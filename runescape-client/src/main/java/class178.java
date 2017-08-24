@@ -1,14 +1,30 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fy")
 public class class178 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("cn")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-54"
+      signature = "Lib;"
    )
-   public static boolean method3414(int var0) {
-      return (var0 & 1) != 0;
+   static IndexData field2419;
+   @ObfuscatedName("o")
+   @Export("overlayIds")
+   static byte[][][] overlayIds;
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Lii;III)Z",
+      garbageValue = "-544333825"
+   )
+   static boolean method3474(IndexDataBase var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         GraphicsObject.decodeSprite(var3);
+         return true;
+      }
    }
 }

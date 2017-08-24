@@ -3,84 +3,84 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kd")
+@ObfuscatedName("ky")
 public class class290 {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   public static final class290 field3859;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lkd;"
+      signature = "Lky;"
    )
-   public static final class290 field3841;
-   @ObfuscatedName("h")
+   static final class290 field3853;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lkd;"
+      signature = "Lky;"
    )
-   static final class290 field3837;
-   @ObfuscatedName("f")
+   static final class290 field3861;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lkd;"
+      signature = "Lky;"
    )
-   static final class290 field3838;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static final class290 field3839;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static final class290 field3840;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static final class290 field3846;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static final class290 field3842;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static final class290 field3845;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   public static final class290 field3844;
+   static final class290 field3854;
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static final class290 field3856;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static final class290 field3852;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static final class290 field3858;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static final class290 field3857;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   public static final class290 field3860;
+   @ObfuscatedName("d")
    @Export("identifier")
    final String identifier;
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 619767457
+      intValue = -625431193
    )
-   public final int field3836;
+   public final int field3855;
 
    static {
-      field3841 = new class290(6, 0, "", "");
-      field3837 = new class290(8, 1, "", "");
-      field3838 = new class290(7, 2, "", "");
-      field3839 = new class290(3, 3, "", "");
-      field3840 = new class290(2, 4, "", "");
-      field3846 = new class290(4, 5, "", "");
-      field3842 = new class290(5, 6, "", "");
-      field3845 = new class290(1, 7, "", "");
-      field3844 = new class290(0, -1, "", "", true, new class290[]{field3841, field3837, field3838, field3840, field3839});
+      field3859 = new class290(5, 0, "", "");
+      field3853 = new class290(2, 1, "", "");
+      field3861 = new class290(0, 2, "", "");
+      field3854 = new class290(4, 3, "", "");
+      field3856 = new class290(3, 4, "", "");
+      field3852 = new class290(1, 5, "", "");
+      field3858 = new class290(7, 6, "", "");
+      field3857 = new class290(6, 7, "", "");
+      field3860 = new class290(8, -1, "", "", true, new class290[]{field3859, field3853, field3861, field3856, field3854});
    }
 
    class290(int var1, int var2, String var3, String var4) {
-      this.field3836 = var1;
+      this.field3855 = var1;
       this.identifier = var4;
    }
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lkd;)V"
+      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lky;)V"
    )
    class290(int var1, int var2, String var3, String var4, boolean var5, class290[] var6) {
-      this.field3836 = var1;
+      this.field3855 = var1;
       this.identifier = var4;
    }
 

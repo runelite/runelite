@@ -1,67 +1,62 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iy")
+@ObfuscatedName("ih")
 public class class244 extends CacheableNode {
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgp;"
    )
-   static NodeCache field3304;
-   @ObfuscatedName("g")
+   public static NodeCache field3315;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lkp;"
+      signature = "Lii;"
    )
-   static SpritePixels field3300;
-   @ObfuscatedName("f")
-   public boolean field3305;
+   public static IndexDataBase field3317;
+   @ObfuscatedName("t")
+   static int[] field3318;
+   @ObfuscatedName("rc")
+   @ObfuscatedGetter(
+      intValue = 45619665
+   )
+   static int field3319;
+   @ObfuscatedName("a")
+   public boolean field3316;
 
    static {
-      field3304 = new NodeCache(64);
+      field3315 = new NodeCache(64);
    }
 
-   class244() {
-      this.field3305 = false;
+   public class244() {
+      this.field3316 = false;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfb;IB)V",
-      garbageValue = "7"
+      signature = "(Lfp;II)V",
+      garbageValue = "-1789751322"
    )
-   void method4347(Buffer var1, int var2) {
+   void method4318(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3305 = true;
+         this.field3316 = true;
       }
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfb;B)V",
-      garbageValue = "27"
+      signature = "(Lfp;I)V",
+      garbageValue = "1883339833"
    )
-   void method4334(Buffer var1) {
+   public void method4316(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4347(var1, var2);
+         this.method4318(var1, var2);
       }
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(Lfb;Ljava/lang/String;I)I",
-      garbageValue = "1132162893"
-   )
-   public static int method4348(Buffer var0, String var1) {
-      int var2 = var0.offset;
-      byte[] var3 = class23.method182(var1);
-      var0.putShortSmart(var3.length);
-      var0.offset += class266.field3648.compress(var3, 0, var3.length, var0.payload, var0.offset);
-      return var0.offset - var2;
    }
 }

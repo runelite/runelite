@@ -4,56 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bj")
 @Implements("ClanMember")
 public class ClanMember extends Node {
-   @ObfuscatedName("qv")
-   @ObfuscatedSignature(
-      signature = "Lfx;"
-   )
-   static IndexFile field929;
-   @ObfuscatedName("h")
-   String field927;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("username")
    String username;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1792303631
+      intValue = -2082212303
    )
    @Export("world")
    int world;
-   @ObfuscatedName("p")
+   @ObfuscatedName("j")
+   String field932;
+   @ObfuscatedName("r")
    @Export("rank")
    byte rank;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "288438858"
+      signature = "(Ljava/lang/String;B)I",
+      garbageValue = "-32"
    )
-   public static void method1208() {
-      class255.field3402.reset();
-      class255.field3403.reset();
-      class255.field3404.reset();
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "-10386"
+      signature = "(B)V",
+      garbageValue = "7"
    )
-   public static final boolean method1207() {
-      KeyFocusListener var0 = KeyFocusListener.keyboard;
-      synchronized(KeyFocusListener.keyboard) {
-         if(KeyFocusListener.field652 == KeyFocusListener.field659) {
-            return false;
-         } else {
-            class48.field625 = KeyFocusListener.field633[KeyFocusListener.field659];
-            class221.field2807 = KeyFocusListener.field631[KeyFocusListener.field659];
-            KeyFocusListener.field659 = KeyFocusListener.field659 + 1 & 127;
-            return true;
-         }
-      }
+   public static void method1169() {
+      class255.field3413.reset();
+      class255.field3430.reset();
+      class255.field3421.reset();
    }
 }

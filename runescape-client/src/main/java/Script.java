@@ -1,107 +1,157 @@
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("ck")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgp;"
    )
-   static NodeCache field1548;
-   @ObfuscatedName("h")
+   static NodeCache field1546;
+   @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "[Ljx;"
+   )
+   static IndexedSprite[] field1549;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Las;"
+   )
+   static class47 field1543;
+   @ObfuscatedName("j")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -2097382571
+      intValue = 1798142611
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1333882737
+      intValue = -1949922097
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 889194183
+      intValue = -293602213
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 9122779
+      intValue = 506993195
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "[Lgd;"
+      signature = "[Lgi;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1548 = new NodeCache(128);
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IB)[Lgd;",
-      garbageValue = "126"
-   )
-   IterableHashTable[] method1864(int var1) {
-      return new IterableHashTable[var1];
+      field1546 = new NodeCache(128);
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "2067900426"
+      signature = "(II)[Lgi;",
+      garbageValue = "-1230171328"
    )
-   static long method1871() {
-      try {
-         URL var0 = new URL(CombatInfo1.method1553("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         Buffer var4 = new Buffer(new byte[1000]);
+   IterableHashTable[] method1857(int var1) {
+      return new IterableHashTable[var1];
+   }
 
-         do {
-            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
-            if(var5 == -1) {
-               var4.offset = 0;
-               long var7 = var4.readLong();
-               return var7;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-617187399"
+   )
+   public static int method1861(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
+         } else {
+            var2 += 3;
+         }
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "(Lbg;B)V",
+      garbageValue = "48"
+   )
+   static final void method1860(Actor var0) {
+      if(var0.field1276 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1263 + 1 > class216.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+         int var1 = var0.field1276 - var0.field1275;
+         int var2 = Client.gameCycle - var0.field1275;
+         int var3 = var0.field1271 * 128 + var0.field1233 * 64;
+         int var4 = var0.field1233 * 64 + var0.field1229 * 128;
+         int var5 = var0.field1233 * 64 + var0.field1239 * 128;
+         int var6 = var0.field1274 * 128 + var0.field1233 * 64;
+         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
+         var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
+      }
+
+      var0.field1287 = 0;
+      var0.orientation = var0.field1277;
+      var0.angle = var0.orientation;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(CI)Z",
+      garbageValue = "209574792"
+   )
+   static final boolean method1859(char var0) {
+      if(Character.isISOControl(var0)) {
+         return false;
+      } else if(class44.method660(var0)) {
+         return true;
+      } else {
+         char[] var1 = class268.field3661;
+
+         int var2;
+         char var3;
+         for(var2 = 0; var2 < var1.length; ++var2) {
+            var3 = var1[var2];
+            if(var0 == var3) {
+               return true;
             }
+         }
 
-            var4.offset += var5;
-         } while(var4.offset < 1000);
+         var1 = class268.field3662;
 
-         return 0L;
-      } catch (Exception var9) {
-         return 0L;
+         for(var2 = 0; var2 < var1.length; ++var2) {
+            var3 = var1[var2];
+            if(var0 == var3) {
+               return true;
+            }
+         }
+
+         return false;
       }
    }
 }

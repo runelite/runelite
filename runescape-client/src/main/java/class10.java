@@ -1,130 +1,103 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("d")
 public final class class10 extends class9 {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -845440721
+   @ObfuscatedName("ev")
+   @ObfuscatedSignature(
+      signature = "Lev;"
    )
-   final int field256;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -727931811
+   static class148 field264;
+   @ObfuscatedName("gc")
+   @ObfuscatedSignature(
+      signature = "[Lkd;"
    )
-   final int field255;
-   @ObfuscatedName("h")
+   @Export("pkIcons")
+   static SpritePixels[] pkIcons;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -974872513
+      intValue = 1761665601
    )
-   final int field253;
-   @ObfuscatedName("x")
+   final int field266;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1018888399
-   )
-   final int field257;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -688745201
-   )
-   final int field254;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -307958691
+      intValue = -1860339831
    )
    final int field259;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -925514625
+      intValue = -1207710427
    )
-   final int field258;
+   final int field257;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1932930275
+   )
+   final int field265;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 613098399
+   )
+   final int field256;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 805369403
+   )
+   final int field261;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 1020217981
+   )
+   final int field262;
 
    @ObfuscatedSignature(
-      signature = "(Leo;IIII)V"
+      signature = "(Lem;IIII)V"
    )
    class10(Model var1, int var2, int var3, int var4, int var5) {
-      this.field256 = var2 + var1.field1969 - var1.field1942;
-      this.field253 = var3 + var1.field1959 - var1.field1962;
-      this.field254 = var4 + var1.field1987 - var1.field1983;
-      this.field255 = var2 + var1.field1942 + var1.field1969;
-      this.field257 = var3 + var1.field1959 + var1.field1962;
-      this.field259 = var4 + var1.field1983 + var1.field1987;
-      this.field258 = var5;
+      this.field266 = var2 + var1.field1963 - var1.field1975;
+      this.field257 = var3 + var1.field1932 - var1.field1982;
+      this.field256 = var4 + var1.field1965 - var1.field1968;
+      this.field259 = var2 + var1.field1963 + var1.field1975;
+      this.field265 = var3 + var1.field1982 + var1.field1932;
+      this.field261 = var4 + var1.field1965 + var1.field1968;
+      this.field262 = var5;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1383927671"
+      garbageValue = "-56481943"
    )
-   final void vmethod47() {
+   public final void vmethod58() {
       for(int var4 = 0; var4 < 8; ++var4) {
-         int var1 = (var4 & 1) == 0?this.field256:this.field255;
-         int var2 = (var4 & 2) == 0?this.field253:this.field257;
-         int var3 = (var4 & 4) == 0?this.field254:this.field259;
+         int var1 = (var4 & 1) == 0?this.field266:this.field259;
+         int var2 = (var4 & 2) == 0?this.field257:this.field265;
+         int var3 = (var4 & 4) == 0?this.field256:this.field261;
          if((var4 & 1) == 0) {
-            class19.method164(var1, var2, var3, this.field255, var2, var3, this.field258);
+            class37.method526(var1, var2, var3, this.field259, var2, var3, this.field262);
          }
 
          if((var4 & 2) == 0) {
-            class19.method164(var1, var2, var3, var1, this.field257, var3, this.field258);
+            class37.method526(var1, var2, var3, var1, this.field265, var3, this.field262);
          }
 
          if((var4 & 4) == 0) {
-            class19.method164(var1, var2, var3, var1, var2, this.field259, this.field258);
+            class37.method526(var1, var2, var3, var1, var2, this.field261, this.field262);
          }
       }
 
    }
 
-   @ObfuscatedName("j")
-   public static final void method51(long var0) {
-      if(var0 > 0L) {
-         if(var0 % 10L == 0L) {
-            long var2 = var0 - 1L;
-
-            try {
-               Thread.sleep(var2);
-            } catch (InterruptedException var7) {
-               ;
-            }
-
-            try {
-               Thread.sleep(1L);
-            } catch (InterruptedException var6) {
-               ;
-            }
-         } else {
-            try {
-               Thread.sleep(var0);
-            } catch (InterruptedException var8) {
-               ;
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("fh")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lcr;I)V",
-      garbageValue = "-1923090662"
+      signature = "(Lii;Ljava/lang/String;Ljava/lang/String;I)[Lkd;",
+      garbageValue = "-2096693165"
    )
-   static final void method46(Actor var0) {
-      if(var0.field1265 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1267 + 1 > PendingSpawn.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
-         int var1 = var0.field1265 - var0.field1264;
-         int var2 = Client.gameCycle - var0.field1264;
-         int var3 = var0.field1219 * 64 + var0.field1260 * 128;
-         int var4 = var0.field1262 * 128 + var0.field1219 * 64;
-         int var5 = var0.field1219 * 64 + var0.field1271 * 128;
-         int var6 = var0.field1263 * 128 + var0.field1219 * 64;
-         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
-         var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;
-      }
-
-      var0.field1276 = 0;
-      var0.orientation = var0.field1266;
-      var0.angle = var0.orientation;
+   public static SpritePixels[] method62(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return class40.method576(var0, var3, var4);
    }
 }

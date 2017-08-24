@@ -1,38 +1,37 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hw")
 public class class221 {
-   @ObfuscatedName("cs")
-   public static char field2807;
-
-   @ObfuscatedName("x")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1897086126"
+      signature = "(Ljava/lang/CharSequence;I)J",
+      garbageValue = "1074781321"
    )
-   public static void method4072() {
-      Object var0 = class237.field3222;
-      synchronized(class237.field3222) {
-         if(class237.field3219 != 0) {
-            class237.field3219 = 1;
+   static long method4087(CharSequence var0) {
+      long var1 = 0L;
+      int var3 = var0.length();
 
-            try {
-               class237.field3222.wait();
-            } catch (InterruptedException var3) {
-               ;
-            }
+      for(int var4 = 0; var4 < var3; ++var4) {
+         var1 *= 37L;
+         char var5 = var0.charAt(var4);
+         if(var5 >= 65 && var5 <= 90) {
+            var1 += (long)(var5 + 1 - 65);
+         } else if(var5 >= 97 && var5 <= 122) {
+            var1 += (long)(var5 + 1 - 97);
+         } else if(var5 >= 48 && var5 <= 57) {
+            var1 += (long)(var5 + 27 - 48);
          }
 
+         if(var1 >= 177917621779460413L) {
+            break;
+         }
       }
-   }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1477019721"
-   )
-   public static boolean method4073(int var0) {
-      return (var0 >> 31 & 1) != 0;
+      while(var1 % 37L == 0L && var1 != 0L) {
+         var1 /= 37L;
+      }
+
+      return var1;
    }
 }

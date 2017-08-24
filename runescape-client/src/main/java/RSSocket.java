@@ -9,54 +9,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fv")
+@ObfuscatedName("ff")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -925589081
+      intValue = -1154687407
    )
    @Export("outbufLen")
    int outbufLen;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("closed")
    boolean closed;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -614194975
+      intValue = -2096938191
    )
    @Export("streamOffset")
    int streamOffset;
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @Export("throwException")
    boolean throwException;
    @ObfuscatedName("j")
    @Export("inputStream")
    InputStream inputStream;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @Export("outbuffer")
    byte[] outbuffer;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lea;"
+      signature = "Lez;"
    )
    @Export("socketThread")
    Task socketThread;
-   @ObfuscatedName("h")
+   @ObfuscatedName("i")
    @Export("outputStream")
    OutputStream outputStream;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Leo;"
    )
    @Export("manager")
    Signlink manager;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @Export("socket")
    Socket socket;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/net/Socket;Lep;)V"
+      signature = "(Ljava/net/Socket;Leo;)V"
    )
    public RSSocket(Socket var1, Signlink var2) throws IOException {
       this.closed = false;
@@ -73,10 +73,10 @@ public final class RSSocket implements Runnable {
       this.outputStream = this.socket.getOutputStream();
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "3"
+      garbageValue = "-92"
    )
    @Export("close")
    public void close() {
@@ -88,7 +88,7 @@ public final class RSSocket implements Runnable {
 
          if(this.socketThread != null) {
             while(this.socketThread.status == 0) {
-               class10.method51(1L);
+               NPC.method1702(1L);
             }
 
             if(this.socketThread.status == 1) {
@@ -104,20 +104,20 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1233996627"
+      garbageValue = "158537241"
    )
    @Export("available")
    public int available() throws IOException {
       return this.closed?0:this.inputStream.available();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "-70"
+      signature = "([BIII)V",
+      garbageValue = "-1180424989"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
@@ -135,10 +135,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "([BIIB)V",
-      garbageValue = "8"
+      garbageValue = "-1"
    )
    @Export("queueForWrite")
    public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
@@ -170,10 +170,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-945061426"
+      garbageValue = "-1147661076"
    )
    @Export("readByte")
    public int readByte() throws IOException {
@@ -247,43 +247,193 @@ public final class RSSocket implements Runnable {
 
          this.outbuffer = null;
       } catch (Exception var12) {
-         Varcs.method1853((String)null, var12);
+         class150.method2975((String)null, var12);
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "440579533"
+      signature = "(II)Z",
+      garbageValue = "-2029816994"
    )
-   public static boolean method3030() {
-      return class204.field2507 != 0?true:class204.field2501.method3696();
+   public static boolean method3080(int var0) {
+      return var0 >= class222.field2819.field2842 && var0 <= class222.field2830.field2842 || var0 == class222.field2837.field2842;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "2033367457"
+      signature = "(IZIS)V",
+      garbageValue = "24603"
    )
-   static final int method3023(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   public static final void method3082(int var0, boolean var1, int var2) {
+      if(var0 >= 8000 && var0 <= '뮀') {
+         class73.sampleRate = var0;
+         AbstractSoundSystem.highMemory = var1;
+         AbstractSoundSystem.priority = var2;
+      } else {
+         throw new IllegalArgumentException();
       }
+   }
 
-      if(var2 > 192) {
-         var1 /= 2;
+   @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "(Lbg;I)V",
+      garbageValue = "-1135495407"
+   )
+   static final void method3081(Actor var0) {
+      var0.poseAnimation = var0.idlePoseAnimation;
+      if(var0.queueSize == 0) {
+         var0.field1287 = 0;
+      } else {
+         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+            Sequence var1 = class216.getAnimation(var0.animation);
+            if(var0.field1249 > 0 && var1.precedenceAnimating == 0) {
+               ++var0.field1287;
+               return;
+            }
+
+            if(var0.field1249 <= 0 && var1.priority == 0) {
+               ++var0.field1287;
+               return;
+            }
+         }
+
+         int var10 = var0.x;
+         int var2 = var0.y;
+         int var3 = var0.field1233 * 64 + var0.pathX[var0.queueSize - 1] * 128;
+         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1233 * 64;
+         if(var10 < var3) {
+            if(var2 < var4) {
+               var0.orientation = 1280;
+            } else if(var2 > var4) {
+               var0.orientation = 1792;
+            } else {
+               var0.orientation = 1536;
+            }
+         } else if(var10 > var3) {
+            if(var2 < var4) {
+               var0.orientation = 768;
+            } else if(var2 > var4) {
+               var0.orientation = 256;
+            } else {
+               var0.orientation = 512;
+            }
+         } else if(var2 < var4) {
+            var0.orientation = 1024;
+         } else if(var2 > var4) {
+            var0.orientation = 0;
+         }
+
+         byte var5 = var0.field1286[var0.queueSize - 1];
+         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
+            int var6 = var0.orientation - var0.angle & 2047;
+            if(var6 > 1024) {
+               var6 -= 2048;
+            }
+
+            int var7 = var0.field1238;
+            if(var6 >= -256 && var6 <= 256) {
+               var7 = var0.field1268;
+            } else if(var6 >= 256 && var6 < 768) {
+               var7 = var0.field1230;
+            } else if(var6 >= -768 && var6 <= -256) {
+               var7 = var0.field1288;
+            }
+
+            if(var7 == -1) {
+               var7 = var0.field1268;
+            }
+
+            var0.poseAnimation = var7;
+            int var8 = 4;
+            boolean var9 = true;
+            if(var0 instanceof NPC) {
+               var9 = ((NPC)var0).composition.isClickable;
+            }
+
+            if(var9) {
+               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1282 != 0) {
+                  var8 = 2;
+               }
+
+               if(var0.queueSize > 2) {
+                  var8 = 6;
+               }
+
+               if(var0.queueSize > 3) {
+                  var8 = 8;
+               }
+
+               if(var0.field1287 > 0 && var0.queueSize > 1) {
+                  var8 = 8;
+                  --var0.field1287;
+               }
+            } else {
+               if(var0.queueSize > 1) {
+                  var8 = 6;
+               }
+
+               if(var0.queueSize > 2) {
+                  var8 = 8;
+               }
+
+               if(var0.field1287 > 0 && var0.queueSize > 1) {
+                  var8 = 8;
+                  --var0.field1287;
+               }
+            }
+
+            if(var5 == 2) {
+               var8 <<= 1;
+            }
+
+            if(var8 >= 8 && var0.field1268 == var0.poseAnimation && var0.field1272 != -1) {
+               var0.poseAnimation = var0.field1272;
+            }
+
+            if(var10 != var3 || var4 != var2) {
+               if(var10 < var3) {
+                  var0.x += var8;
+                  if(var0.x > var3) {
+                     var0.x = var3;
+                  }
+               } else if(var10 > var3) {
+                  var0.x -= var8;
+                  if(var0.x < var3) {
+                     var0.x = var3;
+                  }
+               }
+
+               if(var2 < var4) {
+                  var0.y += var8;
+                  if(var0.y > var4) {
+                     var0.y = var4;
+                  }
+               } else if(var2 > var4) {
+                  var0.y -= var8;
+                  if(var0.y < var4) {
+                     var0.y = var4;
+                  }
+               }
+            }
+
+            if(var3 == var0.x && var4 == var0.y) {
+               --var0.queueSize;
+               if(var0.field1249 > 0) {
+                  --var0.field1249;
+               }
+            }
+
+         } else {
+            var0.x = var3;
+            var0.y = var4;
+            --var0.queueSize;
+            if(var0.field1249 > 0) {
+               --var0.field1249;
+            }
+
+         }
       }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
    }
 }

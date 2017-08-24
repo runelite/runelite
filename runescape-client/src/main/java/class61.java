@@ -2,210 +2,179 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("bp")
+@ObfuscatedName("bz")
 public final class class61 {
-   @ObfuscatedName("eu")
-   @ObfuscatedSignature(
-      signature = "Ljh;"
-   )
-   static Font field765;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("tileHeights")
    static int[][][] tileHeights;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("tileSettings")
    static byte[][][] tileSettings;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1615433323
+      intValue = -1347853047
    )
-   static int field761;
-   @ObfuscatedName("t")
-   static final int[] field767;
-   @ObfuscatedName("y")
-   static final int[] field770;
-   @ObfuscatedName("z")
-   static final int[] field769;
-   @ObfuscatedName("u")
-   static final int[] field772;
-   @ObfuscatedName("k")
+   static int field770;
+   @ObfuscatedName("e")
+   static final int[] field766;
+   @ObfuscatedName("p")
+   static final int[] field768;
+   @ObfuscatedName("m")
    static final int[] field771;
-   @ObfuscatedName("q")
-   static final int[] field781;
-   @ObfuscatedName("bp")
-   static String field777;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -349839355
+   @ObfuscatedName("mo")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
    )
-   static int field773;
-   @ObfuscatedName("az")
-   protected static String field778;
-   @ObfuscatedName("d")
+   static class157 field777;
+   @ObfuscatedName("x")
+   static final int[] field772;
+   @ObfuscatedName("h")
+   static final int[] field762;
+   @ObfuscatedName("f")
+   static final int[] field774;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 94700675
+      intValue = 1763996373
    )
-   static int field774;
+   static int field775;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 221973413
+      intValue = 316888691
    )
-   static int field759;
-   @ObfuscatedName("p")
-   @Export("underlayIds")
-   static byte[][][] underlayIds;
-   @ObfuscatedName("x")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
-   @ObfuscatedName("g")
+   static int field776;
+   @ObfuscatedName("n")
    @Export("overlayPaths")
    static byte[][][] overlayPaths;
-   @ObfuscatedName("c")
-   @Export("overlayRotations")
-   static byte[][][] overlayRotations;
-   @ObfuscatedName("l")
-   static byte[][][] field784;
-   @ObfuscatedName("b")
-   @Export("blendedHue")
-   static int[] blendedHue;
-   @ObfuscatedName("qb")
-   @ObfuscatedSignature(
-      signature = "Ls;"
-   )
-   static class13 field779;
+   @ObfuscatedName("k")
+   static int[][] field773;
+   @ObfuscatedName("y")
+   static int[] field769;
 
    static {
       tileHeights = new int[4][105][105];
       tileSettings = new byte[4][104][104];
-      field761 = 99;
-      field767 = new int[]{1, 2, 4, 8};
-      field770 = new int[]{16, 32, 64, 128};
-      field769 = new int[]{1, 0, -1, 0};
+      field770 = 99;
+      field766 = new int[]{1, 2, 4, 8};
+      field768 = new int[]{16, 32, 64, 128};
+      field771 = new int[]{1, 0, -1, 0};
       field772 = new int[]{0, -1, 0, 1};
-      field771 = new int[]{1, -1, -1, 1};
-      field781 = new int[]{-1, -1, 1, 1};
-      field773 = (int)(Math.random() * 17.0D) - 8;
-      field774 = (int)(Math.random() * 33.0D) - 16;
+      field762 = new int[]{1, -1, -1, 1};
+      field774 = new int[]{-1, -1, 1, 1};
+      field775 = (int)(Math.random() * 17.0D) - 8;
+      field776 = (int)(Math.random() * 33.0D) - 16;
    }
 
-   @ObfuscatedName("iv")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([Lhi;IB)V",
-      garbageValue = "121"
+      signature = "(II)Lip;",
+      garbageValue = "2133926158"
    )
-   static final void method1116(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null && var3.parentId == var1 && (!var3.hasScript || !Renderable.method2896(var3))) {
-            int var5;
-            if(var3.type == 0) {
-               if(!var3.hasScript && Renderable.method2896(var3) && var3 != class2.field12) {
-                  continue;
-               }
+   public static class255 method1090(int var0) {
+      class255 var1 = (class255)class255.field3413.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class255.field3419.getConfigData(32, var0);
+         var1 = new class255();
+         if(var2 != null) {
+            var1.method4484(new Buffer(var2));
+         }
 
-               method1116(var0, var3.id);
-               if(var3.children != null) {
-                  method1116(var3.children, var3.id);
-               }
+         class255.field3413.put(var1, (long)var0);
+         return var1;
+      }
+   }
 
-               WidgetNode var7 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var7 != null) {
-                  var5 = var7.id;
-                  if(Ignore.loadWidget(var5)) {
-                     method1116(class176.widgets[var5], -1);
-                  }
-               }
-            }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljf;",
+      garbageValue = "75"
+   )
+   public static Overlay method1098(int var0) {
+      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
+         var1 = new Overlay();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
+         }
 
-            if(var3.type == 6) {
-               if(var3.field2775 != -1 || var3.field2713 != -1) {
-                  boolean var4 = class170.method3142(var3);
-                  if(var4) {
-                     var5 = var3.field2713;
-                  } else {
-                     var5 = var3.field2775;
-                  }
+         var1.post();
+         Overlay.overlays.put(var1, (long)var0);
+         return var1;
+      }
+   }
 
-                  if(var5 != -1) {
-                     Sequence var6 = PendingSpawn.getAnimation(var5);
+   @ObfuscatedName("gx")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "1279875808"
+   )
+   static final void method1097(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      PendingSpawn var9 = null;
 
-                     for(var3.field2747 += Client.field957; var3.field2747 > var6.frameLenghts[var3.field2771]; class90.method1723(var3)) {
-                        var3.field2747 -= var6.frameLenghts[var3.field2771];
-                        ++var3.field2771;
-                        if(var3.field2771 >= var6.frameIDs.length) {
-                           var3.field2771 -= var6.frameStep;
-                           if(var3.field2771 < 0 || var3.field2771 >= var6.frameIDs.length) {
-                              var3.field2771 = 0;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               if(var3.field2705 != 0 && !var3.hasScript) {
-                  int var8 = var3.field2705 >> 16;
-                  var5 = var3.field2705 << 16 >> 16;
-                  var8 *= Client.field957;
-                  var5 *= Client.field957;
-                  var3.rotationX = var8 + var3.rotationX & 2047;
-                  var3.rotationZ = var5 + var3.rotationZ & 2047;
-                  class90.method1723(var3);
-               }
-            }
+      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+            var9 = var10;
+            break;
          }
       }
 
-   }
-
-   @ObfuscatedName("fp")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-363614385"
-   )
-   static final void method1115() {
-      if(Client.field1153 != class35.plane) {
-         Client.field1153 = class35.plane;
-         class83.method1623(class35.plane);
+      if(var9 == null) {
+         var9 = new PendingSpawn();
+         var9.level = var0;
+         var9.type = var3;
+         var9.x = var1;
+         var9.y = var2;
+         class25.method210(var9);
+         Client.pendingSpawns.addFront(var9);
       }
 
+      var9.id = var4;
+      var9.field1224 = var5;
+      var9.orientation = var6;
+      var9.delay = var7;
+      var9.hitpoints = var8;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "-2121386496"
+      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "-17"
    )
-   static Class method1118(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
-   }
+   public static String method1100(String var0) {
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
+      byte var3 = 2;
 
-   @ObfuscatedName("ip")
-   @ObfuscatedSignature(
-      signature = "(Lhi;III)V",
-      garbageValue = "-9690690"
-   )
-   static final void method1117(Widget var0, int var1, int var2) {
-      if(Client.field1107 == null && !Client.isMenuOpen) {
-         if(var0 != null && class66.method1141(var0) != null) {
-            Client.field1107 = var0;
-            Client.field1173 = class66.method1141(var0);
-            Client.field1101 = var1;
-            Client.field1102 = var2;
-            class48.field621 = 0;
-            Client.field1110 = false;
-            int var3 = Client.menuOptionCount - 1;
-            if(var3 != -1) {
-               class17.field318 = new class90();
-               class17.field318.field1408 = Client.menuActionParams0[var3];
-               class17.field318.field1406 = Client.menuActionParams1[var3];
-               class17.field318.field1407 = Client.menuTypes[var3];
-               class17.field318.field1409 = Client.menuIdentifiers[var3];
-               class17.field318.field1411 = Client.menuOptions[var3];
-            }
-
+      for(int var4 = 0; var4 < var1; ++var4) {
+         char var5 = var0.charAt(var4);
+         if(var3 == 0) {
+            var5 = Character.toLowerCase(var5);
+         } else if(var3 == 2 || Character.isUpperCase(var5)) {
+            var5 = Varbit.method4429(var5);
          }
+
+         if(Character.isLetter(var5)) {
+            var3 = 0;
+         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
+            if(Character.isSpaceChar(var5)) {
+               if(var3 != 2) {
+                  var3 = 1;
+               }
+            } else {
+               var3 = 1;
+            }
+         } else {
+            var3 = 2;
+         }
+
+         var2[var4] = var5;
       }
+
+      return new String(var2);
    }
 }

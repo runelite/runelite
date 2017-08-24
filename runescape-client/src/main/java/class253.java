@@ -2,117 +2,171 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("iw")
 public class class253 extends CacheableNode {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lgs;"
-   )
-   public static NodeCache field3382;
-   @ObfuscatedName("cu")
-   @ObfuscatedSignature(
-      signature = "Lil;"
-   )
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lgp;"
    )
-   static IndexDataBase field3385;
-   @ObfuscatedName("f")
+   public static NodeCache field3399;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgi;"
    )
-   IterableHashTable field3383;
+   IterableHashTable field3394;
 
    static {
-      field3382 = new NodeCache(64);
+      field3399 = new NodeCache(64);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lfb;II)V",
-      garbageValue = "1433200827"
+      signature = "(Lfp;IB)V",
+      garbageValue = "50"
    )
-   void method4474(Buffer var1, int var2) {
+   void method4457(Buffer var1, int var2) {
       if(var2 == 249) {
-         this.field3383 = FileRequest.method4109(var1, this.field3383);
+         this.field3394 = class34.method516(var1, this.field3394);
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-2071361686"
+      garbageValue = "449256614"
    )
-   public String method4472(int var1, String var2) {
-      return class29.method261(this.field3383, var1, var2);
+   public String method4474(int var1, String var2) {
+      return class43.method653(this.field3394, var1, var2);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1950701128"
+      garbageValue = "-2045020007"
    )
-   public int method4479(int var1, int var2) {
-      return ChatLineBuffer.method1892(this.field3383, var1, var2);
+   public int method4458(int var1, int var2) {
+      return class20.method174(this.field3394, var1, var2);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-989041061"
+      garbageValue = "2033059654"
    )
-   void method4475() {
+   public void method4455() {
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfb;I)V",
-      garbageValue = "647397733"
+      signature = "(Lfp;I)V",
+      garbageValue = "1482875009"
    )
-   void method4473(Buffer var1) {
+   public void method4456(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4474(var1, var2);
+         this.method4457(var1, var2);
       }
    }
 
-   @ObfuscatedName("gb")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIIIB)V",
-      garbageValue = "-1"
+      signature = "(IIIII)V",
+      garbageValue = "2133101511"
    )
-   static final void method4495(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      PendingSpawn var9 = null;
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new ItemContainer();
+         ItemContainer.itemContainers.put(var4, (long)var0);
+      }
 
-      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
-            var9 = var10;
-            break;
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
+   }
+
+   @ObfuscatedName("jt")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-1684109970"
+   )
+   static final void method4462(String var0, boolean var1) {
+      if(var0 != null) {
+         if((Client.ignoreCount < 100 || Client.field1053 == 1) && Client.ignoreCount < 400) {
+            String var2 = Frames.method2925(var0, class8.field243);
+            if(var2 != null) {
+               int var3;
+               String var5;
+               String var6;
+               for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
+                  Ignore var4 = Client.ignores[var3];
+                  var5 = Frames.method2925(var4.name, class8.field243);
+                  if(var5 != null && var5.equals(var2)) {
+                     Client.sendGameMessage(31, "", var0 + " is already on your ignore list");
+                     return;
+                  }
+
+                  if(var4.previousName != null) {
+                     var6 = Frames.method2925(var4.previousName, class8.field243);
+                     if(var6 != null && var6.equals(var2)) {
+                        Client.sendGameMessage(31, "", var0 + " is already on your ignore list");
+                        return;
+                     }
+                  }
+               }
+
+               for(var3 = 0; var3 < Client.friendCount; ++var3) {
+                  Friend var7 = Client.friends[var3];
+                  var5 = Frames.method2925(var7.name, class8.field243);
+                  if(var5 != null && var5.equals(var2)) {
+                     Client.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
+                     return;
+                  }
+
+                  if(var7.previousName != null) {
+                     var6 = Frames.method2925(var7.previousName, class8.field243);
+                     if(var6 != null && var6.equals(var2)) {
+                        Client.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
+                        return;
+                     }
+                  }
+               }
+
+               if(Frames.method2925(Player.localPlayer.name, class8.field243).equals(var2)) {
+                  Client.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
+               } else {
+                  Client.secretPacketBuffer1.putOpcode(33);
+                  Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
+                  Client.secretPacketBuffer1.putString(var0);
+               }
+            }
+         } else {
+            Client.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
          }
       }
-
-      if(var9 == null) {
-         var9 = new PendingSpawn();
-         var9.level = var0;
-         var9.type = var3;
-         var9.x = var1;
-         var9.y = var2;
-         class43.method650(var9);
-         Client.pendingSpawns.addFront(var9);
-      }
-
-      var9.id = var4;
-      var9.field1214 = var5;
-      var9.orientation = var6;
-      var9.delay = var7;
-      var9.hitpoints = var8;
    }
 }

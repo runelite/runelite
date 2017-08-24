@@ -4,138 +4,132 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("ee")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("dl")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lil;"
-   )
-   @Export("indexTextures")
-   static IndexData indexTextures;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lec;"
+      signature = "Led;"
    )
    @Export("paint")
    SceneTilePaint paint;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Ldo;"
-   )
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Leq;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Ldv;"
+   )
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lec;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 522504713
+      intValue = -703632049
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Ldo;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "[Lem;"
+      signature = "[Lef;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -221732423
+      intValue = -350125137
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ldf;"
+      signature = "Ldu;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Leb;"
+      signature = "Lee;"
    )
    @Export("bridge")
    Tile bridge;
-   @ObfuscatedName("s")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1137641357
+      intValue = -1191428389
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1082202281
+      intValue = 679790241
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("a")
+   @ObfuscatedName("z")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1617720745
+      intValue = 1630502139
    )
    @Export("x")
    int x;
-   @ObfuscatedName("f")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1965362807
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1355594373
+      intValue = -1955080215
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("e")
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1640367019
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("c")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 798838591
+      intValue = 2049021203
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -398219749
+      intValue = -615840821
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1177383225
+      intValue = -1807073215
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("z")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -2132972443
+      intValue = 1533611519
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
@@ -147,87 +141,5 @@ public final class Tile extends Node {
       this.renderLevel = this.plane = var1;
       this.x = var2;
       this.y = var3;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1912169005"
-   )
-   @Export("getColTags")
-   static String getColTags(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IB)Z",
-      garbageValue = "121"
-   )
-   static boolean method2522(String var0, int var1) {
-      return class9.method43(var0, var1, "openjs");
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "([BIILez;[Lfc;B)V",
-      garbageValue = "3"
-   )
-   static final void method2521(byte[] var0, int var1, int var2, Region var3, CollisionData[] var4) {
-      Buffer var5 = new Buffer(var0);
-      int var6 = -1;
-
-      while(true) {
-         int var7 = var5.getUSmart();
-         if(var7 == 0) {
-            return;
-         }
-
-         var6 += var7;
-         int var8 = 0;
-
-         while(true) {
-            int var9 = var5.getUSmart();
-            if(var9 == 0) {
-               break;
-            }
-
-            var8 += var9 - 1;
-            int var10 = var8 & 63;
-            int var11 = var8 >> 6 & 63;
-            int var12 = var8 >> 12;
-            int var13 = var5.readUnsignedByte();
-            int var14 = var13 >> 2;
-            int var15 = var13 & 3;
-            int var16 = var11 + var1;
-            int var17 = var10 + var2;
-            if(var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
-               int var18 = var12;
-               if((class61.tileSettings[1][var16][var17] & 2) == 2) {
-                  var18 = var12 - 1;
-               }
-
-               CollisionData var19 = null;
-               if(var18 >= 0) {
-                  var19 = var4[var18];
-               }
-
-               class89.addObject(var12, var16, var17, var6, var15, var14, var3, var19);
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("je")
-   @ObfuscatedSignature(
-      signature = "([BII)V",
-      garbageValue = "1771357207"
-   )
-   static void method2520(byte[] var0, int var1) {
-      if(Client.field971 == null) {
-         Client.field971 = new byte[24];
-      }
-
-      class184.method3463(var0, var1, Client.field971, 0, 24);
    }
 }

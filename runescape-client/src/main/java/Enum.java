@@ -4,58 +4,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("iv")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lgs;"
-   )
-   static NodeCache field3388;
-   @ObfuscatedName("dz")
-   @ObfuscatedSignature(
-      signature = "Lil;"
-   )
-   @Export("vorbisIndex")
-   static IndexData vorbisIndex;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lgp;"
    )
-   static IndexDataBase field3396;
-   @ObfuscatedName("x")
+   static NodeCache field3401;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   public static IndexDataBase field3410;
+   @ObfuscatedName("o")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -977370715
+      intValue = 611718383
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1046902501
+      intValue = -1957452873
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @Export("stringVals")
    public String[] stringVals;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @Export("intVals")
    public int[] intVals;
 
    static {
-      field3388 = new NodeCache(64);
+      field3401 = new NodeCache(64);
    }
 
    Enum() {
@@ -63,12 +57,12 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfb;II)V",
-      garbageValue = "-110477450"
+      signature = "(Lfp;II)V",
+      garbageValue = "966505286"
    )
-   void method4497(Buffer var1, int var2) {
+   void method4475(Buffer var1, int var2) {
       if(var2 == 1) {
          this.keyType = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
@@ -102,10 +96,10 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfb;I)V",
-      garbageValue = "-1919746041"
+      signature = "(Lfp;B)V",
+      garbageValue = "109"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -115,17 +109,7 @@ public class Enum extends CacheableNode {
             return;
          }
 
-         this.method4497(var1, var2);
+         this.method4475(var1, var2);
       }
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-78"
-   )
-   static int method4509(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      return var2 == null?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }

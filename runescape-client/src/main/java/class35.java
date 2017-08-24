@@ -3,65 +3,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("az")
 public class class35 {
-   @ObfuscatedName("by")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Laz;"
    )
-   static class233 field505;
+   static final class35 field510;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lat;"
+      signature = "Laz;"
    )
    static final class35 field506;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lat;"
-   )
-   static final class35 field502;
-   @ObfuscatedName("iy")
+   @ObfuscatedName("no")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1903218639
+      intValue = -1753094617
    )
-   @Export("plane")
-   static int plane;
-   @ObfuscatedName("ew")
-   @ObfuscatedSignature(
-      signature = "Ljh;"
-   )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1783583469
-   )
-   final int field503;
+   final int field512;
 
    static {
-      field506 = new class35(0);
-      field502 = new class35(1);
+      field510 = new class35(0);
+      field506 = new class35(1);
    }
 
    class35(int var1) {
-      this.field503 = var1;
+      this.field512 = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("fo")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "1710636095"
+      signature = "(I)V",
+      garbageValue = "-47543402"
    )
-   public static boolean method507(char var0) {
-      return var0 >= 32 && var0 <= 126?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+   static final void method518() {
+      if(ScriptEvent.rssocket != null) {
+         ScriptEvent.rssocket.close();
+         ScriptEvent.rssocket = null;
+      }
+
+      class19.method171();
+      ScriptState.region.reset();
+
+      for(int var0 = 0; var0 < 4; ++var0) {
+         Client.collisionMaps[var0].reset();
+      }
+
+      System.gc();
+      class170.method3216(2);
+      Client.field1168 = -1;
+      Client.field1169 = false;
+      class204.method3749();
+      WorldMapType2.setGameState(10);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IS)Z",
-      garbageValue = "1801"
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "1785123402"
    )
-   public static boolean method506(int var0) {
-      return (var0 >> 30 & 1) != 0;
+   public static void method517(String var0, boolean var1, boolean var2) {
+      class43.method651(var0, var1, "openjs", var2);
    }
 }

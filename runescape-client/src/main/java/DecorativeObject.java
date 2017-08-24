@@ -4,72 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("eq")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1852266975
+      intValue = -1114128343
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1367765709
+      intValue = 172717535
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1806805349
+      intValue = 394124291
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1070600819
+      intValue = -960312351
    )
    @Export("x")
    int x;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 237942733
+      intValue = 340330103
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 188151517
+      intValue = -1312772935
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1578198647
+      intValue = -1293886131
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1391964401
+      intValue = -1728847277
    )
    @Export("renderFlag")
    int renderFlag;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 443380997
+      intValue = 93609811
    )
    @Export("rotation")
    int rotation;
@@ -77,48 +77,5 @@ public final class DecorativeObject {
    DecorativeObject() {
       this.hash = 0;
       this.renderInfoBitPacked = 0;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(ILfx;Lil;I)V",
-      garbageValue = "-1639884748"
-   )
-   static void method2921(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.field3196 = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = class237.field3224;
-      synchronized(class237.field3224) {
-         class237.field3224.addFront(var3);
-      }
-
-      class229.method4092();
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "1486105043"
-   )
-   public static boolean method2923(char var0) {
-      return var0 >= 48 && var0 <= 57 || var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(CII)I",
-      garbageValue = "1454752615"
-   )
-   static int method2922(char var0, int var1) {
-      int var2 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var2 = (var0 << 4) + 1;
-      }
-
-      return var2;
    }
 }

@@ -4,23 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("is")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lgs;"
-   )
-   @Export("inventoryCache")
-   static NodeCache inventoryCache;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lgp;"
    )
-   static IndexDataBase field3268;
-   @ObfuscatedName("f")
+   @Export("inventoryCache")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("dt")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   static IndexData field3283;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   public static IndexDataBase field3284;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 155725293
+      intValue = -1549307139
    )
    @Export("size")
    public int size;
@@ -29,36 +34,53 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   InvType() {
+   public InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfb;II)V",
-      garbageValue = "-2076147853"
+      signature = "(Lfp;II)V",
+      garbageValue = "1925095105"
    )
-   void method4276(Buffer var1, int var2) {
+   void method4274(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfb;I)V",
-      garbageValue = "-736968780"
+      signature = "(Lfp;I)V",
+      garbageValue = "-680436864"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4276(var1, var2);
+         this.method4274(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("ix")
+   @ObfuscatedSignature(
+      signature = "(Lhx;IIII)V",
+      garbageValue = "-1727303757"
+   )
+   static final void method4280(Widget var0, int var1, int var2, int var3) {
+      class211 var4 = var0.method4031(false);
+      if(var4 != null) {
+         if(Client.field1079 < 3) {
+            class44.compass.method5031(var1, var2, var4.field2600, var4.field2599, 25, 25, Client.mapAngle, 256, var4.field2602, var4.field2601);
+         } else {
+            Rasterizer2D.method4957(var1, var2, 0, var4.field2602, var4.field2601);
+         }
+
       }
    }
 }

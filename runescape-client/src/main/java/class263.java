@@ -2,52 +2,61 @@ import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jc")
+@ObfuscatedName("jt")
 public class class263 {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   IndexDataBase field3632;
+   @ObfuscatedName("a")
+   HashMap field3630;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lii;"
    )
-   IndexDataBase field3624;
-   @ObfuscatedName("f")
-   HashMap field3623;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lia;"
-   )
-   IndexDataBase field3621;
+   IndexDataBase field3631;
 
    @ObfuscatedSignature(
-      signature = "(Lia;Lia;)V"
+      signature = "(Lii;Lii;)V"
    )
    public class263(IndexDataBase var1, IndexDataBase var2) {
-      this.field3624 = var1;
-      this.field3621 = var2;
-      this.field3623 = new HashMap();
+      this.field3632 = var1;
+      this.field3631 = var2;
+      this.field3630 = new HashMap();
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Ljy;I)Ljava/util/HashMap;",
-      garbageValue = "1446874562"
+      signature = "([Ljz;I)Ljava/util/HashMap;",
+      garbageValue = "-911827196"
    )
-   public HashMap method4760(class262[] var1) {
+   public HashMap method4701(class262[] var1) {
       HashMap var2 = new HashMap();
       class262[] var3 = var1;
 
       for(int var4 = 0; var4 < var3.length; ++var4) {
          class262 var5 = var3[var4];
-         if(this.field3623.containsKey(var5)) {
-            var2.put(var5, this.field3623.get(var5));
+         if(this.field3630.containsKey(var5)) {
+            var2.put(var5, this.field3630.get(var5));
          } else {
-            Font var6 = class33.method375(this.field3624, this.field3621, var5.field3608, "");
+            Font var6 = Preferences.method1596(this.field3632, this.field3631, var5.field3623, "");
             if(var6 != null) {
-               this.field3623.put(var5, var6);
+               this.field3630.put(var5, var6);
                var2.put(var5, var6);
             }
          }
       }
 
       return var2;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+      garbageValue = "43"
+   )
+   public static String method4703(CharSequence var0) {
+      return class25.method209('*', var0.length());
    }
 }

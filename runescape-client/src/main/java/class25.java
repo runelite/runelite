@@ -3,203 +3,252 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("w")
 public class class25 {
-   @ObfuscatedName("hv")
+   @ObfuscatedName("ba")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("bh")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "[Ljx;"
    )
-   static Widget field373;
-   @ObfuscatedName("dk")
+   static IndexedSprite[] field383;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 43507605
+      intValue = -1661922999
    )
-   static int field377;
-   @ObfuscatedName("gp")
-   @ObfuscatedGetter(
-      intValue = 312366923
-   )
-   @Export("cameraY")
-   static int cameraY;
+   int field381;
    @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1481703975
-   )
-   int field382;
-   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhs;"
    )
-   Coordinates field384;
+   Coordinates field378;
 
    @ObfuscatedSignature(
-      signature = "(ILhh;)V"
+      signature = "(ILhs;)V"
    )
    class25(int var1, Coordinates var2) {
-      this.field382 = var1;
-      this.field384 = var2;
+      this.field381 = var1;
+      this.field378 = var2;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lia;Ljava/lang/String;Ljava/lang/String;I)[Ljr;",
-      garbageValue = "-746166272"
+      signature = "(CII)Ljava/lang/String;",
+      garbageValue = "2124075832"
    )
-   public static IndexedSprite[] method197(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return GroundObject.method2508(var0, var3, var4);
+   static String method209(char var0, int var1) {
+      char[] var2 = new char[var1];
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2[var3] = var0;
+      }
+
+      return new String(var2);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ILhp;B)I",
+      garbageValue = "-3"
+   )
+   public static int method206(int var0, class220 var1) {
+      return (var0 << 8) + var1.field2806;
    }
 
    @ObfuscatedName("gj")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-371461505"
+      signature = "(Lbk;B)V",
+      garbageValue = "-103"
    )
-   @Export("xteaChanged")
-   static final void xteaChanged(boolean var0) {
-      Client.isDynamicRegion = var0;
-      int var1;
-      int var2;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      if(!Client.isDynamicRegion) {
-         var1 = Client.secretPacketBuffer2.method3209();
-         var2 = Client.secretPacketBuffer2.method3329();
-         int var3 = Client.secretPacketBuffer2.readUnsignedShort();
-         Player.xteaKeys = new int[var3][4];
+   static final void method210(PendingSpawn var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.type == 0) {
+         var1 = ScriptState.region.method2896(var0.level, var0.x, var0.y);
+      }
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            for(var5 = 0; var5 < 4; ++var5) {
-               Player.xteaKeys[var4][var5] = Client.secretPacketBuffer2.readInt();
+      if(var0.type == 1) {
+         var1 = ScriptState.region.method2739(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 2) {
+         var1 = ScriptState.region.method2875(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 3) {
+         var1 = ScriptState.region.method2762(var0.level, var0.x, var0.y);
+      }
+
+      if(var1 != 0) {
+         int var5 = ScriptState.region.method2741(var0.level, var0.x, var0.y, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field1227 = var2;
+      var0.field1212 = var3;
+      var0.field1221 = var4;
+   }
+
+   @ObfuscatedName("fw")
+   @ObfuscatedSignature(
+      signature = "(Lbg;S)V",
+      garbageValue = "29985"
+   )
+   static final void method207(Actor var0) {
+      var0.field1284 = false;
+      Sequence var1;
+      if(var0.poseAnimation != -1) {
+         var1 = class216.getAnimation(var0.poseAnimation);
+         if(var1 != null && var1.frameIDs != null) {
+            ++var0.field1273;
+            if(var0.poseFrame < var1.frameIDs.length && var0.field1273 > var1.frameLenghts[var0.poseFrame]) {
+               var0.field1273 = 1;
+               ++var0.poseFrame;
+               SceneTilePaint.method2705(var1, var0.poseFrame, var0.x, var0.y);
             }
+
+            if(var0.poseFrame >= var1.frameIDs.length) {
+               var0.field1273 = 0;
+               var0.poseFrame = 0;
+               SceneTilePaint.method2705(var1, var0.poseFrame, var0.x, var0.y);
+            }
+         } else {
+            var0.poseAnimation = -1;
+         }
+      }
+
+      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
+         if(var0.field1267 < 0) {
+            var0.field1267 = 0;
          }
 
-         class141.mapRegions = new int[var3];
-         Ignore.field872 = new int[var3];
-         class15.landRegionFielIds = new int[var3];
-         class15.field298 = new byte[var3][];
-         class29.field431 = new byte[var3][];
-         boolean var15 = false;
-         if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
-            var15 = true;
+         int var3 = class15.getSpotAnimType(var0.graphic).field3332;
+         if(var3 != -1) {
+            Sequence var2 = class216.getAnimation(var3);
+            if(var2 != null && var2.frameIDs != null) {
+               ++var0.field1240;
+               if(var0.field1267 < var2.frameIDs.length && var0.field1240 > var2.frameLenghts[var0.field1267]) {
+                  var0.field1240 = 1;
+                  ++var0.field1267;
+                  SceneTilePaint.method2705(var2, var0.field1267, var0.x, var0.y);
+               }
+
+               if(var0.field1267 >= var2.frameIDs.length && (var0.field1267 < 0 || var0.field1267 >= var2.frameIDs.length)) {
+                  var0.graphic = -1;
+               }
+            } else {
+               var0.graphic = -1;
+            }
+         } else {
+            var0.graphic = -1;
          }
+      }
 
-         if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var15 = true;
+      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
+         var1 = class216.getAnimation(var0.animation);
+         if(var1.precedenceAnimating == 1 && var0.field1249 > 0 && var0.field1275 <= Client.gameCycle && var0.field1276 < Client.gameCycle) {
+            var0.actionAnimationDisable = 1;
+            return;
          }
+      }
 
-         var3 = 0;
+      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+         var1 = class216.getAnimation(var0.animation);
+         if(var1 != null && var1.frameIDs != null) {
+            ++var0.field1263;
+            if(var0.actionFrame < var1.frameIDs.length && var0.field1263 > var1.frameLenghts[var0.actionFrame]) {
+               var0.field1263 = 1;
+               ++var0.actionFrame;
+               SceneTilePaint.method2705(var1, var0.actionFrame, var0.x, var0.y);
+            }
 
-         for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
-            for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
-               var7 = var6 + (var5 << 8);
-               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  class141.mapRegions[var3] = var7;
-                  Ignore.field872[var3] = class14.indexMaps.getFile("m" + var5 + "_" + var6);
-                  class15.landRegionFielIds[var3] = class14.indexMaps.getFile("l" + var5 + "_" + var6);
-                  ++var3;
+            if(var0.actionFrame >= var1.frameIDs.length) {
+               var0.actionFrame -= var1.frameStep;
+               ++var0.field1265;
+               if(var0.field1265 >= var1.maxLoops) {
+                  var0.animation = -1;
+               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
+                  SceneTilePaint.method2705(var1, var0.actionFrame, var0.x, var0.y);
+               } else {
+                  var0.animation = -1;
                }
             }
+
+            var0.field1284 = var1.stretches;
+         } else {
+            var0.animation = -1;
          }
+      }
 
-         class19.method150(var2, var1, true);
-      } else {
-         var1 = Client.secretPacketBuffer2.method3210();
-         var2 = Client.secretPacketBuffer2.method3210();
-         boolean var14 = Client.secretPacketBuffer2.readUnsignedByte() == 1;
-         var4 = Client.secretPacketBuffer2.readUnsignedShort();
-         Client.secretPacketBuffer2.bitAccess();
-
-         int var8;
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.secretPacketBuffer2.getBits(1);
-                  if(var8 == 1) {
-                     Client.field998[var5][var6][var7] = Client.secretPacketBuffer2.getBits(26);
-                  } else {
-                     Client.field998[var5][var6][var7] = -1;
-                  }
-               }
-            }
-         }
-
-         Client.secretPacketBuffer2.byteAccess();
-         Player.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               Player.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
-            }
-         }
-
-         class141.mapRegions = new int[var4];
-         Ignore.field872 = new int[var4];
-         class15.landRegionFielIds = new int[var4];
-         class15.field298 = new byte[var4][];
-         class29.field431 = new byte[var4][];
-         var4 = 0;
-
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.field998[var5][var6][var7];
-                  if(var8 != -1) {
-                     int var9 = var8 >> 14 & 1023;
-                     int var10 = var8 >> 3 & 2047;
-                     int var11 = (var9 / 8 << 8) + var10 / 8;
-
-                     int var12;
-                     for(var12 = 0; var12 < var4; ++var12) {
-                        if(class141.mapRegions[var12] == var11) {
-                           var11 = -1;
-                           break;
-                        }
-                     }
-
-                     if(var11 != -1) {
-                        class141.mapRegions[var4] = var11;
-                        var12 = var11 >> 8 & 255;
-                        int var13 = var11 & 255;
-                        Ignore.field872[var4] = class14.indexMaps.getFile("m" + var12 + "_" + var13);
-                        class15.landRegionFielIds[var4] = class14.indexMaps.getFile("l" + var12 + "_" + var13);
-                        ++var4;
-                     }
-                  }
-               }
-            }
-         }
-
-         class19.method150(var2, var1, !var14);
+      if(var0.actionAnimationDisable > 0) {
+         --var0.actionAnimationDisable;
       }
 
    }
 
-   @ObfuscatedName("gg")
+   @ObfuscatedName("jz")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-100"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "112"
    )
-   @Export("getTileHeight")
-   static final int getTileHeight(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class61.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
-         }
+   static final void method208(String var0) {
+      if(var0 != null) {
+         if((Client.friendCount < 200 || Client.field1053 == 1) && Client.friendCount < 400) {
+            String var1 = Frames.method2925(var0, class8.field243);
+            if(var1 != null) {
+               int var2;
+               String var4;
+               String var5;
+               for(var2 = 0; var2 < Client.friendCount; ++var2) {
+                  Friend var3 = Client.friends[var2];
+                  var4 = Frames.method2925(var3.name, class8.field243);
+                  if(var4 != null && var4.equals(var1)) {
+                     Client.sendGameMessage(30, "", var0 + " is already on your friend list");
+                     return;
+                  }
 
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = var6 * class61.tileHeights[var5][var3 + 1][var4] + (128 - var6) * class61.tileHeights[var5][var3][var4] >> 7;
-         int var9 = class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) + var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
-         return var9 * var7 + var8 * (128 - var7) >> 7;
-      } else {
-         return 0;
+                  if(var3.previousName != null) {
+                     var5 = Frames.method2925(var3.previousName, class8.field243);
+                     if(var5 != null && var5.equals(var1)) {
+                        Client.sendGameMessage(30, "", var0 + " is already on your friend list");
+                        return;
+                     }
+                  }
+               }
+
+               for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
+                  Ignore var6 = Client.ignores[var2];
+                  var4 = Frames.method2925(var6.name, class8.field243);
+                  if(var4 != null && var4.equals(var1)) {
+                     Client.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
+                     return;
+                  }
+
+                  if(var6.previousName != null) {
+                     var5 = Frames.method2925(var6.previousName, class8.field243);
+                     if(var5 != null && var5.equals(var1)) {
+                        Client.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
+                        return;
+                     }
+                  }
+               }
+
+               if(Frames.method2925(Player.localPlayer.name, class8.field243).equals(var1)) {
+                  Client.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
+               } else {
+                  Client.secretPacketBuffer1.putOpcode(254);
+                  Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
+                  Client.secretPacketBuffer1.putString(var0);
+               }
+            }
+         } else {
+            Client.sendGameMessage(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+         }
       }
    }
 }

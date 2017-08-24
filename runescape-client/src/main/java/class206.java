@@ -2,133 +2,168 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gr")
 public class class206 extends Node {
-   @ObfuscatedName("p")
+   @ObfuscatedName("eh")
    @ObfuscatedSignature(
-      signature = "Lgw;"
+      signature = "Lff;"
    )
-   class203 field2541;
-   @ObfuscatedName("o")
+   static RSSocket field2565;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1457733305
-   )
-   int field2549;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   class208 field2540;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lde;"
-   )
-   class108 field2542;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Ldq;"
-   )
-   class118 field2557;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -632241777
-   )
-   int field2548;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1047007941
-   )
-   int field2544;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1703788925
-   )
-   int field2547;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1367491945
-   )
-   int field2553;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -303924569
-   )
-   int field2558;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1460680217
-   )
-   int field2546;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1631096477
-   )
-   int field2543;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 47007495
-   )
-   int field2545;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 677271641
-   )
-   int field2560;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1463058725
+      intValue = 1567910417
    )
    int field2559;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1310868795
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lgh;"
    )
-   int field2550;
+   class203 field2545;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhh;"
+   )
+   class208 field2543;
    @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 527737509
+   @ObfuscatedSignature(
+      signature = "Ldp;"
    )
-   int field2556;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1153531493
+   class106 field2550;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ldm;"
    )
-   int field2554;
-   @ObfuscatedName("i")
+   class116 field2561;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1402221533
-   )
-   int field2539;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1787242583
+      intValue = -1665405835
    )
    int field2552;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -2018602029
+      intValue = -181414931
+   )
+   int field2563;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1588931529
+   )
+   int field2546;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -57624177
+   )
+   int field2560;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 907793287
+   )
+   int field2542;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1706772695
+   )
+   int field2549;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 613777117
+   )
+   int field2556;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -157196009
+   )
+   int field2548;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1685431997
+   )
+   int field2544;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1371616245
+   )
+   int field2547;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1962818671
+   )
+   int field2553;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1966067279
+   )
+   int field2558;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -929741597
+   )
+   int field2551;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1509815095
+   )
+   int field2554;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1586878209
    )
    int field2555;
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "7"
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 579143227
    )
-   void method3817() {
-      this.field2540 = null;
-      this.field2542 = null;
-      this.field2541 = null;
-      this.field2557 = null;
+   int field2557;
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2142142372"
+   )
+   void method3877() {
+      this.field2543 = null;
+      this.field2550 = null;
+      this.field2545 = null;
+      this.field2561 = null;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-12"
+      signature = "(I)V",
+      garbageValue = "-1761335236"
    )
-   public static boolean method3818() {
-      ClassInfo var0 = (ClassInfo)class281.field3740.method3572();
-      return var0 != null;
+   static final void method3876() {
+      if(!class133.field2004) {
+         int var0 = Region.pitchSin;
+         int var1 = Region.pitchCos;
+         int var2 = Region.yawSin;
+         int var3 = Region.yawCos;
+         byte var4 = 50;
+         short var5 = 3500;
+         int var6 = (class133.field2002 - Graphics3D.centerX) * var4 / Graphics3D.field2030;
+         int var7 = (class133.field2001 - Graphics3D.centerY) * var4 / Graphics3D.field2030;
+         int var8 = (class133.field2002 - Graphics3D.centerX) * var5 / Graphics3D.field2030;
+         int var9 = (class133.field2001 - Graphics3D.centerY) * var5 / Graphics3D.field2030;
+         int var10 = Graphics3D.method2646(var7, var4, var1, var0);
+         int var11 = Graphics3D.method2639(var7, var4, var1, var0);
+         var7 = var10;
+         var10 = Graphics3D.method2646(var9, var5, var1, var0);
+         int var12 = Graphics3D.method2639(var9, var5, var1, var0);
+         var9 = var10;
+         var10 = Graphics3D.method2641(var6, var11, var3, var2);
+         var11 = Graphics3D.method2637(var6, var11, var3, var2);
+         var6 = var10;
+         var10 = Graphics3D.method2641(var8, var12, var3, var2);
+         var12 = Graphics3D.method2637(var8, var12, var3, var2);
+         class133.field2005 = (var10 + var6) / 2;
+         ItemContainer.field793 = (var9 + var7) / 2;
+         class133.field2006 = (var11 + var12) / 2;
+         class133.field2007 = (var10 - var6) / 2;
+         class170.field2345 = (var9 - var7) / 2;
+         class39.field553 = (var12 - var11) / 2;
+         ItemContainer.field792 = Math.abs(class133.field2007);
+         Varbit.field3386 = Math.abs(class170.field2345);
+         class133.field2008 = Math.abs(class39.field553);
+      }
    }
 }

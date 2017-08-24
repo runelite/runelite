@@ -1,55 +1,79 @@
-import java.io.File;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fc")
 public class class156 {
-   @ObfuscatedName("md")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lcd;"
-   )
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Ldt;"
-   )
-   public static CacheFile field2249;
-   @ObfuscatedName("x")
-   public static File field2245;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Ldt;"
-   )
-   public static CacheFile field2257;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ldt;"
+      signature = "Lda;"
    )
    public static CacheFile field2253;
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lda;"
    )
-   public static IndexDataBase field2258;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1411336875
+   public static CacheFile field2250;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lda;"
    )
-   public static int field2247;
-   @ObfuscatedName("a")
-   @Export("cacheLocations")
-   public static String[] cacheLocations;
-   @ObfuscatedName("v")
-   public static String[] field2255;
-   @ObfuscatedName("p")
-   public static File field2256;
+   public static CacheFile field2255;
+   @ObfuscatedName("h")
+   @Export("userHome")
+   public static String userHome;
+   @ObfuscatedName("gw")
+   @ObfuscatedSignature(
+      signature = "[Lkd;"
+   )
+   @Export("mapDots")
+   static SpritePixels[] mapDots;
 
    static {
-      field2249 = null;
-      field2257 = null;
       field2253 = null;
+      field2250 = null;
+      field2255 = null;
+   }
+
+   @ObfuscatedName("hk")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Lhx;B)Ljava/lang/String;",
+      garbageValue = "0"
+   )
+   static String method3036(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
+
+               var0 = var0.substring(0, var3) + GameEngine.method1028(GameObject.method2942(var1, var2 - 1)) + var0.substring(var3 + 2);
+            }
+         }
+
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var6 = "";
+            if(World.field1297 != null) {
+               int var5 = World.field1297.field2238;
+               String var4 = (var5 >> 24 & 255) + "." + (var5 >> 16 & 255) + "." + (var5 >> 8 & 255) + "." + (var5 & 255);
+               var6 = var4;
+               if(World.field1297.value != null) {
+                  var6 = (String)World.field1297.value;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var6 + var0.substring(var2 + 4);
+         }
+      }
+
+      return var0;
    }
 }

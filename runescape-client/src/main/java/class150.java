@@ -1,66 +1,85 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("eb")
 public enum class150 implements RSEnum {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Leb;"
+   )
+   field2210(0, 0),
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "Leb;"
    )
-   field2202(1, 0),
-   @ObfuscatedName("h")
+   field2213(3, 1),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "Leb;"
    )
-   field2203(0, 1),
-   @ObfuscatedName("f")
+   field2206(2, 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "Leb;"
    )
-   field2201(2, 2),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lew;"
-   )
-   field2204(3, 3);
+   field2207(1, 3);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
+   @Export("blendedSaturation")
+   static int[] blendedSaturation;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -179661423
+      intValue = -195133697
    )
-   final int field2199;
-   @ObfuscatedName("x")
+   final int field2209;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -512797031
+      intValue = 1944729461
    )
-   public final int field2200;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 177285035
-   )
-   public static int field2205;
+   public final int field2211;
 
    class150(int var3, int var4) {
-      this.field2200 = var3;
-      this.field2199 = var4;
+      this.field2211 = var3;
+      this.field2209 = var4;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "316484705"
+      garbageValue = "959363303"
    )
    public int rsOrdinal() {
-      return this.field2199;
+      return this.field2209;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lia;I)V",
-      garbageValue = "1839814448"
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
+      garbageValue = "906741009"
    )
-   public static void method2928(IndexDataBase var0) {
-      Enum.field3396 = var0;
+   public static void method2975(String var0, Throwable var1) {
+      var1.printStackTrace();
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Leg;",
+      garbageValue = "660549024"
+   )
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         var1 = class24.method204(Sequence.skel_ref, Sequence.skin_ref, var0, false);
+         if(var1 != null) {
+            Sequence.skeletons.put(var1, (long)var0);
+         }
+
+         return var1;
+      }
    }
 }

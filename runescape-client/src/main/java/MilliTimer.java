@@ -4,90 +4,95 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("et")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
-   @ObfuscatedName("h")
+   @ObfuscatedName("px")
    @ObfuscatedGetter(
-      intValue = -1880554725
+      intValue = 1475905987
    )
-   int field2209;
-   @ObfuscatedName("f")
+   static int field2218;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 134241459
+      intValue = 235969303
+   )
+   int field2216;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 967780253
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("j")
-   long[] field2212;
-   @ObfuscatedName("x")
+   @ObfuscatedName("i")
+   long[] field2223;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -2100527215
+      intValue = -97339205
    )
-   int field2208;
-   @ObfuscatedName("p")
+   int field2219;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      longValue = 4154243649992876609L
+      longValue = -6613736603147461401L
    )
    @Export("milliTime")
    long milliTime;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1245020093
+      intValue = -355158773
    )
-   int field2213;
+   int field2215;
 
    public MilliTimer() {
-      this.field2212 = new long[10];
-      this.field2209 = 256;
+      this.field2223 = new long[10];
+      this.field2216 = 256;
       this.sleepTime = 1;
-      this.field2208 = 0;
-      this.milliTime = class74.currentTimeMs();
+      this.field2219 = 0;
+      this.milliTime = class45.currentTimeMs();
 
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2212[var1] = this.milliTime;
+         this.field2223[var1] = this.milliTime;
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "437016417"
+      garbageValue = "19136800"
    )
-   public int vmethod3004(int var1, int var2) {
-      int var3 = this.field2209;
+   public int vmethod3051(int var1, int var2) {
+      int var3 = this.field2216;
       int var4 = this.sleepTime;
-      this.field2209 = 300;
+      this.field2216 = 300;
       this.sleepTime = 1;
-      this.milliTime = class74.currentTimeMs();
-      if(0L == this.field2212[this.field2213]) {
-         this.field2209 = var3;
+      this.milliTime = class45.currentTimeMs();
+      if(this.field2223[this.field2215] == 0L) {
+         this.field2216 = var3;
          this.sleepTime = var4;
-      } else if(this.milliTime > this.field2212[this.field2213]) {
-         this.field2209 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2212[this.field2213]));
+      } else if(this.milliTime > this.field2223[this.field2215]) {
+         this.field2216 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2223[this.field2215]));
       }
 
-      if(this.field2209 < 25) {
-         this.field2209 = 25;
+      if(this.field2216 < 25) {
+         this.field2216 = 25;
       }
 
-      if(this.field2209 > 256) {
-         this.field2209 = 256;
-         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2212[this.field2213]) / 10L);
+      if(this.field2216 > 256) {
+         this.field2216 = 256;
+         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2223[this.field2215]) / 10L);
       }
 
       if(this.sleepTime > var1) {
          this.sleepTime = var1;
       }
 
-      this.field2212[this.field2213] = this.milliTime;
-      this.field2213 = (this.field2213 + 1) % 10;
+      this.field2223[this.field2215] = this.milliTime;
+      this.field2215 = (this.field2215 + 1) % 10;
       int var5;
       if(this.sleepTime > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(this.field2212[var5] != 0L) {
-               this.field2212[var5] += (long)this.sleepTime;
+            if(0L != this.field2223[var5]) {
+               this.field2223[var5] += (long)this.sleepTime;
             }
          }
       }
@@ -96,110 +101,127 @@ public class MilliTimer extends Timer {
          this.sleepTime = var2;
       }
 
-      class10.method51((long)this.sleepTime);
+      NPC.method1702((long)this.sleepTime);
 
-      for(var5 = 0; this.field2208 < 256; this.field2208 += this.field2209) {
+      for(var5 = 0; this.field2219 < 256; this.field2219 += this.field2216) {
          ++var5;
       }
 
-      this.field2208 &= 255;
+      this.field2219 &= 255;
       return var5;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "102"
+      garbageValue = "61"
    )
-   public void vmethod3010() {
+   public void vmethod3050() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2212[var1] = 0L;
+         this.field2223[var1] = 0L;
       }
 
    }
 
-   @ObfuscatedName("fe")
+   @ObfuscatedName("j")
+   static final void method2988(long var0) {
+      try {
+         Thread.sleep(var0);
+      } catch (InterruptedException var3) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "128"
+      signature = "([BI)Lck;",
+      garbageValue = "-2121434397"
    )
-   static final void method2939() {
-      for(int var0 = 0; var0 < Client.field1166; ++var0) {
-         --Client.field1169[var0];
-         if(Client.field1169[var0] >= -10) {
-            SoundEffect var9 = Client.audioEffects[var0];
-            if(var9 == null) {
-               Object var10000 = null;
-               var9 = SoundEffect.getTrack(Client.field965, Client.field1167[var0], 0);
-               if(var9 == null) {
-                  continue;
-               }
+   static Script method2993(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method1857(var6);
 
-               Client.field1169[var0] += var9.calculateDelay();
-               Client.audioEffects[var0] = var9;
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            IterableHashTable var9 = new IterableHashTable(class165.method3159(var8));
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.put(new IntegerNode(var11), (long)var10);
             }
-
-            if(Client.field1169[var0] < 0) {
-               int var2;
-               if(Client.field1170[var0] != 0) {
-                  int var3 = (Client.field1170[var0] & 255) * 128;
-                  int var4 = Client.field1170[var0] >> 16 & 255;
-                  int var5 = var4 * 128 + 64 - GrandExchangeOffer.localPlayer.x;
-                  if(var5 < 0) {
-                     var5 = -var5;
-                  }
-
-                  int var6 = Client.field1170[var0] >> 8 & 255;
-                  int var7 = var6 * 128 + 64 - GrandExchangeOffer.localPlayer.y;
-                  if(var7 < 0) {
-                     var7 = -var7;
-                  }
-
-                  int var8 = var7 + var5 - 128;
-                  if(var8 > var3) {
-                     Client.field1169[var0] = -100;
-                     continue;
-                  }
-
-                  if(var8 < 0) {
-                     var8 = 0;
-                  }
-
-                  var2 = (var3 - var8) * Client.field1148 / var3;
-               } else {
-                  var2 = Client.field974;
-               }
-
-               if(var2 > 0) {
-                  class108 var10 = var9.method1961().method2005(class11.field262);
-                  class118 var11 = class118.method2232(var10, 100, var2);
-                  var11.method2184(Client.field1168[var0] - 1);
-                  class56.field679.method1894(var11);
-               }
-
-               Client.field1169[var0] = -100;
-            }
-         } else {
-            --Client.field1166;
-
-            for(int var1 = var0; var1 < Client.field1166; ++var1) {
-               Client.field1167[var1] = Client.field1167[var1 + 1];
-               Client.audioEffects[var1] = Client.audioEffects[var1 + 1];
-               Client.field1168[var1] = Client.field1168[var1 + 1];
-               Client.field1169[var1] = Client.field1169[var1 + 1];
-               Client.field1170[var1] = Client.field1170[var1 + 1];
-            }
-
-            --var0;
          }
       }
 
-      if(Client.field1163 && !RSSocket.method3030()) {
-         if(Client.field1024 != 0 && Client.field1095 != -1) {
-            class66.method1144(class253.indexTrack1, Client.field1095, 0, Client.field1024, false);
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "-1724977913"
+   )
+   public static void method2990(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
          }
 
-         Client.field1163 = false;
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method2990(var0, var1, var2, var5 - 1);
+         method2990(var0, var1, var5 + 1, var3);
       }
 
    }

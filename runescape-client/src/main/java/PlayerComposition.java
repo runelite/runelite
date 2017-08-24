@@ -7,73 +7,63 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("hg")
 @Implements("PlayerComposition")
 public class PlayerComposition {
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    static final int[] field2624;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @Export("colorsToReplace")
    public static short[][] colorsToReplace;
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgp;"
    )
-   public static NodeCache field2620;
-   @ObfuscatedName("c")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
-   @ObfuscatedName("b")
-   public static short[][] field2613;
-   @ObfuscatedName("w")
-   public static short[] field2621;
-   @ObfuscatedName("iz")
+   static NodeCache field2627;
+   @ObfuscatedName("s")
+   public static short[][] field2629;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1115885077
-   )
-   static int field2626;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 518401977
+      intValue = -1558301751
    )
    @Export("transformedNpcId")
    public int transformedNpcId;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("bodyPartColours")
    int[] bodyPartColours;
-   @ObfuscatedName("f")
-   @Export("isFemale")
-   public boolean isFemale;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      longValue = -8238034026920203349L
+      longValue = -8156824576555598861L
    )
    @Export("hash")
    long hash;
-   @ObfuscatedName("j")
+   @ObfuscatedName("a")
+   @Export("isFemale")
+   public boolean isFemale;
+   @ObfuscatedName("i")
    @Export("equipmentIds")
    int[] equipmentIds;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = -2711222352281696427L
+      longValue = -7290649988719158771L
    )
    long field2622;
 
    static {
       field2624 = new int[]{8, 11, 4, 6, 9, 7, 10};
-      field2620 = new NodeCache(260);
+      field2627 = new NodeCache(260);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "([I[IZII)V",
-      garbageValue = "2043389444"
+      garbageValue = "57449544"
    )
-   public void method3990(int[] var1, int[] var2, boolean var3, int var4) {
+   public void method3994(int[] var1, int[] var2, boolean var3, int var4) {
       if(var1 == null) {
          var1 = new int[12];
 
          for(int var5 = 0; var5 < 7; ++var5) {
-            for(int var6 = 0; var6 < KitDefinition.field3337; ++var6) {
-               KitDefinition var7 = Area.getKitDefinition(var6);
-               if(var7 != null && !var7.nonSelectable && var7.bodyPartId == var5 + (var3?7:0)) {
+            for(int var6 = 0; var6 < KitDefinition.field3361; ++var6) {
+               KitDefinition var7 = class222.getKitDefinition(var6);
+               if(var7 != null && !var7.nonSelectable && (var3?7:0) + var5 == var7.bodyPartId) {
                   var1[field2624[var5]] = var6 + 256;
                   break;
                }
@@ -88,10 +78,123 @@ public class PlayerComposition {
       this.setHash();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Ljw;ILjw;II)Lem;",
+      garbageValue = "-1040370082"
+   )
+   public Model method4011(Sequence var1, int var2, Sequence var3, int var4) {
+      if(this.transformedNpcId != -1) {
+         return class171.getNpcDefinition(this.transformedNpcId).method4619(var1, var2, var3, var4);
+      } else {
+         long var5 = this.hash;
+         int[] var7 = this.equipmentIds;
+         if(var1 != null && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
+            var7 = new int[12];
+
+            for(int var8 = 0; var8 < 12; ++var8) {
+               var7[var8] = this.equipmentIds[var8];
+            }
+
+            if(var1.leftHandItem >= 0) {
+               var5 += (long)(var1.leftHandItem - this.equipmentIds[5] << 40);
+               var7[5] = var1.leftHandItem;
+            }
+
+            if(var1.rightHandItem >= 0) {
+               var5 += (long)(var1.rightHandItem - this.equipmentIds[3] << 48);
+               var7[3] = var1.rightHandItem;
+            }
+         }
+
+         Model var15 = (Model)field2627.get(var5);
+         if(var15 == null) {
+            boolean var9 = false;
+
+            int var11;
+            for(int var10 = 0; var10 < 12; ++var10) {
+               var11 = var7[var10];
+               if(var11 >= 256 && var11 < 512 && !class222.getKitDefinition(var11 - 256).ready()) {
+                  var9 = true;
+               }
+
+               if(var11 >= 512 && !class169.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+                  var9 = true;
+               }
+            }
+
+            if(var9) {
+               if(this.field2622 != -1L) {
+                  var15 = (Model)field2627.get(this.field2622);
+               }
+
+               if(var15 == null) {
+                  return null;
+               }
+            }
+
+            if(var15 == null) {
+               ModelData[] var16 = new ModelData[12];
+               var11 = 0;
+
+               int var13;
+               for(int var12 = 0; var12 < 12; ++var12) {
+                  var13 = var7[var12];
+                  ModelData var14;
+                  if(var13 >= 256 && var13 < 512) {
+                     var14 = class222.getKitDefinition(var13 - 256).getModelData();
+                     if(var14 != null) {
+                        var16[var11++] = var14;
+                     }
+                  }
+
+                  if(var13 >= 512) {
+                     var14 = class169.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                     if(var14 != null) {
+                        var16[var11++] = var14;
+                     }
+                  }
+               }
+
+               ModelData var18 = new ModelData(var16, var11);
+
+               for(var13 = 0; var13 < 5; ++var13) {
+                  if(this.bodyPartColours[var13] < colorsToReplace[var13].length) {
+                     var18.recolor(class8.colorsToFind[var13], colorsToReplace[var13][this.bodyPartColours[var13]]);
+                  }
+
+                  if(this.bodyPartColours[var13] < field2629[var13].length) {
+                     var18.recolor(class64.field798[var13], field2629[var13][this.bodyPartColours[var13]]);
+                  }
+               }
+
+               var15 = var18.light(64, 850, -30, -50, -30);
+               field2627.put(var15, var5);
+               this.field2622 = var5;
+            }
+         }
+
+         if(var1 == null && var3 == null) {
+            return var15;
+         } else {
+            Model var17;
+            if(var1 != null && var3 != null) {
+               var17 = var1.method4670(var15, var2, var3, var4);
+            } else if(var1 != null) {
+               var17 = var1.method4667(var15, var2);
+            } else {
+               var17 = var3.method4667(var15, var4);
+            }
+
+            return var17;
+         }
+      }
+   }
+
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "1"
+      garbageValue = "31"
    )
    @Export("setHash")
    void setHash() {
@@ -128,143 +231,30 @@ public class PlayerComposition {
       this.equipmentIds[5] = var3;
       this.equipmentIds[9] = var4;
       if(0L != var1 && this.hash != var1) {
-         field2620.remove(var1);
+         field2627.remove(var1);
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljf;ILjf;II)Leo;",
-      garbageValue = "502620493"
+      signature = "(I)Lde;",
+      garbageValue = "-287797910"
    )
-   public Model method3970(Sequence var1, int var2, Sequence var3, int var4) {
+   ModelData method4001() {
       if(this.transformedNpcId != -1) {
-         return class183.getNpcDefinition(this.transformedNpcId).method4668(var1, var2, var3, var4);
-      } else {
-         long var5 = this.hash;
-         int[] var7 = this.equipmentIds;
-         if(var1 != null && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
-            var7 = new int[12];
-
-            for(int var8 = 0; var8 < 12; ++var8) {
-               var7[var8] = this.equipmentIds[var8];
-            }
-
-            if(var1.leftHandItem >= 0) {
-               var5 += (long)(var1.leftHandItem - this.equipmentIds[5] << 40);
-               var7[5] = var1.leftHandItem;
-            }
-
-            if(var1.rightHandItem >= 0) {
-               var5 += (long)(var1.rightHandItem - this.equipmentIds[3] << 48);
-               var7[3] = var1.rightHandItem;
-            }
-         }
-
-         Model var15 = (Model)field2620.get(var5);
-         if(var15 == null) {
-            boolean var9 = false;
-
-            int var11;
-            for(int var10 = 0; var10 < 12; ++var10) {
-               var11 = var7[var10];
-               if(var11 >= 256 && var11 < 512 && !Area.getKitDefinition(var11 - 256).ready()) {
-                  var9 = true;
-               }
-
-               if(var11 >= 512 && !SoundTask.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
-                  var9 = true;
-               }
-            }
-
-            if(var9) {
-               if(this.field2622 != -1L) {
-                  var15 = (Model)field2620.get(this.field2622);
-               }
-
-               if(var15 == null) {
-                  return null;
-               }
-            }
-
-            if(var15 == null) {
-               ModelData[] var16 = new ModelData[12];
-               var11 = 0;
-
-               int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
-                  ModelData var14;
-                  if(var13 >= 256 && var13 < 512) {
-                     var14 = Area.getKitDefinition(var13 - 256).getModelData();
-                     if(var14 != null) {
-                        var16[var11++] = var14;
-                     }
-                  }
-
-                  if(var13 >= 512) {
-                     var14 = SoundTask.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
-                     if(var14 != null) {
-                        var16[var11++] = var14;
-                     }
-                  }
-               }
-
-               ModelData var17 = new ModelData(var16, var11);
-
-               for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.bodyPartColours[var13] < colorsToReplace[var13].length) {
-                     var17.recolor(colorsToFind[var13], colorsToReplace[var13][this.bodyPartColours[var13]]);
-                  }
-
-                  if(this.bodyPartColours[var13] < field2613[var13].length) {
-                     var17.recolor(field2621[var13], field2613[var13][this.bodyPartColours[var13]]);
-                  }
-               }
-
-               var15 = var17.light(64, 850, -30, -50, -30);
-               field2620.put(var15, var5);
-               this.field2622 = var5;
-            }
-         }
-
-         if(var1 == null && var3 == null) {
-            return var15;
-         } else {
-            Model var18;
-            if(var1 != null && var3 != null) {
-               var18 = var1.method4733(var15, var2, var3, var4);
-            } else if(var1 != null) {
-               var18 = var1.method4720(var15, var2);
-            } else {
-               var18 = var3.method4720(var15, var4);
-            }
-
-            return var18;
-         }
-      }
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)Ldi;",
-      garbageValue = "1418527030"
-   )
-   ModelData method3965() {
-      if(this.transformedNpcId != -1) {
-         return class183.getNpcDefinition(this.transformedNpcId).method4669();
+         return class171.getNpcDefinition(this.transformedNpcId).method4620();
       } else {
          boolean var1 = false;
 
          int var3;
          for(int var2 = 0; var2 < 12; ++var2) {
             var3 = this.equipmentIds[var2];
-            if(var3 >= 256 && var3 < 512 && !Area.getKitDefinition(var3 - 256).method4416()) {
+            if(var3 >= 256 && var3 < 512 && !class222.getKitDefinition(var3 - 256).method4372()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !SoundTask.getItemDefinition(var3 - 512).method4605(this.isFemale)) {
+            if(var3 >= 512 && !class169.getItemDefinition(var3 - 512).method4559(this.isFemale)) {
                var1 = true;
             }
          }
@@ -280,14 +270,14 @@ public class PlayerComposition {
                var5 = this.equipmentIds[var4];
                ModelData var6;
                if(var5 >= 256 && var5 < 512) {
-                  var6 = Area.getKitDefinition(var5 - 256).method4404();
+                  var6 = class222.getKitDefinition(var5 - 256).method4373();
                   if(var6 != null) {
                      var7[var3++] = var6;
                   }
                }
 
                if(var5 >= 512) {
-                  var6 = SoundTask.getItemDefinition(var5 - 512).method4606(this.isFemale);
+                  var6 = class169.getItemDefinition(var5 - 512).method4564(this.isFemale);
                   if(var6 != null) {
                      var7[var3++] = var6;
                   }
@@ -298,11 +288,11 @@ public class PlayerComposition {
 
             for(var5 = 0; var5 < 5; ++var5) {
                if(this.bodyPartColours[var5] < colorsToReplace[var5].length) {
-                  var8.recolor(colorsToFind[var5], colorsToReplace[var5][this.bodyPartColours[var5]]);
+                  var8.recolor(class8.colorsToFind[var5], colorsToReplace[var5][this.bodyPartColours[var5]]);
                }
 
-               if(this.bodyPartColours[var5] < field2613[var5].length) {
-                  var8.recolor(field2621[var5], field2613[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var5] < field2629[var5].length) {
+                  var8.recolor(class64.field798[var5], field2629[var5][this.bodyPartColours[var5]]);
                }
             }
 
@@ -311,21 +301,21 @@ public class PlayerComposition {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "2122957360"
+      garbageValue = "-1743259210"
    )
-   public int method3966() {
-      return this.transformedNpcId == -1?(this.equipmentIds[0] << 15) + this.equipmentIds[1] + (this.equipmentIds[11] << 5) + (this.equipmentIds[8] << 10) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20):305419896 + class183.getNpcDefinition(this.transformedNpcId).id;
+   public int method4002() {
+      return this.transformedNpcId == -1?(this.equipmentIds[0] << 15) + this.equipmentIds[1] + (this.equipmentIds[11] << 5) + (this.equipmentIds[8] << 10) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20):305419896 + class171.getNpcDefinition(this.transformedNpcId).id;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IZS)V",
-      garbageValue = "150"
+      signature = "(IZB)V",
+      garbageValue = "8"
    )
-   public void method3959(int var1, boolean var2) {
+   public void method4005(int var1, boolean var2) {
       if(var1 != 1 || !this.isFemale) {
          int var3 = this.equipmentIds[field2624[var1]];
          if(var3 != 0) {
@@ -336,16 +326,16 @@ public class PlayerComposition {
                if(!var2) {
                   --var3;
                   if(var3 < 0) {
-                     var3 = KitDefinition.field3337 - 1;
+                     var3 = KitDefinition.field3361 - 1;
                   }
                } else {
                   ++var3;
-                  if(var3 >= KitDefinition.field3337) {
+                  if(var3 >= KitDefinition.field3361) {
                      var3 = 0;
                   }
                }
 
-               var4 = Area.getKitDefinition(var3);
+               var4 = class222.getKitDefinition(var3);
             } while(var4 == null || var4.nonSelectable || var4.bodyPartId != (this.isFemale?7:0) + var1);
 
             this.equipmentIds[field2624[var1]] = var3 + 256;
@@ -354,50 +344,63 @@ public class PlayerComposition {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IZI)V",
-      garbageValue = "-1542338619"
+      signature = "(IZB)V",
+      garbageValue = "-86"
    )
-   public void method3977(int var1, boolean var2) {
+   public void method3997(int var1, boolean var2) {
       int var3 = this.bodyPartColours[var1];
+      boolean var4;
       if(!var2) {
          do {
             --var3;
             if(var3 < 0) {
                var3 = colorsToReplace[var1].length - 1;
             }
-         } while(!class54.method832(var1, var3));
+
+            if(var1 == 4 && var3 >= 8) {
+               var4 = false;
+            } else {
+               var4 = true;
+            }
+         } while(!var4);
       } else {
          do {
             ++var3;
             if(var3 >= colorsToReplace[var1].length) {
                var3 = 0;
             }
-         } while(!class54.method832(var1, var3));
+
+            if(var1 == 4 && var3 >= 8) {
+               var4 = false;
+            } else {
+               var4 = true;
+            }
+         } while(!var4);
       }
 
       this.bodyPartColours[var1] = var3;
       this.setHash();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-2135741328"
+      signature = "(ZB)V",
+      garbageValue = "49"
    )
-   public void method3961(boolean var1) {
+   public void method4004(boolean var1) {
       if(this.isFemale != var1) {
-         this.method3990((int[])null, this.bodyPartColours, var1, -1);
+         this.method3994((int[])null, this.bodyPartColours, var1, -1);
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lfb;I)V",
-      garbageValue = "588412514"
+      signature = "(Lfp;I)V",
+      garbageValue = "-1593619447"
    )
-   public void method3972(Buffer var1) {
+   public void method3996(Buffer var1) {
       var1.putByte(this.isFemale?1:0);
 
       int var2;
@@ -416,22 +419,12 @@ public class PlayerComposition {
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([Lfl;II)Lfl;",
-      garbageValue = "563178545"
+      signature = "(Lii;Lii;III)Ljm;",
+      garbageValue = "-1227033995"
    )
-   @Export("forOrdinal")
-   public static RSEnum forOrdinal(RSEnum[] var0, int var1) {
-      RSEnum[] var2 = var0;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         RSEnum var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
-         }
-      }
-
-      return null;
+   public static Font method4019(IndexDataBase var0, IndexDataBase var1, int var2, int var3) {
+      return !class178.method3474(var0, var2, var3)?null:Occluder.method2939(var1.getConfigData(var2, var3));
    }
 }

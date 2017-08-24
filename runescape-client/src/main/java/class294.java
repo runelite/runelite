@@ -1,11 +1,11 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ka")
+@ObfuscatedName("kv")
 public class class294 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Lff;"
    )
-   static class104 field3887;
+   public static RSSocket field3904;
 }

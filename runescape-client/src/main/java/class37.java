@@ -1,126 +1,65 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("aa")
 public class class37 {
-   @ObfuscatedName("du")
+   @ObfuscatedName("ft")
    @ObfuscatedGetter(
-      intValue = 628653537
+      intValue = -1434387975
    )
-   static int field522;
+   static int field529;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IS)Lih;",
-      garbageValue = "211"
+      signature = "(IIIIIIII)V",
+      garbageValue = "-1631753114"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   static final void method526(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2764(var0, var1, var2);
+      int[] var8 = Region.method2764(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
+   }
+
+   @ObfuscatedName("it")
+   @ObfuscatedSignature(
+      signature = "(Lhx;I)Z",
+      garbageValue = "-1645496955"
+   )
+   static final boolean method528(Widget var0) {
+      if(var0.tableActions == null) {
+         return false;
       } else {
-         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
+            int var2 = GameObject.method2942(var0, var1);
+            int var3 = var0.field2772[var1];
+            if(var0.tableActions[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 4) {
+               if(var3 == var2) {
+                  return false;
+               }
+            } else if(var3 != var2) {
+               return false;
+            }
          }
 
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3444 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
+         return true;
       }
    }
 
-   @ObfuscatedName("gx")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "76"
-   )
-   static void method519() {
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
-      Client.menuOptions[0] = "Cancel";
-      Client.menuTargets[0] = "";
-      Client.menuTypes[0] = 1006;
-      Client.field1131[0] = false;
-      Client.menuOptionCount = 1;
-   }
-
-   @ObfuscatedName("gq")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2085153661"
+      garbageValue = "-1762720937"
    )
-   static final void method513() {
-      Client.field1136 = 0;
-      int var0 = (GrandExchangeOffer.localPlayer.x >> 7) + class47.baseX;
-      int var1 = (GrandExchangeOffer.localPlayer.y >> 7) + class44.baseY;
-      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-         Client.field1136 = 1;
-      }
-
-      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-         Client.field1136 = 1;
-      }
-
-      if(Client.field1136 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-         Client.field1136 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("ir")
-   @ObfuscatedSignature(
-      signature = "(Lhi;Lif;IIZB)V",
-      garbageValue = "2"
-   )
-   static final void method515(Widget var0, ItemComposition var1, int var2, int var3, boolean var4) {
-      String[] var5 = var1.inventoryActions;
-      byte var6 = -1;
-      String var7 = null;
-      if(var5 != null && var5[var3] != null) {
-         if(var3 == 0) {
-            var6 = 33;
-         } else if(var3 == 1) {
-            var6 = 34;
-         } else if(var3 == 2) {
-            var6 = 35;
-         } else if(var3 == 3) {
-            var6 = 36;
-         } else {
-            var6 = 37;
-         }
-
-         var7 = var5[var3];
-      } else if(var3 == 4) {
-         var6 = 37;
-         var7 = "Drop";
-      }
-
-      if(var6 != -1 && var7 != null) {
-         String var9 = Tile.getColTags(16748608) + var1.name;
-         int var11 = var1.id;
-         int var13 = var0.id;
-         if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var7;
-            Client.menuTargets[Client.menuOptionCount] = var9;
-            Client.menuTypes[Client.menuOptionCount] = var6;
-            Client.menuIdentifiers[Client.menuOptionCount] = var11;
-            Client.menuActionParams0[Client.menuOptionCount] = var2;
-            Client.menuActionParams1[Client.menuOptionCount] = var13;
-            Client.field1131[Client.menuOptionCount] = var4;
-            ++Client.menuOptionCount;
-         }
-      }
-
+   public static void method527() {
+      ItemComposition.itemSpriteCache.reset();
    }
 }

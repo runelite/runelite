@@ -5,40 +5,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bt")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("kx")
+   @ObfuscatedName("ay")
+   protected static String field888;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1710636095
-   )
-   @Export("selectedItemIndex")
-   static int selectedItemIndex;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1747797677
+      intValue = 2100073639
    )
    @Export("id")
    int id;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -844607143
+      intValue = 1577881435
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1067506707
+      intValue = -15833835
    )
    @Export("type")
    int type;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @Export("name")
    String name;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @Export("sender")
    String sender;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @Export(
       value = "value",
       setter = true
@@ -47,7 +43,7 @@ public class MessageNode extends CacheableNode {
 
    @Hook("setMessage")
    MessageNode(int var1, String var2, String var3, String var4) {
-      int var5 = ++class99.field1534 - 1;
+      int var5 = ++class97.field1534 - 1;
       this.id = var5;
       this.tick = Client.gameCycle;
       this.type = var1;
@@ -56,15 +52,15 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-1326429159"
+      garbageValue = "1811102058"
    )
    @Export("setMessage")
    @Hook("setMessage")
    void setMessage(int var1, String var2, String var3, String var4) {
-      int var5 = ++class99.field1534 - 1;
+      int var5 = ++class97.field1534 - 1;
       this.id = var5;
       this.tick = Client.gameCycle;
       this.type = var1;
@@ -73,21 +69,57 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("ip")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-41"
+      signature = "(Lbq;ZI)V",
+      garbageValue = "-732790400"
    )
-   static final boolean method1177(int var0, int var1) {
-      ObjectComposition var2 = class37.getObjectDefinition(var0);
-      if(var1 == 11) {
-         var1 = 10;
+   static final void method1143(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      int var5;
+      if(var1 && var2 != -1 && class2.validInterfaces[var2]) {
+         Coordinates.widgetIndex.method4148(var2);
+         if(class268.widgets[var2] != null) {
+            boolean var6 = true;
+
+            for(var5 = 0; var5 < class268.widgets[var2].length; ++var5) {
+               if(class268.widgets[var2][var5] != null) {
+                  if(class268.widgets[var2][var5].type != 2) {
+                     class268.widgets[var2][var5] = null;
+                  } else {
+                     var6 = false;
+                  }
+               }
+            }
+
+            if(var6) {
+               class268.widgets[var2] = null;
+            }
+
+            class2.validInterfaces[var2] = false;
+         }
       }
 
-      if(var1 >= 5 && var1 <= 8) {
-         var1 = 4;
+      for(IntegerNode var4 = (IntegerNode)Client.widgetFlags.method3628(); var4 != null; var4 = (IntegerNode)Client.widgetFlags.method3625()) {
+         if((long)var2 == (var4.hash >> 48 & 65535L)) {
+            var4.unlink();
+         }
       }
 
-      return var2.method4559(var1);
+      Widget var7 = GZipDecompressor.method3177(var3);
+      if(var7 != null) {
+         class7.method34(var7);
+      }
+
+      class13.method83();
+      if(Client.widgetRoot != -1) {
+         var5 = Client.widgetRoot;
+         if(class13.loadWidget(var5)) {
+            ScriptEvent.method1133(class268.widgets[var5], 1);
+         }
+      }
+
    }
 }

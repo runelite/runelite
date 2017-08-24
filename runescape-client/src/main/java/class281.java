@@ -2,20 +2,20 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jv")
+@ObfuscatedName("jb")
 public class class281 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgn;"
    )
-   public static CombatInfoList field3740;
-   @ObfuscatedName("dq")
+   public static CombatInfoList field3757;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 535715521
+      intValue = -1651255091
    )
-   static int field3741;
+   public static int field3756;
 
    static {
-      field3740 = new CombatInfoList();
+      field3757 = new CombatInfoList();
    }
 }

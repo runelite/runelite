@@ -4,57 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fj")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 2067399327
+   @ObfuscatedName("qu")
+   @ObfuscatedSignature(
+      signature = "Ly;"
    )
-   static int field2435;
+   static class13 field2441;
    @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "[Ldt;"
-   )
-   public static CacheFile[] field2429;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Ljh;"
-   )
-   static Font field2433;
-   @ObfuscatedName("gi")
    @ObfuscatedGetter(
-      intValue = -1669732099
-   )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 819561691
+      intValue = -774643889
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 152246157
+      intValue = 1750462499
    )
-   int field2423;
-   @ObfuscatedName("w")
+   int field2437;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -886511333
+      intValue = 1964414211
    )
-   int field2431;
-   @ObfuscatedName("g")
+   int field2433;
+   @ObfuscatedName("n")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -427190643
+      intValue = -153274973
    )
-   int field2430;
+   int field2436;
 
    ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -64,46 +48,46 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3453();
+      this.method3519();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1968633612"
+      garbageValue = "1738593017"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2423 += ++this.field2431;
+      this.field2437 += ++this.field2433;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2430 ^= this.field2430 << 13;
+               this.field2436 ^= this.field2436 << 13;
             } else {
-               this.field2430 ^= this.field2430 >>> 6;
+               this.field2436 ^= this.field2436 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2430 ^= this.field2430 << 2;
+            this.field2436 ^= this.field2436 << 2;
          } else {
-            this.field2430 ^= this.field2430 >>> 16;
+            this.field2436 ^= this.field2436 >>> 16;
          }
 
-         this.field2430 += this.mm[var1 + 128 & 255];
+         this.field2436 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2423 + this.field2430;
-         this.randResult[var1] = this.field2423 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2436 + this.field2437;
+         this.randResult[var1] = this.field2437 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "536761239"
+      signature = "(B)V",
+      garbageValue = "-86"
    )
-   final void method3453() {
+   final void method3519() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -231,10 +215,10 @@ public final class ISAACCipher {
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1766037560"
+      signature = "(B)I",
+      garbageValue = "122"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -244,115 +228,5 @@ public final class ISAACCipher {
       }
 
       return this.randResult[this.valuesRemaining];
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "467608304"
-   )
-   @Export("ilog")
-   public static int ilog(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(CS)Z",
-      garbageValue = "-2188"
-   )
-   static final boolean method3455(char var0) {
-      if(Character.isISOControl(var0)) {
-         return false;
-      } else if(DecorativeObject.method2923(var0)) {
-         return true;
-      } else {
-         char[] var1 = class268.field3655;
-
-         int var2;
-         char var3;
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         var1 = class268.field3654;
-
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         return false;
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2112511787"
-   )
-   public static String method3445(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = class19.method146(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
-      }
-
-      return var2.toString();
    }
 }

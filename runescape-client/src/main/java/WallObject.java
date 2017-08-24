@@ -4,65 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ey")
+@ObfuscatedName("ec")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("ev")
-   @ObfuscatedSignature(
-      signature = "Lea;"
-   )
-   static Task field2130;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1962379383
+      intValue = -1706154965
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1956735527
+      intValue = 455590419
    )
    @Export("config")
    int config;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1617900715
+      intValue = -1612427993
    )
    @Export("x")
    int x;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -389123369
+      intValue = -1307075903
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 123758765
+      intValue = -820667805
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -99362331
+      intValue = -374113805
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1432137627
+      intValue = -2139522617
    )
    @Export("orientationB")
    int orientationB;

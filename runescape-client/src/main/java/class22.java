@@ -1,62 +1,50 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("h")
 public class class22 extends class28 {
-   @ObfuscatedName("cw")
-   @ObfuscatedGetter(
-      longValue = -8467128941408346871L
-   )
-   static long field352;
-   @ObfuscatedName("bc")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   static class290 field354;
-   @ObfuscatedName("pj")
-   @ObfuscatedGetter(
-      intValue = 588013393
-   )
-   static int field350;
-   @ObfuscatedName("rr")
-   @ObfuscatedGetter(
-      intValue = 900530585
-   )
-   static int field349;
+   @ObfuscatedName("ds")
+   @Export("host")
+   static String host;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfb;Lfb;I)V",
-      garbageValue = "-439814413"
+      signature = "(Lfp;Lfp;B)V",
+      garbageValue = "23"
    )
-   void method171(Buffer var1, Buffer var2) {
+   void method188(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class36.field514.field509) {
+      if(var3 != class36.field521.field513) {
          throw new IllegalStateException("");
       } else {
-         super.field414 = var2.readUnsignedByte();
-         super.field415 = var2.readUnsignedByte();
+         super.field422 = var2.readUnsignedByte();
+         super.field419 = var2.readUnsignedByte();
+         super.field415 = var2.readUnsignedShort();
          super.field416 = var2.readUnsignedShort();
-         super.field411 = var2.readUnsignedShort();
-         super.field424 = var2.readUnsignedShort();
-         super.field413 = var2.readUnsignedShort();
-         super.field415 = Math.min(super.field415, 4);
-         super.field419 = new short[1][64][64];
-         super.field417 = new short[super.field415][64][64];
-         super.field412 = new byte[super.field415][64][64];
-         super.field423 = new byte[super.field415][64][64];
-         super.field420 = new class31[super.field415][64][64][];
+         super.field414 = var2.readUnsignedShort();
+         super.field417 = var2.readUnsignedShort();
+         super.field419 = Math.min(super.field419, 4);
+         super.field420 = new short[1][64][64];
+         super.field418 = new short[super.field419][64][64];
+         super.field421 = new byte[super.field419][64][64];
+         super.field423 = new byte[super.field419][64][64];
+         super.field424 = new class31[super.field419][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class35.field506.field503) {
+         if(var3 != class35.field510.field512) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
-            if(var4 == super.field424 && var5 == super.field413) {
+            if(var4 == super.field414 && var5 == super.field417) {
                for(int var6 = 0; var6 < 64; ++var6) {
                   for(int var7 = 0; var7 < 64; ++var7) {
-                     this.method237(var6, var7, var1);
+                     this.method269(var6, var7, var1);
                   }
                }
 
@@ -67,109 +55,108 @@ public class class22 extends class28 {
       }
    }
 
-   public int hashCode() {
-      return super.field424 | super.field413 << 8;
-   }
-
    public boolean equals(Object var1) {
       if(!(var1 instanceof class22)) {
          return false;
       } else {
          class22 var2 = (class22)var1;
-         return var2.field424 == super.field424 && var2.field413 == super.field413;
+         return var2.field414 == super.field414 && var2.field417 == super.field417;
       }
    }
 
-   @ObfuscatedName("hh")
+   public int hashCode() {
+      return super.field414 | super.field417 << 8;
+   }
+
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1869481255"
+      signature = "(II)Z",
+      garbageValue = "-2052249613"
    )
-   static void method180(int var0, int var1, int var2, int var3) {
-      Widget var4 = class205.method3812(var0, var1);
-      if(var4 != null && var4.field2642 != null) {
-         ScriptEvent var5 = new ScriptEvent();
-         var5.widget = var4;
-         var5.field856 = var4.field2642;
-         Coordinates.method3942(var5);
-      }
-
-      Client.field1083 = var3;
-      Client.spellSelected = true;
-      class29.field434 = var0;
-      Client.field1082 = var1;
-      class51.field664 = var2;
-      class90.method1723(var4);
+   public static boolean method195(int var0) {
+      return var0 >= class222.field2839.field2842 && var0 <= class222.field2840.field2842;
    }
 
-   @ObfuscatedName("h")
-   public static String method181(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(var0 % 37L == 0L) {
-            return null;
-         } else {
-            int var2 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "-1201919137"
+   )
+   public static String method194(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+      int var5 = var1;
 
-            for(long var3 = var0; 0L != var3; var3 /= 37L) {
-               ++var2;
+      int var8;
+      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
+         int var7 = var0[var5++] & 255;
+         if(var7 < 128) {
+            if(var7 == 0) {
+               var8 = '�';
+            } else {
+               var8 = var7;
             }
-
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class269.field3661[(int)(var6 - 37L * var0)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
+         } else if(var7 < 192) {
+            var8 = '�';
+         } else if(var7 < 224) {
+            if(var5 < var6 && (var0[var5] & 192) == 128) {
+               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
+               if(var8 < 128) {
+                  var8 = '�';
                }
+            } else {
+               var8 = '�';
             }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
+         } else if(var7 < 240) {
+            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
+               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 < 2048) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 248) {
+            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
+               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 >= 65536 && var8 <= 1114111) {
+                  var8 = '�';
+               } else {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else {
+            var8 = '�';
          }
-      } else {
-         return null;
       }
+
+      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "1089483364"
+      signature = "([BI)Lkd;",
+      garbageValue = "-2106620676"
    )
-   static void method179(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   public static final SpritePixels method186(byte[] var0) {
+      BufferedImage var1 = null;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
-         }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method179(var0, var1, var2, var5 - 1);
-         method179(var0, var1, var5 + 1, var3);
+      try {
+         var1 = ImageIO.read(new ByteArrayInputStream(var0));
+         int var2 = var1.getWidth();
+         int var3 = var1.getHeight();
+         int[] var4 = new int[var2 * var3];
+         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
+         var5.grabPixels();
+         return new SpritePixels(var4, var2, var3);
+      } catch (IOException var7) {
+         ;
+      } catch (InterruptedException var8) {
+         ;
       }
 
+      return new SpritePixels(0, 0);
    }
 }

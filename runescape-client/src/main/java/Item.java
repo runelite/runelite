@@ -4,38 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cr")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 580350279
+      intValue = -1710972533
    )
    @Export("id")
    int id;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -517906217
+      intValue = -1858492457
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)Leo;",
-      garbageValue = "1214595416"
+      signature = "(I)Lem;",
+      garbageValue = "-1455933636"
    )
    protected final Model getModel() {
-      return SoundTask.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "-23874"
-   )
-   static int method1779(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
+      return class169.getItemDefinition(this.id).getModel(this.quantity);
    }
 }

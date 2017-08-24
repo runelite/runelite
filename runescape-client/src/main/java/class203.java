@@ -1,45 +1,50 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gw")
+@ObfuscatedName("gh")
 public class class203 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("cu")
    @ObfuscatedGetter(
-      intValue = -926223253
+      intValue = -317572497
    )
-   int field2495;
-   @ObfuscatedName("f")
+   public static int field2493;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1479081263
+      intValue = -2022465157
    )
-   int field2494;
-   @ObfuscatedName("c")
+   int field2500;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1026292553
+      intValue = 967598781
    )
-   int field2488;
+   int field2502;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1379055485
+   )
+   int field2499;
+   @ObfuscatedName("i")
+   byte[] field2495;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 508964869
+   )
+   int field2501;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 753650839
+   )
+   int field2498;
    @ObfuscatedName("j")
-   byte[] field2490;
-   @ObfuscatedName("w")
+   byte[] field2494;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -54906565
+      intValue = 692230585
    )
    int field2496;
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -185511115
+      intValue = -376474501
    )
-   int field2493;
-   @ObfuscatedName("h")
-   byte[] field2489;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 765626029
-   )
-   int field2491;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -509240367
-   )
-   int field2492;
+   int field2497;
 }

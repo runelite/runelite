@@ -1,126 +1,89 @@
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("v")
 public class class14 {
-   @ObfuscatedName("cj")
-   @ObfuscatedSignature(
-      signature = "Lil;"
-   )
-   @Export("indexMaps")
-   static IndexData indexMaps;
-   @ObfuscatedName("x")
-   String field296;
-   @ObfuscatedName("p")
-   String field288;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      longValue = -842849425055917643L
-   )
-   public final long field286;
+   @ObfuscatedName("v")
+   static int[][][] field300;
+   @ObfuscatedName("o")
+   String field294;
+   @ObfuscatedName("r")
+   String field297;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 126103537
+      longValue = 5726933110767021897L
    )
-   public final int field293;
-   @ObfuscatedName("f")
+   public final long field295;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -844894711
+   )
+   public final int field298;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "La;"
+      signature = "Lz;"
    )
-   public final GrandExchangeOffer field291;
+   public final GrandExchangeOffer field296;
 
    @ObfuscatedSignature(
-      signature = "(Lfb;BI)V"
+      signature = "(Lfp;BI)V"
    )
    class14(Buffer var1, byte var2, int var3) {
-      this.field288 = var1.readString();
-      this.field296 = var1.readString();
-      this.field293 = var1.readUnsignedShort();
-      this.field286 = var1.readLong();
+      this.field297 = var1.readString();
+      this.field294 = var1.readString();
+      this.field298 = var1.readUnsignedShort();
+      this.field295 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field291 = new GrandExchangeOffer();
-      this.field291.method102(2);
-      this.field291.method103(var2);
-      this.field291.price = var4;
-      this.field291.totalQuantity = var5;
-      this.field291.quantitySold = 0;
-      this.field291.spent = 0;
-      this.field291.itemId = var3;
+      this.field296 = new GrandExchangeOffer();
+      this.field296.method127(2);
+      this.field296.method115(var2);
+      this.field296.price = var4;
+      this.field296.totalQuantity = var5;
+      this.field296.quantitySold = 0;
+      this.field296.spent = 0;
+      this.field296.itemId = var3;
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "-47"
-   )
-   public String method85() {
-      return this.field288;
-   }
-
-   @ObfuscatedName("h")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1937306963"
+      garbageValue = "-2137966317"
    )
-   public String method82() {
-      return this.field296;
+   public String method88() {
+      return this.field297;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lia;I)V",
-      garbageValue = "-966016014"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-1124352196"
    )
-   public static void method80(IndexDataBase var0) {
-      VarPlayerType.varplayer_ref = var0;
-      class171.field2344 = VarPlayerType.varplayer_ref.fileCount(16);
+   public String method91() {
+      return this.field294;
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "2030602781"
+      signature = "(B)Z",
+      garbageValue = "8"
    )
-   protected static int method84() {
-      int var0 = 0;
-      if(class48.field618 == null || !class48.field618.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
+   static final boolean method92() {
+      return class133.field2011;
+   }
 
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  class48.field618 = var2;
-                  GameEngine.field723 = -1L;
-                  GameEngine.field722 = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
+   @ObfuscatedName("hl")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "118"
+   )
+   static final void method87(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1065; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field966[var4] = true;
          }
       }
 
-      if(class48.field618 != null) {
-         long var9 = class74.currentTimeMs();
-         long var3 = class48.field618.getCollectionTime();
-         if(GameEngine.field722 != -1L) {
-            long var5 = var3 - GameEngine.field722;
-            long var7 = var9 - GameEngine.field723;
-            if(0L != var7) {
-               var0 = (int)(100L * var5 / var7);
-            }
-         }
-
-         GameEngine.field722 = var3;
-         GameEngine.field723 = var9;
-      }
-
-      return var0;
    }
 }

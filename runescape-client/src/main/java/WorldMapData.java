@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.util.Iterator;
 import java.util.LinkedList;
 import net.runelite.mapping.Export;
@@ -6,129 +7,123 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("am")
 @Implements("WorldMapData")
 public class WorldMapData {
-   @ObfuscatedName("y")
-   static int[] field473;
-   @ObfuscatedName("gn")
+   @ObfuscatedName("at")
+   static Image field460;
+   @ObfuscatedName("dw")
    @ObfuscatedGetter(
-      intValue = -1953911409
+      intValue = 1788214535
    )
    static int field472;
-   @ObfuscatedName("ge")
-   @ObfuscatedGetter(
-      intValue = 2049132639
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    String field458;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1767506971
+      intValue = 684426583
    )
-   int field469;
-   @ObfuscatedName("j")
+   int field463;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1948571337
+      intValue = 679187049
    )
    @Export("fileId")
    int fileId;
+   @ObfuscatedName("d")
+   boolean field466;
+   @ObfuscatedName("j")
+   String field457;
    @ObfuscatedName("o")
-   boolean field468;
-   @ObfuscatedName("h")
-   String field459;
-   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 940487487
+      intValue = 1073353735
    )
-   int field462;
-   @ObfuscatedName("g")
+   int field467;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhs;"
    )
-   Coordinates field463;
-   @ObfuscatedName("m")
-   LinkedList field470;
+   Coordinates field461;
    @ObfuscatedName("l")
+   LinkedList field464;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -939637391
+      intValue = 2076523025
    )
    int field465;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -185172415
+      intValue = -769782893
    )
-   int field467;
-   @ObfuscatedName("c")
+   int field468;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1797228007
+      intValue = -367944901
    )
-   int field464;
-   @ObfuscatedName("w")
+   int field462;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 273715785
+      intValue = 1093041537
    )
-   int field460;
+   int field456;
 
    public WorldMapData() {
       this.fileId = -1;
-      this.field469 = -1;
-      this.field462 = -1;
-      this.field463 = null;
-      this.field464 = Integer.MAX_VALUE;
+      this.field463 = -1;
+      this.field467 = -1;
+      this.field461 = null;
+      this.field462 = Integer.MAX_VALUE;
+      this.field468 = 0;
+      this.field456 = Integer.MAX_VALUE;
       this.field465 = 0;
-      this.field460 = Integer.MAX_VALUE;
-      this.field467 = 0;
-      this.field468 = false;
+      this.field466 = false;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfb;IB)V",
-      garbageValue = "0"
+      signature = "(Lfp;II)V",
+      garbageValue = "859359160"
    )
    @Export("loadMapData")
    public void loadMapData(Buffer var1, int var2) {
       this.fileId = var2;
-      this.field459 = var1.readString();
+      this.field457 = var1.readString();
       this.field458 = var1.readString();
-      this.field463 = new Coordinates(var1.readInt());
-      this.field469 = var1.readInt();
+      this.field461 = new Coordinates(var1.readInt());
+      this.field463 = var1.readInt();
       var1.readUnsignedByte();
-      this.field468 = var1.readUnsignedByte() == 1;
-      this.field462 = var1.readUnsignedByte();
+      this.field466 = var1.readUnsignedByte() == 1;
+      this.field467 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedByte();
-      this.field470 = new LinkedList();
+      this.field464 = new LinkedList();
 
       for(int var4 = 0; var4 < var3; ++var4) {
-         this.field470.add(this.method298(var1));
+         this.field464.add(this.method307(var1));
       }
 
-      this.method303();
+      this.method312();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1720185193"
+      garbageValue = "1425226394"
    )
-   public String method306() {
-      return this.field459;
+   public String method340() {
+      return this.field457;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-155291459"
+      garbageValue = "1210037963"
    )
-   public boolean method300(int var1, int var2) {
+   public boolean method309(int var1, int var2) {
       int var3 = var1 / 64;
       int var4 = var2 / 64;
-      if(var3 >= this.field464 && var3 <= this.field465) {
-         if(var4 >= this.field460 && var4 <= this.field467) {
-            Iterator var5 = this.field470.iterator();
+      if(var3 >= this.field462 && var3 <= this.field468) {
+         if(var4 >= this.field456 && var4 <= this.field465) {
+            Iterator var5 = this.field464.iterator();
 
             WorldMapSectionBase var6;
             do {
@@ -137,7 +132,7 @@ public class WorldMapData {
                }
 
                var6 = (WorldMapSectionBase)var5.next();
-            } while(!var6.vmethod762(var1, var2));
+            } while(!var6.vmethod747(var1, var2));
 
             return true;
          } else {
@@ -148,22 +143,22 @@ public class WorldMapData {
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "0"
+      signature = "(I)I",
+      garbageValue = "-2081021787"
    )
-   public int method311() {
+   public int method313() {
       return this.fileId;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "-960836204"
+      garbageValue = "-1937266980"
    )
-   public int[] method368(int var1, int var2, int var3) {
-      Iterator var4 = this.field470.iterator();
+   public int[] method310(int var1, int var2, int var3) {
+      Iterator var4 = this.field464.iterator();
 
       WorldMapSectionBase var5;
       do {
@@ -172,36 +167,36 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod741(var1, var2, var3));
+      } while(!var5.vmethod746(var1, var2, var3));
 
-      return var5.vmethod759(var1, var2, var3);
+      return var5.vmethod757(var1, var2, var3);
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1827891313"
+   )
+   public int method360() {
+      return this.field462;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-490809154"
+   )
+   public int method373() {
+      return this.field456;
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "92"
-   )
-   public int method310() {
-      return this.field464;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-112"
-   )
-   public int method327() {
-      return this.field460;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "866559789"
+      garbageValue = "-1754778189"
    )
-   public boolean method299(int var1, int var2, int var3) {
-      Iterator var4 = this.field470.iterator();
+   public boolean method308(int var1, int var2, int var3) {
+      Iterator var4 = this.field464.iterator();
 
       WorldMapSectionBase var5;
       do {
@@ -210,18 +205,18 @@ public class WorldMapData {
          }
 
          var5 = (WorldMapSectionBase)var4.next();
-      } while(!var5.vmethod741(var1, var2, var3));
+      } while(!var5.vmethod746(var1, var2, var3));
 
       return true;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(III)Lhh;",
-      garbageValue = "166808218"
+      signature = "(III)Lhs;",
+      garbageValue = "318764311"
    )
-   public Coordinates method302(int var1, int var2) {
-      Iterator var3 = this.field470.iterator();
+   public Coordinates method311(int var1, int var2) {
+      Iterator var3 = this.field464.iterator();
 
       WorldMapSectionBase var4;
       do {
@@ -230,144 +225,143 @@ public class WorldMapData {
          }
 
          var4 = (WorldMapSectionBase)var3.next();
-      } while(!var4.vmethod762(var1, var2));
+      } while(!var4.vmethod747(var1, var2));
 
-      return var4.vmethod744(var1, var2);
+      return var4.vmethod771(var1, var2);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1076538059"
+      signature = "(B)I",
+      garbageValue = "1"
    )
-   public int method315() {
-      return this.field463.plane;
+   public int method324() {
+      return this.field461.plane;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1305794299"
+      garbageValue = "-951590115"
+   )
+   public int method374() {
+      return this.field461.worldX;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1664983282"
    )
    public int method325() {
-      return this.field463.worldX;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-859833136"
-   )
-   public int method316() {
-      return this.field463.worldY;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "461095477"
-   )
-   public int method309() {
-      return this.field462;
+      return this.field461.worldY;
    }
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-887834545"
+      signature = "(I)I",
+      garbageValue = "-1945442788"
    )
-   void method303() {
-      Iterator var1 = this.field470.iterator();
+   public int method318() {
+      return this.field467;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "-24242"
+   )
+   void method312() {
+      Iterator var1 = this.field464.iterator();
 
       while(var1.hasNext()) {
          WorldMapSectionBase var2 = (WorldMapSectionBase)var1.next();
-         var2.vmethod740(this);
+         var2.vmethod745(this);
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfb;B)Lah;",
-      garbageValue = "-69"
+      signature = "(Lfp;I)Law;",
+      garbageValue = "-1116805896"
    )
-   WorldMapSectionBase method298(Buffer var1) {
+   WorldMapSectionBase method307(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      class27[] var3 = new class27[]{class27.field402, class27.field403, class27.field404, class27.field408};
-      class27 var4 = (class27)PlayerComposition.forOrdinal(var3, var2);
-      Object var5 = null;
-      switch(var4.field405) {
+      class27 var3 = (class27)class88.forOrdinal(class27.method241(), var2);
+      Object var4 = null;
+      switch(var3.field405) {
       case 0:
-         var5 = new WorldMapType3();
+         var4 = new class48();
          break;
       case 1:
-         var5 = new WorldMapType1();
+         var4 = new WorldMapType3();
          break;
       case 2:
-         var5 = new WorldMapType2();
+         var4 = new WorldMapType2();
          break;
       case 3:
-         var5 = new class48();
+         var4 = new WorldMapType1();
          break;
       default:
          throw new IllegalStateException("");
       }
 
-      ((WorldMapSectionBase)var5).vmethod742(var1);
-      return (WorldMapSectionBase)var5;
+      ((WorldMapSectionBase)var4).vmethod751(var1);
+      return (WorldMapSectionBase)var4;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "46"
+      signature = "(I)Z",
+      garbageValue = "-1801906054"
    )
-   public boolean method305() {
-      return this.field468;
+   public boolean method314() {
+      return this.field466;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-16"
+      garbageValue = "0"
    )
-   public int method354() {
-      return this.field465;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1153352324"
-   )
-   public int method356() {
-      return this.field467;
+   public int method320() {
+      return this.field468;
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1101170150"
+      garbageValue = "-1374160597"
    )
-   int method308() {
-      return this.field469;
+   public int method322() {
+      return this.field465;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1842448007"
+      signature = "(I)I",
+      garbageValue = "1899113761"
    )
-   public String method322() {
+   int method362() {
+      return this.field463;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "0"
+   )
+   public String method323() {
       return this.field458;
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
-      signature = "(I)Lhh;",
-      garbageValue = "-1334258435"
+      signature = "(B)Lhs;",
+      garbageValue = "49"
    )
-   public Coordinates method317() {
-      return new Coordinates(this.field463);
+   public Coordinates method306() {
+      return new Coordinates(this.field461);
    }
 }

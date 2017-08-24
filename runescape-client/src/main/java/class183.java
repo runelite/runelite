@@ -4,58 +4,65 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gf")
+@ObfuscatedName("gc")
 public class class183 {
+   @ObfuscatedName("i")
+   public static final String[][] field2445;
    @ObfuscatedName("j")
-   static final String[][] field2443;
-   @ObfuscatedName("h")
-   static final String[] field2442;
-   @ObfuscatedName("f")
-   static Calendar field2441;
+   public static final String[] field2446;
+   @ObfuscatedName("a")
+   public static Calendar field2448;
 
    static {
-      field2443 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
-      field2442 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+      field2445 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
+      field2446 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
       Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
-      field2441 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+      field2448 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IB)Lim;",
-      garbageValue = "-26"
+      signature = "(Lfn;B)V",
+      garbageValue = "49"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class156.field2258.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+   @Export("initializeGPI")
+   static final void initializeGPI(PacketBuffer var0) {
+      var0.bitAccess();
+      int var1 = Client.localInteractingIndex;
+      Player var2 = Player.localPlayer = Client.cachedPlayers[var1] = new Player();
+      var2.field923 = var1;
+      int var3 = var0.getBits(30);
+      byte var4 = (byte)(var3 >> 28);
+      int var5 = var3 >> 14 & 16383;
+      int var6 = var3 & 16383;
+      var2.pathX[0] = var5 - class149.baseX;
+      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
+      var2.pathY[0] = var6 - class67.baseY;
+      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
+      class27.plane = var2.field910 = var4;
+      if(class95.field1506[var1] != null) {
+         var2.decodeApperance(class95.field1506[var1]);
+      }
+
+      class95.field1507 = 0;
+      class95.field1511[++class95.field1507 - 1] = var1;
+      class95.field1504[var1] = 0;
+      class95.field1509 = 0;
+
+      for(int var7 = 1; var7 < 2048; ++var7) {
+         if(var1 != var7) {
+            int var8 = var0.getBits(18);
+            int var9 = var8 >> 16;
+            int var10 = var8 >> 8 & 597;
+            int var11 = var8 & 597;
+            class95.field1502[var7] = (var10 << 14) + var11 + (var9 << 28);
+            class95.field1512[var7] = 0;
+            class95.field1508[var7] = -1;
+            class95.field1515[++class95.field1509 - 1] = var7;
+            class95.field1504[var7] = 0;
          }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("hx")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "1974639053"
-   )
-   static final String method3461(int var0) {
-      String var1 = Integer.toString(var0);
-
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + Tile.getColTags('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + Tile.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + Tile.getColTags(16776960) + var1 + "</col>");
+      var0.byteAccess();
    }
 }

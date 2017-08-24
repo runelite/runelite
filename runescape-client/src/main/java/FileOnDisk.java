@@ -2,27 +2,34 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.SyncFailedException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("dc")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   @Export("item_ref")
+   public static IndexDataBase item_ref;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      longValue = -1034090272085620161L
+      longValue = -2914574443387994835L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = 6564059205904781447L
+      longValue = 380184747870635553L
    )
    @Export("length")
    long length;
@@ -48,34 +55,51 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1247552989"
+      signature = "(ZI)V",
+      garbageValue = "882680926"
    )
-   @Export("length")
-   public final long length() throws IOException {
-      return this.file.length();
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1890976490"
-   )
-   @Export("close")
-   public final void close() throws IOException {
+   public final void method2374(boolean var1) throws IOException {
       if(this.file != null) {
+         if(var1) {
+            try {
+               this.file.getFD().sync();
+            } catch (SyncFailedException var3) {
+               ;
+            }
+         }
+
          this.file.close();
          this.file = null;
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([BIIS)I",
-      garbageValue = "9408"
+      signature = "(I)J",
+      garbageValue = "-2071112601"
+   )
+   @Export("length")
+   public final long length() throws IOException {
+      return this.file.length();
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2083020169"
+   )
+   @Export("close")
+   public final void close() throws IOException {
+      this.method2374(false);
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "([BIII)I",
+      garbageValue = "-2137110675"
    )
    @Export("read")
    public final int read(byte[] var1, int var2, int var3) throws IOException {
@@ -87,17 +111,17 @@ public final class FileOnDisk {
       return var4;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("seek")
    final void seek(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-1951727419"
+      signature = "([BIIB)V",
+      garbageValue = "120"
    )
    @Export("write")
    public final void write(byte[] var1, int var2, int var3) throws IOException {
@@ -119,42 +143,12 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lia;III)Z",
-      garbageValue = "1739221338"
+      signature = "(I)I",
+      garbageValue = "-688324130"
    )
-   static boolean method2386(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         class279.decodeSprite(var3);
-         return true;
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "84621383"
-   )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = WorldMapType1.getSmoothNoise2D(var3, var5);
-      int var8 = WorldMapType1.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = WorldMapType1.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = WorldMapType1.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = (var12 * var8 >> 16) + ((65536 - var12) * var7 >> 16);
-      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
-      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = ((65536 - var16) * var11 >> 16) + (var16 * var13 >> 16);
-      return var15;
+   static final int method2376() {
+      return class133.field2002;
    }
 }

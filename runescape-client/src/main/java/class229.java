@@ -1,115 +1,92 @@
+import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hk")
 public enum class229 implements RSEnum {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhk;"
+   )
+   field3158(5, 0),
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3150(3, 0),
-   @ObfuscatedName("h")
+   field3154(4, 1),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3143(2, 1),
-   @ObfuscatedName("f")
+   field3162(0, 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3144(0, 2),
-   @ObfuscatedName("p")
+   field3156(2, 3),
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3145(6, 3),
-   @ObfuscatedName("x")
+   field3153(3, 4),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3146(1, 4),
-   @ObfuscatedName("g")
+   field3155(1, 5),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   field3147(7, 5),
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhc;"
-   )
-   field3153(5, 6),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhc;"
-   )
-   field3148(4, 7);
-
+   field3159(6, 6),
    @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1502443041
+   @ObfuscatedSignature(
+      signature = "Lhk;"
    )
-   final int field3142;
-   @ObfuscatedName("w")
+   field3160(7, 7);
+
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1753155741
+      intValue = -800149355
    )
-   public final int field3149;
+   final int field3157;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -622571775
+   )
+   public final int field3161;
 
    class229(int var3, int var4) {
-      this.field3149 = var3;
-      this.field3142 = var4;
+      this.field3161 = var3;
+      this.field3157 = var4;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "316484705"
+      garbageValue = "959363303"
    )
    public int rsOrdinal() {
-      return this.field3142;
+      return this.field3157;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-707239856"
+      signature = "(Ljava/applet/Applet;Ljava/lang/String;B)V",
+      garbageValue = "94"
    )
-   static void method4092() {
-      Object var0 = class237.field3222;
-      synchronized(class237.field3222) {
-         if(class237.field3219 == 0) {
-            class237.field3221 = new Thread(new class237());
-            class237.field3221.setDaemon(true);
-            class237.field3221.start();
-            class237.field3221.setPriority(5);
-         }
-
-         class237.field3219 = 600;
-      }
+   public static void method4118(Applet var0, String var1) {
+      class56.field697 = var0;
+      class56.field692 = var1;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lfb;I)Ljava/lang/String;",
-      garbageValue = "-1997738653"
+      signature = "(CS)Z",
+      garbageValue = "9911"
    )
-   public static String method4091(Buffer var0) {
-      String var1;
-      try {
-         int var2 = var0.getUSmart();
-         if(var2 > 32767) {
-            var2 = 32767;
-         }
-
-         byte[] var3 = new byte[var2];
-         var0.offset += class266.field3648.decompress(var0.payload, var0.offset, var3, 0, var2);
-         String var4 = ScriptEvent.getString(var3, 0, var2);
-         var1 = var4;
-      } catch (Exception var6) {
-         var1 = "Cabbage";
-      }
-
-      return var1;
+   public static boolean method4117(char var0) {
+      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
    }
 }

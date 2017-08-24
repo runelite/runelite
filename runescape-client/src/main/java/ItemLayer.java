@@ -4,94 +4,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("dv")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1966237979
+      intValue = -1569125743
    )
    @Export("x")
    int x;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 843442409
+      intValue = 298893263
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1199892667
+      intValue = -435890039
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("c")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1082408805
+      intValue = -712696633
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("g")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lew;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1765039361
+      intValue = -1801481297
    )
    @Export("height")
    int height;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIB)Z",
-      garbageValue = "53"
+      signature = "(S)V",
+      garbageValue = "6033"
    )
-   static final boolean method2428(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = class135.field1998 + var6;
-      if(var7 < var0 && var7 < var1 && var7 < var2) {
-         return false;
-      } else {
-         var7 = class135.field1998 - var6;
-         if(var7 > var0 && var7 > var1 && var7 > var2) {
-            return false;
-         } else {
-            var7 = class135.field1996 + var6;
-            if(var7 < var3 && var7 < var4 && var7 < var5) {
-               return false;
-            } else {
-               var7 = class135.field1996 - var6;
-               return var7 <= var3 || var7 <= var4 || var7 <= var5;
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Lia;Lia;Lia;Lia;I)V",
-      garbageValue = "-1571736501"
-   )
-   public static void method2429(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, IndexDataBase var3) {
-      SoundTask.widgetIndex = var0;
-      class267.field3649 = var1;
-      NPC.field1380 = var2;
-      Widget.field2666 = var3;
-      class176.widgets = new Widget[SoundTask.widgetIndex.size()][];
-      BaseVarType.validInterfaces = new boolean[SoundTask.widgetIndex.size()];
+   public static void method2412() {
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
    }
 }

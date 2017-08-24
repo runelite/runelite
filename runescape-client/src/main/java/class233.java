@@ -1,66 +1,59 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hd")
 public enum class233 implements RSEnum {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhd;"
+   )
+   field3201("runescape", "RuneScape", 0),
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhd;"
    )
-   field3184("runescape", "RuneScape", 0),
-   @ObfuscatedName("h")
+   field3192("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhd;"
    )
-   field3187("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("f")
+   field3194("game3", "Game 3", 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhd;"
    )
-   field3185("game3", "Game 3", 2),
-   @ObfuscatedName("p")
+   field3191("game4", "Game 4", 3),
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhd;"
    )
-   field3189("game4", "Game 4", 3),
-   @ObfuscatedName("x")
+   field3195("game5", "Game 5", 4),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lha;"
+      signature = "Lhd;"
    )
-   field3186("game5", "Game 5", 4),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lha;"
-   )
-   field3188("oldscape", "RuneScape 2007", 5);
+   field3197("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("c")
-   public final String field3183;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 593128645
+      intValue = -23494321
    )
-   final int field3190;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "[Ljr;"
-   )
-   @Export("titlemuteSprite")
-   static IndexedSprite[] titlemuteSprite;
+   final int field3198;
+   @ObfuscatedName("q")
+   public final String field3199;
 
    class233(String var3, String var4, int var5) {
-      this.field3183 = var3;
-      this.field3190 = var5;
+      this.field3199 = var3;
+      this.field3198 = var5;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "316484705"
+      garbageValue = "959363303"
    )
    public int rsOrdinal() {
-      return this.field3190;
+      return this.field3198;
    }
 }

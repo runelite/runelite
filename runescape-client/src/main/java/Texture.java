@@ -3,42 +3,42 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("dk")
 @Implements("Texture")
 public class Texture extends Node {
-   @ObfuscatedName("r")
-   static int[] field1889;
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
+   static int[] field1896;
+   @ObfuscatedName("q")
    @Export("fileIds")
    int[] fileIds;
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @Export("pixels")
    int[] pixels;
-   @ObfuscatedName("g")
-   boolean field1880;
-   @ObfuscatedName("s")
+   @ObfuscatedName("n")
+   boolean field1887;
+   @ObfuscatedName("y")
    @Export("loaded")
    boolean loaded;
+   @ObfuscatedName("d")
+   int field1892;
    @ObfuscatedName("o")
-   int field1885;
-   @ObfuscatedName("x")
-   int field1879;
-   @ObfuscatedName("b")
-   int[] field1884;
-   @ObfuscatedName("m")
-   int field1878;
+   int field1893;
    @ObfuscatedName("l")
-   int[] field1886;
-   @ObfuscatedName("w")
-   int[] field1883;
+   int field1884;
+   @ObfuscatedName("s")
+   int[] field1891;
+   @ObfuscatedName("b")
+   int[] field1889;
+   @ObfuscatedName("k")
+   int[] field1890;
 
    @ObfuscatedSignature(
-      signature = "(Lfb;)V"
+      signature = "(Lfp;)V"
    )
    Texture(Buffer var1) {
       this.loaded = false;
-      this.field1879 = var1.readUnsignedShort();
-      this.field1880 = var1.readUnsignedByte() == 1;
+      this.field1893 = var1.readUnsignedShort();
+      this.field1887 = var1.readUnsignedByte() == 1;
       int var2 = var1.readUnsignedByte();
       if(var2 >= 1 && var2 <= 4) {
          this.fileIds = new int[var2];
@@ -49,49 +49,49 @@ public class Texture extends Node {
          }
 
          if(var2 > 1) {
-            this.field1886 = new int[var2 - 1];
+            this.field1889 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1886[var3] = var1.readUnsignedByte();
+               this.field1889[var3] = var1.readUnsignedByte();
             }
          }
 
          if(var2 > 1) {
-            this.field1883 = new int[var2 - 1];
+            this.field1890 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1883[var3] = var1.readUnsignedByte();
+               this.field1890[var3] = var1.readUnsignedByte();
             }
          }
 
-         this.field1884 = new int[var2];
+         this.field1891 = new int[var2];
 
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field1884[var3] = var1.readInt();
+            this.field1891[var3] = var1.readInt();
          }
 
-         this.field1885 = var1.readUnsignedByte();
-         this.field1878 = var1.readUnsignedByte();
+         this.field1892 = var1.readUnsignedByte();
+         this.field1884 = var1.readUnsignedByte();
          this.pixels = null;
       } else {
          throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("resetPixels")
    void resetPixels() {
       this.pixels = null;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(DILia;)Z"
+      signature = "(DILii;)Z"
    )
-   boolean method2510(double var1, int var3, IndexDataBase var4) {
+   boolean method2501(double var1, int var3, IndexDataBase var4) {
       int var5;
       for(var5 = 0; var5 < this.fileIds.length; ++var5) {
-         if(var4.method4121(this.fileIds[var5]) == null) {
+         if(var4.method4143(this.fileIds[var5]) == null) {
             return false;
          }
       }
@@ -100,11 +100,11 @@ public class Texture extends Node {
       this.pixels = new int[var5];
 
       for(int var6 = 0; var6 < this.fileIds.length; ++var6) {
-         IndexedSprite var7 = Sequence.method4754(var4, this.fileIds[var6]);
-         var7.method5056();
+         IndexedSprite var7 = BufferProvider.method4960(var4, this.fileIds[var6]);
+         var7.method4982();
          byte[] var8 = var7.pixels;
          int[] var9 = var7.palette;
-         int var10 = this.field1884[var6];
+         int var10 = this.field1891[var6];
          if((var10 & -16777216) == 16777216) {
             ;
          }
@@ -137,7 +137,7 @@ public class Texture extends Node {
          if(var6 == 0) {
             var11 = 0;
          } else {
-            var11 = this.field1886[var6 - 1];
+            var11 = this.field1889[var6 - 1];
          }
 
          if(var11 == 0) {
@@ -184,8 +184,8 @@ public class Texture extends Node {
       return true;
    }
 
-   @ObfuscatedName("f")
-   void method2509(int var1) {
+   @ObfuscatedName("a")
+   void method2503(int var1) {
       if(this.pixels != null) {
          short var2;
          int var3;
@@ -194,9 +194,9 @@ public class Texture extends Node {
          int var6;
          int var7;
          int[] var10;
-         if(this.field1885 == 1 || this.field1885 == 3) {
-            if(field1889 == null || field1889.length < this.pixels.length) {
-               field1889 = new int[this.pixels.length];
+         if(this.field1892 == 1 || this.field1892 == 3) {
+            if(field1896 == null || field1896.length < this.pixels.length) {
+               field1896 = new int[this.pixels.length];
             }
 
             if(this.pixels.length == 4096) {
@@ -206,25 +206,25 @@ public class Texture extends Node {
             }
 
             var3 = this.pixels.length;
-            var4 = var2 * this.field1878 * var1;
+            var4 = var2 * this.field1884 * var1;
             var5 = var3 - 1;
-            if(this.field1885 == 1) {
+            if(this.field1892 == 1) {
                var4 = -var4;
             }
 
             for(var6 = 0; var6 < var3; ++var6) {
                var7 = var6 + var4 & var5;
-               field1889[var6] = this.pixels[var7];
+               field1896[var6] = this.pixels[var7];
             }
 
             var10 = this.pixels;
-            this.pixels = field1889;
-            field1889 = var10;
+            this.pixels = field1896;
+            field1896 = var10;
          }
 
-         if(this.field1885 == 2 || this.field1885 == 4) {
-            if(field1889 == null || field1889.length < this.pixels.length) {
-               field1889 = new int[this.pixels.length];
+         if(this.field1892 == 2 || this.field1892 == 4) {
+            if(field1896 == null || field1896.length < this.pixels.length) {
+               field1896 = new int[this.pixels.length];
             }
 
             if(this.pixels.length == 4096) {
@@ -234,9 +234,9 @@ public class Texture extends Node {
             }
 
             var3 = this.pixels.length;
-            var4 = this.field1878 * var1;
+            var4 = this.field1884 * var1;
             var5 = var2 - 1;
-            if(this.field1885 == 2) {
+            if(this.field1892 == 2) {
                var4 = -var4;
             }
 
@@ -244,13 +244,13 @@ public class Texture extends Node {
                for(var7 = 0; var7 < var2; ++var7) {
                   int var8 = var6 + var7;
                   int var9 = var6 + (var7 + var4 & var5);
-                  field1889[var8] = this.pixels[var9];
+                  field1896[var8] = this.pixels[var9];
                }
             }
 
             var10 = this.pixels;
-            this.pixels = field1889;
-            field1889 = var10;
+            this.pixels = field1896;
+            field1896 = var10;
          }
 
       }
