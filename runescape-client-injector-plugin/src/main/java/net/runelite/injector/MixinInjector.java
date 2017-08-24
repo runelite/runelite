@@ -106,7 +106,10 @@ public class MixinInjector
 		// Find vanilla class which implements implementInto
 		ClassFile vanillaCf = findVanillaForInterface(implementInto);
 
-		assert vanillaCf != null : "no class implements " + implementInto;
+		if (vanillaCf == null)
+		{
+			throw new InjectionException("No class implements " + implementInto + " for mixin " + mixinClass);
+		}
 
 		inject(mixinCf, vanillaCf);
 	}
