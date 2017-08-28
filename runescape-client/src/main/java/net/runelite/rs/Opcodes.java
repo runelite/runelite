@@ -133,7 +133,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_CAMERA_MOVEMENT = 134;
    @Export("PACKET_CLIENT_TOGGLE_FRAME")
    public static final int PACKET_CLIENT_TOGGLE_FRAME = 62;
-   public static final int PACKET_CLIENT_246 = 246;
+   @Export("PACKET_CLIENT_WALK")
+   public static final int PACKET_CLIENT_WALK = 246;
    @Export("PACKET_CLIENT_DRAG_ITEM")
    public static final int PACKET_CLIENT_DRAG_ITEM = 99;
    @Export("PACKET_CLIENT_IDLED")

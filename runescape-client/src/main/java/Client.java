@@ -5328,7 +5328,7 @@ public final class Client extends GameEngine {
                                              if(Region.method2750()) {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
-                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_246);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_WALK);
                                                 secretPacketBuffer1.putByte(5);
                                                 secretPacketBuffer1.putShortLE(var3 + class149.baseX);
                                                 secretPacketBuffer1.putShort(var4 + class67.baseY);
