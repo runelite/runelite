@@ -342,7 +342,7 @@ public final class class8 extends class9 {
                   class56.method858(var11);
                   return 1;
                } else if(var0 == 3620) {
-                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_144);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_JOIN_CLANCHAT);
                   Client.secretPacketBuffer1.putByte(0);
                   return 1;
                } else if(var0 == 3621) {

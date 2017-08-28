@@ -6,7 +6,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_114 = 114;
    public static final int PACKET_CLIENT_180 = 180;
    public static final int PACKET_CLIENT_139 = 139;
-   public static final int PACKET_CLIENT_144 = 144;
+   @Export("PACKET_CLIENT_JOIN_CLANCHAT")
+   public static final int PACKET_CLIENT_JOIN_CLANCHAT = 144;
    public static final int PACKET_CLIENT_229 = 229;
    @Export("PACKET_CLIENT_ADVANCE_DIALOGUE")
    public static final int PACKET_CLIENT_ADVANCE_DIALOGUE = 46;

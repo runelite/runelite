@@ -330,7 +330,7 @@ public class class56 {
    )
    static final void method858(String var0) {
       if(!var0.equals("")) {
-         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_144);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_JOIN_CLANCHAT);
          Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
          Client.secretPacketBuffer1.putString(var0);
       }
