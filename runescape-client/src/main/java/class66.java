@@ -281,7 +281,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_47);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM);
                Client.secretPacketBuffer1.putShort(class67.baseY + var1);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.method3288(BaseVarType.field26);
