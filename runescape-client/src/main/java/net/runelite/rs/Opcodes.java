@@ -33,7 +33,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_165 = 165;
    @Export("PACKET_CLIENT_PRIVMSG")
    public static final int PACKET_CLIENT_PRIVMSG = 101;
-   public static final int PACKET_CLIENT_64 = 64;
+   @Export("PACKET_CLIENT_COMMAND")
+   public static final int PACKET_CLIENT_COMMAND = 64;
    @Export("PACKET_CLIENT_MINIMAP_WALK")
    public static final int PACKET_CLIENT_MINIMAP_WALK = 128;
    @Export("PACKET_CLIENT_KEEPALIVE")

@@ -1633,7 +1633,7 @@ public abstract class class28 {
                               }
                            }
 
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_64);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_COMMAND);
                            Client.secretPacketBuffer1.putByte(var58.length() + 1);
                            Client.secretPacketBuffer1.putString(var58);
                            var3 = 1;
