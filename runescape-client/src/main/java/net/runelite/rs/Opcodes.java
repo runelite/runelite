@@ -91,7 +91,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_192 = 192;
    public static final int PACKET_CLIENT_189 = 189;
    public static final int PACKET_CLIENT_197 = 197;
-   public static final int PACKET_CLIENT_66 = 66;
+   @Export("PACKET_CLIENT_EXAMINE_NPC")
+   public static final int PACKET_CLIENT_EXAMINE_NPC = 66;
    @Export("PACKET_CLIENT_STATISTICS")
    public static final int PACKET_CLIENT_STATISTICS = 204;
    public static final int PACKET_CLIENT_69 = 69;

@@ -724,7 +724,7 @@ public class class66 {
                                     }
 
                                     if(var15 != null) {
-                                       Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_66);
+                                       Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_EXAMINE_NPC);
                                        Client.secretPacketBuffer1.putShortLE(var15.id);
                                     }
                                  }
