@@ -250,7 +250,7 @@ public final class class8 extends class9 {
                               }
 
                               Client.field1124 = Client.cycleCntr;
-                              Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_180);
+                              Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DELETE_IGNORE);
                               Client.secretPacketBuffer1.putByte(ClanMember.getLength(var11));
                               Client.secretPacketBuffer1.putString(var11);
                               break;
