@@ -4985,7 +4985,7 @@ public final class Client extends GameEngine {
             if(field1206 && field1021 <= 0) {
                field1021 = 20;
                field1206 = false;
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_134);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAMERA_MOVEMENT);
                secretPacketBuffer1.method3273(mapAngle);
                secretPacketBuffer1.method3280(field956);
             }

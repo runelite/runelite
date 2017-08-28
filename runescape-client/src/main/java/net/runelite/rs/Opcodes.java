@@ -101,7 +101,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_208 = 208;
    public static final int PACKET_CLIENT_22 = 22;
    public static final int PACKET_CLIENT_26 = 26;
-   public static final int PACKET_CLIENT_134 = 134;
+   @Export("PACKET_CLIENT_CAMERA_MOVEMENT")
+   public static final int PACKET_CLIENT_CAMERA_MOVEMENT = 134;
    public static final int PACKET_CLIENT_62 = 62;
    public static final int PACKET_CLIENT_246 = 246;
    @Export("PACKET_CLIENT_DRAG_ITEM")
