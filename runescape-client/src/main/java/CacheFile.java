@@ -426,7 +426,7 @@ public class CacheFile {
                Client.secretPacketBuffer1.putByte(0);
                Client.secretPacketBuffer1.method3273(var3[var5]);
             } else if(var0 == 4) {
-               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_170);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TRADE_PLAYER);
                Client.secretPacketBuffer1.putLEInt(0);
                Client.secretPacketBuffer1.putShortLE(var3[var5]);
             } else if(var0 == 6) {
