@@ -1193,7 +1193,7 @@ public abstract class class28 {
                            }
 
                            Client.field1149 = class82.intStack[Ignore.intStackSize + 2];
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_222);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CHATFILTER_UPDATE);
                            Client.secretPacketBuffer1.putByte(Client.field1148);
                            Client.secretPacketBuffer1.putByte(class13.field293.field3738);
                            Client.secretPacketBuffer1.putByte(Client.field1149);
