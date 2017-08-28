@@ -39,6 +39,7 @@ import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.Lvt;
 import net.runelite.deob.deobfuscators.Order;
 import net.runelite.deob.deobfuscators.PacketHandlerOrder;
+import net.runelite.deob.deobfuscators.PacketWrite;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -146,6 +147,7 @@ public class Deob
 		run(group, new Order());
 
 		run(group, new PacketHandlerOrder());
+		run(group, new PacketWrite());
 
 		run(group, new MenuActionDeobfuscator());
 
