@@ -94,7 +94,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_CAST_SPELL_ON_BAG")
    public static final int PACKET_CLIENT_CAST_SPELL_ON_BAG = 212;
    public static final int PACKET_CLIENT_119 = 119;
-   public static final int PACKET_CLIENT_228 = 228;
+   @Export("PACKET_CLIENT_FIRST_ITEM_ACTION")
+   public static final int PACKET_CLIENT_FIRST_ITEM_ACTION = 228;
    public static final int PACKET_CLIENT_25 = 25;
    public static final int PACKET_CLIENT_169 = 169;
    public static final int PACKET_CLIENT_117 = 117;
