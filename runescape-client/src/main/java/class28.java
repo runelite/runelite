@@ -611,7 +611,7 @@ public abstract class class28 {
                         var19 = var64;
                      }
 
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_162);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_NUMERIC_INPUT);
                      Client.secretPacketBuffer1.putInt(var19);
                      var3 = 1;
                   } else if(var0 == 3105) {
