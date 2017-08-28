@@ -85,7 +85,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_FIRST_OBSTACLE_ACTION")
    public static final int PACKET_CLIENT_FIRST_OBSTACLE_ACTION = 27;
    public static final int PACKET_CLIENT_188 = 188;
-   public static final int PACKET_CLIENT_212 = 212;
+   @Export("PACKET_CLIENT_CAST_SPELL_ON_BAG")
+   public static final int PACKET_CLIENT_CAST_SPELL_ON_BAG = 212;
    public static final int PACKET_CLIENT_119 = 119;
    public static final int PACKET_CLIENT_228 = 228;
    public static final int PACKET_CLIENT_25 = 25;

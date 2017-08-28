@@ -459,7 +459,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 32) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_212);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAST_SPELL_ON_BAG);
                      Client.secretPacketBuffer1.method3273(var3);
                      Client.secretPacketBuffer1.method3280(Client.field1087);
                      Client.secretPacketBuffer1.method3288(BaseVarType.field26);
