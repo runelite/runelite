@@ -665,7 +665,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_122);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_REPORT_PLAYER);
                            Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.method3273(var3);
                         }
