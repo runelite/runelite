@@ -3,7 +3,8 @@ package net.runelite.rs;
 import net.runelite.mapping.Export;
 
 public class Opcodes {
-   public static final int PACKET_CLIENT_114 = 114;
+   @Export("PACKET_CLIENT_DELETE_FRIEND")
+   public static final int PACKET_CLIENT_DELETE_FRIEND = 114;
    public static final int PACKET_CLIENT_180 = 180;
    public static final int PACKET_CLIENT_139 = 139;
    @Export("PACKET_CLIENT_JOIN_CLANCHAT")
