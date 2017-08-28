@@ -5475,7 +5475,7 @@ public final class Client extends GameEngine {
                                              if(var3 > 15000 && var5 > 15000) {
                                                 field1058 = 250;
                                                 class91.method1761(14500);
-                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_217);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_IDLED);
                                              }
 
                                              for(class67 var25 = (class67)field1200.method3711(); var25 != null; var25 = (class67)field1200.method3712()) {
