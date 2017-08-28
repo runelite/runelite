@@ -160,7 +160,7 @@ public class class253 extends CacheableNode {
                if(Frames.method2925(Player.localPlayer.name, class8.field243).equals(var2)) {
                   Client.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                } else {
-                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_33);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADD_IGNORE);
                   Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
                   Client.secretPacketBuffer1.putString(var0);
                }
