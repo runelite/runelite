@@ -1,5 +1,7 @@
 package net.runelite.rs;
 
+import net.runelite.mapping.Export;
+
 public class Opcodes {
    public static final int PACKET_CLIENT_114 = 114;
    public static final int PACKET_CLIENT_180 = 180;
@@ -55,7 +57,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_44 = 44;
    public static final int PACKET_CLIENT_76 = 76;
    public static final int PACKET_CLIENT_74 = 74;
-   public static final int PACKET_CLIENT_27 = 27;
+   @Export("PACKET_CLIENT_FIRST_OBSTACLE_ACTION")
+   public static final int PACKET_CLIENT_FIRST_OBSTACLE_ACTION = 27;
    public static final int PACKET_CLIENT_188 = 188;
    public static final int PACKET_CLIENT_212 = 212;
    public static final int PACKET_CLIENT_119 = 119;
