@@ -6290,7 +6290,7 @@ public final class Client extends GameEngine {
                   }
 
                   if(var15 != null) {
-                     secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_158);
+                     secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DRAG_ITEM_ACROSS_WIDGETS);
                      secretPacketBuffer1.method3273(field1111.index);
                      secretPacketBuffer1.method3273(field1108.index);
                      secretPacketBuffer1.method3288(field1108.id);
