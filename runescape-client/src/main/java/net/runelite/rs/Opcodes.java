@@ -43,7 +43,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_SECOND_OBSTACLE_ACTION = 129;
    @Export("PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM")
    public static final int PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM = 47;
-   public static final int PACKET_CLIENT_244 = 244;
+   @Export("PACKET_CLIENT_DROP_ITEM")
+   public static final int PACKET_CLIENT_DROP_ITEM = 244;
    public static final int PACKET_CLIENT_65 = 65;
    public static final int PACKET_CLIENT_220 = 220;
    @Export("PACKET_CLIENT_TRADE_PLAYER")

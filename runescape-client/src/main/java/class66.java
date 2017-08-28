@@ -501,7 +501,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 37) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_244);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DROP_ITEM);
                      Client.secretPacketBuffer1.putLEShortA(var1);
                      Client.secretPacketBuffer1.putShort(var0);
                      Client.secretPacketBuffer1.putShortLE(var3);
