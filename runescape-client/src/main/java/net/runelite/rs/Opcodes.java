@@ -10,7 +10,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_139 = 139;
    @Export("PACKET_CLIENT_JOIN_CLANCHAT")
    public static final int PACKET_CLIENT_JOIN_CLANCHAT = 144;
-   public static final int PACKET_CLIENT_229 = 229;
+   @Export("PACKET_CLIENT_RESIZE_CLIENT_FRAME")
+   public static final int PACKET_CLIENT_RESIZE_CLIENT_FRAME = 229;
    @Export("PACKET_CLIENT_ADVANCE_DIALOGUE")
    public static final int PACKET_CLIENT_ADVANCE_DIALOGUE = 46;
    @Export("PACKET_CLIENT_ADD_FRIEND")

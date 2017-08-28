@@ -36,7 +36,7 @@ final class class17 implements Comparator {
       garbageValue = "1936733732"
    )
    static void method144() {
-      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_229);
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_RESIZE_CLIENT_FRAME);
       PacketBuffer var0 = Client.secretPacketBuffer1;
       int var1 = Client.isResized?2:1;
       var0.putByte(var1);
