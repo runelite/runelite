@@ -448,7 +448,7 @@ public class class66 {
                         class7.method34(Client.field1086);
                      }
                   } else if(var2 == 31) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_233);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_ON_ITEM);
                      Client.secretPacketBuffer1.putShort(class56.selectedItemIndex);
                      Client.secretPacketBuffer1.method3288(var1);
                      Client.secretPacketBuffer1.method3280(var3);

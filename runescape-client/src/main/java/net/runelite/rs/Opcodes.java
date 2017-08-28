@@ -64,7 +64,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_ITEM_ON_MOB")
    public static final int PACKET_CLIENT_ITEM_ON_MOB = 93;
    public static final int PACKET_CLIENT_41 = 41;
-   public static final int PACKET_CLIENT_233 = 233;
+   @Export("PACKET_CLIENT_ITEM_ON_ITEM")
+   public static final int PACKET_CLIENT_ITEM_ON_ITEM = 233;
    @Export("PACKET_CLIENT_REPORT_PLAYER")
    public static final int PACKET_CLIENT_REPORT_PLAYER = 122;
    public static final int PACKET_CLIENT_67 = 67;
