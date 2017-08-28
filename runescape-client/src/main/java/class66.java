@@ -736,7 +736,7 @@ public class class66 {
                                  Client.field995 = var7;
                                  Client.cursorState = 2;
                                  Client.field1040 = 0;
-                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_220);
+                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_EXAMINE_ITEM);
                                  Client.secretPacketBuffer1.method3273(var3);
                                  break label709;
                               }
@@ -746,7 +746,7 @@ public class class66 {
                                  if(var18 != null && var18.itemQuantities[var0] >= 100000) {
                                     Client.sendGameMessage(27, "", var18.itemQuantities[var0] + " x " + class169.getItemDefinition(var3).name);
                                  } else {
-                                    Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_220);
+                                    Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_EXAMINE_ITEM);
                                     Client.secretPacketBuffer1.method3273(var3);
                                  }
 
