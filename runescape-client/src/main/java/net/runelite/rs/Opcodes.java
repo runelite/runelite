@@ -19,7 +19,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_CHATFILTER_UPDATE")
    public static final int PACKET_CLIENT_CHATFILTER_UPDATE = 222;
    public static final int PACKET_CLIENT_57 = 57;
-   public static final int PACKET_CLIENT_53 = 53;
+   @Export("PACKET_CLIENT_ITEM_PRICE")
+   public static final int PACKET_CLIENT_ITEM_PRICE = 53;
    public static final int PACKET_CLIENT_13 = 13;
    public static final int PACKET_CLIENT_165 = 165;
    public static final int PACKET_CLIENT_101 = 101;

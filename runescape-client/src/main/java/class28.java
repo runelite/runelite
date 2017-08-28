@@ -663,7 +663,7 @@ public abstract class class28 {
                      var3 = 1;
                   } else if(var0 == 3115) {
                      var4 = class82.intStack[--Ignore.intStackSize];
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_53);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_PRICE);
                      Client.secretPacketBuffer1.putShort(var4);
                      var3 = 1;
                   } else if(var0 == 3116) {
