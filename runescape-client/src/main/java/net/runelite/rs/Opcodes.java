@@ -11,7 +11,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_229 = 229;
    @Export("PACKET_CLIENT_ADVANCE_DIALOGUE")
    public static final int PACKET_CLIENT_ADVANCE_DIALOGUE = 46;
-   public static final int PACKET_CLIENT_254 = 254;
+   @Export("PACKET_CLIENT_ADD_FRIEND")
+   public static final int PACKET_CLIENT_ADD_FRIEND = 254;
    public static final int PACKET_CLIENT_6 = 6;
    public static final int PACKET_CLIENT_174 = 174;
    public static final int PACKET_CLIENT_175 = 175;
