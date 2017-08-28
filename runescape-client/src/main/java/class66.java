@@ -99,7 +99,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_129);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SECOND_OBSTACLE_ACTION);
          Client.secretPacketBuffer1.method3273(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
          Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
