@@ -1203,7 +1203,7 @@ public abstract class class28 {
                            Ignore.intStackSize -= 2;
                            var19 = class82.intStack[Ignore.intStackSize];
                            var6 = class82.intStack[Ignore.intStackSize + 1];
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_57);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_REPORTED_PLAYER);
                            Client.secretPacketBuffer1.putByte(ClanMember.getLength(var58) + 2);
                            Client.secretPacketBuffer1.putString(var58);
                            Client.secretPacketBuffer1.putByte(var19 - 1);

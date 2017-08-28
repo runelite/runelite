@@ -19,7 +19,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_NUMERIC_INPUT = 162;
    @Export("PACKET_CLIENT_CHATFILTER_UPDATE")
    public static final int PACKET_CLIENT_CHATFILTER_UPDATE = 222;
-   public static final int PACKET_CLIENT_57 = 57;
+   @Export("PACKET_CLIENT_REPORTED_PLAYER")
+   public static final int PACKET_CLIENT_REPORTED_PLAYER = 57;
    @Export("PACKET_CLIENT_ITEM_PRICE")
    public static final int PACKET_CLIENT_ITEM_PRICE = 53;
    public static final int PACKET_CLIENT_13 = 13;
