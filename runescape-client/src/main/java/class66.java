@@ -58,7 +58,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_240);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_ON_OBSTACLE);
          Client.secretPacketBuffer1.method3273(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.putShort(class67.baseY + var1);
          Client.secretPacketBuffer1.method3288(class48.field626);
