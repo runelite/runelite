@@ -104,7 +104,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_MOUSE_CLICK = 208;
    @Export("PACKET_CLIENT_KEY_PRESSES")
    public static final int PACKET_CLIENT_KEY_PRESSES = 22;
-   public static final int PACKET_CLIENT_26 = 26;
+   @Export("PACKET_CLIENT_MOUSE_CLICK_SMALL")
+   public static final int PACKET_CLIENT_MOUSE_CLICK_SMALL = 26;
    @Export("PACKET_CLIENT_CAMERA_MOVEMENT")
    public static final int PACKET_CLIENT_CAMERA_MOVEMENT = 134;
    public static final int PACKET_CLIENT_62 = 62;

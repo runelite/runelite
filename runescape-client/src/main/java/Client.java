@@ -4948,7 +4948,7 @@ public final class Client extends GameEngine {
                }
 
                var5 = (int)var14;
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_26);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MOUSE_CLICK_SMALL);
                secretPacketBuffer1.putShort((MouseInput.field754 == 2?1:0) + (var5 << 1));
                secretPacketBuffer1.putShort(var4);
                secretPacketBuffer1.putShort(var3);
