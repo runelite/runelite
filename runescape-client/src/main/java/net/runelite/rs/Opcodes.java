@@ -109,7 +109,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_MOUSE_CLICK_SMALL = 26;
    @Export("PACKET_CLIENT_CAMERA_MOVEMENT")
    public static final int PACKET_CLIENT_CAMERA_MOVEMENT = 134;
-   public static final int PACKET_CLIENT_62 = 62;
+   @Export("PACKET_CLIENT_TOGGLE_FRAME")
+   public static final int PACKET_CLIENT_TOGGLE_FRAME = 62;
    public static final int PACKET_CLIENT_246 = 246;
    @Export("PACKET_CLIENT_DRAG_ITEM")
    public static final int PACKET_CLIENT_DRAG_ITEM = 99;

@@ -4992,13 +4992,13 @@ public final class Client extends GameEngine {
 
             if(GameEngine.field732 && !field955) {
                field955 = true;
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_62);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TOGGLE_FRAME);
                secretPacketBuffer1.putByte(1);
             }
 
             if(!GameEngine.field732 && field955) {
                field955 = false;
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_62);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TOGGLE_FRAME);
                secretPacketBuffer1.putByte(0);
             }
 
