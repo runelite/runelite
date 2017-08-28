@@ -4955,7 +4955,7 @@ public final class Client extends GameEngine {
             }
 
             if(KeyFocusListener.field652 > 0) {
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_22);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEY_PRESSES);
                secretPacketBuffer1.putShort(0);
                var1 = secretPacketBuffer1.offset;
                long var16 = class45.currentTimeMs();
