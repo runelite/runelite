@@ -70,7 +70,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_169 = 169;
    public static final int PACKET_CLIENT_117 = 117;
    public static final int PACKET_CLIENT_232 = 232;
-   public static final int PACKET_CLIENT_243 = 243;
+   @Export("PACKET_CLIENT_THIRD_OBSTACLE_ACTION")
+   public static final int PACKET_CLIENT_THIRD_OBSTACLE_ACTION = 243;
    public static final int PACKET_CLIENT_115 = 115;
    public static final int PACKET_CLIENT_192 = 192;
    public static final int PACKET_CLIENT_189 = 189;
