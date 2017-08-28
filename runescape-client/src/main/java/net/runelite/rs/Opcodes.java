@@ -120,7 +120,7 @@ public class Opcodes {
    @Export("PACKET_CLIENT_STATISTICS")
    public static int PACKET_CLIENT_STATISTICS = 204;
    public static int PACKET_CLIENT_69 = 69;
-   @Export("PACKET_CLIENT_MAP_VIEW_REFRESHED")
+   //@Export("PACKET_CLIENT_MAP_VIEW_REFRESHED")
    public static int PACKET_CLIENT_MAP_VIEW_REFRESHED = 241;
    public static int PACKET_CLIENT_79 = 79;
    @Export("PACKET_CLIENT_MOUSE_CLICK")
