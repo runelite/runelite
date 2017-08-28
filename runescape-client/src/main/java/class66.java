@@ -407,7 +407,7 @@ public class class66 {
                   }
 
                   if(var2 == 26) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_174);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CLOSED_WINDOW);
 
                      for(WidgetNode var19 = (WidgetNode)Client.componentTable.method3628(); var19 != null; var19 = (WidgetNode)Client.componentTable.method3625()) {
                         if(var19.owner == 0 || var19.owner == 3) {

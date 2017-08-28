@@ -17,7 +17,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_ADD_FRIEND")
    public static final int PACKET_CLIENT_ADD_FRIEND = 254;
    public static final int PACKET_CLIENT_6 = 6;
-   public static final int PACKET_CLIENT_174 = 174;
+   @Export("PACKET_CLIENT_CLOSED_WINDOW")
+   public static final int PACKET_CLIENT_CLOSED_WINDOW = 174;
    public static final int PACKET_CLIENT_175 = 175;
    public static final int PACKET_CLIENT_216 = 216;
    @Export("PACKET_CLIENT_NUMERIC_INPUT")

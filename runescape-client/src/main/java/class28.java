@@ -528,7 +528,7 @@ public abstract class class28 {
                      class15.method95(Player.localPlayer, class82.intStack[Ignore.intStackSize], class82.intStack[Ignore.intStackSize + 1]);
                      var3 = 1;
                   } else if(var0 == 3103) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_174);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CLOSED_WINDOW);
 
                      for(WidgetNode var67 = (WidgetNode)Client.componentTable.method3628(); var67 != null; var67 = (WidgetNode)Client.componentTable.method3625()) {
                         if(var67.owner == 0 || var67.owner == 3) {
