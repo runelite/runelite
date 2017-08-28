@@ -50,7 +50,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_116 = 116;
    public static final int PACKET_CLIENT_72 = 72;
    public static final int PACKET_CLIENT_247 = 247;
-   public static final int PACKET_CLIENT_177 = 177;
+   @Export("PACKET_CLIENT_SMALL_BUTTON_PRESS")
+   public static final int PACKET_CLIENT_SMALL_BUTTON_PRESS = 177;
    public static final int PACKET_CLIENT_19 = 19;
    public static final int PACKET_CLIENT_255 = 255;
    public static final int PACKET_CLIENT_235 = 235;

@@ -364,7 +364,7 @@ public class class66 {
                   }
 
                   if(var9) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SMALL_BUTTON_PRESS);
                      Client.secretPacketBuffer1.putInt(var1);
                   }
                } else {
@@ -420,7 +420,7 @@ public class class66 {
                         Client.field1086 = null;
                      }
                   } else if(var2 == 28) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SMALL_BUTTON_PRESS);
                      Client.secretPacketBuffer1.putInt(var1);
                      var18 = GZipDecompressor.method3177(var1);
                      if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
@@ -429,7 +429,7 @@ public class class66 {
                         WorldMapType1.method301(var16);
                      }
                   } else if(var2 == 29) {
-                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SMALL_BUTTON_PRESS);
                      Client.secretPacketBuffer1.putInt(var1);
                      var18 = GZipDecompressor.method3177(var1);
                      if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
