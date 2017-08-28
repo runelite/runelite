@@ -4449,7 +4449,7 @@ public final class Client extends GameEngine {
                         class27.field401 = null;
                         class244.field3318 = null;
                         class61.field769 = null;
-                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_241);
+                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MAP_VIEW_REFRESHED);
                         GameEngine.timer.vmethod3050();
 
                         for(var4 = 0; var4 < 32; ++var4) {

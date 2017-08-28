@@ -96,7 +96,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_STATISTICS")
    public static final int PACKET_CLIENT_STATISTICS = 204;
    public static final int PACKET_CLIENT_69 = 69;
-   public static final int PACKET_CLIENT_241 = 241;
+   @Export("PACKET_CLIENT_MAP_VIEW_REFRESHED")
+   public static final int PACKET_CLIENT_MAP_VIEW_REFRESHED = 241;
    public static final int PACKET_CLIENT_79 = 79;
    public static final int PACKET_CLIENT_208 = 208;
    public static final int PACKET_CLIENT_22 = 22;
