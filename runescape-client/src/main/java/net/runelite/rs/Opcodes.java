@@ -79,7 +79,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_161 = 161;
    @Export("PACKET_CLIENT_ITEM_ON_OBSTACLE")
    public static final int PACKET_CLIENT_ITEM_ON_OBSTACLE = 240;
-   public static final int PACKET_CLIENT_151 = 151;
+   @Export("PACKET_CLIENT_FIRST_MOB_ACTION")
+   public static final int PACKET_CLIENT_FIRST_MOB_ACTION = 151;
    @Export("PACKET_CLIENT_EXAMINE_OBSTACLE")
    public static final int PACKET_CLIENT_EXAMINE_OBSTACLE = 44;
    public static final int PACKET_CLIENT_76 = 76;
