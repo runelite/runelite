@@ -110,7 +110,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_115 = 115;
    public static final int PACKET_CLIENT_192 = 192;
    public static final int PACKET_CLIENT_189 = 189;
-   public static final int PACKET_CLIENT_197 = 197;
+   @Export("PACKET_CLIENT_CAST_SPELL_ON_MOB")
+   public static final int PACKET_CLIENT_CAST_SPELL_ON_MOB = 197;
    @Export("PACKET_CLIENT_EXAMINE_NPC")
    public static final int PACKET_CLIENT_EXAMINE_NPC = 66;
    @Export("PACKET_CLIENT_STATISTICS")
