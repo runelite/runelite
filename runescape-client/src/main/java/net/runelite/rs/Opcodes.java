@@ -117,7 +117,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_196 = 196;
    public static final int PACKET_CLIENT_142 = 142;
    public static final int PACKET_CLIENT_221 = 221;
-   public static final int PACKET_CLIENT_71 = 71;
+   @Export("PACKET_CLIENT_CHARACTER_DESIGN")
+   public static final int PACKET_CLIENT_CHARACTER_DESIGN = 71;
    @Export("PACKET_CLIENT_ADD_IGNORE")
    public static final int PACKET_CLIENT_ADD_IGNORE = 33;
 }

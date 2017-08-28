@@ -104,7 +104,7 @@ public class class165 {
          }
 
          if(var1 == 326) {
-            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_71);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CHARACTER_DESIGN);
             Client.field1078.method3996(Client.secretPacketBuffer1);
             return true;
          } else {
