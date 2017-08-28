@@ -49,7 +49,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_TRADE_PLAYER")
    public static final int PACKET_CLIENT_TRADE_PLAYER = 170;
    public static final int PACKET_CLIENT_56 = 56;
-   public static final int PACKET_CLIENT_242 = 242;
+   @Export("PACKET_CLIENT_FOURTH_ITEM_ACTION")
+   public static final int PACKET_CLIENT_FOURTH_ITEM_ACTION = 242;
    @Export("PACKET_CLIENT_ATTACK_NPC")
    public static final int PACKET_CLIENT_ATTACK_NPC = 155;
    public static final int PACKET_CLIENT_116 = 116;
