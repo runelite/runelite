@@ -441,7 +441,7 @@ public class class66 {
                      }
                   } else if(var2 == 30) {
                      if(Client.field1086 == null) {
-                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_46);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADVANCE_DIALOGUE);
                         Client.secretPacketBuffer1.putShortLE(var0);
                         Client.secretPacketBuffer1.putLEShortA(var1);
                         Client.field1086 = Varcs.method1849(var1, var0);

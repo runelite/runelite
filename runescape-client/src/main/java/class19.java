@@ -298,7 +298,7 @@ final class class19 implements Comparator {
          } else if(var0 == 1121) {
             var9 = var3.id;
             int var6 = var3.index;
-            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_46);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADVANCE_DIALOGUE);
             Client.secretPacketBuffer1.putShortLE(var6);
             Client.secretPacketBuffer1.putLEShortA(var9);
             Client.field1086 = var3;

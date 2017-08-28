@@ -8,7 +8,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_139 = 139;
    public static final int PACKET_CLIENT_144 = 144;
    public static final int PACKET_CLIENT_229 = 229;
-   public static final int PACKET_CLIENT_46 = 46;
+   @Export("PACKET_CLIENT_ADVANCE_DIALOGUE")
+   public static final int PACKET_CLIENT_ADVANCE_DIALOGUE = 46;
    public static final int PACKET_CLIENT_254 = 254;
    public static final int PACKET_CLIENT_6 = 6;
    public static final int PACKET_CLIENT_174 = 174;
