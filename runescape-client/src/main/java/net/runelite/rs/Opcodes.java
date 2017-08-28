@@ -66,7 +66,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_233 = 233;
    public static final int PACKET_CLIENT_122 = 122;
    public static final int PACKET_CLIENT_67 = 67;
-   public static final int PACKET_CLIENT_86 = 86;
+   @Export("PACKET_CLIENT_FOLLOW_PLAYER")
+   public static final int PACKET_CLIENT_FOLLOW_PLAYER = 86;
    public static final int PACKET_CLIENT_70 = 70;
    public static final int PACKET_CLIENT_43 = 43;
    public static final int PACKET_CLIENT_73 = 73;
