@@ -43,7 +43,7 @@ public class class51 implements class102 {
       if(Client.audioEffectCount >= 50 || var0) {
          Client.audioEffectCount = 0;
          if(!Client.socketError && ScriptEvent.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_80);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
 
             try {
                ScriptEvent.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);

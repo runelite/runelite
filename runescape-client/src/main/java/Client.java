@@ -5494,7 +5494,7 @@ public final class Client extends GameEngine {
 
                                              ++audioEffectCount;
                                              if(audioEffectCount > 50) {
-                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_80);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
                                              }
 
                                              try {
