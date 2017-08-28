@@ -2565,7 +2565,7 @@ public final class Client extends GameEngine {
                      GameEngine.field734 = var32;
                   }
 
-                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_204);
+                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_STATISTICS);
                   secretPacketBuffer1.putLEInt(GameEngine.FPS);
                   secretPacketBuffer1.putLEShortA(var2);
                   secretPacketBuffer1.putLEShortA(var3);

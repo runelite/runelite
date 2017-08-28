@@ -80,7 +80,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_189 = 189;
    public static final int PACKET_CLIENT_197 = 197;
    public static final int PACKET_CLIENT_66 = 66;
-   public static final int PACKET_CLIENT_204 = 204;
+   @Export("PACKET_CLIENT_STATISTICS")
+   public static final int PACKET_CLIENT_STATISTICS = 204;
    public static final int PACKET_CLIENT_69 = 69;
    public static final int PACKET_CLIENT_241 = 241;
    public static final int PACKET_CLIENT_79 = 79;
