@@ -41,7 +41,6 @@ import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.c2s.RWOpcodeFinder;
 import net.runelite.deob.c2s.WritePacket;
 import org.objectweb.asm.Opcodes;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import org.slf4j.Logger;
@@ -93,7 +92,9 @@ public class PacketWrite implements Deobfuscator
 			if (runeliteOpcodes.findField(fieldName) == null)
 			{
 				Field opField = new Field(runeliteOpcodes, fieldName, Type.INT);
-				opField.setAccessFlags(ACC_PUBLIC | ACC_STATIC | ACC_FINAL);
+				// ACC_FINAL causes javac to inline the fields, which prevents
+				// the mapper from doing field mapping
+				opField.setAccessFlags(ACC_PUBLIC | ACC_STATIC);
 				opField.setValue(wp.getOpcode());
 				runeliteOpcodes.addField(opField);
 			}
