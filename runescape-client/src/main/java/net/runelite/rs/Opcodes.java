@@ -100,7 +100,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_MAP_VIEW_REFRESHED")
    public static final int PACKET_CLIENT_MAP_VIEW_REFRESHED = 241;
    public static final int PACKET_CLIENT_79 = 79;
-   public static final int PACKET_CLIENT_208 = 208;
+   @Export("PACKET_CLIENT_MOUSE_CLICK")
+   public static final int PACKET_CLIENT_MOUSE_CLICK = 208;
    @Export("PACKET_CLIENT_KEY_PRESSES")
    public static final int PACKET_CLIENT_KEY_PRESSES = 22;
    public static final int PACKET_CLIENT_26 = 26;

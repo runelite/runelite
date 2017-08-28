@@ -4860,7 +4860,7 @@ public final class Client extends GameEngine {
                if(!field978) {
                   field970.field880 = 0;
                } else if(MouseInput.field754 != 0 || field970.field880 >= 40) {
-                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_208);
+                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MOUSE_CLICK);
                   secretPacketBuffer1.putByte(0);
                   var2 = secretPacketBuffer1.offset;
                   var3 = 0;
