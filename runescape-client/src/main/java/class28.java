@@ -1455,7 +1455,7 @@ public abstract class class28 {
                            class169.scriptStringStackSize -= 2;
                            var58 = class82.scriptStringStack[class169.scriptStringStackSize];
                            var5 = class82.scriptStringStack[class169.scriptStringStackSize + 1];
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_101);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_PRIVMSG);
                            Client.secretPacketBuffer1.putShort(0);
                            var6 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putString(var58);

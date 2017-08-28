@@ -29,7 +29,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_ITEM_PRICE = 53;
    public static final int PACKET_CLIENT_13 = 13;
    public static final int PACKET_CLIENT_165 = 165;
-   public static final int PACKET_CLIENT_101 = 101;
+   @Export("PACKET_CLIENT_PRIVMSG")
+   public static final int PACKET_CLIENT_PRIVMSG = 101;
    public static final int PACKET_CLIENT_64 = 64;
    @Export("PACKET_CLIENT_MINIMAP_WALK")
    public static final int PACKET_CLIENT_MINIMAP_WALK = 128;
