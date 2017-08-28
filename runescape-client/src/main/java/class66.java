@@ -706,7 +706,7 @@ public class class66 {
                                  Client.field995 = var7;
                                  Client.cursorState = 2;
                                  Client.field1040 = 0;
-                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_44);
+                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_EXAMINE_OBSTACLE);
                                  Client.secretPacketBuffer1.method3280(var3 >> 14 & 32767);
                                  break label709;
                               }

@@ -70,7 +70,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_ITEM_ON_OBSTACLE")
    public static final int PACKET_CLIENT_ITEM_ON_OBSTACLE = 240;
    public static final int PACKET_CLIENT_151 = 151;
-   public static final int PACKET_CLIENT_44 = 44;
+   @Export("PACKET_CLIENT_EXAMINE_OBSTACLE")
+   public static final int PACKET_CLIENT_EXAMINE_OBSTACLE = 44;
    public static final int PACKET_CLIENT_76 = 76;
    @Export("PACKET_CLIENT_CAST_SPELL_ON_PLAYER")
    public static final int PACKET_CLIENT_CAST_SPELL_ON_PLAYER = 74;
