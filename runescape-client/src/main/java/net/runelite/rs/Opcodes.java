@@ -22,7 +22,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_165 = 165;
    public static final int PACKET_CLIENT_101 = 101;
    public static final int PACKET_CLIENT_64 = 64;
-   public static final int PACKET_CLIENT_128 = 128;
+   @Export("PACKET_CLIENT_MINIMAP_WALK")
+   public static final int PACKET_CLIENT_MINIMAP_WALK = 128;
    public static final int PACKET_CLIENT_80 = 80;
    public static final int PACKET_CLIENT_227 = 227;
    public static final int PACKET_CLIENT_129 = 129;

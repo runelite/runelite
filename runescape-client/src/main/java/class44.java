@@ -116,7 +116,7 @@ public class class44 extends WorldMapData {
                int var10 = var5 * var8 - var4 * var7 >> 11;
                int var11 = var9 + Player.localPlayer.x >> 7;
                int var12 = Player.localPlayer.y - var10 >> 7;
-               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_128);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MINIMAP_WALK);
                Client.secretPacketBuffer1.putByte(18);
                Client.secretPacketBuffer1.putShortLE(var11 + class149.baseX);
                Client.secretPacketBuffer1.putShort(var12 + class67.baseY);
