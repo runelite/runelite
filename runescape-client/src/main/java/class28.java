@@ -1373,7 +1373,7 @@ public abstract class class28 {
                               }
                            }
 
-                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_13);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CHATBOX_INPUT);
                            Client.secretPacketBuffer1.putByte(0);
                            var9 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putByte(var19);

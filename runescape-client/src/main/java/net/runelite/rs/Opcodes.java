@@ -29,7 +29,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_REPORTED_PLAYER = 57;
    @Export("PACKET_CLIENT_ITEM_PRICE")
    public static final int PACKET_CLIENT_ITEM_PRICE = 53;
-   public static final int PACKET_CLIENT_13 = 13;
+   @Export("PACKET_CLIENT_CHATBOX_INPUT")
+   public static final int PACKET_CLIENT_CHATBOX_INPUT = 13;
    public static final int PACKET_CLIENT_165 = 165;
    @Export("PACKET_CLIENT_PRIVMSG")
    public static final int PACKET_CLIENT_PRIVMSG = 101;
