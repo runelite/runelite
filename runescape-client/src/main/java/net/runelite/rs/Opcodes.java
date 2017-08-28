@@ -73,7 +73,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_67 = 67;
    @Export("PACKET_CLIENT_FOLLOW_PLAYER")
    public static final int PACKET_CLIENT_FOLLOW_PLAYER = 86;
-   public static final int PACKET_CLIENT_70 = 70;
+   @Export("PACKET_CLIENT_FOUTH_MOB_ACTION")
+   public static final int PACKET_CLIENT_FOUTH_MOB_ACTION = 70;
    public static final int PACKET_CLIENT_43 = 43;
    public static final int PACKET_CLIENT_73 = 73;
    public static final int PACKET_CLIENT_161 = 161;
