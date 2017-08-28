@@ -104,7 +104,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_134 = 134;
    public static final int PACKET_CLIENT_62 = 62;
    public static final int PACKET_CLIENT_246 = 246;
-   public static final int PACKET_CLIENT_99 = 99;
+   @Export("PACKET_CLIENT_DRAG_ITEM")
+   public static final int PACKET_CLIENT_DRAG_ITEM = 99;
    public static final int PACKET_CLIENT_217 = 217;
    @Export("PACKET_CLIENT_DRAG_ITEM_ACROSS_WIDGETS")
    public static final int PACKET_CLIENT_DRAG_ITEM_ACROSS_WIDGETS = 158;

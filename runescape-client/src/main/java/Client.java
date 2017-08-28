@@ -5301,7 +5301,7 @@ public final class Client extends GameEngine {
                                                             var43.method4074(field1133, field1044);
                                                          }
 
-                                                         secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_99);
+                                                         secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DRAG_ITEM);
                                                          secretPacketBuffer1.putLEInt(var30);
                                                          secretPacketBuffer1.putShortLE(field1133);
                                                          secretPacketBuffer1.putInt(class18.field325.id);
