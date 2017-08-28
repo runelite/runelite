@@ -2,6 +2,7 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("p")
 final class class19 implements Comparator {
@@ -297,7 +298,7 @@ final class class19 implements Comparator {
          } else if(var0 == 1121) {
             var9 = var3.id;
             int var6 = var3.index;
-            Client.secretPacketBuffer1.putOpcode(46);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_46);
             Client.secretPacketBuffer1.putShortLE(var6);
             Client.secretPacketBuffer1.putLEShortA(var9);
             Client.field1086 = var3;

@@ -563,7 +563,7 @@ public class class7 {
                         ;
                      }
 
-                     while(var10 < 104 && 0 != (class14.field300[var6][var10 + 1][var7] & var3)) {
+                     while(var10 < 104 && (class14.field300[var6][var10 + 1][var7] & var3) != 0) {
                         ++var10;
                      }
 
@@ -589,12 +589,12 @@ public class class7 {
                         ++var12;
                      }
 
-                     var13 = (var12 + 1 - var11) * (var10 - var9 + 1);
+                     var13 = (var10 - var9 + 1) * (var12 + 1 - var11);
                      if(var13 >= 8) {
                         var46 = 240;
                         var15 = class61.tileHeights[var12][var9][var7] - var46;
                         var16 = class61.tileHeights[var11][var9][var7];
-                        Region.addOcclude(var5, 2, var9 * 128, var10 * 128 + 128, var7 * 128, var7 * 128, var15, var16);
+                        Region.addOcclude(var5, 2, var9 * 128, 128 + var10 * 128, var7 * 128, var7 * 128, var15, var16);
 
                         for(var17 = var11; var17 <= var12; ++var17) {
                            for(var18 = var9; var18 <= var10; ++var18) {
@@ -641,7 +641,7 @@ public class class7 {
 
                      if((var10 - var9 + 1) * (var12 - var11 + 1) >= 4) {
                         var13 = class61.tileHeights[var6][var9][var11];
-                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
+                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, 128 + var12 * 128, var13, var13);
 
                         for(var14 = var9; var14 <= var10; ++var14) {
                            for(var15 = var11; var15 <= var12; ++var15) {

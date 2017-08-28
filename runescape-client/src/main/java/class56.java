@@ -4,6 +4,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("bv")
 public class class56 {
@@ -329,7 +330,7 @@ public class class56 {
    )
    static final void method858(String var0) {
       if(!var0.equals("")) {
-         Client.secretPacketBuffer1.putOpcode(144);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_144);
          Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
          Client.secretPacketBuffer1.putString(var0);
       }
@@ -354,7 +355,7 @@ public class class56 {
          var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;
          var8 = var5 * var3 - var4 * var1 >> 16;
-         var1 = var5 * var1 + var4 * var3 >> 16;
+         var1 = var4 * var3 + var5 * var1 >> 16;
          if(var1 >= 50) {
             Client.screenY = Client.viewportHeight / 2 + var0 * Client.scale / var1;
             Client.screenX = Client.viewportWidth / 2 + var8 * Client.scale / var1;

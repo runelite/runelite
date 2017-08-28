@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("ax")
 public enum class27 implements RSEnum {
@@ -113,7 +114,7 @@ public enum class27 implements RSEnum {
       garbageValue = "-1870380642"
    )
    static final void method248(String var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(6);
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_6);
       Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0) + 1);
       Client.secretPacketBuffer1.putString(var0);
       Client.secretPacketBuffer1.putByte(var1);
@@ -658,7 +659,7 @@ public enum class27 implements RSEnum {
 
                         if(var81 != null) {
                            for(var73 = 0; var73 < var48; ++var73) {
-                              var81.method5019(var22 * var73 + (var64 + var53 - var26), var65);
+                              var81.method5019(var64 + var53 - var26 + var22 * var73, var65);
                            }
                         }
 

@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("w")
 public class class25 {
@@ -241,7 +242,7 @@ public class class25 {
                if(Frames.method2925(Player.localPlayer.name, class8.field243).equals(var1)) {
                   Client.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                } else {
-                  Client.secretPacketBuffer1.putOpcode(254);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_254);
                   Client.secretPacketBuffer1.putByte(ClanMember.getLength(var0));
                   Client.secretPacketBuffer1.putString(var0);
                }

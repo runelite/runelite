@@ -15,6 +15,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 import net.runelite.rs.Reflection;
 import netscape.javascript.JSObject;
 
@@ -1596,7 +1597,7 @@ public final class Client extends GameEngine {
                               for(var10 = 0; var10 < 256; ++var10) {
                                  IndexData var20 = class239.field3268[var10];
                                  if(var20 != null) {
-                                    CollisionData.field2303.offset = 5 + var10 * 8;
+                                    CollisionData.field2303.offset = var10 * 8 + 5;
                                     var12 = CollisionData.field2303.readInt();
                                     int var21 = CollisionData.field2303.readInt();
                                     var20.setInformation(var12, var21);
@@ -2564,7 +2565,7 @@ public final class Client extends GameEngine {
                      GameEngine.field734 = var32;
                   }
 
-                  secretPacketBuffer1.putOpcode(204);
+                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_204);
                   secretPacketBuffer1.putLEInt(GameEngine.FPS);
                   secretPacketBuffer1.putLEShortA(var2);
                   secretPacketBuffer1.putLEShortA(var3);
@@ -3328,8 +3329,8 @@ public final class Client extends GameEngine {
                   class86.field1392 = secretPacketBuffer2.readUnsignedByte();
                   class9.field250 = secretPacketBuffer2.readUnsignedByte();
                   if(class9.field250 >= 100) {
-                     class82.cameraX = 64 + class271.field3678 * 128;
-                     class158.cameraY = 64 + class87.field1393 * 128;
+                     class82.cameraX = class271.field3678 * 128 + 64;
+                     class158.cameraY = class87.field1393 * 128 + 64;
                      Ignore.cameraZ = class227.getTileHeight(class82.cameraX, class158.cameraY, class27.plane) - GroundObject.field1881;
                   }
 
@@ -4414,7 +4415,7 @@ public final class Client extends GameEngine {
                         Player.method1160();
                         ObjectComposition.field3437.reset();
                         if(class87.clientInstance.method922()) {
-                           secretPacketBuffer1.putOpcode(69);
+                           secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_69);
                            secretPacketBuffer1.putInt(1057001181);
                         }
 
@@ -4448,7 +4449,7 @@ public final class Client extends GameEngine {
                         class27.field401 = null;
                         class244.field3318 = null;
                         class61.field769 = null;
-                        secretPacketBuffer1.putOpcode(241);
+                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_241);
                         GameEngine.timer.vmethod3050();
 
                         for(var4 = 0; var4 < 32; ++var4) {
@@ -4839,7 +4840,7 @@ public final class Client extends GameEngine {
 
          if(gameState == 30) {
             while(GraphicsObject.method1683()) {
-               secretPacketBuffer1.putOpcode(79);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_79);
                secretPacketBuffer1.putByte(0);
                var1 = secretPacketBuffer1.offset;
                class208.encodeClassVerifier(secretPacketBuffer1);
@@ -4859,7 +4860,7 @@ public final class Client extends GameEngine {
                if(!field978) {
                   field970.field880 = 0;
                } else if(MouseInput.field754 != 0 || field970.field880 >= 40) {
-                  secretPacketBuffer1.putOpcode(208);
+                  secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_208);
                   secretPacketBuffer1.putByte(0);
                   var2 = secretPacketBuffer1.offset;
                   var3 = 0;
@@ -4947,14 +4948,14 @@ public final class Client extends GameEngine {
                }
 
                var5 = (int)var14;
-               secretPacketBuffer1.putOpcode(26);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_26);
                secretPacketBuffer1.putShort((MouseInput.field754 == 2?1:0) + (var5 << 1));
                secretPacketBuffer1.putShort(var4);
                secretPacketBuffer1.putShort(var3);
             }
 
             if(KeyFocusListener.field652 > 0) {
-               secretPacketBuffer1.putOpcode(22);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_22);
                secretPacketBuffer1.putShort(0);
                var1 = secretPacketBuffer1.offset;
                long var16 = class45.currentTimeMs();
@@ -4984,20 +4985,20 @@ public final class Client extends GameEngine {
             if(field1206 && field1021 <= 0) {
                field1021 = 20;
                field1206 = false;
-               secretPacketBuffer1.putOpcode(134);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_134);
                secretPacketBuffer1.method3273(mapAngle);
                secretPacketBuffer1.method3280(field956);
             }
 
             if(GameEngine.field732 && !field955) {
                field955 = true;
-               secretPacketBuffer1.putOpcode(62);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_62);
                secretPacketBuffer1.putByte(1);
             }
 
             if(!GameEngine.field732 && field955) {
                field955 = false;
-               secretPacketBuffer1.putOpcode(62);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_62);
                secretPacketBuffer1.putByte(0);
             }
 
@@ -5013,7 +5014,7 @@ public final class Client extends GameEngine {
                }
 
                for(var4 = 1; var4 < 103; ++var4) {
-                  var5 = (103 - var4) * 2048 + 24628;
+                  var5 = 24628 + (103 - var4) * 2048;
 
                   for(var6 = 1; var6 < 103; ++var6) {
                      if((class61.tileSettings[var1][var6][var4] & 24) == 0) {
@@ -5038,7 +5039,7 @@ public final class Client extends GameEngine {
                         GroundObject.method2494(var1, var7, var6, var4, var5);
                      }
 
-                     if(var1 < 3 && 0 != (class61.tileSettings[var1 + 1][var7][var6] & 8)) {
+                     if(var1 < 3 && (class61.tileSettings[var1 + 1][var7][var6] & 8) != 0) {
                         GroundObject.method2494(var1 + 1, var7, var6, var4, var5);
                      }
                   }
@@ -5300,7 +5301,7 @@ public final class Client extends GameEngine {
                                                             var43.method4074(field1133, field1044);
                                                          }
 
-                                                         secretPacketBuffer1.putOpcode(99);
+                                                         secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_99);
                                                          secretPacketBuffer1.putLEInt(var30);
                                                          secretPacketBuffer1.putShortLE(field1133);
                                                          secretPacketBuffer1.putInt(class18.field325.id);
@@ -5327,7 +5328,7 @@ public final class Client extends GameEngine {
                                              if(Region.method2750()) {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
-                                                secretPacketBuffer1.putOpcode(246);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_246);
                                                 secretPacketBuffer1.putByte(5);
                                                 secretPacketBuffer1.putShortLE(var3 + class149.baseX);
                                                 secretPacketBuffer1.putShort(var4 + class67.baseY);
@@ -5474,7 +5475,7 @@ public final class Client extends GameEngine {
                                              if(var3 > 15000 && var5 > 15000) {
                                                 field1058 = 250;
                                                 class91.method1761(14500);
-                                                secretPacketBuffer1.putOpcode(217);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_217);
                                              }
 
                                              for(class67 var25 = (class67)field1200.method3711(); var25 != null; var25 = (class67)field1200.method3712()) {
@@ -5493,7 +5494,7 @@ public final class Client extends GameEngine {
 
                                              ++audioEffectCount;
                                              if(audioEffectCount > 50) {
-                                                secretPacketBuffer1.putOpcode(80);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_80);
                                              }
 
                                              try {
@@ -6289,7 +6290,7 @@ public final class Client extends GameEngine {
                   }
 
                   if(var15 != null) {
-                     secretPacketBuffer1.putOpcode(158);
+                     secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_158);
                      secretPacketBuffer1.method3273(field1111.index);
                      secretPacketBuffer1.method3273(field1108.index);
                      secretPacketBuffer1.method3288(field1108.id);
@@ -6770,7 +6771,7 @@ public final class Client extends GameEngine {
 
       for(var11 = 0; var11 < 5; ++var11) {
          if(field1179[var11]) {
-            var12 = (int)(Math.random() * (double)(field1180[var11] * 2 + 1) - (double)field1180[var11] + Math.sin((double)field1183[var11] * ((double)field1145[var11] / 100.0D)) * (double)field1181[var11]);
+            var12 = (int)(Math.random() * (double)(1 + field1180[var11] * 2) - (double)field1180[var11] + Math.sin((double)field1183[var11] * ((double)field1145[var11] / 100.0D)) * (double)field1181[var11]);
             if(var11 == 0) {
                class82.cameraX += var12;
             }

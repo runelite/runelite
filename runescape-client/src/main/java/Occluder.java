@@ -72,23 +72,23 @@ public final class Occluder {
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 650126015
-   )
-   int field2158;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 2041927513
-   )
-   @Export("minNormalY")
-   int minNormalY;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1148936797
    )
    @Export("maxX")
    int maxX;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 2041927513
+   )
+   @Export("minNormalY")
+   int minNormalY;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 650126015
+   )
+   int field2158;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 2018133093

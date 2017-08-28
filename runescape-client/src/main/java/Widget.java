@@ -1191,7 +1191,7 @@ public class Widget extends Node {
 
                   int var13;
                   for(var13 = 0; var13 < var7.width; ++var13) {
-                     if(var7.image[var10 * var7.width + var13] == 0) {
+                     if(0 == var7.image[var10 * var7.width + var13]) {
                         var11 = var13;
                         break;
                      }

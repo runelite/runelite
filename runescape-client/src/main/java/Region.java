@@ -77,18 +77,18 @@ public class Region {
    @ObfuscatedName("x")
    @Export("screenCenterX")
    static int screenCenterX;
-   @ObfuscatedName("ag")
-   @Export("yawCos")
-   static int yawCos;
+   @ObfuscatedName("al")
+   @Export("yawSin")
+   static int yawSin;
    @ObfuscatedName("ax")
    @Export("pitchCos")
    static int pitchCos;
    @ObfuscatedName("at")
    @Export("mouseY2")
    static int mouseY2;
-   @ObfuscatedName("al")
-   @Export("yawSin")
-   static int yawSin;
+   @ObfuscatedName("ag")
+   @Export("yawCos")
+   static int yawCos;
    @ObfuscatedName("h")
    @Export("screenCenterZ")
    static int screenCenterZ;
@@ -384,8 +384,8 @@ public class Region {
             if(var6 > 0) {
                var7 = (var6 * var5.minNormalX >> 8) + var5.minZ;
                var8 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
-               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
-               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
+               var9 = var5.minY + (var6 * var5.minNormalY >> 8);
+               var10 = var5.maxY + (var6 * var5.maxNormalY >> 8);
                if(var3 >= var7 && var3 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -394,9 +394,9 @@ public class Region {
             var6 = var5.minZ - var3;
             if(var6 > 0) {
                var7 = (var6 * var5.field2157 >> 8) + var5.minX;
-               var8 = (var6 * var5.field2158 >> 8) + var5.maxX;
-               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
-               var10 = var5.maxY + (var6 * var5.maxNormalY >> 8);
+               var8 = var5.maxX + (var6 * var5.field2158 >> 8);
+               var9 = var5.minY + (var6 * var5.minNormalY >> 8);
+               var10 = (var6 * var5.maxNormalY >> 8) + var5.maxY;
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
                }
@@ -406,7 +406,7 @@ public class Region {
             if(var6 > 0) {
                var7 = var5.minX + (var6 * var5.field2157 >> 8);
                var8 = var5.maxX + (var6 * var5.field2158 >> 8);
-               var9 = (var6 * var5.minNormalY >> 8) + var5.minY;
+               var9 = var5.minY + (var6 * var5.minNormalY >> 8);
                var10 = var5.maxY + (var6 * var5.maxNormalY >> 8);
                if(var1 >= var7 && var1 <= var8 && var2 >= var9 && var2 <= var10) {
                   return true;
@@ -415,8 +415,8 @@ public class Region {
          } else if(var5.testDirection == 5) {
             var6 = var2 - var5.minY;
             if(var6 > 0) {
-               var7 = var5.minX + (var6 * var5.field2157 >> 8);
-               var8 = var5.maxX + (var6 * var5.field2158 >> 8);
+               var7 = (var6 * var5.field2157 >> 8) + var5.minX;
+               var8 = (var6 * var5.field2158 >> 8) + var5.maxX;
                var9 = var5.minZ + (var6 * var5.minNormalX >> 8);
                var10 = (var6 * var5.maxNormalX >> 8) + var5.maxZ;
                if(var1 >= var7 && var1 <= var8 && var3 >= var9 && var3 <= var10) {
@@ -481,7 +481,7 @@ public class Region {
                      if(var14 >= 0 && var14 < this.maxZ && (!var7 || var13 >= var9 || var14 >= var11 || var14 < var4 && var3 != var13)) {
                         Tile var15 = this.tiles[var12][var13][var14];
                         if(var15 != null) {
-                           int var16 = (this.tileHeights[var12][var13 + 1][var14] + this.tileHeights[var12][var13 + 1][var14 + 1] + this.tileHeights[var12][var13][var14] + this.tileHeights[var12][var13][var14 + 1]) / 4 - (this.tileHeights[var2][var3][var4] + this.tileHeights[var2][var3 + 1][var4] + this.tileHeights[var2][var3][var4 + 1] + this.tileHeights[var2][var3 + 1][var4 + 1]) / 4;
+                           int var16 = (this.tileHeights[var12][var13][var14] + this.tileHeights[var12][var13 + 1][var14] + this.tileHeights[var12][var13][var14 + 1] + this.tileHeights[var12][var13 + 1][var14 + 1]) / 4 - (this.tileHeights[var2][var3][var4] + this.tileHeights[var2][var3 + 1][var4] + this.tileHeights[var2][var3][var4 + 1] + this.tileHeights[var2][var3 + 1][var4 + 1]) / 4;
                            WallObject var17 = var15.wallObject;
                            if(var17 != null) {
                               ModelData var18;
@@ -492,7 +492,7 @@ public class Region {
 
                               if(var17.renderable2 instanceof ModelData) {
                                  var18 = (ModelData)var17.renderable2;
-                                 ModelData.method2433(var1, var18, (1 - var5) * 64 + (var13 - var3) * 128, var16, (var14 - var4) * 128 + (1 - var6) * 64, var7);
+                                 ModelData.method2433(var1, var18, (var13 - var3) * 128 + (1 - var5) * 64, var16, (var14 - var4) * 128 + (1 - var6) * 64, var7);
                               }
                            }
 
@@ -721,7 +721,7 @@ public class Region {
       var12 = var3 * var17 + var12 * var4 >> 16;
       var17 = var21;
       if(var12 >= 50) {
-         var21 = var14 * var6 + var5 * var11 >> 16;
+         var21 = var5 * var11 + var14 * var6 >> 16;
          var11 = var11 * var6 - var5 * var14 >> 16;
          var14 = var21;
          var21 = var18 * var4 - var3 * var11 >> 16;
@@ -742,12 +742,12 @@ public class Region {
                var15 = var3 * var20 + var15 * var4 >> 16;
                if(var15 >= 50) {
                   int var22 = var10 * Graphics3D.field2030 / var12 + Graphics3D.centerX;
-                  int var23 = Graphics3D.centerY + var17 * Graphics3D.field2030 / var12;
+                  int var23 = var17 * Graphics3D.field2030 / var12 + Graphics3D.centerY;
                   int var24 = Graphics3D.centerX + var14 * Graphics3D.field2030 / var11;
                   int var25 = var18 * Graphics3D.field2030 / var11 + Graphics3D.centerY;
-                  int var26 = var13 * Graphics3D.field2030 / var16 + Graphics3D.centerX;
-                  int var27 = var19 * Graphics3D.field2030 / var16 + Graphics3D.centerY;
-                  int var28 = Graphics3D.centerX + var9 * Graphics3D.field2030 / var15;
+                  int var26 = Graphics3D.centerX + var13 * Graphics3D.field2030 / var16;
+                  int var27 = Graphics3D.centerY + var19 * Graphics3D.field2030 / var16;
+                  int var28 = var9 * Graphics3D.field2030 / var15 + Graphics3D.centerX;
                   int var29 = var21 * Graphics3D.field2030 / var15 + Graphics3D.centerY;
                   Graphics3D.rasterAlpha = 0;
                   int var30;
@@ -839,7 +839,7 @@ public class Region {
             SceneTileModel.vertexSceneZ[var9] = var12;
          }
 
-         SceneTileModel.tmpScreenX[var9] = var10 * Graphics3D.field2030 / var12 + Graphics3D.centerX;
+         SceneTileModel.tmpScreenX[var9] = Graphics3D.centerX + var10 * Graphics3D.field2030 / var12;
          SceneTileModel.tmpScreenY[var9] = Graphics3D.centerY + var13 * Graphics3D.field2030 / var12;
       }
 
@@ -1976,7 +1976,7 @@ public class Region {
       if(var7 == null) {
          return true;
       } else {
-         int var11 = var2 * 128 + var5 * 64;
+         int var11 = var5 * 64 + var2 * 128;
          int var12 = var3 * 128 + var6 * 64;
          return this.addEntityMarker(var1, var2, var3, var5, var6, var11, var12, var4, var7, var8, false, var9, var10);
       }
@@ -2415,14 +2415,14 @@ public class Region {
 
    @ObfuscatedName("br")
    public static final int[] method2764(int var0, int var1, int var2) {
-      int var3 = var0 * yawCos + var2 * yawSin >> 16;
+      int var3 = var2 * yawSin + var0 * yawCos >> 16;
       var2 = var2 * yawCos - var0 * yawSin >> 16;
       var0 = var3;
       var3 = pitchCos * var1 - var2 * pitchSin >> 16;
       var2 = pitchSin * var1 + var2 * pitchCos >> 16;
       var2 |= 1;
       int var4 = var0 * Graphics3D.field2030 / var2 + Graphics3D.centerX + Rasterizer2D.draw_region_x;
-      int var5 = Graphics3D.field2030 * var3 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
+      int var5 = Graphics3D.centerY + Graphics3D.field2030 * var3 / var2 + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 
@@ -2523,13 +2523,13 @@ public class Region {
 
    @ObfuscatedName("aw")
    static boolean method2747(int var0, int var1, int var2) {
-      int var3 = var2 * yawSin + var0 * yawCos >> 16;
+      int var3 = var0 * yawCos + var2 * yawSin >> 16;
       int var4 = var2 * yawCos - var0 * yawSin >> 16;
       int var5 = var4 * pitchCos + pitchSin * var1 >> 16;
       int var6 = pitchCos * var1 - var4 * pitchSin >> 16;
       if(var5 >= 50 && var5 <= 3500) {
          int var7 = var3 * 390 / var5 + field2118;
-         int var8 = var6 * 390 / var5 + field2086;
+         int var8 = field2086 + var6 * 390 / var5;
          return var7 >= field2070 && var7 <= field2122 && var8 >= field2109 && var8 <= field2123;
       } else {
          return false;

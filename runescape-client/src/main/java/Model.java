@@ -426,8 +426,8 @@ public class Model extends Renderable {
 
          if(var10 >= 50) {
             var14 = field1969[var10 - var9] * (50 - var9);
-            field1986[var4] = var2 + (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) * Graphics3D.field2030 / 50;
-            field1987[var4] = var3 + Graphics3D.field2030 * (var12 + ((field1976[var7] - var12) * var14 >> 16)) / 50;
+            field1986[var4] = var2 + Graphics3D.field2030 * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
+            field1987[var4] = var3 + (var12 + ((field1976[var7] - var12) * var14 >> 16)) * Graphics3D.field2030 / 50;
             xViewportBuffer[var4++] = var13 + ((this.field2000[var1] - var13) * var14 >> 16);
          }
       }
@@ -442,15 +442,15 @@ public class Model extends Renderable {
          var13 = this.field2000[var1];
          if(var9 >= 50) {
             var14 = field1969[var9 - var10] * (50 - var10);
-            field1986[var4] = var2 + (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) * Graphics3D.field2030 / 50;
-            field1987[var4] = var3 + (var12 + ((field1976[var6] - var12) * var14 >> 16)) * Graphics3D.field2030 / 50;
+            field1986[var4] = var2 + Graphics3D.field2030 * (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) / 50;
+            field1987[var4] = var3 + Graphics3D.field2030 * (var12 + ((field1976[var6] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1944[var1] - var13) * var14 >> 16);
          }
 
          if(var8 >= 50) {
             var14 = field1969[var8 - var10] * (50 - var10);
             field1986[var4] = var2 + Graphics3D.field2030 * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
-            field1987[var4] = var3 + Graphics3D.field2030 * (var12 + ((field1976[var5] - var12) * var14 >> 16)) / 50;
+            field1987[var4] = var3 + (var12 + ((field1976[var5] - var12) * var14 >> 16)) * Graphics3D.field2030 / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1943[var1] - var13) * var14 >> 16);
          }
       }
@@ -822,9 +822,9 @@ public class Model extends Renderable {
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
                      var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-                     var21 = var1[var18][var19 + 1] * (128 - var16) + var1[var18 + 1][var19 + 1] * var16 >> 7;
+                     var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
                      int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-                     var11.verticesY[var12] = this.verticesY[var12] + (var6 - var13) * (var22 - var3) / var6;
+                     var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
                   }
                }
             }
@@ -871,7 +871,7 @@ public class Model extends Renderable {
                int var18 = var2 * this.XYZMag >> 16;
                int var19 = (var17 + var18) * Graphics3D.field2030;
                if(var19 / var13 > Graphics3D.field2037) {
-                  int var20 = (var3 * super.modelHeight >> 16) + var18;
+                  int var20 = var18 + (var3 * super.modelHeight >> 16);
                   int var21 = (var17 - var20) * Graphics3D.field2030;
                   if(var21 / var13 < Graphics3D.field2027) {
                      int var22 = var12 + (var2 * super.modelHeight >> 16);
@@ -1005,7 +1005,7 @@ public class Model extends Renderable {
                         var37 = var36 * var2 + var3 * var37 >> 16;
                         field1996[var34] = var37 - var11;
                         if(var37 >= 50) {
-                           field1983[var34] = var35 * Graphics3D.field2030 / var37 + var30;
+                           field1983[var34] = var30 + var35 * Graphics3D.field2030 / var37;
                            field1970[var34] = var31 + var38 * Graphics3D.field2030 / var37;
                         } else {
                            field1983[var34] = -5000;

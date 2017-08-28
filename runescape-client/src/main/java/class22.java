@@ -108,7 +108,7 @@ public class class22 extends class28 {
                var8 = '�';
             }
          } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
+            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && 128 == (var0[var5 + 1] & 192)) {
                var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
                if(var8 < 2048) {
                   var8 = '�';

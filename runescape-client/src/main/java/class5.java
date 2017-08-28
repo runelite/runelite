@@ -68,7 +68,7 @@ final class class5 implements class0 {
       int var6 = MouseInput.field747;
 
       for(int var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         int var8 = var1 + (Client.menuOptionCount - 1 - var7) * 15 + 31;
+         int var8 = (Client.menuOptionCount - 1 - var7) * 15 + var1 + 31;
          int var9 = 16777215;
          if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < var8 + 3) {
             var9 = 16776960;

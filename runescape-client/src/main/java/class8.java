@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("k")
 public final class class8 extends class9 {
@@ -218,7 +219,7 @@ public final class class8 extends class9 {
                               }
 
                               Client.field1124 = Client.cycleCntr;
-                              Client.secretPacketBuffer1.putOpcode(114);
+                              Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_114);
                               Client.secretPacketBuffer1.putByte(ClanMember.getLength(var11));
                               Client.secretPacketBuffer1.putString(var11);
                               break;
@@ -249,7 +250,7 @@ public final class class8 extends class9 {
                               }
 
                               Client.field1124 = Client.cycleCntr;
-                              Client.secretPacketBuffer1.putOpcode(180);
+                              Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_180);
                               Client.secretPacketBuffer1.putByte(ClanMember.getLength(var11));
                               Client.secretPacketBuffer1.putString(var11);
                               break;
@@ -327,7 +328,7 @@ public final class class8 extends class9 {
                } else if(var0 == 3617) {
                   var11 = class82.scriptStringStack[--class169.scriptStringStackSize];
                   if(class223.clanMembers != null) {
-                     Client.secretPacketBuffer1.putOpcode(139);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_139);
                      Client.secretPacketBuffer1.putByte(ClanMember.getLength(var11));
                      Client.secretPacketBuffer1.putString(var11);
                   }
@@ -341,7 +342,7 @@ public final class class8 extends class9 {
                   class56.method858(var11);
                   return 1;
                } else if(var0 == 3620) {
-                  Client.secretPacketBuffer1.putOpcode(144);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_144);
                   Client.secretPacketBuffer1.putByte(0);
                   return 1;
                } else if(var0 == 3621) {

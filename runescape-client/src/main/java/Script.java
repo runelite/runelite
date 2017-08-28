@@ -109,8 +109,8 @@ public class Script extends CacheableNode {
          int var2 = Client.gameCycle - var0.field1275;
          int var3 = var0.field1271 * 128 + var0.field1233 * 64;
          int var4 = var0.field1233 * 64 + var0.field1229 * 128;
-         int var5 = var0.field1233 * 64 + var0.field1239 * 128;
-         int var6 = var0.field1274 * 128 + var0.field1233 * 64;
+         int var5 = var0.field1239 * 128 + var0.field1233 * 64;
+         int var6 = var0.field1233 * 64 + var0.field1274 * 128;
          var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
          var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
       }

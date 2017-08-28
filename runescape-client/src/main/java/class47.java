@@ -98,7 +98,7 @@ public class class47 {
             class163.field2310[var16 - 1][var17] = var15;
          }
 
-         if(var16 < 127 && 0 == class163.field2307[var16 + 1][var17] && (var12[var13 + 1][var14] & 19136896) == 0) {
+         if(var16 < 127 && class163.field2307[var16 + 1][var17] == 0 && 0 == (var12[var13 + 1][var14] & 19136896)) {
             class163.field2306[var18] = var4 + 1;
             class163.field2312[var18] = var5;
             var18 = var18 + 1 & 4095;
@@ -138,7 +138,7 @@ public class class47 {
             class163.field2310[var16 + 1][var17 - 1] = var15;
          }
 
-         if(var16 > 0 && var17 < 127 && class163.field2307[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
+         if(var16 > 0 && var17 < 127 && 0 == class163.field2307[var16 - 1][var17 + 1] && (var12[var13 - 1][var14 + 1] & 19136824) == 0 && (var12[var13 - 1][var14] & 19136776) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
             class163.field2306[var18] = var4 - 1;
             class163.field2312[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;
@@ -146,7 +146,7 @@ public class class47 {
             class163.field2310[var16 - 1][var17 + 1] = var15;
          }
 
-         if(var16 < 127 && var17 < 127 && class163.field2307[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 1] & 19136992) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && 0 == (var12[var13][var14 + 1] & 19136800)) {
+         if(var16 < 127 && var17 < 127 && class163.field2307[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 1] & 19136992) == 0 && (var12[var13 + 1][var14] & 19136896) == 0 && (var12[var13][var14 + 1] & 19136800) == 0) {
             class163.field2306[var18] = var4 + 1;
             class163.field2312[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;

@@ -165,7 +165,7 @@ public class class211 extends CacheableNode {
                            for(var22 = 0; var22 < var9.height; ++var22) {
                               for(var23 = 0; var23 < var9.width; ++var23) {
                                  int var24 = var23 * (var9.paddingX + 32);
-                                 int var25 = (var9.paddingY + 32) * var22;
+                                 int var25 = var22 * (var9.paddingY + 32);
                                  if(var39 < 20) {
                                     var24 += var9.xSprites[var39];
                                     var25 += var9.field2728[var39];

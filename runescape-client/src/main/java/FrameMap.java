@@ -7,6 +7,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("ei")
 @Implements("FrameMap")
@@ -164,73 +165,73 @@ public class FrameMap extends Node {
          if(var10) {
             int var8 = Coordinates.getWidgetConfig(var5);
             int var9 = var0 - 1;
-            boolean var7 = (var8 >> var9 + 1 & 1) != 0;
+            boolean var7 = 0 != (var8 >> var9 + 1 & 1);
             if(var7) {
                if(var0 == 1) {
-                  Client.secretPacketBuffer1.putOpcode(250);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_250);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 2) {
-                  Client.secretPacketBuffer1.putOpcode(7);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_7);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 3) {
-                  Client.secretPacketBuffer1.putOpcode(171);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_171);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 4) {
-                  Client.secretPacketBuffer1.putOpcode(146);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_146);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 5) {
-                  Client.secretPacketBuffer1.putOpcode(1);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_1);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 6) {
-                  Client.secretPacketBuffer1.putOpcode(105);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_105);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 7) {
-                  Client.secretPacketBuffer1.putOpcode(173);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_173);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 8) {
-                  Client.secretPacketBuffer1.putOpcode(196);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_196);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 9) {
-                  Client.secretPacketBuffer1.putOpcode(142);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_142);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);
                }
 
                if(var0 == 10) {
-                  Client.secretPacketBuffer1.putOpcode(221);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_221);
                   Client.secretPacketBuffer1.putInt(var1);
                   Client.secretPacketBuffer1.putShort(var2);
                   Client.secretPacketBuffer1.putShort(var3);

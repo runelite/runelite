@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("fs")
 public class class165 {
@@ -103,7 +104,7 @@ public class class165 {
          }
 
          if(var1 == 326) {
-            Client.secretPacketBuffer1.putOpcode(71);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_71);
             Client.field1078.method3996(Client.secretPacketBuffer1);
             return true;
          } else {

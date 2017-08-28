@@ -9,16 +9,16 @@ public class class206 extends Node {
       signature = "Lff;"
    )
    static RSSocket field2565;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1567910417
-   )
-   int field2559;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lgh;"
    )
    class203 field2545;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1665405835
+   )
+   int field2552;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lhh;"
@@ -34,21 +34,21 @@ public class class206 extends Node {
       signature = "Ldm;"
    )
    class116 field2561;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1665405835
-   )
-   int field2552;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -181414931
-   )
-   int field2563;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1588931529
    )
    int field2546;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -181414931
+   )
+   int field2563;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1567910417
+   )
+   int field2559;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -57624177

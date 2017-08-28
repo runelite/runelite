@@ -60,7 +60,7 @@ public class class20 {
          }
 
          int var15 = class163.field2310[var16][var17] + 1;
-         if(var16 > 0 && class163.field2307[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && 0 == (var12[var13 - 1][var14 + 1] & 19136824)) {
+         if(var16 > 0 && class163.field2307[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
             class163.field2306[var18] = var4 - 1;
             class163.field2312[var18] = var5;
             var18 = var18 + 1 & 4095;
@@ -68,7 +68,7 @@ public class class20 {
             class163.field2310[var16 - 1][var17] = var15;
          }
 
-         if(var16 < 126 && class163.field2307[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && (var12[var13 + 2][var14 + 1] & 19136992) == 0) {
+         if(var16 < 126 && class163.field2307[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && 0 == (var12[var13 + 2][var14 + 1] & 19136992)) {
             class163.field2306[var18] = var4 + 1;
             class163.field2312[var18] = var5;
             var18 = var18 + 1 & 4095;
@@ -100,7 +100,7 @@ public class class20 {
             class163.field2310[var16 - 1][var17 - 1] = var15;
          }
 
-         if(var16 < 126 && var17 > 0 && class163.field2307[var16 + 1][var17 - 1] == 0 && 0 == (var12[var13 + 1][var14 - 1] & 19136911) && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && (var12[var13 + 2][var14] & 19136995) == 0) {
+         if(var16 < 126 && var17 > 0 && class163.field2307[var16 + 1][var17 - 1] == 0 && 0 == (var12[var13 + 1][var14 - 1] & 19136911) && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && 0 == (var12[var13 + 2][var14] & 19136995)) {
             class163.field2306[var18] = var4 + 1;
             class163.field2312[var18] = var5 - 1;
             var18 = var18 + 1 & 4095;
@@ -108,7 +108,7 @@ public class class20 {
             class163.field2310[var16 + 1][var17 - 1] = var15;
          }
 
-         if(var16 > 0 && var17 < 126 && 0 == class163.field2307[var16 - 1][var17 + 1] && 0 == (var12[var13 - 1][var14 + 1] & 19136830) && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
+         if(var16 > 0 && var17 < 126 && class163.field2307[var16 - 1][var17 + 1] == 0 && 0 == (var12[var13 - 1][var14 + 1] & 19136830) && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
             class163.field2306[var18] = var4 - 1;
             class163.field2312[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;
@@ -116,7 +116,7 @@ public class class20 {
             class163.field2310[var16 - 1][var17 + 1] = var15;
          }
 
-         if(var16 < 126 && var17 < 126 && class163.field2307[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
+         if(var16 < 126 && var17 < 126 && class163.field2307[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && 0 == (var12[var13 + 2][var14 + 1] & 19136995)) {
             class163.field2306[var18] = var4 + 1;
             class163.field2312[var18] = var5 + 1;
             var18 = var18 + 1 & 4095;

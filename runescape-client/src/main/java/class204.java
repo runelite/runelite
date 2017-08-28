@@ -124,7 +124,7 @@ public class class204 {
             }
 
             int var9 = var0 + (var1 << 7) + 1610612736;
-            ScriptState.region.addItemPile(class27.plane, var0, var1, class227.getTileHeight(64 + var0 * 128, var1 * 128 + 64, class27.plane), var5, var9, var11, var10);
+            ScriptState.region.addItemPile(class27.plane, var0, var1, class227.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class27.plane), var5, var9, var11, var10);
          }
       }
    }

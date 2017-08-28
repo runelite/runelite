@@ -1,6 +1,7 @@
 import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("u")
 final class class17 implements Comparator {
@@ -35,7 +36,7 @@ final class class17 implements Comparator {
       garbageValue = "1936733732"
    )
    static void method144() {
-      Client.secretPacketBuffer1.putOpcode(229);
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_229);
       PacketBuffer var0 = Client.secretPacketBuffer1;
       int var1 = Client.isResized?2:1;
       var0.putByte(var1);
@@ -209,7 +210,7 @@ final class class17 implements Comparator {
                            if(var5 == 6) {
                               var40.renderable1 = new DynamicObject(var9, 4, var6 + 4, class27.plane, var1, var2, var3, false, var40.renderable1);
                            } else if(var5 == 7) {
-                              var40.renderable1 = new DynamicObject(var9, 4, (var6 + 2 & 3) + 4, class27.plane, var1, var2, var3, false, var40.renderable1);
+                              var40.renderable1 = new DynamicObject(var9, 4, 4 + (var6 + 2 & 3), class27.plane, var1, var2, var3, false, var40.renderable1);
                            } else if(var5 == 8) {
                               var40.renderable1 = new DynamicObject(var9, 4, var6 + 4, class27.plane, var1, var2, var3, false, var40.renderable1);
                               var40.renderable2 = new DynamicObject(var9, 4, (var6 + 2 & 3) + 4, class27.plane, var1, var2, var3, false, var40.renderable2);
@@ -344,7 +345,7 @@ final class class17 implements Comparator {
                   }
 
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var1 = 64 + var1 * 128;
+                     var1 = var1 * 128 + 64;
                      var2 = var2 * 128 + 64;
                      GraphicsObject var39 = new GraphicsObject(var3, class27.plane, var1, var2, class227.getTileHeight(var1, var2, class27.plane) - var4, var5, Client.gameCycle);
                      Client.graphicsObjectDeque.addFront(var39);
@@ -455,7 +456,7 @@ final class class17 implements Comparator {
                            var15.field921 = var9 + Client.gameCycle;
                            var15.model = var27;
                            var15.field911 = var3 * 128 + var17 * 64;
-                           var15.field913 = var4 * 128 + var18 * 64;
+                           var15.field913 = var18 * 64 + var4 * 128;
                            var15.field927 = var24;
                            byte var28;
                            if(var35 > var36) {
@@ -495,7 +496,7 @@ final class class17 implements Comparator {
                         var1 = var1 * 128 + 64;
                         var2 = var2 * 128 + 64;
                         var3 = 64 + var3 * 128;
-                        var4 = 64 + var4 * 128;
+                        var4 = var4 * 128 + 64;
                         Projectile var13 = new Projectile(var6, class27.plane, var1, var2, class227.getTileHeight(var1, var2, class27.plane) - var7, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var5, var8);
                         var13.method1768(var3, var4, class227.getTileHeight(var3, var4, class27.plane) - var8, var9 + Client.gameCycle);
                         Client.projectiles.addFront(var13);

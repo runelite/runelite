@@ -212,7 +212,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
          int var14;
          if(var10 + var2 <= 104) {
             var13 = (var10 >> 1) + var2;
-            var14 = var2 + (var10 + 1 >> 1);
+            var14 = (var10 + 1 >> 1) + var2;
          } else {
             var13 = var2;
             var14 = var2 + 1;

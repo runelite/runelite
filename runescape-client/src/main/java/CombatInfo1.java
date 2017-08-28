@@ -94,7 +94,7 @@ public class CombatInfo1 extends Node {
          var0.field1275 = 0;
          var0.field1276 = 0;
          var0.x = var0.pathX[0] * 128 + var0.field1233 * 64;
-         var0.y = var0.pathY[0] * 128 + var0.field1233 * 64;
+         var0.y = var0.field1233 * 64 + var0.pathY[0] * 128;
          var0.method1528();
       }
 

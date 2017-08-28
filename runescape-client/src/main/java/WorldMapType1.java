@@ -115,8 +115,8 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(!this.vmethod747(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field437 * 64 - this.field440 * 64 + var1;
-         int var4 = this.field441 * 64 - this.field436 * 64 + var2;
+         int var3 = var1 + (this.field437 * 64 - this.field440 * 64);
+         int var4 = var2 + (this.field441 * 64 - this.field436 * 64);
          return new Coordinates(this.field434, var3, var4);
       }
    }
@@ -651,7 +651,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
                                                                                                                }
                                                                                                             } else {
                                                                                                                Ignore.intStackSize -= 2;
-                                                                                                               if(class82.intStack[Ignore.intStackSize] != class82.intStack[Ignore.intStackSize + 1]) {
+                                                                                                               if(class82.intStack[Ignore.intStackSize + 1] != class82.intStack[Ignore.intStackSize]) {
                                                                                                                   var22 += var37[var22];
                                                                                                                }
                                                                                                             }

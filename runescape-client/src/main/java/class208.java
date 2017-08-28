@@ -137,7 +137,7 @@ public class class208 extends Node {
 
          var16 = var2.readUnsignedByte();
          if(var16 > 0) {
-            var40.field2494 = new byte[2 + var16 * 2];
+            var40.field2494 = new byte[var16 * 2 + 2];
             var40.field2494[1] = 64;
          }
       }
@@ -415,7 +415,7 @@ public class class208 extends Node {
          for(var29 = 2; var29 < var41.length; var29 += 2) {
             var30 = var41[var29];
             var45 = var41[var29 + 1] << 1;
-            var32 = var49 * (var30 - var46) + (var30 - var46) / 2;
+            var32 = (var30 - var46) / 2 + var49 * (var30 - var46);
 
             for(var33 = var46; var33 < var30; ++var33) {
                var35 = var30 - var46;

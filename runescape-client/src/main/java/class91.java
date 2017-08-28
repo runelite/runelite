@@ -203,7 +203,7 @@ public class class91 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            NPC.field1379[var5 + 64] = 16711680 + var5 * 1024;
+            NPC.field1379[var5 + 64] = var5 * 1024 + 16711680;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
@@ -225,7 +225,7 @@ public class class91 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class223.field2846[var5 + 128] = '\uffff' + var5 * 262144;
+            class223.field2846[var5 + 128] = var5 * 262144 + '\uffff';
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
@@ -243,7 +243,7 @@ public class class91 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            WorldMapType2.field532[var5 + 128] = 16711935 + var5 * 1024;
+            WorldMapType2.field532[var5 + 128] = var5 * 1024 + 16711935;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {

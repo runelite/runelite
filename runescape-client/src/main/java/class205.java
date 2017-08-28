@@ -413,7 +413,7 @@ public class class205 extends class118 {
       garbageValue = "667698422"
    )
    int method3849(class206 var1) {
-      int var2 = var1.field2559 + (var1.field2552 * var1.field2546 >> 12);
+      int var2 = (var1.field2552 * var1.field2546 >> 12) + var1.field2559;
       var2 += (this.field2518[var1.field2563] - 8192) * this.field2514[var1.field2563] >> 12;
       class203 var3 = var1.field2545;
       int var4;
@@ -775,7 +775,7 @@ public class class205 extends class118 {
          boolean var7 = false;
          ++var1.field2558;
          var1.field2551 += var6.field2500;
-         double var8 = (double)((var1.field2547 - 60 << 8) + (var1.field2546 * var1.field2552 >> 12)) * 5.086263020833333E-6D;
+         double var8 = (double)((var1.field2546 * var1.field2552 >> 12) + (var1.field2547 - 60 << 8)) * 5.086263020833333E-6D;
          if(var6.field2502 > 0) {
             if(var6.field2498 > 0) {
                var1.field2553 += (int)(128.0D * Math.pow(2.0D, var8 * (double)var6.field2498) + 0.5D);
@@ -984,7 +984,7 @@ public class class205 extends class118 {
    int method3792(class206 var1) {
       class203 var2 = var1.field2545;
       int var3 = this.field2515[var1.field2563] * this.field2538[var1.field2563] + 4096 >> 13;
-      var3 = 16384 + var3 * var3 >> 15;
+      var3 = var3 * var3 + 16384 >> 15;
       var3 = var3 * var1.field2548 + 16384 >> 15;
       var3 = var3 * this.field2528 + 128 >> 8;
       if(var2.field2502 > 0) {
@@ -1029,7 +1029,7 @@ public class class205 extends class118 {
    )
    int method3796(class206 var1) {
       int var2 = this.field2519[var1.field2563];
-      return var2 < 8192?var2 * var1.field2549 + 32 >> 6:16384 - ((128 - var1.field2549) * (16384 - var2) + 32 >> 6);
+      return var2 < 8192?var2 * var1.field2549 + 32 >> 6:16384 - (32 + (128 - var1.field2549) * (16384 - var2) >> 6);
    }
 
    @ObfuscatedName("u")

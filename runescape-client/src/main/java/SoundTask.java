@@ -561,15 +561,15 @@ public class SoundTask implements Runnable {
                         for(var12 = -var36; var12 < var30; ++var12) {
                            var39 = var12 * 128;
                            if(var36 + var12 < var30) {
-                              var11 += class5.field37[var39 + var38 + var36 * 128];
+                              var11 += class5.field37[var36 * 128 + var39 + var38];
                            }
 
                            if(var12 - (var36 + 1) >= 0) {
-                              var11 -= class5.field37[var38 + var39 - 128 * (var36 + 1)];
+                              var11 -= class5.field37[var38 + var39 - (var36 + 1) * 128];
                            }
 
                            if(var12 >= 0) {
-                              Coordinates.field2615[var38 + var39] = var11 / (var36 * 2 + 1);
+                              Coordinates.field2615[var38 + var39] = var11 / (1 + var36 * 2);
                            }
                         }
 

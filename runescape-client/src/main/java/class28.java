@@ -2,6 +2,7 @@ import java.util.LinkedList;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("al")
 public abstract class class28 {
@@ -527,7 +528,7 @@ public abstract class class28 {
                      class15.method95(Player.localPlayer, class82.intStack[Ignore.intStackSize], class82.intStack[Ignore.intStackSize + 1]);
                      var3 = 1;
                   } else if(var0 == 3103) {
-                     Client.secretPacketBuffer1.putOpcode(174);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_174);
 
                      for(WidgetNode var67 = (WidgetNode)Client.componentTable.method3628(); var67 != null; var67 = (WidgetNode)Client.componentTable.method3625()) {
                         if(var67.owner == 0 || var67.owner == 3) {
@@ -592,7 +593,7 @@ public abstract class class28 {
                               var13 = -var13;
                            }
 
-                           int var14 = var10 * 10 + var13;
+                           int var14 = var13 + var10 * 10;
                            if(var10 != var14 / 10) {
                               var66 = false;
                               break;
@@ -610,18 +611,18 @@ public abstract class class28 {
                         var19 = var64;
                      }
 
-                     Client.secretPacketBuffer1.putOpcode(162);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_162);
                      Client.secretPacketBuffer1.putInt(var19);
                      var3 = 1;
                   } else if(var0 == 3105) {
                      var58 = class82.scriptStringStack[--class169.scriptStringStackSize];
-                     Client.secretPacketBuffer1.putOpcode(175);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_175);
                      Client.secretPacketBuffer1.putByte(var58.length() + 1);
                      Client.secretPacketBuffer1.putString(var58);
                      var3 = 1;
                   } else if(var0 == 3106) {
                      var58 = class82.scriptStringStack[--class169.scriptStringStackSize];
-                     Client.secretPacketBuffer1.putOpcode(216);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_216);
                      Client.secretPacketBuffer1.putByte(var58.length() + 1);
                      Client.secretPacketBuffer1.putString(var58);
                      var3 = 1;
@@ -662,7 +663,7 @@ public abstract class class28 {
                      var3 = 1;
                   } else if(var0 == 3115) {
                      var4 = class82.intStack[--Ignore.intStackSize];
-                     Client.secretPacketBuffer1.putOpcode(53);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_53);
                      Client.secretPacketBuffer1.putShort(var4);
                      var3 = 1;
                   } else if(var0 == 3116) {
@@ -675,7 +676,7 @@ public abstract class class28 {
                      } else if(var60.length() > 500) {
                         var3 = 1;
                      } else {
-                        Client.secretPacketBuffer1.putOpcode(165);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_165);
                         Client.secretPacketBuffer1.putShort(1 + ClanMember.getLength(var5) + ClanMember.getLength(var60));
                         Client.secretPacketBuffer1.method3311(var4);
                         Client.secretPacketBuffer1.putString(var60);
@@ -967,7 +968,7 @@ public abstract class class28 {
                            var6 = class82.intStack[Ignore.intStackSize + 2];
                            var64 = class82.intStack[Ignore.intStackSize + 3];
                            var8 = class82.intStack[Ignore.intStackSize + 4];
-                           class82.intStack[++Ignore.intStackSize - 1] = (var8 - var6) * (var19 - var4) / (var64 - var6) + var4;
+                           class82.intStack[++Ignore.intStackSize - 1] = var4 + (var8 - var6) * (var19 - var4) / (var64 - var6);
                            var3 = 1;
                         } else if(var0 == 4007) {
                            Ignore.intStackSize -= 2;
@@ -1192,7 +1193,7 @@ public abstract class class28 {
                            }
 
                            Client.field1149 = class82.intStack[Ignore.intStackSize + 2];
-                           Client.secretPacketBuffer1.putOpcode(222);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_222);
                            Client.secretPacketBuffer1.putByte(Client.field1148);
                            Client.secretPacketBuffer1.putByte(class13.field293.field3738);
                            Client.secretPacketBuffer1.putByte(Client.field1149);
@@ -1202,7 +1203,7 @@ public abstract class class28 {
                            Ignore.intStackSize -= 2;
                            var19 = class82.intStack[Ignore.intStackSize];
                            var6 = class82.intStack[Ignore.intStackSize + 1];
-                           Client.secretPacketBuffer1.putOpcode(57);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_57);
                            Client.secretPacketBuffer1.putByte(ClanMember.getLength(var58) + 2);
                            Client.secretPacketBuffer1.putString(var58);
                            Client.secretPacketBuffer1.putByte(var19 - 1);
@@ -1372,7 +1373,7 @@ public abstract class class28 {
                               }
                            }
 
-                           Client.secretPacketBuffer1.putOpcode(13);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_13);
                            Client.secretPacketBuffer1.putByte(0);
                            var9 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putByte(var19);
@@ -1454,7 +1455,7 @@ public abstract class class28 {
                            class169.scriptStringStackSize -= 2;
                            var58 = class82.scriptStringStack[class169.scriptStringStackSize];
                            var5 = class82.scriptStringStack[class169.scriptStringStackSize + 1];
-                           Client.secretPacketBuffer1.putOpcode(101);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_101);
                            Client.secretPacketBuffer1.putShort(0);
                            var6 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putString(var58);
@@ -1632,7 +1633,7 @@ public abstract class class28 {
                               }
                            }
 
-                           Client.secretPacketBuffer1.putOpcode(64);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_64);
                            Client.secretPacketBuffer1.putByte(var58.length() + 1);
                            Client.secretPacketBuffer1.putString(var58);
                            var3 = 1;
@@ -1887,13 +1888,13 @@ public abstract class class28 {
                                           } else if(var0 == 6633) {
                                              Ignore.intStackSize -= 2;
                                              var4 = class82.intStack[Ignore.intStackSize];
-                                             var50 = 1 == class82.intStack[Ignore.intStackSize + 1];
+                                             var50 = class82.intStack[Ignore.intStackSize + 1] == 1;
                                              class48.method767().method5322(var4, var50);
                                              var3 = 1;
                                           } else if(var0 == 6634) {
                                              Ignore.intStackSize -= 2;
                                              var4 = class82.intStack[Ignore.intStackSize];
-                                             var50 = class82.intStack[Ignore.intStackSize + 1] == 1;
+                                             var50 = 1 == class82.intStack[Ignore.intStackSize + 1];
                                              class48.method767().method5201(var4, var50);
                                              var3 = 1;
                                           } else if(var0 == 6635) {

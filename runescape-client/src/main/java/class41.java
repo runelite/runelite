@@ -314,7 +314,7 @@ public final class class41 {
 
          for(int var17 = var12.field430; var17 < var12.field430 + var12.field431; ++var17) {
             for(int var18 = var12.field429; var18 < var12.field429 + var12.field427; ++var18) {
-               List var19 = this.field576[var17][var18].method421(var5 + (this.field576[var17][var18].field485 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (this.field576[var17][var18].field500 * 64 - var16 + 64) / 64, var14, var9, var10);
+               List var19 = this.field576[var17][var18].method421(var5 + var14 * (this.field576[var17][var18].field485 * 64 - var15) / 64, var8 + var6 - var14 * (this.field576[var17][var18].field500 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -398,7 +398,7 @@ public final class class41 {
 
       for(int var20 = var13.field430; var20 < var13.field430 + var13.field431; ++var20) {
          for(int var21 = var13.field429; var21 < var13.field429 + var13.field427; ++var21) {
-            this.field576[var20][var21].method415(var17 * (this.field576[var20][var21].field485 * 64 - var18) / 64 + var5, var8 - var17 * (this.field576[var20][var21].field500 * 64 - var19 + 64) / 64, var17);
+            this.field576[var20][var21].method415(var5 + var17 * (this.field576[var20][var21].field485 * 64 - var18) / 64, var8 - var17 * (this.field576[var20][var21].field500 * 64 - var19 + 64) / 64, var17);
          }
       }
 
@@ -424,7 +424,7 @@ public final class class41 {
                this.field576[var19][var20].method414();
             }
 
-            this.field576[var19][var20].method391(var16 * (this.field576[var19][var20].field485 * 64 - var17) / 64 + var5, var8 - var16 * (this.field576[var19][var20].field500 * 64 - var18 + 64) / 64, var16, var9);
+            this.field576[var19][var20].method391(var16 * (this.field576[var19][var20].field485 * 64 - var17) / 64 + var5, var8 - (this.field576[var19][var20].field500 * 64 - var18 + 64) * var16 / 64, var16, var9);
          }
       }
 

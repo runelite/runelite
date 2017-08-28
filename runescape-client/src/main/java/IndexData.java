@@ -125,7 +125,7 @@ public class IndexData extends IndexDataBase {
          long var4 = (long)((var3 << 16) + var1);
          int var2;
          if(class29.currentRequest != null && class29.currentRequest.hash == var4) {
-            var2 = 1 + BuildType.field3190.offset * 99 / (BuildType.field3190.payload.length - class29.currentRequest.padding);
+            var2 = BuildType.field3190.offset * 99 / (BuildType.field3190.payload.length - class29.currentRequest.padding) + 1;
          } else {
             var2 = 0;
          }
@@ -310,7 +310,7 @@ public class IndexData extends IndexDataBase {
          long var3 = (long)(var2 + 16711680);
          int var1;
          if(class29.currentRequest != null && var3 == class29.currentRequest.hash) {
-            var1 = 1 + BuildType.field3190.offset * 99 / (BuildType.field3190.payload.length - class29.currentRequest.padding);
+            var1 = BuildType.field3190.offset * 99 / (BuildType.field3190.payload.length - class29.currentRequest.padding) + 1;
          } else {
             var1 = 0;
          }
@@ -390,7 +390,7 @@ public class IndexData extends IndexDataBase {
    static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class211 var5) {
       if(var4 != null) {
          int var6 = Client.mapAngle & 2047;
-         int var7 = var3 * var3 + var2 * var2;
+         int var7 = var2 * var2 + var3 * var3;
          if(var7 <= 6400) {
             int var8 = Graphics3D.SINE[var6];
             int var9 = Graphics3D.COSINE[var6];

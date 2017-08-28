@@ -197,7 +197,7 @@ public class AudioInstrument {
                var14 = this.pitchModifier.step(var1);
                var15 = this.pitchModifierAmplitude.step(var1);
                var12 += this.evaluateWave(var7, var15, this.pitchModifier.form) >> 1;
-               var7 += (var14 * var5 >> 16) + var6;
+               var7 = var7 + var6 + (var14 * var5 >> 16);
             }
 
             if(this.volumeMultiplier != null) {

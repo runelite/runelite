@@ -214,7 +214,7 @@ public class Rasterizer2D extends CacheableNode {
                      var17 = (var15 - var1) % var10;
                      var18 = (var16 - var0) % var7;
                      int var19 = var4;
-                     if(var6[var17 * var7 + var18] != 0) {
+                     if(var6[var18 + var17 * var7] != 0) {
                         var19 = var5;
                      }
 
@@ -308,7 +308,7 @@ public class Rasterizer2D extends CacheableNode {
 
             var16 = var2;
             var17 = -var17;
-            var19 = var17 * var17 + var15;
+            var19 = var15 + var17 * var17;
             var18 = var19 - var2;
 
             for(var19 -= var17; var14 < var13; var18 += var17++ + var17) {
@@ -416,7 +416,7 @@ public class Rasterizer2D extends CacheableNode {
 
          var8 = var2;
          var9 = var6 - var1;
-         var11 = var7 + var9 * var9;
+         var11 = var9 * var9 + var7;
          var10 = var11 - var2;
 
          for(var11 -= var9; var6 < var5; var10 += var9++ + var9) {
@@ -879,7 +879,7 @@ public class Rasterizer2D extends CacheableNode {
             }
 
             if(var5 != var4) {
-               var23 = (var22 * (var5 & 16711935) + var21 * (var4 & 16711935) & -16711936) + (var21 * (var4 & '\uff00') + var22 * (var5 & '\uff00') & 16711680) >>> 8;
+               var23 = (var21 * (var4 & 16711935) + var22 * (var5 & 16711935) & -16711936) + (var22 * (var5 & '\uff00') + var21 * (var4 & '\uff00') & 16711680) >>> 8;
                var12 = var23 & 16711680;
                var13 = var23 & '\uff00';
                var14 = var23 & 255;
@@ -943,7 +943,7 @@ public class Rasterizer2D extends CacheableNode {
                var17 = var25 < 127?var14 * var25 >> 7:255 - ((255 - var14) * (255 - var25) >> 7);
             } else {
                var15 = var23 < 127?(var12 * var23 * var10 >> 7) + var23 * var11 >> 8:var10 * (255 - ((255 - var12) * (255 - var23) >> 7)) + var23 * var11 >> 8;
-               var16 = var24 < 127?(var13 * var24 * var10 >> 7) + var24 * var11 >> 8:(255 - ((255 - var13) * (255 - var24) >> 7)) * var10 + var24 * var11 >> 8;
+               var16 = var24 < 127?(var13 * var24 * var10 >> 7) + var24 * var11 >> 8:var10 * (255 - ((255 - var13) * (255 - var24) >> 7)) + var24 * var11 >> 8;
                var17 = var25 < 127?(var14 * var25 * var10 >> 7) + var25 * var11 >> 8:var10 * (255 - ((255 - var14) * (255 - var25) >> 7)) + var25 * var11 >> 8;
             }
 
@@ -1023,7 +1023,7 @@ public class Rasterizer2D extends CacheableNode {
             int var9 = var5 * (graphicsPixels[var12] >> 16 & 255);
             int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
             int var11 = var5 * (graphicsPixels[var12] & 255);
-            int var14 = (var8 + var11 >> 8) + (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8);
+            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
             graphicsPixels[var12] = var14;
             var12 += graphicsPixelsWidth;
          }

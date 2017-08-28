@@ -290,8 +290,8 @@ public class class105 extends Node {
          float var30;
          float var31;
          for(var25 = 0; var25 < var42; ++var25) {
-            var26 = var43[var17 + 3 + var25 * 4];
-            var27 = var43[var17 + 1 + var25 * 4];
+            var26 = var43[var17 + var25 * 4 + 3];
+            var27 = var43[var17 + var25 * 4 + 1];
             var28 = var43[var25 * 4 + 3];
             var29 = var43[var25 * 4 + 1];
             var43[var17 + var25 * 4 + 3] = var26 + var28;
@@ -379,8 +379,8 @@ public class class105 extends Node {
          }
 
          for(var47 = 0; var47 < var40; ++var47) {
-            var43[var47] = var43[var17 + var47 * 2] * var22[var47 * 2] + var43[var47 * 2 + 1 + var17] * var22[var47 * 2 + 1];
-            var43[var17 - 1 - var47] = var43[var17 + var47 * 2] * var22[var47 * 2 + 1] - var43[var17 + var47 * 2 + 1] * var22[var47 * 2];
+            var43[var47] = var43[var47 * 2 + var17] * var22[var47 * 2] + var43[var17 + var47 * 2 + 1] * var22[var47 * 2 + 1];
+            var43[var17 - 1 - var47] = var43[var47 * 2 + var17] * var22[var47 * 2 + 1] - var43[var17 + var47 * 2 + 1] * var22[var47 * 2];
          }
 
          for(var47 = 0; var47 < var40; ++var47) {

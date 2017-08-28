@@ -933,7 +933,7 @@ public class Graphics3D extends Rasterizer2D {
                var1 = field2032;
             }
 
-            var8 = var19 + ((var8 << 8) - var5 * var19);
+            var8 = (var8 << 8) - var5 * var19 + var19;
             if(var0 < var1) {
                var4 = var5 <<= 14;
                if(var2 < 0) {
@@ -1145,7 +1145,7 @@ public class Graphics3D extends Rasterizer2D {
                      var2 = field2032;
                   }
 
-                  var6 = var30 + ((var6 << 9) - var3 * var30);
+                  var6 = (var6 << 9) - var3 * var30 + var30;
                   if(var1 < var2) {
                      var5 = var3 <<= 14;
                      if(var0 < 0) {
@@ -1720,7 +1720,7 @@ public class Graphics3D extends Rasterizer2D {
          rasterClipY = new int[class165.method3159(field2032)];
       }
 
-      int var4 = Rasterizer2D.graphicsPixelsWidth * var1 + var0;
+      int var4 = var0 + Rasterizer2D.graphicsPixelsWidth * var1;
 
       for(int var5 = 0; var5 < field2032; ++var5) {
          rasterClipY[var5] = var4;
@@ -1907,7 +1907,7 @@ public class Graphics3D extends Rasterizer2D {
                      var2 = field2032;
                   }
 
-                  var6 = var30 + ((var6 << 9) - var3 * var30);
+                  var6 = (var6 << 9) - var3 * var30 + var30;
                   if(var1 < var2) {
                      var5 = var3 <<= 14;
                      if(var0 < 0) {
@@ -2096,7 +2096,7 @@ public class Graphics3D extends Rasterizer2D {
                      var0 = field2032;
                   }
 
-                  var7 = var30 + ((var7 << 9) - var30 * var4);
+                  var7 = (var7 << 9) - var30 * var4 + var30;
                   if(var2 < var0) {
                      var3 = var4 <<= 14;
                      if(var1 < 0) {
@@ -2517,15 +2517,15 @@ public class Graphics3D extends Rasterizer2D {
                   do {
                      var2 = colorPalette[var6 >> 8];
                      var6 += var7;
-                     var2 = (var9 * (var2 & 16711935) >> 8 & 16711935) + (var9 * (var2 & '\uff00') >> 8 & '\uff00');
+                     var2 = (var9 * (var2 & '\uff00') >> 8 & '\uff00') + (var9 * (var2 & 16711935) >> 8 & 16711935);
                      var10 = var0[var1];
-                     var0[var1++] = ((var10 & 16711935) * var8 >> 8 & 16711935) + var2 + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
+                     var0[var1++] = var2 + ((var10 & 16711935) * var8 >> 8 & 16711935) + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                      var10 = var0[var1];
                      var0[var1++] = ((var10 & 16711935) * var8 >> 8 & 16711935) + var2 + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                      var10 = var0[var1];
                      var0[var1++] = var2 + ((var10 & 16711935) * var8 >> 8 & 16711935) + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                      var10 = var0[var1];
-                     var0[var1++] = var2 + ((var10 & 16711935) * var8 >> 8 & 16711935) + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
+                     var0[var1++] = ((var10 & 16711935) * var8 >> 8 & 16711935) + var2 + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                      --var3;
                   } while(var3 > 0);
                }
@@ -2537,7 +2537,7 @@ public class Graphics3D extends Rasterizer2D {
 
                   do {
                      var10 = var0[var1];
-                     var0[var1++] = var2 + ((var10 & 16711935) * var8 >> 8 & 16711935) + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
+                     var0[var1++] = ((var10 & 16711935) * var8 >> 8 & 16711935) + var2 + (var8 * (var10 & '\uff00') >> 8 & '\uff00');
                      --var3;
                   } while(var3 > 0);
                }
@@ -2768,7 +2768,7 @@ public class Graphics3D extends Rasterizer2D {
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
                      var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
@@ -2783,7 +2783,7 @@ public class Graphics3D extends Rasterizer2D {
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
@@ -2840,7 +2840,7 @@ public class Graphics3D extends Rasterizer2D {
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 >>> 26) + (var2 & 4032)]) != 0) {
-                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;
@@ -2864,7 +2864,7 @@ public class Graphics3D extends Rasterizer2D {
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 >>> 26) + (var2 & 4032)]) != 0) {
-                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;
@@ -2963,25 +2963,25 @@ public class Graphics3D extends Rasterizer2D {
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
+                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
+                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var10000 = var16 + var2;
                      var18 = var20;
                      var19 = var21;
@@ -3014,7 +3014,7 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      var2 += var16;
                      --var17;
                   } while(var17 > 0);
@@ -3023,12 +3023,6 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
-                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
-                     }
-
-                     ++var4;
-                     var2 += var16;
-                     if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
                         var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      }
 
@@ -3053,13 +3047,19 @@ public class Graphics3D extends Rasterizer2D {
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
-                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      }
 
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
                         var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     }
+
+                     ++var4;
+                     var2 += var16;
+                     if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;
@@ -3183,25 +3183,25 @@ public class Graphics3D extends Rasterizer2D {
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
                      var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 >>> 26) + (var2 & 4032)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      var7 += var8;
                      var15 = var7 >> 8;
@@ -3213,7 +3213,7 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      var2 += var16;
                      --var17;
                   } while(var17 > 0);
@@ -3222,7 +3222,7 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      if((var3 = var1[(var2 >>> 26) + (var2 & 4032)]) != 0) {
-                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      }
 
                      ++var4;
@@ -3279,7 +3279,7 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      if((var3 = var1[(var2 >>> 26) + (var2 & 4032)]) != 0) {
-                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
+                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
                      }
 
                      ++var4;
@@ -3323,6 +3323,15 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
+                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                     var2 += var16;
+                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
@@ -3333,15 +3342,6 @@ public class Graphics3D extends Rasterizer2D {
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
-                     var2 += var16;
-                     var3 = var1[(var2 & 16256) + (var2 >>> 25)];
-                     var0[var4++] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      var2 += var16;
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
                      var0[var4++] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
@@ -3365,7 +3365,7 @@ public class Graphics3D extends Rasterizer2D {
                if(var17 > 0) {
                   do {
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
-                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;
@@ -3377,13 +3377,13 @@ public class Graphics3D extends Rasterizer2D {
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
-                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;
                      var2 += var16;
                      if((var3 = var1[(var2 & 16256) + (var2 >>> 25)]) != 0) {
-                        var0[var4] = ((var3 & 16711935) * var15 & -16711936) + (var15 * (var3 & '\uff00') & 16711680) >> 8;
+                        var0[var4] = (var15 * (var3 & '\uff00') & 16711680) + ((var3 & 16711935) * var15 & -16711936) >> 8;
                      }
 
                      ++var4;

@@ -327,7 +327,7 @@ public final class GroundObject {
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method4983(var12 + var1 * 4 + 48, (104 - var2 - var23.sizeY) * 4 + var18 + 48);
+               var17.method4983(var12 + 48 + var1 * 4, (104 - var2 - var23.sizeY) * 4 + var18 + 48);
             }
          } else if(var8 == 9) {
             var11 = 15658734;
@@ -336,7 +336,7 @@ public final class GroundObject {
             }
 
             int[] var22 = GrandExchangeOffer.field315.image;
-            var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
+            var18 = var1 * 4 + 24624 + (103 - var2) * 2048;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
                var22[var18 + 1 + 512] = var11;
@@ -360,7 +360,7 @@ public final class GroundObject {
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method4983(48 + var1 * 4 + var9, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
+               var20.method4983(var1 * 4 + var9 + 48, (104 - var2 - var19.sizeY) * 4 + 48 + var21);
             }
          }
       }

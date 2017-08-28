@@ -155,7 +155,7 @@ public final class RSSocket implements Runnable {
                for(int var5 = 0; var5 < var3; ++var5) {
                   this.outbuffer[this.outbufLen] = var1[var5 + var2];
                   this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if(this.outbufLen == (this.streamOffset + 4900) % 5000) {
+                  if((this.streamOffset + 4900) % 5000 == this.outbufLen) {
                      throw new IOException();
                   }
                }

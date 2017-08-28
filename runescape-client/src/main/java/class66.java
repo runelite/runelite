@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("bn")
 public class class66 {
@@ -57,7 +58,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(240);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_240);
          Client.secretPacketBuffer1.method3273(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.putShort(class67.baseY + var1);
          Client.secretPacketBuffer1.method3288(class48.field626);
@@ -72,7 +73,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(232);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_232);
          Client.secretPacketBuffer1.method3280(class67.baseY + var1);
          Client.secretPacketBuffer1.method3280(Client.field1087);
          Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
@@ -86,7 +87,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(27);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_27);
          Client.secretPacketBuffer1.putShortLE(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.method3280(class67.baseY + var1);
          Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
@@ -98,7 +99,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(129);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_129);
          Client.secretPacketBuffer1.method3273(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
          Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
@@ -110,7 +111,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(243);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_243);
          Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
          Client.secretPacketBuffer1.putShortLE(class67.baseY + var1);
          Client.secretPacketBuffer1.method3280(var3 >> 14 & 32767);
@@ -122,7 +123,7 @@ public class class66 {
          Client.field1040 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         Client.secretPacketBuffer1.putOpcode(227);
+         Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_227);
          Client.secretPacketBuffer1.putShortLE(var3 >> 14 & 32767);
          Client.secretPacketBuffer1.method3280(var0 + class149.baseX);
          Client.secretPacketBuffer1.putShortLE(class67.baseY + var1);
@@ -138,7 +139,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(93);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_93);
                Client.secretPacketBuffer1.putShortLE(class56.selectedItemIndex);
                Client.secretPacketBuffer1.putShort(class15.field302);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
@@ -154,7 +155,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(197);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_197);
                Client.secretPacketBuffer1.method3280(var3);
                Client.secretPacketBuffer1.method3273(Client.field1087);
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
@@ -169,7 +170,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(151);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_151);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.putShortLE(var3);
             }
@@ -182,7 +183,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(155);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_155);
                Client.secretPacketBuffer1.method3311(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.method3280(var3);
             }
@@ -195,7 +196,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(76);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_76);
                Client.secretPacketBuffer1.method3273(var3);
                Client.secretPacketBuffer1.method3311(KeyFocusListener.field651[82]?1:0);
             }
@@ -208,7 +209,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(70);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_70);
                Client.secretPacketBuffer1.method3280(var3);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
             }
@@ -221,7 +222,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(41);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_41);
                Client.secretPacketBuffer1.putShortLE(var3);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
             }
@@ -236,7 +237,7 @@ public class class66 {
                   Client.field1040 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  Client.secretPacketBuffer1.putOpcode(72);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_72);
                   Client.secretPacketBuffer1.method3280(class56.selectedItemIndex);
                   Client.secretPacketBuffer1.putInt(class48.field626);
                   Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
@@ -252,7 +253,7 @@ public class class66 {
                   Client.field1040 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  Client.secretPacketBuffer1.putOpcode(74);
+                  Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_74);
                   Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                   Client.secretPacketBuffer1.method3280(Client.field1087);
                   Client.secretPacketBuffer1.method3288(BaseVarType.field26);
@@ -265,7 +266,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(235);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_235);
                Client.secretPacketBuffer1.putShortLE(class15.field302);
                Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.putShort(var3);
@@ -280,7 +281,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(47);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_47);
                Client.secretPacketBuffer1.putShort(class67.baseY + var1);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.method3288(BaseVarType.field26);
@@ -294,7 +295,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(67);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_67);
                Client.secretPacketBuffer1.putShortLE(var3);
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.method3273(var0 + class149.baseX);
@@ -306,7 +307,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(43);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_43);
                Client.secretPacketBuffer1.method3410(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.putShortLE(var3);
                Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
@@ -318,7 +319,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(125);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_125);
                Client.secretPacketBuffer1.method3273(var0 + class149.baseX);
                Client.secretPacketBuffer1.method3280(class67.baseY + var1);
                Client.secretPacketBuffer1.putShort(var3);
@@ -330,7 +331,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(189);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_189);
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.putShortLE(var3);
                Client.secretPacketBuffer1.method3273(class67.baseY + var1);
@@ -342,7 +343,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(192);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_192);
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                Client.secretPacketBuffer1.putShort(class67.baseY + var1);
                Client.secretPacketBuffer1.putShortLE(var3);
@@ -363,7 +364,7 @@ public class class66 {
                   }
 
                   if(var9) {
-                     Client.secretPacketBuffer1.putOpcode(177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
                      Client.secretPacketBuffer1.putInt(var1);
                   }
                } else {
@@ -406,7 +407,7 @@ public class class66 {
                   }
 
                   if(var2 == 26) {
-                     Client.secretPacketBuffer1.putOpcode(174);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_174);
 
                      for(WidgetNode var19 = (WidgetNode)Client.componentTable.method3628(); var19 != null; var19 = (WidgetNode)Client.componentTable.method3625()) {
                         if(var19.owner == 0 || var19.owner == 3) {
@@ -419,7 +420,7 @@ public class class66 {
                         Client.field1086 = null;
                      }
                   } else if(var2 == 28) {
-                     Client.secretPacketBuffer1.putOpcode(177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
                      Client.secretPacketBuffer1.putInt(var1);
                      var18 = GZipDecompressor.method3177(var1);
                      if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
@@ -428,7 +429,7 @@ public class class66 {
                         WorldMapType1.method301(var16);
                      }
                   } else if(var2 == 29) {
-                     Client.secretPacketBuffer1.putOpcode(177);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_177);
                      Client.secretPacketBuffer1.putInt(var1);
                      var18 = GZipDecompressor.method3177(var1);
                      if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
@@ -440,14 +441,14 @@ public class class66 {
                      }
                   } else if(var2 == 30) {
                      if(Client.field1086 == null) {
-                        Client.secretPacketBuffer1.putOpcode(46);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_46);
                         Client.secretPacketBuffer1.putShortLE(var0);
                         Client.secretPacketBuffer1.putLEShortA(var1);
                         Client.field1086 = Varcs.method1849(var1, var0);
                         class7.method34(Client.field1086);
                      }
                   } else if(var2 == 31) {
-                     Client.secretPacketBuffer1.putOpcode(233);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_233);
                      Client.secretPacketBuffer1.putShort(class56.selectedItemIndex);
                      Client.secretPacketBuffer1.method3288(var1);
                      Client.secretPacketBuffer1.method3280(var3);
@@ -458,7 +459,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 32) {
-                     Client.secretPacketBuffer1.putOpcode(212);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_212);
                      Client.secretPacketBuffer1.method3273(var3);
                      Client.secretPacketBuffer1.method3280(Client.field1087);
                      Client.secretPacketBuffer1.method3288(BaseVarType.field26);
@@ -468,7 +469,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 33) {
-                     Client.secretPacketBuffer1.putOpcode(228);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_228);
                      Client.secretPacketBuffer1.putShort(var0);
                      Client.secretPacketBuffer1.method3273(var3);
                      Client.secretPacketBuffer1.putInt(var1);
@@ -476,7 +477,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 34) {
-                     Client.secretPacketBuffer1.putOpcode(117);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_117);
                      Client.secretPacketBuffer1.method3280(var3);
                      Client.secretPacketBuffer1.putShortLE(var0);
                      Client.secretPacketBuffer1.putInt(var1);
@@ -484,7 +485,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 35) {
-                     Client.secretPacketBuffer1.putOpcode(19);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_19);
                      Client.secretPacketBuffer1.putShortLE(var0);
                      Client.secretPacketBuffer1.putInt(var1);
                      Client.secretPacketBuffer1.putShortLE(var3);
@@ -492,7 +493,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 36) {
-                     Client.secretPacketBuffer1.putOpcode(242);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_242);
                      Client.secretPacketBuffer1.method3273(var3);
                      Client.secretPacketBuffer1.method3280(var0);
                      Client.secretPacketBuffer1.putLEShortA(var1);
@@ -500,7 +501,7 @@ public class class66 {
                      class262.field3618 = GZipDecompressor.method3177(var1);
                      Client.field1043 = var0;
                   } else if(var2 == 37) {
-                     Client.secretPacketBuffer1.putOpcode(244);
+                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_244);
                      Client.secretPacketBuffer1.putLEShortA(var1);
                      Client.secretPacketBuffer1.putShort(var0);
                      Client.secretPacketBuffer1.putShortLE(var3);
@@ -525,7 +526,7 @@ public class class66 {
                      }
 
                      if(var2 == 39) {
-                        Client.secretPacketBuffer1.putOpcode(161);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_161);
                         Client.secretPacketBuffer1.putLEShortA(var1);
                         Client.secretPacketBuffer1.method3280(var3);
                         Client.secretPacketBuffer1.method3280(var0);
@@ -533,7 +534,7 @@ public class class66 {
                         class262.field3618 = GZipDecompressor.method3177(var1);
                         Client.field1043 = var0;
                      } else if(var2 == 40) {
-                        Client.secretPacketBuffer1.putOpcode(25);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_25);
                         Client.secretPacketBuffer1.putInt(var1);
                         Client.secretPacketBuffer1.method3273(var0);
                         Client.secretPacketBuffer1.putShort(var3);
@@ -541,7 +542,7 @@ public class class66 {
                         class262.field3618 = GZipDecompressor.method3177(var1);
                         Client.field1043 = var0;
                      } else if(var2 == 41) {
-                        Client.secretPacketBuffer1.putOpcode(169);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_169);
                         Client.secretPacketBuffer1.putShort(var3);
                         Client.secretPacketBuffer1.putShort(var0);
                         Client.secretPacketBuffer1.method3369(var1);
@@ -549,7 +550,7 @@ public class class66 {
                         class262.field3618 = GZipDecompressor.method3177(var1);
                         Client.field1043 = var0;
                      } else if(var2 == 42) {
-                        Client.secretPacketBuffer1.putOpcode(119);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_119);
                         Client.secretPacketBuffer1.putInt(var1);
                         Client.secretPacketBuffer1.method3280(var3);
                         Client.secretPacketBuffer1.method3280(var0);
@@ -557,7 +558,7 @@ public class class66 {
                         class262.field3618 = GZipDecompressor.method3177(var1);
                         Client.field1043 = var0;
                      } else if(var2 == 43) {
-                        Client.secretPacketBuffer1.putOpcode(247);
+                        Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_247);
                         Client.secretPacketBuffer1.putShort(var3);
                         Client.secretPacketBuffer1.putInt(var1);
                         Client.secretPacketBuffer1.method3273(var0);
@@ -573,7 +574,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(73);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_73);
                            Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.method3273(var3);
                         }
@@ -586,7 +587,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(116);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_116);
                            Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.method3273(var3);
                         }
@@ -599,7 +600,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(86);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_86);
                            Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.putShortLE(var3);
                         }
@@ -612,7 +613,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(170);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_170);
                            Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.putShortLE(var3);
                         }
@@ -625,7 +626,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(56);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_56);
                            Client.secretPacketBuffer1.method3280(var3);
                            Client.secretPacketBuffer1.method3311(KeyFocusListener.field651[82]?1:0);
                         }
@@ -638,7 +639,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(115);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_115);
                            Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.putShortLE(var3);
                         }
@@ -651,7 +652,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(65);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_65);
                            Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.method3273(var3);
                         }
@@ -664,7 +665,7 @@ public class class66 {
                            Client.field1040 = 0;
                            Client.destinationX = var0;
                            Client.destinationY = var1;
-                           Client.secretPacketBuffer1.putOpcode(122);
+                           Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_122);
                            Client.secretPacketBuffer1.putByte(KeyFocusListener.field651[82]?1:0);
                            Client.secretPacketBuffer1.method3273(var3);
                         }
@@ -674,7 +675,7 @@ public class class66 {
                               if(var2 == 58) {
                                  var18 = Varcs.method1849(var1, var0);
                                  if(var18 != null) {
-                                    Client.secretPacketBuffer1.putOpcode(255);
+                                    Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_255);
                                     Client.secretPacketBuffer1.putShortLE(Client.field1087);
                                     Client.secretPacketBuffer1.putInt(var1);
                                     Client.secretPacketBuffer1.putShort(var18.itemId);
@@ -692,7 +693,7 @@ public class class66 {
                                  Client.field1040 = 0;
                                  Client.destinationX = var0;
                                  Client.destinationY = var1;
-                                 Client.secretPacketBuffer1.putOpcode(188);
+                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_188);
                                  Client.secretPacketBuffer1.method3273(var3 >> 14 & 32767);
                                  Client.secretPacketBuffer1.method3280(class67.baseY + var1);
                                  Client.secretPacketBuffer1.putShortLE(var0 + class149.baseX);
@@ -705,7 +706,7 @@ public class class66 {
                                  Client.field995 = var7;
                                  Client.cursorState = 2;
                                  Client.field1040 = 0;
-                                 Client.secretPacketBuffer1.putOpcode(44);
+                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_44);
                                  Client.secretPacketBuffer1.method3280(var3 >> 14 & 32767);
                                  break label709;
                               }
@@ -723,7 +724,7 @@ public class class66 {
                                     }
 
                                     if(var15 != null) {
-                                       Client.secretPacketBuffer1.putOpcode(66);
+                                       Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_66);
                                        Client.secretPacketBuffer1.putShortLE(var15.id);
                                     }
                                  }
@@ -735,7 +736,7 @@ public class class66 {
                                  Client.field995 = var7;
                                  Client.cursorState = 2;
                                  Client.field1040 = 0;
-                                 Client.secretPacketBuffer1.putOpcode(220);
+                                 Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_220);
                                  Client.secretPacketBuffer1.method3273(var3);
                                  break label709;
                               }
@@ -745,7 +746,7 @@ public class class66 {
                                  if(var18 != null && var18.itemQuantities[var0] >= 100000) {
                                     Client.sendGameMessage(27, "", var18.itemQuantities[var0] + " x " + class169.getItemDefinition(var3).name);
                                  } else {
-                                    Client.secretPacketBuffer1.putOpcode(220);
+                                    Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_220);
                                     Client.secretPacketBuffer1.method3273(var3);
                                  }
 

@@ -103,7 +103,7 @@ public class FaceNormal {
       class88.field1405.method5017(class91.field1435 + 382, 0);
       Rasterizer2D.noClip();
       var1 = 0;
-      var2 = class91.field1435 + 637 + class20.field342.width * 9 + 24;
+      var2 = class20.field342.width * 9 + class91.field1435 + 637 + 24;
 
       for(var3 = 1; var3 < var0 - 1; ++var3) {
          var4 = class91.field1434[var3] * (var0 - var3) / var0;

@@ -172,7 +172,7 @@ public class Varcs {
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label186: {
+      label201: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -185,44 +185,44 @@ public class Varcs {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset < 1) {
+            if(var13.payload.length - var13.offset >= 1) {
+               int var5 = var13.readUnsignedByte();
+               if(var5 >= 0 && var5 <= 1) {
+                  int var6 = var13.readUnsignedShort();
+
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var6; ++var7) {
+                     var8 = var13.readUnsignedShort();
+                     var9 = var13.readInt();
+                     if(this.varcSerials[var8]) {
+                        this.varcs[var8] = var9;
+                     }
+                  }
+
+                  var7 = var13.readUnsignedShort();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label201;
+                     }
+
+                     var9 = var13.readUnsignedShort();
+                     String var10 = var13.readString();
+                     if(this.varcstringSerials[var9]) {
+                        this.varcstrings[var9] = var10;
+                     }
+
+                     ++var8;
+                  }
+               }
+
                return;
             }
-
-            int var5 = var13.readUnsignedByte();
-            if(var5 >= 0 && var5 <= 1) {
-               int var6 = var13.readUnsignedShort();
-
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var6; ++var7) {
-                  var8 = var13.readUnsignedShort();
-                  var9 = var13.readInt();
-                  if(this.varcSerials[var8]) {
-                     this.varcs[var8] = var9;
-                  }
-               }
-
-               var7 = var13.readUnsignedShort();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label186;
-                  }
-
-                  var9 = var13.readUnsignedShort();
-                  String var10 = var13.readString();
-                  if(this.varcstringSerials[var9]) {
-                     this.varcstrings[var9] = var10;
-                  }
-
-                  ++var8;
-               }
-            }
          } catch (Exception var24) {
-            break label186;
+            break label201;
          } finally {
             try {
                var1.close();

@@ -127,7 +127,7 @@ public class class34 {
                      }
 
                      if(var8.field449 == 2) {
-                        Rasterizer2D.method4884(this.field490 * var1 + this.field490 - 1, this.field490 * (63 - var2) + this.field490 - 1, 1, var10);
+                        Rasterizer2D.method4884(this.field490 + this.field490 * var1 - 1, this.field490 * (63 - var2) + this.field490 - 1, 1, var10);
                      }
 
                      if(var8.field449 == 3) {
@@ -281,7 +281,7 @@ public class class34 {
                   if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
                      var4[var12.mapSceneId].method4997(this.field490 * var1, this.field490 * (63 - var2), this.field490 * 2, this.field490 * 2);
                   } else {
-                     var4[var12.mapSceneId].method4997(this.field490 * var1, this.field490 * (63 - var2), this.field490 * 2 + 1, 1 + this.field490 * 2);
+                     var4[var12.mapSceneId].method4997(this.field490 * var1, this.field490 * (63 - var2), this.field490 * 2 + 1, this.field490 * 2 + 1);
                   }
                }
             }
@@ -446,7 +446,7 @@ public class class34 {
                         Coordinates var15 = new Coordinates(var9, this.field485 * 64 + var6, this.field500 * 64 + var7);
                         Coordinates var16 = null;
                         if(this.field487 != null) {
-                           var16 = new Coordinates(this.field487.field422 + var9, var6 + this.field487.field415 * 64, this.field487.field416 * 64 + var7);
+                           var16 = new Coordinates(this.field487.field422 + var9, this.field487.field415 * 64 + var6, var7 + this.field487.field416 * 64);
                         } else {
                            class45 var17 = (class45)var5;
                            var16 = new Coordinates(var9 + var17.field422, var17.field415 * 64 + var6 + var17.method674() * 8, var17.field416 * 64 + var7 + var17.method686() * 8);
@@ -540,7 +540,7 @@ public class class34 {
                      return;
                   }
 
-                  Coordinates var11 = new Coordinates(var4, var1 + this.field485 * 64, this.field500 * 64 + var2);
+                  Coordinates var11 = new Coordinates(var4, var1 + this.field485 * 64, var2 + this.field500 * 64);
                   Coordinates var12 = null;
                   if(this.field487 != null) {
                      var12 = new Coordinates(this.field487.field422 + var4, this.field487.field415 * 64 + var1, var2 + this.field487.field416 * 64);
@@ -907,7 +907,7 @@ public class class34 {
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method4884(this.field490 * var1, this.field490 * (63 - var2) + this.field490 - 1, this.field490, var4);
+         Rasterizer2D.method4884(this.field490 * var1, this.field490 + this.field490 * (63 - var2) - 1, this.field490, var4);
       }
 
    }
@@ -1011,7 +1011,7 @@ public class class34 {
    )
    void method415(int var1, int var2, int var3) {
       if(this.field492 != null) {
-         if(this.field490 * 64 == var3) {
+         if(var3 == this.field490 * 64) {
             this.field492.method5017(var1, var2);
          } else {
             this.field492.method5029(var1, var2, var3, var3);

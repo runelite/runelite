@@ -273,7 +273,7 @@ public final class class81 extends Node {
                                     break;
                                  }
 
-                                 if(0 != (var27[var19 + var22][var20 - 1] & 19136911)) {
+                                 if((var27[var19 + var22][var20 - 1] & 19136911) != 0) {
                                     break;
                                  }
 
@@ -344,7 +344,7 @@ public final class class81 extends Node {
                               }
                            }
 
-                           if(var30 > 0 && var31 < 128 - var2 && class163.field2307[var30 - 1][var31 + 1] == 0 && (var27[var19 - 1][var20 + var2] & 19136824) == 0) {
+                           if(var30 > 0 && var31 < 128 - var2 && class163.field2307[var30 - 1][var31 + 1] == 0 && 0 == (var27[var19 - 1][var20 + var2] & 19136824)) {
                               for(var22 = 1; var22 < var2; ++var22) {
                                  if((var27[var19 - 1][var20 + var22] & 19136830) != 0 || (var27[var22 + (var19 - 1)][var20 + var2] & 19137016) != 0) {
                                     continue label440;

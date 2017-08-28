@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("au")
 public class class51 implements class102 {
@@ -42,7 +43,7 @@ public class class51 implements class102 {
       if(Client.audioEffectCount >= 50 || var0) {
          Client.audioEffectCount = 0;
          if(!Client.socketError && ScriptEvent.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(80);
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_80);
 
             try {
                ScriptEvent.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);

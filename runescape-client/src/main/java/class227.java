@@ -53,7 +53,7 @@ public class class227 {
                var10 = -var10;
             }
 
-            int var9 = var5 * var1 + var10;
+            int var9 = var10 + var5 * var1;
             if(var9 / var1 != var5) {
                throw new NumberFormatException();
             }
@@ -136,9 +136,9 @@ public class class227 {
 
          int var6 = var0 & 127;
          int var7 = var1 & 127;
-         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + var6 * class61.tileHeights[var5][var3 + 1][var4] >> 7;
+         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + class61.tileHeights[var5][var3 + 1][var4] * var6 >> 7;
          int var9 = class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) + class61.tileHeights[var5][var3 + 1][var4 + 1] * var6 >> 7;
-         return var9 * var7 + var8 * (128 - var7) >> 7;
+         return var8 * (128 - var7) + var9 * var7 >> 7;
       } else {
          return 0;
       }

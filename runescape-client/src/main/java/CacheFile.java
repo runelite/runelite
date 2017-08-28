@@ -5,6 +5,7 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
 @ObfuscatedName("da")
 @Implements("CacheFile")
@@ -421,19 +422,19 @@ public class CacheFile {
          Player var6 = Client.cachedPlayers[var3[var5]];
          if(var6 != null && var6 != Player.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
             if(var0 == 1) {
-               Client.secretPacketBuffer1.putOpcode(73);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_73);
                Client.secretPacketBuffer1.putByte(0);
                Client.secretPacketBuffer1.method3273(var3[var5]);
             } else if(var0 == 4) {
-               Client.secretPacketBuffer1.putOpcode(170);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_170);
                Client.secretPacketBuffer1.putLEInt(0);
                Client.secretPacketBuffer1.putShortLE(var3[var5]);
             } else if(var0 == 6) {
-               Client.secretPacketBuffer1.putOpcode(115);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_115);
                Client.secretPacketBuffer1.putLEInt(0);
                Client.secretPacketBuffer1.putShortLE(var3[var5]);
             } else if(var0 == 7) {
-               Client.secretPacketBuffer1.putOpcode(65);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_65);
                Client.secretPacketBuffer1.putLEInt(0);
                Client.secretPacketBuffer1.method3273(var3[var5]);
             }
@@ -456,10 +457,10 @@ public class CacheFile {
    )
    static final void method2362() {
       int var0 = class271.field3678 * 128 + 64;
-      int var1 = class87.field1393 * 128 + 64;
+      int var1 = 64 + class87.field1393 * 128;
       int var2 = class227.getTileHeight(var0, var1, class27.plane) - GroundObject.field1881;
       if(class82.cameraX < var0) {
-         class82.cameraX += class86.field1392 + (var0 - class82.cameraX) * class9.field250 / 1000;
+         class82.cameraX = (var0 - class82.cameraX) * class9.field250 / 1000 + class82.cameraX + class86.field1392;
          if(class82.cameraX > var0) {
             class82.cameraX = var0;
          }
@@ -473,7 +474,7 @@ public class CacheFile {
       }
 
       if(Ignore.cameraZ < var2) {
-         Ignore.cameraZ += class86.field1392 + (var2 - Ignore.cameraZ) * class9.field250 / 1000;
+         Ignore.cameraZ = (var2 - Ignore.cameraZ) * class9.field250 / 1000 + Ignore.cameraZ + class86.field1392;
          if(Ignore.cameraZ > var2) {
             Ignore.cameraZ = var2;
          }
@@ -487,7 +488,7 @@ public class CacheFile {
       }
 
       if(class158.cameraY < var1) {
-         class158.cameraY += class86.field1392 + (var1 - class158.cameraY) * class9.field250 / 1000;
+         class158.cameraY = (var1 - class158.cameraY) * class9.field250 / 1000 + class158.cameraY + class86.field1392;
          if(class158.cameraY > var1) {
             class158.cameraY = var1;
          }
@@ -518,7 +519,7 @@ public class CacheFile {
       }
 
       if(Friend.cameraPitch < var7) {
-         Friend.cameraPitch += class64.field812 + (var7 - Friend.cameraPitch) * MilliTimer.field2218 / 1000;
+         Friend.cameraPitch = (var7 - Friend.cameraPitch) * MilliTimer.field2218 / 1000 + Friend.cameraPitch + class64.field812;
          if(Friend.cameraPitch > var7) {
             Friend.cameraPitch = var7;
          }

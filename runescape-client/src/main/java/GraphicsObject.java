@@ -459,8 +459,8 @@ public final class GraphicsObject extends Renderable {
                                        }
 
                                        if(Client.field958 == 2) {
-                                          var25 = 2 + (Client.hintArrowX * 4 - class149.baseX * 4) - Player.localPlayer.x / 32;
-                                          var26 = Client.hintArrowY * 4 - class67.baseY * 4 + 2 - Player.localPlayer.y / 32;
+                                          var25 = Client.hintArrowX * 4 - class149.baseX * 4 + 2 - Player.localPlayer.x / 32;
+                                          var26 = 2 + (Client.hintArrowY * 4 - class67.baseY * 4) - Player.localPlayer.y / 32;
                                           class12.method68(var12, var13, var25, var26, class66.field832[1], var57);
                                        }
 
@@ -585,7 +585,7 @@ public final class GraphicsObject extends Renderable {
 
                            for(var20 = 0; var20 < var10.field2670; ++var20) {
                               for(var21 = 0; var21 < var10.originalWidth; ++var21) {
-                                 var22 = var12 + var21 * (var10.paddingX + 32);
+                                 var22 = var21 * (var10.paddingX + 32) + var12;
                                  var23 = var20 * (var10.paddingY + 32) + var13;
                                  if(var46 < 20) {
                                     var22 += var10.xSprites[var46];
@@ -904,7 +904,7 @@ public final class GraphicsObject extends Renderable {
                                                 var48 = Friend.getColTags(16748608) + var54.name + "</col>" + " " + 'x' + Friend.method1117(var10.itemQuantities[var20]);
                                              }
 
-                                             var25 = var22 * (var10.paddingX + 115) + var12;
+                                             var25 = var12 + (var10.paddingX + 115) * var22;
                                              var26 = var21 * (var10.paddingY + 12) + var13;
                                              if(var10.field2721 == 0) {
                                                 var55.method4773(var48, var25, var26, var10.textColor, var10.textShadowed?0:-1);
@@ -1017,7 +1017,7 @@ public final class GraphicsObject extends Renderable {
                                           int var34 = var26 * var33 >> 17;
                                           int var35 = var33 * var26 + 1 >> 17;
                                           int var36 = var26 * var32 >> 17;
-                                          int var37 = var26 * var32 + 1 >> 17;
+                                          int var37 = 1 + var26 * var32 >> 17;
                                           var23 = var46 - Rasterizer2D.draw_region_x;
                                           var24 = var20 - Rasterizer2D.drawingAreaTop;
                                           int var38 = var34 + var23;

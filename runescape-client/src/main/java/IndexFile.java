@@ -97,7 +97,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label133: {
+                  label132: {
                      int var9 = 0;
                      int var10;
                      if(var4) {
@@ -106,7 +106,7 @@ public final class IndexFile {
                         try {
                            this.dataFile.method2349(field2282, 0, 8);
                         } catch (EOFException var16) {
-                           break label133;
+                           break label132;
                         }
 
                         var10 = (field2282[1] & 255) + ((field2282[0] & 255) << 8);
