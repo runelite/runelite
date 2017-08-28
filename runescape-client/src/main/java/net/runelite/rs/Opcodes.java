@@ -83,7 +83,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_FIRST_MOB_ACTION = 151;
    @Export("PACKET_CLIENT_EXAMINE_OBSTACLE")
    public static final int PACKET_CLIENT_EXAMINE_OBSTACLE = 44;
-   public static final int PACKET_CLIENT_76 = 76;
+   @Export("PACKET_CLIENT_THIRD_MOB_ACTION")
+   public static final int PACKET_CLIENT_THIRD_MOB_ACTION = 76;
    @Export("PACKET_CLIENT_CAST_SPELL_ON_PLAYER")
    public static final int PACKET_CLIENT_CAST_SPELL_ON_PLAYER = 74;
    @Export("PACKET_CLIENT_FIRST_OBSTACLE_ACTION")
