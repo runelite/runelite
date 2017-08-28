@@ -139,7 +139,7 @@ public class class66 {
                Client.field1040 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_93);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_ON_MOB);
                Client.secretPacketBuffer1.putShortLE(class56.selectedItemIndex);
                Client.secretPacketBuffer1.putShort(class15.field302);
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?1:0);

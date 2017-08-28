@@ -42,7 +42,8 @@ public class Opcodes {
    public static final int PACKET_CLIENT_255 = 255;
    public static final int PACKET_CLIENT_235 = 235;
    public static final int PACKET_CLIENT_125 = 125;
-   public static final int PACKET_CLIENT_93 = 93;
+   @Export("PACKET_CLIENT_ITEM_ON_MOB")
+   public static final int PACKET_CLIENT_ITEM_ON_MOB = 93;
    public static final int PACKET_CLIENT_41 = 41;
    public static final int PACKET_CLIENT_233 = 233;
    public static final int PACKET_CLIENT_122 = 122;
