@@ -53,7 +53,8 @@ public class Opcodes {
    @Export("PACKET_CLIENT_ATTACK_NPC")
    public static final int PACKET_CLIENT_ATTACK_NPC = 155;
    public static final int PACKET_CLIENT_116 = 116;
-   public static final int PACKET_CLIENT_72 = 72;
+   @Export("PACKET_CLIENT_ITEM_ON_PLAYER")
+   public static final int PACKET_CLIENT_ITEM_ON_PLAYER = 72;
    public static final int PACKET_CLIENT_247 = 247;
    @Export("PACKET_CLIENT_SMALL_BUTTON_PRESS")
    public static final int PACKET_CLIENT_SMALL_BUTTON_PRESS = 177;
