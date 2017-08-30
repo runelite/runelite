@@ -133,10 +133,11 @@ public class MappingExecutorUtil
 		if (!(i instanceof InvokeStatic))
 			return false;
 
+		ClassGroup group = i.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		InvokeStatic is = (InvokeStatic) i;
 		net.runelite.asm.pool.Method m = is.getMethod();
 
-		return m.getClazz().getName().contains("/") == false; // hack to find my classes
+		return group.findClass(m.getClazz().getName()) != null;
 	}
 	
 	public static InstructionContext resolve(
