@@ -116,7 +116,7 @@ final class class17 implements Comparator {
       int var4;
       int var5;
       int var6;
-      if(Client.packetType == (Client.RUNELITE_PACKET?38:184)) {
+      if(Client.packetType == Opcodes.PACKET_SERVER_184) {
          if(Client.RUNELITE_PACKET) {
             var0 = Client.secretPacketBuffer2.runeliteReadInt();
             var3 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -138,7 +138,7 @@ final class class17 implements Comparator {
 
       } else {
          Item var30;
-         if(Client.packetType == (Client.RUNELITE_PACKET?39:56)) {
+         if(Client.packetType == Opcodes.PACKET_SERVER_56) {
             if(Client.RUNELITE_PACKET) {
                var1 = Client.secretPacketBuffer2.runeliteReadInt();
                var0 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -170,7 +170,7 @@ final class class17 implements Comparator {
          } else {
             int var7;
             int var9;
-            if(Client.packetType == (Client.RUNELITE_PACKET?46:136)) {
+            if(Client.packetType == Opcodes.PACKET_SERVER_136) {
                if(Client.RUNELITE_PACKET) {
                   var0 = Client.secretPacketBuffer2.runeliteReadInt();
                   var4 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -240,7 +240,7 @@ final class class17 implements Comparator {
                   }
                }
 
-            } else if(Client.packetType == (Client.RUNELITE_PACKET?48:201)) {
+            } else if(Client.packetType == Opcodes.PACKET_SERVER_201) {
                if(Client.RUNELITE_PACKET) {
                   var0 = Client.secretPacketBuffer2.runeliteReadInt();
                   var3 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -265,7 +265,7 @@ final class class17 implements Comparator {
                   class61.method1097(class27.plane, var1, var2, var6, var7, var4, var5, 0, -1);
                }
 
-            } else if(Client.packetType == (Client.RUNELITE_PACKET?52:0)) {
+            } else if(Client.packetType == Opcodes.PACKET_SERVER_0) {
                if(Client.RUNELITE_PACKET) {
                   var0 = Client.secretPacketBuffer2.runeliteReadInt();
                   var4 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -294,7 +294,7 @@ final class class17 implements Comparator {
 
             } else {
                int var8;
-               if(Client.packetType == (Client.RUNELITE_PACKET?58:243)) {
+               if(Client.packetType == Opcodes.PACKET_SERVER_243) {
                   if(Client.RUNELITE_PACKET) {
                      var0 = Client.secretPacketBuffer2.runeliteReadInt();
                      var4 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -327,7 +327,7 @@ final class class17 implements Comparator {
                      }
                   }
 
-               } else if(Client.packetType == (Client.RUNELITE_PACKET?59:157)) {
+               } else if(Client.packetType == Opcodes.PACKET_SERVER_157) {
                   if(Client.RUNELITE_PACKET) {
                      var0 = Client.secretPacketBuffer2.runeliteReadInt();
                      var3 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -351,7 +351,7 @@ final class class17 implements Comparator {
                      Client.graphicsObjectDeque.addFront(var39);
                   }
 
-               } else if(Client.packetType == (Client.RUNELITE_PACKET?62:170)) {
+               } else if(Client.packetType == Opcodes.PACKET_SERVER_170) {
                   if(Client.RUNELITE_PACKET) {
                      var0 = Client.secretPacketBuffer2.runeliteReadInt();
                      var3 = Client.secretPacketBuffer2.runeliteReadInt();
@@ -386,7 +386,7 @@ final class class17 implements Comparator {
                   int var10;
                   int var11;
                   int var12;
-                  if(Client.packetType == (Client.RUNELITE_PACKET?75:37)) {
+                  if(Client.packetType == Opcodes.PACKET_SERVER_37) {
                      byte var35;
                      byte var36;
                      byte var37;
@@ -478,7 +478,7 @@ final class class17 implements Comparator {
                         }
                      }
 
-                  } else if(Client.packetType == (Client.RUNELITE_PACKET?77:28)) {
+                  } else if(Client.packetType == Opcodes.PACKET_SERVER_28) {
                      var0 = Client.secretPacketBuffer2.readUnsignedByte();
                      var1 = (var0 >> 4 & 7) + class21.field353;
                      var2 = (var0 & 7) + class37.field529;
