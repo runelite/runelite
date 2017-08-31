@@ -37,10 +37,12 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
+import net.runelite.asm.attributes.code.instructions.LDC;
+import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.c2s.RWOpcodeFinder;
 import net.runelite.deob.c2s.WritePacket;
-import org.objectweb.asm.Opcodes;
+import static net.runelite.deob.deobfuscators.transformers.OpcodesTransformer.RUNELITE_OPCODES;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import org.slf4j.Logger;
@@ -50,9 +52,6 @@ public class PacketWrite implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(PacketWrite.class);
 
-	private static final String RUNELITE_OPCODES = "net/runelite/rs/Opcodes";
-	private static final String RUNELITE_PACKET = "RUNELITE_PACKET";
-
 	@Override
 	public void run(ClassGroup group)
 	{
@@ -60,18 +59,7 @@ public class PacketWrite implements Deobfuscator
 		int count = 0;
 
 		ClassFile runeliteOpcodes = group.findClass(RUNELITE_OPCODES);
-		if (runeliteOpcodes == null)
-		{
-			runeliteOpcodes = new ClassFile(group);
-			runeliteOpcodes.setName(RUNELITE_OPCODES);
-			runeliteOpcodes.setSuperName(Type.OBJECT.getInternalName());
-			runeliteOpcodes.setAccess(Opcodes.ACC_PUBLIC);
-			group.addClass(runeliteOpcodes);
-		}
-		else
-		{
-			runeliteOpcodes.getFields().clear();
-		}
+		assert runeliteOpcodes != null : "Opcodes class must exist";
 
 		for (WritePacket wp : writes)
 		{
@@ -95,8 +83,17 @@ public class PacketWrite implements Deobfuscator
 				// ACC_FINAL causes javac to inline the fields, which prevents
 				// the mapper from doing field mapping
 				opField.setAccessFlags(ACC_PUBLIC | ACC_STATIC);
+				// setting a non-final static field value
+				// doesn't work with fernflower
 				opField.setValue(wp.getOpcode());
 				runeliteOpcodes.addField(opField);
+
+				// add initialization
+				Method clinit = runeliteOpcodes.findMethod("<clinit>");
+				assert clinit != null;
+				Instructions instructions = clinit.getCode().getInstructions();
+				instructions.addInstruction(0, new LDC(instructions, wp.getOpcode()));
+				instructions.addInstruction(1, new PutStatic(instructions, opField));
 			}
 
 			++count;
