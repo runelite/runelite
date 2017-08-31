@@ -65,9 +65,12 @@ import net.runelite.deob.deobfuscators.transformers.buffer.BufferFinder;
 import net.runelite.deob.deobfuscators.packethandler.PacketLengthFinder;
 import net.runelite.deob.deobfuscators.packethandler.PacketRead;
 import net.runelite.deob.deobfuscators.packethandler.PacketTypeFinder;
+import static net.runelite.deob.deobfuscators.transformers.OpcodesTransformer.RUNELITE_OPCODES;
 import net.runelite.deob.s2c.HandlerFinder;
 import net.runelite.deob.s2c.PacketHandler;
 import net.runelite.deob.s2c.PacketHandlers;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -302,14 +305,36 @@ public class PacketHandlerOrder implements Deobfuscator
 			Collections.reverse(handler.sortedReads);
 		}
 
-		int count = 0;
+		ClassFile runeliteOpcodes = group.findClass(RUNELITE_OPCODES);
+		assert runeliteOpcodes != null : "Opcodes class must exist";
+
 		for (PacketHandler handler : sortedHandlers)
 		{
 			logger.info("Handler {} mappable {} reads {} invokes {} freads {} fwrites {}",
 				handler.getOpcode(), handler.sizeMap, handler.reads.size(), handler.methodInvokes.size(),
 				handler.fieldRead.size(), handler.fieldWrite.size());
 
-			handler.newOpcode = (byte) count++;
+			final String fieldName = "PACKET_SERVER_" + handler.getOpcode();
+
+			// Add opcode fields
+			if (runeliteOpcodes.findField(fieldName) == null)
+			{
+				Field opField = new Field(runeliteOpcodes, fieldName, Type.INT);
+				// ACC_FINAL causes javac to inline the fields, which prevents
+				// the mapper from doing field mapping
+				opField.setAccessFlags(ACC_PUBLIC | ACC_STATIC);
+				// setting a non-final static field value
+				// doesn't work with fernflower
+				opField.setValue(handler.getOpcode());
+				runeliteOpcodes.addField(opField);
+
+				// add initialization
+				Method clinit = runeliteOpcodes.findMethod("<clinit>");
+				assert clinit != null;
+				Instructions instructions = clinit.getCode().getInstructions();
+				instructions.addInstruction(0, new LDC(instructions, handler.getOpcode()));
+				instructions.addInstruction(1, new PutStatic(instructions, opField));
+			}
 		}
 
 		// Find unique methods
@@ -342,30 +367,15 @@ public class PacketHandlerOrder implements Deobfuscator
 				assert unsorted.getOpcode() == ((Number) pci.getConstant()).intValue();
 
 				Instructions instructions = unsorted.getMethod().getCode().getInstructions();
-				Label pushLabel = instructions.createLabelFor(unsorted.getPush());
 
-				int idx = instructions.getInstructions().indexOf(unsorted.getPush());
-				assert idx != -1;
-
-				Label nextLabel = instructions.createLabelFor(instructions.getInstructions().get(idx + 1));
-
-				instructions.getInstructions().indexOf(unsorted.getPush());
-				assert idx != -1;
-				--idx; // step back to label
+				final String fieldName = "PACKET_SERVER_" + sortedh.getOpcode();
 
 				net.runelite.asm.pool.Field field = new net.runelite.asm.pool.Field(
-					new net.runelite.asm.pool.Class(findClient(group).getName()),
-					RUNELITE_PACKET,
-					Type.BOOLEAN
+					new net.runelite.asm.pool.Class(RUNELITE_OPCODES),
+					fieldName,
+					Type.INT
 				);
-
-				instructions.addInstruction(idx++, new GetStatic(instructions, field));
-				instructions.addInstruction(idx++, new IfEq(instructions, pushLabel));
-				instructions.addInstruction(idx++, new LDC(instructions, sortedh.newOpcode));
-				instructions.addInstruction(idx++, new Goto(instructions, nextLabel));
-
-				// unsorted.getPush() might be bipush which cant hold 0-255
-				instructions.replace(unsorted.getPush(), new LDC(instructions, sortedh.getOpcode()));
+				instructions.replace(unsorted.getPush(), new GetStatic(instructions, field));
 
 				assert jump.getType() == InstructionType.IF_ICMPEQ || jump.getType() == InstructionType.IF_ICMPNE;
 
@@ -378,7 +388,7 @@ public class PacketHandlerOrder implements Deobfuscator
 				else if (jump.getType() == InstructionType.IF_ICMPNE)
 				{
 					// insert a jump after to go to sortedh start
-					idx = instructions.getInstructions().indexOf(jump);
+					int idx = instructions.getInstructions().indexOf(jump);
 					assert idx != -1;
 
 					instructions.addInstruction(idx + 1, new Goto(instructions, startLabel));

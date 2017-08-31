@@ -62,8 +62,6 @@ public class PacketHandler implements Cloneable
 	public Set<Method> methodInvokes = new HashSet<>();
 	public List<Object> constants = new ArrayList<>();
 
-	public int newOpcode;
-
 	public PacketHandler(Method method, Instruction jump, Instruction start, Instruction push, int opcode)
 	{
 		this.method = method;
