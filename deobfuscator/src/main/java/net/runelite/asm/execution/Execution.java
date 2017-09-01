@@ -61,6 +61,7 @@ public class Execution
 	private final Map<Object, Integer> order = new HashMap<>(); // field,method -> order encountered
 	private final Map<Object, Integer> accesses = new HashMap<>();
 	public boolean staticStep; // whether to step through static methods
+	public boolean noExceptions;
 
 	public Execution(ClassGroup group)
 	{

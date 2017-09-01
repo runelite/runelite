@@ -52,7 +52,7 @@ public class PacketHandler implements Cloneable
 	public Frame frame; // after read
 	public Frame jumpFrame;
 
-	public int sizeMap; // number of mappable instructions in handler
+	public List<Instruction> mappable = new ArrayList<>(); // mappable instructions
 	public List<PacketRead> reads = new ArrayList<>(); // instructions which read packet data
 	public List<PacketRead> sortedReads;
 	public Map<Integer, Integer> lvtOrder = new HashMap<>(); // access order of lvt, lvt index -> order

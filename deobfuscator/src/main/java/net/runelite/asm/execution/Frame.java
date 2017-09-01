@@ -38,9 +38,13 @@ import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Frame
 {
+	private static final Logger logger = LoggerFactory.getLogger(Frame.class);
+
 	private Execution execution;
 	private Method method;
 	private boolean executing = true;
@@ -230,6 +234,7 @@ public class Frame
 
 			try
 			{
+				logger.trace("executing {}", cur);
 				ictx = cur.execute(this);
 				this.addInstructionContext(ictx);
 			}
@@ -336,6 +341,10 @@ public class Frame
 		{
 			return; // no frame.other
 		}
+		if (this.execution.noExceptions)
+		{
+			return;
+		}
 		Code code = method.getCode();
 
 		for (Exception e : code.getExceptions().getExceptions())
@@ -369,6 +378,7 @@ public class Frame
 
 		if (ctx.hasJumped(from, to))
 		{
+			logger.trace("Stopping frame {} due to previous jump to {}", this, to);
 			executing = false;
 			return;
 		}

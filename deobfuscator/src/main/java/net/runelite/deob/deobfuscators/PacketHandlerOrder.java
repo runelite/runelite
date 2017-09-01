@@ -118,6 +118,12 @@ public class PacketHandlerOrder implements Deobfuscator
 			e.staticStep = true;
 			e.step = false;
 			e.noInvoke = true;
+			// exception processing won't do non-local jumps, so
+			// depending on whether methods are inlined or not
+			// it may jump completely out of the handler into the
+			// catch all for all packet handling
+			// just disable exception execution
+			e.noExceptions = true;
 
 			assert e.frames.isEmpty();
 
@@ -132,7 +138,10 @@ public class PacketHandlerOrder implements Deobfuscator
 				{
 					if (ictx.getInstruction().getType() != InstructionType.INVOKESTATIC)
 					{
-						++handler.sizeMap;
+						if (!handler.mappable.contains(ictx.getInstruction()))
+						{
+							handler.mappable.add(ictx.getInstruction());
+						}
 					}
 				}
 				if (ictx.getInstruction().getType() == InstructionType.INVOKEVIRTUAL)
@@ -215,9 +224,11 @@ public class PacketHandlerOrder implements Deobfuscator
 				}
 			});
 
+			logger.debug("Beginning execution of opcode {}", handler.getOpcode());
+
 			e.run();
 
-			logger.info("Executed opcode {}: {} mappable instructions", handler.getOpcode(), handler.sizeMap);
+			logger.info("Executed opcode {}: {} mappable instructions", handler.getOpcode(), handler.mappable.size());
 
 			handler.findReorderableReads();
 		}
@@ -243,7 +254,7 @@ public class PacketHandlerOrder implements Deobfuscator
 				{
 					return Integer.compare(p1.fieldWrite.size(), p2.fieldWrite.size());
 				}
-				int i = Integer.compare(p1.sizeMap, p2.sizeMap);
+				int i = Integer.compare(p1.mappable.size(), p2.mappable.size());
 				if (i != 0)
 				{
 					return i;
@@ -311,7 +322,7 @@ public class PacketHandlerOrder implements Deobfuscator
 		for (PacketHandler handler : sortedHandlers)
 		{
 			logger.info("Handler {} mappable {} reads {} invokes {} freads {} fwrites {}",
-				handler.getOpcode(), handler.sizeMap, handler.reads.size(), handler.methodInvokes.size(),
+				handler.getOpcode(), handler.mappable.size(), handler.reads.size(), handler.methodInvokes.size(),
 				handler.fieldRead.size(), handler.fieldWrite.size());
 
 			final String fieldName = "PACKET_SERVER_" + handler.getOpcode();
