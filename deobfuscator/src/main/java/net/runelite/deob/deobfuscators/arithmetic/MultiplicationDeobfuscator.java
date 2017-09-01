@@ -70,10 +70,10 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		int count = 0;
 		while ((i = runOnce()) > 0)
 		{
-			System.out.println("Replaced " + i + " constants");
+			logger.info("Replaced " + i + " constants");
 			count += i;
 		}
-		System.out.println("Total changed " + count);
+		logger.info("Total changed " + count);
 	}
 	
 	public static MultiplicationExpression parseExpression(InstructionContext ctx, Class want)

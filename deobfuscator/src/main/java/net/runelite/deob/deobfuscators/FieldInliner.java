@@ -44,9 +44,13 @@ import net.runelite.asm.attributes.code.instruction.types.PushConstantInstructio
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FieldInliner implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(FieldInliner.class);
+
 	private ClassGroup group;
 	private Multimap<Field, FieldInstruction> fieldInstructions = HashMultimap.create();
 	private List<Field> fields = new ArrayList<>();
@@ -168,7 +172,7 @@ public class FieldInliner implements Deobfuscator
 		makeConstantValues();
 		int count = inlineUse();
 		
-		System.out.println("Inlined " + count + " fields");
+		logger.info("Inlined " + count + " fields");
 	}
 	
 }
