@@ -298,7 +298,6 @@ public class UnusedParameters implements Deobfuscator
 			execution.run();
 
 			i = this.processUnused(execution, group);
-			logger.info("PASS " + pnum++ + " " + i);
 
 			count += i;
 			break;
