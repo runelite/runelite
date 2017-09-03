@@ -26,7 +26,7 @@ package net.runelite.cache.server;
 
 import java.io.FileNotFoundException;
 import net.runelite.cache.StoreLocation;
-import net.runelite.cache.downloader.CacheClient;
+import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;

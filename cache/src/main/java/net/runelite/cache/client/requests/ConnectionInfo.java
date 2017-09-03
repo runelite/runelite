@@ -22,35 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.client.requests;
 
-package net.runelite.cache.downloader;
-
-import java.util.concurrent.CompletableFuture;
-import net.runelite.cache.downloader.requests.FileRequest;
-
-public class PendingFileRequest
+public class ConnectionInfo
 {
-	private final FileRequest request;
-	private final CompletableFuture<FileResult> future;
+	//login state of client
+	//  2 - logged in (in-game)
+	//  3 - logged out (not in-game)
+	private byte type = 3;
 
-	public PendingFileRequest(FileRequest request, CompletableFuture<FileResult> future)
+	//padding to make packet size == 4
+	private int padding;
+
+	public byte getType()
 	{
-		this.request = request;
-		this.future = future;
+		return type;
 	}
 
-	public FileRequest getRequest()
+	public void setType(byte type)
 	{
-		return request;
+		this.type = type;
 	}
 
-	public CompletableFuture<FileResult> getFuture()
+	public int getPadding()
 	{
-		return future;
+		return padding;
 	}
 
-	public int computeHash()
+	public void setPadding(int padding)
 	{
-		return (request.getIndex() << 16) | request.getFile();
+		this.padding = padding;
 	}
 }

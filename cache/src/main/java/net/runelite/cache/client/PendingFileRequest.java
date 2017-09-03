@@ -22,76 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.downloader;
+package net.runelite.cache.client;
 
-import java.io.File;
 import java.util.concurrent.CompletableFuture;
-import net.runelite.cache.fs.Store;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
+import net.runelite.cache.client.requests.FileRequest;
 
-public class CacheClientTest
+public class PendingFileRequest
 {
-	private static final Logger logger = LoggerFactory.getLogger(CacheClientTest.class);
+	private final FileRequest request;
+	private final CompletableFuture<FileResult> future;
 
-	@Before
-	public void before()
+	public PendingFileRequest(FileRequest request, CompletableFuture<FileResult> future)
 	{
-		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
+		this.request = request;
+		this.future = future;
 	}
 
-	@Test
-	@Ignore
-	public void test() throws Exception
+	public FileRequest getRequest()
 	{
-		try (Store store = new Store(new File("d:/temp")))
-		{
-			store.load();
-			
-			CacheClient c = new CacheClient(store);
-			c.connect();
-			CompletableFuture<Integer> handshake = c.handshake();
-
-			Integer result = handshake.get();
-			logger.info("Handshake result: {}", result);
-
-			Assert.assertEquals(0, (int) result);
-			
-			c.download();
-
-			c.close();
-			
-			store.save();
-		}
+		return request;
 	}
 
-	@Test
-	@Ignore
-	public void testTree() throws Exception
+	public CompletableFuture<FileResult> getFuture()
 	{
-		try (Store store = new Store(new File("C:\\rs\\temp")))
-		{
-			store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
-			
-			CacheClient c = new CacheClient(store);
-			c.connect();
-			CompletableFuture<Integer> handshake = c.handshake();
+		return future;
+	}
 
-			Integer result = handshake.get();
-			logger.info("Handshake result: {}", result);
-
-			Assert.assertEquals(0, (int) result);
-			
-			c.download();
-
-			c.close();
-			
-			store.saveTree(new File("C:\\rs\\temp\\t"));
-		}
+	public int computeHash()
+	{
+		return (request.getIndex() << 16) | request.getFile();
 	}
 }
