@@ -281,7 +281,8 @@ public class Archive
 
 			File file = files.get(0);
 
-			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-" + file.getFileId() + "-" + file.getNameHash() + ".datc");
+			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-"
+				+ file.getFileId() + "-" + Integer.toHexString(file.getNameHash()) + ".datc");
 			Files.write(data, archiveFile);
 
 			archiveFile = new java.io.File(to, this.getArchiveId() + ".rev");
@@ -296,7 +297,8 @@ public class Archive
 		{
 			File file = this.getFiles().get(0);
 
-			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-" + file.getFileId() + "-" + file.getNameHash() + ".dat");
+			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-"
+				+ file.getFileId() + "-" + Integer.toHexString(file.getNameHash()) + ".dat");
 			byte[] contents = file.getContents();
 
 			Files.write(contents, archiveFile);
@@ -320,7 +322,8 @@ public class Archive
 
 		for (File file : files)
 		{
-			archiveFile = new java.io.File(archiveFolder, file.getFileId() + "-" + file.getNameHash() + ".dat");
+			archiveFile = new java.io.File(archiveFolder, file.getFileId() + "-"
+				+ Integer.toHexString(file.getNameHash()) + ".dat");
 			byte[] contents = file.getContents();
 			Files.write(contents, archiveFile);
 		}
@@ -328,11 +331,13 @@ public class Archive
 
 	public void loadTreeData(java.io.File parent, java.io.File from) throws IOException
 	{
-		//archiveId-fileId-fileName - assumes name isn't negative
+		//archiveId-fileId-fileName
 		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
+		assert parts.length == 3;
+
 		int archiveId = Integer.parseInt(parts[0]);
 		int fileId = Integer.parseInt(parts[1]);
-		int nameHash = Integer.parseInt(parts[2]);
+		int nameHash = (int) Long.parseLong(parts[2], 16);
 
 		assert archiveId == this.getArchiveId();
 
@@ -356,9 +361,11 @@ public class Archive
 	{
 		//archiveId-fileId-fileName
 		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
+		assert parts.length == 3;
+
 		int archiveId = Integer.parseInt(parts[0]);
 		int fileId = Integer.parseInt(parts[1]);
-		int nameHash = Integer.parseInt(parts[2]);
+		int nameHash = (int) Long.parseLong(parts[2], 16);
 
 		assert archiveId == this.getArchiveId();
 
@@ -385,8 +392,10 @@ public class Archive
 		{
 			//fileId-fileName.dat
 			String[] split = Files.getNameWithoutExtension(file.getName()).split("-");
+			assert split.length == 2;
+
 			int fileId = Integer.parseInt(split[0]);
-			int fileName = Integer.parseInt(split[1]);
+			int fileName = (int) Long.parseLong(split[1], 16);
 
 			File f = new File(this, fileId);
 			f.setNameHash(fileName);
