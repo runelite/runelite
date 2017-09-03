@@ -27,12 +27,13 @@ package net.runelite.cache;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import net.runelite.cache.definitions.FramemapDefinition;
 import net.runelite.cache.definitions.loaders.FramemapLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -53,7 +54,7 @@ public class FramemapDumper
 	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
+		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
 
 		int count = 0;
@@ -66,12 +67,12 @@ public class FramemapDumper
 			for (Archive archive : index.getArchives())
 			{
 				assert archive.getFiles().size() == 1;
-				File file = archive.getFiles().get(0);
+				FSFile file = archive.getFiles().get(0);
 
 				FramemapLoader loader = new FramemapLoader();
 				FramemapDefinition framemap = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(framemap), new java.io.File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(framemap), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

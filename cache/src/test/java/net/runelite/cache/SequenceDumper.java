@@ -27,12 +27,13 @@ package net.runelite.cache;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.definitions.loaders.SequenceLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.io.InputStream;
@@ -54,7 +55,7 @@ public class SequenceDumper
 	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
+		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
 
 		int count = 0;
@@ -66,12 +67,12 @@ public class SequenceDumper
 			Index index = store.getIndex(IndexType.CONFIGS);
 			Archive archive = index.getArchive(ConfigType.SEQUENCE.getId());
 
-			for (File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				SequenceLoader loader = new SequenceLoader();
 				SequenceDefinition seq = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(seq), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(seq), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

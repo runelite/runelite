@@ -167,7 +167,7 @@ public class Store implements Closeable
 		}
 	}
 
-	public void saveTree(java.io.File to) throws IOException
+	public void saveTree(File to) throws IOException
 	{
 		for (Index i : indexes)
 		{
@@ -175,9 +175,9 @@ public class Store implements Closeable
 		}
 	}
 
-	public void loadTree(java.io.File from) throws IOException
+	public void loadTree(File from) throws IOException
 	{
-		for (java.io.File idx : from.listFiles())
+		for (File idx : from.listFiles())
 		{
 			if (!idx.isDirectory())
 			{

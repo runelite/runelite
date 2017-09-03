@@ -33,6 +33,7 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.VarbitDefinition;
 import net.runelite.cache.definitions.loaders.VarbitLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -65,7 +66,7 @@ public class VarbitDumper
 			Index index = store.getIndex(IndexType.CONFIGS);
 			Archive archive = index.getArchive(ConfigType.VARBIT.getId());
 
-			for (net.runelite.cache.fs.File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				VarbitLoader loader = new VarbitLoader();
 				VarbitDefinition varbit = loader.load(file.getFileId(), file.getContents());
