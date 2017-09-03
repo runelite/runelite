@@ -148,7 +148,7 @@ public class Archive
 
 		if (this.crc != res.crc)
 		{
-			logger.warn("crc mismatch for archive {}", this.getArchiveId());
+			logger.warn("crc mismatch for archive {}/{}", index.getId(), this.getArchiveId());
 		}
 
 		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))
@@ -159,7 +159,9 @@ public class Archive
 		if (res.revision != -1 && this.getRevision() != res.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
-			logger.warn("revision mismatch for archive {}", this.getArchiveId());
+			logger.warn("revision mismatch for archive {}/{}, expected {} was {}",
+				index.getId(), this.getArchiveId(),
+				this.getRevision(), res.revision);
 		}
 
 		setCompression(res.compression);
