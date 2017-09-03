@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.downloader;
+package net.runelite.cache.client;
 
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.Bootstrap;
@@ -43,9 +43,9 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import net.runelite.cache.downloader.requests.ConnectionInfo;
-import net.runelite.cache.downloader.requests.FileRequest;
-import net.runelite.cache.downloader.requests.HelloHandshake;
+import net.runelite.cache.client.requests.ConnectionInfo;
+import net.runelite.cache.client.requests.FileRequest;
+import net.runelite.cache.client.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;

@@ -22,11 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.client.requests;
 
-package net.runelite.cache.downloader;
-
-public enum ClientState
+public class FileRequest
 {
-	HANDSHAKING,
-	CONNECTED
+	private final int index;
+	private final int file;
+
+	public FileRequest(int index, int file)
+	{
+		this.index = index;
+		this.file = file;
+	}
+
+	public int getIndex()
+	{
+		return index;
+	}
+
+	public int getFile()
+	{
+		return file;
+	}
 }
