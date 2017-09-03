@@ -28,6 +28,7 @@ import com.google.common.io.Files;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -288,9 +289,9 @@ public class Index implements Closeable
 		this.whirlpool = res.whirlpool;
 	}
 
-	public void saveTree(java.io.File to) throws IOException
+	public void saveTree(File to) throws IOException
 	{
-		java.io.File idx = new java.io.File(to, "" + this.getId());
+		File idx = new File(to, "" + this.getId());
 		idx.mkdirs();
 
 		for (Archive a : archives)
@@ -298,13 +299,13 @@ public class Index implements Closeable
 			a.saveTree(idx);
 		}
 
-		java.io.File rev = new java.io.File(to, this.getId() + ".rev");
+		File rev = new File(to, this.getId() + ".rev");
 		Files.write("" + this.getRevision(), rev, Charset.defaultCharset());
 	}
 
-	public void loadTree(java.io.File parent, java.io.File to) throws IOException
+	public void loadTree(File parent, File to) throws IOException
 	{
-		for (java.io.File f : to.listFiles())
+		for (File f : to.listFiles())
 		{
 			if (f.isDirectory())
 			{
@@ -338,7 +339,7 @@ public class Index implements Closeable
 			}
 		}
 
-		String str = Files.readFirstLine(new java.io.File(parent, this.getId() + ".rev"), Charset.defaultCharset());
+		String str = Files.readFirstLine(new File(parent, this.getId() + ".rev"), Charset.defaultCharset());
 		revision = Integer.parseInt(str);
 
 		Collections.sort(archives, (ar1, ar2) -> Integer.compare(ar1.getArchiveId(), ar2.getArchiveId()));
@@ -591,12 +592,12 @@ public class Index implements Closeable
 
 			for (index2 = 0; index2 < a.getFiles().size(); ++index2)
 			{
-				File file = a.getFiles().get(index2);
+				FSFile file = a.getFiles().get(index2);
 				int offset = file.getFileId();
 
 				if (index2 != 0)
 				{
-					File prev = a.getFiles().get(index2 - 1);
+					FSFile prev = a.getFiles().get(index2 - 1);
 					offset -= prev.getFileId();
 				}
 
@@ -619,7 +620,7 @@ public class Index implements Closeable
 
 				for (index2 = 0; index2 < a.getFiles().size(); ++index2)
 				{
-					File file = a.getFiles().get(index2);
+					FSFile file = a.getFiles().get(index2);
 					stream.writeInt(file.getNameHash());
 				}
 			}

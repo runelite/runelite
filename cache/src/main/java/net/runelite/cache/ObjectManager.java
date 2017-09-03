@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.exporters.ObjectExporter;
 import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
@@ -55,7 +56,7 @@ public class ObjectManager
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.OBJECT.getId());
 
-		for (net.runelite.cache.fs.File f : archive.getFiles())
+		for (FSFile f : archive.getFiles())
 		{
 			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
 			objects.add(def);

@@ -25,6 +25,7 @@
 package net.runelite.cache.fs;
 
 import com.google.common.io.Files;
+import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
@@ -56,10 +57,10 @@ public class StoreLoadTest
 		{
 			store.load();
 
-			java.io.File testStoreFile = folder.newFolder();
-			for (java.io.File f : StoreLocation.LOCATION.listFiles())
+			File testStoreFile = folder.newFolder();
+			for (File f : StoreLocation.LOCATION.listFiles())
 			{
-				Files.copy(f, new java.io.File(testStoreFile, f.getName()));
+				Files.copy(f, new File(testStoreFile, f.getName()));
 			}
 
 			try (Store testStore = new Store(testStoreFile))
@@ -80,7 +81,7 @@ public class StoreLoadTest
 	@Ignore
 	public void unpackStore() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION;
+		File base = StoreLocation.LOCATION;
 		try (Store store = new Store(base))
 		{
 			store.load();
@@ -95,7 +96,7 @@ public class StoreLoadTest
 	{
 		try (Store store = new Store(folder.newFolder()))
 		{
-			store.loadTree(new java.io.File("C:\\rs\\temp\\tree"));
+			store.loadTree(new File("C:\\rs\\temp\\tree"));
 			
 			try (Store store2 = new Store(StoreLocation.LOCATION))
 			{
@@ -110,10 +111,10 @@ public class StoreLoadTest
 	@Ignore
 	public void saveTree() throws IOException
 	{
-		try (Store store = new Store(new java.io.File("d:/rs/07/temp/cache")))
+		try (Store store = new Store(new File("d:/rs/07/temp/cache")))
 		{
 			store.load();
-			store.saveTree(new java.io.File("d:/rs/07/temp/tree"));
+			store.saveTree(new File("d:/rs/07/temp/tree"));
 		}
 	}
 }

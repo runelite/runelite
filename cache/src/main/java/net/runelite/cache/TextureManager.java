@@ -29,7 +29,7 @@ import java.util.List;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 
@@ -50,7 +50,7 @@ public class TextureManager
 
 		TextureLoader loader = new TextureLoader();
 
-		for (File file : archive.getFiles())
+		for (FSFile file : archive.getFiles())
 		{
 			TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
 			textures.add(texture);

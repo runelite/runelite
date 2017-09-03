@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.fs;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import net.runelite.cache.StoreLocation;
@@ -46,7 +47,7 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
-			File file = archive.addFile(0);
+			FSFile file = archive.addFile(0);
 			file.setNameHash(7);
 			file.setContents("test".getBytes());
 
@@ -65,7 +66,7 @@ public class StoreTest
 	public void testManyFiles() throws IOException
 	{
 		Random random = new Random(42L);
-		java.io.File root = folder.newFolder();
+		File root = folder.newFolder();
 
 		try (Store store = new Store(root))
 		{
@@ -75,7 +76,7 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive.addFile(i);
+				FSFile file = archive.addFile(i);
 				file.setNameHash(random.nextInt());
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
@@ -97,7 +98,7 @@ public class StoreTest
 	public void testMultipleArchives() throws IOException
 	{
 		Random random = new Random(43L);
-		java.io.File root = folder.newFolder();
+		File root = folder.newFolder();
 
 		try (Store store = new Store(root))
 		{
@@ -113,7 +114,7 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive.addFile(i);
+				FSFile file = archive.addFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
@@ -122,7 +123,7 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive2.addFile(i);
+				FSFile file = archive2.addFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
@@ -131,7 +132,7 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive3.addFile(i);
+				FSFile file = archive3.addFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
@@ -148,7 +149,7 @@ public class StoreTest
 			}
 
 			// Test tree save/load
-			java.io.File tree = folder.newFolder();
+			File tree = folder.newFolder();
 			store.saveTree(tree);
 
 			try (Store store2 = new Store(folder.newFolder()))

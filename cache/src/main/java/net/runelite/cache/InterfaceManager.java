@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.definitions.exporters.InterfaceExporter;
 import net.runelite.cache.definitions.loaders.InterfaceLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
@@ -58,7 +59,7 @@ public class InterfaceManager
 		{
 			int archiveId = archive.getArchiveId();
 
-			for (net.runelite.cache.fs.File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				int fileId = file.getFileId();
 

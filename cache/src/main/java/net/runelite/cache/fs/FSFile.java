@@ -27,14 +27,14 @@ package net.runelite.cache.fs;
 
 import java.util.Arrays;
 
-public class File
+public class FSFile
 {
 	private Archive archive;
 	private int fileId;
 	private int nameHash;
 	private byte[] contents;
 
-	public File(Archive archive, int fileId)
+	public FSFile(Archive archive, int fileId)
 	{
 		this.archive = archive;
 		this.fileId = fileId;
@@ -61,7 +61,7 @@ public class File
 		{
 			return false;
 		}
-		final File other = (File) obj;
+		final FSFile other = (FSFile) obj;
 		if (this.fileId != other.fileId)
 		{
 			return false;

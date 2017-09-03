@@ -46,7 +46,7 @@ import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.definitions.loaders.UnderlayLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Location;
@@ -361,7 +361,7 @@ public class MapImageDumper
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.UNDERLAY.getId());
 
-		for (File file : archive.getFiles())
+		for (FSFile file : archive.getFiles())
 		{
 			UnderlayLoader loader = new UnderlayLoader();
 			UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
@@ -387,7 +387,7 @@ public class MapImageDumper
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.OVERLAY.getId());
 
-		for (File file : archive.getFiles())
+		for (FSFile file : archive.getFiles())
 		{
 			OverlayLoader loader = new OverlayLoader();
 			OverlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
@@ -413,7 +413,7 @@ public class MapImageDumper
 		Index index = store.getIndex(IndexType.TEXTURES);
 		Archive archive = index.getArchive(0);
 
-		for (File file : archive.getFiles())
+		for (FSFile file : archive.getFiles())
 		{
 			TextureLoader loader = new TextureLoader();
 			TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
@@ -443,11 +443,11 @@ public class MapImageDumper
 
 		for (Archive a : index.getArchives())
 		{
-			List<File> files = a.getFiles();
+			List<FSFile> files = a.getFiles();
 
 			assert files.size() == 1;
 
-			File file = files.get(0);
+			FSFile file = files.get(0);
 			byte[] contents = file.getContents();
 
 			SpriteLoader loader = new SpriteLoader();
@@ -534,7 +534,7 @@ public class MapImageDumper
 
 		ObjectLoader loader = new ObjectLoader();
 
-		for (File f : archive.getFiles())
+		for (FSFile f : archive.getFiles())
 		{
 			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
 			objects.put(def.getId(), def);
