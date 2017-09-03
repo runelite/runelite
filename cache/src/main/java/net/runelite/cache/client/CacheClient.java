@@ -40,6 +40,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -59,8 +61,6 @@ public class CacheClient implements AutoCloseable
 	private static final String HOST = "oldschool1.runescape.com";
 	private static final int PORT = 43594;
 
-	private static final int CLIENT_REVISION = 142;
-
 	private static final int MAX_REQUESTS = 19; // too many and the server closes the conncetion
 
 	private final Store store; // store cache will be written to
@@ -75,9 +75,9 @@ public class CacheClient implements AutoCloseable
 	private CompletableFuture<Integer> handshakeFuture;
 	private final Queue<PendingFileRequest> requests = new ArrayDeque<>();
 
-	public CacheClient(Store store)
+	public CacheClient(Store store, int clientRevision)
 	{
-		this(store, HOST, CLIENT_REVISION);
+		this(store, HOST, clientRevision);
 	}
 
 	public CacheClient(Store store, String host, int clientRevision)
@@ -173,21 +173,35 @@ public class CacheClient implements AutoCloseable
 		return state;
 	}
 
-	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
+	public List<IndexInfo> requestIndexes() throws IOException
 	{
-		Stopwatch stopwatch = Stopwatch.createStarted();
-
-		FileResult result = requestFile(255, 255, true).get();
+		FileResult result = requestFile(255, 255, true).join();
 		result.decompress(null);
 
 		ByteBuf buffer = Unpooled.wrappedBuffer(result.getContents());
-
 		int indexCount = result.getContents().length / 8;
+		List<IndexInfo> indexInfo = new ArrayList<>();
 
 		for (int i = 0; i < indexCount; ++i)
 		{
 			int crc = buffer.readInt();
 			int revision = buffer.readInt();
+			indexInfo.add(new IndexInfo(i, crc, revision));
+		}
+
+		return indexInfo;
+	}
+
+	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
+	{
+		Stopwatch stopwatch = Stopwatch.createStarted();
+
+		List<IndexInfo> indexes = requestIndexes();
+		for (IndexInfo indexInfo : indexes)
+		{
+			int i = indexInfo.getId();
+			int crc = indexInfo.getCrc();
+			int revision = indexInfo.getRevision();
 
 			Index index = store.findIndex(i);
 
@@ -306,7 +320,7 @@ public class CacheClient implements AutoCloseable
 		logger.info("Download completed in {}", stopwatch);
 	}
 
-	public synchronized CompletableFuture<FileResult> requestFile(int index, int fileId, boolean flush)
+	private synchronized CompletableFuture<FileResult> requestFile(int index, int fileId, boolean flush)
 	{
 		if (state != ClientState.CONNECTED)
 		{
