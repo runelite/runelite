@@ -62,17 +62,9 @@ public class StoreLocation
 		}
 	}
 
-	private static Properties getProperies() throws IOException
-	{
-		Properties properties = new Properties();
-		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
-		properties.load(resourceAsStream);
-		return properties;
-	}
-
 	private static File setupCacheDir() throws IOException
 	{
-		File file = new File(System.getProperty("java.io.tmpdir"), "cache-" + getProperies().getProperty("cache.version"));
+		File file = new File(System.getProperty("java.io.tmpdir"), "cache-" + CacheProperties.getCacheVersion());
 
 		if (file.exists())
 		{

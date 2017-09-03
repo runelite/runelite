@@ -26,6 +26,7 @@ package net.runelite.cache.client;
 
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
+import net.runelite.cache.CacheProperties;
 import net.runelite.cache.fs.Store;
 import org.junit.Assert;
 import org.junit.Before;
@@ -53,7 +54,7 @@ public class CacheClientTest
 		{
 			store.load();
 			
-			CacheClient c = new CacheClient(store);
+			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
 			CompletableFuture<Integer> handshake = c.handshake();
 
@@ -78,7 +79,7 @@ public class CacheClientTest
 		{
 			store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
 			
-			CacheClient c = new CacheClient(store);
+			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
 			CompletableFuture<Integer> handshake = c.handshake();
 
