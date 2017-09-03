@@ -149,11 +149,13 @@ public class Archive
 		if (this.crc != res.crc)
 		{
 			logger.warn("crc mismatch for archive {}/{}", index.getId(), this.getArchiveId());
+			this.setCrc(res.crc);
 		}
 
 		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))
 		{
 			logger.warn("whirlpool mismatch for archive {}", this.getArchiveId());
+			this.setWhirlpool(res.whirlpool);
 		}
 
 		if (res.revision != -1 && this.getRevision() != res.revision)
@@ -162,6 +164,11 @@ public class Archive
 			logger.warn("revision mismatch for archive {}/{}, expected {} was {}",
 				index.getId(), this.getArchiveId(),
 				this.getRevision(), res.revision);
+			// I've seen this happen with vanilla caches where the
+			// revision in the index data differs from the revision
+			// stored for the archive data on disk... I assume this
+			// is more correct
+			this.setRevision(res.revision);
 		}
 
 		setCompression(res.compression);
