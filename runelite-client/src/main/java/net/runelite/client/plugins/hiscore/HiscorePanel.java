@@ -35,7 +35,7 @@ import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -83,7 +83,7 @@ public class HiscorePanel extends PluginPanel
 
 	private final IconTextField input;
 
-	private final List<JLabel> skillLabels = new LinkedList<>();
+	private final List<JLabel> skillLabels = new ArrayList<>();
 
 	private final JPanel statsPanel = new JPanel();
 	private final JTextArea details = new JTextArea();
@@ -178,6 +178,20 @@ public class HiscorePanel extends PluginPanel
 		gridBag.setConstraints(totalPanel, c);
 		add(totalPanel);
 
+		JPanel minigamePanel = new JPanel();
+		minigamePanel.setBorder(subPanelBorder);
+		minigamePanel.setLayout(new GridLayout(1, 4));
+
+		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL.getName(), CLUE_SCROLL_ALL));
+		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE.getName(), BOUNTY_HUNTER_ROGUE));
+		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER.getName(), BOUNTY_HUNTER_HUNTER));
+		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING.getName(), LAST_MAN_STANDING));
+
+		c.gridx = 0;
+		c.gridy = 3;
+		gridBag.setConstraints(minigamePanel, c);
+		add(minigamePanel);
+
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBorder(subPanelBorder);
 		detailsPanel.setLayout(new BorderLayout());
@@ -197,7 +211,7 @@ public class HiscorePanel extends PluginPanel
 		detailsPanel.add(details, BorderLayout.CENTER);
 
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		// Last item has a nonzero weighty so it will expand to fill vertical space
 		c.weighty = 1;
 		gridBag.setConstraints(detailsPanel, c);
@@ -216,14 +230,6 @@ public class HiscorePanel extends PluginPanel
 		String text;
 		switch (skillName)
 		{
-			case "Overall":
-			{
-				Skill requestedSkill = result.getOverall();
-				text = "Total Level" + System.lineSeparator()
-					+ "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator()
-					+ "Total Experience: " + formatter.format(requestedSkill.getExperience());
-				break;
-			}
 			case "Combat":
 			{
 				double combatLevel = Experience.getCombatLevelPrecise(
@@ -235,11 +241,36 @@ public class HiscorePanel extends PluginPanel
 					result.getRanged().getLevel(),
 					result.getPrayer().getLevel()
 				);
-				text = "Exact Combat Level: " + formatter.format(combatLevel) + System.lineSeparator()
+				text = "Skill: Combat" + System.lineSeparator()
+					+ "Exact Combat Level: " + formatter.format(combatLevel) + System.lineSeparator()
 					+ "Experience: " + formatter.format(result.getAttack().getExperience()
-						+ result.getStrength().getExperience() + result.getDefence().getExperience()
-						+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
-						+ result.getRanged().getExperience() + result.getPrayer().getExperience());
+					+ result.getStrength().getExperience() + result.getDefence().getExperience()
+					+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
+					+ result.getRanged().getExperience() + result.getPrayer().getExperience());
+				break;
+			}
+			case "Clue Scrolls (all)":
+			{
+				text = "Total Clue Scrolls completed: " + formatter.format(result.getClueScrollAll().getLevel()) + System.lineSeparator()
+					+ "Rank: " + formatter.format(result.getClueScrollAll().getRank());
+				break;
+			}
+			case "Bounty Hunter - Rogue":
+			{
+				text = "Bounty Hunter - Rogue Kills" + System.lineSeparator()
+					+ "Rank: " + formatter.format(result.getBountyHunterRogue().getRank());
+				break;
+			}
+			case "Bounty Hunter - Hunter":
+			{
+				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
+						+ "Rank: " + formatter.format(result.getBountyHunterHunter().getRank());
+				break;
+			}
+			case "Last Man Standing":
+			{
+				text = "Last Man Standing" + System.lineSeparator()
+						+ "Rank: " + formatter.format(result.getLastManStanding().getRank());
 				break;
 			}
 			default:
@@ -324,6 +355,10 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
+		// Clear details panel
+		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
+		details.setText("Click a skill for details");
+
 		for (JLabel label : skillLabels)
 		{
 			String skillName = (String) label.getClientProperty(SKILL_NAME);
@@ -347,10 +382,6 @@ public class HiscorePanel extends PluginPanel
 				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
 			}
 		}
-
-		// Clear details panel
-		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
-		details.setText("Click a skill for details");
 	}
 
 	private static String sanitize(String lookup)
