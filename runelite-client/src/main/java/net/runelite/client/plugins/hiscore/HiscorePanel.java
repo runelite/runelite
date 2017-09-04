@@ -180,12 +180,12 @@ public class HiscorePanel extends PluginPanel
 
 		JPanel minigamePanel = new JPanel();
 		minigamePanel.setBorder(subPanelBorder);
-		minigamePanel.setLayout(new GridLayout(1, 4));
+		minigamePanel.setLayout(new GridLayout(2, 3));
 
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL.getName(), CLUE_SCROLL_ALL));
+		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING.getName(), LAST_MAN_STANDING));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE.getName(), BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER.getName(), BOUNTY_HUNTER_HUNTER));
-		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING.getName(), LAST_MAN_STANDING));
 
 		c.gridx = 0;
 		c.gridy = 3;
@@ -251,34 +251,40 @@ public class HiscorePanel extends PluginPanel
 			}
 			case "Clue Scrolls (all)":
 			{
-				text = "Total Clue Scrolls completed: " + formatter.format(result.getClueScrollAll().getLevel()) + System.lineSeparator()
-					+ "Rank: " + formatter.format(result.getClueScrollAll().getRank());
+				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : formatter.format(result.getClueScrollAll().getRank());
+				text = "Total Clue Scrolls completed" + System.lineSeparator()
+					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Rogue":
 			{
+				String rank = (result.getBountyHunterRogue().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterRogue().getRank());
 				text = "Bounty Hunter - Rogue Kills" + System.lineSeparator()
-					+ "Rank: " + formatter.format(result.getBountyHunterRogue().getRank());
+					+ "Rank: " + rank;
 				break;
 			}
 			case "Bounty Hunter - Hunter":
 			{
+				String rank = (result.getBountyHunterHunter().getRank() == -1) ? "Unranked" : formatter.format(result.getBountyHunterHunter().getRank());
 				text = "Bounty Hunter - Hunter Kills" + System.lineSeparator()
-						+ "Rank: " + formatter.format(result.getBountyHunterHunter().getRank());
+						+ "Rank: " + rank;
 				break;
 			}
 			case "Last Man Standing":
 			{
+				String rank = (result.getLastManStanding().getRank() == -1) ? "Unranked" : formatter.format(result.getLastManStanding().getRank());
 				text = "Last Man Standing" + System.lineSeparator()
-						+ "Rank: " + formatter.format(result.getLastManStanding().getRank());
+						+ "Rank: " + rank;
 				break;
 			}
 			default:
 			{
 				Skill requestedSkill = result.getSkill(skill);
+				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
 				text = "Skill: " + skillName + System.lineSeparator()
-					+ "Rank: " + formatter.format(requestedSkill.getRank()) + System.lineSeparator()
-					+ "Experience: " + formatter.format(requestedSkill.getExperience());
+					+ "Rank: " + rank + System.lineSeparator()
+					+ "Experience: " + exp;
 				break;
 			}
 		}
@@ -355,10 +361,6 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		// Clear details panel
-		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
-		details.setText("Click a skill for details");
-
 		for (JLabel label : skillLabels)
 		{
 			String skillName = (String) label.getClientProperty(SKILL_NAME);
@@ -377,11 +379,19 @@ public class HiscorePanel extends PluginPanel
 				);
 				label.setText(Integer.toString(combatLevel));
 			}
-			else if (skill != null)
+			else if (skill != null && result.getSkill(skill).getRank() != -1)
 			{
 				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
 			}
+			else
+			{
+				label.setText("--");
+			}
 		}
+
+		// Clear details panel
+		details.setFont(UIManager.getFont("Label.font").deriveFont(Font.ITALIC));
+		details.setText("Click a skill for details");
 	}
 
 	private static String sanitize(String lookup)

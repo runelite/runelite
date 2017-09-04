@@ -50,15 +50,15 @@ public enum HiscoreSkill
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
 	CONSTRUCTION("Construction"),
-	CLUE_SCROLL_EASY("Clue scrolls (easy)"),
-	CLUE_SCROLL_MEDIUM("Clue scrolls (medium)"),
-	CLUE_SCROLL_ALL("Clue scrolls (all)"),
+	CLUE_SCROLL_EASY("Clue Scrolls (easy)"),
+	CLUE_SCROLL_MEDIUM("Clue Scrolls (medium)"),
+	CLUE_SCROLL_ALL("Clue Scrolls (all)"),
 	BOUNTY_HUNTER_ROGUE("Bounty Hunter - Rogue"),
 	BOUNTY_HUNTER_HUNTER("Bounty Hunter - Hunter"),
-	CLUE_SCROLL_HARD("Clue scrolls (hard)"),
+	CLUE_SCROLL_HARD("Clue Scrolls (hard)"),
 	LAST_MAN_STANDING("Last Man Standing"),
-	CLUE_SCROLL_ELITE("Clue scrolls (elite)"),
-	CLUE_SCROLL_MASTER("Clue scrolls (master)");
+	CLUE_SCROLL_ELITE("Clue Scrolls (elite)"),
+	CLUE_SCROLL_MASTER("Clue Scrolls (master)");
 
 	private final String name;
 

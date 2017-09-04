@@ -85,13 +85,20 @@ public class HiscoreService
 		{
 			if (count++ >= HiscoreSkill.values().length)
 			{
+				logger.warn("Official Hiscore API returned unexpected data");
 				break; // rest is other things?
 			}
 
 			// rank, level, experience
 			int rank = Integer.parseInt(record.get(0));
 			int level = Integer.parseInt(record.get(1));
-			long experience = Long.parseLong(record.get(2));
+
+			// items that are not skills do not have an experience parameter
+			long experience = -1;
+			if (record.size() == 3)
+			{
+				experience = Long.parseLong(record.get(2));
+			}
 
 			Skill skill = new Skill(rank, level, experience);
 			hiscoreBuilder.setNextSkill(skill);
