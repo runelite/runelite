@@ -35,8 +35,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import net.runelite.cache.index.ArchiveData;
+import net.runelite.cache.index.FileData;
+import net.runelite.cache.index.IndexData;
 import net.runelite.cache.util.Djb2;
-import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.Whirlpool;
@@ -347,92 +349,29 @@ public class Index implements Closeable
 
 	public void readIndexData(byte[] data)
 	{
-		InputStream stream = new InputStream(data);
-		protocol = stream.readUnsignedByte();
-		if (protocol >= 5 && protocol <= 7)
+		IndexData indexData = new IndexData();
+		indexData.load(data);
+
+		protocol = indexData.getProtocol();
+		revision = indexData.getRevision();
+		named = indexData.isNamed();
+		usesWhirpool = indexData.isUsesWhirpool();
+
+		for (ArchiveData ad : indexData.getArchives())
 		{
-			if (protocol >= 6)
+			Archive archive = new Archive(this, ad.getId());
+			archive.setNameHash(ad.getNameHash());
+			archive.setWhirlpool(ad.getWhirlpool());
+			archive.setCrc(ad.getCrc());
+			archive.setRevision(ad.getRevision());
+
+			for (FileData fd : ad.getFiles())
 			{
-				this.revision = stream.readInt();
+				FSFile file = archive.addFile(fd.getId());
+				file.setNameHash(fd.getNameHash());
 			}
 
-			int hash = stream.readUnsignedByte();
-			named = (1 & hash) != 0;
-			usesWhirpool = (2 & hash) != 0;
-			assert (hash & ~3) == 0;
-			int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-			int lastArchiveId = 0;
-
-			int index;
-			int archive;
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				archive = lastArchiveId += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-				Archive a = new Archive(this, archive);
-				this.archives.add(a);
-			}
-
-			if (named)
-			{
-				for (index = 0; index < validArchivesCount; ++index)
-				{
-					int nameHash = stream.readInt();
-					Archive a = this.archives.get(index);
-					a.setNameHash(nameHash);
-				}
-			}
-
-			if (usesWhirpool)
-			{
-				for (index = 0; index < validArchivesCount; ++index)
-				{
-					byte[] var13 = new byte[64];
-					stream.readBytes(var13);
-
-					Archive a = this.archives.get(index);
-					a.setWhirlpool(var13);
-				}
-			}
-
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				int crc = stream.readInt();
-
-				Archive a = this.archives.get(index);
-				a.setCrc(crc);
-			}
-
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				int revision = stream.readInt();
-
-				Archive a = this.archives.get(index);
-				a.setRevision(revision);
-			}
-
-			int[] numberOfFiles = new int[validArchivesCount];
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				int num = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-				numberOfFiles[index] = num;
-			}
-
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				archive = 0;
-
-				Archive a = this.archives.get(index);
-				a.loadFiles(stream, numberOfFiles[index], protocol);
-			}
-
-			if (named)
-			{
-				for (index = 0; index < validArchivesCount; ++index)
-				{
-					Archive a = this.archives.get(index);
-					a.loadNames(stream, numberOfFiles[index]);
-				}
-			}
+			archives.add(archive);
 		}
 	}
 
