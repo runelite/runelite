@@ -134,6 +134,7 @@ public class HiscorePanel extends PluginPanel
 
 		input = new IconTextField();
 		input.setIcon(search);
+		input.setFont(labelFont.deriveFont(Font.BOLD));
 		input.addActionListener(e ->
 		{
 			ScheduledExecutorService executor = runelite.getExecutor();
@@ -180,6 +181,8 @@ public class HiscorePanel extends PluginPanel
 
 		JPanel minigamePanel = new JPanel();
 		minigamePanel.setBorder(subPanelBorder);
+		// These aren't all on one row because when there's a label with four or more digits it causes the details
+		// panel to change its size for some reason...
 		minigamePanel.setLayout(new GridLayout(2, 3));
 
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL.getName(), CLUE_SCROLL_ALL));

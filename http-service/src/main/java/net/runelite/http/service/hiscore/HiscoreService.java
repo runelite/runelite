@@ -26,10 +26,7 @@ package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
-import net.runelite.http.api.hiscore.Skill;
-import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.*;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,12 +47,39 @@ public class HiscoreService
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreService.class);
 
-	private static final HttpUrl RUNESCAPE_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_NORMAL_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws");
+	private static final HttpUrl RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
-	private HttpUrl url = RUNESCAPE_HISCORE_SERVICE;
-
-	private HiscoreResultBuilder lookupUsername(String username) throws IOException
+	private HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
+		HttpUrl url;
+
+		switch (endpoint)
+		{
+			case IRONMAN:
+				url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case HARDCORE_IRONMAN:
+				url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case ULTIMATE_IRONMAN:
+				url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case DEADMAN:
+				url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
+				break;
+			case SEASONAL_DEADMAN:
+				url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
+				break;
+			default:
+				url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
+				break;
+		}
+
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
@@ -85,7 +109,7 @@ public class HiscoreService
 		{
 			if (count++ >= HiscoreSkill.values().length)
 			{
-				logger.warn("Official Hiscore API returned unexpected data");
+				logger.warn("Jagex Hiscore API returned unexpected data");
 				break; // rest is other things?
 			}
 
@@ -107,20 +131,20 @@ public class HiscoreService
 		return hiscoreBuilder;
 	}
 
-	@RequestMapping
-	public HiscoreResult lookup(@RequestParam String username) throws IOException
+	@RequestMapping("/{endpoint}")
+	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws IOException
 	{
-		HiscoreResultBuilder result = lookupUsername(username);
+		HiscoreResultBuilder result = lookupUsername(username, endpoint);
 		return result.build();
 	}
 
-	@RequestMapping("/{skillName}")
-	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable String skillName, @RequestParam String username) throws IOException
+	@RequestMapping("/{endpoint}/{skillName}")
+	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws IOException
 	{
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
 
 		// RS api only supports looking up all stats
-		HiscoreResultBuilder result = lookupUsername(username);
+		HiscoreResultBuilder result = lookupUsername(username, endpoint);
 
 		// Find the skill to return
 		Skill requested = result.getSkill(skill.ordinal());
@@ -131,15 +155,5 @@ public class HiscoreService
 		skillResult.setSkill(requested);
 
 		return skillResult;
-	}
-
-	public HttpUrl getUrl()
-	{
-		return url;
-	}
-
-	public void setUrl(HttpUrl url)
-	{
-		this.url = url;
 	}
 }
