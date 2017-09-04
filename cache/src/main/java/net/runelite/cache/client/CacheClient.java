@@ -51,6 +51,8 @@ import net.runelite.cache.client.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.index.ArchiveData;
+import net.runelite.cache.index.IndexData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -239,45 +241,50 @@ public class CacheClient implements AutoCloseable
 				continue;
 			}
 
-			Index oldIndex = null;
-			if (index != null)
+			IndexData indexData = new IndexData();
+			indexData.load(indexFileResult.getContents());
+
+			if (index == null)
 			{
-				store.removeIndex(index);
-
-				oldIndex = index;
+				index = store.addIndex(i);
 			}
-
-			index = store.addIndex(i);
-
-			index.readIndexData(indexFileResult.getContents());
-			index.setCrc(crc);
+			else
+			{
+				// update index crc
+				index.setCrc(crc);
+			}
 
 			logger.info("Index {} has {} archives", i, index.getArchives().size());
 
-			for (Archive archive : index.getArchives())
+			for (ArchiveData ad : indexData.getArchives())
 			{
-				Archive oldArchive = oldIndex != null ? oldIndex.getArchive(archive.getArchiveId()) : null;
+				Archive existing = index.getArchive(ad.getId());
 
-				if (oldArchive == null || oldArchive.getRevision() != archive.getRevision())
+				if (existing == null || existing.getRevision() != ad.getRevision())
 				{
-					if (oldArchive == null)
+					if (existing == null)
 					{
-						logger.info("Archive {}/{} in index {} is out of date, downloading", archive.getArchiveId(), index.getArchives().size(), index.getId());
+						logger.info("Archive {}/{} in index {} is out of date, downloading",
+							ad.getId(), indexData.getArchives().length, index.getId());
 					}
-					else if (archive.getRevision() < oldArchive.getRevision())
+					else if (ad.getRevision() < existing.getRevision())
 					{
 						logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
-							archive.getArchiveId(), index.getArchives().size(), index.getId(),
-							oldArchive.getRevision(), archive.getRevision());
+							ad.getId(), indexData.getArchives().length, index.getId(),
+							existing.getRevision(), ad.getRevision());
 					}
 					else
 					{
 						logger.info("Archive {}/{} in index {} is out of date ({} != {}), downloading",
-							archive.getArchiveId(), index.getArchives().size(), index.getId(),
-							oldArchive.getRevision(), archive.getRevision());
+							ad.getId(), indexData.getArchives().length, index.getId(),
+							existing.getRevision(), ad.getRevision());
 					}
 
-					CompletableFuture<FileResult> future = requestFile(index.getId(), archive.getArchiveId(), false);
+					final Archive archive = existing == null
+						? index.addArchive(ad.getId())
+						: existing;
+
+					CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
 					future.handle((fr, ex) ->
 					{
 						archive.setData(fr.getCompressedData());
@@ -286,20 +293,8 @@ public class CacheClient implements AutoCloseable
 				}
 				else
 				{
-					logger.info("Active {}/{} in index {} is up to date", archive.getArchiveId(), index.getArchives().size(), index.getId());
-
-					// copy existing contents, this is sort of hackish.
-					byte[] contents = oldArchive.getData();
-					if (contents != null)
-					{
-						archive.setData(contents);
-					}
-					else
-					{
-						contents = oldArchive.saveContents();
-						archive.loadContents(contents);
-						archive.setCompression(oldArchive.getCompression());
-					}
+					logger.info("Active {}/{} in index {} is up to date",
+						ad.getId(), indexData.getArchives().length, index.getId());
 				}
 			}
 		}
