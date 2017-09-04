@@ -120,19 +120,6 @@ public class Archive
 		return file;
 	}
 
-	public void loadFiles(InputStream stream, int numberOfFiles, int protocol)
-	{
-		int archive = 0;
-
-		for (int i = 0; i < numberOfFiles; ++i)
-		{
-			int fileId = archive += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-
-			FSFile file = new FSFile(this, fileId);
-			this.files.add(file);
-		}
-	}
-
 	public void decompressAndLoad(int[] keys) throws IOException
 	{
 		byte[] encryptedData = this.getData();
@@ -426,16 +413,6 @@ public class Archive
 
 		// the filesystem may order these differently (eg, 1, 10, 2)
 		Collections.sort(files, (f1, f2) -> Integer.compare(f1.getFileId(), f2.getFileId()));
-	}
-
-	public void loadNames(InputStream stream, int numberOfFiles)
-	{
-		for (int i = 0; i < numberOfFiles; ++i)
-		{
-			FSFile file = this.files.get(i);
-			int name = stream.readInt();
-			file.setNameHash(name);
-		}
 	}
 
 	public int getArchiveId()
