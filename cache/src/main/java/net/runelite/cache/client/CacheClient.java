@@ -37,14 +37,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import net.runelite.cache.client.requests.ConnectionInfo;
 import net.runelite.cache.client.requests.FileRequest;
 import net.runelite.cache.client.requests.HelloHandshake;
@@ -194,7 +192,7 @@ public class CacheClient implements AutoCloseable
 		return indexInfo;
 	}
 
-	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
+	public void download() throws IOException
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
@@ -230,7 +228,7 @@ public class CacheClient implements AutoCloseable
 
 			logger.info("Downloading index {}", i);
 
-			FileResult indexFileResult = requestFile(255, i, true).get();
+			FileResult indexFileResult = requestFile(255, i, true).join();
 			indexFileResult.decompress(null);
 
 			logger.info("Downloaded index {}", i);
@@ -307,7 +305,14 @@ public class CacheClient implements AutoCloseable
 			// wait for pending requests
 			synchronized (this)
 			{
-				wait();
+				try
+				{
+					wait();
+				}
+				catch (InterruptedException ex)
+				{
+					logger.warn(null, ex);
+				}
 			}
 		}
 
