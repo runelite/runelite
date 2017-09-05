@@ -47,9 +47,11 @@ import net.runelite.cache.client.requests.ConnectionInfo;
 import net.runelite.cache.client.requests.FileRequest;
 import net.runelite.cache.client.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.ArchiveData;
+import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -175,6 +177,8 @@ public class CacheClient implements AutoCloseable
 
 	public List<IndexInfo> requestIndexes() throws IOException
 	{
+		logger.info("Requesting indexes");
+
 		FileResult result = requestFile(255, 255, true).join();
 		result.decompress(null);
 
@@ -281,6 +285,14 @@ public class CacheClient implements AutoCloseable
 					final Archive archive = existing == null
 						? index.addArchive(ad.getId())
 						: existing;
+
+					// Add files
+					archive.getFiles().clear();
+					for (FileData fd : ad.getFiles())
+					{
+						FSFile file = archive.addFile(fd.getId());
+						file.setNameHash(fd.getNameHash());
+					}
 
 					CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
 					future.handle((fr, ex) ->
