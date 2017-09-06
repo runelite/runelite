@@ -22,8 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package net.runelite.cache.fs;
+package net.runelite.cache.fs.jagex;
 
 import java.io.Closeable;
 import java.io.File;
@@ -49,51 +48,47 @@ import org.slf4j.LoggerFactory;
 public class DataFile implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(DataFile.class);
-	
+
 	private static final int SECTOR_SIZE = 520;
-	
-	private final Store store;
-	private final File file;
+
 	private final RandomAccessFile dat;
-	private final byte[] readCachedBuffer = new byte[SECTOR_SIZE];
-	
-	public DataFile(Store store, File file) throws FileNotFoundException
+
+	public DataFile(File file) throws FileNotFoundException
 	{
-		this.file = file;
-		this.store = store;
-		dat = new RandomAccessFile(file, "rw");
+		this.dat = new RandomAccessFile(file, "rw");
 	}
-	
+
 	@Override
 	public void close() throws IOException
 	{
 		dat.close();
 	}
-	
+
 	public void clear() throws IOException
 	{
 		dat.setLength(0L);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param indexId expected index of archive of contents being read
 	 * @param archiveId expected archive of contents being read
 	 * @param sector sector to start reading at
 	 * @param size size of file
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public synchronized byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
+	public byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / SECTOR_SIZE < (long) sector)
 		{
 			logger.warn("bad read, dat length {}, requested sector {}", dat.length(), sector);
 			return null;
 		}
-		
+
+		byte[] readBuffer = new byte[SECTOR_SIZE];
 		ByteBuffer buffer = ByteBuffer.allocate(size);
-		
+
 		for (int part = 0, readBytesCount = 0, nextSector;
 			size > readBytesCount;
 			sector = nextSector)
@@ -105,7 +100,7 @@ public class DataFile implements Closeable
 			}
 
 			dat.seek(SECTOR_SIZE * sector);
-			
+
 			int dataBlockSize = size - readBytesCount;
 			byte headerSize;
 			int currentIndex;
@@ -119,17 +114,22 @@ public class DataFile implements Closeable
 					dataBlockSize = SECTOR_SIZE - headerSize;
 				}
 
-				int i = dat.read(this.readCachedBuffer, 0, headerSize + dataBlockSize);
+				int i = dat.read(readBuffer, 0, headerSize + dataBlockSize);
 				if (i != headerSize + dataBlockSize)
 				{
 					logger.warn("Short read when reading file data for {}/{}", indexId, archiveId);
 					return null;
 				}
-				
-				currentArchive = ((this.readCachedBuffer[1] & 255) << 16) + ((this.readCachedBuffer[0] & 255) << 24) + (('\uff00' & this.readCachedBuffer[2] << 8) - -(this.readCachedBuffer[3] & 255));
-				currentPart = ((this.readCachedBuffer[4] & 255) << 8) + (255 & this.readCachedBuffer[5]);
-				nextSector = (this.readCachedBuffer[8] & 255) + ('\uff00' & this.readCachedBuffer[7] << 8) + ((255 & this.readCachedBuffer[6]) << 16);
-				currentIndex = this.readCachedBuffer[9] & 255;
+
+				currentArchive = ((readBuffer[0] & 0xFF) << 24)
+					| ((readBuffer[1] & 0xFF) << 16)
+					| ((readBuffer[2] & 0xFF) << 8)
+					| (readBuffer[3] & 0xFF);
+				currentPart = ((readBuffer[4] & 0xFF) << 8) + (readBuffer[5] & 0xFF);
+				nextSector = ((readBuffer[6] & 0xFF) << 16)
+					| ((readBuffer[7] & 0xFF) << 8)
+					| (readBuffer[8] & 0xFF);
+				currentIndex = readBuffer[9] & 0xFF;
 			}
 			else
 			{
@@ -139,17 +139,21 @@ public class DataFile implements Closeable
 					dataBlockSize = SECTOR_SIZE - headerSize;
 				}
 
-				int i = dat.read(this.readCachedBuffer, 0, headerSize + dataBlockSize);
+				int i = dat.read(readBuffer, 0, headerSize + dataBlockSize);
 				if (i != headerSize + dataBlockSize)
 				{
 					logger.warn("short read");
 					return null;
 				}
-				
-				currentArchive = (255 & this.readCachedBuffer[1]) + ('\uff00' & this.readCachedBuffer[0] << 8);
-				currentPart = ((this.readCachedBuffer[2] & 255) << 8) + (255 & this.readCachedBuffer[3]);
-				nextSector = (this.readCachedBuffer[6] & 255) + ('\uff00' & this.readCachedBuffer[5] << 8) + ((255 & this.readCachedBuffer[4]) << 16);
-				currentIndex = this.readCachedBuffer[7] & 255;
+
+				currentArchive = ((readBuffer[0] & 0xFF) << 8)
+					| (readBuffer[1] & 0xFF);
+				currentPart = ((readBuffer[2] & 0xFF) << 8)
+					| (readBuffer[3] & 0xFF);
+				nextSector = ((readBuffer[4] & 0xFF) << 16)
+					| ((readBuffer[5] & 0xFF) << 8)
+					| (readBuffer[6] & 0xFF);
+				currentIndex = readBuffer[7] & 0xFF;
 			}
 
 			if (archiveId != currentArchive || currentPart != part || indexId != currentIndex)
@@ -167,7 +171,7 @@ public class DataFile implements Closeable
 				return null;
 			}
 
-			buffer.put(readCachedBuffer, headerSize, dataBlockSize);
+			buffer.put(readBuffer, headerSize, dataBlockSize);
 			readBytesCount += dataBlockSize;
 
 			++part;
@@ -176,14 +180,15 @@ public class DataFile implements Closeable
 		buffer.flip();
 		return buffer.array();
 	}
-	
-	public synchronized DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData, int revision) throws IOException
+
+	public DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData, int revision) throws IOException
 	{
 		int sector;
 		int startSector;
 
+		byte[] writeBuffer = new byte[SECTOR_SIZE];
 		ByteBuffer data = ByteBuffer.wrap(compressedData);
-		
+
 		sector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 		if (sector == 0)
 		{
@@ -210,27 +215,26 @@ public class DataFile implements Closeable
 				}
 			}
 
-
 			if (0xFFFF < archiveId)
 			{
 				if (data.remaining() <= 510)
 				{
 					nextSector = 0;
 				}
-			
-				this.readCachedBuffer[0] = (byte) (archiveId >> 24);
-				this.readCachedBuffer[1] = (byte) (archiveId >> 16);
-				this.readCachedBuffer[2] = (byte) (archiveId >> 8);
-				this.readCachedBuffer[3] = (byte) archiveId;
-				this.readCachedBuffer[4] = (byte) (part >> 8);
-				this.readCachedBuffer[5] = (byte) part;
-				this.readCachedBuffer[6] = (byte) (nextSector >> 16);
-				this.readCachedBuffer[7] = (byte) (nextSector >> 8);
-				this.readCachedBuffer[8] = (byte) nextSector;
-				this.readCachedBuffer[9] = (byte) indexId;
+
+				writeBuffer[0] = (byte) (archiveId >> 24);
+				writeBuffer[1] = (byte) (archiveId >> 16);
+				writeBuffer[2] = (byte) (archiveId >> 8);
+				writeBuffer[3] = (byte) archiveId;
+				writeBuffer[4] = (byte) (part >> 8);
+				writeBuffer[5] = (byte) part;
+				writeBuffer[6] = (byte) (nextSector >> 16);
+				writeBuffer[7] = (byte) (nextSector >> 8);
+				writeBuffer[8] = (byte) nextSector;
+				writeBuffer[9] = (byte) indexId;
 				dat.seek(SECTOR_SIZE * sector);
-				dat.write(this.readCachedBuffer, 0, 10);
-				
+				dat.write(writeBuffer, 0, 10);
+
 				dataToWrite = data.remaining();
 				if (dataToWrite > 510)
 				{
@@ -243,18 +247,18 @@ public class DataFile implements Closeable
 				{
 					nextSector = 0;
 				}
-			
-				this.readCachedBuffer[0] = (byte) (archiveId >> 8);
-				this.readCachedBuffer[1] = (byte) archiveId;
-				this.readCachedBuffer[2] = (byte) (part >> 8);
-				this.readCachedBuffer[3] = (byte) part;
-				this.readCachedBuffer[4] = (byte) (nextSector >> 16);
-				this.readCachedBuffer[5] = (byte) (nextSector >> 8);
-				this.readCachedBuffer[6] = (byte) nextSector;
-				this.readCachedBuffer[7] = (byte) indexId;
+
+				writeBuffer[0] = (byte) (archiveId >> 8);
+				writeBuffer[1] = (byte) archiveId;
+				writeBuffer[2] = (byte) (part >> 8);
+				writeBuffer[3] = (byte) part;
+				writeBuffer[4] = (byte) (nextSector >> 16);
+				writeBuffer[5] = (byte) (nextSector >> 8);
+				writeBuffer[6] = (byte) nextSector;
+				writeBuffer[7] = (byte) indexId;
 				dat.seek(SECTOR_SIZE * sector);
-				dat.write(this.readCachedBuffer, 0, 8);
-				
+				dat.write(writeBuffer, 0, 8);
+
 				dataToWrite = data.remaining();
 				if (dataToWrite > 512)
 				{
@@ -262,11 +266,11 @@ public class DataFile implements Closeable
 				}
 			}
 
-			data.get(readCachedBuffer, 0, dataToWrite);
-			dat.write(readCachedBuffer, 0, dataToWrite);
+			data.get(writeBuffer, 0, dataToWrite);
+			dat.write(writeBuffer, 0, dataToWrite);
 			sector = nextSector;
 		}
-		
+
 		DataFileWriteResult res = new DataFileWriteResult();
 		res.sector = startSector;
 		res.compressedLength = compressedData.length;
@@ -279,19 +283,21 @@ public class DataFile implements Closeable
 		res.whirlpool = Whirlpool.getHash(compressedData, length);
 		return res;
 	}
-	
+
 	public static DataFileReadResult decompress(byte[] b, int[] keys) throws IOException
 	{
 		InputStream stream = new InputStream(b);
-		
+
 		int compression = stream.readUnsignedByte();
 		int compressedLength = stream.readInt();
 		if (compressedLength < 0 || compressedLength > 1000000)
+		{
 			throw new RuntimeException("Invalid data");
+		}
 
 		Crc32 crc32 = new Crc32();
 		crc32.update(b, 0, 5); // compression + length
-		
+
 		byte[] data;
 		int revision = -1;
 		switch (compression)
@@ -311,7 +317,7 @@ public class DataFile implements Closeable
 				}
 
 				data = decryptedData;
-				
+
 				break;
 			}
 			case CompressionType.BZ2:
@@ -339,7 +345,7 @@ public class DataFile implements Closeable
 				}
 
 				assert data.length == decompressedLength;
-				
+
 				break;
 			}
 			case CompressionType.GZ:
@@ -367,13 +373,13 @@ public class DataFile implements Closeable
 				}
 
 				assert data.length == decompressedLength;
-				
+
 				break;
 			}
 			default:
 				throw new RuntimeException("Unknown decompression type");
 		}
-		
+
 		DataFileReadResult res = new DataFileReadResult();
 		res.data = data;
 		res.revision = revision;
@@ -383,7 +389,7 @@ public class DataFile implements Closeable
 		res.compression = compression;
 		return res;
 	}
-	
+
 	public static byte[] compress(byte[] data, int compression, int revision, int[] keys) throws IOException
 	{
 		OutputStream stream = new OutputStream();
@@ -406,7 +412,7 @@ public class DataFile implements Closeable
 			case CompressionType.GZ:
 				compressedData = GZip.compress(data);
 				compressedData = encrypt(compressedData, compressedData.length, keys);
-				
+
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);
 				break;
@@ -416,7 +422,9 @@ public class DataFile implements Closeable
 
 		stream.writeBytes(compressedData);
 		if (revision != -1)
+		{
 			stream.writeShort(revision);
+		}
 
 		return stream.flip();
 	}
@@ -424,7 +432,9 @@ public class DataFile implements Closeable
 	private static byte[] decrypt(byte[] data, int length, int[] keys)
 	{
 		if (keys == null)
+		{
 			return data;
+		}
 
 		try
 		{
@@ -441,7 +451,9 @@ public class DataFile implements Closeable
 	private static byte[] encrypt(byte[] data, int length, int[] keys)
 	{
 		if (keys == null)
+		{
 			return data;
+		}
 
 		try
 		{

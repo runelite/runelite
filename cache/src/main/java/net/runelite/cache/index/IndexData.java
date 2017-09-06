@@ -25,6 +25,7 @@
 package net.runelite.cache.index;
 
 import net.runelite.cache.io.InputStream;
+import net.runelite.cache.io.OutputStream;
 
 public class IndexData
 {
@@ -143,6 +144,135 @@ public class IndexData
 				}
 			}
 		}
+	}
+
+	public byte[] writeIndexData()
+	{
+		OutputStream stream = new OutputStream();
+		stream.writeByte(protocol);
+		if (protocol >= 6)
+		{
+			stream.writeInt(this.revision);
+		}
+
+		stream.writeByte((named ? 1 : 0) | (usesWhirpool ? 2 : 0));
+		if (protocol >= 7)
+		{
+			stream.writeBigSmart(this.archives.length);
+		}
+		else
+		{
+			stream.writeShort(this.archives.length);
+		}
+
+		for (int i = 0; i < this.archives.length; ++i)
+		{
+			ArchiveData a = this.archives[i];
+			int archive = a.getId();
+
+			if (i != 0)
+			{
+				ArchiveData prev = this.archives[i - 1];
+				archive -= prev.getId();
+			}
+
+			if (protocol >= 7)
+			{
+				stream.writeBigSmart(archive);
+			}
+			else
+			{
+				stream.writeShort(archive);
+			}
+		}
+
+		if (named)
+		{
+			for (int i = 0; i < this.archives.length; ++i)
+			{
+				ArchiveData a = this.archives[i];
+				stream.writeInt(a.getNameHash());
+			}
+		}
+
+		if (usesWhirpool)
+		{
+			for (int i = 0; i < this.archives.length; ++i)
+			{
+				ArchiveData a = this.archives[i];
+				stream.writeBytes(a.getWhirlpool());
+			}
+		}
+
+		for (int i = 0; i < this.archives.length; ++i)
+		{
+			ArchiveData a = this.archives[i];
+			stream.writeInt(a.getCrc());
+		}
+
+		for (int i = 0; i < this.archives.length; ++i)
+		{
+			ArchiveData a = this.archives[i];
+			stream.writeInt(a.getRevision());
+		}
+
+		for (int i = 0; i < this.archives.length; ++i)
+		{
+			ArchiveData a = this.archives[i];
+
+			int len = a.getFiles().length;
+
+			if (protocol >= 7)
+			{
+				stream.writeBigSmart(len);
+			}
+			else
+			{
+				stream.writeShort(len);
+			}
+		}
+
+		for (int i = 0; i < this.archives.length; ++i)
+		{
+			ArchiveData a = this.archives[i];
+
+			for (int j = 0; j < a.getFiles().length; ++j)
+			{
+				FileData file = a.getFiles()[j];
+				int offset = file.getId();
+
+				if (j != 0)
+				{
+					FileData prev = a.getFiles()[j - 1];
+					offset -= prev.getId();
+				}
+
+				if (protocol >= 7)
+				{
+					stream.writeBigSmart(offset);
+				}
+				else
+				{
+					stream.writeShort(offset);
+				}
+			}
+		}
+
+		if (named)
+		{
+			for (int i = 0; i < this.archives.length; ++i)
+			{
+				ArchiveData a = this.archives[i];
+
+				for (int j = 0; j < a.getFiles().length; ++j)
+				{
+					FileData file = a.getFiles()[j];
+					stream.writeInt(file.getNameHash());
+				}
+			}
+		}
+
+		return stream.flip();
 	}
 
 	public int getProtocol()

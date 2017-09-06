@@ -24,13 +24,11 @@
  */
 package net.runelite.cache.fs;
 
-import com.google.common.io.Files;
-import java.io.File;
+import net.runelite.cache.fs.jagex.DataFile;
+import net.runelite.cache.fs.jagex.DataFileReadResult;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.io.InputStream;
@@ -42,18 +40,18 @@ public class Archive
 {
 	private static final Logger logger = LoggerFactory.getLogger(Archive.class);
 
-	private Index index; // member of this index
+	private final Index index; // member of this index
 
 	private byte[] data; // raw data from the datafile, compressed/encrypted
 
-	private int archiveId;
+	private final int archiveId;
 	private int nameHash;
 	private byte[] whirlpool;
 	private int crc;
 	private int revision;
 	private int compression;
 
-	private List<FSFile> files = new ArrayList<>();
+	private final List<FSFile> files = new ArrayList<>();
 
 	public Archive(Index index, int id)
 	{
@@ -101,6 +99,11 @@ public class Archive
 			return false;
 		}
 		return true;
+	}
+
+	public Index getIndex()
+	{
+		return index;
 	}
 
 	public byte[] getData()
@@ -167,6 +170,8 @@ public class Archive
 	public void loadContents(byte[] data)
 	{
 		logger.trace("Loading contents of archive {} ({} files)", archiveId, files.size());
+
+		assert !this.getFiles().isEmpty();
 
 		if (this.getFiles().size() == 1)
 		{
@@ -268,151 +273,6 @@ public class Archive
 		logger.trace("Saved contents of archive {}/{} ({} files), {} bytes", index.getId(), archiveId, files.size(), fileData.length);
 
 		return fileData;
-	}
-
-	public void saveTree(File to) throws IOException
-	{
-		if (data != null)
-		{
-			assert files.size() == 1; // this is the maps
-
-			FSFile file = files.get(0);
-
-			File archiveFile = new File(to, this.getArchiveId() + "-"
-				+ file.getFileId() + "-" + Integer.toHexString(file.getNameHash()) + ".datc");
-			Files.write(data, archiveFile);
-
-			archiveFile = new File(to, this.getArchiveId() + ".rev");
-			Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
-
-			archiveFile = new File(to, this.getArchiveId() + ".name");
-			Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
-			return;
-		}
-
-		if (files.size() == 1)
-		{
-			FSFile file = this.getFiles().get(0);
-
-			File archiveFile = new File(to, this.getArchiveId() + "-"
-				+ file.getFileId() + "-" + Integer.toHexString(file.getNameHash()) + ".dat");
-			byte[] contents = file.getContents();
-
-			Files.write(contents, archiveFile);
-
-			archiveFile = new File(to, this.getArchiveId() + ".rev");
-			Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
-
-			archiveFile = new File(to, this.getArchiveId() + ".name");
-			Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
-			return;
-		}
-
-		File archiveFile = new File(to, this.getArchiveId() + ".rev");
-		Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
-
-		archiveFile = new File(to, this.getArchiveId() + ".name");
-		Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
-
-		File archiveFolder = new File(to, "" + this.getArchiveId());
-		archiveFolder.mkdirs();
-
-		for (FSFile file : files)
-		{
-			archiveFile = new File(archiveFolder, file.getFileId() + "-"
-				+ Integer.toHexString(file.getNameHash()) + ".dat");
-			byte[] contents = file.getContents();
-			Files.write(contents, archiveFile);
-		}
-	}
-
-	public void loadTreeData(File parent, File from) throws IOException
-	{
-		//archiveId-fileId-fileName
-		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
-		assert parts.length == 3;
-
-		int archiveId = Integer.parseInt(parts[0]);
-		int fileId = Integer.parseInt(parts[1]);
-		int nameHash = (int) Long.parseLong(parts[2], 16);
-
-		assert archiveId == this.getArchiveId();
-
-		data = Files.toByteArray(from);
-
-		FSFile file = new FSFile(this, fileId);
-		file.setNameHash(nameHash);
-
-		files.add(file);
-
-		File archiveFile = new File(parent, this.getArchiveId() + ".rev");
-		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setRevision(rev);
-
-		archiveFile = new File(parent, this.getArchiveId() + ".name");
-		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setNameHash(name);
-	}
-
-	public void loadTreeSingleFile(File parent, File from) throws IOException
-	{
-		//archiveId-fileId-fileName
-		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
-		assert parts.length == 3;
-
-		int archiveId = Integer.parseInt(parts[0]);
-		int fileId = Integer.parseInt(parts[1]);
-		int nameHash = (int) Long.parseLong(parts[2], 16);
-
-		assert archiveId == this.getArchiveId();
-
-		FSFile file = new FSFile(this, fileId);
-		file.setNameHash(nameHash);
-
-		byte[] contents = Files.toByteArray(from);
-		file.setContents(contents);
-
-		files.add(file);
-
-		File archiveFile = new File(parent, this.getArchiveId() + ".rev");
-		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setRevision(rev);
-
-		archiveFile = new File(parent, this.getArchiveId() + ".name");
-		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setNameHash(name);
-	}
-
-	public void loadTree(File parent, File from) throws IOException
-	{
-		for (File file : from.listFiles())
-		{
-			//fileId-fileName.dat
-			String[] split = Files.getNameWithoutExtension(file.getName()).split("-");
-			assert split.length == 2;
-
-			int fileId = Integer.parseInt(split[0]);
-			int fileName = (int) Long.parseLong(split[1], 16);
-
-			FSFile f = new FSFile(this, fileId);
-			f.setNameHash(fileName);
-
-			byte[] contents = Files.toByteArray(file);
-			f.setContents(contents);
-
-			files.add(f);
-		}
-
-		File archiveFile = new File(parent, this.getArchiveId() + ".rev");
-		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setRevision(rev);
-
-		archiveFile = new File(parent, this.getArchiveId() + ".name");
-		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
-		this.setNameHash(name);
-
-		// the filesystem may order these differently (eg, 1, 10, 2)
-		Collections.sort(files, (f1, f2) -> Integer.compare(f1.getFileId(), f2.getFileId()));
 	}
 
 	public int getArchiveId()

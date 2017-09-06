@@ -22,33 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
-import java.io.File;
 import java.io.IOException;
-import net.runelite.cache.StoreLocation;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-public class IndexFileTest
+public interface Storage extends AutoCloseable
 {
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-	
-	@Test
-	public void test() throws IOException
-	{
-		File file = folder.newFile();
-		try (Store store = new Store(folder.getRoot()))
-		{
-			IndexFile index = new IndexFile(store, 5, file);
-			IndexEntry entry = new IndexEntry(index, 7, 8, 9);
-			index.write(entry);
-			IndexEntry entry2 = index.read(7);
-			Assert.assertEquals(entry, entry2);
-		}
-	}
+	void init(Store store) throws IOException;
+
+	@Override
+	void close() throws IOException;
+
+	void load(Store store) throws IOException;
+
+	void save(Store store) throws IOException;
 }

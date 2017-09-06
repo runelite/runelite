@@ -28,6 +28,7 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
+import net.runelite.cache.fs.tree.TreeStorage;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -70,6 +71,10 @@ public class StoreLoadTest
 				Assert.assertTrue(store.equals(testStore));
 
 				testStore.save();
+			}
+
+			try (Store testStore = new Store(testStoreFile))
+			{
 				testStore.load();
 
 				Assert.assertTrue(store.equals(testStore));
@@ -86,7 +91,8 @@ public class StoreLoadTest
 		{
 			store.load();
 
-			store.saveTree(folder.newFolder());
+			TreeStorage storage = new TreeStorage(folder.newFolder());
+			storage.save(store);
 		}
 	}
 
@@ -96,8 +102,9 @@ public class StoreLoadTest
 	{
 		try (Store store = new Store(folder.newFolder()))
 		{
-			store.loadTree(new File("C:\\rs\\temp\\tree"));
-			
+			TreeStorage storage = new TreeStorage(new File("C:\\rs\\temp\\tree"));
+			storage.load(store);
+
 			try (Store store2 = new Store(StoreLocation.LOCATION))
 			{
 				store2.load();
@@ -114,7 +121,9 @@ public class StoreLoadTest
 		try (Store store = new Store(new File("d:/rs/07/temp/cache")))
 		{
 			store.load();
-			store.saveTree(new File("d:/rs/07/temp/tree"));
+
+			TreeStorage storage = new TreeStorage(new File("d:/rs/07/temp/tree"));
+			storage.save(store);
 		}
 	}
 }
