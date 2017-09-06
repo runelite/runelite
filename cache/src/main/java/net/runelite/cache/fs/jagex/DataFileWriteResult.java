@@ -22,11 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.fs;
 
-public class CompressionType
+package net.runelite.cache.fs.jagex;
+
+public class DataFileWriteResult
 {
-	public static final int NONE = 0;
-	public static final int BZ2  = 1;
-	public static final int GZ   = 2;
+	public int sector, compressedLength;
+	public int crc; // crc of compressed data
+	public byte[] whirlpool;
 }

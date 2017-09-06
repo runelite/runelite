@@ -22,79 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client;
+package net.runelite.cache.fs.jagex;
 
+import java.io.File;
 import java.io.IOException;
-import net.runelite.cache.fs.jagex.DataFile;
-import net.runelite.cache.fs.jagex.DataFileReadResult;
+import net.runelite.cache.StoreLocation;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-public class FileResult
+public class IndexFileTest
 {
-	private final int index;
-	private final int fileId;
-	private final byte[] compressedData;
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	private byte[] contents;
-	private int revision;
-	private int crc;
-	private byte[] whirlpool;
-	private int compression; // compression method used by archive data
-
-	public FileResult(int index, int fileId, byte[] compressedData)
+	@Test
+	public void test() throws IOException
 	{
-		this.index = index;
-		this.fileId = fileId;
-		this.compressedData = compressedData;
-	}
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public int getFileId()
-	{
-		return fileId;
-	}
-
-	public byte[] getCompressedData()
-	{
-		return compressedData;
-	}
-
-	public void decompress(int[] keys) throws IOException
-	{
-		DataFileReadResult res = DataFile.decompress(compressedData, keys);
-
-		contents = res.data;
-		revision = res.revision;
-		crc = res.crc;
-		whirlpool = res.whirlpool;
-		compression = res.compression;
-	}
-
-	public byte[] getContents()
-	{
-		return contents;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public int getCrc()
-	{
-		return crc;
-	}
-
-	public byte[] getWhirlpool()
-	{
-		return whirlpool;
-	}
-
-	public int getCompression()
-	{
-		return compression;
+		File file = folder.newFile();
+		IndexFile index = new IndexFile(5, file);
+		IndexEntry entry = new IndexEntry(index, 7, 8, 9);
+		index.write(entry);
+		IndexEntry entry2 = index.read(7);
+		Assert.assertEquals(entry, entry2);
 	}
 }

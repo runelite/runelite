@@ -94,7 +94,8 @@ public class CacheServerTest
 
 			server.start();
 
-			try (Store store2 = new Store(folder.newFolder()); CacheClient client = new CacheClient(store2, HOST, REVISION))
+			try (Store store2 = new Store(folder.newFolder());
+				CacheClient client = new CacheClient(store2, HOST, REVISION))
 			{
 				client.connect();
 				client.handshake().get();

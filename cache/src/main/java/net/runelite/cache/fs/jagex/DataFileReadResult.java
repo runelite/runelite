@@ -23,11 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache.fs;
+package net.runelite.cache.fs.jagex;
 
-public class DataFileWriteResult
+public class DataFileReadResult
 {
-	public int sector, compressedLength;
+	public byte[] data;
+	public int revision;
 	public int crc; // crc of compressed data
 	public byte[] whirlpool;
+	public int compression; // compression method data was compressed with
 }

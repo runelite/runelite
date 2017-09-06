@@ -34,8 +34,8 @@ import java.util.Arrays;
 import net.runelite.cache.client.requests.ConnectionInfo;
 import net.runelite.cache.client.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.CompressionType;
-import net.runelite.cache.fs.DataFile;
+import net.runelite.cache.fs.jagex.CompressionType;
+import net.runelite.cache.fs.jagex.DataFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.slf4j.Logger;
@@ -188,7 +188,7 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 			Index i = store.findIndex(archiveId);
 			assert i != null;
 
-			byte[] indexData = i.writeIndexData();
+			byte[] indexData = i.toIndexData().writeIndexData();
 
 			byte[] compressed = compress(CompressionType.NONE, indexData);
 			byte[] packed = addHeader(255, archiveId, compressed);

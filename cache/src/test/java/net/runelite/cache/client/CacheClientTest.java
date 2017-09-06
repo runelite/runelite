@@ -28,6 +28,7 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import net.runelite.cache.CacheProperties;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.fs.tree.TreeStorage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -50,10 +51,10 @@ public class CacheClientTest
 	@Ignore
 	public void test() throws Exception
 	{
-		try (Store store = new Store(new File("d:/temp")))
+		try (Store store = new Store(new File("D:\\rs\\07\\temp\\cache")))
 		{
 			store.load();
-			
+
 			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
 			CompletableFuture<Integer> handshake = c.handshake();
@@ -62,11 +63,11 @@ public class CacheClientTest
 			logger.info("Handshake result: {}", result);
 
 			Assert.assertEquals(0, (int) result);
-			
+
 			c.download();
 
 			c.close();
-			
+
 			store.save();
 		}
 	}
@@ -77,8 +78,9 @@ public class CacheClientTest
 	{
 		try (Store store = new Store(new File("C:\\rs\\temp")))
 		{
-			store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
-			
+			TreeStorage storage = new TreeStorage(new File("C:\\rs\\runescape-data\\cache"));
+			storage.load(store);
+
 			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
 			CompletableFuture<Integer> handshake = c.handshake();
@@ -87,12 +89,13 @@ public class CacheClientTest
 			logger.info("Handshake result: {}", result);
 
 			Assert.assertEquals(0, (int) result);
-			
+
 			c.download();
 
 			c.close();
-			
-			store.saveTree(new File("C:\\rs\\temp\\t"));
+
+			storage = new TreeStorage(new File("C:\\rs\\temp\\t"));
+			storage.save(store);
 		}
 	}
 }
