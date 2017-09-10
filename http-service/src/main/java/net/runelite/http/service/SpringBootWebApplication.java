@@ -59,18 +59,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 
 	}
 
-	@Bean("OAuth Client ID")
-	String oauthClientId() throws NamingException
-	{
-		return (String) getContext().lookup("runelite-oauth-client-id");
-	}
-
-	@Bean("OAuth Client Secret")
-	String oauthClientSecret() throws NamingException
-	{
-		return (String) getContext().lookup("runelite-oauth-client-secret");
-	}
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
 	{
