@@ -48,18 +48,6 @@ public class SpringBootWebApplicationTest
 
 	}
 
-	@Bean("OAuth Client ID")
-	String oauthClientId()
-	{
-		return "moo";
-	}
-
-	@Bean("OAuth Client Secret")
-	String oauthClientSecret()
-	{
-		return "moo2";
-	}
-
 	@Test
 	@Ignore
 	public void test() throws InterruptedException

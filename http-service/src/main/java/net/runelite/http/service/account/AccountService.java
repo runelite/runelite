@@ -49,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -97,8 +98,8 @@ public class AccountService
 	@Autowired
 	public AccountService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		@Qualifier("OAuth Client ID") String oauthClientId,
-		@Qualifier("OAuth Client Secret") String oauthClientSecret,
+		@Value("${oauth.client-id}") String oauthClientId,
+		@Value("${oauth.client-secret}") String oauthClientSecret,
 		AuthFilter auth
 	)
 	{
