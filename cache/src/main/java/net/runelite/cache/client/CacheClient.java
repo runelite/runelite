@@ -68,6 +68,7 @@ public class CacheClient implements AutoCloseable
 	private final Store store; // store cache will be written to
 	private final String host;
 	private final int clientRevision;
+	private DownloadWatcher watcher;
 
 	private ClientState state;
 
@@ -87,6 +88,12 @@ public class CacheClient implements AutoCloseable
 		this.store = store;
 		this.host = host;
 		this.clientRevision = clientRevision;
+	}
+
+	public CacheClient(Store store, int clientRevision, DownloadWatcher watcher)
+	{
+		this(store, clientRevision);
+		this.watcher = watcher;
 	}
 
 	public void connect()
@@ -226,8 +233,9 @@ public class CacheClient implements AutoCloseable
 			}
 			else
 			{
+				// despite the index being up to date, not everything
+				// can be downloaded, eg. for tracks.
 				logger.info("Index {} is up to date", index.getId());
-				continue;
 			}
 
 			logger.info("Downloading index {}", i);
@@ -250,11 +258,10 @@ public class CacheClient implements AutoCloseable
 			{
 				index = store.addIndex(i);
 			}
-			else
-			{
-				// update index crc
-				index.setCrc(crc);
-			}
+
+			// update index crc and revision
+			index.setCrc(crc);
+			index.setRevision(revision);
 
 			logger.info("Index {} has {} archives", i, index.getArchives().size());
 
@@ -262,50 +269,58 @@ public class CacheClient implements AutoCloseable
 			{
 				Archive existing = index.getArchive(ad.getId());
 
-				if (existing == null || existing.getRevision() != ad.getRevision())
+				if (existing != null && existing.getRevision() == ad.getRevision())
 				{
-					if (existing == null)
-					{
-						logger.info("Archive {}/{} in index {} is out of date, downloading",
-							ad.getId(), indexData.getArchives().length, index.getId());
-					}
-					else if (ad.getRevision() < existing.getRevision())
-					{
-						logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
-							ad.getId(), indexData.getArchives().length, index.getId(),
-							existing.getRevision(), ad.getRevision());
-					}
-					else
-					{
-						logger.info("Archive {}/{} in index {} is out of date ({} != {}), downloading",
-							ad.getId(), indexData.getArchives().length, index.getId(),
-							existing.getRevision(), ad.getRevision());
-					}
+					logger.info("Archive {}/{} in index {} is up to date",
+						ad.getId(), indexData.getArchives().length, index.getId());
+					continue;
+				}
 
-					final Archive archive = existing == null
-						? index.addArchive(ad.getId())
-						: existing;
-
-					// Add files
-					archive.getFiles().clear();
-					for (FileData fd : ad.getFiles())
-					{
-						FSFile file = archive.addFile(fd.getId());
-						file.setNameHash(fd.getNameHash());
-					}
-
-					CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
-					future.handle((fr, ex) ->
-					{
-						archive.setData(fr.getCompressedData());
-						return null;
-					});
+				if (existing == null)
+				{
+					logger.info("Archive {}/{} in index {} is out of date, downloading",
+						ad.getId(), indexData.getArchives().length, index.getId());
+				}
+				else if (ad.getRevision() < existing.getRevision())
+				{
+					logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
+						ad.getId(), indexData.getArchives().length, index.getId(),
+						existing.getRevision(), ad.getRevision());
 				}
 				else
 				{
-					logger.info("Active {}/{} in index {} is up to date",
-						ad.getId(), indexData.getArchives().length, index.getId());
+					logger.info("Archive {}/{} in index {} is out of date ({} != {}), downloading",
+						ad.getId(), indexData.getArchives().length, index.getId(),
+						existing.getRevision(), ad.getRevision());
 				}
+
+				final Archive archive = existing == null
+					? index.addArchive(ad.getId())
+					: existing;
+
+				archive.setRevision(ad.getRevision());
+				archive.setCrc(ad.getCrc());
+				archive.setNameHash(ad.getNameHash());
+
+				// Add files
+				archive.clearFiles();
+				for (FileData fd : ad.getFiles())
+				{
+					FSFile file = archive.addFile(fd.getId());
+					file.setNameHash(fd.getNameHash());
+				}
+
+				CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
+				future.handle((fr, ex) ->
+				{
+					archive.setData(fr.getCompressedData());
+
+					if (watcher != null)
+					{
+						watcher.downloadComplete(archive);
+					}
+					return null;
+				});
 			}
 		}
 
