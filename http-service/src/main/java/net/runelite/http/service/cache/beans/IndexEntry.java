@@ -22,48 +22,88 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.cache.beans;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.naming.NamingException;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.sql2o.Sql2o;
-import org.sql2o.converters.Converter;
-import org.sql2o.quirks.NoQuirks;
-
-@SpringBootApplication
-public class SpringBootWebApplicationTest
+public class IndexEntry
 {
-	@Bean("Runelite SQL2O")
-	Sql2o sql2o()
+	private int id;
+	private int indexId;
+	private int revision;
+
+	@Override
+	public String toString()
 	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/runelite", "root", "", new NoQuirks(converters));
+		return "IndexEntry{" + "id=" + id + ", indexId=" + indexId + ", revision=" + revision + '}';
 	}
 
-	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
+	@Override
+	public int hashCode()
 	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/cache", "root", "", new NoQuirks(converters));
+		int hash = 5;
+		hash = 83 * hash + this.id;
+		hash = 83 * hash + this.indexId;
+		hash = 83 * hash + this.revision;
+		return hash;
 	}
 
-	@Test
-	@Ignore
-	public void test() throws InterruptedException
+	@Override
+	public boolean equals(Object obj)
 	{
-		SpringApplication.run(SpringBootWebApplicationTest.class, new String[0]);
-		for (;;)
+		if (this == obj)
 		{
-			Thread.sleep(100L);
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final IndexEntry other = (IndexEntry) obj;
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.indexId != other.indexId)
+		{
+			return false;
+		}
+		if (this.revision != other.revision)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public int getIndexId()
+	{
+		return indexId;
+	}
+
+	public void setIndexId(int indexId)
+	{
+		this.indexId = indexId;
+	}
+
+	public int getRevision()
+	{
+		return revision;
+	}
+
+	public void setRevision(int revision)
+	{
+		this.revision = revision;
 	}
 }

@@ -22,48 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.cache;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.naming.NamingException;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.sql2o.Sql2o;
-import org.sql2o.converters.Converter;
-import org.sql2o.quirks.NoQuirks;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@SpringBootApplication
-public class SpringBootWebApplicationTest
+@Configuration
+@EnableWebSecurity
+public class CacheSecurity extends WebSecurityConfigurerAdapter
 {
-	@Bean("Runelite SQL2O")
-	Sql2o sql2o()
+	@Value("${auth.password}")
+	private String password;
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception
 	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/runelite", "root", "", new NoQuirks(converters));
+		http.httpBasic()
+			.and()
+			.authorizeRequests()
+			.antMatchers("/cache/admin/**")
+			.hasRole("ADMIN");
 	}
 
-	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/cache", "root", "", new NoQuirks(converters));
-	}
-
-	@Test
-	@Ignore
-	public void test() throws InterruptedException
-	{
-		SpringApplication.run(SpringBootWebApplicationTest.class, new String[0]);
-		for (;;)
-		{
-			Thread.sleep(100L);
-		}
+		auth.inMemoryAuthentication()
+			.withUser("admin")
+			.password(password)
+			.roles("ADMIN");
 	}
 }

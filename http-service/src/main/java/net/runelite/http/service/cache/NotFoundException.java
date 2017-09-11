@@ -22,48 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.cache;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.naming.NamingException;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.sql2o.Sql2o;
-import org.sql2o.converters.Converter;
-import org.sql2o.quirks.NoQuirks;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@SpringBootApplication
-public class SpringBootWebApplicationTest
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+public class NotFoundException extends RuntimeException
 {
-	@Bean("Runelite SQL2O")
-	Sql2o sql2o()
-	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/runelite", "root", "", new NoQuirks(converters));
-	}
 
-	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
-	{
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://localhost/cache", "root", "", new NoQuirks(converters));
-	}
-
-	@Test
-	@Ignore
-	public void test() throws InterruptedException
-	{
-		SpringApplication.run(SpringBootWebApplicationTest.class, new String[0]);
-		for (;;)
-		{
-			Thread.sleep(100L);
-		}
-	}
 }

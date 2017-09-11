@@ -56,7 +56,15 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
+	}
 
+	@Bean("Runelite Cache SQL2O")
+	Sql2o cacheSql2o() throws NamingException
+	{
+		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache");
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
 
 	@Override
