@@ -29,14 +29,12 @@ import java.util.Arrays;
 
 public class FSFile
 {
-	private Archive archive;
-	private int fileId;
+	private final int fileId;
 	private int nameHash;
 	private byte[] contents;
 
-	public FSFile(Archive archive, int fileId)
+	public FSFile(int fileId)
 	{
-		this.archive = archive;
 		this.fileId = fileId;
 	}
 
@@ -75,11 +73,6 @@ public class FSFile
 			return false;
 		}
 		return true;
-	}
-
-	public Archive getArchive()
-	{
-		return archive;
 	}
 
 	public int getFileId()
