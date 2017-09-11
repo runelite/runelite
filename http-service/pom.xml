@@ -53,6 +53,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<version>${spring.boot.version}</version>
 			<optional>true</optional>
@@ -61,6 +66,11 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>http-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>cache</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -88,6 +98,11 @@
 			<groupId>com.github.scribejava</groupId>
 			<artifactId>scribejava-apis</artifactId>
 			<version>4.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>3.0.6</version>
 		</dependency>
 
 		<dependency>
