@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import org.slf4j.Logger;
@@ -41,6 +42,33 @@ public class ArchiveFiles
 
 	private final List<FSFile> files = new ArrayList<>();
 	private final Map<Integer, FSFile> fileMap = new HashMap<>();
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 67 * hash + Objects.hashCode(this.files);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final ArchiveFiles other = (ArchiveFiles) obj;
+		if (!Objects.equals(this.files, other.files))
+		{
+			return false;
+		}
+		return true;
+	}
 
 	public void addFile(FSFile file)
 	{
