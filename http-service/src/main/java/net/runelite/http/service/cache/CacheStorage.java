@@ -89,8 +89,9 @@ public class CacheStorage implements Storage
 				List<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry);
 				for (FileEntry fileEntry : files)
 				{
-					FSFile file = archive.addFile(fileEntry.getFileId());
+					FSFile file = new FSFile(fileEntry.getFileId());
 					file.setNameHash(fileEntry.getNameHash());
+					archive.addFile(file);
 				}
 			}
 		}
