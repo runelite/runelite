@@ -27,12 +27,9 @@ package net.runelite.cache.fs;
 import net.runelite.cache.fs.jagex.DataFile;
 import net.runelite.cache.fs.jagex.DataFileReadResult;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import net.runelite.cache.io.InputStream;
-import net.runelite.cache.io.OutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +48,7 @@ public class Archive
 	private int revision;
 	private int compression;
 
-	private final List<FSFile> files = new ArrayList<>();
+	private final ArchiveFiles files = new ArchiveFiles();
 
 	public Archive(Index index, int id)
 	{
@@ -118,9 +115,14 @@ public class Archive
 
 	public FSFile addFile(int id)
 	{
-		FSFile file = new FSFile(this, id);
-		this.files.add(file);
+		FSFile file = new FSFile(id);
+		this.files.addFile(file);
 		return file;
+	}
+
+	public FSFile findFile(int id)
+	{
+		return this.files.findFile(id);
 	}
 
 	public void decompressAndLoad(int[] keys) throws IOException
@@ -163,116 +165,13 @@ public class Archive
 
 		setCompression(res.compression);
 
-		loadContents(decompressedData);
+		files.loadContents(decompressedData);
 		this.setData(null); // now that we've loaded it, clean it so it doesn't get written back
-	}
-
-	public void loadContents(byte[] data)
-	{
-		logger.trace("Loading contents of archive {} ({} files)", archiveId, files.size());
-
-		assert !this.getFiles().isEmpty();
-
-		if (this.getFiles().size() == 1)
-		{
-			this.getFiles().get(0).setContents(data);
-			return;
-		}
-
-		int filesCount = this.getFiles().size();
-
-		InputStream stream = new InputStream(data);
-		stream.setOffset(stream.getLength() - 1);
-		int chunks = stream.readUnsignedByte();
-
-		// -1 for chunks count + one int per file slot per chunk
-		stream.setOffset(stream.getLength() - 1 - chunks * filesCount * 4);
-		int[][] chunkSizes = new int[filesCount][chunks];
-		int[] filesSize = new int[filesCount];
-
-		for (int chunk = 0; chunk < chunks; ++chunk)
-		{
-			int chunkSize = 0;
-
-			for (int id = 0; id < filesCount; ++id)
-			{
-				int delta = stream.readInt();
-				chunkSize += delta; // size of this chunk
-
-				chunkSizes[id][chunk] = chunkSize; // store size of chunk
-
-				filesSize[id] += chunkSize; // add chunk size to file size
-			}
-		}
-
-		byte[][] fileContents = new byte[filesCount][];
-		int[] fileOffsets = new int[filesCount];
-
-		for (int i = 0; i < filesCount; ++i)
-		{
-			fileContents[i] = new byte[filesSize[i]];
-		}
-
-		// the file data is at the beginning of the stream
-		stream.setOffset(0);
-
-		for (int chunk = 0; chunk < chunks; ++chunk)
-		{
-			for (int id = 0; id < filesCount; ++id)
-			{
-				int chunkSize = chunkSizes[id][chunk];
-
-				stream.readBytes(fileContents[id], fileOffsets[id], chunkSize);
-
-				fileOffsets[id] += chunkSize;
-			}
-		}
-
-		for (int i = 0; i < filesCount; ++i)
-		{
-			FSFile f = this.getFiles().get(i);
-			f.setContents(fileContents[i]);
-		}
 	}
 
 	public byte[] saveContents()
 	{
-		OutputStream stream = new OutputStream();
-
-		int filesCount = this.getFiles().size();
-
-		if (filesCount == 1)
-		{
-			FSFile file = this.getFiles().get(0);
-			stream.writeBytes(file.getContents());
-		}
-		else
-		{
-			for (FSFile file : this.getFiles())
-			{
-				byte[] contents = file.getContents();
-				stream.writeBytes(contents);
-			}
-
-			int offset = 0;
-
-			for (FSFile file : this.getFiles())
-			{
-				int chunkSize = file.getSize();
-
-				int sz = chunkSize - offset;
-				offset = chunkSize;
-				stream.writeInt(sz);
-			}
-
-			stream.writeByte(1); // chunks
-		}
-
-		byte[] fileData = stream.flip();
-
-		logger.trace("Saved contents of archive {}/{} ({} files), {} bytes", index.getId(), archiveId, files.size(), fileData.length);
-
-		return fileData;
+		return files.saveContents();
 	}
 
 	public int getArchiveId()
@@ -332,6 +231,11 @@ public class Archive
 
 	public List<FSFile> getFiles()
 	{
-		return files;
+		return files.getFiles();
+	}
+
+	public void clearFiles()
+	{
+		files.clear();
 	}
 }
