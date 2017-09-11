@@ -28,6 +28,7 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
@@ -127,9 +128,10 @@ public class TreeStorage implements Storage
 
 		byte[] data = Files.toByteArray(from);
 
-		FSFile file = archive.addFile(fileId);
+		FSFile file = new FSFile(fileId);
 		file.setNameHash(nameHash);
 		file.setContents(data);
+		archive.addFile(file);
 
 		File archiveFile = new File(parent, archive.getArchiveId() + ".rev");
 		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
@@ -152,8 +154,9 @@ public class TreeStorage implements Storage
 
 		assert archiveId == archive.getArchiveId();
 
-		FSFile file = archive.addFile(fileId);
+		FSFile file = new FSFile(fileId);
 		file.setNameHash(nameHash);
+		archive.addFile(file);
 
 		byte[] contents = Files.toByteArray(from);
 		file.setContents(contents);
@@ -169,6 +172,8 @@ public class TreeStorage implements Storage
 
 	public void loadTree(Archive archive, File parent, File from) throws IOException
 	{
+		List<FSFile> files = new ArrayList<>();
+
 		for (File file : from.listFiles())
 		{
 			//fileId-fileName.dat
@@ -178,12 +183,17 @@ public class TreeStorage implements Storage
 			int fileId = Integer.parseInt(split[0]);
 			int fileName = (int) Long.parseLong(split[1], 16);
 
-			FSFile f = archive.addFile(fileId);
+			FSFile f = new FSFile(fileId);
 			f.setNameHash(fileName);
+			files.add(f);
 
 			byte[] contents = Files.toByteArray(file);
 			f.setContents(contents);
 		}
+
+		// the filesystem may order these differently (eg, 1, 10, 2)
+		Collections.sort(files, (f1, f2) -> Integer.compare(f1.getFileId(), f2.getFileId()));
+		files.forEach(archive::addFile);
 
 		File archiveFile = new File(parent, archive.getArchiveId() + ".rev");
 		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
@@ -192,9 +202,6 @@ public class TreeStorage implements Storage
 		archiveFile = new File(parent, archive.getArchiveId() + ".name");
 		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
 		archive.setNameHash(name);
-
-		// the filesystem may order these differently (eg, 1, 10, 2)
-		Collections.sort(archive.getFiles(), (f1, f2) -> Integer.compare(f1.getFileId(), f2.getFileId()));
 	}
 
 	@Override

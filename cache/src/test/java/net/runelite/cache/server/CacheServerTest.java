@@ -115,9 +115,10 @@ public class CacheServerTest
 	{
 		Index index = store.addIndex(0);
 		Archive archive = index.addArchive(0);
-		FSFile file = archive.addFile(0);
+		FSFile file = new FSFile(0);
 		file.setNameHash(7);
 		file.setContents("test".getBytes());
+		archive.addFile(file);
 	}
 
 }

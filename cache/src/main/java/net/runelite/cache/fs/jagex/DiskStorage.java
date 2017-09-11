@@ -137,8 +137,9 @@ public class DiskStorage implements Storage
 
 			for (FileData fd : ad.getFiles())
 			{
-				FSFile file = archive.addFile(fd.getId());
+				FSFile file = new FSFile(fd.getId());
 				file.setNameHash(fd.getNameHash());
+				archive.addFile(file);
 			}
 		}
 

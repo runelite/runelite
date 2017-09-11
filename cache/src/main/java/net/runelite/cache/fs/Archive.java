@@ -113,9 +113,8 @@ public class Archive
 		this.data = data;
 	}
 
-	public FSFile addFile(int id)
+	public FSFile addFile(FSFile file)
 	{
-		FSFile file = new FSFile(id);
 		this.files.addFile(file);
 		return file;
 	}
