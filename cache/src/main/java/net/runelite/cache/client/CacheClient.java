@@ -306,8 +306,9 @@ public class CacheClient implements AutoCloseable
 				archive.clearFiles();
 				for (FileData fd : ad.getFiles())
 				{
-					FSFile file = archive.addFile(fd.getId());
+					FSFile file = new FSFile(fd.getId());
 					file.setNameHash(fd.getNameHash());
+					archive.addFile(file);
 				}
 
 				CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);

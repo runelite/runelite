@@ -48,7 +48,8 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
-			FSFile file = archive.addFile(0);
+			FSFile file = new FSFile(0);
+			archive.addFile(file);
 			file.setNameHash(7);
 			file.setContents("test".getBytes());
 
@@ -77,8 +78,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = archive.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt());
+				archive.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -115,8 +117,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = archive.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -124,8 +127,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = archive2.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive2.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -133,8 +137,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = archive3.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive3.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
