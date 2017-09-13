@@ -27,12 +27,13 @@ package net.runelite.cache;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import net.runelite.cache.definitions.InventoryDefinition;
 import net.runelite.cache.definitions.loaders.InventoryLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -53,7 +54,7 @@ public class InventoryDumper
 	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
+		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
 
 		int count = 0;
@@ -65,12 +66,12 @@ public class InventoryDumper
 			Index index = store.getIndex(IndexType.CONFIGS);
 			Archive archive = index.getArchive(ConfigType.INV.getId());
 
-			for (File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				InventoryLoader loader = new InventoryLoader();
 				InventoryDefinition inv = loader.load(file.getContents());
 
-				Files.write(gson.toJson(inv), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(inv), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

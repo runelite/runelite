@@ -56,19 +56,15 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
-
 	}
 
-	@Bean("OAuth Client ID")
-	String oauthClientId() throws NamingException
+	@Bean("Runelite Cache SQL2O")
+	Sql2o cacheSql2o() throws NamingException
 	{
-		return (String) getContext().lookup("runelite-oauth-client-id");
-	}
-
-	@Bean("OAuth Client Secret")
-	String oauthClientSecret() throws NamingException
-	{
-		return (String) getContext().lookup("runelite-oauth-client-secret");
+		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache");
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
 
 	@Override

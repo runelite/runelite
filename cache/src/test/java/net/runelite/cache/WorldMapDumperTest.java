@@ -33,6 +33,7 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.WorldMapDefinition;
 import net.runelite.cache.definitions.loaders.WorldMapLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -65,7 +66,7 @@ public class WorldMapDumperTest
 			Index index = store.getIndex(IndexType.WORLDMAP);
 			Archive archive = index.getArchive(0); // there is also archive 1/2, but their data format is not this
 
-			for (net.runelite.cache.fs.File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				WorldMapLoader loader = new WorldMapLoader();
 				WorldMapDefinition def = loader.load(file.getContents(), file.getFileId());

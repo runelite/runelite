@@ -34,6 +34,7 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.EnumDefinition;
 import net.runelite.cache.definitions.loaders.EnumLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -66,7 +67,7 @@ public class EnumDumperTest
 
 			EnumLoader loader = new EnumLoader();
 
-			for (net.runelite.cache.fs.File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				byte[] b = file.getContents();
 

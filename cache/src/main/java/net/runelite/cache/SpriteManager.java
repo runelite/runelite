@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.exporters.SpriteExporter;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 
@@ -52,11 +53,11 @@ public class SpriteManager
 
 		for (Archive a : index.getArchives())
 		{
-			List<net.runelite.cache.fs.File> files = a.getFiles();
+			List<FSFile> files = a.getFiles();
 
 			assert files.size() == 1;
 
-			net.runelite.cache.fs.File file = files.get(0);
+			FSFile file = files.get(0);
 			byte[] contents = file.getContents();
 
 			SpriteLoader loader = new SpriteLoader();

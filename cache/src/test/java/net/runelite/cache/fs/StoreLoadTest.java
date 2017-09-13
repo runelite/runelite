@@ -25,8 +25,10 @@
 package net.runelite.cache.fs;
 
 import com.google.common.io.Files;
+import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
+import net.runelite.cache.fs.tree.TreeStorage;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -56,10 +58,10 @@ public class StoreLoadTest
 		{
 			store.load();
 
-			java.io.File testStoreFile = folder.newFolder();
-			for (java.io.File f : StoreLocation.LOCATION.listFiles())
+			File testStoreFile = folder.newFolder();
+			for (File f : StoreLocation.LOCATION.listFiles())
 			{
-				Files.copy(f, new java.io.File(testStoreFile, f.getName()));
+				Files.copy(f, new File(testStoreFile, f.getName()));
 			}
 
 			try (Store testStore = new Store(testStoreFile))
@@ -69,6 +71,10 @@ public class StoreLoadTest
 				Assert.assertTrue(store.equals(testStore));
 
 				testStore.save();
+			}
+
+			try (Store testStore = new Store(testStoreFile))
+			{
 				testStore.load();
 
 				Assert.assertTrue(store.equals(testStore));
@@ -80,12 +86,13 @@ public class StoreLoadTest
 	@Ignore
 	public void unpackStore() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION;
+		File base = StoreLocation.LOCATION;
 		try (Store store = new Store(base))
 		{
 			store.load();
 
-			store.saveTree(folder.newFolder());
+			TreeStorage storage = new TreeStorage(folder.newFolder());
+			storage.save(store);
 		}
 	}
 
@@ -95,8 +102,9 @@ public class StoreLoadTest
 	{
 		try (Store store = new Store(folder.newFolder()))
 		{
-			store.loadTree(new java.io.File("C:\\rs\\temp\\tree"));
-			
+			TreeStorage storage = new TreeStorage(new File("C:\\rs\\temp\\tree"));
+			storage.load(store);
+
 			try (Store store2 = new Store(StoreLocation.LOCATION))
 			{
 				store2.load();
@@ -110,10 +118,12 @@ public class StoreLoadTest
 	@Ignore
 	public void saveTree() throws IOException
 	{
-		try (Store store = new Store(new java.io.File("d:/rs/07/temp/cache")))
+		try (Store store = new Store(new File("d:/rs/07/temp/cache")))
 		{
 			store.load();
-			store.saveTree(new java.io.File("d:/rs/07/temp/tree"));
+
+			TreeStorage storage = new TreeStorage(new File("d:/rs/07/temp/tree"));
+			storage.save(store);
 		}
 	}
 }

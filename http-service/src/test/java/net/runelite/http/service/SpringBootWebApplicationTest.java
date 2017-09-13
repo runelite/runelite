@@ -27,6 +27,7 @@ package net.runelite.http.service;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
@@ -44,20 +45,15 @@ public class SpringBootWebApplicationTest
 	{
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o("jdbc:mysql://192.168.1.2/runelite", "adam", "", new NoQuirks(converters));
-
+		return new Sql2o("jdbc:mysql://localhost/runelite", "root", "", new NoQuirks(converters));
 	}
 
-	@Bean("OAuth Client ID")
-	String oauthClientId()
+	@Bean("Runelite Cache SQL2O")
+	Sql2o cacheSql2o() throws NamingException
 	{
-		return "moo";
-	}
-
-	@Bean("OAuth Client Secret")
-	String oauthClientSecret()
-	{
-		return "moo2";
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o("jdbc:mysql://localhost/cache", "root", "", new NoQuirks(converters));
 	}
 
 	@Test

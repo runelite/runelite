@@ -25,10 +25,11 @@
 
 package net.runelite.cache;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -47,7 +48,7 @@ public class TitleDumper
 	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
+		File base = StoreLocation.LOCATION,
 			outFile = folder.newFolder();
 
 		try (Store store = new Store(base))
@@ -56,7 +57,7 @@ public class TitleDumper
 
 			Index index = store.getIndex(IndexType.BINARY);
 			Archive a = index.findArchiveByName("title.jpg");
-			File file = a.getFiles().get(0);
+			FSFile file = a.getFiles().get(0);
 
 			Files.write(outFile.toPath(), file.getContents());
 		}
