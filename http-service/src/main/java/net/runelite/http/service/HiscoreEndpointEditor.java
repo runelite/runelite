@@ -24,27 +24,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.http.api.hiscore;
+package net.runelite.http.service;
 
-public enum HiscoreEndpoint
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
+
+import java.beans.PropertyEditorSupport;
+
+public class HiscoreEndpointEditor extends PropertyEditorSupport
 {
-	NORMAL("normal", "Normal"),
-	IRONMAN("ironman", "Ironman"),
-	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman"),
-	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman"),
-	DEADMAN("deadman", "Deadman"),
-	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman");
-
-	private final String name;
-	private final String prettyName;
-
-	HiscoreEndpoint(String name, String prettyName)
+	@Override
+	public void setAsText(String text) throws IllegalArgumentException
 	{
-		this.name = name;
-		this.prettyName = prettyName;
+		setValue(HiscoreEndpoint.valueOf(text.toUpperCase()));
 	}
-	
-	public String getName() { return name; }
-
-	public String getPrettyName() { return prettyName; }
 }

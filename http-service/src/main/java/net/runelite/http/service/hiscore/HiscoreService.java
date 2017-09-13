@@ -27,6 +27,7 @@ package net.runelite.http.service.hiscore;
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.*;
+import net.runelite.http.service.HiscoreEndpointEditor;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,10 +37,8 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/hiscore")
@@ -54,32 +53,16 @@ public class HiscoreService
 	private static final HttpUrl RUNESCAPE_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws");
 	private static final HttpUrl RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
+	private HttpUrl url;
+
 	private HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl url;
+		setUrl(endpoint);
+		return lookupUsername(username);
+	}
 
-		switch (endpoint)
-		{
-			case IRONMAN:
-				url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case HARDCORE_IRONMAN:
-				url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case ULTIMATE_IRONMAN:
-				url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case DEADMAN:
-				url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
-				break;
-			case SEASONAL_DEADMAN:
-				url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
-				break;
-			default:
-				url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
-				break;
-		}
-
+	private HiscoreResultBuilder lookupUsername(String username) throws IOException
+	{
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
@@ -155,5 +138,46 @@ public class HiscoreService
 		skillResult.setSkill(requested);
 
 		return skillResult;
+	}
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder)
+	{
+		binder.registerCustomEditor(HiscoreEndpoint.class, new HiscoreEndpointEditor());
+	}
+
+	public void setUrl(HiscoreEndpoint endpoint)
+	{
+		switch (endpoint)
+		{
+			case IRONMAN:
+				url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case HARDCORE_IRONMAN:
+				url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case ULTIMATE_IRONMAN:
+				url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
+				break;
+			case DEADMAN:
+				url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
+				break;
+			case SEASONAL_DEADMAN:
+				url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
+				break;
+			default:
+				url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
+				break;
+		}
+	}
+
+	public HttpUrl getUrl()
+	{
+		return url;
+	}
+
+	public void setUrl(HttpUrl url)
+	{
+		this.url = url;
 	}
 }
