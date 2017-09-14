@@ -35,16 +35,12 @@ public enum HiscoreEndpoint
 	DEADMAN("deadman", "Deadman"),
 	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman");
 
-	private final String name;
 	private final String prettyName;
 
 	HiscoreEndpoint(String name, String prettyName)
 	{
-		this.name = name;
 		this.prettyName = prettyName;
 	}
-	
-	public String getName() { return name; }
 
-	public String getPrettyName() { return prettyName; }
+	public String prettyName() { return prettyName; }
 }

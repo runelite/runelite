@@ -25,13 +25,8 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.base.Strings;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -39,24 +34,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
+
 import net.runelite.api.Experience;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.*;
+
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-import net.runelite.http.api.hiscore.Skill;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +75,7 @@ public class HiscorePanel extends PluginPanel
 	private final List<JLabel> skillLabels = new ArrayList<>();
 
 	private final JPanel statsPanel = new JPanel();
+	private final ButtonGroup endpointButtonGroup = new ButtonGroup();
 	private final JTextArea details = new JTextArea();
 
 	private final HiscoreClient client = new HiscoreClient();
@@ -215,10 +205,52 @@ public class HiscorePanel extends PluginPanel
 
 		c.gridx = 0;
 		c.gridy = 4;
-		// Last item has a nonzero weighty so it will expand to fill vertical space
-		c.weighty = 1;
 		gridBag.setConstraints(detailsPanel, c);
 		add(detailsPanel);
+
+		JPanel endpointPanel = new JPanel();
+		endpointPanel.setBorder(subPanelBorder);
+		// endpointPanel.setLayout(new GridLayout(1, 6));
+
+		List<JToggleButton> endpointButtons = new ArrayList<>();
+
+		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
+		{
+			try
+			{
+				Icon icon = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(endpoint.name() + ".png")));
+				Icon selected = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(endpoint.name() + "_selected.png")));
+				JToggleButton button = new JToggleButton();
+				button.setIcon(icon);
+				button.setSelectedIcon(selected);
+				button.setPreferredSize(new Dimension(24,24));
+				button.setBackground(Color.WHITE);
+				button.setFocusPainted(false);
+				button.setActionCommand(endpoint.name());
+				button.setToolTipText(endpoint.prettyName() + " Hiscores");
+				button.addActionListener((e ->
+				{
+					ScheduledExecutorService executor = runelite.getExecutor();
+					executor.execute(this::lookup);
+				}));
+				endpointButtons.add(button);
+				endpointButtonGroup.add(button);
+				endpointPanel.add(button);
+			}
+			catch (IOException ex)
+			{
+				logger.warn(null, ex);
+			}
+		}
+
+		endpointButtons.get(0).setSelected(true);
+
+		c.gridx = 0;
+		c.gridy = 5;
+		// Last item has a nonzero weighty so it will expand to fill vertical space
+		c.weighty = 1;
+		gridBag.setConstraints(endpointPanel, c);
+		add(endpointPanel);
 	}
 
 	private void changeDetail(String skillName, HiscoreSkill skill)
@@ -356,7 +388,10 @@ public class HiscorePanel extends PluginPanel
 
 		try
 		{
-			result = client.lookup(lookup);
+			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
+			logger.debug("Hiscore endpoint " + endpoint.name() + " selected");
+
+			result = client.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
 		{

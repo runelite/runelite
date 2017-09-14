@@ -44,7 +44,7 @@ public class HiscoreClient
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
-			.addPathSegment(endpoint.getName())
+			.addPathSegment(endpoint.name())
 			.addQueryParameter("username", username);
 
 		HttpUrl url = builder.build();
@@ -77,7 +77,7 @@ public class HiscoreClient
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 				.addPathSegment("hiscore")
-				.addPathSegment(endpoint.getName())
+				.addPathSegment(endpoint.name())
 				.addPathSegment(skill.toString().toLowerCase())
 				.addQueryParameter("username", username);
 

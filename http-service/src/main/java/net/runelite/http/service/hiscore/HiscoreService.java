@@ -53,16 +53,42 @@ public class HiscoreService
 	private static final HttpUrl RUNESCAPE_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws");
 	private static final HttpUrl RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
-	private HttpUrl url;
+	private HttpUrl testUrl;
 
 	private HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		setUrl(endpoint);
-		return lookupUsername(username);
-	}
+		HttpUrl url;
 
-	private HiscoreResultBuilder lookupUsername(String username) throws IOException
-	{
+		// I don't like this, there must be a better way to set the URL for the test
+		if (testUrl != null)
+		{
+			url = testUrl;
+		}
+		else
+		{
+			switch (endpoint)
+			{
+				case IRONMAN:
+					url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
+					break;
+				case HARDCORE_IRONMAN:
+					url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
+					break;
+				case ULTIMATE_IRONMAN:
+					url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
+					break;
+				case DEADMAN:
+					url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
+					break;
+				case SEASONAL_DEADMAN:
+					url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
+					break;
+				default:
+					url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
+					break;
+			}
+		}
+
 		HttpUrl hiscoreUrl = url.newBuilder()
 			.addQueryParameter("player", username)
 			.build();
@@ -148,36 +174,16 @@ public class HiscoreService
 
 	public void setUrl(HiscoreEndpoint endpoint)
 	{
-		switch (endpoint)
-		{
-			case IRONMAN:
-				url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case HARDCORE_IRONMAN:
-				url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case ULTIMATE_IRONMAN:
-				url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
-				break;
-			case DEADMAN:
-				url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
-				break;
-			case SEASONAL_DEADMAN:
-				url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
-				break;
-			default:
-				url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
-				break;
-		}
+
 	}
 
-	public HttpUrl getUrl()
+	public HttpUrl getTestUrl()
 	{
-		return url;
+		return testUrl;
 	}
 
-	public void setUrl(HttpUrl url)
+	public void setTestUrl(HttpUrl url)
 	{
-		this.url = url;
+		this.testUrl = url;
 	}
 }
