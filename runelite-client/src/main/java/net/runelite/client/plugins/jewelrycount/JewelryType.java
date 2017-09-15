@@ -32,5 +32,10 @@ public enum JewelryType
 	ROW,
 	ROS,
 	SKILLS,
-	CBRACE
+	CBRACE,
+	DIGSITE,
+	BURNING,
+	PASSAGE,
+	RETURNING,
+	TCRYSTAL
 }
