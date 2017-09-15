@@ -28,22 +28,29 @@ package net.runelite.http.api.hiscore;
 
 public enum HiscoreEndpoint
 {
-	NORMAL("normal", "Normal"),
-	IRONMAN("ironman", "Ironman"),
-	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman"),
-	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman"),
-	DEADMAN("deadman", "Deadman"),
-	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman");
+	NORMAL("normal", "Normal", "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
+	IRONMAN("ironman", "Ironman", "http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
+	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman", "http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
+	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman", "http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
+	DEADMAN("deadman", "Deadman", "http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
+	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman", "http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
 	private final String prettyName;
+	private final String hiscoreURL;
 
-	HiscoreEndpoint(String name, String prettyName)
+	HiscoreEndpoint(String name, String prettyName, String hiscoreURL)
 	{
 		this.prettyName = prettyName;
+		this.hiscoreURL = hiscoreURL;
 	}
 
 	public String prettyName()
 	{
 		return prettyName;
+	}
+
+	public String hiscoreUrl()
+	{
+		return hiscoreURL;
 	}
 }
