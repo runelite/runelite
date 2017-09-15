@@ -28,6 +28,7 @@ import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.*;
 import net.runelite.http.service.HiscoreEndpointEditor;
+import net.runelite.http.service.cache.NotFoundException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -37,6 +38,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,44 +102,58 @@ public class HiscoreService
 			.build();
 
 		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
-		String responseStr;
 
-		try (ResponseBody body = okresponse.body())
+		if (!okresponse.isSuccessful())
 		{
-			responseStr = body.string();
-		}
-
-		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
-
-		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
-		hiscoreBuilder.setPlayer(username);
-
-		int count = 0;
-
-		for (CSVRecord record : parser.getRecords())
-		{
-			if (count++ >= HiscoreSkill.values().length)
+			switch (HttpStatus.valueOf(okresponse.code()))
 			{
-				logger.warn("Jagex Hiscore API returned unexpected data");
-				break; // rest is other things?
+				case NOT_FOUND:
+					throw new NotFoundException();
+				default:
+					throw new RuntimeException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+			}
+		}
+		else
+		{
+			String responseStr;
+
+			try (ResponseBody body = okresponse.body())
+			{
+				responseStr = body.string();
 			}
 
-			// rank, level, experience
-			int rank = Integer.parseInt(record.get(0));
-			int level = Integer.parseInt(record.get(1));
+			CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
 
-			// items that are not skills do not have an experience parameter
-			long experience = -1;
-			if (record.size() == 3)
+			HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
+			hiscoreBuilder.setPlayer(username);
+
+			int count = 0;
+
+			for (CSVRecord record : parser.getRecords())
 			{
-				experience = Long.parseLong(record.get(2));
+				if (count++ >= HiscoreSkill.values().length)
+				{
+					logger.warn("Jagex Hiscore API returned unexpected data");
+					break; // rest is other things?
+				}
+
+				// rank, level, experience
+				int rank = Integer.parseInt(record.get(0));
+				int level = Integer.parseInt(record.get(1));
+
+				// items that are not skills do not have an experience parameter
+				long experience = -1;
+				if (record.size() == 3)
+				{
+					experience = Long.parseLong(record.get(2));
+				}
+
+				Skill skill = new Skill(rank, level, experience);
+				hiscoreBuilder.setNextSkill(skill);
 			}
 
-			Skill skill = new Skill(rank, level, experience);
-			hiscoreBuilder.setNextSkill(skill);
+			return hiscoreBuilder;
 		}
-
-		return hiscoreBuilder;
 	}
 
 	@RequestMapping("/{endpoint}")
