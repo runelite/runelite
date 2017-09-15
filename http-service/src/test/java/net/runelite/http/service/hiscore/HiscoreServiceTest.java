@@ -62,13 +62,13 @@ public class HiscoreServiceTest
 			+ "492790,1,0\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
+			+ "531,1432\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "-1,-1";
+			+ "254,92";
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -97,6 +97,8 @@ public class HiscoreServiceTest
 		Assert.assertEquals(50, result.getAttack().getLevel());
 		Assert.assertEquals(159727L, result.getFishing().getExperience());
 		Assert.assertEquals(492790, result.getConstruction().getRank());
+		Assert.assertEquals(1432, result.getClueScrollAll().getLevel());
+		Assert.assertEquals(254, result.getClueScrollMaster().getRank());
 	}
 
 }
