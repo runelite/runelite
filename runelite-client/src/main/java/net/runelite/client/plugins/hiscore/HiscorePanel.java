@@ -316,7 +316,7 @@ public class HiscorePanel extends PluginPanel
 			{
 				Skill requestedSkill = result.getSkill(skill);
 				String rank = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
-				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getRank());
+				String exp = (requestedSkill.getRank() == -1) ? "Unranked" : formatter.format(requestedSkill.getExperience());
 				text = "Skill: " + skillName + System.lineSeparator()
 					+ "Rank: " + rank + System.lineSeparator()
 					+ "Experience: " + exp;
