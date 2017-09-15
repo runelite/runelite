@@ -337,7 +337,7 @@ public class HiscorePanel extends PluginPanel
 		label.putClientProperty(SKILL_NAME, skillName);
 		label.putClientProperty(SKILL, skill);
 
-		String skillIcon = "/net/runelite/client/plugins/hiscore/skill_icons_small/" + skillName.toLowerCase() + ".png";
+		String skillIcon = "skill_icons_small/" + skillName.toLowerCase() + ".png";
 		logger.debug("Loading skill icon from {}", skillIcon);
 
 		try
