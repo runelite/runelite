@@ -404,7 +404,7 @@ public class HiscorePanel extends PluginPanel
 			String skillName = (String) label.getClientProperty(SKILL_NAME);
 			HiscoreSkill skill = (HiscoreSkill) label.getClientProperty(SKILL);
 
-			if	(skillName.equals("Combat"))
+			if (skillName.equals("Combat"))
 			{
 				if (result.getPlayer() != null)
 				{

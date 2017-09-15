@@ -28,7 +28,7 @@ import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.*;
 import net.runelite.http.service.HiscoreEndpointEditor;
-import net.runelite.http.service.cache.NotFoundException;
+import net.runelite.http.service.NotFoundException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;

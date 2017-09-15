@@ -23,27 +23,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.http.service;
 
-package net.runelite.http.api.hiscore;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public enum HiscoreEndpoint
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
+public class NotFoundException extends RuntimeException
 {
-	NORMAL("normal", "Normal"),
-	IRONMAN("ironman", "Ironman"),
-	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman"),
-	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman"),
-	DEADMAN("deadman", "Deadman"),
-	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman");
 
-	private final String prettyName;
-
-	HiscoreEndpoint(String name, String prettyName)
-	{
-		this.prettyName = prettyName;
-	}
-
-	public String prettyName()
-	{
-		return prettyName;
-	}
 }
