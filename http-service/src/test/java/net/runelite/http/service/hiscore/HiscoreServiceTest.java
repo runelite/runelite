@@ -89,8 +89,7 @@ public class HiscoreServiceTest
 	@Test
 	public void testNormalLookup() throws Exception
 	{
-		HiscoreService hiscores = new HiscoreService();
-		hiscores.setTestUrl(server.url("/"));
+		HiscoreTestService hiscores = new HiscoreTestService(server.url("/"));
 
 		HiscoreResult result = hiscores.lookup(HiscoreEndpoint.NORMAL, "zezima");
 
