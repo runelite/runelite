@@ -23,13 +23,26 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.util;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import java.sql.Timestamp;
+import java.time.Instant;
+import org.sql2o.converters.Converter;
+import org.sql2o.converters.ConverterException;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Not found")
-public class NotFoundException extends RuntimeException
+public class InstantConverter implements Converter<Instant>
 {
+	@Override
+	public Instant convert(Object val) throws ConverterException
+	{
+		Timestamp ts = (Timestamp) val;
+		return ts.toInstant();
+	}
+
+	@Override
+	public Object toDatabaseParam(Instant val)
+	{
+		return Timestamp.from(val);
+	}
 
 }

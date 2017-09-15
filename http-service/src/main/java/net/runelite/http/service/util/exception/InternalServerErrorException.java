@@ -23,18 +23,16 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.http.service.util.exception;
 
-package net.runelite.http.service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-
-import java.beans.PropertyEditorSupport;
-
-public class HiscoreEndpointEditor extends PropertyEditorSupport
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+public class InternalServerErrorException extends RuntimeException
 {
-	@Override
-	public void setAsText(String text) throws IllegalArgumentException
+	public InternalServerErrorException(String message)
 	{
-		setValue(HiscoreEndpoint.valueOf(text.toUpperCase()));
+		super(message);
 	}
 }

@@ -27,8 +27,10 @@ package net.runelite.http.service.hiscore;
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.*;
-import net.runelite.http.service.HiscoreEndpointEditor;
-import net.runelite.http.service.NotFoundException;
+import net.runelite.http.service.util.HiscoreEndpointEditor;
+import net.runelite.http.service.util.exception.GatewayTimeoutException;
+import net.runelite.http.service.util.exception.InternalServerErrorException;
+import net.runelite.http.service.util.exception.NotFoundException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,58 +50,22 @@ public class HiscoreService
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreService.class);
 
-	private static final HttpUrl RUNESCAPE_NORMAL_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws");
-	private static final HttpUrl RUNESCAPE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws");
-	private static final HttpUrl RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws");
-	private static final HttpUrl RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws");
-	private static final HttpUrl RUNESCAPE_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws");
-	private static final HttpUrl RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE = HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
-
-	private HttpUrl testUrl;
-
-	private HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
+	HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl url;
+		return lookupUsername(username, HttpUrl.parse(endpoint.hiscoreUrl()));
+	}
 
-		// I don't like this, there must be a better way to set the URL for the test
-		if (testUrl != null)
-		{
-			url = testUrl;
-		}
-		else
-		{
-			switch (endpoint)
-			{
-				case IRONMAN:
-					url = RUNESCAPE_IRONMAN_HISCORE_SERVICE;
-					break;
-				case HARDCORE_IRONMAN:
-					url = RUNESCAPE_HARDCORE_IRONMAN_HISCORE_SERVICE;
-					break;
-				case ULTIMATE_IRONMAN:
-					url = RUNESCAPE_ULTIMATE_IRONMAN_HISCORE_SERVICE;
-					break;
-				case DEADMAN:
-					url = RUNESCAPE_DEADMAN_HISCORE_SERVICE;
-					break;
-				case SEASONAL_DEADMAN:
-					url = RUNESCAPE_SEASONAL_DEADMAN_HISCORE_SERVICE;
-					break;
-				default:
-					url = RUNESCAPE_NORMAL_HISCORE_SERVICE;
-					break;
-			}
-		}
+	HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
+	{
+		HttpUrl url = hiscoreUrl.newBuilder()
+				.addQueryParameter("player", username)
+				.build();
 
-		HttpUrl hiscoreUrl = url.newBuilder()
-			.addQueryParameter("player", username)
-			.build();
-
-		logger.info("Built URL {}", hiscoreUrl);
+		logger.info("Built URL {}", url);
 
 		Request okrequest = new Request.Builder()
-			.url(hiscoreUrl)
-			.build();
+				.url(url)
+				.build();
 
 		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 
@@ -109,51 +75,51 @@ public class HiscoreService
 			{
 				case NOT_FOUND:
 					throw new NotFoundException();
+				case GATEWAY_TIMEOUT:
+					throw new GatewayTimeoutException();
 				default:
-					throw new RuntimeException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+					throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
 			}
 		}
-		else
+
+		String responseStr;
+
+		try (ResponseBody body = okresponse.body())
 		{
-			String responseStr;
-
-			try (ResponseBody body = okresponse.body())
-			{
-				responseStr = body.string();
-			}
-
-			CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
-
-			HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
-			hiscoreBuilder.setPlayer(username);
-
-			int count = 0;
-
-			for (CSVRecord record : parser.getRecords())
-			{
-				if (count++ >= HiscoreSkill.values().length)
-				{
-					logger.warn("Jagex Hiscore API returned unexpected data");
-					break; // rest is other things?
-				}
-
-				// rank, level, experience
-				int rank = Integer.parseInt(record.get(0));
-				int level = Integer.parseInt(record.get(1));
-
-				// items that are not skills do not have an experience parameter
-				long experience = -1;
-				if (record.size() == 3)
-				{
-					experience = Long.parseLong(record.get(2));
-				}
-
-				Skill skill = new Skill(rank, level, experience);
-				hiscoreBuilder.setNextSkill(skill);
-			}
-
-			return hiscoreBuilder;
+			responseStr = body.string();
 		}
+
+		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
+
+		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
+		hiscoreBuilder.setPlayer(username);
+
+		int count = 0;
+
+		for (CSVRecord record : parser.getRecords())
+		{
+			if (count++ >= HiscoreSkill.values().length)
+			{
+				logger.warn("Jagex Hiscore API returned unexpected data");
+				break; // rest is other things?
+			}
+
+			// rank, level, experience
+			int rank = Integer.parseInt(record.get(0));
+			int level = Integer.parseInt(record.get(1));
+
+			// items that are not skills do not have an experience parameter
+			long experience = -1;
+			if (record.size() == 3)
+			{
+				experience = Long.parseLong(record.get(2));
+			}
+
+			Skill skill = new Skill(rank, level, experience);
+			hiscoreBuilder.setNextSkill(skill);
+		}
+
+		return hiscoreBuilder;
 	}
 
 	@RequestMapping("/{endpoint}")
@@ -186,20 +152,5 @@ public class HiscoreService
 	public void initBinder(WebDataBinder binder)
 	{
 		binder.registerCustomEditor(HiscoreEndpoint.class, new HiscoreEndpointEditor());
-	}
-
-	public void setUrl(HiscoreEndpoint endpoint)
-	{
-
-	}
-
-	public HttpUrl getTestUrl()
-	{
-		return testUrl;
-	}
-
-	public void setTestUrl(HttpUrl url)
-	{
-		this.testUrl = url;
 	}
 }
