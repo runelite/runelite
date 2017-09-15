@@ -42,8 +42,8 @@ public class RuneliteAPI
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
+	private static final String BASE = "http://localhost:8080/runelite-";
+	private static final String WSBASE = "wss://localhost:8080/runelite-";
 	private static final Properties properties = new Properties();
 	private static String version;
 	private static int rsVersion;
