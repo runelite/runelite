@@ -44,7 +44,7 @@ public class HiscoreClient
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
-			.addPathSegment(endpoint.name())
+			.addPathSegment(endpoint.name().toLowerCase())
 			.addQueryParameter("username", username);
 
 		HttpUrl url = builder.build();

@@ -255,7 +255,7 @@ public class HiscorePanel extends PluginPanel
 
 	private void changeDetail(String skillName, HiscoreSkill skill)
 	{
-		if (result == null)
+		if (result == null || result.getPlayer() == null)
 		{
 			return;
 		}
@@ -287,7 +287,7 @@ public class HiscorePanel extends PluginPanel
 			case "Clue Scrolls (all)":
 			{
 				String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : formatter.format(result.getClueScrollAll().getRank());
-				text = "Total Clue Scrolls completed" + System.lineSeparator()
+				text = "Total Clue Scrolls Completed" + System.lineSeparator()
 					+ "Rank: " + rank;
 				break;
 			}
@@ -395,7 +395,7 @@ public class HiscorePanel extends PluginPanel
 		}
 		catch (IOException ex)
 		{
-			logger.warn(null, ex);
+			logger.warn("Error fetching Hiscore data " + ex.getMessage());
 			return;
 		}
 
@@ -404,26 +404,33 @@ public class HiscorePanel extends PluginPanel
 			String skillName = (String) label.getClientProperty(SKILL_NAME);
 			HiscoreSkill skill = (HiscoreSkill) label.getClientProperty(SKILL);
 
-			if (skillName.equals("Combat"))
+			if	(skillName.equals("Combat"))
 			{
-				int combatLevel = Experience.getCombatLevel(
-					result.getAttack().getLevel(),
-					result.getStrength().getLevel(),
-					result.getDefence().getLevel(),
-					result.getHitpoints().getLevel(),
-					result.getMagic().getLevel(),
-					result.getRanged().getLevel(),
-					result.getPrayer().getLevel()
-				);
-				label.setText(Integer.toString(combatLevel));
+				if (result.getPlayer() != null)
+				{
+					int combatLevel = Experience.getCombatLevel(
+							result.getAttack().getLevel(),
+							result.getStrength().getLevel(),
+							result.getDefence().getLevel(),
+							result.getHitpoints().getLevel(),
+							result.getMagic().getLevel(),
+							result.getRanged().getLevel(),
+							result.getPrayer().getLevel()
+					);
+					label.setText(Integer.toString(combatLevel));
+				}
+				else
+				{
+					label.setText("--");
+				}
 			}
-			else if (skill != null && result.getSkill(skill).getRank() != -1)
-			{
-				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
-			}
-			else
+			else if (result.getSkill(skill) == null)
 			{
 				label.setText("--");
+			}
+			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
+			{
+				label.setText(Integer.toString(result.getSkill(skill).getLevel()));
 			}
 		}
 
