@@ -28,6 +28,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
+
+import net.runelite.http.service.util.InstantConverter;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;

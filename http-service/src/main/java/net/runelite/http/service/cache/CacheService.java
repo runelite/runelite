@@ -55,6 +55,7 @@ import net.runelite.cache.fs.jagex.DataFileReadResult;
 import net.runelite.http.api.cache.Cache;
 import net.runelite.http.api.cache.CacheArchive;
 import net.runelite.http.api.cache.CacheIndex;
+import net.runelite.http.service.util.exception.NotFoundException;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.FileEntry;
