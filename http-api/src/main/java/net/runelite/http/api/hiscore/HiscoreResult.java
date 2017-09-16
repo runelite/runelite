@@ -53,6 +53,15 @@ public class HiscoreResult
 	private Skill runecraft;
 	private Skill hunter;
 	private Skill construction;
+	private Skill clueScrollEasy;
+	private Skill clueScrollMedium;
+	private Skill clueScrollAll;
+	private Skill bountyHunterRogue;
+	private Skill bountyHunterHunter;
+	private Skill clueScrollHard;
+	private Skill lastManStanding;
+	private Skill clueScrollElite;
+	private Skill clueScrollMaster;
 
 	public String getPlayer()
 	{
@@ -304,6 +313,96 @@ public class HiscoreResult
 		this.construction = construction;
 	}
 
+	public Skill getClueScrollEasy()
+	{
+		return clueScrollEasy;
+	}
+
+	public void setClueScrollEasy(Skill clueScrollEasy)
+	{
+		this.clueScrollEasy = clueScrollEasy;
+	}
+
+	public Skill getClueScrollMedium()
+	{
+		return clueScrollMedium;
+	}
+
+	public void setClueScrollMedium(Skill clueScrollMedium)
+	{
+		this.clueScrollMedium = clueScrollMedium;
+	}
+
+	public Skill getClueScrollAll()
+	{
+		return clueScrollAll;
+	}
+
+	public void setClueScrollAll(Skill clueScrollAll)
+	{
+		this.clueScrollAll = clueScrollAll;
+	}
+
+	public Skill getBountyHunterRogue()
+	{
+		return bountyHunterRogue;
+	}
+
+	public void setBountyHunterRogue(Skill bountyHunterRogue)
+	{
+		this.bountyHunterRogue = bountyHunterRogue;
+	}
+
+	public Skill getBountyHunterHunter()
+	{
+		return bountyHunterHunter;
+	}
+
+	public void setBountyHunterHunter(Skill bountyHunterHunter)
+	{
+		this.bountyHunterHunter = bountyHunterHunter;
+	}
+
+	public Skill getClueScrollHard()
+	{
+		return clueScrollHard;
+	}
+
+	public void setClueScrollHard(Skill clueScrollHard)
+	{
+		this.clueScrollHard = clueScrollHard;
+	}
+
+	public Skill getLastManStanding()
+	{
+		return lastManStanding;
+	}
+
+	public void setLastManStanding(Skill lastManStanding)
+	{
+		this.lastManStanding = lastManStanding;
+	}
+
+	public Skill getClueScrollElite()
+	{
+		return clueScrollElite;
+	}
+
+	public void setClueScrollElite(Skill clueScrollElite)
+	{
+		this.clueScrollElite = clueScrollElite;
+	}
+
+	public Skill getClueScrollMaster()
+	{
+		return clueScrollMaster;
+	}
+
+	public void setClueScrollMaster(Skill clueScrollMaster)
+	{
+		this.clueScrollMaster = clueScrollMaster;
+	}
+
 	public Skill getSkill(HiscoreSkill skill)
 	{
 		switch (skill)
@@ -356,9 +455,27 @@ public class HiscoreResult
 				return getConstruction();
 			case OVERALL:
 				return getOverall();
+			case CLUE_SCROLL_EASY:
+				return getClueScrollEasy();
+			case CLUE_SCROLL_MEDIUM:
+				return getClueScrollMedium();
+			case CLUE_SCROLL_ALL:
+				return getClueScrollAll();
+			case BOUNTY_HUNTER_ROGUE:
+				return getBountyHunterRogue();
+			case BOUNTY_HUNTER_HUNTER:
+				return getBountyHunterHunter();
+			case CLUE_SCROLL_HARD:
+				return getClueScrollHard();
+			case LAST_MAN_STANDING:
+				return getLastManStanding();
+			case CLUE_SCROLL_ELITE:
+				return getClueScrollElite();
+			case CLUE_SCROLL_MASTER:
+				return getClueScrollMaster();
 		}
 
-		throw new IllegalArgumentException("Invalid skill");
+		throw new IllegalArgumentException("Invalid hiscore item");
 	}
 
 	@Override
@@ -390,6 +507,15 @@ public class HiscoreResult
 		hash = 29 * hash + Objects.hashCode(this.runecraft);
 		hash = 29 * hash + Objects.hashCode(this.hunter);
 		hash = 29 * hash + Objects.hashCode(this.construction);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollEasy);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollMedium);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollAll);
+		hash = 29 * hash + Objects.hashCode(this.bountyHunterRogue);
+		hash = 29 * hash + Objects.hashCode(this.bountyHunterHunter);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollHard);
+		hash = 29 * hash + Objects.hashCode(this.lastManStanding);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollElite);
+		hash = 29 * hash + Objects.hashCode(this.clueScrollMaster);
 		return hash;
 	}
 
@@ -509,12 +635,48 @@ public class HiscoreResult
 		{
 			return false;
 		}
+		if (!Objects.equals(this.clueScrollEasy, other.clueScrollEasy))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clueScrollMedium, other.clueScrollMedium))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clueScrollAll, other.clueScrollAll))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.bountyHunterRogue, other.bountyHunterRogue))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.bountyHunterHunter, other.bountyHunterHunter))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clueScrollHard, other.clueScrollHard))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.lastManStanding, other.lastManStanding))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clueScrollElite, other.clueScrollElite))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clueScrollMaster, other.clueScrollMaster))
+		{
+			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "HiscoreResult{" + "player=" + player + ", overall=" + overall + ", attack=" + attack + ", defence=" + defence + ", strength=" + strength + ", hitpoints=" + hitpoints + ", ranged=" + ranged + ", prayer=" + prayer + ", magic=" + magic + ", cooking=" + cooking + ", woodcutting=" + woodcutting + ", fletching=" + fletching + ", fishing=" + fishing + ", firemaking=" + firemaking + ", crafting=" + crafting + ", smithing=" + smithing + ", mining=" + mining + ", herblore=" + herblore + ", agility=" + agility + ", thieving=" + thieving + ", slayer=" + slayer + ", farming=" + farming + ", runecraft=" + runecraft + ", hunter=" + hunter + ", construction=" + construction + '}';
+		return "HiscoreResult{" + "player=" + player + ", overall=" + overall + ", attack=" + attack + ", defence=" + defence + ", strength=" + strength + ", hitpoints=" + hitpoints + ", ranged=" + ranged + ", prayer=" + prayer + ", magic=" + magic + ", cooking=" + cooking + ", woodcutting=" + woodcutting + ", fletching=" + fletching + ", fishing=" + fishing + ", firemaking=" + firemaking + ", crafting=" + crafting + ", smithing=" + smithing + ", mining=" + mining + ", herblore=" + herblore + ", agility=" + agility + ", thieving=" + thieving + ", slayer=" + slayer + ", farming=" + farming + ", runecraft=" + runecraft + ", hunter=" + hunter + ", construction=" + construction + ", clueScrollEasy=" + clueScrollEasy + ", clueScrollMedium=" + clueScrollMedium + ", clueScrollAll=" + clueScrollAll + ", bountyHunterRogue=" + bountyHunterRogue + ", bountyHunterHunter=" + bountyHunterHunter + ", clueScrollHard=" + clueScrollHard + ", lastManStanding=" + lastManStanding + ", clueScrollElite=" + clueScrollElite + ", clueScrollMaster=" + clueScrollMaster + '}';
 	}
 }
