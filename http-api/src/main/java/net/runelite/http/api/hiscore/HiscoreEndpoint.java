@@ -26,19 +26,21 @@
 
 package net.runelite.http.api.hiscore;
 
+import okhttp3.HttpUrl;
+
 public enum HiscoreEndpoint
 {
-	NORMAL("normal", "Normal", "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
-	IRONMAN("ironman", "Ironman", "http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
-	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman", "http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
-	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman", "http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
-	DEADMAN("deadman", "Deadman", "http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
-	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman", "http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
+	NORMAL("normal", "Normal", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws")),
+	IRONMAN("ironman", "Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws")),
+	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws")),
+	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws")),
+	DEADMAN("deadman", "Deadman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws")),
+	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws"));
 
 	private final String prettyName;
-	private final String hiscoreURL;
+	private final HttpUrl hiscoreURL;
 
-	HiscoreEndpoint(String name, String prettyName, String hiscoreURL)
+	HiscoreEndpoint(String name, String prettyName, HttpUrl hiscoreURL)
 	{
 		this.prettyName = prettyName;
 		this.hiscoreURL = hiscoreURL;
@@ -49,7 +51,7 @@ public enum HiscoreEndpoint
 		return prettyName;
 	}
 
-	public String hiscoreUrl()
+	public HttpUrl hiscoreUrl()
 	{
 		return hiscoreURL;
 	}

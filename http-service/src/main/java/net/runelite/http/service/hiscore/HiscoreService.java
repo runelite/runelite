@@ -28,7 +28,6 @@ import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.hiscore.*;
 import net.runelite.http.service.util.HiscoreEndpointEditor;
-import net.runelite.http.service.util.exception.GatewayTimeoutException;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import net.runelite.http.service.util.exception.NotFoundException;
 import okhttp3.HttpUrl;
@@ -52,7 +51,7 @@ public class HiscoreService
 
 	HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		return lookupUsername(username, HttpUrl.parse(endpoint.hiscoreUrl()));
+		return lookupUsername(username, endpoint.hiscoreUrl());
 	}
 
 	HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
@@ -75,8 +74,6 @@ public class HiscoreService
 			{
 				case NOT_FOUND:
 					throw new NotFoundException();
-				case GATEWAY_TIMEOUT:
-					throw new GatewayTimeoutException();
 				default:
 					throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
 			}
