@@ -210,7 +210,6 @@ public class HiscorePanel extends PluginPanel
 
 		JPanel endpointPanel = new JPanel();
 		endpointPanel.setBorder(subPanelBorder);
-		// endpointPanel.setLayout(new GridLayout(1, 6));
 
 		List<JToggleButton> endpointButtons = new ArrayList<>();
 

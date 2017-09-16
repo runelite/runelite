@@ -31,12 +31,12 @@ import okhttp3.HttpUrl;
 
 import java.io.IOException;
 
-public class HiscoreTestService extends HiscoreService
+class HiscoreTestService extends HiscoreService
 {
 	private HttpUrl testUrl;
 
-	public HiscoreTestService(HttpUrl testUrl)
-		{
+	HiscoreTestService(HttpUrl testUrl)
+	{
 		this.testUrl = testUrl;
 	}
 
