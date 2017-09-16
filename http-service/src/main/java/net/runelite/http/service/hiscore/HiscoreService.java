@@ -51,7 +51,7 @@ public class HiscoreService
 
 	HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		return lookupUsername(username, endpoint.hiscoreUrl());
+		return lookupUsername(username, endpoint.getHiscoreURL());
 	}
 
 	HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException

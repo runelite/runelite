@@ -226,7 +226,7 @@ public class HiscorePanel extends PluginPanel
 				button.setBackground(Color.WHITE);
 				button.setFocusPainted(false);
 				button.setActionCommand(endpoint.name());
-				button.setToolTipText(endpoint.prettyName() + " Hiscores");
+				button.setToolTipText(endpoint.getName()+ " Hiscores");
 				button.addActionListener((e ->
 				{
 					ScheduledExecutorService executor = runelite.getExecutor();

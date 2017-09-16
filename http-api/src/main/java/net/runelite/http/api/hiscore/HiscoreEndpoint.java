@@ -30,28 +30,28 @@ import okhttp3.HttpUrl;
 
 public enum HiscoreEndpoint
 {
-	NORMAL("normal", "Normal", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool/index_lite.ws")),
-	IRONMAN("ironman", "Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws")),
-	HARDCORE_IRONMAN("hardcore_ironman", "Hardcore Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws")),
-	ULTIMATE_IRONMAN("ultimate_ironman", "Ultimate Ironman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws")),
-	DEADMAN("deadman", "Deadman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws")),
-	SEASONAL_DEADMAN("seasonal_deadman", "Seasonal Deadman", HttpUrl.parse("http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws"));
+	NORMAL("Normal", "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
+	IRONMAN("Ironman", "http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
+	HARDCORE_IRONMAN("Hardcore Ironman", "http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
+	ULTIMATE_IRONMAN("Ultimate Ironman", "http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
+	DEADMAN("Deadman", "http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
+	SEASONAL_DEADMAN("Seasonal Deadman", "http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
-	private final String prettyName;
+	private final String name;
 	private final HttpUrl hiscoreURL;
 
-	HiscoreEndpoint(String name, String prettyName, HttpUrl hiscoreURL)
+	HiscoreEndpoint(String name, String hiscoreURL)
 	{
-		this.prettyName = prettyName;
-		this.hiscoreURL = hiscoreURL;
+		this.name = name;
+		this.hiscoreURL = HttpUrl.parse(hiscoreURL);
 	}
 
-	public String prettyName()
+	public String getName()
 	{
-		return prettyName;
+		return name;
 	}
 
-	public HttpUrl hiscoreUrl()
+	public HttpUrl getHiscoreURL()
 	{
 		return hiscoreURL;
 	}
