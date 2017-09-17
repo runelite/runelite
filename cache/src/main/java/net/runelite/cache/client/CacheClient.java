@@ -43,9 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
-import net.runelite.cache.client.requests.ConnectionInfo;
-import net.runelite.cache.client.requests.FileRequest;
-import net.runelite.cache.client.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
@@ -53,6 +50,14 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.ArchiveData;
 import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
+import net.runelite.cache.protocol.decoders.HandshakeResponseDecoder;
+import net.runelite.cache.protocol.encoders.ArchiveRequestEncoder;
+import net.runelite.cache.protocol.encoders.EncryptionEncoder;
+import net.runelite.cache.protocol.encoders.HandshakeEncoder;
+import net.runelite.cache.protocol.packets.ArchiveRequestPacket;
+import net.runelite.cache.protocol.packets.HandshakePacket;
+import net.runelite.cache.protocol.packets.HandshakeResponseType;
+import net.runelite.cache.protocol.packets.HandshakeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +80,7 @@ public class CacheClient implements AutoCloseable
 	private final EventLoopGroup group = new NioEventLoopGroup(1);
 	private Channel channel;
 
-	private CompletableFuture<Integer> handshakeFuture;
+	private CompletableFuture<HandshakeResponseType> handshakeFuture;
 	private final Queue<PendingFileRequest> requests = new ArrayDeque<>();
 
 	public CacheClient(Store store, int clientRevision)
@@ -108,8 +113,21 @@ public class CacheClient implements AutoCloseable
 				public void initChannel(SocketChannel ch) throws Exception
 				{
 					ChannelPipeline p = ch.pipeline();
+
 					//p.addFirst(new HttpProxyHandler(new InetSocketAddress("runelite.net", 3128)));
-					p.addLast(new CacheClientHandler(CacheClient.this));
+					p.addLast("decoder", new HandshakeResponseDecoder());
+
+					p.addLast(
+						new CacheClientHandler(),
+						new HandshakeResponseHandler(CacheClient.this),
+						new ArchiveResponseHandler(CacheClient.this)
+					);
+
+					p.addLast(
+						new HandshakeEncoder(),
+						new EncryptionEncoder(),
+						new ArchiveRequestEncoder()
+					);
 				}
 			});
 
@@ -118,51 +136,22 @@ public class CacheClient implements AutoCloseable
 		channel = f.channel();
 	}
 
-	public CompletableFuture<Integer> handshake()
+	public CompletableFuture<HandshakeResponseType> handshake()
 	{
-		HelloHandshake msg = new HelloHandshake();
-		msg.setRevision(getClientRevision());
-
-		ByteBuf message = Unpooled.buffer(5);
-		message.writeByte(msg.getType()); // handshake type
-		message.writeInt(msg.getRevision()); // client revision
+		HandshakePacket handshakePacket = new HandshakePacket();
+		handshakePacket.setType(HandshakeType.ON_DEMAND);
+		handshakePacket.setRevision(getClientRevision());
 
 		state = ClientState.HANDSHAKING;
 
 		assert handshakeFuture == null;
 		handshakeFuture = new CompletableFuture<>();
 
-		channel.writeAndFlush(message);
+		channel.writeAndFlush(handshakePacket);
 
-		logger.info("Sent handshake with revision {}", msg.getRevision());
+		logger.info("Sent handshake with revision {}", handshakePacket.getRevision());
 
 		return handshakeFuture;
-	}
-
-	public void onHandshake(int response)
-	{
-		assert handshakeFuture != null;
-
-		if (response != HelloHandshake.RESPONSE_OK)
-		{
-			handshakeFuture.complete(response);
-			close();
-			return;
-		}
-
-		// Send connection info
-		ConnectionInfo cinfo = new ConnectionInfo();
-		ByteBuf outbuf = Unpooled.buffer(4);
-		outbuf.writeByte(cinfo.getType());
-		outbuf.writeMedium(cinfo.getPadding());
-
-		channel.writeAndFlush(outbuf);
-
-		state = ClientState.CONNECTED;
-
-		logger.info("Client is now connected!");
-
-		handshakeFuture.complete(response);
 	}
 
 	@Override
@@ -180,6 +169,16 @@ public class CacheClient implements AutoCloseable
 	public ClientState getState()
 	{
 		return state;
+	}
+
+	void setState(ClientState state)
+	{
+		this.state = state;
+	}
+
+	CompletableFuture<HandshakeResponseType> getHandshakeFuture()
+	{
+		return handshakeFuture;
 	}
 
 	public List<IndexInfo> requestIndexes() throws IOException
@@ -263,7 +262,7 @@ public class CacheClient implements AutoCloseable
 			index.setCrc(crc);
 			index.setRevision(revision);
 
-			logger.info("Index {} has {} archives", i, index.getArchives().size());
+			logger.info("Index {} has {} archives", i, indexData.getArchives().length);
 
 			for (ArchiveData ad : indexData.getArchives())
 			{
@@ -372,14 +371,14 @@ public class CacheClient implements AutoCloseable
 			}
 		}
 
-		ByteBuf buf = Unpooled.buffer(4);
-		FileRequest request = new FileRequest(index, fileId);
-		CompletableFuture<FileResult> future = new CompletableFuture<>();
-		PendingFileRequest pf = new PendingFileRequest(request, future);
+		ArchiveRequestPacket archiveRequest = new ArchiveRequestPacket();
+		archiveRequest.setPriority(false);
+		archiveRequest.setIndex(index);
+		archiveRequest.setArchive(fileId);
 
-		buf.writeByte(0); // 0/1 - seems to be a priority?
-		int hash = pf.computeHash();
-		buf.writeMedium(hash);
+		CompletableFuture<FileResult> future = new CompletableFuture<>();
+		PendingFileRequest pf = new PendingFileRequest(index,
+			fileId, future);
 
 		logger.trace("Sending request for {}/{}", index, fileId);
 
@@ -387,11 +386,11 @@ public class CacheClient implements AutoCloseable
 
 		if (!flush)
 		{
-			channel.write(buf);
+			channel.write(archiveRequest);
 		}
 		else
 		{
-			channel.writeAndFlush(buf);
+			channel.writeAndFlush(archiveRequest);
 		}
 
 		return future;
@@ -401,7 +400,7 @@ public class CacheClient implements AutoCloseable
 	{
 		for (PendingFileRequest pr : requests)
 		{
-			if (pr.getRequest().getIndex() == index && pr.getRequest().getFile() == file)
+			if (pr.getIndex() == index && pr.getArchive() == file)
 			{
 				return pr;
 			}

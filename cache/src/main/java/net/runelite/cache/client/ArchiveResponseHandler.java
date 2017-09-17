@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.server;
+package net.runelite.cache.client;
 
-public enum ClientState
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import net.runelite.cache.protocol.packets.ArchiveResponsePacket;
+
+public class ArchiveResponseHandler extends SimpleChannelInboundHandler<ArchiveResponsePacket>
 {
-	HANDSHAKING,
-	CONNECTED
+	private final CacheClient client;
+
+	public ArchiveResponseHandler(CacheClient client)
+	{
+		this.client = client;
+	}
+
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse) throws Exception
+	{
+		client.onFileFinish(archiveResponse.getIndex(),
+			archiveResponse.getArchive(),
+			archiveResponse.getData());
+	}
+
 }

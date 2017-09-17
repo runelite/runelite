@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.server;
+package net.runelite.cache.protocol.decoders;
 
+import net.runelite.cache.server.CacheFrameDecoder;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import java.util.List;
+import net.runelite.cache.protocol.packets.ArchiveRequestPacket;
 
-public class Chunker
+public class ArchiveRequestDecoder extends ByteToMessageDecoder
 {
-	private static final Logger logger = LoggerFactory.getLogger(Chunker.class);
 
-	private static final int CHUNK_SIZE = 512;
-
-	private final byte[] data;
-
-	public Chunker(byte[] data)
+	@Override
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
 	{
-		this.data = data;
-	}
-
-	/**
-	 * Split data into 512 byte chunks, with the first byte of each chunk
-	 * being 0xff, except for the first chunk.
-	 *
-	 * @return
-	 */
-	public byte[] chunkData()
-	{
-		ByteBuf buf = Unpooled.buffer();
-
-		int pos = 0;
-		int remaining = data.length;
-
-		int put = Math.min(CHUNK_SIZE, remaining);
-		buf.writeBytes(data, pos, put);
-
-		pos += put;
-		remaining -= put;
-
-		while (remaining > 0)
+		byte opcode = in.getByte(in.readerIndex());
+		if (opcode != CacheFrameDecoder.ARCHIVE_REQUEST_HIGH
+			&& opcode != CacheFrameDecoder.ARCHIVE_REQUEST_LOW)
 		{
-			buf.writeByte((byte) 0xff);
-
-			put = Math.min(CHUNK_SIZE - 1, remaining);
-			buf.writeBytes(data, pos, put);
-
-			pos += put;
-			remaining -= put;
+			ctx.fireChannelRead(in.retain());
+			return;
 		}
 
-		return Arrays.copyOf(buf.array(), buf.readableBytes());
+		byte priority = in.readByte();
+		int index = in.readByte() & 0xFF;
+		int archiveId = in.readShort() & 0xFFFF;
+
+		ArchiveRequestPacket archiveRequest = new ArchiveRequestPacket();
+		archiveRequest.setPriority(priority == 1);
+		archiveRequest.setIndex(index);
+		archiveRequest.setArchive(archiveId);
+		out.add(archiveRequest);
 	}
+
 }

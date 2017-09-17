@@ -22,28 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client;
+package net.runelite.cache.protocol.encoders;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.MessageToByteEncoder;
+import net.runelite.cache.protocol.packets.ArchiveResponsePacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CacheClientHandler extends ChannelInboundHandlerAdapter
+public class ArchiveResponseEncoder extends MessageToByteEncoder<ArchiveResponsePacket>
 {
-	private static final Logger logger = LoggerFactory.getLogger(CacheClientHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ArchiveResponseEncoder.class);
+
+	private static final int CHUNK_SIZE = 512;
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception
+	protected void encode(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse, ByteBuf out) throws Exception
 	{
-		logger.warn("Channel has gone inactive");
+		// archive file header
+		// 1 byte index
+		// 2 byte archive
+		out.writeByte(archiveResponse.getIndex());
+		out.writeShort(archiveResponse.getArchive());
+
+		int pos = out.readableBytes();
+
+		// next is the compressed data which starts with compression
+		// type and length
+		ByteBuf file = Unpooled.wrappedBuffer(archiveResponse.getData());
+		// - 3 for the header
+		int chunkSize = Math.min(file.readableBytes(), CHUNK_SIZE - 3);
+
+		out.writeBytes(file.readBytes(chunkSize));
+
+		while (file.isReadable())
+		{
+			out.writeByte(0xff);
+
+			chunkSize = Math.min(file.readableBytes(), CHUNK_SIZE - 1);
+			out.writeBytes(file.readBytes(chunkSize));
+		}
+
+		int size = out.readableBytes() - pos;
+		logger.debug("Wrote index {} archive {} (size {}) in {} bytes",
+			archiveResponse.getIndex(), archiveResponse.getArchive(),
+			archiveResponse.getData().length, size);
 	}
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-	{
-		// Close the connection when an exception is raised.
-		logger.warn(null, cause);
-		ctx.close();
-	}
 }

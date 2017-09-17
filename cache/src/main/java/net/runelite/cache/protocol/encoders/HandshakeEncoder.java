@@ -22,26 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client.requests;
+package net.runelite.cache.protocol.encoders;
 
-public class FileRequest
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+import net.runelite.cache.protocol.packets.HandshakePacket;
+
+public class HandshakeEncoder extends MessageToByteEncoder<HandshakePacket>
 {
-	private final int index;
-	private final int file;
 
-	public FileRequest(int index, int file)
+	@Override
+	protected void encode(ChannelHandlerContext ctx, HandshakePacket handshakePacket, ByteBuf out) throws Exception
 	{
-		this.index = index;
-		this.file = file;
+		out.writeByte(handshakePacket.getType().getValue());
+		out.writeInt(handshakePacket.getRevision());
 	}
 
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public int getFile()
-	{
-		return file;
-	}
 }

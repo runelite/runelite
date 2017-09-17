@@ -35,9 +35,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.client.IndexInfo;
-import static net.runelite.cache.client.requests.HelloHandshake.RESPONSE_OK;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.protocol.packets.HandshakeResponseType;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
@@ -99,9 +99,9 @@ public class CacheUpdater
 				(Archive archive) -> executor.submit(new CacheUploader(minioClient, minioBucket, archive)));
 
 			client.connect();
-			int result = client.handshake().join();
+			HandshakeResponseType result = client.handshake().join();
 
-			if (result != RESPONSE_OK)
+			if (result != HandshakeResponseType.RESPONSE_OK)
 			{
 				throw new OutOfDateException();
 			}

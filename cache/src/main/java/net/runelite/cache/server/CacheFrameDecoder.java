@@ -22,28 +22,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client;
+package net.runelite.cache.server;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import java.util.List;
+import net.runelite.cache.protocol.packets.EncryptionPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CacheClientHandler extends ChannelInboundHandlerAdapter
+public class CacheFrameDecoder extends ByteToMessageDecoder
 {
-	private static final Logger logger = LoggerFactory.getLogger(CacheClientHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(CacheFrameDecoder.class);
+
+	public static final int ARCHIVE_REQUEST_LOW = 0;
+	public static final int ARCHIVE_REQUEST_HIGH = 1;
+	public static final int ENCRYPTION = EncryptionPacket.OPCODE;
+	public static final int HANDSHAKE_ON_DEMAND = 15;
+
+	private ClientState state = ClientState.HANDSHAKING;
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
 	{
-		logger.warn("Channel has gone inactive");
-	}
+		in.markReaderIndex();
+		byte opcode = in.readByte();
+		in.resetReaderIndex();
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-	{
-		// Close the connection when an exception is raised.
-		logger.warn(null, cause);
-		ctx.close();
+		int length;
+
+		switch (opcode)
+		{
+			case HANDSHAKE_ON_DEMAND:
+				length = 5;
+
+				if (state != ClientState.HANDSHAKING)
+				{
+					ctx.close();
+					return;
+				}
+				state = ClientState.CONNECTED;
+				break;
+			case ARCHIVE_REQUEST_LOW:
+			case ARCHIVE_REQUEST_HIGH:
+			case ENCRYPTION:
+				length = 4;
+
+				if (state != ClientState.CONNECTED)
+				{
+					ctx.close();
+					return;
+				}
+				break;
+			default:
+				logger.debug("Unknown packet opcode from {}: {}",
+					ctx.channel().remoteAddress(), opcode);
+				ctx.close();
+				return;
+		}
+
+		if (in.readableBytes() < length)
+		{
+			return;
+		}
+
+		ByteBuf packet = in.readRetainedSlice(length);
+		out.add(packet);
 	}
 }

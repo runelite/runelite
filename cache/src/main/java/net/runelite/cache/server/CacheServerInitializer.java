@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,48 @@
  */
 package net.runelite.cache.server;
 
-public enum ClientState
+import net.runelite.cache.protocol.decoders.HandshakeDecoder;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import net.runelite.cache.protocol.decoders.ArchiveRequestDecoder;
+import net.runelite.cache.protocol.decoders.EncryptionDecoder;
+import net.runelite.cache.protocol.encoders.ArchiveResponseEncoder;
+import net.runelite.cache.protocol.encoders.HandshakeResponseEncoder;
+import net.runelite.cache.protocol.encoders.XorEncoder;
+
+public class CacheServerInitializer extends ChannelInitializer<SocketChannel>
 {
-	HANDSHAKING,
-	CONNECTED
+	private final CacheServer server;
+
+	public CacheServerInitializer(CacheServer server)
+	{
+		this.server = server;
+	}
+
+	@Override
+	protected void initChannel(SocketChannel ch) throws Exception
+	{
+		ChannelPipeline p = ch.pipeline();
+
+		p.addLast(
+			new CacheFrameDecoder(),
+			new HandshakeDecoder(),
+			new EncryptionDecoder(),
+			new ArchiveRequestDecoder()
+		);
+
+		p.addLast(
+			new HandshakeResponseEncoder(),
+			new XorEncoder(),
+			new ArchiveResponseEncoder()
+		);
+
+		p.addLast(
+			new ArchiveRequestHandler(server.getStore()),
+			new EncryptionHandler(),
+			new HandshakeHandler(server)
+		);
+	}
+
 }
