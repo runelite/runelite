@@ -22,35 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client.requests;
+package net.runelite.cache.protocol.encoders;
 
-public class ConnectionInfo
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+
+public class XorEncoder extends MessageToByteEncoder<ByteBuf>
 {
-	//login state of client
-	//  2 - logged in (in-game)
-	//  3 - logged out (not in-game)
-	private byte type = 3;
+	private byte key;
 
-	//padding to make packet size == 4
-	private int padding;
-
-	public byte getType()
+	public byte getKey()
 	{
-		return type;
+		return key;
 	}
 
-	public void setType(byte type)
+	public void setKey(byte key)
 	{
-		this.type = type;
+		this.key = key;
 	}
 
-	public int getPadding()
+	@Override
+	protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
 	{
-		return padding;
+		if (key == 0)
+		{
+			out.writeBytes(msg);
+			return;
+		}
+
+		while (msg.isReadable())
+		{
+			out.writeByte(msg.readByte() ^ key);
+		}
 	}
 
-	public void setPadding(int padding)
-	{
-		this.padding = padding;
-	}
 }

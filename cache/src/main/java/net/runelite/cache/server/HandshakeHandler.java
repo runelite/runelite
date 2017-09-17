@@ -22,28 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.client;
+package net.runelite.cache.server;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
+import net.runelite.cache.protocol.packets.HandshakePacket;
+import net.runelite.cache.protocol.packets.HandshakeResponsePacket;
+import net.runelite.cache.protocol.packets.HandshakeResponseType;
+import net.runelite.cache.protocol.packets.HandshakeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CacheClientHandler extends ChannelInboundHandlerAdapter
+public class HandshakeHandler extends SimpleChannelInboundHandler<HandshakePacket>
 {
-	private static final Logger logger = LoggerFactory.getLogger(CacheClientHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(HandshakeHandler.class);
 
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception
+	private final CacheServer server;
+
+	public HandshakeHandler(CacheServer server)
 	{
-		logger.warn("Channel has gone inactive");
+		this.server = server;
 	}
 
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+	protected void channelRead0(ChannelHandlerContext ctx, HandshakePacket handshakePacket) throws Exception
 	{
-		// Close the connection when an exception is raised.
-		logger.warn(null, cause);
-		ctx.close();
+		if (handshakePacket.getType() != HandshakeType.ON_DEMAND)
+		{
+			logger.warn("Expected handshake type ON_DEMAND");
+			ctx.close();
+			return;
+		}
+
+		if (handshakePacket.getRevision() != server.getRevision())
+		{
+			logger.warn("Incorrect version for client {}, expected {}",
+				handshakePacket.getRevision(), server.getRevision());
+			ctx.close();
+			return;
+		}
+
+		logger.info("Handshake complete from client {}, type {}, revision {}",
+			ctx.channel().remoteAddress(), handshakePacket.getType(),
+			handshakePacket.getRevision());
+
+		HandshakeResponsePacket handshakeResponse = new HandshakeResponsePacket();
+		handshakeResponse.setResponse(HandshakeResponseType.RESPONSE_OK);
+		ctx.channel().writeAndFlush(handshakeResponse);
 	}
+
 }

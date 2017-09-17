@@ -41,25 +41,10 @@ import org.junit.rules.TemporaryFolder;
 public class CacheServerTest
 {
 	private static final String HOST = "localhost";
-	private static final int REVISION = 139;
+	private static final int REVISION = 154;
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	@Ignore
-	public void run() throws Exception
-	{
-		try (Store store = new Store(new File("D:\\rs\\07\\temp\\cache139"));
-			CacheServer server = new CacheServer(store, REVISION))
-		{
-			store.load();
-			store.rebuildCrc();
-
-			server.start();
-			server.waitForClose();
-		}
-	}
 
 	@Test
 	@Ignore

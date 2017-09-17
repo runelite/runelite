@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.server;
+package net.runelite.cache.protocol.encoders;
 
-public enum ClientState
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+import net.runelite.cache.protocol.packets.EncryptionPacket;
+
+public class EncryptionEncoder extends MessageToByteEncoder<EncryptionPacket>
 {
-	HANDSHAKING,
-	CONNECTED
+
+	@Override
+	protected void encode(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket, ByteBuf out) throws Exception
+	{
+		out.writeByte(EncryptionPacket.OPCODE);
+		out.writeByte(encryptionPacket.getKey());
+		out.writeShort(0);
+	}
+
 }

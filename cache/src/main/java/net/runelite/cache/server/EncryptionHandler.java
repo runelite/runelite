@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,24 @@
  */
 package net.runelite.cache.server;
 
-public enum ClientState
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.SimpleChannelInboundHandler;
+import net.runelite.cache.protocol.encoders.XorEncoder;
+import net.runelite.cache.protocol.packets.EncryptionPacket;
+
+public class EncryptionHandler extends SimpleChannelInboundHandler<EncryptionPacket>
 {
-	HANDSHAKING,
-	CONNECTED
+
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, EncryptionPacket encryptionPacket) throws Exception
+	{
+		ChannelPipeline p = ctx.pipeline();
+		XorEncoder xorEncoder = p.get(XorEncoder.class);
+		if (xorEncoder != null)
+		{
+			xorEncoder.setKey(encryptionPacket.getKey());
+		}
+	}
+
 }

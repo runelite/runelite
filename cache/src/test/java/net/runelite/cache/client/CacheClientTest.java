@@ -29,6 +29,7 @@ import java.util.concurrent.CompletableFuture;
 import net.runelite.cache.CacheProperties;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.fs.tree.TreeStorage;
+import net.runelite.cache.protocol.packets.HandshakeResponseType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -57,12 +58,12 @@ public class CacheClientTest
 
 			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
-			CompletableFuture<Integer> handshake = c.handshake();
+			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
 
-			Integer result = handshake.get();
+			HandshakeResponseType result = handshake.get();
 			logger.info("Handshake result: {}", result);
 
-			Assert.assertEquals(0, (int) result);
+			Assert.assertEquals(HandshakeResponseType.RESPONSE_OK, result);
 
 			c.download();
 
@@ -83,12 +84,12 @@ public class CacheClientTest
 
 			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
 			c.connect();
-			CompletableFuture<Integer> handshake = c.handshake();
+			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
 
-			Integer result = handshake.get();
+			HandshakeResponseType result = handshake.get();
 			logger.info("Handshake result: {}", result);
 
-			Assert.assertEquals(0, (int) result);
+			Assert.assertEquals(HandshakeResponseType.RESPONSE_OK, result);
 
 			c.download();
 

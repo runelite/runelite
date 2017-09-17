@@ -25,31 +25,32 @@
 package net.runelite.cache.client;
 
 import java.util.concurrent.CompletableFuture;
-import net.runelite.cache.client.requests.FileRequest;
 
 public class PendingFileRequest
 {
-	private final FileRequest request;
+	private final int index;
+	private final int archive;
 	private final CompletableFuture<FileResult> future;
 
-	public PendingFileRequest(FileRequest request, CompletableFuture<FileResult> future)
+	public PendingFileRequest(int index, int archive, CompletableFuture<FileResult> future)
 	{
-		this.request = request;
+		this.index = index;
+		this.archive = archive;
 		this.future = future;
 	}
 
-	public FileRequest getRequest()
+	public int getIndex()
 	{
-		return request;
+		return index;
+	}
+
+	public int getArchive()
+	{
+		return archive;
 	}
 
 	public CompletableFuture<FileResult> getFuture()
 	{
 		return future;
-	}
-
-	public int computeHash()
-	{
-		return (request.getIndex() << 16) | request.getFile();
 	}
 }

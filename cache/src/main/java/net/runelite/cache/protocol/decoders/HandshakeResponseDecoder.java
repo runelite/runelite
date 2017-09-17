@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.server;
+package net.runelite.cache.protocol.decoders;
 
-public enum ClientState
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import java.util.List;
+import net.runelite.cache.protocol.packets.HandshakeResponsePacket;
+import net.runelite.cache.protocol.packets.HandshakeResponseType;
+
+public class HandshakeResponseDecoder extends ByteToMessageDecoder
 {
-	HANDSHAKING,
-	CONNECTED
+
+	@Override
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
+	{
+		if (in.readableBytes() < 1)
+		{
+			return;
+		}
+
+		byte response = in.readByte();
+
+		HandshakeResponsePacket handshakeResponse = new HandshakeResponsePacket();
+		handshakeResponse.setResponse(HandshakeResponseType.of(response));
+		out.add(handshakeResponse);
+	}
+
 }
