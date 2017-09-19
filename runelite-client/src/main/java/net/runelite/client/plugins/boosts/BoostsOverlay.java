@@ -55,6 +55,7 @@ class BoostsOverlay extends Overlay
 	};
 
 	private static final int TOP_BORDER = 2;
+	private static final int BOTTOM_BORDER = 2;
 	private static final int LEFT_BORDER = 2;
 	private static final int RIGHT_BORDER = 2;
 
@@ -108,6 +109,8 @@ class BoostsOverlay extends Overlay
 		{
 			return null;
 		}
+
+		height += BOTTOM_BORDER;
 
 		graphics.setColor(BACKGROUND);
 		graphics.fillRect(0, 0, WIDTH, height);
