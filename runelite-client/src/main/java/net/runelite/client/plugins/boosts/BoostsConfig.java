@@ -53,4 +53,14 @@ public interface BoostsConfig
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "relativeBoost",
+		name = "Use Relative Boosts",
+		description = "Configures whether or not relative boost is used"
+	)
+	default boolean useRelativeBoost()
+	{
+		return false;
+	}
 }
