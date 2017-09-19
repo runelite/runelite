@@ -558,16 +558,16 @@ public abstract class class28 {
                            break;
                         }
 
-                        label2239: {
+                        label2262: {
                            var46 = var58.charAt(var12);
                            if(var12 == 0) {
                               if(var46 == 45) {
                                  var47 = true;
-                                 break label2239;
+                                 break label2262;
                               }
 
                               if(var46 == 43) {
-                                 break label2239;
+                                 break label2262;
                               }
                            }
 
@@ -612,7 +612,12 @@ public abstract class class28 {
                      }
 
                      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_NUMERIC_INPUT);
-                     Client.secretPacketBuffer1.putInt(var19);
+                     if(Client.RUNELITE_PACKET) {
+                        Client.secretPacketBuffer1.runeliteWriteInt(var19);
+                     } else {
+                        Client.secretPacketBuffer1.putInt(var19);
+                     }
+
                      var3 = 1;
                   } else if(var0 == 3105) {
                      var58 = class82.scriptStringStack[--class169.scriptStringStackSize];
@@ -664,7 +669,12 @@ public abstract class class28 {
                   } else if(var0 == 3115) {
                      var4 = class82.intStack[--Ignore.intStackSize];
                      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_PRICE);
-                     Client.secretPacketBuffer1.putShort(var4);
+                     if(Client.RUNELITE_PACKET) {
+                        Client.secretPacketBuffer1.runeliteWriteInt(var4);
+                     } else {
+                        Client.secretPacketBuffer1.putShort(var4);
+                     }
+
                      var3 = 1;
                   } else if(var0 == 3116) {
                      var4 = class82.intStack[--Ignore.intStackSize];
@@ -1194,9 +1204,16 @@ public abstract class class28 {
 
                            Client.field1149 = class82.intStack[Ignore.intStackSize + 2];
                            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CHATFILTER_UPDATE);
-                           Client.secretPacketBuffer1.putByte(Client.field1148);
-                           Client.secretPacketBuffer1.putByte(class13.field293.field3738);
-                           Client.secretPacketBuffer1.putByte(Client.field1149);
+                           if(Client.RUNELITE_PACKET) {
+                              Client.secretPacketBuffer1.runeliteWriteInt(Client.field1148);
+                              Client.secretPacketBuffer1.runeliteWriteInt(class13.field293.field3738);
+                              Client.secretPacketBuffer1.runeliteWriteInt(Client.field1149);
+                           } else {
+                              Client.secretPacketBuffer1.putByte(Client.field1148);
+                              Client.secretPacketBuffer1.putByte(class13.field293.field3738);
+                              Client.secretPacketBuffer1.putByte(Client.field1149);
+                           }
+
                            var3 = 1;
                         } else if(var0 == 5002) {
                            var58 = class82.scriptStringStack[--class169.scriptStringStackSize];
@@ -1374,7 +1391,12 @@ public abstract class class28 {
                            }
 
                            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CHATBOX_INPUT);
-                           Client.secretPacketBuffer1.putByte(0);
+                           if(Client.RUNELITE_PACKET) {
+                              Client.secretPacketBuffer1.runeliteWriteInt(0);
+                           } else {
+                              Client.secretPacketBuffer1.putByte(0);
+                           }
+
                            var9 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putByte(var19);
                            Client.secretPacketBuffer1.putByte(var18);
@@ -1386,64 +1408,66 @@ public abstract class class28 {
 
                            for(int var15 = 0; var15 < var13; ++var15) {
                               char var16 = var58.charAt(var15);
-                              if(var16 > 0 && var16 < 128 || var16 >= 160 && var16 <= 255) {
-                                 var24[var15] = (byte)var16;
-                              } else if(var16 == 8364) {
-                                 var24[var15] = -128;
-                              } else if(var16 == 8218) {
-                                 var24[var15] = -126;
-                              } else if(var16 == 402) {
-                                 var24[var15] = -125;
-                              } else if(var16 == 8222) {
-                                 var24[var15] = -124;
-                              } else if(var16 == 8230) {
-                                 var24[var15] = -123;
-                              } else if(var16 == 8224) {
-                                 var24[var15] = -122;
-                              } else if(var16 == 8225) {
-                                 var24[var15] = -121;
-                              } else if(var16 == 710) {
-                                 var24[var15] = -120;
-                              } else if(var16 == 8240) {
-                                 var24[var15] = -119;
-                              } else if(var16 == 352) {
-                                 var24[var15] = -118;
-                              } else if(var16 == 8249) {
-                                 var24[var15] = -117;
-                              } else if(var16 == 338) {
-                                 var24[var15] = -116;
-                              } else if(var16 == 381) {
-                                 var24[var15] = -114;
-                              } else if(var16 == 8216) {
-                                 var24[var15] = -111;
-                              } else if(var16 == 8217) {
-                                 var24[var15] = -110;
-                              } else if(var16 == 8220) {
-                                 var24[var15] = -109;
-                              } else if(var16 == 8221) {
-                                 var24[var15] = -108;
-                              } else if(var16 == 8226) {
-                                 var24[var15] = -107;
-                              } else if(var16 == 8211) {
-                                 var24[var15] = -106;
-                              } else if(var16 == 8212) {
-                                 var24[var15] = -105;
-                              } else if(var16 == 732) {
-                                 var24[var15] = -104;
-                              } else if(var16 == 8482) {
-                                 var24[var15] = -103;
-                              } else if(var16 == 353) {
-                                 var24[var15] = -102;
-                              } else if(var16 == 8250) {
-                                 var24[var15] = -101;
-                              } else if(var16 == 339) {
-                                 var24[var15] = -100;
-                              } else if(var16 == 382) {
-                                 var24[var15] = -98;
-                              } else if(var16 == 376) {
-                                 var24[var15] = -97;
+                              if((var16 <= 0 || var16 >= 128) && (var16 < 160 || var16 > 255)) {
+                                 if(var16 == 8364) {
+                                    var24[var15] = -128;
+                                 } else if(var16 == 8218) {
+                                    var24[var15] = -126;
+                                 } else if(var16 == 402) {
+                                    var24[var15] = -125;
+                                 } else if(var16 == 8222) {
+                                    var24[var15] = -124;
+                                 } else if(var16 == 8230) {
+                                    var24[var15] = -123;
+                                 } else if(var16 == 8224) {
+                                    var24[var15] = -122;
+                                 } else if(var16 == 8225) {
+                                    var24[var15] = -121;
+                                 } else if(var16 == 710) {
+                                    var24[var15] = -120;
+                                 } else if(var16 == 8240) {
+                                    var24[var15] = -119;
+                                 } else if(var16 == 352) {
+                                    var24[var15] = -118;
+                                 } else if(var16 == 8249) {
+                                    var24[var15] = -117;
+                                 } else if(var16 == 338) {
+                                    var24[var15] = -116;
+                                 } else if(var16 == 381) {
+                                    var24[var15] = -114;
+                                 } else if(var16 == 8216) {
+                                    var24[var15] = -111;
+                                 } else if(var16 == 8217) {
+                                    var24[var15] = -110;
+                                 } else if(var16 == 8220) {
+                                    var24[var15] = -109;
+                                 } else if(var16 == 8221) {
+                                    var24[var15] = -108;
+                                 } else if(var16 == 8226) {
+                                    var24[var15] = -107;
+                                 } else if(var16 == 8211) {
+                                    var24[var15] = -106;
+                                 } else if(var16 == 8212) {
+                                    var24[var15] = -105;
+                                 } else if(var16 == 732) {
+                                    var24[var15] = -104;
+                                 } else if(var16 == 8482) {
+                                    var24[var15] = -103;
+                                 } else if(var16 == 353) {
+                                    var24[var15] = -102;
+                                 } else if(var16 == 8250) {
+                                    var24[var15] = -101;
+                                 } else if(var16 == 339) {
+                                    var24[var15] = -100;
+                                 } else if(var16 == 382) {
+                                    var24[var15] = -98;
+                                 } else if(var16 == 376) {
+                                    var24[var15] = -97;
+                                 } else {
+                                    var24[var15] = 63;
+                                 }
                               } else {
-                                 var24[var15] = 63;
+                                 var24[var15] = (byte)var16;
                               }
                            }
 
@@ -1456,7 +1480,12 @@ public abstract class class28 {
                            var58 = class82.scriptStringStack[class169.scriptStringStackSize];
                            var5 = class82.scriptStringStack[class169.scriptStringStackSize + 1];
                            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_PRIVMSG);
-                           Client.secretPacketBuffer1.putShort(0);
+                           if(Client.RUNELITE_PACKET) {
+                              Client.secretPacketBuffer1.runeliteWriteInt(0);
+                           } else {
+                              Client.secretPacketBuffer1.putShort(0);
+                           }
+
                            var6 = Client.secretPacketBuffer1.offset;
                            Client.secretPacketBuffer1.putString(var58);
                            PacketBuffer var36 = Client.secretPacketBuffer1;

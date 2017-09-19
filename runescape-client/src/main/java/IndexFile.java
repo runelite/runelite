@@ -214,12 +214,14 @@ public final class IndexFile {
                if(var3 < 0 || var3 > this.maxSize) {
                   var10000 = null;
                   return (byte[])var10000;
-               } else if(var4 > 0 && (long)var4 <= this.dataFile.method2346() / 520L) {
+               } else if(var4 <= 0 || (long)var4 > this.dataFile.method2346() / 520L) {
+                  var10000 = null;
+                  return (byte[])var10000;
+               } else {
                   byte[] var5 = new byte[var3];
                   int var6 = 0;
-                  int var7 = 0;
 
-                  while(var6 < var3) {
+                  for(int var7 = 0; var6 < var3; ++var7) {
                      if(var4 == 0) {
                         var10000 = null;
                         return (byte[])var10000;
@@ -236,30 +238,25 @@ public final class IndexFile {
                      int var10 = (field2282[3] & 255) + ((field2282[2] & 255) << 8);
                      int var11 = ((field2282[5] & 255) << 8) + ((field2282[4] & 255) << 16) + (field2282[6] & 255);
                      int var12 = field2282[7] & 255;
-                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
-                        if(var11 >= 0 && (long)var11 <= this.dataFile.method2346() / 520L) {
-                           for(int var13 = 0; var13 < var8; ++var13) {
-                              var5[var6++] = field2282[var13 + 8];
-                           }
-
-                           var4 = var11;
-                           ++var7;
-                           continue;
-                        }
-
+                     if(var9 != var1 || var7 != var10 || var12 != this.index) {
                         var10000 = null;
                         return (byte[])var10000;
                      }
 
-                     var10000 = null;
-                     return (byte[])var10000;
+                     if(var11 < 0 || (long)var11 > this.dataFile.method2346() / 520L) {
+                        var10000 = null;
+                        return (byte[])var10000;
+                     }
+
+                     for(int var13 = 0; var13 < var8; ++var13) {
+                        var5[var6++] = field2282[var13 + 8];
+                     }
+
+                     var4 = var11;
                   }
 
                   byte[] var18 = var5;
                   return var18;
-               } else {
-                  var10000 = null;
-                  return (byte[])var10000;
                }
             }
          } catch (IOException var16) {

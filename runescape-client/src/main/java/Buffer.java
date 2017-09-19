@@ -721,8 +721,7 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-369069894"
    )
-   @Export("putLEShortA")
-   public void putLEShortA(int var1) {
+   public void method3371(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);

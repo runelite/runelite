@@ -117,9 +117,16 @@ public class class44 extends WorldMapData {
                int var11 = var9 + Player.localPlayer.x >> 7;
                int var12 = Player.localPlayer.y - var10 >> 7;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MINIMAP_WALK);
-               Client.secretPacketBuffer1.putByte(18);
-               Client.secretPacketBuffer1.putShortLE(var11 + class149.baseX);
-               Client.secretPacketBuffer1.putShort(var12 + class67.baseY);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(18);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var11 + class149.baseX);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var12 + class67.baseY);
+               } else {
+                  Client.secretPacketBuffer1.putByte(18);
+                  Client.secretPacketBuffer1.putShortLE(var11 + class149.baseX);
+                  Client.secretPacketBuffer1.putShort(var12 + class67.baseY);
+               }
+
                Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?(KeyFocusListener.field651[81]?2:1):0);
                Client.secretPacketBuffer1.putByte(var4);
                Client.secretPacketBuffer1.putByte(var5);

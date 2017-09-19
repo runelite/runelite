@@ -299,8 +299,14 @@ final class class19 implements Comparator {
             var9 = var3.id;
             int var6 = var3.index;
             Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADVANCE_DIALOGUE);
-            Client.secretPacketBuffer1.putShortLE(var6);
-            Client.secretPacketBuffer1.putLEShortA(var9);
+            if(Client.RUNELITE_PACKET) {
+               Client.secretPacketBuffer1.runeliteWriteInt(var6);
+               Client.secretPacketBuffer1.runeliteWriteInt(var9);
+            } else {
+               Client.secretPacketBuffer1.putShortLE(var6);
+               Client.secretPacketBuffer1.method3371(var9);
+            }
+
             Client.field1086 = var3;
             class7.method34(var3);
             return 1;

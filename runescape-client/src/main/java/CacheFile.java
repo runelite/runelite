@@ -423,20 +423,40 @@ public class CacheFile {
          if(var6 != null && var6 != Player.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
             if(var0 == 1) {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_73);
-               Client.secretPacketBuffer1.putByte(0);
-               Client.secretPacketBuffer1.method3273(var3[var5]);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(0);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var3[var5]);
+               } else {
+                  Client.secretPacketBuffer1.putByte(0);
+                  Client.secretPacketBuffer1.method3273(var3[var5]);
+               }
             } else if(var0 == 4) {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TRADE_PLAYER);
-               Client.secretPacketBuffer1.putLEInt(0);
-               Client.secretPacketBuffer1.putShortLE(var3[var5]);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(0);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var3[var5]);
+               } else {
+                  Client.secretPacketBuffer1.putLEInt(0);
+                  Client.secretPacketBuffer1.putShortLE(var3[var5]);
+               }
             } else if(var0 == 6) {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_115);
-               Client.secretPacketBuffer1.putLEInt(0);
-               Client.secretPacketBuffer1.putShortLE(var3[var5]);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(0);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var3[var5]);
+               } else {
+                  Client.secretPacketBuffer1.putLEInt(0);
+                  Client.secretPacketBuffer1.putShortLE(var3[var5]);
+               }
             } else if(var0 == 7) {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_65);
-               Client.secretPacketBuffer1.putLEInt(0);
-               Client.secretPacketBuffer1.method3273(var3[var5]);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(0);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var3[var5]);
+               } else {
+                  Client.secretPacketBuffer1.putLEInt(0);
+                  Client.secretPacketBuffer1.method3273(var3[var5]);
+               }
             }
 
             var4 = true;

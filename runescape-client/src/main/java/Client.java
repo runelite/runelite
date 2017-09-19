@@ -2003,44 +2003,6 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(packetType == Opcodes.PACKET_SERVER_2) {
-               class95.field1507 = 0;
-
-               for(var2 = 0; var2 < 2048; ++var2) {
-                  class95.field1506[var2] = null;
-                  class95.field1513[var2] = 1;
-               }
-
-               for(var2 = 0; var2 < 2048; ++var2) {
-                  cachedPlayers[var2] = null;
-               }
-
-               class183.initializeGPI(secretPacketBuffer2);
-               packetType = -1;
-               return true;
-            }
-
-            if(packetType == Opcodes.PACKET_SERVER_200) {
-               for(var2 = 0; var2 < VarPlayerType.field3291; ++var2) {
-                  VarPlayerType var109 = class36.method520(var2);
-                  if(var109 != null) {
-                     class212.settings[var2] = 0;
-                     class212.widgetSettings[var2] = 0;
-                  }
-               }
-
-               class9.method54();
-               field981 += 32;
-               packetType = -1;
-               return true;
-            }
-
-            if(packetType == Opcodes.PACKET_SERVER_104) {
-               class35.method518();
-               packetType = -1;
-               return false;
-            }
-
             int var5;
             int var6;
             int var11;
@@ -2156,6 +2118,44 @@ public final class Client extends GameEngine {
                class281.field3757.method3638(var118);
                packetType = -1;
                return true;
+            }
+
+            if(packetType == Opcodes.PACKET_SERVER_2) {
+               class95.field1507 = 0;
+
+               for(var2 = 0; var2 < 2048; ++var2) {
+                  class95.field1506[var2] = null;
+                  class95.field1513[var2] = 1;
+               }
+
+               for(var2 = 0; var2 < 2048; ++var2) {
+                  cachedPlayers[var2] = null;
+               }
+
+               class183.initializeGPI(secretPacketBuffer2);
+               packetType = -1;
+               return true;
+            }
+
+            if(packetType == Opcodes.PACKET_SERVER_200) {
+               for(var2 = 0; var2 < VarPlayerType.field3291; ++var2) {
+                  VarPlayerType var109 = class36.method520(var2);
+                  if(var109 != null) {
+                     class212.settings[var2] = 0;
+                     class212.widgetSettings[var2] = 0;
+                  }
+               }
+
+               class9.method54();
+               field981 += 32;
+               packetType = -1;
+               return true;
+            }
+
+            if(packetType == Opcodes.PACKET_SERVER_104) {
+               class35.method518();
+               packetType = -1;
+               return false;
             }
 
             if(packetType == Opcodes.PACKET_SERVER_168) {
@@ -2276,7 +2276,7 @@ public final class Client extends GameEngine {
             }
 
             int var4;
-            Widget var105;
+            Widget var104;
             if(packetType == Opcodes.PACKET_SERVER_251) {
                if(RUNELITE_PACKET) {
                   var2 = secretPacketBuffer2.runeliteReadInt();
@@ -2284,14 +2284,14 @@ public final class Client extends GameEngine {
                   var2 = secretPacketBuffer2.method3291();
                }
 
-               var105 = GZipDecompressor.method3177(var2);
+               var104 = GZipDecompressor.method3177(var2);
 
-               for(var4 = 0; var4 < var105.itemIds.length; ++var4) {
-                  var105.itemIds[var4] = -1;
-                  var105.itemIds[var4] = 0;
+               for(var4 = 0; var4 < var104.itemIds.length; ++var4) {
+                  var104.itemIds[var4] = -1;
+                  var104.itemIds[var4] = 0;
                }
 
-               class7.method34(var105);
+               class7.method34(var104);
                packetType = -1;
                return true;
             }
@@ -2303,10 +2303,10 @@ public final class Client extends GameEngine {
                   var2 = secretPacketBuffer2.readInt();
                }
 
-               var105 = GZipDecompressor.method3177(var2);
-               var105.modelType = 3;
-               var105.modelId = Player.localPlayer.composition.method4002();
-               class7.method34(var105);
+               var104 = GZipDecompressor.method3177(var2);
+               var104.modelType = 3;
+               var104.modelId = Player.localPlayer.composition.method4002();
+               class7.method34(var104);
                packetType = -1;
                return true;
             }
@@ -2439,18 +2439,18 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == Opcodes.PACKET_SERVER_218) {
-               byte var104;
+               byte var105;
                if(RUNELITE_PACKET) {
                   var3 = secretPacketBuffer2.runeliteReadInt();
-                  var104 = secretPacketBuffer2.runeliteReadByte();
+                  var105 = secretPacketBuffer2.runeliteReadByte();
                } else {
-                  var104 = secretPacketBuffer2.method3277();
+                  var105 = secretPacketBuffer2.method3277();
                   var3 = secretPacketBuffer2.method3309();
                }
 
-               class212.settings[var3] = var104;
-               if(class212.widgetSettings[var3] != var104) {
-                  class212.widgetSettings[var3] = var104;
+               class212.settings[var3] = var105;
+               if(class212.widgetSettings[var3] != var105) {
+                  class212.widgetSettings[var3] = var105;
                }
 
                WorldMapType1.method301(var3);
@@ -2566,10 +2566,18 @@ public final class Client extends GameEngine {
                   }
 
                   secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_STATISTICS);
-                  secretPacketBuffer1.putLEInt(GameEngine.FPS);
-                  secretPacketBuffer1.putLEShortA(var2);
-                  secretPacketBuffer1.putLEShortA(var3);
-                  secretPacketBuffer1.method3410(var5);
+                  if(RUNELITE_PACKET) {
+                     secretPacketBuffer1.runeliteWriteInt(GameEngine.FPS);
+                     secretPacketBuffer1.runeliteWriteInt(var2);
+                     secretPacketBuffer1.runeliteWriteInt(var3);
+                     secretPacketBuffer1.runeliteWriteInt(var5);
+                  } else {
+                     secretPacketBuffer1.putLEInt(GameEngine.FPS);
+                     secretPacketBuffer1.method3371(var2);
+                     secretPacketBuffer1.method3371(var3);
+                     secretPacketBuffer1.method3410(var5);
+                  }
+
                   packetType = -1;
                   return true;
                }
@@ -4157,7 +4165,7 @@ public final class Client extends GameEngine {
                         if(isDynamicRegion) {
                            var45 = 0;
 
-                           label675:
+                           label678:
                            while(true) {
                               CollisionData[] var19;
                               int var23;
@@ -4181,13 +4189,13 @@ public final class Client extends GameEngine {
 
                                  while(true) {
                                     if(var45 >= 4) {
-                                       break label675;
+                                       break label678;
                                     }
 
                                     WorldMapType3.method239();
 
                                     for(var4 = 0; var4 < 13; ++var4) {
-                                       label564:
+                                       label567:
                                        for(var5 = 0; var5 < 13; ++var5) {
                                           var46 = field1005[var45][var4][var5];
                                           if(var46 != -1) {
@@ -4212,7 +4220,7 @@ public final class Client extends GameEngine {
                                                    while(true) {
                                                       var22 = var47.getUSmart();
                                                       if(var22 == 0) {
-                                                         continue label564;
+                                                         continue label567;
                                                       }
 
                                                       var21 += var22;
@@ -4416,7 +4424,11 @@ public final class Client extends GameEngine {
                         ObjectComposition.field3437.reset();
                         if(class87.clientInstance.method922()) {
                            secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_69);
-                           secretPacketBuffer1.putInt(1057001181);
+                           if(RUNELITE_PACKET) {
+                              secretPacketBuffer1.runeliteWriteInt(1057001181);
+                           } else {
+                              secretPacketBuffer1.putInt(1057001181);
+                           }
                         }
 
                         if(!isDynamicRegion) {
@@ -4841,7 +4853,12 @@ public final class Client extends GameEngine {
          if(gameState == 30) {
             while(GraphicsObject.method1683()) {
                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_79);
-               secretPacketBuffer1.putByte(0);
+               if(RUNELITE_PACKET) {
+                  secretPacketBuffer1.runeliteWriteInt(0);
+               } else {
+                  secretPacketBuffer1.putByte(0);
+               }
+
                var1 = secretPacketBuffer1.offset;
                class208.encodeClassVerifier(secretPacketBuffer1);
                secretPacketBuffer1.putLength(secretPacketBuffer1.offset - var1);
@@ -4861,7 +4878,12 @@ public final class Client extends GameEngine {
                   field970.field880 = 0;
                } else if(MouseInput.field754 != 0 || field970.field880 >= 40) {
                   secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MOUSE_CLICK);
-                  secretPacketBuffer1.putByte(0);
+                  if(RUNELITE_PACKET) {
+                     secretPacketBuffer1.runeliteWriteInt(0);
+                  } else {
+                     secretPacketBuffer1.putByte(0);
+                  }
+
                   var2 = secretPacketBuffer1.offset;
                   var3 = 0;
 
@@ -4956,7 +4978,12 @@ public final class Client extends GameEngine {
 
             if(KeyFocusListener.field652 > 0) {
                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEY_PRESSES);
-               secretPacketBuffer1.putShort(0);
+               if(RUNELITE_PACKET) {
+                  secretPacketBuffer1.runeliteWriteInt(0);
+               } else {
+                  secretPacketBuffer1.putShort(0);
+               }
+
                var1 = secretPacketBuffer1.offset;
                long var16 = class45.currentTimeMs();
 
@@ -4986,20 +5013,33 @@ public final class Client extends GameEngine {
                field1021 = 20;
                field1206 = false;
                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAMERA_MOVEMENT);
-               secretPacketBuffer1.method3273(mapAngle);
-               secretPacketBuffer1.method3280(field956);
+               if(RUNELITE_PACKET) {
+                  secretPacketBuffer1.runeliteWriteInt(mapAngle);
+                  secretPacketBuffer1.runeliteWriteInt(field956);
+               } else {
+                  secretPacketBuffer1.method3273(mapAngle);
+                  secretPacketBuffer1.method3280(field956);
+               }
             }
 
             if(GameEngine.field732 && !field955) {
                field955 = true;
                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TOGGLE_FRAME);
-               secretPacketBuffer1.putByte(1);
+               if(RUNELITE_PACKET) {
+                  secretPacketBuffer1.runeliteWriteInt(1);
+               } else {
+                  secretPacketBuffer1.putByte(1);
+               }
             }
 
             if(!GameEngine.field732 && field955) {
                field955 = false;
                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TOGGLE_FRAME);
-               secretPacketBuffer1.putByte(0);
+               if(RUNELITE_PACKET) {
+                  secretPacketBuffer1.runeliteWriteInt(0);
+               } else {
+                  secretPacketBuffer1.putByte(0);
+               }
             }
 
             int[] var20;
@@ -5302,10 +5342,17 @@ public final class Client extends GameEngine {
                                                          }
 
                                                          secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DRAG_ITEM);
-                                                         secretPacketBuffer1.putLEInt(var30);
-                                                         secretPacketBuffer1.putShortLE(field1133);
-                                                         secretPacketBuffer1.putInt(class18.field325.id);
-                                                         secretPacketBuffer1.putShortLE(field1044);
+                                                         if(RUNELITE_PACKET) {
+                                                            secretPacketBuffer1.runeliteWriteInt(var30);
+                                                            secretPacketBuffer1.runeliteWriteInt(field1133);
+                                                            secretPacketBuffer1.runeliteWriteInt(class18.field325.id);
+                                                            secretPacketBuffer1.runeliteWriteInt(field1044);
+                                                         } else {
+                                                            secretPacketBuffer1.putLEInt(var30);
+                                                            secretPacketBuffer1.putShortLE(field1133);
+                                                            secretPacketBuffer1.putInt(class18.field325.id);
+                                                            secretPacketBuffer1.putShortLE(field1044);
+                                                         }
                                                       }
                                                    } else if(this.method1187()) {
                                                       this.method1188(field1069, field1046);
@@ -5329,9 +5376,16 @@ public final class Client extends GameEngine {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
                                                 secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_WALK);
-                                                secretPacketBuffer1.putByte(5);
-                                                secretPacketBuffer1.putShortLE(var3 + class149.baseX);
-                                                secretPacketBuffer1.putShort(var4 + class67.baseY);
+                                                if(RUNELITE_PACKET) {
+                                                   secretPacketBuffer1.runeliteWriteInt(5);
+                                                   secretPacketBuffer1.runeliteWriteInt(var3 + class149.baseX);
+                                                   secretPacketBuffer1.runeliteWriteInt(var4 + class67.baseY);
+                                                } else {
+                                                   secretPacketBuffer1.putByte(5);
+                                                   secretPacketBuffer1.putShortLE(var3 + class149.baseX);
+                                                   secretPacketBuffer1.putShort(var4 + class67.baseY);
+                                                }
+
                                                 secretPacketBuffer1.putLEInt(KeyFocusListener.field651[82]?(KeyFocusListener.field651[81]?2:1):0);
                                                 Region.method2751();
                                                 field1038 = MouseInput.field753;
@@ -6291,12 +6345,21 @@ public final class Client extends GameEngine {
 
                   if(var15 != null) {
                      secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_DRAG_ITEM_ACROSS_WIDGETS);
-                     secretPacketBuffer1.method3273(field1111.index);
-                     secretPacketBuffer1.method3273(field1108.index);
-                     secretPacketBuffer1.method3288(field1108.id);
-                     secretPacketBuffer1.putShort(field1111.itemId);
-                     secretPacketBuffer1.putShort(field1108.itemId);
-                     secretPacketBuffer1.method3288(field1111.id);
+                     if(RUNELITE_PACKET) {
+                        secretPacketBuffer1.runeliteWriteInt(field1111.index);
+                        secretPacketBuffer1.runeliteWriteInt(field1108.index);
+                        secretPacketBuffer1.runeliteWriteInt(field1108.id);
+                        secretPacketBuffer1.runeliteWriteInt(field1111.itemId);
+                        secretPacketBuffer1.runeliteWriteInt(field1108.itemId);
+                        secretPacketBuffer1.runeliteWriteInt(field1111.id);
+                     } else {
+                        secretPacketBuffer1.method3273(field1111.index);
+                        secretPacketBuffer1.method3273(field1108.index);
+                        secretPacketBuffer1.method3288(field1108.id);
+                        secretPacketBuffer1.putShort(field1111.itemId);
+                        secretPacketBuffer1.putShort(field1108.itemId);
+                        secretPacketBuffer1.method3288(field1111.id);
+                     }
                   }
                }
             } else if(this.method1187()) {

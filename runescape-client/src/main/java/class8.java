@@ -343,7 +343,12 @@ public final class class8 extends class9 {
                   return 1;
                } else if(var0 == 3620) {
                   Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_JOIN_CLANCHAT);
-                  Client.secretPacketBuffer1.putByte(0);
+                  if(Client.RUNELITE_PACKET) {
+                     Client.secretPacketBuffer1.runeliteWriteInt(0);
+                  } else {
+                     Client.secretPacketBuffer1.putByte(0);
+                  }
+
                   return 1;
                } else if(var0 == 3621) {
                   if(Client.field1198 == 0) {
@@ -365,13 +370,13 @@ public final class class8 extends class9 {
 
                   return 1;
                } else if(var0 == 3623) {
-                  label318: {
+                  label323: {
                      var11 = class82.scriptStringStack[--class169.scriptStringStackSize];
                      String var13 = "<img=0>";
                      if(!var11.startsWith(var13)) {
                         var7 = "<img=1>";
                         if(!var11.startsWith(var7)) {
-                           break label318;
+                           break label323;
                         }
                      }
 
