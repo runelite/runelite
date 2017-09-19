@@ -24,10 +24,6 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 import com.google.common.collect.ObjectArrays;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -36,6 +32,11 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 
 class BoostsOverlay extends Overlay
 {
@@ -55,6 +56,7 @@ class BoostsOverlay extends Overlay
 	};
 
 	private static final int TOP_BORDER = 2;
+	private static final int BOTTOM_BORDER = 2;
 	private static final int LEFT_BORDER = 2;
 	private static final int RIGHT_BORDER = 2;
 
@@ -109,6 +111,8 @@ class BoostsOverlay extends Overlay
 			return null;
 		}
 
+		height += BOTTOM_BORDER;
+
 		graphics.setColor(BACKGROUND);
 		graphics.fillRect(0, 0, WIDTH, height);
 
@@ -126,9 +130,26 @@ class BoostsOverlay extends Overlay
 			graphics.setColor(Color.white);
 			graphics.drawString(skill.getName(), LEFT_BORDER, y + metrics.getHeight());
 
-			String str = boosted + "/" + base;
+			String str;
+			if (!config.useRelativeBoost())
+			{
+				str = boosted + "/" + base;
+			}
+			else
+			{
+				int boost = boosted - base;
+				str = String.valueOf(boost);
+				if (boost > 0)
+				{
+					str = "+"  + str;
+					graphics.setColor(Color.GREEN.darker());
+				}
+				else
+				{
+					graphics.setColor(Color.RED.darker());
+				}
+			}
 			graphics.drawString(str, WIDTH - RIGHT_BORDER - metrics.stringWidth(str), y + metrics.getHeight());
-
 			y += metrics.getHeight() + SEPARATOR;
 		}
 
