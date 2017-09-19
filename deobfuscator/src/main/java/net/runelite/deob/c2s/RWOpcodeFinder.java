@@ -57,6 +57,17 @@ public class RWOpcodeFinder
 		return writeOpcode;
 	}
 
+	public ClassFile getSecretBuffer()
+	{
+		assert writeOpcode.getClassFile() == readOpcode.getClassFile();
+		return writeOpcode.getClassFile();
+	}
+
+	public ClassFile getBuffer()
+	{
+		return getSecretBuffer().getParent();
+	}
+
 	public void find()
 	{
 		IsaacCipherFinder ic = new IsaacCipherFinder(group);

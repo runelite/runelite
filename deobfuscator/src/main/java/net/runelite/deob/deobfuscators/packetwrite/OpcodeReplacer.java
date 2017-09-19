@@ -22,51 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.packetwrite;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
-import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
-import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.c2s.RWOpcodeFinder;
-import net.runelite.deob.c2s.WritePacket;
 import static net.runelite.deob.deobfuscators.transformers.OpcodesTransformer.RUNELITE_OPCODES;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PacketWrite implements Deobfuscator
+class OpcodeReplacer
 {
-	private static final Logger logger = LoggerFactory.getLogger(PacketWrite.class);
+	private static final Logger logger = LoggerFactory.getLogger(OpcodeReplacer.class);
 
-	@Override
-	public void run(ClassGroup group)
+	public void run(ClassGroup group, Collection<PacketWrite> writes)
 	{
-		List<WritePacket> writes = findWrites(group);
 		int count = 0;
 
 		ClassFile runeliteOpcodes = group.findClass(RUNELITE_OPCODES);
 		assert runeliteOpcodes != null : "Opcodes class must exist";
 
-		for (WritePacket wp : writes)
+		for (PacketWrite wp : writes)
 		{
-			Instructions ins = wp.getMethod().getCode().getInstructions();
+			Instructions ins = wp.getInstructions();
 
-			Instruction param = wp.getPushConstant();
-			assert param instanceof PushConstantInstruction;
+			Instruction param = wp.getOpcodeIns();
+			if (!(param instanceof PushConstantInstruction))
+			{
+				continue;
+			}
 
 			final String fieldName = "PACKET_CLIENT_" + wp.getOpcode();
 
@@ -100,76 +95,5 @@ public class PacketWrite implements Deobfuscator
 		}
 
 		logger.info("Injected {} packet writes", count);
-	}
-
-	private List<WritePacket> findWrites(ClassGroup group)
-	{
-		RWOpcodeFinder rw = new RWOpcodeFinder(group);
-		rw.find();
-
-		List<WritePacket> writes = new ArrayList<>();
-
-		for (ClassFile cf : group.getClasses())
-		{
-			for (Method m : cf.getMethods())
-			{
-				Code code = m.getCode();
-
-				if (code == null)
-				{
-					continue;
-				}
-
-				writes.addAll(findPacketWrite(rw, m, code));
-			}
-		}
-
-		return writes;
-	}
-
-	private List<WritePacket> findPacketWrite(RWOpcodeFinder rw, Method m, Code code)
-	{
-		List<WritePacket> writes = new ArrayList<>();
-
-		List<Instruction> instructions = code.getInstructions().getInstructions();
-		for (int j = 0; j < instructions.size(); ++j)
-		{
-			Instruction i = instructions.get(j);
-
-			if (i instanceof InvokeInstruction)
-			{
-				InvokeInstruction ii = (InvokeInstruction) i;
-				if (ii.getMethods().contains(rw.getWriteOpcode()))
-				{
-					Instruction cv = instructions.get(j - 1);
-
-					if (!(cv instanceof PushConstantInstruction))
-					{
-						continue; // maybe already run?
-					}
-
-					WritePacket wp = new WritePacket(
-						m,
-						i,
-						cv,
-						((Number) ((PushConstantInstruction) cv).getConstant()).intValue()
-					);
-
-					Instruction gs = instructions.get(j - 2);
-					assert gs instanceof GetStatic;
-
-					writes.add(wp);
-				}
-			}
-		}
-
-		return writes;
-	}
-
-	private ClassFile findClient(ClassGroup group)
-	{
-		// "client" in vainlla but "Client" in deob..
-		ClassFile cf = group.findClass("client");
-		return cf != null ? cf : group.findClass("Client");
 	}
 }

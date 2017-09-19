@@ -39,7 +39,6 @@ import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.Lvt;
 import net.runelite.deob.deobfuscators.Order;
 import net.runelite.deob.deobfuscators.PacketHandlerOrder;
-import net.runelite.deob.deobfuscators.PacketWrite;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -53,6 +52,7 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.cfg.ControlFlowDeobfuscator;
 import net.runelite.deob.deobfuscators.menuaction.MenuActionDeobfuscator;
+import net.runelite.deob.deobfuscators.packetwrite.PacketWriteDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
 import net.runelite.deob.deobfuscators.transformers.OpcodesTransformer;
@@ -149,7 +149,7 @@ public class Deob
 
 		new OpcodesTransformer().transform(group);
 		run(group, new PacketHandlerOrder());
-		run(group, new PacketWrite());
+		run(group, new PacketWriteDeobfuscator());
 
 		run(group, new MenuActionDeobfuscator());
 

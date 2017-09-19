@@ -22,50 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.packetwrite;
 
-import java.io.File;
-import java.io.IOException;
-import net.runelite.asm.ClassGroup;
-import net.runelite.deob.DeobTestProperties;
-import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.util.JarUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.execution.InstructionContext;
 
-public class PacketWriteTest
+class PacketWrite
 {
-	@Rule
-	public DeobTestProperties properties = new DeobTestProperties();
+	InstructionContext putOpcode;
+	List<InstructionContext> writes = new ArrayList<>();
 
-	@Rule
-	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
-
-	private ClassGroup group;
-
-	@Before
-	public void before() throws IOException
+	Instruction getOpcodeIns()
 	{
-		group = JarUtil.loadJar(new File(properties.getRsClient()));
-		group.removeClass(group.findClass("net/runelite/rs/Reflection"));
+		return putOpcode.getPops().get(0).getPushed().getInstruction();
 	}
 
-	@After
-	public void after() throws IOException
+	public int getOpcode()
 	{
-		JarUtil.saveJar(group, folder.newFile());
+		return ((Number) ((PushConstantInstruction) getOpcodeIns()).getConstant()).intValue();
 	}
 
-	@Test
-	@Ignore
-	public void testRun() throws IOException
+	Instructions getInstructions()
 	{
-		PacketWrite pw = new PacketWrite();
-		pw.run(group);
+		return putOpcode.getInstruction().getInstructions();
 	}
-
 }
