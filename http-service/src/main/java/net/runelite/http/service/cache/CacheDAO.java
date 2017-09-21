@@ -39,6 +39,7 @@ public class CacheDAO
 	private Query associateArchive;
 	private Query findArchive, insertArchive;
 	private Query associateFile;
+	private Query findFilesForArchive;
 
 	public List<CacheEntry> listCaches(Connection con)
 	{
@@ -118,8 +119,13 @@ public class CacheDAO
 
 	public List<FileEntry> findFilesForArchive(Connection con, ArchiveEntry archiveEntry)
 	{
-		return con.createQuery("select id, fileId, nameHash from file "
-			+ "where archive = :archive")
+		if (findFilesForArchive == null)
+		{
+			findFilesForArchive = con.createQuery("select id, fileId, nameHash from file "
+				+ "where archive = :archive");
+		}
+
+		return findFilesForArchive
 			.addParameter("archive", archiveEntry.getId())
 			.executeAndFetch(FileEntry.class);
 	}
