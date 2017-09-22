@@ -142,11 +142,11 @@ public class RunepouchOverlay extends Overlay
 					int amount = client.getSetting(amountVarbits[i]);
 					if(amount > 0) {
 						int runeId = client.getSetting(runeVarbits[i]);
+
 						BufferedImage runeImg = getRuneImage(runeId);
 						if (runeImg != null)
-						{
-							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(),location.getY()+ (graphics.getFontMetrics().getHeight()-2)*i), runeImg);
-						}
+							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(),location.getY() + 2 + (graphics.getFontMetrics().getHeight()-2)*i), runeImg);
+
 						graphics.setColor(Color.black);
 						graphics.drawString("" + formatNumber(amount), location.getX() + 13, location.getY() + (graphics.getFontMetrics().getHeight()-2)*i + 11);
 
@@ -160,7 +160,7 @@ public class RunepouchOverlay extends Overlay
 	}
 
 	String formatNumber(int var0) {
-		return var0 < 100000 ? String.valueOf(var0) : var0 / 1000 + "K";
+		return var0 < 10000 ? String.valueOf(var0) : var0 / 1000 + "K";
 	}
 
 	private BufferedImage getRuneImage(int runeId)
