@@ -34,7 +34,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 import java.awt.*;
+import java.awt.font.*;
 import java.util.Arrays;
+import java.util.Map;
 
 public class RunepouchOverlay extends Overlay
 {
@@ -48,6 +50,14 @@ public class RunepouchOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		Font font = graphics.getFont();
+		if(font.getSize() != 10){
+			Map attributes = font.getAttributes();
+			attributes.put(TextAttribute.SIZE, 10);
+			font = Font.getFont(attributes);
+			graphics.setFont(font);
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN
 				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
@@ -72,16 +82,23 @@ public class RunepouchOverlay extends Overlay
 				Varbits[] varbits = {Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3};
 				int[] amounts = new int[3];
 				for(int i = 0; i < amounts.length; i++){
-					amounts[i] = client.getSetting(varbits[i]);
-				}
-				graphics.setColor(Color.black);
-				graphics.drawString("" + Arrays.toString(amounts), location.getX() + 1, location.getY() + graphics.getFontMetrics().getHeight() + 1);
+					int amount = client.getSetting(varbits[i]);
+					if(amount > 0) {
+						graphics.setColor(Color.black);
+						graphics.drawString("" + formatNumber(amount), location.getX() + 1, location.getY() + (graphics.getFontMetrics().getHeight()-2)*i + 11);
 
-				graphics.setColor(Color.white);
-				graphics.drawString("" + Arrays.toString(amounts), location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
+						graphics.setColor(Color.white);
+						graphics.drawString("" + formatNumber(amount), location.getX(), location.getY() + (graphics.getFontMetrics().getHeight()-2)*i + 10);
+
+					}
+				}
 			}
 		}
 		return null;
+	}
+
+	String formatNumber(int var0) {
+		return var0 < 100000 ? String.valueOf(var0) : var0 / 1000 + "K";
 	}
 
 }
