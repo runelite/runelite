@@ -78,12 +78,15 @@ public class RunecraftOverlay extends Overlay
 					varbits = Varbits.POUCH_SMALL;
 					break;
 				case ItemID.MEDIUM_POUCH:
+				case ItemID.MEDIUM_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_MEDIUM;
 					break;
 				case ItemID.LARGE_POUCH:
+				case ItemID.LARGE_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_LARGE;
 					break;
 				case ItemID.GIANT_POUCH:
+				case ItemID.GIANT_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_GIANT;
 					break;
 				default:
