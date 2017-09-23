@@ -3421,11 +3421,11 @@ public final class ItemID
 	public static final int BOOK_OF_FOLKLORE = 5508;
 	public static final int SMALL_POUCH = 5509;
 	public static final int MEDIUM_POUCH = 5510;
-	public static final int MEDIUM_POUCH_DAMAGED = 5511;
+	public static final int MEDIUM_POUCH_5511 = 5511;
 	public static final int LARGE_POUCH = 5512;
-	public static final int LARGE_POUCH_DAMAGED = 5513;
+	public static final int LARGE_POUCH_5513 = 5513;
 	public static final int GIANT_POUCH = 5514;
-	public static final int GIANT_POUCH_DAMAGED = 5515;
+	public static final int GIANT_POUCH_5515 = 5515;
 	public static final int ELEMENTAL_TALISMAN = 5516;
 	public static final int SCRYING_ORB = 5518;
 	public static final int SCRYING_ORB_5519 = 5519;
