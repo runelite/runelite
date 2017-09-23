@@ -33,7 +33,8 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
-public class RuneImageCache {
+public class RuneImageCache
+{
     private String[] RuneNames = { //ids from the varbit
             "None",
             "Air",		//1
@@ -58,13 +59,16 @@ public class RuneImageCache {
             "Smoke"		//20
     };
     private LoadingCache<Integer,BufferedImage> cache;
-    public RuneImageCache(){
+    public RuneImageCache()
+    {
         cache = CacheBuilder.newBuilder()
                 .maximumSize(RuneNames.length)
                 .build(
-                        new CacheLoader<Integer, BufferedImage>() {
+                        new CacheLoader<Integer, BufferedImage>()
+                        {
                             @Override
-                            public BufferedImage load(Integer runeId) throws Exception {
+                            public BufferedImage load(Integer runeId) throws Exception
+                            {
                                 InputStream in = RunepouchOverlay.class.getResourceAsStream(RuneNames[runeId] + ".png");
                                 return ImageIO.read(in);
                             }
@@ -74,9 +78,11 @@ public class RuneImageCache {
 
     public BufferedImage getImage(int runeId)
     {
-        try{
+        try
+        {
             return cache.get(runeId);
-        } catch(ExecutionException e){
+        } catch(ExecutionException e)
+        {
             return null;
         }
     }

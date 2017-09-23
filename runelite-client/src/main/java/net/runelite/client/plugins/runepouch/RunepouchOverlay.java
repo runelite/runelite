@@ -64,7 +64,8 @@ public class RunepouchOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Font font = graphics.getFont();
-		if(font.getSize() != 10){
+		if(font.getSize() != 10)
+		{
 			Map attributes = font.getAttributes();
 			attributes.put(TextAttribute.SIZE, 10);
 			font = Font.getFont(attributes);
@@ -95,9 +96,11 @@ public class RunepouchOverlay extends Overlay
 				Varbits[] amountVarbits = {Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3};
 				Varbits[] runeVarbits = {Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3};
 
-				for(int i = 0; i < runeVarbits.length; i++) {
+				for(int i = 0; i < runeVarbits.length; i++)
+				{
 					int amount = client.getSetting(amountVarbits[i]);
-					if(amount > 0) {
+					if(amount > 0)
+					{
 						int runeId = client.getSetting(runeVarbits[i]);
 
 						BufferedImage runeImg = runeImageCache.getImage(runeId);
@@ -116,7 +119,8 @@ public class RunepouchOverlay extends Overlay
 		return null;
 	}
 
-	String formatNumber(int var0) {
+	String formatNumber(int var0)
+	{
 		return var0 < 10000 ? String.valueOf(var0) : var0 / 1000 + "K";
 	}
 }
