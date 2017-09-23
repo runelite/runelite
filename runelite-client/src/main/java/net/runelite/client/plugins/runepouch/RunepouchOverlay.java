@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.runepouch;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
@@ -42,61 +45,15 @@ import java.awt.font.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.util.Map;
 
 public class RunepouchOverlay extends Overlay
 {
-	private String[] RuneNames = {
-			"None",
-			"Air",		//1
-			"Water",	//2
-			"Earth",	//3
-			"Fire",		//4
-			"Mind",		//5
-			"Chaos",	//6
-			"Death",	//7
-			"Blood",	//8
-			"Cosmic",	//9
-			"Nature",	//10
-			"Law",		//11
-			"Body",		//12
-			"Soul",		//13
-			"Astral",	//14
-			"Mist",		//15
-			"Mud",		//16
-			"Dust",		//17
-			"Lava",		//18
-			"Steam",	//19
-			"Smoke"		//20
-	};
-	private String[] RuneNamesShort = {
-			"NA",
-			"Ar",	//1
-			"Wa",	//2
-			"Er",	//3
-			"Fi",	//4
-			"Mi",	//5
-			"Ch",	//6
-			"Dt",	//7
-			"Bl",	//8
-			"Cs",	//9
-			"Nt",	//10
-			"Lw",	//11
-			"Bo",	//12
-			"So",	//13
-			"As",	//14
-			"Mi",	//15
-			"Mu",	//16
-			"Du",	//17
-			"Lv",	//18
-			"St",	//19
-			"Sm"	//20
-	};
-
 	private final Client client = RuneLite.getClient();
 	private static final Logger logger = LoggerFactory.getLogger(RunepouchOverlay.class);
 
-	private final BufferedImage[] imgCache = new BufferedImage[RuneNames.length];
+	private RuneImageCache runeImageCache = new RuneImageCache();
 
 	public RunepouchOverlay(Runepouch plugin)
 	{
@@ -143,7 +100,7 @@ public class RunepouchOverlay extends Overlay
 					if(amount > 0) {
 						int runeId = client.getSetting(runeVarbits[i]);
 
-						BufferedImage runeImg = getRuneImage(runeId);
+						BufferedImage runeImg = runeImageCache.getImage(runeId);
 						if (runeImg != null)
 							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(),location.getY() + 2 + (graphics.getFontMetrics().getHeight()-2)*i), runeImg);
 
@@ -161,28 +118,5 @@ public class RunepouchOverlay extends Overlay
 
 	String formatNumber(int var0) {
 		return var0 < 10000 ? String.valueOf(var0) : var0 / 1000 + "K";
-	}
-
-	private BufferedImage getRuneImage(int runeId)
-	{
-		BufferedImage runeImg = null;
-
-		if (imgCache[runeId] != null)
-		{
-			return imgCache[runeId];
-		}
-
-		try
-		{
-			InputStream in = RunepouchOverlay.class.getResourceAsStream(RuneNames[runeId] + ".png");
-			runeImg = ImageIO.read(in);
-			imgCache[runeId] = runeImg;
-		}
-		catch (IOException e)
-		{
-			logger.warn("Error Loading rune icon", e);
-		}
-
-		return runeImg;
 	}
 }
