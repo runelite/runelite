@@ -44,6 +44,9 @@ public class RunecraftOverlay extends Overlay
 	private final Client client = RuneLite.getClient();
 
 	private final RunecraftConfig config;
+	private final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
+	private final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
+	private final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
 	public RunecraftOverlay(Runecraft plugin)
 	{
@@ -78,12 +81,15 @@ public class RunecraftOverlay extends Overlay
 					varbits = Varbits.POUCH_SMALL;
 					break;
 				case ItemID.MEDIUM_POUCH:
+				case MEDIUM_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_MEDIUM;
 					break;
 				case ItemID.LARGE_POUCH:
+				case LARGE_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_LARGE;
 					break;
 				case ItemID.GIANT_POUCH:
+				case GIANT_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_GIANT;
 					break;
 				default:
