@@ -27,54 +27,61 @@ package net.runelite.client.plugins.runepouch;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
+import javax.imageio.ImageIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RuneImageCache
 {
-	private String[] RuneNames = { //ids from the varbit
-			"None",
-			"Air",		//1
-			"Water",	//2
-			"Earth",	//3
-			"Fire",		//4
-			"Mind",		//5
-			"Chaos",	//6
-			"Death",	//7
-			"Blood",	//8
-			"Cosmic",	//9
-			"Nature",	//10
-			"Law",		//11
-			"Body",		//12
-			"Soul",		//13
-			"Astral",	//14
-			"Mist",		//15
-			"Mud",		//16
-			"Dust",		//17
-			"Lava",		//18
-			"Steam",	//19
-			"Smoke"		//20
+	private static final Logger logger = LoggerFactory.getLogger(RuneImageCache.class);
+
+	// ids from the varbit
+	private static final String[] RUNE_NAMES =
+	{
+		"None",
+		"Air", //1
+		"Water", //2
+		"Earth", //3
+		"Fire", //4
+		"Mind", //5
+		"Chaos", //6
+		"Death", //7
+		"Blood", //8
+		"Cosmic", //9
+		"Nature", //10
+		"Law", //11
+		"Body", //12
+		"Soul", //13
+		"Astral", //14
+		"Mist", //15
+		"Mud", //16
+		"Dust", //17
+		"Lava", //18
+		"Steam", //19
+		"Smoke"		//20
 	};
-	private LoadingCache<Integer,BufferedImage> cache;
+
+	private final LoadingCache<Integer, BufferedImage> cache;
+
 	public RuneImageCache()
 	{
 		cache = CacheBuilder.newBuilder()
-				.maximumSize(RuneNames.length)
-				.build(
-						new CacheLoader<Integer, BufferedImage>()
-						{
-							@Override
-							public BufferedImage load(Integer runeId) throws Exception
+			.maximumSize(RUNE_NAMES.length)
+			.build(
+				new CacheLoader<Integer, BufferedImage>()
+				{
+					@Override
+					public BufferedImage load(Integer runeId) throws Exception
 
-												{
-								InputStream in = RunepouchOverlay.class.getResourceAsStream(RuneNames[runeId] + ".png");
-								return ImageIO.read(in);
-							}
-						}
-				);
+					{
+						InputStream in = RunepouchOverlay.class.getResourceAsStream(RUNE_NAMES[runeId] + ".png");
+						return ImageIO.read(in);
+					}
+				}
+			);
 	}
 
 	public BufferedImage getImage(int runeId)
@@ -85,6 +92,7 @@ public class RuneImageCache
 		}
 		catch (ExecutionException e)
 		{
+			logger.warn("unable to load rune image", e);
 			return null;
 		}
 	}

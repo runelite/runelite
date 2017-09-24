@@ -24,8 +24,18 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import net.runelite.api.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.TextAttribute;
+import java.awt.image.BufferedImage;
+import java.util.Map;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.Point;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -36,17 +46,21 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.image.BufferedImage;
-import java.util.Map;
-
 public class RunepouchOverlay extends Overlay
 {
-	private final Client client = RuneLite.getClient();
 	private static final Logger logger = LoggerFactory.getLogger(RunepouchOverlay.class);
 
-	private RuneImageCache runeImageCache = new RuneImageCache();
+	private static final Varbits[] AMOUNT_VARBITS =
+	{
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+	};
+	private static final Varbits[] RUNE_VARBITS =
+	{
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+	};
+
+	private final Client client = RuneLite.getClient();
+	private final RuneImageCache runeImageCache = new RuneImageCache();
 
 	public RunepouchOverlay(Runepouch plugin)
 	{
@@ -56,17 +70,8 @@ public class RunepouchOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Font font = graphics.getFont();
-		if (font.getSize() != 10)
-		{
-			Map attributes = font.getAttributes();
-			attributes.put(TextAttribute.SIZE, 10);
-			font = Font.getFont(attributes);
-			graphics.setFont(font);
-		}
-
 		if (client.getGameState() != GameState.LOGGED_IN
-				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
 			return null;
 		}
@@ -78,41 +83,64 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
+		Font font = graphics.getFont();
+		if (font.getSize() != 10)
+		{
+			Map attributes = font.getAttributes();
+			attributes.put(TextAttribute.SIZE, 10);
+			font = Font.getFont(attributes);
+			graphics.setFont(font);
+		}
+
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{
 			if (item.getId() != ItemID.RUNE_POUCH)
+			{
 				continue;
+			}
 
 			Point location = item.getCanvasLocation();
-			if (location != null)
+			if (location == null)
 			{
-				Varbits[] amountVarbits = {Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3};
-				Varbits[] runeVarbits = {Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3};
+				continue;
+			}
 
-				for (int i = 0; i < runeVarbits.length; i++)
+			assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
+
+			for (int i = 0; i < AMOUNT_VARBITS.length; i++)
+			{
+				Varbits amountVarbit = AMOUNT_VARBITS[i];
+				Varbits runeVarbit = RUNE_VARBITS[i];
+
+				int amount = client.getSetting(amountVarbit);
+				if (amount <= 0)
 				{
-					int amount = client.getSetting(amountVarbits[i]);
-					if (amount > 0)
-					{
-						int runeId = client.getSetting(runeVarbits[i]);
-
-						BufferedImage runeImg = runeImageCache.getImage(runeId);
-						if (runeImg != null)
-							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight() - 2) * i), runeImg);
-
-						graphics.setColor(Color.black);
-						graphics.drawString("" + formatNumber(amount), location.getX() + 13, location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 11);
-
-						graphics.setColor(Color.white);
-						graphics.drawString("" + formatNumber(amount), location.getX() + 12, location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 10);
-					}
+					continue;
 				}
+
+				int runeId = client.getSetting(runeVarbit);
+
+				BufferedImage runeImg = runeImageCache.getImage(runeId);
+				if (runeImg != null)
+				{
+					OverlayUtil.renderImageLocation(graphics,
+						new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight() - 2) * i),
+						runeImg);
+				}
+
+				graphics.setColor(Color.black);
+				graphics.drawString("" + formatNumber(amount), location.getX() + 13,
+					location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 11);
+
+				graphics.setColor(Color.white);
+				graphics.drawString("" + formatNumber(amount), location.getX() + 12,
+					location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 10);
 			}
 		}
 		return null;
 	}
 
-	String formatNumber(int var0)
+	private static String formatNumber(int var0)
 	{
 		return var0 < 10000 ? String.valueOf(var0) : var0 / 1000 + "K";
 	}
