@@ -24,17 +24,8 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import com.google.common.eventbus.Subscribe;
-import net.runelite.api.ChatMessageType;
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Runepouch extends Plugin
 {

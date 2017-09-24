@@ -24,9 +24,6 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
@@ -39,13 +36,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.Buffer;
 import java.util.Map;
 
 public class RunepouchOverlay extends Overlay
@@ -64,7 +57,7 @@ public class RunepouchOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Font font = graphics.getFont();
-		if(font.getSize() != 10)
+		if (font.getSize() != 10)
 		{
 			Map attributes = font.getAttributes();
 			attributes.put(TextAttribute.SIZE, 10);
@@ -87,7 +80,7 @@ public class RunepouchOverlay extends Overlay
 
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{
-			if(item.getId() != ItemID.RUNE_POUCH)
+			if (item.getId() != ItemID.RUNE_POUCH)
 				continue;
 
 			Point location = item.getCanvasLocation();
@@ -96,22 +89,22 @@ public class RunepouchOverlay extends Overlay
 				Varbits[] amountVarbits = {Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3};
 				Varbits[] runeVarbits = {Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3};
 
-				for(int i = 0; i < runeVarbits.length; i++)
+				for (int i = 0; i < runeVarbits.length; i++)
 				{
 					int amount = client.getSetting(amountVarbits[i]);
-					if(amount > 0)
+					if (amount > 0)
 					{
 						int runeId = client.getSetting(runeVarbits[i]);
 
 						BufferedImage runeImg = runeImageCache.getImage(runeId);
 						if (runeImg != null)
-							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(),location.getY() + 2 + (graphics.getFontMetrics().getHeight()-2)*i), runeImg);
+							OverlayUtil.renderImageLocation(graphics, new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight() - 2) * i), runeImg);
 
 						graphics.setColor(Color.black);
-						graphics.drawString("" + formatNumber(amount), location.getX() + 13, location.getY() + (graphics.getFontMetrics().getHeight()-2)*i + 11);
+						graphics.drawString("" + formatNumber(amount), location.getX() + 13, location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 11);
 
 						graphics.setColor(Color.white);
-						graphics.drawString("" + formatNumber(amount), location.getX() + 12, location.getY() + (graphics.getFontMetrics().getHeight()-2)*i + 10);
+						graphics.drawString("" + formatNumber(amount), location.getX() + 12, location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 10);
 					}
 				}
 			}
