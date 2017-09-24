@@ -66,14 +66,14 @@ public class AnnotationRenamer
 			if (name != null)
 				mappings.map(cf.getPoolClass(), name);
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				name = DeobAnnotations.getExportedName(f.getAnnotations());
 				if (name != null)
 					mappings.map(f.getPoolField(), name);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				name = DeobAnnotations.getExportedName(m.getAnnotations());
 				if (name != null)

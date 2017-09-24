@@ -24,15 +24,18 @@
  */
 package net.runelite.client;
 
-import net.runelite.client.game.ItemManager;
+import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;
 import java.awt.AWTException;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -41,19 +44,28 @@ import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.account.AccountClient;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +84,7 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
+	private final RuneliteProperties properties = new RuneliteProperties();
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private final MenuManager menuManager = new MenuManager(this);
@@ -84,6 +97,7 @@ public class RuneLite
 	private AccountSession accountSession;
 	private final ConfigManager configManager = new ConfigManager(eventBus);
 	private final ItemManager itemManager = new ItemManager(this);
+	private final InfoBoxManager infoBoxManager = new InfoBoxManager();
 
 	static
 	{
@@ -116,9 +130,25 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
-		gui = new ClientUI();
+		SwingUtilities.invokeAndWait(() ->
+		{
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-		setupTrayIcon();
+			try
+			{
+				UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+			}
+			catch (UnsupportedLookAndFeelException ex)
+			{
+				logger.warn("unable to set look and feel", ex);
+			}
+
+			gui = new ClientUI();
+			setTitle(null);
+
+			setupTrayIcon();
+		});
 
 		configManager.load();
 
@@ -141,6 +171,18 @@ public class RuneLite
 		loadSession();
 	}
 
+	public void setTitle(String extra)
+	{
+		if (!Strings.isNullOrEmpty(extra))
+		{
+			gui.setTitle("RuneLite " + properties.getVersion() + " " + extra);
+		}
+		else
+		{
+			gui.setTitle("RuneLite " + properties.getVersion());
+		}
+	}
+
 	private void setupTrayIcon()
 	{
 		if (!SystemTray.isSupported())
@@ -160,7 +202,19 @@ public class RuneLite
 		catch (AWTException ex)
 		{
 			logger.debug("Unable to add system tray icon", ex);
+			return;
 		}
+
+		// bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				gui.setVisible(true);
+				gui.setState(Frame.NORMAL); // unminimize
+			}
+		});
 	}
 
 	private void loadSession()
@@ -295,6 +349,11 @@ public class RuneLite
 		return runelite;
 	}
 
+	public RuneliteProperties getProperties()
+	{
+		return properties;
+	}
+
 	public ClientUI getGui()
 	{
 		return gui;
@@ -364,5 +423,15 @@ public class RuneLite
 	public ItemManager getItemManager()
 	{
 		return itemManager;
+	}
+
+	public InfoBoxManager getInfoBoxManager()
+	{
+		return infoBoxManager;
+	}
+
+	public <T> T[] runQuery(Query query)
+	{
+		return (T[]) query.result(client);
 	}
 }

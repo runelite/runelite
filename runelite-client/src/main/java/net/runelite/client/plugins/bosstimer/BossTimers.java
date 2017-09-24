@@ -26,21 +26,11 @@
 package net.runelite.client.plugins.bosstimer;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.Actor;
+import net.runelite.client.RuneLite;
 import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,10 +38,7 @@ public class BossTimers extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(BossTimers.class);
 
-	private final BossTimersOverlay overlay = new BossTimersOverlay(this, OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
-
-	private final List<Boss> bosses = loadBossData();
-	private final List<RespawnTimer> timers = new ArrayList<>();
+	private final InfoBoxManager infoBoxManager = RuneLite.getRunelite().getInfoBoxManager();
 
 	@Override
 	protected void startUp() throws Exception
@@ -63,74 +50,23 @@ public class BossTimers extends Plugin
 	{
 	}
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	public List<RespawnTimer> getTimers()
-	{
-		return timers;
-	}
-
 	@Subscribe
 	public void onActorDeath(ActorDeath death)
 	{
 		Actor actor = death.getActor();
 
-		Boss boss = findBoss(actor.getName());
+		Boss boss = Boss.find(actor.getName());
 		if (boss == null)
 		{
 			return;
 		}
 
-		if (findTimerFor(actor.getName()) != null)
-		{
-			return;
-		}
+		// remove existing timer
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
 		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
 
-		Instant respawnTime = Instant.now().plus(boss.getSpawnTime(), ChronoUnit.SECONDS);
-		RespawnTimer respawnTimer = new RespawnTimer(boss, respawnTime);
-
-		timers.add(respawnTimer);
+		RespawnTimer timer = new RespawnTimer(boss);
+		infoBoxManager.addInfoBox(timer);
 	}
-
-	public Boss findBoss(String name)
-	{
-		for (Boss boss : bosses)
-		{
-			if (boss.getName().equals(name))
-			{
-				return boss;
-			}
-		}
-		return null;
-	}
-
-	private RespawnTimer findTimerFor(String name)
-	{
-		for (RespawnTimer timer : timers)
-		{
-			if (timer.getBoss().getName().equals(name))
-			{
-				return timer;
-			}
-		}
-		return null;
-	}
-
-	private static List<Boss> loadBossData()
-	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<List<Boss>>()
-		{
-		}.getType();
-
-		InputStream in = BossTimers.class.getResourceAsStream("boss_timers.json");
-		return gson.fromJson(new InputStreamReader(in), type);
-	}
-
 }

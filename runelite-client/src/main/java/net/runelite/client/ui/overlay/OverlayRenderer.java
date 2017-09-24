@@ -25,12 +25,14 @@
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
-
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 
 public class OverlayRenderer
 {
+	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay();
+
 	public void render(BufferedImage clientBuffer)
 	{
 		TopDownRendererLeft tdl = new TopDownRendererLeft();
@@ -55,6 +57,8 @@ public class OverlayRenderer
 				}
 			}
 		}
+
+		tdl.add(infoBoxOverlay);
 
 		tdl.render(clientBuffer);
 		tdr.render(clientBuffer);

@@ -32,7 +32,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
@@ -53,7 +53,7 @@ public class UpdateMappingsTest
 		OUT = "d:/rs/07/adamout.jar";
 
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Test
 	@Ignore
@@ -92,12 +92,12 @@ public class UpdateMappingsTest
 		{
 			cf.getAnnotations().clearAnnotations();
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				f.getAnnotations().clearAnnotations();
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				m.getAnnotations().clearAnnotations();
 			}
@@ -115,7 +115,7 @@ public class UpdateMappingsTest
 
 			Assert.assertEquals(implname, otherimplname);
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				Field otherf = other.findField(f.getName(), f.getType());
 
@@ -127,7 +127,7 @@ public class UpdateMappingsTest
 				Assert.assertEquals(name + " <-> " + otherName, name, otherName);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Method otherm = other.findMethod(m.getName(), m.getDescriptor());
 
@@ -172,8 +172,8 @@ public class UpdateMappingsTest
 		for (ClassFile cf : cg.getClasses())
 		{
 			++classes;
-			methods += cf.getMethods().getMethods().size();
-			fields += cf.getFields().getFields().size();
+			methods += cf.getMethods().size();
+			fields += cf.getFields().size();
 		}
 		int total = methods + fields + classes;
 		return "total: " + total + ", " + methods + " methods, " + fields + " fields, " + classes + " classes";
@@ -190,12 +190,12 @@ public class UpdateMappingsTest
 				++fields;
 
 				Field f = (Field) o;
-				assert f.getFields().getClassFile().getGroup() == in;
+				assert f.getClassFile().getGroup() == in;
 			}
 			else if (o instanceof Method)
 			{
 				Method m = (Method) o;
-				assert m.getMethods().getClassFile().getGroup() == in;
+				assert m.getClassFile().getGroup() == in;
 
 				if (m.isStatic())
 				{

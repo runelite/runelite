@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.33-SNAPSHOT</version>
+		<version>1.2.4-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -68,6 +68,17 @@
 			<artifactId>gson</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.pushingpixels</groupId>
+			<artifactId>substance</artifactId>
+			<version>7.0.01</version>
+		</dependency>
+		<dependency>
+			<groupId>org.pushingpixels</groupId>
+			<artifactId>trident</artifactId>
+			<version>1.4</version>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -76,7 +87,13 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
-			<artifactId>client</artifactId>
+			<artifactId>api</artifactId>
+			<version>${project.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -101,7 +118,25 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+						<nonFilteredFileExtension>png</nonFilteredFileExtension>
+						<nonFilteredFileExtension>gif</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -119,13 +154,22 @@
 							<shadedClassifierName>shaded</shadedClassifierName>
 
 							<filters>
-								<!--
-								Do not filter anything under net.runelite.
-								net.runelite.rs:client gets automatically filtered otherwise because it is runtime scoped
-								and only accessed with reflection.
-								-->
+								<!-- include runtime apis -->
 								<filter>
-									<artifact>net.runelite.*:*</artifact>
+									<!-- net.runelite:injected-client and net.runelite:api -->
+									<artifact>net.runelite:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>net.runelite.rs:api</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>org.pushingpixels:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
@@ -154,7 +198,6 @@
 				</executions>
 				<configuration>
 					<skip>${jarsigner.skip}</skip>
-					<verbose>true</verbose>
 					<keystore>${jarsigner.keystore}</keystore>
 					<alias>${jarsigner.alias}</alias>
 					<storepass>${jarsigner.storepass}</storepass>

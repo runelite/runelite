@@ -27,14 +27,14 @@ package net.runelite.deob.deobfuscators.transformers;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.ALoad_1;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +50,7 @@ public class ClientErrorTransformer implements Transformer
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				transform(m);
 			}
@@ -72,7 +72,7 @@ public class ClientErrorTransformer implements Transformer
 		code.getExceptions().clear();
 		ins.clear();
 
-		Instruction aload1 = new ALoad_1(ins); // load throwable
+		Instruction aload1 = new ALoad(ins, 1); // load throwable
 
 		InvokeVirtual printStackTrace = new InvokeVirtual(ins,
 			new net.runelite.asm.pool.Method(

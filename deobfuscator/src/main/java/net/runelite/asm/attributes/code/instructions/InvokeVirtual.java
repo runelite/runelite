@@ -39,7 +39,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Method;
@@ -103,7 +102,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		if (!method.getType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getType().getReturnValue()),
+				method.getType().getReturnValue(),
 				Value.UNKNOWN
 			);
 			stack.push(ctx);
@@ -174,7 +173,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 
 	private net.runelite.asm.Method lookupMethod()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)
@@ -218,7 +217,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		for (int i = 0; i < myMethods.size(); ++i)
 		{
 			net.runelite.asm.Method m1 = myMethods.get(i), otherMethod = null;
-			ClassFile c1 = m1.getMethods().getClassFile();
+			ClassFile c1 = m1.getClassFile();
 
 			if (myMethods.size() == 1)
 			{
@@ -229,7 +228,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 				for (int j = 0; j < myMethods.size(); ++j)
 				{
 					net.runelite.asm.Method m2 = otherMethods.get(j);
-					ClassFile c2 = m2.getMethods().getClassFile();
+					ClassFile c2 = m2.getClassFile();
 
 					if (MappingExecutorUtil.isMaybeEqual(c1, c2))
 					{

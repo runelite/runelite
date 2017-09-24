@@ -122,9 +122,6 @@ public class JarUtil
 		catch (Exception ex)
 		{
 			logger.warn("Class {} failed validation", name, ex);
-			return;
 		}
-
-		logger.debug("Class {} passed validation", name);
 	}
 }

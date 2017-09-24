@@ -1,86 +1,87 @@
+import java.math.BigInteger;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cx")
 public class class89 {
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1322101193
-   )
-   int field1402;
+   @ObfuscatedName("i")
+   @Export("rsaKeyExponent")
+   static final BigInteger rsaKeyExponent;
    @ObfuscatedName("j")
+   @Export("rsaKeyModulus")
+   static final BigInteger rsaKeyModulus;
+   @ObfuscatedName("ci")
    @ObfuscatedGetter(
-      intValue = 882471429
+      longValue = 3058820432292079519L
    )
-   int field1399;
-   @ObfuscatedName("n")
+   static long field1419;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 473556583
+      intValue = -754303033
    )
-   int field1400;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1417670369
-   )
-   int field1403;
-   @ObfuscatedName("v")
-   String field1401;
-
-   @ObfuscatedName("a")
+   static int field1418;
+   @ObfuscatedName("cy")
    @ObfuscatedSignature(
-      signature = "(Lbf;I)V",
-      garbageValue = "1209899171"
+      signature = "Lib;"
    )
-   public static void method1689(ScriptEvent var0) {
-      IndexFile.method3018(var0, 200000);
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("pm")
+   @ObfuscatedGetter(
+      intValue = -2065050613
+   )
+   static int field1421;
+
+   static {
+      rsaKeyExponent = new BigInteger("10001", 16);
+      rsaKeyModulus = new BigInteger("87634f232851b5e6a0364aa35a4736c302418a5d8de44f7929399610d611e19591c975c41892b8b6541d85dbfd176b9f3c4583abc071cd84b76917ae5b75d3ccba32191ce238726bc3485dd3c09baf484d5fb43ab4f1253013ce9aabc649d9b375dfb8c7efe18db6015a565bd7c97f70d912b324a198f750c49bc604a2802909", 16);
    }
 
-   @ObfuscatedName("gl")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-2023080400"
+      signature = "(Lib;IIIBZI)V",
+      garbageValue = "-376626977"
    )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = class5.font_p12full.method4674(var0, 250);
-      int var6 = class5.font_p12full.method4675(var0, 250) * 13;
-      Rasterizer2D.method4921(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 16777215);
-      class5.font_p12full.method4681(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class39.method549(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
-      if(var1) {
-         GZipDecompressor.field2327.vmethod4942(0, 0);
-      } else {
-         int var7 = var3;
-         int var8 = var4;
-         int var9 = var5;
-         int var10 = var6;
+   static void method1717(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class239.field3256.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class239.field3273.get(var6);
+         if(var8 == null) {
+            var8 = (FileRequest)class239.field3264.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class239.field3256.put(var8, var6);
+                  --class239.field3254;
+                  ++class239.field3257;
+               }
 
-         for(int var11 = 0; var11 < Client.field1006; ++var11) {
-            if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var7 && Client.widgetPositionX[var11] < var9 + var7 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
-               Client.field1112[var11] = true;
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class239.field3263.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class239.field3256.put(var8, var6);
+                  ++class239.field3257;
+               } else {
+                  class239.field3258.push(var8);
+                  class239.field3264.put(var8, var6);
+                  ++class239.field3254;
+               }
+
             }
          }
       }
-
-   }
-
-   @ObfuscatedName("iz")
-   @ObfuscatedSignature(
-      signature = "(Lhy;I)Lhy;",
-      garbageValue = "-2067760955"
-   )
-   static Widget method1688(Widget var0) {
-      Widget var1 = class77.method1480(var0);
-      if(var1 == null) {
-         var1 = var0.dragParent;
-      }
-
-      return var1;
    }
 }

@@ -2,134 +2,88 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("t")
+@ObfuscatedName("v")
 public class class14 {
    @ObfuscatedName("v")
-   String field300;
+   static int[][][] field300;
+   @ObfuscatedName("o")
+   String field294;
    @ObfuscatedName("r")
-   String field299;
+   String field297;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = 1346984612903991971L
+      longValue = 5726933110767021897L
    )
-   public final long field296;
-   @ObfuscatedName("a")
+   public final long field295;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -230433603
+      intValue = -844894711
    )
-   public final int field301;
-   @ObfuscatedName("n")
+   public final int field298;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lo;"
+      signature = "Lz;"
    )
-   public final XGrandExchangeOffer field297;
+   public final GrandExchangeOffer field296;
 
    @ObfuscatedSignature(
-      signature = "(Lfe;BI)V"
+      signature = "(Lfp;BI)V"
    )
    class14(Buffer var1, byte var2, int var3) {
-      this.field299 = var1.readString();
-      this.field300 = var1.readString();
-      this.field301 = var1.readUnsignedShort();
-      this.field296 = var1.readLong();
+      this.field297 = var1.readString();
+      this.field294 = var1.readString();
+      this.field298 = var1.readUnsignedShort();
+      this.field295 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field297 = new XGrandExchangeOffer();
-      this.field297.method114(2);
-      this.field297.method111(var2);
-      this.field297.price = var4;
-      this.field297.totalQuantity = var5;
-      this.field297.quantitySold = 0;
-      this.field297.spent = 0;
-      this.field297.itemId = var3;
+      this.field296 = new GrandExchangeOffer();
+      this.field296.method127(2);
+      this.field296.method115(var2);
+      this.field296.price = var4;
+      this.field296.totalQuantity = var5;
+      this.field296.quantitySold = 0;
+      this.field296.spent = 0;
+      this.field296.itemId = var3;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1827097735"
+      garbageValue = "-2137966317"
    )
-   public String method79() {
-      return this.field299;
+   public String method88() {
+      return this.field297;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1456592655"
+      garbageValue = "-1124352196"
    )
-   public String method83() {
-      return this.field300;
+   public String method91() {
+      return this.field294;
    }
 
-   @ObfuscatedName("aq")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1477968803"
+      signature = "(B)Z",
+      garbageValue = "8"
    )
-   protected static final void method78() {
-      class48.timer.vmethod2974();
-
-      int var0;
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field690[var0] = 0L;
-      }
-
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field700[var0] = 0L;
-      }
-
-      class277.field3737 = 0;
+   static final boolean method92() {
+      return class133.field2011;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("hl")
    @ObfuscatedSignature(
-      signature = "(Lif;Lif;I)I",
-      garbageValue = "1402451631"
+      signature = "(IIIIB)V",
+      garbageValue = "118"
    )
-   static int method86(IndexDataBase var0, IndexDataBase var1) {
-      int var2 = 0;
-      if(var0.method4101("title.jpg", "")) {
-         ++var2;
+   static final void method87(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1065; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field966[var4] = true;
+         }
       }
 
-      if(var1.method4101("logo", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("logo_deadman_mode", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("titlebox", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("titlebutton", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("runes", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("title_mute", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("options_radio_buttons,0", "")) {
-         ++var2;
-      }
-
-      if(var1.method4101("options_radio_buttons,2", "")) {
-         ++var2;
-      }
-
-      var1.method4101("sl_back", "");
-      var1.method4101("sl_flags", "");
-      var1.method4101("sl_arrows", "");
-      var1.method4101("sl_stars", "");
-      var1.method4101("sl_button", "");
-      return var2;
    }
 }

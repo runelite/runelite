@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -56,7 +57,7 @@ public class I2L extends Instruction implements ConversionInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, long.class, object.getValue().cast(long.class));
+		StackContext ctx = new StackContext(ins, Type.LONG, object.getValue().cast(long.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

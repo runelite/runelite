@@ -24,36 +24,14 @@
  */
 package net.runelite.api;
 
+import java.awt.Polygon;
+
 /**
  * Decorative object, such as objects on walls
  *
  * @author Adam
  */
-public class DecorativeObject extends TileObject
+public interface DecorativeObject extends TileObject
 {
-	private final net.runelite.rs.api.DecorativeObject decorativeObject;
-
-	public DecorativeObject(Client client, net.runelite.rs.api.DecorativeObject decorativeObject)
-	{
-		super(client);
-		this.decorativeObject = decorativeObject;
-	}
-
-	@Override
-	protected int getHash()
-	{
-		return decorativeObject.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return decorativeObject.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return decorativeObject.getY();
-	}
+	Polygon getConvexHull();
 }

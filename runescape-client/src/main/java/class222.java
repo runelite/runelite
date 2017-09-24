@@ -1,78 +1,168 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
-public class class222 {
+@ObfuscatedName("hm")
+public enum class222 implements RSEnum {
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2819(0, 0),
    @ObfuscatedName("j")
-   public static final boolean[] field2841;
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2834(1, 0),
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2821(2, 0),
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2830(3, 0),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2837(9, 2),
    @ObfuscatedName("n")
-   public static int[] field2839;
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2823(4, 1),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2825(5, 1),
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2824(6, 1),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2827(7, 1),
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2828(8, 1),
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2829(12, 2),
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2832(13, 2),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2831(14, 2),
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2826(15, 2),
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2833(16, 2),
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2820(17, 2),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2835(18, 2),
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2836(19, 2),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2822(20, 2),
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2838(21, 2),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2839(10, 2),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2840(11, 2),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   field2841(22, 3);
 
-   static {
-      field2841 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
-      field2839 = new int[99];
-      int var0 = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -140182977
+   )
+   public final int field2842;
 
-      for(int var1 = 0; var1 < 99; ++var1) {
-         int var2 = var1 + 1;
-         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
-         var0 += var3;
-         field2839[var1] = var0 / 4;
-      }
-
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "0"
+   )
+   class222(int var3, int var4) {
+      this.field2842 = var3;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILcg;ZI)I",
-      garbageValue = "-929296159"
+      signature = "(I)I",
+      garbageValue = "959363303"
    )
-   static int method4057(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class83.field1336:class1.field9;
-      if(var0 == 1600) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 1601) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 1602) {
-         class83.scriptStringStack[++BaseVarType.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 1603) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 1604) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 1605) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.modelZoom;
-         return 1;
-      } else if(var0 == 1606) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 1607) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 1608) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 1609) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 1610) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.field2708;
-         return 1;
-      } else if(var0 == 1611) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 1612) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.field2703;
-         return 1;
-      } else if(var0 == 1613) {
-         class83.intStack[++WorldMapType2.intStackSize - 1] = var3.field2683.rsOrdinal();
-         return 1;
+   public int rsOrdinal() {
+      return this.field2842;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IB)Liy;",
+      garbageValue = "37"
+   )
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         return 2;
+         byte[] var2 = class54.identKit_ref.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         KitDefinition.identKits.put(var1, (long)var0);
+         return var1;
       }
    }
 }

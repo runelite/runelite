@@ -25,13 +25,14 @@
 package net.runelite.cache.script.disassembler;
 
 import com.google.common.io.Files;
+import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.script.Instructions;
@@ -51,7 +52,7 @@ public class DisassemblerTest
 	@Test
 	public void test() throws IOException
 	{
-		java.io.File outDir = folder.newFolder();
+		File outDir = folder.newFolder();
 		int count = 0;
 
 		Instructions.init();
@@ -67,12 +68,12 @@ public class DisassemblerTest
 			{
 				assert archive.getFiles().size() == 1;
 
-				File file = archive.getFiles().get(0);
+				FSFile file = archive.getFiles().get(0);
 				byte[] contents = file.getContents();
 
 				ScriptDefinition script = loader.load(file.getFileId(), contents);
 
-				java.io.File outFile = new java.io.File(outDir, archive.getArchiveId() + ".rs2asm");
+				File outFile = new File(outDir, archive.getArchiveId() + ".rs2asm");
 
 				Disassembler disassembler = new Disassembler();
 				String out = disassembler.disassemble(script);

@@ -3,104 +3,107 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("jr")
 @Implements("Parameters")
 public class Parameters {
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3727;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3713;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3714;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3712;
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3722;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3717;
+   static final Parameters field3729;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3715;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3718;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3720;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   public static final Parameters field3716;
+   static final Parameters field3717;
    @ObfuscatedName("m")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3724;
-   @ObfuscatedName("w")
+   static final Parameters field3730;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3721;
+   static final Parameters field3715;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3725;
+   static final Parameters field3722;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3725;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3716;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3721;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   public static final Parameters field3714;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
    public static final Parameters field3726;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Ljr;"
    )
-   public static final Parameters field3719;
+   static final Parameters field3718;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3724;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3728;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3723;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Ljr;"
+   )
+   static final Parameters field3720;
    @ObfuscatedName("c")
    @Export("key")
    public final String key;
 
    static {
-      field3727 = new Parameters("12", "12");
-      field3713 = new Parameters("10", "10");
-      field3714 = new Parameters("8", "8");
-      field3715 = new Parameters("7", "7");
-      field3716 = new Parameters("1", "1");
-      field3717 = new Parameters("15", "15");
-      field3718 = new Parameters("5", "5");
-      field3712 = new Parameters("11", "11");
-      field3721 = new Parameters("3", "3");
-      field3719 = new Parameters("9", "9");
+      field3729 = new Parameters("8", "8");
+      field3715 = new Parameters("1", "1");
+      field3716 = new Parameters("11", "11");
+      field3717 = new Parameters("3", "3");
+      field3718 = new Parameters("2", "2");
+      field3721 = new Parameters("4", "4");
+      field3730 = new Parameters("10", "10");
+      field3720 = new Parameters("14", "14");
+      field3722 = new Parameters("5", "5");
+      field3723 = new Parameters("9", "9");
       field3724 = new Parameters("6", "6");
-      field3722 = new Parameters("13", "13");
-      field3720 = new Parameters("4", "4");
-      field3725 = new Parameters("14", "14");
-      field3726 = new Parameters("2", "2");
+      field3725 = new Parameters("12", "12");
+      field3726 = new Parameters("15", "15");
+      field3714 = new Parameters("7", "7");
+      field3728 = new Parameters("13", "13");
    }
 
    Parameters(String var1, String var2) {

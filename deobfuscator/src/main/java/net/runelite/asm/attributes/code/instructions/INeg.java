@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -58,7 +59,7 @@ public class INeg extends Instruction
 			result = new Value(-i);
 		}
 		
-		StackContext ctx = new StackContext(ins, int.class, result);
+		StackContext ctx = new StackContext(ins, Type.INT, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,7 @@
  */
 package net.runelite.api;
 
-import java.util.Arrays;
-
-public class Region
+public interface Region
 {
-	private final Client client;
-	private final net.runelite.rs.api.Region region;
-
-	public Region(Client client, net.runelite.rs.api.Region region)
-	{
-		this.client = client;
-		this.region = region;
-	}
-
-	public Tile[][][] getTiles()
-	{
-		return Arrays.stream(region.getTiles())
-			.map(tile1 -> Arrays.stream(tile1)
-				.map(tile2 -> Arrays.stream(tile2)
-					.map(tile3 -> tile3 != null ? new Tile(client, tile3) : null)
-					.toArray(Tile[]::new)
-				).toArray(Tile[][]::new)
-			).toArray(Tile[][][]::new);
-	}
+	Tile[][][] getTiles();
 }

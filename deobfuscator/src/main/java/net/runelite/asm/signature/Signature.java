@@ -24,6 +24,8 @@
  */
 package net.runelite.asm.signature;
 
+import net.runelite.asm.Type;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,7 +72,7 @@ public class Signature
 	public Signature(Signature other)
 	{
 		arguments = new ArrayList<>(other.arguments);
-		rv = new Type(other.rv);
+		rv = other.rv;
 	}
 
 	@Override
@@ -101,10 +103,10 @@ public class Signature
 		sb.append('(');
 		for (Type a : arguments)
 		{
-			sb.append(a.getFullType());
+			sb.append(a);
 		}
 		sb.append(')');
-		sb.append(rv.getFullType());
+		sb.append(rv);
 		return sb.toString();
 	}
 
@@ -135,7 +137,7 @@ public class Signature
 
 	public boolean isVoid()
 	{
-		return rv.getFullType().equals("V");
+		return rv.equals(Type.VOID);
 	}
 
 	public static class Builder

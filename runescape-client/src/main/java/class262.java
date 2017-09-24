@@ -1,97 +1,79 @@
-import java.util.HashMap;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jy")
+@ObfuscatedName("jz")
 public class class262 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Ljz;"
    )
-   IndexDataBase field3633;
+   public static final class262 field3619;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class262 field3629;
+   @ObfuscatedName("dh")
+   @ObfuscatedGetter(
+      intValue = -1725715993
+   )
+   static int field3628;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class262 field3620;
    @ObfuscatedName("n")
-   HashMap field3634;
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class262 field3621;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Ljz;"
    )
-   IndexDataBase field3632;
-
-   @ObfuscatedSignature(
-      signature = "(Lif;Lif;)V"
-   )
-   public class262(IndexDataBase var1, IndexDataBase var2) {
-      this.field3633 = var1;
-      this.field3632 = var2;
-      this.field3634 = new HashMap();
-   }
-
+   public static final class262 field3617;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([Ljk;I)Ljava/util/HashMap;",
-      garbageValue = "-1123358068"
+      signature = "Ljz;"
    )
-   public HashMap method4656(class261[] var1) {
-      HashMap var2 = new HashMap();
-      class261[] var3 = var1;
+   public static final class262 field3616;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ljx;"
+   )
+   static IndexedSprite field3624;
+   @ObfuscatedName("ht")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
+   static Widget field3618;
+   @ObfuscatedName("q")
+   final String field3622;
+   @ObfuscatedName("b")
+   String field3623;
 
-      for(int var4 = 0; var4 < var3.length; ++var4) {
-         class261 var5 = var3[var4];
-         if(this.field3634.containsKey(var5)) {
-            var2.put(var5, this.field3634.get(var5));
-         } else {
-            IndexDataBase var7 = this.field3633;
-            IndexDataBase var8 = this.field3632;
-            String var9 = var5.field3630;
-            int var10 = var7.getFile(var9);
-            int var11 = var7.getChild(var10, "");
-            Font var12;
-            if(!IndexData.method4200(var7, var10, var11)) {
-               var12 = null;
-            } else {
-               byte[] var14 = var8.getConfigData(var10, var11);
-               Font var13;
-               if(var14 == null) {
-                  var13 = null;
-               } else {
-                  Font var15 = new Font(var14, class286.field3795, class31.offsetsY, class286.field3797, class90.field1405, class286.field3796, class177.spritePixels);
-                  class18.method138();
-                  var13 = var15;
-               }
-
-               var12 = var13;
-            }
-
-            if(var12 != null) {
-               this.field3634.put(var5, var12);
-               var2.put(var5, var12);
-            }
-         }
-      }
-
-      return var2;
+   static {
+      field3629 = new class262("PLAIN11", "p11_full");
+      field3617 = new class262("PLAIN12", "p12_full");
+      field3616 = new class262("BOLD12", "b12_full");
+      field3619 = new class262("VERDANA11", "verdana_11pt_regular");
+      field3620 = new class262("VERDANA13", "verdana_13pt_regular");
+      field3621 = new class262("VERDANA15", "verdana_15pt_regular");
    }
 
-   @ObfuscatedName("j")
+   class262(String var1, String var2) {
+      this.field3622 = var1;
+      this.field3623 = var2;
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(BI)C",
-      garbageValue = "490588091"
+      signature = "(I)[Ljz;",
+      garbageValue = "-1299849397"
    )
-   public static char method4659(byte var0) {
-      int var1 = var0 & 255;
-      if(var1 == 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         if(var1 >= 128 && var1 < 160) {
-            char var2 = class266.field3663[var1 - 128];
-            if(var2 == 0) {
-               var2 = 63;
-            }
-
-            var1 = var2;
-         }
-
-         return (char)var1;
-      }
+   public static class262[] method4697() {
+      return new class262[]{field3620, field3629, field3616, field3619, field3617, field3621};
    }
 }

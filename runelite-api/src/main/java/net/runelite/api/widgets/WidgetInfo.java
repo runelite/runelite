@@ -28,6 +28,8 @@ public enum WidgetInfo
 {
 	INVENTORY(WidgetID.INVENTORY_GROUP_ID, 0),
 
+	CLUE_SCROLL_TEXT(WidgetID.CLUE_SCROLL_GROUP_ID, WidgetID.Cluescroll.CLUE_TEXT),
+
 	EQUIPMENT(WidgetID.EQUIPMENT_GROUP_ID, 0),
 
 	EQUIPMENT_HELMET(WidgetID.EQUIPMENT_GROUP_ID, WidgetID.Equipment.HELMET),
@@ -85,6 +87,16 @@ public enum WidgetInfo
 	public int getChildId()
 	{
 		return childId;
+	}
+
+	public static int TO_GROUP(int id)
+	{
+		return id >>> 16;
+	}
+
+	public static int TO_CHILD(int id)
+	{
+		return id & 0xFFFF;
 	}
 
 }

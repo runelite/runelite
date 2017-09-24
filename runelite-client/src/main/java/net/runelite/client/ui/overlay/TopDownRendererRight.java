@@ -52,8 +52,8 @@ public class TopDownRendererRight implements Renderer
 		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
 
 		int y = BORDER_TOP;
-		int clientWidth = client.getClientWidth();
-		int clientHeight = client.getClientHeight();
+		int clientWidth = client.getCanvas().getWidth();
+		int clientHeight = client.getCanvas().getHeight();
 
 		for (Overlay overlay : overlays)
 		{

@@ -9,14 +9,14 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bd")
+@ObfuscatedName("bc")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
+   @ObfuscatedName("i")
+   AudioFormat field690;
    @ObfuscatedName("a")
-   AudioFormat field665;
-   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -366119193
+      intValue = -2003185615
    )
    @Export("size")
    int size;
@@ -27,19 +27,19 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1605457436"
+      garbageValue = "-1510564929"
    )
-   protected void vmethod1997() {
+   protected void vmethod2022() {
       this.source.flush();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "55"
+      signature = "(I)V",
+      garbageValue = "1086892300"
    )
    @Export("close")
    protected void close() {
@@ -50,37 +50,43 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1959206863"
-   )
-   @Export("create")
-   protected void create(int var1) throws LineUnavailableException {
-      try {
-         Info var2 = new Info(SourceDataLine.class, this.field665, var1 << (AbstractSoundSystem.highMemory?2:1));
-         this.source = (SourceDataLine)AudioSystem.getLine(var2);
-         this.source.open();
-         this.source.start();
-         this.size = var1;
-      } catch (LineUnavailableException var3) {
-         if(KeyFocusListener.method764(var1) != 1) {
-            this.create(class152.method2922(var1));
-         } else {
-            this.source = null;
-            throw var3;
-         }
-      }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-17"
+      signature = "(I)I",
+      garbageValue = "-96148960"
    )
    @Export("size")
    protected int size() {
       return this.size - (this.source.available() >> (AbstractSoundSystem.highMemory?2:1));
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-1782171697"
+   )
+   @Export("create")
+   protected void create(int var1) throws LineUnavailableException {
+      try {
+         Info var2 = new Info(SourceDataLine.class, this.field690, var1 << (AbstractSoundSystem.highMemory?2:1));
+         this.source = (SourceDataLine)AudioSystem.getLine(var2);
+         this.source.open();
+         this.source.start();
+         this.size = var1;
+      } catch (LineUnavailableException var5) {
+         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
+         var4 = (var4 >>> 4) + var4 & 252645135;
+         var4 += var4 >>> 8;
+         var4 += var4 >>> 16;
+         int var3 = var4 & 255;
+         if(var3 != 1) {
+            this.create(class165.method3159(var1));
+         } else {
+            this.source = null;
+            throw var5;
+         }
+      }
    }
 
    @ObfuscatedName("r")
@@ -104,13 +110,13 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "52"
+      signature = "(I)V",
+      garbageValue = "-1976760408"
    )
-   protected void vmethod1992() {
-      this.field665 = new AudioFormat((float)ChatLineBuffer.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
+   protected void vmethod2017() {
+      this.field690 = new AudioFormat((float)class73.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
       this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
    }
 }

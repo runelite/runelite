@@ -28,17 +28,22 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Objects;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
+import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class ClientUI extends JFrame
 {
+	private static final Logger logger = LoggerFactory.getLogger(ClientUI.class);
+
 	private static final int PANEL_WIDTH = 805;
 	private static final int PANEL_HEIGHT = 541;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
@@ -46,13 +51,15 @@ public final class ClientUI extends JFrame
 	private JPanel container;
 	private JPanel navContainer;
 	private ClientPanel panel;
-	private NavigationPanel navigationPanel;
+	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
-	public ClientUI() throws Exception
+	public ClientUI()
 	{
 		init();
 		pack();
+		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
+		titleBarPane.editTitleBar(this);
 		setTitle("RuneLite");
 		setIconImage(RuneLite.ICON);
 		setLocationRelativeTo(getOwner());
@@ -60,9 +67,12 @@ public final class ClientUI extends JFrame
 		setVisible(true);
 	}
 
-	private void init() throws Exception
+	private void init()
 	{
+		assert SwingUtilities.isEventDispatchThread();
+
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
 		addWindowListener(new WindowAdapter()
 		{
@@ -73,62 +83,69 @@ public final class ClientUI extends JFrame
 			}
 		});
 
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored)
-		{
-		}
-
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
 
-		panel = new ClientPanel(!RuneLite.getOptions().has("no-rs"));
+		panel = new ClientPanel();
+		if (!RuneLite.getOptions().has("no-rs"))
+		{
+			try
+			{
+				panel.loadRs();
+			}
+			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
+			{
+				logger.warn("Error loading RS!", ex);
+			}
+		}
 		container.add(panel, BorderLayout.CENTER);
 
 		navContainer = new JPanel();
 		navContainer.setLayout(new BorderLayout(0, 0));
 		container.add(navContainer, BorderLayout.EAST);
 
-		navigationPanel = new NavigationPanel();
-		navContainer.add(navigationPanel, BorderLayout.EAST);
+		pluginToolbar = new PluginToolbar(this);
+		navContainer.add(pluginToolbar, BorderLayout.EAST);
 
 		add(container);
 	}
 
-	public void expand(PluginPanel panel)
+	void expand(PluginPanel panel)
 	{
-		if (Objects.equals(pluginPanel, panel))
+		if (pluginPanel != null)
 		{
 			navContainer.remove(1);
 			container.validate();
-			this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-			if (this.getWidth() == EXPANDED_WIDTH)
-			{
-				this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
-			}
-			pluginPanel = null;
 		}
-		else
-		{
-			if (pluginPanel != null)
-			{
-				navContainer.remove(1);
-				container.validate();
-			}
 
-			pluginPanel = panel;
-			navContainer.add(pluginPanel, BorderLayout.WEST);
-			container.validate();
-			this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+		pluginPanel = panel;
+		navContainer.add(pluginPanel, BorderLayout.WEST);
+		container.validate();
+		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+	}
+
+	void contract()
+	{
+		navContainer.remove(1);
+		container.validate();
+		this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		if (this.getWidth() == EXPANDED_WIDTH)
+		{
+			this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		}
+		pluginPanel = null;
 	}
 
 	private void checkExit()
 	{
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		Client client = RuneLite.getClient();
+		int result = JOptionPane.OK_OPTION;
+
+		// only ask if not logged out
+		if (client != null && client.getGameState() != GameState.LOGIN_SCREEN)
+		{
+			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		}
 
 		if (result == JOptionPane.OK_OPTION)
 		{
@@ -136,9 +153,9 @@ public final class ClientUI extends JFrame
 		}
 	}
 
-	public NavigationPanel getNavigationPanel()
+	public PluginToolbar getPluginToolbar()
 	{
-		return navigationPanel;
+		return pluginToolbar;
 	}
 
 	public PluginPanel getPluginPanel()

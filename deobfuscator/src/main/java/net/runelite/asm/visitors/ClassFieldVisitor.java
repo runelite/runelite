@@ -27,7 +27,7 @@ package net.runelite.asm.visitors;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
-import net.runelite.asm.signature.Type;
+import net.runelite.asm.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.FieldVisitor;
@@ -44,7 +44,7 @@ public class ClassFieldVisitor extends FieldVisitor
 
 		this.classFile = cf;
 
-		field = new Field(classFile.getFields(), name, desc);
+		field = new Field(cf, name, desc);
 		field.setAccessFlags(access);
 		field.setValue(value);
 	}
@@ -65,6 +65,6 @@ public class ClassFieldVisitor extends FieldVisitor
 	@Override
 	public void visitEnd()
 	{
-		classFile.getFields().addField(field);
+		classFile.addField(field);
 	}
 }

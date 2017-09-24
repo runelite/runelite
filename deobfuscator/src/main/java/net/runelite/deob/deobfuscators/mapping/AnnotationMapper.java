@@ -80,7 +80,7 @@ public class AnnotationMapper
 			}
 		}
 
-		for (Field f : from.getFields().getFields())
+		for (Field f : from.getFields())
 		{
 			if (!hasCopyableAnnotation(f.getAnnotations()))
 				continue;
@@ -95,7 +95,7 @@ public class AnnotationMapper
 			count += copyAnnotations(f.getAnnotations(), other.getAnnotations());
 		}
 
-		for (Method m : from.getMethods().getMethods())
+		for (Method m : from.getMethods())
 		{
 			if (!hasCopyableAnnotation(m.getAnnotations()))
 				continue;

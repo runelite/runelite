@@ -119,7 +119,7 @@ public class MenuManager
 
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
-		client.getPlayerMenuType()[playerOptionIndex] = MenuAction.RUNELITE.getId();
+		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE.getId();
 
 		playerMenuIndexMap.put(playerOptionIndex, menuText);
 	}

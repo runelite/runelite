@@ -24,8 +24,6 @@
  */
 package net.runelite.asm.execution;
 
-import java.util.stream.Collectors;
-import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.Return;
 import static net.runelite.asm.execution.StaticStep.popStack;
@@ -182,10 +180,15 @@ public class ParallellMappingExecutor
 				// ensure this is stopped or else on the
 				// next step the frame is reused
 				// and the other side is stepped
+
+				// I think this must be a crash - but note
+				// stopping of frames with a return frame
 				f1.stop();
 				return step();
 			}
 
+			// p2 is already at the first mappable instruction of
+			// the inlined method - so only step p1
 			step2 = false;
 			return step();
 		}
@@ -193,6 +196,8 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f2, p2) == null)
 			{
+				// I think this must be a crash - but note
+				// stopping of frames with a return frame
 				f2.stop();
 				return step();
 			}
@@ -205,9 +210,17 @@ public class ParallellMappingExecutor
 			Frame stepf1 = stepInto(f1, p1);
 			Frame stepf2 = stepInto(f2, p2);
 
+			if (stepf1 == null && stepf2 == null)
+			{
+				// may have to return to a new frame, don't stop
+				// yet
+				return step();
+			}
+
 			if (stepf1 == null || stepf2 == null)
 			{
-				// move to next frame
+				// I think this must be a crash - but note
+				// stopping of frames with a return frame
 				if (stepf1 == null)
 				{
 					f1.stop();
@@ -237,17 +250,5 @@ public class ParallellMappingExecutor
 	public InstructionContext getP2()
 	{
 		return p2;
-	}
-
-	public void removeFramesFromMethod(Method m)
-	{
-		e.frames = e.frames.stream().filter(f -> f.getMethod() != m).collect(Collectors.toList());
-		e2.frames = e2.frames.stream().filter(f -> f.getMethod() != m).collect(Collectors.toList());
-	}
-
-	public void addFrame(Frame f1, Frame f2)
-	{
-		e.frames.add(0, f1);
-		e2.frames.add(0, f2);
 	}
 }

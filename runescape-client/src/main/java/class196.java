@@ -1,26 +1,67 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gp")
+@ObfuscatedName("gv")
 public class class196 {
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgb;"
    )
-   class196 field2473;
-   @ObfuscatedName("r")
+   class197 field2480;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgb;"
    )
-   class196 field2474;
+   class197 field2479;
+
+   public class196() {
+      this.field2480 = new class197();
+      this.field2480.field2481 = this.field2480;
+      this.field2480.field2482 = this.field2480;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "()Lgb;"
+   )
+   public class197 method3711() {
+      class197 var1 = this.field2480.field2481;
+      if(var1 == this.field2480) {
+         this.field2479 = null;
+         return null;
+      } else {
+         this.field2479 = var1.field2481;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lgb;)V"
+   )
+   public void method3710(class197 var1) {
+      if(var1.field2482 != null) {
+         var1.method3726();
+      }
+
+      var1.field2482 = this.field2480.field2482;
+      var1.field2481 = this.field2480;
+      var1.field2482.field2481 = var1;
+      var1.field2481.field2482 = var1;
+   }
 
    @ObfuscatedName("a")
-   public void method3639() {
-      if(this.field2473 != null) {
-         this.field2473.field2474 = this.field2474;
-         this.field2474.field2473 = this.field2473;
-         this.field2474 = null;
-         this.field2473 = null;
+   @ObfuscatedSignature(
+      signature = "()Lgb;"
+   )
+   public class197 method3712() {
+      class197 var1 = this.field2479;
+      if(var1 == this.field2480) {
+         this.field2479 = null;
+         return null;
+      } else {
+         this.field2479 = var1.field2481;
+         return var1;
       }
    }
 }

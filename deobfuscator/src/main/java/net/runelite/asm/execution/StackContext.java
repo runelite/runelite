@@ -27,7 +27,7 @@ package net.runelite.asm.execution;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.util.PrimitiveUtils;
+import net.runelite.asm.Type;
 
 public class StackContext
 {
@@ -42,15 +42,6 @@ public class StackContext
 	{
 		this.pushed = pushed;
 		this.type = type;
-		this.value = value;
-	}
-	
-	public StackContext(InstructionContext pushed, Class<?> clazz, Value value)
-	{
-		assert value.isUnknownOrNull() || value.getValue().getClass() == PrimitiveUtils.unbox(clazz);
-		
-		this.pushed = pushed;
-		type = new Type(clazz.getCanonicalName());
 		this.value = value;
 	}
 	

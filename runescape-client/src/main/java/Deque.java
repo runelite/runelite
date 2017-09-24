@@ -8,13 +8,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class Deque {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgs;"
    )
    @Export("current")
    Node current;
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lgs;"
    )
    @Export("head")
    public Node head;
@@ -25,9 +25,9 @@ public class Deque {
       this.head.previous = this.head;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lge;)V"
+      signature = "(Lgs;)V"
    )
    @Export("addTail")
    public void addTail(Node var1) {
@@ -41,9 +41,9 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("getFront")
    public Node getFront() {
@@ -57,9 +57,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("getNext")
    public Node getNext() {
@@ -75,7 +75,7 @@ public class Deque {
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lge;)V"
+      signature = "(Lgs;)V"
    )
    @Export("addFront")
    public void addFront(Node var1) {
@@ -89,9 +89,9 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("popFront")
    public Node popFront() {
@@ -104,9 +104,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("getTail")
    public Node getTail() {
@@ -120,9 +120,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("popTail")
    public Node popTail() {
@@ -135,9 +135,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "()Lge;"
+      signature = "()Lgs;"
    )
    @Export("getPrevious")
    public Node getPrevious() {
@@ -151,7 +151,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @Export("clear")
    public void clear() {
       while(true) {
@@ -167,9 +167,9 @@ public class Deque {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lge;Lge;)V"
+      signature = "(Lgs;Lgs;)V"
    )
-   public static void method3598(Node var0, Node var1) {
+   public static void method3691(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

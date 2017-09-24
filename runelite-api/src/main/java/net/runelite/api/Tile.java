@@ -24,83 +24,20 @@
  */
 package net.runelite.api;
 
-import java.util.Arrays;
-
-public class Tile
+public interface Tile
 {
-	private final Client client;
-	private final net.runelite.rs.api.Tile tile;
-
-	public Tile(Client client, net.runelite.rs.api.Tile tile)
-	{
-		this.client = client;
-		this.tile = tile;
-	}
-
 	/**
 	 * Get the decorative object for this tile.
 	 *
 	 * @return
 	 */
-	public DecorativeObject getDecorativeObject()
-	{
-		net.runelite.rs.api.DecorativeObject decorativeObject = tile.getDecorativeObject();
+	DecorativeObject getDecorativeObject();
 
-		if (decorativeObject == null)
-		{
-			return null;
-		}
+	GameObject[] getGameObjects();
 
-		return new DecorativeObject(client, decorativeObject);
-	}
+	ItemLayer getItemLayer();
 
-	public GameObject[] getGameObjects()
-	{
-		net.runelite.rs.api.GameObject[] objects = tile.getObjects();
+	GroundObject getGroundObject();
 
-		if (objects == null)
-		{
-			return null;
-		}
-
-		return Arrays.stream(tile.getObjects())
-			.map(go -> go != null ? new GameObject(client, go) : null)
-			.toArray(i -> new GameObject[i]);
-	}
-
-	public ItemLayer getItemLayer()
-	{
-		net.runelite.rs.api.ItemLayer itemLayer = tile.getItemLayer();
-
-		if (itemLayer == null)
-		{
-			return null;
-		}
-
-		return new ItemLayer(client, itemLayer);
-	}
-
-	public GroundObject getGroundObject()
-	{
-		net.runelite.rs.api.GroundObject groundObject = tile.getGroundObject();
-
-		if (groundObject == null)
-		{
-			return null;
-		}
-
-		return new GroundObject(client, groundObject);
-	}
-
-	public WallObject getWallObject()
-	{
-		net.runelite.rs.api.WallObject wallObject = tile.getWallObject();
-
-		if (wallObject == null)
-		{
-			return null;
-		}
-
-		return new WallObject(client, wallObject);
-	}
+	WallObject getWallObject();
 }

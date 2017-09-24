@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -33,7 +34,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import org.objectweb.asm.MethodVisitor;
 
@@ -66,38 +66,38 @@ public class NewArray extends Instruction implements IntInstruction
 		StackContext count = stack.pop();
 		ins.pop(count);
 		
-		Class<?> t = null;
+		String t;
 		switch (type)
 		{
 			case 4:
-				t = boolean.class;
+				t = "[Z";
 				break;
 			case 5:
-				t = char.class;
+				t = "[C";
 				break;
 			case 6:
-				t = float.class;
+				t = "[F";
 				break;
 			case 7:
-				t = double.class;
+				t = "[D";
 				break;
 			case 8:
-				t = byte.class;
+				t = "[B";
 				break;
 			case 9:
-				t = short.class;
+				t = "[S";
 				break;
 			case 10:
-				t = int.class;
+				t = "[I";
 				break;
 			case 11:
-				t = long.class;
+				t = "[J";
 				break;
 			default:
 				throw new IllegalStateException("unknown array type " + type);
 		}
-		
-		StackContext ctx = new StackContext(ins, new Type(t.getName() + "[]"), Value.newArray(count.getValue()));
+
+		StackContext ctx = new StackContext(ins, new Type(t), Value.newArray(count.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

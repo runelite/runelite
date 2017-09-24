@@ -36,10 +36,10 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.DeobAnnotations;
-import net.runelite.deob.DeobProperties;
+import net.runelite.deob.DeobTestProperties;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,7 +47,7 @@ import org.junit.Test;
 public class MappingDumper
 {
 	@Rule
-	public DeobProperties properties = new DeobProperties();
+	public DeobTestProperties properties = new DeobTestProperties();
 
 	@Test
 	public void dump() throws IOException
@@ -72,7 +72,7 @@ public class MappingDumper
 				++classes;
 			}
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 
@@ -84,13 +84,8 @@ public class MappingDumper
 				++fields;
 
 				String fieldName = DeobAnnotations.getObfuscatedName(f.getAnnotations());
-				Type type = DeobAnnotations.getObfuscatedType(f);
+				Type type = f.getType();
 				Number getter = DeobAnnotations.getObfuscatedGetter(f);
-
-				if (type == null)
-				{
-					type = f.getType();
-				}
 
 				String fieldType = typeToString(type);
 
@@ -118,7 +113,7 @@ public class MappingDumper
 				}
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());
 
@@ -138,7 +133,7 @@ public class MappingDumper
 					signature = m.getDescriptor();
 				}
 
-				String returnType = typeToString(signature.getReturnValue());
+				String returnType = typeToString(m.getDescriptor().getReturnValue());
 				String[] paramTypes = new String[signature.size()];
 				for (int i = 0; i < paramTypes.length; i++)
 				{
@@ -204,7 +199,7 @@ public class MappingDumper
 			String implName = DeobAnnotations.getImplements(cf);
 			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
-			for (Field f : cf.getFields().getFields())
+			for (Field f : cf.getFields())
 			{
 				String exportName = DeobAnnotations.getExportedName(f.getAnnotations());
 
@@ -223,15 +218,15 @@ public class MappingDumper
 				jField.addProperty("owner", f.isStatic() ? "" : implName);
 				jField.addProperty("class", className);
 				jField.addProperty("field", fieldName);
-				jField.addProperty("obfSignature", (obfType != null ? obfType.getFullType() : ""));
-				jField.addProperty("signature", f.getType().getFullType());
+				jField.addProperty("obfSignature", (obfType != null ? obfType.toString() : ""));
+				jField.addProperty("signature", f.getType().toString());
 				jField.addProperty("multiplier", (getter != null ? getter : 0));
 				jField.addProperty("static", f.isStatic());
 
 				jFields.add(jField);
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 
 				String exportName = DeobAnnotations.getExportedName(m.getAnnotations());
@@ -273,7 +268,7 @@ public class MappingDumper
 	private static String typeToString(Type type)
 	{
 		String subType;
-		switch (type.getType())
+		switch (type.toString())
 		{
 			case "B":
 				subType = byte.class.getCanonicalName();
@@ -303,14 +298,13 @@ public class MappingDumper
 				subType = void.class.getCanonicalName();
 				break;
 			default:
-				String t = type.getType();
-				subType = t.substring(1, t.length() - 1).replace("/", ".");
+				subType = type.getInternalName();
 				break;
 		}
 
 		if (type.isArray())
 		{
-			for (int i = 0; i < type.getArrayDims(); ++i)
+			for (int i = 0; i < type.getDimensions(); ++i)
 			{
 				subType += "[]";
 			}

@@ -31,17 +31,20 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MultiplyZeroDeobfuscator implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(MultiplyZeroDeobfuscator.class);
+
 	private int count;
 
 	private void visit(MethodContext mctx)
@@ -110,11 +113,11 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 
 			if (instruction instanceof IMul)
 			{
-				ins.replace(instruction, new LDC_W(ins, 0));
+				ins.replace(instruction, new LDC(ins, 0));
 			}
 			else if (instruction instanceof LMul)
 			{
-				ins.replace(instruction, new LDC2_W(ins, 0L));
+				ins.replace(instruction, new LDC(ins, 0L));
 			}
 			else
 			{
@@ -134,6 +137,6 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 		e.populateInitialMethods();
 		e.run();
 		
-		System.out.println("Removed " + count + " 0 multiplications");
+		logger.info("Removed " + count + " 0 multiplications");
 	}
 }

@@ -28,10 +28,11 @@ package net.runelite.cache;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -52,7 +53,7 @@ public class ModelDumperTest
 	@Test
 	public void test() throws IOException
 	{
-		java.io.File modelDir = folder.newFolder("models");
+		File modelDir = folder.newFolder("models");
 		int count = 0;
 
 		try (Store store = new Store(StoreLocation.LOCATION))
@@ -65,14 +66,14 @@ public class ModelDumperTest
 			{
 				assert archive.getFiles().size() == 1;
 
-				File file = archive.getFiles().get(0);
+				FSFile file = archive.getFiles().get(0);
 				byte[] contents = file.getContents();
 
 				ModelLoader loader = new ModelLoader();
 				loader.load(archive.getArchiveId(), contents);
 
-				Files.write(contents, new java.io.File(modelDir, archive.getArchiveId() + ".model"));
-				//Files.write(gson.toJson(loader), new java.io.File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(contents, new File(modelDir, archive.getArchiveId() + ".model"));
+				//Files.write(gson.toJson(loader), new File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

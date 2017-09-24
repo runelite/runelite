@@ -29,31 +29,6 @@ package net.runelite.api;
  *
  * @author Adam
  */
-public class WallObject extends TileObject
+public interface WallObject extends TileObject
 {
-	private final net.runelite.rs.api.WallObject wallObject;
-
-	public WallObject(Client client, net.runelite.rs.api.WallObject wallObject)
-	{
-		super(client);
-		this.wallObject = wallObject;
-	}
-
-	@Override
-	protected int getHash()
-	{
-		return wallObject.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return wallObject.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return wallObject.getY();
-	}
 }

@@ -27,172 +27,34 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
-import net.runelite.rs.api.CombatInfo1;
-import net.runelite.rs.api.CombatInfo2;
-import net.runelite.rs.api.CombatInfoList;
-import net.runelite.rs.api.CombatInfoListHolder;
-import net.runelite.rs.api.Node;
 
-public abstract class Actor extends Renderable
+public interface Actor extends Renderable
 {
+	int getCombatLevel();
 
-	private final Client client;
-	private net.runelite.rs.api.Actor actor;
+	String getName();
 
-	public Actor(Client client, net.runelite.rs.api.Actor actor)
-	{
-		super(actor);
+	Actor getInteracting();
 
-		this.client = client;
-		this.actor = actor;
-	}
+	int getHealthRatio();
 
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 47 * hash + Objects.hashCode(this.client);
-		return hash;
-	}
+	int getHealth();
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Actor other = (Actor) obj;
-		if (!Objects.equals(this.client, other.client))
-		{
-			return false;
-		}
-		return true;
-	}
+	Point getLocalLocation();
 
-	public abstract int getCombatLevel();
+	int getOrientation();
 
-	public abstract String getName();
+	int getAnimation();
 
-	public Actor getInteracting()
-	{
-		int i = actor.getInteracting();
-		if (i == -1)
-		{
-			return null;
-		}
+	int getGraphic();
 
-		if (i < 0x8000)
-		{
-			return client.getNpc(i);
-		}
+	int getModelHeight();
 
-		i -= 0x8000;
-		return client.getPlayer(i);
-	}
+	Polygon getCanvasTilePoly();
 
-	public int getHealthRatio()
-	{
-		CombatInfoList combatInfoList = actor.getCombatInfoList();
-		if (combatInfoList != null)
-		{
-			Node node = combatInfoList.getNode();
-			Node next = node.getNext();
-			if (next instanceof CombatInfoListHolder)
-			{
-				CombatInfoListHolder combatInfoListWrapper = (CombatInfoListHolder) next;
-				CombatInfoList combatInfoList1 = combatInfoListWrapper.getCombatInfo1();
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
-				Node node2 = combatInfoList1.getNode();
-				Node next2 = node2.getNext();
-				if (next2 instanceof CombatInfo1)
-				{
-					CombatInfo1 combatInfo = (CombatInfo1) next2;
-					return combatInfo.getHealthRatio();
-				}
-			}
-		}
-		return -1;
-	}
+	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
 
-	public int getHealth()
-	{
-		CombatInfoList combatInfoList = actor.getCombatInfoList();
-		if (combatInfoList != null)
-		{
-			Node node = combatInfoList.getNode();
-			Node next = node.getNext();
-			if (next instanceof CombatInfoListHolder)
-			{
-				CombatInfoListHolder combatInfoListWrapper = (CombatInfoListHolder) next;
-				CombatInfo2 cf = combatInfoListWrapper.getCombatInfo2();
-				return cf.getHealthScale();
-			}
-		}
-		return -1;
-	}
-
-	public Point getLocalLocation()
-	{
-		return new Point(getX(), getY());
-	}
-
-	private int getX()
-	{
-		return actor.getX();
-	}
-
-	private int getY()
-	{
-		return actor.getY();
-	}
-
-	public int getOrientation()
-	{
-		return actor.getOrientation();
-	}
-
-	public int getAnimation()
-	{
-		return actor.getAnimation();
-	}
-
-	public int getGraphic()
-	{
-		return actor.getGraphic();
-	}
-
-	public int getModelHeight()
-	{
-		return actor.getModelHeight();
-	}
-
-	public Polygon getCanvasTilePoly()
-	{
-		return Perspective.getCanvasTilePoly(client, getLocalLocation());
-	}
-
-	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
-	{
-		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
-	}
-
-	public Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset)
-	{
-		return Perspective.getCanvasImageLocation(client, graphics, getLocalLocation(), image, zOffset);
-	}
-
-	public Point getMinimapLocation()
-	{
-		return Perspective.worldToMiniMap(client, getX(), getY());
-	}
+	Point getMinimapLocation();
 }

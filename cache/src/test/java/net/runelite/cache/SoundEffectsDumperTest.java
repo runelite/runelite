@@ -33,6 +33,7 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.loaders.sound.SoundEffectLoader;
 import net.runelite.cache.definitions.sound.SoundEffectDefinition;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -66,7 +67,7 @@ public class SoundEffectsDumperTest
 			{
 				assert archive.getFiles().size() == 1;
 
-				net.runelite.cache.fs.File file = archive.getFiles().get(0);
+				FSFile file = archive.getFiles().get(0);
 
 				SoundEffectLoader soundEffectLoader = new SoundEffectLoader();
 				SoundEffectDefinition soundEffect = soundEffectLoader.load(file.getContents());

@@ -61,6 +61,7 @@ public class Execution
 	private final Map<Object, Integer> order = new HashMap<>(); // field,method -> order encountered
 	private final Map<Object, Integer> accesses = new HashMap<>();
 	public boolean staticStep; // whether to step through static methods
+	public boolean noExceptions;
 
 	public Execution(ClassGroup group)
 	{
@@ -78,7 +79,7 @@ public class Execution
 		{
 			boolean extendsApplet = extendsApplet(cf);
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 				{
@@ -184,6 +185,11 @@ public class Execution
 			return null;
 		}
 
+		if (to.isNative())
+		{
+			return null;
+		}
+
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
@@ -243,7 +249,7 @@ public class Execution
 			}
 		}
 
-		logger.info("Processed {} frames", fcount);
+		logger.debug("Processed {} frames", fcount);
 	}
 
 	public void addExecutionVisitor(ExecutionVisitor ev)

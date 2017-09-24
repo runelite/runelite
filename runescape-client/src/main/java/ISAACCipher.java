@@ -4,41 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fj")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("p")
+   @ObfuscatedName("qu")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ly;"
    )
-   static ModIcon field2431;
+   static class13 field2441;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1859588229
+      intValue = -774643889
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1915932257
+      intValue = 1750462499
    )
-   int field2429;
-   @ObfuscatedName("w")
+   int field2437;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -4704379
+      intValue = 1964414211
    )
-   int field2425;
-   @ObfuscatedName("e")
+   int field2433;
+   @ObfuscatedName("n")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1472845395
+      intValue = -153274973
    )
-   int field2428;
+   int field2436;
 
    ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -48,46 +48,46 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3415();
+      this.method3519();
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1915613784"
+      garbageValue = "1738593017"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2429 += ++this.field2425;
+      this.field2437 += ++this.field2433;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2428 ^= this.field2428 << 13;
+               this.field2436 ^= this.field2436 << 13;
             } else {
-               this.field2428 ^= this.field2428 >>> 6;
+               this.field2436 ^= this.field2436 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2428 ^= this.field2428 << 2;
+            this.field2436 ^= this.field2436 << 2;
          } else {
-            this.field2428 ^= this.field2428 >>> 16;
+            this.field2436 ^= this.field2436 >>> 16;
          }
 
-         this.field2428 += this.mm[var1 + 128 & 255];
+         this.field2436 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.field2429 + this.field2428 + this.mm[(var2 & 1020) >> 2];
-         this.randResult[var1] = this.field2429 = var2 + this.mm[(var3 >> 8 & 1020) >> 2];
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2436 + this.field2437;
+         this.randResult[var1] = this.field2437 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "130854265"
+      signature = "(B)V",
+      garbageValue = "-86"
    )
-   final void method3415() {
+   final void method3519() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -215,10 +215,10 @@ public final class ISAACCipher {
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "912530925"
+      signature = "(B)I",
+      garbageValue = "122"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -228,17 +228,5 @@ public final class ISAACCipher {
       }
 
       return this.randResult[this.valuesRemaining];
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lif;Ljava/lang/String;Ljava/lang/String;B)Ljf;",
-      garbageValue = "-94"
-   )
-   @Export("getSprite")
-   public static ModIcon getSprite(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return Projectile.method1743(var0, var3, var4);
    }
 }

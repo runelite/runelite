@@ -31,18 +31,13 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.Goto;
-import net.runelite.asm.attributes.code.instructions.IConst_1;
-import net.runelite.asm.attributes.code.instructions.IConst_2;
-import net.runelite.asm.attributes.code.instructions.IConst_3;
-import net.runelite.asm.attributes.code.instructions.IConst_M1;
 import net.runelite.asm.attributes.code.instructions.IDiv;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.IStore_0;
-import net.runelite.asm.attributes.code.instructions.IStore_1;
+import net.runelite.asm.attributes.code.instructions.IStore;
 import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
@@ -64,8 +59,8 @@ public class MultiplyOneDeobfuscatorTest
 		
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
-			new IConst_3(ins),
-			new IStore_0(ins)
+			new LDC(ins, 3),
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -74,7 +69,7 @@ public class MultiplyOneDeobfuscatorTest
 		Label label = new Label(ins),
 		    label2 = new Label(ins);
 		
-		IConst_1 one = new IConst_1(ins);
+		LDC one = new LDC(ins, 1);
 		
 		Instruction body[] = {
 			new SiPush(ins, (short) 256),
@@ -82,7 +77,7 @@ public class MultiplyOneDeobfuscatorTest
 			new ILoad(ins, 0),
 			new IfEq(ins, label),
 			
-			new IConst_2(ins),
+			new LDC(ins, 2),
 			new Goto(ins, label2),
 			
 			label,
@@ -119,8 +114,8 @@ public class MultiplyOneDeobfuscatorTest
 		
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
-			new IConst_3(ins),
-			new IStore_0(ins)
+			new LDC(ins, 3),
+			new IStore(ins, 0)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -129,7 +124,7 @@ public class MultiplyOneDeobfuscatorTest
 		Label label = new Label(ins),
 		    label2 = new Label(ins);
 		
-		IConst_1 one = new IConst_1(ins);
+		LDC one = new LDC(ins, 1);
 		IMul mul = new IMul(ins);
 		
 		Instruction body[] = {
@@ -199,10 +194,10 @@ public class MultiplyOneDeobfuscatorTest
 		
 		// vars[0] = 3
 		Instruction[] prepareVariables = {
-			new IConst_3(ins),
-			new IStore_0(ins),
-			new IConst_2(ins),
-			new IStore_1(ins)
+			new LDC(ins, 3),
+			new IStore(ins, 0),
+			new LDC(ins, 2),
+			new IStore(ins, 1)
 		};
 		
 		for (Instruction i : prepareVariables)
@@ -212,13 +207,13 @@ public class MultiplyOneDeobfuscatorTest
 		    label2 = new Label(ins),
 		    label3 = new Label(ins);
 		
-		IConst_1 one = new IConst_1(ins);
+		LDC one = new LDC(ins, 1);
 		IMul mul = new IMul(ins);
 		
 		Instruction body[] = {
 			one,
 			
-			new IConst_M1(ins),
+			new LDC(ins, -1),
 			new ILoad(ins, 0),
 			new IfICmpEq(ins, label),
 
@@ -226,13 +221,13 @@ public class MultiplyOneDeobfuscatorTest
 			
 			label,
 			new ILoad(ins, 1),
-			new LDC_W(ins, -1440517609),
+			new LDC(ins, -1440517609),
 			new IDiv(ins),
 			new Goto(ins, label3),
 			
 			label2,
 			new ILoad(ins, 1),
-			new LDC_W(ins, -1440517609),
+			new LDC(ins, -1440517609),
 			new IDiv(ins),
 			
 			label3,

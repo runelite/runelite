@@ -33,6 +33,7 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.KitDefinition;
 import net.runelite.cache.definitions.loaders.KitLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
@@ -65,7 +66,7 @@ public class KitDumperTest
 
 			KitLoader loader = new KitLoader();
 
-			for (net.runelite.cache.fs.File file : archive.getFiles())
+			for (FSFile file : archive.getFiles())
 			{
 				byte[] b = file.getContents();
 

@@ -27,22 +27,20 @@ package net.runelite.deob;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
-import net.runelite.asm.Fields;
 import net.runelite.asm.Method;
-import net.runelite.asm.Methods;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 
 public class ClassGroupFactory
 {
-	private static void addVoidMethod(Methods methods, String name)
+	private static void addVoidMethod(ClassFile cf, String name)
 	{
-		Method method = new Method(methods, name, new Signature("()V"));
+		Method method = new Method(cf, name, new Signature("()V"));
 		method.setStatic();
-		methods.addMethod(method);
+		cf.addMethod(method);
 
 		Code code = new Code(method);
 		method.setCode(code);
@@ -60,23 +58,21 @@ public class ClassGroupFactory
 		cf.setSuperName("java/lang/Object");
 		group.addClass(cf);
 
-		Fields fields = cf.getFields();
-		Field field = new Field(fields, "field", new Type("I"));
+		Field field = new Field(cf, "field", Type.INT);
 		field.setStatic();
-		fields.addField(field);
+		cf.addField(field);
 
-		Methods methods = cf.getMethods();
-		Method method = new Method(methods, "func", new Signature("()V"));
+		Method method = new Method(cf, "func", new Signature("()V"));
 		method.setStatic();
-		methods.addMethod(method);
+		cf.addMethod(method);
 
 		Code code = new Code(method);
 		method.setCode(code);
 
 		{
-			method = new Method(methods, "func2", new Signature("(III)V"));
+			method = new Method(cf, "func2", new Signature("(III)V"));
 			method.setStatic();
-			methods.addMethod(method);
+			cf.addMethod(method);
 
 			code = new Code(method);
 			method.setCode(code);
@@ -85,10 +81,10 @@ public class ClassGroupFactory
 			ins.addInstruction(new VReturn(ins));
 		}
 
-		addVoidMethod(methods, "void1");
-		addVoidMethod(methods, "void2");
-		addVoidMethod(methods, "void3");
-		addVoidMethod(methods, "void4");
+		addVoidMethod(cf, "void1");
+		addVoidMethod(cf, "void2");
+		addVoidMethod(cf, "void3");
+		addVoidMethod(cf, "void4");
 
 		return group;
 	}

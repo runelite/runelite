@@ -32,7 +32,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 
 
 public class Pop2 extends Instruction
@@ -56,7 +55,7 @@ public class Pop2 extends Instruction
 		StackContext value = stack.pop();
 		ins.pop(value);
 
-		if (value.getType().equals(new Type(double.class.getCanonicalName())) || value.getType().equals(new Type(long.class.getCanonicalName())))
+		if (value.getType().getSize() == 2)
 			return ins;
 		
 		value = stack.pop();

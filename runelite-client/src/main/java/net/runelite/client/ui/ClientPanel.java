@@ -28,6 +28,7 @@ import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.io.IOException;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
@@ -44,19 +45,17 @@ final class ClientPanel extends JPanel
 
 	private Applet rs;
 
-	public ClientPanel(boolean loadRs) throws Exception
+	public ClientPanel()
 	{
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setLayout(new BorderLayout());
 		setBackground(Color.black);
+	}
 
-		if (!loadRs)
-		{
-			return;
-		}
-
+	public void loadRs() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	{
 		ClientLoader loader = new ClientLoader();
 
 		UpdateCheckClient updateCheck = new UpdateCheckClient();
@@ -85,13 +84,14 @@ final class ClientPanel extends JPanel
 			return;
 		}
 
-		if (!(rs instanceof net.runelite.rs.api.Client))
+		if (!(rs instanceof Client))
 		{
 			logger.error("Injected client does not implement Client!");
 			System.exit(-1);
 		}
 
-		Client client = new Client((net.runelite.rs.api.Client) rs);
+		Client client = (Client) rs;
+
 		RuneLite.setClient(client);
 
 		// This causes the whole game frame to be redrawn each frame instead

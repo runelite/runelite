@@ -30,7 +30,6 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -50,8 +49,8 @@ public class ClassFile
 	private Class super_class;
 	private String source;
 	private final Interfaces interfaces;
-	private final Fields fields;
-	private final Methods methods;
+	private final List<Field> fields = new ArrayList<>();
+	private final List<Method> methods = new ArrayList<>();
 	private final Annotations annotations;
 
 	public ClassFile(ClassGroup group)
@@ -59,17 +58,12 @@ public class ClassFile
 		this.group = group;
 
 		interfaces = new Interfaces(this);
-		fields = new Fields(this);
-		methods = new Methods(this);
 		annotations = new Annotations();
 	}
 
 	public ClassFile()
 	{
-		interfaces = new Interfaces(this);
-		fields = new Fields(this);
-		methods = new Methods(this);
-		annotations = new Annotations();
+		this(null);
 	}
 
 	@Override
@@ -107,17 +101,17 @@ public class ClassFile
 
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
 			annotation.accept(av);
 		}
 
-		for (Field field : fields.getFields())
+		for (Field field : fields)
 		{
-			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().getFullType(), null, field.getValue());
+			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().toString(), null, field.getValue());
 			field.accept(fv);
 		}
 
-		for (Method method : methods.getMethods())
+		for (Method method : methods)
 		{
 			String[] exceptions = method.getExceptions().getExceptions().stream().map(cl -> cl.getName()).toArray(String[]::new);
 			if (exceptions.length == 0)
@@ -147,14 +141,34 @@ public class ClassFile
 		return interfaces;
 	}
 
-	public Fields getFields()
+	public List<Field> getFields()
 	{
 		return fields;
 	}
 
-	public Methods getMethods()
+	public void addField(Field field)
+	{
+		fields.add(field);
+	}
+
+	public void removeField(Field field)
+	{
+		fields.remove(field);
+	}
+
+	public List<Method> getMethods()
 	{
 		return methods;
+	}
+
+	public void addMethod(Method method)
+	{
+		methods.add(method);
+	}
+
+	public void removeMethod(Method method)
+	{
+		methods.remove(method);
 	}
 
 	public Annotations getAnnotations()
@@ -222,14 +236,28 @@ public class ClassFile
 		return children;
 	}
 
-	public Field findField(String name)
-	{
-		return fields.findField(name);
-	}
-
 	public Field findField(String name, Type type)
 	{
-		return fields.findField(name, type);
+		for (Field f : fields)
+		{
+			if (f.getName().equals(name) && f.getType().equals(type))
+			{
+				return f;
+			}
+		}
+		return null;
+	}
+
+	public Field findField(String name)
+	{
+		for (Field f : fields)
+		{
+			if (f.getName().equals(name))
+			{
+				return f;
+			}
+		}
+		return null;
 	}
 
 	public Class getPoolClass()
@@ -239,7 +267,7 @@ public class ClassFile
 
 	public Field findFieldDeep(String name, Type type)
 	{
-		Field f = fields.findField(name, type);
+		Field f = findField(name, type);
 		if (f != null)
 		{
 			return f;
@@ -254,9 +282,33 @@ public class ClassFile
 		return null;
 	}
 
+	public Method findMethod(String name, Signature type)
+	{
+		for (Method m : methods)
+		{
+			if (m.getName().equals(name) && m.getDescriptor().equals(type))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
+	public Method findMethod(String name)
+	{
+		for (Method m : methods)
+		{
+			if (m.getName().equals(name))
+			{
+				return m;
+			}
+		}
+		return null;
+	}
+
 	public Method findMethodDeep(String name, Signature type)
 	{
-		Method m = methods.findMethod(name, type);
+		Method m = findMethod(name, type);
 		if (m != null)
 		{
 			return m;
@@ -273,7 +325,7 @@ public class ClassFile
 
 	public Method findMethodDeepStatic(String name, Signature type)
 	{
-		Method m = methods.findMethod(name, type);
+		Method m = findMethod(name, type);
 		if (m != null && m.isStatic())
 		{
 			return m;
@@ -288,19 +340,9 @@ public class ClassFile
 		return null;
 	}
 
-	public Method findMethod(String name, Signature type)
-	{
-		return methods.findMethod(name, type);
-	}
-
-	public Method findMethod(String name)
-	{
-		return methods.findMethod(name);
-	}
-
 	public Method findMethodDeep(String name)
 	{
-		Method m = methods.findMethod(name);
+		Method m = findMethod(name);
 		if (m != null)
 		{
 			return m;

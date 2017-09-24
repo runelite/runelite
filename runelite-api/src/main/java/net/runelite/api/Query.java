@@ -34,7 +34,7 @@ public abstract class Query<EntityType, QueryType>
 	{
 	}
 
-	protected abstract EntityType[] result(Client client);
+	public abstract EntityType[] result(Client client);
 
 	protected Predicate<EntityType> and(Predicate<EntityType> other)
 	{

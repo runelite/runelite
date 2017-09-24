@@ -37,8 +37,6 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
-import net.runelite.asm.attributes.code.instructions.AThrow;
 
 public class ControlFlowGraph
 {
@@ -77,66 +75,63 @@ public class ControlFlowGraph
 		return head;
 	}
 
-	public static ControlFlowGraph build(Code code)
+	public static class Builder
 	{
-		Map<Label, Block> blocks = new HashMap<>();
-		List<Block> allblocks = new ArrayList<>();
+		private final Map<Label, Block> blocks = new HashMap<>();
+		private final List<Block> allBlocks = new ArrayList<>();
 
-		int id = 0;
-		for (Instruction i : code.getInstructions().getInstructions())
+		public ControlFlowGraph build(Code code)
 		{
-			if (i instanceof Label)
+			int id = 0;
+
+			Block head = new Block(),
+				cur = head;
+			allBlocks.add(head);
+
+			for (Instruction i : code.getInstructions().getInstructions())
 			{
-				// blocks always begin at labels, so create initial blocks
-				Block block = new Block();
-				blocks.put((Label) i, block);
-				allblocks.add(block);
+				if (i instanceof Label)
+				{
+					// blocks always begin at labels, so create initial blocks
+					Block block = new Block();
+					blocks.put((Label) i, block);
+					allBlocks.add(block);
+				}
 			}
-		}
 
-		Block cur = null;
-		Block head = null;
-
-		for (Instruction i : code.getInstructions().getInstructions())
-		{
-			if (i instanceof Label)
+			for (Instruction i : code.getInstructions().getInstructions())
 			{
-				Block next = blocks.get((Label) i);
-				assert next != null;
-
-				if (next.getId() == -1)
+				if (i instanceof Label)
 				{
-					next.setId(id++);
-				}
+					Block next = blocks.get((Label) i);
+					assert next != null;
 
-				if (head == null)
-				{
-					head = cur = next;
-				}
-				else if (next != cur)
-				{
-					assert cur != null;
-
-					if (!cur.getInstructions().get(cur.getInstructions().size() - 1).isTerminal())
+					if (next.getId() == -1)
 					{
-						assert next.getFlowsFrom() == null;
-						assert cur.getFlowsInto() == null;
-
-						// previous block flows directly into next
-						next.setFlowsFrom(cur);
-						cur.setFlowsInto(next);
+						next.setId(id++);
 					}
 
-					cur = next;
+					if (next != cur)
+					{
+						Instruction last = cur.getInstructions().isEmpty()
+							? null
+							: cur.getInstructions().get(cur.getInstructions().size() - 1);
+
+						if (last == null || !last.isTerminal())
+						{
+							assert next.getFlowsFrom() == null;
+							assert cur.getFlowsInto() == null;
+
+							// previous block flows directly into next
+							next.setFlowsFrom(cur);
+							cur.setFlowsInto(next);
+						}
+
+						cur = next;
+					}
 				}
-			}
 
-			assert cur != null : "code doesn't start with a label";
-			cur.addInstruction(i);
-
-			if (i instanceof JumpingInstruction || i.isTerminal())
-			{
-				assert i instanceof JumpingInstruction || i instanceof AThrow || i instanceof ReturnInstruction;
+				cur.addInstruction(i);
 
 				if (i instanceof JumpingInstruction)
 				{
@@ -156,24 +151,29 @@ public class ControlFlowGraph
 					}
 				}
 			}
+
+			assert head != null : "no instructions in code";
+			assert head.getFlowsFrom() == null;
+
+			for (Block b : allBlocks)
+			{
+				buildExceptions(code, b);
+			}
+
+			ControlFlowGraph cfg = new ControlFlowGraph(head);
+			cfg.blocks = blocks;
+			cfg.allBlocks = allBlocks;
+			return cfg;
 		}
-
-		assert head != null : "no instructions in code";
-		assert head.getFlowsFrom() == null;
-
-		for (Block b : allblocks)
-		{
-			buildExceptions(code, b);
-		}
-
-		ControlFlowGraph cfg = new ControlFlowGraph(head);
-		cfg.blocks = blocks;
-		cfg.allBlocks = allblocks;
-		return cfg;
 	}
 
 	private static void buildExceptions(Code code, Block block)
 	{
+		if (block.getInstructions().isEmpty())
+		{
+			return;
+		}
+
 		Instruction first = block.getInstructions().get(0),
 			last = block.getInstructions().get(block.getInstructions().size() - 1);
 
@@ -264,7 +264,6 @@ public class ControlFlowGraph
 
 			assert sidx >= sidx2;
 			assert eidx <= eidx2;
-
 			prev = e;
 		}
 

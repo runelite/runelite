@@ -5,122 +5,122 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kk")
+@ObfuscatedName("kf")
 @Implements("MachineInfo")
 public class MachineInfo extends Node {
-   @ObfuscatedName("as")
-   String field3879;
-   @ObfuscatedName("af")
-   int[] field3896;
-   @ObfuscatedName("e")
+   @ObfuscatedName("ah")
+   String field3892;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 879230059
+      intValue = -554689299
    )
    @Export("osType")
    int osType;
-   @ObfuscatedName("av")
-   String field3887;
-   @ObfuscatedName("l")
+   @ObfuscatedName("bd")
+   int[] field3902;
+   @ObfuscatedName("an")
+   String field3883;
+   @ObfuscatedName("q")
    @Export("os32Bit")
    boolean os32Bit;
-   @ObfuscatedName("q")
+   @ObfuscatedName("af")
+   String field3894;
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = 503870261
+      intValue = 1521172187
    )
    @Export("osVersionType")
    int osVersionType;
-   @ObfuscatedName("ab")
-   String field3888;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("am")
    @ObfuscatedGetter(
-      intValue = 2110903779
+      intValue = -2092439035
    )
    @Export("javaVendorType")
    int javaVendorType;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ak")
+   String field3895;
+   @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = 2040853991
+      intValue = -1060682771
    )
    @Export("javaVersionMajor")
    int javaVersionMajor;
    @ObfuscatedName("at")
-   String field3889;
-   @ObfuscatedName("am")
    @ObfuscatedGetter(
-      intValue = 1143535097
+      intValue = 1604852659
    )
    @Export("javaVersionMinor")
    int javaVersionMinor;
-   @ObfuscatedName("ao")
-   String field3866;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("au")
+   String field3900;
+   @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1487376091
+      intValue = 599517651
    )
    @Export("javaVersionPatch")
    int javaVersionPatch;
-   @ObfuscatedName("aq")
-   boolean field3881;
+   @ObfuscatedName("bp")
+   String field3901;
    @ObfuscatedName("ac")
-   String field3895;
+   boolean field3882;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
-      intValue = -910911793
+      intValue = -1654935755
    )
    @Export("maxMemoryMB")
    int maxMemoryMB;
-   @ObfuscatedName("aj")
-   @ObfuscatedGetter(
-      intValue = -1643544223
-   )
-   int field3883;
-   @ObfuscatedName("ad")
-   @ObfuscatedGetter(
-      intValue = 708047703
-   )
-   int field3884;
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = 1840139
-   )
-   int field3885;
-   @ObfuscatedName("ah")
-   @ObfuscatedGetter(
-      intValue = -186975453
-   )
-   int field3871;
-   @ObfuscatedName("al")
-   @ObfuscatedGetter(
-      intValue = -1148416601
-   )
-   int field3873;
-   @ObfuscatedName("an")
-   @ObfuscatedGetter(
-      intValue = 520549645
-   )
-   int field3892;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = 1181616815
+      intValue = 573337081
    )
-   int field3893;
-   @ObfuscatedName("bp")
+   int field3889;
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = -720178165
+      intValue = 905436055
+   )
+   int field3873;
+   @ObfuscatedName("aw")
+   @ObfuscatedGetter(
+      intValue = 463451325
+   )
+   int field3869;
+   @ObfuscatedName("ap")
+   @ObfuscatedGetter(
+      intValue = -1339234933
    )
    int field3897;
+   @ObfuscatedName("as")
+   @ObfuscatedGetter(
+      intValue = 1712708657
+   )
+   int field3881;
+   @ObfuscatedName("ae")
+   @ObfuscatedGetter(
+      intValue = 1041916685
+   )
+   int field3886;
+   @ObfuscatedName("ai")
+   @ObfuscatedGetter(
+      intValue = -688026769
+   )
+   int field3899;
+   @ObfuscatedName("bs")
+   @ObfuscatedGetter(
+      intValue = 2060686141
+   )
+   int field3903;
 
    @ObfuscatedSignature(
       signature = "(Z)V",
       garbageValue = "1"
    )
    public MachineInfo(boolean var1) {
-      this.field3896 = new int[3];
-      if(class13.osNameLC.startsWith("win")) {
+      this.field3902 = new int[3];
+      if(Parameters.osNameLC.startsWith("win")) {
          this.osType = 1;
-      } else if(class13.osNameLC.startsWith("mac")) {
+      } else if(Parameters.osNameLC.startsWith("mac")) {
          this.osType = 2;
-      } else if(class13.osNameLC.startsWith("linux")) {
+      } else if(Parameters.osNameLC.startsWith("linux")) {
          this.osType = 3;
       } else {
          this.osType = 4;
@@ -177,6 +177,8 @@ public class MachineInfo extends Node {
             this.osVersionType = 9;
          } else if(var3.indexOf("6.3") != -1) {
             this.osVersionType = 10;
+         } else if(var3.indexOf("10.0") != -1) {
+            this.osVersionType = 11;
          }
       } else if(this.osType == 2) {
          if(var3.indexOf("10.4") != -1) {
@@ -193,6 +195,8 @@ public class MachineInfo extends Node {
             this.osVersionType = 25;
          } else if(var3.indexOf("10.10") != -1) {
             this.osVersionType = 26;
+         } else if(var3.indexOf("10.11") != -1) {
+            this.osVersionType = 27;
          }
       }
 
@@ -237,7 +241,7 @@ public class MachineInfo extends Node {
                break;
             }
 
-            var7 = var8 - 48 + 10 * var7;
+            var7 = var8 - 48 + var7 * 10;
             ++var6;
          }
       } catch (Exception var15) {
@@ -255,7 +259,7 @@ public class MachineInfo extends Node {
                break;
             }
 
-            var7 = var7 * 10 + (var8 - 48);
+            var7 = var8 - 48 + var7 * 10;
             ++var6;
          }
       } catch (Exception var14) {
@@ -263,89 +267,89 @@ public class MachineInfo extends Node {
       }
 
       this.javaVersionPatch = var7;
-      this.field3881 = false;
+      this.field3882 = false;
       Runtime.getRuntime();
       this.maxMemoryMB = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
       if(this.javaVersionMajor > 3) {
-         this.field3883 = Runtime.getRuntime().availableProcessors();
+         this.field3889 = Runtime.getRuntime().availableProcessors();
       } else {
-         this.field3883 = 0;
+         this.field3889 = 0;
       }
 
-      this.field3884 = 0;
-      if(this.field3879 == null) {
-         this.field3879 = "";
+      this.field3873 = 0;
+      if(this.field3892 == null) {
+         this.field3892 = "";
       }
 
-      if(this.field3887 == null) {
-         this.field3887 = "";
+      if(this.field3883 == null) {
+         this.field3883 = "";
       }
 
-      if(this.field3888 == null) {
-         this.field3888 = "";
-      }
-
-      if(this.field3889 == null) {
-         this.field3889 = "";
-      }
-
-      if(this.field3866 == null) {
-         this.field3866 = "";
+      if(this.field3894 == null) {
+         this.field3894 = "";
       }
 
       if(this.field3895 == null) {
          this.field3895 = "";
       }
 
-      this.method5281();
+      if(this.field3900 == null) {
+         this.field3900 = "";
+      }
+
+      if(this.field3901 == null) {
+         this.field3901 = "";
+      }
+
+      this.method5343();
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1770018539"
+   )
+   void method5343() {
+      if(this.field3892.length() > 40) {
+         this.field3892 = this.field3892.substring(0, 40);
+      }
+
+      if(this.field3883.length() > 40) {
+         this.field3883 = this.field3883.substring(0, 40);
+      }
+
+      if(this.field3894.length() > 10) {
+         this.field3894 = this.field3894.substring(0, 10);
+      }
+
+      if(this.field3895.length() > 10) {
+         this.field3895 = this.field3895.substring(0, 10);
+      }
+
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-4"
-   )
-   void method5281() {
-      if(this.field3879.length() > 40) {
-         this.field3879 = this.field3879.substring(0, 40);
-      }
-
-      if(this.field3887.length() > 40) {
-         this.field3887 = this.field3887.substring(0, 40);
-      }
-
-      if(this.field3888.length() > 10) {
-         this.field3888 = this.field3888.substring(0, 10);
-      }
-
-      if(this.field3889.length() > 10) {
-         this.field3889 = this.field3889.substring(0, 10);
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-66423710"
+      garbageValue = "-933251585"
    )
-   public int method5283() {
+   public int method5345() {
       byte var1 = 38;
-      int var2 = var1 + class83.method1641(this.field3879);
-      var2 += class83.method1641(this.field3887);
-      var2 += class83.method1641(this.field3888);
-      var2 += class83.method1641(this.field3889);
-      var2 += class83.method1641(this.field3866);
-      var2 += class83.method1641(this.field3895);
+      int var2 = var1 + MouseInput.method1048(this.field3892);
+      var2 += MouseInput.method1048(this.field3883);
+      var2 += MouseInput.method1048(this.field3894);
+      var2 += MouseInput.method1048(this.field3895);
+      var2 += MouseInput.method1048(this.field3900);
+      var2 += MouseInput.method1048(this.field3901);
       return var2;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-910438586"
+      signature = "(Lfp;I)V",
+      garbageValue = "-1097921951"
    )
-   public void method5282(Buffer var1) {
+   public void method5342(Buffer var1) {
       var1.putByte(6);
       var1.putByte(this.osType);
       var1.putByte(this.os32Bit?1:0);
@@ -354,26 +358,26 @@ public class MachineInfo extends Node {
       var1.putByte(this.javaVersionMajor);
       var1.putByte(this.javaVersionMinor);
       var1.putByte(this.javaVersionPatch);
-      var1.putByte(this.field3881?1:0);
+      var1.putByte(this.field3882?1:0);
       var1.putShort(this.maxMemoryMB);
-      var1.putByte(this.field3883);
-      var1.put24bitInt(this.field3884);
-      var1.putShort(this.field3885);
-      var1.putJagString(this.field3879);
-      var1.putJagString(this.field3887);
-      var1.putJagString(this.field3888);
-      var1.putJagString(this.field3889);
-      var1.putByte(this.field3871);
-      var1.putShort(this.field3873);
-      var1.putJagString(this.field3866);
+      var1.putByte(this.field3889);
+      var1.put24bitInt(this.field3873);
+      var1.putShort(this.field3869);
+      var1.putJagString(this.field3892);
+      var1.putJagString(this.field3883);
+      var1.putJagString(this.field3894);
       var1.putJagString(this.field3895);
-      var1.putByte(this.field3892);
-      var1.putByte(this.field3893);
+      var1.putByte(this.field3897);
+      var1.putShort(this.field3881);
+      var1.putJagString(this.field3900);
+      var1.putJagString(this.field3901);
+      var1.putByte(this.field3886);
+      var1.putByte(this.field3899);
 
-      for(int var2 = 0; var2 < this.field3896.length; ++var2) {
-         var1.putInt(this.field3896[var2]);
+      for(int var2 = 0; var2 < this.field3902.length; ++var2) {
+         var1.putInt(this.field3902[var2]);
       }
 
-      var1.putInt(this.field3897);
+      var1.putInt(this.field3903);
    }
 }

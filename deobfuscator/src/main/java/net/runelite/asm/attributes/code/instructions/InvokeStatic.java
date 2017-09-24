@@ -41,7 +41,7 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import static net.runelite.asm.execution.StaticStep.stepInto;
-import net.runelite.asm.execution.Type;
+
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
@@ -105,7 +105,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		if (!method.getType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getType().getReturnValue()),
+				method.getType().getReturnValue(),
 				Value.UNKNOWN
 			);
 			stack.push(ctx);
@@ -170,7 +170,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 
 	private net.runelite.asm.Method lookupMethod()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)

@@ -49,7 +49,7 @@ public class StaticMethodSignatureMapper
 				continue;
 			}
 
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				// this used to check the method wasnt <clinit>,
 				// but fernflower was modified to not remove code

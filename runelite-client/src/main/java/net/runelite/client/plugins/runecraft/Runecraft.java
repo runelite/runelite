@@ -24,17 +24,29 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import com.google.common.eventbus.Subscribe;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.runelite.api.ChatMessageType;
+import net.runelite.client.RuneLite;
+import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class Runecraft extends Plugin
 {
-	private static final RunecraftOverlay overlay = new RunecraftOverlay();
+	public static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
+
+	private final RunecraftConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunecraftConfig.class);
+	private final RunecraftOverlay overlay = new RunecraftOverlay(this);
+	private final BindNeckOverlay bindNeckOverlay = new BindNeckOverlay(this);
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, bindNeckOverlay);
 	}
 
 	@Override
@@ -45,5 +57,47 @@ public class Runecraft extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+	}
+
+	public RunecraftConfig getConfig()
+	{
+		return config;
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		Matcher match = bindNeckString.matcher(event.getMessage());
+		if (match.find())
+		{
+			bindNeckOverlay.bindingCharges = Integer.parseInt(match.group(1));
+			return;
+		}
+
+		if (event.getMessage().contains("You bind the temple's power"))
+		{
+			if (event.getMessage().contains("mud")
+					|| event.getMessage().contains("lava")
+					|| event.getMessage().contains("steam")
+					|| event.getMessage().contains("dust")
+					|| event.getMessage().contains("smoke")
+					|| event.getMessage().contains("mist"))
+			{
+				bindNeckOverlay.bindingCharges -= 1;
+				return;
+			}
+		}
+
+		if (event.getMessage().contains("Your Binding necklace has disintegrated."))
+		{
+			//set it to 17 because this message is triggered first before the above chat event
+			bindNeckOverlay.bindingCharges = 17;
+			return;
+		}
 	}
 }

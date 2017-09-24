@@ -24,18 +24,7 @@
  */
 package net.runelite.api;
 
-public class Renderable extends Node
+public interface Renderable extends Node
 {
-	private final net.runelite.rs.api.Renderable renderable;
-
-	public Renderable(net.runelite.rs.api.Renderable renderable)
-	{
-		super(renderable);
-		this.renderable = renderable;
-	}
-
-	public static Renderable of(net.runelite.rs.api.Renderable renderable)
-	{
-		return (Renderable) Node.of(renderable);
-	}
+	Model getModel();
 }

@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.exporters.NpcExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
@@ -55,11 +56,16 @@ public class NpcManager
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.NPC.getId());
 
-		for (net.runelite.cache.fs.File f : archive.getFiles())
+		for (FSFile f : archive.getFiles())
 		{
 			NpcDefinition npc = loader.load(f.getFileId(), f.getContents());
 			npcs.add(npc);
 		}
+	}
+	
+	public List<NpcDefinition> getNpcs()
+	{
+		return npcs;
 	}
 
 	public void dump(File out) throws IOException

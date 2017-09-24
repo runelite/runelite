@@ -35,20 +35,19 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_NATIVE;
+import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
+import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.ACC_SYNCHRONIZED;
 
 public class Method
 {
-	public static final short ACC_PUBLIC = 0x1;
-	public static final short ACC_PRIVATE = 0x2;
-	public static final short ACC_PROTECTED = 0x4;
-	public static final short ACC_STATIC = 0x8;
-	public static final short ACC_FINAL = 0x10;
-	public static final short ACC_SYNCHRONIZED = 0x20;
-	public static final short ACC_ABSTRACT = 0x400;
+	public static final int ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
 
-	public static final short ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
-
-	private Methods methods;
+	private final ClassFile classFile;
 
 	private int accessFlags;
 	private String name;
@@ -57,26 +56,31 @@ public class Method
 	private Annotations annotations;
 	private Code code;
 
-	public Method(Methods methods, String name, Signature signature)
+	public Method(ClassFile classFile, String name, Signature signature)
 	{
-		this.methods = methods;
+		this.classFile = classFile;
 		this.name = name;
 		this.arguments = signature;
 		exceptions = new Exceptions();
 		annotations = new Annotations();
 	}
 
+	public ClassFile getClassFile()
+	{
+		return classFile;
+	}
+
 	@Override
 	public String toString()
 	{
-		return (this.isStatic() ? "static " : "") + this.getMethods().getClassFile().getName() + "." + this.name + this.arguments;
+		return (this.isStatic() ? "static " : "") + classFile.getName() + "." + this.name + this.arguments;
 	}
 
 	public void accept(MethodVisitor visitor)
 	{
 		for (Annotation annotation : annotations.getAnnotations())
 		{
-			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().toString(), true);
 			annotation.accept(av);
 		}
 
@@ -112,7 +116,6 @@ public class Method
 
 			for (Instruction i : code.getInstructions().getInstructions())
 			{
-				i = i.makeSpecific();
 				i.accept(visitor);
 			}
 
@@ -120,16 +123,6 @@ public class Method
 		}
 
 		visitor.visitEnd();
-	}
-
-	public Methods getMethods()
-	{
-		return methods;
-	}
-
-	public void setMethods(Methods methods)
-	{
-		this.methods = methods;
 	}
 
 	public int getAccessFlags()
@@ -160,6 +153,11 @@ public class Method
 	public void setDescriptor(Signature signature)
 	{
 		this.arguments = signature;
+	}
+
+	public boolean isNative()
+	{
+		return (accessFlags & ACC_NATIVE) != 0;
 	}
 
 	public boolean isStatic()
@@ -260,7 +258,7 @@ public class Method
 	public net.runelite.asm.pool.Method getPoolMethod()
 	{
 		return new net.runelite.asm.pool.Method(
-			new net.runelite.asm.pool.Class(this.getMethods().getClassFile().getName()),
+			new net.runelite.asm.pool.Class(classFile.getName()),
 			name,
 			arguments
 		);

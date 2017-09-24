@@ -1,38 +1,32 @@
 import javax.imageio.ImageIO;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("bs")
 public class class54 {
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "[Lie;"
-   )
-   public static Area[] field662;
-   @ObfuscatedName("ak")
-   static java.awt.Font field657;
-   @ObfuscatedName("ce")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   static IndexData field660;
-   @ObfuscatedName("hv")
+   @ObfuscatedName("ld")
    @ObfuscatedGetter(
-      intValue = -998485645
+      intValue = -1170918911
    )
-   static int field659;
+   static int field682;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   @Export("identKit_ref")
+   public static IndexDataBase identKit_ref;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "[Lda;"
+   )
+   public static CacheFile[] field685;
+   @ObfuscatedName("r")
+   @Export("underlayIds")
+   static byte[][][] underlayIds;
 
    static {
       ImageIO.setUseCache(false);
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
-      garbageValue = "1376114429"
-   )
-   public static void method800(String var0, Throwable var1) {
-      var1.printStackTrace();
    }
 }

@@ -1,150 +1,37 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
-public enum class221 implements RSEnum {
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2824(0, 0),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2813(1, 0),
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2812(2, 0),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2815(3, 0),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2830(9, 2),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2817(4, 1),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2818(5, 1),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2819(6, 1),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2820(7, 1),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2821(8, 1),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2822(12, 2),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2823(13, 2),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2832(14, 2),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2814(15, 2),
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2835(16, 2),
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2827(17, 2),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2828(18, 2),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2829(19, 2),
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2836(20, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2825(21, 2),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2831(10, 2),
+@ObfuscatedName("hw")
+public class class221 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "(Ljava/lang/CharSequence;I)J",
+      garbageValue = "1074781321"
    )
-   field2826(11, 2),
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   field2834(22, 3);
+   static long method4087(CharSequence var0) {
+      long var1 = 0L;
+      int var3 = var0.length();
 
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 885315965
-   )
-   public final int field2816;
-   @ObfuscatedName("oh")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   static SpritePixels field2833;
+      for(int var4 = 0; var4 < var3; ++var4) {
+         var1 *= 37L;
+         char var5 = var0.charAt(var4);
+         if(var5 >= 65 && var5 <= 90) {
+            var1 += (long)(var5 + 1 - 65);
+         } else if(var5 >= 97 && var5 <= 122) {
+            var1 += (long)(var5 + 1 - 97);
+         } else if(var5 >= 48 && var5 <= 57) {
+            var1 += (long)(var5 + 27 - 48);
+         }
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   class221(int var3, int var4) {
-      this.field2816 = var3;
-   }
+         if(var1 >= 177917621779460413L) {
+            break;
+         }
+      }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1952293135"
-   )
-   public int rsOrdinal() {
-      return this.field2816;
+      while(var1 % 37L == 0L && var1 != 0L) {
+         var1 /= 37L;
+      }
+
+      return var1;
    }
 }

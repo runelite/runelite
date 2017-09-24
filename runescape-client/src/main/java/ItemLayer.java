@@ -4,71 +4,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("dv")
 @Implements("ItemLayer")
 public final class ItemLayer {
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lew;"
    )
    @Export("bottom")
    Renderable bottom;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1481402509
+      intValue = -1569125743
    )
    @Export("x")
    int x;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1679345499
+      intValue = 298893263
    )
    @Export("y")
    int y;
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2039712311
+      intValue = -435890039
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -2021271429
+      intValue = -712696633
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lew;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lef;"
+      signature = "Lew;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 396278729
+      intValue = -1801481297
    )
    @Export("height")
    int height;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BII)I",
-      garbageValue = "1414610843"
+      signature = "(S)V",
+      garbageValue = "6033"
    )
-   public static int method2394(byte[] var0, int var1) {
-      int var3 = -1;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
+   public static void method2412() {
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
    }
 }

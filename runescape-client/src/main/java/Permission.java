@@ -3,77 +3,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("ha")
 @Implements("Permission")
 public enum Permission implements RSEnum {
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
-   field3176(0, -1, true, false, true),
+   field3181(0, -1, true, false, true),
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
-   field3174(1, 0, true, true, true),
-   @ObfuscatedName("n")
+   field3175(1, 0, true, true, true),
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
    field3179(2, 1, true, true, false),
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
-   field3175(3, 2, false, false, true),
-   @ObfuscatedName("v")
+   field3177(3, 2, false, false, true),
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
-   field3177(4, 3, false, false, true),
-   @ObfuscatedName("e")
+   field3178(4, 3, false, false, true),
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhb;"
+      signature = "Lha;"
    )
-   field3180(5, 10, false, false, true);
+   field3174(5, 10, false, false, true);
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 79589525
+      intValue = -1092083065
    )
-   final int field3173;
-   @ObfuscatedName("s")
+   public final int field3176;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1913823705
+      intValue = -246974849
    )
-   public final int field3178;
-   @ObfuscatedName("w")
-   public final boolean field3181;
-   @ObfuscatedName("p")
+   final int field3180;
+   @ObfuscatedName("k")
    public final boolean field3182;
+   @ObfuscatedName("s")
+   public final boolean field3183;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3173 = var3;
-      this.field3178 = var4;
-      this.field3181 = var6;
-      this.field3182 = var7;
+      this.field3180 = var3;
+      this.field3176 = var4;
+      this.field3182 = var6;
+      this.field3183 = var7;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1952293135"
+      garbageValue = "959363303"
    )
    public int rsOrdinal() {
-      return this.field3173;
+      return this.field3180;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-1551289977"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "5"
    )
-   public static boolean method4073(char var0) {
-      return var0 >= 32 && var0 <= 126?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+   static final String method4124(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

@@ -1,54 +1,62 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iy")
+@ObfuscatedName("ih")
 public class class244 extends CacheableNode {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgp;"
    )
-   static NodeCache field3318;
-   @ObfuscatedName("a")
+   public static NodeCache field3315;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lii;"
    )
-   public static IndexDataBase field3320;
-   @ObfuscatedName("n")
-   public boolean field3321;
+   public static IndexDataBase field3317;
+   @ObfuscatedName("t")
+   static int[] field3318;
+   @ObfuscatedName("rc")
+   @ObfuscatedGetter(
+      intValue = 45619665
+   )
+   static int field3319;
+   @ObfuscatedName("a")
+   public boolean field3316;
 
    static {
-      field3318 = new NodeCache(64);
+      field3315 = new NodeCache(64);
    }
 
-   class244() {
-      this.field3321 = false;
+   public class244() {
+      this.field3316 = false;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfe;II)V",
-      garbageValue = "-712453"
+      signature = "(Lfp;II)V",
+      garbageValue = "-1789751322"
    )
-   void method4278(Buffer var1, int var2) {
+   void method4318(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3321 = true;
+         this.field3316 = true;
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfe;B)V",
-      garbageValue = "-1"
+      signature = "(Lfp;I)V",
+      garbageValue = "1883339833"
    )
-   void method4272(Buffer var1) {
+   public void method4316(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4278(var1, var2);
+         this.method4318(var1, var2);
       }
    }
 }

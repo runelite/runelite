@@ -33,10 +33,10 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.ClassUtil;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class AnnotationTest
 		// parse it again
 		cf = ClassUtil.loadClass(new ByteArrayInputStream(out));
 
-		Method method = cf.getMethods().getMethods().get(1);
+		Method method = cf.getMethods().get(1);
 		Assert.assertEquals("method1", method.getName());
 
 		Annotations annotations = method.getAnnotations();

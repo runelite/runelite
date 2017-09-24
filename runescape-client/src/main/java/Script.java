@@ -4,111 +4,154 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("ck")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgp;"
    )
-   static NodeCache field1530;
-   @ObfuscatedName("ib")
+   static NodeCache field1546;
+   @ObfuscatedName("ba")
    @ObfuscatedSignature(
-      signature = "Lbe;"
+      signature = "[Ljx;"
    )
-   @Export("localPlayer")
-   static Player localPlayer;
+   static IndexedSprite[] field1549;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Las;"
+   )
+   static class47 field1543;
    @ObfuscatedName("j")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1613300093
+      intValue = 1798142611
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1673906801
+      intValue = -1949922097
    )
    @Export("localStringCount")
    int localStringCount;
    @ObfuscatedName("r")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1732810093
+      intValue = -293602213
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 269316271
+      intValue = 506993195
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "[Lgl;"
+      signature = "[Lgi;"
    )
    @Export("switches")
-   class186[] switches;
+   IterableHashTable[] switches;
 
    static {
-      field1530 = new NodeCache(128);
+      field1546 = new NodeCache(128);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IB)[Lgl;",
-      garbageValue = "68"
+      signature = "(II)[Lgi;",
+      garbageValue = "-1230171328"
    )
-   class186[] method1837(int var1) {
-      return new class186[var1];
+   IterableHashTable[] method1857(int var1) {
+      return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILhx;I)I",
-      garbageValue = "-1532471377"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-617187399"
    )
-   public static int method1835(int var0, class219 var1) {
-      return (var0 + '鱀' << 8) + var1.field2801;
-   }
+   public static int method1861(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
 
-   @ObfuscatedName("jw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-337634088"
-   )
-   static final void method1831(String var0) {
-      if(var0 != null) {
-         String var1 = class202.method3682(var0, class164.field2317);
-         if(var1 != null) {
-            for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-               Ignore var3 = Client.ignores[var2];
-               String var4 = var3.name;
-               String var5 = class202.method3682(var4, class164.field2317);
-               if(class46.method713(var0, var1, var4, var5)) {
-                  --Client.ignoreCount;
-
-                  for(int var6 = var2; var6 < Client.ignoreCount; ++var6) {
-                     Client.ignores[var6] = Client.ignores[var6 + 1];
-                  }
-
-                  Client.field1099 = Client.cycleCntr;
-                  Client.secretPacketBuffer1.putOpcode(192);
-                  Client.secretPacketBuffer1.putByte(DecorativeObject.getLength(var0));
-                  Client.secretPacketBuffer1.putString(var0);
-                  break;
-               }
-            }
-
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
+         } else {
+            var2 += 3;
          }
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "(Lbg;B)V",
+      garbageValue = "48"
+   )
+   static final void method1860(Actor var0) {
+      if(var0.field1276 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1263 + 1 > class216.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+         int var1 = var0.field1276 - var0.field1275;
+         int var2 = Client.gameCycle - var0.field1275;
+         int var3 = var0.field1271 * 128 + var0.field1233 * 64;
+         int var4 = var0.field1233 * 64 + var0.field1229 * 128;
+         int var5 = var0.field1239 * 128 + var0.field1233 * 64;
+         int var6 = var0.field1233 * 64 + var0.field1274 * 128;
+         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
+         var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
+      }
+
+      var0.field1287 = 0;
+      var0.orientation = var0.field1277;
+      var0.angle = var0.orientation;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(CI)Z",
+      garbageValue = "209574792"
+   )
+   static final boolean method1859(char var0) {
+      if(Character.isISOControl(var0)) {
+         return false;
+      } else if(class44.method660(var0)) {
+         return true;
+      } else {
+         char[] var1 = class268.field3661;
+
+         int var2;
+         char var3;
+         for(var2 = 0; var2 < var1.length; ++var2) {
+            var3 = var1[var2];
+            if(var0 == var3) {
+               return true;
+            }
+         }
+
+         var1 = class268.field3662;
+
+         for(var2 = 0; var2 < var1.length; ++var2) {
+            var3 = var1[var2];
+            if(var0 == var3) {
+               return true;
+            }
+         }
+
+         return false;
       }
    }
 }

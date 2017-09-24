@@ -29,10 +29,10 @@ import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.signature.Type;
 import net.runelite.runeloader.inject.AddInterfaceInstruction;
 import net.runelite.runeloader.inject.GetterInjectInstruction;
 import net.runelite.runeloader.inject.InjectionModscript;
@@ -118,7 +118,7 @@ public class MappingImporter
 
 	private Field findFieldWithObfuscatedName(ClassFile c, String name)
 	{
-		for (Field f : c.getFields().getFields())
+		for (Field f : c.getFields())
 		{
 			Annotations an = f.getAnnotations();
 			if (this.hasObfuscatedName(an, name))

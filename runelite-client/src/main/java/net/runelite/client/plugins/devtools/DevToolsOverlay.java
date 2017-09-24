@@ -123,7 +123,7 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderPlayers(Graphics2D graphics)
 	{
-		Player[] players = client.getPlayers();
+		Player[] players = client.getCachedPlayers();
 		Player local = client.getLocalPlayer();
 
 		if (players != null && (players.length - 1) > 0)
@@ -148,7 +148,7 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderNpcs(Graphics2D graphics)
 	{
-		NPC[] npcs = client.getNpcs();
+		NPC[] npcs = client.getCachedNPCs();
 		if (npcs != null && (npcs.length - 1) > 0)
 		{
 			for (NPC npc : npcs)
@@ -252,6 +252,14 @@ public class DevToolsOverlay extends Overlay
 					{
 						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
+
+					// Draw a polygon around the convex hull
+					// of the model vertices
+					Polygon p = gameObject.getConvexHull();
+					if (p != null)
+					{
+						graphics.drawPolygon(p);
+					}
 				}
 			}
 		}
@@ -290,6 +298,12 @@ public class DevToolsOverlay extends Overlay
 			{
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
+
+			Polygon p = decorObject.getConvexHull();
+			if (p != null)
+			{
+				graphics.drawPolygon(p);
+			}
 		}
 	}
 
@@ -324,37 +338,15 @@ public class DevToolsOverlay extends Overlay
 
 	public void renderWidgets(Graphics2D graphics)
 	{
-		int parentID = plugin.getWidgetParent();
-		int childID = plugin.getWidgetChild();
-		int itemIndex = plugin.getWidgetItem();
+		Widget widget = plugin.currentWidget;
+		int itemIndex = plugin.itemIndex;
 
-		if (parentID == -1)
+		if (widget == null || widget.isHidden())
 		{
 			return;
 		}
 
-		Widget widgetParent = client.getWidget(parentID, 0);
-		if (widgetParent == null || widgetParent.isHidden())
-		{
-			return;
-		}
-
-		Rectangle parentBounds = widgetParent.getBounds();
-		graphics.setColor(YELLOW);
-		graphics.draw(parentBounds);
-
-		if (childID == -1)
-		{
-			return;
-		}
-
-		Widget widgetChild = client.getWidget(parentID, childID);
-		if (widgetChild == null || widgetChild.isHidden())
-		{
-			return;
-		}
-
-		Rectangle childBounds = widgetChild.getBounds();
+		Rectangle childBounds = widget.getBounds();
 		graphics.setColor(CYAN);
 		graphics.draw(childBounds);
 
@@ -363,21 +355,21 @@ public class DevToolsOverlay extends Overlay
 			return;
 		}
 
-		Widget childComponent = widgetChild.getChild(itemIndex);
-		if (childComponent != null && !childComponent.isHidden()
-			&& childComponent.getItemId() != ITEM_EMPTY
-			&& childComponent.getItemId() != ITEM_FILLED)
+		if (widget.getItemId() != ITEM_EMPTY
+			&& widget.getItemId() != ITEM_FILLED)
 		{
-			Rectangle componentBounds = childComponent.getBounds();
+			Rectangle componentBounds = widget.getBounds();
 
 			graphics.setColor(ORANGE);
 			graphics.draw(componentBounds);
 
-			renderWidgetText(graphics, componentBounds, childComponent.getItemId(), YELLOW);
+			renderWidgetText(graphics, componentBounds, widget.getItemId(), YELLOW);
 		}
 
-		WidgetItem widgetItem = widgetChild.getWidgetItem(itemIndex);
-		if (widgetItem == null)
+		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
+		if (widgetItem == null
+			|| widgetItem.getId() == ITEM_EMPTY
+			|| widgetItem.getId() == ITEM_FILLED)
 		{
 			return;
 		}

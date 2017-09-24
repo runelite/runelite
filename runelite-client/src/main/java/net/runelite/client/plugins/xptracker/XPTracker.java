@@ -36,7 +36,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.task.Schedule;
 
@@ -48,9 +47,29 @@ public class XPTracker extends Plugin
 	private final ClientUI ui = runeLite.getGui();
 	private final Client client = RuneLite.getClient();
 
-	private final NavigationButton navButton = new NavigationButton("XP Tracker");
-	private final XPPanel xpPanel = new XPPanel(runeLite, this);
+	private NavigationButton navButton;
+	private XPPanel xpPanel;
 	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		navButton = new NavigationButton("XP Tracker", () -> xpPanel);
+		xpPanel = new XPPanel(runeLite, this);
+
+		navButton.getButton().setText("XP");
+		ui.getPluginToolbar().addNavigation(navButton);
+
+		Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
+		font = font.deriveFont(Font.BOLD, 16);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		ge.registerFont(font);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
@@ -78,30 +97,6 @@ public class XPTracker extends Plugin
 			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill),
 				skill);
 		}
-	}
-
-	private void setPluginPanel(ActionEvent e)
-	{
-		ui.expand(xpPanel);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		navButton.getButton().addActionListener(this::setPluginPanel);
-
-		navButton.getButton().setText("XP");
-		ui.getNavigationPanel().addNavigation(navButton);
-
-		Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
-		font = font.deriveFont(Font.BOLD, 16);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(font);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
 	}
 
 	@Schedule(

@@ -27,56 +27,27 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-public abstract class TileObject
+public interface TileObject
 {
-	protected final Client client;
+	int getHash();
 
-	public TileObject(Client client)
-	{
-		this.client = client;
-	}
+	int getX();
 
-	protected abstract int getHash();
+	int getY();
 
-	protected abstract int getLocalX();
+	int getId();
 
-	protected abstract int getLocalY();
+	Point getWorldLocation();
 
-	public int getId()
-	{
-		int hash = getHash();
-		return hash >> 14 & 32767;
-	}
+	Point getLocalLocation();
 
-	public Point getWorldLocation()
-	{
-		Point localLocation = getLocalLocation();
-		return Perspective.localToWorld(client, localLocation);
-	}
+	Point getCanvasLocation();
 
-	public Point getLocalLocation()
-	{
-		return new Point(getLocalX(), getLocalY());
-	}
+	Polygon getCanvasTilePoly();
 
-	public Point getCanvasLocation()
-	{
-		Point locaLocation = getLocalLocation();
-		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
-	}
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
-	public Polygon getCanvasTilePoly()
-	{
-		return Perspective.getCanvasTilePoly(client, getLocalLocation());
-	}
+	Point getMinimapLocation();
 
-	public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset)
-	{
-		return Perspective.getCanvasTextLocation(client, graphics, getLocalLocation(), text, zOffset);
-	}
-
-	public Point getMinimapLocation()
-	{
-		return Perspective.worldToMiniMap(client, getLocalX(), getLocalY());
-	}
+	Polygon getConvexHull(Model model, int orientation);
 }

@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -52,7 +53,7 @@ public class D2F extends Instruction implements ConversionInstruction
 		
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, float.class, value.getValue().cast(float.class));
+		StackContext ctx = new StackContext(ins, Type.FLOAT, value.getValue().cast(float.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -40,10 +40,11 @@ public class HiscoreClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(HiscoreClient.class);
 
-	public HiscoreResult lookup(String username) throws IOException
+	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
 		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
+			.addPathSegment(endpoint.name().toLowerCase())
 			.addQueryParameter("username", username);
 
 		HttpUrl url = builder.build();
@@ -65,5 +66,44 @@ public class HiscoreClient
 		{
 			throw new IOException(ex);
 		}
+	}
+
+	public HiscoreResult lookup(String username) throws IOException
+	{
+		return lookup(username, HiscoreEndpoint.NORMAL);
+	}
+
+	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
+	{
+		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+				.addPathSegment("hiscore")
+				.addPathSegment(endpoint.name())
+				.addPathSegment(skill.toString().toLowerCase())
+				.addQueryParameter("username", username);
+
+		HttpUrl url = builder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill) throws IOException
+	{
+		return lookup(username, skill, HiscoreEndpoint.NORMAL);
 	}
 }

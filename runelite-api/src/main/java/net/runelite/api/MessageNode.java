@@ -24,32 +24,13 @@
  */
 package net.runelite.api;
 
-public class MessageNode
+public interface MessageNode
 {
-	private final net.runelite.rs.api.MessageNode messageNode;
+	ChatMessageType getType();
 
-	public MessageNode(net.runelite.rs.api.MessageNode messageNode)
-	{
-		this.messageNode = messageNode;
-	}
+	String getSender();
 
-	public ChatMessageType getType()
-	{
-		return ChatMessageType.of(messageNode.getType());
-	}
+	String getValue();
 
-	public String getSender()
-	{
-		return messageNode.getSender();
-	}
-
-	public String getValue()
-	{
-		return messageNode.getValue();
-	}
-
-	public void setValue(String value)
-	{
-		messageNode.setValue(value);
-	}
+	void setValue(String value);
 }

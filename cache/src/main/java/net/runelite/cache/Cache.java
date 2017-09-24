@@ -26,7 +26,10 @@ package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.fs.jagex.DiskStorage;
+import net.runelite.cache.fs.tree.TreeStorage;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -76,9 +79,15 @@ public class Cache
 
 			System.out.print("Packing tree from " + tree + " to " + cache + "...");
 
-			Store treeBase = new Store(new File(cache));
-			treeBase.loadTree(new File(tree));
-			treeBase.save();
+			File cacheDir = new File(cache),
+				treeDir = new File(tree);
+
+			Storage from = new TreeStorage(treeDir);
+			Storage to = new DiskStorage(cacheDir);
+
+			Store store = new Store(from);
+			store.load();
+			to.save(store);
 
 			System.out.println(" done!");
 			return;
@@ -96,7 +105,8 @@ public class Cache
 			Store treeBase = new Store(new File(cache));
 			treeBase.load();
 
-			treeBase.saveTree(new File(tree));
+			TreeStorage storage = new TreeStorage(new File(tree));
+			storage.save(treeBase);
 
 			System.out.println(" done!");
 			return;
@@ -173,8 +183,9 @@ public class Cache
 	{
 		if (cache == null)
 		{
-			Store store = new Store(new File(tree));
-			store.loadTree(new File(tree));
+			Storage storage = new TreeStorage(new File(tree));
+			Store store = new Store(storage);
+			store.load();
 			return store;
 		}
 		else

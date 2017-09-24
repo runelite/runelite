@@ -25,283 +25,60 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.Node;
 import net.runelite.api.Point;
-import net.runelite.api.WidgetNode;
-import net.runelite.api.XHashTable;
 
-public class Widget
+public interface Widget
 {
-	private static final int ITEM_SLOT_SIZE = 32;
+	int getId();
 
-	private final Client client;
-	private final net.runelite.rs.api.Widget widget;
+	int getType();
 
-	public Widget(Client client, net.runelite.rs.api.Widget widget)
-	{
-		this.client = client;
-		this.widget = widget;
-	}
+	int getContentType();
 
-	public int getId()
-	{
-		return widget.getId();
-	}
+	Widget getParent();
 
-	public int getType()
-	{
-		return widget.getType();
-	}
+	int getParentId();
 
-	public int getContentType()
-	{
-		return widget.getContentType();
-	}
+	Widget getChild(int index);
 
-	public Widget getParent()
-	{
-		int id = getParentId();
-		if (id == -1)
-		{
-			return null;
-		}
+	Widget[] getDynamicChildren();
 
-		return client.getWidget(id >>> 16, id & 0xFFFF);
-	}
+	Widget[] getStaticChildren();
 
-	public int getParentId()
-	{
-		int parentId = widget.getParentId();
-		if (parentId != -1)
-		{
-			return parentId;
-		}
+	Widget[] getNestedChildren();
 
-		int i = getId() >>> 16;
-		XHashTable componentTable = client.getComponentTable();
-		for (Node node : componentTable.getNodes())
-		{
-			WidgetNode wn = (WidgetNode) node;
+	int getRelativeX();
 
-			if (i == wn.getId())
-			{
-				return (int) wn.getHash();
-			}
-		}
+	int getRelativeY();
 
-		return -1;
-	}
+	String getText();
 
-	private int getRelativeX()
-	{
-		return widget.getRelativeX();
-	}
+	void setText(String text);
 
-	private int getRelativeY()
-	{
-		return widget.getRelativeY();
-	}
+	int getTextColor();
 
-	public String getText()
-	{
-		return widget.getText().replace('\u00A0', ' ');
-	}
+	String getName();
 
-	public void setText(String text)
-	{
-		widget.setText(text);
-	}
+	int getModelId();
 
-	public int getTextColor()
-	{
-		return widget.getTextColor();
-	}
+	int getSpriteId();
 
-	public String getName()
-	{
-		return widget.getName().replace('\u00A0', ' ');
-	}
+	boolean isHidden();
 
-	public int getModelId()
-	{
-		return widget.getModelId();
-	}
+	Point getCanvasLocation();
 
-	public int getSpriteId()
-	{
-		return widget.getSpriteId();
-	}
+	int getWidth();
 
-	public boolean isHidden()
-	{
-		Widget parent = getParent();
-		return (parent != null && parent.isHidden()) || widget.isHidden();
-	}
+	int getHeight();
 
-	public Point getCanvasLocation()
-	{
-		int x = 0;
-		int y = 0;
-		Widget cur;
+	Rectangle getBounds();
 
-		for (cur = this; cur.getParent() != null; cur = cur.getParent())
-		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
+	Collection<WidgetItem> getWidgetItems();
 
-			x -= cur.widget.getScrollX();
-			y -= cur.widget.getScrollY();
-		}
+	WidgetItem getWidgetItem(int index);
 
-		// cur is now the root
-		int[] widgetBoundsWidth = client.getWidgetPositionsX();
-		int[] widgetBoundsHeight = client.getWidgetPositionsY();
+	int getItemId();
 
-		int boundsIndex = cur.widget.getBoundsIndex();
-		if (boundsIndex != -1)
-		{
-			x += widgetBoundsWidth[boundsIndex];
-			y += widgetBoundsHeight[boundsIndex];
-
-			if (cur.getType() > 0)
-			{
-				x += cur.getRelativeX();
-				y += cur.getRelativeY();
-			}
-		}
-		else
-		{
-			x += cur.getRelativeX();
-			y += cur.getRelativeY();
-		}
-
-		return new Point(x, y);
-	}
-
-	public int getWidth()
-	{
-		return widget.getWidth();
-	}
-
-	public int getHeight()
-	{
-		return widget.getHeight();
-	}
-
-	public Rectangle getBounds()
-	{
-		Point canvasLocation = getCanvasLocation();
-		return new Rectangle(canvasLocation.getX(), canvasLocation.getY(), getWidth(), getHeight());
-	}
-
-	public Collection<WidgetItem> getWidgetItems()
-	{
-		int[] itemIds = widget.getItemIds();
-
-		if (itemIds == null)
-		{
-			return null;
-		}
-
-		List<WidgetItem> items = new ArrayList<>(itemIds.length);
-
-		for (int i = 0; i < itemIds.length; ++i)
-		{
-			WidgetItem item = getWidgetItem(i);
-
-			if (item != null)
-			{
-				items.add(item);
-			}
-		}
-
-		return items;
-	}
-
-	public WidgetItem getWidgetItem(int index)
-	{
-		int[] itemIds = widget.getItemIds();
-		int[] itemQuantities = widget.getItemQuantities();
-
-		if (itemIds == null || itemQuantities == null)
-		{
-			return null;
-		}
-
-		int columns = getWidth(); // the number of item slot columns is stored here
-		int paddingX = getPaddingX();
-		int paddingY = getPaddingY();
-		int itemId = itemIds[index];
-		int itemQuantity = itemQuantities[index];
-
-		Point widgetCanvasLocation = getCanvasLocation();
-
-		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
-		{
-			return null;
-		}
-
-		int row = index / columns;
-		int col = index % columns;
-		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
-		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
-
-		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
-	}
-
-	private int getPaddingX()
-	{
-		return widget.getPaddingX();
-	}
-
-	private int getPaddingY()
-	{
-		return widget.getPaddingY();
-	}
-
-	public Widget[] getChildren()
-	{
-		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
-
-		if (widgets == null)
-		{
-			return null;
-		}
-
-		Widget[] children = new Widget[widgets.length];
-
-		for (int i = 0; i < widgets.length; ++i)
-		{
-			children[i] = getChild(i);
-		}
-
-		return children;
-	}
-
-	public Widget getChild(int index)
-	{
-		net.runelite.rs.api.Widget[] widgets = widget.getChildren();
-
-		if (widgets == null || widgets[index] == null)
-		{
-			return null;
-		}
-
-		return new Widget(client, widgets[index]);
-	}
-
-	public int getItemId()
-	{
-		return widget.getItemId();
-	}
-
-	public int getItemQuantity()
-	{
-		return widget.getItemQuantity();
-	}
+	int getItemQuantity();
 }

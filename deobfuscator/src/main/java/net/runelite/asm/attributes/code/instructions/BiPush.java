@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -54,6 +55,12 @@ public class BiPush extends Instruction implements PushConstantInstruction, IntI
 	}
 
 	@Override
+	public String toString()
+	{
+		return "bipush " + b;
+	}
+
+	@Override
 	public void accept(MethodVisitor visitor)
 	{
 		visitor.visitIntInsn(this.getType().getCode(), b);
@@ -65,7 +72,7 @@ public class BiPush extends Instruction implements PushConstantInstruction, IntI
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, int.class, new Value((int) b)); // bipush sign extends the value to an int
+		StackContext ctx = new StackContext(ins, Type.INT, new Value((int) b)); // bipush sign extends the value to an int
 		stack.push(ctx);
 		
 		ins.push(ctx);

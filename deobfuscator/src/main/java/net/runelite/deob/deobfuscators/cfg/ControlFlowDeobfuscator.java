@@ -58,7 +58,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				if (code == null)
@@ -90,7 +90,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
 				if (code == null)
@@ -115,13 +115,14 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		Instructions ins = code.getInstructions();
 		Exceptions exceptions = code.getExceptions();
 
-		ControlFlowGraph graph = ControlFlowGraph.build(code);
+		ControlFlowGraph graph = new ControlFlowGraph.Builder().build(code);
 
 		List<Exception> exc = new ArrayList<>(exceptions.getExceptions());
 
 		exceptions.clear(); // Must clear this before ins.clear() runs
 		ins.clear();
 
+		// insert jumps where blocks flow into others
 		for (Block block : graph.getBlocks())
 		{
 			if (block.getFlowsInto() == null)
@@ -153,6 +154,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 			++insertedJump;
 		}
 
+		// Readd instructions from modified blocks
 		for (Block block : graph.getBlocks())
 		{
 			for (Instruction i : block.getInstructions())
@@ -207,7 +209,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		Instructions ins = code.getInstructions();
 		Exceptions exceptions = code.getExceptions();
 
-		ControlFlowGraph graph = ControlFlowGraph.build(code);
+		ControlFlowGraph graph = new ControlFlowGraph.Builder().build(code);
 
 		for (Block block : graph.getBlocks())
 		{
@@ -290,8 +292,6 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		// Now all blocks have been placed, build new exception ranges
 		for (Block cur : done)
 		{
-			// labels are always at the beginning of blocks
-			assert cur.getInstructions().get(0) instanceof Label;
 			assert cur.getExceptions() != null;
 
 			// find exceptions to create
@@ -299,6 +299,10 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 			for (ExceptionHandler ex : cur.getExceptions())
 			{
 				Exception ex2 = new Exception(exceptions);
+
+				// if block is covered by an exception handler,
+				// it must begin with a label.
+				assert cur.getInstructions().get(0) instanceof Label;
 
 				ex2.setStart((Label) cur.getInstructions().get(0));
 				ex2.setHandler(ex.getHandler());

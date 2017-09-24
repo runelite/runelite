@@ -27,6 +27,7 @@ package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -35,7 +36,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
 import org.objectweb.asm.MethodVisitor;
@@ -59,7 +59,7 @@ public class New extends Instruction implements TypeInstruction
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitTypeInsn(this.getType().getCode(), this.getType_().getFullType());
+		visitor.visitTypeInsn(this.getType().getCode(), this.getType_().getInternalName());
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class New extends Instruction implements TypeInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, new Type(clazz.getName()), Value.UNKNOWN);
+		StackContext ctx = new StackContext(ins, Type.getType(clazz), Value.UNKNOWN);
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -90,7 +90,7 @@ public class New extends Instruction implements TypeInstruction
 	@Override
 	public void lookup()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		myClass = group.findClass(clazz.getName());
 	}
 	
@@ -102,14 +102,14 @@ public class New extends Instruction implements TypeInstruction
 	}
 
 	@Override
-	public net.runelite.asm.signature.Type getType_()
+	public Type getType_()
 	{
-		return new net.runelite.asm.signature.Type(clazz.getName());
+		return Type.getType(clazz);
 	}
 
 	@Override
-	public void setType(net.runelite.asm.signature.Type type)
+	public void setType(Type type)
 	{
-		clazz = new Class(type.getFullType());
+		clazz = new Class(type.getInternalName());
 	}
 }

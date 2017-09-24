@@ -26,9 +26,9 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import net.runelite.api.widgets.Widget;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
@@ -39,8 +39,8 @@ import net.runelite.client.ui.overlay.Overlay;
 public class DevTools extends Plugin
 {
 	private final DevToolsOverlay overlay = new DevToolsOverlay(this);
-	private final DevToolsPanel panel = new DevToolsPanel(this);
-	private final NavigationButton navButton = new NavigationButton("DevTools");
+	private DevToolsPanel panel;
+	private NavigationButton navButton;
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
 
 	private boolean togglePlayers;
@@ -52,21 +52,21 @@ public class DevTools extends Plugin
 	private boolean toggleDecor;
 	private boolean toggleInventory;
 
-	private int widgetParent = -1;
-	private int widgetChild = -1;
-	private int widgetItem = -1;
+	Widget currentWidget;
+	int itemIndex = -1;
 
 	private Font font;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		navButton.getButton().addActionListener(this::setPluginPanel);
+		panel = new DevToolsPanel(this);
+		navButton = new NavigationButton("DevTools", () -> panel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
 		navButton.getButton().setIcon(icon);
 
-		ui.getNavigationPanel().addNavigation(navButton);
+		ui.getPluginToolbar().addNavigation(navButton);
 
 		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
 
@@ -84,11 +84,6 @@ public class DevTools extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	private void setPluginPanel(ActionEvent e)
-	{
-		ui.expand(panel);
 	}
 
 	Font getFont()
@@ -174,36 +169,6 @@ public class DevTools extends Plugin
 	boolean isToggleInventory()
 	{
 		return toggleInventory;
-	}
-
-	void setWidgetParent(int id)
-	{
-		widgetParent = id;
-	}
-
-	void setWidgetChild(int id)
-	{
-		widgetChild = id;
-	}
-
-	void setWidgetItem(int id)
-	{
-		widgetItem = id;
-	}
-
-	int getWidgetParent()
-	{
-		return widgetParent;
-	}
-
-	int getWidgetChild()
-	{
-		return widgetChild;
-	}
-
-	int getWidgetItem()
-	{
-		return widgetItem;
 	}
 
 }

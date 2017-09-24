@@ -26,6 +26,7 @@ package net.runelite.deob.deobfuscators;
 
 import java.util.Optional;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -33,9 +34,8 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.IAdd;
-import net.runelite.asm.attributes.code.instructions.IConst_2;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Return;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.ClassGroupFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,10 +57,10 @@ public class CastNullTest
 
 		Instruction[] instructions =
 		{
-			new IConst_2(ins),
+			new LDC(ins, 2),
 			new AConstNull(ins),
 			checkCast,
-			new IConst_2(ins),
+			new LDC(ins, 2),
 			new IAdd(ins),
 			new Return(ins, InstructionType.IRETURN)
 		};

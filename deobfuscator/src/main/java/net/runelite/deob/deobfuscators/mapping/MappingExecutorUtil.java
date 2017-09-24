@@ -30,6 +30,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.asm.attributes.code.instruction.types.ConversionInstruction;
@@ -47,14 +48,13 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 
 public class MappingExecutorUtil
 {	
 	public static ParallelExecutorMapping map(Method m1, Method m2)
 	{
-		ClassGroup group1 = m1.getMethods().getClassFile().getGroup();
-		ClassGroup group2 = m2.getMethods().getClassFile().getGroup();
+		ClassGroup group1 = m1.getClassFile().getGroup();
+		ClassGroup group2 = m2.getClassFile().getGroup();
 
 		Execution e = new Execution(group1);
 		e.step = true;
@@ -72,8 +72,8 @@ public class MappingExecutorUtil
 		frame2.other = frame;
 		
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
-		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getMethods().getClassFile().getGroup(),
-			m2.getMethods().getClassFile().getGroup());
+		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getClassFile().getGroup(),
+			m2.getClassFile().getGroup());
 		
 		mappings.m1 = m1;
 		mappings.m2 = m2;
@@ -133,10 +133,11 @@ public class MappingExecutorUtil
 		if (!(i instanceof InvokeStatic))
 			return false;
 
+		ClassGroup group = i.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		InvokeStatic is = (InvokeStatic) i;
 		net.runelite.asm.pool.Method m = is.getMethod();
 
-		return m.getClazz().getName().contains("/") == false; // hack to find my classes
+		return group.findClass(m.getClazz().getName()) != null;
 	}
 	
 	public static InstructionContext resolve(
@@ -204,7 +205,7 @@ public class MappingExecutorUtil
 					int paramIndex = 0;
 					for (int lvtIndex = 0 /* static */;
 						paramIndex < sig.size();
-						lvtIndex += sig.getTypeOfArg(paramIndex++).getSlots())
+						lvtIndex += sig.getTypeOfArg(paramIndex++).getSize())
 						if (lvtIndex == lvt.getVariableIndex())
 							break;
 					assert paramIndex < sig.size();
@@ -232,8 +233,14 @@ public class MappingExecutorUtil
 
 	public static boolean isMaybeEqual(Type t1, Type t2)
 	{
-		if (t1.getArrayDims() != t2.getArrayDims())
+		if (t1.getDimensions() != t2.getDimensions())
 			return false;
+
+		while (t1.getDimensions() > 0)
+		{
+			t1 = t1.getSubtype();
+			t2 = t2.getSubtype();
+		}
 
 		if (t1.isPrimitive() || t2.isPrimitive())
 			return t1.equals(t2);

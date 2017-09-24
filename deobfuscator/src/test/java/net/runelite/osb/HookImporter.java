@@ -35,11 +35,11 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.JarUtil;
 import net.runelite.osb.inject.ClassHook;
 import net.runelite.osb.inject.FieldHook;
@@ -227,7 +227,7 @@ public class HookImporter
 
 	private Field findFieldWithObfuscatedName(ClassFile c, String name)
 	{
-		for (Field f : c.getFields().getFields())
+		for (Field f : c.getFields())
 		{
 			Annotations an = f.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
@@ -242,7 +242,7 @@ public class HookImporter
 	{
 		Signature sig = new Signature(signature);
 
-		for (Method m : c.getMethods().getMethods())
+		for (Method m : c.getMethods())
 		{
 			Annotations an = m.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
@@ -305,19 +305,17 @@ public class HookImporter
 			return t;
 		}
 
-		if (!t.isObfuscatedType() && !t.getType().equals("client"))
+		if (!t.getInternalName().startsWith("class") && !t.getInternalName().equals("client"))
 		{
 			return t;
 		}
 
-		String className = t.getType();
-		className = className.substring(1, className.length() - 1); // remove L ;
-		ClassFile cf = group.findClass(className);
+		ClassFile cf = group.findClass(t.getInternalName());
 		assert cf != null;
 
 		Annotations an = cf.getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
-		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
+		return Type.getType("L" + obfuscatedName + ";", t.getDimensions());
 	}
 
 	private Signature toObSignature(Signature s)

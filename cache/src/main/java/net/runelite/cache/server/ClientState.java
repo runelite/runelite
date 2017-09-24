@@ -27,6 +27,5 @@ package net.runelite.cache.server;
 public enum ClientState
 {
 	HANDSHAKING,
-	CONNECTING,
 	CONNECTED
 }

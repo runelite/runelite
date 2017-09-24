@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class ClassMapper
@@ -47,7 +47,7 @@ public class ClassMapper
 	
 	private List<Integer> fieldCardinalities(ClassFile cf)
 	{
-		List<Type> t = cf.getFields().getFields().stream()
+		List<Type> t = cf.getFields().stream()
 			.filter(f -> !f.isStatic())
 			.map(f -> f.getType())
 			.collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class ClassMapper
 	
 	private List<Integer> methodCardinalities(ClassFile cf)
 	{
-		List<Signature> t = cf.getMethods().getMethods().stream()
+		List<Signature> t = cf.getMethods().stream()
 			.filter(m -> !m.isStatic())
 			.filter(m -> !m.getName().startsWith("<"))
 			.map(m -> m.getDescriptor())

@@ -33,6 +33,7 @@ import javax.sound.midi.Sequencer;
 import net.runelite.cache.definitions.TrackDefinition;
 import net.runelite.cache.definitions.loaders.TrackLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Djb2Manager;
@@ -88,7 +89,7 @@ public class TrackDumperTest
 	{
 		assert archive.getFiles().size() == 1;
 
-		net.runelite.cache.fs.File file = archive.getFiles().get(0);
+		FSFile file = archive.getFiles().get(0);
 
 		TrackLoader loader = new TrackLoader();
 		TrackDefinition def = loader.load(file.getContents());

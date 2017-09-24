@@ -2,44 +2,53 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
-public class class201 implements Iterable {
-   @ObfuscatedName("a")
+@ObfuscatedName("ge")
+public class class201 implements Iterator {
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgj;"
    )
-   public CacheableNode field2484;
-
-   public class201() {
-      this.field2484 = new CacheableNode();
-      this.field2484.previous = this.field2484;
-      this.field2484.next = this.field2484;
-   }
-
-   @ObfuscatedName("a")
-   public void method3670() {
-      while(this.field2484.previous != this.field2484) {
-         this.field2484.previous.unlinkDual();
-      }
-
-   }
-
+   class202 field2491;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lgn;)V"
+      signature = "Lgo;"
    )
-   public void method3674(CacheableNode var1) {
-      if(var1.next != null) {
-         var1.unlinkDual();
-      }
+   CacheableNode field2490;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   CacheableNode field2489;
 
-      var1.next = this.field2484.next;
-      var1.previous = this.field2484;
-      var1.next.previous = var1;
-      var1.previous.next = var1;
+   @ObfuscatedSignature(
+      signature = "(Lgj;)V"
+   )
+   class201(class202 var1) {
+      this.field2489 = null;
+      this.field2491 = var1;
+      this.field2490 = this.field2491.field2492.previous;
+      this.field2489 = null;
    }
 
-   public Iterator iterator() {
-      return new class200(this);
+   public Object next() {
+      CacheableNode var1 = this.field2490;
+      if(var1 == this.field2491.field2492) {
+         var1 = null;
+         this.field2490 = null;
+      } else {
+         this.field2490 = var1.previous;
+      }
+
+      this.field2489 = var1;
+      return var1;
+   }
+
+   public boolean hasNext() {
+      return this.field2491.field2492 != this.field2490;
+   }
+
+   public void remove() {
+      this.field2489.unlinkDual();
+      this.field2489 = null;
    }
 }

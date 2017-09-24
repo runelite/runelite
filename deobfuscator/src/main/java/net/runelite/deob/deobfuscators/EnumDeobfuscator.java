@@ -31,18 +31,17 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
-import net.runelite.asm.attributes.code.instructions.ALoad_1;
-import net.runelite.asm.attributes.code.instructions.ILoad_2;
+import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.signature.Signature;
-import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +85,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		}
 
 		// number of non static methods should be 1
-		long count = cf.getMethods().getMethods()
+		long count = cf.getMethods()
 			.stream()
 			.filter(m -> !m.isStatic())
 			.filter(m -> !m.getName().startsWith("<"))
@@ -103,12 +102,12 @@ public class EnumDeobfuscator implements Deobfuscator
 	{
 		assert cf.isInterface();
 
-		if (cf.getMethods().getMethods().size() != 1)
+		if (cf.getMethods().size() != 1)
 		{
 			return false;
 		}
 
-		Method method = cf.getMethods().getMethods().get(0);
+		Method method = cf.getMethods().get(0);
 		return method.getDescriptor().toString().equals("()I"); // ordinal
 	}
 
@@ -121,7 +120,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		cf.setSuperName("java/lang/Enum");
 
 		// all static fields of the type of the class become enum members
-		for (Field field : cf.getFields().getFields())
+		for (Field field : cf.getFields())
 		{
 			if (field.isStatic() && field.getType().equals(new Type("L" + cf.getName() + ";")))
 			{
@@ -129,7 +128,7 @@ public class EnumDeobfuscator implements Deobfuscator
 			}
 		}
 
-		for (Method method : cf.getMethods().getMethods())
+		for (Method method : cf.getMethods())
 		{
 			if (!method.getName().equals("<init>"))
 			{
@@ -157,9 +156,9 @@ public class EnumDeobfuscator implements Deobfuscator
 			}
 			while (i.getType() != InstructionType.INVOKESPECIAL);
 
-			ins.addInstruction(0, new ALoad_0(ins)); // load this
-			ins.addInstruction(1, new ALoad_1(ins)); // load constant name
-			ins.addInstruction(2, new ILoad_2(ins)); // ordinal
+			ins.addInstruction(0, new ALoad(ins, 0)); // load this
+			ins.addInstruction(1, new ALoad(ins, 1)); // load constant name
+			ins.addInstruction(2, new ILoad(ins, 2)); // ordinal
 			ins.addInstruction(3, new InvokeSpecial(ins, ENUM_INIT)); // invoke enum constructor
 
 			// Shift all indexes after this up +2 because of the new String and int argument
@@ -183,7 +182,7 @@ public class EnumDeobfuscator implements Deobfuscator
 		// the enum fields are actually in
 		List<Field> order = new ArrayList<>();
 
-		for (Method method : cf.getMethods().getMethods())
+		for (Method method : cf.getMethods())
 		{
 			if (!method.getName().equals("<clinit>"))
 			{
@@ -203,8 +202,8 @@ public class EnumDeobfuscator implements Deobfuscator
 				if (i.getType() == InstructionType.DUP && !seenDup)
 				{
 					// XXX this should actually be the field name, but it seems to have no effect on fernflower
-					ins.addInstruction(j + 1, new LDC_W(ins, "runelite"));
-					ins.addInstruction(j + 2, new LDC_W(ins, count++));
+					ins.addInstruction(j + 1, new LDC(ins, "runelite"));
+					ins.addInstruction(j + 2, new LDC(ins, count++));
 					seenDup = true;
 				}
 				else if (i.getType() == InstructionType.INVOKESPECIAL)
@@ -242,7 +241,7 @@ public class EnumDeobfuscator implements Deobfuscator
 
 		// Enum fields must be first. Also they are in order in clinit.
 		// Sort fields
-		Collections.sort(cf.getFields().getFields(), (f1, f2) ->
+		Collections.sort(cf.getFields(), (f1, f2) ->
 		{
 			int idx1 = order.indexOf(f1);
 			int idx2 = order.indexOf(f2);

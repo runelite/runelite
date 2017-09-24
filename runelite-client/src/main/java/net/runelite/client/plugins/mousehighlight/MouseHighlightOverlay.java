@@ -66,7 +66,7 @@ class MouseHighlightOverlay extends Overlay
 
 		String[] targets = client.getMenuTargets();
 		String[] options = client.getMenuOptions();
-		int count = client.getMenuCount() - 1;
+		int count = client.getMenuOptionCount() - 1;
 
 		if (count < 0 || count >= targets.length || count >= options.length)
 		{

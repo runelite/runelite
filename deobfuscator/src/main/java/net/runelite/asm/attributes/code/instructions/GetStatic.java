@@ -34,7 +34,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
@@ -70,7 +69,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		visitor.visitFieldInsn(this.getType().getCode(),
 			field.getClazz().getName(),
 			field.getName(),
-			field.getType().getFullType()
+			field.getType().toString()
 		);
 	}
 
@@ -80,7 +79,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 
-		StackContext ctx = new StackContext(ins, new Type(field.getType()), Value.UNKNOWN);
+		StackContext ctx = new StackContext(ins, field.getType(), Value.UNKNOWN);
 		stack.push(ctx);
 
 		ins.push(ctx);
@@ -104,7 +103,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	{
 		Class clazz = field.getClazz();
 
-		ClassFile cf = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup().findClass(clazz.getName());
+		ClassFile cf = this.getInstructions().getCode().getMethod().getClassFile().getGroup().findClass(clazz.getName());
 		if (cf == null)
 		{
 			return null;

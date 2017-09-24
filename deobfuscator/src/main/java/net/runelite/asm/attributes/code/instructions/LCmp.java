@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Field;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -53,31 +53,37 @@ public class LCmp extends Instruction implements MappableInstruction
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext two = stack.pop();
 		StackContext one = stack.pop();
-		
+
 		ins.pop(two, one);
-		
+
 		Value result = Value.UNKNOWN;
 		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			long l2 = (long) two.getValue().getValue(),
 				l1 = (long) one.getValue().getValue();
-		
+
 			if (l1 > l2)
+			{
 				result = new Value(1);
+			}
 			else if (l1 == l2)
+			{
 				result = new Value(0);
+			}
 			else if (l1 < l2)
+			{
 				result = new Value(-1);
+			}
 		}
-		
-		StackContext ctx = new StackContext(ins, int.class, result);
+
+		StackContext ctx = new StackContext(ins, Type.INT, result);
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
 
@@ -87,7 +93,9 @@ public class LCmp extends Instruction implements MappableInstruction
 		List<Field> f1s = getComparedFields(ctx), f2s = getComparedFields(other);
 
 		if (f1s == null || f2s == null || f1s.size() != f2s.size())
+		{
 			return;
+		}
 
 		for (int i = 0; i < f1s.size(); ++i)
 		{
@@ -110,7 +118,9 @@ public class LCmp extends Instruction implements MappableInstruction
 				GetFieldInstruction gfi = (GetFieldInstruction) base.getInstruction();
 
 				if (gfi.getMyField() != null)
+				{
 					fields.add(gfi.getMyField());
+				}
 			}
 		}
 
@@ -120,19 +130,39 @@ public class LCmp extends Instruction implements MappableInstruction
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		List<Field> f1s = getComparedFields(thisIc), f2s = getComparedFields(otherIc);
-
-		if (f1s == null || f2s == null || f1s.size() != f2s.size())
+		if (thisIc.getInstruction().getType() != otherIc.getInstruction().getType())
+		{
 			return false;
+		}
+
+		List<Field> f1s = getComparedFields(thisIc),
+			f2s = getComparedFields(otherIc);
+
+		if ((f1s == null) != (f2s == null))
+		{
+			return false;
+		}
+
+		if (f1s == null || f2s == null)
+		{
+			return true;
+		}
+
+		if (f1s.size() != f2s.size())
+		{
+			return false;
+		}
 
 		for (int i = 0; i < f1s.size(); ++i)
 		{
 			Field f1 = f1s.get(i), f2 = f2s.get(i);
 
-			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile())
 				|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType())
 				|| f1.isStatic() != f2.isStatic())
+			{
 				return false;
+			}
 		}
 
 		return true;

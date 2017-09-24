@@ -43,6 +43,11 @@ public class Instructions
 
 	public Label createLabelFor(Instruction target)
 	{
+		return createLabelFor(target, false);
+	}
+
+	public Label createLabelFor(Instruction target, boolean forceCreate)
+	{
 		assert target.getInstructions() == this;
 		assert instructions.contains(target);
 
@@ -56,7 +61,7 @@ public class Instructions
 		{
 			Instruction before = instructions.get(i - 1);
 
-			if (before instanceof Label)
+			if (!forceCreate && before instanceof Label)
 			{
 				return (Label) before;
 			}

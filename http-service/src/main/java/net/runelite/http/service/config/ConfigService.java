@@ -24,18 +24,28 @@
  */
 package net.runelite.http.service.config;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
+import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
-import spark.Request;
-import spark.Response;
 
+@RestController
+@RequestMapping("/config")
 public class ConfigService
 {
 	private static final String CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS `config` (\n"
@@ -49,15 +59,17 @@ public class ConfigService
 		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
 
 	private final Sql2o sql2o;
+	private final AuthFilter auth;
 
-	@Inject
-	public ConfigService(@Named("Runelite SQL2O") Sql2o sql2o)
+	@Autowired
+	public ConfigService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		AuthFilter auth
+	)
 	{
 		this.sql2o = sql2o;
-	}
+		this.auth = auth;
 
-	public void init()
-	{
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery(CREATE_CONFIG)
@@ -75,9 +87,15 @@ public class ConfigService
 		}
 	}
 
-	public Configuration get(Request request, Response response)
+	@RequestMapping
+	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		SessionEntry session = request.session().attribute("session");
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return null;
+		}
 
 		List<ConfigEntry> config;
 
@@ -88,38 +106,54 @@ public class ConfigService
 				.executeAndFetch(ConfigEntry.class);
 		}
 
-		response.type("application/json");
 		return new Configuration(config);
 	}
 
-	public Object setKey(Request request, Response response)
+	@RequestMapping(path = "/{key}", method = PUT)
+	public void setKey(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@PathVariable String key,
+		@RequestBody String value
+	) throws IOException
 	{
-		SessionEntry session = request.session().attribute("session");
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
 
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update value = :value")
 				.addParameter("user", session.getUser())
-				.addParameter("key", request.params("key"))
-				.addParameter("value", request.body())
+				.addParameter("key", key)
+				.addParameter("value", value)
 				.executeUpdate();
 		}
-
-		return "";
 	}
 
-	public Object unsetKey(Request request, Response response)
+	@RequestMapping(path = "/{key}", method = DELETE)
+	public void unsetKey(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@PathVariable String key
+	) throws IOException
 	{
-		SessionEntry session = request.session().attribute("session");
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
 
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery("delete from config where user = :user and `key` = :key")
 				.addParameter("user", session.getUser())
-				.addParameter("key", request.params("key"))
+				.addParameter("key", key)
 				.executeUpdate();
 		}
-
-		return "";
 	}
 }

@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
@@ -41,14 +43,27 @@ public class RunecraftOverlay extends Overlay
 {
 	private final Client client = RuneLite.getClient();
 
-	public RunecraftOverlay()
+	private final RunecraftConfig config;
+	private final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
+	private final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
+	private final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
+
+	public RunecraftOverlay(Runecraft plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.config = plugin.getConfig();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN
+				|| !config.showPouch()
+				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return null;
+		}
+
 		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
 		if (inventoryWidget == null || inventoryWidget.isHidden())
@@ -66,12 +81,15 @@ public class RunecraftOverlay extends Overlay
 					varbits = Varbits.POUCH_SMALL;
 					break;
 				case ItemID.MEDIUM_POUCH:
+				case MEDIUM_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_MEDIUM;
 					break;
 				case ItemID.LARGE_POUCH:
+				case LARGE_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_LARGE;
 					break;
 				case ItemID.GIANT_POUCH:
+				case GIANT_POUCH_DAMAGED:
 					varbits = Varbits.POUCH_GIANT;
 					break;
 				default:
@@ -82,6 +100,10 @@ public class RunecraftOverlay extends Overlay
 			if (location != null)
 			{
 				int value = client.getSetting(varbits);
+				graphics.setColor(Color.black);
+				graphics.drawString("" + value, location.getX() + 1, location.getY() + graphics.getFontMetrics().getHeight() + 1);
+
+				graphics.setColor(Color.white);
 				graphics.drawString("" + value, location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
 			}
 		}

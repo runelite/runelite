@@ -261,7 +261,7 @@ public class Instructions
 		add(3301, 2, 0);
 		add(3302, 2, 1);
 		add(3303, 2, 1);
-		add(3304, 1, 1);
+		add(Opcodes.GET_INVENTORY_SIZE, "get_inventory_size", 1, 1);
 		add(Opcodes.GET_BOOSTEDSKILLLEVELS, "get_boostedskilllevels", 1, 1);
 		add(Opcodes.GET_REALSKILLLEVELS, "get_realskilllevels", 1, 1);
 		add(Opcodes.GET_SKILLEXPERIENCES, "get_skillexperiences", 1, 1);
@@ -402,7 +402,7 @@ public class Instructions
 		add(5017, 1, 1);
 		add(5018, 1, 1);
 		add(5019, 1, 1);
-		add(5020, 0, 0, 1, 0);
+		add(Opcodes.RUN_COMMAND, "run_command", 0, 0, 1, 0);
 		add(5021, 0, 0, 1, 0);
 		add(5022, 0, 0, 0, 1);
 		// 5100-5400

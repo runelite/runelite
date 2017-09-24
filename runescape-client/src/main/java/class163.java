@@ -1,165 +1,248 @@
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("fs")
-public abstract class class163 {
-   @ObfuscatedName("ed")
-   @ObfuscatedGetter(
-      intValue = -71304227
-   )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("gt")
-   @ObfuscatedSignature(
-      signature = "[Ljt;"
-   )
-   @Export("mapDots")
-   static SpritePixels[] mapDots;
+@ObfuscatedName("fr")
+public class class163 {
    @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -2129602153
-   )
-   public int field2308;
+   static int[][] field2307;
+   @ObfuscatedName("r")
+   static int[][] field2310;
+   @ObfuscatedName("b")
+   static int[] field2306;
+   @ObfuscatedName("k")
+   static int[] field2312;
+
+   static {
+      field2307 = new int[128][128];
+      field2310 = new int[128][128];
+      field2306 = new int[4096];
+      field2312 = new int[4096];
+   }
+
    @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 539123419
-   )
-   public int field2311;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1831966495
-   )
-   public int field2307;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 309432097
-   )
-   public int field2306;
-
-   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIILfv;I)Z",
-      garbageValue = "1809467862"
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldc;",
+      garbageValue = "309792936"
    )
-   public abstract boolean vmethod3052(int var1, int var2, int var3, CollisionData var4);
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lfe;II)V",
-      garbageValue = "-1653646613"
-   )
-   @Export("decodeClassVerifier")
-   public static void decodeClassVerifier(Buffer var0, int var1) {
-      ClassInfo var2 = new ClassInfo();
-      var2.count = var0.readUnsignedByte();
-      var2.field3745 = var0.readInt();
-      var2.type = new int[var2.count];
-      var2.errorIdentifiers = new int[var2.count];
-      var2.fields = new Field[var2.count];
-      var2.fieldValues = new int[var2.count];
-      var2.methods = new Method[var2.count];
-      var2.args = new byte[var2.count][][];
-
-      for(int var3 = 0; var3 < var2.count; ++var3) {
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
+      File var3 = new File(class46.field612, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
          try {
-            int var4 = var0.readUnsignedByte();
-            String var5;
-            String var6;
-            int var7;
-            if(var4 != 0 && var4 != 1 && var4 != 2) {
-               if(var4 == 3 || var4 == 4) {
-                  var5 = var0.readString();
-                  var6 = var0.readString();
-                  var7 = var0.readUnsignedByte();
-                  String[] var8 = new String[var7];
-
-                  for(int var9 = 0; var9 < var7; ++var9) {
-                     var8[var9] = var0.readString();
-                  }
-
-                  String var20 = var0.readString();
-                  byte[][] var10 = new byte[var7][];
-                  int var12;
-                  if(var4 == 3) {
-                     for(int var11 = 0; var11 < var7; ++var11) {
-                        var12 = var0.readInt();
-                        var10[var11] = new byte[var12];
-                        var0.readBytes(var10[var11], 0, var12);
-                     }
-                  }
-
-                  var2.type[var3] = var4;
-                  Class[] var21 = new Class[var7];
-
-                  for(var12 = 0; var12 < var7; ++var12) {
-                     var21[var12] = class82.method1585(var8[var12]);
-                  }
-
-                  Class var22 = class82.method1585(var20);
-                  if(class82.method1585(var5).getClassLoader() == null) {
-                     throw new SecurityException();
-                  }
-
-                  Method[] var13 = class82.method1585(var5).getDeclaredMethods();
-                  Method[] var14 = var13;
-
-                  for(int var15 = 0; var15 < var14.length; ++var15) {
-                     Method var16 = var14[var15];
-                     if(Reflection.getMethodName(var16).equals(var6)) {
-                        Class[] var17 = Reflection.getParameterTypes(var16);
-                        if(var21.length == var17.length) {
-                           boolean var18 = true;
-
-                           for(int var19 = 0; var19 < var21.length; ++var19) {
-                              if(var17[var19] != var21[var19]) {
-                                 var18 = false;
-                                 break;
-                              }
-                           }
-
-                           if(var18 && var22 == var16.getReturnType()) {
-                              var2.methods[var3] = var16;
-                           }
-                        }
-                     }
-                  }
-
-                  var2.args[var3] = var10;
-               }
-            } else {
-               var5 = var0.readString();
-               var6 = var0.readString();
-               var7 = 0;
-               if(var4 == 1) {
-                  var7 = var0.readInt();
-               }
-
-               var2.type[var3] = var4;
-               var2.fieldValues[var3] = var7;
-               if(class82.method1585(var5).getClassLoader() == null) {
-                  throw new SecurityException();
-               }
-
-               var2.fields[var3] = Reflection.findField(class82.method1585(var5), var6);
-            }
-         } catch (ClassNotFoundException var24) {
-            var2.errorIdentifiers[var3] = -1;
-         } catch (SecurityException var25) {
-            var2.errorIdentifiers[var3] = -2;
-         } catch (NullPointerException var26) {
-            var2.errorIdentifiers[var3] = -3;
-         } catch (Exception var27) {
-            var2.errorIdentifiers[var3] = -4;
-         } catch (Throwable var28) {
-            var2.errorIdentifiers[var3] = -5;
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
          }
       }
 
-      class280.field3753.method3563(var2);
+      String var4 = "";
+      if(class39.field551 == 33) {
+         var4 = "_rc";
+      } else if(class39.field551 == 34) {
+         var4 = "_wip";
+      }
+
+      File var5 = new File(class156.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
+         }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ILck;ZB)I",
+      garbageValue = "18"
+   )
+   static int method3143(int var0, Script var1, boolean var2) {
+      if(var0 == 3300) {
+         class82.intStack[++Ignore.intStackSize - 1] = Client.gameCycle;
+         return 1;
+      } else {
+         int var3;
+         int var4;
+         int[] var5;
+         int var6;
+         int var7;
+         ItemContainer var8;
+         if(var0 == 3301) {
+            Ignore.intStackSize -= 2;
+            var3 = class82.intStack[Ignore.intStackSize];
+            var4 = class82.intStack[Ignore.intStackSize + 1];
+            var5 = class82.intStack;
+            var6 = ++Ignore.intStackSize - 1;
+            var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
+            if(var8 == null) {
+               var7 = -1;
+            } else if(var4 >= 0 && var4 < var8.itemIds.length) {
+               var7 = var8.itemIds[var4];
+            } else {
+               var7 = -1;
+            }
+
+            var5[var6] = var7;
+            return 1;
+         } else if(var0 == 3302) {
+            Ignore.intStackSize -= 2;
+            var3 = class82.intStack[Ignore.intStackSize];
+            var4 = class82.intStack[Ignore.intStackSize + 1];
+            class82.intStack[++Ignore.intStackSize - 1] = class17.method131(var3, var4);
+            return 1;
+         } else if(var0 == 3303) {
+            Ignore.intStackSize -= 2;
+            var3 = class82.intStack[Ignore.intStackSize];
+            var4 = class82.intStack[Ignore.intStackSize + 1];
+            class82.intStack[++Ignore.intStackSize - 1] = class88.method1715(var3, var4);
+            return 1;
+         } else {
+            int var10;
+            if(var0 == 3304) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               int[] var9 = class82.intStack;
+               var10 = ++Ignore.intStackSize - 1;
+               InvType var11 = (InvType)InvType.inventoryCache.get((long)var3);
+               InvType var12;
+               if(var11 != null) {
+                  var12 = var11;
+               } else {
+                  byte[] var13 = InvType.field3284.getConfigData(5, var3);
+                  var11 = new InvType();
+                  if(var13 != null) {
+                     var11.decode(new Buffer(var13));
+                  }
+
+                  InvType.inventoryCache.put(var11, (long)var3);
+                  var12 = var11;
+               }
+
+               var9[var10] = var12.size;
+               return 1;
+            } else if(var0 == 3305) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = Client.boostedSkillLevels[var3];
+               return 1;
+            } else if(var0 == 3306) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = Client.realSkillLevels[var3];
+               return 1;
+            } else if(var0 == 3307) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = Client.skillExperiences[var3];
+               return 1;
+            } else if(var0 == 3308) {
+               var3 = class27.plane;
+               var4 = (Player.localPlayer.x >> 7) + class149.baseX;
+               var10 = (Player.localPlayer.y >> 7) + class67.baseY;
+               class82.intStack[++Ignore.intStackSize - 1] = (var4 << 14) + var10 + (var3 << 28);
+               return 1;
+            } else if(var0 == 3309) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = var3 >> 14 & 16383;
+               return 1;
+            } else if(var0 == 3310) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = var3 >> 28;
+               return 1;
+            } else if(var0 == 3311) {
+               var3 = class82.intStack[--Ignore.intStackSize];
+               class82.intStack[++Ignore.intStackSize - 1] = var3 & 16383;
+               return 1;
+            } else if(var0 == 3312) {
+               class82.intStack[++Ignore.intStackSize - 1] = Client.isMembers?1:0;
+               return 1;
+            } else if(var0 != 3313) {
+               if(var0 == 3314) {
+                  Ignore.intStackSize -= 2;
+                  var3 = class82.intStack[Ignore.intStackSize] + '耀';
+                  var4 = class82.intStack[Ignore.intStackSize + 1];
+                  class82.intStack[++Ignore.intStackSize - 1] = class17.method131(var3, var4);
+                  return 1;
+               } else if(var0 == 3315) {
+                  Ignore.intStackSize -= 2;
+                  var3 = class82.intStack[Ignore.intStackSize] + '耀';
+                  var4 = class82.intStack[Ignore.intStackSize + 1];
+                  class82.intStack[++Ignore.intStackSize - 1] = class88.method1715(var3, var4);
+                  return 1;
+               } else if(var0 == 3316) {
+                  if(Client.rights >= 2) {
+                     class82.intStack[++Ignore.intStackSize - 1] = Client.rights;
+                  } else {
+                     class82.intStack[++Ignore.intStackSize - 1] = 0;
+                  }
+
+                  return 1;
+               } else if(var0 == 3317) {
+                  class82.intStack[++Ignore.intStackSize - 1] = Client.field1059;
+                  return 1;
+               } else if(var0 == 3318) {
+                  class82.intStack[++Ignore.intStackSize - 1] = Client.world;
+                  return 1;
+               } else if(var0 == 3321) {
+                  class82.intStack[++Ignore.intStackSize - 1] = Client.energy;
+                  return 1;
+               } else if(var0 == 3322) {
+                  class82.intStack[++Ignore.intStackSize - 1] = Client.weight;
+                  return 1;
+               } else if(var0 == 3323) {
+                  if(Client.field952) {
+                     class82.intStack[++Ignore.intStackSize - 1] = 1;
+                  } else {
+                     class82.intStack[++Ignore.intStackSize - 1] = 0;
+                  }
+
+                  return 1;
+               } else if(var0 == 3324) {
+                  class82.intStack[++Ignore.intStackSize - 1] = Client.flags;
+                  return 1;
+               } else if(var0 == 3325) {
+                  Ignore.intStackSize -= 4;
+                  var3 = class82.intStack[Ignore.intStackSize];
+                  var4 = class82.intStack[Ignore.intStackSize + 1];
+                  var10 = class82.intStack[Ignore.intStackSize + 2];
+                  var6 = class82.intStack[Ignore.intStackSize + 3];
+                  var3 += var4 << 14;
+                  var3 += var10 << 28;
+                  var3 += var6;
+                  class82.intStack[++Ignore.intStackSize - 1] = var3;
+                  return 1;
+               } else {
+                  return 2;
+               }
+            } else {
+               Ignore.intStackSize -= 2;
+               var3 = class82.intStack[Ignore.intStackSize] + '耀';
+               var4 = class82.intStack[Ignore.intStackSize + 1];
+               var5 = class82.intStack;
+               var6 = ++Ignore.intStackSize - 1;
+               var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
+               if(var8 == null) {
+                  var7 = -1;
+               } else if(var4 >= 0 && var4 < var8.itemIds.length) {
+                  var7 = var8.itemIds[var4];
+               } else {
+                  var7 = -1;
+               }
+
+               var5[var6] = var7;
+               return 1;
+            }
+         }
+      }
    }
 }

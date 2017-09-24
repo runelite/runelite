@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -52,7 +53,7 @@ public class AConstNull extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, Object.class, Value.NULL);
+		StackContext ctx = new StackContext(ins, Type.OBJECT, Value.NULL);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -4,30 +4,32 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ea")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("a")
+   @ObfuscatedName("b")
+   static byte[][][] field2018;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1493288071
+      intValue = 861799345
    )
    @Export("x")
    int x;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 768970437
+      intValue = -1237027645
    )
    @Export("y")
    int y;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 484112089
+      intValue = 1002998349
    )
    @Export("z")
    int z;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 64441025
+      intValue = 1480682103
    )
    @Export("magnitude")
    int magnitude;
@@ -36,7 +38,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Leq;)V"
+      signature = "(Lea;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -45,27 +47,101 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("in")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIII)V",
-      garbageValue = "572386918"
+      signature = "(II)V",
+      garbageValue = "320726178"
    )
-   @Export("drawWidget")
-   static final void drawWidget(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if(class33.loadWidget(var0)) {
-         class203.field2508 = null;
-         Frames.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(class203.field2508 != null) {
-            Frames.gameDraw(class203.field2508, -1412584499, var1, var2, var3, var4, Ignore.field846, class45.field579, var7);
-            class203.field2508 = null;
+   static void method2613(int var0) {
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var1 != null) {
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
          }
 
-      } else {
-         if(var7 != -1) {
-            Client.field1111[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field1111[var8] = true;
+      }
+   }
+
+   @ObfuscatedName("ih")
+   @ObfuscatedSignature(
+      signature = "(Lhx;III)V",
+      garbageValue = "-1661113368"
+   )
+   static final void method2614(Widget var0, int var1, int var2) {
+      if(Client.field1111 == null && !Client.isMenuOpen) {
+         if(var0 != null) {
+            Widget var5 = var0;
+            int var6 = Actor.method1537(Coordinates.getWidgetConfig(var0));
+            Widget var4;
+            int var7;
+            if(var6 == 0) {
+               var4 = null;
+            } else {
+               var7 = 0;
+
+               while(true) {
+                  if(var7 >= var6) {
+                     var4 = var5;
+                     break;
+                  }
+
+                  var5 = GZipDecompressor.method3177(var5.parentId);
+                  if(var5 == null) {
+                     var4 = null;
+                     break;
+                  }
+
+                  ++var7;
+               }
+            }
+
+            Widget var8 = var4;
+            if(var4 == null) {
+               var8 = var0.dragParent;
+            }
+
+            if(var8 != null) {
+               Client.field1111 = var0;
+               var5 = var0;
+               var6 = Actor.method1537(Coordinates.getWidgetConfig(var0));
+               if(var6 == 0) {
+                  var4 = null;
+               } else {
+                  var7 = 0;
+
+                  while(true) {
+                     if(var7 >= var6) {
+                        var4 = var5;
+                        break;
+                     }
+
+                     var5 = GZipDecompressor.method3177(var5.parentId);
+                     if(var5 == null) {
+                        var4 = null;
+                        break;
+                     }
+
+                     ++var7;
+                  }
+               }
+
+               var8 = var4;
+               if(var4 == null) {
+                  var8 = var0.dragParent;
+               }
+
+               Client.field1045 = var8;
+               Client.field1106 = var1;
+               Client.field1107 = var2;
+               class54.field682 = 0;
+               Client.field1115 = false;
+               int var9 = class51.method817();
+               if(var9 != -1) {
+                  class34.method514(var9);
+               }
+
+               return;
             }
          }
 

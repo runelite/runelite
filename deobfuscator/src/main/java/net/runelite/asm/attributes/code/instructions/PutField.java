@@ -73,7 +73,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		visitor.visitFieldInsn(this.getType().getCode(),
 			field.getClazz().getName(),
 			field.getName(),
-			field.getType().getFullType());
+			field.getType().toString());
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 	{
 		Class clazz = field.getClazz();
 
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getClassFile().getGroup();
 		ClassFile cf = group.findClass(clazz.getName());
 		if (cf == null)
 		{
@@ -215,7 +215,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 			return false;
 		}
 
-		if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+		if (!MappingExecutorUtil.isMaybeEqual(f1.getClassFile(), f2.getClassFile())
 			|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType()))
 		{
 			return false;

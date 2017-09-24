@@ -27,6 +27,7 @@ package net.runelite.cache;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import net.runelite.cache.definitions.TextureDefinition;
@@ -49,7 +50,7 @@ public class TextureDumper
 	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
+		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
 
 		int count = 0;
@@ -63,7 +64,7 @@ public class TextureDumper
 
 			for (TextureDefinition texture : tm.getTextures())
 			{
-				Files.write(gson.toJson(texture), new java.io.File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(texture), new File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

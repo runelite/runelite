@@ -41,7 +41,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.NavigationPanel;
+import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
@@ -55,14 +55,18 @@ public class AccountPlugin extends Plugin
 
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final ClientUI ui = runelite.getGui();
-	private final NavigationButton loginButton = new NavigationButton("Login");
-	private final NavigationButton logoutButton = new NavigationButton("Logout");
+
+	private NavigationButton loginButton;
+	private NavigationButton logoutButton;
 
 	private final AccountClient loginClient = new AccountClient();
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		loginButton = new NavigationButton("Login");
+		logoutButton = new NavigationButton("Logout");
+
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
 		loginButton.getButton().setIcon(icon);
 
@@ -72,7 +76,7 @@ public class AccountPlugin extends Plugin
 		loginButton.getButton().addActionListener(this::loginClick);
 		logoutButton.getButton().addActionListener(this::logoutClick);
 
-		ui.getNavigationPanel().addNavigation(loginButton);
+		ui.getPluginToolbar().addNavigation(loginButton);
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public class AccountPlugin extends Plugin
 		runelite.deleteSession(); // delete saved session file
 
 		// Replace logout nav button with login
-		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(logoutButton);
 		navigationPanel.addNavigation(loginButton);
 	}
@@ -163,7 +167,6 @@ public class AccountPlugin extends Plugin
 	{
 		logger.debug("Now logged in as {}", loginResponse.getUsername());
 
-		//runelite.getGui().setTitle("RuneLite (" + loginResponse.getUsername() + ")");
 		AccountSession session = runelite.getAccountSession();
 		session.setUsername(loginResponse.getUsername());
 
@@ -187,7 +190,7 @@ public class AccountPlugin extends Plugin
 
 		logger.debug("Session opened as {}", session.getUsername());
 
-		runelite.getGui().setTitle("RuneLite (" + session.getUsername() + ")");
+		runelite.setTitle("(" + session.getUsername() + ")");
 
 		replaceLoginWithLogout();
 	}
@@ -195,7 +198,7 @@ public class AccountPlugin extends Plugin
 	private void replaceLoginWithLogout()
 	{
 		// Replace login nav button with logout
-		NavigationPanel navigationPanel = ui.getNavigationPanel();
+		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(loginButton);
 		navigationPanel.addNavigation(logoutButton);
 	}
@@ -203,7 +206,7 @@ public class AccountPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
-		runelite.getGui().setTitle("RuneLite");
+		runelite.setTitle(null);
 	}
 
 }

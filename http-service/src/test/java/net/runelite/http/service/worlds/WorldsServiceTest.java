@@ -34,7 +34,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import spark.utils.IOUtils;
+import org.sql2o.tools.IOUtils;
 
 public class WorldsServiceTest
 {

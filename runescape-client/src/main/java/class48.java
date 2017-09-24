@@ -1,218 +1,442 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ay")
+@ObfuscatedName("ap")
 public class class48 implements WorldMapSectionBase {
-   @ObfuscatedName("u")
+   @ObfuscatedName("ki")
    @ObfuscatedSignature(
-      signature = "Lfu;"
+      signature = "Lhx;"
    )
-   @Export("timer")
-   static Timer timer;
-   @ObfuscatedName("cd")
+   static Widget field629;
+   @ObfuscatedName("ix")
    @ObfuscatedGetter(
-      longValue = 5150890726337518591L
+      intValue = 130502055
    )
-   static long field608;
-   @ObfuscatedName("hp")
+   static int field626;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -362606635
+      intValue = 1718948249
    )
-   static int field605;
-   @ObfuscatedName("a")
+   int field630;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -251057171
+      intValue = 1140831587
    )
-   int field601;
-   @ObfuscatedName("v")
+   int field622;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1201511355
+      intValue = 516108485
    )
-   int field598;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 285699377
-   )
-   int field602;
+   int field632;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 679265661
+      intValue = -568275821
    )
-   int field595;
+   int field619;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 2025062643
+   )
+   int field620;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 1556846705
+   )
+   int field624;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 2128091289
+      intValue = 214105443
    )
-   int field596;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1261408413
-   )
-   int field600;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 929332967
-   )
-   int field604;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1417995219
-   )
-   int field603;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 505385021
-   )
-   int field599;
+   int field623;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 382408053
+      intValue = 2140769619
    )
-   int field609;
+   int field627;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1064731839
+   )
+   int field621;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1485934049
+   )
+   int field625;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-2141582860"
+      signature = "(IIB)Z",
+      garbageValue = "59"
    )
-   public boolean vmethod722(int var1, int var2) {
-      return var1 >= (this.field598 << 6) + (this.field602 << 3) && var1 <= (this.field598 << 6) + (this.field602 << 3) + 7 && var2 >= (this.field604 << 6) + (this.field603 << 3) && var2 <= (this.field604 << 6) + (this.field603 << 3) + 7;
+   public boolean vmethod747(int var1, int var2) {
+      return var1 >= (this.field622 << 6) + (this.field632 << 3) && var1 <= (this.field622 << 6) + (this.field632 << 3) + 7 && var2 >= (this.field623 << 6) + (this.field627 << 3) && var2 <= (this.field623 << 6) + (this.field627 << 3) + 7;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "-1671303044"
+      garbageValue = "1746025354"
    )
-   public boolean vmethod721(int var1, int var2, int var3) {
-      return var1 >= this.field601 && var1 < this.field601 + this.field595?var2 >= (this.field596 << 6) + (this.field600 << 3) && var2 <= (this.field596 << 6) + (this.field600 << 3) + 7 && var3 >= (this.field599 << 6) + (this.field609 << 3) && var3 <= (this.field599 << 6) + (this.field609 << 3) + 7:false;
+   public boolean vmethod746(int var1, int var2, int var3) {
+      return var1 >= this.field630 && var1 < this.field619 + this.field630?var2 >= (this.field620 << 6) + (this.field624 << 3) && var2 <= (this.field620 << 6) + (this.field624 << 3) + 7 && var3 >= (this.field621 << 6) + (this.field625 << 3) && var3 <= (this.field621 << 6) + (this.field625 << 3) + 7:false;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Lam;I)V",
-      garbageValue = "-1824757307"
+      garbageValue = "2013920575"
    )
-   public void vmethod720(WorldMapData var1) {
-      if(var1.field447 > this.field598) {
-         var1.field447 = this.field598;
+   public void vmethod745(WorldMapData var1) {
+      if(var1.field462 > this.field622) {
+         var1.field462 = this.field622;
       }
 
-      if(var1.field448 < this.field598) {
-         var1.field448 = this.field598;
+      if(var1.field468 < this.field622) {
+         var1.field468 = this.field622;
       }
 
-      if(var1.field441 > this.field604) {
-         var1.field441 = this.field604;
+      if(var1.field456 > this.field623) {
+         var1.field456 = this.field623;
       }
 
-      if(var1.field450 < this.field604) {
-         var1.field450 = this.field604;
+      if(var1.field465 < this.field623) {
+         var1.field465 = this.field623;
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)Lhd;",
-      garbageValue = "665140774"
+      signature = "(III)Lhs;",
+      garbageValue = "1278074658"
    )
-   public Coordinates vmethod743(int var1, int var2) {
-      if(!this.vmethod722(var1, var2)) {
+   public Coordinates vmethod771(int var1, int var2) {
+      if(!this.vmethod747(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field600 * 8 - this.field602 * 8 + this.field596 * 64 - this.field598 * 64 + var1;
-         int var4 = this.field609 * 8 - this.field603 * 8 + this.field599 * 64 - this.field604 * 64 + var2;
-         return new Coordinates(this.field601, var3, var4);
+         int var3 = this.field624 * 8 - this.field632 * 8 + this.field620 * 64 - this.field622 * 64 + var1;
+         int var4 = this.field621 * 64 - this.field623 * 64 + var2 + (this.field625 * 8 - this.field627 * 8);
+         return new Coordinates(this.field630, var3, var4);
       }
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIB)[I",
-      garbageValue = "13"
+      signature = "(IIII)[I",
+      garbageValue = "1584803853"
    )
-   public int[] vmethod731(int var1, int var2, int var3) {
-      if(!this.vmethod721(var1, var2, var3)) {
+   public int[] vmethod757(int var1, int var2, int var3) {
+      if(!this.vmethod746(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field602 * 8 - this.field600 * 8 + this.field598 * 64 - this.field596 * 64 + var2, this.field603 * 8 - this.field609 * 8 + this.field604 * 64 - this.field599 * 64 + var3};
+         int[] var4 = new int[]{this.field622 * 64 - this.field620 * 64 + var2 + (this.field632 * 8 - this.field624 * 8), var3 + (this.field623 * 64 - this.field621 * 64) + (this.field627 * 8 - this.field625 * 8)};
          return var4;
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-1909314997"
+      signature = "(Lfp;I)V",
+      garbageValue = "-1644047401"
    )
-   public void vmethod746(Buffer var1) {
-      this.field601 = var1.readUnsignedByte();
-      this.field595 = var1.readUnsignedByte();
-      this.field596 = var1.readUnsignedShort();
-      this.field600 = var1.readUnsignedByte();
-      this.field599 = var1.readUnsignedShort();
-      this.field609 = var1.readUnsignedByte();
-      this.field598 = var1.readUnsignedShort();
-      this.field602 = var1.readUnsignedByte();
-      this.field604 = var1.readUnsignedShort();
-      this.field603 = var1.readUnsignedByte();
-      this.method724();
+   public void vmethod751(Buffer var1) {
+      this.field630 = var1.readUnsignedByte();
+      this.field619 = var1.readUnsignedByte();
+      this.field620 = var1.readUnsignedShort();
+      this.field624 = var1.readUnsignedByte();
+      this.field621 = var1.readUnsignedShort();
+      this.field625 = var1.readUnsignedByte();
+      this.field622 = var1.readUnsignedShort();
+      this.field632 = var1.readUnsignedByte();
+      this.field623 = var1.readUnsignedShort();
+      this.field627 = var1.readUnsignedByte();
+      this.method752();
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1606776473"
+      garbageValue = "152533182"
    )
-   void method724() {
+   void method752() {
    }
 
-   @ObfuscatedName("ir")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lhy;B)V",
-      garbageValue = "-94"
+      signature = "(II)Lil;",
+      garbageValue = "-1791412752"
    )
-   static void method749(Widget var0) {
-      if(var0.loopCycle == Client.field1110) {
-         Client.field1111[var0.boundsIndex] = true;
-      }
-
-   }
-
-   @ObfuscatedName("gp")
-   @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "-1175012851"
-   )
-   static final void method750(int var0, int var1, int var2) {
-      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = Actor.getTileHeight(var0, var1, class45.plane) - var2;
-         var0 -= class41.cameraX;
-         var3 -= XItemContainer.cameraZ;
-         var1 -= class7.cameraY;
-         int var4 = Graphics3D.SINE[class8.cameraPitch];
-         int var5 = Graphics3D.COSINE[class8.cameraPitch];
-         int var6 = Graphics3D.SINE[Friend.cameraYaw];
-         int var7 = Graphics3D.COSINE[Friend.cameraYaw];
-         int var8 = var6 * var1 + var0 * var7 >> 16;
-         var1 = var7 * var1 - var0 * var6 >> 16;
-         var0 = var8;
-         var8 = var3 * var5 - var4 * var1 >> 16;
-         var1 = var5 * var1 + var3 * var4 >> 16;
-         if(var1 >= 50) {
-            Client.screenY = Client.scale * var0 / var1 + Client.viewportHeight / 2;
-            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
-         } else {
-            Client.screenY = -1;
-            Client.screenX = -1;
+   public static class252 method774(int var0) {
+      class252 var1 = (class252)class252.field3389.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class252.field3388.getConfigData(11, var0);
+         var1 = new class252();
+         if(var2 != null) {
+            var1.method4442(new Buffer(var2));
          }
 
-      } else {
-         Client.screenY = -1;
-         Client.screenX = -1;
+         var1.method4441();
+         class252.field3389.put(var1, (long)var0);
+         return var1;
       }
+   }
+
+   @ObfuscatedName("gc")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2034101455"
+   )
+   static final void method753() {
+      for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
+         if(var0.floor == class27.plane && Client.gameCycle <= var0.cycle) {
+            if(Client.gameCycle >= var0.startTime) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.method1768(var1.x, var1.y, class227.getTileHeight(var1.x, var1.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = Player.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
+
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.method1768(var3.x, var3.y, class227.getTileHeight(var3.x, var3.y, var0.floor) - var0.endHeight, Client.gameCycle);
+                  }
+               }
+
+               var0.method1770(Client.field1007);
+               ScriptState.region.method2877(class27.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+            }
+         } else {
+            var0.unlink();
+         }
+      }
+
+   }
+
+   @ObfuscatedName("hn")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "944998697"
+   )
+   static final void method775(int var0, int var1, int var2, int var3) {
+      if(Client.itemSelectionState == 0 && !Client.spellSelected) {
+         class36.addMenuEntry("Walk here", "", 23, 0, var0 - var2, var1 - var3);
+      }
+
+      int var4 = -1;
+      int var5 = -1;
+
+      int var6;
+      int var7;
+      for(var6 = 0; var6 < class133.field2009; ++var6) {
+         var7 = class133.field2003[var6];
+         int var8 = var7 & 127;
+         int var9 = var7 >> 7 & 127;
+         int var10 = var7 >> 29 & 3;
+         int var11 = var7 >> 14 & 32767;
+         if(var7 != var5) {
+            var5 = var7;
+            if(var10 == 2 && ScriptState.region.method2741(class27.plane, var8, var9, var7) >= 0) {
+               ObjectComposition var12 = GameObject.getObjectDefinition(var11);
+               if(var12.impostorIds != null) {
+                  var12 = var12.getImpostor();
+               }
+
+               if(var12 == null) {
+                  continue;
+               }
+
+               if(Client.itemSelectionState == 1) {
+                  class36.addMenuEntry("Use", Client.field1085 + " " + "->" + " " + Friend.getColTags('\uffff') + var12.name, 1, var7, var8, var9);
+               } else if(Client.spellSelected) {
+                  if((class67.field845 & 4) == 4) {
+                     class36.addMenuEntry(Client.field1089, Client.field1090 + " " + "->" + " " + Friend.getColTags('\uffff') + var12.name, 2, var7, var8, var9);
+                  }
+               } else {
+                  String[] var13 = var12.actions;
+                  if(Client.field1102) {
+                     var13 = class171.method3220(var13);
+                  }
+
+                  if(var13 != null) {
+                     for(int var14 = 4; var14 >= 0; --var14) {
+                        if(var13[var14] != null) {
+                           short var15 = 0;
+                           if(var14 == 0) {
+                              var15 = 3;
+                           }
+
+                           if(var14 == 1) {
+                              var15 = 4;
+                           }
+
+                           if(var14 == 2) {
+                              var15 = 5;
+                           }
+
+                           if(var14 == 3) {
+                              var15 = 6;
+                           }
+
+                           if(var14 == 4) {
+                              var15 = 1001;
+                           }
+
+                           class36.addMenuEntry(var13[var14], Friend.getColTags('\uffff') + var12.name, var15, var7, var8, var9);
+                        }
+                     }
+                  }
+
+                  class36.addMenuEntry("Examine", Friend.getColTags('\uffff') + var12.name, 1002, var12.id << 14, var8, var9);
+               }
+            }
+
+            Player var16;
+            int var19;
+            NPC var20;
+            int var27;
+            int[] var28;
+            if(var10 == 1) {
+               NPC var23 = Client.cachedNPCs[var11];
+               if(var23 == null) {
+                  continue;
+               }
+
+               if(var23.composition.field3574 == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
+                  for(var19 = 0; var19 < Client.field946; ++var19) {
+                     var20 = Client.cachedNPCs[Client.npcIndices[var19]];
+                     if(var20 != null && var20 != var23 && var20.composition.field3574 == 1 && var23.x == var20.x && var20.y == var23.y) {
+                        class5.method12(var20.composition, Client.npcIndices[var19], var8, var9);
+                     }
+                  }
+
+                  var19 = class95.field1507;
+                  var28 = class95.field1511;
+
+                  for(var27 = 0; var27 < var19; ++var27) {
+                     var16 = Client.cachedPlayers[var28[var27]];
+                     if(var16 != null && var16.x == var23.x && var23.y == var16.y) {
+                        class73.method1144(var16, var28[var27], var8, var9);
+                     }
+                  }
+               }
+
+               class5.method12(var23.composition, var11, var8, var9);
+            }
+
+            if(var10 == 0) {
+               Player var24 = Client.cachedPlayers[var11];
+               if(var24 == null) {
+                  continue;
+               }
+
+               if((var24.x & 127) == 64 && (var24.y & 127) == 64) {
+                  for(var19 = 0; var19 < Client.field946; ++var19) {
+                     var20 = Client.cachedNPCs[Client.npcIndices[var19]];
+                     if(var20 != null && var20.composition.field3574 == 1 && var24.x == var20.x && var20.y == var24.y) {
+                        class5.method12(var20.composition, Client.npcIndices[var19], var8, var9);
+                     }
+                  }
+
+                  var19 = class95.field1507;
+                  var28 = class95.field1511;
+
+                  for(var27 = 0; var27 < var19; ++var27) {
+                     var16 = Client.cachedPlayers[var28[var27]];
+                     if(var16 != null && var16 != var24 && var24.x == var16.x && var16.y == var24.y) {
+                        class73.method1144(var16, var28[var27], var8, var9);
+                     }
+                  }
+               }
+
+               if(var11 != Client.field1060) {
+                  class73.method1144(var24, var11, var8, var9);
+               } else {
+                  var4 = var7;
+               }
+            }
+
+            if(var10 == 3) {
+               Deque var25 = Client.groundItemDeque[class27.plane][var8][var9];
+               if(var25 != null) {
+                  for(Item var26 = (Item)var25.getTail(); var26 != null; var26 = (Item)var25.getPrevious()) {
+                     ItemComposition var29 = class169.getItemDefinition(var26.id);
+                     if(Client.itemSelectionState == 1) {
+                        class36.addMenuEntry("Use", Client.field1085 + " " + "->" + " " + Friend.getColTags(16748608) + var29.name, 16, var26.id, var8, var9);
+                     } else if(Client.spellSelected) {
+                        if((class67.field845 & 1) == 1) {
+                           class36.addMenuEntry(Client.field1089, Client.field1090 + " " + "->" + " " + Friend.getColTags(16748608) + var29.name, 17, var26.id, var8, var9);
+                        }
+                     } else {
+                        String[] var21 = var29.groundActions;
+                        if(Client.field1102) {
+                           var21 = class171.method3220(var21);
+                        }
+
+                        for(int var22 = 4; var22 >= 0; --var22) {
+                           if(var21 != null && var21[var22] != null) {
+                              byte var17 = 0;
+                              if(var22 == 0) {
+                                 var17 = 18;
+                              }
+
+                              if(var22 == 1) {
+                                 var17 = 19;
+                              }
+
+                              if(var22 == 2) {
+                                 var17 = 20;
+                              }
+
+                              if(var22 == 3) {
+                                 var17 = 21;
+                              }
+
+                              if(var22 == 4) {
+                                 var17 = 22;
+                              }
+
+                              class36.addMenuEntry(var21[var22], Friend.getColTags(16748608) + var29.name, var17, var26.id, var8, var9);
+                           } else if(var22 == 2) {
+                              class36.addMenuEntry("Take", Friend.getColTags(16748608) + var29.name, 20, var26.id, var8, var9);
+                           }
+                        }
+
+                        class36.addMenuEntry("Examine", Friend.getColTags(16748608) + var29.name, 1004, var26.id, var8, var9);
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+      if(var4 != -1) {
+         var6 = var4 & 127;
+         var7 = var4 >> 7 & 127;
+         Player var18 = Client.cachedPlayers[Client.field1060];
+         class73.method1144(var18, Client.field1060, var6, var7);
+      }
+
+   }
+
+   @ObfuscatedName("eq")
+   @ObfuscatedSignature(
+      signature = "(B)Lkr;",
+      garbageValue = "1"
+   )
+   static RenderOverview method767() {
+      return KeyFocusListener.renderOverview;
    }
 }

@@ -24,35 +24,13 @@
  */
 package net.runelite.api;
 
+import java.awt.Polygon;
+
 /**
  *
  * @author Adam
  */
-public class GameObject extends TileObject
+public interface GameObject extends TileObject
 {
-	private final net.runelite.rs.api.GameObject gameObject;
-
-	public GameObject(Client client, net.runelite.rs.api.GameObject gameObject)
-	{
-		super(client);
-		this.gameObject = gameObject;
-	}
-
-	@Override
-	protected int getHash()
-	{
-		return gameObject.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return gameObject.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return gameObject.getY();
-	}
+	Polygon getConvexHull();
 }

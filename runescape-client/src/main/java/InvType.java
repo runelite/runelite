@@ -4,49 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("is")
 @Implements("InvType")
 public class InvType extends CacheableNode {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lgc;"
+      signature = "Lgp;"
    )
-   public static NodeCache field3280;
-   @ObfuscatedName("a")
+   @Export("inventoryCache")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("dt")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lib;"
    )
-   public static IndexDataBase field3281;
-   @ObfuscatedName("n")
+   static IndexData field3283;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   public static IndexDataBase field3284;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -135933061
+      intValue = -1549307139
    )
-   public int field3279;
+   @Export("size")
+   public int size;
 
    static {
-      field3280 = new NodeCache(64);
+      inventoryCache = new NodeCache(64);
    }
 
    public InvType() {
-      this.field3279 = 0;
+      this.size = 0;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfe;II)V",
-      garbageValue = "1728090237"
+      signature = "(Lfp;II)V",
+      garbageValue = "1925095105"
    )
-   void method4223(Buffer var1, int var2) {
+   void method4274(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3279 = var1.readUnsignedShort();
+         this.size = var1.readUnsignedShort();
       }
 
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfe;I)V",
-      garbageValue = "-389165341"
+      signature = "(Lfp;I)V",
+      garbageValue = "-680436864"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -56,30 +63,24 @@ public class InvType extends CacheableNode {
             return;
          }
 
-         this.method4223(var1, var2);
+         this.method4274(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("ix")
    @ObfuscatedSignature(
-      signature = "(II)Lii;",
-      garbageValue = "1672639787"
+      signature = "(Lhx;IIII)V",
+      garbageValue = "-1727303757"
    )
-   @Export("getSpotAnimType")
-   public static Spotanim getSpotAnimType(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.field3337.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+   static final void method4280(Widget var0, int var1, int var2, int var3) {
+      class211 var4 = var0.method4031(false);
+      if(var4 != null) {
+         if(Client.field1079 < 3) {
+            class44.compass.method5031(var1, var2, var4.field2600, var4.field2599, 25, 25, Client.mapAngle, 256, var4.field2602, var4.field2601);
+         } else {
+            Rasterizer2D.method4957(var1, var2, 0, var4.field2602, var4.field2601);
          }
 
-         Spotanim.spotanims.put(var1, (long)var0);
-         return var1;
       }
    }
 }

@@ -4,72 +4,83 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bq")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("n")
-   boolean field824;
-   @ObfuscatedName("a")
+   @ObfuscatedName("fa")
+   static byte[][] field850;
+   @ObfuscatedName("gm")
    @ObfuscatedGetter(
-      intValue = 246644215
+      intValue = -639579995
+   )
+   static int field851;
+   @ObfuscatedName("a")
+   boolean field854;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1356359209
    )
    @Export("id")
    int id;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -22027933
+      intValue = -1328378399
    )
    @Export("owner")
    int owner;
 
    WidgetNode() {
-      this.field824 = false;
+      this.field854 = false;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;S)V",
-      garbageValue = "610"
+      signature = "(IB)I",
+      garbageValue = "-11"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class18.addChatMessage(var0, var1, var2, (String)null);
-   }
+   public static int method1121(int var0) {
+      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var1;
+      if(var2 != null) {
+         var1 = var2;
+      } else {
+         byte[] var7 = Varbit.varbit_ref.getConfigData(14, var0);
+         var2 = new Varbit();
+         if(var7 != null) {
+            var2.decode(new Buffer(var7));
+         }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-15"
-   )
-   static int method1091() {
-      return 9;
-   }
-
-   @ObfuscatedName("jx")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-      garbageValue = "1470626583"
-   )
-   static String method1089(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
+         Varbit.varbits.put(var2, (long)var0);
+         var1 = var2;
       }
 
-      String var3 = "";
-      if(class8.sessionToken != null) {
-         var3 = "/p=" + class8.sessionToken;
+      int var3 = var1.configId;
+      int var4 = var1.leastSignificantBit;
+      int var5 = var1.mostSignificantBit;
+      int var6 = class212.field2607[var5 - var4];
+      return class212.widgetSettings[var3] >> var4 & var6;
+   }
+
+   @ObfuscatedName("gk")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "0"
+   )
+   static final void method1120() {
+      Client.field1050 = 0;
+      int var0 = (Player.localPlayer.x >> 7) + class149.baseX;
+      int var1 = (Player.localPlayer.y >> 7) + class67.baseY;
+      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+         Client.field1050 = 1;
       }
 
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class25.field371 + var3 + "/";
+      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+         Client.field1050 = 1;
+      }
+
+      if(Client.field1050 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.field1050 = 0;
+      }
+
    }
 }

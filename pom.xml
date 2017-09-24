@@ -28,21 +28,31 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.1.33-SNAPSHOT</version>
-	<name>Runelite</name>
+	<version>1.2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<name>Runelite</name>
+	<description>Open source RuneScape client and deobfuscator</description>
+	<url>http://runelite.net</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>149</rs.version>
+		<rs.version>154</rs.version>
 	</properties>
+
+	<licenses>
+		<license>
+			<name>2-Clause BSD License</name>
+			<url>https://opensource.org/licenses/BSD-2-Clause</url>
+		</license>
+	</licenses>
+
+	<inceptionYear>2014</inceptionYear>
 
 	<scm>
 		<url>https://github.com/runelite/runelite</url>
@@ -50,6 +60,24 @@
 		<developerConnection>scm:git:git@github.com:runelite/runelite</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+	
+	<developers>
+		<developer>
+			<id>Adam-</id>
+			<name>Adam</name>
+			<email>Adam@sigterm.info</email>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/runelite/runelite/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/runelite/runelite</url>
+	</ciManagement>
 
 	<distributionManagement>
 		<repository>
@@ -65,6 +93,13 @@
 			<url>http://repo.runelite.net</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>runelite-plugins</id>
+			<name>Runelite Plugins</name>
+			<url>http://repo.runelite.net</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<modules>
 		<module>cache</module>
@@ -73,6 +108,7 @@
 		<module>model-viewer-rsmv</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
+		<module>runelite-mixins</module>
 		<module>runescape-api</module>
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>
@@ -86,8 +122,18 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.20</version>
+				<!-- newer versions seem to not show stacktraces in Netbeans -->
+				<version>2.18</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>

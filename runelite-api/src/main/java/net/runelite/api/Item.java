@@ -24,23 +24,9 @@
  */
 package net.runelite.api;
 
-public class Item extends Renderable
+public interface Item extends Renderable
 {
-	private final net.runelite.rs.api.Item item;
+	int getId();
 
-	public Item(net.runelite.rs.api.Item item)
-	{
-		super(item);
-		this.item = item;
-	}
-
-	public int getId()
-	{
-		return item.getId();
-	}
-
-	public int getQuantity()
-	{
-		return item.getQuantity();
-	}
+	int getQuantity();
 }

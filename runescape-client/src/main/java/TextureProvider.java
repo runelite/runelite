@@ -1,26 +1,31 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("da")
+@ObfuscatedName("dy")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljx;"
+   )
+   static IndexedSprite field1790;
+   @ObfuscatedName("fl")
+   static byte[][] field1793;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1815933983
+      intValue = 463571385
    )
    @Export("width")
    int width;
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @Export("brightness")
    double brightness;
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "[Leo;"
+      signature = "[Ldk;"
    )
    @Export("textures")
    Texture[] textures;
@@ -32,25 +37,25 @@ public class TextureProvider implements ITextureLoader {
    Deque deque;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1952578149
+      intValue = 1800261481
    )
    @Export("size")
    int size;
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lii;"
    )
    @Export("sprites")
    IndexDataBase sprites;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1202783989
+      intValue = 1081175379
    )
    @Export("maxSize")
    int maxSize;
 
    @ObfuscatedSignature(
-      signature = "(Lif;Lif;IDI)V"
+      signature = "(Lii;Lii;IDI)V"
    )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
@@ -73,10 +78,10 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-110"
+      signature = "(I)V",
+      garbageValue = "382924969"
    )
    @Export("reset")
    public void reset() {
@@ -90,20 +95,20 @@ public class TextureProvider implements ITextureLoader {
       this.size = this.maxSize;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "769753382"
+      garbageValue = "664221956"
    )
    @Export("getAverageTextureRGB")
    public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1868:0;
+      return this.textures[var1] != null?this.textures[var1].field1893:0;
    }
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "883752153"
+      garbageValue = "899946592"
    )
    @Export("load")
    public int[] load(int var1) {
@@ -115,7 +120,7 @@ public class TextureProvider implements ITextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method2487(this.brightness, this.width, this.sprites);
+         boolean var3 = var2.method2501(this.brightness, this.width, this.sprites);
          if(var3) {
             if(this.size == 0) {
                Texture var4 = (Texture)this.deque.popTail();
@@ -133,91 +138,44 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-16711936"
+      garbageValue = "562063917"
    )
-   public boolean vmethod2877(int var1) {
+   public boolean vmethod2931(int var1) {
       return this.width == 64;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-31277212"
+      garbageValue = "811109479"
    )
-   public boolean vmethod2875(int var1) {
-      return this.textures[var1].field1869;
+   public boolean vmethod2928(int var1) {
+      return this.textures[var1].field1887;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @Export("brightness")
    public void brightness(double var1) {
       this.brightness = var1;
       this.reset();
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1836397146"
+      signature = "(IB)V",
+      garbageValue = "2"
    )
-   public void method2369(int var1) {
+   public void method2398(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
-         if(var3 != null && var3.field1874 != 0 && var3.loaded) {
-            var3.method2488(var1);
+         if(var3 != null && var3.field1892 != 0 && var3.loaded) {
+            var3.method2503(var1);
             var3.loaded = false;
          }
       }
 
-   }
-
-   @ObfuscatedName("au")
-   @ObfuscatedSignature(
-      signature = "(Len;IIB)Lds;",
-      garbageValue = "-54"
-   )
-   public static final AbstractSoundSystem method2381(Signlink var0, int var1, int var2) {
-      if(ChatLineBuffer.sampleRate == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
-
-         try {
-            AbstractSoundSystem var3 = class267.field3666.vmethod1892();
-            var3.samples = new int[256 * (AbstractSoundSystem.highMemory?2:1)];
-            var3.field1631 = var2;
-            var3.vmethod1992();
-            var3.offset = (var2 & -1024) + 1024;
-            if(var3.offset > 16384) {
-               var3.offset = 16384;
-            }
-
-            var3.create(var3.offset);
-            if(class11.priority > 0 && class24.task == null) {
-               class24.task = new SoundTask();
-               class280.field3754 = Executors.newScheduledThreadPool(1);
-               class280.field3754.scheduleAtFixedRate(class24.task, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(class24.task != null) {
-               if(class24.task.systems[var1] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               class24.task.systems[var1] = var3;
-            }
-
-            return var3;
-         } catch (Throwable var4) {
-            return new AbstractSoundSystem();
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
    }
 }

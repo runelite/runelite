@@ -4,20 +4,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fg")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("az")
-   @ObfuscatedSignature(
-      signature = "Lju;"
-   )
-   public static BufferProvider field2327;
-   @ObfuscatedName("gf")
-   @ObfuscatedSignature(
-      signature = "[Ljf;"
-   )
-   static ModIcon[] field2330;
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @Export("inflator")
    Inflater inflator;
 
@@ -32,10 +22,10 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfe;[BB)V",
-      garbageValue = "105"
+      signature = "(Lfp;[BB)V",
+      garbageValue = "115"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -45,7 +35,7 @@ public class GZipDecompressor {
          }
 
          try {
-            this.inflator.setInput(var1.payload, var1.offset + 10, var1.payload.length - (var1.offset + 10 + 8));
+            this.inflator.setInput(var1.payload, var1.offset + 10, var1.payload.length - (var1.offset + 8 + 10));
             this.inflator.inflate(var2);
          } catch (Exception var4) {
             this.inflator.reset();
@@ -58,15 +48,21 @@ public class GZipDecompressor {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2034737161"
+      signature = "(II)Lhx;",
+      garbageValue = "1667299355"
    )
-   public static void method3074() {
-      Widget.field2647.reset();
-      Widget.field2783.reset();
-      Widget.field2684.reset();
-      Widget.field2650.reset();
+   public static Widget method3177(int var0) {
+      int var1 = var0 >> 16;
+      int var2 = var0 & '\uffff';
+      if(class268.widgets[var1] == null || class268.widgets[var1][var2] == null) {
+         boolean var3 = class13.loadWidget(var1);
+         if(!var3) {
+            return null;
+         }
+      }
+
+      return class268.widgets[var1][var2];
    }
 }

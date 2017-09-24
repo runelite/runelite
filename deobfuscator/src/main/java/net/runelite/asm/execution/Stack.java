@@ -25,8 +25,11 @@
 
 package net.runelite.asm.execution;
 
+import net.runelite.asm.Type;
+
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.asm.Method;
 
 public class Stack
 {
@@ -48,7 +51,7 @@ public class Stack
 	{
 		for (int i = 0; i < level; ++i)
 			System.err.print(" ");
-		System.err.println(ctx.getType().type + " pushed by " + ctx.getPushed().getInstruction().getType().getName());// + " at " + ctx.getPushed().getInstruction().getPc());
+		System.err.println(ctx.getType() + " pushed by " + ctx.getPushed().getInstruction().getType().getName());// + " at " + ctx.getPushed().getInstruction().getPc());
 		for (StackContext c : ctx.getPushed().getPops())
 			printStack(c, level + 2);
 	}
@@ -57,14 +60,14 @@ public class Stack
 	{
 		if (size == stack.length)
 		{
-			net.runelite.asm.Method m = i.getPushed().getInstruction().getInstructions().getCode().getMethod();
-			System.err.println("stack overflow in " + m.getMethods().getClassFile().getName() + " method " + m.getName());
+			Method m = i.getPushed().getInstruction().getInstructions().getCode().getMethod();
+			System.err.println("stack overflow in " + m.getClassFile().getName() + " method " + m.getName());
 			for (int c = 0; c < stack.length; ++c)
 				printStack(stack[c], 0);
 			throw new RuntimeException("Stack overflow");
 		}
 		
-		assert !i.getType().type.equals("V");
+		assert !i.getType().equals(Type.VOID);
 
 		stack[size] = i;
 		++size;

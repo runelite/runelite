@@ -34,7 +34,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.deob.Deobfuscator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -100,15 +100,15 @@ public class SimpleModArithTest
 {
 	private void checkConstants(ClassFile cf)
 	{
-		for (Method m : cf.getMethods().getMethods())
+		for (Method m : cf.getMethods())
 		{
 			Code code = m.getCode();
 			Instructions instructions = code.getInstructions();
 			for (Instruction i : instructions.getInstructions())
 			{
-				if (i instanceof LDC_W)
+				if (i instanceof LDC)
 				{
-					LDC_W ldc = (LDC_W) i;
+					LDC ldc = (LDC) i;
 					Assert.assertFalse(DMath.isBig(ldc.getConstantAsInt()));
 				}
 			}

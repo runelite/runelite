@@ -24,31 +24,6 @@
  */
 package net.runelite.api;
 
-public class GroundObject extends TileObject
+public interface GroundObject extends TileObject
 {
-	private final net.runelite.rs.api.GroundObject groundObject;
-
-	public GroundObject(Client client, net.runelite.rs.api.GroundObject groundObject)
-	{
-		super(client);
-		this.groundObject = groundObject;
-	}
-
-	@Override
-	protected int getHash()
-	{
-		return groundObject.getHash();
-	}
-
-	@Override
-	protected int getLocalX()
-	{
-		return groundObject.getX();
-	}
-
-	@Override
-	protected int getLocalY()
-	{
-		return groundObject.getY();
-	}
 }

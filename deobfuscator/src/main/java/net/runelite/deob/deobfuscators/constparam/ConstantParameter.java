@@ -116,7 +116,7 @@ public class ConstantParameter implements Deobfuscator
 		// object is popped first, then param 1, 2, 3, etc. double and long take two slots.
 		for (int lvtOffset = offset, parameterIndex = 0;
 			parameterIndex < method.getDescriptor().size();
-			lvtOffset += method.getDescriptor().getTypeOfArg(parameterIndex++).getSlots())
+			lvtOffset += method.getDescriptor().getTypeOfArg(parameterIndex++).getSize())
 		{
 			// get(0) == first thing popped which is the last parameter,
 			// get(descriptor.size() - 1) == first parameter

@@ -40,7 +40,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.VReturn;
@@ -84,7 +83,7 @@ public class HandlerFinder
 
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods().getMethods())
+			for (Method method : cf.getMethods())
 			{
 				if (method.getCode() == null)
 				{
@@ -170,8 +169,6 @@ public class HandlerFinder
 				// Anything else which jumps to here instead needs to return.
 				insertReturn(ins, jump, end);
 			}
-
-			findEndOfReads(handler, ins, start);
 
 			logger.info("Found packet handler {} opcode {}", handler, handler.getOpcode());
 		}
@@ -268,34 +265,6 @@ public class HandlerFinder
 				}
 			}
 		}
-	}
-
-	private void findEndOfReads(PacketHandler handler, Instructions instructions, Instruction start)
-	{
-		List<Instruction> ins = instructions.getInstructions();
-
-		int idx = ins.indexOf(start);
-		assert idx != -1;
-
-		Instruction last = start;
-		for (; idx < ins.size(); ++idx)
-		{
-			Instruction i = ins.get(idx);
-
-			if (i instanceof JumpingInstruction)
-			{
-				last = i;
-				break;
-			}
-
-			if (i instanceof ReturnInstruction)
-			{
-				break;
-			}
-
-			handler.addInstruction(i);
-		}
-		handler.setAfterRead(last);
 	}
 
 	private void insertReturn(Instructions ins, Instruction start, Instruction end)

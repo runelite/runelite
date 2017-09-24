@@ -45,9 +45,13 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IllegalStateExceptions implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(IllegalStateExceptions.class);
+
 	private int count;
 	private Set<Instruction> interesting = new HashSet<>();
 	private List<InstructionContext> toRemove = new ArrayList<>();
@@ -57,7 +61,7 @@ public class IllegalStateExceptions implements Deobfuscator
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : cf.getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)
@@ -79,7 +83,7 @@ public class IllegalStateExceptions implements Deobfuscator
 					
 					New new2 = (New) ins2;
 					net.runelite.asm.pool.Class clazz = new2.getNewClass();
-					if (!clazz.getName().equals("java/lang/IllegalStateException"))
+					if (!clazz.getName().contains("java/lang/IllegalStateException"))
 						continue;
 
 					interesting.add(ins);
@@ -156,6 +160,6 @@ public class IllegalStateExceptions implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
-		System.out.println("Removed " + count + " illegal state exceptions");
+		logger.info("Removed " + count + " illegal state exceptions");
 	}
 }

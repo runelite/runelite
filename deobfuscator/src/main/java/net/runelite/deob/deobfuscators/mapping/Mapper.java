@@ -159,13 +159,13 @@ public class Mapper
 				continue;
 			}
 
-			List<Method> methods1 = cf.getMethods().getMethods().stream()
+			List<Method> methods1 = cf.getMethods().stream()
 				.filter(m -> !m.isStatic())
 				.filter(m -> !m.getName().equals("<init>"))
 				.filter(m -> m.getCode() != null)
 				.collect(Collectors.toList());
 
-			List<Method> methods2 = other.getMethods().getMethods().stream()
+			List<Method> methods2 = other.getMethods().stream()
 				.filter(m -> !m.isStatic())
 				.filter(m -> !m.getName().equals("<init>"))
 				.filter(m -> m.getCode() != null)

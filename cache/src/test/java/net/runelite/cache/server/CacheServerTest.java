@@ -24,11 +24,12 @@
  */
 package net.runelite.cache.server;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import net.runelite.cache.StoreLocation;
-import net.runelite.cache.downloader.CacheClient;
+import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.junit.Assert;
@@ -40,25 +41,10 @@ import org.junit.rules.TemporaryFolder;
 public class CacheServerTest
 {
 	private static final String HOST = "localhost";
-	private static final int REVISION = 139;
+	private static final int REVISION = 154;
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	@Ignore
-	public void run() throws Exception
-	{
-		try (Store store = new Store(new java.io.File("D:\\rs\\07\\temp\\cache139"));
-			CacheServer server = new CacheServer(store, REVISION))
-		{
-			store.load();
-			store.rebuildCrc();
-
-			server.start();
-			server.waitForClose();
-		}
-	}
 
 	@Test
 	@Ignore
@@ -93,7 +79,8 @@ public class CacheServerTest
 
 			server.start();
 
-			try (Store store2 = new Store(folder.newFolder()); CacheClient client = new CacheClient(store2, HOST, REVISION))
+			try (Store store2 = new Store(folder.newFolder());
+				CacheClient client = new CacheClient(store2, HOST, REVISION))
 			{
 				client.connect();
 				client.handshake().get();
@@ -103,7 +90,7 @@ public class CacheServerTest
 				Archive archive = index.getArchive(0);
 				archive.decompressAndLoad(null); // cache client doesn't decompress archive
 
-				File file = archive.getFiles().get(0);
+				FSFile file = archive.getFiles().get(0);
 				Assert.assertArrayEquals("test".getBytes(), file.getContents());
 			}
 		}
@@ -113,9 +100,10 @@ public class CacheServerTest
 	{
 		Index index = store.addIndex(0);
 		Archive archive = index.addArchive(0);
-		File file = archive.addFile(0);
+		FSFile file = new FSFile(0);
 		file.setNameHash(7);
 		file.setContents("test".getBytes());
+		archive.addFile(file);
 	}
 
 }

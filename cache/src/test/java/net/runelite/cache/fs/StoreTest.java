@@ -24,9 +24,11 @@
  */
 package net.runelite.cache.fs;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import net.runelite.cache.StoreLocation;
+import net.runelite.cache.fs.tree.TreeStorage;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,7 +48,8 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
-			File file = archive.addFile(0);
+			FSFile file = new FSFile(0);
+			archive.addFile(file);
 			file.setNameHash(7);
 			file.setContents("test".getBytes());
 
@@ -65,7 +68,7 @@ public class StoreTest
 	public void testManyFiles() throws IOException
 	{
 		Random random = new Random(42L);
-		java.io.File root = folder.newFolder();
+		File root = folder.newFolder();
 
 		try (Store store = new Store(root))
 		{
@@ -75,8 +78,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt());
+				archive.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -97,7 +101,7 @@ public class StoreTest
 	public void testMultipleArchives() throws IOException
 	{
 		Random random = new Random(43L);
-		java.io.File root = folder.newFolder();
+		File root = folder.newFolder();
 
 		try (Store store = new Store(root))
 		{
@@ -113,8 +117,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -122,8 +127,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive2.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive2.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -131,8 +137,9 @@ public class StoreTest
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				File file = archive3.addFile(i);
+				FSFile file = new FSFile(i);
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
+				archive3.addFile(file);
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
@@ -148,12 +155,14 @@ public class StoreTest
 			}
 
 			// Test tree save/load
-			java.io.File tree = folder.newFolder();
-			store.saveTree(tree);
+			File tree = folder.newFolder();
+			Storage treeStorage = new TreeStorage(tree);
 
-			try (Store store2 = new Store(folder.newFolder()))
+			treeStorage.save(store);
+
+			try (Store store2 = new Store(treeStorage))
 			{
-				store2.loadTree(tree);
+				store2.load();
 			}
 		}
 	}

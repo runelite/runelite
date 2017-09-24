@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -62,7 +63,7 @@ public class DAdd extends Instruction implements AdditionInstruction
 			result = new Value(d1 + d2);
 		}
 		
-		StackContext ctx = new StackContext(ins, double.class, result);
+		StackContext ctx = new StackContext(ins, Type.DOUBLE, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

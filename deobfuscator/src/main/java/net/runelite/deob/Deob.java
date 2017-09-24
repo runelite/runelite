@@ -51,9 +51,13 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.cfg.ControlFlowDeobfuscator;
+import net.runelite.deob.deobfuscators.menuaction.MenuActionDeobfuscator;
+import net.runelite.deob.deobfuscators.packetwrite.PacketWriteDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.deobfuscators.transformers.MaxMemoryTransformer;
+import net.runelite.deob.deobfuscators.transformers.OpcodesTransformer;
 import net.runelite.deob.deobfuscators.transformers.ReflectionTransformer;
+import net.runelite.deob.deobfuscators.transformers.RuneliteBufferTransformer;
 import net.runelite.deob.util.JarUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,12 +147,17 @@ public class Deob
 
 		run(group, new Order());
 
+		new OpcodesTransformer().transform(group);
 		run(group, new PacketHandlerOrder());
+		run(group, new PacketWriteDeobfuscator());
+
+		run(group, new MenuActionDeobfuscator());
 
 		new GetPathTransformer().transform(group);
 		new ClientErrorTransformer().transform(group);
 		new ReflectionTransformer().transform(group);
 		new MaxMemoryTransformer().transform(group);
+		new RuneliteBufferTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
 

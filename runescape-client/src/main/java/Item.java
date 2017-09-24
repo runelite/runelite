@@ -4,31 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cr")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("r")
-   @Export("underlayIds")
-   static byte[][][] underlayIds;
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 615123459
+      intValue = -1710972533
    )
    @Export("id")
    int id;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -698831991
+      intValue = -1858492457
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)Lej;",
-      garbageValue = "19"
+      signature = "(I)Lem;",
+      garbageValue = "-1455933636"
    )
    protected final Model getModel() {
-      return class83.getItemDefinition(this.id).getModel(this.quantity);
+      return class169.getItemDefinition(this.id).getModel(this.quantity);
    }
 }
