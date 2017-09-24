@@ -55,7 +55,7 @@ public class CacheDAO
 
 	public List<IndexEntry> findIndexesForCache(Connection con, CacheEntry cache)
 	{
-		return con.createQuery("select index.id, index.indexId, index.revision from cache "
+		return con.createQuery("select index.id, index.indexId, index.crc, index.revision from cache "
 			+ "join cache_index on cache_index.cache = cache.id "
 			+ "join `index` on cache_index.index = index.id "
 			+ "where cache.id = :id "
@@ -66,7 +66,7 @@ public class CacheDAO
 
 	public IndexEntry findIndexForCache(Connection con, CacheEntry cache, int indexId)
 	{
-		return con.createQuery("select index.id, index.indexId, index.revision from cache "
+		return con.createQuery("select index.id, index.indexId, index.crc, index.revision from cache "
 			+ "join cache_index on cache_index.cache = cache.id "
 			+ "join `index` on cache_index.index = index.id "
 			+ "where cache.id = :id "
@@ -78,7 +78,8 @@ public class CacheDAO
 
 	public List<ArchiveEntry> findArchivesForIndex(Connection con, IndexEntry indexEntry)
 	{
-		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash, archive.revision from index_archive "
+		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
+			" archive.crc, archive.revision, archive.hash from index_archive "
 			+ "join archive on index_archive.archive = archive.id "
 			+ "where index_archive.index = :id")
 			.addParameter("id", indexEntry.getId())
@@ -87,7 +88,8 @@ public class CacheDAO
 	
 	public ArchiveEntry findArchiveForIndex(Connection con, IndexEntry indexEntry, int archiveId)
 	{
-		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash, archive.revision from index_archive "
+		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
+			" archive.crc, archive.revision, archive.hash from index_archive "
 			+ "join archive on index_archive.archive = archive.id "
 			+ "where index_archive.index = :id "
 			+ "and archive.archiveId = :archiveId")
@@ -105,7 +107,8 @@ public class CacheDAO
 	 */
 	public ArchiveEntry findMostRecentArchive(Connection con, int indexId, int archiveId)
 	{
-		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash, archive.revision from archive "
+		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
+			" archive.crc, archive.revision, archive.hash from archive "
 			+ "join index_archive on index_archive.archive = archive.id "
 			+ "join `index` on index.id = index_archive.index "
 			+ "where index.indexId = :indexId and archive.archiveId = :archiveId "
@@ -153,12 +156,14 @@ public class CacheDAO
 			.executeAndFetchFirst(CacheEntry.class);
 	}
 
-	public IndexEntry findIndex(Connection con, int indexId, int revision)
+	public IndexEntry findIndex(Connection con, int indexId, int crc, int revision)
 	{
-		return con.createQuery("select id, indexId, revision from `index` "
+		return con.createQuery("select id, indexId, crc, revision from `index` "
 			+ "where indexId = :indexId "
+			+ "and crc = :crc "
 			+ "and revision = :revision")
 			.addParameter("indexId", indexId)
+			.addParameter("crc", crc)
 			.addParameter("revision", revision)
 			.executeAndFetchFirst(IndexEntry.class);
 	}
@@ -171,10 +176,14 @@ public class CacheDAO
 			.executeUpdate();
 	}
 
-	public IndexEntry findOrCreateIndex(Connection con, CacheEntry cache, int indexId, int revision)
+	public IndexEntry findOrCreateIndex(Connection con, CacheEntry cache, int indexId, int crc, int revision)
 	{
-		IndexEntry entry = con.createQuery("select id, indexId, revision from `index` where indexId = :indexId and revision = :revision")
+		IndexEntry entry = con.createQuery("select id, indexId, crc, revision from `index`"
+			+ "where indexId = :indexId "
+			+ "and crc = :crc "
+			+ "and revision = :revision")
 			.addParameter("indexId", indexId)
+			.addParameter("crc", crc)
 			.addParameter("revision", revision)
 			.executeAndFetchFirst(IndexEntry.class);
 
@@ -183,8 +192,9 @@ public class CacheDAO
 			return entry;
 		}
 
-		int id = con.createQuery("insert into `index` (indexId, revision) values (:indexId, :revision)")
+		int id = con.createQuery("insert into `index` (indexId, crc, revision) values (:indexId, :crc, :revision)")
 			.addParameter("indexId", indexId)
+			.addParameter("crc", crc)
 			.addParameter("revision", revision)
 			.executeUpdate()
 			.getKey(int.class);
@@ -192,6 +202,7 @@ public class CacheDAO
 		entry = new IndexEntry();
 		entry.setId(id);
 		entry.setIndexId(indexId);
+		entry.setCrc(crc);
 		entry.setRevision(revision);
 		return entry;
 	}
@@ -209,18 +220,25 @@ public class CacheDAO
 	}
 
 	public ArchiveEntry findArchive(Connection con, IndexEntry index,
-		int archiveId, int nameHash, int revision)
+		int archiveId, int nameHash, int crc, int revision)
 	{
 		if (findArchive == null)
 		{
-			findArchive = con.createQuery("select archive.id, archive.archiveId, archive.nameHash, archive.revision from archive "
+			findArchive = con.createQuery("select archive.id, archive.archiveId, archive.nameHash,"
+				+ " archive.crc, archive.revision, archive.hash from archive "
 				+ " join index_archive on index_archive.archive = archive.id"
 				+ " join `index` on index.id = index_archive.index"
-				+ " where archive.archiveId = :archiveId and archive.revision = :revision and index.indexId = :indexId");
+				+ " where archive.archiveId = :archiveId"
+				+ " and archive.nameHash = :nameHash"
+				+ " and archive.crc = :crc"
+				+ " and archive.revision = :revision"
+				+ " and index.indexId = :indexId");
 		}
 
 		ArchiveEntry entry = findArchive
 			.addParameter("archiveId", archiveId)
+			.addParameter("nameHash", nameHash)
+			.addParameter("crc", crc)
 			.addParameter("revision", revision)
 			.addParameter("indexId", index.getIndexId())
 			.executeAndFetchFirst(ArchiveEntry.class);
@@ -228,18 +246,20 @@ public class CacheDAO
 	}
 
 	public ArchiveEntry createArchive(Connection con, IndexEntry index,
-		int archiveId, int nameHash, int revision)
+		int archiveId, int nameHash, int crc, int revision, byte[] hash)
 	{
 		if (insertArchive == null)
 		{
-			insertArchive = con.createQuery("insert into archive (archiveId, nameHash, revision) values "
-				+ "(:archiveId, :nameHash, :revision)");
+			insertArchive = con.createQuery("insert into archive (archiveId, nameHash, crc, revision, hash) values "
+				+ "(:archiveId, :nameHash, :crc, :revision, :hash)");
 		}
 
 		int id = insertArchive
 			.addParameter("archiveId", archiveId)
 			.addParameter("nameHash", nameHash)
+			.addParameter("crc", crc)
 			.addParameter("revision", revision)
+			.addParameter("hash", hash)
 			.executeUpdate()
 			.getKey(int.class);
 
@@ -247,7 +267,9 @@ public class CacheDAO
 		entry.setId(id);
 		entry.setArchiveId(archiveId);
 		entry.setNameHash(nameHash);
+		entry.setCrc(crc);
 		entry.setRevision(revision);
+		entry.setHash(hash);
 		return entry;
 	}
 

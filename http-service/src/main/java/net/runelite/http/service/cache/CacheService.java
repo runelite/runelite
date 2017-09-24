@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.cache;
 
+import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
 import io.minio.MinioClient;
 import io.minio.errors.ErrorResponseException;
@@ -106,27 +107,24 @@ public class CacheService
 
 	/**
 	 * retrieve archive from storage
-	 *
-	 * @param indexId
-	 * @param archiveId
-	 * @param revision
 	 * @return
 	 */
-	private byte[] getArchive(int indexId, int archiveId, int revision)
+	private byte[] getArchive(ArchiveEntry archiveEntry)
 	{
+		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
-			.append(indexId)
+			.append(hashStr.substring(0, 2))
 			.append('/')
-			.append(archiveId)
-			.append('/')
-			.append(revision)
+			.append(hashStr.substring(2))
 			.toString();
 
 		try (InputStream in = minioClient.getObject(minioBucket, path))
 		{
 			return ByteStreams.toByteArray(in);
 		}
-		catch (InvalidBucketNameException | NoSuchAlgorithmException | InsufficientDataException | IOException | InvalidKeyException | NoResponseException | XmlPullParserException | ErrorResponseException | InternalException | InvalidArgumentException ex)
+		catch (InvalidBucketNameException | NoSuchAlgorithmException | InsufficientDataException
+			| IOException | InvalidKeyException | NoResponseException | XmlPullParserException
+			| ErrorResponseException | InternalException | InvalidArgumentException ex)
 		{
 			logger.warn(null, ex);
 			return null;
@@ -144,7 +142,7 @@ public class CacheService
 			files = cacheDao.findFilesForArchive(con, archiveEntry);
 		}
 
-		byte[] archiveData = getArchive(index.getNumber(), config.getId(), archiveEntry.getRevision());
+		byte[] archiveData = getArchive(archiveEntry);
 
 		if (archiveData == null)
 		{
@@ -289,7 +287,7 @@ public class CacheService
 			archiveEntry = cacheDao.findArchiveForIndex(con, indexEntry, archiveId);
 		}
 
-		return getArchive(indexId, archiveId, archiveEntry.getRevision());
+		return getArchive(archiveEntry);
 	}
 
 	@RequestMapping("item/{itemId}")

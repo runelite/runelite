@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.2.8-MariaDB, for osx10.12 (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.20-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: cache
+-- Host: localhost    Database: localhost
 -- ------------------------------------------------------
--- Server version	10.2.8-MariaDB
+-- Server version	10.1.20-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,7 +26,9 @@ CREATE TABLE `archive` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `archiveId` int(11) NOT NULL,
   `nameHash` int(11) NOT NULL,
+  `crc` int(11) NOT NULL,
   `revision` int(11) NOT NULL,
+  `hash` binary(32) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `archive_revision` (`archiveId`,`revision`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -42,7 +44,7 @@ DROP TABLE IF EXISTS `cache`;
 CREATE TABLE `cache` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `revision` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `revision_date` (`revision`,`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -95,9 +97,10 @@ DROP TABLE IF EXISTS `index`;
 CREATE TABLE `index` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `indexId` int(11) NOT NULL,
+  `crc` int(11) NOT NULL,
   `revision` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `indexId` (`indexId`,`revision`)
+  UNIQUE KEY `indexId` (`indexId`,`revision`,`crc`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -129,4 +132,4 @@ CREATE TABLE `index_archive` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-10 13:11:23
+-- Dump completed on 2017-09-24 15:38:31

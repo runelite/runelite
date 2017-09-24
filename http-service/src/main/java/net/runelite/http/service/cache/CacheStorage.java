@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.cache;
 
+import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
@@ -77,14 +78,16 @@ public class CacheStorage implements Storage
 		for (IndexEntry indexEntry : indexes)
 		{
 			Index index = store.addIndex(indexEntry.getIndexId());
+			index.setCrc(indexEntry.getCrc());
 			index.setRevision(indexEntry.getRevision());
 
 			List<ArchiveEntry> archives = cacheDao.findArchivesForIndex(con, indexEntry);
 			for (ArchiveEntry archiveEntry : archives)
 			{
 				Archive archive = index.addArchive(archiveEntry.getArchiveId());
-				archive.setRevision(archiveEntry.getRevision());
 				archive.setNameHash(archiveEntry.getNameHash());
+				archive.setCrc(archiveEntry.getCrc());
+				archive.setRevision(archiveEntry.getRevision());
 
 				List<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry);
 				for (FileEntry fileEntry : files)
@@ -102,17 +105,19 @@ public class CacheStorage implements Storage
 	{
 		for (Index index : store.getIndexes())
 		{
-			IndexEntry entry = cacheDao.findOrCreateIndex(con, cacheEntry, index.getId(), index.getRevision());
+			IndexEntry entry = cacheDao.findOrCreateIndex(con, cacheEntry, index.getId(), index.getCrc(), index.getRevision());
 			// this assumes nothing is associated to the cache yet
 			cacheDao.associateIndexToCache(con, cacheEntry, entry);
 
 			for (Archive archive : index.getArchives())
 			{
 				ArchiveEntry archiveEntry = cacheDao.findArchive(con, entry, archive.getArchiveId(),
-					archive.getNameHash(), archive.getRevision());
+					archive.getNameHash(), archive.getCrc(), archive.getRevision());
 				if (archiveEntry == null)
 				{
-					archiveEntry = cacheDao.createArchive(con, entry, archive.getArchiveId(), archive.getNameHash(), archive.getRevision());
+					byte[] hash = Hashing.sha256().hashBytes(archive.getData()).asBytes();
+					archiveEntry = cacheDao.createArchive(con, entry, archive.getArchiveId(),
+						archive.getNameHash(), archive.getCrc(), archive.getRevision(), hash);
 
 					for (FSFile file : archive.getFiles())
 					{

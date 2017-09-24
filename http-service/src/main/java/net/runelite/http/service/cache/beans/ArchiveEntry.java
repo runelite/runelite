@@ -24,27 +24,33 @@
  */
 package net.runelite.http.service.cache.beans;
 
+import java.util.Arrays;
+
 public class ArchiveEntry
 {
 	private int id;
 	private int archiveId;
 	private int nameHash;
+	private int crc;
 	private int revision;
+	private byte[] hash;
 
 	@Override
 	public String toString()
 	{
-		return "ArchiveEntry{" + "id=" + id + ", archiveId=" + archiveId + ", nameHash=" + nameHash + ", revision=" + revision + '}';
+		return "ArchiveEntry{" + "id=" + id + ", archiveId=" + archiveId + ", nameHash=" + nameHash + ", crc=" + crc + ", revision=" + revision + '}';
 	}
 
 	@Override
 	public int hashCode()
 	{
-		int hash = 7;
-		hash = 89 * hash + this.id;
-		hash = 89 * hash + this.archiveId;
-		hash = 89 * hash + this.nameHash;
-		hash = 89 * hash + this.revision;
+		int hash = 3;
+		hash = 53 * hash + this.id;
+		hash = 53 * hash + this.archiveId;
+		hash = 53 * hash + this.nameHash;
+		hash = 53 * hash + this.crc;
+		hash = 53 * hash + this.revision;
+		hash = 53 * hash + Arrays.hashCode(this.hash);
 		return hash;
 	}
 
@@ -76,7 +82,15 @@ public class ArchiveEntry
 		{
 			return false;
 		}
+		if (this.crc != other.crc)
+		{
+			return false;
+		}
 		if (this.revision != other.revision)
+		{
+			return false;
+		}
+		if (!Arrays.equals(this.hash, other.hash))
 		{
 			return false;
 		}
@@ -113,6 +127,16 @@ public class ArchiveEntry
 		this.nameHash = nameHash;
 	}
 
+	public int getCrc()
+	{
+		return crc;
+	}
+
+	public void setCrc(int crc)
+	{
+		this.crc = crc;
+	}
+
 	public int getRevision()
 	{
 		return revision;
@@ -122,5 +146,15 @@ public class ArchiveEntry
 	{
 		this.revision = revision;
 	}
-	
+
+	public byte[] getHash()
+	{
+		return hash;
+	}
+
+	public void setHash(byte[] hash)
+	{
+		this.hash = hash;
+	}
+
 }

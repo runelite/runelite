@@ -24,6 +24,8 @@
  */
 package net.runelite.http.service.cache;
 
+import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
 import io.minio.MinioClient;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
@@ -60,12 +62,13 @@ public class CacheUploader implements Runnable
 	public void run()
 	{
 		byte[] data = archive.getData();
+		byte[] hash = Hashing.sha256().hashBytes(data).asBytes();
+		String hashStr = BaseEncoding.base16().encode(hash);
+
 		String path = new StringBuilder()
-			.append(archive.getIndex().getId())
+			.append(hashStr.substring(0, 2))
 			.append('/')
-			.append(archive.getArchiveId())
-			.append('/')
-			.append(archive.getRevision())
+			.append(hashStr.substring(2))
 			.toString();
 
 		try
