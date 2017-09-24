@@ -115,6 +115,8 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 		archiveResponse.setArchive(file);
 		archiveResponse.setData(compressedData.array());
 		out.add(archiveResponse);
+
+		compressedData.release();
 	}
 
 	/**

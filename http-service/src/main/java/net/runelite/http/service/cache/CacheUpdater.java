@@ -147,7 +147,8 @@ public class CacheUpdater
 			IndexEntry ie = dbIndexes.get(i);
 
 			if (ii.getId() != ie.getIndexId()
-				|| ii.getRevision() != ie.getRevision())
+				|| ii.getRevision() != ie.getRevision()
+				|| ii.getCrc() != ie.getCrc())
 			{
 				return true;
 			}

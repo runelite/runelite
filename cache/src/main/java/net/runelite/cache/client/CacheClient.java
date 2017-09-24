@@ -58,6 +58,7 @@ import net.runelite.cache.protocol.packets.ArchiveRequestPacket;
 import net.runelite.cache.protocol.packets.HandshakePacket;
 import net.runelite.cache.protocol.packets.HandshakeResponseType;
 import net.runelite.cache.protocol.packets.HandshakeType;
+import net.runelite.cache.util.Crc32;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -268,7 +269,9 @@ public class CacheClient implements AutoCloseable
 			{
 				Archive existing = index.getArchive(ad.getId());
 
-				if (existing != null && existing.getRevision() == ad.getRevision())
+				if (existing != null && existing.getRevision() == ad.getRevision()
+					&& existing.getCrc() == ad.getCrc()
+					&& existing.getNameHash() == ad.getNameHash())
 				{
 					logger.info("Archive {}/{} in index {} is up to date",
 						ad.getId(), indexData.getArchives().length, index.getId());
@@ -288,9 +291,12 @@ public class CacheClient implements AutoCloseable
 				}
 				else
 				{
-					logger.info("Archive {}/{} in index {} is out of date ({} != {}), downloading",
+					logger.info("Archive {}/{} in index {} is out of date, downloading. " +
+						"revision: ours: {} theirs: {}, crc: ours: {} theirs {}, name: ours {} theirs {}",
 						ad.getId(), indexData.getArchives().length, index.getId(),
-						existing.getRevision(), ad.getRevision());
+						existing.getRevision(), ad.getRevision(),
+						existing.getCrc(), ad.getCrc(),
+						existing.getNameHash(), ad.getNameHash());
 				}
 
 				final Archive archive = existing == null
@@ -313,7 +319,20 @@ public class CacheClient implements AutoCloseable
 				CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
 				future.handle((fr, ex) ->
 				{
-					archive.setData(fr.getCompressedData());
+					byte[] data = fr.getCompressedData();
+
+					Crc32 crc32 = new Crc32();
+					crc32.update(data, 0, data.length);
+					int hash = crc32.getHash();
+
+					if (hash != archive.getCrc())
+					{
+						logger.warn("crc mismatch on downloaded archive {}/{}: {} != {}",
+							archive.getIndex().getId(), archive.getArchiveId(),
+							hash, archive.getCrc());
+					}
+
+					archive.setData(data);
 
 					if (watcher != null)
 					{

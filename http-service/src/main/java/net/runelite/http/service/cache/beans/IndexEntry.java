@@ -28,21 +28,23 @@ public class IndexEntry
 {
 	private int id;
 	private int indexId;
+	private int crc;
 	private int revision;
 
 	@Override
 	public String toString()
 	{
-		return "IndexEntry{" + "id=" + id + ", indexId=" + indexId + ", revision=" + revision + '}';
+		return "IndexEntry{" + "id=" + id + ", indexId=" + indexId + ", crc=" + crc + ", revision=" + revision + '}';
 	}
 
 	@Override
 	public int hashCode()
 	{
 		int hash = 5;
-		hash = 83 * hash + this.id;
-		hash = 83 * hash + this.indexId;
-		hash = 83 * hash + this.revision;
+		hash = 17 * hash + this.id;
+		hash = 17 * hash + this.indexId;
+		hash = 17 * hash + this.crc;
+		hash = 17 * hash + this.revision;
 		return hash;
 	}
 
@@ -67,6 +69,10 @@ public class IndexEntry
 			return false;
 		}
 		if (this.indexId != other.indexId)
+		{
+			return false;
+		}
+		if (this.crc != other.crc)
 		{
 			return false;
 		}
@@ -95,6 +101,16 @@ public class IndexEntry
 	public void setIndexId(int indexId)
 	{
 		this.indexId = indexId;
+	}
+
+	public int getCrc()
+	{
+		return crc;
+	}
+
+	public void setCrc(int crc)
+	{
+		this.crc = crc;
 	}
 
 	public int getRevision()
