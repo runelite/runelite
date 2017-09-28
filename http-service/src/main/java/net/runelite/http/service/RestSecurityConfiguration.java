@@ -22,40 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.http.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity
-@Order(200)
-public class CacheSecurity extends WebSecurityConfigurerAdapter
+public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter
 {
-	@Value("${auth.password}")
-	private String password;
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
-		http.httpBasic()
-			.and()
-			.authorizeRequests()
-			.antMatchers("/cache/admin/**")
-			.hasRole("ADMIN");
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
-	{
-		auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password(password)
-			.roles("ADMIN");
+		http.csrf().disable();
 	}
 }
