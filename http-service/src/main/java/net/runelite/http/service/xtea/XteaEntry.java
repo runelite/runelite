@@ -24,24 +24,17 @@
  */
 package net.runelite.http.service.xtea;
 
+import java.time.Instant;
+
 public class XteaEntry
 {
-	private int rev;
 	private int region;
+	private Instant time;
+	private int rev;
 	private int key1;
 	private int key2;
 	private int key3;
 	private int key4;
-
-	public int getRev()
-	{
-		return rev;
-	}
-
-	public void setRev(int rev)
-	{
-		this.rev = rev;
-	}
 
 	public int getRegion()
 	{
@@ -51,6 +44,26 @@ public class XteaEntry
 	public void setRegion(int region)
 	{
 		this.region = region;
+	}
+
+	public Instant getTime()
+	{
+		return time;
+	}
+
+	public void setTime(Instant time)
+	{
+		this.time = time;
+	}
+
+	public int getRev()
+	{
+		return rev;
+	}
+
+	public void setRev(int rev)
+	{
+		this.rev = rev;
 	}
 
 	public int getKey1()
