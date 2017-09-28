@@ -26,6 +26,7 @@ package net.runelite.http.service.cache;
 
 import java.time.Instant;
 import java.util.List;
+import net.runelite.cache.IndexType;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.FileEntry;
@@ -98,25 +99,39 @@ public class CacheDAO
 			.executeAndFetchFirst(ArchiveEntry.class);
 	}
 
-	/**
-	 * Finds the most recent archive for the given indexId/archiveId
-	 * @param con
-	 * @param indexId
-	 * @param archiveId
-	 * @return 
-	 */
-	public ArchiveEntry findMostRecentArchive(Connection con, int indexId, int archiveId)
+	public ArchiveEntry findArchiveById(Connection con, CacheEntry cache, IndexType index, int archiveId)
 	{
 		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
 			" archive.crc, archive.revision, archive.hash from archive "
 			+ "join index_archive on index_archive.archive = archive.id "
 			+ "join `index` on index.id = index_archive.index "
-			+ "where index.indexId = :indexId and archive.archiveId = :archiveId "
-			+ "group by archive.id "
-			+ "order by archive.revision desc "
+			+ "join cache_index on cache_index.index = index.id "
+			+ "join cache on cache.id = cache_index.cache "
+			+ "where cache.id = :cacheId "
+			+ "and index.indexId = :indexId "
+			+ "and archive.archiveId = :archiveId "
 			+ "limit 1")
-			.addParameter("indexId", indexId)
+			.addParameter("cacheId", cache.getId())
+			.addParameter("indexId", index.getNumber())
 			.addParameter("archiveId", archiveId)
+			.executeAndFetchFirst(ArchiveEntry.class);
+	}
+
+	public ArchiveEntry findArchiveByName(Connection con, CacheEntry cache, IndexType index, int nameHash)
+	{
+		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
+			" archive.crc, archive.revision, archive.hash from archive "
+			+ "join index_archive on index_archive.archive = archive.id "
+			+ "join `index` on index.id = index_archive.index "
+			+ "join cache_index on cache_index.index = index.id "
+			+ "join cache on cache.id = cache_index.cache "
+			+ "where cache.id = :cacheId "
+			+ "and index.indexId = :indexId "
+			+ "and archive.nameHash = :nameHash "
+			+ "limit 1")
+			.addParameter("cacheId", cache.getId())
+			.addParameter("indexId", index.getNumber())
+			.addParameter("nameHash", nameHash)
 			.executeAndFetchFirst(ArchiveEntry.class);
 	}
 

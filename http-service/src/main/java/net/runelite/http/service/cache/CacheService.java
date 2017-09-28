@@ -107,9 +107,10 @@ public class CacheService
 
 	/**
 	 * retrieve archive from storage
+	 * @param archiveEntry
 	 * @return
 	 */
-	private byte[] getArchive(ArchiveEntry archiveEntry)
+	public byte[] getArchive(ArchiveEntry archiveEntry)
 	{
 		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
@@ -297,7 +298,9 @@ public class CacheService
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			archiveEntry = cacheDao.findMostRecentArchive(con, IndexType.CONFIGS.getNumber(), ConfigType.ITEM.getId());
+
+			CacheEntry cache = cacheDao.findMostRecent(con);
+			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.ITEM.getId());
 			if (archiveEntry == null)
 			{
 				throw new NotFoundException();
@@ -329,7 +332,9 @@ public class CacheService
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			archiveEntry = cacheDao.findMostRecentArchive(con, IndexType.CONFIGS.getNumber(), ConfigType.OBJECT.getId());
+
+			CacheEntry cache = cacheDao.findMostRecent(con);
+			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.OBJECT.getId());
 			if (archiveEntry == null)
 			{
 				throw new NotFoundException();
@@ -361,7 +366,9 @@ public class CacheService
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			archiveEntry = cacheDao.findMostRecentArchive(con, IndexType.CONFIGS.getNumber(), ConfigType.NPC.getId());
+
+			CacheEntry cache = cacheDao.findMostRecent(con);
+			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.NPC.getId());
 			if (archiveEntry == null)
 			{
 				throw new NotFoundException();
