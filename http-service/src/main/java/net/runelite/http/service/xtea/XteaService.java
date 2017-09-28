@@ -24,10 +24,20 @@
  */
 package net.runelite.http.service.xtea;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.runelite.cache.IndexType;
+import net.runelite.cache.fs.jagex.DataFile;
+import net.runelite.cache.util.Djb2;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
+import net.runelite.http.service.cache.CacheDAO;
+import net.runelite.http.service.cache.CacheService;
+import net.runelite.http.service.cache.beans.ArchiveEntry;
+import net.runelite.http.service.cache.beans.CacheEntry;
+import net.runelite.http.service.util.exception.InternalServerErrorException;
+import net.runelite.http.service.util.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +58,32 @@ public class XteaService
 	private static final Logger logger = LoggerFactory.getLogger(XteaService.class);
 
 	private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS `xtea` (\n"
-		+ "  `rev` int(11) NOT NULL,\n"
+		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
 		+ "  `region` int(11) NOT NULL,\n"
+		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
+		+ "  `rev` int(11) NOT NULL,\n"
 		+ "  `key1` int(11) NOT NULL,\n"
 		+ "  `key2` int(11) NOT NULL,\n"
 		+ "  `key3` int(11) NOT NULL,\n"
 		+ "  `key4` int(11) NOT NULL,\n"
-		+ "  PRIMARY KEY (`rev`,`region`,`key1`,`key2`,`key3`,`key4`)\n"
-		+ ") ENGINE=InnoDB;";
+		+ "  PRIMARY KEY (`id`),\n"
+		+ "  KEY `region` (`region`,`time`)\n"
+		+ ") ENGINE=InnoDB";
 
 	private final Sql2o sql2o;
+	private final Sql2o cacheSql2o;
+	private final CacheService cacheService;
 
 	@Autowired
-	public XteaService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public XteaService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Qualifier("Runelite Cache SQL2O") Sql2o cacheSql2o,
+		CacheService cacheService
+	)
 	{
 		this.sql2o = sql2o;
+		this.cacheSql2o = cacheSql2o;
+		this.cacheService = cacheService;
 
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -71,43 +92,146 @@ public class XteaService
 		}
 	}
 
-	@RequestMapping(method = POST)
-	public Object submit(@RequestBody XteaRequest xteaRequest)
+	private XteaEntry findLatestXtea(Connection con, int region)
 	{
-		try (Connection con = sql2o.beginTransaction())
+		return con.createQuery("select region, time, key1, key2, key3, key4 from xtea "
+			+ "where region = :region "
+			+ "order by time desc "
+			+ "limit 1")
+			.addParameter("region", region)
+			.executeAndFetchFirst(XteaEntry.class);
+	}
+
+	@RequestMapping(method = POST)
+	public void submit(@RequestBody XteaRequest xteaRequest)
+	{
+		try (Connection con = sql2o.beginTransaction();
+			Connection cacheCon = cacheSql2o.open())
 		{
-			Query query = con.createQuery("insert ignore into xtea (rev, region, key1, key2, key3, key4) values (:rev, :region, :key1, :key2, :key3, :key4)");
+			CacheDAO cacheDao = new CacheDAO();
+			CacheEntry cache = cacheDao.findMostRecent(cacheCon);
+
+			if (cache == null)
+			{
+				throw new InternalServerErrorException("No most recent cache");
+			}
+
+			Query query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
+				+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
 
 			for (XteaKey key : xteaRequest.getKeys())
 			{
-				query.addParameter("rev", xteaRequest.getRevision())
-					.addParameter("region", key.getRegion())
-					.addParameter("key1", key.getKeys()[0])
-					.addParameter("key2", key.getKeys()[1])
-					.addParameter("key3", key.getKeys()[2])
-					.addParameter("key4", key.getKeys()[3])
+				int region = key.getRegion();
+				int[] keys = key.getKeys();
+
+				XteaEntry xteaEntry = findLatestXtea(con, region);
+
+				if (keys.length != 4)
+				{
+					throw new IllegalArgumentException("Key length must be 4");
+				}
+
+				// already have these?
+				if (xteaEntry != null
+					&& xteaEntry.getKey1() == keys[0]
+					&& xteaEntry.getKey2() == keys[1]
+					&& xteaEntry.getKey3() == keys[2]
+					&& xteaEntry.getKey4() == keys[3])
+				{
+					continue;
+				}
+
+				if (!checkKeys(cacheCon, cache, region, keys))
+				{
+					continue;
+				}
+
+				query.addParameter("region", region)
+					.addParameter("rev", xteaRequest.getRevision())
+					.addParameter("key1", keys[0])
+					.addParameter("key2", keys[1])
+					.addParameter("key3", keys[2])
+					.addParameter("key4", keys[3])
 					.addToBatch();
 			}
 
 			query.executeBatch();
 			con.commit();
 		}
-
-		return "";
 	}
 
-	@RequestMapping("/{revision}")
-	public List<XteaKey> get(@PathVariable int revision)
+	@RequestMapping
+	public List<XteaKey> get()
 	{
 		try (Connection con = sql2o.open())
 		{
-			List<XteaEntry> entries = con.createQuery("select * from xtea where rev = :rev")
-				.addParameter("rev", revision)
+			List<XteaEntry> entries = con.createQuery(
+				"select t1.region, t1.time, t1.rev, t1.key1, t1.key2, t1.key3, t1.key4 from xtea t1 "
+				+ "inner join ( select region,max(time) as time from xtea group by region ) t2 "
+				+ "on t1.region = t2.region and t1.time = t2.time")
 				.executeAndFetch(XteaEntry.class);
 
 			return entries.stream()
 				.map(XteaService::entryToKey)
 				.collect(Collectors.toList());
+		}
+	}
+
+	@RequestMapping("/{region}")
+	public XteaKey getRegion(@PathVariable int region)
+	{
+		XteaEntry entry;
+
+		try (Connection con = sql2o.open())
+		{
+			entry = con.createQuery("select region, time, rev, key1, key2, key3, key4 from xtea "
+				+ "where region = :region order by time desc limit 1")
+				.addParameter("region", region)
+				.executeAndFetchFirst(XteaEntry.class);
+		}
+
+		if (entry == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return entryToKey(entry);
+	}
+
+	private boolean checkKeys(Connection con, CacheEntry cache, int regionId, int[] keys)
+	{
+		int x = regionId >>> 8;
+		int y = regionId & 0xFF;
+
+		String archiveName = new StringBuilder()
+			.append('l')
+			.append(x)
+			.append('_')
+			.append(y)
+			.toString();
+		int archiveNameHash = Djb2.hash(archiveName);
+
+		CacheDAO cacheDao = new CacheDAO();
+		ArchiveEntry archiveEntry = cacheDao.findArchiveByName(con, cache, IndexType.MAPS, archiveNameHash);
+		if (archiveEntry == null)
+		{
+			throw new InternalServerErrorException("Unable to find archive for region");
+		}
+
+		byte[] data = cacheService.getArchive(archiveEntry);
+		if (data == null)
+		{
+			throw new InternalServerErrorException("Unable to get archive data");
+		}
+
+		try
+		{
+			DataFile.decompress(data, keys);
+			return true;
+		}
+		catch (IOException ex)
+		{
+			return false;
 		}
 	}
 
