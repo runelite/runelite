@@ -89,7 +89,7 @@ LABEL60:
    if_icmpeq              LABEL64
    jump                   LABEL76
 LABEL64:
-   025                    1627
+   get_varbit             1627
    load_int               0
    if_icmpeq              LABEL68
    jump                   LABEL76
