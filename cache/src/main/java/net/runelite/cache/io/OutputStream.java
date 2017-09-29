@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.io;
 
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -98,11 +99,11 @@ public final class OutputStream extends java.io.OutputStream
 
 	public void writeBigSmart(int value)
 	{
+		Preconditions.checkArgument(value >= 0);
 		if (value >= 65536)
 		{
-			ensureRemaining(5);
-			this.writeByte(-1);
-			this.writeInt(Integer.MAX_VALUE & value);
+			ensureRemaining(4);
+			this.writeInt((1 << 31) | value);
 		}
 		else
 		{
