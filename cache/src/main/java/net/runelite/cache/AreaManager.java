@@ -24,51 +24,47 @@
  */
 package net.runelite.cache;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.AreaDefinition;
+import net.runelite.cache.definitions.loaders.AreaLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.FSFile;
+import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class AreaDumper
+public class AreaManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(AreaDumper.class);
+	private final Store store;
+	private final Map<Integer, AreaDefinition> areas = new HashMap<>();
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	@Test
-	public void extract() throws IOException
+	public AreaManager(Store store)
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+		this.store = store;
+	}
 
-		int count = 0;
+	public void load()
+	{
+		Index index = store.getIndex(IndexType.CONFIGS);
+		Archive archive = index.getArchive(ConfigType.AREA.getId());
 
-		try (Store store = new Store(base))
+		for (FSFile file : archive.getFiles())
 		{
-			store.load();
-
-			AreaManager areaManager = new AreaManager(store);
-			areaManager.load();
-
-			for (AreaDefinition area : areaManager.getAreas())
-			{
-				Files.write(gson.toJson(area), new File(outDir, area.id + ".json"), Charset.defaultCharset());
-				++count;
-			}
+			AreaLoader loader = new AreaLoader();
+			AreaDefinition area = loader.load(file.getContents(), file.getFileId());
+			areas.put(area.id, area);
 		}
+	}
 
-		logger.info("Dumped {} areas to {}", count, outDir);
+	public Collection<AreaDefinition> getAreas()
+	{
+		return Collections.unmodifiableCollection(areas.values());
+	}
+
+	public AreaDefinition getArea(int areaId)
+	{
+		return areas.get(areaId);
 	}
 }

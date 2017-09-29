@@ -59,7 +59,7 @@ public class ObjectLoader
 
 	private void processOp(int opcode, ObjectDefinition def, InputStream is)
 	{
-		if (1 == opcode)
+		if (opcode == 1)
 		{
 			int length = is.readUnsignedByte();
 			if (length > 0)
@@ -101,7 +101,7 @@ public class ObjectLoader
 		{
 			def.setSizeX(is.readUnsignedByte());
 		}
-		else if (15 == opcode)
+		else if (opcode == 15)
 		{
 			def.setSizeY(is.readUnsignedByte());
 		}
@@ -122,7 +122,7 @@ public class ObjectLoader
 		{
 			def.setAnInt2105(0);
 		}
-		else if (22 == opcode)
+		else if (opcode == 22)
 		{
 			def.setNonFlatShading(false);
 		}
@@ -130,7 +130,7 @@ public class ObjectLoader
 		{
 			def.setaBool2111(true);
 		}
-		else if (24 == opcode)
+		else if (opcode == 24)
 		{
 			def.setAnimationID(is.readUnsignedShort());
 			if (def.getAnimationID() == 0xFFFF)
@@ -193,7 +193,7 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
-		else if (62 == opcode)
+		else if (opcode == 62)
 		{
 			def.setIsRotated(true);
 		}
@@ -209,7 +209,7 @@ public class ObjectLoader
 		{
 			def.setModelSizeHeight(is.readUnsignedShort());
 		}
-		else if (67 == opcode)
+		else if (opcode == 67)
 		{
 			def.setModelSizeY(is.readUnsignedShort());
 		}
@@ -221,7 +221,7 @@ public class ObjectLoader
 		{
 			is.readByte();
 		}
-		else if (70 == opcode)
+		else if (opcode == 70)
 		{
 			def.setOffsetX(is.readUnsignedShort());
 		}
@@ -303,7 +303,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 82)
 		{
-			def.setMapIconID(is.readUnsignedShort());
+			def.setMapAreaId(is.readUnsignedShort());
 		}
 		else if (opcode == 92)
 		{
