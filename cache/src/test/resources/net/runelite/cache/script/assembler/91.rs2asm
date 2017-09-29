@@ -20,7 +20,7 @@ LABEL7:
 LABEL9:
    sload                  0
    string_remove_html    
-   3623                  
+   is_ignore             
    load_int               1
    if_icmpeq              LABEL15
    jump                   LABEL17
@@ -42,7 +42,7 @@ LABEL24:
 LABEL26:
    sload                  0
    string_remove_html    
-   3623                  
+   is_ignore             
    load_int               1
    if_icmpeq              LABEL32
    jump                   LABEL34
@@ -64,7 +64,7 @@ LABEL40:
    jump                   LABEL51
 LABEL44:
    sload                  0
-   3609                  
+   is_friend             
    load_int               1
    if_icmpeq              LABEL49
    jump                   LABEL51
