@@ -24,10 +24,13 @@
  */
 package net.runelite.cache;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.exporters.SpriteExporter;
@@ -40,7 +43,7 @@ import net.runelite.cache.fs.Store;
 public class SpriteManager
 {
 	private final Store store;
-	private final List<SpriteDefinition> sprites = new ArrayList<>();
+	private final Multimap<Integer, SpriteDefinition> sprites = HashMultimap.create();
 
 	public SpriteManager(Store store)
 	{
@@ -61,20 +64,42 @@ public class SpriteManager
 			byte[] contents = file.getContents();
 
 			SpriteLoader loader = new SpriteLoader();
-			SpriteDefinition[] sprites = loader.load(a.getArchiveId(), contents);
+			SpriteDefinition[] defs = loader.load(a.getArchiveId(), contents);
 
-			this.sprites.addAll(Arrays.asList(sprites));
+			for (SpriteDefinition sprite : defs)
+			{
+				sprites.put(sprite.getId(), sprite);
+			}
 		}
 	}
 
-	public List<SpriteDefinition> getSprites()
+	public Collection<SpriteDefinition> getSprites()
 	{
-		return sprites;
+		return Collections.unmodifiableCollection(sprites.values());
+	}
+
+	public SpriteDefinition findSprite(int spriteId, int frameId)
+	{
+		for (SpriteDefinition sprite : sprites.get(spriteId))
+		{
+			if (sprite.getFrame() == frameId)
+			{
+				return sprite;
+			}
+		}
+		return null;
+	}
+
+	public BufferedImage getSpriteImage(SpriteDefinition sprite)
+	{
+		BufferedImage image = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		image.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
+		return image;
 	}
 
 	public void export(File outDir) throws IOException
 	{
-		for (SpriteDefinition sprite : sprites)
+		for (SpriteDefinition sprite : sprites.values())
 		{
 			// I don't know why this happens
 			if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)

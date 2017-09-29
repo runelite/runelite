@@ -37,7 +37,7 @@ public class ObjectDefinition
 	private int[] objectModels;
 	private int[] objectTypes;
 	private short[] recolorToFind;
-	private int mapIconID = -1;
+	private int mapAreaId = -1;
 	private short[] textureToReplace;
 	private int sizeX = 1;
 	private int sizeY = 1;
@@ -154,14 +154,14 @@ public class ObjectDefinition
 		this.recolorToFind = recolorToFind;
 	}
 
-	public int getMapIconID()
+	public int getMapAreaId()
 	{
-		return mapIconID;
+		return mapAreaId;
 	}
 
-	public void setMapIconID(int mapIconID)
+	public void setMapAreaId(int mapAreaId)
 	{
-		this.mapIconID = mapIconID;
+		this.mapAreaId = mapAreaId;
 	}
 
 	public short[] getTextureToReplace()

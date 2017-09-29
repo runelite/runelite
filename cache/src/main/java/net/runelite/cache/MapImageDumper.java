@@ -24,8 +24,6 @@
  */
 package net.runelite.cache;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -35,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
@@ -69,13 +68,13 @@ public class MapImageDumper
 	private final List<UnderlayDefinition> underlays = new ArrayList<>();
 	private final List<OverlayDefinition> overlays = new ArrayList<>();
 	private final List<TextureDefinition> textures = new ArrayList<>();
-	private final Multimap<Integer, SpriteDefinition> sprites = HashMultimap.create();
 	private final Map<SpriteDefinition, Integer> averageColors = new HashMap<>();
 	private final Map<Integer, Image> scaledMapIcons = new HashMap<>();
 	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
-	private final Map<Integer, Image> mapFunctions = new HashMap<>(); // quest, water, etc
 
 	private RegionLoader regionLoader;
+	private final AreaManager areas;
+	private final SpriteManager sprites;
 
 	private boolean labelRegions;
 	private boolean outlineRegions;
@@ -83,6 +82,8 @@ public class MapImageDumper
 	public MapImageDumper(Store store)
 	{
 		this.store = store;
+		this.areas = new AreaManager(store);
+		this.sprites = new SpriteManager(store);
 	}
 
 	public void load() throws IOException
@@ -90,10 +91,12 @@ public class MapImageDumper
 		loadUnderlays(store);
 		loadOverlays(store);
 		loadTextures(store);
-		loadSprites(store);
 		loadObjects(store);
 
 		loadRegions(store);
+		areas.load();
+		sprites.load();
+		loadSprites();
 	}
 
 	public BufferedImage drawMap(int z) throws IOException
@@ -131,7 +134,7 @@ public class MapImageDumper
 			int drawBaseY = regionLoader.getHighestY().getBaseY() - baseY;
 
 			Graphics2D graphics = image.createGraphics();
-			
+
 			drawObjects(graphics, region, z, drawBaseX, drawBaseY);
 
 			graphics.dispose();
@@ -172,7 +175,7 @@ public class MapImageDumper
 
 		return image;
 	}
-	
+
 	private void drawUnderlay(BufferedImage image, int z)
 	{
 		// pass 1
@@ -199,7 +202,7 @@ public class MapImageDumper
 					int overlayId = region.getOverlayId(z, x, y) - 1;
 					int underlayId = region.getUnderlayId(z, x, y) - 1;
 					int rgb = 0;
-					
+
 					if (overlayId > -1)
 					{
 						OverlayDefinition overlay = findOverlay(overlayId);
@@ -220,7 +223,7 @@ public class MapImageDumper
 			}
 		}
 	}
-	
+
 	private void drawOverlay(BufferedImage image, int z)
 	{
 		for (Region region : regionLoader.getRegions())
@@ -265,7 +268,7 @@ public class MapImageDumper
 							TextureDefinition texture = findTexture(overlay.getTexture());
 							assert texture.getFileIds().length == 1;
 
-							SpriteDefinition sprite = findSprite(texture.getFileIds()[0], 0);
+							SpriteDefinition sprite = sprites.findSprite(texture.getFileIds()[0], 0);
 							assert sprite != null;
 
 							rgb = averageColors.get(sprite);
@@ -336,14 +339,22 @@ public class MapImageDumper
 			int drawX = drawBaseX + localX;
 			int drawY = drawBaseY + (Region.Y - 1 - localY);
 
-			if (od.getMapIconID() != -1)
+			if (od.getMapAreaId() != -1)
 			{
-				Image iconImage = mapFunctions.get(od.getMapIconID());
+				AreaDefinition area = areas.getArea(od.getMapAreaId());
+				assert area != null;
+
+				int spriteId = area.spriteId;
+
+				SpriteDefinition sprite = sprites.findSprite(spriteId, 0);
+				assert sprite != null;
+
+				BufferedImage iconImage = sprites.getSpriteImage(sprite);
 				graphics.drawImage(iconImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
 			}
 		}
 	}
-	
+
 	private void loadRegions(Store store) throws IOException
 	{
 		regionLoader = new RegionLoader(store);
@@ -435,11 +446,10 @@ public class MapImageDumper
 		return null;
 	}
 
-	private void loadSprites(Store store)
+	private void loadSprites()
 	{
 		Index index = store.getIndex(IndexType.SPRITES);
 		final int mapsceneHash = Djb2.hash("mapscene");
-		final int mapfunctionHash = Djb2.hash("mapfunction");
 
 		for (Archive a : index.getArchives())
 		{
@@ -460,8 +470,6 @@ public class MapImageDumper
 					continue;
 				}
 
-				this.sprites.put(sprite.getId(), sprite);
-
 				averageColors.put(sprite, getAverageColor(sprite.getPixels()));
 
 				if (a.getNameHash() == mapsceneHash)
@@ -475,28 +483,8 @@ public class MapImageDumper
 					assert scaledMapIcons.containsKey(sprite.getFrame()) == false;
 					scaledMapIcons.put(sprite.getFrame(), scaledImage);
 				}
-				else if (a.getNameHash() == mapfunctionHash)
-				{
-					BufferedImage spriteImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
-					spriteImage.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
-
-					assert mapFunctions.containsKey(sprite.getFrame()) == false;
-					mapFunctions.put(sprite.getFrame(), spriteImage);
-				}
 			}
 		}
-	}
-
-	private SpriteDefinition findSprite(int id, int frame)
-	{
-		for (SpriteDefinition def : sprites.get(id))
-		{
-			if (def.getFrame() == frame)
-			{
-				return def;
-			}
-		}
-		return null;
 	}
 
 	private int getAverageColor(int[] pixels)
