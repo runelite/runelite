@@ -22,41 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.util;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.stream.Stream;
+import net.runelite.http.api.xtea.XteaClient;
+import net.runelite.http.api.xtea.XteaKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class XteaKeyManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(XteaKeyManager.class);
-	
-	private final Map<Integer, Integer[]> keys = new HashMap<>();
+
+	private final Map<Integer, int[]> keys = new HashMap<>();
 
 	public void loadKeys() throws IOException
 	{
-		Properties properties = new Properties();
-		properties.load(XteaKeyManager.class.getResourceAsStream("/keys.properties"));
+		XteaClient xteaClient = new XteaClient();
 
-		for (Object key : properties.keySet())
+		for (XteaKey key : xteaClient.get())
 		{
-			int region = Integer.parseInt((String) key);
-
-			String[] values = properties.getProperty((String) key).split(",");
-
-			assert values.length == 4;
-
-			Integer[] k = (Integer[]) Stream.of(values)
-				.map(i -> Integer.parseInt(i))
-				.toArray(Integer[]::new);
-
-			keys.put(region, k);
+			keys.put(key.getRegion(), key.getKeys());
 		}
 
 		logger.info("Loaded {} keys", keys.size());
@@ -64,12 +52,6 @@ public class XteaKeyManager
 
 	public int[] getKeys(int region)
 	{
-		Integer[] k = keys.get(region);
-		if (k == null)
-			return null;
-
-		return Stream.of(k)
-			.mapToInt(Integer::intValue)
-			.toArray();
+		return keys.get(region);
 	}
 }

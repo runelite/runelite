@@ -44,6 +44,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>http-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>21.0</version>
