@@ -48,8 +48,8 @@ public class Instructions
 		add(IF_ICMPLT, "if_icmplt", 2, 0);
 		add(IF_ICMPGT, "if_icmpgt", 2, 0);
 		add(RETURN, "return", 0, 0);
-		add(GET_VARBIT, 0, 1);
-		add(SET_VARBIT, 1, 0);
+		add(GET_VARBIT, "get_varbit", 0, 1);
+		add(SET_VARBIT, "set_varbit", 1, 0);
 		add(IF_ICMPLE, "if_icmple", 2, 0);
 		add(IF_ICMPGE, "if_icmpge", 2, 0);
 		add(ILOAD, "iload", 0, 1);
@@ -182,7 +182,7 @@ public class Instructions
 		add(WIDGET_PUT_FLIPPEDVERTICALLY_WIDGET, "widget_put_flippedvertically_widget", 2, 0);
 		add(WIDGET_PUT_FLIPPEDHORIZONALLY_WIDGET, "widget_put_flippedhorizonally_widget", 2, 0);
 		add(WIDGET_PUT_SCROLLWIDTHHEIGHT_WIDGET, "widget_put_scrollwidthheight_widget", 3, 0);
-		add(WIDGET_ADVANCE_DIALOGUE_WIDGET, 1, 0);
+		add(WIDGET_ADVANCE_DIALOGUE_WIDGET, "widget_advance_dialogue_window", 1, 0);
 		add(2122, 2, 0);
 		add(2123, 2, 0);
 		add(2124, 2, 0);
@@ -370,7 +370,7 @@ public class Instructions
 		add(CHAR_IS_PRINTABLE, "char_is_printable", 1, 1);
 		add(ISALNUM, "isalnum", 1, 1);
 		add(ISALPHA, "isalpha", 1, 1);
-		add(ISDIGIT, 1, 1);
+		add(ISDIGIT, "isdigit", 1, 1);
 		add(STRING_LENGTH, "string_length", 0, 1, 1, 0);
 		add(STRING_SUBSTRING, "string_substring", 2, 0, 1, 1);
 		add(STRING_REMOVE_HTML, "string_remove_html", 0, 0, 1, 1);
