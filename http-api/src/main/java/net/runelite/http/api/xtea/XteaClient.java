@@ -24,13 +24,19 @@
  */
 package net.runelite.http.api.xtea;
 
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,10 +59,9 @@ public class XteaClient
 
 		String json = RuneliteAPI.GSON.toJson(xteaRequest);
 
-		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea");
-
-		HttpUrl url = builder.build();
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("xtea")
+			.build();
 
 		logger.debug("Built URI: {}", url);
 
@@ -66,5 +71,52 @@ public class XteaClient
 			.build();
 
 		return RuneliteAPI.CLIENT.newCall(request).execute();
+	}
+
+	public List<XteaKey> get() throws IOException
+	{
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("xtea")
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<XteaKey>>(){}.getType());
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public XteaKey get(int region) throws IOException
+	{
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("xtea")
+			.addPathSegment(Integer.toString(region))
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+
+		try (ResponseBody body = response.body())
+		{
+			InputStream in = body.byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), XteaKey.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }
