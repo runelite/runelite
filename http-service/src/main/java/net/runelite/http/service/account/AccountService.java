@@ -88,7 +88,7 @@ public class AccountService
 	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
 	private static final String RL_REDIR = "http://runelite.net/logged-in";
 
-	private final Gson gson = new Gson();
+	private final Gson gson = RuneliteAPI.GSON;
 
 	private final Sql2o sql2o;
 	private final String oauthClientId;
