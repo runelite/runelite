@@ -38,13 +38,22 @@ public class XteaKeyManager
 
 	private final Map<Integer, int[]> keys = new HashMap<>();
 
-	public void loadKeys() throws IOException
+	public void loadKeys()
 	{
 		XteaClient xteaClient = new XteaClient();
 
-		for (XteaKey key : xteaClient.get())
+		try
 		{
-			keys.put(key.getRegion(), key.getKeys());
+			for (XteaKey key : xteaClient.get())
+			{
+				keys.put(key.getRegion(), key.getKeys());
+			}
+		}
+		catch (IOException ex)
+		{
+			// happens on release when it is not deployed yet
+			logger.debug("unable to load xtea keys", ex);
+			return;
 		}
 
 		logger.info("Loaded {} keys", keys.size());
