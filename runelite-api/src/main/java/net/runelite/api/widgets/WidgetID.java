@@ -34,6 +34,9 @@ class WidgetID
 	static final int MINIMAP_GROUP_ID = 160;
 	static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
 	static final int CLUE_SCROLL_GROUP_ID = 203;
+	static final int FIXED_VIEWPORT_GROUP_ID = 548;
+	static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID = 161;
+	static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
 
 	static class PestControl
 	{
@@ -91,5 +94,12 @@ class WidgetID
 	static class Minimap
 	{
 		static final int XP_ORB = 1;
+	}
+
+	static class Viewport
+	{
+		static final int FIXED_VIEWPORT = 11;
+		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 5;
+		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 5;
 	}
 }
