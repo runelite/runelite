@@ -60,7 +60,12 @@ public enum Varbits
 	 * Venom - 1,000,000 (6dmg/hit) - 1,000,008 (20 dmg/hit)
 	 */
 	POISON(102, 0, 5),
-	VENOM(102, 6, 9);
+	VENOM(102, 6, 9),
+
+	/**
+	 * Options
+	 */
+	SIDE_PANELS(4607, 1055, 8, 8);
 
 	/**
 	 * varbit id
