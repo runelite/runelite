@@ -124,11 +124,41 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
-		//Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		//if (bank != null && !bank.isHidden())
-		//{
-		//	return null;
-		//}
+		WidgetInfo viewportInfo = WidgetInfo.FIXED_VIEWPORT;
+		if (client.isResized())
+		{
+			if (client.getSetting(Varbits.SIDE_PANELS) == 1)
+			{
+				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE;
+			}
+			else
+			{
+				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX;
+			}
+		}
+		Widget viewport = client.getWidget(viewportInfo);
+
+		if (viewport != null)
+		{
+			Widget[] subViewports = viewport.getStaticChildren();
+			if (subViewports.length > 0)
+			{
+				for (Widget w : subViewports)
+				{
+					if (w.getNestedChildren().length > 0)
+					{
+						return null;
+					}
+				}
+			}
+			else
+			{
+				if (viewport.getNestedChildren().length > 0)
+				{
+					return null;
+				}
+			}
+		}
 
 		// gets the hidden/highlighted items from the text box in the config
 		String configItems = config.getHiddenItems();
@@ -204,7 +234,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					Point point = itemLayer.getCanvasLocation();
 					// if the item is offscreen, don't bother drawing it
-					if (point == null || !isInViewport(point))
+					if (point == null || !pointInWidget(point, viewport))
 					{
 						continue;
 					}
@@ -295,24 +325,11 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	private boolean isInViewport(Point point)
+	private boolean pointInWidget(Point point, Widget widget)
 	{
-		WidgetInfo widgetInfo = WidgetInfo.FIXED_VIEWPORT;
-		if (client.isResized())
+		if (widget != null)
 		{
-			if (client.getSetting(Varbits.SIDE_PANELS) == 1)
-			{
-				widgetInfo = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE;
-			}
-			else
-			{
-				widgetInfo = WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX;
-			}
-		}
-		Widget viewport = client.getWidget(widgetInfo);
-		if (viewport != null)
-		{
-			Rectangle bounds = viewport.getBounds();
+			Rectangle bounds = widget.getBounds();
 			return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
 		}
 		return false;
