@@ -1,168 +1,64 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hm")
-public enum class222 implements RSEnum {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2819(0, 0),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2834(1, 0),
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2821(2, 0),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2830(3, 0),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2837(9, 2),
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2823(4, 1),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2825(5, 1),
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2824(6, 1),
+@ObfuscatedName("hn")
+public class class222 {
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2827(7, 1),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2828(8, 1),
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2829(12, 2),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2832(13, 2),
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2831(14, 2),
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2826(15, 2),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2833(16, 2),
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2820(17, 2),
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2835(18, 2),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2836(19, 2),
+   public static final boolean[] field2843;
    @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2822(20, 2),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2838(21, 2),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2839(10, 2),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2840(11, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   field2841(22, 3);
+   public static int[] field2842;
 
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -140182977
-   )
-   public final int field2842;
+   static {
+      field2843 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
+      field2842 = new int[99];
+      int var0 = 0;
 
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "0"
-   )
-   class222(int var3, int var4) {
-      this.field2842 = var3;
+      for(int var1 = 0; var1 < 99; ++var1) {
+         int var2 = var1 + 1;
+         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
+         var0 += var3;
+         field2842[var1] = var0 / 4;
+      }
+
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("ix")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "959363303"
+      signature = "(Ljava/lang/String;Lhj;I)Ljava/lang/String;",
+      garbageValue = "913941881"
    )
-   public int rsOrdinal() {
-      return this.field2842;
-   }
+   static String method4189(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IB)Liy;",
-      garbageValue = "37"
-   )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class54.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+               var0 = var0.substring(0, var3) + Varcs.method1895(ScriptVarType.method27(var1, var2 - 1)) + var0.substring(var3 + 2);
+            }
          }
 
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var4 = "";
+            if(class29.field435 != null) {
+               var4 = class90.method1796(class29.field435.field2240);
+               if(class29.field435.value != null) {
+                  var4 = (String)class29.field435.value;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var4 + var0.substring(var2 + 4);
+         }
       }
+
+      return var0;
    }
 }

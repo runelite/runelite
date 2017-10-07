@@ -2,43 +2,43 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("jt")
 public class class279 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1282865791
+      intValue = -1574596097
    )
-   public int field3741;
-   @ObfuscatedName("j")
+   public int field3754;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1224417301
+      intValue = 1497636907
    )
-   public int field3742;
+   public int field3755;
 
    class279(int var1, int var2, int var3, int var4) {
-      this.method4864(var1, var2);
-      this.method4866(var3, var4);
+      this.method5028(var1, var2);
+      this.method5029(var3, var4);
    }
 
    public class279(int var1, int var2) {
       this(0, 0, var1, var2);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "65280"
+      garbageValue = "-2015143167"
    )
-   void method4864(int var1, int var2) {
+   void method5028(int var1, int var2) {
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1987534259"
+      signature = "(IIB)V",
+      garbageValue = "1"
    )
-   void method4866(int var1, int var2) {
-      this.field3741 = var1;
-      this.field3742 = var2;
+   void method5029(int var1, int var2) {
+      this.field3754 = var1;
+      this.field3755 = var2;
    }
 }

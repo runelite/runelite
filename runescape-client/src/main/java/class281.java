@@ -1,21 +1,15 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jb")
+@ObfuscatedName("je")
 public class class281 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgp;"
    )
-   public static CombatInfoList field3757;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1651255091
-   )
-   public static int field3756;
+   public static CombatInfoList field3766;
 
    static {
-      field3757 = new CombatInfoList();
+      field3766 = new CombatInfoList();
    }
 }

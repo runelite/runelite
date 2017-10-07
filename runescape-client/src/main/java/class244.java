@@ -1,62 +1,75 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ih")
+@ObfuscatedName("ib")
 public class class244 extends CacheableNode {
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgl;"
    )
-   public static NodeCache field3315;
-   @ObfuscatedName("i")
+   public static NodeCache field3316;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lit;"
    )
-   public static IndexDataBase field3317;
-   @ObfuscatedName("t")
-   static int[] field3318;
-   @ObfuscatedName("rc")
-   @ObfuscatedGetter(
-      intValue = 45619665
-   )
-   static int field3319;
-   @ObfuscatedName("a")
-   public boolean field3316;
+   public static IndexDataBase field3319;
+   @ObfuscatedName("e")
+   public boolean field3317;
 
    static {
-      field3315 = new NodeCache(64);
+      field3316 = new NodeCache(64);
    }
 
    public class244() {
-      this.field3316 = false;
+      this.field3317 = false;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfp;II)V",
-      garbageValue = "-1789751322"
+      signature = "(Lfg;II)V",
+      garbageValue = "-2091067975"
    )
-   void method4318(Buffer var1, int var2) {
+   void method4431(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3316 = true;
+         this.field3317 = true;
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfp;I)V",
-      garbageValue = "1883339833"
+      signature = "(Lfg;I)V",
+      garbageValue = "-1904677155"
    )
-   public void method4316(Buffer var1) {
+   public void method4427(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4318(var1, var2);
+         this.method4431(var1, var2);
       }
+   }
+
+   @ObfuscatedName("ke")
+   @ObfuscatedSignature(
+      signature = "(Lhj;I)I",
+      garbageValue = "2022379037"
+   )
+   @Export("getWidgetConfig")
+   static int getWidgetConfig(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.value:var0.config;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lfc;I)V",
+      garbageValue = "-248473500"
+   )
+   public static void method4432(Huffman var0) {
+      class265.field3664 = var0;
    }
 }

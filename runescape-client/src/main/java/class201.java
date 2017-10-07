@@ -2,53 +2,44 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
-public class class201 implements Iterator {
-   @ObfuscatedName("i")
+@ObfuscatedName("gu")
+public class class201 implements Iterable {
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgg;"
    )
-   class202 field2491;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   CacheableNode field2490;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   CacheableNode field2489;
+   public CacheableNode field2504;
 
-   @ObfuscatedSignature(
-      signature = "(Lgj;)V"
-   )
-   class201(class202 var1) {
-      this.field2489 = null;
-      this.field2491 = var1;
-      this.field2490 = this.field2491.field2492.previous;
-      this.field2489 = null;
+   public class201() {
+      this.field2504 = new CacheableNode();
+      this.field2504.previous = this.field2504;
+      this.field2504.next = this.field2504;
    }
 
-   public Object next() {
-      CacheableNode var1 = this.field2490;
-      if(var1 == this.field2491.field2492) {
-         var1 = null;
-         this.field2490 = null;
-      } else {
-         this.field2490 = var1.previous;
+   @ObfuscatedName("d")
+   public void method3773() {
+      while(this.field2504.previous != this.field2504) {
+         this.field2504.previous.unlinkDual();
       }
 
-      this.field2489 = var1;
-      return var1;
    }
 
-   public boolean hasNext() {
-      return this.field2491.field2492 != this.field2490;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Lgg;)V"
+   )
+   public void method3777(CacheableNode var1) {
+      if(var1.next != null) {
+         var1.unlinkDual();
+      }
+
+      var1.next = this.field2504.next;
+      var1.previous = this.field2504;
+      var1.next.previous = var1;
+      var1.previous.next = var1;
    }
 
-   public void remove() {
-      this.field2489.unlinkDual();
-      this.field2489 = null;
+   public Iterator iterator() {
+      return new class200(this);
    }
 }

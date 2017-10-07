@@ -4,10 +4,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fj")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("i")
+   @ObfuscatedName("ma")
+   @ObfuscatedSignature(
+      signature = "Lcj;"
+   )
+   @Export("chatMessages")
+   static Varcs chatMessages;
+   @ObfuscatedName("d")
    @Export("inflator")
    Inflater inflator;
 
@@ -22,14 +28,14 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfp;[BB)V",
-      garbageValue = "115"
+      signature = "(Lfg;[BI)V",
+      garbageValue = "-2120575701"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
+      if(var1.payload[var1.offset] == 31 && -117 == var1.payload[var1.offset + 1]) {
          if(this.inflator == null) {
             this.inflator = new Inflater(true);
          }
@@ -46,23 +52,5 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(II)Lhx;",
-      garbageValue = "1667299355"
-   )
-   public static Widget method3177(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(class268.widgets[var1] == null || class268.widgets[var1][var2] == null) {
-         boolean var3 = class13.loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return class268.widgets[var1][var2];
    }
 }

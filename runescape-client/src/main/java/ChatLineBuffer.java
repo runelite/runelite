@@ -4,23 +4,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cw")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
+   @ObfuscatedName("cn")
+   public static char field1546;
+   @ObfuscatedName("gq")
+   @ObfuscatedGetter(
+      intValue = 1462660465
+   )
+   @Export("cameraY")
+   static int cameraY;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lii;"
-   )
-   static IndexDataBase field1565;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "[Lbt;"
+      signature = "[Lbm;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1103196823
+      intValue = -1475713077
    )
    @Export("length")
    int length;
@@ -29,10 +32,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbt;",
-      garbageValue = "-52"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbm;",
+      garbageValue = "10833127"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -60,93 +63,68 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IB)Lbt;",
-      garbageValue = "98"
+      signature = "(IS)Lbm;",
+      garbageValue = "-20723"
    )
-   MessageNode method1868(int var1) {
+   MessageNode method1940(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1159945325"
+      signature = "(B)I",
+      garbageValue = "-124"
    )
-   int method1869() {
+   int method1938() {
       return this.length;
    }
 
-   @ObfuscatedName("he")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-720413109"
+      signature = "(II)Z",
+      garbageValue = "1153741484"
    )
-   static final void method1867(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1065; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1110[var4] = true;
-         }
-      }
-
+   public static boolean method1945(int var0) {
+      return var0 == class221.field2837.field2838;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BIIS)Z",
-      garbageValue = "-21392"
+      signature = "(Lit;I)V",
+      garbageValue = "1650578553"
    )
-   static final boolean method1876(byte[] var0, int var1, int var2) {
-      boolean var3 = true;
-      Buffer var4 = new Buffer(var0);
-      int var5 = -1;
+   public static void method1936(IndexDataBase var0) {
+      InvType.field3283 = var0;
+   }
 
-      label69:
-      while(true) {
-         int var6 = var4.getUSmart();
-         if(var6 == 0) {
-            return var3;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1729797070"
+   )
+   @Export("adjustHSLListness0")
+   static final int adjustHSLListness0(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         var5 += var6;
-         int var7 = 0;
-         boolean var8 = false;
-
-         while(true) {
-            int var9;
-            while(!var8) {
-               var9 = var4.getUSmart();
-               if(var9 == 0) {
-                  continue label69;
-               }
-
-               var7 += var9 - 1;
-               int var10 = var7 & 63;
-               int var11 = var7 >> 6 & 63;
-               int var12 = var4.readUnsignedByte() >> 2;
-               int var13 = var11 + var1;
-               int var14 = var10 + var2;
-               if(var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-                  ObjectComposition var15 = GameObject.getObjectDefinition(var5);
-                  if(var12 != 22 || !Client.lowMemory || var15.field3454 != 0 || var15.interactType == 1 || var15.field3451) {
-                     if(!var15.method4521()) {
-                        ++Client.field1033;
-                        var3 = false;
-                     }
-
-                     var8 = true;
-                  }
-               }
-            }
-
-            var9 = var4.getUSmart();
-            if(var9 == 0) {
-               break;
-            }
-
-            var4.readUnsignedByte();
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
+
+         return (var0 & 'ﾀ') + var1;
       }
    }
 }

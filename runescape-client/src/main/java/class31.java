@@ -2,186 +2,190 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("ag")
 public class class31 {
-   @ObfuscatedName("eb")
-   @ObfuscatedSignature(
-      signature = "Ljm;"
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 459901819
    )
-   static Font field447;
+   @Export("sampleRate")
+   public static int sampleRate;
+   @ObfuscatedName("lp")
+   @ObfuscatedSignature(
+      signature = "[Lhj;"
+   )
+   static Widget[] field457;
    @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -756300447
+   )
+   static int field459;
+   @ObfuscatedName("ft")
+   @ObfuscatedGetter(
+      intValue = 759314825
+   )
+   static int field453;
+   @ObfuscatedName("da")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lij;"
    )
-   static Widget field452;
-   @ObfuscatedName("i")
+   static IndexData field458;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 178354685
+      intValue = 1903816733
    )
-   final int field450;
-   @ObfuscatedName("j")
+   final int field455;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1333329269
+      intValue = 2145922275
    )
-   final int field448;
-   @ObfuscatedName("a")
+   final int field454;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1631470609
+      intValue = 320533149
    )
-   final int field449;
+   final int field461;
 
    class31(int var1, int var2, int var3) {
-      this.field450 = var1;
-      this.field448 = var2;
-      this.field449 = var3;
+      this.field455 = var1;
+      this.field454 = var2;
+      this.field461 = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("fg")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-176341843"
+      signature = "(I)V",
+      garbageValue = "-2068882454"
    )
-   static int method303(int var0, int var1) {
-      Overlay var2 = class61.method1098(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else {
-         int var3;
-         if(var2.texture >= 0) {
-            var3 = class169.method3211(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-            return Graphics3D.colorPalette[var3] | -16777216;
-         } else if(var2.color == 16711935) {
-            return var1;
-         } else {
-            var3 = class21.method179(var2.hue, var2.saturation, var2.lightness);
-            int var4 = class169.method3211(var3, 96);
-            return Graphics3D.colorPalette[var4] | -16777216;
+   static void method268() {
+      Client.field1144 = -1L;
+      Client.field934 = -1;
+      class110.field1653.field861 = 0;
+      class43.field595 = true;
+      Client.field935 = true;
+      Client.field1137 = -1L;
+      FrameMap.method2754();
+      Client.secretPacketBuffer1.offset = 0;
+      Client.secretPacketBuffer2.offset = 0;
+      Client.packetType = -1;
+      Client.lastFrameId = -1;
+      Client.secondLastFrameId = -1;
+      Client.thridLastFrameId = -1;
+      Client.field969 = 0;
+      Client.field983 = 0;
+      Client.field974 = 0;
+      Client.field938 = 0;
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
+      Varcs.method1894(0);
+      class96.chatLineMap.clear();
+      class96.field1508.clear();
+      class96.field1509.method3773();
+      class96.field1510 = 0;
+      Client.itemSelectionState = 0;
+      Client.spellSelected = false;
+      Client.field1154 = 0;
+      Client.mapAngle = 0;
+      Client.field1183 = 0;
+      Client.field1140 = -1;
+      Client.destinationX = 0;
+      Client.destinationY = 0;
+      Client.field946 = class89.field1403;
+      Client.field947 = class89.field1403;
+      Client.field960 = 0;
+      class94.field1485 = 0;
+
+      int var0;
+      for(var0 = 0; var0 < 2048; ++var0) {
+         class94.field1478[var0] = null;
+         class94.field1477[var0] = 1;
+      }
+
+      for(var0 = 0; var0 < 2048; ++var0) {
+         Client.cachedPlayers[var0] = null;
+      }
+
+      for(var0 = 0; var0 < '耀'; ++var0) {
+         Client.cachedNPCs[var0] = null;
+      }
+
+      Client.field1061 = -1;
+      Client.projectiles.clear();
+      Client.graphicsObjectDeque.clear();
+
+      for(var0 = 0; var0 < 4; ++var0) {
+         for(int var1 = 0; var1 < 104; ++var1) {
+            for(int var2 = 0; var2 < 104; ++var2) {
+               Client.groundItemDeque[var0][var1][var2] = null;
+            }
          }
       }
+
+      Client.pendingSpawns = new Deque();
+      Client.field1180 = 0;
+      Client.friendCount = 0;
+      Client.ignoreCount = 0;
+
+      for(var0 = 0; var0 < class181.field2452; ++var0) {
+         VarPlayerType var3 = Buffer.method3461(var0);
+         if(var3 != null) {
+            class211.settings[var0] = 0;
+            class211.widgetSettings[var0] = 0;
+         }
+      }
+
+      GZipDecompressor.chatMessages.reset();
+      Client.field1081 = -1;
+      if(Client.widgetRoot != -1) {
+         class215.method4106(Client.widgetRoot);
+      }
+
+      for(WidgetNode var4 = (WidgetNode)Client.componentTable.method3646(); var4 != null; var4 = (WidgetNode)Client.componentTable.method3647()) {
+         PendingSpawn.method1584(var4, true);
+      }
+
+      Client.widgetRoot = -1;
+      Client.componentTable = new HashTable(8);
+      Client.field1077 = null;
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
+      Client.field1179.method4096((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.playerOptions[var0] = null;
+         Client.playerOptionsPriorities[var0] = false;
+      }
+
+      ItemContainer.itemContainers = new HashTable(32);
+      Client.field1123 = true;
+
+      for(var0 = 0; var0 < 100; ++var0) {
+         Client.field1118[var0] = true;
+      }
+
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_RESIZE_CLIENT_FRAME);
+      Client.secretPacketBuffer1.putByte(class19.method142());
+      Client.secretPacketBuffer1.putShort(class60.canvasWidth);
+      Client.secretPacketBuffer1.putShort(class48.canvasHeight);
+      Client.clanChatOwner = null;
+      class21.clanChatCount = 0;
+      WorldMapType1.clanMembers = null;
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.grandExchangeOffers[var0] = new GrandExchangeOffer();
+      }
+
+      class19.field330 = null;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIIIZI)Lkd;",
-      garbageValue = "1238891309"
+      signature = "(B)I",
+      garbageValue = "-41"
    )
-   @Export("createSprite")
-   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if(var1 == -1) {
-         var4 = 0;
-      } else if(var4 == 2 && var1 != 1) {
-         var4 = 1;
-      }
-
-      long var6 = ((long)var3 << 42) + ((long)var4 << 40) + (long)var0 + ((long)var1 << 16) + ((long)var2 << 38);
-      SpritePixels var8;
-      if(!var5) {
-         var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
-         if(var8 != null) {
-            return var8;
-         }
-      }
-
-      ItemComposition var9 = class169.getItemDefinition(var0);
-      if(var1 > 1 && var9.countObj != null) {
-         int var10 = -1;
-
-         for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
-               var10 = var9.countObj[var11];
-            }
-         }
-
-         if(var10 != -1) {
-            var9 = class169.getItemDefinition(var10);
-         }
-      }
-
-      Model var19 = var9.getModel(1);
-      if(var19 == null) {
-         return null;
-      } else {
-         SpritePixels var20 = null;
-         if(var9.notedTemplate != -1) {
-            var20 = createSprite(var9.note, 10, 1, 0, 0, true);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.notedId != -1) {
-            var20 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.field3497 != -1) {
-            var20 = createSprite(var9.field3536, var1, 0, 0, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         }
-
-         int[] var12 = Rasterizer2D.graphicsPixels;
-         int var13 = Rasterizer2D.graphicsPixelsWidth;
-         int var14 = Rasterizer2D.graphicsPixelsHeight;
-         int[] var15 = new int[4];
-         Rasterizer2D.copyDrawRegion(var15);
-         var8 = new SpritePixels(36, 32);
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         Rasterizer2D.reset();
-         Graphics3D.method2616();
-         Graphics3D.method2619(16, 16);
-         Graphics3D.rasterGouraudLowRes = false;
-         if(var9.field3497 != -1) {
-            var20.method5019(0, 0);
-         }
-
-         int var16 = var9.zoom2d;
-         if(var5) {
-            var16 = (int)((double)var16 * 1.5D);
-         } else if(var2 == 2) {
-            var16 = (int)((double)var16 * 1.04D);
-         }
-
-         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
-         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
-         var19.method2515();
-         var19.method2528(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.modelHeight / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
-         if(var9.notedId != -1) {
-            var20.method5019(0, 0);
-         }
-
-         if(var2 >= 1) {
-            var8.method5033(1);
-         }
-
-         if(var2 >= 2) {
-            var8.method5033(16777215);
-         }
-
-         if(var3 != 0) {
-            var8.method5094(var3);
-         }
-
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
-         if(var9.notedTemplate != -1) {
-            var20.method5019(0, 0);
-         }
-
-         if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            ItemComposition.field3489.method4773(Permission.method4124(var1), 0, 9, 16776960, 1);
-         }
-
-         if(!var5) {
-            ItemComposition.itemSpriteCache.put(var8, var6);
-         }
-
-         Rasterizer2D.setRasterBuffer(var12, var13, var14);
-         Rasterizer2D.setDrawRegion(var15);
-         Graphics3D.method2616();
-         Graphics3D.rasterGouraudLowRes = true;
-         return var8;
-      }
+   public static int method267() {
+      return KeyFocusListener.keyboardIdleTicks;
    }
 }

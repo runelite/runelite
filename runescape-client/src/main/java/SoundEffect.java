@@ -3,24 +3,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("cf")
 @Implements("SoundEffect")
 public class SoundEffect {
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("start")
    int start;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "[Ldw;"
+      signature = "[Ldu;"
    )
    @Export("instruments")
    AudioInstrument[] instruments;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("end")
    int end;
 
    @ObfuscatedSignature(
-      signature = "(Lfp;)V"
+      signature = "(Lfg;)V"
    )
    SoundEffect(Buffer var1) {
       this.instruments = new AudioInstrument[10];
@@ -38,7 +38,7 @@ public class SoundEffect {
       this.end = var1.readUnsignedShort();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("mix")
    final byte[] mix() {
       int var1 = 0;
@@ -63,7 +63,7 @@ public class SoundEffect {
                int[] var7 = this.instruments[var4].synthesize(var5, this.instruments[var4].duration);
 
                for(int var8 = 0; var8 < var5; ++var8) {
-                  int var9 = (var7[var8] >> 8) + var3[var8 + var6];
+                  int var9 = var3[var8 + var6] + (var7[var8] >> 8);
                   if((var9 + 128 & -256) != 0) {
                      var9 = var9 >> 31 ^ 127;
                   }
@@ -77,16 +77,16 @@ public class SoundEffect {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "()Ldp;"
+      signature = "()Ldo;"
    )
-   public class106 method1943() {
+   public class105 method2011() {
       byte[] var1 = this.mix();
-      return new class106(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
+      return new class105(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("calculateDelay")
    public final int calculateDelay() {
       int var1 = 9999999;
@@ -120,9 +120,9 @@ public class SoundEffect {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lii;II)Ldj;"
+      signature = "(Lit;II)Lcf;"
    )
    @Export("getTrack")
    public static SoundEffect getTrack(IndexDataBase var0, int var1, int var2) {

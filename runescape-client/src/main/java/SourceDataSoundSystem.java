@@ -12,34 +12,34 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bc")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    AudioFormat field690;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2003185615
+      intValue = -222126409
    )
    @Export("size")
    int size;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("source")
    SourceDataLine source;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1510564929"
+      garbageValue = "-1570571941"
    )
-   protected void vmethod2022() {
+   protected void vmethod2096() {
       this.source.flush();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1086892300"
+      garbageValue = "-529989113"
    )
    @Export("close")
    protected void close() {
@@ -50,50 +50,44 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-96148960"
-   )
-   @Export("size")
-   protected int size() {
-      return this.size - (this.source.available() >> (AbstractSoundSystem.highMemory?2:1));
-   }
-
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1782171697"
+      garbageValue = "2135777451"
    )
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field690, var1 << (AbstractSoundSystem.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.field690, var1 << (class33.highMemory?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
          this.size = var1;
-      } catch (LineUnavailableException var5) {
-         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
-         var4 = (var4 >>> 4) + var4 & 252645135;
-         var4 += var4 >>> 8;
-         var4 += var4 >>> 16;
-         int var3 = var4 & 255;
-         if(var3 != 1) {
-            this.create(class165.method3159(var1));
+      } catch (LineUnavailableException var3) {
+         if(class15.method98(var1) != 1) {
+            this.create(class88.method1780(var1));
          } else {
             this.source = null;
-            throw var5;
+            throw var3;
          }
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-106"
+   )
+   @Export("size")
+   protected int size() {
+      return this.size - (this.source.available() >> (class33.highMemory?2:1));
+   }
+
+   @ObfuscatedName("p")
    @Export("write")
    protected void write() {
       int var1 = 256;
-      if(AbstractSoundSystem.highMemory) {
+      if(class33.highMemory) {
          var1 <<= 1;
       }
 
@@ -110,13 +104,13 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1976760408"
+      signature = "(B)V",
+      garbageValue = "0"
    )
-   protected void vmethod2017() {
-      this.field690 = new AudioFormat((float)class73.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
-      this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
+   protected void vmethod2133() {
+      this.field690 = new AudioFormat((float)class31.sampleRate, 16, class33.highMemory?2:1, true, false);
+      this.bytes = new byte[256 << (class33.highMemory?2:1)];
    }
 }

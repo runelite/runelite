@@ -3,39 +3,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jn")
+@ObfuscatedName("ja")
 public class class277 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("ct")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Leh;"
    )
-   public static final class277 field3736;
-   @ObfuscatedName("j")
+   @Export("socket")
+   static Task socket;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lja;"
    )
-   public static final class277 field3735;
-   @ObfuscatedName("a")
+   static final class277 field3752;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Ljn;"
+      signature = "Lja;"
    )
-   public static final class277 field3737;
-   @ObfuscatedName("g")
-   @Export("tt")
-   static int[] tt;
-   @ObfuscatedName("r")
+   public static final class277 field3751;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lja;"
+   )
+   static final class277 field3748;
+   @ObfuscatedName("s")
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1962201825
+      intValue = 205433069
    )
-   public final int field3738;
+   public final int field3749;
 
    static {
-      field3736 = new class277(0);
-      field3735 = new class277(1);
-      field3737 = new class277(2);
+      field3752 = new class277(0);
+      field3751 = new class277(1);
+      field3748 = new class277(2);
    }
 
    class277(int var1) {
-      this.field3738 = var1;
+      this.field3749 = var1;
    }
 }

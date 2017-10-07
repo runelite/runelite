@@ -1,246 +1,389 @@
-import java.io.File;
-import java.io.IOException;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
-public class class163 {
-   @ObfuscatedName("a")
-   static int[][] field2307;
-   @ObfuscatedName("r")
-   static int[][] field2310;
-   @ObfuscatedName("b")
-   static int[] field2306;
+@ObfuscatedName("fy")
+public abstract class class163 {
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1043890977
+   )
+   public int field2317;
    @ObfuscatedName("k")
-   static int[] field2312;
-
-   static {
-      field2307 = new int[128][128];
-      field2310 = new int[128][128];
-      field2306 = new int[4096];
-      field2312 = new int[4096];
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldc;",
-      garbageValue = "309792936"
+   @ObfuscatedGetter(
+      intValue = 1668256127
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class46.field612, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
-      }
-
-      String var4 = "";
-      if(class39.field551 == 33) {
-         var4 = "_rc";
-      } else if(class39.field551 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class156.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
-   }
-
+   public int field2318;
    @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILck;ZB)I",
-      garbageValue = "18"
+   @ObfuscatedGetter(
+      intValue = -1590290837
    )
-   static int method3143(int var0, Script var1, boolean var2) {
-      if(var0 == 3300) {
-         class82.intStack[++Ignore.intStackSize - 1] = Client.gameCycle;
+   public int field2319;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1986231923
+   )
+   public int field2320;
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIILfq;I)Z",
+      garbageValue = "1696204871"
+   )
+   protected abstract boolean vmethod3147(int var1, int var2, int var3, CollisionData var4);
+
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "(ILcv;ZS)I",
+      garbageValue = "1831"
+   )
+   static int method3151(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 6600) {
+         var3 = class5.plane;
+         int var9 = (AbstractByteBuffer.localPlayer.x >> 7) + WallObject.baseX;
+         int var5 = (AbstractByteBuffer.localPlayer.y >> 7) + Varcs.baseY;
+         Friend.method1134().method5326(var3, var9, var5, true);
          return 1;
       } else {
-         int var3;
-         int var4;
-         int[] var5;
-         int var6;
-         int var7;
-         ItemContainer var8;
-         if(var0 == 3301) {
-            Ignore.intStackSize -= 2;
-            var3 = class82.intStack[Ignore.intStackSize];
-            var4 = class82.intStack[Ignore.intStackSize + 1];
-            var5 = class82.intStack;
-            var6 = ++Ignore.intStackSize - 1;
-            var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-            if(var8 == null) {
-               var7 = -1;
-            } else if(var4 >= 0 && var4 < var8.itemIds.length) {
-               var7 = var8.itemIds[var4];
-            } else {
-               var7 = -1;
+         WorldMapData var11;
+         if(var0 == 6601) {
+            var3 = class81.intStack[--class81.intStackSize];
+            String var16 = "";
+            var11 = Friend.method1134().method5419(var3);
+            if(var11 != null) {
+               var16 = var11.method280();
             }
 
-            var5[var6] = var7;
+            class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var16;
             return 1;
-         } else if(var0 == 3302) {
-            Ignore.intStackSize -= 2;
-            var3 = class82.intStack[Ignore.intStackSize];
-            var4 = class82.intStack[Ignore.intStackSize + 1];
-            class82.intStack[++Ignore.intStackSize - 1] = class17.method131(var3, var4);
+         } else if(var0 == 6602) {
+            var3 = class81.intStack[--class81.intStackSize];
+            Friend.method1134().method5412(var3);
             return 1;
-         } else if(var0 == 3303) {
-            Ignore.intStackSize -= 2;
-            var3 = class82.intStack[Ignore.intStackSize];
-            var4 = class82.intStack[Ignore.intStackSize + 1];
-            class82.intStack[++Ignore.intStackSize - 1] = class88.method1715(var3, var4);
+         } else if(var0 == 6603) {
+            class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5338();
+            return 1;
+         } else if(var0 == 6604) {
+            var3 = class81.intStack[--class81.intStackSize];
+            Friend.method1134().method5335(var3);
+            return 1;
+         } else if(var0 == 6605) {
+            class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5476()?1:0;
             return 1;
          } else {
-            int var10;
-            if(var0 == 3304) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               int[] var9 = class82.intStack;
-               var10 = ++Ignore.intStackSize - 1;
-               InvType var11 = (InvType)InvType.inventoryCache.get((long)var3);
-               InvType var12;
-               if(var11 != null) {
-                  var12 = var11;
-               } else {
-                  byte[] var13 = InvType.field3284.getConfigData(5, var3);
-                  var11 = new InvType();
-                  if(var13 != null) {
-                     var11.decode(new Buffer(var13));
-                  }
-
-                  InvType.inventoryCache.put(var11, (long)var3);
-                  var12 = var11;
-               }
-
-               var9[var10] = var12.size;
+            Coordinates var15;
+            if(var0 == 6606) {
+               var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+               Friend.method1134().method5342(var15.worldX, var15.worldY);
                return 1;
-            } else if(var0 == 3305) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = Client.boostedSkillLevels[var3];
+            } else if(var0 == 6607) {
+               var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+               Friend.method1134().method5381(var15.worldX, var15.worldY);
                return 1;
-            } else if(var0 == 3306) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = Client.realSkillLevels[var3];
+            } else if(var0 == 6608) {
+               var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+               Friend.method1134().method5474(var15.plane, var15.worldX, var15.worldY);
                return 1;
-            } else if(var0 == 3307) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = Client.skillExperiences[var3];
+            } else if(var0 == 6609) {
+               var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+               Friend.method1134().method5345(var15.plane, var15.worldX, var15.worldY);
                return 1;
-            } else if(var0 == 3308) {
-               var3 = class27.plane;
-               var4 = (Player.localPlayer.x >> 7) + class149.baseX;
-               var10 = (Player.localPlayer.y >> 7) + class67.baseY;
-               class82.intStack[++Ignore.intStackSize - 1] = (var4 << 14) + var10 + (var3 << 28);
+            } else if(var0 == 6610) {
+               class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5442();
+               class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5347();
                return 1;
-            } else if(var0 == 3309) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = var3 >> 14 & 16383;
-               return 1;
-            } else if(var0 == 3310) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = var3 >> 28;
-               return 1;
-            } else if(var0 == 3311) {
-               var3 = class82.intStack[--Ignore.intStackSize];
-               class82.intStack[++Ignore.intStackSize - 1] = var3 & 16383;
-               return 1;
-            } else if(var0 == 3312) {
-               class82.intStack[++Ignore.intStackSize - 1] = Client.isMembers?1:0;
-               return 1;
-            } else if(var0 != 3313) {
-               if(var0 == 3314) {
-                  Ignore.intStackSize -= 2;
-                  var3 = class82.intStack[Ignore.intStackSize] + '耀';
-                  var4 = class82.intStack[Ignore.intStackSize + 1];
-                  class82.intStack[++Ignore.intStackSize - 1] = class17.method131(var3, var4);
-                  return 1;
-               } else if(var0 == 3315) {
-                  Ignore.intStackSize -= 2;
-                  var3 = class82.intStack[Ignore.intStackSize] + '耀';
-                  var4 = class82.intStack[Ignore.intStackSize + 1];
-                  class82.intStack[++Ignore.intStackSize - 1] = class88.method1715(var3, var4);
-                  return 1;
-               } else if(var0 == 3316) {
-                  if(Client.rights >= 2) {
-                     class82.intStack[++Ignore.intStackSize - 1] = Client.rights;
-                  } else {
-                     class82.intStack[++Ignore.intStackSize - 1] = 0;
-                  }
-
-                  return 1;
-               } else if(var0 == 3317) {
-                  class82.intStack[++Ignore.intStackSize - 1] = Client.field1059;
-                  return 1;
-               } else if(var0 == 3318) {
-                  class82.intStack[++Ignore.intStackSize - 1] = Client.world;
-                  return 1;
-               } else if(var0 == 3321) {
-                  class82.intStack[++Ignore.intStackSize - 1] = Client.energy;
-                  return 1;
-               } else if(var0 == 3322) {
-                  class82.intStack[++Ignore.intStackSize - 1] = Client.weight;
-                  return 1;
-               } else if(var0 == 3323) {
-                  if(Client.field952) {
-                     class82.intStack[++Ignore.intStackSize - 1] = 1;
-                  } else {
-                     class82.intStack[++Ignore.intStackSize - 1] = 0;
-                  }
-
-                  return 1;
-               } else if(var0 == 3324) {
-                  class82.intStack[++Ignore.intStackSize - 1] = Client.flags;
-                  return 1;
-               } else if(var0 == 3325) {
-                  Ignore.intStackSize -= 4;
-                  var3 = class82.intStack[Ignore.intStackSize];
-                  var4 = class82.intStack[Ignore.intStackSize + 1];
-                  var10 = class82.intStack[Ignore.intStackSize + 2];
-                  var6 = class82.intStack[Ignore.intStackSize + 3];
-                  var3 += var4 << 14;
-                  var3 += var10 << 28;
-                  var3 += var6;
-                  class82.intStack[++Ignore.intStackSize - 1] = var3;
-                  return 1;
-               } else {
-                  return 2;
-               }
             } else {
-               Ignore.intStackSize -= 2;
-               var3 = class82.intStack[Ignore.intStackSize] + '耀';
-               var4 = class82.intStack[Ignore.intStackSize + 1];
-               var5 = class82.intStack;
-               var6 = ++Ignore.intStackSize - 1;
-               var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-               if(var8 == null) {
-                  var7 = -1;
-               } else if(var4 >= 0 && var4 < var8.itemIds.length) {
-                  var7 = var8.itemIds[var4];
-               } else {
-                  var7 = -1;
-               }
+               WorldMapData var13;
+               if(var0 == 6611) {
+                  var3 = class81.intStack[--class81.intStackSize];
+                  var13 = Friend.method1134().method5419(var3);
+                  if(var13 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                  } else {
+                     class81.intStack[++class81.intStackSize - 1] = var13.method326().method4058();
+                  }
 
-               var5[var6] = var7;
-               return 1;
+                  return 1;
+               } else if(var0 == 6612) {
+                  var3 = class81.intStack[--class81.intStackSize];
+                  var13 = Friend.method1134().method5419(var3);
+                  if(var13 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                  } else {
+                     class81.intStack[++class81.intStackSize - 1] = (var13.method290() - var13.method316() + 1) * 64;
+                     class81.intStack[++class81.intStackSize - 1] = (var13.method323() - var13.method333() + 1) * 64;
+                  }
+
+                  return 1;
+               } else if(var0 == 6613) {
+                  var3 = class81.intStack[--class81.intStackSize];
+                  var13 = Friend.method1134().method5419(var3);
+                  if(var13 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                     class81.intStack[++class81.intStackSize - 1] = 0;
+                  } else {
+                     class81.intStack[++class81.intStackSize - 1] = var13.method316() * 64;
+                     class81.intStack[++class81.intStackSize - 1] = var13.method333() * 64;
+                     class81.intStack[++class81.intStackSize - 1] = var13.method290() * 64 + 64 - 1;
+                     class81.intStack[++class81.intStackSize - 1] = var13.method323() * 64 + 64 - 1;
+                  }
+
+                  return 1;
+               } else if(var0 == 6614) {
+                  var3 = class81.intStack[--class81.intStackSize];
+                  var13 = Friend.method1134().method5419(var3);
+                  if(var13 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = -1;
+                  } else {
+                     class81.intStack[++class81.intStackSize - 1] = var13.method292();
+                  }
+
+                  return 1;
+               } else if(var0 == 6615) {
+                  var15 = Friend.method1134().method5348();
+                  if(var15 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = -1;
+                     class81.intStack[++class81.intStackSize - 1] = -1;
+                  } else {
+                     class81.intStack[++class81.intStackSize - 1] = var15.worldX;
+                     class81.intStack[++class81.intStackSize - 1] = var15.worldY;
+                  }
+
+                  return 1;
+               } else if(var0 == 6616) {
+                  class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5328();
+                  return 1;
+               } else if(var0 == 6617) {
+                  var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+                  var13 = Friend.method1134().method5329();
+                  if(var13 == null) {
+                     class81.intStack[++class81.intStackSize - 1] = -1;
+                     class81.intStack[++class81.intStackSize - 1] = -1;
+                     return 1;
+                  } else {
+                     int[] var14 = var13.method285(var15.plane, var15.worldX, var15.worldY);
+                     if(var14 == null) {
+                        class81.intStack[++class81.intStackSize - 1] = -1;
+                        class81.intStack[++class81.intStackSize - 1] = -1;
+                     } else {
+                        class81.intStack[++class81.intStackSize - 1] = var14[0];
+                        class81.intStack[++class81.intStackSize - 1] = var14[1];
+                     }
+
+                     return 1;
+                  }
+               } else {
+                  Coordinates var7;
+                  if(var0 == 6618) {
+                     var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+                     var13 = Friend.method1134().method5329();
+                     if(var13 == null) {
+                        class81.intStack[++class81.intStackSize - 1] = -1;
+                        class81.intStack[++class81.intStackSize - 1] = -1;
+                        return 1;
+                     } else {
+                        var7 = var13.method275(var15.worldX, var15.worldY);
+                        if(var7 == null) {
+                           class81.intStack[++class81.intStackSize - 1] = -1;
+                        } else {
+                           class81.intStack[++class81.intStackSize - 1] = var7.method4058();
+                        }
+
+                        return 1;
+                     }
+                  } else {
+                     Coordinates var12;
+                     if(var0 == 6619) {
+                        class81.intStackSize -= 2;
+                        var3 = class81.intStack[class81.intStackSize];
+                        var12 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
+                        class28.method219(var3, var12, false);
+                        return 1;
+                     } else if(var0 == 6620) {
+                        class81.intStackSize -= 2;
+                        var3 = class81.intStack[class81.intStackSize];
+                        var12 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
+                        class28.method219(var3, var12, true);
+                        return 1;
+                     } else if(var0 == 6621) {
+                        class81.intStackSize -= 2;
+                        var3 = class81.intStack[class81.intStackSize];
+                        var12 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
+                        var11 = Friend.method1134().method5419(var3);
+                        if(var11 == null) {
+                           class81.intStack[++class81.intStackSize - 1] = 0;
+                           return 1;
+                        } else {
+                           class81.intStack[++class81.intStackSize - 1] = var11.method272(var12.plane, var12.worldX, var12.worldY)?1:0;
+                           return 1;
+                        }
+                     } else if(var0 == 6622) {
+                        class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5349();
+                        class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5439();
+                        return 1;
+                     } else if(var0 == 6623) {
+                        var15 = new Coordinates(class81.intStack[--class81.intStackSize]);
+                        var13 = Friend.method1134().method5325(var15.plane, var15.worldX, var15.worldY);
+                        if(var13 == null) {
+                           class81.intStack[++class81.intStackSize - 1] = -1;
+                        } else {
+                           class81.intStack[++class81.intStackSize - 1] = var13.method313();
+                        }
+
+                        return 1;
+                     } else if(var0 == 6624) {
+                        Friend.method1134().method5445(class81.intStack[--class81.intStackSize]);
+                        return 1;
+                     } else if(var0 == 6625) {
+                        Friend.method1134().method5352();
+                        return 1;
+                     } else if(var0 == 6626) {
+                        Friend.method1134().method5492(class81.intStack[--class81.intStackSize]);
+                        return 1;
+                     } else if(var0 == 6627) {
+                        Friend.method1134().method5354();
+                        return 1;
+                     } else {
+                        boolean var10;
+                        if(var0 == 6628) {
+                           var10 = class81.intStack[--class81.intStackSize] == 1;
+                           Friend.method1134().method5355(var10);
+                           return 1;
+                        } else if(var0 == 6629) {
+                           var3 = class81.intStack[--class81.intStackSize];
+                           Friend.method1134().method5356(var3);
+                           return 1;
+                        } else if(var0 == 6630) {
+                           var3 = class81.intStack[--class81.intStackSize];
+                           Friend.method1134().method5357(var3);
+                           return 1;
+                        } else if(var0 == 6631) {
+                           Friend.method1134().method5358();
+                           return 1;
+                        } else if(var0 == 6632) {
+                           var10 = class81.intStack[--class81.intStackSize] == 1;
+                           Friend.method1134().method5388(var10);
+                           return 1;
+                        } else {
+                           boolean var4;
+                           if(var0 == 6633) {
+                              class81.intStackSize -= 2;
+                              var3 = class81.intStack[class81.intStackSize];
+                              var4 = class81.intStack[class81.intStackSize + 1] == 1;
+                              Friend.method1134().method5383(var3, var4);
+                              return 1;
+                           } else if(var0 == 6634) {
+                              class81.intStackSize -= 2;
+                              var3 = class81.intStack[class81.intStackSize];
+                              var4 = class81.intStack[class81.intStackSize + 1] == 1;
+                              Friend.method1134().method5361(var3, var4);
+                              return 1;
+                           } else if(var0 == 6635) {
+                              class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5362()?1:0;
+                              return 1;
+                           } else if(var0 == 6636) {
+                              var3 = class81.intStack[--class81.intStackSize];
+                              class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5363(var3)?1:0;
+                              return 1;
+                           } else if(var0 == 6637) {
+                              var3 = class81.intStack[--class81.intStackSize];
+                              class81.intStack[++class81.intStackSize - 1] = Friend.method1134().method5364(var3)?1:0;
+                              return 1;
+                           } else if(var0 == 6638) {
+                              class81.intStackSize -= 2;
+                              var3 = class81.intStack[class81.intStackSize];
+                              var12 = new Coordinates(class81.intStack[class81.intStackSize + 1]);
+                              var7 = Friend.method1134().method5367(var3, var12);
+                              if(var7 == null) {
+                                 class81.intStack[++class81.intStackSize - 1] = -1;
+                              } else {
+                                 class81.intStack[++class81.intStackSize - 1] = var7.method4058();
+                              }
+
+                              return 1;
+                           } else {
+                              class39 var8;
+                              if(var0 == 6639) {
+                                 var8 = Friend.method1134().method5320();
+                                 if(var8 == null) {
+                                    class81.intStack[++class81.intStackSize - 1] = -1;
+                                    class81.intStack[++class81.intStackSize - 1] = -1;
+                                 } else {
+                                    class81.intStack[++class81.intStackSize - 1] = var8.field552;
+                                    class81.intStack[++class81.intStackSize - 1] = var8.field547.method4058();
+                                 }
+
+                                 return 1;
+                              } else if(var0 == 6640) {
+                                 var8 = Friend.method1134().method5370();
+                                 if(var8 == null) {
+                                    class81.intStack[++class81.intStackSize - 1] = -1;
+                                    class81.intStack[++class81.intStackSize - 1] = -1;
+                                 } else {
+                                    class81.intStack[++class81.intStackSize - 1] = var8.field552;
+                                    class81.intStack[++class81.intStackSize - 1] = var8.field547.method4058();
+                                 }
+
+                                 return 1;
+                              } else {
+                                 Area var6;
+                                 if(var0 == 6693) {
+                                    var3 = class81.intStack[--class81.intStackSize];
+                                    var6 = class3.field24[var3];
+                                    if(var6.name == null) {
+                                       class81.scriptStringStack[++class81.scriptStringStackSize - 1] = "";
+                                    } else {
+                                       class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var6.name;
+                                    }
+
+                                    return 1;
+                                 } else if(var0 == 6694) {
+                                    var3 = class81.intStack[--class81.intStackSize];
+                                    var6 = class3.field24[var3];
+                                    class81.intStack[++class81.intStackSize - 1] = var6.field3298;
+                                    return 1;
+                                 } else if(var0 == 6695) {
+                                    var3 = class81.intStack[--class81.intStackSize];
+                                    var6 = class3.field24[var3];
+                                    if(var6 == null) {
+                                       class81.intStack[++class81.intStackSize - 1] = -1;
+                                    } else {
+                                       class81.intStack[++class81.intStackSize - 1] = var6.field3309;
+                                    }
+
+                                    return 1;
+                                 } else if(var0 == 6696) {
+                                    var3 = class81.intStack[--class81.intStackSize];
+                                    var6 = class3.field24[var3];
+                                    if(var6 == null) {
+                                       class81.intStack[++class81.intStackSize - 1] = -1;
+                                    } else {
+                                       class81.intStack[++class81.intStackSize - 1] = var6.spriteId;
+                                    }
+
+                                    return 1;
+                                 } else if(var0 == 6697) {
+                                    class81.intStack[++class81.intStackSize - 1] = class147.field2194.field623;
+                                    return 1;
+                                 } else if(var0 == 6698) {
+                                    class81.intStack[++class81.intStackSize - 1] = class147.field2194.field621.method4058();
+                                    return 1;
+                                 } else if(var0 == 6699) {
+                                    class81.intStack[++class81.intStackSize - 1] = class147.field2194.field620.method4058();
+                                    return 1;
+                                 } else {
+                                    return 2;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }
       }

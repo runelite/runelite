@@ -1,203 +1,167 @@
-import java.math.BigInteger;
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cq")
 public class class86 {
-   @ObfuscatedName("o")
-   static final BigInteger field1387;
-   @ObfuscatedName("n")
-   static final BigInteger field1383;
-   @ObfuscatedName("pl")
-   @ObfuscatedGetter(
-      intValue = 1076953163
-   )
-   static int field1392;
-   @ObfuscatedName("ae")
-   @ObfuscatedGetter(
-      intValue = -307335085
-   )
-   static int field1391;
-
-   static {
-      field1387 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
-      field1383 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
-   }
-
-   @ObfuscatedName("je")
+   @ObfuscatedName("hc")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-      garbageValue = "2"
+      signature = "(ZI)V",
+      garbageValue = "1939330576"
    )
-   static String method1709(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(class25.sessionToken != null) {
-         var3 = "/p=" + class25.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + MouseInput.field756 + var3 + "/";
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(ILck;ZI)I",
-      garbageValue = "2106914071"
-   )
-   static int method1705(int var0, Script var1, boolean var2) {
+   @Export("xteaChanged")
+   static final void xteaChanged(boolean var0) {
+      Client.isDynamicRegion = var0;
+      int var1;
       int var3;
       int var4;
-      if(var0 == 100) {
-         Ignore.intStackSize -= 3;
-         var3 = class82.intStack[Ignore.intStackSize];
-         var4 = class82.intStack[Ignore.intStackSize + 1];
-         int var5 = class82.intStack[Ignore.intStackSize + 2];
-         if(var4 == 0) {
-            throw new RuntimeException();
-         } else {
-            Widget var6 = GZipDecompressor.method3177(var3);
-            if(var6.children == null) {
-               var6.children = new Widget[var5 + 1];
-            }
+      int var5;
+      int var6;
+      int var7;
+      if(!Client.isDynamicRegion) {
+         var1 = Client.secretPacketBuffer2.method3274();
+         int var2 = Client.secretPacketBuffer2.method3299();
+         var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         class37.xteaKeys = new int[var3][4];
 
-            if(var6.children.length <= var5) {
-               Widget[] var7 = new Widget[var5 + 1];
-
-               for(int var8 = 0; var8 < var6.children.length; ++var8) {
-                  var7[var8] = var6.children[var8];
-               }
-
-               var6.children = var7;
-            }
-
-            if(var5 > 0 && var6.children[var5 - 1] == null) {
-               throw new RuntimeException("" + (var5 - 1));
-            } else {
-               Widget var12 = new Widget();
-               var12.type = var4;
-               var12.parentId = var12.id = var6.id;
-               var12.index = var5;
-               var12.hasScript = true;
-               var6.children[var5] = var12;
-               if(var2) {
-                  class31.field452 = var12;
-               } else {
-                  class23.field366 = var12;
-               }
-
-               class7.method34(var6);
-               return 1;
+         for(var4 = 0; var4 < var3; ++var4) {
+            for(var5 = 0; var5 < 4; ++var5) {
+               class37.xteaKeys[var4][var5] = Client.secretPacketBuffer2.readInt();
             }
          }
+
+         CombatInfo1.mapRegions = new int[var3];
+         BuildType.field3191 = new int[var3];
+         Client.landRegionFielIds = new int[var3];
+         class37.field529 = new byte[var3][];
+         class12.field277 = new byte[var3][];
+         boolean var15 = false;
+         if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
+            var15 = true;
+         }
+
+         if(var1 / 8 == 48 && var2 / 8 == 148) {
+            var15 = true;
+         }
+
+         var3 = 0;
+
+         for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
+            for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
+               var7 = var6 + (var5 << 8);
+               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
+                  CombatInfo1.mapRegions[var3] = var7;
+                  BuildType.field3191[var3] = class226.indexMaps.getFile("m" + var5 + "_" + var6);
+                  Client.landRegionFielIds[var3] = class226.indexMaps.getFile("l" + var5 + "_" + var6);
+                  ++var3;
+               }
+            }
+         }
+
+         class11.method60(var1, var2, true);
       } else {
-         Widget var9;
-         if(var0 == 101) {
-            var9 = var2?class31.field452:class23.field366;
-            Widget var10 = GZipDecompressor.method3177(var9.id);
-            var10.children[var9.index] = null;
-            class7.method34(var10);
-            return 1;
-         } else if(var0 == 102) {
-            var9 = GZipDecompressor.method3177(class82.intStack[--Ignore.intStackSize]);
-            var9.children = null;
-            class7.method34(var9);
-            return 1;
-         } else if(var0 != 200) {
-            if(var0 == 201) {
-               var9 = GZipDecompressor.method3177(class82.intStack[--Ignore.intStackSize]);
-               if(var9 != null) {
-                  class82.intStack[++Ignore.intStackSize - 1] = 1;
-                  if(var2) {
-                     class31.field452 = var9;
+         var1 = Client.secretPacketBuffer2.method3274();
+         boolean var14 = Client.secretPacketBuffer2.method3265() == 1;
+         var3 = Client.secretPacketBuffer2.readUnsignedShort();
+         var4 = Client.secretPacketBuffer2.readUnsignedShort();
+         Client.secretPacketBuffer2.bitAccess();
+
+         int var8;
+         for(var5 = 0; var5 < 4; ++var5) {
+            for(var6 = 0; var6 < 13; ++var6) {
+               for(var7 = 0; var7 < 13; ++var7) {
+                  var8 = Client.secretPacketBuffer2.getBits(1);
+                  if(var8 == 1) {
+                     Client.field986[var5][var6][var7] = Client.secretPacketBuffer2.getBits(26);
                   } else {
-                     class23.field366 = var9;
+                     Client.field986[var5][var6][var7] = -1;
                   }
-               } else {
-                  class82.intStack[++Ignore.intStackSize - 1] = 0;
                }
-
-               return 1;
-            } else {
-               return 2;
             }
-         } else {
-            Ignore.intStackSize -= 2;
-            var3 = class82.intStack[Ignore.intStackSize];
-            var4 = class82.intStack[Ignore.intStackSize + 1];
-            Widget var11 = Varcs.method1849(var3, var4);
-            if(var11 != null && var4 != -1) {
-               class82.intStack[++Ignore.intStackSize - 1] = 1;
-               if(var2) {
-                  class31.field452 = var11;
-               } else {
-                  class23.field366 = var11;
-               }
-            } else {
-               class82.intStack[++Ignore.intStackSize - 1] = 0;
-            }
-
-            return 1;
          }
+
+         Client.secretPacketBuffer2.byteAccess();
+         class37.xteaKeys = new int[var4][4];
+
+         for(var5 = 0; var5 < var4; ++var5) {
+            for(var6 = 0; var6 < 4; ++var6) {
+               class37.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
+            }
+         }
+
+         CombatInfo1.mapRegions = new int[var4];
+         BuildType.field3191 = new int[var4];
+         Client.landRegionFielIds = new int[var4];
+         class37.field529 = new byte[var4][];
+         class12.field277 = new byte[var4][];
+         var4 = 0;
+
+         for(var5 = 0; var5 < 4; ++var5) {
+            for(var6 = 0; var6 < 13; ++var6) {
+               for(var7 = 0; var7 < 13; ++var7) {
+                  var8 = Client.field986[var5][var6][var7];
+                  if(var8 != -1) {
+                     int var9 = var8 >> 14 & 1023;
+                     int var10 = var8 >> 3 & 2047;
+                     int var11 = (var9 / 8 << 8) + var10 / 8;
+
+                     int var12;
+                     for(var12 = 0; var12 < var4; ++var12) {
+                        if(CombatInfo1.mapRegions[var12] == var11) {
+                           var11 = -1;
+                           break;
+                        }
+                     }
+
+                     if(var11 != -1) {
+                        CombatInfo1.mapRegions[var4] = var11;
+                        var12 = var11 >> 8 & 255;
+                        int var13 = var11 & 255;
+                        BuildType.field3191[var4] = class226.indexMaps.getFile("m" + var12 + "_" + var13);
+                        Client.landRegionFielIds[var4] = class226.indexMaps.getFile("l" + var12 + "_" + var13);
+                        ++var4;
+                     }
+                  }
+               }
+            }
+         }
+
+         class11.method60(var3, var1, !var14);
       }
+
    }
 
-   @ObfuscatedName("ju")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "2032232111"
+      signature = "(Lcg;I)V",
+      garbageValue = "2072107926"
    )
-   static void method1708(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < ItemComposition.field3486; ++var4) {
-         ItemComposition var5 = class169.getItemDefinition(var4);
-         if((!var1 || var5.field3487) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class182.field2443 = -1;
-               class271.field3676 = null;
-               return;
-            }
-
-            if(var3 >= var2.length) {
-               short[] var6 = new short[var2.length * 2];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
-               }
-
-               var2 = var6;
-            }
-
-            var2[var3++] = (short)var4;
+   static void method1775(World var0) {
+      if(var0.method1638() != Client.isMembers) {
+         Client.isMembers = var0.method1638();
+         boolean var1 = var0.method1638();
+         if(var1 != class46.isMembersWorld) {
+            ItemComposition.items.reset();
+            ItemComposition.itemModelCache.reset();
+            ItemComposition.itemSpriteCache.reset();
+            class46.isMembersWorld = var1;
          }
       }
 
-      class271.field3676 = var2;
-      class244.field3319 = 0;
-      class182.field2443 = var3;
-      String[] var8 = new String[class182.field2443];
+      GameEngine.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      SceneTilePaint.field2023 = Client.socketType == 0?'ꩊ':var0.id + '鱀';
+      AbstractSoundSystem.field1631 = Client.socketType == 0?443:var0.id + '썐';
+      class18.myWorldPort = SceneTilePaint.field2023;
+   }
 
-      for(int var9 = 0; var9 < class182.field2443; ++var9) {
-         var8[var9] = class169.getItemDefinition(var2[var9]).name;
-      }
-
-      short[] var10 = class271.field3676;
-      MilliTimer.method2990(var8, var10, 0, var8.length - 1);
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "([BI)Ljava/lang/String;",
+      garbageValue = "-1563774459"
+   )
+   public static String method1772(byte[] var0) {
+      return BuildType.method4209(var0, 0, var0.length);
    }
 }

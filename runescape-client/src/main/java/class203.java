@@ -1,50 +1,81 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("gx")
 public class class203 {
-   @ObfuscatedName("cu")
-   @ObfuscatedGetter(
-      intValue = -317572497
-   )
-   public static int field2493;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -2022465157
-   )
-   int field2500;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 967598781
-   )
-   int field2502;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1379055485
+      intValue = -1848448087
    )
-   int field2499;
+   public static int field2521;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lgy;"
+   )
+   public static class204 field2523;
    @ObfuscatedName("i")
-   byte[] field2495;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 508964869
+   @ObfuscatedSignature(
+      signature = "Ldi;"
    )
-   int field2501;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 753650839
+   public static class110 field2524;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lit;"
    )
-   int field2498;
-   @ObfuscatedName("j")
-   byte[] field2494;
+   public static IndexDataBase field2522;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 692230585
+      intValue = -849064175
    )
-   int field2496;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -376474501
+   public static int field2520;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lit;"
    )
-   int field2497;
+   public static IndexDataBase field2517;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   public static IndexDataBase field2519;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   public static IndexDataBase field2518;
+
+   static {
+      field2521 = 0;
+   }
+
+   @ObfuscatedName("fo")
+   @ObfuscatedSignature(
+      signature = "(IZZZB)Lij;",
+      garbageValue = "69"
+   )
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class155.field2261 != null) {
+         var4 = new IndexFile(var0, class155.field2261, class96.field1514[var0], 1000000);
+      }
+
+      return new IndexData(var4, class204.field2552, var0, var1, var2, var3);
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1285347962"
+   )
+   public static String method3795(CharSequence var0) {
+      String var1 = CombatInfo1.method1610(class36.method491(var0));
+      if(var1 == null) {
+         var1 = "";
+      }
+
+      return var1;
+   }
 }

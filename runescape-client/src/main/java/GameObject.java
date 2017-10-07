@@ -4,90 +4,96 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("eu")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("q")
+   @ObfuscatedName("rj")
+   @ObfuscatedSignature(
+      signature = "Lke;"
+   )
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -736885083
+      intValue = -1094402199
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 103296511
+      intValue = 1323863499
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 894408259
+      intValue = -1764823617
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("y")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 458464099
+      intValue = -1368551095
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("k")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -387411869
+      intValue = 411947517
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -914532633
+      intValue = -1299454667
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -261433413
+      intValue = -577031491
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -834535881
+      intValue = -152636925
    )
    @Export("x")
    int x;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1835013323
+      intValue = 493563687
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 186849019
+      intValue = -1164147829
    )
    @Export("height")
    int height;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lew;"
+      signature = "Lee;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -242865057
+      intValue = -1691976901
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("l")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1955198605
+      intValue = 1400343359
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("d")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -571924079
+      intValue = -905884947
    )
    @Export("drawPriority")
    int drawPriority;
@@ -97,204 +103,35 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("gv")
    @ObfuscatedSignature(
-      signature = "(II)Liq;",
-      garbageValue = "-174436540"
+      signature = "(ZI)V",
+      garbageValue = "395429518"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3452 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("io")
-   @ObfuscatedSignature(
-      signature = "(Lhx;II)I",
-      garbageValue = "496840329"
-   )
-   static final int method2942(Widget var0, int var1) {
-      if(var0.dynamicValues != null && var1 < var0.dynamicValues.length) {
-         try {
-            int[] var2 = var0.dynamicValues[var1];
-            int var3 = 0;
-            int var4 = 0;
-            byte var5 = 0;
-
-            while(true) {
-               int var6 = var2[var4++];
-               int var7 = 0;
-               byte var8 = 0;
-               if(var6 == 0) {
-                  return var3;
-               }
-
-               if(var6 == 1) {
-                  var7 = Client.boostedSkillLevels[var2[var4++]];
-               }
-
-               if(var6 == 2) {
-                  var7 = Client.realSkillLevels[var2[var4++]];
-               }
-
-               if(var6 == 3) {
-                  var7 = Client.skillExperiences[var2[var4++]];
-               }
-
-               int var9;
-               Widget var10;
-               int var11;
-               int var12;
-               if(var6 == 4) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = GZipDecompressor.method3177(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class169.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == var11 + 1) {
-                           var7 += var10.itemQuantities[var12];
-                        }
-                     }
-                  }
-               }
-
-               if(var6 == 5) {
-                  var7 = class212.widgetSettings[var2[var4++]];
-               }
-
-               if(var6 == 6) {
-                  var7 = class223.field2847[Client.realSkillLevels[var2[var4++]] - 1];
-               }
-
-               if(var6 == 7) {
-                  var7 = class212.widgetSettings[var2[var4++]] * 100 / '뜛';
-               }
-
-               if(var6 == 8) {
-                  var7 = Player.localPlayer.combatLevel;
-               }
-
-               if(var6 == 9) {
-                  for(var9 = 0; var9 < 25; ++var9) {
-                     if(class223.field2845[var9]) {
-                        var7 += Client.realSkillLevels[var9];
-                     }
-                  }
-               }
-
-               if(var6 == 10) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = GZipDecompressor.method3177(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class169.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var11 + 1 == var10.itemIds[var12]) {
-                           var7 = 999999999;
-                           break;
-                        }
-                     }
-                  }
-               }
-
-               if(var6 == 11) {
-                  var7 = Client.energy;
-               }
-
-               if(var6 == 12) {
-                  var7 = Client.weight;
-               }
-
-               if(var6 == 13) {
-                  var9 = class212.widgetSettings[var2[var4++]];
-                  int var13 = var2[var4++];
-                  var7 = (var9 & 1 << var13) != 0?1:0;
-               }
-
-               if(var6 == 14) {
-                  var9 = var2[var4++];
-                  var7 = WidgetNode.method1121(var9);
-               }
-
-               if(var6 == 15) {
-                  var8 = 1;
-               }
-
-               if(var6 == 16) {
-                  var8 = 2;
-               }
-
-               if(var6 == 17) {
-                  var8 = 3;
-               }
-
-               if(var6 == 18) {
-                  var7 = (Player.localPlayer.x >> 7) + class149.baseX;
-               }
-
-               if(var6 == 19) {
-                  var7 = (Player.localPlayer.y >> 7) + class67.baseY;
-               }
-
-               if(var6 == 20) {
-                  var7 = var2[var4++];
-               }
-
-               if(var8 == 0) {
-                  if(var5 == 0) {
-                     var3 += var7;
+   static final void method2968(boolean var0) {
+      for(int var1 = 0; var1 < Client.field960; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4730()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1211 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field1015[var4][var5] == Client.field1016) {
+                     continue;
                   }
 
-                  if(var5 == 1) {
-                     var3 -= var7;
-                  }
-
-                  if(var5 == 2 && var7 != 0) {
-                     var3 /= var7;
-                  }
-
-                  if(var5 == 3) {
-                     var3 *= var7;
-                  }
-
-                  var5 = 0;
-               } else {
-                  var5 = var8;
+                  Client.field1015[var4][var5] = Client.field1016;
                }
+
+               if(!var2.composition.field3586) {
+                  var3 -= Integer.MIN_VALUE;
+               }
+
+               class8.region.method2768(class5.plane, var2.x, var2.y, CacheFile.getTileHeight(var2.field1211 * 64 - 64 + var2.x, var2.field1211 * 64 - 64 + var2.y, class5.plane), 60 + (var2.field1211 * 64 - 64), var2, var2.angle, var3, var2.field1210);
             }
-         } catch (Exception var14) {
-            return -1;
          }
-      } else {
-         return -2;
       }
-   }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-879322116"
-   )
-   public static void method2943() {
-      class281.field3757 = new CombatInfoList();
    }
 }

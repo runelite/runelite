@@ -1,33 +1,26 @@
 import java.io.IOException;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("c")
 final class class18 implements Comparator {
-   @ObfuscatedName("hd")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
+   @ObfuscatedName("dz")
+   @ObfuscatedGetter(
+      intValue = -1935718401
    )
-   static Widget field325;
-   @ObfuscatedName("o")
-   @Export("offsetsY")
-   static int[] offsetsY;
-   @ObfuscatedName("dj")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   @Export("indexTextures")
-   static IndexData indexTextures;
+   @Export("myWorldPort")
+   static int myWorldPort;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lv;Lv;I)I",
-      garbageValue = "1202764882"
+      signature = "(Lb;Lb;I)I",
+      garbageValue = "-217579539"
    )
-   int method146(class14 var1, class14 var2) {
-      return var1.method88().compareTo(var2.method88());
+   int method131(class14 var1, class14 var2) {
+      return var1.method80().compareTo(var2.method80());
    }
 
    public boolean equals(Object var1) {
@@ -35,33 +28,43 @@ final class class18 implements Comparator {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method146((class14)var1, (class14)var2);
+      return this.method131((class14)var1, (class14)var2);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1923000935"
+      signature = "(I)Lco;",
+      garbageValue = "1912746613"
    )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class294.field3904 != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class294.field3904.queueForWrite(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class294.field3904.close();
-            } catch (Exception var3) {
-               ;
-            }
+   static Preferences method137() {
+      FileOnDisk var0 = null;
+      Preferences var1 = new Preferences();
 
-            ++class239.field3274;
-            class294.field3904 = null;
+      try {
+         var0 = class81.getPreferencesFile("", Client.field923.field3198, false);
+         byte[] var2 = new byte[(int)var0.length()];
+
+         int var4;
+         for(int var3 = 0; var3 < var2.length; var3 += var4) {
+            var4 = var0.read(var2, var3, var2.length - var3);
+            if(var4 == -1) {
+               throw new IOException();
+            }
          }
 
+         var1 = new Preferences(new Buffer(var2));
+      } catch (Exception var6) {
+         ;
       }
+
+      try {
+         if(var0 != null) {
+            var0.close();
+         }
+      } catch (Exception var5) {
+         ;
+      }
+
+      return var1;
    }
 }

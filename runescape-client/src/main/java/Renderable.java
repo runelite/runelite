@@ -4,17 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("ee")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("ey")
+   @ObfuscatedName("pp")
    @ObfuscatedSignature(
-      signature = "Lez;"
+      signature = "Ldy;"
    )
-   static Task field2127;
-   @ObfuscatedName("cu")
+   static class114 field2113;
+   @ObfuscatedName("dr")
+   @ObfuscatedSignature(
+      signature = "Lij;"
+   )
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
+   @ObfuscatedName("ck")
    @ObfuscatedGetter(
-      intValue = -275210191
+      intValue = -1171648773
    )
    @Export("modelHeight")
    public int modelHeight;
@@ -23,17 +29,17 @@ public abstract class Renderable extends CacheableNode {
       this.modelHeight = 1000;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Lem;",
-      garbageValue = "-1455933636"
+      signature = "(I)Leb;",
+      garbageValue = "1172124455"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("cx")
+   @ObfuscatedName("cl")
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();

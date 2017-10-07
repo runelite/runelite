@@ -4,132 +4,132 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("ed")
 @Implements("Tile")
 public final class Tile extends Node {
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Led;"
-   )
-   @Export("paint")
-   SceneTilePaint paint;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Leq;"
-   )
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ldv;"
-   )
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lec;"
-   )
-   @Export("wallObject")
-   WallObject wallObject;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -703632049
-   )
-   @Export("entityCount")
-   int entityCount;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Ldo;"
-   )
-   @Export("groundObject")
-   GroundObject groundObject;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "[Lef;"
+      signature = "[Leu;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -350125137
-   )
-   @Export("physicalLevel")
-   int physicalLevel;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Ldu;"
-   )
-   @Export("overlay")
-   SceneTileModel overlay;
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lee;"
+      signature = "Lep;"
    )
-   @Export("bridge")
-   Tile bridge;
+   @Export("paint")
+   SceneTilePaint paint;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ldj;"
+   )
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lea;"
+   )
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Let;"
+   )
+   @Export("wallObject")
+   WallObject wallObject;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1191428389
+      intValue = -1323551655
+   )
+   @Export("entityCount")
+   int entityCount;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ldq;"
+   )
+   @Export("groundObject")
+   GroundObject groundObject;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 79339529
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ldb;"
+   )
+   @Export("overlay")
+   SceneTileModel overlay;
+   @ObfuscatedName("j")
+   @Export("visible")
+   boolean visible;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 679790241
+      intValue = 2134551675
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("z")
-   @Export("visible")
-   boolean visible;
-   @ObfuscatedName("j")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1630502139
+      intValue = -1773668409
+   )
+   @Export("physicalLevel")
+   int physicalLevel;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -160254689
    )
    @Export("x")
    int x;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1955080215
-   )
-   @Export("renderLevel")
-   int renderLevel;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1640367019
+      intValue = -800399631
    )
    @Export("y")
    int y;
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -620511103
+   )
+   @Export("renderLevel")
+   int renderLevel;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Led;"
+   )
+   @Export("bridge")
+   Tile bridge;
+   @ObfuscatedName("f")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("e")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2049021203
+      intValue = 1765055595
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("p")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -615840821
+      intValue = -1692785581
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1807073215
+      intValue = -832896271
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1533611519
+      intValue = -371989349
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;

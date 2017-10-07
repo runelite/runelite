@@ -9,54 +9,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fi")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1154687407
-   )
-   @Export("outbufLen")
-   int outbufLen;
-   @ObfuscatedName("r")
-   @Export("closed")
-   boolean closed;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -2096938191
+      intValue = 1871572789
    )
    @Export("streamOffset")
    int streamOffset;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
+   @Export("closed")
+   boolean closed;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 927880139
+   )
+   @Export("outbufLen")
+   int outbufLen;
+   @ObfuscatedName("t")
    @Export("throwException")
    boolean throwException;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @Export("inputStream")
    InputStream inputStream;
-   @ObfuscatedName("q")
+   @ObfuscatedName("r")
    @Export("outbuffer")
    byte[] outbuffer;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lez;"
+      signature = "Leh;"
    )
    @Export("socketThread")
    Task socketThread;
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @Export("outputStream")
    OutputStream outputStream;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Leo;"
+      signature = "Lez;"
    )
    @Export("manager")
    Signlink manager;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("socket")
    Socket socket;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/net/Socket;Leo;)V"
+      signature = "(Ljava/net/Socket;Lez;)V"
    )
    public RSSocket(Socket var1, Signlink var2) throws IOException {
       this.closed = false;
@@ -73,10 +73,10 @@ public final class RSSocket implements Runnable {
       this.outputStream = this.socket.getOutputStream();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-92"
+      garbageValue = "43"
    )
    @Export("close")
    public void close() {
@@ -88,7 +88,7 @@ public final class RSSocket implements Runnable {
 
          if(this.socketThread != null) {
             while(this.socketThread.status == 0) {
-               NPC.method1702(1L);
+               class211.method4044(1L);
             }
 
             if(this.socketThread.status == 1) {
@@ -104,20 +104,20 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "158537241"
+      signature = "(S)I",
+      garbageValue = "16156"
    )
    @Export("available")
    public int available() throws IOException {
       return this.closed?0:this.inputStream.available();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-1180424989"
+      garbageValue = "994485765"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
@@ -135,10 +135,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "([BIIB)V",
-      garbageValue = "-1"
+      garbageValue = "-6"
    )
    @Export("queueForWrite")
    public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
@@ -155,7 +155,7 @@ public final class RSSocket implements Runnable {
                for(int var5 = 0; var5 < var3; ++var5) {
                   this.outbuffer[this.outbufLen] = var1[var5 + var2];
                   this.outbufLen = (this.outbufLen + 1) % 5000;
-                  if((this.streamOffset + 4900) % 5000 == this.outbufLen) {
+                  if(this.outbufLen == (this.streamOffset + 4900) % 5000) {
                      throw new IOException();
                   }
                }
@@ -170,18 +170,14 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1147661076"
+      signature = "(B)I",
+      garbageValue = "42"
    )
    @Export("readByte")
    public int readByte() throws IOException {
       return this.closed?0:this.inputStream.read();
-   }
-
-   protected void finalize() {
-      this.close();
    }
 
    public void run() {
@@ -190,7 +186,7 @@ public final class RSSocket implements Runnable {
             int var1;
             int var2;
             synchronized(this) {
-               if(this.outbufLen == this.streamOffset) {
+               if(this.streamOffset == this.outbufLen) {
                   if(this.closed) {
                      break;
                   }
@@ -247,192 +243,185 @@ public final class RSSocket implements Runnable {
 
          this.outbuffer = null;
       } catch (Exception var12) {
-         class150.method2975((String)null, var12);
+         DynamicObject.method1932((String)null, var12);
       }
 
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-2029816994"
-   )
-   public static boolean method3080(int var0) {
-      return var0 >= class222.field2819.field2842 && var0 <= class222.field2830.field2842 || var0 == class222.field2837.field2842;
+   protected void finalize() {
+      this.close();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IZIS)V",
-      garbageValue = "24603"
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "2134912325"
    )
-   public static final void method3082(int var0, boolean var1, int var2) {
-      if(var0 >= 8000 && var0 <= '뮀') {
-         class73.sampleRate = var0;
-         AbstractSoundSystem.highMemory = var1;
-         AbstractSoundSystem.priority = var2;
-      } else {
-         throw new IllegalArgumentException();
+   public static String method3088(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+      int var5 = var1;
+
+      int var8;
+      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
+         int var7 = var0[var5++] & 255;
+         if(var7 < 128) {
+            if(var7 == 0) {
+               var8 = '�';
+            } else {
+               var8 = var7;
+            }
+         } else if(var7 < 192) {
+            var8 = '�';
+         } else if(var7 < 224) {
+            if(var5 < var6 && (var0[var5] & 192) == 128) {
+               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
+               if(var8 < 128) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 240) {
+            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && 128 == (var0[var5 + 1] & 192)) {
+               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 < 2048) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 248) {
+            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
+               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 >= 65536 && var8 <= 1114111) {
+                  var8 = '�';
+               } else {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else {
+            var8 = '�';
+         }
       }
+
+      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("fa")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lbg;I)V",
-      garbageValue = "-1135495407"
+      signature = "(Lfd;IB)Z",
+      garbageValue = "103"
    )
-   static final void method3081(Actor var0) {
-      var0.poseAnimation = var0.idlePoseAnimation;
-      if(var0.queueSize == 0) {
-         var0.field1287 = 0;
+   @Export("decodeRegionHash")
+   static boolean decodeRegionHash(PacketBuffer var0, int var1) {
+      int var2 = var0.getBits(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.getBits(1) != 0) {
+            decodeRegionHash(var0, var1);
+         }
+
+         var3 = var0.getBits(13);
+         var4 = var0.getBits(13);
+         boolean var12 = var0.getBits(1) == 1;
+         if(var12) {
+            class94.field1487[++class94.field1486 - 1] = var1;
+         }
+
+         if(Client.cachedPlayers[var1] != null) {
+            throw new RuntimeException();
+         } else {
+            Player var6 = Client.cachedPlayers[var1] = new Player();
+            var6.field886 = var1;
+            if(class94.field1478[var1] != null) {
+               var6.decodeApperance(class94.field1478[var1]);
+            }
+
+            var6.orientation = class94.field1475[var1];
+            var6.interacting = class94.field1481[var1];
+            var7 = class94.field1483[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.field1264[0] = class94.field1477[var1];
+            var6.field894 = (byte)var8;
+            var6.method1173((var9 << 13) + var3 - WallObject.baseX, (var10 << 13) + var4 - Varcs.baseY);
+            var6.field887 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.getBits(2);
+         var4 = class94.field1483[var1];
+         class94.field1483[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+         return false;
       } else {
-         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var1 = class216.getAnimation(var0.animation);
-            if(var0.field1249 > 0 && var1.precedenceAnimating == 0) {
-               ++var0.field1287;
-               return;
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.getBits(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class94.field1483[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
             }
 
-            if(var0.field1249 <= 0 && var1.priority == 0) {
-               ++var0.field1287;
-               return;
-            }
-         }
-
-         int var10 = var0.x;
-         int var2 = var0.y;
-         int var3 = var0.field1233 * 64 + var0.pathX[var0.queueSize - 1] * 128;
-         int var4 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1233 * 64;
-         if(var10 < var3) {
-            if(var2 < var4) {
-               var0.orientation = 1280;
-            } else if(var2 > var4) {
-               var0.orientation = 1792;
-            } else {
-               var0.orientation = 1536;
-            }
-         } else if(var10 > var3) {
-            if(var2 < var4) {
-               var0.orientation = 768;
-            } else if(var2 > var4) {
-               var0.orientation = 256;
-            } else {
-               var0.orientation = 512;
-            }
-         } else if(var2 < var4) {
-            var0.orientation = 1024;
-         } else if(var2 > var4) {
-            var0.orientation = 0;
-         }
-
-         byte var5 = var0.field1286[var0.queueSize - 1];
-         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
-            int var6 = var0.orientation - var0.angle & 2047;
-            if(var6 > 1024) {
-               var6 -= 2048;
-            }
-
-            int var7 = var0.field1238;
-            if(var6 >= -256 && var6 <= 256) {
-               var7 = var0.field1268;
-            } else if(var6 >= 256 && var6 < 768) {
-               var7 = var0.field1230;
-            } else if(var6 >= -768 && var6 <= -256) {
-               var7 = var0.field1288;
-            }
-
-            if(var7 == -1) {
-               var7 = var0.field1268;
-            }
-
-            var0.poseAnimation = var7;
-            int var8 = 4;
-            boolean var9 = true;
-            if(var0 instanceof NPC) {
-               var9 = ((NPC)var0).composition.isClickable;
-            }
-
-            if(var9) {
-               if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1282 != 0) {
-                  var8 = 2;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 3) {
-                  var8 = 8;
-               }
-
-               if(var0.field1287 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1287;
-               }
-            } else {
-               if(var0.queueSize > 1) {
-                  var8 = 6;
-               }
-
-               if(var0.queueSize > 2) {
-                  var8 = 8;
-               }
-
-               if(var0.field1287 > 0 && var0.queueSize > 1) {
-                  var8 = 8;
-                  --var0.field1287;
-               }
+            if(var5 == 1) {
+               --var9;
             }
 
             if(var5 == 2) {
-               var8 <<= 1;
+               ++var8;
+               --var9;
             }
 
-            if(var8 >= 8 && var0.field1268 == var0.poseAnimation && var0.field1272 != -1) {
-               var0.poseAnimation = var0.field1272;
+            if(var5 == 3) {
+               --var8;
             }
 
-            if(var10 != var3 || var4 != var2) {
-               if(var10 < var3) {
-                  var0.x += var8;
-                  if(var0.x > var3) {
-                     var0.x = var3;
-                  }
-               } else if(var10 > var3) {
-                  var0.x -= var8;
-                  if(var0.x < var3) {
-                     var0.x = var3;
-                  }
-               }
-
-               if(var2 < var4) {
-                  var0.y += var8;
-                  if(var0.y > var4) {
-                     var0.y = var4;
-                  }
-               } else if(var2 > var4) {
-                  var0.y -= var8;
-                  if(var0.y < var4) {
-                     var0.y = var4;
-                  }
-               }
+            if(var5 == 4) {
+               ++var8;
             }
 
-            if(var3 == var0.x && var4 == var0.y) {
-               --var0.queueSize;
-               if(var0.field1249 > 0) {
-                  --var0.field1249;
-               }
+            if(var5 == 5) {
+               --var8;
+               ++var9;
             }
 
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class94.field1483[var1] = (var8 << 14) + var9 + (var7 << 28);
+            return false;
          } else {
-            var0.x = var3;
-            var0.y = var4;
-            --var0.queueSize;
-            if(var0.field1249 > 0) {
-               --var0.field1249;
-            }
-
+            var3 = var0.getBits(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class94.field1483[var1];
+            var8 = (var7 >> 28) + var4 & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var7 + var11 & 255;
+            class94.field1483[var1] = (var9 << 14) + var10 + (var8 << 28);
+            return false;
          }
       }
    }

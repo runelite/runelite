@@ -1,65 +1,89 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("av")
 public class class37 {
-   @ObfuscatedName("ft")
-   @ObfuscatedGetter(
-      intValue = -1434387975
-   )
-   static int field529;
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("cf")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1631753114"
+      signature = "Lij;"
    )
-   static final void method526(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int[] var7 = Region.method2764(var0, var1, var2);
-      int[] var8 = Region.method2764(var3, var4, var5);
-      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
-   }
-
-   @ObfuscatedName("it")
+   @Export("indexSprites")
+   static IndexData indexSprites;
+   @ObfuscatedName("fz")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
+   @ObfuscatedName("fk")
+   static byte[][] field529;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lhx;I)Z",
-      garbageValue = "-1645496955"
+      signature = "Ljz;"
    )
-   static final boolean method528(Widget var0) {
-      if(var0.tableActions == null) {
-         return false;
+   static IndexedSprite field527;
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-36706974"
+   )
+   static final void method493() {
+      Client.secretPacketBuffer2.bitAccess();
+      int var0 = Client.secretPacketBuffer2.getBits(8);
+      int var1;
+      if(var0 < Client.field960) {
+         for(var1 = var0; var1 < Client.field960; ++var1) {
+            Client.field1037[++Client.field1036 - 1] = Client.npcIndices[var1];
+         }
+      }
+
+      if(var0 > Client.field960) {
+         throw new RuntimeException("");
       } else {
-         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = GameObject.method2942(var0, var1);
-            int var3 = var0.field2772[var1];
-            if(var0.tableActions[var1] == 2) {
-               if(var2 >= var3) {
-                  return false;
+         Client.field960 = 0;
+
+         for(var1 = 0; var1 < var0; ++var1) {
+            int var2 = Client.npcIndices[var1];
+            NPC var3 = Client.cachedNPCs[var2];
+            int var4 = Client.secretPacketBuffer2.getBits(1);
+            if(var4 == 0) {
+               Client.npcIndices[++Client.field960 - 1] = var2;
+               var3.field1256 = Client.gameCycle;
+            } else {
+               int var5 = Client.secretPacketBuffer2.getBits(2);
+               if(var5 == 0) {
+                  Client.npcIndices[++Client.field960 - 1] = var2;
+                  var3.field1256 = Client.gameCycle;
+                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
+               } else {
+                  int var6;
+                  int var7;
+                  if(var5 == 1) {
+                     Client.npcIndices[++Client.field960 - 1] = var2;
+                     var3.field1256 = Client.gameCycle;
+                     var6 = Client.secretPacketBuffer2.getBits(3);
+                     var3.method1753(var6, (byte)1);
+                     var7 = Client.secretPacketBuffer2.getBits(1);
+                     if(var7 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
+                     }
+                  } else if(var5 == 2) {
+                     Client.npcIndices[++Client.field960 - 1] = var2;
+                     var3.field1256 = Client.gameCycle;
+                     var6 = Client.secretPacketBuffer2.getBits(3);
+                     var3.method1753(var6, (byte)2);
+                     var7 = Client.secretPacketBuffer2.getBits(3);
+                     var3.method1753(var7, (byte)2);
+                     int var8 = Client.secretPacketBuffer2.getBits(1);
+                     if(var8 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
+                     }
+                  } else if(var5 == 3) {
+                     Client.field1037[++Client.field1036 - 1] = var2;
+                  }
                }
-            } else if(var0.tableActions[var1] == 3) {
-               if(var2 <= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 4) {
-               if(var3 == var2) {
-                  return false;
-               }
-            } else if(var3 != var2) {
-               return false;
             }
          }
 
-         return true;
       }
-   }
-
-   @ObfuscatedName("ar")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1762720937"
-   )
-   public static void method527() {
-      ItemComposition.itemSpriteCache.reset();
    }
 }

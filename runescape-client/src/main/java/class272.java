@@ -1,13 +1,11 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ja")
+@ObfuscatedName("jg")
 public class class272 {
-   @ObfuscatedName("cl")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   @Export("indexModels")
-   static IndexData indexModels;
+   @ObfuscatedName("gf")
+   public static final int[] field3710;
+
+   static {
+      field3710 = new int[]{0, 0, 4, 0, 0, 0, 0, 0, 0, 6, 0, 6, 0, 0, -2, 0, 8, -2, -2, 2, 10, 0, 0, 4, 6, 0, 0, 10, 0, 0, 2, 0, 0, 6, 0, 0, 0, -2, 0, 0, 7, 0, -2, 0, 15, 0, 0, 0, 0, 6, 0, 0, 0, 0, -1, 5, 0, 5, 0, 0, 0, 0, 0, 0, 8, -2, 0, 0, 0, 0, 4, 0, 12, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, -2, 0, 0, -2, 0, 2, -2, 5, 0, 0, 0, 0, 0, 0, 20, 0, 0, -1, 0, 0, 0, -2, 0, 0, 0, -2, 2, 0, 0, 0, 0, 0, -2, 0, -1, 0, 0, 4, 0, 0, 0, 0, 0, 2, 7, -1, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 6, -2, 0, -2, 0, -2, 0, -2, 0, 5, 6, 0, -1, 0, 0, 0, 2, 0, 0, 0, 14, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 6, 0, 0, 0, 0, 3, 1, 5, 8, 0, 0, 0, 0, 4, 0, 3, 0, 6, 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 0, 0, 1, 0, 0, 0, 0, 0, 0, -2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 2, 0, 0, 0, 0, 6, 0};
+   }
 }

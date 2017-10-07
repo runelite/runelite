@@ -1,14 +1,15 @@
-import java.awt.FontMetrics;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("hm")
 public class class225 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgy;"
+      signature = "(III)I",
+      garbageValue = "2079103650"
    )
-   public static class205 field2856;
-   @ObfuscatedName("ad")
-   static FontMetrics field2854;
+   static int method4197(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class238.currentRequest != null && var2 == class238.currentRequest.hash?RSCanvas.field678.offset * 99 / (RSCanvas.field678.payload.length - class238.currentRequest.padding) + 1:0;
+   }
 }

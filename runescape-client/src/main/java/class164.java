@@ -2,69 +2,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
-public abstract class class164 {
-   @ObfuscatedName("i")
+@ObfuscatedName("fp")
+public class class164 {
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 777660859
+      intValue = -198923963
    )
-   public int field2314;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 493223029
-   )
-   public int field2315;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1828749207
-   )
-   public int field2316;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1949920475
-   )
-   public int field2317;
+   static int field2325;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIILfh;I)Z",
-      garbageValue = "-982142966"
+      signature = "(Lit;Lit;I)Z",
+      garbageValue = "-2027019132"
    )
-   protected abstract boolean vmethod3145(int var1, int var2, int var3, CollisionData var4);
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "899838602"
-   )
-   static void method3149(int var0, int var1) {
-      long var2 = (long)((var0 << 16) + var1);
-      FileRequest var4 = (FileRequest)class239.field3264.get(var2);
-      if(var4 != null) {
-         class239.field3258.setHead(var4);
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1096599157"
-   )
-   public static void method3148(int var0) {
-      if(class204.field2507 != 0) {
-         class204.field2510 = var0;
+   public static boolean method3160(IndexDataBase var0, IndexDataBase var1) {
+      Area.field3291 = var1;
+      if(!var0.method4292()) {
+         return false;
       } else {
-         class225.field2856.method3793(var0);
+         Area.field3297 = var0.fileCount(35);
+         class3.field24 = new Area[Area.field3297];
+
+         for(int var2 = 0; var2 < Area.field3297; ++var2) {
+            byte[] var3 = var0.getConfigData(35, var2);
+            if(var3 != null) {
+               class3.field24[var2] = new Area(var2);
+               class3.field24[var2].method4392(new Buffer(var3));
+               class3.field24[var2].method4401();
+            }
+         }
+
+         return true;
       }
-
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(S)Lcp;",
-      garbageValue = "-14663"
-   )
-   static World method3150() {
-      return World.field1301 < World.worldCount?World.worldList[++World.field1301 - 1]:null;
    }
 }

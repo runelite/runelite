@@ -1,139 +1,125 @@
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.LinkedList;
-import java.util.Queue;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
-public class class148 implements Runnable {
-   @ObfuscatedName("j")
-   volatile boolean field2193;
-   @ObfuscatedName("a")
-   Queue field2195;
-   @ObfuscatedName("i")
-   final Thread field2194;
-
-   public class148() {
-      this.field2195 = new LinkedList();
-      this.field2194 = new Thread(this);
-      this.field2194.setPriority(1);
-      this.field2194.start();
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1425751142"
+@ObfuscatedName("en")
+public class class148 {
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 86475233
    )
-   public void method2946() {
-      this.field2193 = true;
+   public static int field2203;
+   @ObfuscatedName("bo")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("e")
+   volatile byte[] field2204;
+   @ObfuscatedName("k")
+   volatile boolean field2199;
+   @ObfuscatedName("d")
+   final URL field2201;
 
-      try {
-         synchronized(this) {
-            this.notify();
-         }
-
-         this.field2194.join();
-      } catch (InterruptedException var4) {
-         ;
-      }
-
+   class148(URL var1) {
+      this.field2201 = var1;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Len;",
-      garbageValue = "1781541517"
+      signature = "(B)Z",
+      garbageValue = "-41"
    )
-   public class149 method2955(URL var1) {
-      class149 var2 = new class149(var1);
-      synchronized(this) {
-         this.field2195.add(var2);
-         this.notify();
-         return var2;
-      }
+   public boolean method2990() {
+      return this.field2199;
    }
 
-   public void run() {
-      while(!this.field2193) {
-         try {
-            class149 var1;
-            synchronized(this) {
-               var1 = (class149)this.field2195.poll();
-               if(var1 == null) {
-                  try {
-                     this.wait();
-                  } catch (InterruptedException var13) {
-                     ;
-                  }
-                  continue;
-               }
-            }
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)[B",
+      garbageValue = "1081987069"
+   )
+   public byte[] method2984() {
+      return this.field2204;
+   }
 
-            DataInputStream var2 = null;
-            URLConnection var3 = null;
-
-            try {
-               var3 = var1.field2202.openConnection();
-               var3.setConnectTimeout(5000);
-               var3.setReadTimeout(5000);
-               var3.setUseCaches(false);
-               var3.setRequestProperty("Connection", "close");
-               int var4 = var3.getContentLength();
-               if(var4 >= 0) {
-                  byte[] var5 = new byte[var4];
-                  var2 = new DataInputStream(var3.getInputStream());
-                  var2.readFully(var5);
-                  var1.field2200 = var5;
-               }
-
-               var1.field2199 = true;
-            } catch (IOException var14) {
-               var1.field2199 = true;
-            } finally {
-               if(var2 != null) {
-                  var2.close();
-               }
-
-               if(var3 != null && var3 instanceof HttpURLConnection) {
-                  ((HttpURLConnection)var3).disconnect();
-               }
-
-            }
-         } catch (Exception var17) {
-            class150.method2975((String)null, var17);
+   @ObfuscatedName("il")
+   @ObfuscatedSignature(
+      signature = "(IIIIS)V",
+      garbageValue = "-14620"
+   )
+   static final void method2982(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1116; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1119[var4] = true;
          }
       }
 
    }
 
-   @ObfuscatedName("fk")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1896430250"
+      signature = "(Lfg;IIIIIII)V",
+      garbageValue = "-35816606"
    )
-   static void method2956(int var0) {
-      if(var0 == -1 && !Client.field1169) {
-         class165.method3158();
-      } else if(var0 != -1 && var0 != Client.field1168 && Client.field1167 != 0 && !Client.field1169) {
-         class46.method736(2, class45.indexTrack1, var0, 0, Client.field1167, false);
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class61.tileSettings[var1][var2][var3] = 0;
+
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -Player.method1189(var2 + var4 + 932731, var3 + var5 + 556238) * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var8 = var0.readUnsignedByte();
+               if(var8 == 1) {
+                  var8 = 0;
+               }
+
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -var8 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class61.overlayIds[var1][var2][var3] = var0.readByte();
+               class277.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class61.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
       }
 
-      Client.field1168 = var0;
-   }
-
-   @ObfuscatedName("jp")
-   @ObfuscatedSignature(
-      signature = "(Lhx;IB)Ljava/lang/String;",
-      garbageValue = "8"
-   )
-   static String method2953(Widget var0, int var1) {
-      int var3 = Coordinates.getWidgetConfig(var0);
-      boolean var2 = 0 != (var3 >> var1 + 1 & 1);
-      return !var2 && var0.field2701 == null?null:(var0.actions != null && var0.actions.length > var1 && var0.actions[var1] != null && var0.actions[var1].trim().length() != 0?var0.actions[var1]:null);
    }
 }

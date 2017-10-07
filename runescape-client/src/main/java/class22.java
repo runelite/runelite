@@ -1,50 +1,41 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
-@ObfuscatedName("h")
+@ObfuscatedName("l")
 public class class22 extends class28 {
-   @ObfuscatedName("ds")
-   @Export("host")
-   static String host;
-
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfp;Lfp;B)V",
-      garbageValue = "23"
+      signature = "(Lfg;Lfg;I)V",
+      garbageValue = "1738092484"
    )
-   void method188(Buffer var1, Buffer var2) {
+   void method153(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class36.field521.field513) {
+      if(var3 != class36.field522.field523) {
          throw new IllegalStateException("");
       } else {
-         super.field422 = var2.readUnsignedByte();
+         super.field425 = var2.readUnsignedByte();
          super.field419 = var2.readUnsignedByte();
-         super.field415 = var2.readUnsignedShort();
+         super.field418 = var2.readUnsignedShort();
+         super.field426 = var2.readUnsignedShort();
          super.field416 = var2.readUnsignedShort();
-         super.field414 = var2.readUnsignedShort();
          super.field417 = var2.readUnsignedShort();
          super.field419 = Math.min(super.field419, 4);
          super.field420 = new short[1][64][64];
-         super.field418 = new short[super.field419][64][64];
-         super.field421 = new byte[super.field419][64][64];
+         super.field421 = new short[super.field419][64][64];
+         super.field422 = new byte[super.field419][64][64];
          super.field423 = new byte[super.field419][64][64];
          super.field424 = new class31[super.field419][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class35.field510.field512) {
+         if(var3 != class35.field515.field513) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
-            if(var4 == super.field414 && var5 == super.field417) {
+            if(var4 == super.field416 && var5 == super.field417) {
                for(int var6 = 0; var6 < 64; ++var6) {
                   for(int var7 = 0; var7 < 64; ++var7) {
-                     this.method269(var6, var7, var1);
+                     this.method228(var6, var7, var1);
                   }
                }
 
@@ -55,108 +46,114 @@ public class class22 extends class28 {
       }
    }
 
+   public int hashCode() {
+      return super.field416 | super.field417 << 8;
+   }
+
    public boolean equals(Object var1) {
       if(!(var1 instanceof class22)) {
          return false;
       } else {
          class22 var2 = (class22)var1;
-         return var2.field414 == super.field414 && var2.field417 == super.field417;
+         return var2.field416 == super.field416 && super.field417 == var2.field417;
       }
    }
 
-   public int hashCode() {
-      return super.field414 | super.field417 << 8;
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-2052249613"
+      signature = "(Lhj;III)V",
+      garbageValue = "-795578561"
    )
-   public static boolean method195(int var0) {
-      return var0 >= class222.field2839.field2842 && var0 <= class222.field2840.field2842;
-   }
+   static final void method161(Widget var0, int var1, int var2) {
+      if(Client.field1183 == 0 || Client.field1183 == 3) {
+         if(MouseInput.field741 == 1 || !class110.field1650 && MouseInput.field741 == 4) {
+            class210 var3 = var0.method4117(true);
+            if(var3 == null) {
+               return;
+            }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-1201919137"
-   )
-   public static String method194(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-      int var5 = var1;
-
-      int var8;
-      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = '�';
-            } else {
-               var8 = var7;
-            }
-         } else if(var7 < 192) {
-            var8 = '�';
-         } else if(var7 < 224) {
-            if(var5 < var6 && (var0[var5] & 192) == 128) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && 128 == (var0[var5 + 1] & 192)) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 248) {
-            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = '�';
+            int var4 = MouseInput.field752 - var1;
+            int var5 = MouseInput.field753 - var2;
+            if(var3.method4042(var4, var5)) {
+               var4 -= var3.field2615 / 2;
+               var5 -= var3.field2611 / 2;
+               int var6 = Client.mapAngle & 2047;
+               int var7 = Graphics3D.SINE[var6];
+               int var8 = Graphics3D.COSINE[var6];
+               int var9 = var5 * var7 + var8 * var4 >> 11;
+               int var10 = var5 * var8 - var4 * var7 >> 11;
+               int var11 = var9 + AbstractByteBuffer.localPlayer.x >> 7;
+               int var12 = AbstractByteBuffer.localPlayer.y - var10 >> 7;
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_MINIMAP_WALK);
+               if(Client.RUNELITE_PACKET) {
+                  Client.secretPacketBuffer1.runeliteWriteInt(18);
                } else {
-                  var8 = '�';
+                  Client.secretPacketBuffer1.putByte(18);
                }
-            } else {
-               var8 = '�';
+
+               Client.secretPacketBuffer1.method3261(KeyFocusListener.field655[82]?(KeyFocusListener.field655[81]?2:1):0);
+               Client.secretPacketBuffer1.putShortLE(var11 + WallObject.baseX);
+               Client.secretPacketBuffer1.putShort(var12 + Varcs.baseY);
+               Client.secretPacketBuffer1.putByte(var4);
+               Client.secretPacketBuffer1.putByte(var5);
+               Client.secretPacketBuffer1.putShort(Client.mapAngle);
+               Client.secretPacketBuffer1.putByte(57);
+               Client.secretPacketBuffer1.putByte(0);
+               Client.secretPacketBuffer1.putByte(0);
+               Client.secretPacketBuffer1.putByte(89);
+               Client.secretPacketBuffer1.putShort(AbstractByteBuffer.localPlayer.x);
+               Client.secretPacketBuffer1.putShort(AbstractByteBuffer.localPlayer.y);
+               Client.secretPacketBuffer1.putByte(63);
+               Client.destinationX = var11;
+               Client.destinationY = var12;
             }
-         } else {
-            var8 = '�';
+         }
+
+      }
+   }
+
+   @ObfuscatedName("iw")
+   @ObfuscatedSignature(
+      signature = "(Lhj;IIIIIII)V",
+      garbageValue = "1793645415"
+   )
+   static final void method154(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(Client.field993) {
+         Client.field994 = 32;
+      } else {
+         Client.field994 = 0;
+      }
+
+      Client.field993 = false;
+      int var7;
+      if(MouseInput.field738 == 1 || !class110.field1650 && MouseInput.field738 == 4) {
+         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+            var0.scrollY -= 4;
+            class25.method172(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+            var0.scrollY += 4;
+            class25.method172(var0);
+         } else if(var5 >= var1 - Client.field994 && var5 < Client.field994 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
+            var7 = var3 * (var3 - 32) / var4;
+            if(var7 < 8) {
+               var7 = 8;
+            }
+
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.scrollY = var8 * (var4 - var3) / var9;
+            class25.method172(var0);
+            Client.field993 = true;
          }
       }
 
-      return new String(var3, 0, var4);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "([BI)Lkd;",
-      garbageValue = "-2106620676"
-   )
-   public static final SpritePixels method186(byte[] var0) {
-      BufferedImage var1 = null;
-
-      try {
-         var1 = ImageIO.read(new ByteArrayInputStream(var0));
-         int var2 = var1.getWidth();
-         int var3 = var1.getHeight();
-         int[] var4 = new int[var2 * var3];
-         PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2);
-         var5.grabPixels();
-         return new SpritePixels(var4, var2, var3);
-      } catch (IOException var7) {
-         ;
-      } catch (InterruptedException var8) {
-         ;
+      if(Client.field1111 != 0) {
+         var7 = var0.width;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+            var0.scrollY += Client.field1111 * 45;
+            class25.method172(var0);
+         }
       }
 
-      return new SpritePixels(0, 0);
    }
 }

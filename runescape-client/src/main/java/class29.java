@@ -1,144 +1,138 @@
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.IOException;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ab")
 public final class class29 {
+   @ObfuscatedName("gb")
+   @ObfuscatedSignature(
+      signature = "[Ljz;"
+   )
+   static IndexedSprite[] field432;
+   @ObfuscatedName("cs")
+   @ObfuscatedSignature(
+      signature = "Leh;"
+   )
+   static Task field435;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Ljz;"
    )
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
-   @ObfuscatedName("ai")
-   @ObfuscatedGetter(
-      intValue = -510525503
-   )
-   static int field433;
+   static IndexedSprite field431;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Lao;"
+      signature = "Laj;"
    )
    final class41 this$0;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1375423633
+      intValue = 534048561
    )
-   int field430;
-   @ObfuscatedName("i")
+   int field436;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1417589321
+      intValue = 468929733
    )
-   int field431;
-   @ObfuscatedName("r")
+   int field434;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -926289463
+      intValue = 2075524231
    )
    int field429;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -2145940451
+      intValue = -1450828851
    )
-   int field427;
+   int field430;
 
    @ObfuscatedSignature(
-      signature = "(Lao;)V"
+      signature = "(Laj;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("ho")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1819998997"
+      signature = "(ZI)V",
+      garbageValue = "-1692120928"
    )
-   @Export("addChatMessage")
-   @Hook("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatLineBuffer var4 = (ChatLineBuffer)class97.chatLineMap.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new ChatLineBuffer();
-         class97.chatLineMap.put(Integer.valueOf(var0), var4);
-      }
-
-      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
-      class97.field1532.put(var5, (long)var5.id);
-      class97.field1536.method3743(var5);
-      Client.chatCycle = Client.cycleCntr;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/io/File;",
-      garbageValue = "1956061000"
-   )
-   public static File method273(String var0) {
-      if(!class158.field2260) {
-         throw new RuntimeException("");
-      } else {
-         File var1 = (File)class158.field2261.get(var0);
-         if(var1 != null) {
-            return var1;
-         } else {
-            File var2 = new File(class158.field2265, var0);
-            RandomAccessFile var3 = null;
+   @Export("flush")
+   static final void flush(boolean var0) {
+      class28.method234();
+      ++Client.audioEffectCount;
+      if(Client.audioEffectCount >= 50 || var0) {
+         Client.audioEffectCount = 0;
+         if(!Client.socketError && class268.rssocket != null) {
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
 
             try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class158.field2261.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var8) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var7) {
-                  ;
-               }
-
-               throw new RuntimeException();
+               class268.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+               Client.secretPacketBuffer1.offset = 0;
+            } catch (IOException var2) {
+               Client.socketError = true;
             }
          }
+
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1553626600"
+      signature = "(ILcv;ZI)I",
+      garbageValue = "1305951217"
    )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = ScriptVarType.getSmoothNoise2D(var3, var5);
-      int var8 = ScriptVarType.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = ScriptVarType.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = ScriptVarType.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
-      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = (var14 * var10 >> 16) + ((65536 - var14) * var9 >> 16);
-      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = ((65536 - var16) * var11 >> 16) + (var13 * var16 >> 16);
-      return var15;
+   static int method236(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 5504) {
+         class81.intStackSize -= 2;
+         var3 = class81.intStack[class81.intStackSize];
+         int var4 = class81.intStack[class81.intStackSize + 1];
+         if(!Client.field1160) {
+            Client.field921 = var3;
+            Client.mapAngle = var4;
+         }
+
+         return 1;
+      } else if(var0 == 5505) {
+         class81.intStack[++class81.intStackSize - 1] = Client.field921;
+         return 1;
+      } else if(var0 == 5506) {
+         class81.intStack[++class81.intStackSize - 1] = Client.mapAngle;
+         return 1;
+      } else if(var0 == 5530) {
+         var3 = class81.intStack[--class81.intStackSize];
+         if(var3 < 0) {
+            var3 = 0;
+         }
+
+         Client.field1002 = var3;
+         return 1;
+      } else if(var0 == 5531) {
+         class81.intStack[++class81.intStackSize - 1] = Client.field1002;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(ILit;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-386121004"
+   )
+   public static void method235(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.getFile(var2);
+      int var7 = var1.getChild(var6, var3);
+      class203.field2521 = 1;
+      class203.field2522 = var1;
+      class203.field2520 = var6;
+      Frames.field2138 = var7;
+      class148.field2203 = var4;
+      BufferProvider.field3778 = var5;
+      class288.field3814 = var0;
    }
 }

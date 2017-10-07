@@ -2,21 +2,24 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jp")
-public class class268 {
-   @ObfuscatedName("n")
+@ObfuscatedName("jo")
+public final class class268 {
+   @ObfuscatedName("el")
    @ObfuscatedSignature(
-      signature = "[[Lhx;"
+      signature = "Lfi;"
    )
-   @Export("widgets")
-   public static Widget[][] widgets;
-   @ObfuscatedName("a")
-   static final char[] field3661;
-   @ObfuscatedName("r")
-   static final char[] field3662;
+   @Export("rssocket")
+   static RSSocket rssocket;
+   @ObfuscatedName("d")
+   public static final char[] field3678;
+   @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "Lij;"
+   )
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
 
    static {
-      field3661 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
-      field3662 = new char[]{'[', ']', '#'};
+      field3678 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
    }
 }

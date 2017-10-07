@@ -1,73 +1,88 @@
-import java.util.Comparator;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ci")
-final class class94 implements Comparator {
-   @ObfuscatedName("fj")
+public class class94 {
+   @ObfuscatedName("e")
+   static byte[] field1476;
+   @ObfuscatedName("p")
+   static byte[] field1477;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "[Lkd;"
+      signature = "[Lfg;"
    )
-   @Export("mapfunctions")
-   static SpritePixels[] mapfunctions;
-   // $FF: synthetic field
-   final boolean val$preferOwnWorld;
-
-   class94(boolean var1) {
-      this.val$preferOwnWorld = var1;
-   }
-
+   static Buffer[] field1478;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 596344085
+   )
+   static int field1485;
+   @ObfuscatedName("r")
+   static int[] field1480;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1602588739
+   )
+   static int field1474;
+   @ObfuscatedName("v")
+   static int[] field1482;
+   @ObfuscatedName("t")
+   static int[] field1483;
+   @ObfuscatedName("y")
+   static int[] field1475;
+   @ObfuscatedName("o")
+   static int[] field1481;
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Lv;Lv;S)I",
-      garbageValue = "-10146"
+   @ObfuscatedGetter(
+      intValue = 1893576507
    )
-   int method1779(class14 var1, class14 var2) {
-      if(var2.field298 == var1.field298) {
-         return 0;
-      } else {
-         if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field298) {
-               return -1;
-            }
-
-            if(var2.field298 == Client.world) {
-               return 1;
-            }
-         }
-
-         return var1.field298 < var2.field298?-1:1;
-      }
-   }
-
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method1779((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("i")
+   static int field1486;
+   @ObfuscatedName("u")
+   static int[] field1487;
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IS)Liz;",
-      garbageValue = "5953"
+      signature = "Lfg;"
    )
-   public static FloorUnderlayDefinition method1790(int var0) {
-      FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = FloorUnderlayDefinition.underlay_ref.getConfigData(1, var0);
-         var1 = new FloorUnderlayDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
-         }
+   static Buffer field1488;
+   @ObfuscatedName("ck")
+   @ObfuscatedGetter(
+      intValue = 1389387385
+   )
+   public static int field1491;
 
-         var1.post();
-         FloorUnderlayDefinition.underlays.put(var1, (long)var0);
-         return var1;
-      }
+   static {
+      field1476 = new byte[2048];
+      field1477 = new byte[2048];
+      field1478 = new Buffer[2048];
+      field1485 = 0;
+      field1480 = new int[2048];
+      field1474 = 0;
+      field1482 = new int[2048];
+      field1483 = new int[2048];
+      field1475 = new int[2048];
+      field1481 = new int[2048];
+      field1486 = 0;
+      field1487 = new int[2048];
+      field1488 = new Buffer(new byte[5000]);
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lit;I)V",
+      garbageValue = "-656194536"
+   )
+   public static void method1859(IndexDataBase var0) {
+      VarPlayerType.varplayer_ref = var0;
+      class181.field2452 = VarPlayerType.varplayer_ref.fileCount(16);
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "535343937"
+   )
+   public static boolean method1858(int var0) {
+      return (var0 >> 30 & 1) != 0;
    }
 }

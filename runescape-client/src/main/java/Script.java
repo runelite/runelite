@@ -4,154 +4,83 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("cv")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgl;"
    )
-   static NodeCache field1546;
-   @ObfuscatedName("ba")
-   @ObfuscatedSignature(
-      signature = "[Ljx;"
-   )
-   static IndexedSprite[] field1549;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Las;"
-   )
-   static class47 field1543;
-   @ObfuscatedName("j")
+   static NodeCache field1518;
+   @ObfuscatedName("k")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1798142611
+      intValue = -1723494033
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1949922097
+      intValue = -1163104061
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("q")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -293602213
+      intValue = 1531329989
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 506993195
-   )
-   @Export("stringStackCount")
-   int stringStackCount;
-   @ObfuscatedName("k")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "[Lgi;"
+      signature = "[Lgc;"
    )
    @Export("switches")
    IterableHashTable[] switches;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -98022837
+   )
+   @Export("stringStackCount")
+   int stringStackCount;
 
    static {
-      field1546 = new NodeCache(128);
+      field1518 = new NodeCache(128);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)[Lgi;",
-      garbageValue = "-1230171328"
+      signature = "(IS)[Lgc;",
+      garbageValue = "-22826"
    )
-   IterableHashTable[] method1857(int var1) {
+   IterableHashTable[] method1919(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("kt")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-617187399"
+      signature = "(Lhj;I)Z",
+      garbageValue = "2044719853"
    )
-   public static int method1861(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   static boolean method1926(Widget var0) {
+      if(Client.field961) {
+         if(class244.getWidgetConfig(var0) != 0) {
+            return false;
+         }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if(var4 <= 127) {
-            ++var2;
-         } else if(var4 <= 2047) {
-            var2 += 2;
-         } else {
-            var2 += 3;
+         if(var0.type == 0) {
+            return false;
          }
       }
 
-      return var2;
-   }
-
-   @ObfuscatedName("fl")
-   @ObfuscatedSignature(
-      signature = "(Lbg;B)V",
-      garbageValue = "48"
-   )
-   static final void method1860(Actor var0) {
-      if(var0.field1276 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1263 + 1 > class216.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
-         int var1 = var0.field1276 - var0.field1275;
-         int var2 = Client.gameCycle - var0.field1275;
-         int var3 = var0.field1271 * 128 + var0.field1233 * 64;
-         int var4 = var0.field1233 * 64 + var0.field1229 * 128;
-         int var5 = var0.field1239 * 128 + var0.field1233 * 64;
-         int var6 = var0.field1233 * 64 + var0.field1274 * 128;
-         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
-         var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
-      }
-
-      var0.field1287 = 0;
-      var0.orientation = var0.field1277;
-      var0.angle = var0.orientation;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "209574792"
-   )
-   static final boolean method1859(char var0) {
-      if(Character.isISOControl(var0)) {
-         return false;
-      } else if(class44.method660(var0)) {
-         return true;
-      } else {
-         char[] var1 = class268.field3661;
-
-         int var2;
-         char var3;
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         var1 = class268.field3662;
-
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         return false;
-      }
+      return var0.isHidden;
    }
 }

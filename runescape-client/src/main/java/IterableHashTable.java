@@ -4,28 +4,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gc")
 @Implements("IterableHashTable")
 public final class IterableHashTable implements Iterable {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @Export("size")
    int size;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "[Lgs;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @Export("index")
    int index;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
    @Export("head")
    Node head;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
@@ -45,7 +45,7 @@ public final class IterableHashTable implements Iterable {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(J)Lgs;"
    )
@@ -65,7 +65,7 @@ public final class IterableHashTable implements Iterable {
       return null;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "()Lgs;"
    )
@@ -90,7 +90,7 @@ public final class IterableHashTable implements Iterable {
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(Lgs;J)V"
    )
@@ -108,7 +108,7 @@ public final class IterableHashTable implements Iterable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "()Lgs;"
    )
@@ -118,7 +118,7 @@ public final class IterableHashTable implements Iterable {
       return this.getTail();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @Export("clear")
    public void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {

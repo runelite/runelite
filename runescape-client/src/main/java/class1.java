@@ -1,120 +1,126 @@
-import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("k")
 public class class1 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lk;"
    )
-   static final class1 field12;
-   @ObfuscatedName("j")
+   static final class1 field8;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lk;"
    )
    static final class1 field1;
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lk;"
    )
    static final class1 field2;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lj;"
-   )
-   static final class1 field0;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lj;"
-   )
-   static final class1 field4;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lk;"
    )
    static final class1 field3;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lk;"
+   )
+   static final class1 field13;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lk;"
+   )
+   static final class1 field0;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lk;"
    )
    static final class1 field6;
-   @ObfuscatedName("b")
+   @ObfuscatedName("os")
+   @ObfuscatedSignature(
+      signature = "Ldk;"
+   )
+   @Export("soundSystem0")
+   static AbstractSoundSystem soundSystem0;
+   @ObfuscatedName("n")
+   static int[] field10;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1933692685
+      intValue = 1768765237
    )
    final int field7;
 
    static {
-      field12 = new class1(6);
-      field1 = new class1(2);
-      field2 = new class1(3);
-      field0 = new class1(1);
-      field4 = new class1(4);
-      field3 = new class1(5);
-      field6 = new class1(0);
+      field8 = new class1(5);
+      field1 = new class1(4);
+      field2 = new class1(6);
+      field3 = new class1(2);
+      field13 = new class1(1);
+      field0 = new class1(0);
+      field6 = new class1(3);
    }
 
    class1(int var1) {
       this.field7 = var1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Lcq;",
-      garbageValue = "390861271"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-366756684"
    )
-   static Preferences method0() {
-      FileOnDisk var0 = null;
-      Preferences var1 = new Preferences();
-
-      try {
-         var0 = class163.getPreferencesFile("", class56.field695.field3199, false);
-         byte[] var2 = new byte[(int)var0.length()];
-
-         int var4;
-         for(int var3 = 0; var3 < var2.length; var3 += var4) {
-            var4 = var0.read(var2, var3, var2.length - var3);
-            if(var4 == -1) {
-               throw new IOException();
-            }
-         }
-
-         var1 = new Preferences(new Buffer(var2));
-      } catch (Exception var6) {
-         ;
-      }
-
-      try {
-         if(var0 != null) {
-            var0.close();
-         }
-      } catch (Exception var5) {
-         ;
-      }
-
-      return var1;
+   static void method3(String var0, String var1, String var2) {
+      class90.loginMessage1 = var0;
+      class90.loginMessage2 = var1;
+      class90.loginMessage3 = var2;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("je")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1016415555"
+      signature = "(Lhj;IIII)V",
+      garbageValue = "-1464901598"
    )
-   static void method1(int var0) {
-      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var1 != null) {
-         var1.unlink();
+   static final void method1(Widget var0, int var1, int var2, int var3) {
+      class210 var4 = var0.method4117(false);
+      if(var4 != null) {
+         if(Client.field1183 < 3) {
+            class15.compass.method5186(var1, var2, var4.field2615, var4.field2611, 25, 25, Client.mapAngle, 256, var4.field2616, var4.field2613);
+         } else {
+            Rasterizer2D.method5068(var1, var2, 0, var4.field2616, var4.field2613);
+         }
+
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lii;I)V",
-      garbageValue = "2078011764"
+      signature = "(B)Z",
+      garbageValue = "-6"
    )
-   public static void method2(IndexDataBase var0) {
-      InvType.field3284 = var0;
+   public static final boolean method0() {
+      KeyFocusListener var0 = KeyFocusListener.keyboard;
+      synchronized(KeyFocusListener.keyboard) {
+         if(KeyFocusListener.field665 == KeyFocusListener.field666) {
+            return false;
+         } else {
+            class94.field1491 = KeyFocusListener.field643[KeyFocusListener.field666];
+            ChatLineBuffer.field1546 = KeyFocusListener.field659[KeyFocusListener.field666];
+            KeyFocusListener.field666 = KeyFocusListener.field666 + 1 & 127;
+            return true;
+         }
+      }
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "756305658"
+   )
+   public static int method2(int var0) {
+      return var0 >> 11 & 63;
    }
 }
