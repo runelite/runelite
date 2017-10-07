@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -48,6 +49,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.RuneLite;
@@ -121,11 +124,41 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
-		//Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		//if (bank != null && !bank.isHidden())
-		//{
-		//	return null;
-		//}
+		WidgetInfo viewportInfo = WidgetInfo.FIXED_VIEWPORT;
+		if (client.isResized())
+		{
+			if (client.getSetting(Varbits.SIDE_PANELS) == 1)
+			{
+				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE;
+			}
+			else
+			{
+				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX;
+			}
+		}
+		Widget viewport = client.getWidget(viewportInfo);
+
+		if (viewport != null)
+		{
+			Widget[] subViewports = viewport.getStaticChildren();
+			if (subViewports.length > 0)
+			{
+				for (Widget w : subViewports)
+				{
+					if (w.getNestedChildren().length > 0)
+					{
+						return null;
+					}
+				}
+			}
+			else
+			{
+				if (viewport.getNestedChildren().length > 0)
+				{
+					return null;
+				}
+			}
+		}
 
 		// gets the hidden/highlighted items from the text box in the config
 		String configItems = config.getHiddenItems();
@@ -199,6 +232,13 @@ public class GroundItemsOverlay extends Overlay
 
 				for (int i = 0; i < itemIds.size(); ++i)
 				{
+					Point point = itemLayer.getCanvasLocation();
+					// if the item is offscreen, don't bother drawing it
+					if (point == null || !pointInWidget(point, viewport))
+					{
+						continue;
+					}
+
 					int itemId = itemIds.get(i);
 					int quantity = items.get(itemId);
 					ItemComposition item = itemCache.getUnchecked(itemId);
@@ -270,13 +310,6 @@ public class GroundItemsOverlay extends Overlay
 					String itemString = itemStringBuilder.toString();
 					itemStringBuilder.setLength(0);
 
-					Point point = itemLayer.getCanvasLocation();
-					// if the item is offscreen, don't bother drawing it
-					if (point == null)
-					{
-						continue;
-					}
-
 					int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
 
 					// Drawing the shadow for the text, 1px on both x and y
@@ -290,5 +323,15 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private boolean pointInWidget(Point point, Widget widget)
+	{
+		if (widget != null)
+		{
+			Rectangle bounds = widget.getBounds();
+			return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
+		}
+		return false;
 	}
 }
