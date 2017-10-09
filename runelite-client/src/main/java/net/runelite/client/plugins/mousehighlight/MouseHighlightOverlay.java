@@ -172,15 +172,23 @@ class MouseHighlightOverlay extends Overlay
 
 	private static Color hex2rgb(String col)
 	{
-		if (col.length() < 6)
+		int hex;
+		try
 		{
-			return new Color(0, 255, 255);
+			hex = Integer.decode("#" + col);
 		}
+		catch(NumberFormatException ex)
+		{
+			return Color.cyan;
+		}
+		int r = (hex & 0xFF0000) >> 16;
+		int g = (hex & 0xFF00) >> 8;
+		int b = (hex & 0xFF);
 
 		return new Color(
-			Integer.valueOf(col.substring(0, 2), 16),
-			Integer.valueOf(col.substring(2, 4), 16),
-			Integer.valueOf(col.substring(4, 6), 16)
+				r,
+				g,
+				b
 		);
 	}
 }
