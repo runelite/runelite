@@ -177,7 +177,7 @@ class MouseHighlightOverlay extends Overlay
 		{
 			hex = Integer.decode("#" + col);
 		}
-		catch(NumberFormatException ex)
+		catch (NumberFormatException ex)
 		{
 			return Color.cyan;
 		}
