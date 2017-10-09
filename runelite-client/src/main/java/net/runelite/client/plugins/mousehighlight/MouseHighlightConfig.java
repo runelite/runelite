@@ -43,4 +43,11 @@ public interface MouseHighlightConfig
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "border",
+			name = "Border Color",
+			description = "Color of the mouse hover border (in hexadecimal without # or 0x)"
+	)
+	default String borderColor() { return "00FFFF"; }
 }

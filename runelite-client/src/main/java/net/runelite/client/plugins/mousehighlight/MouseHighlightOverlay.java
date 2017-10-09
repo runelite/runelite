@@ -145,7 +145,7 @@ class MouseHighlightOverlay extends Overlay
 		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
 
 		// Draws the outline of the rect
-		graphics.setColor(Color.cyan);
+		graphics.setColor(hex2rgb(config.borderColor()));
 		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
 		y += 5;
