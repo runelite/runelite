@@ -92,4 +92,8 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 0; // placeholder, unknown
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
+
+	// NPC animations
+	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
+	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
 }
