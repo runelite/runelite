@@ -27,6 +27,8 @@ package net.runelite.client.plugins.mousehighlight;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.Color;
+
 @ConfigGroup(
 	keyName = "mousehighlight",
 	name = "Mouse Highlighting",
@@ -49,8 +51,8 @@ public interface MouseHighlightConfig
 			name = "Border Color",
 			description = "Color of the mouse hover border (in hexadecimal without # or 0x)"
 	)
-	default String borderColor()
+	default Color borderColor()
 	{
-		return "00FFFF";
+		return Color.cyan;
 	}
 }
