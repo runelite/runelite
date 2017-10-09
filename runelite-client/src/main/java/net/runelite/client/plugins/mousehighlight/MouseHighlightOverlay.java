@@ -158,7 +158,7 @@ class MouseHighlightOverlay extends Overlay
 		for (int i = 0; i < parts.size(); i++)
 		{
 			// Sets the string colour to the colour the game uses.
-			graphics.setColor(hex2rgb(colours.get(i)));
+			graphics.setColor(Color.decode(colours.get(i)));
 			// Draws the target (Player, item)
 			graphics.drawString(parts.get(i), x + option_width + parts_width, y);
 
@@ -168,27 +168,5 @@ class MouseHighlightOverlay extends Overlay
 		graphics.setColor(Color.white);
 
 		return null;
-	}
-
-	private static Color hex2rgb(String col)
-	{
-		int hex;
-		try
-		{
-			hex = Integer.decode("#" + col);
-		}
-		catch (NumberFormatException ex)
-		{
-			return Color.cyan;
-		}
-		int r = (hex & 0xFF0000) >> 16;
-		int g = (hex & 0xFF00) >> 8;
-		int b = (hex & 0xFF);
-
-		return new Color(
-				r,
-				g,
-				b
-		);
 	}
 }
