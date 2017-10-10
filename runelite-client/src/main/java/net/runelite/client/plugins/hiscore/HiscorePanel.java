@@ -119,7 +119,7 @@ public class HiscorePanel extends PluginPanel
 		}
 		catch (IOException ex)
 		{
-			logger.warn(null, ex);
+			throw new RuntimeException(ex);
 		}
 
 		input = new IconTextField();
@@ -217,12 +217,14 @@ public class HiscorePanel extends PluginPanel
 		{
 			try
 			{
-				Icon icon = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(endpoint.name() + ".png")));
-				Icon selected = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(endpoint.name() + "_selected.png")));
+				Icon icon = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
+					endpoint.name().toLowerCase() + ".png")));
+				Icon selected = new ImageIcon(ImageIO.read(HiscorePanel.class.getResourceAsStream(
+					endpoint.name().toLowerCase() + "_selected.png")));
 				JToggleButton button = new JToggleButton();
 				button.setIcon(icon);
 				button.setSelectedIcon(selected);
-				button.setPreferredSize(new Dimension(24,24));
+				button.setPreferredSize(new Dimension(24, 24));
 				button.setBackground(Color.WHITE);
 				button.setFocusPainted(false);
 				button.setActionCommand(endpoint.name());
@@ -238,7 +240,7 @@ public class HiscorePanel extends PluginPanel
 			}
 			catch (IOException ex)
 			{
-				logger.warn(null, ex);
+				throw new RuntimeException(ex);
 			}
 		}
 
