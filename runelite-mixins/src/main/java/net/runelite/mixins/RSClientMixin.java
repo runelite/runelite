@@ -222,4 +222,22 @@ public abstract class RSClientMixin implements RSClient
 	{
 		setChatCycle(getCycleCntr());
 	}
+
+	@Inject
+	@Override
+	public Widget getViewportWidget()
+	{
+		if (isResized())
+		{
+			if (getSetting(Varbits.SIDE_PANELS) == 1)
+			{
+				return getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
+			}
+			else
+			{
+				return getWidget(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX);
+			}
+		}
+		return getWidget(WidgetInfo.FIXED_VIEWPORT);
+	}
 }
