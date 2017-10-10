@@ -25,9 +25,7 @@
 package net.runelite.client.plugins.fightcave;
 
 import net.runelite.api.AnimationID;
-import net.runelite.api.Client;
 import net.runelite.api.Prayer;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 public enum JadAttack
@@ -35,9 +33,9 @@ public enum JadAttack
 	MAGIC(AnimationID.TZTOK_JAD_MAGIC_ATTACK, Prayer.PROTECT_FROM_MAGIC, WidgetInfo.PRAYER_PROTECT_FROM_MAGIC),
 	RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES, WidgetInfo.PRAYER_PROTECT_FROM_MISSILES);
 
-	private int animation;
-	private Prayer prayer;
-	private WidgetInfo prayerWidgetInfo;
+	private final int animation;
+	private final Prayer prayer;
+	private final WidgetInfo prayerWidgetInfo;
 
 	JadAttack(int animation, Prayer prayer, WidgetInfo prayerWidgetInfo)
 	{
