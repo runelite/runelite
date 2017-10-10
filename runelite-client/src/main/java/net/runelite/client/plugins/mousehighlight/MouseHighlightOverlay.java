@@ -94,8 +94,8 @@ class MouseHighlightOverlay extends Overlay
 
 		Matcher m = p.matcher(target);
 
-		List<String> parts = new ArrayList<String>();
-		List<String> colours = new ArrayList<String>();
+		List<String> parts = new ArrayList<>();
+		List<String> colours = new ArrayList<>();
 
 		while (m.find())
 		{
@@ -103,7 +103,7 @@ class MouseHighlightOverlay extends Overlay
 			parts.add(m.group(2));
 		}
 
-		if (parts.size() == 0)
+		if (parts.isEmpty())
 		{
 			return null;
 		}
