@@ -49,7 +49,7 @@ public interface MouseHighlightConfig
 	@ConfigItem(
 		keyName = "border",
 		name = "Border Color",
-		description = "Color of the mouse hover border (in hexadecimal without # or 0x)"
+		description = "Color of the mouse hover border"
 	)
 	default Color borderColor()
 	{
