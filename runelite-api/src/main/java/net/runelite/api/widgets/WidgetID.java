@@ -37,6 +37,7 @@ class WidgetID
 	static final int FIXED_VIEWPORT_GROUP_ID = 548;
 	static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID = 161;
 	static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
+	static final int PRAYER_GROUP_ID = 541;
 
 	static class PestControl
 	{
@@ -101,5 +102,38 @@ class WidgetID
 		static final int FIXED_VIEWPORT = 20;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
+	}
+
+	static class Prayer
+	{
+		static final int THICK_SKIN = 4;
+		static final int BURST_OF_STRENGTH = 5;
+		static final int CLARITY_OF_THOUGHT = 6;
+		static final int SHARP_EYE = 22;
+		static final int MYSTIC_WILL = 23;
+		static final int ROCK_SKIN = 7;
+		static final int SUPERHUMAN_STRENGTH = 8;
+		static final int IMPROVED_REFLEXES = 9;
+		static final int RAPID_RESTORE = 10;
+		static final int RAPID_HEAL = 11;
+		static final int PROTECT_ITEM = 12;
+		static final int HAWK_EYE = 24;
+		static final int MYSTIC_LORE = 25;
+		static final int STEEL_SKIN = 13;
+		static final int ULTIMATE_STRENGTH = 14;
+		static final int INCREDIBLE_REFLEXES = 15;
+		static final int PROTECT_FROM_MAGIC = 16;
+		static final int PROTECT_FROM_MISSILES = 17;
+		static final int PROTECT_FROM_MELEE = 18;
+		static final int EAGLE_EYE = 26;
+		static final int MYSTIC_MIGHT = 27;
+		static final int RETRIBUTION = 19;
+		static final int REDEMPTION = 20;
+		static final int SMITE = 21;
+		static final int PRESERVE = 32;
+		static final int CHIVALRY = 28;
+		static final int PIETY = 29;
+		static final int RIGOUR = 30;
+		static final int AUGURY = 31;
 	}
 }

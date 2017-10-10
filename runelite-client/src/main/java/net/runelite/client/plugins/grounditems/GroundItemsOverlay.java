@@ -49,7 +49,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -124,19 +123,7 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
-		WidgetInfo viewportInfo = WidgetInfo.FIXED_VIEWPORT;
-		if (client.isResized())
-		{
-			if (client.getSetting(Varbits.SIDE_PANELS) == 1)
-			{
-				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE;
-			}
-			else
-			{
-				viewportInfo = WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX;
-			}
-		}
-		Widget viewport = client.getWidget(viewportInfo);
+		Widget viewport = client.getViewportWidget();
 
 		if (viewport != null)
 		{
