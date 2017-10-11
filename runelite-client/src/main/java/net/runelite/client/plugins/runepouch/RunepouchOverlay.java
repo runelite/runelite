@@ -26,11 +26,8 @@ package net.runelite.client.plugins.runepouch;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -49,6 +46,7 @@ import org.slf4j.LoggerFactory;
 public class RunepouchOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(RunepouchOverlay.class);
+	private static Runepouch plugin;
 
 	private static final Varbits[] AMOUNT_VARBITS =
 	{
@@ -65,6 +63,7 @@ public class RunepouchOverlay extends Overlay
 	public RunepouchOverlay(Runepouch plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -73,6 +72,8 @@ public class RunepouchOverlay extends Overlay
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
+			graphics.setFont(plugin.getFont());
+			graphics.drawString("test",100,100);
 			return null;
 		}
 
@@ -83,13 +84,9 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Font font = graphics.getFont();
-		if (font.getSize() != 10)
+		if (graphics.getFont() != plugin.getFont())
 		{
-			Map attributes = font.getAttributes();
-			attributes.put(TextAttribute.SIZE, 10);
-			font = Font.getFont(attributes);
-			graphics.setFont(font);
+			graphics.setFont(plugin.getFont());
 		}
 
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
