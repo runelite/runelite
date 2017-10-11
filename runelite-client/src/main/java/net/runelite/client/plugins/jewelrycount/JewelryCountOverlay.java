@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.jewelrycount;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -39,11 +38,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 class JewelryCountOverlay extends Overlay
 {
 	private final JewelryCountConfig config;
+	private final JewelryCount plugin;
 
 	JewelryCountOverlay(JewelryCount plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -102,10 +103,6 @@ class JewelryCountOverlay extends Overlay
 
 				Rectangle widgetBounds = widget.getBounds();
 
-				//to match inventory text
-				widgetBounds.x -= 5;
-				widgetBounds.y -= 1;
-
 				renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
 
 			}
@@ -116,19 +113,23 @@ class JewelryCountOverlay extends Overlay
 
 	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
 	{
-		String text = charges + "";
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
+		Font font = plugin.getFont();
+		if (font != null)
+		{
+			graphics.setFont(font);
+		}
 
-		int textX = (int) (bounds.getX() + bounds.getWidth() - textBounds.getWidth());
-		int textY = (int) (bounds.getY() + (textBounds.getHeight()));
+		FontMetrics fm = graphics.getFontMetrics();
+
+		int textX = (int) bounds.getX();
+		int textY = (int) bounds.getY() + fm.getHeight();
 
 		//text shadow
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, textX + 1, textY + 1);
+		graphics.drawString(String.valueOf(charges), textX + 1, textY + 1);
 
 		graphics.setColor(color);
-		graphics.drawString(text, textX, textY);
+		graphics.drawString(String.valueOf(charges), textX, textY);
 	}
 
 }
