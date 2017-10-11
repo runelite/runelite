@@ -28,9 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.TextAttribute;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -58,6 +59,10 @@ public class RunepouchOverlay extends Overlay
 	{
 		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
 	};
+	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS =
+	{
+		WidgetInfo.DEPOSIT_BOX_INVENTORY, WidgetInfo.BANK_INVENTORY, WidgetInfo.INVENTORY
+	};
 
 	private final Client client = RuneLite.getClient();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
@@ -76,23 +81,13 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return null;
-		}
-
 		Font font = graphics.getFont();
 		if (font.getSize() != 10)
 		{
-			Map attributes = font.getAttributes();
-			attributes.put(TextAttribute.SIZE, 10);
-			font = Font.getFont(attributes);
-			graphics.setFont(font);
+			graphics.setFont(font.deriveFont(10f));
 		}
 
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		for (WidgetItem item : getInventoryItems())
 		{
 			if (item.getId() != ItemID.RUNE_POUCH)
 			{
@@ -138,6 +133,37 @@ public class RunepouchOverlay extends Overlay
 			}
 		}
 		return null;
+	}
+
+	private WidgetItem[] getInventoryItems()
+	{
+		List<WidgetItem> items = new ArrayList<>();
+		for (WidgetInfo widgetInfo : INVENTORY_WIDGET_INFOS)
+		{
+			Widget inventory = client.getWidget(widgetInfo);
+			if (inventory == null || inventory.isHidden())
+			{
+				continue;
+			}
+			if (widgetInfo == WidgetInfo.INVENTORY)
+			{
+				items.addAll(inventory.getWidgetItems());
+				break;
+			}
+			else
+			{
+				Widget[] children = inventory.getDynamicChildren();
+				for (int i = 0; i < children.length; i++)
+				{
+					// set bounds to same size as default inventory
+					Rectangle bounds = children[i].getBounds();
+					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+					items.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i, bounds));
+				}
+				break;
+			}
+		}
+		return items.toArray(new WidgetItem[items.size()]);
 	}
 
 	private static String formatNumber(int var0)
