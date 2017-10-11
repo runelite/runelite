@@ -35,7 +35,6 @@ public class FontManager
 	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
 
 	private static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	private static Font fallbackFont = new Font("Arial", Font.PLAIN, 12);
 	private static Font runescapeFont;
 	private static Font runescapeSmallFont;
 
