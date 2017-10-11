@@ -44,7 +44,7 @@ public class Runepouch extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeFont();
+		font = FontManager.getRunescapeSmallFont();
 	}
 
 	@Override

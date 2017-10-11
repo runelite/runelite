@@ -72,8 +72,6 @@ public class RunepouchOverlay extends Overlay
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
-			graphics.setFont(plugin.getFont());
-			graphics.drawString("test",100,100);
 			return null;
 		}
 
