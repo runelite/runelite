@@ -158,7 +158,7 @@ class MouseHighlightOverlay extends Overlay
 		for (int i = 0; i < parts.size(); i++)
 		{
 			// Sets the string colour to the colour the game uses.
-			graphics.setColor(Color.decode(colours.get(i)));
+			graphics.setColor(Color.decode("#" + colours.get(i)));
 			// Draws the target (Player, item)
 			graphics.drawString(parts.get(i), x + option_width + parts_width, y);
 
