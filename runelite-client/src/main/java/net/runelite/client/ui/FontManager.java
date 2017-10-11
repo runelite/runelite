@@ -34,59 +34,43 @@ public class FontManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
 
+	private static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	private static Font fallbackFont = new Font("Arial", Font.PLAIN, 12);
+	private static Font runescapeFont;
+	private static Font runescapeSmallFont;
 
-	public static Font getRunescapeFont()
+	static
 	{
 		try
 		{
-			Font font = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("/runescape.ttf"));
-			font = font.deriveFont(Font.PLAIN, 16);
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("/runescape.ttf"));
+			runescapeFont = runescapeFont.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeFont);
 
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-
-			return font;
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("/runescape_small.ttf"));
+			runescapeSmallFont = runescapeSmallFont.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeSmallFont);
 		}
 		catch (Exception ex)
 		{
 			if (ex instanceof FontFormatException)
 			{
-				logger.error("Font loaded, but format incorrect");
+				logger.error("Font loaded, but format incorrect: " + ex);
 			}
 			if (ex instanceof IOException)
 			{
-				logger.error("Font file not found");
+				logger.error("Font file not found: " + ex);
 			}
-
-			return fallbackFont;
 		}
+	}
+
+	public static Font getRunescapeFont()
+	{
+		return runescapeFont;
 	}
 
 	public static Font getRunescapeSmallFont()
 	{
-		try
-		{
-			Font font = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("/runescape_small.ttf"));
-			font = font.deriveFont(Font.PLAIN, 16);
-
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(font);
-
-			return font;
-		}
-		catch (Exception ex)
-		{
-			if (ex instanceof FontFormatException)
-			{
-				logger.error("Font loaded, but format incorrect");
-			}
-			if (ex instanceof IOException)
-			{
-				logger.error("Font file not found");
-			}
-
-			return fallbackFont;
-		}
+		return runescapeSmallFont;
 	}
 }
