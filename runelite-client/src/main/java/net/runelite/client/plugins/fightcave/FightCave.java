@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.fightcave;
 
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Query;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
+import java.time.temporal.ChronoUnit;
 
-public class JewelryCount extends Plugin
+public class FightCave extends Plugin
 {
-	private final JewelryCountConfig config = RuneLite.getRunelite().getConfigManager().getConfig(JewelryCountConfig.class);
-	private final Overlay overlay = new JewelryCountOverlay(this);
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final Client client = RuneLite.getClient();
+	private final FightCaveOverlay overlay = new FightCaveOverlay(this);
 
-	private Font font;
+	private JadAttack attack;
 
 	@Override
 	public Overlay getOverlay()
@@ -47,10 +53,7 @@ public class JewelryCount extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape_small.ttf"));
-		font = font.deriveFont(Font.PLAIN, 16);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(font);
+
 	}
 
 	@Override
@@ -59,13 +62,44 @@ public class JewelryCount extends Plugin
 
 	}
 
-	public JewelryCountConfig getConfig()
+	@Schedule(
+		period = 600,
+		unit = ChronoUnit.MILLIS
+	)
+	public void update()
 	{
-		return config;
+		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		NPC jad = findJad();
+		if (jad != null)
+		{
+			if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
+			{
+				attack = JadAttack.MAGIC;
+			}
+			else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
+			{
+				attack = JadAttack.RANGE;
+			}
+		}
+		else
+		{
+			attack = null;
+		}
 	}
 
-	public Font getFont()
+	private NPC findJad()
 	{
-		return font;
+		Query query = new NPCQuery().nameContains("TzTok-Jad");
+		NPC[] result = runelite.runQuery(query);
+		return result.length >= 1 ? result[0] : null;
+	}
+
+	JadAttack getAttack()
+	{
+		return attack;
 	}
 }

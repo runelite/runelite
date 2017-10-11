@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Canvas;
+
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -143,4 +144,6 @@ public interface Client
 	void setGameDrawingMode(int gameDrawingMode);
 
 	void refreshChat();
+
+	Widget getViewportWidget();
 }

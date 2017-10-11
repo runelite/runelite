@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
@@ -41,7 +43,7 @@ class MouseHighlightOverlay extends Overlay
 {
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
-	private final Pattern p = Pattern.compile("^<col=([^>]+)>([^<]*)");
+	private final Pattern p = Pattern.compile("<col=([^>]+)>([^<]*)");
 	private final MouseHighlightConfig config;
 
 	MouseHighlightOverlay(MouseHighlight plugin)
@@ -91,13 +93,20 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		Matcher m = p.matcher(target);
-		if (!m.find())
+
+		List<String> parts = new ArrayList<>();
+		List<String> colours = new ArrayList<>();
+
+		while (m.find())
+		{
+			colours.add(m.group(1));
+			parts.add(m.group(2));
+		}
+
+		if (parts.isEmpty())
 		{
 			return null;
 		}
-
-		String colour = m.group(1);
-		String matchedTarget = m.group(2);
 
 		// Remove colour text from option
 		option = option.replaceAll("<col=([^>]+)>", "");
@@ -109,7 +118,11 @@ class MouseHighlightOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		// Gets the widths of the various strings we will be displaying
 		int option_width = fm.stringWidth(option + " ");
-		int total_width = option_width + fm.stringWidth(matchedTarget);
+		int total_width = option_width;
+		for (String part : parts)
+		{
+			total_width += fm.stringWidth(part);
+		}
 		int height = fm.getHeight();
 
 		x -= total_width + 6; // Draw to the left of the mouse
@@ -132,7 +145,7 @@ class MouseHighlightOverlay extends Overlay
 		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
 
 		// Draws the outline of the rect
-		graphics.setColor(Color.cyan);
+		graphics.setColor(config.borderColor());
 		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
 		x += 3;
 		y += 5;
@@ -140,25 +153,20 @@ class MouseHighlightOverlay extends Overlay
 		graphics.setColor(Color.white);
 		// Draws the option (Use, Walk here, Wield)
 		graphics.drawString(option + " ", x, y);
-		// Sets the string colour to the colour the game uses.
-		graphics.setColor(hex2rgb(colour));
-		// Draws the target (Player, item)
-		graphics.drawString(matchedTarget, x + option_width, y);
-
-		return null;
-	}
-
-	private static Color hex2rgb(String col)
-	{
-		if (col.length() < 6)
+		// Write text
+		int parts_width = 0;
+		for (int i = 0; i < parts.size(); i++)
 		{
-			return new Color(0, 255, 255);
+			// Sets the string colour to the colour the game uses.
+			graphics.setColor(Color.decode("#" + colours.get(i)));
+			// Draws the target (Player, item)
+			graphics.drawString(parts.get(i), x + option_width + parts_width, y);
+
+			parts_width += fm.stringWidth(parts.get(i));
 		}
 
-		return new Color(
-			Integer.valueOf(col.substring(0, 2), 16),
-			Integer.valueOf(col.substring(2, 4), 16),
-			Integer.valueOf(col.substring(4, 6), 16)
-		);
+		graphics.setColor(Color.white);
+
+		return null;
 	}
 }
