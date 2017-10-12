@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.api.widgets.Widget;
@@ -33,6 +32,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 
@@ -68,11 +68,8 @@ public class DevTools extends Plugin
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
-
-		font = font.deriveFont(Font.BOLD, 16);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(font);
+		font = FontManager.getRunescapeFont()
+			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override

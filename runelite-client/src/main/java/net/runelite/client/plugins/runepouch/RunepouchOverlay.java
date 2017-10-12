@@ -26,11 +26,8 @@ package net.runelite.client.plugins.runepouch;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -40,6 +37,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -83,14 +81,7 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Font font = graphics.getFont();
-		if (font.getSize() != 10)
-		{
-			Map attributes = font.getAttributes();
-			attributes.put(TextAttribute.SIZE, 10);
-			font = Font.getFont(attributes);
-			graphics.setFont(font);
-		}
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{
