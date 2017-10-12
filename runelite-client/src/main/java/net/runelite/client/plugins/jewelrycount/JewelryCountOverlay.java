@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.jewelrycount;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -37,6 +39,11 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class JewelryCountOverlay extends Overlay
 {
+	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS = {
+			WidgetInfo.DEPOSIT_BOX_INVENTORY, WidgetInfo.BANK_INVENTORY, WidgetInfo.INVENTORY
+	};
+
+	private final Client client = RuneLite.getClient();
 	private final JewelryCountConfig config;
 	private final JewelryCount plugin;
 
@@ -50,8 +57,6 @@ class JewelryCountOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Client client = RuneLite.getClient();
-
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| !config.enabled()
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
@@ -59,27 +64,17 @@ class JewelryCountOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
-
-		if (inventory == null)
+		for (WidgetItem item : getInventoryItems())
 		{
-			return null;
-		}
+			JewelryCharges charges = JewelryCharges.getCharges(item.getId());
 
-		if (!inventory.isHidden())
-		{
-			for (WidgetItem item : inventory.getWidgetItems())
+			if (charges == null)
 			{
-				JewelryCharges charges = JewelryCharges.getCharges(item.getId());
-
-				if (charges == null)
-				{
-					continue;
-				}
-
-				renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
-
+				continue;
 			}
+
+			renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
+
 		}
 
 		Widget equipment = client.getWidget(WidgetInfo.EQUIPMENT);
@@ -109,6 +104,37 @@ class JewelryCountOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private WidgetItem[] getInventoryItems()
+	{
+		List<WidgetItem> items = new ArrayList<>();
+		for (WidgetInfo widgetInfo : INVENTORY_WIDGET_INFOS)
+		{
+			Widget inventory = client.getWidget(widgetInfo);
+			if (inventory == null || inventory.isHidden())
+			{
+				continue;
+			}
+			if (widgetInfo == WidgetInfo.INVENTORY)
+			{
+				items.addAll(inventory.getWidgetItems());
+				break;
+			}
+			else
+			{
+				Widget[] children = inventory.getDynamicChildren();
+				for (int i = 0; i < children.length; i++)
+				{
+					// set bounds to same size as default inventory
+					Rectangle bounds = children[i].getBounds();
+					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+					items.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i, bounds));
+				}
+				break;
+			}
+		}
+		return items.toArray(new WidgetItem[items.size()]);
 	}
 
 	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
