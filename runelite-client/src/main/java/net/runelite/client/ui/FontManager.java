@@ -54,11 +54,11 @@ public class FontManager
 		{
 			if (ex instanceof FontFormatException)
 			{
-				logger.error("Font loaded, but format incorrect: " + ex);
+				logger.error("Font loaded, but format incorrect.", ex);
 			}
 			if (ex instanceof IOException)
 			{
-				logger.error("Font file not found: " + ex);
+				logger.error("Font file not found.", ex);
 			}
 		}
 	}
