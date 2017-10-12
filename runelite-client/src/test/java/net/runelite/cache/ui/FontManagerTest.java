@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.cache.ui;
 
-import java.awt.Font;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
-public class JewelryCount extends Plugin
+public class FontManagerTest
 {
-	private final JewelryCountConfig config = RuneLite.getRunelite().getConfigManager().getConfig(JewelryCountConfig.class);
-	private final Overlay overlay = new JewelryCountOverlay(this);
-
-	private Font font;
-
-	@Override
-	public Overlay getOverlay()
+	@Test
+	public void getRunescapeFont()
 	{
-		return overlay;
+		assertNotNull(FontManager.getRunescapeFont());
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@Test
+	public void getRunescapeSmallFont()
 	{
-		font = FontManager.getRunescapeSmallFont()
-			.deriveFont(Font.PLAIN, 16);
+		assertNotNull(FontManager.getRunescapeSmallFont());
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-
-	}
-
-	public JewelryCountConfig getConfig()
-	{
-		return config;
-	}
-
-	public Font getFont()
-	{
-		return font;
-	}
 }

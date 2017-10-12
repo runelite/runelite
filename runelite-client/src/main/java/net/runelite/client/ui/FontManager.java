@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.ui;
 
 import java.awt.Font;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class JewelryCount extends Plugin
+public class FontManager
 {
-	private final JewelryCountConfig config = RuneLite.getRunelite().getConfigManager().getConfig(JewelryCountConfig.class);
-	private final Overlay overlay = new JewelryCountOverlay(this);
+	private static final Logger logger = LoggerFactory.getLogger(FontManager.class);
 
-	private Font font;
+	private static final Font runescapeFont;
+	private static final Font runescapeSmallFont;
 
-	@Override
-	public Overlay getOverlay()
+	static
 	{
-		return overlay;
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+		try
+		{
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape.ttf"))
+				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeFont);
+
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape_small.ttf"))
+				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeSmallFont);
+		}
+		catch (FontFormatException ex)
+		{
+			throw new RuntimeException("Font loaded, but format incorrect.", ex);
+		}
+		catch (IOException ex)
+		{
+			throw new RuntimeException("Font file not found.", ex);
+		}
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	public static Font getRunescapeFont()
 	{
-		font = FontManager.getRunescapeSmallFont()
-			.deriveFont(Font.PLAIN, 16);
+		return runescapeFont;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	public static Font getRunescapeSmallFont()
 	{
-
-	}
-
-	public JewelryCountConfig getConfig()
-	{
-		return config;
-	}
-
-	public Font getFont()
-	{
-		return font;
+		return runescapeSmallFont;
 	}
 }
