@@ -37,6 +37,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 public class RunepouchOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(RunepouchOverlay.class);
-	private static Runepouch plugin;
 
 	private static final Varbits[] AMOUNT_VARBITS =
 	{
@@ -63,7 +63,6 @@ public class RunepouchOverlay extends Overlay
 	public RunepouchOverlay(Runepouch plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.plugin = plugin;
 	}
 
 	@Override
@@ -82,10 +81,7 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		if (graphics.getFont() != plugin.getFont())
-		{
-			graphics.setFont(plugin.getFont());
-		}
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : inventoryWidget.getWidgetItems())
 		{

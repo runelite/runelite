@@ -1,10 +1,3 @@
-package net.runelite.cache.ui;
-
-import net.runelite.client.ui.FontManager;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
@@ -29,7 +22,14 @@ import static org.junit.Assert.*;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-public class FontManagerTest {
+package net.runelite.cache.ui;
+
+import net.runelite.client.ui.FontManager;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+
+public class FontManagerTest
+{
 	@Test
 	public void getRunescapeFont()
 	{

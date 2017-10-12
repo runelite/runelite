@@ -25,11 +25,9 @@
 package net.runelite.client.plugins.implings;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Font;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 /**
@@ -43,14 +41,9 @@ public class Implings extends Plugin
 
 	private final ImplingsOverlay overlay = new ImplingsOverlay(this);
 
-	private Font font;
-
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeFont();
-		font = font.deriveFont(Font.BOLD, 16);
-
 		// Initialize overlay config
 		overlay.updateConfig();
 	}

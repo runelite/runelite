@@ -68,8 +68,8 @@ public class DevTools extends Plugin
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		font = FontManager.getRunescapeFont();
-		font = font.deriveFont(Font.BOLD, 16);
+		font = FontManager.getRunescapeFont()
+			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override

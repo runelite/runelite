@@ -24,30 +24,34 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.io.IOException;
-
 public class FontManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(FontManager.class);
 
-	private static final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	private static Font runescapeFont;
-	private static Font runescapeSmallFont;
+	private static final Font runescapeFont;
+	private static final Font runescapeSmallFont;
 
 	static
 	{
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
 		try
 		{
-			runescapeFont = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("runescape.ttf"));
-			runescapeFont = runescapeFont.deriveFont(Font.PLAIN, 16);
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape.ttf"))
+				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
-			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT, FontManager.class.getResourceAsStream("runescape_small.ttf"));
-			runescapeSmallFont = runescapeSmallFont.deriveFont(Font.PLAIN, 16);
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape_small.ttf"))
+				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 		}
 		catch (FontFormatException ex)

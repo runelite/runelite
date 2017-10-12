@@ -38,8 +38,8 @@ public class PestControl extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeFont();
-		font = font.deriveFont(Font.BOLD, 16);
+		font = FontManager.getRunescapeFont()
+			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override

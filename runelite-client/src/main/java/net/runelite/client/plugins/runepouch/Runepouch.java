@@ -33,7 +33,6 @@ import java.awt.Font;
 public class Runepouch extends Plugin
 {
 	private final RunepouchOverlay overlay = new RunepouchOverlay(this);
-	private Font font;
 
 	@Override
 	public Overlay getOverlay()
@@ -44,16 +43,10 @@ public class Runepouch extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeSmallFont();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-	}
-
-	public Font getFont()
-	{
-		return font;
 	}
 }

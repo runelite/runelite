@@ -24,12 +24,11 @@
  */
 package net.runelite.client.plugins.jewelrycount;
 
+import java.awt.Font;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
-
-import java.awt.Font;
 
 public class JewelryCount extends Plugin
 {
@@ -47,8 +46,8 @@ public class JewelryCount extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeSmallFont();
-		font = font.deriveFont(Font.PLAIN, 16);
+		font = FontManager.getRunescapeSmallFont()
+			.deriveFont(Font.PLAIN, 16);
 	}
 
 	@Override
