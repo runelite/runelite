@@ -28,6 +28,7 @@ package net.runelite.client.plugins.fpsinfo;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class FPS extends Plugin
@@ -39,10 +40,8 @@ public class FPS extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
+		font = FontManager.getRunescapeFont();
 		font = font.deriveFont(Font.BOLD, 16);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(font);
 	}
 
 	@Override

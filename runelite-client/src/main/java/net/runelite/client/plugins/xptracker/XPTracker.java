@@ -33,6 +33,7 @@ import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -60,10 +61,8 @@ public class XPTracker extends Plugin
 		navButton.getButton().setText("XP");
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/runescape.ttf"));
+		Font font = FontManager.getRunescapeFont();
 		font = font.deriveFont(Font.BOLD, 16);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(font);
 	}
 
 	@Override
