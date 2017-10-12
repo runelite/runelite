@@ -125,7 +125,8 @@ class MouseHighlightOverlay extends Overlay
 		}
 		int height = fm.getHeight();
 
-		x -= total_width + 6; // Draw to the left of the mouse
+		if(config.display_left())
+			x -= total_width + 6; //Draw to the left of the mouse
 		y -= height / 2; // Draw slightly above the mouse
 
 		// Don't draw off of the screen
