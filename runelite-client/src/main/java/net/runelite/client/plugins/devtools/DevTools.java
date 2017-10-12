@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.devtools;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.api.widgets.Widget;

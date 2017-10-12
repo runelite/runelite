@@ -30,7 +30,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 
 public class JewelryCount extends Plugin
 {

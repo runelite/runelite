@@ -36,7 +36,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.task.Schedule;
 

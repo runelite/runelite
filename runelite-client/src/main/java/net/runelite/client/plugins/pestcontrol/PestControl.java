@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.pestcontrol;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
