@@ -25,10 +25,7 @@
 package net.runelite.client.plugins.runepouch;
 
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
-
-import java.awt.Font;
 
 public class Runepouch extends Plugin
 {
