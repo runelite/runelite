@@ -144,6 +144,10 @@ public class Opcodes {
    @Export("PACKET_CLIENT_SMALL_BUTTON_PRESS")
    @ObfuscatedName("PACKET_CLIENT_221")
    public static int PACKET_CLIENT_SMALL_BUTTON_PRESS;
+
+
+   @Export("PACKET_CLIENT_CLICK_ANYWHERE")
+   @ObfuscatedName("PACKET_CLIENT_24")
    public static int PACKET_CLIENT_24;
    @Export("PACKET_CLIENT_DROP_ITEM")
    @ObfuscatedName("PACKET_CLIENT_80")
@@ -250,6 +254,8 @@ public class Opcodes {
    @ObfuscatedName("PACKET_CLIENT_113")
    public static int PACKET_CLIENT_ITEM_PRICE;
    public static int PACKET_CLIENT_198;
+   @Export("PACKET_CLIENT_CLICK_IN_GAME_WALK")
+   @ObfuscatedName("PACKET_CLIENT_99")
    public static int PACKET_CLIENT_99;
    public static int PACKET_CLIENT_241;
    @Export("PACKET_CLIENT_REPORTED_PLAYER")
