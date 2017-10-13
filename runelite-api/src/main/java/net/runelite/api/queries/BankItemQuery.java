@@ -25,50 +25,50 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Client;
-import net.runelite.api.Query;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
-public abstract class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
+
+public class BankItemQuery extends WidgetItemQuery
 {
-
-	public WidgetItemQuery idEquals(int... ids)
-	{
-		predicate = and(item ->
-		{
-			for (int id : ids)
-			{
-				if (item.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
-	public WidgetItemQuery indexEquals(int... indexes)
-	{
-		predicate = and(item ->
-		{
-			for (int index : indexes)
-			{
-				if (item.getIndex() == index)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
-	public WidgetItemQuery quantityEquals(int quantity)
-	{
-		predicate = and(item -> item.getQuantity() == quantity);
-		return this;
-	}
+	private static final int ITEM_EMPTY = 6512;
 
 	@Override
-	public abstract WidgetItem[] result(Client client);
+	public WidgetItem[] result(Client client)
+	{
+		Collection<WidgetItem> widgetItems = getBankItems(client);
+		if (widgetItems != null)
+		{
+			return widgetItems.stream().filter(Objects::nonNull).filter(predicate).toArray(WidgetItem[]::new);
+		}
+		return new WidgetItem[0];
+	}
+
+	private Collection<WidgetItem> getBankItems(Client client)
+	{
+		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bank != null && !bank.isHidden())
+		{
+			Widget[] children = bank.getDynamicChildren();
+			for (int i = 0; i < children.length; i++)
+			{
+				if (children[i].getItemId() == ITEM_EMPTY)
+				{
+					continue;
+				}
+				// set bounds to same size as default inventory
+				Rectangle bounds = children[i].getBounds();
+				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+				// Index is set to 0 because the widget's index does not correlate to the order in the bank
+				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), 0, bounds));
+			}
+		}
+		return widgetItems;
+	}
 }
