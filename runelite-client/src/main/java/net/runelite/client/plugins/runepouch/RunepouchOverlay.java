@@ -59,16 +59,21 @@ public class RunepouchOverlay extends Overlay
 
 	private final Client client = RuneLite.getClient();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
+	private final Runepouch plugin;
+	private final RunepouchConfig config;
 
 	public RunepouchOverlay(Runepouch plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.plugin = plugin;
+		this.config = plugin.getConfig();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
+		if (!config.enabled()
+			|| client.getGameState() != GameState.LOGGED_IN
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
 			return null;
@@ -109,23 +114,28 @@ public class RunepouchOverlay extends Overlay
 					continue;
 				}
 
+				graphics.setColor(Color.black);
+				graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
+					location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
+
+				graphics.setColor(config.fontColor());
+				graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
+					location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
+
+				if (!config.showIcons())
+				{
+					continue;
+				}
+
 				int runeId = client.getSetting(runeVarbit);
 
 				BufferedImage runeImg = runeImageCache.getImage(runeId);
 				if (runeImg != null)
 				{
 					OverlayUtil.renderImageLocation(graphics,
-						new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight() - 2) * i),
+						new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
 						runeImg);
 				}
-
-				graphics.setColor(Color.black);
-				graphics.drawString("" + formatNumber(amount), location.getX() + 13,
-					location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 11);
-
-				graphics.setColor(Color.white);
-				graphics.drawString("" + formatNumber(amount), location.getX() + 12,
-					location.getY() + (graphics.getFontMetrics().getHeight() - 2) * i + 10);
 			}
 		}
 		return null;
