@@ -131,8 +131,8 @@ public class RunepouchOverlay extends Overlay
 		return null;
 	}
 
-	private static String formatNumber(int var0)
+	private static String formatNumber(int amount)
 	{
-		return var0 < 10000 ? String.valueOf(var0) : var0 / 1000 + "K";
+		return amount < 1000 ? String.valueOf(amount) : amount / 1000 + "K";
 	}
 }
