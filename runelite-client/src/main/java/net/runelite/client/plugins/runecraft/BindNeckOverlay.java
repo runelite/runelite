@@ -27,27 +27,37 @@ package net.runelite.client.plugins.runecraft;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.BINDING_NECKLACE;
-import net.runelite.api.widgets.Widget;
+
+import net.runelite.api.Query;
+import net.runelite.api.queries.EquipmentItemQuery;
+import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class BindNeckOverlay extends Overlay
 {
 	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final RunecraftConfig config;
+	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 	int bindingCharges;
 
-	public BindNeckOverlay(Runecraft plugin)
+	BindNeckOverlay(Runecraft plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
@@ -63,69 +73,41 @@ public class BindNeckOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		graphics.setFont(font);
 
-		if (inventory == null)
+		for (WidgetItem necklace : getNecklaceWidgetItems())
 		{
-			return null;
-		}
-
-		if (!inventory.isHidden())
-		{
-			for (WidgetItem item : inventory.getWidgetItems())
-			{
-				if (item.getId() != BINDING_NECKLACE)
-				{
-					continue;
-				}
-
-				if (bindingCharges == 1)
-				{
-					renderBindNeck(graphics, item.getCanvasBounds(), bindingCharges, Color.red);
-				}
-				else
-				{
-					renderBindNeck(graphics, item.getCanvasBounds(), bindingCharges, Color.white);
-				}
-			}
-		}
-
-		Widget equipment = client.getWidget(WidgetInfo.EQUIPMENT);
-
-		if (equipment != null)
-		{
-			Widget amuletSlot = client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1);
-
-			if (!amuletSlot.isHidden() && amuletSlot.getItemId() == BINDING_NECKLACE)
-			{
-				Rectangle widgetBounds = amuletSlot.getBounds();
-
-				//to match inventory text
-				widgetBounds.x -= 5;
-				widgetBounds.y -= 1;
-
-				if (bindingCharges == 1)
-				{
-					renderBindNeck(graphics, widgetBounds, bindingCharges, Color.red);
-				}
-				else
-				{
-					renderBindNeck(graphics, widgetBounds, bindingCharges, Color.white);
-				}
-			}
+			Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
+			renderBindNeck(graphics, necklace.getCanvasBounds(), bindingCharges, color);
 		}
 
 		return null;
+	}
+
+	private Collection<WidgetItem> getNecklaceWidgetItems()
+	{
+		Query inventoryQuery = new InventoryItemQuery()
+			.idEquals(BINDING_NECKLACE);
+		WidgetItem[] inventoryWidgetItems = runelite.runQuery(inventoryQuery);
+
+		Query equipmentQuery = new EquipmentItemQuery()
+			.slotEquals(WidgetInfo.EQUIPMENT_AMULET)
+			.idEquals(BINDING_NECKLACE);
+		WidgetItem[] equipmentWidgetItems = runelite.runQuery(equipmentQuery);
+
+		Collection<WidgetItem> necklaces = new ArrayList<>();
+		necklaces.addAll(Arrays.asList(inventoryWidgetItems));
+		necklaces.addAll(Arrays.asList(equipmentWidgetItems));
+		return necklaces;
 	}
 
 	private void renderBindNeck(Graphics2D graphics, Rectangle bounds, int charges, Color color)
 	{
 		String text = charges <= 0 ? "?" : charges + "";
 		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
-		int textX = (int) (bounds.getX() + bounds.getWidth() - textBounds.getWidth());
-		int textY = (int) (bounds.getY() + (textBounds.getHeight()));
+		int textX = (int) bounds.getX();
+		int textY = (int) bounds.getY() + fm.getHeight();
 
 		//text shadow
 		graphics.setColor(Color.BLACK);

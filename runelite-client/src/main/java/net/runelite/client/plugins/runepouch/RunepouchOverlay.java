@@ -32,8 +32,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
+import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
@@ -41,13 +42,9 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RunepouchOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(RunepouchOverlay.class);
-
 	private static final Varbits[] AMOUNT_VARBITS =
 	{
 		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
@@ -58,14 +55,13 @@ public class RunepouchOverlay extends Overlay
 	};
 
 	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
-	private final Runepouch plugin;
 	private final RunepouchConfig config;
 
-	public RunepouchOverlay(Runepouch plugin)
+	RunepouchOverlay(Runepouch plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.plugin = plugin;
 		this.config = plugin.getConfig();
 	}
 
@@ -79,63 +75,56 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-
-		if (inventoryWidget == null || inventoryWidget.isHidden())
+		Query query = new InventoryItemQuery().idEquals(ItemID.RUNE_POUCH);
+		WidgetItem[] items = runelite.runQuery(query);
+		if (items.length == 0)
 		{
 			return null;
 		}
 
+		WidgetItem runePouch = items[0];
+		Point location = runePouch.getCanvasLocation();
+		if (location == null)
+		{
+			return null;
+		}
+
+		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
+
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
-			if (item.getId() != ItemID.RUNE_POUCH)
+			Varbits amountVarbit = AMOUNT_VARBITS[i];
+			Varbits runeVarbit = RUNE_VARBITS[i];
+
+			int amount = client.getSetting(amountVarbit);
+			if (amount <= 0)
 			{
 				continue;
 			}
 
-			Point location = item.getCanvasLocation();
-			if (location == null)
+			graphics.setColor(Color.black);
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
+				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
+
+			graphics.setColor(config.fontColor());
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
+				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
+
+			if (!config.showIcons())
 			{
 				continue;
 			}
 
-			assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
+			int runeId = client.getSetting(runeVarbit);
 
-			for (int i = 0; i < AMOUNT_VARBITS.length; i++)
+			BufferedImage runeImg = runeImageCache.getImage(runeId);
+			if (runeImg != null)
 			{
-				Varbits amountVarbit = AMOUNT_VARBITS[i];
-				Varbits runeVarbit = RUNE_VARBITS[i];
-
-				int amount = client.getSetting(amountVarbit);
-				if (amount <= 0)
-				{
-					continue;
-				}
-
-				graphics.setColor(Color.black);
-				graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
-					location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
-
-				graphics.setColor(config.fontColor());
-				graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
-					location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
-
-				if (!config.showIcons())
-				{
-					continue;
-				}
-
-				int runeId = client.getSetting(runeVarbit);
-
-				BufferedImage runeImg = runeImageCache.getImage(runeId);
-				if (runeImg != null)
-				{
-					OverlayUtil.renderImageLocation(graphics,
-						new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
-						runeImg);
-				}
+				OverlayUtil.renderImageLocation(graphics,
+					new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
+					runeImg);
 			}
 		}
 		return null;

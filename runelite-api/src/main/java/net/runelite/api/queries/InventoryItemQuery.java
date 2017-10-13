@@ -36,11 +36,12 @@ import java.util.Objects;
 
 public class InventoryItemQuery extends WidgetItemQuery
 {
-	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS = {
-			WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER,
-			WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
-			WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER,
-			WidgetInfo.INVENTORY
+	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS =
+	{
+		WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.INVENTORY
 	};
 
 	@Override

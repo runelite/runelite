@@ -24,18 +24,14 @@
  */
 package net.runelite.client.plugins.jewelrycount;
 
-import java.awt.Font;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 public class JewelryCount extends Plugin
 {
 	private final JewelryCountConfig config = RuneLite.getRunelite().getConfigManager().getConfig(JewelryCountConfig.class);
 	private final Overlay overlay = new JewelryCountOverlay(this);
-
-	private Font font;
 
 	@Override
 	public Overlay getOverlay()
@@ -46,8 +42,6 @@ public class JewelryCount extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeSmallFont()
-			.deriveFont(Font.PLAIN, 16);
 	}
 
 	@Override
@@ -59,10 +53,5 @@ public class JewelryCount extends Plugin
 	public JewelryCountConfig getConfig()
 	{
 		return config;
-	}
-
-	public Font getFont()
-	{
-		return font;
 	}
 }

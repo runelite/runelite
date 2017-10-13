@@ -37,26 +37,22 @@ import java.util.Objects;
 
 public class EquipmentItemQuery extends WidgetItemQuery
 {
-	private static final WidgetInfo[] ALL_EQUIPMENT_WIDGET_INFOS = {
-			WidgetInfo.EQUIPMENT_HELMET,
-			WidgetInfo.EQUIPMENT_CAPE,
-			WidgetInfo.EQUIPMENT_AMULET,
-			WidgetInfo.EQUIPMENT_WEAPON,
-			WidgetInfo.EQUIPMENT_BODY,
-			WidgetInfo.EQUIPMENT_SHIELD,
-			WidgetInfo.EQUIPMENT_LEGS,
-			WidgetInfo.EQUIPMENT_GLOVES,
-			WidgetInfo.EQUIPMENT_BOOTS,
-			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_AMMO,
+	private static final WidgetInfo[] ALL_EQUIPMENT_WIDGET_INFOS =
+	{
+		WidgetInfo.EQUIPMENT_HELMET,
+		WidgetInfo.EQUIPMENT_CAPE,
+		WidgetInfo.EQUIPMENT_AMULET,
+		WidgetInfo.EQUIPMENT_WEAPON,
+		WidgetInfo.EQUIPMENT_BODY,
+		WidgetInfo.EQUIPMENT_SHIELD,
+		WidgetInfo.EQUIPMENT_LEGS,
+		WidgetInfo.EQUIPMENT_GLOVES,
+		WidgetInfo.EQUIPMENT_BOOTS,
+		WidgetInfo.EQUIPMENT_RING,
+		WidgetInfo.EQUIPMENT_AMMO,
 	};
 
-	private Collection<WidgetInfo> slots;
-
-	public EquipmentItemQuery()
-	{
-		slots = new ArrayList<>();
-	}
+	private final Collection<WidgetInfo> slots = new ArrayList<>();
 
 	public EquipmentItemQuery slotEquals(WidgetInfo... slotWidgetInfo)
 	{
