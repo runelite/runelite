@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,44 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.Overlay;
+import java.awt.Color;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class Runepouch extends Plugin
+@ConfigGroup(
+	keyName = "runepouch",
+	name = "Runepouch",
+	description = "Configuration for the Runepouch plugin"
+)
+public interface RunepouchConfig
 {
-	private final RunepouchConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunepouchConfig.class);
-	private final RunepouchOverlay overlay = new RunepouchOverlay(this);
-
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not Runepouch information is displayed"
+	)
+	default boolean enabled()
 	{
-		return overlay;
+		return true;
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@ConfigItem(
+		keyName = "fontcolor",
+		name = "Font Color",
+		description = "Color of the font for the number of runes in pouch"
+	)
+	default Color fontColor()
 	{
+		return Color.yellow;
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@ConfigItem(
+		keyName = "runeicons",
+		name = "Show Rune Icons",
+		description = "Show the rune icons next to the number of runes in pouch"
+	)
+	default boolean showIcons()
 	{
-	}
-
-	public RunepouchConfig getConfig()
-	{
-		return config;
+		return true;
 	}
 }
