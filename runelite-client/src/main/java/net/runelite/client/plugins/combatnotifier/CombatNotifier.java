@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combatnotifier;
 
+import com.google.common.eventbus.Subscribe;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -32,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.task.Schedule;
 
@@ -52,6 +54,12 @@ public class CombatNotifier extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		lastInteracting = null;
 	}
 
 	@Schedule(
