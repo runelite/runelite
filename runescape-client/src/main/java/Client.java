@@ -5194,7 +5194,7 @@ public final class Client extends GameEngine {
                }
 
                var5 = (int)var16;
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_24);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CLICK_ANYWHERE);
                secretPacketBuffer1.putShort((var5 << 1) + (MouseInput.field741 == 2?1:0));
                secretPacketBuffer1.putShort(var4);
                secretPacketBuffer1.putShort(var3);
@@ -5525,7 +5525,7 @@ public final class Client extends GameEngine {
                                              if(Region.method2805()) {
                                                 var4 = Region.selectedRegionTileX;
                                                 var5 = Region.selectedRegionTileY;
-                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_99);
+                                                secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CLICK_IN_GAME_WALK);
                                                 if(RUNELITE_PACKET) {
                                                    secretPacketBuffer1.runeliteWriteInt(5);
                                                 } else {
