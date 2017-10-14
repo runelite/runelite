@@ -4234,7 +4234,7 @@ public final class Client extends GameEngine {
                         class10.field262 = null;
                         class61.field769 = null;
                         Huffman.field2332 = null;
-                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_254);
+                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_REGION_CHANGED);
                         class21.method150();
                      }
                   }

@@ -232,7 +232,9 @@ public class Opcodes {
    @Export("PACKET_CLIENT_CLOSED_WINDOW")
    @ObfuscatedName("PACKET_CLIENT_124")
    public static int PACKET_CLIENT_CLOSED_WINDOW;
-   public static int PACKET_CLIENT_254;
+   @Export("PACKET_CLIENT_REGION_CHANGED")
+   @ObfuscatedName("PACKET_CLIENT_254")
+   public static int PACKET_CLIENT_REGION_CHANGED;
    public static int PACKET_CLIENT_253;
    @Export("PACKET_CLIENT_FOUTH_MOB_ACTION")
    @ObfuscatedName("PACKET_CLIENT_61")
@@ -313,7 +315,7 @@ public class Opcodes {
       PACKET_CLIENT_109 = 109;
       PACKET_CLIENT_FOUTH_MOB_ACTION = 61;
       PACKET_CLIENT_253 = 253;
-      PACKET_CLIENT_254 = 254;
+      PACKET_CLIENT_REGION_CHANGED = 254;
       PACKET_CLIENT_CLOSED_WINDOW = 124;
       PACKET_CLIENT_MINIMAP_WALK = 116;
       PACKET_CLIENT_TRADE_PLAYER = 120;
