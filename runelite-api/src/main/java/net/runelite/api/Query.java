@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 
 public abstract class Query<EntityType, QueryType>
 {
-	protected Predicate<EntityType> predicate;
+	protected Predicate<EntityType> predicate = x -> true;
 
 	protected Query()
 	{

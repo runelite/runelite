@@ -70,7 +70,10 @@ public class EquipmentItemQuery extends WidgetItemQuery
 		Collection<WidgetItem> widgetItems = getEquippedItems(client);
 		if (widgetItems != null)
 		{
-			return widgetItems.stream().filter(Objects::nonNull).filter(predicate).toArray(WidgetItem[]::new);
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
 		}
 		return new WidgetItem[0];
 	}
