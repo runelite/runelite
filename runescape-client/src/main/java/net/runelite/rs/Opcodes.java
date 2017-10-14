@@ -144,7 +144,11 @@ public class Opcodes {
    @Export("PACKET_CLIENT_SMALL_BUTTON_PRESS")
    @ObfuscatedName("PACKET_CLIENT_221")
    public static int PACKET_CLIENT_SMALL_BUTTON_PRESS;
-   public static int PACKET_CLIENT_24;
+
+
+   @Export("PACKET_CLIENT_CLICK_ANYWHERE")
+   @ObfuscatedName("PACKET_CLIENT_24")
+   public static int PACKET_CLIENT_CLICK_ANYWHERE;
    @Export("PACKET_CLIENT_DROP_ITEM")
    @ObfuscatedName("PACKET_CLIENT_80")
    public static int PACKET_CLIENT_DROP_ITEM;
@@ -250,7 +254,9 @@ public class Opcodes {
    @ObfuscatedName("PACKET_CLIENT_113")
    public static int PACKET_CLIENT_ITEM_PRICE;
    public static int PACKET_CLIENT_198;
-   public static int PACKET_CLIENT_99;
+   @Export("PACKET_CLIENT_CLICK_IN_GAME_WALK")
+   @ObfuscatedName("PACKET_CLIENT_99")
+   public static int PACKET_CLIENT_CLICK_IN_GAME_WALK;
    public static int PACKET_CLIENT_241;
    @Export("PACKET_CLIENT_REPORTED_PLAYER")
    @ObfuscatedName("PACKET_CLIENT_49")
@@ -295,7 +301,7 @@ public class Opcodes {
       PACKET_CLIENT_60 = 60;
       PACKET_CLIENT_REPORTED_PLAYER = 49;
       PACKET_CLIENT_241 = 241;
-      PACKET_CLIENT_99 = 99;
+      PACKET_CLIENT_CLICK_IN_GAME_WALK = 99;
       PACKET_CLIENT_198 = 198;
       PACKET_CLIENT_ITEM_PRICE = 113;
       PACKET_CLIENT_231 = 231;
@@ -351,7 +357,7 @@ public class Opcodes {
       PACKET_CLIENT_102 = 102;
       PACKET_CLIENT_41 = 41;
       PACKET_CLIENT_DROP_ITEM = 80;
-      PACKET_CLIENT_24 = 24;
+      PACKET_CLIENT_CLICK_ANYWHERE = 24;
       PACKET_CLIENT_SMALL_BUTTON_PRESS = 221;
       PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM = 25;
       PACKET_CLIENT_70 = 70;
