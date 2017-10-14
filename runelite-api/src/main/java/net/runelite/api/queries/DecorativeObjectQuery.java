@@ -37,7 +37,10 @@ public class DecorativeObjectQuery extends TileObjectQuery<DecorativeObject, Dec
 	@Override
 	public DecorativeObject[] result(Client client)
 	{
-		return getDecorativeObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(DecorativeObject[]::new);
+		return getDecorativeObjects(client).stream()
+			.filter(Objects::nonNull)
+			.filter(predicate)
+			.toArray(DecorativeObject[]::new);
 	}
 
 	private Collection<DecorativeObject> getDecorativeObjects(Client client)

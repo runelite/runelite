@@ -25,31 +25,53 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Client;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
+public class BankItemQuery extends WidgetItemQuery
 {
+	private static final int ITEM_EMPTY = 6512;
+
 	@Override
-	public WallObject[] result(Client client)
+	public WidgetItem[] result(Client client)
 	{
-		return getWallObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.toArray(WallObject[]::new);
+		Collection<WidgetItem> widgetItems = getBankItems(client);
+		if (widgetItems != null)
+		{
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
+		}
+		return new WidgetItem[0];
 	}
 
-	private Collection<WallObject> getWallObjects(Client client)
+	private Collection<WidgetItem> getBankItems(Client client)
 	{
-		Collection<WallObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
+		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		Widget bank = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bank != null && !bank.isHidden())
 		{
-			objects.add(tile.getWallObject());
+			Widget[] children = bank.getDynamicChildren();
+			for (int i = 0; i < children.length; i++)
+			{
+				if (children[i].getItemId() == ITEM_EMPTY)
+				{
+					continue;
+				}
+				// set bounds to same size as default inventory
+				Rectangle bounds = children[i].getBounds();
+				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+				// Index is set to 0 because the widget's index does not correlate to the order in the bank
+				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), 0, bounds));
+			}
 		}
-		return objects;
+		return widgetItems;
 	}
 }

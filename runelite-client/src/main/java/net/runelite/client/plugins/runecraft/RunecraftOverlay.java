@@ -26,29 +26,37 @@ package net.runelite.client.plugins.runecraft;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
-import net.runelite.api.Point;
+import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class RunecraftOverlay extends Overlay
 {
+	private static final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
+	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
+	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
+
 	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final RunecraftConfig config;
-	private final int MEDIUM_POUCH_DAMAGED = ItemID.MEDIUM_POUCH_5511;
-	private final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
-	private final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
-	public RunecraftOverlay(Runecraft plugin)
+	RunecraftOverlay(Runecraft plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
@@ -64,14 +72,11 @@ public class RunecraftOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		graphics.setFont(font);
 
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return null;
-		}
-
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
+		Query query = new InventoryItemQuery();
+		WidgetItem[] widgetItems = runelite.runQuery(query);
+		for (WidgetItem item : widgetItems)
 		{
 			Varbits varbits;
 
@@ -96,18 +101,25 @@ public class RunecraftOverlay extends Overlay
 					continue;
 			}
 
-			Point location = item.getCanvasLocation();
-			if (location != null)
-			{
-				int value = client.getSetting(varbits);
-				graphics.setColor(Color.black);
-				graphics.drawString("" + value, location.getX() + 1, location.getY() + graphics.getFontMetrics().getHeight() + 1);
-
-				graphics.setColor(Color.white);
-				graphics.drawString("" + value, location.getX(), location.getY() + graphics.getFontMetrics().getHeight());
-			}
+			renderPouch(graphics, item.getCanvasBounds(), varbits, Color.WHITE);
 		}
 		return null;
 	}
 
+	private void renderPouch(Graphics2D graphics, Rectangle bounds, Varbits varbits, Color color)
+	{
+		FontMetrics fm = graphics.getFontMetrics();
+
+		int textX = (int) bounds.getX();
+		int textY = (int) bounds.getY() + fm.getHeight();
+
+		int contents = client.getSetting(varbits);
+
+		//text shadow
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(String.valueOf(contents), textX + 1, textY + 1);
+
+		graphics.setColor(color);
+		graphics.drawString(String.valueOf(contents), textX, textY);
+	}
 }
