@@ -1,5 +1,5 @@
 ![](http://runelite.net/images/runelite_logo_border.png)
-# runelite
+# runelite [![Travis](https://img.shields.io/travis/runelite/runelite.svg)](https://travis-ci.org/runelite/runelite) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
 runelite is a RuneScape 2 client and reverse engineering project
 
