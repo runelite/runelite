@@ -236,9 +236,9 @@ public class Opcodes {
    @ObfuscatedName("PACKET_CLIENT_254")
    public static int PACKET_CLIENT_REGION_CHANGED;
    public static int PACKET_CLIENT_253;
-   @Export("PACKET_CLIENT_FOUTH_MOB_ACTION")
+   @Export("PACKET_CLIENT_FOURTH_MOB_ACTION")
    @ObfuscatedName("PACKET_CLIENT_61")
-   public static int PACKET_CLIENT_FOUTH_MOB_ACTION;
+   public static int PACKET_CLIENT_FOURTH_MOB_ACTION;
    public static int PACKET_CLIENT_109;
    @Export("PACKET_CLIENT_ITEM_ON_OBSTACLE")
    @ObfuscatedName("PACKET_CLIENT_162")
@@ -313,7 +313,7 @@ public class Opcodes {
       PACKET_CLIENT_44 = 44;
       PACKET_CLIENT_ITEM_ON_OBSTACLE = 162;
       PACKET_CLIENT_109 = 109;
-      PACKET_CLIENT_FOUTH_MOB_ACTION = 61;
+      PACKET_CLIENT_FOURTH_MOB_ACTION = 61;
       PACKET_CLIENT_253 = 253;
       PACKET_CLIENT_REGION_CHANGED = 254;
       PACKET_CLIENT_CLOSED_WINDOW = 124;
