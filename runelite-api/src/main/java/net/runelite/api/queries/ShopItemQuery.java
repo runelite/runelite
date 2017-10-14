@@ -42,7 +42,10 @@ public class ShopItemQuery extends WidgetItemQuery
 		Collection<WidgetItem> widgetItems = getShopItems(client);
 		if (widgetItems != null)
 		{
-			return widgetItems.stream().filter(Objects::nonNull).filter(predicate).toArray(WidgetItem[]::new);
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
 		}
 		return new WidgetItem[0];
 	}

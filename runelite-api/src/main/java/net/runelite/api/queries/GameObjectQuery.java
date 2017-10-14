@@ -38,7 +38,10 @@ public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery
 	@Override
 	public GameObject[] result(Client client)
 	{
-		return getGameObjects(client).stream().filter(Objects::nonNull).filter(predicate).toArray(GameObject[]::new);
+		return getGameObjects(client).stream()
+			.filter(Objects::nonNull)
+			.filter(predicate)
+			.toArray(GameObject[]::new);
 	}
 
 	private Collection<GameObject> getGameObjects(Client client)

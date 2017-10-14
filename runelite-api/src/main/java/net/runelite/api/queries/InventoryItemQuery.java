@@ -49,7 +49,10 @@ public class InventoryItemQuery extends WidgetItemQuery
 		Collection<WidgetItem> widgetItems = getInventoryItems(client);
 		if (widgetItems != null)
 		{
-			return widgetItems.stream().filter(Objects::nonNull).filter(predicate).toArray(WidgetItem[]::new);
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
 		}
 		return new WidgetItem[0];
 	}
