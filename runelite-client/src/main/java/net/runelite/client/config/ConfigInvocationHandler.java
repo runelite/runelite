@@ -126,7 +126,7 @@ class ConfigInvocationHandler implements InvocationHandler
 		constructor.setAccessible(true);
 
 		Class<?> declaringClass = method.getDeclaringClass();
-		return constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
+		return constructor.newInstance(declaringClass, MethodHandles.Lookup.PUBLIC | MethodHandles.Lookup.PRIVATE)
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);
