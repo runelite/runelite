@@ -5201,7 +5201,7 @@ public final class Client extends GameEngine {
             }
 
             if(KeyFocusListener.field662 > 0) {
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_55);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TYPE_ON_KEYBOARD);
                if(RUNELITE_PACKET) {
                   secretPacketBuffer1.runeliteWriteInt(0);
                } else {

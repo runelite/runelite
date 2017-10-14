@@ -199,7 +199,9 @@ public class Opcodes {
    public static int PACKET_CLIENT_135;
    public static int PACKET_CLIENT_166;
    public static int PACKET_CLIENT_212;
-   public static int PACKET_CLIENT_55;
+   @Export("PACKET_CLIENT_TYPE_ON_KEYBOARD")
+   @ObfuscatedName("PACKET_CLIENT_55")
+   public static int PACKET_CLIENT_TYPE_ON_KEYBOARD;
    public static int PACKET_CLIENT_189;
    @Export("PACKET_CLIENT_ADD_IGNORE")
    @ObfuscatedName("PACKET_CLIENT_159")
@@ -330,7 +332,7 @@ public class Opcodes {
       PACKET_CLIENT_77 = 77;
       PACKET_CLIENT_ADD_IGNORE = 159;
       PACKET_CLIENT_189 = 189;
-      PACKET_CLIENT_55 = 55;
+      PACKET_CLIENT_TYPE_ON_KEYBOARD = 55;
       PACKET_CLIENT_212 = 212;
       PACKET_CLIENT_166 = 166;
       PACKET_CLIENT_135 = 135;
