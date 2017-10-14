@@ -109,7 +109,7 @@ public class ConfigService
 		return new Configuration(config);
 	}
 
-	@RequestMapping(path = "/{key}", method = PUT)
+	@RequestMapping(path = "/{key:.+}", method = PUT)
 	public void setKey(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -134,7 +134,7 @@ public class ConfigService
 		}
 	}
 
-	@RequestMapping(path = "/{key}", method = DELETE)
+	@RequestMapping(path = "/{key:.+}", method = DELETE)
 	public void unsetKey(
 		HttpServletRequest request,
 		HttpServletResponse response,
