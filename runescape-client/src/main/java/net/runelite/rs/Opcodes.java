@@ -199,7 +199,9 @@ public class Opcodes {
    public static int PACKET_CLIENT_135;
    public static int PACKET_CLIENT_166;
    public static int PACKET_CLIENT_212;
-   public static int PACKET_CLIENT_55;
+   @Export("PACKET_CLIENT_TYPE_ON_KEYBOARD")
+   @ObfuscatedName("PACKET_CLIENT_55")
+   public static int PACKET_CLIENT_TYPE_ON_KEYBOARD;
    public static int PACKET_CLIENT_189;
    @Export("PACKET_CLIENT_ADD_IGNORE")
    @ObfuscatedName("PACKET_CLIENT_159")
@@ -232,11 +234,13 @@ public class Opcodes {
    @Export("PACKET_CLIENT_CLOSED_WINDOW")
    @ObfuscatedName("PACKET_CLIENT_124")
    public static int PACKET_CLIENT_CLOSED_WINDOW;
-   public static int PACKET_CLIENT_254;
+   @Export("PACKET_CLIENT_REGION_CHANGED")
+   @ObfuscatedName("PACKET_CLIENT_254")
+   public static int PACKET_CLIENT_REGION_CHANGED;
    public static int PACKET_CLIENT_253;
-   @Export("PACKET_CLIENT_FOUTH_MOB_ACTION")
+   @Export("PACKET_CLIENT_FOURTH_MOB_ACTION")
    @ObfuscatedName("PACKET_CLIENT_61")
-   public static int PACKET_CLIENT_FOUTH_MOB_ACTION;
+   public static int PACKET_CLIENT_FOURTH_MOB_ACTION;
    public static int PACKET_CLIENT_109;
    @Export("PACKET_CLIENT_ITEM_ON_OBSTACLE")
    @ObfuscatedName("PACKET_CLIENT_162")
@@ -311,9 +315,9 @@ public class Opcodes {
       PACKET_CLIENT_44 = 44;
       PACKET_CLIENT_ITEM_ON_OBSTACLE = 162;
       PACKET_CLIENT_109 = 109;
-      PACKET_CLIENT_FOUTH_MOB_ACTION = 61;
+      PACKET_CLIENT_FOURTH_MOB_ACTION = 61;
       PACKET_CLIENT_253 = 253;
-      PACKET_CLIENT_254 = 254;
+      PACKET_CLIENT_REGION_CHANGED = 254;
       PACKET_CLIENT_CLOSED_WINDOW = 124;
       PACKET_CLIENT_MINIMAP_WALK = 116;
       PACKET_CLIENT_TRADE_PLAYER = 120;
@@ -328,7 +332,7 @@ public class Opcodes {
       PACKET_CLIENT_77 = 77;
       PACKET_CLIENT_ADD_IGNORE = 159;
       PACKET_CLIENT_189 = 189;
-      PACKET_CLIENT_55 = 55;
+      PACKET_CLIENT_TYPE_ON_KEYBOARD = 55;
       PACKET_CLIENT_212 = 212;
       PACKET_CLIENT_166 = 166;
       PACKET_CLIENT_135 = 135;

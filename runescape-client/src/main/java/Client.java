@@ -4234,7 +4234,7 @@ public final class Client extends GameEngine {
                         class10.field262 = null;
                         class61.field769 = null;
                         Huffman.field2332 = null;
-                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_254);
+                        secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_REGION_CHANGED);
                         class21.method150();
                      }
                   }
@@ -5201,7 +5201,7 @@ public final class Client extends GameEngine {
             }
 
             if(KeyFocusListener.field662 > 0) {
-               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_55);
+               secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_TYPE_ON_KEYBOARD);
                if(RUNELITE_PACKET) {
                   secretPacketBuffer1.runeliteWriteInt(0);
                } else {

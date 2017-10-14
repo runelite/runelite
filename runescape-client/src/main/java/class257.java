@@ -261,7 +261,7 @@ public enum class257 implements RSEnum {
                Client.field1171 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_FOUTH_MOB_ACTION);
+               Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_FOURTH_MOB_ACTION);
                if(Client.RUNELITE_PACKET) {
                   Client.secretPacketBuffer1.runeliteWriteInt(var3);
                } else {
