@@ -25,31 +25,46 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Client;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
+public class ShopItemQuery extends WidgetItemQuery
 {
 	@Override
-	public WallObject[] result(Client client)
+	public WidgetItem[] result(Client client)
 	{
-		return getWallObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.toArray(WallObject[]::new);
+		Collection<WidgetItem> widgetItems = getShopItems(client);
+		if (widgetItems != null)
+		{
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
+		}
+		return new WidgetItem[0];
 	}
 
-	private Collection<WallObject> getWallObjects(Client client)
+	private Collection<WidgetItem> getShopItems(Client client)
 	{
-		Collection<WallObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
+		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		Widget shop = client.getWidget(WidgetInfo.SHOP_ITEMS_CONTAINER);
+		if (shop != null && !shop.isHidden())
 		{
-			objects.add(tile.getWallObject());
+			Widget[] children = shop.getDynamicChildren();
+			for (int i = 1; i < children.length; i++)
+			{
+				// set bounds to same size as default inventory
+				Rectangle bounds = children[i].getBounds();
+				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+				widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i - 1, bounds));
+			}
 		}
-		return objects;
+		return widgetItems;
 	}
 }

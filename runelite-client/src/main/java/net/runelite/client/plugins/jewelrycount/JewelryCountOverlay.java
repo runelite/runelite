@@ -25,26 +25,32 @@
 package net.runelite.client.plugins.jewelrycount;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.Query;
+import net.runelite.api.queries.EquipmentItemQuery;
+import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class JewelryCountOverlay extends Overlay
 {
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final JewelryCountConfig config;
-	private final JewelryCount plugin;
+	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	JewelryCountOverlay(JewelryCount plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.config = plugin.getConfig();
-		this.plugin = plugin;
 	}
 
 	@Override
@@ -59,66 +65,44 @@ class JewelryCountOverlay extends Overlay
 			return null;
 		}
 
-		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		graphics.setFont(font);
 
-		if (inventory == null)
+		for (WidgetItem item : getJewelryWidgetItems())
 		{
-			return null;
-		}
+			JewelryCharges charges = JewelryCharges.getCharges(item.getId());
 
-		if (!inventory.isHidden())
-		{
-			for (WidgetItem item : inventory.getWidgetItems())
+			if (charges == null)
 			{
-				JewelryCharges charges = JewelryCharges.getCharges(item.getId());
-
-				if (charges == null)
-				{
-					continue;
-				}
-
-				renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
-
+				continue;
 			}
-		}
 
-		Widget equipment = client.getWidget(WidgetInfo.EQUIPMENT);
+			renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
 
-		if (equipment != null)
-		{
-			Widget[] equipmentSlots =
-			{
-				client.getWidget(WidgetInfo.EQUIPMENT_AMULET).getChild(1), client.getWidget(WidgetInfo.EQUIPMENT_RING).getChild(1),
-				client.getWidget(WidgetInfo.EQUIPMENT_GLOVES).getChild(1)
-			};
-
-			for (Widget widget : equipmentSlots)
-			{
-				JewelryCharges charges = JewelryCharges.getCharges(widget.getItemId());
-
-				if (charges == null || widget.isHidden())
-				{
-					continue;
-				}
-
-				Rectangle widgetBounds = widget.getBounds();
-
-				renderWidgetText(graphics, widgetBounds, charges.getCharges(), Color.white);
-
-			}
 		}
 
 		return null;
 	}
 
+	private Collection<WidgetItem> getJewelryWidgetItems()
+	{
+		Query inventoryQuery = new InventoryItemQuery();
+		WidgetItem[] inventoryWidgetItems = runelite.runQuery(inventoryQuery);
+
+		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
+			WidgetInfo.EQUIPMENT_AMULET,
+			WidgetInfo.EQUIPMENT_RING,
+			WidgetInfo.EQUIPMENT_GLOVES
+		);
+		WidgetItem[] equipmentWidgetItems = runelite.runQuery(equipmentQuery);
+
+		Collection<WidgetItem> jewelry = new ArrayList<>();
+		jewelry.addAll(Arrays.asList(inventoryWidgetItems));
+		jewelry.addAll(Arrays.asList(equipmentWidgetItems));
+		return jewelry;
+	}
+
 	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
 	{
-		Font font = plugin.getFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
-		}
-
 		FontMetrics fm = graphics.getFontMetrics();
 
 		int textX = (int) bounds.getX();

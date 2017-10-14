@@ -25,31 +25,67 @@
 package net.runelite.api.queries;
 
 import net.runelite.api.Client;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
+public class InventoryItemQuery extends WidgetItemQuery
 {
-	@Override
-	public WallObject[] result(Client client)
+	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS =
 	{
-		return getWallObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.toArray(WallObject[]::new);
+		WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER,
+		WidgetInfo.INVENTORY
+	};
+
+	@Override
+	public WidgetItem[] result(Client client)
+	{
+		Collection<WidgetItem> widgetItems = getInventoryItems(client);
+		if (widgetItems != null)
+		{
+			return widgetItems.stream()
+				.filter(Objects::nonNull)
+				.filter(predicate)
+				.toArray(WidgetItem[]::new);
+		}
+		return new WidgetItem[0];
 	}
 
-	private Collection<WallObject> getWallObjects(Client client)
+	private Collection<WidgetItem> getInventoryItems(Client client)
 	{
-		Collection<WallObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
+		Collection<WidgetItem> widgetItems = new ArrayList<>();
+		for (WidgetInfo widgetInfo : INVENTORY_WIDGET_INFOS)
 		{
-			objects.add(tile.getWallObject());
+			Widget inventory = client.getWidget(widgetInfo);
+			if (inventory == null || inventory.isHidden())
+			{
+				continue;
+			}
+			if (widgetInfo == WidgetInfo.INVENTORY)
+			{
+				widgetItems.addAll(inventory.getWidgetItems());
+				break;
+			}
+			else
+			{
+				Widget[] children = inventory.getDynamicChildren();
+				for (int i = 0; i < children.length; i++)
+				{
+					// set bounds to same size as default inventory
+					Rectangle bounds = children[i].getBounds();
+					bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
+					widgetItems.add(new WidgetItem(children[i].getItemId(), children[i].getItemQuantity(), i, bounds));
+				}
+				break;
+			}
 		}
-		return objects;
+		return widgetItems;
 	}
 }

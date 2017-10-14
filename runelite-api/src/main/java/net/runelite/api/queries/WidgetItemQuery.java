@@ -26,21 +26,10 @@ package net.runelite.api.queries;
 
 import net.runelite.api.Client;
 import net.runelite.api.Query;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
-import java.util.Collection;
-import java.util.Objects;
-
-public class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
+public abstract class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
 {
-	private final WidgetInfo widgetInfo;
-
-	public WidgetItemQuery(WidgetInfo widgetInfo)
-	{
-		this.widgetInfo = widgetInfo;
-	}
 
 	public WidgetItemQuery idEquals(int... ids)
 	{
@@ -81,17 +70,5 @@ public class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
 	}
 
 	@Override
-	public WidgetItem[] result(Client client)
-	{
-		Widget widget = client.getWidget(widgetInfo);
-		if (widget != null)
-		{
-			Collection<WidgetItem> widgetItems = widget.getWidgetItems();
-			if (widgetItems != null)
-			{
-				return widgetItems.stream().filter(Objects::nonNull).filter(predicate).toArray(WidgetItem[]::new);
-			}
-		}
-		return new WidgetItem[0];
-	}
+	public abstract WidgetItem[] result(Client client);
 }

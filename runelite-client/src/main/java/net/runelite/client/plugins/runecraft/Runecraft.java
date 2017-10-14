@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.runecraft;
 
 import com.google.common.eventbus.Subscribe;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -37,7 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 public class Runecraft extends Plugin
 {
-	public static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
+	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
 
 	private final RunecraftConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunecraftConfig.class);
 	private final RunecraftOverlay overlay = new RunecraftOverlay(this);
@@ -97,7 +98,6 @@ public class Runecraft extends Plugin
 		{
 			//set it to 17 because this message is triggered first before the above chat event
 			bindNeckOverlay.bindingCharges = 17;
-			return;
 		}
 	}
 }
