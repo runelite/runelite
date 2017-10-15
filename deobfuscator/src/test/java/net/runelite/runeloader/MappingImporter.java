@@ -53,7 +53,7 @@ public class MappingImporter
 	private static final File IN = new File("d:/rs/07/adamin.jar");
 	private static final File OUT = new File("d:/rs/07/adamout.jar");
 
-	public static final String RL_INJECTION = "/injection_130.json";
+	public static final String RL_INJECTION = "injection_130.json";
 
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");

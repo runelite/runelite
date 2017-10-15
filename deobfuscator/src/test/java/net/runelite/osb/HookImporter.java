@@ -66,7 +66,7 @@ public class HookImporter
 	@Before
 	public void before() throws IOException
 	{
-		InputStream is = HookImporter.class.getResourceAsStream("/osbmappings-114.json");
+		InputStream is = HookImporter.class.getResourceAsStream("osbmappings-114.json");
 		Assert.assertNotNull(is);
 
 		Gson gson = new Gson();
