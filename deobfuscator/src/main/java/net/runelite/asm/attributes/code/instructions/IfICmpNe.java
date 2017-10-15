@@ -43,7 +43,7 @@ public class IfICmpNe extends If
 
 	public IfICmpNe(Instructions instructions, Label to)
 	{
-		super(instructions, to);
+		super(instructions, InstructionType.IF_ICMPNE, to);
 	}
 
 	@Override

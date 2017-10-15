@@ -62,15 +62,6 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		this.to = to;
 	}
 
-	public If(Instructions instructions, Label to)
-	{
-		super(instructions, InstructionType.IF_ICMPNE);
-
-		assert to.getInstructions() == this.getInstructions();
-
-		this.to = to;
-	}
-
 	@Override
 	public void accept(MethodVisitor visitor)
 	{

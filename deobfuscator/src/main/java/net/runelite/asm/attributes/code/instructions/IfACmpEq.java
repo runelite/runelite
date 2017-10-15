@@ -27,6 +27,7 @@ package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
@@ -36,6 +37,11 @@ public class IfACmpEq extends If
 	public IfACmpEq(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
+	}
+
+	public IfACmpEq(Instructions instructions, Label to)
+	{
+		super(instructions, InstructionType.IF_ACMPEQ, to);
 	}
 	
 	@Override
