@@ -29,12 +29,18 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.MethodContext;
 
 public class Expression
 {
 	private final InstructionType type;
 	private final InstructionContext head;
+	private final List<Expression> exprs = new ArrayList<>();
 	private final List<InstructionContext> ins = new ArrayList<>();
+
+	public List<Expression> sortedExprs;
+	public List<InstructionContext> sortedIns;
+	private int exprHash;
 
 	public Expression(InstructionType type, InstructionContext head)
 	{
@@ -52,6 +58,16 @@ public class Expression
 		return head;
 	}
 
+	public void addExpr(Expression expr)
+	{
+		exprs.add(expr);
+	}
+
+	public List<Expression> getExprs()
+	{
+		return Collections.unmodifiableList(exprs);
+	}
+
 	public void addInstruction(InstructionContext ctx)
 	{
 		ins.add(ctx);
@@ -60,5 +76,33 @@ public class Expression
 	public List<InstructionContext> getIns()
 	{
 		return Collections.unmodifiableList(ins);
+	}
+
+	public void sort(MethodContext ctx)
+	{
+		for (Expression e : exprs)
+		{
+			e.sort(ctx);
+		}
+
+		// sort instructions
+		sortedIns = new ArrayList<>(ins);
+		Collections.sort(sortedIns, (i1, i2) -> ExprArgOrder.compare(ctx.getMethod(), head.getInstruction().getType(), i1, i2));
+		Collections.reverse(sortedIns);
+
+		// sort sub exprs
+		sortedExprs = new ArrayList<>(exprs);
+		Collections.sort(sortedExprs, (e1, e2) -> Integer.compare(e1.exprHash, e2.exprHash));
+
+		int hash = 0;
+		for (InstructionContext ic : sortedIns)
+		{
+			hash ^= ExprArgOrder.hash(ctx.getMethod(), ic);
+		}
+		for (Expression e : sortedExprs)
+		{
+			hash ^= e.exprHash;
+		}
+		exprHash = hash;
 	}
 }

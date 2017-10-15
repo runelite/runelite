@@ -22,23 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.exprargorder;
 
 import java.util.List;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
+import static net.runelite.asm.attributes.code.InstructionType.IADD;
+import static net.runelite.asm.attributes.code.InstructionType.IF_ICMPEQ;
+import static net.runelite.asm.attributes.code.InstructionType.ILOAD;
+import static net.runelite.asm.attributes.code.InstructionType.LDC;
+import static net.runelite.asm.attributes.code.InstructionType.SIPUSH;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.ILoad;
+import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.IStore;
+import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.deob.ClassGroupFactory;
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ExprArgOrderTest
@@ -84,9 +91,9 @@ public class ExprArgOrderTest
 
 		List<Instruction> instructions = ins.getInstructions();
 
-		Assert.assertEquals(InstructionType.ILOAD, instructions.get(2).getType());
-		Assert.assertEquals(InstructionType.LDC, instructions.get(3).getType());
-		Assert.assertEquals(InstructionType.IADD, instructions.get(4).getType());
+		assertEquals(ILOAD, instructions.get(2).getType());
+		assertEquals(LDC, instructions.get(3).getType());
+		assertEquals(IADD, instructions.get(4).getType());
 	}
 
 	@Test
@@ -137,13 +144,17 @@ public class ExprArgOrderTest
 
 		List<Instruction> instructions = ins.getInstructions();
 
-		Assert.assertEquals(InstructionType.ILOAD, instructions.get(2).getType());
-		Assert.assertEquals(InstructionType.LDC, instructions.get(3).getType());
-		Assert.assertEquals(InstructionType.IADD, instructions.get(4).getType());
+		// ensure this stays the same
+		assertEquals(ILOAD, instructions.get(2).getType());
+		assertEquals(LDC, instructions.get(3).getType());
+		assertEquals(IADD, instructions.get(4).getType());
 
-		Assert.assertEquals(InstructionType.ILOAD, instructions.get(6).getType());
-		Assert.assertEquals(InstructionType.SIPUSH, instructions.get(7).getType());
-		Assert.assertEquals(InstructionType.IADD, instructions.get(8).getType());
+		//
+		assertEquals(ILOAD, instructions.get(6).getType());
+		assertEquals(SIPUSH, instructions.get(7).getType());
+		assertEquals(IADD, instructions.get(8).getType());
+		assertEquals(LDC, instructions.get(9).getType());
+		assertEquals(IADD, instructions.get(10).getType());
 	}
 
 	@Test
@@ -194,8 +205,117 @@ public class ExprArgOrderTest
 		// 4: iadd
 		// 5: ldc
 		// 6: add
-		Assert.assertEquals(InstructionType.IADD, instructions.get(4).getType());
-		Assert.assertEquals(InstructionType.IADD, instructions.get(6).getType());
+		assertEquals(IADD, instructions.get(4).getType());
+		assertEquals(IADD, instructions.get(6).getType());
+	}
+
+	@Test
+	public void test4()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(2);
+
+		// vars[0] = 3
+		Instruction[] prepareVariables =
+		{
+			new LDC(ins, 3),
+			new IStore(ins, 0)
+		};
+
+		for (Instruction i : prepareVariables)
+		{
+			ins.addInstruction(i);
+		}
+
+		Instruction body[] =
+		{
+			new SiPush(ins, (short) 600),
+			new ILoad(ins, 0),
+			new LDC(ins, 3),
+			new IMul(ins),
+			new IAdd(ins),
+			new Pop(ins),
+			new ILoad(ins, 0),
+			new LDC(ins, 3),
+			new IMul(ins),
+			new SiPush(ins, (short) 600),
+			new IAdd(ins),
+			new Pop(ins),
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+		{
+			ins.addInstruction(i);
+		}
+
+		ExprArgOrder exprArgOrder = new ExprArgOrder();
+		exprArgOrder.run(group);
+
+		List<Instruction> instructions = ins.getInstructions();
+
+		for (int i = 2; i <= 7; ++i)
+		{
+			assertEquals(instructions.get(i).getType(), instructions.get(i + 6).getType());
+		}
+	}
+
+	@Test
+	public void test5()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(2);
+
+		// vars[0] = 3
+		Instruction[] prepareVariables =
+		{
+			new LDC(ins, 3),
+			new IStore(ins, 0)
+		};
+
+		for (Instruction i : prepareVariables)
+		{
+			ins.addInstruction(i);
+		}
+
+		Label label = new Label(ins);
+
+		Instruction body[] =
+		{
+			// if (0 == 3 + var0) -> if (var0 + 3 == 0)
+			new LDC(ins, 0),
+			new LDC(ins, 3),
+			new ILoad(ins, 0),
+			new IAdd(ins),
+			new IfICmpEq(ins, label),
+			label,
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+		{
+			ins.addInstruction(i);
+		}
+
+		ExprArgOrder exprArgOrder = new ExprArgOrder();
+		exprArgOrder.run(group);
+
+		List<Instruction> instructions = ins.getInstructions();
+
+		// ldc iload add -> iload ldc iadd
+		assertEquals(ILOAD, instructions.get(3).getType());
+		assertEquals(LDC, instructions.get(4).getType());
+		assertEquals(IADD, instructions.get(5).getType());
+
+		// idc moves from 2 to 5
+		assertEquals(LDC, instructions.get(2).getType());
+		assertEquals(IF_ICMPEQ, instructions.get(6).getType());
 	}
 
 }

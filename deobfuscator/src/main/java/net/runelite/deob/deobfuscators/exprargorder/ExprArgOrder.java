@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.exprargorder;
 
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
@@ -40,6 +40,12 @@ import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
+import static net.runelite.asm.attributes.code.InstructionType.IADD;
+import static net.runelite.asm.attributes.code.InstructionType.IF_ACMPEQ;
+import static net.runelite.asm.attributes.code.InstructionType.IF_ACMPNE;
+import static net.runelite.asm.attributes.code.InstructionType.IF_ICMPEQ;
+import static net.runelite.asm.attributes.code.InstructionType.IF_ICMPNE;
+import static net.runelite.asm.attributes.code.InstructionType.IMUL;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -48,6 +54,7 @@ import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.IInc;
 import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.IfACmpEq;
 import net.runelite.asm.attributes.code.instructions.IfACmpNe;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
@@ -58,7 +65,6 @@ import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.deobfuscators.exprargorder.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,46 +72,98 @@ public class ExprArgOrder implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExprArgOrder.class);
 
-	private static final MessageDigest sha256;
-
-	private final Set<Instruction> swap = new HashSet<>();
 	private final Map<Instruction, Expression> exprs = new HashMap<>();
 	private int count;
 
-	static
+	private boolean isCommutative(InstructionType type)
 	{
-		try
+		switch (type)
 		{
-			sha256 = MessageDigest.getInstance("SHA-256");
+			case IADD:
+			case IMUL:
+			case IF_ICMPEQ:
+			case IF_ICMPNE:
+			case IF_ACMPEQ:
+			case IF_ACMPNE:
+				return true;
+			default:
+				return false;
 		}
-		catch (NoSuchAlgorithmException ex)
+	}
+
+	private Instruction newInstruction(Instructions ins, Instruction old, InstructionType type)
+	{
+		assert isCommutative(type);
+
+		switch (type)
 		{
-			throw new RuntimeException(ex);
+			case IADD:
+				return new IAdd(ins);
+			case IMUL:
+				return new IMul(ins);
+			case IF_ICMPEQ:
+			{
+				If i = (If) old;
+				return new IfICmpEq(ins, i.getJumps().get(0));
+			}
+			case IF_ICMPNE:
+			{
+				If i = (If) old;
+				return new IfICmpNe(ins, i.getJumps().get(0));
+			}
+			case IF_ACMPEQ:
+			{
+				If i = (If) old;
+				return new IfACmpEq(ins, i.getJumps().get(0));
+			}
+			case IF_ACMPNE:
+			{
+				If i = (If) old;
+				return new IfACmpNe(ins, i.getJumps().get(0));
+			}
+			default:
+				throw new IllegalStateException();
 		}
 	}
 
 	private void parseExpr(Expression expr, InstructionContext ctx)
 	{
-		assert ctx.getInstruction().getType() == InstructionType.IADD || ctx.getInstruction().getType() == InstructionType.IMUL;
+		InstructionType type = ctx.getInstruction().getType();
+
+		assert isCommutative(type) : "type is " + type;
 		List<StackContext> pops = ctx.getPops();
 
 		InstructionContext i1 = pops.get(0).getPushed(),
 			i2 = pops.get(1).getPushed();
 
-		if (i1.getInstruction().getType() == ctx.getInstruction().getType())
+		if (i1.getInstruction().getType() == type)
 		{
-			swap.remove(i1.getInstruction()); // remove sub expr
 			parseExpr(expr, i1);
+			exprs.remove(i1.getInstruction()); // remove sub expr
+		}
+		else if (isCommutative(i1.getInstruction().getType()))
+		{
+			Expression sub = new Expression(i1.getInstruction().getType(), i1);
+			parseExpr(sub, i1);
+			expr.addExpr(sub);
+			exprs.remove(i1.getInstruction()); // remove sub expr
 		}
 		else
 		{
 			expr.addInstruction(i1);
 		}
 
-		if (i2.getInstruction().getType() == ctx.getInstruction().getType())
+		if (i2.getInstruction().getType() == type)
 		{
-			swap.remove(i2.getInstruction()); // remove sub expr
 			parseExpr(expr, i2);
+			exprs.remove(i2.getInstruction()); // remove sub expr
+		}
+		else if (isCommutative(i2.getInstruction().getType()))
+		{
+			Expression sub = new Expression(i2.getInstruction().getType(), i2);
+			parseExpr(sub, i2);
+			expr.addExpr(sub);
+			exprs.remove(i2.getInstruction()); // remove sub expr
 		}
 		else
 		{
@@ -117,19 +175,13 @@ public class ExprArgOrder implements Deobfuscator
 	{
 		Instruction ins = ctx.getInstruction();
 
-		if (ins instanceof IAdd || ins instanceof IMul)
+		if (ins instanceof IAdd || ins instanceof IMul
+			|| ins instanceof IfICmpEq || ins instanceof IfICmpNe
+			|| ins instanceof IfACmpEq || ins instanceof IfACmpNe)
 		{
-			// parse (var1 + var2) + var3 into one expression
 			Expression expression = new Expression(ins.getType(), ctx);
 			parseExpr(expression, ctx);
 			exprs.put(ins, expression);
-
-			swap.add(ins);
-		}
-		if (ins instanceof IfICmpEq || ins instanceof IfICmpNe
-			|| ins instanceof IfACmpEq || ins instanceof IfACmpNe)
-		{
-			swap.add(ins);
 		}
 	}
 
@@ -228,14 +280,24 @@ public class ExprArgOrder implements Deobfuscator
 		ins.addInstruction(idx, i);
 	}
 
-	private int hash(Method method, InstructionContext ic)
+	public static int hash(Method method, InstructionContext ic)
 	{
+		MessageDigest sha256;
+		try
+		{
+			sha256 = MessageDigest.getInstance("SHA-256");
+		}
+		catch (NoSuchAlgorithmException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+
 		hash(method, sha256, ic);
 		byte[] res = sha256.digest();
 		return Ints.fromByteArray(res);
 	}
 
-	private void hash(Method method, MessageDigest sha256, InstructionContext ic)
+	private static void hash(Method method, MessageDigest sha256, InstructionContext ic)
 	{
 		Instruction i = ic.getInstruction();
 
@@ -308,13 +370,13 @@ public class ExprArgOrder implements Deobfuscator
 		return c.size() <= 1;
 	}
 
-	private int compare(Method method, InstructionType type, InstructionContext ic1, InstructionContext ic2)
+	public static int compare(Method method, InstructionType type, InstructionContext ic1, InstructionContext ic2)
 	{
 		Instruction i1 = ic1.getInstruction();
 		Instruction i2 = ic2.getInstruction();
 
-		if (type == InstructionType.IF_ICMPEQ || type == InstructionType.IF_ICMPNE
-			|| type == InstructionType.IADD || type == InstructionType.IMUL)
+		if (type == IF_ICMPEQ || type == IF_ICMPNE
+			|| type == IADD || type == IMUL)
 		{
 			if (!(i1 instanceof PushConstantInstruction)
 				&& (i2 instanceof PushConstantInstruction))
@@ -329,7 +391,7 @@ public class ExprArgOrder implements Deobfuscator
 			}
 		}
 
-		if (type == InstructionType.IF_ACMPEQ || type == InstructionType.IF_ACMPNE)
+		if (type == IF_ACMPEQ || type == IF_ACMPNE)
 		{
 			if (!(i1 instanceof AConstNull)
 				&& (i2 instanceof AConstNull))
@@ -355,97 +417,76 @@ public class ExprArgOrder implements Deobfuscator
 		return Integer.compare(hash1, hash2);
 	}
 
+	private void insert(Instructions ins, Instruction next, Expression expression)
+	{
+		int count = 0;
+		for (InstructionContext ictx : expression.sortedIns)
+		{
+			insert(ins, ictx, next);
+
+			++count;
+			// insert iadd/imul
+			if (count == 2)
+			{
+				Instruction newOp = newInstruction(ins, expression.getHead().getInstruction(), expression.getType());
+
+				int idx = ins.getInstructions().indexOf(next);
+				assert idx != -1;
+
+				ins.addInstruction(idx, newOp);
+				count = 1; // only 1 as half is the result of newOp
+			}
+		}
+
+		for (Expression sub : expression.sortedExprs)
+		{
+			insert(ins, next, sub);
+
+			++count;
+			if (count == 2)
+			{
+				Instruction newOp = newInstruction(ins, expression.getHead().getInstruction(), expression.getType());
+
+				int idx = ins.getInstructions().indexOf(next);
+				assert idx != -1;
+
+				ins.addInstruction(idx, newOp);
+				count = 1;
+			}
+		}
+
+	}
+
 	private void visit(MethodContext ctx)
 	{
 		Instructions ins = ctx.getMethod().getCode().getInstructions();
 
-		for (Instruction i : swap)
+		for (Expression expression : exprs.values())
 		{
+			Instruction i = expression.getHead().getInstruction();
 			if (!canRemove(ctx, ins, i))
 			{
 				continue;
 			}
 
-			Expression expression = exprs.get(i);
-			if (expression != null)
-			{
-				// instruction is part of a add/mul expression
+			int idx = ins.getInstructions().indexOf(expression.getHead().getInstruction());
+			assert idx != -1;
 
-				// sort expression members
-				List<InstructionContext> exprs = new ArrayList<>(expression.getIns());
-				Collections.sort(exprs, (i1, i2) -> compare(ctx.getMethod(), i.getType(), i1, i2));
-				Collections.reverse(exprs);
+			// get next instruction
+			Instruction next = ins.getInstructions().get(idx + 1);;
 
-				int idx = ins.getInstructions().indexOf(expression.getHead().getInstruction());
-				assert idx != -1;
+			// remove expression
+			remove(ins, expression.getHead());
 
-				// get next instruction
-				Instruction next = ins.getInstructions().get(idx + 1);;
+			// sort expression
+			expression.sort(ctx);
 
-				remove(ins, expression.getHead());
-
-				int count = 0;
-				for (InstructionContext ictx : exprs)
-				{
-					insert(ins, ictx, next);
-
-					++count;
-					// insert iadd/imul
-					if (count == 2)
-					{
-						assert expression.getType() == InstructionType.IADD || expression.getType() == InstructionType.IMUL;
-						Instruction newOp = expression.getType() == InstructionType.IADD ? new IAdd(ins) : new IMul(ins);
-
-						idx = ins.getInstructions().indexOf(next);
-						assert idx != -1;
-
-						ins.addInstruction(idx, newOp);
-						count = 1; // only 1 as half is the result of newOp
-					}
-				}
-			}
-			else
-			{
-				// an if
-				InstructionContext ictx = ctx.getInstructonContexts(i).iterator().next();
-
-				StackContext one = ictx.getPops().get(0),
-					two = ictx.getPops().get(1);
-
-				InstructionContext ic1 = one.getPushed(),
-					ic2 = two.getPushed();
-
-				Instruction i1 = ic1.getInstruction(),
-					i2 = ic2.getInstruction();
-
-				if (i1.getInstructions() == null || i2.getInstructions() == null)
-				{
-					continue;
-				}
-
-				assert i1.getInstructions() == ins;
-				assert i2.getInstructions() == ins;
-
-				assert ins.getInstructions().contains(i1);
-				assert ins.getInstructions().contains(i2);
-
-				int cval = compare(ctx.getMethod(), i.getType(), ic1, ic2);
-				if (cval <= 0)
-				{
-					continue;
-				}
-
-				remove(ins, ic1);
-				remove(ins, ic2);
-
-				insert(ins, ic1, i);
-				insert(ins, ic2, i);
-			}
+			// insert expression
+			insert(ins, next, expression);
 
 			++count;
 		}
 
-		swap.clear();
 		exprs.clear();
 	}
 
