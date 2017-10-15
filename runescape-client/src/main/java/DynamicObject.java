@@ -352,7 +352,7 @@ public class DynamicObject extends Renderable {
                            for(var8 = 0; var8 < 256; ++var8) {
                               IndexData var17 = class238.field3260[var8];
                               if(var17 != null) {
-                                 SceneTilePaint.field2033.offset = var8 * 8 + 5;
+                                 SceneTilePaint.field2033.offset = 5 + var8 * 8;
                                  var10 = SceneTilePaint.field2033.readInt();
                                  int var18 = SceneTilePaint.field2033.readInt();
                                  var17.setInformation(var10, var18);

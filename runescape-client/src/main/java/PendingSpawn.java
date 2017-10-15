@@ -414,7 +414,7 @@ public final class PendingSpawn extends Node {
             var8 = (var28 - var27) * 128;
 
             for(var16 = 0; var16 < var8; ++var16) {
-               var10 = ClanMember.field917[var7 + var29] - var27 * ScriptState.field792[var29 + class90.field1421 & ScriptState.field792.length - 1] / 6;
+               var10 = ClanMember.field917[var7 + var29] - ScriptState.field792[var29 + class90.field1421 & ScriptState.field792.length - 1] * var27 / 6;
                if(var10 < 0) {
                   var10 = 0;
                }
@@ -490,11 +490,11 @@ public final class PendingSpawn extends Node {
                         for(var21 = -var16; var21 < var28; ++var21) {
                            var13 = var21 * 128;
                            if(var16 + var21 < var28) {
-                              var11 += class224.field2854[var16 * 128 + var10 + var13];
+                              var11 += class224.field2854[var10 + var13 + var16 * 128];
                            }
 
                            if(var21 - (var16 + 1) >= 0) {
-                              var11 -= class224.field2854[var10 + var13 - (var16 + 1) * 128];
+                              var11 -= class224.field2854[var10 + var13 - 128 * (var16 + 1)];
                            }
 
                            if(var21 >= 0) {
@@ -519,7 +519,7 @@ public final class PendingSpawn extends Node {
                      }
 
                      if(var13 >= 0) {
-                        class224.field2854[var21 + var13] = var11 / (var16 * 2 + 1);
+                        class224.field2854[var21 + var13] = var11 / (1 + var16 * 2);
                      }
                   }
 
@@ -561,7 +561,7 @@ public final class PendingSpawn extends Node {
          class208.field2603.method5173(class90.field1419, 0);
          Rasterizer2D.noClip();
          var5 = 0;
-         var29 = class12.field275.width * 9 + class90.field1419;
+         var29 = class90.field1419 + class12.field275.width * 9;
 
          for(var7 = 1; var7 < var26 - 1; ++var7) {
             var8 = class90.field1418[var7] * (var26 - var7) / var26;
@@ -579,7 +579,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) + ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) >> 8;
+                  class12.field275.pixels[var29++] = (var21 * (var11 & '\uff00') + var13 * (var22 & '\uff00') & 16711680) + ((var22 & 16711935) * var13 + (var11 & 16711935) * var21 & -16711936) >> 8;
                } else {
                   ++var29;
                }
@@ -592,7 +592,7 @@ public final class PendingSpawn extends Node {
          ScriptState.field791.method5173(class90.field1419 + 382, 0);
          Rasterizer2D.noClip();
          var5 = 0;
-         var29 = class12.field275.width * 9 + class90.field1419 + 637 + 24;
+         var29 = class90.field1419 + 637 + 24 + class12.field275.width * 9;
 
          for(var7 = 1; var7 < var26 - 1; ++var7) {
             var8 = class90.field1418[var7] * (var26 - var7) / var26;
@@ -606,7 +606,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) + ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) >> 8;
+                  class12.field275.pixels[var29++] = (var21 * (var11 & '\uff00') + var13 * (var22 & '\uff00') & 16711680) + ((var22 & 16711935) * var13 + (var11 & 16711935) * var21 & -16711936) >> 8;
                } else {
                   ++var29;
                }

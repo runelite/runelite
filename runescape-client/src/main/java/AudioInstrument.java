@@ -287,9 +287,9 @@ public class AudioInstrument {
                var15 = this.release.step(var1);
                var16 = this.field1718.step(var1);
                if(var20) {
-                  var12 = (var15 * (this.release.end - this.release.start) >> 8) + this.release.start;
+                  var12 = this.release.start + (var15 * (this.release.end - this.release.start) >> 8);
                } else {
-                  var12 = this.release.start + (var16 * (this.release.end - this.release.start) >> 8);
+                  var12 = (var16 * (this.release.end - this.release.start) >> 8) + this.release.start;
                }
 
                var11 += 256;

@@ -158,6 +158,6 @@ public final class NPC extends Actor {
       super.pathX[0] = var1;
       super.pathY[0] = var2;
       super.x = super.field1211 * 64 + super.pathX[0] * 128;
-      super.y = super.pathY[0] * 128 + super.field1211 * 64;
+      super.y = super.field1211 * 64 + super.pathY[0] * 128;
    }
 }

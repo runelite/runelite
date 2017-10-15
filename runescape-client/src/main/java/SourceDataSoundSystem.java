@@ -93,12 +93,12 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
       for(int var2 = 0; var2 < var1; ++var2) {
          int var3 = super.samples[var2];
-         if((var3 + 8388608 & -16777216) != 0) {
+         if(0 != (var3 + 8388608 & -16777216)) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
          this.bytes[var2 * 2] = (byte)(var3 >> 8);
-         this.bytes[var2 * 2 + 1] = (byte)(var3 >> 16);
+         this.bytes[1 + var2 * 2] = (byte)(var3 >> 16);
       }
 
       this.source.write(this.bytes, 0, var1 << 1);

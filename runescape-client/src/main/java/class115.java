@@ -844,7 +844,7 @@ public class class115 extends class117 {
          var1 = var4 >> 8;
          var13 = var2[var1];
          var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var4 & 255) * (var2[var1 + 1] - var13)) * var6 >> 6;
+         var3[var10001] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -855,7 +855,7 @@ public class class115 extends class117 {
       for(var1 = var12; var5 < var7; var4 += var11) {
          var13 = var2[var4 >> 8];
          var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += var6 * ((var13 << 8) + (var1 - var13) * (var4 & 255)) >> 6;
       }
 
       var10.field1681 = var4;
@@ -876,7 +876,7 @@ public class class115 extends class117 {
          var1 = var4 >> 8;
          byte var13 = var2[var1 - 1];
          var10001 = var5++;
-         var3[var10001] += ((var2[var1] - var13) * (var4 & 255) + (var13 << 8)) * var6 >> 6;
+         var3[var10001] += var6 * ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) >> 6;
          var4 += var11;
       }
 
@@ -888,7 +888,7 @@ public class class115 extends class117 {
 
       for(var1 = var11; var5 < var7; var4 += var1) {
          var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += var6 * ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) >> 6;
       }
 
       var10.field1681 = var4;
@@ -1014,7 +1014,7 @@ public class class115 extends class117 {
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
          byte var14 = var2[var1 - 1];
-         var0 = (var2[var1] - var14) * (var4 & 255) + (var14 << 8);
+         var0 = (var14 << 8) + (var2[var1] - var14) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var10001 = var5++;
@@ -1060,29 +1060,29 @@ public class class115 extends class117 {
       for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
          var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
       for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
          var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
@@ -1111,29 +1111,29 @@ public class class115 extends class117 {
       for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
          var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
          var2[var10001] += var11 * var6;
          var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
       for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
          var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var11;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
@@ -1170,7 +1170,7 @@ public class class115 extends class117 {
       for(var1 = var13; var5 < var8; var4 += var12) {
          var14 = var2[var4 >> 8];
          var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += var6 * ((var14 << 8) + (var1 - var14) * (var4 & 255)) >> 6;
          var6 += var7;
       }
 
@@ -1197,7 +1197,7 @@ public class class115 extends class117 {
          var1 = var4 >> 8;
          byte var14 = var2[var1 - 1];
          var10001 = var5++;
-         var3[var10001] += ((var2[var1] - var14) * (var4 & 255) + (var14 << 8)) * var6 >> 6;
+         var3[var10001] += var6 * ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1210,7 +1210,7 @@ public class class115 extends class117 {
 
       for(var1 = var12; var5 < var8; var4 += var1) {
          var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += var6 * ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) >> 6;
          var6 += var7;
       }
 
@@ -1347,7 +1347,7 @@ public class class115 extends class117 {
       }
 
       var5 >>= 1;
-      var13.field1680 += var5 * var13.field1689;
+      var13.field1680 += var13.field1689 * var5;
       var13.field1690 = var6;
       var13.field1682 = var7;
       var13.field1681 = var4;
@@ -1370,7 +1370,7 @@ public class class115 extends class117 {
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
          byte var16 = var2[var1 - 1];
-         var0 = (var2[var1] - var16) * (var4 & 255) + (var16 << 8);
+         var0 = (var16 << 8) + (var2[var1] - var16) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var6 += var8;
@@ -1396,7 +1396,7 @@ public class class115 extends class117 {
       }
 
       var5 >>= 1;
-      var13.field1680 += var5 * var13.field1689;
+      var13.field1680 += var13.field1689 * var5;
       var13.field1690 = var6;
       var13.field1682 = var7;
       var13.field1681 = var4;
@@ -1418,7 +1418,7 @@ public class class115 extends class117 {
          var9 = var10;
       }
 
-      var12.field1680 += (var9 - var4) * var12.field1689;
+      var12.field1680 += var12.field1689 * (var9 - var4);
       var4 <<= 1;
       var9 <<= 1;
 
@@ -1427,28 +1427,28 @@ public class class115 extends class117 {
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
@@ -1457,7 +1457,7 @@ public class class115 extends class117 {
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
@@ -1484,7 +1484,7 @@ public class class115 extends class117 {
          var9 = var10;
       }
 
-      var12.field1680 += (var9 - var4) * var12.field1689;
+      var12.field1680 += var12.field1689 * (var9 - var4);
       var4 <<= 1;
       var9 <<= 1;
 
@@ -1493,28 +1493,28 @@ public class class115 extends class117 {
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;
@@ -1523,7 +1523,7 @@ public class class115 extends class117 {
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var5 * var13;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
          var2[var10001] += var13 * var6;

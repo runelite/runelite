@@ -127,7 +127,7 @@ public class class48 implements WorldMapSectionBase {
          return null;
       } else {
          int var3 = this.field641 * 64 - this.field627 * 64 + var1 + (this.field631 * 8 - this.field633 * 8);
-         int var4 = this.field628 * 64 - this.field636 * 64 + var2 + (this.field630 * 8 - this.field625 * 8);
+         int var4 = var2 + (this.field628 * 64 - this.field636 * 64) + (this.field630 * 8 - this.field625 * 8);
          return new Coordinates(this.field629, var3, var4);
       }
    }

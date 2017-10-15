@@ -74,7 +74,7 @@ public class Track1 extends Node {
       }
 
       var4 += var5 * 5;
-      var4 += (var7 + var8 + var6 + var9 + var11) * 2;
+      var4 += 2 * (var7 + var8 + var6 + var9 + var11);
       var4 = var4 + var10 + var12;
       var13 = var1.offset;
       var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;

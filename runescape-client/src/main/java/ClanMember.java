@@ -81,8 +81,8 @@ public class ClanMember extends Node {
             int var9;
             int var10;
             for(var8 = 0; var8 < Client.field1141; ++var8) {
-               var9 = Client.field1142[var8] * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
-               var10 = Client.field1143[var8] * 4 + 2 - AbstractByteBuffer.localPlayer.y / 32;
+               var9 = 2 + Client.field1142[var8] * 4 - AbstractByteBuffer.localPlayer.x / 32;
+               var10 = 2 + Client.field1143[var8] * 4 - AbstractByteBuffer.localPlayer.y / 32;
                class43.drawDot(var1, var2, var9, var10, Client.field1176[var8], var4);
             }
 
@@ -92,7 +92,7 @@ public class ClanMember extends Node {
                for(var9 = 0; var9 < 104; ++var9) {
                   Deque var17 = Client.groundItemDeque[class5.plane][var8][var9];
                   if(var17 != null) {
-                     var11 = var8 * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
+                     var11 = 2 + var8 * 4 - AbstractByteBuffer.localPlayer.x / 32;
                      var12 = 2 + var9 * 4 - AbstractByteBuffer.localPlayer.y / 32;
                      class43.drawDot(var1, var2, var11, var12, MouseInput.mapDots[0], var4);
                   }
@@ -181,8 +181,8 @@ public class ClanMember extends Node {
             }
 
             if(Client.destinationX != 0) {
-               var10 = Client.destinationX * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
-               var11 = Client.destinationY * 4 + 2 - AbstractByteBuffer.localPlayer.y / 32;
+               var10 = 2 + Client.destinationX * 4 - AbstractByteBuffer.localPlayer.x / 32;
+               var11 = 2 + Client.destinationY * 4 - AbstractByteBuffer.localPlayer.y / 32;
                class43.drawDot(var1, var2, var10, var11, class54.field687[0], var4);
             }
 
@@ -337,7 +337,7 @@ public class ClanMember extends Node {
             } else if(var0 == 6507) {
                class81.intStackSize -= 4;
                var7 = class81.intStack[class81.intStackSize];
-               boolean var10 = 1 == class81.intStack[class81.intStackSize + 1];
+               boolean var10 = class81.intStack[class81.intStackSize + 1] == 1;
                var5 = class81.intStack[class81.intStackSize + 2];
                boolean var6 = class81.intStack[class81.intStackSize + 3] == 1;
                class56.method837(var7, var10, var5, var6);
@@ -445,8 +445,8 @@ public class ClanMember extends Node {
    )
    static final void method1192(Actor var0) {
       int var1 = var0.field1255 - Client.gameCycle;
-      int var2 = var0.field1211 * 64 + var0.field1236 * 128;
-      int var3 = var0.field1211 * 64 + var0.field1229 * 128;
+      int var2 = var0.field1236 * 128 + var0.field1211 * 64;
+      int var3 = var0.field1229 * 128 + var0.field1211 * 64;
       var0.x += (var2 - var0.x) / var1;
       var0.y += (var3 - var0.y) / var1;
       var0.field1251 = 0;

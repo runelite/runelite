@@ -63,7 +63,7 @@ public class class54 {
                   class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
                }
 
-               if(var3 + var1 == var4 && var4 < 103) {
+               if(var4 == var3 + var1 && var4 < 103) {
                   class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
                }
             }

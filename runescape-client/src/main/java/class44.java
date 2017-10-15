@@ -236,7 +236,7 @@ public class class44 extends WorldMapData {
 
                var11 = var0.x;
                var3 = var0.y;
-               var4 = var0.field1211 * 64 + var0.pathX[var0.queueSize - 1] * 128;
+               var4 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1211 * 64;
                int var5 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1211 * 64;
                if(var11 < var4) {
                   if(var3 < var5) {
@@ -386,7 +386,7 @@ public class class44 extends WorldMapData {
          var0.graphic = -1;
          var0.field1255 = 0;
          var0.field1254 = 0;
-         var0.x = var0.field1211 * 64 + var0.pathX[0] * 128;
+         var0.x = var0.pathX[0] * 128 + var0.field1211 * 64;
          var0.y = var0.pathY[0] * 128 + var0.field1211 * 64;
          var0.method1588();
       }

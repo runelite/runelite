@@ -162,7 +162,7 @@ public class Friend {
                   }
 
                   int var6 = Client.field1158[var0] >> 8 & 255;
-                  int var7 = var6 * 128 + 64 - AbstractByteBuffer.localPlayer.y;
+                  int var7 = 64 + var6 * 128 - AbstractByteBuffer.localPlayer.y;
                   if(var7 < 0) {
                      var7 = -var7;
                   }

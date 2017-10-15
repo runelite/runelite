@@ -96,7 +96,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod722(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field535 * 64 - this.field537 * 64 + var1;
+         int var3 = var1 + (this.field535 * 64 - this.field537 * 64);
          int var4 = this.field536 * 64 - this.field534 * 64 + var2;
          return new Coordinates(this.field538, var3, var4);
       }
@@ -111,7 +111,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod725(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{var2 + (this.field537 * 64 - this.field535 * 64), var3 + (this.field534 * 64 - this.field536 * 64)};
+         int[] var4 = new int[]{var2 + (this.field537 * 64 - this.field535 * 64), this.field534 * 64 - this.field536 * 64 + var3};
          return var4;
       }
    }
@@ -458,7 +458,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                            for(var20 = 0; var20 < var10.field2670; ++var20) {
                               for(var21 = 0; var21 < var10.originalWidth; ++var21) {
                                  var22 = var12 + var21 * (var10.paddingX + 32);
-                                 var23 = (var10.paddingY + 32) * var20 + var13;
+                                 var23 = var13 + var20 * (var10.paddingY + 32);
                                  if(var19 < 20) {
                                     var22 += var10.xSprites[var19];
                                     var23 += var10.field2727[var19];
@@ -681,9 +681,9 @@ public class WorldMapType2 implements WorldMapSectionBase {
                                        for(var24 = 0; var24 < var22; ++var24) {
                                           for(var25 = 0; var25 < var23; ++var25) {
                                              if(var10.textureId != 0) {
-                                                var40.method5188(var20 / 2 + var24 * var20 + var12, var21 / 2 + var13 + var21 * var25, var10.textureId, 4096);
+                                                var40.method5188(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var21 * var25, var10.textureId, 4096);
                                              } else if(var14 != 0) {
-                                                var40.method5181(var12 + var24 * var20, var21 * var25 + var13, 256 - (var14 & 255));
+                                                var40.method5181(var12 + var24 * var20, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
                                                 var40.method5172(var12 + var20 * var24, var13 + var21 * var25);
                                              }
@@ -778,7 +778,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                                              }
 
                                              var25 = var12 + var22 * (var10.paddingX + 115);
-                                             var26 = (var10.paddingY + 12) * var21 + var13;
+                                             var26 = var13 + var21 * (var10.paddingY + 12);
                                              if(var10.field2721 == 0) {
                                                 var39.method4840(var33, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2721 == 1) {

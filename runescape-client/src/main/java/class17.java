@@ -66,7 +66,7 @@ final class class17 implements Comparator {
          int var1 = var0.field1254 - var0.field1255;
          int var2 = Client.gameCycle - var0.field1255;
          int var3 = var0.field1236 * 128 + var0.field1211 * 64;
-         int var4 = var0.field1211 * 64 + var0.field1229 * 128;
+         int var4 = var0.field1229 * 128 + var0.field1211 * 64;
          int var5 = var0.field1250 * 128 + var0.field1211 * 64;
          int var6 = var0.field1216 * 128 + var0.field1211 * 64;
          var0.x = (var5 * var2 + var3 * (var1 - var2)) / var1;

@@ -41,7 +41,7 @@ public class class207 extends Node {
       Buffer var2 = new Buffer(var1);
 
       int var3;
-      for(var3 = 0; 0 != var2.payload[var3 + var2.offset]; ++var3) {
+      for(var3 = 0; var2.payload[var3 + var2.offset] != 0; ++var3) {
          ;
       }
 
@@ -125,7 +125,7 @@ public class class207 extends Node {
 
          var16 = var2.readUnsignedByte();
          if(var16 > 0) {
-            var38.field2515 = new byte[var16 * 2 + 2];
+            var38.field2515 = new byte[2 + var16 * 2];
             var38.field2515[1] = 64;
          }
       }
@@ -345,7 +345,7 @@ public class class207 extends Node {
          byte var41 = var45[1];
 
          for(var29 = 0; var29 < var44; ++var29) {
-            this.field2595[var29] = (byte)(var41 * this.field2595[var29] + 32 >> 6);
+            this.field2595[var29] = (byte)(32 + var41 * this.field2595[var29] >> 6);
          }
 
          for(var29 = 2; var29 < var45.length; var29 += 2) {
@@ -355,7 +355,7 @@ public class class207 extends Node {
 
             for(var33 = var44; var33 < var30; ++var33) {
                var34 = ClanMember.method1196(var32, var30 - var44);
-               this.field2595[var33] = (byte)(var34 * this.field2595[var33] + 32 >> 6);
+               this.field2595[var33] = (byte)(32 + var34 * this.field2595[var33] >> 6);
                var32 += var31 - var41;
             }
 
@@ -399,7 +399,7 @@ public class class207 extends Node {
          for(var29 = 2; var29 < var39.length; var29 += 2) {
             var30 = var39[var29];
             var43 = var39[var29 + 1] << 1;
-            var32 = var47 * (var30 - var44) + (var30 - var44) / 2;
+            var32 = (var30 - var44) / 2 + var47 * (var30 - var44);
 
             for(var33 = var44; var33 < var30; ++var33) {
                var34 = ClanMember.method1196(var32, var30 - var44);

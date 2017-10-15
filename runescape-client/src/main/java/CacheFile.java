@@ -389,8 +389,8 @@ public class CacheFile {
 
          int var6 = var0 & 127;
          int var7 = var1 & 127;
-         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + class61.tileHeights[var5][var3 + 1][var4] * var6 >> 7;
-         int var9 = var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] + class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) >> 7;
+         int var8 = class61.tileHeights[var5][var3 + 1][var4] * var6 + class61.tileHeights[var5][var3][var4] * (128 - var6) >> 7;
+         int var9 = var6 * class61.tileHeights[var5][var3 + 1][var4 + 1] + (128 - var6) * class61.tileHeights[var5][var3][var4 + 1] >> 7;
          return var8 * (128 - var7) + var7 * var9 >> 7;
       } else {
          return 0;

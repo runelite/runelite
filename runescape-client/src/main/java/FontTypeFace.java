@@ -497,7 +497,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                               String var19 = var11.substring(4);
                               var14 = class41.parseInt(var19, 10, true);
                               IndexedSprite var17 = modIcons[var14];
-                              var17.method5147(var12 + var2, var3 + this.verticalSpace - var17.originalHeight + var13);
+                              var17.method5147(var12 + var2, var13 + (var3 + this.verticalSpace - var17.originalHeight));
                               var2 += var17.width;
                               var7 = -1;
                            } catch (Exception var21) {

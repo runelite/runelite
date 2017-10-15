@@ -41,7 +41,7 @@ public class class45 extends class28 {
       garbageValue = "1791482049"
    )
    boolean method643(int var1, int var2) {
-      return var1 < this.field603 * 8?false:(var2 < this.field606 * 8?false:(var1 >= this.field603 * 8 + 8?false:var2 < this.field606 * 8 + 8));
+      return var1 < this.field603 * 8?false:(var2 < this.field606 * 8?false:(var1 >= 8 + this.field603 * 8?false:var2 < 8 + this.field606 * 8));
    }
 
    @ObfuscatedName("ag")
@@ -272,7 +272,7 @@ public class class45 extends class28 {
                class162.field2307[var30 - 1][var31 - 1] = var21;
             }
 
-            if(var30 < 127 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && 0 == (var18[var19 + 1][var20 - 1] & 19136899) && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
+            if(var30 < 127 && var31 > 0 && 0 == class162.field2309[var30 + 1][var31 - 1] && (var18[var19 + 1][var20 - 1] & 19136899) == 0 && 0 == (var18[var19 + 1][var20] & 19136896) && (var18[var19][var20 - 1] & 19136770) == 0) {
                class162.field2313[var33] = var10 + 1;
                class162.field2314[var33] = var11 - 1;
                var33 = var33 + 1 & 4095;
@@ -280,7 +280,7 @@ public class class45 extends class28 {
                class162.field2307[var30 + 1][var31 - 1] = var21;
             }
 
-            if(var30 > 0 && var31 < 127 && 0 == class162.field2309[var30 - 1][var31 + 1] && 0 == (var18[var19 - 1][var20 + 1] & 19136824) && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
+            if(var30 > 0 && var31 < 127 && class162.field2309[var30 - 1][var31 + 1] == 0 && 0 == (var18[var19 - 1][var20 + 1] & 19136824) && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
                class162.field2313[var33] = var10 - 1;
                class162.field2314[var33] = var11 + 1;
                var33 = var33 + 1 & 4095;
@@ -288,7 +288,7 @@ public class class45 extends class28 {
                class162.field2307[var30 - 1][var31 + 1] = var21;
             }
 
-            if(var30 < 127 && var31 < 127 && 0 == class162.field2309[var30 + 1][var31 + 1] && (var18[var19 + 1][var20 + 1] & 19136992) == 0 && 0 == (var18[var19 + 1][var20] & 19136896) && (var18[var19][var20 + 1] & 19136800) == 0) {
+            if(var30 < 127 && var31 < 127 && 0 == class162.field2309[var30 + 1][var31 + 1] && (var18[var19 + 1][var20 + 1] & 19136992) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
                class162.field2313[var33] = var10 + 1;
                class162.field2314[var33] = var11 + 1;
                var33 = var33 + 1 & 4095;
@@ -337,7 +337,7 @@ public class class45 extends class28 {
             }
 
             var21 = class162.field2307[var30][var31] + 1;
-            if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && (var18[var19 - 1][var20 + 1] & 19136824) == 0) {
+            if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && 0 == (var18[var19 - 1][var20 + 1] & 19136824)) {
                class162.field2313[var33] = var10 - 1;
                class162.field2314[var33] = var11;
                var33 = var33 + 1 & 4095;
@@ -345,7 +345,7 @@ public class class45 extends class28 {
                class162.field2307[var30 - 1][var31] = var21;
             }
 
-            if(var30 < 126 && 0 == class162.field2309[var30 + 1][var31] && (var18[var19 + 2][var20] & 19136899) == 0 && (var18[var19 + 2][var20 + 1] & 19136992) == 0) {
+            if(var30 < 126 && class162.field2309[var30 + 1][var31] == 0 && (var18[var19 + 2][var20] & 19136899) == 0 && (var18[var19 + 2][var20 + 1] & 19136992) == 0) {
                class162.field2313[var33] = var10 + 1;
                class162.field2314[var33] = var11;
                var33 = var33 + 1 & 4095;
@@ -377,7 +377,7 @@ public class class45 extends class28 {
                class162.field2307[var30 - 1][var31 - 1] = var21;
             }
 
-            if(var30 < 126 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136911) == 0 && (var18[var19 + 2][var20 - 1] & 19136899) == 0 && 0 == (var18[var19 + 2][var20] & 19136995)) {
+            if(var30 < 126 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136911) == 0 && 0 == (var18[var19 + 2][var20 - 1] & 19136899) && 0 == (var18[var19 + 2][var20] & 19136995)) {
                class162.field2313[var33] = var10 + 1;
                class162.field2314[var33] = var11 - 1;
                var33 = var33 + 1 & 4095;
@@ -385,7 +385,7 @@ public class class45 extends class28 {
                class162.field2307[var30 + 1][var31 - 1] = var21;
             }
 
-            if(var30 > 0 && var31 < 126 && class162.field2309[var30 - 1][var31 + 1] == 0 && 0 == (var18[var19 - 1][var20 + 1] & 19136830) && (var18[var19 - 1][var20 + 2] & 19136824) == 0 && 0 == (var18[var19][var20 + 2] & 19137016)) {
+            if(var30 > 0 && var31 < 126 && class162.field2309[var30 - 1][var31 + 1] == 0 && 0 == (var18[var19 - 1][var20 + 1] & 19136830) && (var18[var19 - 1][var20 + 2] & 19136824) == 0 && (var18[var19][var20 + 2] & 19137016) == 0) {
                class162.field2313[var33] = var10 - 1;
                class162.field2314[var33] = var11 + 1;
                var33 = var33 + 1 & 4095;
@@ -450,7 +450,7 @@ public class class45 extends class28 {
                            }
 
                            var21 = class162.field2307[var30][var31] + 1;
-                           if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && 0 == (var18[var19 - 1][var20 + var2 - 1] & 19136824)) {
+                           if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && (var18[var19 - 1][var20 + var2 - 1] & 19136824) == 0) {
                               var22 = 1;
 
                               while(true) {
@@ -471,7 +471,7 @@ public class class45 extends class28 {
                               }
                            }
 
-                           if(var30 < 128 - var2 && 0 == class162.field2309[var30 + 1][var31] && 0 == (var18[var19 + var2][var20] & 19136899) && (var18[var19 + var2][var20 + var2 - 1] & 19136992) == 0) {
+                           if(var30 < 128 - var2 && 0 == class162.field2309[var30 + 1][var31] && (var18[var19 + var2][var20] & 19136899) == 0 && (var18[var19 + var2][var20 + var2 - 1] & 19136992) == 0) {
                               var22 = 1;
 
                               while(true) {
@@ -513,7 +513,7 @@ public class class45 extends class28 {
                               }
                            }
 
-                           if(var31 < 128 - var2 && 0 == class162.field2309[var30][var31 + 1] && (var18[var19][var20 + var2] & 19136824) == 0 && (var18[var19 + var2 - 1][var20 + var2] & 19136992) == 0) {
+                           if(var31 < 128 - var2 && class162.field2309[var30][var31 + 1] == 0 && (var18[var19][var20 + var2] & 19136824) == 0 && 0 == (var18[var19 + var2 - 1][var20 + var2] & 19136992)) {
                               var22 = 1;
 
                               while(true) {
@@ -526,7 +526,7 @@ public class class45 extends class28 {
                                     break;
                                  }
 
-                                 if((var18[var19 + var22][var20 + var2] & 19137016) != 0) {
+                                 if(0 != (var18[var19 + var22][var20 + var2] & 19137016)) {
                                     break;
                                  }
 
@@ -547,7 +547,7 @@ public class class45 extends class28 {
                                     break;
                                  }
 
-                                 if((var18[var19 - 1][var22 + (var20 - 1)] & 19136830) != 0 || (var18[var22 + (var19 - 1)][var20 - 1] & 19136911) != 0) {
+                                 if(0 != (var18[var19 - 1][var22 + (var20 - 1)] & 19136830) || (var18[var22 + (var19 - 1)][var20 - 1] & 19136911) != 0) {
                                     break;
                                  }
 
@@ -555,7 +555,7 @@ public class class45 extends class28 {
                               }
                            }
 
-                           if(var30 < 128 - var2 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + var2][var20 - 1] & 19136899) == 0) {
+                           if(var30 < 128 - var2 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && 0 == (var18[var19 + var2][var20 - 1] & 19136899)) {
                               var22 = 1;
 
                               while(true) {
@@ -576,7 +576,7 @@ public class class45 extends class28 {
                               }
                            }
 
-                           if(var30 > 0 && var31 < 128 - var2 && class162.field2309[var30 - 1][var31 + 1] == 0 && 0 == (var18[var19 - 1][var20 + var2] & 19136824)) {
+                           if(var30 > 0 && var31 < 128 - var2 && 0 == class162.field2309[var30 - 1][var31 + 1] && (var18[var19 - 1][var20 + var2] & 19136824) == 0) {
                               for(var22 = 1; var22 < var2; ++var22) {
                                  if((var18[var19 - 1][var22 + var20] & 19136830) != 0 || (var18[var22 + (var19 - 1)][var20 + var2] & 19137016) != 0) {
                                     continue label815;
@@ -592,7 +592,7 @@ public class class45 extends class28 {
                         } while(var30 >= 128 - var2);
                      } while(var31 >= 128 - var2);
                   } while(class162.field2309[var30 + 1][var31 + 1] != 0);
-               } while((var18[var19 + var2][var20 + var2] & 19136992) != 0);
+               } while(0 != (var18[var19 + var2][var20 + var2] & 19136992));
 
                for(var22 = 1; var22 < var2; ++var22) {
                   if((var18[var19 + var22][var20 + var2] & 19137016) != 0 || (var18[var19 + var2][var22 + var20] & 19136995) != 0) {
@@ -643,7 +643,7 @@ public class class45 extends class28 {
                      var25 = var21 - (var19 + var17 - 1);
                   }
 
-                  int var26 = var24 * var24 + var25 * var25;
+                  int var26 = var25 * var25 + var24 * var24;
                   if(var26 < var31 || var31 == var26 && class162.field2307[var22][var23] < var14) {
                      var31 = var26;
                      var14 = class162.field2307[var22][var23];

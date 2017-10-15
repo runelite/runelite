@@ -35,7 +35,7 @@ public class GZipDecompressor {
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && -117 == var1.payload[var1.offset + 1]) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
          if(this.inflator == null) {
             this.inflator = new Inflater(true);
          }

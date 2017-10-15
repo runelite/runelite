@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gi")
 public class class205 extends Node {
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -803986209
+   )
+   int field2565;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgv;"
    )
    class202 field2560;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -134393741
-   )
-   int field2567;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lga;"
@@ -29,21 +29,21 @@ public class class205 extends Node {
       signature = "Ldx;"
    )
    class115 field2570;
-   @ObfuscatedName("t")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 754040557
+      intValue = -134393741
    )
-   int field2566;
+   int field2567;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1021019747
    )
    int field2563;
-   @ObfuscatedName("v")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -803986209
+      intValue = 754040557
    )
-   int field2565;
+   int field2566;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -636565271

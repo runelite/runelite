@@ -118,15 +118,15 @@ public class class34 {
                      }
 
                      if(var8.field461 == 1) {
-                        Rasterizer2D.method5063(this.field500 * var1 + this.field500 - 1, this.field500 * (63 - var2), 1, var12);
+                        Rasterizer2D.method5063(this.field500 + this.field500 * var1 - 1, this.field500 * (63 - var2), 1, var12);
                      }
 
                      if(var8.field461 == 2) {
-                        Rasterizer2D.method5063(this.field500 + this.field500 * var1 - 1, this.field500 * (63 - var2) + this.field500 - 1, 1, var12);
+                        Rasterizer2D.method5063(this.field500 + this.field500 * var1 - 1, this.field500 + this.field500 * (63 - var2) - 1, 1, var12);
                      }
 
                      if(var8.field461 == 3) {
-                        Rasterizer2D.method5063(this.field500 * var1, this.field500 * (63 - var2) + this.field500 - 1, 1, var12);
+                        Rasterizer2D.method5063(this.field500 * var1, this.field500 + this.field500 * (63 - var2) - 1, 1, var12);
                      }
                   }
 
@@ -197,7 +197,7 @@ public class class34 {
                      if(var10.mapSceneId != 46 && var10.mapSceneId != 52) {
                         var4[var10.mapSceneId].method5149(this.field500 * var1, this.field500 * (63 - var2), this.field500 * 2, this.field500 * 2);
                      } else {
-                        var4[var10.mapSceneId].method5149(this.field500 * var1, this.field500 * (63 - var2), this.field500 * 2 + 1, this.field500 * 2 + 1);
+                        var4[var10.mapSceneId].method5149(this.field500 * var1, this.field500 * (63 - var2), 1 + this.field500 * 2, 1 + this.field500 * 2);
                      }
                   }
                }
@@ -478,7 +478,7 @@ public class class34 {
                      class31 var13 = var11[var12];
                      Area var14 = this.method373(var13.field455);
                      if(var14 != null) {
-                        Coordinates var15 = new Coordinates(var9, this.field497 * 64 + var6, this.field498 * 64 + var7);
+                        Coordinates var15 = new Coordinates(var9, var6 + this.field497 * 64, var7 + this.field498 * 64);
                         Coordinates var16 = null;
                         if(this.field499 != null) {
                            var16 = new Coordinates(this.field499.field425 + var9, var6 + this.field499.field418 * 64, var7 + this.field499.field426 * 64);
@@ -530,10 +530,10 @@ public class class34 {
                      return;
                   }
 
-                  Coordinates var11 = new Coordinates(var4, this.field497 * 64 + var1, this.field498 * 64 + var2);
+                  Coordinates var11 = new Coordinates(var4, var1 + this.field497 * 64, var2 + this.field498 * 64);
                   Coordinates var12 = null;
                   if(this.field499 != null) {
-                     var12 = new Coordinates(this.field499.field425 + var4, this.field499.field418 * 64 + var1, this.field499.field426 * 64 + var2);
+                     var12 = new Coordinates(this.field499.field425 + var4, var1 + this.field499.field418 * 64, var2 + this.field499.field426 * 64);
                   } else {
                      Iterator var13 = this.field509.iterator();
 
@@ -893,11 +893,11 @@ public class class34 {
       }
 
       if(var3 == 2) {
-         Rasterizer2D.method5128(this.field500 * var1 + this.field500 - 1, this.field500 * (63 - var2), this.field500, var4);
+         Rasterizer2D.method5128(this.field500 + this.field500 * var1 - 1, this.field500 * (63 - var2), this.field500, var4);
       }
 
       if(var3 == 3) {
-         Rasterizer2D.method5063(this.field500 * var1, this.field500 * (63 - var2) + this.field500 - 1, this.field500, var4);
+         Rasterizer2D.method5063(this.field500 * var1, this.field500 + this.field500 * (63 - var2) - 1, this.field500, var4);
       }
 
    }
@@ -1065,7 +1065,7 @@ public class class34 {
          }
 
          int[] var10 = BaseVarType.field33.image;
-         var11 = 24624 + var1 * 4 + (103 - var2) * 2048;
+         var11 = 24624 + (103 - var2) * 2048 + var1 * 4;
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = Occluder.getObjectDefinition(var12);
          if(var13.mapSceneId != -1) {
@@ -1073,7 +1073,7 @@ public class class34 {
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method5147(var15 + var1 * 4 + 48, (104 - var2 - var13.sizeY) * 4 + var16 + 48);
+               var14.method5147(var15 + 48 + var1 * 4, var16 + 48 + (104 - var2 - var13.sizeY) * 4);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -1151,7 +1151,7 @@ public class class34 {
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method5147(var1 * 4 + 48 + var12, (104 - var2 - var23.sizeY) * 4 + 48 + var18);
+               var17.method5147(var12 + 48 + var1 * 4, var18 + 48 + (104 - var2 - var23.sizeY) * 4);
             }
          } else if(var8 == 9) {
             var11 = 15658734;
@@ -1160,7 +1160,7 @@ public class class34 {
             }
 
             int[] var22 = BaseVarType.field33.image;
-            var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
+            var18 = 24624 + (103 - var2) * 2048 + var1 * 4;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
                var22[var18 + 1 + 512] = var11;
@@ -1184,7 +1184,7 @@ public class class34 {
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method5147(var1 * 4 + var9 + 48, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
+               var20.method5147(var9 + 48 + var1 * 4, var21 + 48 + (104 - var2 - var19.sizeY) * 4);
             }
          }
       }

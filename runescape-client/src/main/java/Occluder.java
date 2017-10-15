@@ -27,47 +27,47 @@ public final class Occluder {
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -568920457
-   )
-   @Export("minNormalX")
-   int minNormalX;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1696108751
-   )
-   @Export("type")
-   int type;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -184521319
    )
    @Export("minZ")
    int minZ;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1696108751
+   )
+   @Export("type")
+   int type;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -568920457
+   )
+   @Export("minNormalX")
+   int minNormalX;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -97707391
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1658673257
-   )
-   @Export("maxZ")
-   int maxZ;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1928932069
-   )
-   int field2152;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1591277857
    )
    @Export("maxNormalX")
    int maxNormalX;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1928932069
+   )
+   int field2152;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1658673257
+   )
+   @Export("maxZ")
+   int maxZ;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1747102443
@@ -80,12 +80,6 @@ public final class Occluder {
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1765323821
-   )
-   @Export("maxX")
-   int maxX;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1706822655
@@ -97,18 +91,24 @@ public final class Occluder {
       intValue = 1731428905
    )
    int field2159;
-   @ObfuscatedName("y")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1829017021
+      intValue = -1765323821
    )
-   @Export("maxY")
-   int maxY;
+   @Export("maxX")
+   int maxX;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -778408973
    )
    @Export("maxNormalY")
    int maxNormalY;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1829017021
+   )
+   @Export("maxY")
+   int maxY;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1574635281

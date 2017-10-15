@@ -193,7 +193,7 @@ public class class43 {
    static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
       if(var4 != null) {
          int var6 = Client.mapAngle & 2047;
-         int var7 = var2 * var2 + var3 * var3;
+         int var7 = var3 * var3 + var2 * var2;
          if(var7 <= 6400) {
             int var8 = Graphics3D.SINE[var6];
             int var9 = Graphics3D.COSINE[var6];

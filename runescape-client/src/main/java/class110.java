@@ -266,6 +266,6 @@ public class class110 {
       garbageValue = "16"
    )
    public static boolean method2171(int var0, int var1) {
-      return 0 != (var0 >> var1 + 1 & 1);
+      return (var0 >> var1 + 1 & 1) != 0;
    }
 }

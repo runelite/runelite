@@ -320,7 +320,7 @@ public final class class41 {
 
          for(int var17 = var12.field436; var17 < var12.field434 + var12.field436; ++var17) {
             for(int var18 = var12.field429; var18 < var12.field429 + var12.field430; ++var18) {
-               List var19 = this.field575[var17][var18].method376(var5 + var14 * (this.field575[var17][var18].field497 * 64 - var15) / 64, var8 + var6 - var14 * (this.field575[var17][var18].field498 * 64 - var16 + 64) / 64, var14, var9, var10);
+               List var19 = this.field575[var17][var18].method376(var5 + (this.field575[var17][var18].field497 * 64 - var15) * var14 / 64, var8 + var6 - var14 * (this.field575[var17][var18].field498 * 64 - var16 + 64) / 64, var14, var9, var10);
                if(!var19.isEmpty()) {
                   var11.addAll(var19);
                }
@@ -430,7 +430,7 @@ public final class class41 {
                this.field575[var19][var20].method366();
             }
 
-            this.field575[var19][var20].method346((this.field575[var19][var20].field497 * 64 - var17) * var16 / 64 + var5, var8 - (this.field575[var19][var20].field498 * 64 - var18 + 64) * var16 / 64, var16, var9);
+            this.field575[var19][var20].method346((this.field575[var19][var20].field497 * 64 - var17) * var16 / 64 + var5, var8 - (64 + (this.field575[var19][var20].field498 * 64 - var18)) * var16 / 64, var16, var9);
          }
       }
 
@@ -520,7 +520,7 @@ public final class class41 {
                var10 = -var10;
             }
 
-            int var9 = var5 * var1 + var10;
+            int var9 = var10 + var5 * var1;
             if(var9 / var1 != var5) {
                throw new NumberFormatException();
             }
@@ -599,13 +599,13 @@ public final class class41 {
          }
       }
 
-      var8 = Client.field1168 + (Client.field1169 - Client.field1168) * var5 / 100;
+      var8 = (Client.field1169 - Client.field1168) * var5 / 100 + Client.field1168;
       Client.scale = var3 * var6 * var8 / 85504 << 1;
       if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
          int[] var14 = new int[9];
 
          for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = 15 + var10 * 32 + 128;
+            int var11 = 15 + 128 + var10 * 32;
             int var12 = 600 + var11 * 3;
             int var13 = Graphics3D.SINE[var11];
             var14[var10] = var12 * var13 >> 16;
@@ -860,8 +860,8 @@ public final class class41 {
                   }
 
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
-                     var1 = var1 * 128 + 64;
-                     var2 = var2 * 128 + 64;
+                     var1 = 64 + var1 * 128;
+                     var2 = 64 + var2 * 128;
                      GraphicsObject var38 = new GraphicsObject(var3, class5.plane, var1, var2, CacheFile.getTileHeight(var1, var2, class5.plane) - var29, var30, Client.gameCycle);
                      Client.graphicsObjectDeque.addFront(var38);
                   }
@@ -959,7 +959,7 @@ public final class class41 {
                         int var19 = var32 + (var17 >> 1);
                         int var20 = var32 + (var17 + 1 >> 1);
                         int var21 = var8 + (var18 >> 1);
-                        int var22 = var8 + (var18 + 1 >> 1);
+                        int var22 = (var18 + 1 >> 1) + var8;
                         int[][] var23 = class61.tileHeights[class5.plane];
                         int var24 = var23[var20][var21] + var23[var19][var21] + var23[var19][var22] + var23[var20][var22] >> 2;
                         int var25 = (var32 << 7) + (var17 << 6);
@@ -970,8 +970,8 @@ public final class class41 {
                            var15.field891 = var29 + Client.gameCycle;
                            var15.field892 = var10 + Client.gameCycle;
                            var15.model = var27;
-                           var15.field906 = var32 * 128 + var17 * 64;
-                           var15.field884 = var8 * 128 + var18 * 64;
+                           var15.field906 = var17 * 64 + var32 * 128;
+                           var15.field884 = var18 * 64 + var8 * 128;
                            var15.field897 = var24;
                            byte var28;
                            if(var35 > var37) {
@@ -1008,10 +1008,10 @@ public final class class41 {
                      var11 = Client.secretPacketBuffer2.readUnsignedByte();
                      var12 = Client.secretPacketBuffer2.readUnsignedByte();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var29 >= 0 && var3 < 104 && var29 < 104 && var31 != '\uffff') {
-                        var1 = var1 * 128 + 64;
+                        var1 = 64 + var1 * 128;
                         var2 = 64 + var2 * 128;
                         var3 = 64 + var3 * 128;
-                        var29 = var29 * 128 + 64;
+                        var29 = 64 + var29 * 128;
                         Projectile var13 = new Projectile(var31, class5.plane, var1, var2, CacheFile.getTileHeight(var1, var2, class5.plane) - var32, var9 + Client.gameCycle, var10 + Client.gameCycle, var11, var12, var30, var8);
                         var13.method1817(var3, var29, CacheFile.getTileHeight(var3, var29, class5.plane) - var8, var9 + Client.gameCycle);
                         Client.projectiles.addFront(var13);

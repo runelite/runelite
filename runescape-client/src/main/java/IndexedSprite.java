@@ -38,7 +38,7 @@ public final class IndexedSprite extends Rasterizer2D {
 
          for(int var3 = 0; var3 < this.height; ++var3) {
             for(int var4 = 0; var4 < this.originalWidth; ++var4) {
-               var1[var4 + (var3 + this.offsetY) * this.width + this.offsetX] = this.pixels[var2++];
+               var1[var4 + this.offsetX + this.width * (var3 + this.offsetY)] = this.pixels[var2++];
             }
          }
 

@@ -137,7 +137,7 @@ public class Preferences {
    )
    static final int method1647(int var0, int var1, int var2) {
       int var3 = 256 - var2;
-      return ((var1 & '\uff00') * var2 + (var0 & '\uff00') * var3 & 16711680) + (var3 * (var0 & 16711935) + (var1 & 16711935) * var2 & -16711936) >> 8;
+      return ((var1 & '\uff00') * var2 + (var0 & '\uff00') * var3 & 16711680) + ((var1 & 16711935) * var2 + var3 * (var0 & 16711935) & -16711936) >> 8;
    }
 
    @ObfuscatedName("i")
@@ -148,7 +148,7 @@ public class Preferences {
    static final int method1645(int var0, int var1) {
       int var2 = var0 + var1 * 57;
       var2 ^= var2 << 13;
-      int var3 = 1376312589 + (var2 * var2 * 15731 + 789221) * var2 & Integer.MAX_VALUE;
+      int var3 = 1376312589 + var2 * (789221 + var2 * var2 * 15731) & Integer.MAX_VALUE;
       return var3 >> 19 & 255;
    }
 }

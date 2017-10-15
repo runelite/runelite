@@ -263,11 +263,11 @@ public class class36 {
             for(var12 = 1; var12 < 103; ++var12) {
                var13 = class61.tileHeights[var2][var12 + 1][var11] - class61.tileHeights[var2][var12 - 1][var11];
                var14 = class61.tileHeights[var2][var12][var11 + 1] - class61.tileHeights[var2][var12][var11 - 1];
-               var15 = (int)Math.sqrt((double)(var14 * var14 + var13 * var13 + 65536));
+               var15 = (int)Math.sqrt((double)(65536 + var13 * var13 + var14 * var14));
                var16 = (var13 << 8) / var15;
                var17 = 65536 / var15;
                var18 = (var14 << 8) / var15;
-               var19 = 96 + (var18 * -50 + var16 * -50 + var17 * -10) / var10;
+               var19 = 96 + (var16 * -50 + var18 * -50 + var17 * -10) / var10;
                var20 = (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2) + (var42[var12 + 1][var11] >> 3) + (var42[var12][var11 + 1] >> 3) + (var42[var12][var11] >> 1);
                class60.field762[var12][var11] = var19 - var20;
             }
@@ -530,12 +530,12 @@ public class class36 {
                         ++var12;
                      }
 
-                     var13 = (var10 - var9 + 1) * (var12 + 1 - var11);
+                     var13 = (var12 + 1 - var11) * (var10 - var9 + 1);
                      if(var13 >= 8) {
                         var46 = 240;
                         var15 = class61.tileHeights[var12][var8][var9] - var46;
                         var16 = class61.tileHeights[var11][var8][var9];
-                        Region.addOcclude(var5, 1, var8 * 128, var8 * 128, var9 * 128, var10 * 128 + 128, var15, var16);
+                        Region.addOcclude(var5, 1, var8 * 128, var8 * 128, var9 * 128, 128 + var10 * 128, var15, var16);
 
                         for(var17 = var11; var17 <= var12; ++var17) {
                            for(var18 = var9; var18 <= var10; ++var18) {
@@ -554,7 +554,7 @@ public class class36 {
                         ;
                      }
 
-                     while(var10 < 104 && 0 != (class168.field2350[var6][var10 + 1][var7] & var3)) {
+                     while(var10 < 104 && (class168.field2350[var6][var10 + 1][var7] & var3) != 0) {
                         ++var10;
                      }
 
@@ -572,7 +572,7 @@ public class class36 {
                      label518:
                      while(var12 < var5) {
                         for(var13 = var9; var13 <= var10; ++var13) {
-                           if((class168.field2350[var12 + 1][var13][var7] & var3) == 0) {
+                           if(0 == (class168.field2350[var12 + 1][var13][var7] & var3)) {
                               break label518;
                            }
                         }
@@ -585,7 +585,7 @@ public class class36 {
                         var46 = 240;
                         var15 = class61.tileHeights[var12][var9][var7] - var46;
                         var16 = class61.tileHeights[var11][var9][var7];
-                        Region.addOcclude(var5, 2, var9 * 128, var10 * 128 + 128, var7 * 128, var7 * 128, var15, var16);
+                        Region.addOcclude(var5, 2, var9 * 128, 128 + var10 * 128, var7 * 128, var7 * 128, var15, var16);
 
                         for(var17 = var11; var17 <= var12; ++var17) {
                            for(var18 = var9; var18 <= var10; ++var18) {
@@ -630,9 +630,9 @@ public class class36 {
                         ++var10;
                      }
 
-                     if((var10 - var9 + 1) * (var12 - var11 + 1) >= 4) {
+                     if((var12 - var11 + 1) * (var10 - var9 + 1) >= 4) {
                         var13 = class61.tileHeights[var6][var9][var11];
-                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
+                        Region.addOcclude(var5, 4, var9 * 128, 128 + var10 * 128, var11 * 128, 128 + var12 * 128, var13, var13);
 
                         for(var14 = var9; var14 <= var10; ++var14) {
                            for(var15 = var11; var15 <= var12; ++var15) {

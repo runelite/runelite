@@ -28,7 +28,7 @@ public class class227 {
          for(var3 = 1; var3 < var1 - 1; ++var3) {
             for(var4 = 1; var4 < 127; ++var4) {
                var5 = var4 + (var3 << 7);
-               Varbit.field3383[var5] = (ScriptState.field792[var5 - 128] + ScriptState.field792[var5 + 1] + ScriptState.field792[var5 + 128] + ScriptState.field792[var5 - 1]) / 4;
+               Varbit.field3383[var5] = (ScriptState.field792[var5 - 128] + ScriptState.field792[var5 - 1] + ScriptState.field792[var5 + 1] + ScriptState.field792[var5 + 128]) / 4;
             }
          }
 

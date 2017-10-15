@@ -180,14 +180,14 @@ final class class15 implements Comparator {
          var11 = Graphics3D.SINE[var6];
          var12 = Graphics3D.COSINE[var6];
          var13 = var12 * var9 - var5 * var11 >> 16;
-         var10 = var11 * var9 + var5 * var12 >> 16;
+         var10 = var5 * var12 + var11 * var9 >> 16;
          var9 = var13;
       }
 
       if(var7 != 0) {
          var11 = Graphics3D.SINE[var7];
          var12 = Graphics3D.COSINE[var7];
-         var13 = var12 * var8 + var10 * var11 >> 16;
+         var13 = var10 * var11 + var12 * var8 >> 16;
          var10 = var12 * var10 - var8 * var11 >> 16;
          var8 = var13;
       }

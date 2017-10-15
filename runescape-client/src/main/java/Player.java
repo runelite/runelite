@@ -237,7 +237,7 @@ public final class Player extends Actor {
       super.pathY[0] = var2;
       int var3 = this.getSize();
       super.x = var3 * 64 + super.pathX[0] * 128;
-      super.y = super.pathY[0] * 128 + var3 * 64;
+      super.y = var3 * 64 + super.pathY[0] * 128;
    }
 
    @ObfuscatedName("k")
@@ -824,7 +824,7 @@ public final class Player extends Actor {
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   class81.intStackSize -= 2;
-                                                                                                                  if(class81.intStack[class81.intStackSize] == class81.intStack[class81.intStackSize + 1]) {
+                                                                                                                  if(class81.intStack[class81.intStackSize + 1] == class81.intStack[class81.intStackSize]) {
                                                                                                                      var22 += var39[var22];
                                                                                                                   }
                                                                                                                }

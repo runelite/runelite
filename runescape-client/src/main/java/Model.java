@@ -353,15 +353,15 @@ public class Model extends Renderable {
                this.field1940 = var3;
             }
 
-            int var5 = var2 * var2 + var4 * var4;
+            int var5 = var4 * var4 + var2 * var2;
             if(var5 > this.XYZMag) {
                this.XYZMag = var5;
             }
          }
 
          this.XYZMag = (int)(Math.sqrt((double)this.XYZMag) + 0.99D);
-         this.field1943 = (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + super.modelHeight * super.modelHeight)) + 0.99D);
-         this.field1942 = this.field1943 + (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + this.field1940 * this.field1940)) + 0.99D);
+         this.field1943 = (int)(Math.sqrt((double)(super.modelHeight * super.modelHeight + this.XYZMag * this.XYZMag)) + 0.99D);
+         this.field1942 = this.field1943 + (int)(Math.sqrt((double)(this.field1940 * this.field1940 + this.XYZMag * this.XYZMag)) + 0.99D);
       }
    }
 
@@ -433,7 +433,7 @@ public class Model extends Renderable {
          if(var9 >= 50) {
             var14 = field1970[var9 - var8] * (50 - var8);
             field1967[var4] = var2 + (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) * Graphics3D.field2009 / 50;
-            field1968[var4] = var3 + Graphics3D.field2009 * (var12 + ((field1957[var6] - var12) * var14 >> 16)) / 50;
+            field1968[var4] = var3 + (var12 + ((field1957[var6] - var12) * var14 >> 16)) * Graphics3D.field2009 / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1926[var1] - var13) * var14 >> 16);
          }
       }
@@ -455,7 +455,7 @@ public class Model extends Renderable {
 
          if(var10 >= 50) {
             var14 = field1970[var10 - var9] * (50 - var9);
-            field1967[var4] = var2 + (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) * Graphics3D.field2009 / 50;
+            field1967[var4] = var2 + Graphics3D.field2009 * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
             field1968[var4] = var3 + (var12 + ((field1957[var7] - var12) * var14 >> 16)) * Graphics3D.field2009 / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1935[var1] - var13) * var14 >> 16);
          }
@@ -478,8 +478,8 @@ public class Model extends Renderable {
 
          if(var8 >= 50) {
             var14 = field1970[var8 - var10] * (50 - var10);
-            field1967[var4] = var2 + (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) * Graphics3D.field2009 / 50;
-            field1968[var4] = var3 + (var12 + ((field1957[var5] - var12) * var14 >> 16)) * Graphics3D.field2009 / 50;
+            field1967[var4] = var2 + Graphics3D.field2009 * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
+            field1968[var4] = var3 + Graphics3D.field2009 * (var12 + ((field1957[var5] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1978[var1] - var13) * var14 >> 16);
          }
       }
@@ -702,7 +702,7 @@ public class Model extends Renderable {
             int var2 = this.verticesX[var1];
             int var3 = this.verticesY[var1];
             int var4 = this.verticesZ[var1];
-            int var5 = var2 * var2 + var4 * var4 + var3 * var3;
+            int var5 = var3 * var3 + var4 * var4 + var2 * var2;
             if(var5 > this.XYZMag) {
                this.XYZMag = var5;
             }
@@ -733,7 +733,7 @@ public class Model extends Renderable {
 
       for(int var4 = 0; var4 < this.field1949; ++var4) {
          int var5 = var3 * this.verticesY[var4] - var2 * this.verticesZ[var4] >> 16;
-         this.verticesZ[var4] = var2 * this.verticesY[var4] + var3 * this.verticesZ[var4] >> 16;
+         this.verticesZ[var4] = var3 * this.verticesZ[var4] + var2 * this.verticesY[var4] >> 16;
          this.verticesY[var4] = var5;
       }
 
@@ -822,9 +822,9 @@ public class Model extends Renderable {
                      var18 = var14 >> 7;
                      var19 = var15 >> 7;
                      var20 = var1[var18][var19] * (128 - var16) + var1[var18 + 1][var19] * var16 >> 7;
-                     var21 = var1[var18][var19 + 1] * (128 - var16) + var16 * var1[var18 + 1][var19 + 1] >> 7;
+                     var21 = var1[var18][var19 + 1] * (128 - var16) + var1[var18 + 1][var19 + 1] * var16 >> 7;
                      int var22 = var20 * (128 - var17) + var21 * var17 >> 7;
-                     var11.verticesY[var12] = this.verticesY[var12] + (var6 - var13) * (var22 - var3) / var6;
+                     var11.verticesY[var12] = (var6 - var13) * (var22 - var3) / var6 + this.verticesY[var12];
                   }
                }
             }
@@ -854,13 +854,13 @@ public class Model extends Renderable {
          int var14 = var8 * var4 + var5 * var6 >> 16;
          int var15 = (var14 - this.XYZMag) * Graphics3D.field2009;
          if(var15 / var13 < Graphics3D.field2013) {
-            int var16 = (var14 + this.XYZMag) * Graphics3D.field2009;
+            int var16 = Graphics3D.field2009 * (var14 + this.XYZMag);
             if(var16 / var13 > Graphics3D.field2012) {
                int var17 = var3 * var7 - var10 * var2 >> 16;
                int var18 = var2 * this.XYZMag >> 16;
-               int var19 = (var17 + var18) * Graphics3D.field2009;
+               int var19 = Graphics3D.field2009 * (var17 + var18);
                if(var19 / var13 > Graphics3D.field2014) {
-                  int var20 = var18 + (var3 * super.modelHeight >> 16);
+                  int var20 = (var3 * super.modelHeight >> 16) + var18;
                   int var21 = (var17 - var20) * Graphics3D.field2009;
                   if(var21 / var13 < Graphics3D.field2007) {
                      int var22 = var12 + (var2 * super.modelHeight >> 16);
@@ -979,7 +979,7 @@ public class Model extends Renderable {
                         int var37 = this.verticesZ[var34];
                         int var38;
                         if(var1 != 0) {
-                           var38 = var37 * var32 + var35 * var33 >> 16;
+                           var38 = var35 * var33 + var37 * var32 >> 16;
                            var37 = var37 * var33 - var35 * var32 >> 16;
                            var35 = var38;
                         }
@@ -1237,7 +1237,7 @@ public class Model extends Renderable {
                      if(var14 != 0) {
                         var15 = field1976[var14];
                         var16 = field1966[var14];
-                        var17 = var15 * this.verticesY[var11] + var16 * this.verticesX[var11] >> 16;
+                        var17 = var16 * this.verticesX[var11] + var15 * this.verticesY[var11] >> 16;
                         this.verticesY[var11] = var16 * this.verticesY[var11] - var15 * this.verticesX[var11] >> 16;
                         this.verticesX[var11] = var17;
                      }
@@ -1246,14 +1246,14 @@ public class Model extends Renderable {
                         var15 = field1976[var12];
                         var16 = field1966[var12];
                         var17 = var16 * this.verticesY[var11] - var15 * this.verticesZ[var11] >> 16;
-                        this.verticesZ[var11] = var15 * this.verticesY[var11] + var16 * this.verticesZ[var11] >> 16;
+                        this.verticesZ[var11] = var16 * this.verticesZ[var11] + var15 * this.verticesY[var11] >> 16;
                         this.verticesY[var11] = var17;
                      }
 
                      if(var13 != 0) {
                         var15 = field1976[var13];
                         var16 = field1966[var13];
-                        var17 = var15 * this.verticesZ[var11] + var16 * this.verticesX[var11] >> 16;
+                        var17 = var16 * this.verticesX[var11] + var15 * this.verticesZ[var11] >> 16;
                         this.verticesZ[var11] = var16 * this.verticesZ[var11] - var15 * this.verticesX[var11] >> 16;
                         this.verticesX[var11] = var17;
                      }
@@ -1409,7 +1409,7 @@ public class Model extends Renderable {
                   int var22 = var16 * var21 - var19 * var18;
                   int var23 = var19 * var15 - var13 * var21;
                   int var24 = var13 * var18 - var16 * var15;
-                  if(var14 * var22 + var17 * var23 + var20 * var24 > 0) {
+                  if(var20 * var24 + var17 * var23 + var14 * var22 > 0) {
                      field1918[var6] = true;
                      int var25 = (field1955[var7] + field1955[var26] + field1955[var9]) / 3 + this.field1943;
                      field1920[var25][field1960[var25]++] = var6;
@@ -1603,19 +1603,19 @@ public class Model extends Renderable {
          int var22 = this.verticesZ[var19];
          int var23;
          if(var3 != 0) {
-            var23 = var21 * var14 + var20 * var15 >> 16;
+            var23 = var20 * var15 + var21 * var14 >> 16;
             var21 = var21 * var15 - var20 * var14 >> 16;
             var20 = var23;
          }
 
          if(var1 != 0) {
             var23 = var21 * var11 - var22 * var10 >> 16;
-            var22 = var21 * var10 + var22 * var11 >> 16;
+            var22 = var22 * var11 + var21 * var10 >> 16;
             var21 = var23;
          }
 
          if(var2 != 0) {
-            var23 = var22 * var12 + var20 * var13 >> 16;
+            var23 = var20 * var13 + var22 * var12 >> 16;
             var22 = var22 * var13 - var20 * var12 >> 16;
             var20 = var23;
          }
@@ -1624,9 +1624,9 @@ public class Model extends Renderable {
          var21 += var6;
          var22 += var7;
          var23 = var21 * var17 - var22 * var16 >> 16;
-         var22 = var21 * var16 + var22 * var17 >> 16;
+         var22 = var22 * var17 + var21 * var16 >> 16;
          field1955[var19] = var22 - var18;
-         field1953[var19] = var8 + var20 * Graphics3D.field2009 / var22;
+         field1953[var19] = var20 * Graphics3D.field2009 / var22 + var8;
          field1954[var19] = var9 + var23 * Graphics3D.field2009 / var22;
          if(this.field1941 > 0) {
             yViewportBuffer[var19] = var20;
@@ -1668,19 +1668,19 @@ public class Model extends Renderable {
          int var23 = this.verticesZ[var20];
          int var24;
          if(var3 != 0) {
-            var24 = var22 * var15 + var21 * var16 >> 16;
+            var24 = var21 * var16 + var22 * var15 >> 16;
             var22 = var22 * var16 - var21 * var15 >> 16;
             var21 = var24;
          }
 
          if(var1 != 0) {
             var24 = var22 * var12 - var23 * var11 >> 16;
-            var23 = var22 * var11 + var23 * var12 >> 16;
+            var23 = var23 * var12 + var22 * var11 >> 16;
             var22 = var24;
          }
 
          if(var2 != 0) {
-            var24 = var23 * var13 + var21 * var14 >> 16;
+            var24 = var21 * var14 + var23 * var13 >> 16;
             var23 = var23 * var14 - var21 * var13 >> 16;
             var21 = var24;
          }
@@ -1689,7 +1689,7 @@ public class Model extends Renderable {
          var22 += var6;
          var23 += var7;
          var24 = var22 * var18 - var23 * var17 >> 16;
-         var23 = var22 * var17 + var23 * var18 >> 16;
+         var23 = var23 * var18 + var22 * var17 >> 16;
          field1955[var20] = var23 - var19;
          field1953[var20] = var9 + var21 * Graphics3D.field2009 / var8;
          field1954[var20] = var10 + var24 * Graphics3D.field2009 / var8;
