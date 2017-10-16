@@ -31,6 +31,8 @@ public abstract class InfoBox
 {
 	private final BufferedImage image;
 
+	private String tooltip;
+
 	public InfoBox(BufferedImage image)
 	{
 		this.image = image;
@@ -53,5 +55,15 @@ public abstract class InfoBox
 	public boolean cull()
 	{
 		return false;
+	}
+
+	public String getTooltip()
+	{
+		return tooltip;
+	}
+
+	public void setTooltip(String tooltip)
+	{
+		this.tooltip = tooltip;
 	}
 }
