@@ -72,10 +72,11 @@ public class ExprArgOrder implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExprArgOrder.class);
 
+	private final List<Instruction> exprIns = new ArrayList<>();
 	private final Map<Instruction, Expression> exprs = new HashMap<>();
 	private int count;
 
-	private boolean isCommutative(InstructionType type)
+	static boolean isCommutative(InstructionType type)
 	{
 		switch (type)
 		{
@@ -93,7 +94,7 @@ public class ExprArgOrder implements Deobfuscator
 
 	private Instruction newInstruction(Instructions ins, Instruction old, InstructionType type)
 	{
-		assert isCommutative(type);
+		assert isCommutative(type) : "type is " + type;
 
 		switch (type)
 		{
@@ -130,44 +131,31 @@ public class ExprArgOrder implements Deobfuscator
 	{
 		InstructionType type = ctx.getInstruction().getType();
 
-		assert isCommutative(type) : "type is " + type;
 		List<StackContext> pops = ctx.getPops();
 
-		InstructionContext i1 = pops.get(0).getPushed(),
-			i2 = pops.get(1).getPushed();
+		for (StackContext sctx : pops)
+		{
+			InstructionContext i = sctx.getPushed();
 
-		if (i1.getInstruction().getType() == type)
-		{
-			parseExpr(expr, i1);
-			exprs.remove(i1.getInstruction()); // remove sub expr
-		}
-		else if (isCommutative(i1.getInstruction().getType()))
-		{
-			Expression sub = new Expression(i1.getInstruction().getType(), i1);
-			parseExpr(sub, i1);
-			expr.addExpr(sub);
-			exprs.remove(i1.getInstruction()); // remove sub expr
-		}
-		else
-		{
-			expr.addInstruction(i1);
-		}
+			if (isCommutative(type) && i.getInstruction().getType() == type)
+			{
+				parseExpr(expr, i);
+			}
+			else if (isCommutative(type))
+			{
+				Expression sub = new Expression(i);
+				parseExpr(sub, i);
+				expr.addComExpr(sub);
+			}
+			else
+			{
+				Expression sub = new Expression(i);
+				parseExpr(sub, i);
+				expr.addExpr(sub);
+			}
 
-		if (i2.getInstruction().getType() == type)
-		{
-			parseExpr(expr, i2);
-			exprs.remove(i2.getInstruction()); // remove sub expr
-		}
-		else if (isCommutative(i2.getInstruction().getType()))
-		{
-			Expression sub = new Expression(i2.getInstruction().getType(), i2);
-			parseExpr(sub, i2);
-			expr.addExpr(sub);
-			exprs.remove(i2.getInstruction()); // remove sub expr
-		}
-		else
-		{
-			expr.addInstruction(i2);
+			exprIns.remove(i.getInstruction());
+			exprs.remove(i.getInstruction()); // remove sub expr
 		}
 	}
 
@@ -179,9 +167,13 @@ public class ExprArgOrder implements Deobfuscator
 			|| ins instanceof IfICmpEq || ins instanceof IfICmpNe
 			|| ins instanceof IfACmpEq || ins instanceof IfACmpNe)
 		{
-			Expression expression = new Expression(ins.getType(), ctx);
+			Expression expression = new Expression(ctx);
 			parseExpr(expression, ctx);
-			exprs.put(ins, expression);
+			if (!exprs.containsKey(ins))
+			{
+				exprIns.add(ins);
+				exprs.put(ins, expression);
+			}
 		}
 	}
 
@@ -263,13 +255,6 @@ public class ExprArgOrder implements Deobfuscator
 
 	private void insert(Instructions ins, InstructionContext ic, Instruction before)
 	{
-		List<StackContext> pops = new ArrayList<>(ic.getPops());
-		Collections.reverse(pops);
-		for (StackContext sc : pops)
-		{
-			insert(ins, sc.getPushed(), before);
-		}
-
 		Instruction i = ic.getInstruction();
 		assert i.getInstructions() == null;
 
@@ -417,53 +402,107 @@ public class ExprArgOrder implements Deobfuscator
 		return Integer.compare(hash1, hash2);
 	}
 
+	public static int compare(Method method, InstructionType type, Expression expr1, Expression expr2)
+	{
+		Instruction i1 = expr1.getHead().getInstruction();
+		Instruction i2 = expr2.getHead().getInstruction();
+
+		if (type == IF_ICMPEQ || type == IF_ICMPNE
+			|| type == IADD || type == IMUL)
+		{
+			if (!(i1 instanceof PushConstantInstruction)
+				&& (i2 instanceof PushConstantInstruction))
+			{
+				return 1;
+			}
+
+			if (i1 instanceof PushConstantInstruction
+				&& !(i2 instanceof PushConstantInstruction))
+			{
+				return -1;
+			}
+		}
+
+		if (type == IF_ACMPEQ || type == IF_ACMPNE)
+		{
+			if (!(i1 instanceof AConstNull)
+				&& (i2 instanceof AConstNull))
+			{
+				return 1;
+			}
+
+			if (i1 instanceof AConstNull
+				&& !(i2 instanceof AConstNull))
+			{
+				return -1;
+			}
+		}
+
+		int hash1 = hash(method, expr1.getHead());
+		int hash2 = hash(method, expr2.getHead());
+
+		if (hash1 == hash2)
+		{
+			logger.debug("Unable to differentiate {} from {}", expr1.getHead(), expr2.getHead());
+		}
+
+		return Integer.compare(hash1, hash2);
+	}
+
 	private void insert(Instructions ins, Instruction next, Expression expression)
 	{
 		int count = 0;
-		for (InstructionContext ictx : expression.sortedIns)
+
+		if (expression.sortedExprs != null)
 		{
-			insert(ins, ictx, next);
-
-			++count;
-			// insert iadd/imul
-			if (count == 2)
+			for (Expression sub : expression.sortedExprs)
 			{
-				Instruction newOp = newInstruction(ins, expression.getHead().getInstruction(), expression.getType());
+				if (count == 2)
+				{
+					Instruction newOp;
+					if (isCommutative(expression.getType()))
+					{
+						// there might be >2 sortedExprs so we can't reuse instructions
+						newOp = newInstruction(ins, expression.getHead().getInstruction(), expression.getType());
+					}
+					else
+					{
+						newOp = expression.getHead().getInstruction();
+						assert newOp.getInstructions() == null;
+						newOp.setInstructions(ins);
+					}
 
-				int idx = ins.getInstructions().indexOf(next);
-				assert idx != -1;
+					int idx = ins.getInstructions().indexOf(next);
+					assert idx != -1;
 
-				ins.addInstruction(idx, newOp);
-				count = 1; // only 1 as half is the result of newOp
+					ins.addInstruction(idx, newOp);
+					count = 1;
+				}
+
+				insert(ins, next, sub);
+				++count;
 			}
 		}
 
-		for (Expression sub : expression.sortedExprs)
+		List<Expression> reverseExpr = new ArrayList<>(expression.getExprs());
+		Collections.reverse(reverseExpr);
+		for (Expression sub : reverseExpr)
 		{
 			insert(ins, next, sub);
-
-			++count;
-			if (count == 2)
-			{
-				Instruction newOp = newInstruction(ins, expression.getHead().getInstruction(), expression.getType());
-
-				int idx = ins.getInstructions().indexOf(next);
-				assert idx != -1;
-
-				ins.addInstruction(idx, newOp);
-				count = 1;
-			}
 		}
 
+		insert(ins, expression.getHead(), next);
 	}
 
 	private void visit(MethodContext ctx)
 	{
 		Instructions ins = ctx.getMethod().getCode().getInstructions();
 
-		for (Expression expression : exprs.values())
+		for (Instruction i : exprIns)
 		{
-			Instruction i = expression.getHead().getInstruction();
+			Expression expression = exprs.get(i);
+			assert expression != null;
+
 			if (!canRemove(ctx, ins, i))
 			{
 				continue;
@@ -487,6 +526,7 @@ public class ExprArgOrder implements Deobfuscator
 			++count;
 		}
 
+		exprIns.clear();
 		exprs.clear();
 	}
 

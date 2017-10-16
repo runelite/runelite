@@ -33,24 +33,21 @@ import net.runelite.asm.execution.MethodContext;
 
 public class Expression
 {
-	private final InstructionType type;
 	private final InstructionContext head;
 	private final List<Expression> exprs = new ArrayList<>();
-	private final List<InstructionContext> ins = new ArrayList<>();
+	private final List<Expression> comExprs = new ArrayList<>();
 
 	public List<Expression> sortedExprs;
-	public List<InstructionContext> sortedIns;
 	private int exprHash;
 
-	public Expression(InstructionType type, InstructionContext head)
+	public Expression(InstructionContext head)
 	{
-		this.type = type;
 		this.head = head;
 	}
 
 	public InstructionType getType()
 	{
-		return type;
+		return head.getInstruction().getType();
 	}
 
 	public InstructionContext getHead()
@@ -68,37 +65,32 @@ public class Expression
 		return Collections.unmodifiableList(exprs);
 	}
 
-	public void addInstruction(InstructionContext ctx)
+	public void addComExpr(Expression expr)
 	{
-		ins.add(ctx);
+		comExprs.add(expr);
 	}
 
-	public List<InstructionContext> getIns()
+	public List<Expression> getComExprs()
 	{
-		return Collections.unmodifiableList(ins);
+		return Collections.unmodifiableList(comExprs);
 	}
 
 	public void sort(MethodContext ctx)
 	{
+		for (Expression e : comExprs)
+		{
+			e.sort(ctx);
+		}
 		for (Expression e : exprs)
 		{
 			e.sort(ctx);
 		}
 
-		// sort instructions
-		sortedIns = new ArrayList<>(ins);
-		Collections.sort(sortedIns, (i1, i2) -> ExprArgOrder.compare(ctx.getMethod(), head.getInstruction().getType(), i1, i2));
-		Collections.reverse(sortedIns);
-
-		// sort sub exprs
-		sortedExprs = new ArrayList<>(exprs);
-		Collections.sort(sortedExprs, (e1, e2) -> Integer.compare(e1.exprHash, e2.exprHash));
+		sortedExprs = new ArrayList<>(comExprs);
+		Collections.sort(sortedExprs, (e1, e2) -> ExprArgOrder.compare(ctx.getMethod(), getType(), e1, e2));
+		Collections.reverse(sortedExprs);
 
 		int hash = 0;
-		for (InstructionContext ic : sortedIns)
-		{
-			hash ^= ExprArgOrder.hash(ctx.getMethod(), ic);
-		}
 		for (Expression e : sortedExprs)
 		{
 			hash ^= e.exprHash;

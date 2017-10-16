@@ -28,6 +28,7 @@ package net.runelite.asm.attributes.code.instructions;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
+import static net.runelite.asm.attributes.code.InstructionType.IAND;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -40,6 +41,11 @@ public class IAnd extends Instruction
 	public IAnd(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
+	}
+
+	public IAnd(Instructions instructions)
+	{
+		this(instructions, IAND);
 	}
 
 	@Override
