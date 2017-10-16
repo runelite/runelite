@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,9 @@ public class TopDownRendererRight implements Renderer
 			graphics = clientBuffer.createGraphics();
 			graphics.drawImage(image, clientWidth - BORDER_RIGHT - (int) dimension.getWidth(), y, null);
 			graphics.dispose();
+
+			Rectangle bounds = new Rectangle(clientWidth - BORDER_RIGHT - (int) dimension.getWidth(), y, (int) dimension.getWidth(), (int) dimension.getHeight());
+			overlay.storeBounds(bounds);
 
 			y += dimension.getHeight() + PADDING;
 		}
