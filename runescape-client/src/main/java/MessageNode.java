@@ -128,7 +128,7 @@ public class MessageNode extends CacheableNode {
             }
          }
 
-         int var74 = class94.field1485;
+         int var74 = class94.playerIndexesCount;
          int[] var7 = class94.field1480;
          int var8 = 3;
          int var14;

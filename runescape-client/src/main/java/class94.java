@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -17,7 +18,8 @@ public class class94 {
    @ObfuscatedGetter(
       intValue = 596344085
    )
-   static int field1485;
+   @Export("playerIndexesCount")
+   static int playerIndexesCount;
    @ObfuscatedName("r")
    static int[] field1480;
    @ObfuscatedName("g")
@@ -55,7 +57,7 @@ public class class94 {
       field1476 = new byte[2048];
       field1477 = new byte[2048];
       field1478 = new Buffer[2048];
-      field1485 = 0;
+      playerIndexesCount = 0;
       field1480 = new int[2048];
       field1474 = 0;
       field1482 = new int[2048];

@@ -95,7 +95,7 @@ public class class31 {
       Client.field946 = class89.field1403;
       Client.field947 = class89.field1403;
       Client.npcIndexesCount = 0;
-      class94.field1485 = 0;
+      class94.playerIndexesCount = 0;
 
       int var0;
       for(var0 = 0; var0 < 2048; ++var0) {

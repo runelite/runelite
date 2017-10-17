@@ -1267,7 +1267,7 @@ public final class Player extends Actor {
                                                                                                       } else {
                                                                                                          var14 = class81.intStack[--class81.intStackSize];
                                                                                                          var54 = class81.scriptStringStack[--class81.scriptStringStackSize];
-                                                                                                         var16 = class94.field1485;
+                                                                                                         var16 = class94.playerIndexesCount;
                                                                                                          int[] var42 = class94.field1480;
                                                                                                          boolean var59 = false;
 

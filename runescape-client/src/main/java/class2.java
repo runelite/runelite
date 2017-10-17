@@ -137,7 +137,7 @@ final class class2 implements class0 {
       int[] var0 = class94.field1480;
 
       int var1;
-      for(var1 = 0; var1 < class94.field1485; ++var1) {
+      for(var1 = 0; var1 < class94.playerIndexesCount; ++var1) {
          Player var2 = Client.cachedPlayers[var0[var1]];
          if(var2 != null && var2.field1223 > 0) {
             --var2.field1223;

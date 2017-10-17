@@ -80,7 +80,7 @@ public class class36 {
       int var4;
       int var5;
       int var6;
-      for(var4 = 0; var4 < class94.field1485; ++var4) {
+      for(var4 = 0; var4 < class94.playerIndexesCount; ++var4) {
          var5 = class94.field1480[var4];
          if((class94.field1476[var5] & 1) == 0) {
             if(var3 > 0) {
@@ -104,7 +104,7 @@ public class class36 {
       } else {
          var0.bitAccess();
 
-         for(var4 = 0; var4 < class94.field1485; ++var4) {
+         for(var4 = 0; var4 < class94.playerIndexesCount; ++var4) {
             var5 = class94.field1480[var4];
             if((class94.field1476[var5] & 1) != 0) {
                if(var3 > 0) {
@@ -174,14 +174,14 @@ public class class36 {
                if(var3 != 0) {
                   throw new RuntimeException();
                } else {
-                  class94.field1485 = 0;
+                  class94.playerIndexesCount = 0;
                   class94.field1474 = 0;
 
                   for(var4 = 1; var4 < 2048; ++var4) {
                      class94.field1476[var4] = (byte)(class94.field1476[var4] >> 1);
                      Player var7 = Client.cachedPlayers[var4];
                      if(var7 != null) {
-                        class94.field1480[++class94.field1485 - 1] = var4;
+                        class94.field1480[++class94.playerIndexesCount - 1] = var4;
                      } else {
                         class94.field1482[++class94.field1474 - 1] = var4;
                      }

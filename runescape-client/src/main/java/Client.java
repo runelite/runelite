@@ -1953,7 +1953,7 @@ public final class Client extends GameEngine {
             }
 
             if(packetType == Opcodes.PACKET_SERVER_208) {
-               class94.field1485 = 0;
+               class94.playerIndexesCount = 0;
 
                for(var2 = 0; var2 < 2048; ++var2) {
                   class94.field1478[var2] = null;
@@ -5338,7 +5338,7 @@ public final class Client extends GameEngine {
                if(field969 > 750) {
                   IndexFile.method3106();
                } else {
-                  var1 = class94.field1485;
+                  var1 = class94.playerIndexesCount;
                   var22 = class94.field1480;
 
                   for(var3 = 0; var3 < var1; ++var3) {

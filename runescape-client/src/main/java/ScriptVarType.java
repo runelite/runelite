@@ -1413,7 +1413,7 @@ public class ScriptVarType implements RSEnum, class293 {
       Client.field1005 = 0;
       boolean var4 = false;
       int var5 = -1;
-      int var6 = class94.field1485;
+      int var6 = class94.playerIndexesCount;
       int[] var7 = class94.field1480;
 
       int var8;

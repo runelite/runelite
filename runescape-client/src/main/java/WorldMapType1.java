@@ -259,8 +259,8 @@ public class WorldMapType1 implements WorldMapSectionBase {
          var2.decodeApperance(class94.field1478[var1]);
       }
 
-      class94.field1485 = 0;
-      class94.field1480[++class94.field1485 - 1] = var1;
+      class94.playerIndexesCount = 0;
+      class94.field1480[++class94.playerIndexesCount - 1] = var1;
       class94.field1476[var1] = 0;
       class94.field1474 = 0;
 

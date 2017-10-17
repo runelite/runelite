@@ -78,7 +78,7 @@ public class class7 {
       if(var0 != null && var0.hasConfig() && !var0.hidden) {
          int var2 = var0.field886 << 14;
          var0.field901 = false;
-         if((Client.lowMemory && class94.field1485 > 50 || class94.field1485 > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
+         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
             var0.field901 = true;
          }
 

@@ -115,7 +115,7 @@ public class ClanMember extends Node {
                }
             }
 
-            var8 = class94.field1485;
+            var8 = class94.playerIndexesCount;
             int[] var22 = class94.field1480;
 
             for(var10 = 0; var10 < var8; ++var10) {

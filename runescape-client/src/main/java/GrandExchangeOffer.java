@@ -261,7 +261,7 @@ public class GrandExchangeOffer {
                                     }
                                  }
 
-                                 var28 = class94.field1485;
+                                 var28 = class94.playerIndexesCount;
                                  var50 = class94.field1480;
 
                                  for(var54 = 0; var54 < var28; ++var54) {
@@ -289,7 +289,7 @@ public class GrandExchangeOffer {
                                     }
                                  }
 
-                                 var28 = class94.field1485;
+                                 var28 = class94.playerIndexesCount;
                                  var50 = class94.field1480;
 
                                  for(var54 = 0; var54 < var28; ++var54) {

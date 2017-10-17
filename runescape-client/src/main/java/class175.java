@@ -32,7 +32,7 @@ public class class175 {
       }
 
       GameObject.method2968(true);
-      int var4 = class94.field1485;
+      int var4 = class94.playerIndexesCount;
       int[] var5 = class94.field1480;
 
       int var6;
