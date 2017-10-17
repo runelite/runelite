@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Inject;
@@ -59,7 +60,8 @@ public abstract class RSActorMixin implements RSActor
 
 		if (i < 0x8000)
 		{
-			return client.getNpc(i);
+			NPC[] npcs = client.getCachedNPCs();
+			return npcs[i];
 		}
 
 		i -= 0x8000;

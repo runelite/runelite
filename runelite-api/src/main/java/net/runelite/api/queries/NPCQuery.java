@@ -27,16 +27,13 @@ package net.runelite.api.queries;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 
-import java.util.Arrays;
-import java.util.Objects;
 
 public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
 	@Override
 	public NPC[] result(Client client)
 	{
-		return Arrays.stream(client.getCachedNPCs())
-				.filter(Objects::nonNull)
+		return client.getNpcs().stream()
 				.filter(predicate)
 				.toArray(NPC[]::new);
 	}

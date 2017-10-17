@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Canvas;
+import java.util.List;
 
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -35,9 +36,7 @@ public interface Client
 
 	Player[] getCachedPlayers();
 
-	NPC getNpc(int idx);
-
-	NPC[] getCachedNPCs();
+	List<NPC> getNpcs();
 
 	int getBoostedSkillLevel(Skill skill);
 

@@ -52,9 +52,19 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public NPC getNpc(int idx)
+	public List<NPC> getNpcs()
 	{
-		return getCachedNPCs()[idx];
+		int validNpcIndexes = getNpcIndexesCount();
+		int[] npcIndexes = getNpcIndices();
+		NPC[] cachedNpcs = getCachedNPCs();
+		List<NPC> npcs = new ArrayList<NPC>(validNpcIndexes);
+
+		for (int i = 0; i < validNpcIndexes; ++i)
+		{
+			npcs.add(cachedNpcs[npcIndexes[i]]);
+		}
+
+		return npcs;
 	}
 
 	@Inject

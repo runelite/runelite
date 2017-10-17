@@ -34,6 +34,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -148,23 +149,17 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderNpcs(Graphics2D graphics)
 	{
-		NPC[] npcs = client.getCachedNPCs();
-		if (npcs != null && (npcs.length - 1) > 0)
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
 		{
-			for (NPC npc : npcs)
+			String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
+			if (npc.getCombatLevel() > 1)
 			{
-				if (npc != null)
-				{
-					String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
-					if (npc.getCombatLevel() > 1)
-					{
-						OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
-					}
-					else
-					{
-						OverlayUtil.renderActorOverlay(graphics, npc, text, ORANGE);
-					}
-				}
+				OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
+			}
+			else
+			{
+				OverlayUtil.renderActorOverlay(graphics, npc, text, ORANGE);
 			}
 		}
 	}
