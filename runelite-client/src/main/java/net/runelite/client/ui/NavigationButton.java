@@ -32,13 +32,17 @@ public class NavigationButton
 	private final JButton button = new JButton();
 	private final Supplier<PluginPanel> panelSupplier;
 
+	private String name;
+
 	public NavigationButton(String name)
 	{
+		this.name = name;
 		this.panelSupplier = null;
 	}
 
 	public NavigationButton(String name, Supplier<PluginPanel> panelSupplier)
 	{
+		this.name = name;
 		this.panelSupplier = panelSupplier;
 	}
 
@@ -50,5 +54,10 @@ public class NavigationButton
 	public Supplier<PluginPanel> getPanelSupplier()
 	{
 		return panelSupplier;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 }
