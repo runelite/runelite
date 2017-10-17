@@ -57,6 +57,7 @@ public class PluginToolbar extends JToolBar
 	public void addNavigation(NavigationButton button)
 	{
 		button.getButton().addActionListener((ae) -> onClick(button));
+		button.getButton().setToolTipText(button.getName());
 
 		buttons.add(button);
 		add(button.getButton());
