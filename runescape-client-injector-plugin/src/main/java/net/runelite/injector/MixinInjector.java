@@ -40,6 +40,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
 import net.runelite.asm.attributes.code.instructions.PutField;
@@ -149,29 +150,39 @@ public class MixinInjector
 		group.initialize();
 
 		Map<Field, Field> shadowFields = new HashMap<>();
+		Map<Field, Field> injectedFields = new HashMap<>();
 
 		for (Field field : mixinCf.getFields())
 		{
 			Annotation shadow = field.getAnnotations().find(SHADOW);
-			if (shadow == null)
+			if (shadow != null)
 			{
-				continue;
+				if (!field.isStatic())
+				{
+					throw new InjectionException("Can only shadow static fields");
+				}
+
+				String shadowName = shadow.getElement().getString(); // shadow this field
+				Field shadowField = findField(shadowName);
+
+				if (shadowField == null)
+				{
+					throw new InjectionException("Shadow of nonexistent field " + shadowName);
+				}
+
+				shadowFields.put(field, shadowField);
 			}
 
-			if (!field.isStatic())
+			Annotation inject = field.getAnnotations().find(INJECT);
+			if (inject != null)
 			{
-				throw new InjectionException("Can only shadow static fields");
+				Field copy = new Field(cf, field.getName(), field.getType());
+				copy.setAccessFlags(field.getAccessFlags());
+				copy.setValue(field.getValue());
+				cf.addField(copy);
+
+				injectedFields.put(field, copy);
 			}
-
-			String shadowName = shadow.getElement().getString(); // shadow this field
-			Field shadowField = findField(shadowName);
-
-			if (shadowField == null)
-			{
-				throw new InjectionException("Shadow of nonexistent field " + shadowName);
-			}
-
-			shadowFields.put(field, shadowField);
 		}
 
 		for (Method method : mixinCf.getMethods())
@@ -199,6 +210,21 @@ public class MixinInjector
 						Field obShadow = inject.toObField(shadowed);
 						assert obShadow != null;
 						gfi.setField(obShadow.getPoolField());
+					}
+
+					Field injected = injectedFields.get(field);
+					if (injected != null) {
+						gfi.setField(injected.getPoolField());
+					}
+				}
+				else if (i instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction gfi = (SetFieldInstruction) i;
+					Field field = gfi.getMyField();
+
+					Field injected = injectedFields.get(field);
+					if (injected != null) {
+						gfi.setField(injected.getPoolField());
 					}
 				}
 				else if (i instanceof InvokeInstruction)
