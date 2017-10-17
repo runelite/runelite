@@ -151,8 +151,8 @@ public class class86 {
       GameEngine.host = var0.address;
       Client.world = var0.id;
       Client.flags = var0.mask;
-      SceneTilePaint.field2023 = Client.socketType == 0?'ꩊ':var0.id + '鱀';
-      AbstractSoundSystem.field1631 = Client.socketType == 0?443:var0.id + '썐';
+      SceneTilePaint.field2023 = Client.socketType == 0?43594:var0.id + 40000;
+      AbstractSoundSystem.field1631 = Client.socketType == 0?443:var0.id + 50000;
       class18.myWorldPort = SceneTilePaint.field2023;
    }
 

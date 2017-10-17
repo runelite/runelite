@@ -84,7 +84,7 @@ public class class24 {
 
       String var4 = class81.scriptStringStack[--class81.scriptStringStackSize];
       int[] var5 = null;
-      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 89) {
+      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
          int var6 = class81.intStack[--class81.intStackSize];
          if(var6 > 0) {
             for(var5 = new int[var6]; var6-- > 0; var5[var6] = class81.intStack[--class81.intStackSize]) {
@@ -99,7 +99,7 @@ public class class24 {
 
       int var7;
       for(var7 = var8.length - 1; var7 >= 1; --var7) {
-         if(var4.charAt(var7 - 1) == 115) {
+         if(var4.charAt(var7 - 1) == 's') {
             var8[var7] = class81.scriptStringStack[--class81.scriptStringStackSize];
          } else {
             var8[var7] = new Integer(class81.intStack[--class81.intStackSize]);

@@ -29,7 +29,7 @@ public final class MainBufferProvider extends BufferProvider {
       super.height = var2;
       super.pixels = new int[var2 * var1 + 1];
       DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
-      DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
+      DirectColorModel var5 = new DirectColorModel(32, 16711680, 65280, 255);
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
       this.image = new BufferedImage(var5, var6, false, new Hashtable());
       this.method853(var3);

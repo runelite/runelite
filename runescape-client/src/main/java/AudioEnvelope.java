@@ -45,9 +45,9 @@ public class AudioEnvelope {
       this.durations = new int[2];
       this.phases = new int[2];
       this.durations[0] = 0;
-      this.durations[1] = '\uffff';
+      this.durations[1] = 65535;
       this.phases[0] = 0;
-      this.phases[1] = '\uffff';
+      this.phases[1] = 65535;
    }
 
    @ObfuscatedName("d")

@@ -130,9 +130,9 @@ public class Texture extends Node {
 
             for(var15 = 0; var15 < var11.length; ++var15) {
                var16 = var11[var15];
-               if(var16 >> 8 == (var16 & '\uffff')) {
+               if(var16 >> 8 == (var16 & 65535)) {
                   var16 &= 255;
-                  var11[var15] = var13 * var16 >> 8 & 16711935 | var14 * var16 & '\uff00';
+                  var11[var15] = var13 * var16 >> 8 & 16711935 | var14 * var16 & 65280;
                }
             }
          }

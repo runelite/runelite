@@ -1834,6 +1834,6 @@ public class ModelData extends Renderable {
          var1 = 126;
       }
 
-      return (var0 & 'ﾀ') + var1;
+      return (var0 & 65408) + var1;
    }
 }

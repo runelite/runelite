@@ -267,43 +267,43 @@ public final class RSSocket implements Runnable {
          int var7 = var0[var5++] & 255;
          if(var7 < 128) {
             if(var7 == 0) {
-               var8 = '�';
+               var8 = 65533;
             } else {
                var8 = var7;
             }
          } else if(var7 < 192) {
-            var8 = '�';
+            var8 = 65533;
          } else if(var7 < 224) {
             if(var5 < var6 && (var0[var5] & 192) == 128) {
                var8 = (var7 & 31) << 6 | var0[var5++] & 63;
                if(var8 < 128) {
-                  var8 = '�';
+                  var8 = 65533;
                }
             } else {
-               var8 = '�';
+               var8 = 65533;
             }
          } else if(var7 < 240) {
             if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
                var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
                if(var8 < 2048) {
-                  var8 = '�';
+                  var8 = 65533;
                }
             } else {
-               var8 = '�';
+               var8 = 65533;
             }
          } else if(var7 < 248) {
             if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
                var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
                if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = '�';
+                  var8 = 65533;
                } else {
-                  var8 = '�';
+                  var8 = 65533;
                }
             } else {
-               var8 = '�';
+               var8 = 65533;
             }
          } else {
-            var8 = '�';
+            var8 = 65533;
          }
       }
 

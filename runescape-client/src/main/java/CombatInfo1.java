@@ -95,7 +95,7 @@ public class CombatInfo1 extends Node {
             int var8;
             if(var5 > var6) {
                var7 = var6 * 65536 / var5;
-               var8 = '耀';
+               var8 = 32768;
 
                while(var1 != var3) {
                   if(var1 < var3) {
@@ -124,7 +124,7 @@ public class CombatInfo1 extends Node {
                }
             } else {
                var7 = var5 * 65536 / var6;
-               var8 = '耀';
+               var8 = 32768;
 
                while(var2 != var4) {
                   if(var2 < var4) {
@@ -184,7 +184,7 @@ public class CombatInfo1 extends Node {
                long var6 = var0;
                var0 /= 37L;
                var8 = class268.field3678[(int)(var6 - 37L * var0)];
-               if(var8 == 95) {
+               if(var8 == '_') {
                   int var9 = var5.length() - 1;
                   var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
                   var8 = 160;

@@ -314,19 +314,19 @@ public class NPCComposition extends CacheableNode {
          }
       } else {
          this.varpIndex = var1.readUnsignedShort();
-         if(this.varpIndex == '\uffff') {
+         if(this.varpIndex == 65535) {
             this.varpIndex = -1;
          }
 
          this.varp32Index = var1.readUnsignedShort();
-         if(this.varp32Index == '\uffff') {
+         if(this.varp32Index == 65535) {
             this.varp32Index = -1;
          }
 
          var3 = -1;
          if(var2 == 118) {
             var3 = var1.readUnsignedShort();
-            if(var3 == '\uffff') {
+            if(var3 == 65535) {
                var3 = -1;
             }
          }
@@ -336,7 +336,7 @@ public class NPCComposition extends CacheableNode {
 
          for(int var5 = 0; var5 <= var4; ++var5) {
             this.configs[var5] = var1.readUnsignedShort();
-            if(this.configs[var5] == '\uffff') {
+            if(this.configs[var5] == 65535) {
                this.configs[var5] = -1;
             }
          }

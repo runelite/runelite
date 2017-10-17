@@ -35,7 +35,7 @@ public class class56 {
       garbageValue = "-11"
    )
    static final boolean method848(char var0) {
-      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
+      return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
    }
 
    @ObfuscatedName("k")

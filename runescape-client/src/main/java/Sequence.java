@@ -201,7 +201,7 @@ public class Sequence extends CacheableNode {
    public Model method4799(Model var1, int var2) {
       var2 = this.frameIDs[var2];
       Frames var3 = GraphicsObject.getFrames(var2 >> 16);
-      var2 &= '\uffff';
+      var2 &= 65535;
       if(var3 == null) {
          return var1.method2641(true);
       } else {
@@ -219,13 +219,13 @@ public class Sequence extends CacheableNode {
    public Model method4779(Model var1, int var2, Sequence var3, int var4) {
       var2 = this.frameIDs[var2];
       Frames var5 = GraphicsObject.getFrames(var2 >> 16);
-      var2 &= '\uffff';
+      var2 &= 65535;
       if(var5 == null) {
          return var3.method4799(var1, var4);
       } else {
          var4 = var3.frameIDs[var4];
          Frames var6 = GraphicsObject.getFrames(var4 >> 16);
-         var4 &= '\uffff';
+         var4 &= 65535;
          Model var7;
          if(var6 == null) {
             var7 = var1.method2641(!var5.method2941(var2));
@@ -247,7 +247,7 @@ public class Sequence extends CacheableNode {
    Model method4811(Model var1, int var2, int var3) {
       var2 = this.frameIDs[var2];
       Frames var4 = GraphicsObject.getFrames(var2 >> 16);
-      var2 &= '\uffff';
+      var2 &= 65535;
       if(var4 == null) {
          return var1.method2641(true);
       } else {
@@ -282,7 +282,7 @@ public class Sequence extends CacheableNode {
    Model method4785(Model var1, int var2) {
       var2 = this.frameIDs[var2];
       Frames var3 = GraphicsObject.getFrames(var2 >> 16);
-      var2 &= '\uffff';
+      var2 &= 65535;
       if(var3 == null) {
          return var1.method2591(true);
       } else {
@@ -300,7 +300,7 @@ public class Sequence extends CacheableNode {
    public Model method4802(Model var1, int var2) {
       int var3 = this.frameIDs[var2];
       Frames var4 = GraphicsObject.getFrames(var3 >> 16);
-      var3 &= '\uffff';
+      var3 &= 65535;
       if(var4 == null) {
          return var1.method2641(true);
       } else {
@@ -309,11 +309,11 @@ public class Sequence extends CacheableNode {
          if(this.field3609 != null && var2 < this.field3609.length) {
             var6 = this.field3609[var2];
             var5 = GraphicsObject.getFrames(var6 >> 16);
-            var6 &= '\uffff';
+            var6 &= 65535;
          }
 
          Model var7;
-         if(var5 != null && var6 != '\uffff') {
+         if(var5 != null && var6 != 65535) {
             var7 = var1.method2641(!var4.method2941(var3) & !var5.method2941(var6));
             var7.method2639(var4, var3);
             var7.method2639(var5, var6);
@@ -383,6 +383,6 @@ public class Sequence extends CacheableNode {
       garbageValue = "-111"
    )
    public static boolean method4813(char var0) {
-      return var0 >= 32 && var0 <= 126?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 }

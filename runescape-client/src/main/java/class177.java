@@ -31,11 +31,11 @@ public class class177 {
             var0[var4++] = (byte)var6;
          } else if(var6 <= 2047) {
             var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & 63);
+            var0[var4++] = (byte)(128 | var6 & '?');
          } else {
-            var0[var4++] = (byte)(224 | var6 >> 12);
+            var0[var4++] = (byte)(224 | var6 >> '\f');
             var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & 63);
+            var0[var4++] = (byte)(128 | var6 & '?');
          }
       }
 

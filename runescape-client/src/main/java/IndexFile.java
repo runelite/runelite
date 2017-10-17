@@ -48,7 +48,7 @@ public final class IndexFile {
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
       this.indexFile = null;
-      this.maxSize = '\ufde8';
+      this.maxSize = 65000;
       this.index = var1;
       this.dataFile = var2;
       this.indexFile = var3;
@@ -411,6 +411,6 @@ public final class IndexFile {
       garbageValue = "1294370326"
    )
    static char method3103(char var0) {
-      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
+      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
    }
 }

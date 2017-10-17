@@ -395,7 +395,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                   long var5 = class147.currentTimeMs() - class51.field675 - var11.field289;
                   int var7 = (int)(var5 / 3600000L);
                   int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
-                  int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * '\uea60')) / 1000L);
+                  int var9 = (int)((var5 - (long)(var7 * 3600000) - (long)(var8 * 60000)) / 1000L);
                   String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
                   class81.scriptStringStack[++class81.scriptStringStackSize - 1] = var10;
                   return 1;

@@ -74,28 +74,28 @@ public class class224 {
          label83: {
             char var7 = var0.charAt(var6);
             if(var6 == 0) {
-               if(var7 == 45) {
+               if(var7 == '-') {
                   var2 = true;
                   break label83;
                }
 
-               if(var7 == 43) {
+               if(var7 == '+') {
                   break label83;
                }
             }
 
             int var9;
-            if(var7 >= 48 && var7 <= 57) {
-               var9 = var7 - 48;
-            } else if(var7 >= 65 && var7 <= 90) {
-               var9 = var7 - 55;
+            if(var7 >= '0' && var7 <= '9') {
+               var9 = var7 - '0';
+            } else if(var7 >= 'A' && var7 <= 'Z') {
+               var9 = var7 - '7';
             } else {
-               if(var7 < 97 || var7 > 122) {
+               if(var7 < 'a' || var7 > 'z') {
                   var1 = false;
                   break;
                }
 
-               var9 = var7 - 87;
+               var9 = var7 - 'W';
             }
 
             if(var9 >= 10) {

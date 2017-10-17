@@ -68,7 +68,7 @@ final class class12 implements Comparator {
             if(var6 >= 128 && var6 < 160) {
                char var7 = class266.field3665[var6 - 128];
                if(var7 == 0) {
-                  var7 = 63;
+                  var7 = '?';
                }
 
                var6 = var7;

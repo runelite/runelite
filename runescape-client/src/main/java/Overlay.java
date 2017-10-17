@@ -237,6 +237,6 @@ public class Overlay extends CacheableNode {
       garbageValue = "1865294034"
    )
    public static boolean method4773(char var0) {
-      return var0 >= 48 && var0 <= 57 || var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
+      return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

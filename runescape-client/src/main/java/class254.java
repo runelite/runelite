@@ -169,19 +169,19 @@ public class class254 extends CacheableNode {
          this.field3429 = var1.readUnsignedShort();
       } else if(var2 == 17 || var2 == 18) {
          this.field3434 = var1.readUnsignedShort();
-         if(this.field3434 == '\uffff') {
+         if(this.field3434 == 65535) {
             this.field3434 = -1;
          }
 
          this.field3418 = var1.readUnsignedShort();
-         if(this.field3418 == '\uffff') {
+         if(this.field3418 == 65535) {
             this.field3418 = -1;
          }
 
          int var3 = -1;
          if(var2 == 18) {
             var3 = var1.readUnsignedShort();
-            if(var3 == '\uffff') {
+            if(var3 == 65535) {
                var3 = -1;
             }
          }
@@ -191,7 +191,7 @@ public class class254 extends CacheableNode {
 
          for(int var5 = 0; var5 <= var4; ++var5) {
             this.field3433[var5] = var1.readUnsignedShort();
-            if(this.field3433[var5] == '\uffff') {
+            if(this.field3433[var5] == 65535) {
                this.field3433[var5] = -1;
             }
          }

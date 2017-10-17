@@ -32,14 +32,14 @@ public final class class270 {
             var3.graphic = Client.secretPacketBuffer2.method3299();
             var5 = Client.secretPacketBuffer2.method3326();
             var3.field1214 = var5 >> 16;
-            var3.graphicsDelay = (var5 & '\uffff') + Client.gameCycle;
+            var3.graphicsDelay = (var5 & 65535) + Client.gameCycle;
             var3.field1249 = 0;
             var3.field1246 = 0;
             if(var3.graphicsDelay > Client.gameCycle) {
                var3.field1249 = -1;
             }
 
-            if(var3.graphic == '\uffff') {
+            if(var3.graphic == 65535) {
                var3.graphic = -1;
             }
          }
@@ -61,7 +61,7 @@ public final class class270 {
          int var7;
          if((var4 & 8) != 0) {
             var5 = Client.secretPacketBuffer2.readUnsignedShort();
-            if(var5 == '\uffff') {
+            if(var5 == 65535) {
                var5 = -1;
             }
 
@@ -101,7 +101,7 @@ public final class class270 {
 
          if((var4 & 16) != 0) {
             var3.interacting = Client.secretPacketBuffer2.method3274();
-            if(var3.interacting == '\uffff') {
+            if(var3.interacting == 65535) {
                var3.interacting = -1;
             }
          }

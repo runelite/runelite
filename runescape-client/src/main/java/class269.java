@@ -25,8 +25,8 @@ public class class269 {
          field3681[var0] = (char)(var0 + 48 - 52);
       }
 
-      field3681[62] = 43;
-      field3681[63] = 47;
+      field3681[62] = '+';
+      field3681[63] = '/';
       field3680 = new char[64];
 
       for(var0 = 0; var0 < 26; ++var0) {
@@ -41,8 +41,8 @@ public class class269 {
          field3680[var0] = (char)(var0 + 48 - 52);
       }
 
-      field3680[62] = 42;
-      field3680[63] = 45;
+      field3680[62] = '*';
+      field3680[63] = '-';
       field3679 = new int[128];
 
       for(var0 = 0; var0 < field3679.length; ++var0) {

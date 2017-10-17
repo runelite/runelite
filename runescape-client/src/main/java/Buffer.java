@@ -417,7 +417,7 @@ public class Buffer extends Node {
    @Export("readShortSmart")
    public int readShortSmart() {
       int var1 = this.payload[this.offset] & 255;
-      return var1 < 128?this.readUnsignedByte() - 64:this.readUnsignedShort() - '쀀';
+      return var1 < 128?this.readUnsignedByte() - 64:this.readUnsignedShort() - 49152;
    }
 
    @ObfuscatedName("o")
@@ -487,7 +487,7 @@ public class Buffer extends Node {
    @Export("getUSmart")
    public int getUSmart() {
       int var1 = this.payload[this.offset] & 255;
-      return var1 < 128?this.readUnsignedByte():this.readUnsignedShort() - '耀';
+      return var1 < 128?this.readUnsignedByte():this.readUnsignedShort() - 32768;
    }
 
    @ObfuscatedName("ac")
@@ -957,8 +957,8 @@ public class Buffer extends Node {
    public void putShortSmart(int var1) {
       if(var1 >= 0 && var1 < 128) {
          this.putByte(var1);
-      } else if(var1 >= 0 && var1 < '耀') {
-         this.putShort(var1 + '耀');
+      } else if(var1 >= 0 && var1 < 32768) {
+         this.putShort(var1 + 32768);
       } else {
          throw new IllegalArgumentException();
       }

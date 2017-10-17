@@ -117,13 +117,13 @@ public class AudioInstrument {
       Random var0 = new Random(0L);
 
       int var1;
-      for(var1 = 0; var1 < '耀'; ++var1) {
+      for(var1 = 0; var1 < 32768; ++var1) {
          NOISE[var1] = (var0.nextInt() & 2) - 1;
       }
 
       SINE = new int['耀'];
 
-      for(var1 = 0; var1 < '耀'; ++var1) {
+      for(var1 = 0; var1 < 32768; ++var1) {
          SINE[var1] = (int)(Math.sin((double)var1 / 5215.1903D) * 16384.0D);
       }
 
@@ -260,7 +260,7 @@ public class AudioInstrument {
             if(this.volumeMultiplier != null) {
                var14 = this.volumeMultiplier.step(var1);
                var15 = this.volumeMultiplierAmplitude.step(var1);
-               var13 = var13 * ((this.evaluateWave(var10, var15, this.volumeMultiplier.form) >> 1) + '耀') >> 15;
+               var13 = var13 * ((this.evaluateWave(var10, var15, this.volumeMultiplier.form) >> 1) + 32768) >> 15;
                var10 = var10 + var9 + (var14 * var8 >> 16);
             }
 

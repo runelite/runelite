@@ -162,7 +162,7 @@ public class WidgetNode extends Node {
          }
 
          if(var1 == 17) {
-            Client.field1081 = var2 & '\uffff';
+            Client.field1081 = var2 & 65535;
          }
 
          class89[] var4;

@@ -206,7 +206,7 @@ public class MessageNode extends CacheableNode {
                      var8 += 2;
                   } else {
                      if(Client.screenY > -1) {
-                        Rasterizer2D.method5129(var20, var21, var88, 5, '\uff00');
+                        Rasterizer2D.method5129(var20, var21, var88, 5, 65280);
                         Rasterizer2D.method5129(var88 + var20, var21, var14 - var88, 5, 16711680);
                      }
 
@@ -702,7 +702,7 @@ public class MessageNode extends CacheableNode {
       if(var0.field2661 == 2 && !Client.spellSelected) {
          var3 = class34.method483(var0);
          if(var3 != null) {
-            class10.addMenuEntry(var3, class60.getColTags('\uff00') + var0.field2774, 25, 0, -1, var0.id);
+            class10.addMenuEntry(var3, class60.getColTags(65280) + var0.field2774, 25, 0, -1, var0.id);
          }
       }
 

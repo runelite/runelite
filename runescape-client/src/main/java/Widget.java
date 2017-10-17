@@ -801,7 +801,7 @@ public class Widget extends Node {
       this.field2645 = var1.readByte();
       this.field2664 = var1.readByte();
       this.parentId = var1.readUnsignedShort();
-      if(this.parentId == '\uffff') {
+      if(this.parentId == 65535) {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
@@ -828,7 +828,7 @@ public class Widget extends Node {
       if(this.type == 6) {
          this.modelType = 1;
          this.modelId = var1.readUnsignedShort();
-         if(this.modelId == '\uffff') {
+         if(this.modelId == 65535) {
             this.modelId = -1;
          }
 
@@ -839,7 +839,7 @@ public class Widget extends Node {
          this.rotationY = var1.readUnsignedShort();
          this.modelZoom = var1.readUnsignedShort();
          this.field2649 = var1.readUnsignedShort();
-         if(this.field2649 == '\uffff') {
+         if(this.field2649 == 65535) {
             this.field2649 = -1;
          }
 
@@ -856,7 +856,7 @@ public class Widget extends Node {
 
       if(this.type == 4) {
          this.fontId = var1.readUnsignedShort();
-         if(this.fontId == '\uffff') {
+         if(this.fontId == 65535) {
             this.fontId = -1;
          }
 
@@ -935,14 +935,14 @@ public class Widget extends Node {
       this.field2670 = var1.readUnsignedShort();
       this.opacity = var1.readUnsignedByte();
       this.parentId = var1.readUnsignedShort();
-      if(this.parentId == '\uffff') {
+      if(this.parentId == 65535) {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
       this.field2740 = var1.readUnsignedShort();
-      if(this.field2740 == '\uffff') {
+      if(this.field2740 == 65535) {
          this.field2740 = -1;
       }
 
@@ -971,7 +971,7 @@ public class Widget extends Node {
 
             for(var6 = 0; var6 < var5; ++var6) {
                this.dynamicValues[var4][var6] = var1.readUnsignedShort();
-               if(this.dynamicValues[var4][var6] == '\uffff') {
+               if(this.dynamicValues[var4][var6] == 65535) {
                   this.dynamicValues[var4][var6] = -1;
                }
             }
@@ -1049,7 +1049,7 @@ public class Widget extends Node {
          this.field2722 = var1.readUnsignedByte();
          this.field2720 = var1.readUnsignedByte();
          this.fontId = var1.readUnsignedShort();
-         if(this.fontId == '\uffff') {
+         if(this.fontId == 65535) {
             this.fontId = -1;
          }
 
@@ -1079,23 +1079,23 @@ public class Widget extends Node {
       if(this.type == 6) {
          this.modelType = 1;
          this.modelId = var1.readUnsignedShort();
-         if(this.modelId == '\uffff') {
+         if(this.modelId == 65535) {
             this.modelId = -1;
          }
 
          this.field2703 = 1;
          this.field2755 = var1.readUnsignedShort();
-         if(this.field2755 == '\uffff') {
+         if(this.field2755 == 65535) {
             this.field2755 = -1;
          }
 
          this.field2649 = var1.readUnsignedShort();
-         if(this.field2649 == '\uffff') {
+         if(this.field2649 == 65535) {
             this.field2649 = -1;
          }
 
          this.field2706 = var1.readUnsignedShort();
-         if(this.field2706 == '\uffff') {
+         if(this.field2706 == 65535) {
             this.field2706 = -1;
          }
 
@@ -1109,7 +1109,7 @@ public class Widget extends Node {
          this.itemQuantities = new int[this.field2670 * this.originalWidth];
          this.field2721 = var1.readUnsignedByte();
          this.fontId = var1.readUnsignedShort();
-         if(this.fontId == '\uffff') {
+         if(this.fontId == 65535) {
             this.fontId = -1;
          }
 

@@ -107,7 +107,7 @@ public class class31 {
          Client.cachedPlayers[var0] = null;
       }
 
-      for(var0 = 0; var0 < '耀'; ++var0) {
+      for(var0 = 0; var0 < 32768; ++var0) {
          Client.cachedNPCs[var0] = null;
       }
 

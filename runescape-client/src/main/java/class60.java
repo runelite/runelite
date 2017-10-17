@@ -70,7 +70,7 @@ public final class class60 {
          byte var5 = -1;
          if((var4 & 128) != 0) {
             var3.interacting = var0.method3272();
-            if(var3.interacting == '\uffff') {
+            if(var3.interacting == 65535) {
                var3.interacting = -1;
             }
          }
@@ -80,14 +80,14 @@ public final class class60 {
             var3.graphic = var0.method3274();
             var6 = var0.method3309();
             var3.field1214 = var6 >> 16;
-            var3.graphicsDelay = (var6 & '\uffff') + Client.gameCycle;
+            var3.graphicsDelay = (var6 & 65535) + Client.gameCycle;
             var3.field1249 = 0;
             var3.field1246 = 0;
             if(var3.graphicsDelay > Client.gameCycle) {
                var3.field1249 = -1;
             }
 
-            if(var3.graphic == '\uffff') {
+            if(var3.graphic == 65535) {
                var3.graphic = -1;
             }
          }
@@ -190,7 +190,7 @@ public final class class60 {
 
          if((var4 & 8) != 0) {
             var6 = var0.method3299();
-            if(var6 == '\uffff') {
+            if(var6 == 65535) {
                var6 = -1;
             }
 
@@ -250,7 +250,7 @@ public final class class60 {
 
          if((var4 & 1) != 0) {
             var3.overhead = var0.readString();
-            if(var3.overhead.charAt(0) == 126) {
+            if(var3.overhead.charAt(0) == '~') {
                var3.overhead = var3.overhead.substring(1);
                MessageNode.sendGameMessage(2, var3.name, var3.overhead);
             } else if(var3 == AbstractByteBuffer.localPlayer) {

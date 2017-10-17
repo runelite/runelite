@@ -61,7 +61,7 @@ public class class20 {
          var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
-      return var1.length() > 9?" " + class60.getColTags('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class60.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class60.getColTags(16776960) + var1 + "</col>");
+      return var1.length() > 9?" " + class60.getColTags(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class60.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class60.getColTags(16776960) + var1 + "</col>");
    }
 
    @ObfuscatedName("go")

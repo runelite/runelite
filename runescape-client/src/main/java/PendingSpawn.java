@@ -155,7 +155,7 @@ public final class PendingSpawn extends Node {
                   var12 = new char[var11];
 
                   for(var13 = 0; var13 < var11; ++var13) {
-                     var12[var13] = 42;
+                     var12[var13] = '*';
                   }
 
                   var23 = new String(var12);
@@ -174,7 +174,7 @@ public final class PendingSpawn extends Node {
                var14 = new char[var13];
 
                for(var15 = 0; var15 < var13; ++var15) {
-                  var14[var15] = 42;
+                  var14[var15] = '*';
                }
 
                var32 = new String(var14);
@@ -237,7 +237,7 @@ public final class PendingSpawn extends Node {
                   var12 = new char[var11];
 
                   for(var13 = 0; var13 < var11; ++var13) {
-                     var12[var13] = 42;
+                     var12[var13] = '*';
                   }
 
                   var23 = new String(var12);
@@ -256,7 +256,7 @@ public final class PendingSpawn extends Node {
                var14 = new char[var13];
 
                for(var15 = 0; var15 < var13; ++var15) {
-                  var14[var15] = 42;
+                  var14[var15] = '*';
                }
 
                var32 = new String(var14);
@@ -314,7 +314,7 @@ public final class PendingSpawn extends Node {
                char[] var36 = new char[var10];
 
                for(var21 = 0; var21 < var10; ++var21) {
-                  var36[var21] = 42;
+                  var36[var21] = '*';
                }
 
                var9 = new String(var36);
@@ -362,7 +362,7 @@ public final class PendingSpawn extends Node {
                   var12 = new char[var11];
 
                   for(var13 = 0; var13 < var11; ++var13) {
-                     var12[var13] = 42;
+                     var12[var13] = '*';
                   }
 
                   var23 = new String(var12);
@@ -579,7 +579,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) + ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) >> 8;
+                  class12.field275.pixels[var29++] = (var13 * (var22 & 65280) + var21 * (var11 & 65280) & 16711680) + ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) >> 8;
                } else {
                   ++var29;
                }
@@ -606,7 +606,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) + (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) >> 8;
+                  class12.field275.pixels[var29++] = ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) + (var13 * (var22 & 65280) + var21 * (var11 & 65280) & 16711680) >> 8;
                } else {
                   ++var29;
                }
@@ -862,8 +862,8 @@ public final class PendingSpawn extends Node {
          var6 = 98048;
       }
 
-      if(var6 < '耀') {
-         var6 = '耀';
+      if(var6 < 32768) {
+         var6 = 32768;
       }
 
       if(var6 > Client.field1124) {
