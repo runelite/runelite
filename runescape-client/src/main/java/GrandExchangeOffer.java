@@ -262,7 +262,7 @@ public class GrandExchangeOffer {
                                  }
 
                                  var28 = class94.playerIndexesCount;
-                                 var50 = class94.field1480;
+                                 var50 = class94.playerIndices;
 
                                  for(var54 = 0; var54 < var28; ++var54) {
                                     var39 = Client.cachedPlayers[var50[var54]];
@@ -290,7 +290,7 @@ public class GrandExchangeOffer {
                                  }
 
                                  var28 = class94.playerIndexesCount;
-                                 var50 = class94.field1480;
+                                 var50 = class94.playerIndices;
 
                                  for(var54 = 0; var54 < var28; ++var54) {
                                     var39 = Client.cachedPlayers[var50[var54]];

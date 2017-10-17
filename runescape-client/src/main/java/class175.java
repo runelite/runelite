@@ -33,7 +33,7 @@ public class class175 {
 
       GameObject.method2968(true);
       int var4 = class94.playerIndexesCount;
-      int[] var5 = class94.field1480;
+      int[] var5 = class94.playerIndices;
 
       int var6;
       for(var6 = 0; var6 < var4; ++var6) {

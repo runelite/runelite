@@ -5339,7 +5339,7 @@ public final class Client extends GameEngine {
                   IndexFile.method3106();
                } else {
                   var1 = class94.playerIndexesCount;
-                  var22 = class94.field1480;
+                  var22 = class94.playerIndices;
 
                   for(var3 = 0; var3 < var1; ++var3) {
                      Player var23 = cachedPlayers[var22[var3]];

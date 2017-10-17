@@ -21,7 +21,8 @@ public class class94 {
    @Export("playerIndexesCount")
    static int playerIndexesCount;
    @ObfuscatedName("r")
-   static int[] field1480;
+   @Export("playerIndices")
+   static int[] playerIndices;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1602588739
@@ -58,7 +59,7 @@ public class class94 {
       field1477 = new byte[2048];
       field1478 = new Buffer[2048];
       playerIndexesCount = 0;
-      field1480 = new int[2048];
+      playerIndices = new int[2048];
       field1474 = 0;
       field1482 = new int[2048];
       field1483 = new int[2048];

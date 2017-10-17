@@ -260,7 +260,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       }
 
       class94.playerIndexesCount = 0;
-      class94.field1480[++class94.playerIndexesCount - 1] = var1;
+      class94.playerIndices[++class94.playerIndexesCount - 1] = var1;
       class94.field1476[var1] = 0;
       class94.field1474 = 0;
 

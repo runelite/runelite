@@ -134,7 +134,7 @@ final class class2 implements class0 {
       garbageValue = "1858449218"
    )
    static final void method6() {
-      int[] var0 = class94.field1480;
+      int[] var0 = class94.playerIndices;
 
       int var1;
       for(var1 = 0; var1 < class94.playerIndexesCount; ++var1) {

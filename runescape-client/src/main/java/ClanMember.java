@@ -116,7 +116,7 @@ public class ClanMember extends Node {
             }
 
             var8 = class94.playerIndexesCount;
-            int[] var22 = class94.field1480;
+            int[] var22 = class94.playerIndices;
 
             for(var10 = 0; var10 < var8; ++var10) {
                Player var19 = Client.cachedPlayers[var22[var10]];

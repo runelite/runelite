@@ -1414,7 +1414,7 @@ public class ScriptVarType implements RSEnum, class293 {
       boolean var4 = false;
       int var5 = -1;
       int var6 = class94.playerIndexesCount;
-      int[] var7 = class94.field1480;
+      int[] var7 = class94.playerIndices;
 
       int var8;
       for(var8 = 0; var8 < var6 + Client.npcIndexesCount; ++var8) {
