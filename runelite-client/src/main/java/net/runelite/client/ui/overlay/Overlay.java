@@ -27,11 +27,13 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 public abstract class Overlay
 {
 	private OverlayPosition position; // where to draw it
 	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
+	private Rectangle bounds; //screen bounds of overlay after OverlayRenderer decides location
 
 	public Overlay(OverlayPosition position)
 	{
@@ -65,4 +67,14 @@ public abstract class Overlay
 	}
 
 	public abstract Dimension render(Graphics2D graphics);
+
+	public Rectangle getBounds()
+	{
+		return bounds;
+	}
+
+	public void storeBounds(Rectangle bounds)
+	{
+		this.bounds = bounds;
+	}
 }

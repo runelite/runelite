@@ -29,10 +29,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -69,9 +71,14 @@ public class InfoBoxOverlay extends Overlay
 
 		FontMetrics metrics = graphics.getFontMetrics();
 
-		int width = infoBoxes.size() * BOXSIZE;
+		int width = infoBoxes.size() * (BOXSIZE + SEPARATOR);
+
+		Point mouse = client.getMouseCanvasPosition();
+		int mouseX = mouse.getX();
+		int mouseY = mouse.getY();
 		int x = 0;
 
+		Rectangle overlayBounds = this.getBounds();
 		for (InfoBox box : infoBoxes)
 		{
 			if (!box.render())
@@ -100,6 +107,38 @@ public class InfoBoxOverlay extends Overlay
 
 			graphics.setColor(color);
 			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2), BOXSIZE - SEPARATOR);
+
+			if (overlayBounds == null)
+			{
+				continue;
+			}
+
+			String tooltip = box.getTooltip();
+			if (tooltip == null || tooltip.isEmpty())
+			{
+				continue;
+			}
+
+			Rectangle bounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
+			if (bounds.contains(mouse.getX(), mouse.getY()))
+			{
+				int tooltipWidth = metrics.stringWidth(tooltip);
+				int height = metrics.getHeight();
+
+				Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
+				graphics.setColor(gray);
+
+				// Draws the background rect
+				graphics.fillRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+
+				// Draws the outline of the rect
+				graphics.setColor(Color.BLACK);
+				graphics.drawRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+
+				// Tooltip text
+				graphics.setColor(Color.WHITE);
+				graphics.drawString(tooltip, mouseX + 3, mouseY + 5);
+			}
 
 			x += BOXSIZE + SEPARATOR;
 		}

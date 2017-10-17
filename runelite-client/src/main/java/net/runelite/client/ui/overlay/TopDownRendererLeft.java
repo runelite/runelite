@@ -22,11 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +60,9 @@ public class TopDownRendererLeft implements Renderer
 
 			if (dimension == null)
 				continue;
+
+			Rectangle bounds = new Rectangle(BORDER_LEFT, y, (int) dimension.getWidth(), (int) dimension.getHeight());
+			overlay.storeBounds(bounds);
 
 			y += dimension.getHeight() + PADDING;
 		}
