@@ -213,7 +213,8 @@ public class MixinInjector
 					}
 
 					Field injected = injectedFields.get(field);
-					if (injected != null) {
+					if (injected != null)
+					{
 						gfi.setField(injected.getPoolField());
 					}
 				}
@@ -223,7 +224,8 @@ public class MixinInjector
 					Field field = gfi.getMyField();
 
 					Field injected = injectedFields.get(field);
-					if (injected != null) {
+					if (injected != null)
+					{
 						gfi.setField(injected.getPoolField());
 					}
 				}
