@@ -21,7 +21,7 @@ public class MachineInfo extends Node {
    @ObfuscatedName("at")
    String field3905;
    @ObfuscatedName("r")
-   @Export("Fos64Bit")
+   @Export("os64Bit")
    boolean os64Bit;
    @ObfuscatedName("aw")
    String field3906;
