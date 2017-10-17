@@ -93,7 +93,7 @@ public final class SpritePixels extends Rasterizer2D {
       if(var6 != 0) {
          var1 -= this.offsetX << 4;
          var2 -= this.offsetY << 4;
-         double var7 = (double)(var5 & '\uffff') * 9.587379924285257E-5D;
+         double var7 = (double)(var5 & 65535) * 9.587379924285257E-5D;
          int var9 = (int)Math.floor(Math.sin(var7) * (double)var6 + 0.5D);
          int var10 = (int)Math.floor(Math.cos(var7) * (double)var6 + 0.5D);
          int var11 = var10 * -var1 + -var2 * var9;
@@ -1276,7 +1276,7 @@ public final class SpritePixels extends Rasterizer2D {
             var2 = var1[var3++];
             if(var2 != 0) {
                int var13 = var0[var4];
-               var0[var4++] = ((var13 & 16711935) * var10 + var9 * (var2 & 16711935) & -16711936) + ((var2 & '\uff00') * var9 + var10 * (var13 & '\uff00') & 16711680) >> 8;
+               var0[var4++] = ((var13 & 16711935) * var10 + var9 * (var2 & 16711935) & -16711936) + ((var2 & 65280) * var9 + var10 * (var13 & 65280) & 16711680) >> 8;
             } else {
                ++var4;
             }
@@ -1344,7 +1344,7 @@ public final class SpritePixels extends Rasterizer2D {
    static void method5180(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       int var11 = 256 - var9;
       int var12 = (var10 & 16711935) * var11 & -16711936;
-      int var13 = (var10 & '\uff00') * var11 & 16711680;
+      int var13 = (var10 & 65280) * var11 & 16711680;
       var10 = (var12 | var13) >>> 8;
 
       for(int var14 = -var6; var14 < 0; ++var14) {
@@ -1352,7 +1352,7 @@ public final class SpritePixels extends Rasterizer2D {
             var2 = var1[var3++];
             if(var2 != 0) {
                var12 = var9 * (var2 & 16711935) & -16711936;
-               var13 = (var2 & '\uff00') * var9 & 16711680;
+               var13 = (var2 & 65280) * var9 & 16711680;
                var0[var4++] = var10 + ((var12 | var13) >>> 8);
             } else {
                ++var4;
@@ -1377,7 +1377,7 @@ public final class SpritePixels extends Rasterizer2D {
             var2 = var1[(var3 >> 16) + var16];
             if(var2 != 0) {
                int var18 = var0[var5];
-               var0[var5++] = ((var2 & '\uff00') * var12 + var13 * (var18 & '\uff00') & 16711680) + ((var18 & 16711935) * var13 + var12 * (var2 & 16711935) & -16711936) >> 8;
+               var0[var5++] = ((var2 & 65280) * var12 + var13 * (var18 & 65280) & 16711680) + ((var18 & 16711935) * var13 + var12 * (var2 & 16711935) & -16711936) >> 8;
             } else {
                ++var5;
             }

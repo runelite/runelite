@@ -103,7 +103,7 @@ final class class15 implements Comparator {
                   var5 = 126;
                }
 
-               var3 = var5 + (var4 & 'ﾀ');
+               var3 = var5 + (var4 & 65408);
             }
 
             return Graphics3D.colorPalette[var3] | -16777216;
@@ -153,7 +153,7 @@ final class class15 implements Comparator {
                      var12 = 126;
                   }
 
-                  var8 = var12 + (var7 & 'ﾀ');
+                  var8 = var12 + (var7 & 65408);
                }
             }
 

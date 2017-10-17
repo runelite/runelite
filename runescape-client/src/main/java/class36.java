@@ -660,11 +660,11 @@ public class class36 {
       for(int var4 = 0; var4 < var3; ++var4) {
          var1 *= 37L;
          char var5 = var0.charAt(var4);
-         if(var5 >= 65 && var5 <= 90) {
+         if(var5 >= 'A' && var5 <= 'Z') {
             var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 97 && var5 <= 122) {
+         } else if(var5 >= 'a' && var5 <= 'z') {
             var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= 48 && var5 <= 57) {
+         } else if(var5 >= '0' && var5 <= '9') {
             var1 += (long)(var5 + 27 - 48);
          }
 

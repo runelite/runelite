@@ -2435,7 +2435,7 @@ public class Region {
          var1 = 126;
       }
 
-      return (var0 & 'ﾀ') + var1;
+      return (var0 & 65408) + var1;
    }
 
    @ObfuscatedName("aa")

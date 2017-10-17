@@ -41,7 +41,7 @@ public class class11 {
 
          int var7;
          int var9;
-         for(var7 = 0; var7 < '耀'; ++var7) {
+         for(var7 = 0; var7 < 32768; ++var7) {
             NPC var8 = Client.cachedNPCs[var7];
             if(var8 != null) {
                for(var9 = 0; var9 < 10; ++var9) {

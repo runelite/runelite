@@ -219,11 +219,11 @@ public class MachineInfo extends Node {
       try {
          while(var6 < var5.length()) {
             var8 = var5.charAt(var6);
-            if(var8 < 48 || var8 > 57) {
+            if(var8 < '0' || var8 > '9') {
                break;
             }
 
-            var7 = var8 - 48 + var7 * 10;
+            var7 = var8 - '0' + var7 * 10;
             ++var6;
          }
       } catch (Exception var16) {
@@ -237,11 +237,11 @@ public class MachineInfo extends Node {
       try {
          while(var6 < var5.length()) {
             var8 = var5.charAt(var6);
-            if(var8 < 48 || var8 > 57) {
+            if(var8 < '0' || var8 > '9') {
                break;
             }
 
-            var7 = var8 - 48 + var7 * 10;
+            var7 = var8 - '0' + var7 * 10;
             ++var6;
          }
       } catch (Exception var15) {
@@ -255,11 +255,11 @@ public class MachineInfo extends Node {
       try {
          while(var6 < var5.length()) {
             var8 = var5.charAt(var6);
-            if(var8 < 48 || var8 > 57) {
+            if(var8 < '0' || var8 > '9') {
                break;
             }
 
-            var7 = var7 * 10 + (var8 - 48);
+            var7 = var7 * 10 + (var8 - '0');
             ++var6;
          }
       } catch (Exception var14) {

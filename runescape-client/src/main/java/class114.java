@@ -92,7 +92,7 @@ public class class114 {
          var1 = new byte[var2];
 
          for(var6 = 0; var6 < var2; ++var6) {
-            int var10 = var3[var6] + '耀' >> 16;
+            int var10 = var3[var6] + 32768 >> 16;
             if(var10 < -128) {
                var1[var6] = -128;
             } else if(var10 > 127) {

@@ -1391,7 +1391,7 @@ public final class Client extends GameEngine {
       gameDrawingMode = 0;
       field1126 = 0L;
       isResized = true;
-      field1128 = new int[]{16776960, 16711680, '\uff00', '\uffff', 16711935, 16777215};
+      field1128 = new int[]{16776960, 16711680, 65280, 65535, 16711935, 16777215};
       field1129 = 0;
       field1018 = 0;
       field1131 = "";
@@ -1575,8 +1575,8 @@ public final class Client extends GameEngine {
       garbageValue = "1633753465"
    )
    protected final void vmethod1203() {
-      SceneTilePaint.field2023 = socketType == 0?'ꩊ':world + '鱀';
-      AbstractSoundSystem.field1631 = socketType == 0?443:world + '썐';
+      SceneTilePaint.field2023 = socketType == 0?43594:world + 40000;
+      AbstractSoundSystem.field1631 = socketType == 0?443:world + 50000;
       class18.myWorldPort = SceneTilePaint.field2023;
       class152.colorsToFind = class214.field2641;
       class208.colorsToReplace = class214.field2640;
@@ -2060,7 +2060,7 @@ public final class Client extends GameEngine {
                   var2 = secretPacketBuffer2.method3299();
                }
 
-               if(var2 == '\uffff') {
+               if(var2 == 65535) {
                   var2 = -1;
                }
 
@@ -2324,7 +2324,7 @@ public final class Client extends GameEngine {
 
             if(packetType == Opcodes.PACKET_SERVER_90) {
                var2 = secretPacketBuffer2.method3299();
-               if(var2 == '\uffff') {
+               if(var2 == 65535) {
                   var2 = -1;
                }
 
@@ -2755,7 +2755,7 @@ public final class Client extends GameEngine {
             if(packetType == Opcodes.PACKET_SERVER_20) {
                var2 = secretPacketBuffer2.method3326();
                var3 = secretPacketBuffer2.method3272();
-               if(var3 == '\uffff') {
+               if(var3 == 65535) {
                   var3 = -1;
                }
 
@@ -2995,14 +2995,14 @@ public final class Client extends GameEngine {
                long var27;
                if(packetType == Opcodes.PACKET_SERVER_72) {
                   var2 = secretPacketBuffer2.method3299();
-                  if(var2 == '\uffff') {
+                  if(var2 == 65535) {
                      var2 = -1;
                   }
 
                   var3 = secretPacketBuffer2.method3283();
                   var23 = secretPacketBuffer2.readInt();
                   var26 = secretPacketBuffer2.method3299();
-                  if(var26 == '\uffff') {
+                  if(var26 == 65535) {
                      var26 = -1;
                   }
 
@@ -3118,7 +3118,7 @@ public final class Client extends GameEngine {
                   Object[] var93 = new Object[var24.length() + 1];
 
                   for(var23 = var24.length() - 1; var23 >= 0; --var23) {
-                     if(var24.charAt(var23) == 115) {
+                     if(var24.charAt(var23) == 's') {
                         var93[var23 + 1] = secretPacketBuffer2.readString();
                      } else {
                         var93[var23 + 1] = new Integer(secretPacketBuffer2.readInt());
@@ -3307,7 +3307,7 @@ public final class Client extends GameEngine {
                   var2 = secretPacketBuffer2.readInt();
                   var3 = secretPacketBuffer2.readUnsignedShort();
                   if(var2 < -70000) {
-                     var3 += '耀';
+                     var3 += 32768;
                   }
 
                   if(var2 >= 0) {
@@ -3362,7 +3362,7 @@ public final class Client extends GameEngine {
                   var2 = secretPacketBuffer2.readInt();
                   var3 = secretPacketBuffer2.readUnsignedShort();
                   if(var2 < -70000) {
-                     var3 += '耀';
+                     var3 += 32768;
                   }
 
                   if(var2 >= 0) {

@@ -59,7 +59,7 @@ public class class110 {
       garbageValue = "2103328028"
    )
    class105 method2157(int var1, int var2, int[] var3) {
-      int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
+      int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
       class105 var7 = (class105)this.field1658.get(var5);
@@ -89,7 +89,7 @@ public class class110 {
       garbageValue = "-21"
    )
    class105 method2158(int var1, int var2, int[] var3) {
-      int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
+      int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
       class105 var7 = (class105)this.field1658.get(var5);

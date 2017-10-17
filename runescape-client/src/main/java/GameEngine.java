@@ -212,7 +212,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             if(var1.endsWith("127.0.0.1")) {
                return true;
             } else {
-               while(var1.length() > 0 && var1.charAt(var1.length() - 1) >= 48 && var1.charAt(var1.length() - 1) <= 57) {
+               while(var1.length() > 0 && var1.charAt(var1.length() - 1) >= '0' && var1.charAt(var1.length() - 1) <= '9') {
                   var1 = var1.substring(0, var1.length() - 1);
                }
 
@@ -864,7 +864,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                   int var3;
                   for(var3 = 6; var3 < var2.length(); ++var3) {
                      char var5 = var2.charAt(var3);
-                     boolean var4 = var5 >= 48 && var5 <= 57;
+                     boolean var4 = var5 >= '0' && var5 <= '9';
                      if(!var4) {
                         break;
                      }

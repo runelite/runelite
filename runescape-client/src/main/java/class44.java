@@ -394,10 +394,10 @@ public class class44 extends WorldMapData {
       if(var0.field1265 != 0) {
          if(var0.interacting != -1) {
             Object var13 = null;
-            if(var0.interacting < '耀') {
+            if(var0.interacting < 32768) {
                var13 = Client.cachedNPCs[var0.interacting];
-            } else if(var0.interacting >= '耀') {
-               var13 = Client.cachedPlayers[var0.interacting - '耀'];
+            } else if(var0.interacting >= 32768) {
+               var13 = Client.cachedPlayers[var0.interacting - 32768];
             }
 
             if(var13 != null) {

@@ -193,7 +193,7 @@ public class CollisionData {
 
             if(var4 == 1) {
                this.remove(var1, var2, 2048);
-               this.remove(var1 + 1, var2 + 1, '耀');
+               this.remove(var1 + 1, var2 + 1, 32768);
             }
 
             if(var4 == 2) {
@@ -202,7 +202,7 @@ public class CollisionData {
             }
 
             if(var4 == 3) {
-               this.remove(var1, var2, '耀');
+               this.remove(var1, var2, 32768);
                this.remove(var1 - 1, var2 - 1, 2048);
             }
          }
@@ -430,7 +430,7 @@ public class CollisionData {
 
             if(var4 == 1) {
                this.add(var1, var2, 2048);
-               this.add(var1 + 1, var2 + 1, '耀');
+               this.add(var1 + 1, var2 + 1, 32768);
             }
 
             if(var4 == 2) {
@@ -439,7 +439,7 @@ public class CollisionData {
             }
 
             if(var4 == 3) {
-               this.add(var1, var2, '耀');
+               this.add(var1, var2, 32768);
                this.add(var1 - 1, var2 - 1, 2048);
             }
          }
@@ -504,8 +504,8 @@ public class CollisionData {
 
       for(int var3 = 0; var3 < var1; ++var3) {
          char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
+         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+            if(var4 == ' ') {
                var2.append('+');
             } else {
                byte var5 = PlayerComposition.method4079(var4);

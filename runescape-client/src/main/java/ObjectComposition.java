@@ -373,7 +373,7 @@ public class ObjectComposition extends CacheableNode {
          this.modelClipped = true;
       } else if(var2 == 24) {
          this.animationId = var1.readUnsignedShort();
-         if(this.animationId == '\uffff') {
+         if(this.animationId == 65535) {
             this.animationId = -1;
          }
       } else if(var2 == 27) {
@@ -456,19 +456,19 @@ public class ObjectComposition extends CacheableNode {
          }
       } else {
          this.varpId = var1.readUnsignedShort();
-         if(this.varpId == '\uffff') {
+         if(this.varpId == 65535) {
             this.varpId = -1;
          }
 
          this.configId = var1.readUnsignedShort();
-         if(this.configId == '\uffff') {
+         if(this.configId == 65535) {
             this.configId = -1;
          }
 
          var3 = -1;
          if(var2 == 92) {
             var3 = var1.readUnsignedShort();
-            if(var3 == '\uffff') {
+            if(var3 == 65535) {
                var3 = -1;
             }
          }
@@ -478,7 +478,7 @@ public class ObjectComposition extends CacheableNode {
 
          for(int var5 = 0; var5 <= var4; ++var5) {
             this.impostorIds[var5] = var1.readUnsignedShort();
-            if(this.impostorIds[var5] == '\uffff') {
+            if(this.impostorIds[var5] == 65535) {
                this.impostorIds[var5] = -1;
             }
          }
@@ -523,7 +523,7 @@ public class ObjectComposition extends CacheableNode {
 
             var3 = (ModelData)field3484.get((long)var7);
             if(var3 == null) {
-               var3 = ModelData.method2498(field3446, var7 & '\uffff', 0);
+               var3 = ModelData.method2498(field3446, var7 & 65535, 0);
                if(var3 == null) {
                   return null;
                }
@@ -565,7 +565,7 @@ public class ObjectComposition extends CacheableNode {
 
          var3 = (ModelData)field3484.get((long)var5);
          if(var3 == null) {
-            var3 = ModelData.method2498(field3446, var5 & '\uffff', 0);
+            var3 = ModelData.method2498(field3446, var5 & 65535, 0);
             if(var3 == null) {
                return null;
             }
@@ -725,7 +725,7 @@ public class ObjectComposition extends CacheableNode {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.objectModels.length; ++var2) {
-            var1 &= field3446.method4237(this.objectModels[var2] & '\uffff', 0);
+            var1 &= field3446.method4237(this.objectModels[var2] & 65535, 0);
          }
 
          return var1;
@@ -741,7 +741,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes != null) {
          for(int var4 = 0; var4 < this.objectTypes.length; ++var4) {
             if(this.objectTypes[var4] == var1) {
-               return field3446.method4237(this.objectModels[var4] & '\uffff', 0);
+               return field3446.method4237(this.objectModels[var4] & 65535, 0);
             }
          }
 
@@ -754,7 +754,7 @@ public class ObjectComposition extends CacheableNode {
          boolean var2 = true;
 
          for(int var3 = 0; var3 < this.objectModels.length; ++var3) {
-            var2 &= field3446.method4237(this.objectModels[var3] & '\uffff', 0);
+            var2 &= field3446.method4237(this.objectModels[var3] & 65535, 0);
          }
 
          return var2;

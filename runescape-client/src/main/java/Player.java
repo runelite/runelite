@@ -305,7 +305,7 @@ public final class Player extends Actor {
          } else {
             var7 = var1.readUnsignedByte();
             var4[var5] = var7 + (var6 << 8);
-            if(var5 == 0 && var4[0] == '\uffff') {
+            if(var5 == 0 && var4[0] == 65535) {
                var3 = var1.readUnsignedShort();
                break;
             }
@@ -331,38 +331,38 @@ public final class Player extends Actor {
       }
 
       super.idlePoseAnimation = var1.readUnsignedShort();
-      if(super.idlePoseAnimation == '\uffff') {
+      if(super.idlePoseAnimation == 65535) {
          super.idlePoseAnimation = -1;
       }
 
       super.field1266 = var1.readUnsignedShort();
-      if(super.field1266 == '\uffff') {
+      if(super.field1266 == 65535) {
          super.field1266 = -1;
       }
 
       super.field1213 = super.field1266;
       super.field1215 = var1.readUnsignedShort();
-      if(super.field1215 == '\uffff') {
+      if(super.field1215 == 65535) {
          super.field1215 = -1;
       }
 
       super.field1260 = var1.readUnsignedShort();
-      if(super.field1260 == '\uffff') {
+      if(super.field1260 == 65535) {
          super.field1260 = -1;
       }
 
       super.field1217 = var1.readUnsignedShort();
-      if(super.field1217 == '\uffff') {
+      if(super.field1217 == 65535) {
          super.field1217 = -1;
       }
 
       super.field1218 = var1.readUnsignedShort();
-      if(super.field1218 == '\uffff') {
+      if(super.field1218 == 65535) {
          super.field1218 = -1;
       }
 
       super.field1219 = var1.readUnsignedShort();
-      if(super.field1219 == '\uffff') {
+      if(super.field1219 == 65535) {
          super.field1219 = -1;
       }
 
@@ -437,7 +437,7 @@ public final class Player extends Actor {
          if(var10 != null) {
             var5 = var10;
          } else {
-            var11 = (var8 + '鱀' << 8) + var6.field2796;
+            var11 = (var8 + 40000 << 8) + var6.field2796;
             var10 = BaseVarType.method15(var11, var6);
             if(var10 != null) {
                var5 = var10;
@@ -606,7 +606,7 @@ public final class Player extends Actor {
                                                                                                                                                                   if(var7 != 43) {
                                                                                                                                                                      if(var7 == 44) {
                                                                                                                                                                         var11 = var39[var22] >> 16;
-                                                                                                                                                                        var12 = var39[var22] & '\uffff';
+                                                                                                                                                                        var12 = var39[var22] & 65535;
                                                                                                                                                                         int var72 = class81.intStack[--class81.intStackSize];
                                                                                                                                                                         if(var72 >= 0 && var72 <= 5000) {
                                                                                                                                                                            class81.field1332[var11] = var72;
@@ -1424,13 +1424,13 @@ public final class Player extends Actor {
                                                                                                                var13 = 1;
                                                                                                             } else if(var7 == 3313) {
                                                                                                                class81.intStackSize -= 2;
-                                                                                                               var14 = class81.intStack[class81.intStackSize] + '耀';
+                                                                                                               var14 = class81.intStack[class81.intStackSize] + 32768;
                                                                                                                var15 = class81.intStack[class81.intStackSize + 1];
                                                                                                                class81.intStack[++class81.intStackSize - 1] = class41.method589(var14, var15);
                                                                                                                var13 = 1;
                                                                                                             } else if(var7 == 3314) {
                                                                                                                class81.intStackSize -= 2;
-                                                                                                               var14 = class81.intStack[class81.intStackSize] + '耀';
+                                                                                                               var14 = class81.intStack[class81.intStackSize] + 32768;
                                                                                                                var15 = class81.intStack[class81.intStackSize + 1];
                                                                                                                var58 = class81.intStack;
                                                                                                                var29 = ++class81.intStackSize - 1;
@@ -1493,7 +1493,7 @@ public final class Player extends Actor {
                                                                                                                }
                                                                                                             } else {
                                                                                                                class81.intStackSize -= 2;
-                                                                                                               var14 = class81.intStack[class81.intStackSize] + '耀';
+                                                                                                               var14 = class81.intStack[class81.intStackSize] + 32768;
                                                                                                                var15 = class81.intStack[class81.intStackSize + 1];
                                                                                                                var58 = class81.intStack;
                                                                                                                var29 = ++class81.intStackSize - 1;
@@ -2090,7 +2090,7 @@ public final class Player extends Actor {
       garbageValue = "-1257267345"
    )
    static final int method1189(int var0, int var1) {
-      int var2 = Varcs.getSmoothNoise(var0 + '넵', var1 + 91923, 4) - 128 + (Varcs.getSmoothNoise(var0 + 10294, '鎽' + var1, 2) - 128 >> 1) + (Varcs.getSmoothNoise(var0, var1, 1) - 128 >> 2);
+      int var2 = Varcs.getSmoothNoise(var0 + 45365, var1 + 91923, 4) - 128 + (Varcs.getSmoothNoise(var0 + 10294, 37821 + var1, 2) - 128 >> 1) + (Varcs.getSmoothNoise(var0, var1, 1) - 128 >> 2);
       var2 = (int)((double)var2 * 0.3D) + 35;
       if(var2 < 10) {
          var2 = 10;

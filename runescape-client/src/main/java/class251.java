@@ -55,7 +55,7 @@ public class class251 extends CacheableNode {
          if(var5 >= 128 && var5 < 160) {
             char var6 = class266.field3665[var5 - 128];
             if(var6 == 0) {
-               var6 = 63;
+               var6 = '?';
             }
 
             var5 = var6;
@@ -79,7 +79,7 @@ public class class251 extends CacheableNode {
       garbageValue = "1820384379"
    )
    public boolean method4528() {
-      return this.field3387 == 115;
+      return this.field3387 == 's';
    }
 
    @ObfuscatedName("e")

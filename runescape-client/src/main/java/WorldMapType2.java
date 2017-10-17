@@ -348,7 +348,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                            Runtime var42 = Runtime.getRuntime();
                            var20 = (int)((var42.totalMemory() - var42.freeMemory()) / 1024L);
                            var21 = 16776960;
-                           if(var20 > '耀' && Client.lowMemory) {
+                           if(var20 > 32768 && Client.lowMemory) {
                               var21 = 16711680;
                            }
 
@@ -504,7 +504,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
                                              var27.method5181(var22 + var24, var23 + var25, 128);
                                              if(var1 != -1) {
-                                                Widget var28 = var0[var1 & '\uffff'];
+                                                Widget var28 = var0[var1 & 65535];
                                                 int var29;
                                                 if(var25 + var23 < Rasterizer2D.drawingAreaTop && var28.scrollY > 0) {
                                                    var29 = (Rasterizer2D.drawingAreaTop - var23 - var25) * Client.field1122 / 3;

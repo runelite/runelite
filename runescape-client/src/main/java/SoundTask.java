@@ -87,7 +87,7 @@ public class SoundTask implements Runnable {
                      } else if(var9 < 0) {
                         var6 = class60.getColTags(16756736);
                      } else if(var9 > 9) {
-                        var6 = class60.getColTags('\uff00');
+                        var6 = class60.getColTags(65280);
                      } else if(var9 > 6) {
                         var6 = class60.getColTags(4259584);
                      } else if(var9 > 3) {

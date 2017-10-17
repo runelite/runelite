@@ -109,11 +109,11 @@ public class class51 implements class101 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class5.field41[var5 + 64] = var5 * 4 + '\uff00';
+            class5.field41[var5 + 64] = var5 * 4 + 65280;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class5.field41[var5 + 128] = var5 * 262144 + '\uffff';
+            class5.field41[var5 + 128] = var5 * 262144 + 65535;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
@@ -214,7 +214,7 @@ public class class51 implements class101 {
                      }
 
                      char[] var13 = new char[var11];
-                     var13[0] = 43;
+                     var13[0] = '+';
 
                      for(int var14 = var11 - 1; var14 > 0; --var14) {
                         int var15 = var10;
@@ -340,7 +340,7 @@ public class class51 implements class101 {
                         var17 = class81.intStack;
                         var23 = ++class81.intStackSize - 1;
                         var21 = (char)var18;
-                        var6 = var21 >= 65 && var21 <= 90 || var21 >= 97 && var21 <= 122;
+                        var6 = var21 >= 'A' && var21 <= 'Z' || var21 >= 'a' && var21 <= 'z';
                         var17[var23] = var6?1:0;
                         return 1;
                      } else if(var0 != 4116) {
@@ -367,9 +367,9 @@ public class class51 implements class101 {
 
                            for(var26 = 0; var26 < var3.length(); ++var26) {
                               var21 = var3.charAt(var26);
-                              if(var21 == 60) {
+                              if(var21 == '<') {
                                  var30 = true;
-                              } else if(var21 == 62) {
+                              } else if(var21 == '>') {
                                  var30 = false;
                               } else if(!var30) {
                                  var28.append(var21);
@@ -398,7 +398,7 @@ public class class51 implements class101 {
                         var17 = class81.intStack;
                         var23 = ++class81.intStackSize - 1;
                         var21 = (char)var18;
-                        var6 = var21 >= 48 && var21 <= 57;
+                        var6 = var21 >= '0' && var21 <= '9';
                         var17[var23] = var6?1:0;
                         return 1;
                      }

@@ -198,10 +198,10 @@ public class GrandExchangeOffer {
                               }
 
                               if(Client.itemSelectionState == 1) {
-                                 class10.addMenuEntry("Use", Client.field1067 + " " + "->" + " " + class60.getColTags('\uffff') + var27.name, 1, var22, var23, var24);
+                                 class10.addMenuEntry("Use", Client.field1067 + " " + "->" + " " + class60.getColTags(65535) + var27.name, 1, var22, var23, var24);
                               } else if(Client.spellSelected) {
                                  if((WorldMapType1.field451 & 4) == 4) {
-                                    class10.addMenuEntry(Client.field1071, Client.field948 + " " + "->" + " " + class60.getColTags('\uffff') + var27.name, 2, var22, var23, var24);
+                                    class10.addMenuEntry(Client.field1071, Client.field948 + " " + "->" + " " + class60.getColTags(65535) + var27.name, 2, var22, var23, var24);
                                  }
                               } else {
                                  String[] var36 = var27.actions;
@@ -233,12 +233,12 @@ public class GrandExchangeOffer {
                                              var38 = 1001;
                                           }
 
-                                          class10.addMenuEntry(var36[var37], class60.getColTags('\uffff') + var27.name, var38, var22, var23, var24);
+                                          class10.addMenuEntry(var36[var37], class60.getColTags(65535) + var27.name, var38, var22, var23, var24);
                                        }
                                     }
                                  }
 
-                                 class10.addMenuEntry("Examine", class60.getColTags('\uffff') + var27.name, 1002, var27.id << 14, var23, var24);
+                                 class10.addMenuEntry("Examine", class60.getColTags(65535) + var27.name, 1002, var27.id << 14, var23, var24);
                               }
                            }
 

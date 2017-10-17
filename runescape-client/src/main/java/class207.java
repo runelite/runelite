@@ -617,7 +617,7 @@ public class class207 extends Node {
                      case '-':
                      case '_':
                      case ' ':
-                        var9 = 95;
+                        var9 = '_';
                         break;
                      case '#':
                      case '[':
@@ -634,11 +634,11 @@ public class class207 extends Node {
                      case 'â':
                      case 'ã':
                      case 'ä':
-                        var9 = 97;
+                        var9 = 'a';
                         break;
                      case 'Ç':
                      case 'ç':
-                        var9 = 99;
+                        var9 = 'c';
                         break;
                      case 'È':
                      case 'É':
@@ -648,7 +648,7 @@ public class class207 extends Node {
                      case 'é':
                      case 'ê':
                      case 'ë':
-                        var9 = 101;
+                        var9 = 'e';
                         break;
                      case 'Í':
                      case 'Î':
@@ -656,11 +656,11 @@ public class class207 extends Node {
                      case 'í':
                      case 'î':
                      case 'ï':
-                        var9 = 105;
+                        var9 = 'i';
                         break;
                      case 'Ñ':
                      case 'ñ':
-                        var9 = 110;
+                        var9 = 'n';
                         break;
                      case 'Ò':
                      case 'Ó':
@@ -672,7 +672,7 @@ public class class207 extends Node {
                      case 'ô':
                      case 'õ':
                      case 'ö':
-                        var9 = 111;
+                        var9 = 'o';
                         break;
                      case 'Ù':
                      case 'Ú':
@@ -682,14 +682,14 @@ public class class207 extends Node {
                      case 'ú':
                      case 'û':
                      case 'ü':
-                        var9 = 117;
+                        var9 = 'u';
                         break;
                      case 'ß':
-                        var9 = 98;
+                        var9 = 'b';
                         break;
                      case 'ÿ':
                      case 'Ÿ':
-                        var9 = 121;
+                        var9 = 'y';
                         break;
                      default:
                         var9 = Character.toLowerCase(var7);

@@ -500,7 +500,7 @@ public enum class257 implements RSEnum {
                         if(var16.hasScript) {
                            Client.field948 = var16.name + class60.getColTags(16777215);
                         } else {
-                           Client.field948 = class60.getColTags('\uff00') + var16.field2774 + class60.getColTags(16777215);
+                           Client.field948 = class60.getColTags(65280) + var16.field2774 + class60.getColTags(16777215);
                         }
                      }
 

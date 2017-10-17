@@ -136,7 +136,7 @@ public final class DecorativeObject {
 
          if(Character.isLetter(var5)) {
             var3 = 0;
-         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
+         } else if(var5 != '.' && var5 != '?' && var5 != '!') {
             if(Character.isSpaceChar(var5)) {
                if(var3 != 2) {
                   var3 = 1;

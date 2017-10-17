@@ -489,27 +489,27 @@ public final class class41 {
          for(int var7 = 0; var7 < var6; ++var7) {
             char var8 = var0.charAt(var7);
             if(var7 == 0) {
-               if(var8 == 45) {
+               if(var8 == '-') {
                   var3 = true;
                   continue;
                }
 
-               if(var8 == 43) {
+               if(var8 == '+') {
                   continue;
                }
             }
 
             int var10;
-            if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
-            } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+            if(var8 >= '0' && var8 <= '9') {
+               var10 = var8 - '0';
+            } else if(var8 >= 'A' && var8 <= 'Z') {
+               var10 = var8 - '7';
             } else {
-               if(var8 < 97 || var8 > 122) {
+               if(var8 < 'a' || var8 > 'z') {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 87;
+               var10 = var8 - 'W';
             }
 
             if(var10 >= var1) {
@@ -1007,7 +1007,7 @@ public final class class41 {
                      var10 = Client.secretPacketBuffer2.readUnsignedShort();
                      var11 = Client.secretPacketBuffer2.readUnsignedByte();
                      var12 = Client.secretPacketBuffer2.readUnsignedByte();
-                     if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var29 >= 0 && var3 < 104 && var29 < 104 && var31 != '\uffff') {
+                     if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var29 >= 0 && var3 < 104 && var29 < 104 && var31 != 65535) {
                         var1 = var1 * 128 + 64;
                         var2 = var2 * 128 + 64;
                         var3 = var3 * 128 + 64;
@@ -1061,7 +1061,7 @@ public final class class41 {
          }
 
          var6 = var5;
-         if(var5.valType != 115) {
+         if(var5.valType != 's') {
             ;
          }
 
