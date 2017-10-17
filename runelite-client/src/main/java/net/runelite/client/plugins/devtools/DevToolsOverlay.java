@@ -124,21 +124,15 @@ public class DevToolsOverlay extends Overlay
 
 	private void renderPlayers(Graphics2D graphics)
 	{
-		Player[] players = client.getCachedPlayers();
+		List<Player> players = client.getPlayers();
 		Player local = client.getLocalPlayer();
 
-		if (players != null && (players.length - 1) > 0)
+		for (Player p : players)
 		{
-			for (Player p : players)
+			if (p != local)
 			{
-				if (p != null)
-				{
-					if (!p.getName().equals(local.getName()))
-					{
-						String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
-						OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
-					}
-				}
+				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 

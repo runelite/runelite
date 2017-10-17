@@ -45,9 +45,19 @@ public abstract class RSClientMixin implements RSClient
 {
 	@Inject
 	@Override
-	public Player getPlayer(int idx)
+	public List<Player> getPlayers()
 	{
-		return getCachedPlayers()[idx];
+		int validPlayerIndexes = getPlayerIndexesCount();
+		int[] playerIndexes = getPlayerIndices();
+		Player[] cachedPlayers = getCachedPlayers();
+		List<Player> players = new ArrayList<Player>(validPlayerIndexes);
+		
+		for (int i = 0; i < validPlayerIndexes; ++i)
+		{
+			players.add(cachedPlayers[playerIndexes[i]]);
+		}
+		
+		return players;
 	}
 
 	@Inject

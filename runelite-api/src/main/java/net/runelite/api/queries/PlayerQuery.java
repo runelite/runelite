@@ -27,17 +27,13 @@ package net.runelite.api.queries;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
 {
 	@Override
 	public Player[] result(Client client)
 	{
-		return Arrays.stream(client.getCachedPlayers())
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(Player[]::new);
+		return client.getPlayers().stream()
+			.filter(predicate)
+			.toArray(Player[]::new);
 	}
 }
