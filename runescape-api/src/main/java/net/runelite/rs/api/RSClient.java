@@ -128,9 +128,14 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("collisionMaps")
 	RSCollisionData[] getCollisionMaps();
+	
+	@Import("playerIndexesCount")
+	int getPlayerIndexesCount();
+	
+	@Import("playerIndices")
+	int[] getPlayerIndices();
 
 	@Import("cachedPlayers")
-	@Override
 	RSPlayer[] getCachedPlayers();
 
 	@Import("groundItemDeque")

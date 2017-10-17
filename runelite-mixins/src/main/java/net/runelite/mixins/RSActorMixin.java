@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -65,7 +66,8 @@ public abstract class RSActorMixin implements RSActor
 		}
 
 		i -= 0x8000;
-		return client.getPlayer(i);
+		Player[] players = client.getCachedPlayers();
+		return players[i];
 	}
 
 	@Inject

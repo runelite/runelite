@@ -32,9 +32,7 @@ import net.runelite.api.widgets.WidgetInfo;
 
 public interface Client
 {
-	Player getPlayer(int idx);
-
-	Player[] getCachedPlayers();
+	List<Player> getPlayers();
 
 	List<NPC> getNpcs();
 
