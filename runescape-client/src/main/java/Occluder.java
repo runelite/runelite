@@ -27,24 +27,24 @@ public final class Occluder {
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -184521319
-   )
-   @Export("minZ")
-   int minZ;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1696108751
-   )
-   @Export("type")
-   int type;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -568920457
    )
    @Export("minNormalX")
    int minNormalX;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1696108751
+   )
+   @Export("type")
+   int type;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -184521319
+   )
+   @Export("minZ")
+   int minZ;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -97707391

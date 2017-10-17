@@ -280,9 +280,9 @@ public class class104 extends Node {
          float var29;
          for(var25 = 0; var25 < var40; ++var25) {
             var26 = var43[var25 * 4] - var43[var4 - var25 * 4 - 1];
-            var27 = var43[2 + var25 * 4] - var43[var4 - var25 * 4 - 3];
+            var27 = var43[var25 * 4 + 2] - var43[var4 - var25 * 4 - 3];
             var28 = var44[var25 * 2];
-            var29 = var44[1 + var25 * 2];
+            var29 = var44[var25 * 2 + 1];
             var43[var4 - var25 * 4 - 1] = var26 * var28 - var27 * var29;
             var43[var4 - var25 * 4 - 3] = var26 * var29 + var27 * var28;
          }
@@ -290,16 +290,16 @@ public class class104 extends Node {
          float var30;
          float var31;
          for(var25 = 0; var25 < var42; ++var25) {
-            var26 = var43[var17 + 3 + var25 * 4];
-            var27 = var43[var17 + 1 + var25 * 4];
-            var28 = var43[3 + var25 * 4];
-            var29 = var43[1 + var25 * 4];
-            var43[var17 + 3 + var25 * 4] = var26 + var28;
-            var43[var17 + 1 + var25 * 4] = var27 + var29;
+            var26 = var43[var17 + var25 * 4 + 3];
+            var27 = var43[var17 + var25 * 4 + 1];
+            var28 = var43[var25 * 4 + 3];
+            var29 = var43[var25 * 4 + 1];
+            var43[var17 + var25 * 4 + 3] = var26 + var28;
+            var43[var17 + var25 * 4 + 1] = var27 + var29;
             var30 = var44[var17 - 4 - var25 * 4];
             var31 = var44[var17 - 3 - var25 * 4];
-            var43[3 + var25 * 4] = (var26 - var28) * var30 - (var27 - var29) * var31;
-            var43[1 + var25 * 4] = (var27 - var29) * var30 + (var26 - var28) * var31;
+            var43[var25 * 4 + 3] = (var26 - var28) * var30 - (var27 - var29) * var31;
+            var43[var25 * 4 + 1] = (var27 - var29) * var30 + (var26 - var28) * var31;
          }
 
          var25 = class132.ilog(var4 - 1);
@@ -314,7 +314,7 @@ public class class104 extends Node {
 
             for(var50 = 0; var50 < 2 << var47; ++var50) {
                int var51 = var4 - var48 * var50 * 2;
-               int var52 = var4 - var48 * (1 + var50 * 2);
+               int var52 = var4 - var48 * (var50 * 2 + 1);
 
                for(int var32 = 0; var32 < var4 >> var47 + 4; ++var32) {
                   int var33 = var32 * 4;
@@ -325,7 +325,7 @@ public class class104 extends Node {
                   var43[var51 - 1 - var33] = var34 + var36;
                   var43[var51 - 3 - var33] = var35 + var37;
                   float var38 = var44[var32 * var49];
-                  float var39 = var44[1 + var32 * var49];
+                  float var39 = var44[var32 * var49 + 1];
                   var43[var52 - 1 - var33] = (var34 - var36) * var38 - (var35 - var37) * var39;
                   var43[var52 - 3 - var33] = (var35 - var37) * var38 + (var34 - var36) * var39;
                }
@@ -353,34 +353,34 @@ public class class104 extends Node {
          }
 
          for(var47 = 0; var47 < var17; ++var47) {
-            var43[var47] = var43[1 + var47 * 2];
+            var43[var47] = var43[var47 * 2 + 1];
          }
 
          for(var47 = 0; var47 < var42; ++var47) {
             var43[var4 - 1 - var47 * 2] = var43[var47 * 4];
-            var43[var4 - 2 - var47 * 2] = var43[1 + var47 * 4];
-            var43[var4 - var40 - 1 - var47 * 2] = var43[2 + var47 * 4];
-            var43[var4 - var40 - 2 - var47 * 2] = var43[3 + var47 * 4];
+            var43[var4 - 2 - var47 * 2] = var43[var47 * 4 + 1];
+            var43[var4 - var40 - 1 - var47 * 2] = var43[var47 * 4 + 2];
+            var43[var4 - var40 - 2 - var47 * 2] = var43[var47 * 4 + 3];
          }
 
          for(var47 = 0; var47 < var42; ++var47) {
             var27 = var23[var47 * 2];
-            var28 = var23[1 + var47 * 2];
+            var28 = var23[var47 * 2 + 1];
             var29 = var43[var17 + var47 * 2];
-            var30 = var43[var17 + 1 + var47 * 2];
+            var30 = var43[var17 + var47 * 2 + 1];
             var31 = var43[var4 - 2 - var47 * 2];
             float var53 = var43[var4 - 1 - var47 * 2];
             float var54 = var28 * (var29 - var31) + var27 * (var30 + var53);
             var43[var17 + var47 * 2] = (var29 + var31 + var54) * 0.5F;
             var43[var4 - 2 - var47 * 2] = (var29 + var31 - var54) * 0.5F;
             var54 = var28 * (var30 + var53) - var27 * (var29 - var31);
-            var43[var17 + 1 + var47 * 2] = (var30 - var53 + var54) * 0.5F;
+            var43[var17 + var47 * 2 + 1] = (var30 - var53 + var54) * 0.5F;
             var43[var4 - 1 - var47 * 2] = (-var30 + var53 + var54) * 0.5F;
          }
 
          for(var47 = 0; var47 < var40; ++var47) {
-            var43[var47] = var43[var17 + var47 * 2] * var22[var47 * 2] + var43[var17 + 1 + var47 * 2] * var22[1 + var47 * 2];
-            var43[var17 - 1 - var47] = var43[var17 + var47 * 2] * var22[1 + var47 * 2] - var43[var17 + 1 + var47 * 2] * var22[var47 * 2];
+            var43[var47] = var43[var17 + var47 * 2] * var22[var47 * 2] + var43[var17 + var47 * 2 + 1] * var22[var47 * 2 + 1];
+            var43[var17 - 1 - var47] = var43[var17 + var47 * 2] * var22[var47 * 2 + 1] - var43[var17 + var47 * 2 + 1] * var22[var47 * 2];
          }
 
          for(var47 = 0; var47 < var40; ++var47) {
@@ -535,21 +535,21 @@ public class class104 extends Node {
 
          for(int var7 = 0; var7 < var4; ++var7) {
             var6[var7 * 2] = (float)Math.cos((double)(var7 * 4) * 3.141592653589793D / (double)var2);
-            var6[1 + var7 * 2] = -((float)Math.sin((double)(var7 * 4) * 3.141592653589793D / (double)var2));
+            var6[var7 * 2 + 1] = -((float)Math.sin((double)(var7 * 4) * 3.141592653589793D / (double)var2));
          }
 
          float[] var12 = new float[var3];
 
          for(int var8 = 0; var8 < var4; ++var8) {
-            var12[var8 * 2] = (float)Math.cos((double)(1 + var8 * 2) * 3.141592653589793D / (double)(var2 * 2));
-            var12[1 + var8 * 2] = (float)Math.sin((double)(1 + var8 * 2) * 3.141592653589793D / (double)(var2 * 2));
+            var12[var8 * 2] = (float)Math.cos((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
+            var12[var8 * 2 + 1] = (float)Math.sin((double)(var8 * 2 + 1) * 3.141592653589793D / (double)(var2 * 2));
          }
 
          float[] var13 = new float[var4];
 
          for(int var9 = 0; var9 < var5; ++var9) {
-            var13[var9 * 2] = (float)Math.cos((double)(2 + var9 * 4) * 3.141592653589793D / (double)var2);
-            var13[1 + var9 * 2] = -((float)Math.sin((double)(2 + var9 * 4) * 3.141592653589793D / (double)var2));
+            var13[var9 * 2] = (float)Math.cos((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2);
+            var13[var9 * 2 + 1] = -((float)Math.sin((double)(var9 * 4 + 2) * 3.141592653589793D / (double)var2));
          }
 
          int[] var14 = new int[var5];

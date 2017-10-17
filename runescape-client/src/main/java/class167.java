@@ -394,7 +394,7 @@ public final class class167 {
                ++var0.nblock_used;
                var0.field2400 = var47;
                method3178(var0);
-               if(var0.nblock_used == var0.field2400 + 1 && var0.out_len == 0) {
+               if(var0.field2400 + 1 == var0.nblock_used && var0.out_len == 0) {
                   var26 = true;
                   break;
                }

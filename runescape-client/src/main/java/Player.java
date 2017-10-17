@@ -237,7 +237,7 @@ public final class Player extends Actor {
       super.pathY[0] = var2;
       int var3 = this.getSize();
       super.x = var3 * 64 + super.pathX[0] * 128;
-      super.y = var3 * 64 + super.pathY[0] * 128;
+      super.y = super.pathY[0] * 128 + var3 * 64;
    }
 
    @ObfuscatedName("k")
@@ -824,7 +824,7 @@ public final class Player extends Actor {
                                                                                                                   }
                                                                                                                } else {
                                                                                                                   class81.intStackSize -= 2;
-                                                                                                                  if(class81.intStack[class81.intStackSize + 1] == class81.intStack[class81.intStackSize]) {
+                                                                                                                  if(class81.intStack[class81.intStackSize] == class81.intStack[class81.intStackSize + 1]) {
                                                                                                                      var22 += var39[var22];
                                                                                                                   }
                                                                                                                }
@@ -2090,7 +2090,7 @@ public final class Player extends Actor {
       garbageValue = "-1257267345"
    )
    static final int method1189(int var0, int var1) {
-      int var2 = Varcs.getSmoothNoise(var0 + '넵', var1 + 91923, 4) - 128 + (Varcs.getSmoothNoise(var0 + 10294, var1 + '鎽', 2) - 128 >> 1) + (Varcs.getSmoothNoise(var0, var1, 1) - 128 >> 2);
+      int var2 = Varcs.getSmoothNoise(var0 + '넵', var1 + 91923, 4) - 128 + (Varcs.getSmoothNoise(var0 + 10294, '鎽' + var1, 2) - 128 >> 1) + (Varcs.getSmoothNoise(var0, var1, 1) - 128 >> 2);
       var2 = (int)((double)var2 * 0.3D) + 35;
       if(var2 < 10) {
          var2 = 10;

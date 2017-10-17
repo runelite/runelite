@@ -80,7 +80,7 @@ public class class22 extends class28 {
                int var6 = Client.mapAngle & 2047;
                int var7 = Graphics3D.SINE[var6];
                int var8 = Graphics3D.COSINE[var6];
-               int var9 = var8 * var4 + var5 * var7 >> 11;
+               int var9 = var5 * var7 + var8 * var4 >> 11;
                int var10 = var5 * var8 - var4 * var7 >> 11;
                int var11 = var9 + AbstractByteBuffer.localPlayer.x >> 7;
                int var12 = AbstractByteBuffer.localPlayer.y - var10 >> 7;

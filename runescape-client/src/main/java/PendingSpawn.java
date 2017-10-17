@@ -323,7 +323,7 @@ public final class PendingSpawn extends Node {
                var0.method4840("Trust this computer", class90.loginWindowX + 180 - 9, var27, 16776960, 0);
                var27 += 15;
                var0.method4840("for 30 days: ", class90.loginWindowX + 180 - 9, var27, 16776960, 0);
-               var16 = class90.loginWindowX + 180 - 9 + var0.method4918("for 30 days: ") + 15;
+               var16 = 180 + class90.loginWindowX - 9 + var0.method4918("for 30 days: ") + 15;
                var10 = var27 - var0.verticalSpace;
                IndexedSprite var37;
                if(class90.field1438) {
@@ -414,7 +414,7 @@ public final class PendingSpawn extends Node {
             var8 = (var28 - var27) * 128;
 
             for(var16 = 0; var16 < var8; ++var16) {
-               var10 = ClanMember.field917[var7 + var29] - ScriptState.field792[var29 + class90.field1421 & ScriptState.field792.length - 1] * var27 / 6;
+               var10 = ClanMember.field917[var7 + var29] - var27 * ScriptState.field792[var29 + class90.field1421 & ScriptState.field792.length - 1] / 6;
                if(var10 < 0) {
                   var10 = 0;
                }
@@ -490,15 +490,15 @@ public final class PendingSpawn extends Node {
                         for(var21 = -var16; var21 < var28; ++var21) {
                            var13 = var21 * 128;
                            if(var16 + var21 < var28) {
-                              var11 += class224.field2854[var10 + var13 + var16 * 128];
+                              var11 += class224.field2854[var16 * 128 + var10 + var13];
                            }
 
                            if(var21 - (var16 + 1) >= 0) {
-                              var11 -= class224.field2854[var10 + var13 - 128 * (var16 + 1)];
+                              var11 -= class224.field2854[var10 + var13 - (var16 + 1) * 128];
                            }
 
                            if(var21 >= 0) {
-                              ClanMember.field917[var10 + var13] = var11 / (1 + var16 * 2);
+                              ClanMember.field917[var10 + var13] = var11 / (var16 * 2 + 1);
                            }
                         }
 
@@ -519,7 +519,7 @@ public final class PendingSpawn extends Node {
                      }
 
                      if(var13 >= 0) {
-                        class224.field2854[var21 + var13] = var11 / (1 + var16 * 2);
+                        class224.field2854[var21 + var13] = var11 / (var16 * 2 + 1);
                      }
                   }
 
@@ -561,7 +561,7 @@ public final class PendingSpawn extends Node {
          class208.field2603.method5173(class90.field1419, 0);
          Rasterizer2D.noClip();
          var5 = 0;
-         var29 = class90.field1419 + class12.field275.width * 9;
+         var29 = class12.field275.width * 9 + class90.field1419;
 
          for(var7 = 1; var7 < var26 - 1; ++var7) {
             var8 = class90.field1418[var7] * (var26 - var7) / var26;
@@ -579,7 +579,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = (var21 * (var11 & '\uff00') + var13 * (var22 & '\uff00') & 16711680) + ((var22 & 16711935) * var13 + (var11 & 16711935) * var21 & -16711936) >> 8;
+                  class12.field275.pixels[var29++] = (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) + ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) >> 8;
                } else {
                   ++var29;
                }
@@ -592,7 +592,7 @@ public final class PendingSpawn extends Node {
          ScriptState.field791.method5173(class90.field1419 + 382, 0);
          Rasterizer2D.noClip();
          var5 = 0;
-         var29 = class90.field1419 + 637 + 24 + class12.field275.width * 9;
+         var29 = class12.field275.width * 9 + class90.field1419 + 637 + 24;
 
          for(var7 = 1; var7 < var26 - 1; ++var7) {
             var8 = class90.field1418[var7] * (var26 - var7) / var26;
@@ -606,7 +606,7 @@ public final class PendingSpawn extends Node {
                   var13 = 256 - var11;
                   var11 = class41.field577[var11];
                   var22 = class12.field275.pixels[var29];
-                  class12.field275.pixels[var29++] = (var21 * (var11 & '\uff00') + var13 * (var22 & '\uff00') & 16711680) + ((var22 & 16711935) * var13 + (var11 & 16711935) * var21 & -16711936) >> 8;
+                  class12.field275.pixels[var29++] = ((var11 & 16711935) * var21 + (var22 & 16711935) * var13 & -16711936) + (var13 * (var22 & '\uff00') + var21 * (var11 & '\uff00') & 16711680) >> 8;
                } else {
                   ++var29;
                }

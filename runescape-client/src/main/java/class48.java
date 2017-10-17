@@ -126,8 +126,8 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod722(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field641 * 64 - this.field627 * 64 + var1 + (this.field631 * 8 - this.field633 * 8);
-         int var4 = var2 + (this.field628 * 64 - this.field636 * 64) + (this.field630 * 8 - this.field625 * 8);
+         int var3 = this.field641 * 64 - this.field627 * 64 + (this.field631 * 8 - this.field633 * 8) + var1;
+         int var4 = this.field628 * 64 - this.field636 * 64 + var2 + (this.field630 * 8 - this.field625 * 8);
          return new Coordinates(this.field629, var3, var4);
       }
    }
@@ -141,7 +141,7 @@ public class class48 implements WorldMapSectionBase {
       if(!this.vmethod725(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{var2 + (this.field627 * 64 - this.field641 * 64) + (this.field633 * 8 - this.field631 * 8), this.field625 * 8 - this.field630 * 8 + var3 + (this.field636 * 64 - this.field628 * 64)};
+         int[] var4 = new int[]{this.field627 * 64 - this.field641 * 64 + var2 + (this.field633 * 8 - this.field631 * 8), var3 + (this.field636 * 64 - this.field628 * 64) + (this.field625 * 8 - this.field630 * 8)};
          return var4;
       }
    }

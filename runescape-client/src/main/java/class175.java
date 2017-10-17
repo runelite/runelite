@@ -64,7 +64,7 @@ public class class175 {
          }
 
          var14 = Client.mapAngle & 2047;
-         class15.method97(Occluder.field2140, CacheFile.getTileHeight(AbstractByteBuffer.localPlayer.x, AbstractByteBuffer.localPlayer.y, class5.plane) - Client.field1002, class40.field569, var4, var14, 600 + var4 * 3);
+         class15.method97(Occluder.field2140, CacheFile.getTileHeight(AbstractByteBuffer.localPlayer.x, AbstractByteBuffer.localPlayer.y, class5.plane) - Client.field1002, class40.field569, var4, var14, var4 * 3 + 600);
       }
 
       if(!Client.field1160) {
@@ -94,7 +94,7 @@ public class class175 {
       int var11;
       for(var10 = 0; var10 < 5; ++var10) {
          if(Client.field1161[var10]) {
-            var11 = (int)(Math.random() * (double)(1 + Client.field1162[var10] * 2) - (double)Client.field1162[var10] + Math.sin((double)Client.field1164[var10] / 100.0D * (double)Client.field1165[var10]) * (double)Client.field1056[var10]);
+            var11 = (int)(Math.random() * (double)(Client.field1162[var10] * 2 + 1) - (double)Client.field1162[var10] + Math.sin((double)Client.field1164[var10] / 100.0D * (double)Client.field1165[var10]) * (double)Client.field1056[var10]);
             if(var10 == 0) {
                class211.cameraX += var11;
             }

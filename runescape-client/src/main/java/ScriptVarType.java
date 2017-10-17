@@ -1238,7 +1238,7 @@ public class ScriptVarType implements RSEnum, class293 {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class46.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == var11 + 1) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
                         }
                      }
@@ -1276,7 +1276,7 @@ public class ScriptVarType implements RSEnum, class293 {
                   var11 = var2[var4++];
                   if(var11 != -1 && (!class46.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(var10.itemIds[var12] == var11 + 1) {
+                        if(var11 + 1 == var10.itemIds[var12]) {
                            var7 = 999999999;
                            break;
                         }
@@ -1480,22 +1480,22 @@ public class ScriptVarType implements RSEnum, class293 {
             if(Client.field1011[var8] == 9) {
                var16 = 150 - Client.field1066[var8];
                if(var16 < 50) {
-                  var15 = 16711680 + var16 * 1280;
+                  var15 = var16 * 1280 + 16711680;
                } else if(var16 < 100) {
                   var15 = 16776960 - (var16 - 50) * 327680;
                } else if(var16 < 150) {
-                  var15 = '\uff00' + (var16 - 100) * 5;
+                  var15 = (var16 - 100) * 5 + '\uff00';
                }
             }
 
             if(Client.field1011[var8] == 10) {
                var16 = 150 - Client.field1066[var8];
                if(var16 < 50) {
-                  var15 = 16711680 + var16 * 5;
+                  var15 = var16 * 5 + 16711680;
                } else if(var16 < 100) {
                   var15 = 16711935 - (var16 - 50) * 327680;
                } else if(var16 < 150) {
-                  var15 = 255 + (var16 - 100) * 327680 - (var16 - 100) * 5;
+                  var15 = (var16 - 100) * 327680 + 255 - (var16 - 100) * 5;
                }
             }
 
@@ -1504,7 +1504,7 @@ public class ScriptVarType implements RSEnum, class293 {
                if(var16 < 50) {
                   var15 = 16777215 - var16 * 327685;
                } else if(var16 < 100) {
-                  var15 = '\uff00' + (var16 - 50) * 327685;
+                  var15 = (var16 - 50) * 327685 + '\uff00';
                } else if(var16 < 150) {
                   var15 = 16777215 - (var16 - 100) * 327680;
                }

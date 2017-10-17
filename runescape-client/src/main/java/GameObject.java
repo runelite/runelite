@@ -128,7 +128,7 @@ public final class GameObject {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class8.region.method2768(class5.plane, var2.x, var2.y, CacheFile.getTileHeight(var2.field1211 * 64 - 64 + var2.x, var2.field1211 * 64 - 64 + var2.y, class5.plane), 60 + (var2.field1211 * 64 - 64), var2, var2.angle, var3, var2.field1210);
+               class8.region.method2768(class5.plane, var2.x, var2.y, CacheFile.getTileHeight(var2.field1211 * 64 - 64 + var2.x, var2.field1211 * 64 - 64 + var2.y, class5.plane), var2.field1211 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1210);
             }
          }
       }

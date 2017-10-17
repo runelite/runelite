@@ -1099,7 +1099,7 @@ public class RenderOverview {
                   var8 = (class39)var7.next();
                   int var9 = var8.field547.worldX - var2.worldX;
                   int var10 = var8.field547.worldY - var2.worldY;
-                  var11 = var9 * var9 + var10 * var10;
+                  var11 = var10 * var10 + var9 * var9;
                   if(var11 == 0) {
                      return var8.field547;
                   }

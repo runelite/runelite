@@ -261,15 +261,15 @@ public class AudioInstrument {
                var14 = this.volumeMultiplier.step(var1);
                var15 = this.volumeMultiplierAmplitude.step(var1);
                var13 = var13 * ((this.evaluateWave(var10, var15, this.volumeMultiplier.form) >> 1) + '耀') >> 15;
-               var10 += (var14 * var8 >> 16) + var9;
+               var10 = var10 + var9 + (var14 * var8 >> 16);
             }
 
             for(var14 = 0; var14 < 5; ++var14) {
                if(this.oscillatorVolume[var14] != 0) {
                   var15 = delays[var14] + var11;
                   if(var15 < var1) {
-                     samples[var15] += this.evaluateWave(phases[var14], volumeSteps[var14] * var13 >> 15, this.pitch.form);
-                     phases[var14] += (pitchSteps[var14] * var12 >> 16) + pitchBaseSteps[var14];
+                     samples[var15] += this.evaluateWave(phases[var14], var13 * volumeSteps[var14] >> 15, this.pitch.form);
+                     phases[var14] += (var12 * pitchSteps[var14] >> 16) + pitchBaseSteps[var14];
                   }
                }
             }
@@ -287,7 +287,7 @@ public class AudioInstrument {
                var15 = this.release.step(var1);
                var16 = this.field1718.step(var1);
                if(var20) {
-                  var12 = this.release.start + (var15 * (this.release.end - this.release.start) >> 8);
+                  var12 = (var15 * (this.release.end - this.release.start) >> 8) + this.release.start;
                } else {
                   var12 = (var16 * (this.release.end - this.release.start) >> 8) + this.release.start;
                }

@@ -135,7 +135,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(!this.vmethod725(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{var2 + (this.field448 * 64 - this.field445 * 64), this.field446 * 64 - this.field440 * 64 + var3};
+         int[] var4 = new int[]{this.field448 * 64 - this.field445 * 64 + var2, var3 + (this.field446 * 64 - this.field440 * 64)};
          return var4;
       }
    }

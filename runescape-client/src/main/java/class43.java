@@ -197,7 +197,7 @@ public class class43 {
          if(var7 <= 6400) {
             int var8 = Graphics3D.SINE[var6];
             int var9 = Graphics3D.COSINE[var6];
-            int var10 = var9 * var2 + var3 * var8 >> 16;
+            int var10 = var3 * var8 + var9 * var2 >> 16;
             int var11 = var3 * var9 - var8 * var2 >> 16;
             if(var7 > 2500) {
                var4.method5185(var10 + var5.field2615 / 2 - var4.maxWidth / 2, var5.field2611 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2615, var5.field2611, var5.field2616, var5.field2613);

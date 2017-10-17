@@ -1712,7 +1712,7 @@ public final class Client extends GameEngine {
       }
 
       var3 += 8;
-      var4 = 22 + menuOptionCount * 15;
+      var4 = menuOptionCount * 15 + 22;
       var5 = var1 - var3 / 2;
       if(var5 + var3 > class60.canvasWidth) {
          var5 = class60.canvasWidth - var3;
@@ -1736,7 +1736,7 @@ public final class Client extends GameEngine {
       class54.menuX = var5;
       class10.menuY = var6;
       class20.menuWidth = var3;
-      class28.menuHeight = 22 + menuOptionCount * 15;
+      class28.menuHeight = menuOptionCount * 15 + 22;
    }
 
    @ObfuscatedName("hh")
@@ -3180,8 +3180,8 @@ public final class Client extends GameEngine {
                   class221.field2820 = secretPacketBuffer2.readUnsignedByte();
                   class66.field830 = secretPacketBuffer2.readUnsignedByte();
                   if(class66.field830 >= 100) {
-                     class211.cameraX = 64 + class110.field1656 * 128;
-                     ChatLineBuffer.cameraY = 64 + ItemContainer.field801 * 128;
+                     class211.cameraX = class110.field1656 * 128 + 64;
+                     ChatLineBuffer.cameraY = ItemContainer.field801 * 128 + 64;
                      ScriptState.cameraZ = CacheFile.getTileHeight(class211.cameraX, ChatLineBuffer.cameraY, class5.plane) - class15.field303;
                   }
 
@@ -3197,13 +3197,13 @@ public final class Client extends GameEngine {
                   class181.field2454 = secretPacketBuffer2.readUnsignedByte();
                   class28.field427 = secretPacketBuffer2.readUnsignedByte();
                   if(class28.field427 >= 100) {
-                     var2 = 64 + class51.field672 * 128;
-                     var3 = 64 + class35.field514 * 128;
+                     var2 = class51.field672 * 128 + 64;
+                     var3 = class35.field514 * 128 + 64;
                      var23 = CacheFile.getTileHeight(var2, var3, class5.plane) - class170.field2359;
                      var26 = var2 - class211.cameraX;
                      var25 = var23 - ScriptState.cameraZ;
                      var34 = var3 - ChatLineBuffer.cameraY;
-                     var82 = (int)Math.sqrt((double)(var26 * var26 + var34 * var34));
+                     var82 = (int)Math.sqrt((double)(var34 * var34 + var26 * var26));
                      class9.cameraPitch = (int)(Math.atan2((double)var25, (double)var82) * 325.949D) & 2047;
                      class174.cameraYaw = (int)(Math.atan2((double)var26, (double)var34) * -325.949D) & 2047;
                      if(class9.cameraPitch < 128) {
@@ -3683,8 +3683,8 @@ public final class Client extends GameEngine {
                   return true;
                }
 
-               if(packetType == Opcodes.PACKET_SERVER_150) {
-                  class86.xteaChanged(false);
+               if(packetType == Opcodes.PACKET_SERVER_148) {
+                  class86.xteaChanged(true);
                   secretPacketBuffer2.readOpcode();
                   var2 = secretPacketBuffer2.readUnsignedShort();
                   class36.method487(secretPacketBuffer2, var2);
@@ -3692,8 +3692,8 @@ public final class Client extends GameEngine {
                   return true;
                }
 
-               if(packetType == Opcodes.PACKET_SERVER_148) {
-                  class86.xteaChanged(true);
+               if(packetType == Opcodes.PACKET_SERVER_150) {
+                  class86.xteaChanged(false);
                   secretPacketBuffer2.readOpcode();
                   var2 = secretPacketBuffer2.readUnsignedShort();
                   class36.method487(secretPacketBuffer2, var2);
@@ -4456,7 +4456,7 @@ public final class Client extends GameEngine {
          int var9;
          int var10;
          for(var8 = 0; var8 < menuOptionCount; ++var8) {
-            var9 = var2 + 31 + (menuOptionCount - 1 - var8) * 15;
+            var9 = var2 + (menuOptionCount - 1 - var8) * 15 + 31;
             var10 = 16777215;
             if(var6 > var1 && var6 < var3 + var1 && var7 > var9 - 13 && var7 < var9 + 3) {
                var10 = 16776960;
@@ -4625,7 +4625,7 @@ public final class Client extends GameEngine {
                   field1173 = field980;
                }
 
-               var3 = 50 + (field1173 * 50 - field980 * 50) / field1173;
+               var3 = (field1173 * 50 - field980 * 50) / field1173 + 50;
                class14.drawStatusBox("Loading - please wait." + "<br>" + " (" + var3 + "%" + ")", false);
             } else {
                class14.drawStatusBox("Loading - please wait.", false);
@@ -5279,7 +5279,7 @@ public final class Client extends GameEngine {
                }
 
                for(var4 = 1; var4 < 103; ++var4) {
-                  var5 = 24628 + (103 - var4) * 2048;
+                  var5 = (103 - var4) * 2048 + 24628;
 
                   for(var6 = 1; var6 < 103; ++var6) {
                      if((class61.tileSettings[var1][var6][var4] & 24) == 0) {
@@ -5578,8 +5578,8 @@ public final class Client extends GameEngine {
 
                                              PendingSpawn.method1581();
                                              if(field1160) {
-                                                var4 = 64 + class110.field1656 * 128;
-                                                var5 = 64 + ItemContainer.field801 * 128;
+                                                var4 = class110.field1656 * 128 + 64;
+                                                var5 = ItemContainer.field801 * 128 + 64;
                                                 var6 = CacheFile.getTileHeight(var4, var5, class5.plane) - class15.field303;
                                                 if(class211.cameraX < var4) {
                                                    class211.cameraX = (var4 - class211.cameraX) * class66.field830 / 1000 + class211.cameraX + class221.field2820;
@@ -5596,7 +5596,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(ScriptState.cameraZ < var6) {
-                                                   ScriptState.cameraZ += class221.field2820 + (var6 - ScriptState.cameraZ) * class66.field830 / 1000;
+                                                   ScriptState.cameraZ = (var6 - ScriptState.cameraZ) * class66.field830 / 1000 + ScriptState.cameraZ + class221.field2820;
                                                    if(ScriptState.cameraZ > var6) {
                                                       ScriptState.cameraZ = var6;
                                                    }
@@ -5610,7 +5610,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(ChatLineBuffer.cameraY < var5) {
-                                                   ChatLineBuffer.cameraY += class221.field2820 + (var5 - ChatLineBuffer.cameraY) * class66.field830 / 1000;
+                                                   ChatLineBuffer.cameraY = (var5 - ChatLineBuffer.cameraY) * class66.field830 / 1000 + ChatLineBuffer.cameraY + class221.field2820;
                                                    if(ChatLineBuffer.cameraY > var5) {
                                                       ChatLineBuffer.cameraY = var5;
                                                    }
@@ -5623,13 +5623,13 @@ public final class Client extends GameEngine {
                                                    }
                                                 }
 
-                                                var4 = 64 + class51.field672 * 128;
-                                                var5 = 64 + class35.field514 * 128;
+                                                var4 = class51.field672 * 128 + 64;
+                                                var5 = class35.field514 * 128 + 64;
                                                 var6 = CacheFile.getTileHeight(var4, var5, class5.plane) - class170.field2359;
                                                 var7 = var4 - class211.cameraX;
                                                 var8 = var6 - ScriptState.cameraZ;
                                                 var9 = var5 - ChatLineBuffer.cameraY;
-                                                int var10 = (int)Math.sqrt((double)(var7 * var7 + var9 * var9));
+                                                int var10 = (int)Math.sqrt((double)(var9 * var9 + var7 * var7));
                                                 int var11 = (int)(Math.atan2((double)var8, (double)var10) * 325.949D) & 2047;
                                                 int var12 = (int)(Math.atan2((double)var7, (double)var9) * -325.949D) & 2047;
                                                 if(var11 < 128) {
@@ -5641,14 +5641,14 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(class9.cameraPitch < var11) {
-                                                   class9.cameraPitch += (var11 - class9.cameraPitch) * class28.field427 / 1000 + class181.field2454;
+                                                   class9.cameraPitch = (var11 - class9.cameraPitch) * class28.field427 / 1000 + class9.cameraPitch + class181.field2454;
                                                    if(class9.cameraPitch > var11) {
                                                       class9.cameraPitch = var11;
                                                    }
                                                 }
 
                                                 if(class9.cameraPitch > var11) {
-                                                   class9.cameraPitch -= class181.field2454 + class28.field427 * (class9.cameraPitch - var11) / 1000;
+                                                   class9.cameraPitch -= class28.field427 * (class9.cameraPitch - var11) / 1000 + class181.field2454;
                                                    if(class9.cameraPitch < var11) {
                                                       class9.cameraPitch = var11;
                                                    }
@@ -5669,7 +5669,7 @@ public final class Client extends GameEngine {
                                                 }
 
                                                 if(var13 < 0) {
-                                                   class174.cameraYaw -= -var13 * class28.field427 / 1000 + class181.field2454;
+                                                   class174.cameraYaw -= class181.field2454 + -var13 * class28.field427 / 1000;
                                                    class174.cameraYaw &= 2047;
                                                 }
 
@@ -5830,7 +5830,7 @@ public final class Client extends GameEngine {
 
                   int var17;
                   for(var17 = 0; var17 < menuOptionCount; ++var17) {
-                     var9 = var3 + 31 + (menuOptionCount - 1 - var17) * 15;
+                     var9 = var3 + (menuOptionCount - 1 - var17) * 15 + 31;
                      if(var5 > var2 && var5 < var2 + var4 && var6 > var9 - 13 && var6 < var9 + 3) {
                         var7 = var17;
                      }

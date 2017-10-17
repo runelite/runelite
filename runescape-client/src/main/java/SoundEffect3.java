@@ -82,7 +82,7 @@ public class SoundEffect3 {
             var3 = this.interpolateMagniture(var1, var4, var2);
             float var5 = -2.0F * var3 * (float)Math.cos((double)this.interpolatePhase(var1, var4, var2));
             float var6 = var3 * var3;
-            minimisedCoefficients[var1][1 + var4 * 2] = minimisedCoefficients[var1][var4 * 2 - 1] * var6;
+            minimisedCoefficients[var1][var4 * 2 + 1] = minimisedCoefficients[var1][var4 * 2 - 1] * var6;
             minimisedCoefficients[var1][var4 * 2] = minimisedCoefficients[var1][var4 * 2 - 1] * var5 + minimisedCoefficients[var1][var4 * 2 - 2] * var6;
 
             for(int var7 = var4 * 2 - 1; var7 >= 2; --var7) {

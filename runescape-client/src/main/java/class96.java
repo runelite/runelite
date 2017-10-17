@@ -459,8 +459,8 @@ public class class96 {
             int[] var23 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
-               var2 = 15 + 128 + var1 * 32;
-               var3 = 600 + var2 * 3;
+               var2 = var1 * 32 + 15 + 128;
+               var3 = var2 * 3 + 600;
                var4 = Graphics3D.SINE[var2];
                var23[var1] = var4 * var3 >> 16;
             }

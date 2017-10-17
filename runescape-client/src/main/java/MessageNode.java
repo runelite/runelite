@@ -560,7 +560,7 @@ public class MessageNode extends CacheableNode {
 
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3436 - var61 * var87.field3436 / var87.field3422;
-                     int var63 = -var87.field3428 + var61 * var87.field3428 / var87.field3422;
+                     int var63 = var61 * var87.field3428 / var87.field3422 + -var87.field3428;
                      int var64 = var62 + (var2 + Client.screenY - (var50 >> 1));
                      int var65 = var63 + (var3 + Client.screenX - 12);
                      int var66 = var65;
@@ -669,7 +669,7 @@ public class MessageNode extends CacheableNode {
 
                            if(var30 != null) {
                               for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method5172(var64 + var58 - var38 + var34 * var73, var65);
+                                 var30.method5172(var34 * var73 + (var64 + var58 - var38), var65);
                               }
                            }
 
@@ -730,8 +730,8 @@ public class MessageNode extends CacheableNode {
 
          for(var4 = 0; var4 < var0.height; ++var4) {
             for(var5 = 0; var5 < var0.width; ++var5) {
-               int var6 = var5 * (var0.paddingX + 32);
-               int var7 = var4 * (var0.paddingY + 32);
+               int var6 = (var0.paddingX + 32) * var5;
+               int var7 = (var0.paddingY + 32) * var4;
                if(var13 < 20) {
                   var6 += var0.xSprites[var13];
                   var7 += var0.field2727[var13];

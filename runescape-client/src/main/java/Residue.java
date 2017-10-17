@@ -91,7 +91,7 @@ public class Residue {
                   var11 = var7[var9];
                   int var12 = this.field1667[var8 + var11 * 8];
                   if(var12 >= 0) {
-                     int var13 = this.begin + var9 * this.partitionSize;
+                     int var13 = var9 * this.partitionSize + this.begin;
                      CodeBook var14 = class104.codeBooks[var12];
                      int var15;
                      if(this.type == 0) {

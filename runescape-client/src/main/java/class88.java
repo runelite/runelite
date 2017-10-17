@@ -86,7 +86,7 @@ public class class88 {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class94.field1483[var1] = (Varcs.baseY + var4.pathY[0] >> 13) + (var4.field894 << 28) + (WallObject.baseX + var4.pathX[0] >> 13 << 14);
+            class94.field1483[var1] = (var4.field894 << 28) + (Varcs.baseY + var4.pathY[0] >> 13) + (WallObject.baseX + var4.pathX[0] >> 13 << 14);
             if(var4.field1235 != -1) {
                class94.field1475[var1] = var4.field1235;
             } else {

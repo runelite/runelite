@@ -349,7 +349,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             } else if(var0 == 3916) {
                class81.intStackSize -= 2;
                var13 = class81.intStack[class81.intStackSize] == 1;
-               boolean var4 = 1 == class81.intStack[class81.intStackSize + 1];
+               boolean var4 = class81.intStack[class81.intStackSize + 1] == 1;
                if(class19.field330 != null) {
                   class19.field330.method74(new class93(var4), var13);
                }
@@ -443,7 +443,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          var8 = var3 * var5 - var4 * var1 >> 16;
          var1 = var5 * var1 + var3 * var4 >> 16;
          if(var1 >= 50) {
-            Client.screenY = Client.viewportHeight / 2 + var0 * Client.scale / var1;
+            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
             Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
          } else {
             Client.screenY = -1;

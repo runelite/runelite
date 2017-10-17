@@ -91,11 +91,11 @@ public class class51 implements class101 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            WidgetNode.field837[var5 + 64] = 16711680 + var5 * 1024;
+            WidgetNode.field837[var5 + 64] = var5 * 1024 + 16711680;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            WidgetNode.field837[var5 + 128] = 16776960 + var5 * 4;
+            WidgetNode.field837[var5 + 128] = var5 * 4 + 16776960;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
@@ -109,11 +109,11 @@ public class class51 implements class101 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class5.field41[var5 + 64] = '\uff00' + var5 * 4;
+            class5.field41[var5 + 64] = var5 * 4 + '\uff00';
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class5.field41[var5 + 128] = '\uffff' + var5 * 262144;
+            class5.field41[var5 + 128] = var5 * 262144 + '\uffff';
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
@@ -127,11 +127,11 @@ public class class51 implements class101 {
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class1.field10[var5 + 64] = 255 + var5 * 262144;
+            class1.field10[var5 + 64] = var5 * 262144 + 255;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {
-            class1.field10[var5 + 128] = 16711935 + var5 * 1024;
+            class1.field10[var5 + 128] = var5 * 1024 + 16711935;
          }
 
          for(var5 = 0; var5 < 64; ++var5) {

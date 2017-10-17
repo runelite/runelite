@@ -649,7 +649,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
          if(var9 == 0) {
             var13 = var3 + this.minSpacing;
          } else if(var9 == 1) {
-            var13 = var3 + this.minSpacing + (var5 - this.minSpacing - this.maxSpacing - var10 * (var12 - 1)) / 2;
+            var13 = var3 + (var5 - this.minSpacing - this.maxSpacing - var10 * (var12 - 1)) / 2 + this.minSpacing;
          } else if(var9 == 2) {
             var13 = var3 + var5 - this.maxSpacing - var10 * (var12 - 1);
          } else {
@@ -913,7 +913,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
    @ObfuscatedName("av")
    @Export("renderRGBA")
    static void renderRGBA(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      var2 = (var9 * (var2 & 16711935) & -16711936) + ((var2 & '\uff00') * var9 & 16711680) >> 8;
+      var2 = ((var2 & '\uff00') * var9 & 16711680) + (var9 * (var2 & 16711935) & -16711936) >> 8;
       var9 = 256 - var9;
 
       for(int var10 = -var6; var10 < 0; ++var10) {

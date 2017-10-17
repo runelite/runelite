@@ -19,6 +19,12 @@ public class FaceNormal {
    )
    @Export("mapfunctions")
    static SpritePixels[] mapfunctions;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -852035081
+   )
+   @Export("y")
+   int y;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -546781547
@@ -31,12 +37,6 @@ public class FaceNormal {
    )
    @Export("x")
    int x;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -852035081
-   )
-   @Export("y")
-   int y;
 
    @ObfuscatedName("io")
    @ObfuscatedSignature(

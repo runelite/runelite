@@ -81,8 +81,8 @@ public class ClanMember extends Node {
             int var9;
             int var10;
             for(var8 = 0; var8 < Client.field1141; ++var8) {
-               var9 = 2 + Client.field1142[var8] * 4 - AbstractByteBuffer.localPlayer.x / 32;
-               var10 = 2 + Client.field1143[var8] * 4 - AbstractByteBuffer.localPlayer.y / 32;
+               var9 = Client.field1142[var8] * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
+               var10 = Client.field1143[var8] * 4 + 2 - AbstractByteBuffer.localPlayer.y / 32;
                class43.drawDot(var1, var2, var9, var10, Client.field1176[var8], var4);
             }
 
@@ -92,8 +92,8 @@ public class ClanMember extends Node {
                for(var9 = 0; var9 < 104; ++var9) {
                   Deque var17 = Client.groundItemDeque[class5.plane][var8][var9];
                   if(var17 != null) {
-                     var11 = 2 + var8 * 4 - AbstractByteBuffer.localPlayer.x / 32;
-                     var12 = 2 + var9 * 4 - AbstractByteBuffer.localPlayer.y / 32;
+                     var11 = var8 * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
+                     var12 = var9 * 4 + 2 - AbstractByteBuffer.localPlayer.y / 32;
                      class43.drawDot(var1, var2, var11, var12, MouseInput.mapDots[0], var4);
                   }
                }
@@ -181,8 +181,8 @@ public class ClanMember extends Node {
             }
 
             if(Client.destinationX != 0) {
-               var10 = 2 + Client.destinationX * 4 - AbstractByteBuffer.localPlayer.x / 32;
-               var11 = 2 + Client.destinationY * 4 - AbstractByteBuffer.localPlayer.y / 32;
+               var10 = Client.destinationX * 4 + 2 - AbstractByteBuffer.localPlayer.x / 32;
+               var11 = Client.destinationY * 4 + 2 - AbstractByteBuffer.localPlayer.y / 32;
                class43.drawDot(var1, var2, var10, var11, class54.field687[0], var4);
             }
 

@@ -474,7 +474,7 @@ public class class44 extends WorldMapData {
    )
    @Export("getSmoothNoise2D")
    static final int getSmoothNoise2D(int var0, int var1) {
-      int var2 = Preferences.method1645(var0 - 1, var1 - 1) + Preferences.method1645(var0 + 1, var1 - 1) + Preferences.method1645(var0 - 1, var1 + 1) + Preferences.method1645(var0 + 1, var1 + 1);
+      int var2 = Preferences.method1645(var0 - 1, var1 - 1) + Preferences.method1645(var0 + 1, var1 - 1) + Preferences.method1645(var0 - 1, 1 + var1) + Preferences.method1645(var0 + 1, var1 + 1);
       int var3 = Preferences.method1645(var0 - 1, var1) + Preferences.method1645(var0 + 1, var1) + Preferences.method1645(var0, var1 - 1) + Preferences.method1645(var0, var1 + 1);
       int var4 = Preferences.method1645(var0, var1);
       return var2 / 16 + var3 / 8 + var4 / 4;

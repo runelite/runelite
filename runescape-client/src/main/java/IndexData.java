@@ -69,7 +69,7 @@ public class IndexData extends IndexDataBase {
       this.field3243 = var6;
       int var8 = this.index;
       if(SceneTilePaint.field2033 != null) {
-         SceneTilePaint.field2033.offset = 5 + var8 * 8;
+         SceneTilePaint.field2033.offset = var8 * 8 + 5;
          int var9 = SceneTilePaint.field2033.readInt();
          int var10 = SceneTilePaint.field2033.readInt();
          this.setInformation(var9, var10);

@@ -200,7 +200,7 @@ public final class FileOnDisk {
          var10 = class132.field1986 - var4;
          var11 = class96.field1517 - var5;
          var12 = class270.field3685 - var6;
-         return Math.abs(var10) > var7 + class31.field459?false:(Math.abs(var11) > var15 + MessageNode.field873?false:(Math.abs(var12) > var16 + class48.field638?false:(Math.abs(var12 * BuildType.field3190 - var11 * class132.field1988) > var15 * class48.field638 + var16 * MessageNode.field873?false:(Math.abs(var10 * class132.field1988 - var12 * class132.field1987) > var7 * class48.field638 + var16 * class31.field459?false:Math.abs(var11 * class132.field1987 - var10 * BuildType.field3190) <= var7 * MessageNode.field873 + var15 * class31.field459))));
+         return Math.abs(var10) > var7 + class31.field459?false:(Math.abs(var11) > var15 + MessageNode.field873?false:(Math.abs(var12) > var16 + class48.field638?false:(Math.abs(var12 * BuildType.field3190 - var11 * class132.field1988) > var16 * MessageNode.field873 + var15 * class48.field638?false:(Math.abs(var10 * class132.field1988 - var12 * class132.field1987) > var16 * class31.field459 + var7 * class48.field638?false:Math.abs(var11 * class132.field1987 - var10 * BuildType.field3190) <= var15 * class31.field459 + var7 * MessageNode.field873))));
       }
    }
 

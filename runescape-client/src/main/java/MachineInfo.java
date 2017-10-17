@@ -259,7 +259,7 @@ public class MachineInfo extends Node {
                break;
             }
 
-            var7 = var8 - 48 + var7 * 10;
+            var7 = var7 * 10 + (var8 - 48);
             ++var6;
          }
       } catch (Exception var14) {

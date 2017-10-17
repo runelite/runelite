@@ -113,7 +113,7 @@ public class class208 extends class117 {
       if((this.field2600.field2539[var1.field2563] & 4) != 0 && var1.field2571 < 0) {
          int var3 = this.field2600.field2544[var1.field2563] / class31.sampleRate;
          int var4 = (var3 + 1048575 - var1.field2577) / var3;
-         var1.field2577 = var1.field2577 + var3 * var2 & 1048575;
+         var1.field2577 = var3 * var2 + var1.field2577 & 1048575;
          if(var4 <= var2) {
             if(this.field2600.field2540[var1.field2563] == 0) {
                var1.field2570 = class115.method2352(var1.field2559, var1.field2570.method2248(), var1.field2570.method2350(), var1.field2570.method2251());

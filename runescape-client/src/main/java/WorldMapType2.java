@@ -96,7 +96,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod722(var1, var2)) {
          return null;
       } else {
-         int var3 = var1 + (this.field535 * 64 - this.field537 * 64);
+         int var3 = this.field535 * 64 - this.field537 * 64 + var1;
          int var4 = this.field536 * 64 - this.field534 * 64 + var2;
          return new Coordinates(this.field538, var3, var4);
       }
@@ -111,7 +111,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       if(!this.vmethod725(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{var2 + (this.field537 * 64 - this.field535 * 64), this.field534 * 64 - this.field536 * 64 + var3};
+         int[] var4 = new int[]{this.field537 * 64 - this.field535 * 64 + var2, var3 + (this.field534 * 64 - this.field536 * 64)};
          return var4;
       }
    }
@@ -168,7 +168,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       } else if(var0.field2664 == 3) {
          var0.relativeY = var2 * var0.originalY >> 14;
       } else if(var0.field2664 == 4) {
-         var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
+         var0.relativeY = (var2 * var0.originalY >> 14) + (var2 - var0.height) / 2;
       } else {
          var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);
       }
@@ -778,7 +778,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                                              }
 
                                              var25 = var12 + var22 * (var10.paddingX + 115);
-                                             var26 = var13 + var21 * (var10.paddingY + 12);
+                                             var26 = (var10.paddingY + 12) * var21 + var13;
                                              if(var10.field2721 == 0) {
                                                 var39.method4840(var33, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2721 == 1) {

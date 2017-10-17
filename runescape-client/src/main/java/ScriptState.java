@@ -79,9 +79,9 @@ public class ScriptState {
          }
 
          int var13 = var5 * var12 >> 17;
-         int var14 = 1 + var5 * var12 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
          int var15 = var5 * var11 >> 17;
-         int var16 = 1 + var5 * var11 >> 17;
+         int var16 = var5 * var11 + 1 >> 17;
          var0 -= Rasterizer2D.draw_region_x;
          var1 -= Rasterizer2D.drawingAreaTop;
          int var17 = var0 + var13;

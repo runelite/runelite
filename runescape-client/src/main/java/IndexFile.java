@@ -67,7 +67,7 @@ public final class IndexFile {
             int var6;
             boolean var10000;
             if(var4) {
-               if(this.indexFile.method2412() < (long)(6 + var1 * 6)) {
+               if(this.indexFile.method2412() < (long)(var1 * 6 + 6)) {
                   var10000 = false;
                   return var10000;
                }
@@ -205,7 +205,7 @@ public final class IndexFile {
       synchronized(this.dataFile) {
          Object var10000;
          try {
-            if(this.indexFile.method2412() < (long)(6 + var1 * 6)) {
+            if(this.indexFile.method2412() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
             }

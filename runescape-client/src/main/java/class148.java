@@ -72,7 +72,7 @@ public class class148 {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -Player.method1189(var2 + var4 + 932731, var3 + var5 + 556238) * 8;
+                  class61.tileHeights[0][var2][var3] = -Player.method1189(var2 + 932731 + var4, var3 + 556238 + var5) * 8;
                } else {
                   class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
                }

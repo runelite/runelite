@@ -200,8 +200,8 @@ public class World {
                var23 = var8.sizeX;
             }
 
-            var21.field1319 = 128 * (var22 + var1);
-            var21.field1316 = 128 * (var23 + var2);
+            var21.field1319 = (var22 + var1) * 128;
+            var21.field1316 = (var23 + var2) * 128;
             var21.field1318 = var8.ambientSoundId;
             var21.field1317 = var8.field3483 * 128;
             var21.field1320 = var8.field3445;

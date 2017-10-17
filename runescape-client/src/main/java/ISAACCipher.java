@@ -69,7 +69,7 @@ public final class ISAACCipher {
             this.field2444 ^= this.field2444 >>> 16;
          }
 
-         this.field2444 += this.mm[var1 + 128 & 255];
+         this.field2444 += this.mm[128 + var1 & 255];
          int var3;
          this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2444 + this.field2445;
          this.randResult[var1] = this.field2445 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;

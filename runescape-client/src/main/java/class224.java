@@ -107,7 +107,7 @@ public class class224 {
                var9 = -var9;
             }
 
-            int var8 = var9 + var4 * 10;
+            int var8 = var4 * 10 + var9;
             if(var4 != var8 / 10) {
                var1 = false;
                break;
