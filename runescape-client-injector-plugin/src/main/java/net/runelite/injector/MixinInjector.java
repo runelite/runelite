@@ -101,7 +101,7 @@ public class MixinInjector
 		}
 	}
 
-	private void inject(Class<?> mixinClass, Class<?> implementInto) throws IOException, InjectionException
+	protected void inject(Class<?> mixinClass, Class<?> implementInto) throws IOException, InjectionException
 	{
 		ClassFile mixinCf = loadClass(mixinClass);
 		// Find vanilla class which implements implementInto
