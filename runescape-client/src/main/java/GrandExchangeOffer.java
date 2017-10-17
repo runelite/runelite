@@ -254,7 +254,7 @@ public class GrandExchangeOffer {
                               }
 
                               if(var47.composition.field3559 == 1 && (var47.x & 127) == 64 && (var47.y & 127) == 64) {
-                                 for(var28 = 0; var28 < Client.field960; ++var28) {
+                                 for(var28 = 0; var28 < Client.npcIndexesCount; ++var28) {
                                     var29 = Client.cachedNPCs[Client.npcIndices[var28]];
                                     if(var29 != null && var47 != var29 && var29.composition.field3559 == 1 && var47.x == var29.x && var29.y == var47.y) {
                                        SoundTask.method2153(var29.composition, Client.npcIndices[var28], var23, var24);
@@ -282,7 +282,7 @@ public class GrandExchangeOffer {
                               }
 
                               if((var48.x & 127) == 64 && (var48.y & 127) == 64) {
-                                 for(var28 = 0; var28 < Client.field960; ++var28) {
+                                 for(var28 = 0; var28 < Client.npcIndexesCount; ++var28) {
                                     var29 = Client.cachedNPCs[Client.npcIndices[var28]];
                                     if(var29 != null && var29.composition.field3559 == 1 && var48.x == var29.x && var29.y == var48.y) {
                                        SoundTask.method2153(var29.composition, Client.npcIndices[var28], var23, var24);

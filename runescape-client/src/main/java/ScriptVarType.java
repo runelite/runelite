@@ -1417,7 +1417,7 @@ public class ScriptVarType implements RSEnum, class293 {
       int[] var7 = class94.field1480;
 
       int var8;
-      for(var8 = 0; var8 < var6 + Client.field960; ++var8) {
+      for(var8 = 0; var8 < var6 + Client.npcIndexesCount; ++var8) {
          Object var9;
          if(var8 < var6) {
             var9 = Client.cachedPlayers[var7[var8]];

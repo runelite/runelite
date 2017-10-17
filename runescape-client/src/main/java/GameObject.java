@@ -109,7 +109,7 @@ public final class GameObject {
       garbageValue = "395429518"
    )
    static final void method2968(boolean var0) {
-      for(int var1 = 0; var1 < Client.field960; ++var1) {
+      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
          NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
          int var3 = (Client.npcIndices[var1] << 14) + 536870912;
          if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4730()) {

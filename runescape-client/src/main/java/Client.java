@@ -623,7 +623,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 236394013
    )
-   static int field960;
+   @Export("npcIndexesCount")
+   static int npcIndexesCount;
    @ObfuscatedName("dm")
    @Export("npcIndices")
    static int[] npcIndices;
@@ -1224,7 +1225,7 @@ public final class Client extends GameEngine {
       field957 = class149.field2209;
       field981 = null;
       cachedNPCs = new NPC['耀'];
-      field960 = 0;
+      npcIndexesCount = 0;
       npcIndices = new int['耀'];
       pendingNpcFlagsCount = 0;
       pendingNpcFlagsIndices = new int[250];
@@ -5347,7 +5348,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  for(var1 = 0; var1 < field960; ++var1) {
+                  for(var1 = 0; var1 < npcIndexesCount; ++var1) {
                      var2 = npcIndices[var1];
                      NPC var24 = cachedNPCs[var2];
                      if(var24 != null) {

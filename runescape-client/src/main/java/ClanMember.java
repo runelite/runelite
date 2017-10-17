@@ -99,7 +99,7 @@ public class ClanMember extends Node {
                }
             }
 
-            for(var8 = 0; var8 < Client.field960; ++var8) {
+            for(var8 = 0; var8 < Client.npcIndexesCount; ++var8) {
                NPC var18 = Client.cachedNPCs[Client.npcIndices[var8]];
                if(var18 != null && var18.hasConfig()) {
                   NPCComposition var21 = var18.composition;

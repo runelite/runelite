@@ -31,7 +31,7 @@ public class class23 {
                }
 
                NPC var3 = Client.cachedNPCs[var1];
-               Client.npcIndices[++Client.field960 - 1] = var1;
+               Client.npcIndices[++Client.npcIndexesCount - 1] = var1;
                var3.field1256 = Client.gameCycle;
                int var4;
                if(var0) {

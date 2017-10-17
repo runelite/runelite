@@ -167,9 +167,9 @@ public final class class270 {
       if(Client.packetLength != Client.secretPacketBuffer2.offset) {
          throw new RuntimeException(Client.secretPacketBuffer2.offset + "," + Client.packetLength);
       } else {
-         for(var1 = 0; var1 < Client.field960; ++var1) {
+         for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
             if(Client.cachedNPCs[Client.npcIndices[var1]] == null) {
-               throw new RuntimeException(var1 + "," + Client.field960);
+               throw new RuntimeException(var1 + "," + Client.npcIndexesCount);
             }
          }
 

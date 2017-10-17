@@ -147,7 +147,7 @@ final class class2 implements class0 {
          }
       }
 
-      for(var1 = 0; var1 < Client.field960; ++var1) {
+      for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
          int var4 = Client.npcIndices[var1];
          NPC var3 = Client.cachedNPCs[var4];
          if(var3 != null && var3.field1223 > 0) {

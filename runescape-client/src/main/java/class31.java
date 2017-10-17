@@ -94,7 +94,7 @@ public class class31 {
       Client.destinationY = 0;
       Client.field946 = class89.field1403;
       Client.field947 = class89.field1403;
-      Client.field960 = 0;
+      Client.npcIndexesCount = 0;
       class94.field1485 = 0;
 
       int var0;

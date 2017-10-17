@@ -30,35 +30,35 @@ public class class37 {
       Client.secretPacketBuffer2.bitAccess();
       int var0 = Client.secretPacketBuffer2.getBits(8);
       int var1;
-      if(var0 < Client.field960) {
-         for(var1 = var0; var1 < Client.field960; ++var1) {
+      if(var0 < Client.npcIndexesCount) {
+         for(var1 = var0; var1 < Client.npcIndexesCount; ++var1) {
             Client.field1037[++Client.field1036 - 1] = Client.npcIndices[var1];
          }
       }
 
-      if(var0 > Client.field960) {
+      if(var0 > Client.npcIndexesCount) {
          throw new RuntimeException("");
       } else {
-         Client.field960 = 0;
+         Client.npcIndexesCount = 0;
 
          for(var1 = 0; var1 < var0; ++var1) {
             int var2 = Client.npcIndices[var1];
             NPC var3 = Client.cachedNPCs[var2];
             int var4 = Client.secretPacketBuffer2.getBits(1);
             if(var4 == 0) {
-               Client.npcIndices[++Client.field960 - 1] = var2;
+               Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
                var3.field1256 = Client.gameCycle;
             } else {
                int var5 = Client.secretPacketBuffer2.getBits(2);
                if(var5 == 0) {
-                  Client.npcIndices[++Client.field960 - 1] = var2;
+                  Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
                   var3.field1256 = Client.gameCycle;
                   Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
                } else {
                   int var6;
                   int var7;
                   if(var5 == 1) {
-                     Client.npcIndices[++Client.field960 - 1] = var2;
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
                      var3.field1256 = Client.gameCycle;
                      var6 = Client.secretPacketBuffer2.getBits(3);
                      var3.method1753(var6, (byte)1);
@@ -67,7 +67,7 @@ public class class37 {
                         Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var2;
                      }
                   } else if(var5 == 2) {
-                     Client.npcIndices[++Client.field960 - 1] = var2;
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
                      var3.field1256 = Client.gameCycle;
                      var6 = Client.secretPacketBuffer2.getBits(3);
                      var3.method1753(var6, (byte)2);
