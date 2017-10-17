@@ -21,8 +21,8 @@ public class MachineInfo extends Node {
    @ObfuscatedName("at")
    String field3905;
    @ObfuscatedName("r")
-   @Export("os32Bit")
-   boolean os32Bit;
+   @Export("Fos64Bit")
+   boolean os64Bit;
    @ObfuscatedName("aw")
    String field3906;
    @ObfuscatedName("ae")
@@ -151,9 +151,9 @@ public class MachineInfo extends Node {
       }
 
       if(!var2.startsWith("amd64") && !var2.startsWith("x86_64")) {
-         this.os32Bit = false;
+         this.os64Bit = false;
       } else {
-         this.os32Bit = true;
+         this.os64Bit = true;
       }
 
       if(this.osType == 1) {
@@ -364,7 +364,7 @@ public class MachineInfo extends Node {
    public void method5508(Buffer var1) {
       var1.putByte(6);
       var1.putByte(this.osType);
-      var1.putByte(this.os32Bit?1:0);
+      var1.putByte(this.os64Bit?1:0);
       var1.putByte(this.osVersionType);
       var1.putByte(this.javaVendorType);
       var1.putByte(this.javaVersionMajor);
