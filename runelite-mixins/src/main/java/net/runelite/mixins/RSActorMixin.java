@@ -32,6 +32,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -141,6 +142,13 @@ public abstract class RSActorMixin implements RSActor
 	public Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset)
 	{
 		return Perspective.getCanvasImageLocation(client, graphics, getLocalLocation(), image, zOffset);
+	}
+
+	@Inject
+	@Override
+	public Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset)
+	{
+		return Perspective.getCanvasSpriteLocation(client, graphics, getLocalLocation(), sprite, zOffset);
 	}
 
 	@Inject

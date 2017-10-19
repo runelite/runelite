@@ -28,15 +28,12 @@ import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
@@ -48,8 +45,6 @@ import org.slf4j.LoggerFactory;
 class FishingSpotOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(FishingSpotOverlay.class);
-
-	private final BufferedImage[] imgCache = new BufferedImage[FishingSpot.values().length];
 
 	private final List<Integer> ids = new ArrayList<>();
 
@@ -86,10 +81,10 @@ class FishingSpotOverlay extends Overlay
 			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
 			if (config.showIcons())
 			{
-				BufferedImage fishImage = getFishImage(spot);
-				if (fishImage != null)
+				SpritePixels fishSprite = getFishSprite(spot);
+				if (fishSprite != null)
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker());
+					OverlayUtil.renderActorOverlaySprite(graphics, npc, fishSprite, color.darker());
 				}
 			}
 			else
@@ -102,28 +97,9 @@ class FishingSpotOverlay extends Overlay
 		return null;
 	}
 
-	private BufferedImage getFishImage(FishingSpot spot)
+	private SpritePixels getFishSprite(FishingSpot spot)
 	{
-		int fishIdx = spot.ordinal();
-		BufferedImage fishImage = null;
-
-		if (imgCache[fishIdx] != null)
-		{
-			return imgCache[fishIdx];
-		}
-
-		try
-		{
-			InputStream in = FishingSpotOverlay.class.getResourceAsStream(spot.getImage() + ".png");
-			fishImage = ImageIO.read(in);
-			imgCache[fishIdx] = fishImage;
-		}
-		catch (IOException e)
-		{
-			logger.warn("Error Loading fish icon", e);
-		}
-
-		return fishImage;
+		return client.createItemSprite(spot.getItemSpriteId(), 5, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
 	}
 
 	public void updateConfig()

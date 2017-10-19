@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 
 import net.runelite.api.Actor;
 import net.runelite.api.Point;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
 
 
@@ -78,6 +79,14 @@ public class OverlayUtil
 		graphics.drawImage(image, x, y, null);
 	}
 
+	public static void renderSpriteLocation(Graphics2D graphics, Point imgLoc, SpritePixels sprite)
+	{
+		int x = imgLoc.getX();
+		int y = imgLoc.getY();
+
+		sprite.drawAt(x, y);
+	}
+
 	public static void renderActorOverlay(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
@@ -117,6 +126,27 @@ public class OverlayUtil
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
+		}
+	}
+
+	public static void renderActorOverlaySprite(Graphics2D graphics, Actor actor, SpritePixels sprite, Color color)
+	{
+		Polygon poly = actor.getCanvasTilePoly();
+		if (poly != null)
+		{
+			renderPolygon(graphics, poly, color);
+		}
+
+		Point minimapLocation = actor.getMinimapLocation();
+		if (minimapLocation != null)
+		{
+			renderMinimapLocation(graphics, minimapLocation, color);
+		}
+
+		Point imageLocation = actor.getCanvasSpriteLocation(graphics, sprite, actor.getModelHeight());
+		if (imageLocation != null)
+		{
+			renderSpriteLocation(graphics, imageLocation, sprite);
 		}
 	}
 

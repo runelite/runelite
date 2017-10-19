@@ -24,6 +24,20 @@
  */
 package net.runelite.rs.api;
 
-public interface RSSpritePixels
+import net.runelite.api.SpritePixels;
+import net.runelite.mapping.Import;
+
+public interface RSSpritePixels extends SpritePixels
 {
+	@Import("drawAt")
+	@Override
+	void drawAt(int x, int y);
+
+	@Import("height")
+	@Override
+	int getHeight();
+
+	@Import("width")
+	@Override
+	int getWidth();
 }
