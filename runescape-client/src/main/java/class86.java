@@ -2,166 +2,105 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cn")
 public class class86 {
-   @ObfuscatedName("hc")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1939330576"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "873978136"
    )
-   @Export("xteaChanged")
-   static final void xteaChanged(boolean var0) {
-      Client.isDynamicRegion = var0;
-      int var1;
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      if(!Client.isDynamicRegion) {
-         var1 = Client.secretPacketBuffer2.method3274();
-         int var2 = Client.secretPacketBuffer2.method3299();
-         var3 = Client.secretPacketBuffer2.readUnsignedShort();
-         class37.xteaKeys = new int[var3][4];
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
+   }
 
-         for(var4 = 0; var4 < var3; ++var4) {
-            for(var5 = 0; var5 < 4; ++var5) {
-               class37.xteaKeys[var4][var5] = Client.secretPacketBuffer2.readInt();
-            }
-         }
-
-         CombatInfo1.mapRegions = new int[var3];
-         BuildType.field3191 = new int[var3];
-         Client.landRegionFielIds = new int[var3];
-         class37.field529 = new byte[var3][];
-         class12.field277 = new byte[var3][];
-         boolean var15 = false;
-         if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
-            var15 = true;
-         }
-
-         if(var1 / 8 == 48 && var2 / 8 == 148) {
-            var15 = true;
-         }
-
-         var3 = 0;
-
-         for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
-            for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
-               var7 = var6 + (var5 << 8);
-               if(!var15 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  CombatInfo1.mapRegions[var3] = var7;
-                  BuildType.field3191[var3] = class226.indexMaps.getFile("m" + var5 + "_" + var6);
-                  Client.landRegionFielIds[var3] = class226.indexMaps.getFile("l" + var5 + "_" + var6);
-                  ++var3;
-               }
-            }
-         }
-
-         class11.method60(var1, var2, true);
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(ILct;ZI)I",
+      garbageValue = "-1818381209"
+   )
+   static int method1718(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
       } else {
-         var1 = Client.secretPacketBuffer2.method3274();
-         boolean var14 = Client.secretPacketBuffer2.method3265() == 1;
-         var3 = Client.secretPacketBuffer2.readUnsignedShort();
-         var4 = Client.secretPacketBuffer2.readUnsignedShort();
-         Client.secretPacketBuffer2.bitAccess();
-
-         int var8;
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.secretPacketBuffer2.getBits(1);
-                  if(var8 == 1) {
-                     Client.field986[var5][var6][var7] = Client.secretPacketBuffer2.getBits(26);
-                  } else {
-                     Client.field986[var5][var6][var7] = -1;
-                  }
-               }
-            }
-         }
-
-         Client.secretPacketBuffer2.byteAccess();
-         class37.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               class37.xteaKeys[var5][var6] = Client.secretPacketBuffer2.readInt();
-            }
-         }
-
-         CombatInfo1.mapRegions = new int[var4];
-         BuildType.field3191 = new int[var4];
-         Client.landRegionFielIds = new int[var4];
-         class37.field529 = new byte[var4][];
-         class12.field277 = new byte[var4][];
-         var4 = 0;
-
-         for(var5 = 0; var5 < 4; ++var5) {
-            for(var6 = 0; var6 < 13; ++var6) {
-               for(var7 = 0; var7 < 13; ++var7) {
-                  var8 = Client.field986[var5][var6][var7];
-                  if(var8 != -1) {
-                     int var9 = var8 >> 14 & 1023;
-                     int var10 = var8 >> 3 & 2047;
-                     int var11 = (var9 / 8 << 8) + var10 / 8;
-
-                     int var12;
-                     for(var12 = 0; var12 < var4; ++var12) {
-                        if(CombatInfo1.mapRegions[var12] == var11) {
-                           var11 = -1;
-                           break;
-                        }
-                     }
-
-                     if(var11 != -1) {
-                        CombatInfo1.mapRegions[var4] = var11;
-                        var12 = var11 >> 8 & 255;
-                        int var13 = var11 & 255;
-                        BuildType.field3191[var4] = class226.indexMaps.getFile("m" + var12 + "_" + var13);
-                        Client.landRegionFielIds[var4] = class226.indexMaps.getFile("l" + var12 + "_" + var13);
-                        ++var4;
-                     }
-                  }
-               }
-            }
-         }
-
-         class11.method60(var3, var1, !var14);
+         var3 = var2?class251.field3392:class164.field2314;
       }
 
+      int var4;
+      if(var0 == 1300) {
+         var4 = class81.intStack[--class278.intStackSize] - 1;
+         if(var4 >= 0 && var4 <= 9) {
+            var3.method4077(var4, class81.scriptStringStack[--class266.scriptStringStackSize]);
+            return 1;
+         } else {
+            --class266.scriptStringStackSize;
+            return 1;
+         }
+      } else if(var0 == 1301) {
+         class278.intStackSize -= 2;
+         var4 = class81.intStack[class278.intStackSize];
+         int var5 = class81.intStack[class278.intStackSize + 1];
+         var3.dragParent = class215.method4064(var4, var5);
+         return 1;
+      } else if(var0 == 1302) {
+         var3.field2720 = class81.intStack[--class278.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1303) {
+         var3.field2718 = class81.intStack[--class278.intStackSize];
+         return 1;
+      } else if(var0 == 1304) {
+         var3.field2688 = class81.intStack[--class278.intStackSize];
+         return 1;
+      } else if(var0 == 1305) {
+         var3.name = class81.scriptStringStack[--class266.scriptStringStackSize];
+         return 1;
+      } else if(var0 == 1306) {
+         var3.selectedAction = class81.scriptStringStack[--class266.scriptStringStackSize];
+         return 1;
+      } else if(var0 == 1307) {
+         var3.actions = null;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lcg;I)V",
-      garbageValue = "2072107926"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-2110216567"
    )
-   static void method1775(World var0) {
-      if(var0.method1638() != Client.isMembers) {
-         Client.isMembers = var0.method1638();
-         boolean var1 = var0.method1638();
-         if(var1 != class46.isMembersWorld) {
-            ItemComposition.items.reset();
-            ItemComposition.itemModelCache.reset();
-            ItemComposition.itemSpriteCache.reset();
-            class46.isMembersWorld = var1;
+   public static String method1719(CharSequence var0) {
+      long var3 = 0L;
+      int var5 = var0.length();
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         var3 *= 37L;
+         char var7 = var0.charAt(var6);
+         if(var7 >= 'A' && var7 <= 'Z') {
+            var3 += (long)(var7 + 1 - 65);
+         } else if(var7 >= 'a' && var7 <= 'z') {
+            var3 += (long)(var7 + 1 - 97);
+         } else if(var7 >= '0' && var7 <= '9') {
+            var3 += (long)(var7 + 27 - 48);
+         }
+
+         if(var3 >= 177917621779460413L) {
+            break;
          }
       }
 
-      GameEngine.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      SceneTilePaint.field2023 = Client.socketType == 0?43594:var0.id + 40000;
-      AbstractSoundSystem.field1631 = Client.socketType == 0?443:var0.id + 50000;
-      class18.myWorldPort = SceneTilePaint.field2023;
-   }
+      while(var3 % 37L == 0L && 0L != var3) {
+         var3 /= 37L;
+      }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "-1563774459"
-   )
-   public static String method1772(byte[] var0) {
-      return BuildType.method4209(var0, 0, var0.length);
+      String var8 = Overlay.method4776(var3);
+      if(var8 == null) {
+         var8 = "";
+      }
+
+      return var8;
    }
 }

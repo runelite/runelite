@@ -2,147 +2,171 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jy")
+@ObfuscatedName("jj")
 public class class275 {
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      longValue = 6455756924506434381L
-   )
-   long field3739;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      longValue = 4178260345248170241L
-   )
-   long field3733;
-   @ObfuscatedName("e")
-   public boolean field3735;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      longValue = 3790287593749549163L
-   )
-   long field3738;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1054102895
+      longValue = 653291847198752043L
    )
-   int field3740;
-   @ObfuscatedName("v")
+   long field3730;
+   @ObfuscatedName("q")
+   public boolean field3732;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 2015618495
-   )
-   int field3741;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      longValue = 4063592258915756873L
+      longValue = 6691804990526158911L
    )
    long field3734;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      longValue = -7448374143879815307L
+      longValue = -3808860700115427123L
    )
-   long field3737;
-   @ObfuscatedName("r")
+   long field3731;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 2117260945
+      intValue = -1080619477
+   )
+   int field3737;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -886140301
+   )
+   int field3738;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      longValue = 6582958372533018075L
+   )
+   long field3733;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      longValue = 3324687787754482331L
+   )
+   long field3739;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 481770167
+   )
+   int field3740;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1275284283
    )
    int field3736;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 157330773
-   )
-   int field3742;
 
    public class275() {
-      this.field3733 = -1L;
-      this.field3738 = -1L;
-      this.field3735 = false;
-      this.field3734 = 0L;
+      this.field3734 = -1L;
+      this.field3731 = -1L;
+      this.field3732 = false;
+      this.field3733 = 0L;
+      this.field3730 = 0L;
       this.field3739 = 0L;
-      this.field3737 = 0L;
+      this.field3740 = 0;
+      this.field3737 = 0;
+      this.field3738 = 0;
       this.field3736 = 0;
-      this.field3740 = 0;
-      this.field3741 = 0;
-      this.field3742 = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1971597185"
+      garbageValue = "529648922"
    )
-   public void method4995() {
-      if(-1L != this.field3738) {
-         this.field3734 = class147.currentTimeMs() - this.field3738;
-         this.field3738 = -1L;
+   public void method4994() {
+      if(this.field3731 != -1L) {
+         this.field3733 = class174.currentTimeMs() - this.field3731;
+         this.field3731 = -1L;
       }
 
-      ++this.field3741;
-      this.field3735 = true;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "23"
-   )
-   public void method4993() {
-      if(-1L != this.field3733) {
-         this.field3739 = class147.currentTimeMs() - this.field3733;
-         this.field3733 = -1L;
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1677432830"
-   )
-   public void method4991(int var1) {
-      this.field3738 = class147.currentTimeMs();
-      this.field3736 = var1;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lfg;B)V",
-      garbageValue = "110"
-   )
-   public void method4998(Buffer var1) {
-      PacketBuffer.method3505(var1, this.field3739);
-      PacketBuffer.method3505(var1, this.field3734);
-      PacketBuffer.method3505(var1, this.field3737);
-      var1.putShort(this.field3736);
-      var1.putShort(this.field3740);
-      var1.putShort(this.field3741);
-      var1.putShort(this.field3742);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
-   )
-   public void method4996() {
-      this.field3735 = false;
-      this.field3740 = 0;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1138490387"
-   )
-   public void method5001() {
-      this.field3733 = class147.currentTimeMs();
+      ++this.field3738;
+      this.field3732 = true;
    }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1409216246"
+      garbageValue = "522059052"
    )
-   public void method5014() {
-      this.method4995();
+   public void method4995() {
+      if(-1L != this.field3734) {
+         this.field3730 = class174.currentTimeMs() - this.field3734;
+         this.field3734 = -1L;
+      }
+
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-61"
+   )
+   public void method4993(int var1) {
+      this.field3731 = class174.currentTimeMs();
+      this.field3740 = var1;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Lfz;I)V",
+      garbageValue = "391685167"
+   )
+   public void method4997(Buffer var1) {
+      long var2 = this.field3730;
+      var2 /= 10L;
+      if(var2 < 0L) {
+         var2 = 0L;
+      } else if(var2 > 65535L) {
+         var2 = 65535L;
+      }
+
+      var1.putShort((int)var2);
+      long var4 = this.field3733;
+      var4 /= 10L;
+      if(var4 < 0L) {
+         var4 = 0L;
+      } else if(var4 > 65535L) {
+         var4 = 65535L;
+      }
+
+      var1.putShort((int)var4);
+      long var6 = this.field3739;
+      var6 /= 10L;
+      if(var6 < 0L) {
+         var6 = 0L;
+      } else if(var6 > 65535L) {
+         var6 = 65535L;
+      }
+
+      var1.putShort((int)var6);
+      var1.putShort(this.field3740);
+      var1.putShort(this.field3737);
+      var1.putShort(this.field3738);
+      var1.putShort(this.field3736);
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "61"
+   )
+   public void method5009() {
+      this.field3732 = false;
+      this.field3737 = 0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "34"
+   )
+   public void method4991() {
+      this.field3734 = class174.currentTimeMs();
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "67"
+   )
+   public void method4996() {
+      this.method4994();
    }
 }

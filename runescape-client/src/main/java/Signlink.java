@@ -8,38 +8,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("em")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("k")
-   @Export("javaVersion")
-   public static String javaVersion;
-   @ObfuscatedName("n")
-   @Export("tt")
-   static int[] tt;
-   @ObfuscatedName("fr")
+   @ObfuscatedName("ds")
    @ObfuscatedGetter(
-      intValue = 1236774709
+      intValue = 1027755043
    )
-   static int field2245;
-   @ObfuscatedName("s")
+   static int field2230;
+   @ObfuscatedName("c")
+   static int[] field2231;
+   @ObfuscatedName("v")
    @Export("closed")
    boolean closed;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Let;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Let;"
    )
    @Export("cachedTask")
    Task cachedTask;
@@ -49,11 +45,11 @@ public class Signlink implements Runnable {
       this.cachedTask = null;
       this.closed = false;
       javaVendor = "Unknown";
-      javaVersion = "1.6";
+      class18.javaVersion = "1.6";
 
       try {
          javaVendor = System.getProperty("java.vendor");
-         javaVersion = System.getProperty("java.version");
+         class18.javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
       }
@@ -65,16 +61,16 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)Leh;",
-      garbageValue = "2123097703"
+      signature = "(IIILjava/lang/Object;I)Let;",
+      garbageValue = "-1698095252"
    )
-   final Task method3022(int var1, int var2, int var3, Object var4) {
+   final Task method2977(int var1, int var2, int var3, Object var4) {
       Task var5 = new Task();
       var5.type = var1;
-      var5.field2240 = var2;
-      var5.field2234 = var4;
+      var5.field2222 = var2;
+      var5.field2223 = var4;
       synchronized(this) {
          if(this.cachedTask != null) {
             this.cachedTask.task = var5;
@@ -88,20 +84,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Leh;",
-      garbageValue = "1220994707"
+      signature = "(Ljava/lang/Runnable;II)Let;",
+      garbageValue = "-1094648036"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
-      return this.method3022(2, var2, 0, var1);
+      return this.method2977(2, var2, 0, var1);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-881555459"
+      garbageValue = "94442798"
    )
    @Export("join")
    public final void join() {
@@ -118,24 +114,24 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Leh;",
-      garbageValue = "-1795805114"
+      signature = "(Ljava/lang/String;II)Let;",
+      garbageValue = "1571435179"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
-      return this.method3022(1, var2, 0, var1);
+      return this.method2977(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)Leh;",
-      garbageValue = "27"
+      signature = "(IS)Let;",
+      garbageValue = "31658"
    )
    @Export("createHost")
    public final Task createHost(int var1) {
-      return this.method3022(3, var1, 0, (Object)null);
+      return this.method2977(3, var1, 0, (Object)null);
    }
 
    public final void run() {
@@ -167,17 +163,17 @@ public class Signlink implements Runnable {
          try {
             int var5 = var1.type;
             if(var5 == 1) {
-               var1.value = new Socket(InetAddress.getByName((String)var1.field2234), var1.field2240);
+               var1.value = new Socket(InetAddress.getByName((String)var1.field2223), var1.field2222);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2234);
+               Thread var3 = new Thread((Runnable)var1.field2223);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2240);
+               var3.setPriority(var1.field2222);
                var1.value = var3;
             } else if(var5 == 4) {
-               var1.value = new DataInputStream(((URL)var1.field2234).openStream());
+               var1.value = new DataInputStream(((URL)var1.field2223).openStream());
             } else if(var5 == 3) {
-               String var10 = (var1.field2240 >> 24 & 255) + "." + (var1.field2240 >> 16 & 255) + "." + (var1.field2240 >> 8 & 255) + "." + (var1.field2240 & 255);
+               String var10 = (var1.field2222 >> 24 & 255) + "." + (var1.field2222 >> 16 & 255) + "." + (var1.field2222 >> 8 & 255) + "." + (var1.field2222 & 255);
                var1.value = InetAddress.getByName(var10).getHostName();
             }
 
@@ -190,113 +186,110 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II[BIB)I",
-      garbageValue = "40"
+      signature = "(IILfc;Lfw;I)Z",
+      garbageValue = "1512527763"
    )
-   public static int method3020(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
-      int var5 = var2 - var1;
+   static final boolean method2991(int var0, int var1, class163 var2, CollisionData var3) {
+      int var4 = var0;
+      int var5 = var1;
+      byte var6 = 64;
+      byte var7 = 64;
+      int var8 = var0 - var6;
+      int var9 = var1 - var7;
+      class162.field2302[var6][var7] = 99;
+      class162.field2295[var6][var7] = 0;
+      byte var10 = 0;
+      int var11 = 0;
+      class162.field2298[var10] = var0;
+      byte var10001 = var10;
+      int var18 = var10 + 1;
+      class162.field2299[var10001] = var1;
+      int[][] var12 = var3.flags;
 
-      for(int var6 = 0; var6 < var5; ++var6) {
-         char var7 = var0.charAt(var6 + var1);
-         if(var7 > 0 && var7 < 128 || var7 >= 160 && var7 <= 255) {
-            var3[var6 + var4] = (byte)var7;
-         } else if(var7 == 8364) {
-            var3[var6 + var4] = -128;
-         } else if(var7 == 8218) {
-            var3[var6 + var4] = -126;
-         } else if(var7 == 402) {
-            var3[var6 + var4] = -125;
-         } else if(var7 == 8222) {
-            var3[var6 + var4] = -124;
-         } else if(var7 == 8230) {
-            var3[var6 + var4] = -123;
-         } else if(var7 == 8224) {
-            var3[var6 + var4] = -122;
-         } else if(var7 == 8225) {
-            var3[var6 + var4] = -121;
-         } else if(var7 == 710) {
-            var3[var6 + var4] = -120;
-         } else if(var7 == 8240) {
-            var3[var6 + var4] = -119;
-         } else if(var7 == 352) {
-            var3[var6 + var4] = -118;
-         } else if(var7 == 8249) {
-            var3[var6 + var4] = -117;
-         } else if(var7 == 338) {
-            var3[var6 + var4] = -116;
-         } else if(var7 == 381) {
-            var3[var6 + var4] = -114;
-         } else if(var7 == 8216) {
-            var3[var6 + var4] = -111;
-         } else if(var7 == 8217) {
-            var3[var6 + var4] = -110;
-         } else if(var7 == 8220) {
-            var3[var6 + var4] = -109;
-         } else if(var7 == 8221) {
-            var3[var6 + var4] = -108;
-         } else if(var7 == 8226) {
-            var3[var6 + var4] = -107;
-         } else if(var7 == 8211) {
-            var3[var6 + var4] = -106;
-         } else if(var7 == 8212) {
-            var3[var6 + var4] = -105;
-         } else if(var7 == 732) {
-            var3[var6 + var4] = -104;
-         } else if(var7 == 8482) {
-            var3[var6 + var4] = -103;
-         } else if(var7 == 353) {
-            var3[var6 + var4] = -102;
-         } else if(var7 == 8250) {
-            var3[var6 + var4] = -101;
-         } else if(var7 == 339) {
-            var3[var6 + var4] = -100;
-         } else if(var7 == 382) {
-            var3[var6 + var4] = -98;
-         } else if(var7 == 376) {
-            var3[var6 + var4] = -97;
-         } else {
-            var3[var6 + var4] = 63;
+      while(var18 != var11) {
+         var4 = class162.field2298[var11];
+         var5 = class162.field2299[var11];
+         var11 = var11 + 1 & 4095;
+         int var16 = var4 - var8;
+         int var17 = var5 - var9;
+         int var13 = var4 - var3.x;
+         int var14 = var5 - var3.y;
+         if(var2.vmethod3126(2, var4, var5, var3)) {
+            class162.field2296 = var4;
+            class162.field2292 = var5;
+            return true;
+         }
+
+         int var15 = class162.field2295[var16][var17] + 1;
+         if(var16 > 0 && class162.field2302[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
+            class162.field2298[var18] = var4 - 1;
+            class162.field2299[var18] = var5;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 - 1][var17] = 2;
+            class162.field2295[var16 - 1][var17] = var15;
+         }
+
+         if(var16 < 126 && class162.field2302[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && (var12[var13 + 2][var14 + 1] & 19136992) == 0) {
+            class162.field2298[var18] = var4 + 1;
+            class162.field2299[var18] = var5;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 + 1][var17] = 8;
+            class162.field2295[var16 + 1][var17] = var15;
+         }
+
+         if(var17 > 0 && class162.field2302[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136782) == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0) {
+            class162.field2298[var18] = var4;
+            class162.field2299[var18] = var5 - 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16][var17 - 1] = 1;
+            class162.field2295[var16][var17 - 1] = var15;
+         }
+
+         if(var17 < 126 && class162.field2302[var16][var17 + 1] == 0 && (var12[var13][var14 + 2] & 19136824) == 0 && (var12[var13 + 1][var14 + 2] & 19136992) == 0) {
+            class162.field2298[var18] = var4;
+            class162.field2299[var18] = var5 + 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16][var17 + 1] = 4;
+            class162.field2295[var16][var17 + 1] = var15;
+         }
+
+         if(var16 > 0 && var17 > 0 && class162.field2302[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14] & 19136830) == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13][var14 - 1] & 19136911) == 0) {
+            class162.field2298[var18] = var4 - 1;
+            class162.field2299[var18] = var5 - 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 - 1][var17 - 1] = 3;
+            class162.field2295[var16 - 1][var17 - 1] = var15;
+         }
+
+         if(var16 < 126 && var17 > 0 && class162.field2302[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136911) == 0 && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && (var12[var13 + 2][var14] & 19136995) == 0) {
+            class162.field2298[var18] = var4 + 1;
+            class162.field2299[var18] = var5 - 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 + 1][var17 - 1] = 9;
+            class162.field2295[var16 + 1][var17 - 1] = var15;
+         }
+
+         if(var16 > 0 && var17 < 126 && class162.field2302[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
+            class162.field2298[var18] = var4 - 1;
+            class162.field2299[var18] = var5 + 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 - 1][var17 + 1] = 6;
+            class162.field2295[var16 - 1][var17 + 1] = var15;
+         }
+
+         if(var16 < 126 && var17 < 126 && class162.field2302[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
+            class162.field2298[var18] = var4 + 1;
+            class162.field2299[var18] = var5 + 1;
+            var18 = var18 + 1 & 4095;
+            class162.field2302[var16 + 1][var17 + 1] = 12;
+            class162.field2295[var16 + 1][var17 + 1] = var15;
          }
       }
 
-      return var5;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)Lkr;",
-      garbageValue = "-2077769855"
-   )
-   static SpritePixels method3021() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class287.field3808;
-      var0.maxHeight = class164.field2325;
-      var0.offsetX = class287.field3807[0];
-      var0.offsetY = World.offsetsY[0];
-      var0.width = class236.field3238[0];
-      var0.height = FileSystem.field3207[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = class208.spritePixels[0];
-      var0.image = new int[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.image[var3] = class181.field2456[var2[var3] & 255];
-      }
-
-      Actor.method1605();
-      return var0;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(ZZB)I",
-      garbageValue = "-86"
-   )
-   public static int method3041(boolean var0, boolean var1) {
-      byte var2 = 0;
-      int var3 = var2 + class238.field3253 + class238.field3255;
-      return var3;
+      class162.field2296 = var4;
+      class162.field2292 = var5;
+      return false;
    }
 }

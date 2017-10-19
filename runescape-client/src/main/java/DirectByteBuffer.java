@@ -4,17 +4,17 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fm")
 @Implements("DirectByteBuffer")
 public class DirectByteBuffer extends AbstractByteBuffer {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @Export("buffer")
    ByteBuffer buffer;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-95"
+      signature = "(I)[B",
+      garbageValue = "-1323537898"
    )
    @Export("get")
    byte[] get() {
@@ -24,10 +24,10 @@ public class DirectByteBuffer extends AbstractByteBuffer {
       return var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-180504190"
+      garbageValue = "-107169366"
    )
    @Export("put")
    void put(byte[] var1) {

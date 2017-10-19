@@ -2,71 +2,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hf")
+@ObfuscatedName("hl")
 public enum class228 implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
-   field3160(6, 0),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhf;"
-   )
-   field3154(5, 1),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhf;"
-   )
-   field3155(1, 2),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhf;"
-   )
-   field3156(0, 3),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhf;"
-   )
-   field3162(2, 4),
+   field3150(3, 0),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
-   field3157(4, 5),
-   @ObfuscatedName("r")
+   field3153(2, 1),
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
-   field3159(7, 6),
+   field3155(4, 2),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lhl;"
+   )
+   field3151(7, 3),
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhf;"
+      signature = "Lhl;"
    )
-   field3158(3, 7);
-
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 2098498661
-   )
-   final int field3153;
+   field3152(0, 4),
    @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -956915519
+   @ObfuscatedSignature(
+      signature = "Lhl;"
    )
-   public final int field3161;
+   field3154(5, 5),
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhl;"
+   )
+   field3163(6, 6),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhl;"
+   )
+   field3157(1, 7);
+
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 269789679
+   )
+   final int field3148;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1145751383
+   )
+   public final int field3156;
 
    class228(int var3, int var4) {
-      this.field3161 = var3;
-      this.field3153 = var4;
+      this.field3156 = var3;
+      this.field3148 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-41"
+      garbageValue = "6"
    )
    public int rsOrdinal() {
-      return this.field3153;
+      return this.field3148;
    }
 }

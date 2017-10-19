@@ -1,28 +1,25 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ew")
 public class class138 {
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "[Lcg;"
+      signature = "(III)I",
+      garbageValue = "-879956227"
    )
-   @Export("worldList")
-   static World[] worldList;
+   static final int method2888(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1430163046"
-   )
-   public static void method2927(int var0) {
-      class203.field2521 = 1;
-      class203.field2522 = null;
-      class203.field2520 = -1;
-      Frames.field2138 = -1;
-      class148.field2203 = 0;
-      BufferProvider.field3778 = false;
-      class288.field3814 = var0;
+         return (var0 & 65408) + var1;
+      }
    }
 }

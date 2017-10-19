@@ -1,38 +1,66 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fk")
 public class class164 {
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -198923963
+   @ObfuscatedName("aa")
+   static int[] field2312;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
    )
-   static int field2325;
+   static Widget field2314;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;I)Z",
-      garbageValue = "-2027019132"
+      signature = "(Ljava/lang/Object;ZI)[B",
+      garbageValue = "-14986289"
    )
-   public static boolean method3160(IndexDataBase var0, IndexDataBase var1) {
-      Area.field3291 = var1;
-      if(!var0.method4292()) {
-         return false;
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var1?ChatLineBuffer.method1912(var3):var3;
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
       } else {
-         Area.field3297 = var0.fileCount(35);
-         class3.field24 = new Area[Area.field3297];
-
-         for(int var2 = 0; var2 < Area.field3297; ++var2) {
-            byte[] var3 = var0.getConfigData(35, var2);
-            if(var3 != null) {
-               class3.field24[var2] = new Area(var2);
-               class3.field24[var2].method4392(new Buffer(var3));
-               class3.field24[var2].method4401();
-            }
-         }
-
-         return true;
+         throw new IllegalArgumentException();
       }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1801394173"
+   )
+   public static void method3140(int var0) {
+      class203.field2500 = 1;
+      class87.field1392 = null;
+      class203.field2502 = -1;
+      class203.field2505 = -1;
+      class10.field268 = 0;
+      DynamicObject.field1539 = false;
+      class36.field523 = var0;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "-122"
+   )
+   static final int method3141(int var0, int var1) {
+      int var2 = GameEngine.getSmoothNoise(var0 + 45365, 91923 + var1, 4) - 128 + (GameEngine.getSmoothNoise(10294 + var0, var1 + 37821, 2) - 128 >> 1) + (GameEngine.getSmoothNoise(var0, var1, 1) - 128 >> 2);
+      var2 = (int)((double)var2 * 0.3D) + 35;
+      if(var2 < 10) {
+         var2 = 10;
+      } else if(var2 > 60) {
+         var2 = 60;
+      }
+
+      return var2;
    }
 }

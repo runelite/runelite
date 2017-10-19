@@ -4,132 +4,160 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("ig")
 public class class238 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1541399361
+      intValue = -502064433
    )
-   public static int field3257;
-   @ObfuscatedName("k")
+   public static int field3263;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1149179185
+      intValue = 175288755
    )
-   public static int field3252;
-   @ObfuscatedName("v")
+   public static int field3245;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgs;"
    )
-   public static HashTable field3259;
-   @ObfuscatedName("w")
+   public static HashTable field3252;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 740684121
+      intValue = -1572068145
    )
-   public static int field3271;
-   @ObfuscatedName("p")
+   public static int field3264;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgs;"
    )
-   public static HashTable field3251;
-   @ObfuscatedName("g")
+   public static HashTable field3247;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgj;"
    )
-   public static Node2LinkedList field3258;
-   @ObfuscatedName("u")
+   public static Node2LinkedList field3261;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Lis;"
    )
    @Export("currentRequest")
    public static FileRequest currentRequest;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1570656921
+   )
+   public static int field3248;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   public static HashTable field3244;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 532267269
+      longValue = -6446435534470100275L
    )
-   public static int field3255;
-   @ObfuscatedName("s")
+   public static long field3258;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1826581109
+   )
+   public static int field3250;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgs;"
    )
-   public static HashTable field3256;
-   @ObfuscatedName("e")
+   public static HashTable field3254;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      longValue = 3919691914862641059L
-   )
-   public static long field3268;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 836154213
+      intValue = -135001399
    )
    public static int field3253;
-   @ObfuscatedName("y")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgn;"
-   )
-   public static HashTable field3261;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1450329009
-   )
-   public static int field3254;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "[Lij;"
+      signature = "[Lih;"
    )
    static IndexData[] field3260;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1496817713
+      intValue = -285986479
    )
-   public static int field3262;
-   @ObfuscatedName("d")
+   public static int field3259;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Lfe;"
    )
-   public static RSSocket field3265;
-   @ObfuscatedName("b")
+   public static RSSocket field3255;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfg;"
+      signature = "Lfz;"
    )
-   public static Buffer field3270;
+   public static Buffer field3246;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -452708239
+   )
+   public static int field3251;
    @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 849855347
-   )
-   public static int field3266;
+   static CRC32 field3265;
    @ObfuscatedName("c")
-   static CRC32 field3267;
-   @ObfuscatedName("z")
-   public static byte field3269;
-   @ObfuscatedName("i")
-   static boolean field3263;
+   public static byte field3262;
+   @ObfuscatedName("u")
+   static boolean field3256;
 
    static {
-      field3252 = 0;
-      field3251 = new HashTable(4096);
-      field3255 = 0;
-      field3256 = new HashTable(32);
+      field3245 = 0;
+      field3247 = new HashTable(4096);
+      field3248 = 0;
+      field3244 = new HashTable(32);
+      field3250 = 0;
+      field3261 = new Node2LinkedList();
+      field3252 = new HashTable(4096);
       field3253 = 0;
-      field3258 = new Node2LinkedList();
-      field3259 = new HashTable(4096);
-      field3254 = 0;
-      field3261 = new HashTable(4096);
-      field3262 = 0;
-      field3270 = new Buffer(8);
-      field3266 = 0;
-      field3267 = new CRC32();
+      field3254 = new HashTable(4096);
+      field3259 = 0;
+      field3246 = new Buffer(8);
+      field3251 = 0;
+      field3265 = new CRC32();
       field3260 = new IndexData[256];
-      field3269 = 0;
-      field3257 = 0;
-      field3271 = 0;
+      field3262 = 0;
+      field3263 = 0;
+      field3264 = 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("gw")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1048650421"
+      signature = "(IIIIIII)V",
+      garbageValue = "332986610"
    )
-   public static boolean method4362(int var0) {
-      return var0 >= class221.field2826.field2838 && var0 <= class221.field2836.field2838;
+   static final void method4334(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 2048 - var3 & 2047;
+      int var7 = 2048 - var4 & 2047;
+      int var8 = 0;
+      int var9 = 0;
+      int var10 = var5;
+      int var11;
+      int var12;
+      int var13;
+      if(var6 != 0) {
+         var11 = Graphics3D.SINE[var6];
+         var12 = Graphics3D.COSINE[var6];
+         var13 = var12 * var9 - var11 * var5 >> 16;
+         var10 = var11 * var9 + var5 * var12 >> 16;
+         var9 = var13;
+      }
+
+      if(var7 != 0) {
+         var11 = Graphics3D.SINE[var7];
+         var12 = Graphics3D.COSINE[var7];
+         var13 = var10 * var11 + var8 * var12 >> 16;
+         var10 = var12 * var10 - var11 * var8 >> 16;
+         var8 = var13;
+      }
+
+      AbstractByteBuffer.cameraX = var0 - var8;
+      class229.cameraZ = var1 - var9;
+      World.cameraY = var2 - var10;
+      class18.cameraPitch = var3;
+      CombatInfo1.cameraYaw = var4;
    }
 }

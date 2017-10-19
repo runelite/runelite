@@ -1,19 +1,20 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hw")
+@ObfuscatedName("hn")
 public class class226 {
-   @ObfuscatedName("cr")
+   @ObfuscatedName("qh")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lkb;"
    )
-   @Export("indexMaps")
-   static IndexData indexMaps;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 876075813
+   static MachineInfo field3137;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-1706797354"
    )
-   public static int field3144;
+   public static boolean method4157(int var0) {
+      return (var0 & 1) != 0;
+   }
 }

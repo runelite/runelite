@@ -1,68 +1,52 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("di")
+@ObfuscatedName("dt")
 public class class110 {
-   @ObfuscatedName("a")
-   @Export("osNameLC")
-   public static String osNameLC;
-   @ObfuscatedName("ba")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lbt;"
-   )
-   static class70 field1653;
-   @ObfuscatedName("cb")
-   static boolean field1650;
-   @ObfuscatedName("pb")
-   @ObfuscatedGetter(
-      intValue = -1419635649
-   )
-   static int field1656;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
    @Export("vorbis_index")
    IndexDataBase vorbis_index;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
    @Export("sfx_index")
    IndexDataBase sfx_index;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgs;"
    )
-   HashTable field1658;
-   @ObfuscatedName("e")
+   HashTable field1654;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgs;"
    )
-   HashTable field1652;
+   HashTable field1653;
 
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;)V"
+      signature = "(Lip;Lip;)V"
    )
    public class110(IndexDataBase var1, IndexDataBase var2) {
-      this.field1652 = new HashTable(256);
-      this.field1658 = new HashTable(256);
+      this.field1653 = new HashTable(256);
+      this.field1654 = new HashTable(256);
       this.sfx_index = var1;
       this.vorbis_index = var2;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II[II)Ldo;",
-      garbageValue = "2103328028"
+      signature = "(II[II)Ldi;",
+      garbageValue = "-1888577433"
    )
-   class105 method2157(int var1, int var2, int[] var3) {
+   class105 method2130(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class105 var7 = (class105)this.field1658.get(var5);
+      class105 var7 = (class105)this.field1654.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
@@ -72,10 +56,10 @@ public class class110 {
          if(var8 == null) {
             return null;
          } else {
-            var7 = var8.method2011();
-            this.field1658.put(var7, var5);
+            var7 = var8.method1978();
+            this.field1654.put(var7, var5);
             if(var3 != null) {
-               var3[0] -= var7.field1596.length;
+               var3[0] -= var7.field1600.length;
             }
 
             return var7;
@@ -83,189 +67,100 @@ public class class110 {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II[IB)Ldo;",
-      garbageValue = "-21"
+      signature = "(II[II)Ldi;",
+      garbageValue = "1507688238"
    )
-   class105 method2158(int var1, int var2, int[] var3) {
+   class105 method2137(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class105 var7 = (class105)this.field1658.get(var5);
+      class105 var7 = (class105)this.field1654.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         class104 var8 = (class104)this.field1652.get(var5);
+         class104 var8 = (class104)this.field1653.get(var5);
          if(var8 == null) {
-            var8 = class104.method2027(this.vorbis_index, var1, var2);
+            var8 = class104.method2000(this.vorbis_index, var1, var2);
             if(var8 == null) {
                return null;
             }
 
-            this.field1652.put(var8, var5);
+            this.field1653.put(var8, var5);
          }
 
-         var7 = var8.method2037(var3);
+         var7 = var8.method2001(var3);
          if(var7 == null) {
             return null;
          } else {
             var8.unlink();
-            this.field1658.put(var7, var5);
+            this.field1654.put(var7, var5);
             return var7;
          }
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I[II)Ldo;",
-      garbageValue = "1531071422"
+      signature = "(I[IB)Ldi;",
+      garbageValue = "1"
    )
-   public class105 method2160(int var1, int[] var2) {
-      if(this.vorbis_index.size() == 1) {
-         return this.method2158(0, var1, var2);
-      } else if(this.vorbis_index.fileCount(var1) == 1) {
-         return this.method2158(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I[II)Ldo;",
-      garbageValue = "-1865161267"
-   )
-   public class105 method2165(int var1, int[] var2) {
+   public class105 method2129(int var1, int[] var2) {
       if(this.sfx_index.size() == 1) {
-         return this.method2157(0, var1, var2);
+         return this.method2130(0, var1, var2);
       } else if(this.sfx_index.fileCount(var1) == 1) {
-         return this.method2157(var1, 0, var2);
+         return this.method2130(var1, 0, var2);
       } else {
          throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([Lcg;II[I[IB)V",
-      garbageValue = "46"
+      signature = "(I[IB)Ldi;",
+      garbageValue = "77"
    )
-   static void method2174(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
-
-         while(var5 < var6) {
-            boolean var9 = true;
-
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1638()?1:0;
-                     var12 = var8.method1638()?1:0;
-                  } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1638()?1:0;
-                     var12 = var8.method1638()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
-            }
-         }
-
-         method2174(var0, var1, var6, var3, var4);
-         method2174(var0, var6 + 1, var2, var3, var4);
+   public class105 method2132(int var1, int[] var2) {
+      if(this.vorbis_index.size() == 1) {
+         return this.method2137(0, var1, var2);
+      } else if(this.vorbis_index.fileCount(var1) == 1) {
+         return this.method2137(var1, 0, var2);
+      } else {
+         throw new RuntimeException();
       }
-
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("jm")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "16"
+      signature = "(Lbq;ZB)V",
+      garbageValue = "1"
    )
-   public static boolean method2171(int var0, int var1) {
-      return (var0 >> var1 + 1 & 1) != 0;
+   static final void method2145(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      if(var1) {
+         class3.method5(var2);
+      }
+
+      for(IntegerNode var4 = (IntegerNode)Client.widgetFlags.method3637(); var4 != null; var4 = (IntegerNode)Client.widgetFlags.method3638()) {
+         if((long)var2 == (var4.hash >> 48 & 65535L)) {
+            var4.unlink();
+         }
+      }
+
+      Widget var5 = ItemLayer.method2454(var3);
+      if(var5 != null) {
+         class45.method647(var5);
+      }
+
+      class224.method4154();
+      if(Client.widgetRoot != -1) {
+         PendingSpawn.method1523(Client.widgetRoot, 1);
+      }
+
    }
 }

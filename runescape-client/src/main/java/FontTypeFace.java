@@ -4,69 +4,69 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jm")
+@ObfuscatedName("jw")
 @Implements("FontTypeFace")
 public abstract class FontTypeFace extends Rasterizer2D {
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("strikeRGB")
    static int strikeRGB;
-   @ObfuscatedName("z")
-   static String[] field3655;
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
+   static String[] field3656;
+   @ObfuscatedName("u")
    @Export("underlineRGB")
    static int underlineRGB;
-   @ObfuscatedName("a")
-   static Random field3661;
-   @ObfuscatedName("x")
-   static int field3658;
-   @ObfuscatedName("u")
+   @ObfuscatedName("k")
+   static Random field3659;
+   @ObfuscatedName("b")
+   static int field3646;
+   @ObfuscatedName("t")
    @Export("prevShadeRGB")
    static int prevShadeRGB;
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @Export("prevColorRGB")
    static int prevColorRGB;
-   @ObfuscatedName("j")
+   @ObfuscatedName("h")
    @Export("color")
    static int color;
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @Export("shadow")
    static int shadow;
-   @ObfuscatedName("c")
-   static int field3643;
-   @ObfuscatedName("h")
-   static int field3647;
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
+   static int field3657;
+   @ObfuscatedName("y")
+   static int field3658;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "[Ljz;"
+      signature = "[Ljo;"
    )
    @Export("modIcons")
    public static IndexedSprite[] modIcons;
-   @ObfuscatedName("k")
-   int[] field3642;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
+   int[] field3640;
+   @ObfuscatedName("p")
    @Export("verticalSpace")
    public int verticalSpace;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @Export("gylphs")
    byte[][] gylphs;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("minSpacing")
    public int minSpacing;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("horizontalOffsets")
    int[] horizontalOffsets;
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @Export("maxSpacing")
    public int maxSpacing;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("verticalOffsets")
    int[] verticalOffsets;
-   @ObfuscatedName("y")
-   byte[] field3651;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
+   byte[] field3649;
+   @ObfuscatedName("q")
    @Export("gylphHeights")
    int[] gylphHeights;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @Export("glyphWidths")
    int[] glyphWidths;
 
@@ -77,17 +77,17 @@ public abstract class FontTypeFace extends Rasterizer2D {
       shadow = -1;
       prevColorRGB = 0;
       color = 0;
-      field3658 = 256;
-      field3643 = 0;
-      field3647 = 0;
-      field3661 = new Random();
-      field3655 = new String[100];
+      field3646 = 256;
+      field3657 = 0;
+      field3658 = 0;
+      field3659 = new Random();
+      field3656 = new String[100];
    }
 
    FontTypeFace(byte[] var1) {
       this.gylphs = new byte[256][];
       this.verticalSpace = 0;
-      this.method4832(var1);
+      this.method4834(var1);
    }
 
    FontTypeFace(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
@@ -97,7 +97,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       this.verticalOffsets = var3;
       this.gylphHeights = var4;
       this.glyphWidths = var5;
-      this.method4832(var1);
+      this.method4834(var1);
       this.gylphs = var7;
       int var8 = Integer.MAX_VALUE;
       int var9 = Integer.MIN_VALUE;
@@ -116,7 +116,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       this.maxSpacing = var9 - this.verticalSpace;
    }
 
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ay")
    @Export("setColor")
    void setColor(int var1, int var2) {
       strikeRGB = -1;
@@ -125,13 +125,13 @@ public abstract class FontTypeFace extends Rasterizer2D {
       shadow = var2;
       prevColorRGB = var1;
       color = var1;
-      field3658 = 256;
-      field3643 = 0;
-      field3647 = 0;
+      field3646 = 256;
+      field3657 = 0;
+      field3658 = 0;
    }
 
-   @ObfuscatedName("y")
-   public int method4918(String var1) {
+   @ObfuscatedName("u")
+   public int method4848(String var1) {
       if(var1 == null) {
          return 0;
       } else {
@@ -154,7 +154,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         if(var7.startsWith("img=")) {
                            try {
                               String var9 = var7.substring(4);
-                              int var8 = class41.parseInt(var9, 10, true);
+                              int var8 = MilliTimer.parseInt(var9, 10, true);
                               var4 += modIcons[var8].width;
                               var3 = -1;
                            } catch (Exception var12) {
@@ -173,9 +173,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
                }
 
                if(var2 == -1) {
-                  var4 += this.field3642[(char)(PlayerComposition.method4079(var6) & 255)];
-                  if(this.field3651 != null && var3 != -1) {
-                     var4 += this.field3651[var6 + (var3 << 8)];
+                  var4 += this.field3640[(char)(class28.method246(var6) & 255)];
+                  if(this.field3649 != null && var3 != -1) {
+                     var4 += this.field3649[var6 + (var3 << 8)];
                   }
 
                   var3 = var6;
@@ -187,8 +187,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("o")
-   public int method4836(String var1, int[] var2, String[] var3) {
+   @ObfuscatedName("i")
+   public int method4838(String var1, int[] var2, String[] var3) {
       if(var1 == null) {
          return 0;
       } else {
@@ -222,23 +222,23 @@ public abstract class FontTypeFace extends Rasterizer2D {
                      var7 = -1;
                      var11 = 0;
                   } else if(var16.equals("lt")) {
-                     var4 += this.method4834('<');
-                     if(this.field3651 != null && var11 != -1) {
-                        var4 += this.field3651[(var11 << '\b') + 60];
+                     var4 += this.method4836('<');
+                     if(this.field3649 != null && var11 != -1) {
+                        var4 += this.field3649[(var11 << '\b') + 60];
                      }
 
                      var11 = '<';
                   } else if(var16.equals("gt")) {
-                     var4 += this.method4834('>');
-                     if(this.field3651 != null && var11 != -1) {
-                        var4 += this.field3651[(var11 << '\b') + 62];
+                     var4 += this.method4836('>');
+                     if(this.field3649 != null && var11 != -1) {
+                        var4 += this.field3649[(var11 << '\b') + 62];
                      }
 
                      var11 = '>';
                   } else if(var16.startsWith("img=")) {
                      try {
                         String var18 = var16.substring(4);
-                        int var17 = class41.parseInt(var18, 10, true);
+                        int var17 = MilliTimer.parseInt(var18, 10, true);
                         var4 += modIcons[var17].width;
                         var11 = 0;
                      } catch (Exception var22) {
@@ -252,9 +252,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
                if(var10 == -1) {
                   if(var15 != 0) {
                      var6.append(var15);
-                     var4 += this.method4834(var15);
-                     if(this.field3651 != null && var11 != -1) {
-                        var4 += this.field3651[var15 + (var11 << '\b')];
+                     var4 += this.method4836(var15);
+                     if(this.field3649 != null && var11 != -1) {
+                        var4 += this.field3649[var15 + (var11 << '\b')];
                      }
 
                      var11 = var15;
@@ -293,15 +293,15 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("as")
-   void method4904(String var1, int var2, int var3) {
+   @ObfuscatedName("at")
+   void method4907(String var1, int var2, int var3) {
       var3 -= this.verticalSpace;
       int var4 = -1;
       int var5 = -1;
 
       for(int var6 = 0; var6 < var1.length(); ++var6) {
          if(var1.charAt(var6) != 0) {
-            char var7 = (char)(PlayerComposition.method4079(var1.charAt(var6)) & 255);
+            char var7 = (char)(class28.method246(var1.charAt(var6)) & 255);
             if(var7 == '<') {
                var4 = var6;
             } else {
@@ -316,7 +316,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         if(var8.startsWith("img=")) {
                            try {
                               String var14 = var8.substring(4);
-                              var9 = class41.parseInt(var14, 10, true);
+                              var9 = MilliTimer.parseInt(var14, 10, true);
                               IndexedSprite var12 = modIcons[var9];
                               var12.method5147(var2, var3 + this.verticalSpace - var12.originalHeight);
                               var2 += var12.width;
@@ -339,14 +339,14 @@ public abstract class FontTypeFace extends Rasterizer2D {
                }
 
                if(var4 == -1) {
-                  if(this.field3651 != null && var5 != -1) {
-                     var2 += this.field3651[var7 + (var5 << 8)];
+                  if(this.field3649 != null && var5 != -1) {
+                     var2 += this.field3649[var7 + (var5 << 8)];
                   }
 
                   int var13 = this.gylphHeights[var7];
                   var9 = this.glyphWidths[var7];
                   if(var7 != ' ') {
-                     if(field3658 == 256) {
+                     if(field3646 == 256) {
                         if(shadow != -1) {
                            renderShadeRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var13, var9, shadow);
                         }
@@ -354,24 +354,24 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         this.renderRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var13, var9, color);
                      } else {
                         if(shadow != -1) {
-                           renderShadeRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var13, var9, shadow, field3658);
+                           renderShadeRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var13, var9, shadow, field3646);
                         }
 
-                        this.renderRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var13, var9, color, field3658);
+                        this.renderRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var13, var9, color, field3646);
                      }
-                  } else if(field3643 > 0) {
-                     field3647 += field3643;
-                     var2 += field3647 >> 8;
-                     field3647 &= 255;
+                  } else if(field3657 > 0) {
+                     field3658 += field3657;
+                     var2 += field3658 >> 8;
+                     field3658 &= 255;
                   }
 
-                  int var10 = this.field3642[var7];
+                  int var10 = this.field3640[var7];
                   if(strikeRGB != -1) {
-                     Rasterizer2D.method5063(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var10, strikeRGB);
+                     Rasterizer2D.method5053(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var10, strikeRGB);
                   }
 
                   if(underlineRGB != -1) {
-                     Rasterizer2D.method5063(var2, var3 + this.verticalSpace + 1, var10, underlineRGB);
+                     Rasterizer2D.method5053(var2, var3 + this.verticalSpace + 1, var10, underlineRGB);
                   }
 
                   var2 += var10;
@@ -383,13 +383,13 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("g")
-   void method4832(byte[] var1) {
-      this.field3642 = new int[256];
+   @ObfuscatedName("e")
+   void method4834(byte[] var1) {
+      this.field3640 = new int[256];
       int var2;
       if(var1.length == 257) {
-         for(var2 = 0; var2 < this.field3642.length; ++var2) {
-            this.field3642[var2] = var1[var2] & 255;
+         for(var2 = 0; var2 < this.field3640.length; ++var2) {
+            this.field3640[var2] = var1[var2] & 255;
          }
 
          this.verticalSpace = var1[256] & 255;
@@ -397,7 +397,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
          var2 = 0;
 
          for(int var3 = 0; var3 < 256; ++var3) {
-            this.field3642[var3] = var1[var2++] & 255;
+            this.field3640[var3] = var1[var2++] & 255;
          }
 
          int[] var10 = new int[256];
@@ -438,13 +438,13 @@ public abstract class FontTypeFace extends Rasterizer2D {
             }
          }
 
-         this.field3651 = new byte[65536];
+         this.field3649 = new byte[65536];
 
          for(var13 = 0; var13 < 256; ++var13) {
             if(var13 != 32 && var13 != 160) {
                for(var8 = 0; var8 < 256; ++var8) {
                   if(var8 != 32 && var8 != 160) {
-                     this.field3651[var8 + (var13 << 8)] = (byte)method4833(var11, var12, var4, this.field3642, var10, var13, var8);
+                     this.field3649[var8 + (var13 << 8)] = (byte)method4835(var11, var12, var4, this.field3640, var10, var13, var8);
                   }
                }
             }
@@ -455,7 +455,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("ao")
    @Export("drawMouseoverText")
    void drawMouseoverText(String var1, int var2, int var3, int[] var4, int[] var5) {
       var3 -= this.verticalSpace;
@@ -465,7 +465,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
       for(int var9 = 0; var9 < var1.length(); ++var9) {
          if(var1.charAt(var9) != 0) {
-            char var10 = (char)(PlayerComposition.method4079(var1.charAt(var9)) & 255);
+            char var10 = (char)(class28.method246(var1.charAt(var9)) & 255);
             if(var10 == '<') {
                var6 = var9;
             } else {
@@ -495,7 +495,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
                               ++var8;
                               String var19 = var11.substring(4);
-                              var14 = class41.parseInt(var19, 10, true);
+                              var14 = MilliTimer.parseInt(var19, 10, true);
                               IndexedSprite var17 = modIcons[var14];
                               var17.method5147(var12 + var2, var13 + (var3 + this.verticalSpace - var17.originalHeight));
                               var2 += var17.width;
@@ -518,8 +518,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
                }
 
                if(var6 == -1) {
-                  if(this.field3651 != null && var7 != -1) {
-                     var2 += this.field3651[var10 + (var7 << 8)];
+                  if(this.field3649 != null && var7 != -1) {
+                     var2 += this.field3649[var10 + (var7 << 8)];
                   }
 
                   int var18 = this.gylphHeights[var10];
@@ -538,7 +538,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
                   ++var8;
                   if(var10 != ' ') {
-                     if(field3658 == 256) {
+                     if(field3646 == 256) {
                         if(shadow != -1) {
                            renderShadeRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var18, var12, shadow);
                         }
@@ -546,24 +546,24 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         this.renderRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var18, var12, color);
                      } else {
                         if(shadow != -1) {
-                           renderShadeRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var18, var12, shadow, field3658);
+                           renderShadeRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var18, var12, shadow, field3646);
                         }
 
-                        this.renderRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var18, var12, color, field3658);
+                        this.renderRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var18, var12, color, field3646);
                      }
-                  } else if(field3643 > 0) {
-                     field3647 += field3643;
-                     var2 += field3647 >> 8;
-                     field3647 &= 255;
+                  } else if(field3657 > 0) {
+                     field3658 += field3657;
+                     var2 += field3658 >> 8;
+                     field3658 &= 255;
                   }
 
-                  int var15 = this.field3642[var10];
+                  int var15 = this.field3640[var10];
                   if(strikeRGB != -1) {
-                     Rasterizer2D.method5063(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var15, strikeRGB);
+                     Rasterizer2D.method5053(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var15, strikeRGB);
                   }
 
                   if(underlineRGB != -1) {
-                     Rasterizer2D.method5063(var2, var3 + this.verticalSpace, var15, underlineRGB);
+                     Rasterizer2D.method5053(var2, var3 + this.verticalSpace, var15, underlineRGB);
                   }
 
                   var2 += var15;
@@ -575,37 +575,42 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("t")
-   int method4834(char var1) {
+   @ObfuscatedName("x")
+   int method4836(char var1) {
       if(var1 == 160) {
          var1 = ' ';
       }
 
-      return this.field3642[PlayerComposition.method4079(var1) & 255];
+      return this.field3640[class28.method246(var1) & 255];
    }
 
-   @ObfuscatedName("ad")
+   @ObfuscatedName("b")
+   public int method4840(String var1, int var2) {
+      return this.method4838(var1, new int[]{var2}, field3656);
+   }
+
+   @ObfuscatedName("aw")
    @Export("setRGB")
    void setRGB(String var1) {
       try {
          if(var1.startsWith("col=")) {
-            color = Sequence.method4782(var1.substring(4), 16);
+            color = KitDefinition.method4443(var1.substring(4), 16);
          } else if(var1.equals("/col")) {
             color = prevColorRGB;
          } else if(var1.startsWith("str=")) {
-            strikeRGB = Sequence.method4782(var1.substring(4), 16);
+            strikeRGB = KitDefinition.method4443(var1.substring(4), 16);
          } else if(var1.equals("str")) {
             strikeRGB = 8388608;
          } else if(var1.equals("/str")) {
             strikeRGB = -1;
          } else if(var1.startsWith("u=")) {
-            underlineRGB = Sequence.method4782(var1.substring(2), 16);
+            underlineRGB = KitDefinition.method4443(var1.substring(2), 16);
          } else if(var1.equals("u")) {
             underlineRGB = 0;
          } else if(var1.equals("/u")) {
             underlineRGB = -1;
          } else if(var1.startsWith("shad=")) {
-            shadow = Sequence.method4782(var1.substring(5), 16);
+            shadow = KitDefinition.method4443(var1.substring(5), 16);
          } else if(var1.equals("shad")) {
             shadow = 0;
          } else if(var1.equals("/shad")) {
@@ -619,13 +624,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("u")
-   public int method4838(String var1, int var2) {
-      return this.method4836(var1, new int[]{var2}, field3655);
-   }
-
-   @ObfuscatedName("n")
-   public int method4844(String var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
+   @ObfuscatedName("l")
+   public int method4915(String var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       if(var1 == null) {
          return 0;
       } else {
@@ -639,7 +639,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
             var11 = null;
          }
 
-         int var12 = this.method4836(var1, var11, field3655);
+         int var12 = this.method4838(var1, var11, field3656);
          if(var9 == 3 && var12 == 1) {
             var9 = 1;
          }
@@ -664,17 +664,17 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
          for(var14 = 0; var14 < var12; ++var14) {
             if(var8 == 0) {
-               this.method4904(field3655[var14], var2, var13);
+               this.method4907(field3656[var14], var2, var13);
             } else if(var8 == 1) {
-               this.method4904(field3655[var14], var2 + (var4 - this.method4918(field3655[var14])) / 2, var13);
+               this.method4907(field3656[var14], var2 + (var4 - this.method4848(field3656[var14])) / 2, var13);
             } else if(var8 == 2) {
-               this.method4904(field3655[var14], var2 + var4 - this.method4918(field3655[var14]), var13);
+               this.method4907(field3656[var14], var2 + var4 - this.method4848(field3656[var14]), var13);
             } else if(var14 == var12 - 1) {
-               this.method4904(field3655[var14], var2, var13);
+               this.method4907(field3656[var14], var2, var13);
             } else {
-               this.method4850(field3655[var14], var4);
-               this.method4904(field3655[var14], var2, var13);
-               field3643 = 0;
+               this.method4852(field3656[var14], var4);
+               this.method4907(field3656[var14], var2, var13);
+               field3657 = 0;
             }
 
             var13 += var10;
@@ -684,8 +684,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("ag")
-   void method4850(String var1, int var2) {
+   @ObfuscatedName("az")
+   void method4852(String var1, int var2) {
       int var3 = 0;
       boolean var4 = false;
 
@@ -701,26 +701,26 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
 
       if(var3 > 0) {
-         field3643 = (var2 - this.method4918(var1) << 8) / var3;
+         field3657 = (var2 - this.method4848(var1) << 8) / var3;
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @Export("renderRGB")
    abstract void renderRGB(byte[] var1, int var2, int var3, int var4, int var5, int var6);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @Export("renderRGBA")
    abstract void renderRGBA(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7);
 
-   @ObfuscatedName("i")
-   public int method4878(String var1, int var2) {
-      int var3 = this.method4836(var1, new int[]{var2}, field3655);
+   @ObfuscatedName("h")
+   public int method4839(String var1, int var2) {
+      int var3 = this.method4838(var1, new int[]{var2}, field3656);
       int var4 = 0;
 
       for(int var5 = 0; var5 < var3; ++var5) {
-         int var6 = this.method4918(field3655[var5]);
+         int var6 = this.method4848(field3656[var5]);
          if(var6 > var4) {
             var4 = var6;
          }
@@ -729,19 +729,19 @@ public abstract class FontTypeFace extends Rasterizer2D {
       return var4;
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("aa")
    @Export("drawRandomizedMouseoverText")
    public void drawRandomizedMouseoverText(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         field3661.setSeed((long)var6);
-         field3658 = 192 + (field3661.nextInt() & 31);
+         field3659.setSeed((long)var6);
+         field3646 = 192 + (field3659.nextInt() & 31);
          int[] var7 = new int[var1.length()];
          int var8 = 0;
 
          for(int var9 = 0; var9 < var1.length(); ++var9) {
             var7[var9] = var8;
-            if((field3661.nextInt() & 3) == 0) {
+            if((field3659.nextInt() & 3) == 0) {
                ++var8;
             }
          }
@@ -750,32 +750,32 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("w")
-   public void method4843(String var1, int var2, int var3, int var4, int var5) {
+   @ObfuscatedName("m")
+   public void method4845(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         this.method4904(var1, var2 - this.method4918(var1) / 2, var3);
+         this.method4907(var1, var2 - this.method4848(var1) / 2, var3);
       }
    }
 
-   @ObfuscatedName("c")
-   public void method4840(String var1, int var2, int var3, int var4, int var5) {
-      if(var1 != null) {
-         this.setColor(var4, var5);
-         this.method4904(var1, var2, var3);
-      }
-   }
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("y")
    public void method4842(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         this.method4904(var1, var2 - this.method4918(var1), var3);
+         this.method4907(var1, var2, var3);
       }
    }
 
-   @ObfuscatedName("m")
-   public void method4845(String var1, int var2, int var3, int var4, int var5, int var6) {
+   @ObfuscatedName("r")
+   public void method4844(String var1, int var2, int var3, int var4, int var5) {
+      if(var1 != null) {
+         this.setColor(var4, var5);
+         this.method4907(var1, var2 - this.method4848(var1), var3);
+      }
+   }
+
+   @ObfuscatedName("f")
+   public void method4847(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.setColor(var4, var5);
          int[] var7 = new int[var1.length()];
@@ -784,12 +784,12 @@ public abstract class FontTypeFace extends Rasterizer2D {
             var7[var8] = (int)(Math.sin((double)var8 / 2.0D + (double)var6 / 5.0D) * 5.0D);
          }
 
-         this.drawMouseoverText(var1, var2 - this.method4918(var1) / 2, var3, (int[])null, var7);
+         this.drawMouseoverText(var1, var2 - this.method4848(var1) / 2, var3, (int[])null, var7);
       }
    }
 
-   @ObfuscatedName("ae")
-   public void method4921(String var1, int var2, int var3, int var4, int var5, int var6) {
+   @ObfuscatedName("ap")
+   public void method4860(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.setColor(var4, var5);
          int[] var7 = new int[var1.length()];
@@ -800,12 +800,12 @@ public abstract class FontTypeFace extends Rasterizer2D {
             var8[var9] = (int)(Math.sin((double)var9 / 3.0D + (double)var6 / 5.0D) * 5.0D);
          }
 
-         this.drawMouseoverText(var1, var2 - this.method4918(var1) / 2, var3, var7, var8);
+         this.drawMouseoverText(var1, var2 - this.method4848(var1) / 2, var3, var7, var8);
       }
    }
 
-   @ObfuscatedName("ai")
-   public void method4847(String var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("af")
+   public void method4849(String var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(var1 != null) {
          this.setColor(var4, var5);
          double var8 = 7.0D - (double)var7 / 8.0D;
@@ -819,21 +819,21 @@ public abstract class FontTypeFace extends Rasterizer2D {
             var10[var11] = (int)(Math.sin((double)var11 / 1.5D + (double)var6 / 1.0D) * var8);
          }
 
-         this.drawMouseoverText(var1, var2 - this.method4918(var1) / 2, var3, (int[])null, var10);
+         this.drawMouseoverText(var1, var2 - this.method4848(var1) / 2, var3, (int[])null, var10);
       }
    }
 
-   @ObfuscatedName("h")
-   public void method4841(String var1, int var2, int var3, int var4, int var5, int var6) {
+   @ObfuscatedName("c")
+   public void method4843(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         field3658 = var6;
-         this.method4904(var1, var2, var3);
+         field3646 = var6;
+         this.method4907(var1, var2, var3);
       }
    }
 
-   @ObfuscatedName("v")
-   static int method4833(byte[][] var0, byte[][] var1, int[] var2, int[] var3, int[] var4, int var5, int var6) {
+   @ObfuscatedName("d")
+   static int method4835(byte[][] var0, byte[][] var1, int[] var2, int[] var3, int[] var4, int var5, int var6) {
       int var7 = var2[var5];
       int var8 = var7 + var4[var5];
       int var9 = var2[var6];
@@ -910,29 +910,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("av")
-   @Export("renderRGBA")
-   static void renderRGBA(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      var2 = ((var2 & 65280) * var9 & 16711680) + (var9 * (var2 & 16711935) & -16711936) >> 8;
-      var9 = 256 - var9;
-
-      for(int var10 = -var6; var10 < 0; ++var10) {
-         for(int var11 = -var5; var11 < 0; ++var11) {
-            if(var1[var3++] != 0) {
-               int var12 = var0[var4];
-               var0[var4++] = (((var12 & 65280) * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8) + var2;
-            } else {
-               ++var4;
-            }
-         }
-
-         var4 += var7;
-         var3 += var8;
-      }
-
-   }
-
-   @ObfuscatedName("am")
+   @ObfuscatedName("ax")
    @Export("render")
    static void render(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = -(var5 >> 2);
@@ -980,7 +958,29 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("al")
+   @Export("renderRGBA")
+   static void renderRGBA(int[] var0, byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+      var2 = ((var2 & 65280) * var9 & 16711680) + (var9 * (var2 & 16711935) & -16711936) >> 8;
+      var9 = 256 - var9;
+
+      for(int var10 = -var6; var10 < 0; ++var10) {
+         for(int var11 = -var5; var11 < 0; ++var11) {
+            if(var1[var3++] != 0) {
+               int var12 = var0[var4];
+               var0[var4++] = (((var12 & 65280) * var9 & 16711680) + ((var12 & 16711935) * var9 & -16711936) >> 8) + var2;
+            } else {
+               ++var4;
+            }
+         }
+
+         var4 += var7;
+         var3 += var8;
+      }
+
+   }
+
+   @ObfuscatedName("av")
    @Export("renderShadeRGBA")
    static void renderShadeRGBA(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       int var7 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
@@ -1022,7 +1022,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("j")
    @Export("appendTags")
    public static String appendTags(String var0) {
       int var1 = var0.length();

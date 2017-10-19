@@ -1,86 +1,85 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hk")
 public class class227 {
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljz;I)V",
-      garbageValue = "-1235273336"
+   @ObfuscatedName("d")
+   @Export("spritePixels")
+   public static byte[][] spritePixels;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 2056707241
    )
-   static final void method4199(IndexedSprite var0) {
-      short var1 = 256;
+   static int field3145;
 
-      int var2;
-      for(var2 = 0; var2 < ScriptState.field792.length; ++var2) {
-         ScriptState.field792[var2] = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lgk;IIB)I",
+      garbageValue = "-43"
+   )
+   static int method4159(IterableHashTable var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
       }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         ScriptState.field792[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               Varbit.field3383[var5] = (ScriptState.field792[var5 - 128] + ScriptState.field792[var5 + 1] + ScriptState.field792[var5 + 128] + ScriptState.field792[var5 - 1]) / 4;
-            }
-         }
-
-         int[] var8 = ScriptState.field792;
-         ScriptState.field792 = Varbit.field3383;
-         Varbit.field3383 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + var0.offsetX + 16;
-                  int var6 = var3 + var0.offsetY + 16;
-                  int var7 = var5 + (var6 << 7);
-                  ScriptState.field792[var7] = 0;
-               }
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ILcv;ZB)I",
-      garbageValue = "-23"
+      signature = "(Lip;Lip;S)V",
+      garbageValue = "256"
    )
-   static int method4198(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class81.field1341:class81.field1340;
-      if(var0 == 1500) {
-         class81.intStack[++class81.intStackSize - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 1501) {
-         class81.intStack[++class81.intStackSize - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 1502) {
-         class81.intStack[++class81.intStackSize - 1] = var3.width;
-         return 1;
-      } else if(var0 == 1503) {
-         class81.intStack[++class81.intStackSize - 1] = var3.height;
-         return 1;
-      } else if(var0 == 1504) {
-         class81.intStack[++class81.intStackSize - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 1505) {
-         class81.intStack[++class81.intStackSize - 1] = var3.parentId;
-         return 1;
-      } else {
-         return 2;
+   public static void method4158(IndexDataBase var0, IndexDataBase var1) {
+      CombatInfo2.field3367 = var0;
+      CombatInfo2.field3369 = var1;
+   }
+
+   @ObfuscatedName("ky")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZB)V",
+      garbageValue = "-29"
+   )
+   static void method4160(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
+
+      for(int var4 = 0; var4 < class33.field483; ++var4) {
+         ItemComposition var5 = FaceNormal.getItemDefinition(var4);
+         if((!var1 || var5.field3526) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               class169.field2340 = -1;
+               class3.field31 = null;
+               return;
+            }
+
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
+         }
       }
+
+      class3.field31 = var2;
+      class14.field300 = 0;
+      class169.field2340 = var3;
+      String[] var8 = new String[class169.field2340];
+
+      for(int var9 = 0; var9 < class169.field2340; ++var9) {
+         var8[var9] = FaceNormal.getItemDefinition(var2[var9]).name;
+      }
+
+      class8.method39(var8, class3.field31);
    }
 }

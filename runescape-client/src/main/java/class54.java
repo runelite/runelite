@@ -1,72 +1,80 @@
 import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("bf")
 public class class54 {
-   @ObfuscatedName("jq")
-   @ObfuscatedGetter(
-      intValue = 261096063
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("ep")
-   @ObfuscatedSignature(
-      signature = "Lfi;"
-   )
-   static RSSocket field688;
-   @ObfuscatedName("di")
-   @ObfuscatedSignature(
-      signature = "Lij;"
-   )
-   static IndexData field686;
-   @ObfuscatedName("ge")
-   @ObfuscatedSignature(
-      signature = "[Lkr;"
-   )
-   static SpritePixels[] field687;
-
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1913001930"
+      signature = "(IS)Z",
+      garbageValue = "512"
    )
-   static final boolean method813() {
-      return class132.field1982;
+   public static boolean method779(int var0) {
+      return var0 == class221.field2824.field2825;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("it")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-17"
+      signature = "(IIIIIIIII)V",
+      garbageValue = "1002340331"
    )
-   static final void method812(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class174.field2411[0][var5][var4] = 127;
-               if(var0 == var5 && var5 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
-               }
+   static final void method778(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      if(WorldMapData.loadWidget(var0)) {
+         class64.field807 = null;
+         class88.gameDraw(class215.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         if(class64.field807 != null) {
+            class88.gameDraw(class64.field807, -1412584499, var1, var2, var3, var4, class43.field593, Friend.field825, var7);
+            class64.field807 = null;
+         }
 
-               if(var5 == var0 + var2 && var5 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
-               }
-
-               if(var4 == var1 && var4 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
-               }
-
-               if(var4 == var3 + var1 && var4 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
-               }
+      } else {
+         if(var7 != -1) {
+            Client.field1119[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field1119[var8] = true;
             }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("ha")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "226214383"
+   )
+   static void method777() {
+      if(Client.spellSelected) {
+         Widget var0 = class215.method4064(class56.field696, Client.field1070);
+         if(var0 != null && var0.field2719 != null) {
+            ScriptEvent var1 = new ScriptEvent();
+            var1.widget = var0;
+            var1.field849 = var0.field2719;
+            class56.method817(var1);
+         }
+
+         Client.spellSelected = false;
+         class45.method647(var0);
+      }
+   }
+
+   @ObfuscatedName("gn")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1185476756"
+   )
+   static final void method780() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints == -1) {
+            var0.delay = 0;
+            class114.method2166(var0);
+         } else {
+            var0.unlink();
          }
       }
 

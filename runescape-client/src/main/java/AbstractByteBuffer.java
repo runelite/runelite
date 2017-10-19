@@ -1,37 +1,56 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fa")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("k")
-   static boolean field2429;
-   @ObfuscatedName("ik")
-   @ObfuscatedSignature(
-      signature = "Lbw;"
+   @ObfuscatedName("s")
+   static boolean field2410;
+   @ObfuscatedName("gw")
+   @ObfuscatedGetter(
+      intValue = 39076377
    )
-   @Export("localPlayer")
-   static Player localPlayer;
+   @Export("cameraX")
+   static int cameraX;
 
    static {
-      field2429 = false;
+      field2410 = false;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-95"
+      signature = "(I)[B",
+      garbageValue = "-1323537898"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-180504190"
+      garbageValue = "-107169366"
    )
    @Export("put")
    abstract void put(byte[] var1);
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1797966404"
+   )
+   public static void method3472() {
+      KitDefinition.identKits.reset();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-1540851623"
+   )
+   static String method3475(int var0) {
+      return "<img=" + var0 + ">";
+   }
 }

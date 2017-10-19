@@ -4,46 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hr")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhr;"
    )
    @Export("RC")
    static final BuildType RC;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhr;"
    )
    @Export("WIP")
    static final BuildType WIP;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhr;"
    )
    @Export("LIVE")
    static final BuildType LIVE;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhr;"
    )
    @Export("BUILD_LIVE")
    static final BuildType BUILD_LIVE;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -990518267
-   )
-   static int field3190;
-   @ObfuscatedName("ff")
-   static int[] field3191;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 999181077
+      intValue = -732504795
    )
    @Export("ordinal")
    public final int ordinal;
@@ -60,53 +53,49 @@ public class BuildType {
       this.ordinal = var2;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "([BIIB)Ljava/lang/String;",
-      garbageValue = "-77"
+      signature = "(Lip;IIB)Lky;",
+      garbageValue = "95"
    )
-   static String method4209(byte[] var0, int var1, int var2) {
-      StringBuilder var3 = new StringBuilder();
+   public static SpritePixels method4173(IndexDataBase var0, int var1, int var2) {
+      if(!class261.method4822(var0, var1, var2)) {
+         return null;
+      } else {
+         SpritePixels var4 = new SpritePixels();
+         var4.maxWidth = class287.field3809;
+         var4.maxHeight = class287.field3807;
+         var4.offsetX = class287.field3808[0];
+         var4.offsetY = class21.offsetsY[0];
+         var4.width = class287.field3806[0];
+         var4.height = class56.field700[0];
+         int var5 = var4.height * var4.width;
+         byte[] var6 = class227.spritePixels[0];
+         var4.image = new int[var5];
 
-      for(int var4 = var1; var4 < var2 + var1; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class269.field3681[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class269.field3681[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class269.field3681[(var6 & 15) << 2 | var7 >>> 6]).append(class269.field3681[var7 & 63]);
-            } else {
-               var3.append(class269.field3681[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class269.field3681[(var5 & 3) << 4]).append("==");
+         for(int var7 = 0; var7 < var5; ++var7) {
+            var4.image[var7] = class114.field1675[var6[var7] & 255];
          }
-      }
 
-      return var3.toString();
+         class249.method4493();
+         return var4;
+      }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("jp")
    @ObfuscatedSignature(
-      signature = "(II)Liu;",
-      garbageValue = "1021830326"
+      signature = "(Lhj;IIII)V",
+      garbageValue = "-1014087476"
    )
-   public static class252 method4211(int var0) {
-      class252 var1 = (class252)class252.field3395.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class252.field3397.getConfigData(34, var0);
-         var1 = new class252();
-         if(var2 != null) {
-            var1.method4555(new Buffer(var2));
+   static final void method4177(Widget var0, int var1, int var2, int var3) {
+      class210 var4 = var0.method4076(false);
+      if(var4 != null) {
+         if(Client.field1148 < 3) {
+            class202.compass.method5184(var1, var2, var4.field2589, var4.field2592, 25, 25, Client.mapAngle, 256, var4.field2594, var4.field2591);
+         } else {
+            Rasterizer2D.method5059(var1, var2, 0, var4.field2594, var4.field2591);
          }
 
-         var1.method4547();
-         class252.field3395.put(var1, (long)var0);
-         return var1;
       }
    }
 }

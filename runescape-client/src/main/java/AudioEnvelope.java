@@ -3,40 +3,40 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("da")
+@ObfuscatedName("de")
 @Implements("AudioEnvelope")
 public class AudioEnvelope {
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("ticks")
    int ticks;
-   @ObfuscatedName("y")
+   @ObfuscatedName("n")
    @Export("max")
    int max;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @Export("segments")
    int segments;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("form")
    int form;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("phaseIndex")
    int phaseIndex;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @Export("durations")
    int[] durations;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @Export("phases")
    int[] phases;
-   @ObfuscatedName("t")
+   @ObfuscatedName("z")
    @Export("amplitude")
    int amplitude;
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @Export("step")
    int step;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @Export("start")
    int start;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("end")
    int end;
 
@@ -50,9 +50,9 @@ public class AudioEnvelope {
       this.phases[1] = 65535;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfg;)V"
+      signature = "(Lfz;)V"
    )
    @Export("decode")
    final void decode(Buffer var1) {
@@ -62,7 +62,7 @@ public class AudioEnvelope {
       this.decodeSegments(var1);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @Export("reset")
    final void reset() {
       this.ticks = 0;
@@ -72,9 +72,9 @@ public class AudioEnvelope {
       this.max = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfg;)V"
+      signature = "(Lfz;)V"
    )
    @Export("decodeSegments")
    final void decodeSegments(Buffer var1) {
@@ -89,7 +89,7 @@ public class AudioEnvelope {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @Export("step")
    final int step(int var1) {
       if(this.max >= this.ticks) {

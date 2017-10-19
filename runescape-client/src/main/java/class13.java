@@ -2,32 +2,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("t")
 public class class13 {
-   @ObfuscatedName("k")
-   public static Comparator field281;
-   @ObfuscatedName("e")
-   public static Comparator field280;
-   @ObfuscatedName("p")
-   public static Comparator field283;
+   @ObfuscatedName("s")
+   public static Comparator field285;
    @ObfuscatedName("q")
-   public static Comparator field282;
-   @ObfuscatedName("d")
-   public final List field284;
+   public static Comparator field286;
+   @ObfuscatedName("o")
+   public static Comparator field289;
+   @ObfuscatedName("g")
+   public static Comparator field288;
+   @ObfuscatedName("w")
+   public final List field290;
 
    static {
-      field281 = new class19();
+      field285 = new class19();
       new class12();
-      field280 = new class17();
-      field283 = new class18();
-      field282 = new class15();
+      field286 = new class17();
+      field289 = new class18();
+      field288 = new class15();
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfg;Z)V",
+      signature = "(Lfz;Z)V",
       garbageValue = "1"
    )
    public class13(Buffer var1, boolean var2) {
@@ -41,42 +42,40 @@ public class class13 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field284 = new ArrayList(var6);
+      this.field290 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field284.add(new class14(var1, var5, var3));
+         this.field290.add(new class14(var1, var5, var3));
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "1996887458"
+      garbageValue = "-660126978"
    )
-   public void method74(Comparator var1, boolean var2) {
+   public void method75(Comparator var1, boolean var2) {
       if(var2) {
-         Collections.sort(this.field284, var1);
+         Collections.sort(this.field290, var1);
       } else {
-         Collections.sort(this.field284, Collections.reverseOrder(var1));
+         Collections.sort(this.field290, Collections.reverseOrder(var1));
       }
 
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("fr")
    @ObfuscatedSignature(
-      signature = "(Ldd;B)V",
-      garbageValue = "5"
+      signature = "(IZZZI)Lih;",
+      garbageValue = "176379728"
    )
-   static final void method78(class117 var0) {
-      var0.field1703 = false;
-      if(var0.field1705 != null) {
-         var0.field1705.field1737 = 0;
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class155.field2239 != null) {
+         var4 = new IndexFile(var0, class155.field2239, PacketBuffer.field2417[var0], 1000000);
       }
 
-      for(class117 var1 = var0.vmethod4025(); var1 != null; var1 = var0.vmethod4002()) {
-         method78(var1);
-      }
-
+      return new IndexData(var4, class37.field534, var0, var1, var2, var3);
    }
 }

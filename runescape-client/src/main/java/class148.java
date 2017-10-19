@@ -1,125 +1,94 @@
 import java.net.URL;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ex")
 public class class148 {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 86475233
-   )
-   public static int field2203;
-   @ObfuscatedName("bo")
-   @Export("sessionToken")
-   static String sessionToken;
-   @ObfuscatedName("e")
-   volatile byte[] field2204;
-   @ObfuscatedName("k")
-   volatile boolean field2199;
-   @ObfuscatedName("d")
-   final URL field2201;
+   @ObfuscatedName("q")
+   volatile byte[] field2190;
+   @ObfuscatedName("s")
+   volatile boolean field2192;
+   @ObfuscatedName("w")
+   final URL field2188;
 
    class148(URL var1) {
-      this.field2201 = var1;
+      this.field2188 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "-41"
+      garbageValue = "0"
    )
-   public boolean method2990() {
-      return this.field2199;
+   public boolean method2933() {
+      return this.field2192;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "1081987069"
+      signature = "(B)[B",
+      garbageValue = "-108"
    )
-   public byte[] method2984() {
-      return this.field2204;
+   public byte[] method2935() {
+      return this.field2190;
    }
 
-   @ObfuscatedName("il")
+   @ObfuscatedName("hi")
    @ObfuscatedSignature(
-      signature = "(IIIIS)V",
-      garbageValue = "-14620"
+      signature = "(B)V",
+      garbageValue = "-98"
    )
-   static final void method2982(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1116; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1119[var4] = true;
-         }
+   static void method2940() {
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
+   }
+
+   @ObfuscatedName("fp")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1978123503"
+   )
+   static void method2942(int var0) {
+      if(var0 == -1 && !Client.field1151) {
+         class152.method2974();
+      } else if(var0 != -1 && var0 != Client.field1150 && Client.field1149 != 0 && !Client.field1151) {
+         IndexFile.method3070(2, class37.indexTrack1, var0, 0, Client.field1149, false);
       }
 
+      Client.field1150 = var0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("gp")
    @ObfuscatedSignature(
-      signature = "(Lfg;IIIIIII)V",
-      garbageValue = "-35816606"
+      signature = "(IIII)V",
+      garbageValue = "-1299228607"
    )
-   @Export("loadTerrain")
-   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class61.tileSettings[var1][var2][var3] = 0;
-
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -Player.method1189(var2 + 932731 + var4, var3 + 556238 + var5) * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
-
-            if(var7 == 1) {
-               int var8 = var0.readUnsignedByte();
-               if(var8 == 1) {
-                  var8 = 0;
-               }
-
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -var8 * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class61.overlayIds[var1][var2][var3] = var0.readByte();
-               class277.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               class61.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
-            }
+   static final void method2941(int var0, int var1, int var2) {
+      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+         int var3 = class41.getTileHeight(var0, var1, class46.plane) - var2;
+         var0 -= AbstractByteBuffer.cameraX;
+         var3 -= class229.cameraZ;
+         var1 -= World.cameraY;
+         int var4 = Graphics3D.SINE[class18.cameraPitch];
+         int var5 = Graphics3D.COSINE[class18.cameraPitch];
+         int var6 = Graphics3D.SINE[CombatInfo1.cameraYaw];
+         int var7 = Graphics3D.COSINE[CombatInfo1.cameraYaw];
+         int var8 = var6 * var1 + var0 * var7 >> 16;
+         var1 = var7 * var1 - var0 * var6 >> 16;
+         var0 = var8;
+         var8 = var3 * var5 - var4 * var1 >> 16;
+         var1 = var5 * var1 + var4 * var3 >> 16;
+         if(var1 >= 50) {
+            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
+            Client.screenX = Client.viewportWidth / 2 + var8 * Client.scale / var1;
+         } else {
+            Client.screenY = -1;
+            Client.screenX = -1;
          }
+
       } else {
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               break;
-            }
-
-            if(var7 == 1) {
-               var0.readUnsignedByte();
-               break;
-            }
-
-            if(var7 <= 49) {
-               var0.readUnsignedByte();
-            }
-         }
+         Client.screenY = -1;
+         Client.screenX = -1;
       }
-
    }
 }

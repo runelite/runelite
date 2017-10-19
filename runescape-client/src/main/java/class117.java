@@ -1,60 +1,60 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dm")
 public abstract class class117 extends Node {
-   @ObfuscatedName("c")
-   volatile boolean field1703;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
+   volatile boolean field1704;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Lds;"
    )
    class120 field1705;
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Ldm;"
    )
-   class117 field1706;
-   @ObfuscatedName("j")
-   int field1704;
+   class117 field1703;
+   @ObfuscatedName("b")
+   int field1706;
 
    protected class117() {
-      this.field1703 = true;
+      this.field1704 = true;
    }
 
-   @ObfuscatedName("v")
-   protected abstract void vmethod4004(int[] var1, int var2, int var3);
+   @ObfuscatedName("d")
+   protected abstract void vmethod3968(int[] var1, int var2, int var3);
 
-   @ObfuscatedName("y")
-   protected abstract void vmethod4023(int var1);
+   @ObfuscatedName("u")
+   protected abstract void vmethod3981(int var1);
 
-   @ObfuscatedName("fm")
-   final void method2374(int[] var1, int var2, int var3) {
-      if(this.field1703) {
-         this.vmethod4004(var1, var2, var3);
+   @ObfuscatedName("fw")
+   final void method2353(int[] var1, int var2, int var3) {
+      if(this.field1704) {
+         this.vmethod3968(var1, var2, var3);
       } else {
-         this.vmethod4023(var3);
+         this.vmethod3981(var3);
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "()Ldd;"
+      signature = "()Ldm;"
    )
-   protected abstract class117 vmethod4002();
+   protected abstract class117 vmethod3967();
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "()Ldd;"
+      signature = "()Ldm;"
    )
-   protected abstract class117 vmethod4025();
+   protected abstract class117 vmethod3966();
 
-   @ObfuscatedName("ay")
-   int vmethod2391() {
+   @ObfuscatedName("ag")
+   int vmethod2359() {
       return 255;
    }
 
-   @ObfuscatedName("g")
-   protected abstract int vmethod4007();
+   @ObfuscatedName("e")
+   protected abstract int vmethod3974();
 }

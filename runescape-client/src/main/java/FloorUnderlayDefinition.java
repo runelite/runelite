@@ -4,48 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iv")
+@ObfuscatedName("ix")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgo;"
    )
    @Export("underlays")
    public static NodeCache underlays;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
    @Export("underlay_ref")
-   public static IndexDataBase underlay_ref;
-   @ObfuscatedName("e")
+   static IndexDataBase underlay_ref;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -2059318829
+      intValue = -1535374769
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1904101643
+      intValue = -1289687633
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("s")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1962127203
+      intValue = -130637247
+   )
+   @Export("hue")
+   public int hue;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 38048895
    )
    @Export("lightness")
    public int lightness;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2022750189
-   )
-   @Export("hue")
-   public int hue;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1959955153
+      intValue = -635045375
    )
    @Export("hueMultiplier")
    public int hueMultiplier;
@@ -58,10 +58,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.rgbColor = 0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-5"
+      signature = "(II)V",
+      garbageValue = "1983594199"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -98,18 +98,18 @@ public class FloorUnderlayDefinition extends CacheableNode {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var2 == var10) {
+         if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var10 == var4) {
             var12 = 2.0D + (var6 - var2) / (var10 - var8);
-         } else if(var10 == var6) {
+         } else if(var6 == var10) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
       this.saturation = (int)(var14 * 256.0D);
-      this.lightness = (int)(256.0D * var16);
+      this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
       } else if(this.saturation > 255) {
@@ -123,9 +123,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       if(var16 > 0.5D) {
-         this.hueMultiplier = (int)(512.0D * var14 * (1.0D - var16));
+         this.hueMultiplier = (int)(512.0D * (1.0D - var16) * var14);
       } else {
-         this.hueMultiplier = (int)(512.0D * var14 * var16);
+         this.hueMultiplier = (int)(var16 * var14 * 512.0D);
       }
 
       if(this.hueMultiplier < 1) {
@@ -135,10 +135,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.hue = (int)((double)this.hueMultiplier * var12);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfg;III)V",
-      garbageValue = "1700656627"
+      signature = "(Lfz;IIS)V",
+      garbageValue = "-21317"
    )
    @Export("decode")
    void decode(Buffer var1, int var2, int var3) {
@@ -148,20 +148,20 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-173613719"
+      garbageValue = "343148870"
    )
    @Export("post")
    void post() {
       this.setHSL(this.rgbColor);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lfg;II)V",
-      garbageValue = "-366860968"
+      signature = "(Lfz;II)V",
+      garbageValue = "1744721365"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {

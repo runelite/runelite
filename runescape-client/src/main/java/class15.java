@@ -1,201 +1,122 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("i")
 final class class15 implements Comparator {
-   @ObfuscatedName("s")
+   @ObfuscatedName("ei")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lfe;"
    )
-   @Export("item_ref")
-   public static IndexDataBase item_ref;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1436240791
-   )
-   static int field298;
-   @ObfuscatedName("fd")
+   @Export("rssocket")
+   static RSSocket rssocket;
+   @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "Lkr;"
+      signature = "Lih;"
    )
-   @Export("compass")
-   static SpritePixels compass;
+   static IndexData field310;
    @ObfuscatedName("fn")
-   @ObfuscatedSignature(
-      signature = "Lkr;"
-   )
-   @Export("mapedge")
-   static SpritePixels mapedge;
-   @ObfuscatedName("ph")
-   @ObfuscatedGetter(
-      intValue = -767622985
-   )
-   static int field303;
+   @Export("mapRegions")
+   @Hook("mapRegionsChanged")
+   static int[] mapRegions;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lb;Lb;I)I",
-      garbageValue = "404248605"
+      signature = "(La;La;I)I",
+      garbageValue = "1495680373"
    )
-   int method91(class14 var1, class14 var2) {
-      return var1.field295.totalQuantity < var2.field295.totalQuantity?-1:(var2.field295.totalQuantity == var1.field295.totalQuantity?0:1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method91((class14)var1, (class14)var2);
+   int method89(class14 var1, class14 var2) {
+      return var1.field294.totalQuantity < var2.field294.totalQuantity?-1:(var2.field294.totalQuantity == var1.field294.totalQuantity?0:1);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1942965117"
-   )
-   public static int method98(int var0) {
-      var0 = (var0 & 1431655765) + (var0 >>> 1 & 1431655765);
-      var0 = (var0 >>> 2 & 858993459) + (var0 & 858993459);
-      var0 = var0 + (var0 >>> 4) & 252645135;
-      var0 += var0 >>> 8;
-      var0 += var0 >>> 16;
-      return var0 & 255;
+   public int compare(Object var1, Object var2) {
+      return this.method89((class14)var1, (class14)var2);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("gc")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "16711935"
+      signature = "(I)V",
+      garbageValue = "-1404435572"
    )
-   static int method95(int var0, int var1) {
-      Overlay var2 = class43.method626(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else {
-         int var4;
-         int var5;
-         if(var2.texture >= 0) {
-            var4 = Graphics3D.textureLoader.getAverageTextureRGB(var2.texture);
-            byte var11 = 96;
-            int var3;
-            if(var4 == -2) {
-               var3 = 12345678;
-            } else if(var4 == -1) {
-               if(var11 < 0) {
-                  var11 = 0;
-               } else if(var11 > 127) {
-                  var11 = 127;
-               }
-
-               var5 = 127 - var11;
-               var3 = var5;
-            } else {
-               var5 = var11 * (var4 & 127) / 128;
-               if(var5 < 2) {
-                  var5 = 2;
-               } else if(var5 > 126) {
-                  var5 = 126;
-               }
-
-               var3 = var5 + (var4 & 65408);
-            }
-
-            return Graphics3D.colorPalette[var3] | -16777216;
-         } else if(var2.color == 16711935) {
-            return var1;
-         } else {
-            var4 = var2.hue;
-            var5 = var2.saturation;
-            int var6 = var2.lightness;
-            if(var6 > 179) {
-               var5 /= 2;
-            }
-
-            if(var6 > 192) {
-               var5 /= 2;
-            }
-
-            if(var6 > 217) {
-               var5 /= 2;
-            }
-
-            if(var6 > 243) {
-               var5 /= 2;
-            }
-
-            int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-            byte var9 = 96;
-            int var8;
-            if(var7 == -2) {
-               var8 = 12345678;
-            } else {
-               int var12;
-               if(var7 == -1) {
-                  if(var9 < 0) {
-                     var9 = 0;
-                  } else if(var9 > 127) {
-                     var9 = 127;
-                  }
-
-                  var12 = 127 - var9;
-                  var8 = var12;
+   static final void method96() {
+      for(GraphicsObject var0 = (GraphicsObject)Client.graphicsObjectDeque.getFront(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjectDeque.getNext()) {
+         if(var0.level == class46.plane && !var0.finished) {
+            if(Client.gameCycle >= var0.startCycle) {
+               var0.method1675(Client.field1004);
+               if(var0.finished) {
+                  var0.unlink();
                } else {
-                  var12 = var9 * (var7 & 127) / 128;
-                  if(var12 < 2) {
-                     var12 = 2;
-                  } else if(var12 > 126) {
-                     var12 = 126;
-                  }
-
-                  var8 = var12 + (var7 & 65408);
+                  class3.region.method2718(var0.level, var0.x, var0.y, var0.height, 60, var0, 0, -1, false);
                }
             }
-
-            return Graphics3D.colorPalette[var8] | -16777216;
+         } else {
+            var0.unlink();
          }
       }
+
    }
 
-   @ObfuscatedName("hg")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIIIIII)V",
-      garbageValue = "-1139435692"
+      signature = "(ILct;ZS)I",
+      garbageValue = "-15027"
    )
-   static final void method97(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = 2048 - var3 & 2047;
-      int var7 = 2048 - var4 & 2047;
-      int var8 = 0;
-      int var9 = 0;
-      int var10 = var5;
-      int var11;
-      int var12;
-      int var13;
-      if(var6 != 0) {
-         var11 = Graphics3D.SINE[var6];
-         var12 = Graphics3D.COSINE[var6];
-         var13 = var12 * var9 - var5 * var11 >> 16;
-         var10 = var11 * var9 + var5 * var12 >> 16;
-         var9 = var13;
+   static int method95(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
+      } else {
+         var3 = var2?class251.field3392:class164.field2314;
       }
 
-      if(var7 != 0) {
-         var11 = Graphics3D.SINE[var7];
-         var12 = Graphics3D.COSINE[var7];
-         var13 = var12 * var8 + var10 * var11 >> 16;
-         var10 = var12 * var10 - var8 * var11 >> 16;
-         var8 = var13;
-      }
+      class45.method647(var3);
+      if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
+         if(var0 == 1201) {
+            var3.modelType = 2;
+            var3.modelId = class81.intStack[--class278.intStackSize];
+            return 1;
+         } else if(var0 == 1202) {
+            var3.modelType = 3;
+            var3.modelId = class66.localPlayer.composition.method4034();
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         class278.intStackSize -= 2;
+         int var4 = class81.intStack[class278.intStackSize];
+         int var5 = class81.intStack[class278.intStackSize + 1];
+         var3.itemId = var4;
+         var3.itemQuantity = var5;
+         ItemComposition var6 = FaceNormal.getItemDefinition(var4);
+         var3.rotationX = var6.xan2d;
+         var3.rotationZ = var6.yan2d;
+         var3.rotationY = var6.zan2d;
+         var3.field2737 = var6.offsetX2d;
+         var3.field2692 = var6.offsetY2d;
+         var3.modelZoom = var6.zoom2d;
+         if(var0 == 1205) {
+            var3.field2759 = 0;
+         } else if(var0 == 1212 | 1 == var6.isStackable) {
+            var3.field2759 = 1;
+         } else {
+            var3.field2759 = 2;
+         }
 
-      class211.cameraX = var0 - var8;
-      ScriptState.cameraZ = var1 - var9;
-      ChatLineBuffer.cameraY = var2 - var10;
-      class9.cameraPitch = var3;
-      class174.cameraYaw = var4;
+         if(var3.field2758 > 0) {
+            var3.modelZoom = var3.modelZoom * 32 / var3.field2758;
+         } else if(var3.originalWidth > 0) {
+            var3.modelZoom = var3.modelZoom * 32 / var3.originalWidth;
+         }
+
+         return 1;
+      }
    }
 }

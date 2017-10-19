@@ -4,78 +4,76 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("cj")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Renderable {
-   @ObfuscatedName("lr")
-   @ObfuscatedGetter(
-      intValue = -465586463
-   )
-   static int field1358;
-   @ObfuscatedName("ce")
+   @ObfuscatedName("k")
+   @Export("osNameLC")
+   public static String osNameLC;
+   @ObfuscatedName("ng")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "[Lbh;"
    )
-   @Export("indexModels")
-   static IndexData indexModels;
-   @ObfuscatedName("d")
+   @Export("clanMembers")
+   static ClanMember[] clanMembers;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1291553661
+      intValue = -1091697919
    )
    @Export("id")
    int id;
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @Export("finished")
    boolean finished;
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1877573441
+      intValue = -1318309111
    )
-   int field1357;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 2057826415
-   )
-   int field1354;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ljl;"
-   )
-   Sequence field1347;
+   int field1342;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1784457741
+      intValue = -1514763711
+   )
+   int field1346;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
+   Sequence field1341;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -696049155
    )
    @Export("level")
    int level;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1619850511
+      intValue = -1623273965
    )
    @Export("x")
    int x;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1072741549
+      intValue = -1787111417
    )
    @Export("y")
    int y;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1557286641
+      intValue = -1771908919
    )
    @Export("height")
    int height;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 338622339
+      intValue = -1761706863
    )
    @Export("startCycle")
    int startCycle;
 
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      this.field1354 = 0;
-      this.field1357 = 0;
+      this.field1346 = 0;
+      this.field1342 = 0;
       this.finished = false;
       this.id = var1;
       this.level = var2;
@@ -83,46 +81,46 @@ public final class GraphicsObject extends Renderable {
       this.y = var4;
       this.height = var5;
       this.startCycle = var7 + var6;
-      int var8 = class155.getSpotAnimType(this.id).field3326;
+      int var8 = class244.getSpotAnimType(this.id).field3325;
       if(var8 != -1) {
          this.finished = false;
-         this.field1347 = class204.getAnimation(var8);
+         this.field1341 = NPCComposition.getAnimation(var8);
       } else {
          this.finished = true;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)Leb;",
-      garbageValue = "1172124455"
+      signature = "(B)Leh;",
+      garbageValue = "0"
    )
    protected final Model getModel() {
-      Spotanim var1 = class155.getSpotAnimType(this.id);
+      Spotanim var1 = class244.getSpotAnimType(this.id);
       Model var2;
       if(!this.finished) {
-         var2 = var1.method4436(this.field1354);
+         var2 = var1.method4404(this.field1346);
       } else {
-         var2 = var1.method4436(-1);
+         var2 = var1.method4404(-1);
       }
 
       return var2 == null?null:var2;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "54"
+      signature = "(II)V",
+      garbageValue = "336145472"
    )
-   final void method1727(int var1) {
+   final void method1675(int var1) {
       if(!this.finished) {
-         this.field1357 += var1;
+         this.field1342 += var1;
 
-         while(this.field1357 > this.field1347.frameLenghts[this.field1354]) {
-            this.field1357 -= this.field1347.frameLenghts[this.field1354];
-            ++this.field1354;
-            if(this.field1354 >= this.field1347.frameIDs.length) {
+         while(this.field1342 > this.field1341.frameLenghts[this.field1346]) {
+            this.field1342 -= this.field1341.frameLenghts[this.field1346];
+            ++this.field1346;
+            if(this.field1346 >= this.field1341.frameIDs.length) {
                this.finished = true;
                break;
             }
@@ -131,52 +129,27 @@ public final class GraphicsObject extends Renderable {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Lei;",
-      garbageValue = "1355432419"
+      signature = "(Lip;Lip;ZI)V",
+      garbageValue = "1898450877"
    )
-   @Export("getFrames")
-   static Frames getFrames(int var0) {
-      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         var1 = class19.method144(Sequence.skel_ref, Sequence.skin_ref, var0, false);
-         if(var1 != null) {
-            Sequence.skeletons.put(var1, (long)var0);
-         }
-
-         return var1;
-      }
+   public static void method1670(IndexDataBase var0, IndexDataBase var1, boolean var2) {
+      ObjectComposition.objects_ref = var0;
+      ObjectComposition.field3436 = var1;
+      ObjectComposition.field3455 = var2;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)[Lkr;",
-      garbageValue = "-863365301"
+      signature = "(III)I",
+      garbageValue = "-2135631064"
    )
-   static SpritePixels[] method1735() {
-      SpritePixels[] var0 = new SpritePixels[class15.field298];
-
-      for(int var1 = 0; var1 < class15.field298; ++var1) {
-         SpritePixels var2 = var0[var1] = new SpritePixels();
-         var2.maxWidth = class287.field3808;
-         var2.maxHeight = class164.field2325;
-         var2.offsetX = class287.field3807[var1];
-         var2.offsetY = World.offsetsY[var1];
-         var2.width = class236.field3238[var1];
-         var2.height = FileSystem.field3207[var1];
-         int var3 = var2.width * var2.height;
-         byte[] var4 = class208.spritePixels[var1];
-         var2.image = new int[var3];
-
-         for(int var5 = 0; var5 < var3; ++var5) {
-            var2.image[var5] = class181.field2456[var4[var5] & 255];
-         }
-      }
-
-      Actor.method1605();
-      return var0;
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = class28.method244(var0 - 1, var1 - 1) + class28.method244(var0 + 1, var1 - 1) + class28.method244(var0 - 1, 1 + var1) + class28.method244(1 + var0, 1 + var1);
+      int var3 = class28.method244(var0 - 1, var1) + class28.method244(1 + var0, var1) + class28.method244(var0, var1 - 1) + class28.method244(var0, 1 + var1);
+      int var4 = class28.method244(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 }

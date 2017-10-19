@@ -4,44 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hu")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("r")
-   public static int[] field3207;
-   @ObfuscatedName("ar")
-   protected static String field3202;
-   @ObfuscatedName("d")
+   @ObfuscatedName("p")
+   @Export("validInterfaces")
+   static boolean[] validInterfaces;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1856203529
+      intValue = 275421763
    )
-   int field3206;
-   @ObfuscatedName("e")
+   int field3200;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
    @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("k")
-   public byte[] field3203;
-   @ObfuscatedName("p")
+   IndexFile index;
+   @ObfuscatedName("s")
+   byte[] field3197;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lih;"
    )
    @Export("data")
-   public IndexData data;
+   IndexData data;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgc;IIB)I",
-      garbageValue = "114"
+      signature = "(II)Lio;",
+      garbageValue = "247927451"
    )
-   static int method4214(IterableHashTable var0, int var1, int var2) {
-      if(var0 == null) {
-         return var2;
+   public static CombatInfo2 method4185(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field3360.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
-         return var3 == null?var2:var3.value;
+         byte[] var2 = CombatInfo2.field3367.getConfigData(33, var0);
+         var1 = new CombatInfo2();
+         if(var2 != null) {
+            var1.method4482(new Buffer(var2));
+         }
+
+         CombatInfo2.field3360.put(var1, (long)var0);
+         return var1;
       }
    }
 }

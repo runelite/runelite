@@ -2,75 +2,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hy")
 public class class219 implements class218 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   public static final class219 field2806;
-   @ObfuscatedName("t")
+   public static final class219 field2779;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   public static final class219 field2801;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   public static final class219 field2797;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   public static final class219 field2798;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   public static final class219 field2799;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhh;"
-   )
-   public static final class219 field2800;
+   public static final class219 field2787;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   public static final class219 field2804;
-   @ObfuscatedName("r")
+   public static final class219 field2778;
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   public static final class219 field2802;
+   public static final class219 field2780;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   public static final class219 field2781;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   public static final class219 field2803;
+   public static final class219 field2782;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhy;"
    )
-   static final class219 field2805;
-   @ObfuscatedName("y")
+   public static final class219 field2785;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   public static final class219 field2784;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   public static final class219 field2783;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   static final class219 field2786;
+   @ObfuscatedName("l")
+   static int[] field2789;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 437553647
+      intValue = 1576396191
    )
-   public final int field2796;
+   public final int field2788;
 
    static {
-      field2806 = new class219("", 10);
-      field2797 = new class219("", 11);
-      field2798 = new class219("", 12);
-      field2799 = new class219("", 13);
-      field2800 = new class219("", 14);
-      field2804 = new class219("", 15, new ScriptVarType[]{ScriptVarType.field231, ScriptVarType.field231}, (ScriptVarType[])null);
-      field2802 = new class219("", 16, new ScriptVarType[]{ScriptVarType.field231, ScriptVarType.field231}, (ScriptVarType[])null);
-      field2803 = new class219("", 17, new ScriptVarType[]{ScriptVarType.field231, ScriptVarType.field231}, (ScriptVarType[])null);
-      field2805 = new class219("", 73, true, true);
-      field2801 = new class219("", 76, true, false);
+      field2779 = new class219("", 10);
+      field2778 = new class219("", 11);
+      field2780 = new class219("", 12);
+      field2781 = new class219("", 13);
+      field2782 = new class219("", 14);
+      field2785 = new class219("", 15, new ScriptVarType[]{ScriptVarType.field77, ScriptVarType.field77}, (ScriptVarType[])null);
+      field2784 = new class219("", 16, new ScriptVarType[]{ScriptVarType.field77, ScriptVarType.field77}, (ScriptVarType[])null);
+      field2783 = new class219("", 17, new ScriptVarType[]{ScriptVarType.field77, ScriptVarType.field77}, (ScriptVarType[])null);
+      field2786 = new class219("", 73, true, true);
+      field2787 = new class219("", 76, true, false);
    }
 
    class219(String var1, int var2) {
@@ -78,14 +80,14 @@ public class class219 implements class218 {
    }
 
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IZ[Lr;Z[Lr;)V"
+      signature = "(Ljava/lang/String;IZ[Lp;Z[Lp;)V"
    )
    class219(String var1, int var2, boolean var3, ScriptVarType[] var4, boolean var5, ScriptVarType[] var6) {
-      this.field2796 = var2;
+      this.field2788 = var2;
    }
 
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I[Lr;[Lr;)V"
+      signature = "(Ljava/lang/String;I[Lp;[Lp;)V"
    )
    class219(String var1, int var2, ScriptVarType[] var3, ScriptVarType[] var4) {
       this(var1, var2, var3 != null, var3, null != var4, var4);
@@ -95,68 +97,102 @@ public class class219 implements class218 {
       this(var1, var2, var3, (ScriptVarType[])null, var4, (ScriptVarType[])null);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-41"
+      garbageValue = "6"
    )
    public int rsOrdinal() {
-      return this.field2796;
+      return this.field2788;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([BI)Lcv;",
-      garbageValue = "-1528227773"
+      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)[Ljo;",
+      garbageValue = "-661504365"
    )
-   static Script method4177(byte[] var0) {
-      Script var1 = new Script();
-      Buffer var2 = new Buffer(var0);
-      var2.offset = var2.payload.length - 2;
-      int var3 = var2.readUnsignedShort();
-      int var4 = var2.payload.length - 2 - var3 - 12;
-      var2.offset = var4;
-      int var5 = var2.readInt();
-      var1.localIntCount = var2.readUnsignedShort();
-      var1.localStringCount = var2.readUnsignedShort();
-      var1.intStackCount = var2.readUnsignedShort();
-      var1.stringStackCount = var2.readUnsignedShort();
-      int var6 = var2.readUnsignedByte();
-      int var7;
-      int var8;
-      if(var6 > 0) {
-         var1.switches = var1.method1919(var6);
+   public static IndexedSprite[] method4135(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return Projectile.method1782(var0, var3, var4);
+   }
 
-         for(var7 = 0; var7 < var6; ++var7) {
-            var8 = var2.readUnsignedShort();
-            IterableHashTable var9 = new IterableHashTable(class88.method1780(var8));
-            var1.switches[var7] = var9;
+   @ObfuscatedName("ge")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-39856878"
+   )
+   static final void method4134(int var0) {
+      int[] var1 = ScriptVarType.field85.image;
+      int var2 = var1.length;
 
-            while(var8-- > 0) {
-               int var10 = var2.readInt();
-               int var11 = var2.readInt();
-               var9.put(new IntegerNode(var11), (long)var10);
+      int var3;
+      for(var3 = 0; var3 < var2; ++var3) {
+         var1[var3] = 0;
+      }
+
+      int var4;
+      int var5;
+      for(var3 = 1; var3 < 103; ++var3) {
+         var4 = (103 - var3) * 2048 + 24628;
+
+         for(var5 = 1; var5 < 103; ++var5) {
+            if((class61.tileSettings[var0][var5][var3] & 24) == 0) {
+               class3.region.method2751(var1, var4, 512, var0, var5, var3);
+            }
+
+            if(var0 < 3 && (class61.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
+               class3.region.method2751(var1, var4, 512, var0 + 1, var5, var3);
+            }
+
+            var4 += 4;
+         }
+      }
+
+      var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+      var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+      ScriptVarType.field85.method5165();
+
+      int var6;
+      for(var5 = 1; var5 < 103; ++var5) {
+         for(var6 = 1; var6 < 103; ++var6) {
+            if((class61.tileSettings[var0][var6][var5] & 24) == 0) {
+               class33.method349(var0, var6, var5, var3, var4);
+            }
+
+            if(var0 < 3 && (class61.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
+               class33.method349(var0 + 1, var6, var5, var3, var4);
             }
          }
       }
 
-      var2.offset = 0;
-      var2.getNullString();
-      var1.instructions = new int[var5];
-      var1.intOperands = new int[var5];
-      var1.stringOperands = new String[var5];
+      Client.field1164 = 0;
 
-      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
-         var8 = var2.readUnsignedShort();
-         if(var8 == 3) {
-            var1.stringOperands[var7] = var2.readString();
-         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
-            var1.intOperands[var7] = var2.readInt();
-         } else {
-            var1.intOperands[var7] = var2.readUnsignedByte();
+      for(var5 = 0; var5 < 104; ++var5) {
+         for(var6 = 0; var6 < 104; ++var6) {
+            int var7 = class3.region.method2746(class46.plane, var5, var6);
+            if(var7 != 0) {
+               var7 = var7 >> 14 & 32767;
+               int var8 = CollisionData.getObjectDefinition(var7).mapIconId;
+               if(var8 >= 0) {
+                  Client.field1145[Client.field1164] = Area.field3285[var8].method4368(false);
+                  Client.field1143[Client.field1164] = var5;
+                  Client.field1179[Client.field1164] = var6;
+                  ++Client.field1164;
+               }
+            }
          }
       }
 
-      return var1;
+      GameEngine.field733.setRaster();
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IS)I",
+      garbageValue = "710"
+   )
+   public static int method4137(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
    }
 }

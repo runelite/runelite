@@ -4,96 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("el")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("rj")
-   @ObfuscatedSignature(
-      signature = "Lke;"
-   )
-   @Export("renderOverview")
-   static RenderOverview renderOverview;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1094402199
+      intValue = -1329892511
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1323863499
+      intValue = 1606333247
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1764823617
+      intValue = -860923379
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1368551095
+      intValue = -86285207
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 411947517
+      intValue = 262140159
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1299454667
+      intValue = 737228437
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -577031491
+      intValue = -604076057
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -152636925
+      intValue = 754706703
    )
    @Export("x")
    int x;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 493563687
+      intValue = -1334738467
    )
    @Export("y")
    int y;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1164147829
+      intValue = -1495885479
    )
    @Export("height")
    int height;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lee;"
+      signature = "Len;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1691976901
+      intValue = -1548847697
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1400343359
+      intValue = -2044543599
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("y")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -905884947
+      intValue = -1867691603
    )
    @Export("drawPriority")
    int drawPriority;
@@ -103,35 +97,12 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("gv")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "395429518"
+      signature = "(I)V",
+      garbageValue = "-1220026247"
    )
-   static final void method2968(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4730()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1211 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field1015[var4][var5] == Client.field1016) {
-                     continue;
-                  }
-
-                  Client.field1015[var4][var5] = Client.field1016;
-               }
-
-               if(!var2.composition.field3586) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               class8.region.method2768(class5.plane, var2.x, var2.y, CacheFile.getTileHeight(var2.field1211 * 64 - 64 + var2.x, var2.field1211 * 64 - 64 + var2.y, class5.plane), var2.field1211 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1210);
-            }
-         }
-      }
-
+   public static void method2924() {
+      VarPlayerType.varplayers.reset();
    }
 }

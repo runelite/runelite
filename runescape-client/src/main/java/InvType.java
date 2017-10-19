@@ -4,23 +4,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("is")
+@ObfuscatedName("iu")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgo;"
    )
    @Export("inventoryCache")
-   static NodeCache inventoryCache;
-   @ObfuscatedName("d")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
-   static IndexDataBase field3283;
-   @ObfuscatedName("e")
+   public static IndexDataBase field3276;
+   @ObfuscatedName("nx")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 934778583
+      intValue = 1626334629
    )
    @Export("size")
    public int size;
@@ -29,36 +32,55 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   InvType() {
+   public InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfg;II)V",
-      garbageValue = "1017655659"
+      signature = "(Lfz;IB)V",
+      garbageValue = "0"
    )
-   void method4369(Buffer var1, int var2) {
+   void method4344(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfg;B)V",
-      garbageValue = "64"
+      signature = "(Lfz;I)V",
+      garbageValue = "-2081374581"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4369(var1, var2);
+         this.method4344(var1, var2);
       }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)Ljo;",
+      garbageValue = "-271401086"
+   )
+   @Export("getSprite")
+   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      IndexedSprite var5;
+      if(!class261.method4822(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         var5 = class175.method3460();
+      }
+
+      return var5;
    }
 }

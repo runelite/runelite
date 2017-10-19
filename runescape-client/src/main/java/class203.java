@@ -1,81 +1,65 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gl")
 public class class203 {
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1848448087
+      intValue = 1543715893
    )
-   public static int field2521;
-   @ObfuscatedName("p")
+   public static int field2500;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgy;"
    )
-   public static class204 field2523;
-   @ObfuscatedName("i")
+   public static class204 field2499;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Ldi;"
+      signature = "Ldt;"
    )
-   public static class110 field2524;
+   public static class110 field2504;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1403512053
+   )
+   public static int field2502;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   public static IndexDataBase field2503;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 68294145
+   )
+   public static int field2505;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
-   public static IndexDataBase field2522;
-   @ObfuscatedName("r")
+   public static IndexDataBase field2498;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   public static IndexDataBase field2501;
+   @ObfuscatedName("pi")
    @ObfuscatedGetter(
-      intValue = -849064175
+      intValue = -1563588957
    )
-   public static int field2520;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   public static IndexDataBase field2517;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   public static IndexDataBase field2519;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   public static IndexDataBase field2518;
+   static int field2497;
 
    static {
-      field2521 = 0;
+      field2500 = 0;
    }
 
-   @ObfuscatedName("fo")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IZZZB)Lij;",
-      garbageValue = "69"
+      signature = "(I)[Lja;",
+      garbageValue = "1590977264"
    )
-   @Export("openCacheIndex")
-   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
-      IndexFile var4 = null;
-      if(class155.field2261 != null) {
-         var4 = new IndexFile(var0, class155.field2261, class96.field1514[var0], 1000000);
-      }
-
-      return new IndexData(var4, class204.field2552, var0, var1, var2, var3);
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "1285347962"
-   )
-   public static String method3795(CharSequence var0) {
-      String var1 = CombatInfo1.method1610(class36.method491(var0));
-      if(var1 == null) {
-         var1 = "";
-      }
-
-      return var1;
+   public static Parameters[] method3779() {
+      return new Parameters[]{Parameters.field3723, Parameters.field3714, Parameters.field3727, Parameters.field3724, Parameters.field3715, Parameters.field3726, Parameters.field3718, Parameters.field3717, Parameters.field3722, Parameters.field3716, Parameters.field3728, Parameters.field3721, Parameters.field3720, Parameters.field3725, Parameters.field3719};
    }
 }

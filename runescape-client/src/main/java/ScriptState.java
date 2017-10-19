@@ -1,42 +1,34 @@
-import java.applet.Applet;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bx")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("r")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "Lkr;"
+      signature = "Lhj;"
    )
-   static SpritePixels field791;
-   @ObfuscatedName("ai")
-   static int[] field792;
-   @ObfuscatedName("gw")
+   static Widget field787;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 503524493
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1095625493
+      intValue = 1238152133
    )
    @Export("invokedFromPc")
    int invokedFromPc;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "Lct;"
    )
    @Export("invokedFromScript")
    Script invokedFromScript;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @Export("savedLocalInts")
    int[] savedLocalInts;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @Export("savedLocalStrings")
    String[] savedLocalStrings;
 
@@ -44,58 +36,124 @@ public class ScriptState {
       this.invokedFromPc = -1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
-      garbageValue = "2131467544"
+      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
+      garbageValue = "-1676821045"
    )
-   public static void method1124(Applet var0, String var1) {
-      class56.field694 = var0;
-      class56.field695 = var1;
+   static Class method1068(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
    }
 
-   @ObfuscatedName("ik")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIIIII)V",
-      garbageValue = "1955376972"
+      signature = "(ILct;ZB)I",
+      garbageValue = "30"
    )
-   static final void method1123(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = var2 - var0;
-      int var7 = var3 - var1;
-      int var8 = var6 >= 0?var6:-var6;
-      int var9 = var7 >= 0?var7:-var7;
-      int var10 = var8;
-      if(var8 < var9) {
-         var10 = var9;
+   static int method1067(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
+      } else {
+         var3 = var2?class251.field3392:class164.field2314;
       }
 
-      if(var10 != 0) {
-         int var11 = (var6 << 16) / var10;
-         int var12 = (var7 << 16) / var10;
-         if(var12 <= var11) {
-            var11 = -var11;
-         } else {
-            var12 = -var12;
+      String var4 = class81.scriptStringStack[--class266.scriptStringStackSize];
+      int[] var5 = null;
+      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
+         int var6 = class81.intStack[--class278.intStackSize];
+         if(var6 > 0) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class81.intStack[--class278.intStackSize]) {
+               ;
+            }
          }
 
-         int var13 = var5 * var12 >> 17;
-         int var14 = var5 * var12 + 1 >> 17;
-         int var15 = var5 * var11 >> 17;
-         int var16 = var5 * var11 + 1 >> 17;
-         var0 -= Rasterizer2D.draw_region_x;
-         var1 -= Rasterizer2D.drawingAreaTop;
-         int var17 = var0 + var13;
-         int var18 = var0 - var14;
-         int var19 = var0 + var6 - var14;
-         int var20 = var0 + var13 + var6;
-         int var21 = var15 + var1;
-         int var22 = var1 - var16;
-         int var23 = var7 + var1 - var16;
-         int var24 = var15 + var7 + var1;
-         Graphics3D.setRasterClippingEnabled(var17, var18, var19);
-         Graphics3D.rasterFlat(var21, var22, var23, var17, var18, var19, var4);
-         Graphics3D.setRasterClippingEnabled(var17, var19, var20);
-         Graphics3D.rasterFlat(var21, var23, var24, var17, var19, var20, var4);
+         var4 = var4.substring(0, var4.length() - 1);
       }
+
+      Object[] var8 = new Object[var4.length() + 1];
+
+      int var7;
+      for(var7 = var8.length - 1; var7 >= 1; --var7) {
+         if(var4.charAt(var7 - 1) == 's') {
+            var8[var7] = class81.scriptStringStack[--class266.scriptStringStackSize];
+         } else {
+            var8[var7] = new Integer(class81.intStack[--class278.intStackSize]);
+         }
+      }
+
+      var7 = class81.intStack[--class278.intStackSize];
+      if(var7 != -1) {
+         var8[0] = new Integer(var7);
+      } else {
+         var8 = null;
+      }
+
+      if(var0 == 1400) {
+         var3.field2724 = var8;
+      } else if(var0 == 1401) {
+         var3.field2645 = var8;
+      } else if(var0 == 1402) {
+         var3.field2721 = var8;
+      } else if(var0 == 1403) {
+         var3.mouseEnterListener = var8;
+      } else if(var0 == 1404) {
+         var3.mouseExitListener = var8;
+      } else if(var0 == 1405) {
+         var3.field2731 = var8;
+      } else if(var0 == 1406) {
+         var3.field2719 = var8;
+      } else if(var0 == 1407) {
+         var3.configListenerArgs = var8;
+         var3.configTriggers = var5;
+      } else if(var0 == 1408) {
+         var3.renderListener = var8;
+      } else if(var0 == 1409) {
+         var3.field2742 = var8;
+      } else if(var0 == 1410) {
+         var3.field2750 = var8;
+      } else if(var0 == 1411) {
+         var3.field2635 = var8;
+      } else if(var0 == 1412) {
+         var3.mouseHoverListener = var8;
+      } else if(var0 == 1414) {
+         var3.tableListenerArgs = var8;
+         var3.tableModTriggers = var5;
+      } else if(var0 == 1415) {
+         var3.skillListenerArgs = var8;
+         var3.skillTriggers = var5;
+      } else if(var0 == 1416) {
+         var3.field2755 = var8;
+      } else if(var0 == 1417) {
+         var3.scrollListener = var8;
+      } else if(var0 == 1418) {
+         var3.field2744 = var8;
+      } else if(var0 == 1419) {
+         var3.field2771 = var8;
+      } else if(var0 == 1420) {
+         var3.field2703 = var8;
+      } else if(var0 == 1421) {
+         var3.field2747 = var8;
+      } else if(var0 == 1422) {
+         var3.field2748 = var8;
+      } else if(var0 == 1423) {
+         var3.field2749 = var8;
+      } else if(var0 == 1424) {
+         var3.field2740 = var8;
+      } else if(var0 == 1425) {
+         var3.field2637 = var8;
+      } else if(var0 == 1426) {
+         var3.field2753 = var8;
+      } else {
+         if(var0 != 1427) {
+            return 2;
+         }
+
+         var3.field2661 = var8;
+      }
+
+      var3.field2722 = true;
+      return 1;
    }
 }

@@ -1,129 +1,131 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("n")
 public class class11 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lo;"
+      signature = "Ln;"
    )
-   public static final class11 field272;
-   @ObfuscatedName("k")
+   public static final class11 field276;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lo;"
+      signature = "Ln;"
    )
-   public static final class11 field270;
+   public static final class11 field275;
+   @ObfuscatedName("oi")
+   @ObfuscatedSignature(
+      signature = "Lcy;"
+   )
+   static class100 field278;
+   @ObfuscatedName("bn")
+   @ObfuscatedSignature(
+      signature = "[Lky;"
+   )
+   static SpritePixels[] field274;
 
    static {
-      field272 = new class11();
-      field270 = new class11();
+      field276 = new class11();
+      field275 = new class11();
    }
 
-   @ObfuscatedName("hj")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIZB)V",
-      garbageValue = "-47"
+      signature = "(III)I",
+      garbageValue = "154522386"
    )
-   static final void method60(int var0, int var1, boolean var2) {
-      if(!var2 || var0 != class43.field589 || Signlink.field2245 != var1) {
-         class43.field589 = var0;
-         Signlink.field2245 = var1;
-         FrameMap.setGameState(25);
-         class14.drawStatusBox("Loading - please wait.", true);
-         int var3 = WallObject.baseX;
-         int var4 = Varcs.baseY;
-         WallObject.baseX = (var0 - 6) * 8;
-         Varcs.baseY = (var1 - 6) * 8;
-         int var5 = WallObject.baseX - var3;
-         int var6 = Varcs.baseY - var4;
-         var3 = WallObject.baseX;
-         var4 = Varcs.baseY;
-
-         int var7;
-         int var9;
-         for(var7 = 0; var7 < 32768; ++var7) {
-            NPC var8 = Client.cachedNPCs[var7];
-            if(var8 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var8.pathX[var9] -= var5;
-                  var8.pathY[var9] -= var6;
-               }
-
-               var8.x -= var5 * 128;
-               var8.y -= var6 * 128;
-            }
-         }
-
-         for(var7 = 0; var7 < 2048; ++var7) {
-            Player var21 = Client.cachedPlayers[var7];
-            if(var21 != null) {
-               for(var9 = 0; var9 < 10; ++var9) {
-                  var21.pathX[var9] -= var5;
-                  var21.pathY[var9] -= var6;
-               }
-
-               var21.x -= var5 * 128;
-               var21.y -= var6 * 128;
-            }
-         }
-
-         byte var20 = 0;
-         byte var18 = 104;
-         byte var22 = 1;
-         if(var5 < 0) {
-            var20 = 103;
-            var18 = -1;
-            var22 = -1;
-         }
-
-         byte var10 = 0;
-         byte var11 = 104;
-         byte var12 = 1;
-         if(var6 < 0) {
-            var10 = 103;
-            var11 = -1;
-            var12 = -1;
-         }
-
-         int var14;
-         for(int var13 = var20; var13 != var18; var13 += var22) {
-            for(var14 = var10; var14 != var11; var14 += var12) {
-               int var15 = var13 + var5;
-               int var16 = var6 + var14;
-
-               for(int var17 = 0; var17 < 4; ++var17) {
-                  if(var15 >= 0 && var16 >= 0 && var15 < 104 && var16 < 104) {
-                     Client.groundItemDeque[var17][var13][var14] = Client.groundItemDeque[var17][var15][var16];
-                  } else {
-                     Client.groundItemDeque[var17][var13][var14] = null;
+   static int method60(int var0, int var1) {
+      Overlay var2 = class18.method135(var0);
+      if(var2 == null) {
+         return var1;
+      } else if(var2.otherRgbColor >= 0) {
+         return var2.otherRgbColor | -16777216;
+      } else {
+         int var3;
+         int var4;
+         if(var2.texture >= 0) {
+            var4 = Graphics3D.textureLoader.getAverageTextureRGB(var2.texture);
+            byte var5 = 96;
+            if(var4 == -2) {
+               var3 = 12345678;
+            } else {
+               int var7;
+               if(var4 == -1) {
+                  if(var5 < 0) {
+                     var5 = 0;
+                  } else if(var5 > 127) {
+                     var5 = 127;
                   }
+
+                  var7 = 127 - var5;
+                  var3 = var7;
+               } else {
+                  var7 = var5 * (var4 & 127) / 128;
+                  if(var7 < 2) {
+                     var7 = 2;
+                  } else if(var7 > 126) {
+                     var7 = 126;
+                  }
+
+                  var3 = var7 + (var4 & 65408);
                }
             }
+
+            return Graphics3D.colorPalette[var3] | -16777216;
+         } else if(var2.color == 16711935) {
+            return var1;
+         } else {
+            var3 = ClanMember.method1139(var2.hue, var2.saturation, var2.lightness);
+            var4 = class25.method189(var3, 96);
+            return Graphics3D.colorPalette[var4] | -16777216;
          }
-
-         for(PendingSpawn var19 = (PendingSpawn)Client.pendingSpawns.getFront(); var19 != null; var19 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-            var19.x -= var5;
-            var19.y -= var6;
-            if(var19.x < 0 || var19.y < 0 || var19.x >= 104 || var19.y >= 104) {
-               var19.unlink();
-            }
-         }
-
-         if(Client.destinationX != 0) {
-            Client.destinationX -= var5;
-            Client.destinationY -= var6;
-         }
-
-         Client.field1154 = 0;
-         Client.field1160 = false;
-         Client.field1140 = -1;
-         Client.graphicsObjectDeque.clear();
-         Client.projectiles.clear();
-
-         for(var14 = 0; var14 < 4; ++var14) {
-            Client.collisionMaps[var14].reset();
-         }
-
       }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lfg;I)V",
+      garbageValue = "615015896"
+   )
+   @Export("initializeGPI")
+   static final void initializeGPI(PacketBuffer var0) {
+      var0.bitAccess();
+      int var1 = Client.localInteractingIndex;
+      Player var2 = class66.localPlayer = Client.cachedPlayers[var1] = new Player();
+      var2.field913 = var1;
+      int var3 = var0.getBits(30);
+      byte var4 = (byte)(var3 >> 28);
+      int var5 = var3 >> 14 & 16383;
+      int var6 = var3 & 16383;
+      var2.pathX[0] = var5 - class22.baseX * 411265;
+      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
+      var2.pathY[0] = var6 - class273.baseY;
+      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
+      class46.plane = var2.field908 = var4;
+      if(class94.field1488[var1] != null) {
+         var2.decodeApperance(class94.field1488[var1]);
+      }
+
+      class94.playerIndexesCount = 0;
+      class94.playerIndices[++class94.playerIndexesCount - 1] = var1;
+      class94.field1497[var1] = 0;
+      class94.field1491 = 0;
+
+      for(int var7 = 1; var7 < 2048; ++var7) {
+         if(var7 != var1) {
+            int var8 = var0.getBits(18);
+            int var9 = var8 >> 16;
+            int var10 = var8 >> 8 & 597;
+            int var11 = var8 & 597;
+            class94.field1493[var7] = (var10 << 14) + var11 + (var9 << 28);
+            class94.field1494[var7] = 0;
+            class94.field1495[var7] = -1;
+            class94.field1492[++class94.field1491 - 1] = var7;
+            class94.field1497[var7] = 0;
+         }
+      }
+
+      var0.byteAccess();
    }
 }

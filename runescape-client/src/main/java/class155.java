@@ -1,78 +1,89 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.io.File;
-import net.runelite.mapping.Export;
+import java.net.URI;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("ee")
 public class class155 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ldz;"
+      signature = "Ldv;"
    )
-   public static CacheFile field2258;
-   @ObfuscatedName("q")
-   public static File field2256;
-   @ObfuscatedName("i")
+   static CacheFile field2240;
+   @ObfuscatedName("et")
    @ObfuscatedSignature(
-      signature = "Ldz;"
+      signature = "Ljh;"
    )
-   public static CacheFile field2261;
+   static Font field2238;
+   @ObfuscatedName("g")
+   public static File field2237;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Ldz;"
+      signature = "Ldv;"
    )
-   public static CacheFile field2260;
-   @ObfuscatedName("p")
-   static File field2255;
+   public static CacheFile field2239;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ldv;"
+   )
+   public static CacheFile field2241;
 
    static {
-      field2258 = null;
-      field2261 = null;
-      field2260 = null;
+      field2240 = null;
+      field2239 = null;
+      field2241 = null;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IB)Lii;",
-      garbageValue = "118"
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "-2088264904"
    )
-   @Export("getSpotAnimType")
-   public static Spotanim getSpotAnimType(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.field3321.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+   public static void method2999(String var0, boolean var1, boolean var2) {
+      if(var1) {
+         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var4) {
+               ;
+            }
          }
 
-         Spotanim.spotanims.put(var1, (long)var0);
-         return var1;
+         if(class56.field692.startsWith("win")) {
+            class254.method4577(var0, 0);
+         } else if(class56.field692.startsWith("mac")) {
+            Parameters.method4989(var0, 1, "openjs");
+         } else {
+            class254.method4577(var0, 2);
+         }
+      } else {
+         class254.method4577(var0, 3);
       }
+
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("hc")
    @ObfuscatedSignature(
-      signature = "(IB)Lix;",
-      garbageValue = "-104"
+      signature = "(IIIII)V",
+      garbageValue = "16711935"
    )
-   public static class251 method3049(int var0) {
-      class251 var1 = (class251)class251.field3386.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class251.field3388.getConfigData(11, var0);
-         var1 = new class251();
-         if(var2 != null) {
-            var1.method4527(new Buffer(var2));
-         }
-
-         var1.method4542();
-         class251.field3386.put(var1, (long)var0);
-         return var1;
+   static void method3015(int var0, int var1, int var2, int var3) {
+      Widget var4 = class215.method4064(var0, var1);
+      if(var4 != null && var4.field2755 != null) {
+         ScriptEvent var5 = new ScriptEvent();
+         var5.widget = var4;
+         var5.field849 = var4.field2755;
+         class56.method817(var5);
       }
+
+      Client.field1169 = var3;
+      Client.spellSelected = true;
+      class56.field696 = var0;
+      Client.field1070 = var1;
+      class90.field1421 = var2;
+      class45.method647(var4);
    }
 }

@@ -1,125 +1,69 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hc")
 public class class224 {
-   @ObfuscatedName("ad")
-   static int[] field2854;
-
-   @ObfuscatedName("e")
+   @ObfuscatedName("ch")
    @ObfuscatedSignature(
-      signature = "(Lij;IIIBZB)V",
-      garbageValue = "-62"
+      signature = "Let;"
    )
-   static void method4193(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class238.field3251.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class238.field3256.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class238.field3259.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class238.field3251.put(var8, var6);
-                  --class238.field3254;
-                  ++class238.field3255;
-               }
+   @Export("socket")
+   static Task socket;
 
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class238.field3261.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class238.field3251.put(var8, var6);
-                  ++class238.field3255;
-               } else {
-                  class238.field3258.push(var8);
-                  class238.field3259.put(var8, var6);
-                  ++class238.field3254;
-               }
-
-            }
-         }
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I[BLfr;S)V",
+      garbageValue = "-23805"
+   )
+   static void method4155(int var0, byte[] var1, IndexFile var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3200 = 0;
+      var3.hash = (long)var0;
+      var3.field3197 = var1;
+      var3.index = var2;
+      Deque var4 = class236.field3229;
+      synchronized(class236.field3229) {
+         class236.field3229.addFront(var3);
       }
+
+      GroundObject.method2538();
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Z",
-      garbageValue = "-881647233"
+      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;B)Lky;",
+      garbageValue = "17"
    )
-   public static boolean method4196(CharSequence var0) {
-      boolean var2 = false;
-      boolean var3 = false;
-      int var4 = 0;
-      int var5 = var0.length();
-      int var6 = 0;
+   public static SpritePixels method4153(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return BuildType.method4173(var0, var3, var4);
+   }
 
-      boolean var1;
-      while(true) {
-         if(var6 >= var5) {
-            var1 = var3;
-            break;
+   @ObfuscatedName("hb")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "60"
+   )
+   static void method4154() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(class46.method693(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+                  Client.field1161[var1] = Client.field1161[var1 + 1];
+               }
+            }
+
+            --Client.menuOptionCount;
          }
-
-         label83: {
-            char var7 = var0.charAt(var6);
-            if(var6 == 0) {
-               if(var7 == '-') {
-                  var2 = true;
-                  break label83;
-               }
-
-               if(var7 == '+') {
-                  break label83;
-               }
-            }
-
-            int var9;
-            if(var7 >= '0' && var7 <= '9') {
-               var9 = var7 - '0';
-            } else if(var7 >= 'A' && var7 <= 'Z') {
-               var9 = var7 - '7';
-            } else {
-               if(var7 < 'a' || var7 > 'z') {
-                  var1 = false;
-                  break;
-               }
-
-               var9 = var7 - 'W';
-            }
-
-            if(var9 >= 10) {
-               var1 = false;
-               break;
-            }
-
-            if(var2) {
-               var9 = -var9;
-            }
-
-            int var8 = var4 * 10 + var9;
-            if(var4 != var8 / 10) {
-               var1 = false;
-               break;
-            }
-
-            var4 = var8;
-            var3 = true;
-         }
-
-         ++var6;
       }
 
-      return var1;
    }
 }

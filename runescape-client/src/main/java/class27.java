@@ -1,78 +1,119 @@
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("af")
 public enum class27 implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lai;"
+      signature = "Laf;"
    )
-   field407(2, (byte)0),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lai;"
-   )
-   field409(0, (byte)1),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lai;"
-   )
-   field400(1, (byte)2),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lai;"
-   )
-   field402(3, (byte)3);
-
-   @ObfuscatedName("kp")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   static Widget field403;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1086504679
-   )
-   final int field404;
+   field411(0, (byte)0),
    @ObfuscatedName("s")
-   final byte field405;
+   @ObfuscatedSignature(
+      signature = "Laf;"
+   )
+   field407(2, (byte)1),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Laf;"
+   )
+   field406(1, (byte)2),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Laf;"
+   )
+   field409(3, (byte)3);
+
+   @ObfuscatedName("v")
+   final byte field408;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -365676159
+   )
+   final int field410;
 
    class27(int var3, byte var4) {
-      this.field404 = var3;
-      this.field405 = var4;
+      this.field410 = var3;
+      this.field408 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-41"
+      garbageValue = "6"
    )
    public int rsOrdinal() {
-      return this.field405;
+      return this.field408;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)[Lai;",
-      garbageValue = "8"
+      signature = "(II)Z",
+      garbageValue = "-612438083"
    )
-   static class27[] method205() {
-      return new class27[]{field407, field400, field409, field402};
+   public static boolean method222(int var0) {
+      return var0 >= class221.field2822.field2825 && var0 <= class221.field2823.field2825;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1512147132"
+      garbageValue = "-181040815"
    )
-   public static void method204() {
-      if(MouseInput.mouse != null) {
-         MouseInput var0 = MouseInput.mouse;
-         synchronized(MouseInput.mouse) {
-            MouseInput.mouse = null;
+   static void method218() {
+      for(class80 var0 = (class80)class80.field1323.getFront(); var0 != null; var0 = (class80)class80.field1323.getNext()) {
+         if(var0.field1317 != null) {
+            class11.field278.method1920(var0.field1317);
+            var0.field1317 = null;
+         }
+
+         if(var0.field1324 != null) {
+            class11.field278.method1920(var0.field1324);
+            var0.field1324 = null;
          }
       }
 
+      class80.field1323.clear();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "1277196757"
+   )
+   static long method221() {
+      try {
+         URL var0 = new URL(class12.method71("services", false) + "m=accountappeal/login.ws");
+         URLConnection var1 = var0.openConnection();
+         var1.setRequestProperty("connection", "close");
+         var1.setDoInput(true);
+         var1.setDoOutput(true);
+         var1.setConnectTimeout(5000);
+         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
+         var2.write("data1=req");
+         var2.flush();
+         InputStream var3 = var1.getInputStream();
+         Buffer var4 = new Buffer(new byte[1000]);
+
+         do {
+            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
+            if(var5 == -1) {
+               var4.offset = 0;
+               long var7 = var4.readLong();
+               return var7;
+            }
+
+            var4.offset += var5;
+         } while(var4.offset < 1000);
+
+         return 0L;
+      } catch (Exception var9) {
+         return 0L;
+      }
    }
 }

@@ -3,9 +3,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("je")
 public class class281 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgq;"
    )
    public static CombatInfoList field3766;
 

@@ -4,38 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("iy")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgo;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("ah")
-   static int[] field3383;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 985159855
+      intValue = 1132565087
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -755105553
+      intValue = 1344468855
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1073057617
+      intValue = 1239467697
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -44,12 +42,12 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfg;IB)V",
-      garbageValue = "92"
+      signature = "(Lfz;II)V",
+      garbageValue = "395008886"
    )
-   void method4521(Buffer var1, int var2) {
+   void method4496(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -58,10 +56,10 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfg;I)V",
-      garbageValue = "1775628716"
+      signature = "(Lfz;I)V",
+      garbageValue = "-2085991396"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -71,7 +69,7 @@ public class Varbit extends CacheableNode {
             return;
          }
 
-         this.method4521(var1, var2);
+         this.method4496(var1, var2);
       }
    }
 }

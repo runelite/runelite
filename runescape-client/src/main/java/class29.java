@@ -1,138 +1,113 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Opcodes;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("ay")
 public final class class29 {
-   @ObfuscatedName("gb")
-   @ObfuscatedSignature(
-      signature = "[Ljz;"
+   @ObfuscatedName("jn")
+   @ObfuscatedGetter(
+      intValue = 1570994549
    )
-   static IndexedSprite[] field432;
-   @ObfuscatedName("cs")
+   @Export("menuY")
+   static int menuY;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Ljo;"
    )
-   static Task field435;
-   @ObfuscatedName("y")
+   @Export("logoSprite")
+   static IndexedSprite logoSprite;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ljz;"
+      signature = "Ljo;"
    )
-   static IndexedSprite field431;
+   static IndexedSprite field430;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Lac;"
    )
    final class41 this$0;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 534048561
+      intValue = -1749118415
+   )
+   int field428;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 784638285
+   )
+   int field437;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1263190717
+   )
+   int field435;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 577821165
    )
    int field436;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 468929733
-   )
-   int field434;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 2075524231
-   )
-   int field429;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1450828851
-   )
-   int field430;
 
    @ObfuscatedSignature(
-      signature = "(Laj;)V"
+      signature = "(Lac;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("ho")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1692120928"
-   )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      class28.method234();
-      ++Client.audioEffectCount;
-      if(Client.audioEffectCount >= 50 || var0) {
-         Client.audioEffectCount = 0;
-         if(!Client.socketError && class268.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
-
-            try {
-               class268.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
-               Client.secretPacketBuffer1.offset = 0;
-            } catch (IOException var2) {
-               Client.socketError = true;
-            }
-         }
-
-      }
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ILcv;ZI)I",
-      garbageValue = "1305951217"
+      signature = "([Lfl;II)Lfl;",
+      garbageValue = "-2140920394"
    )
-   static int method236(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         class81.intStackSize -= 2;
-         var3 = class81.intStack[class81.intStackSize];
-         int var4 = class81.intStack[class81.intStackSize + 1];
-         if(!Client.field1160) {
-            Client.field921 = var3;
-            Client.mapAngle = var4;
-         }
+   @Export("forOrdinal")
+   public static RSEnum forOrdinal(RSEnum[] var0, int var1) {
+      RSEnum[] var2 = var0;
 
-         return 1;
-      } else if(var0 == 5505) {
-         class81.intStack[++class81.intStackSize - 1] = Client.field921;
-         return 1;
-      } else if(var0 == 5506) {
-         class81.intStack[++class81.intStackSize - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class81.intStack[--class81.intStackSize];
-         if(var3 < 0) {
-            var3 = 0;
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         RSEnum var4 = var2[var3];
+         if(var1 == var4.rsOrdinal()) {
+            return var4;
          }
-
-         Client.field1002 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class81.intStack[++class81.intStackSize - 1] = Client.field1002;
-         return 1;
-      } else {
-         return 2;
       }
+
+      return null;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("gb")
    @ObfuscatedSignature(
-      signature = "(ILit;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "-386121004"
+      signature = "(Lbk;ZB)V",
+      garbageValue = "96"
    )
-   public static void method235(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getFile(var2);
-      int var7 = var1.getChild(var6, var3);
-      class203.field2521 = 1;
-      class203.field2522 = var1;
-      class203.field2520 = var6;
-      Frames.field2138 = var7;
-      class148.field2203 = var4;
-      BufferProvider.field3778 = var5;
-      class288.field3814 = var0;
+   static void method249(Player var0, boolean var1) {
+      if(var0 != null && var0.hasConfig() && !var0.hidden) {
+         int var2 = var0.field913 << 14;
+         var0.field905 = false;
+         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
+            var0.field905 = true;
+         }
+
+         int var3 = var0.x >> 7;
+         int var4 = var0.y >> 7;
+         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+            if(var0.model != null && Client.gameCycle >= var0.field895 && Client.gameCycle < var0.field903) {
+               var0.field905 = false;
+               var0.field894 = class41.getTileHeight(var0.x, var0.y, class46.plane);
+               class3.region.method2729(class46.plane, var0.x, var0.y, var0.field894, 60, var0, var0.angle, var2, var0.field901, var0.field902, var0.field892, var0.field904);
+            } else {
+               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
+                  if(Client.field1017[var3][var4] == Client.field1018) {
+                     return;
+                  }
+
+                  Client.field1017[var3][var4] = Client.field1018;
+               }
+
+               var0.field894 = class41.getTileHeight(var0.x, var0.y, class46.plane);
+               class3.region.method2718(class46.plane, var0.x, var0.y, var0.field894, 60, var0, var0.angle, var2, var0.field1212);
+            }
+         }
+      }
+
    }
 }

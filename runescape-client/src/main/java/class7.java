@@ -1,153 +1,132 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("g")
+@ObfuscatedName("e")
 public class class7 {
-   @ObfuscatedName("d")
-   public static boolean field243;
-   @ObfuscatedName("k")
-   public static boolean field242;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    public static boolean field245;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lo;"
-   )
-   public static class11 field244;
+   @ObfuscatedName("s")
+   public static boolean field238;
    @ObfuscatedName("q")
+   public static boolean field247;
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Ln;"
    )
-   public static CombatInfoList field247;
+   public static class11 field240;
+   @ObfuscatedName("cr")
+   static boolean field244;
+   @ObfuscatedName("an")
+   @Export("clientInstance")
+   @ObfuscatedSignature(
+      signature = "Lclient;"
+   )
+   static Client clientInstance;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgq;"
+   )
+   public static CombatInfoList field241;
+   @ObfuscatedName("ea")
+   @ObfuscatedGetter(
+      longValue = 5050311703199981383L
+   )
+   static long field243;
+   @ObfuscatedName("ep")
+   @ObfuscatedSignature(
+      signature = "Ljd;"
+   )
+   static class262 field246;
+   @ObfuscatedName("e")
+   static byte[][][] field248;
 
    static {
-      field243 = false;
-      field242 = false;
       field245 = false;
-      field244 = class11.field272;
-      field247 = new CombatInfoList();
+      field238 = false;
+      field247 = false;
+      field240 = class11.field276;
+      field241 = new CombatInfoList();
    }
 
-   @ObfuscatedName("ie")
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(II)Leo;",
+      garbageValue = "-1548337777"
+   )
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         IndexDataBase var3 = Sequence.skel_ref;
+         IndexDataBase var4 = Sequence.skin_ref;
+         boolean var5 = true;
+         int[] var6 = var3.getChilds(var0);
+
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.getChild(var0, var6[var7]);
+            if(var8 == null) {
+               var5 = false;
+            } else {
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.getChild(var9, 0);
+               if(var10 == null) {
+                  var5 = false;
+               }
+            }
+         }
+
+         Frames var2;
+         if(!var5) {
+            var2 = null;
+         } else {
+            try {
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
+            }
+         }
+
+         if(var2 != null) {
+            Sequence.skeletons.put(var2, (long)var0);
+         }
+
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("fm")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1514878070"
+      garbageValue = "1494717784"
    )
-   static final void method41() {
-      boolean var0 = false;
+   static final void method33() {
+      int[] var0 = class94.playerIndices;
 
-      while(!var0) {
-         var0 = true;
-
-         for(int var1 = 0; var1 < Client.menuOptionCount - 1; ++var1) {
-            if(Client.menuTypes[var1] < 1000 && Client.menuTypes[var1 + 1] > 1000) {
-               String var2 = Client.menuTargets[var1];
-               Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-               Client.menuTargets[var1 + 1] = var2;
-               String var3 = Client.menuOptions[var1];
-               Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-               Client.menuOptions[var1 + 1] = var3;
-               int var4 = Client.menuTypes[var1];
-               Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
-               Client.menuTypes[var1 + 1] = var4;
-               var4 = Client.menuActionParams0[var1];
-               Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
-               Client.menuActionParams0[var1 + 1] = var4;
-               var4 = Client.menuActionParams1[var1];
-               Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
-               Client.menuActionParams1[var1 + 1] = var4;
-               var4 = Client.menuIdentifiers[var1];
-               Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-               Client.menuIdentifiers[var1 + 1] = var4;
-               boolean var5 = Client.field1021[var1];
-               Client.field1021[var1] = Client.field1021[var1 + 1];
-               Client.field1021[var1 + 1] = var5;
-               var0 = false;
+      int var1;
+      for(var1 = 0; var1 < class94.playerIndexesCount; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.field1225 > 0) {
+            --var2.field1225;
+            if(var2.field1225 == 0) {
+               var2.overhead = null;
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("gu")
-   @ObfuscatedSignature(
-      signature = "(Lbw;ZI)V",
-      garbageValue = "1646322556"
-   )
-   static void method35(Player var0, boolean var1) {
-      if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field886 << 14;
-         var0.field901 = false;
-         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
-            var0.field901 = true;
-         }
-
-         int var3 = var0.x >> 7;
-         int var4 = var0.y >> 7;
-         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.field891 && Client.gameCycle < var0.field892) {
-               var0.field901 = false;
-               var0.field890 = CacheFile.getTileHeight(var0.x, var0.y, class5.plane);
-               class8.region.method2811(class5.plane, var0.x, var0.y, var0.field890, 60, var0, var0.angle, var2, var0.field904, var0.field898, var0.field883, var0.field900);
-            } else {
-               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-                  if(Client.field1015[var3][var4] == Client.field1016) {
-                     return;
-                  }
-
-                  Client.field1015[var3][var4] = Client.field1016;
-               }
-
-               var0.field890 = CacheFile.getTileHeight(var0.x, var0.y, class5.plane);
-               class8.region.method2768(class5.plane, var0.x, var0.y, var0.field890, 60, var0, var0.angle, var2, var0.field1210);
+      for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
+         int var4 = Client.npcIndices[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(var3 != null && var3.field1225 > 0) {
+            --var3.field1225;
+            if(var3.field1225 == 0) {
+               var3.overhead = null;
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("kw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "117519009"
-   )
-   static void method42(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < class226.field3144; ++var4) {
-         ItemComposition var5 = class46.getItemDefinition(var4);
-         if((!var1 || var5.field3538) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class25.field370 = -1;
-               class33.field491 = null;
-               return;
-            }
-
-            if(var3 >= var2.length) {
-               short[] var6 = new short[var2.length * 2];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
-               }
-
-               var2 = var6;
-            }
-
-            var2[var3++] = (short)var4;
-         }
-      }
-
-      class33.field491 = var2;
-      ScriptVarType.field101 = 0;
-      class25.field370 = var3;
-      String[] var8 = new String[class25.field370];
-
-      for(int var9 = 0; var9 < class25.field370; ++var9) {
-         var8[var9] = class46.getItemDefinition(var2[var9]).name;
-      }
-
-      Frames.method2948(var8, class33.field491);
    }
 }

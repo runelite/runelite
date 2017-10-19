@@ -2,59 +2,32 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hz")
 public class class215 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)Lig;",
-      garbageValue = "855164858"
+      signature = "[[Lhj;"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = KitDefinition.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   @Export("widgets")
+   public static Widget[][] widgets;
 
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
-      }
+   @ObfuscatedName("hl")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
+      garbageValue = "855854550"
+   )
+   @Export("addMenuEntry")
+   public static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
+      FaceNormal.method2904(var0, var1, var2, var3, var4, var5, false);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "131404512"
+      signature = "(IIB)Lhj;",
+      garbageValue = "-95"
    )
-   public static void method4106(int var0) {
-      if(var0 != -1) {
-         if(Widget.validInterfaces[var0]) {
-            FrameMap.widgetIndex.method4236(var0);
-            if(class177.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < class177.widgets[var0].length; ++var2) {
-                  if(class177.widgets[var0][var2] != null) {
-                     if(class177.widgets[var0][var2].type != 2) {
-                        class177.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
-                  }
-               }
-
-               if(var1) {
-                  class177.widgets[var0] = null;
-               }
-
-               Widget.validInterfaces[var0] = false;
-            }
-         }
-      }
+   public static Widget method4064(int var0, int var1) {
+      Widget var2 = ItemLayer.method2454(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 }

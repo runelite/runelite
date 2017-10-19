@@ -1,41 +1,106 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bo")
 public class class66 extends class196 {
-   @ObfuscatedName("eg")
+   @ObfuscatedName("ik")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Lbk;"
    )
-   static class147 field832;
-   @ObfuscatedName("pq")
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("pc")
    @ObfuscatedGetter(
-      intValue = 1161932649
+      intValue = -289344427
    )
    static int field830;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -961179935
+      intValue = 1663828241
    )
-   int field833;
-   @ObfuscatedName("k")
-   String field829;
-   @ObfuscatedName("e")
-   short field828;
+   int field832;
+   @ObfuscatedName("s")
+   String field828;
+   @ObfuscatedName("q")
+   short field829;
 
    class66(String var1, int var2) {
-      this.field833 = (int)(class147.currentTimeMs() / 1000L);
-      this.field829 = var1;
-      this.field828 = (short)var2;
+      this.field832 = (int)(class174.currentTimeMs() / 1000L);
+      this.field828 = var1;
+      this.field829 = (short)var2;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("ig")
    @ObfuscatedSignature(
-      signature = "(Lit;I)V",
-      garbageValue = "1557803585"
+      signature = "(IIIIIII)V",
+      garbageValue = "-1811976194"
    )
-   public static void method1138(IndexDataBase var0) {
-      class251.field3388 = var0;
+   static final void method1085(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = var2 - var0;
+      int var7 = var3 - var1;
+      int var8 = var6 >= 0?var6:-var6;
+      int var9 = var7 >= 0?var7:-var7;
+      int var10 = var8;
+      if(var8 < var9) {
+         var10 = var9;
+      }
+
+      if(var10 != 0) {
+         int var11 = (var6 << 16) / var10;
+         int var12 = (var7 << 16) / var10;
+         if(var12 <= var11) {
+            var11 = -var11;
+         } else {
+            var12 = -var12;
+         }
+
+         int var13 = var5 * var12 >> 17;
+         int var14 = var5 * var12 + 1 >> 17;
+         int var15 = var5 * var11 >> 17;
+         int var16 = var5 * var11 + 1 >> 17;
+         var0 -= Rasterizer2D.draw_region_x;
+         var1 -= Rasterizer2D.drawingAreaTop;
+         int var17 = var0 + var13;
+         int var18 = var0 - var14;
+         int var19 = var0 + var6 - var14;
+         int var20 = var0 + var6 + var13;
+         int var21 = var15 + var1;
+         int var22 = var1 - var16;
+         int var23 = var7 + var1 - var16;
+         int var24 = var15 + var7 + var1;
+         Graphics3D.setRasterClippingEnabled(var17, var18, var19);
+         Graphics3D.rasterFlat(var21, var22, var23, var17, var18, var19, var4);
+         Graphics3D.setRasterClippingEnabled(var17, var19, var20);
+         Graphics3D.rasterFlat(var21, var23, var24, var17, var19, var20, var4);
+      }
+   }
+
+   @ObfuscatedName("jj")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "-1992353405"
+   )
+   @Export("isIgnored")
+   static boolean isIgnored(String var0) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var1 = WidgetNode.method1087(var0, Permission.field3169);
+
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(WidgetNode.method1087(var3.name, Permission.field3169))) {
+               return true;
+            }
+
+            if(var1.equalsIgnoreCase(WidgetNode.method1087(var3.previousName, Permission.field3169))) {
+               return true;
+            }
+         }
+
+         return false;
+      }
    }
 }

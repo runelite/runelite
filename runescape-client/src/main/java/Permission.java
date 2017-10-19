@@ -3,68 +3,97 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hi")
+@ObfuscatedName("hb")
 @Implements("Permission")
 public enum Permission implements RSEnum {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lhb;"
    )
-   field3180(0, -1, true, false, true),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
-   )
-   field3175(1, 0, true, true, true),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
-   )
-   field3178(2, 1, true, true, false),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
-   )
-   field3174(3, 2, false, false, true),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhi;"
-   )
-   field3176(4, 3, false, false, true),
+   field3173(0, -1, true, false, true),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhi;"
+      signature = "Lhb;"
    )
-   field3179(5, 10, false, false, true);
-
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1755925237
+   field3170(1, 0, true, true, true),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
    )
-   final int field3177;
+   field3171(2, 1, true, true, false),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field3177(3, 2, false, false, true),
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 379086131
+   @ObfuscatedSignature(
+      signature = "Lhb;"
    )
-   public final int field3181;
+   field3178(4, 3, false, false, true),
    @ObfuscatedName("v")
-   public final boolean field3182;
-   @ObfuscatedName("t")
-   public final boolean field3183;
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field3174(5, 10, false, false, true);
+
+   @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "Lkp;"
+   )
+   static class290 field3169;
+   @ObfuscatedName("x")
+   public final boolean field3172;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 951129097
+   )
+   final int field3175;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 2098096185
+   )
+   public final int field3176;
+   @ObfuscatedName("d")
+   public final boolean field3179;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3177 = var3;
-      this.field3181 = var4;
-      this.field3182 = var6;
-      this.field3183 = var7;
+      this.field3175 = var3;
+      this.field3176 = var4;
+      this.field3179 = var6;
+      this.field3172 = var7;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "-41"
+      garbageValue = "6"
    )
    public int rsOrdinal() {
-      return this.field3177;
+      return this.field3175;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "139191382"
+   )
+   static int method4170(int var0, int var1) {
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var2 == null) {
+         return 0;
+      } else if(var1 == -1) {
+         return 0;
+      } else {
+         int var3 = 0;
+
+         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
+            if(var2.itemIds[var4] == var1) {
+               var3 += var2.stackSizes[var4];
+            }
+         }
+
+         return var3;
+      }
    }
 }

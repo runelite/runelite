@@ -4,150 +4,127 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ek")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("nw")
-   @Export("clanChatRank")
-   static byte clanChatRank;
-   @ObfuscatedName("ht")
+   @ObfuscatedName("ho")
    @ObfuscatedGetter(
-      intValue = -1358348553
+      intValue = -1675011633
    )
-   static int field2140;
-   @ObfuscatedName("o")
+   static int field2148;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1175298727
+      intValue = -1677198477
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 9481335
+      intValue = -70538753
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -568920457
+      intValue = -892469509
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1696108751
+      intValue = 1308835421
    )
    @Export("type")
    int type;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -184521319
+      intValue = 1353275461
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -97707391
+      intValue = -1563554767
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1591277857
+      intValue = -807794627
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1928932069
+      intValue = 303707881
    )
-   int field2152;
-   @ObfuscatedName("v")
+   int field2130;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1658673257
+      intValue = 315451681
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1747102443
+      intValue = -1907771027
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -941657009
+      intValue = 919985115
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("j")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1706822655
+      intValue = -399616409
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1731428905
+      intValue = 1473430507
    )
-   int field2159;
-   @ObfuscatedName("r")
+   int field2143;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1765323821
+      intValue = 1306127215
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -778408973
+      intValue = 87949545
    )
    @Export("maxNormalY")
    int maxNormalY;
-   @ObfuscatedName("y")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1829017021
+      intValue = 2011735051
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1574635281
+      intValue = 1701914367
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1193920907
+      intValue = -614446609
    )
    @Export("maxTIleX")
    int maxTIleX;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)Lic;",
-      garbageValue = "7"
+      signature = "(I)[Lcw;",
+      garbageValue = "-1961182814"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3456 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
+   static class89[] method2921() {
+      return new class89[]{class89.field1404, class89.field1406, class89.field1403, class89.field1405};
    }
 }

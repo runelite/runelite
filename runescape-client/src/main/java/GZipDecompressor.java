@@ -1,19 +1,25 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fn")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("ma")
+   @ObfuscatedName("gr")
    @ObfuscatedSignature(
-      signature = "Lcj;"
+      signature = "[Lky;"
    )
-   @Export("chatMessages")
-   static Varcs chatMessages;
-   @ObfuscatedName("d")
+   @Export("mapfunctions")
+   static SpritePixels[] mapfunctions;
+   @ObfuscatedName("au")
+   @ObfuscatedGetter(
+      intValue = -2072355635
+   )
+   static int field2325;
+   @ObfuscatedName("w")
    @Export("inflator")
    Inflater inflator;
 
@@ -28,10 +34,10 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfg;[BI)V",
-      garbageValue = "-2120575701"
+      signature = "(Lfz;[BI)V",
+      garbageValue = "-762882727"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -52,5 +58,29 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
+   }
+
+   @ObfuscatedName("iq")
+   @ObfuscatedSignature(
+      signature = "([Lhj;Lhj;ZI)V",
+      garbageValue = "-2118962620"
+   )
+   static void method3159(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class43.method614(var0, var1.id, var3, var4, var2);
+      if(var1.children != null) {
+         class43.method614(var1.children, var1.id, var3, var4, var2);
+      }
+
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
+      if(var5 != null) {
+         class261.method4814(var5.id, var3, var4, var2);
+      }
+
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 }

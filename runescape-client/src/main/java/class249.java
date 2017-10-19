@@ -1,32 +1,19 @@
-import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("ir")
 public class class249 {
-   @ObfuscatedName("y")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lit;III)Z",
-      garbageValue = "-1684833447"
+      signature = "(S)V",
+      garbageValue = "13695"
    )
-   public static boolean method4517(IndexDataBase var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         Timer.decodeSprite(var3);
-         return true;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "2112823440"
-   )
-   static void method4518(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(KeyFocusListener.keyboard);
-      var0.addFocusListener(KeyFocusListener.keyboard);
+   public static void method4493() {
+      class287.field3808 = null;
+      class21.offsetsY = null;
+      class287.field3806 = null;
+      class56.field700 = null;
+      class114.field1675 = null;
+      class227.spritePixels = null;
    }
 }

@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("ft")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1021352465
+      intValue = -309537
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 2032492441
+      intValue = -2081425597
    )
-   int field2445;
+   int field2421;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 2051052159
+   )
+   int field2422;
    @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1332326451
-   )
-   int field2449;
-   @ObfuscatedName("s")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -506879387
+      intValue = 1400927513
    )
-   int field2444;
+   int field2426;
 
    ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -43,46 +43,46 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3533();
+      this.method3519();
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-2104932224"
+      garbageValue = "-1131307910"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2445 += ++this.field2449;
+      this.field2421 += ++this.field2422;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2444 ^= this.field2444 << 13;
+               this.field2426 ^= this.field2426 << 13;
             } else {
-               this.field2444 ^= this.field2444 >>> 6;
+               this.field2426 ^= this.field2426 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2444 ^= this.field2444 << 2;
+            this.field2426 ^= this.field2426 << 2;
          } else {
-            this.field2444 ^= this.field2444 >>> 16;
+            this.field2426 ^= this.field2426 >>> 16;
          }
 
-         this.field2444 += this.mm[128 + var1 & 255];
+         this.field2426 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2444 + this.field2445;
-         this.randResult[var1] = this.field2445 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2426 + this.field2421;
+         this.randResult[var1] = this.field2421 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-104990874"
+      garbageValue = "1300079771"
    )
-   final void method3533() {
+   final void method3519() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -210,10 +210,10 @@ public final class ISAACCipher {
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "172178130"
+      signature = "(B)I",
+      garbageValue = "-44"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -225,61 +225,15 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("ht")
    @ObfuscatedSignature(
-      signature = "([BIIIIIII[Lfq;I)V",
-      garbageValue = "-1690423582"
+      signature = "(IIIII)V",
+      garbageValue = "-2052306998"
    )
-   static final void method3540(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, CollisionData[] var8) {
-      int var10;
-      for(int var9 = 0; var9 < 8; ++var9) {
-         for(var10 = 0; var10 < 8; ++var10) {
-            if(var9 + var2 > 0 && var9 + var2 < 103 && var3 + var10 > 0 && var3 + var10 < 103) {
-               var8[var1].flags[var9 + var2][var10 + var3] &= -16777217;
-            }
-         }
-      }
-
-      Buffer var28 = new Buffer(var0);
-
-      for(var10 = 0; var10 < 4; ++var10) {
-         for(int var11 = 0; var11 < 64; ++var11) {
-            for(int var12 = 0; var12 < 64; ++var12) {
-               if(var10 == var4 && var11 >= var5 && var11 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
-                  int var17 = var11 & 7;
-                  int var18 = var12 & 7;
-                  int var19 = var7 & 3;
-                  int var16;
-                  if(var19 == 0) {
-                     var16 = var17;
-                  } else if(var19 == 1) {
-                     var16 = var18;
-                  } else if(var19 == 2) {
-                     var16 = 7 - var17;
-                  } else {
-                     var16 = 7 - var18;
-                  }
-
-                  int var22 = var2 + var16;
-                  int var25 = var11 & 7;
-                  int var26 = var12 & 7;
-                  int var27 = var7 & 3;
-                  int var24;
-                  if(var27 == 0) {
-                     var24 = var26;
-                  } else if(var27 == 1) {
-                     var24 = 7 - var25;
-                  } else if(var27 == 2) {
-                     var24 = 7 - var26;
-                  } else {
-                     var24 = var25;
-                  }
-
-                  class148.loadTerrain(var28, var1, var22, var24 + var3, 0, 0, var7);
-               } else {
-                  class148.loadTerrain(var28, 0, -1, -1, 0, 0, 0);
-               }
-            }
+   static final void method3525(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1117; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1120[var4] = true;
          }
       }
 

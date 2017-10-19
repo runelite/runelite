@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("ad")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1359106856"
-   )
-   boolean vmethod722(int var1, int var2);
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "-1997246299"
-   )
-   boolean vmethod725(int var1, int var2, int var3);
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Las;B)V",
-      garbageValue = "125"
-   )
-   void vmethod723(WorldMapData var1);
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIB)Lhl;",
-      garbageValue = "-58"
+      signature = "(III)Z",
+      garbageValue = "2005574810"
    )
-   Coordinates vmethod727(int var1, int var2);
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "-170036108"
-   )
-   int[] vmethod741(int var1, int var2, int var3);
+   boolean vmethod700(int var1, int var2);
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfg;B)V",
-      garbageValue = "88"
+      signature = "(IIII)Z",
+      garbageValue = "2147483647"
    )
-   void vmethod728(Buffer var1);
+   boolean vmethod699(int var1, int var2, int var3);
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lat;I)V",
+      garbageValue = "1123585680"
+   )
+   void vmethod720(WorldMapData var1);
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(III)Lhg;",
+      garbageValue = "-1413226110"
+   )
+   Coordinates vmethod702(int var1, int var2);
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "880778915"
+   )
+   int[] vmethod709(int var1, int var2, int var3);
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(Lfz;B)V",
+      garbageValue = "15"
+   )
+   void vmethod703(Buffer var1);
 }

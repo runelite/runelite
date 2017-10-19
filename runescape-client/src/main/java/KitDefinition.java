@@ -4,56 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("ib")
 @Implements("KitDefinition")
 public class KitDefinition extends CacheableNode {
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -233136703
-   )
-   public static int field3350;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lgl;"
-   )
-   @Export("identKits")
-   public static NodeCache identKits;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   public static IndexDataBase field3349;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("identKit_ref")
-   public static IndexDataBase identKit_ref;
-   @ObfuscatedName("s")
-   @Export("modelIds")
-   int[] modelIds;
-   @ObfuscatedName("y")
-   @Export("models")
-   int[] models;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 605085695
+      intValue = 2061243849
+   )
+   public static int field3347;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   @Export("identKits")
+   static NodeCache identKits;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   static IndexDataBase field3346;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   @Export("identKit_ref")
+   static IndexDataBase identKit_ref;
+   @ObfuscatedName("v")
+   @Export("modelIds")
+   int[] modelIds;
+   @ObfuscatedName("z")
+   @Export("models")
+   int[] models;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 820240641
    )
    @Export("bodyPartId")
    public int bodyPartId;
-   @ObfuscatedName("o")
+   @ObfuscatedName("n")
    @Export("nonSelectable")
    public boolean nonSelectable;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("recolorToFind")
    short[] recolorToFind;
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @Export("retextureToFind")
    short[] retextureToFind;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("recolorToReplace")
    short[] recolorToReplace;
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @Export("retextureToReplace")
    short[] retextureToReplace;
 
@@ -67,12 +67,12 @@ public class KitDefinition extends CacheableNode {
       this.nonSelectable = false;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lfg;II)V",
-      garbageValue = "1879864734"
+      signature = "(Lfz;IB)V",
+      garbageValue = "56"
    )
-   void method4459(Buffer var1, int var2) {
+   void method4442(Buffer var1, int var2) {
       if(var2 == 1) {
          this.bodyPartId = var1.readUnsignedByte();
       } else {
@@ -112,16 +112,16 @@ public class KitDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-39"
+      signature = "(S)Z",
+      garbageValue = "-11139"
    )
-   public boolean method4462() {
+   public boolean method4439() {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.models[var2] != -1 && !field3349.method4237(this.models[var2], 0)) {
+         if(this.models[var2] != -1 && !field3346.method4192(this.models[var2], 0)) {
             var1 = false;
          }
       }
@@ -129,18 +129,18 @@ public class KitDefinition extends CacheableNode {
       return var1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Ldl;",
-      garbageValue = "2131482281"
+      signature = "(I)Ldo;",
+      garbageValue = "307937284"
    )
-   public ModelData method4476() {
+   public ModelData method4455() {
       ModelData[] var1 = new ModelData[5];
       int var2 = 0;
 
       for(int var3 = 0; var3 < 5; ++var3) {
          if(this.models[var3] != -1) {
-            var1[var2++] = ModelData.method2498(field3349, this.models[var3], 0);
+            var1[var2++] = ModelData.method2534(field3346, this.models[var3], 0);
          }
       }
 
@@ -154,17 +154,17 @@ public class KitDefinition extends CacheableNode {
 
       if(this.retextureToFind != null) {
          for(var4 = 0; var4 < this.retextureToFind.length; ++var4) {
-            var5.method2513(this.retextureToFind[var4], this.retextureToReplace[var4]);
+            var5.method2495(this.retextureToFind[var4], this.retextureToReplace[var4]);
          }
       }
 
       return var5;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2090957672"
+      signature = "(B)Z",
+      garbageValue = "77"
    )
    @Export("ready")
    public boolean ready() {
@@ -174,7 +174,7 @@ public class KitDefinition extends CacheableNode {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
-            if(!field3349.method4237(this.modelIds[var2], 0)) {
+            if(!field3346.method4192(this.modelIds[var2], 0)) {
                var1 = false;
             }
          }
@@ -183,10 +183,10 @@ public class KitDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lfg;I)V",
-      garbageValue = "-1419312589"
+      signature = "(Lfz;I)V",
+      garbageValue = "221170125"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -196,14 +196,14 @@ public class KitDefinition extends CacheableNode {
             return;
          }
 
-         this.method4459(var1, var2);
+         this.method4442(var1, var2);
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)Ldl;",
-      garbageValue = "-644894171"
+      signature = "(I)Ldo;",
+      garbageValue = "1991370698"
    )
    @Export("getModelData")
    public ModelData getModelData() {
@@ -213,7 +213,7 @@ public class KitDefinition extends CacheableNode {
          ModelData[] var1 = new ModelData[this.modelIds.length];
 
          for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
-            var1[var2] = ModelData.method2498(field3349, this.modelIds[var2], 0);
+            var1[var2] = ModelData.method2534(field3346, this.modelIds[var2], 0);
          }
 
          ModelData var4;
@@ -232,7 +232,7 @@ public class KitDefinition extends CacheableNode {
 
          if(this.retextureToFind != null) {
             for(var3 = 0; var3 < this.retextureToFind.length; ++var3) {
-               var4.method2513(this.retextureToFind[var3], this.retextureToReplace[var3]);
+               var4.method2495(this.retextureToFind[var3], this.retextureToReplace[var3]);
             }
          }
 
@@ -240,27 +240,12 @@ public class KitDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-1873515579"
+      signature = "(Ljava/lang/CharSequence;II)I",
+      garbageValue = "-1329234514"
    )
-   public static boolean method4485(char var0) {
-      if((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
-         if(var0 != 0) {
-            char[] var1 = class266.field3665;
-
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               char var3 = var1[var2];
-               if(var0 == var3) {
-                  return true;
-               }
-            }
-         }
-
-         return false;
-      } else {
-         return true;
-      }
+   public static int method4443(CharSequence var0, int var1) {
+      return MilliTimer.parseInt(var0, var1, true);
    }
 }

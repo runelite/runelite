@@ -1,64 +1,77 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hp")
 public class class222 {
-   @ObfuscatedName("k")
-   public static final boolean[] field2843;
-   @ObfuscatedName("e")
-   public static int[] field2842;
+   @ObfuscatedName("s")
+   public static final boolean[] field2827;
+   @ObfuscatedName("q")
+   public static int[] field2826;
 
    static {
-      field2843 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
-      field2842 = new int[99];
+      field2827 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
+      field2826 = new int[99];
       int var0 = 0;
 
       for(int var1 = 0; var1 < 99; ++var1) {
          int var2 = var1 + 1;
          int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
          var0 += var3;
-         field2842[var1] = var0 / 4;
+         field2826[var1] = var0 / 4;
       }
 
    }
 
-   @ObfuscatedName("ix")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Lhj;I)Ljava/lang/String;",
-      garbageValue = "913941881"
+      signature = "(B)[Lhq;",
+      garbageValue = "-48"
    )
-   static String method4189(String var0, Widget var1) {
-      if(var0.indexOf("%") != -1) {
-         int var2;
-         for(var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if(var3 == -1) {
-                  break;
-               }
+   public static class232[] method4145() {
+      return new class232[]{class232.field3186, class232.field3188, class232.field3187, class232.field3191, class232.field3190, class232.field3189};
+   }
 
-               var0 = var0.substring(0, var3) + Varcs.method1895(ScriptVarType.method27(var1, var2 - 1)) + var0.substring(var3 + 2);
-            }
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-171984717"
+   )
+   public static void method4146() {
+      class251.field3387.reset();
+   }
+
+   @ObfuscatedName("ho")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2027559128"
+   )
+   static final void method4147() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints > 0) {
+            --var0.hitpoints;
          }
 
-         while(true) {
-            var2 = var0.indexOf("%dns");
-            if(var2 == -1) {
-               break;
+         if(var0.hitpoints == 0) {
+            if(var0.field1204 < 0 || class33.method347(var0.field1204, var0.field1199)) {
+               Ignore.method1099(var0.level, var0.type, var0.x, var0.y, var0.field1204, var0.field1198, var0.field1199);
+               var0.unlink();
+            }
+         } else {
+            if(var0.delay > 0) {
+               --var0.delay;
             }
 
-            String var4 = "";
-            if(class29.field435 != null) {
-               var4 = class90.method1796(class29.field435.field2240);
-               if(class29.field435.value != null) {
-                  var4 = (String)class29.field435.value;
+            if(var0.delay == 0 && var0.x >= 1 && var0.y >= 1 && var0.x <= 102 && var0.y <= 102 && (var0.id < 0 || class33.method347(var0.id, var0.field1202))) {
+               Ignore.method1099(var0.level, var0.type, var0.x, var0.y, var0.id, var0.orientation, var0.field1202);
+               var0.delay = -1;
+               if(var0.field1204 == var0.id && var0.field1204 == -1) {
+                  var0.unlink();
+               } else if(var0.field1204 == var0.id && var0.field1198 == var0.orientation && var0.field1199 == var0.field1202) {
+                  var0.unlink();
                }
             }
-
-            var0 = var0.substring(0, var2) + var4 + var0.substring(var2 + 4);
          }
       }
 
-      return var0;
    }
 }

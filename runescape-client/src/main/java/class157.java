@@ -3,26 +3,26 @@ import java.util.Hashtable;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fy")
 public class class157 {
-   @ObfuscatedName("d")
-   public static boolean field2265;
-   @ObfuscatedName("e")
-   static Hashtable field2267;
-   @ObfuscatedName("k")
-   public static File field2264;
+   @ObfuscatedName("w")
+   public static boolean field2248;
+   @ObfuscatedName("q")
+   static Hashtable field2246;
+   @ObfuscatedName("s")
+   public static File field2245;
 
    static {
-      field2265 = false;
-      field2267 = new Hashtable(16);
+      field2248 = false;
+      field2246 = new Hashtable(16);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1602499210"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-1589346319"
    )
-   public static void method3056() {
-      class252.field3395.reset();
+   static String method3022() {
+      return class70.preferences.field1305?class45.method653(class90.username):class90.username;
    }
 }

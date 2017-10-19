@@ -4,17 +4,17 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gp")
+@ObfuscatedName("gq")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgd;"
    )
-   Node field2482;
-   @ObfuscatedName("d")
+   Node field2461;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgd;"
    )
    @Export("node")
    Node node;
@@ -25,11 +25,11 @@ public class CombatInfoList implements Iterable {
       this.node.previous = this.node;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lgs;)Lgs;"
+      signature = "(Lgd;)Lgd;"
    )
-   Node method3678(Node var1) {
+   Node method3656(Node var1) {
       Node var2;
       if(var1 == null) {
          var2 = this.node.next;
@@ -38,47 +38,47 @@ public class CombatInfoList implements Iterable {
       }
 
       if(var2 == this.node) {
-         this.field2482 = null;
+         this.field2461 = null;
          return null;
       } else {
-         this.field2482 = var2.next;
+         this.field2461 = var2.next;
          return var2;
       }
    }
 
-   @ObfuscatedName("g")
-   public boolean method3667() {
+   @ObfuscatedName("e")
+   public boolean method3658() {
       return this.node.next == this.node;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "()Lgs;"
+      signature = "()Lgd;"
    )
-   public Node method3664() {
-      return this.method3678((Node)null);
+   public Node method3655() {
+      return this.method3656((Node)null);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "()Lgs;"
+      signature = "()Lgd;"
    )
-   public Node method3665() {
-      Node var1 = this.field2482;
+   public Node method3677() {
+      Node var1 = this.field2461;
       if(var1 == this.node) {
-         this.field2482 = null;
+         this.field2461 = null;
          return null;
       } else {
-         this.field2482 = var1.next;
+         this.field2461 = var1.next;
          return var1;
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgs;)V"
+      signature = "(Lgd;)V"
    )
-   public void method3661(Node var1) {
+   public void method3652(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -89,11 +89,11 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgs;)V"
+      signature = "(Lgd;)V"
    )
-   public void method3660(Node var1) {
+   public void method3651(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -104,11 +104,11 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "()Lgs;"
+      signature = "()Lgd;"
    )
-   public Node method3663() {
+   public Node method3654() {
       Node var1 = this.node.next;
       if(var1 == this.node) {
          return null;
@@ -122,11 +122,11 @@ public class CombatInfoList implements Iterable {
       return new class188(this);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lgs;Lgs;)V"
+      signature = "(Lgd;Lgd;)V"
    )
-   public static void method3662(Node var0, Node var1) {
+   public static void method3680(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

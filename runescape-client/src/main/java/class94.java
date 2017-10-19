@@ -3,89 +3,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("cq")
 public class class94 {
-   @ObfuscatedName("e")
-   static byte[] field1476;
-   @ObfuscatedName("p")
-   static byte[] field1477;
    @ObfuscatedName("q")
+   static byte[] field1497;
+   @ObfuscatedName("o")
+   static byte[] field1487;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lfg;"
+      signature = "[Lfz;"
    )
-   static Buffer[] field1478;
-   @ObfuscatedName("s")
+   static Buffer[] field1488;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 596344085
+      intValue = 1448704133
    )
    @Export("playerIndexesCount")
    static int playerIndexesCount;
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @Export("playerIndices")
    static int[] playerIndices;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1602588739
+      intValue = 1321394161
    )
-   static int field1474;
-   @ObfuscatedName("v")
-   static int[] field1482;
-   @ObfuscatedName("t")
-   static int[] field1483;
-   @ObfuscatedName("y")
-   static int[] field1475;
-   @ObfuscatedName("o")
-   static int[] field1481;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1893576507
-   )
-   static int field1486;
-   @ObfuscatedName("u")
-   static int[] field1487;
-   @ObfuscatedName("b")
+   static int field1491;
+   @ObfuscatedName("ip")
    @ObfuscatedSignature(
-      signature = "Lfg;"
+      signature = "Lhj;"
    )
-   static Buffer field1488;
-   @ObfuscatedName("ck")
+   static Widget field1498;
+   @ObfuscatedName("d")
+   static int[] field1492;
+   @ObfuscatedName("x")
+   static int[] field1493;
+   @ObfuscatedName("z")
+   static int[] field1494;
+   @ObfuscatedName("n")
+   static int[] field1495;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1389387385
+      intValue = -939550357
    )
-   public static int field1491;
+   static int field1496;
+   @ObfuscatedName("t")
+   static int[] field1486;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfz;"
+   )
+   static Buffer field1484;
+   @ObfuscatedName("fr")
+   @ObfuscatedGetter(
+      intValue = -706811263
+   )
+   static int field1500;
 
    static {
-      field1476 = new byte[2048];
-      field1477 = new byte[2048];
-      field1478 = new Buffer[2048];
+      field1497 = new byte[2048];
+      field1487 = new byte[2048];
+      field1488 = new Buffer[2048];
       playerIndexesCount = 0;
       playerIndices = new int[2048];
-      field1474 = 0;
-      field1482 = new int[2048];
-      field1483 = new int[2048];
-      field1475 = new int[2048];
-      field1481 = new int[2048];
-      field1486 = 0;
-      field1487 = new int[2048];
-      field1488 = new Buffer(new byte[5000]);
+      field1491 = 0;
+      field1492 = new int[2048];
+      field1493 = new int[2048];
+      field1494 = new int[2048];
+      field1495 = new int[2048];
+      field1496 = 0;
+      field1486 = new int[2048];
+      field1484 = new Buffer(new byte[5000]);
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lit;I)V",
-      garbageValue = "-656194536"
-   )
-   public static void method1859(IndexDataBase var0) {
-      VarPlayerType.varplayer_ref = var0;
-      class181.field2452 = VarPlayerType.varplayer_ref.fileCount(16);
-   }
+   @ObfuscatedName("w")
+   public static final void method1823(long var0) {
+      if(var0 > 0L) {
+         if(var0 % 10L == 0L) {
+            long var2 = var0 - 1L;
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "535343937"
-   )
-   public static boolean method1858(int var0) {
-      return (var0 >> 30 & 1) != 0;
+            try {
+               Thread.sleep(var2);
+            } catch (InterruptedException var7) {
+               ;
+            }
+
+            try {
+               Thread.sleep(1L);
+            } catch (InterruptedException var6) {
+               ;
+            }
+         } else {
+            try {
+               Thread.sleep(var0);
+            } catch (InterruptedException var8) {
+               ;
+            }
+         }
+
+      }
    }
 }

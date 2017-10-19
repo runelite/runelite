@@ -1,682 +1,500 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("av")
 public class class36 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Laz;"
+      signature = "Lav;"
    )
-   static final class36 field522;
-   @ObfuscatedName("k")
+   static final class36 field516;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Laz;"
+      signature = "Lav;"
    )
-   static final class36 field524;
-   @ObfuscatedName("e")
+   static final class36 field521;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 677831097
+      intValue = 39136011
    )
-   final int field523;
+   static int field523;
+   @ObfuscatedName("fp")
+   static byte[][] field519;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 794415859
+   )
+   final int field515;
 
    static {
-      field522 = new class36(0);
-      field524 = new class36(1);
+      field521 = new class36(0);
+      field516 = new class36(1);
    }
 
    class36(int var1) {
-      this.field523 = var1;
+      this.field515 = var1;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "751789724"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "18"
    )
-   @Export("toByteArray")
-   public static byte[] toByteArray(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
+   static void method481(String var0, String var1, String var2) {
+      class90.loginMessage1 = var0;
+      class90.loginMessage2 = var1;
+      class90.loginMessage3 = var2;
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-965603903"
+   )
+   static final void method480(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1117; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1119[var4] = true;
          }
-      } else if(var0 instanceof AbstractByteBuffer) {
-         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
-         return var2.get();
+      }
+
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(ILct;ZB)I",
+      garbageValue = "50"
+   )
+   static int method482(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class81.intStack[--class278.intStackSize];
+         var4 = ItemLayer.method2454(var3);
       } else {
-         throw new IllegalArgumentException();
+         var4 = var2?class251.field3392:class164.field2314;
       }
-   }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Leb;IIIIB)V",
-      garbageValue = "27"
-   )
-   public static final void method489(Model var0, int var1, int var2, int var3, int var4) {
-      class7.field247.method3660(new class10(var0, var1, var2, var3, var4));
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Lfd;IB)V",
-      garbageValue = "2"
-   )
-   static final void method487(PacketBuffer var0, int var1) {
-      int var2 = var0.offset;
-      class94.field1486 = 0;
-      int var3 = 0;
-      var0.bitAccess();
-
-      int var4;
-      int var5;
-      int var6;
-      for(var4 = 0; var4 < class94.playerIndexesCount; ++var4) {
-         var5 = class94.playerIndices[var4];
-         if((class94.field1476[var5] & 1) == 0) {
-            if(var3 > 0) {
-               --var3;
-               class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-            } else {
-               var6 = var0.getBits(1);
-               if(var6 == 0) {
-                  var3 = KeyFocusListener.method785(var0);
-                  class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-               } else {
-                  class88.decodeMovement(var0, var5);
-               }
-            }
+      if(var0 == 1000) {
+         class278.intStackSize -= 4;
+         var4.originalX = class81.intStack[class278.intStackSize];
+         var4.originalY = class81.intStack[class278.intStackSize + 1];
+         var4.field2647 = class81.intStack[class278.intStackSize + 2];
+         var4.field2732 = class81.intStack[class278.intStackSize + 3];
+         class45.method647(var4);
+         class7.clientInstance.method1161(var4);
+         if(var3 != -1 && var4.type == 0) {
+            GZipDecompressor.method3159(class215.widgets[var3 >> 16], var4, false);
          }
-      }
 
-      var0.byteAccess();
-      if(var3 != 0) {
-         throw new RuntimeException();
+         return 1;
+      } else if(var0 == 1001) {
+         class278.intStackSize -= 4;
+         var4.originalWidth = class81.intStack[class278.intStackSize];
+         var4.field2654 = class81.intStack[class278.intStackSize + 1];
+         var4.field2649 = class81.intStack[class278.intStackSize + 2];
+         var4.buttonType = class81.intStack[class278.intStackSize + 3];
+         class45.method647(var4);
+         class7.clientInstance.method1161(var4);
+         if(var3 != -1 && var4.type == 0) {
+            GZipDecompressor.method3159(class215.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class81.intStack[--class278.intStackSize] == 1;
+         if(var5 != var4.isHidden) {
+            var4.isHidden = var5;
+            class45.method647(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.field2659 = class81.intStack[--class278.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.field2698 = class81.intStack[--class278.intStackSize] == 1;
+         return 1;
       } else {
-         var0.bitAccess();
-
-         for(var4 = 0; var4 < class94.playerIndexesCount; ++var4) {
-            var5 = class94.playerIndices[var4];
-            if((class94.field1476[var5] & 1) != 0) {
-               if(var3 > 0) {
-                  --var3;
-                  class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-               } else {
-                  var6 = var0.getBits(1);
-                  if(var6 == 0) {
-                     var3 = KeyFocusListener.method785(var0);
-                     class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                  } else {
-                     class88.decodeMovement(var0, var5);
-                  }
-               }
-            }
-         }
-
-         var0.byteAccess();
-         if(var3 != 0) {
-            throw new RuntimeException();
-         } else {
-            var0.bitAccess();
-
-            for(var4 = 0; var4 < class94.field1474; ++var4) {
-               var5 = class94.field1482[var4];
-               if((class94.field1476[var5] & 1) != 0) {
-                  if(var3 > 0) {
-                     --var3;
-                     class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                  } else {
-                     var6 = var0.getBits(1);
-                     if(var6 == 0) {
-                        var3 = KeyFocusListener.method785(var0);
-                        class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                     } else if(RSSocket.decodeRegionHash(var0, var5)) {
-                        class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                     }
-                  }
-               }
-            }
-
-            var0.byteAccess();
-            if(var3 != 0) {
-               throw new RuntimeException();
-            } else {
-               var0.bitAccess();
-
-               for(var4 = 0; var4 < class94.field1474; ++var4) {
-                  var5 = class94.field1482[var4];
-                  if((class94.field1476[var5] & 1) == 0) {
-                     if(var3 > 0) {
-                        --var3;
-                        class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                     } else {
-                        var6 = var0.getBits(1);
-                        if(var6 == 0) {
-                           var3 = KeyFocusListener.method785(var0);
-                           class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                        } else if(RSSocket.decodeRegionHash(var0, var5)) {
-                           class94.field1476[var5] = (byte)(class94.field1476[var5] | 2);
-                        }
-                     }
-                  }
-               }
-
-               var0.byteAccess();
-               if(var3 != 0) {
-                  throw new RuntimeException();
-               } else {
-                  class94.playerIndexesCount = 0;
-                  class94.field1474 = 0;
-
-                  for(var4 = 1; var4 < 2048; ++var4) {
-                     class94.field1476[var4] = (byte)(class94.field1476[var4] >> 1);
-                     Player var7 = Client.cachedPlayers[var4];
-                     if(var7 != null) {
-                        class94.playerIndices[++class94.playerIndexesCount - 1] = var4;
-                     } else {
-                        class94.field1482[++class94.field1474 - 1] = var4;
-                     }
-                  }
-
-                  class60.method1065(var0);
-                  if(var0.offset - var2 != var1) {
-                     throw new RuntimeException(var0.offset - var2 + " " + var1);
-                  }
-               }
-            }
-         }
+         return 2;
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("fd")
    @ObfuscatedSignature(
-      signature = "(Lem;[Lfq;I)V",
-      garbageValue = "-131080087"
+      signature = "(Lby;IB)V",
+      garbageValue = "5"
    )
-   static final void method490(Region var0, CollisionData[] var1) {
+   static final void method479(Actor var0, int var1) {
       int var2;
       int var3;
       int var4;
-      int var5;
-      for(var2 = 0; var2 < 4; ++var2) {
-         for(var3 = 0; var3 < 104; ++var3) {
-            for(var4 = 0; var4 < 104; ++var4) {
-               if((class61.tileSettings[var2][var3][var4] & 1) == 1) {
-                  var5 = var2;
-                  if((class61.tileSettings[1][var3][var4] & 2) == 2) {
-                     var5 = var2 - 1;
-                  }
-
-                  if(var5 >= 0) {
-                     var1[var5].method3112(var3, var4);
-                  }
-               }
-            }
-         }
-      }
-
-      class61.field776 += (int)(Math.random() * 5.0D) - 2;
-      if(class61.field776 < -8) {
-         class61.field776 = -8;
-      }
-
-      if(class61.field776 > 8) {
-         class61.field776 = 8;
-      }
-
-      class61.field777 += (int)(Math.random() * 5.0D) - 2;
-      if(class61.field777 < -16) {
-         class61.field777 = -16;
-      }
-
-      if(class61.field777 > 16) {
-         class61.field777 = 16;
-      }
-
-      int var9;
-      int var10;
-      int var11;
-      int var12;
-      int var13;
-      int var14;
-      int var15;
-      int var16;
-      int var17;
-      int var18;
-      for(var2 = 0; var2 < 4; ++var2) {
-         byte[][] var42 = class174.field2411[var2];
-         var9 = (int)Math.sqrt(5100.0D);
-         var10 = var9 * 768 >> 8;
-
-         int var19;
-         int var20;
-         for(var11 = 1; var11 < 103; ++var11) {
-            for(var12 = 1; var12 < 103; ++var12) {
-               var13 = class61.tileHeights[var2][var12 + 1][var11] - class61.tileHeights[var2][var12 - 1][var11];
-               var14 = class61.tileHeights[var2][var12][var11 + 1] - class61.tileHeights[var2][var12][var11 - 1];
-               var15 = (int)Math.sqrt((double)(var14 * var14 + var13 * var13 + 65536));
-               var16 = (var13 << 8) / var15;
-               var17 = 65536 / var15;
-               var18 = (var14 << 8) / var15;
-               var19 = (var18 * -50 + var16 * -50 + var17 * -10) / var10 + 96;
-               var20 = (var42[var12 - 1][var11] >> 2) + (var42[var12][var11 - 1] >> 2) + (var42[var12 + 1][var11] >> 3) + (var42[var12][var11 + 1] >> 3) + (var42[var12][var11] >> 1);
-               class60.field762[var12][var11] = var19 - var20;
-            }
-         }
-
-         for(var11 = 0; var11 < 104; ++var11) {
-            class170.blendedHue[var11] = 0;
-            class35.blendedSaturation[var11] = 0;
-            class10.field262[var11] = 0;
-            class61.field769[var11] = 0;
-            Huffman.field2332[var11] = 0;
-         }
-
-         for(var11 = -5; var11 < 109; ++var11) {
-            for(var12 = 0; var12 < 104; ++var12) {
-               var13 = var11 + 5;
-               if(var13 >= 0 && var13 < 104) {
-                  var14 = class61.underlayIds[var2][var13][var12] & 255;
-                  if(var14 > 0) {
-                     FloorUnderlayDefinition var43 = class72.method1166(var14 - 1);
-                     class170.blendedHue[var12] += var43.hue;
-                     class35.blendedSaturation[var12] += var43.saturation;
-                     class10.field262[var12] += var43.lightness;
-                     class61.field769[var12] += var43.hueMultiplier;
-                     ++Huffman.field2332[var12];
-                  }
-               }
-
-               var14 = var11 - 5;
-               if(var14 >= 0 && var14 < 104) {
-                  var15 = class61.underlayIds[var2][var14][var12] & 255;
-                  if(var15 > 0) {
-                     FloorUnderlayDefinition var44 = class72.method1166(var15 - 1);
-                     class170.blendedHue[var12] -= var44.hue;
-                     class35.blendedSaturation[var12] -= var44.saturation;
-                     class10.field262[var12] -= var44.lightness;
-                     class61.field769[var12] -= var44.hueMultiplier;
-                     --Huffman.field2332[var12];
-                  }
-               }
+      Sequence var11;
+      if(var0.field1240 > Client.gameCycle) {
+         var2 = var0.field1240 - Client.gameCycle;
+         var3 = var0.field1251 * 128 + var0.field1221 * 64;
+         var4 = var0.field1211 * 128 + var0.field1221 * 64;
+         var0.x += (var3 - var0.x) / var2;
+         var0.y += (var4 - var0.y) / var2;
+         var0.field1267 = 0;
+         var0.orientation = var0.field1257;
+      } else {
+         int var5;
+         int var7;
+         if(var0.field1256 >= Client.gameCycle) {
+            if(var0.field1256 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1243 + 1 > NPCComposition.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+               var2 = var0.field1256 - var0.field1240;
+               var3 = Client.gameCycle - var0.field1240;
+               var4 = var0.field1251 * 128 + var0.field1221 * 64;
+               var5 = var0.field1211 * 128 + var0.field1221 * 64;
+               int var6 = var0.field1252 * 128 + var0.field1221 * 64;
+               var7 = var0.field1254 * 128 + var0.field1221 * 64;
+               var0.x = (var6 * var3 + var4 * (var2 - var3)) / var2;
+               var0.y = (var3 * var7 + var5 * (var2 - var3)) / var2;
             }
 
-            if(var11 >= 1 && var11 < 103) {
-               var12 = 0;
-               var13 = 0;
-               var14 = 0;
-               var15 = 0;
-               var16 = 0;
-
-               for(var17 = -5; var17 < 109; ++var17) {
-                  var18 = var17 + 5;
-                  if(var18 >= 0 && var18 < 104) {
-                     var12 += class170.blendedHue[var18];
-                     var13 += class35.blendedSaturation[var18];
-                     var14 += class10.field262[var18];
-                     var15 += class61.field769[var18];
-                     var16 += Huffman.field2332[var18];
-                  }
-
-                  var19 = var17 - 5;
-                  if(var19 >= 0 && var19 < 104) {
-                     var12 -= class170.blendedHue[var19];
-                     var13 -= class35.blendedSaturation[var19];
-                     var14 -= class10.field262[var19];
-                     var15 -= class61.field769[var19];
-                     var16 -= Huffman.field2332[var19];
-                  }
-
-                  if(var17 >= 1 && var17 < 103 && (!Client.lowMemory || (class61.tileSettings[0][var11][var17] & 2) != 0 || (class61.tileSettings[var2][var11][var17] & 16) == 0)) {
-                     if(var2 < class61.field773) {
-                        class61.field773 = var2;
+            var0.field1267 = 0;
+            var0.orientation = var0.field1257;
+            var0.angle = var0.orientation;
+         } else {
+            var0.poseAnimation = var0.idlePoseAnimation;
+            if(var0.queueSize == 0) {
+               var0.field1267 = 0;
+            } else {
+               label579: {
+                  if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+                     var11 = NPCComposition.getAnimation(var0.animation);
+                     if(var0.field1213 > 0 && var11.precedenceAnimating == 0) {
+                        ++var0.field1267;
+                        break label579;
                      }
 
-                     var20 = class61.underlayIds[var2][var11][var17] & 255;
-                     int var21 = class61.overlayIds[var2][var11][var17] & 255;
-                     if(var20 > 0 || var21 > 0) {
-                        int var22 = class61.tileHeights[var2][var11][var17];
-                        int var23 = class61.tileHeights[var2][var11 + 1][var17];
-                        int var24 = class61.tileHeights[var2][var11 + 1][var17 + 1];
-                        int var25 = class61.tileHeights[var2][var11][var17 + 1];
-                        int var26 = class60.field762[var11][var17];
-                        int var27 = class60.field762[var11 + 1][var17];
-                        int var28 = class60.field762[var11 + 1][var17 + 1];
-                        int var29 = class60.field762[var11][var17 + 1];
-                        int var30 = -1;
-                        int var31 = -1;
-                        int var32;
-                        int var33;
-                        if(var20 > 0) {
-                           var32 = var12 * 256 / var15;
-                           var33 = var13 / var16;
-                           int var34 = var14 / var16;
-                           var30 = SceneTilePaint.method2753(var32, var33, var34);
-                           var32 = var32 + class61.field776 & 255;
-                           var34 += class61.field777;
-                           if(var34 < 0) {
-                              var34 = 0;
-                           } else if(var34 > 255) {
-                              var34 = 255;
-                           }
+                     if(var0.field1213 <= 0 && var11.priority == 0) {
+                        ++var0.field1267;
+                        break label579;
+                     }
+                  }
 
-                           var31 = SceneTilePaint.method2753(var32, var33, var34);
+                  var2 = var0.x;
+                  var3 = var0.y;
+                  var4 = var0.pathX[var0.queueSize - 1] * 128 + var0.field1221 * 64;
+                  var5 = var0.pathY[var0.queueSize - 1] * 128 + var0.field1221 * 64;
+                  if(var2 < var4) {
+                     if(var3 < var5) {
+                        var0.orientation = 1280;
+                     } else if(var3 > var5) {
+                        var0.orientation = 1792;
+                     } else {
+                        var0.orientation = 1536;
+                     }
+                  } else if(var2 > var4) {
+                     if(var3 < var5) {
+                        var0.orientation = 768;
+                     } else if(var3 > var5) {
+                        var0.orientation = 256;
+                     } else {
+                        var0.orientation = 512;
+                     }
+                  } else if(var3 < var5) {
+                     var0.orientation = 1024;
+                  } else if(var3 > var5) {
+                     var0.orientation = 0;
+                  }
+
+                  byte var14 = var0.field1258[var0.queueSize - 1];
+                  if(var4 - var2 <= 256 && var4 - var2 >= -256 && var5 - var3 <= 256 && var5 - var3 >= -256) {
+                     var7 = var0.orientation - var0.angle & 2047;
+                     if(var7 > 1024) {
+                        var7 -= 2048;
+                     }
+
+                     int var8 = var0.field1218;
+                     if(var7 >= -256 && var7 <= 256) {
+                        var8 = var0.field1217;
+                     } else if(var7 >= 256 && var7 < 768) {
+                        var8 = var0.field1220;
+                     } else if(var7 >= -768 && var7 <= -256) {
+                        var8 = var0.field1219;
+                     }
+
+                     if(var8 == -1) {
+                        var8 = var0.field1217;
+                     }
+
+                     var0.poseAnimation = var8;
+                     int var9 = 4;
+                     boolean var10 = true;
+                     if(var0 instanceof NPC) {
+                        var10 = ((NPC)var0).composition.isClickable;
+                     }
+
+                     if(var10) {
+                        if(var0.angle != var0.orientation && var0.interacting == -1 && var0.field1262 != 0) {
+                           var9 = 2;
                         }
 
-                        if(var2 > 0) {
-                           boolean var47 = true;
-                           if(var20 == 0 && class277.overlayPaths[var2][var11][var17] != 0) {
-                              var47 = false;
-                           }
+                        if(var0.queueSize > 2) {
+                           var9 = 6;
+                        }
 
-                           if(var21 > 0 && !class43.method626(var21 - 1).isHidden) {
-                              var47 = false;
-                           }
+                        if(var0.queueSize > 3) {
+                           var9 = 8;
+                        }
 
-                           if(var47 && var23 == var22 && var22 == var24 && var25 == var22) {
-                              class168.field2350[var2][var11][var17] |= 2340;
+                        if(var0.field1267 > 0 && var0.queueSize > 1) {
+                           var9 = 8;
+                           --var0.field1267;
+                        }
+                     } else {
+                        if(var0.queueSize > 1) {
+                           var9 = 6;
+                        }
+
+                        if(var0.queueSize > 2) {
+                           var9 = 8;
+                        }
+
+                        if(var0.field1267 > 0 && var0.queueSize > 1) {
+                           var9 = 8;
+                           --var0.field1267;
+                        }
+                     }
+
+                     if(var14 == 2) {
+                        var9 <<= 1;
+                     }
+
+                     if(var9 >= 8 && var0.poseAnimation == var0.field1217 && var0.field1216 != -1) {
+                        var0.poseAnimation = var0.field1216;
+                     }
+
+                     if(var2 != var4 || var5 != var3) {
+                        if(var2 < var4) {
+                           var0.x += var9;
+                           if(var0.x > var4) {
+                              var0.x = var4;
+                           }
+                        } else if(var2 > var4) {
+                           var0.x -= var9;
+                           if(var0.x < var4) {
+                              var0.x = var4;
                            }
                         }
 
-                        var32 = 0;
-                        if(var31 != -1) {
-                           var32 = Graphics3D.colorPalette[class147.method2980(var31, 96)];
+                        if(var3 < var5) {
+                           var0.y += var9;
+                           if(var0.y > var5) {
+                              var0.y = var5;
+                           }
+                        } else if(var3 > var5) {
+                           var0.y -= var9;
+                           if(var0.y < var5) {
+                              var0.y = var5;
+                           }
                         }
+                     }
 
-                        if(var21 == 0) {
-                           var0.addTile(var2, var11, var17, 0, 0, -1, var22, var23, var24, var25, class147.method2980(var30, var26), class147.method2980(var30, var27), class147.method2980(var30, var28), class147.method2980(var30, var29), 0, 0, 0, 0, var32, 0);
-                        } else {
-                           var33 = class277.overlayPaths[var2][var11][var17] + 1;
-                           byte var48 = class61.overlayRotations[var2][var11][var17];
-                           Overlay var35 = class43.method626(var21 - 1);
-                           int var36 = var35.texture;
-                           int var37;
-                           int var38;
-                           int var39;
-                           int var40;
-                           if(var36 >= 0) {
-                              var38 = Graphics3D.textureLoader.getAverageTextureRGB(var36);
-                              var37 = -1;
-                           } else if(var35.color == 16711935) {
-                              var37 = -2;
-                              var36 = -1;
-                              var38 = -2;
-                           } else {
-                              var37 = SceneTilePaint.method2753(var35.hue, var35.saturation, var35.lightness);
-                              var39 = var35.hue + class61.field776 & 255;
-                              var40 = var35.lightness + class61.field777;
-                              if(var40 < 0) {
-                                 var40 = 0;
-                              } else if(var40 > 255) {
-                                 var40 = 255;
-                              }
-
-                              var38 = SceneTilePaint.method2753(var39, var35.saturation, var40);
-                           }
-
-                           var39 = 0;
-                           if(var38 != -2) {
-                              var39 = Graphics3D.colorPalette[ChatLineBuffer.adjustHSLListness0(var38, 96)];
-                           }
-
-                           if(var35.otherRgbColor != -1) {
-                              var40 = var35.otherHue + class61.field776 & 255;
-                              int var41 = var35.otherLightness + class61.field777;
-                              if(var41 < 0) {
-                                 var41 = 0;
-                              } else if(var41 > 255) {
-                                 var41 = 255;
-                              }
-
-                              var38 = SceneTilePaint.method2753(var40, var35.otherSaturation, var41);
-                              var39 = Graphics3D.colorPalette[ChatLineBuffer.adjustHSLListness0(var38, 96)];
-                           }
-
-                           var0.addTile(var2, var11, var17, var33, var48, var36, var22, var23, var24, var25, class147.method2980(var30, var26), class147.method2980(var30, var27), class147.method2980(var30, var28), class147.method2980(var30, var29), ChatLineBuffer.adjustHSLListness0(var37, var26), ChatLineBuffer.adjustHSLListness0(var37, var27), ChatLineBuffer.adjustHSLListness0(var37, var28), ChatLineBuffer.adjustHSLListness0(var37, var29), var32, var39);
+                     if(var4 == var0.x && var5 == var0.y) {
+                        --var0.queueSize;
+                        if(var0.field1213 > 0) {
+                           --var0.field1213;
                         }
+                     }
+                  } else {
+                     var0.x = var4;
+                     var0.y = var5;
+                     --var0.queueSize;
+                     if(var0.field1213 > 0) {
+                        --var0.field1213;
                      }
                   }
                }
             }
          }
+      }
 
-         for(var11 = 1; var11 < 103; ++var11) {
-            for(var12 = 1; var12 < 103; ++var12) {
-               if((class61.tileSettings[var2][var12][var11] & 8) != 0) {
-                  var17 = 0;
-               } else if(var2 > 0 && (class61.tileSettings[1][var12][var11] & 2) != 0) {
-                  var17 = var2 - 1;
+      if(var0.x < 128 || var0.y < 128 || var0.x >= 13184 || var0.y >= 13184) {
+         var0.animation = -1;
+         var0.graphic = -1;
+         var0.field1240 = 0;
+         var0.field1256 = 0;
+         var0.x = var0.pathX[0] * 128 + var0.field1221 * 64;
+         var0.y = var0.pathY[0] * 128 + var0.field1221 * 64;
+         var0.method1525();
+      }
+
+      if(class66.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
+         var0.animation = -1;
+         var0.graphic = -1;
+         var0.field1240 = 0;
+         var0.field1256 = 0;
+         var0.x = var0.pathX[0] * 128 + var0.field1221 * 64;
+         var0.y = var0.pathY[0] * 128 + var0.field1221 * 64;
+         var0.method1525();
+      }
+
+      if(var0.field1262 != 0) {
+         if(var0.interacting != -1) {
+            Object var15 = null;
+            if(var0.interacting < 32768) {
+               var15 = Client.cachedNPCs[var0.interacting];
+            } else if(var0.interacting >= 32768) {
+               var15 = Client.cachedPlayers[var0.interacting - 32768];
+            }
+
+            if(var15 != null) {
+               var3 = var0.x - ((Actor)var15).x;
+               var4 = var0.y - ((Actor)var15).y;
+               if(var3 != 0 || var4 != 0) {
+                  var0.orientation = (int)(Math.atan2((double)var3, (double)var4) * 325.949D) & 2047;
+               }
+            } else if(var0.field1236) {
+               var0.interacting = -1;
+               var0.field1236 = false;
+            }
+         }
+
+         if(var0.field1249 != -1 && (var0.queueSize == 0 || var0.field1267 > 0)) {
+            var0.orientation = var0.field1249;
+            var0.field1249 = -1;
+         }
+
+         var2 = var0.orientation - var0.angle & 2047;
+         if(var2 == 0 && var0.field1236) {
+            var0.interacting = -1;
+            var0.field1236 = false;
+         }
+
+         if(var2 != 0) {
+            ++var0.field1261;
+            boolean var13;
+            if(var2 > 1024) {
+               var0.angle -= var0.field1262;
+               var13 = true;
+               if(var2 < var0.field1262 || var2 > 2048 - var0.field1262) {
+                  var0.angle = var0.orientation;
+                  var13 = false;
+               }
+
+               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1261 > 25 || var13)) {
+                  if(var0.field1253 != -1) {
+                     var0.poseAnimation = var0.field1253;
+                  } else {
+                     var0.poseAnimation = var0.field1217;
+                  }
+               }
+            } else {
+               var0.angle += var0.field1262;
+               var13 = true;
+               if(var2 < var0.field1262 || var2 > 2048 - var0.field1262) {
+                  var0.angle = var0.orientation;
+                  var13 = false;
+               }
+
+               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1261 > 25 || var13)) {
+                  if(var0.field1227 != -1) {
+                     var0.poseAnimation = var0.field1227;
+                  } else {
+                     var0.poseAnimation = var0.field1217;
+                  }
+               }
+            }
+
+            var0.angle &= 2047;
+         } else {
+            var0.field1261 = 0;
+         }
+      }
+
+      var0.field1212 = false;
+      if(var0.poseAnimation != -1) {
+         var11 = NPCComposition.getAnimation(var0.poseAnimation);
+         if(var11 != null && var11.frameIDs != null) {
+            ++var0.field1234;
+            if(var0.poseFrame < var11.frameIDs.length && var0.field1234 > var11.frameLenghts[var0.poseFrame]) {
+               var0.field1234 = 1;
+               ++var0.poseFrame;
+               class40.method539(var11, var0.poseFrame, var0.x, var0.y);
+            }
+
+            if(var0.poseFrame >= var11.frameIDs.length) {
+               var0.field1234 = 0;
+               var0.poseFrame = 0;
+               class40.method539(var11, var0.poseFrame, var0.x, var0.y);
+            }
+         } else {
+            var0.poseAnimation = -1;
+         }
+      }
+
+      if(var0.graphic != -1 && Client.gameCycle >= var0.graphicsDelay) {
+         if(var0.field1215 < 0) {
+            var0.field1215 = 0;
+         }
+
+         var2 = class244.getSpotAnimType(var0.graphic).field3325;
+         if(var2 != -1) {
+            Sequence var12 = NPCComposition.getAnimation(var2);
+            if(var12 != null && var12.frameIDs != null) {
+               ++var0.field1248;
+               if(var0.field1215 < var12.frameIDs.length && var0.field1248 > var12.frameLenghts[var0.field1215]) {
+                  var0.field1248 = 1;
+                  ++var0.field1215;
+                  class40.method539(var12, var0.field1215, var0.x, var0.y);
+               }
+
+               if(var0.field1215 >= var12.frameIDs.length && (var0.field1215 < 0 || var0.field1215 >= var12.frameIDs.length)) {
+                  var0.graphic = -1;
+               }
+            } else {
+               var0.graphic = -1;
+            }
+         } else {
+            var0.graphic = -1;
+         }
+      }
+
+      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
+         var11 = NPCComposition.getAnimation(var0.animation);
+         if(var11.precedenceAnimating == 1 && var0.field1213 > 0 && var0.field1240 <= Client.gameCycle && var0.field1256 < Client.gameCycle) {
+            var0.actionAnimationDisable = 1;
+            return;
+         }
+      }
+
+      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+         var11 = NPCComposition.getAnimation(var0.animation);
+         if(var11 != null && var11.frameIDs != null) {
+            ++var0.field1243;
+            if(var0.actionFrame < var11.frameIDs.length && var0.field1243 > var11.frameLenghts[var0.actionFrame]) {
+               var0.field1243 = 1;
+               ++var0.actionFrame;
+               class40.method539(var11, var0.actionFrame, var0.x, var0.y);
+            }
+
+            if(var0.actionFrame >= var11.frameIDs.length) {
+               var0.actionFrame -= var11.frameStep;
+               ++var0.field1245;
+               if(var0.field1245 >= var11.maxLoops) {
+                  var0.animation = -1;
+               } else if(var0.actionFrame >= 0 && var0.actionFrame < var11.frameIDs.length) {
+                  class40.method539(var11, var0.actionFrame, var0.x, var0.y);
                } else {
-                  var17 = var2;
-               }
-
-               var0.setPhysicalLevel(var2, var12, var11, var17);
-            }
-         }
-
-         class61.underlayIds[var2] = null;
-         class61.overlayIds[var2] = null;
-         class277.overlayPaths[var2] = null;
-         class61.overlayRotations[var2] = null;
-         class174.field2411[var2] = null;
-      }
-
-      var0.applyLighting(-50, -10, -50);
-
-      for(var2 = 0; var2 < 104; ++var2) {
-         for(var3 = 0; var3 < 104; ++var3) {
-            if((class61.tileSettings[1][var2][var3] & 2) == 2) {
-               var0.setBridge(var2, var3);
-            }
-         }
-      }
-
-      var2 = 1;
-      var3 = 2;
-      var4 = 4;
-
-      for(var5 = 0; var5 < 4; ++var5) {
-         if(var5 > 0) {
-            var2 <<= 3;
-            var3 <<= 3;
-            var4 <<= 3;
-         }
-
-         for(int var6 = 0; var6 <= var5; ++var6) {
-            for(int var7 = 0; var7 <= 104; ++var7) {
-               for(int var8 = 0; var8 <= 104; ++var8) {
-                  short var46;
-                  if((class168.field2350[var6][var8][var7] & var2) != 0) {
-                     var9 = var7;
-                     var10 = var7;
-                     var11 = var6;
-
-                     for(var12 = var6; var9 > 0 && (class168.field2350[var6][var8][var9 - 1] & var2) != 0; --var9) {
-                        ;
-                     }
-
-                     while(var10 < 104 && (class168.field2350[var6][var8][var10 + 1] & var2) != 0) {
-                        ++var10;
-                     }
-
-                     label476:
-                     while(var11 > 0) {
-                        for(var13 = var9; var13 <= var10; ++var13) {
-                           if((class168.field2350[var11 - 1][var8][var13] & var2) == 0) {
-                              break label476;
-                           }
-                        }
-
-                        --var11;
-                     }
-
-                     label465:
-                     while(var12 < var5) {
-                        for(var13 = var9; var13 <= var10; ++var13) {
-                           if((class168.field2350[var12 + 1][var8][var13] & var2) == 0) {
-                              break label465;
-                           }
-                        }
-
-                        ++var12;
-                     }
-
-                     var13 = (var10 - var9 + 1) * (var12 + 1 - var11);
-                     if(var13 >= 8) {
-                        var46 = 240;
-                        var15 = class61.tileHeights[var12][var8][var9] - var46;
-                        var16 = class61.tileHeights[var11][var8][var9];
-                        Region.addOcclude(var5, 1, var8 * 128, var8 * 128, var9 * 128, var10 * 128 + 128, var15, var16);
-
-                        for(var17 = var11; var17 <= var12; ++var17) {
-                           for(var18 = var9; var18 <= var10; ++var18) {
-                              class168.field2350[var17][var8][var18] &= ~var2;
-                           }
-                        }
-                     }
-                  }
-
-                  if((class168.field2350[var6][var8][var7] & var3) != 0) {
-                     var9 = var8;
-                     var10 = var8;
-                     var11 = var6;
-
-                     for(var12 = var6; var9 > 0 && (class168.field2350[var6][var9 - 1][var7] & var3) != 0; --var9) {
-                        ;
-                     }
-
-                     while(var10 < 104 && (class168.field2350[var6][var10 + 1][var7] & var3) != 0) {
-                        ++var10;
-                     }
-
-                     label529:
-                     while(var11 > 0) {
-                        for(var13 = var9; var13 <= var10; ++var13) {
-                           if((class168.field2350[var11 - 1][var13][var7] & var3) == 0) {
-                              break label529;
-                           }
-                        }
-
-                        --var11;
-                     }
-
-                     label518:
-                     while(var12 < var5) {
-                        for(var13 = var9; var13 <= var10; ++var13) {
-                           if((class168.field2350[var12 + 1][var13][var7] & var3) == 0) {
-                              break label518;
-                           }
-                        }
-
-                        ++var12;
-                     }
-
-                     var13 = (var12 + 1 - var11) * (var10 - var9 + 1);
-                     if(var13 >= 8) {
-                        var46 = 240;
-                        var15 = class61.tileHeights[var12][var9][var7] - var46;
-                        var16 = class61.tileHeights[var11][var9][var7];
-                        Region.addOcclude(var5, 2, var9 * 128, var10 * 128 + 128, var7 * 128, var7 * 128, var15, var16);
-
-                        for(var17 = var11; var17 <= var12; ++var17) {
-                           for(var18 = var9; var18 <= var10; ++var18) {
-                              class168.field2350[var17][var18][var7] &= ~var3;
-                           }
-                        }
-                     }
-                  }
-
-                  if((class168.field2350[var6][var8][var7] & var4) != 0) {
-                     var9 = var8;
-                     var10 = var8;
-                     var11 = var7;
-
-                     for(var12 = var7; var11 > 0 && (class168.field2350[var6][var8][var11 - 1] & var4) != 0; --var11) {
-                        ;
-                     }
-
-                     while(var12 < 104 && (class168.field2350[var6][var8][var12 + 1] & var4) != 0) {
-                        ++var12;
-                     }
-
-                     label582:
-                     while(var9 > 0) {
-                        for(var13 = var11; var13 <= var12; ++var13) {
-                           if((class168.field2350[var6][var9 - 1][var13] & var4) == 0) {
-                              break label582;
-                           }
-                        }
-
-                        --var9;
-                     }
-
-                     label571:
-                     while(var10 < 104) {
-                        for(var13 = var11; var13 <= var12; ++var13) {
-                           if((class168.field2350[var6][var10 + 1][var13] & var4) == 0) {
-                              break label571;
-                           }
-                        }
-
-                        ++var10;
-                     }
-
-                     if((var10 - var9 + 1) * (var12 - var11 + 1) >= 4) {
-                        var13 = class61.tileHeights[var6][var9][var11];
-                        Region.addOcclude(var5, 4, var9 * 128, var10 * 128 + 128, var11 * 128, var12 * 128 + 128, var13, var13);
-
-                        for(var14 = var9; var14 <= var10; ++var14) {
-                           for(var15 = var11; var15 <= var12; ++var15) {
-                              class168.field2350[var6][var14][var15] &= ~var4;
-                           }
-                        }
-                     }
-                  }
+                  var0.animation = -1;
                }
             }
+
+            var0.field1212 = var11.stretches;
+         } else {
+            var0.animation = -1;
          }
       }
 
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)J",
-      garbageValue = "1285881737"
-   )
-   static long method491(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 'A' && var5 <= 'Z') {
-            var1 += (long)(var5 + 1 - 65);
-         } else if(var5 >= 'a' && var5 <= 'z') {
-            var1 += (long)(var5 + 1 - 97);
-         } else if(var5 >= '0' && var5 <= '9') {
-            var1 += (long)(var5 + 27 - 48);
-         }
-
-         if(var1 >= 177917621779460413L) {
-            break;
-         }
+      if(var0.actionAnimationDisable > 0) {
+         --var0.actionAnimationDisable;
       }
 
-      while(var1 % 37L == 0L && var1 != 0L) {
-         var1 /= 37L;
-      }
-
-      return var1;
    }
 }

@@ -3,34 +3,35 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Opcodes;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fw")
 @Implements("CollisionData")
 public class CollisionData {
-   @ObfuscatedName("am")
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = -959088199
+      intValue = 145261967
    )
    @Export("width")
    int width;
-   @ObfuscatedName("af")
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = -686257497
+      intValue = -628535809
    )
    @Export("x")
    int x;
-   @ObfuscatedName("av")
+   @ObfuscatedName("al")
    @Export("flags")
    public int[][] flags;
-   @ObfuscatedName("az")
+   @ObfuscatedName("av")
    @ObfuscatedGetter(
-      intValue = 1315759885
+      intValue = -1235042947
    )
    @Export("height")
    int height;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = -1887115167
+      intValue = 231900507
    )
    @Export("y")
    int y;
@@ -44,30 +45,30 @@ public class CollisionData {
       this.reset();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1476860009"
+      garbageValue = "2035877143"
    )
    @Export("remove")
    void remove(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "-241360178"
+      signature = "(IIIS)V",
+      garbageValue = "255"
    )
    @Export("add")
    void add(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "30"
+      signature = "(I)V",
+      garbageValue = "1826334910"
    )
    @Export("reset")
    public void reset() {
@@ -83,10 +84,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "2047269003"
+      signature = "(IIIIZB)V",
+      garbageValue = "-64"
    )
    @Export("removeWall")
    public void removeWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -236,10 +237,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-82"
+      signature = "(III)V",
+      garbageValue = "-266514345"
    )
    @Export("unblock")
    public void unblock(int var1, int var2) {
@@ -248,10 +249,10 @@ public class CollisionData {
       this.flags[var1][var2] &= -262145;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIIIZB)V",
-      garbageValue = "16"
+      signature = "(IIIIIZI)V",
+      garbageValue = "1928753278"
    )
    @Export("removeObject")
    public void removeObject(int var1, int var2, int var3, int var4, int var5, boolean var6) {
@@ -281,10 +282,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIB)V",
-      garbageValue = "-48"
+      garbageValue = "-20"
    )
    @Export("block")
    public void block(int var1, int var2) {
@@ -293,10 +294,10 @@ public class CollisionData {
       this.flags[var1][var2] |= 262144;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "2015562749"
+      garbageValue = "1623627732"
    )
    @Export("addObject")
    public void addObject(int var1, int var2, int var3, int var4, boolean var5) {
@@ -320,10 +321,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "-1087036361"
+      garbageValue = "-1196820482"
    )
    @Export("addWall")
    public void addWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -473,62 +474,64 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-385683414"
+      signature = "(IIB)V",
+      garbageValue = "32"
    )
-   public void method3112(int var1, int var2) {
+   public void method3075(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 2097152;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lbg;B)V",
-      garbageValue = "1"
+      signature = "(II)Liv;",
+      garbageValue = "1286251463"
    )
-   public static void method3128(ScriptEvent var0) {
-      Player.method1188(var0, 200000);
+   @Export("getObjectDefinition")
+   public static ObjectComposition getObjectDefinition(int var0) {
+      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
+         var1 = new ObjectComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         var1.post();
+         if(var1.isSolid) {
+            var1.interactType = 0;
+            var1.field3453 = false;
+         }
+
+         ObjectComposition.objects.put(var1, (long)var0);
+         return var1;
+      }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("ji")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2116792091"
+      signature = "(I)V",
+      garbageValue = "483297471"
    )
-   public static String method3130(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
+   static final void method3106() {
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CLOSED_WINDOW);
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
-            } else {
-               byte var5 = PlayerComposition.method4079(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3637(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3638()) {
+         if(var0.owner == 0 || var0.owner == 3) {
+            class110.method2145(var0, true);
          }
       }
 
-      return var2.toString();
+      if(Client.field1078 != null) {
+         class45.method647(Client.field1078);
+         Client.field1078 = null;
+      }
+
    }
 }

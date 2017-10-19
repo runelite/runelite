@@ -3,140 +3,159 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("b")
+@ObfuscatedName("a")
 public class class14 {
-   @ObfuscatedName("q")
-   String field292;
-   @ObfuscatedName("p")
-   String field291;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      longValue = -192077290121212393L
-   )
-   public final long field289;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -459196987
-   )
-   public final int field297;
-   @ObfuscatedName("e")
+   @ObfuscatedName("cf")
    @ObfuscatedSignature(
-      signature = "Lj;"
+      signature = "Lih;"
    )
-   public final GrandExchangeOffer field295;
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("gj")
+   @ObfuscatedSignature(
+      signature = "[Lky;"
+   )
+   @Export("pkIcons")
+   static SpritePixels[] pkIcons;
+   @ObfuscatedName("pb")
+   @ObfuscatedGetter(
+      intValue = 1470002847
+   )
+   static int field292;
+   @ObfuscatedName("rp")
+   @ObfuscatedGetter(
+      intValue = -995736971
+   )
+   static int field300;
+   @ObfuscatedName("g")
+   String field304;
+   @ObfuscatedName("o")
+   String field295;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      longValue = -8704949915974274793L
+   )
+   public final long field293;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -2140382519
+   )
+   public final int field296;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lh;"
+   )
+   public final GrandExchangeOffer field294;
 
    @ObfuscatedSignature(
-      signature = "(Lfg;BI)V"
+      signature = "(Lfz;BI)V"
    )
    class14(Buffer var1, byte var2, int var3) {
-      this.field291 = var1.readString();
-      this.field292 = var1.readString();
-      this.field297 = var1.readUnsignedShort();
-      this.field289 = var1.readLong();
+      this.field295 = var1.readString();
+      this.field304 = var1.readString();
+      this.field296 = var1.readUnsignedShort();
+      this.field293 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field295 = new GrandExchangeOffer();
-      this.field295.method117(2);
-      this.field295.method103(var2);
-      this.field295.price = var4;
-      this.field295.totalQuantity = var5;
-      this.field295.quantitySold = 0;
-      this.field295.spent = 0;
-      this.field295.itemId = var3;
+      this.field294 = new GrandExchangeOffer();
+      this.field294.method101(2);
+      this.field294.method102(var2);
+      this.field294.price = var4;
+      this.field294.totalQuantity = var5;
+      this.field294.quantitySold = 0;
+      this.field294.spent = 0;
+      this.field294.itemId = var3;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1858237188"
-   )
-   public String method80() {
-      return this.field291;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-767606168"
+      garbageValue = "902643102"
    )
    public String method84() {
-      return this.field292;
+      return this.field295;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "-70"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "1072463974"
    )
-   static int method89(byte[] var0, int var1, int var2) {
-      int var3 = -1;
-
-      for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
+   public String method82() {
+      return this.field304;
    }
 
-   @ObfuscatedName("gq")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-2071315624"
+      signature = "(Lih;IIIBZB)V",
+      garbageValue = "127"
    )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = class20.font_p12full.method4878(var0, 250);
-      int var6 = class20.font_p12full.method4838(var0, 250) * 13;
-      Rasterizer2D.method5129(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2, 16777215);
-      class20.font_p12full.method4844(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      MilliTimer.method3014(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
-      if(var1) {
-         class12.field275.vmethod5136(0, 0);
-      } else {
-         class148.method2982(var3, var4, var5, var6);
-      }
-
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1910900205"
-   )
-   static final int method85() {
-      return class132.field1985;
-   }
-
-   @ObfuscatedName("ib")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "104"
-   )
-   static void method86() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.field1021[var3] = Client.field1021[var3 + 1];
+   static void method87(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class238.field3247.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class238.field3244.get(var6);
+         if(var8 == null) {
+            var8 = (FileRequest)class238.field3252.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class238.field3247.put(var8, var6);
+                  --class238.field3253;
+                  ++class238.field3248;
                }
-            }
 
-            --Client.menuOptionCount;
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class238.field3254.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class238.field3247.put(var8, var6);
+                  ++class238.field3248;
+               } else {
+                  class238.field3261.push(var8);
+                  class238.field3252.put(var8, var6);
+                  ++class238.field3253;
+               }
+
+            }
          }
       }
+   }
 
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lip;Lip;Ljava/lang/String;Ljava/lang/String;B)Ljh;",
+      garbageValue = "4"
+   )
+   public static Font method86(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
+      int var4 = var0.getFile(var2);
+      int var5 = var0.getChild(var4, var3);
+      Font var6;
+      if(!class261.method4822(var0, var4, var5)) {
+         var6 = null;
+      } else {
+         byte[] var8 = var1.getConfigData(var4, var5);
+         Font var7;
+         if(var8 == null) {
+            var7 = null;
+         } else {
+            Font var9 = new Font(var8, class287.field3808, class21.offsetsY, class287.field3806, class56.field700, class114.field1675, class227.spritePixels);
+            class249.method4493();
+            var7 = var9;
+         }
+
+         var6 = var7;
+      }
+
+      return var6;
    }
 }

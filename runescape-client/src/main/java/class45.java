@@ -1,96 +1,95 @@
-import java.awt.Component;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("ak")
 public class class45 extends class28 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -607005123
-   )
-   int field604;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 478487487
-   )
-   int field607;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1037110155
+      intValue = -1864419113
    )
    int field603;
-   @ObfuscatedName("b")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1315342335
+      intValue = 674352101
    )
-   int field606;
+   int field604;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1227908357
+   )
+   int field602;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1192514489
+   )
+   int field605;
 
-   @ObfuscatedName("ad")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1062396151"
+      garbageValue = "-354967826"
    )
-   int method647() {
-      return this.field603;
+   int method649() {
+      return this.field602;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "1791482049"
+      signature = "(IIB)Z",
+      garbageValue = "-55"
    )
-   boolean method643(int var1, int var2) {
-      return var1 < this.field603 * 8?false:(var2 < this.field606 * 8?false:(var1 >= this.field603 * 8 + 8?false:var2 < this.field606 * 8 + 8));
+   boolean method633(int var1, int var2) {
+      return var1 < this.field602 * 8?false:(var2 < this.field605 * 8?false:(var1 >= this.field602 * 8 + 8?false:var2 < this.field605 * 8 + 8));
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1855841522"
+      garbageValue = "-234704773"
    )
-   int method648() {
-      return this.field606;
+   int method631() {
+      return this.field605;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfg;Lfg;B)V",
-      garbageValue = "43"
+      signature = "(Lfz;Lfz;I)V",
+      garbageValue = "-474858510"
    )
-   void method641(Buffer var1, Buffer var2) {
+   void method626(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class36.field524.field523) {
+      if(var3 != class36.field516.field515) {
          throw new IllegalStateException("");
       } else {
-         super.field425 = var2.readUnsignedByte();
          super.field419 = var2.readUnsignedByte();
-         super.field418 = var2.readUnsignedShort();
-         super.field426 = var2.readUnsignedShort();
-         this.field607 = var2.readUnsignedByte();
-         this.field604 = var2.readUnsignedByte();
+         super.field415 = var2.readUnsignedByte();
+         super.field423 = var2.readUnsignedShort();
          super.field416 = var2.readUnsignedShort();
-         super.field417 = var2.readUnsignedShort();
+         this.field604 = var2.readUnsignedByte();
          this.field603 = var2.readUnsignedByte();
-         this.field606 = var2.readUnsignedByte();
-         super.field419 = Math.min(super.field419, 4);
-         super.field420 = new short[1][64][64];
-         super.field421 = new short[super.field419][64][64];
-         super.field422 = new byte[super.field419][64][64];
-         super.field423 = new byte[super.field419][64][64];
-         super.field424 = new class31[super.field419][64][64][];
+         super.field420 = var2.readUnsignedShort();
+         super.field418 = var2.readUnsignedShort();
+         this.field602 = var2.readUnsignedByte();
+         this.field605 = var2.readUnsignedByte();
+         super.field415 = Math.min(super.field415, 4);
+         super.field421 = new short[1][64][64];
+         super.field417 = new short[super.field415][64][64];
+         super.field422 = new byte[super.field415][64][64];
+         super.field424 = new byte[super.field415][64][64];
+         super.field425 = new class31[super.field415][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class35.field512.field513) {
+         if(var3 != class35.field506.field507) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
             int var6 = var1.readUnsignedByte();
             int var7 = var1.readUnsignedByte();
-            if(var4 == super.field416 && var5 == super.field417 && var6 == this.field603 && var7 == this.field606) {
+            if(var4 == super.field420 && var5 == super.field418 && var6 == this.field602 && var7 == this.field605) {
                for(int var8 = 0; var8 < 8; ++var8) {
                   for(int var9 = 0; var9 < 8; ++var9) {
-                     this.method228(var8 + this.field603 * 8, var9 + this.field606 * 8, var1);
+                     this.method239(var8 + this.field602 * 8, var9 + this.field605 * 8, var1);
                   }
                }
 
@@ -101,22 +100,26 @@ public class class45 extends class28 {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1206693689"
+      signature = "(B)I",
+      garbageValue = "0"
    )
-   int method657() {
-      return this.field607;
+   int method628() {
+      return this.field604;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-846552591"
+      garbageValue = "-1953485283"
    )
-   int method644() {
-      return this.field604;
+   int method624() {
+      return this.field603;
+   }
+
+   public int hashCode() {
+      return super.field420 | super.field418 << 8 | this.field602 << 16 | this.field605 << 24;
    }
 
    public boolean equals(Object var1) {
@@ -124,580 +127,236 @@ public class class45 extends class28 {
          return false;
       } else {
          class45 var2 = (class45)var1;
-         return var2.field416 == super.field416 && var2.field417 == super.field417?this.field603 == var2.field603 && this.field606 == var2.field606:false;
+         return var2.field420 == super.field420 && super.field418 == var2.field418?var2.field602 == this.field602 && this.field605 == var2.field605:false;
       }
    }
 
-   public int hashCode() {
-      return super.field416 | super.field417 << 8 | this.field603 << 16 | this.field606 << 24;
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("jt")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "2139458086"
+      signature = "(Lhj;I)V",
+      garbageValue = "1204036324"
    )
-   static void method652(Component var0) {
-      var0.addMouseListener(MouseInput.mouse);
-      var0.addMouseMotionListener(MouseInput.mouse);
-      var0.addFocusListener(MouseInput.mouse);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lit;Ljava/lang/String;Ljava/lang/String;I)[Lkr;",
-      garbageValue = "-1635160581"
-   )
-   public static SpritePixels[] method666(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      SpritePixels[] var5;
-      if(!class249.method4517(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = GraphicsObject.method1735();
+   static void method647(Widget var0) {
+      if(var0.loopCycle == Client.field1057) {
+         Client.field1119[var0.boundsIndex] = true;
       }
 
-      return var5;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("jl")
    @ObfuscatedSignature(
-      signature = "(IIILfy;Lfq;Z[I[II)I",
-      garbageValue = "1598769719"
+      signature = "(II)V",
+      garbageValue = "-3167365"
    )
-   public static int method667(int var0, int var1, int var2, class163 var3, CollisionData var4, boolean var5, int[] var6, int[] var7) {
-      int var9;
-      for(int var8 = 0; var8 < 128; ++var8) {
-         for(var9 = 0; var9 < 128; ++var9) {
-            class162.field2309[var8][var9] = 0;
-            class162.field2307[var8][var9] = 99999999;
+   static final void method630(int var0) {
+      CombatInfoListHolder.method1688();
+
+      for(class80 var1 = (class80)class80.field1323.getFront(); var1 != null; var1 = (class80)class80.field1323.getNext()) {
+         if(var1.field1325 != null) {
+            var1.method1601();
          }
       }
 
-      int var10;
-      int var11;
-      byte var12;
-      byte var13;
-      int var14;
-      int var15;
-      byte var16;
-      int var17;
-      int[][] var18;
-      int var19;
-      int var20;
-      int var21;
-      int var22;
-      boolean var28;
-      boolean var29;
-      int var30;
-      int var31;
-      int var33;
-      if(var2 == 1) {
-         var10 = var0;
-         var11 = var1;
-         var12 = 64;
-         var13 = 64;
-         var14 = var0 - var12;
-         var15 = var1 - var13;
-         class162.field2309[var12][var13] = 99;
-         class162.field2307[var12][var13] = 0;
-         var16 = 0;
-         var17 = 0;
-         class162.field2313[var16] = var0;
-         var33 = var16 + 1;
-         class162.field2314[var16] = var1;
-         var18 = var4.flags;
-
-         while(true) {
-            if(var33 == var17) {
-               class162.field2311 = var10;
-               class162.field2312 = var11;
-               var29 = false;
-               break;
+      int var4 = Friend.method1084(var0).configType;
+      if(var4 != 0) {
+         int var2 = class211.widgetSettings[var0];
+         if(var4 == 1) {
+            if(var2 == 1) {
+               Graphics3D.setBrightness(0.9D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.9D);
             }
 
-            var10 = class162.field2313[var17];
-            var11 = class162.field2314[var17];
-            var17 = var17 + 1 & 4095;
-            var30 = var10 - var14;
-            var31 = var11 - var15;
-            var19 = var10 - var4.x;
-            var20 = var11 - var4.y;
-            if(var3.vmethod3147(1, var10, var11, var4)) {
-               class162.field2311 = var10;
-               class162.field2312 = var11;
-               var29 = true;
-               break;
+            if(var2 == 2) {
+               Graphics3D.setBrightness(0.8D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.8D);
             }
 
-            var21 = class162.field2307[var30][var31] + 1;
-            if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136776) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31] = 2;
-               class162.field2307[var30 - 1][var31] = var21;
+            if(var2 == 3) {
+               Graphics3D.setBrightness(0.7D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.7D);
             }
 
-            if(var30 < 127 && class162.field2309[var30 + 1][var31] == 0 && (var18[var19 + 1][var20] & 19136896) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31] = 8;
-               class162.field2307[var30 + 1][var31] = var21;
+            if(var2 == 4) {
+               Graphics3D.setBrightness(0.6D);
+               ((TextureProvider)Graphics3D.textureLoader).brightness(0.6D);
             }
 
-            if(var31 > 0 && class162.field2309[var30][var31 - 1] == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class162.field2313[var33] = var10;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30][var31 - 1] = 1;
-               class162.field2307[var30][var31 - 1] = var21;
-            }
-
-            if(var31 < 127 && class162.field2309[var30][var31 + 1] == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class162.field2313[var33] = var10;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30][var31 + 1] = 4;
-               class162.field2307[var30][var31 + 1] = var21;
-            }
-
-            if(var30 > 0 && var31 > 0 && class162.field2309[var30 - 1][var31 - 1] == 0 && (var18[var19 - 1][var20 - 1] & 19136782) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31 - 1] = 3;
-               class162.field2307[var30 - 1][var31 - 1] = var21;
-            }
-
-            if(var30 < 127 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136899) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 - 1] & 19136770) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31 - 1] = 9;
-               class162.field2307[var30 + 1][var31 - 1] = var21;
-            }
-
-            if(var30 > 0 && var31 < 127 && class162.field2309[var30 - 1][var31 + 1] == 0 && (var18[var19 - 1][var20 + 1] & 19136824) == 0 && (var18[var19 - 1][var20] & 19136776) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31 + 1] = 6;
-               class162.field2307[var30 - 1][var31 + 1] = var21;
-            }
-
-            if(var30 < 127 && var31 < 127 && class162.field2309[var30 + 1][var31 + 1] == 0 && (var18[var19 + 1][var20 + 1] & 19136992) == 0 && (var18[var19 + 1][var20] & 19136896) == 0 && (var18[var19][var20 + 1] & 19136800) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31 + 1] = 12;
-               class162.field2307[var30 + 1][var31 + 1] = var21;
-            }
+            ItemComposition.itemSpriteCache.reset();
          }
 
-         var28 = var29;
-      } else if(var2 == 2) {
-         var10 = var0;
-         var11 = var1;
-         var12 = 64;
-         var13 = 64;
-         var14 = var0 - var12;
-         var15 = var1 - var13;
-         class162.field2309[var12][var13] = 99;
-         class162.field2307[var12][var13] = 0;
-         var16 = 0;
-         var17 = 0;
-         class162.field2313[var16] = var0;
-         var33 = var16 + 1;
-         class162.field2314[var16] = var1;
-         var18 = var4.flags;
-
-         while(true) {
-            if(var33 == var17) {
-               class162.field2311 = var10;
-               class162.field2312 = var11;
-               var29 = false;
-               break;
+         if(var4 == 3) {
+            short var3 = 0;
+            if(var2 == 0) {
+               var3 = 255;
             }
 
-            var10 = class162.field2313[var17];
-            var11 = class162.field2314[var17];
-            var17 = var17 + 1 & 4095;
-            var30 = var10 - var14;
-            var31 = var11 - var15;
-            var19 = var10 - var4.x;
-            var20 = var11 - var4.y;
-            if(var3.vmethod3147(2, var10, var11, var4)) {
-               class162.field2311 = var10;
-               class162.field2312 = var11;
-               var29 = true;
-               break;
+            if(var2 == 1) {
+               var3 = 192;
             }
 
-            var21 = class162.field2307[var30][var31] + 1;
-            if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && (var18[var19 - 1][var20 + 1] & 19136824) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31] = 2;
-               class162.field2307[var30 - 1][var31] = var21;
+            if(var2 == 2) {
+               var3 = 128;
             }
 
-            if(var30 < 126 && class162.field2309[var30 + 1][var31] == 0 && (var18[var19 + 2][var20] & 19136899) == 0 && (var18[var19 + 2][var20 + 1] & 19136992) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31] = 8;
-               class162.field2307[var30 + 1][var31] = var21;
+            if(var2 == 3) {
+               var3 = 64;
             }
 
-            if(var31 > 0 && class162.field2309[var30][var31 - 1] == 0 && (var18[var19][var20 - 1] & 19136782) == 0 && (var18[var19 + 1][var20 - 1] & 19136899) == 0) {
-               class162.field2313[var33] = var10;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30][var31 - 1] = 1;
-               class162.field2307[var30][var31 - 1] = var21;
+            if(var2 == 4) {
+               var3 = 0;
             }
 
-            if(var31 < 126 && class162.field2309[var30][var31 + 1] == 0 && (var18[var19][var20 + 2] & 19136824) == 0 && (var18[var19 + 1][var20 + 2] & 19136992) == 0) {
-               class162.field2313[var33] = var10;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30][var31 + 1] = 4;
-               class162.field2307[var30][var31 + 1] = var21;
-            }
-
-            if(var30 > 0 && var31 > 0 && class162.field2309[var30 - 1][var31 - 1] == 0 && (var18[var19 - 1][var20] & 19136830) == 0 && (var18[var19 - 1][var20 - 1] & 19136782) == 0 && (var18[var19][var20 - 1] & 19136911) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31 - 1] = 3;
-               class162.field2307[var30 - 1][var31 - 1] = var21;
-            }
-
-            if(var30 < 126 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + 1][var20 - 1] & 19136911) == 0 && (var18[var19 + 2][var20 - 1] & 19136899) == 0 && (var18[var19 + 2][var20] & 19136995) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11 - 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31 - 1] = 9;
-               class162.field2307[var30 + 1][var31 - 1] = var21;
-            }
-
-            if(var30 > 0 && var31 < 126 && class162.field2309[var30 - 1][var31 + 1] == 0 && (var18[var19 - 1][var20 + 1] & 19136830) == 0 && (var18[var19 - 1][var20 + 2] & 19136824) == 0 && (var18[var19][var20 + 2] & 19137016) == 0) {
-               class162.field2313[var33] = var10 - 1;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 - 1][var31 + 1] = 6;
-               class162.field2307[var30 - 1][var31 + 1] = var21;
-            }
-
-            if(var30 < 126 && var31 < 126 && class162.field2309[var30 + 1][var31 + 1] == 0 && (var18[var19 + 1][var20 + 2] & 19137016) == 0 && (var18[var19 + 2][var20 + 2] & 19136992) == 0 && (var18[var19 + 2][var20 + 1] & 19136995) == 0) {
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31 + 1] = 12;
-               class162.field2307[var30 + 1][var31 + 1] = var21;
-            }
-         }
-
-         var28 = var29;
-      } else {
-         var10 = var0;
-         var11 = var1;
-         var12 = 64;
-         var13 = 64;
-         var14 = var0 - var12;
-         var15 = var1 - var13;
-         class162.field2309[var12][var13] = 99;
-         class162.field2307[var12][var13] = 0;
-         var16 = 0;
-         var17 = 0;
-         class162.field2313[var16] = var0;
-         var33 = var16 + 1;
-         class162.field2314[var16] = var1;
-         var18 = var4.flags;
-
-         label840:
-         while(true) {
-            label838:
-            while(true) {
-               do {
-                  do {
-                     do {
-                        label815:
-                        do {
-                           if(var17 == var33) {
-                              class162.field2311 = var10;
-                              class162.field2312 = var11;
-                              var29 = false;
-                              break label840;
-                           }
-
-                           var10 = class162.field2313[var17];
-                           var11 = class162.field2314[var17];
-                           var17 = var17 + 1 & 4095;
-                           var30 = var10 - var14;
-                           var31 = var11 - var15;
-                           var19 = var10 - var4.x;
-                           var20 = var11 - var4.y;
-                           if(var3.vmethod3147(var2, var10, var11, var4)) {
-                              class162.field2311 = var10;
-                              class162.field2312 = var11;
-                              var29 = true;
-                              break label840;
-                           }
-
-                           var21 = class162.field2307[var30][var31] + 1;
-                           if(var30 > 0 && class162.field2309[var30 - 1][var31] == 0 && (var18[var19 - 1][var20] & 19136782) == 0 && (var18[var19 - 1][var20 + var2 - 1] & 19136824) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2 - 1) {
-                                    class162.field2313[var33] = var10 - 1;
-                                    class162.field2314[var33] = var11;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30 - 1][var31] = 2;
-                                    class162.field2307[var30 - 1][var31] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var19 - 1][var20 + var22] & 19136830) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var30 < 128 - var2 && class162.field2309[var30 + 1][var31] == 0 && (var18[var19 + var2][var20] & 19136899) == 0 && (var18[var19 + var2][var20 + var2 - 1] & 19136992) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2 - 1) {
-                                    class162.field2313[var33] = var10 + 1;
-                                    class162.field2314[var33] = var11;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30 + 1][var31] = 8;
-                                    class162.field2307[var30 + 1][var31] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var19 + var2][var20 + var22] & 19136995) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var31 > 0 && class162.field2309[var30][var31 - 1] == 0 && (var18[var19][var20 - 1] & 19136782) == 0 && (var18[var19 + var2 - 1][var20 - 1] & 19136899) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2 - 1) {
-                                    class162.field2313[var33] = var10;
-                                    class162.field2314[var33] = var11 - 1;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30][var31 - 1] = 1;
-                                    class162.field2307[var30][var31 - 1] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var22 + var19][var20 - 1] & 19136911) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var31 < 128 - var2 && class162.field2309[var30][var31 + 1] == 0 && (var18[var19][var20 + var2] & 19136824) == 0 && (var18[var19 + var2 - 1][var20 + var2] & 19136992) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2 - 1) {
-                                    class162.field2313[var33] = var10;
-                                    class162.field2314[var33] = var11 + 1;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30][var31 + 1] = 4;
-                                    class162.field2307[var30][var31 + 1] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var19 + var22][var20 + var2] & 19137016) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var30 > 0 && var31 > 0 && class162.field2309[var30 - 1][var31 - 1] == 0 && (var18[var19 - 1][var20 - 1] & 19136782) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2) {
-                                    class162.field2313[var33] = var10 - 1;
-                                    class162.field2314[var33] = var11 - 1;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30 - 1][var31 - 1] = 3;
-                                    class162.field2307[var30 - 1][var31 - 1] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var19 - 1][var22 + (var20 - 1)] & 19136830) != 0 || (var18[var22 + (var19 - 1)][var20 - 1] & 19136911) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var30 < 128 - var2 && var31 > 0 && class162.field2309[var30 + 1][var31 - 1] == 0 && (var18[var19 + var2][var20 - 1] & 19136899) == 0) {
-                              var22 = 1;
-
-                              while(true) {
-                                 if(var22 >= var2) {
-                                    class162.field2313[var33] = var10 + 1;
-                                    class162.field2314[var33] = var11 - 1;
-                                    var33 = var33 + 1 & 4095;
-                                    class162.field2309[var30 + 1][var31 - 1] = 9;
-                                    class162.field2307[var30 + 1][var31 - 1] = var21;
-                                    break;
-                                 }
-
-                                 if((var18[var19 + var2][var22 + (var20 - 1)] & 19136995) != 0 || (var18[var19 + var22][var20 - 1] & 19136911) != 0) {
-                                    break;
-                                 }
-
-                                 ++var22;
-                              }
-                           }
-
-                           if(var30 > 0 && var31 < 128 - var2 && class162.field2309[var30 - 1][var31 + 1] == 0 && (var18[var19 - 1][var20 + var2] & 19136824) == 0) {
-                              for(var22 = 1; var22 < var2; ++var22) {
-                                 if((var18[var19 - 1][var22 + var20] & 19136830) != 0 || (var18[var22 + (var19 - 1)][var20 + var2] & 19137016) != 0) {
-                                    continue label815;
-                                 }
-                              }
-
-                              class162.field2313[var33] = var10 - 1;
-                              class162.field2314[var33] = var11 + 1;
-                              var33 = var33 + 1 & 4095;
-                              class162.field2309[var30 - 1][var31 + 1] = 6;
-                              class162.field2307[var30 - 1][var31 + 1] = var21;
-                           }
-                        } while(var30 >= 128 - var2);
-                     } while(var31 >= 128 - var2);
-                  } while(class162.field2309[var30 + 1][var31 + 1] != 0);
-               } while((var18[var19 + var2][var20 + var2] & 19136992) != 0);
-
-               for(var22 = 1; var22 < var2; ++var22) {
-                  if((var18[var19 + var22][var20 + var2] & 19137016) != 0 || (var18[var19 + var2][var22 + var20] & 19136995) != 0) {
-                     continue label838;
-                  }
+            if(var3 != Client.field1149) {
+               if(Client.field1149 == 0 && Client.field1150 != -1) {
+                  CombatInfoListHolder.method1691(class37.indexTrack1, Client.field1150, 0, var3, false);
+                  Client.field1151 = false;
+               } else if(var3 == 0) {
+                  class152.method2974();
+                  Client.field1151 = false;
+               } else {
+                  GrandExchangeOffer.method115(var3);
                }
 
-               class162.field2313[var33] = var10 + 1;
-               class162.field2314[var33] = var11 + 1;
-               var33 = var33 + 1 & 4095;
-               class162.field2309[var30 + 1][var31 + 1] = 12;
-               class162.field2307[var30 + 1][var31 + 1] = var21;
+               Client.field1149 = var3;
             }
          }
 
-         var28 = var29;
+         if(var4 == 4) {
+            if(var2 == 0) {
+               Client.field1152 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field1152 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field1152 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field1152 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field1152 = 0;
+            }
+         }
+
+         if(var4 == 5) {
+            Client.field1051 = var2;
+         }
+
+         if(var4 == 6) {
+            Client.field1076 = var2;
+         }
+
+         if(var4 == 9) {
+            Client.field1077 = var2;
+         }
+
+         if(var4 == 10) {
+            if(var2 == 0) {
+               Client.field922 = 127;
+            }
+
+            if(var2 == 1) {
+               Client.field922 = 96;
+            }
+
+            if(var2 == 2) {
+               Client.field922 = 64;
+            }
+
+            if(var2 == 3) {
+               Client.field922 = 32;
+            }
+
+            if(var2 == 4) {
+               Client.field922 = 0;
+            }
+         }
+
+         if(var4 == 17) {
+            Client.field1082 = var2 & 65535;
+         }
+
+         if(var4 == 18) {
+            Client.field948 = (class89)class29.forOrdinal(Occluder.method2921(), var2);
+            if(Client.field948 == null) {
+               Client.field948 = class89.field1405;
+            }
+         }
+
+         if(var4 == 19) {
+            if(var2 == -1) {
+               Client.field1043 = -1;
+            } else {
+               Client.field1043 = var2 & 2047;
+            }
+         }
+
+         if(var4 == 22) {
+            Client.field949 = (class89)class29.forOrdinal(Occluder.method2921(), var2);
+            if(Client.field949 == null) {
+               Client.field949 = class89.field1405;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-1780688822"
+   )
+   public static String method653(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = '*';
       }
 
-      var9 = var0 - 64;
-      var10 = var1 - 64;
-      var11 = class162.field2311;
-      var30 = class162.field2312;
-      if(!var28) {
-         var31 = Integer.MAX_VALUE;
-         var14 = Integer.MAX_VALUE;
-         byte var32 = 10;
-         var33 = var3.field2317;
-         var17 = var3.field2318;
-         int var27 = var3.field2319;
-         var19 = var3.field2320;
+      String var1 = new String(var3);
+      return var1;
+   }
 
-         for(var20 = var33 - var32; var20 <= var32 + var33; ++var20) {
-            for(var21 = var17 - var32; var21 <= var32 + var17; ++var21) {
-               var22 = var20 - var9;
-               int var23 = var21 - var10;
-               if(var22 >= 0 && var23 >= 0 && var22 < 128 && var23 < 128 && class162.field2307[var22][var23] < 100) {
-                  int var24 = 0;
-                  if(var20 < var33) {
-                     var24 = var33 - var20;
-                  } else if(var20 > var33 + var27 - 1) {
-                     var24 = var20 - (var27 + var33 - 1);
-                  }
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "-255236574"
+   )
+   static void method642(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
 
-                  int var25 = 0;
-                  if(var21 < var17) {
-                     var25 = var17 - var21;
-                  } else if(var21 > var17 + var19 - 1) {
-                     var25 = var21 - (var19 + var17 - 1);
-                  }
-
-                  int var26 = var24 * var24 + var25 * var25;
-                  if(var26 < var31 || var31 == var26 && class162.field2307[var22][var23] < var14) {
-                     var31 = var26;
-                     var14 = class162.field2307[var22][var23];
-                     var11 = var20;
-                     var30 = var21;
-                  }
-               }
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
             }
          }
 
-         if(var31 == Integer.MAX_VALUE) {
-            return -1;
-         }
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method642(var0, var1, var2, var5 - 1);
+         method642(var0, var1, var5 + 1, var3);
       }
 
-      if(var0 == var11 && var30 == var1) {
-         return 0;
-      } else {
-         var13 = 0;
-         class162.field2313[var13] = var11;
-         var31 = var13 + 1;
-         class162.field2314[var13] = var30;
-
-         for(var14 = var15 = class162.field2309[var11 - var9][var30 - var10]; var0 != var11 || var30 != var1; var14 = class162.field2309[var11 - var9][var30 - var10]) {
-            if(var15 != var14) {
-               var15 = var14;
-               class162.field2313[var31] = var11;
-               class162.field2314[var31++] = var30;
-            }
-
-            if((var14 & 2) != 0) {
-               ++var11;
-            } else if((var14 & 8) != 0) {
-               --var11;
-            }
-
-            if((var14 & 1) != 0) {
-               ++var30;
-            } else if((var14 & 4) != 0) {
-               --var30;
-            }
-         }
-
-         var33 = 0;
-
-         while(var31-- > 0) {
-            var6[var33] = class162.field2313[var31];
-            var7[var33++] = class162.field2314[var31];
-            if(var33 >= var6.length) {
-               break;
-            }
-         }
-
-         return var33;
-      }
    }
 }

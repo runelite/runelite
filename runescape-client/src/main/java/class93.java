@@ -1,10 +1,16 @@
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("cc")
 final class class93 implements Comparator {
+   @ObfuscatedName("dw")
+   @ObfuscatedGetter(
+      intValue = -1045725577
+   )
+   static int field1482;
    // $FF: synthetic field
    final boolean val$preferOwnWorld;
 
@@ -12,97 +18,106 @@ final class class93 implements Comparator {
       this.val$preferOwnWorld = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lb;Lb;I)I",
-      garbageValue = "-1564919917"
+      signature = "(La;La;I)I",
+      garbageValue = "2081890726"
    )
-   int method1836(class14 var1, class14 var2) {
-      if(var2.field297 == var1.field297) {
+   int method1797(class14 var1, class14 var2) {
+      if(var2.field296 == var1.field296) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field297) {
+            if(Client.world == var1.field296) {
                return -1;
             }
 
-            if(var2.field297 == Client.world) {
+            if(var2.field296 == Client.world) {
                return 1;
             }
          }
 
-         return var1.field297 < var2.field297?-1:1;
+         return var1.field296 < var2.field296?-1:1;
       }
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method1797((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method1836((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Lin;",
-      garbageValue = "-1720679585"
+      signature = "([BI)V",
+      garbageValue = "-1942272906"
    )
-   public static class254 method1843(int var0) {
-      class254 var1 = (class254)class254.field3410.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class254.field3420.getConfigData(32, var0);
-         var1 = new class254();
-         if(var2 != null) {
-            var1.method4598(new Buffer(var2));
-         }
+   @Export("decodeSprite")
+   static void decodeSprite(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      var1.offset = var0.length - 2;
+      class287.field3805 = var1.readUnsignedShort();
+      class287.field3808 = new int[class287.field3805];
+      class21.offsetsY = new int[class287.field3805];
+      class287.field3806 = new int[class287.field3805];
+      class56.field700 = new int[class287.field3805];
+      class227.spritePixels = new byte[class287.field3805][];
+      var1.offset = var0.length - 7 - class287.field3805 * 8;
+      class287.field3809 = var1.readUnsignedShort();
+      class287.field3807 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
 
-         class254.field3410.put(var1, (long)var0);
-         return var1;
+      int var3;
+      for(var3 = 0; var3 < class287.field3805; ++var3) {
+         class287.field3808[var3] = var1.readUnsignedShort();
       }
-   }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1469692066"
-   )
-   @Export("loadWidget")
-   public static boolean loadWidget(int var0) {
-      if(Widget.validInterfaces[var0]) {
-         return true;
-      } else if(!FrameMap.widgetIndex.containsFile(var0)) {
-         return false;
-      } else {
-         int var1 = FrameMap.widgetIndex.fileCount(var0);
-         if(var1 == 0) {
-            Widget.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(class177.widgets[var0] == null) {
-               class177.widgets[var0] = new Widget[var1];
+      for(var3 = 0; var3 < class287.field3805; ++var3) {
+         class21.offsetsY[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class287.field3805; ++var3) {
+         class287.field3806[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class287.field3805; ++var3) {
+         class56.field700[var3] = var1.readUnsignedShort();
+      }
+
+      var1.offset = var0.length - 7 - class287.field3805 * 8 - (var2 - 1) * 3;
+      class114.field1675 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class114.field1675[var3] = var1.read24BitInt();
+         if(class114.field1675[var3] == 0) {
+            class114.field1675[var3] = 1;
+         }
+      }
+
+      var1.offset = 0;
+
+      for(var3 = 0; var3 < class287.field3805; ++var3) {
+         int var4 = class287.field3806[var3];
+         int var5 = class56.field700[var3];
+         int var6 = var4 * var5;
+         byte[] var7 = new byte[var6];
+         class227.spritePixels[var3] = var7;
+         int var8 = var1.readUnsignedByte();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.readByte();
             }
-
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(class177.widgets[var0][var2] == null) {
-                  byte[] var3 = FrameMap.widgetIndex.getConfigData(var0, var2);
-                  if(var3 != null) {
-                     class177.widgets[var0][var2] = new Widget();
-                     class177.widgets[var0][var2].id = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        class177.widgets[var0][var2].decodeActive(new Buffer(var3));
-                     } else {
-                        class177.widgets[var0][var2].decode(new Buffer(var3));
-                     }
-                  }
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var9 + var10 * var4] = var1.readByte();
                }
             }
-
-            Widget.validInterfaces[var0] = true;
-            return true;
          }
       }
+
    }
 }

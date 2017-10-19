@@ -5,89 +5,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("ca")
 @Implements("Varcs")
 public class Varcs {
-   @ObfuscatedName("fu")
-   @ObfuscatedGetter(
-      intValue = -777215457
-   )
-   @Export("baseY")
-   static int baseY;
-   @ObfuscatedName("cm")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Ldj;"
    )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("r")
+   @Export("task")
+   static SoundTask task;
+   @ObfuscatedName("p")
    @Export("changed")
    boolean changed;
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @Export("varcstrings")
    String[] varcstrings;
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @Export("varcs")
    int[] varcs;
    @ObfuscatedName("e")
-   @Export("varcSerials")
-   boolean[] varcSerials;
-   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      longValue = 5464217345041047593L
+      longValue = 3814697020037707849L
    )
    @Export("lastSerialize")
    long lastSerialize;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
+   @Export("varcSerials")
+   boolean[] varcSerials;
+   @ObfuscatedName("o")
    @Export("varcstringSerials")
    boolean[] varcstringSerials;
 
    Varcs() {
       this.changed = false;
-      this.varcs = new int[FaceNormal.configsIndex.fileCount(19)];
-      this.varcstrings = new String[FaceNormal.configsIndex.fileCount(15)];
+      this.varcs = new int[class8.configsIndex.fileCount(19)];
+      this.varcstrings = new String[class8.configsIndex.fileCount(15)];
       this.varcSerials = new boolean[this.varcs.length];
 
       int var1;
-      byte[] var4;
       for(var1 = 0; var1 < this.varcs.length; ++var1) {
-         class243 var3 = (class243)class243.field3310.get((long)var1);
+         class243 var3 = (class243)class243.field3313.get((long)var1);
          class243 var2;
          if(var3 != null) {
             var2 = var3;
          } else {
-            var4 = class243.field3311.getConfigData(19, var1);
+            byte[] var4 = class243.field3310.getConfigData(19, var1);
             var3 = new class243();
             if(var4 != null) {
-               var3.method4419(new Buffer(var4));
+               var3.method4385(new Buffer(var4));
             }
 
-            class243.field3310.put(var3, (long)var1);
+            class243.field3313.put(var3, (long)var1);
             var2 = var3;
          }
 
-         this.varcSerials[var1] = var2.field3312;
+         this.varcSerials[var1] = var2.field3311;
       }
 
       this.varcstringSerials = new boolean[this.varcstrings.length];
 
       for(var1 = 0; var1 < this.varcstrings.length; ++var1) {
-         class244 var6 = (class244)class244.field3316.get((long)var1);
-         class244 var5;
-         if(var6 != null) {
-            var5 = var6;
-         } else {
-            var4 = class244.field3319.getConfigData(15, var1);
-            var6 = new class244();
-            if(var4 != null) {
-               var6.method4427(new Buffer(var4));
-            }
-
-            class244.field3316.put(var6, (long)var1);
-            var5 = var6;
-         }
-
-         this.varcstringSerials[var1] = var5.field3317;
+         class244 var5 = class80.method1605(var1);
+         this.varcstringSerials[var1] = var5.field3319;
       }
 
       for(var1 = 0; var1 < this.varcs.length; ++var1) {
@@ -97,30 +76,30 @@ public class Varcs {
       this.deserialize();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(ZI)Ldw;",
-      garbageValue = "-1635784449"
+      signature = "(ZB)Ldw;",
+      garbageValue = "1"
    )
    @Export("getVarPrefs")
    FileOnDisk getVarPrefs(boolean var1) {
-      return class81.getPreferencesFile("2", Client.field923.field3198, var1);
+      return Tile.getPreferencesFile("2", WorldMapType1.field452.field3192, var1);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1566900642"
+      signature = "(B)Z",
+      garbageValue = "71"
    )
    @Export("changed")
    boolean changed() {
       return this.changed;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1357530342"
+      signature = "(B)V",
+      garbageValue = "-89"
    )
    @Export("serialize")
    void serialize() {
@@ -143,7 +122,7 @@ public class Varcs {
 
          for(int var5 = 0; var5 < this.varcstrings.length; ++var5) {
             if(this.varcstringSerials[var5] && this.varcstrings[var5] != null) {
-               var2 += 2 + class162.getLength(this.varcstrings[var5]);
+               var2 += 2 + class86.getLength(this.varcstrings[var5]);
                ++var4;
             }
          }
@@ -182,19 +161,19 @@ public class Varcs {
       }
 
       this.changed = false;
-      this.lastSerialize = class147.currentTimeMs();
+      this.lastSerialize = class174.currentTimeMs();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "755100380"
+      garbageValue = "-157052359"
    )
    @Export("deserialize")
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label199: {
+      label202: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -207,44 +186,44 @@ public class Varcs {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset < 1) {
+            if(var13.payload.length - var13.offset >= 1) {
+               int var5 = var13.readUnsignedByte();
+               if(var5 >= 0 && var5 <= 1) {
+                  int var6 = var13.readUnsignedShort();
+
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var6; ++var7) {
+                     var8 = var13.readUnsignedShort();
+                     var9 = var13.readInt();
+                     if(this.varcSerials[var8]) {
+                        this.varcs[var8] = var9;
+                     }
+                  }
+
+                  var7 = var13.readUnsignedShort();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label202;
+                     }
+
+                     var9 = var13.readUnsignedShort();
+                     String var10 = var13.readString();
+                     if(this.varcstringSerials[var9]) {
+                        this.varcstrings[var9] = var10;
+                     }
+
+                     ++var8;
+                  }
+               }
+
                return;
             }
-
-            int var5 = var13.readUnsignedByte();
-            if(var5 >= 0 && var5 <= 1) {
-               int var6 = var13.readUnsignedShort();
-
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var6; ++var7) {
-                  var8 = var13.readUnsignedShort();
-                  var9 = var13.readInt();
-                  if(this.varcSerials[var8]) {
-                     this.varcs[var8] = var9;
-                  }
-               }
-
-               var7 = var13.readUnsignedShort();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label199;
-                  }
-
-                  var9 = var13.readUnsignedShort();
-                  String var10 = var13.readString();
-                  if(this.varcstringSerials[var9]) {
-                     this.varcstrings[var9] = var10;
-                  }
-
-                  ++var8;
-               }
-            }
          } catch (Exception var24) {
-            break label199;
+            break label202;
          } finally {
             try {
                var1.close();
@@ -260,30 +239,30 @@ public class Varcs {
       this.changed = false;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)Ljava/lang/String;",
-      garbageValue = "694306595"
+      garbageValue = "2027020619"
    )
    @Export("getVarcString")
    String getVarcString(int var1) {
       return this.varcstrings[var1];
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "1629568340"
+      garbageValue = "-474365172"
    )
    @Export("getVarc")
    int getVarc(int var1) {
       return this.varcs[var1];
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1825124638"
+      garbageValue = "-1572863624"
    )
    @Export("putVarc")
    void putVarc(int var1, int var2) {
@@ -294,10 +273,10 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;B)V",
-      garbageValue = "-77"
+      signature = "(ILjava/lang/String;I)V",
+      garbageValue = "988342558"
    )
    @Export("putVarcString")
    void putVarcString(int var1, String var2) {
@@ -308,10 +287,10 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-5"
+      signature = "(I)V",
+      garbageValue = "889737719"
    )
    @Export("reset")
    void reset() {
@@ -330,58 +309,16 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "8742"
+      signature = "(I)V",
+      garbageValue = "1012983695"
    )
    @Export("process")
    void process() {
-      if(this.changed && this.lastSerialize < class147.currentTimeMs() - 60000L) {
+      if(this.changed && this.lastSerialize < class174.currentTimeMs() - 60000L) {
          this.serialize();
       }
 
-   }
-
-   @ObfuscatedName("jl")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1776242125"
-   )
-   static final String method1895(int var0) {
-      return var0 < 999999999?Integer.toString(var0):"*";
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-2003574460"
-   )
-   public static void method1894(int var0) {
-      MouseInput.mouseIdleTicks = var0;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-30749042"
-   )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = class44.getSmoothNoise2D(var3, var5);
-      int var8 = class44.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = class44.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = class44.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
-      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
-      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = ((65536 - var16) * var11 >> 16) + (var16 * var13 >> 16);
-      return var15;
    }
 }

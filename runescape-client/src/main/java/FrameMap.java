@@ -4,36 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ej")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   @Export("widgetIndex")
-   public static IndexDataBase widgetIndex;
-   @ObfuscatedName("bf")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -402308395
-   )
-   static int field2042;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 740167325
+      intValue = -498389343
    )
    @Export("id")
    int id;
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1422185657
+      intValue = 71963637
    )
    @Export("count")
    int count;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @Export("types")
    int[] types;
-   @ObfuscatedName("p")
+   @ObfuscatedName("o")
    @Export("list")
    int[][] list;
 
@@ -61,63 +50,12 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("fj")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "1"
+      signature = "(IB)Z",
+      garbageValue = "35"
    )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(var0 != Client.gameState) {
-         if(Client.gameState == 0) {
-            PendingSpawn.clientInstance.method900();
-         }
-
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.loginState = 0;
-            Client.field1030 = 0;
-            Client.field1138 = 0;
-            Client.field929.method4991(var0);
-            if(var0 != 20) {
-               class204.method3924(false);
-            }
-         }
-
-         if(var0 != 20 && var0 != 40 && class54.field688 != null) {
-            class54.field688.close();
-            class54.field688 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field1031 = 0;
-            Client.field982 = 0;
-            Client.field979 = 1;
-            Client.field980 = 0;
-            Client.field1173 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               class51.method792(Client.field1193, class37.indexSprites, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               class51.method792(Client.field1193, class37.indexSprites, false, 4);
-            } else {
-               PendingSpawn.method1585();
-            }
-         } else {
-            class51.method792(Client.field1193, class37.indexSprites, true, 0);
-         }
-
-         Client.gameState = var0;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-543431994"
-   )
-   public static void method2754() {
-      class281.field3766 = new CombatInfoList();
+   public static boolean method2715(int var0) {
+      return (var0 >> 29 & 1) != 0;
    }
 }

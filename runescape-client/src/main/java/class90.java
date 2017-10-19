@@ -3,173 +3,203 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("ch")
 public class class90 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1101905987
+      intValue = 802800573
    )
-   static int field1419;
-   @ObfuscatedName("x")
+   static int field1413;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1320292677
+      intValue = -1949073269
    )
    @Export("loginWindowX")
    static int loginWindowX;
-   @ObfuscatedName("a")
-   static int[] field1418;
-   @ObfuscatedName("av")
+   @ObfuscatedName("k")
+   static int[] field1443;
+   @ObfuscatedName("al")
    @ObfuscatedGetter(
-      intValue = -402345667
+      intValue = 1898131193
    )
    @Export("loginIndex")
    static int loginIndex;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1020956297
+      intValue = -711567673
    )
    static int field1423;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ap")
    @ObfuscatedGetter(
-      intValue = 1543759681
+      intValue = -998485217
    )
-   static int field1420;
-   @ObfuscatedName("ag")
+   static int field1424;
+   @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1348969651
+      intValue = 955073511
    )
-   static int field1421;
-   @ObfuscatedName("as")
+   static int field1426;
+   @ObfuscatedName("at")
    @ObfuscatedGetter(
-      intValue = -1554402745
+      intValue = 113381281
    )
-   static int field1441;
-   @ObfuscatedName("af")
+   static int field1430;
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = 2009884061
+      intValue = -152078545
    )
-   static int field1413;
+   static int field1412;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = -1370567727
+      intValue = 563413099
    )
-   static int field1422;
-   @ObfuscatedName("am")
+   static int field1429;
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = 80044439
+      intValue = -1583018365
    )
    @Export("loadingBarPercentage")
    static int loadingBarPercentage;
-   @ObfuscatedName("az")
+   @ObfuscatedName("av")
    @Export("loadingText")
    static String loadingText;
-   @ObfuscatedName("an")
-   static String field1428;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ae")
+   static String field1442;
+   @ObfuscatedName("ab")
    @Export("loginMessage1")
    static String loginMessage1;
-   @ObfuscatedName("aa")
+   @ObfuscatedName("aj")
    @Export("loginMessage2")
    static String loginMessage2;
-   @ObfuscatedName("aj")
+   @ObfuscatedName("ac")
    @Export("loginMessage3")
    static String loginMessage3;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("ad")
    @Export(
       value = "username",
       setter = true
    )
    static String username;
-   @ObfuscatedName("ao")
-   @Export("password")
-   static String password;
-   @ObfuscatedName("bl")
+   @ObfuscatedName("bz")
    @Export("worldSelectShown")
    static boolean worldSelectShown;
-   @ObfuscatedName("at")
-   static boolean field1414;
-   @ObfuscatedName("ak")
-   static boolean field1435;
-   @ObfuscatedName("bj")
-   static boolean field1436;
-   @ObfuscatedName("bc")
+   @ObfuscatedName("am")
+   @Export("password")
+   static String password;
+   @ObfuscatedName("ah")
+   static boolean field1439;
+   @ObfuscatedName("as")
+   static boolean field1450;
+   @ObfuscatedName("br")
+   static boolean field1441;
+   @ObfuscatedName("bw")
    static boolean field1438;
-   @ObfuscatedName("by")
+   @ObfuscatedName("bs")
    @ObfuscatedGetter(
-      intValue = -861123053
+      intValue = -904804285
    )
-   static int field1439;
-   @ObfuscatedName("bv")
+   static int field1422;
+   @ObfuscatedName("bo")
    @ObfuscatedGetter(
-      intValue = 723683725
+      intValue = 1421698321
    )
-   static int field1429;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   static IndexedSprite field1411;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   static IndexedSprite field1412;
-   @ObfuscatedName("bq")
-   static String field1437;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   static IndexedSprite field1415;
+   static int field1428;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "[Ljz;"
+      signature = "Lky;"
    )
-   @Export("titlemuteSprite")
-   static IndexedSprite[] titlemuteSprite;
-   @ObfuscatedName("d")
-   static boolean field1409;
+   static SpritePixels field1427;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1414;
+   @ObfuscatedName("ay")
+   static int[] field1425;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "[Ljo;"
+   )
+   static IndexedSprite[] field1415;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1417;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1418;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1419;
+   @ObfuscatedName("pd")
+   @ObfuscatedGetter(
+      intValue = 1360976181
+   )
+   static int field1448;
+   @ObfuscatedName("w")
+   static boolean field1440;
+   @ObfuscatedName("kz")
+   @ObfuscatedGetter(
+      intValue = -171984717
+   )
+   static int field1421;
 
    static {
-      field1419 = 0;
-      loginWindowX = field1419 + 202;
-      field1418 = new int[256];
-      field1423 = 0;
-      field1420 = 0;
-      field1421 = 0;
-      field1441 = 0;
       field1413 = 0;
-      field1422 = 0;
+      loginWindowX = field1413 + 202;
+      field1443 = new int[256];
+      field1423 = 0;
+      field1424 = 0;
+      field1426 = 0;
+      field1430 = 0;
+      field1412 = 0;
+      field1429 = 0;
       loadingBarPercentage = 10;
       loadingText = "";
       loginIndex = 0;
-      field1428 = "";
+      field1442 = "";
       loginMessage1 = "";
       loginMessage2 = "";
       loginMessage3 = "";
       username = "";
       password = "";
-      field1414 = false;
-      field1435 = false;
-      field1436 = false;
+      field1439 = false;
+      field1450 = false;
+      field1441 = false;
       field1438 = true;
-      field1439 = 0;
+      field1422 = 0;
       worldSelectShown = false;
-      field1429 = -1;
+      field1428 = -1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("ja")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1366020519"
+      signature = "(Ljava/lang/String;ZB)Z",
+      garbageValue = "-114"
    )
-   public static String method1796(int var0) {
-      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
+   @Export("isFriended")
+   static boolean isFriended(String var0, boolean var1) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var2 = WidgetNode.method1087(var0, Permission.field3169);
+
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(WidgetNode.method1087(Client.friends[var3].name, Permission.field3169)) && (!var1 || Client.friends[var3].world != 0)) {
+               return true;
+            }
+         }
+
+         if(var2.equalsIgnoreCase(WidgetNode.method1087(class66.localPlayer.name, Permission.field3169))) {
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

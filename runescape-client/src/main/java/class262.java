@@ -2,47 +2,47 @@ import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jf")
+@ObfuscatedName("jd")
 public class class262 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   IndexDataBase field3637;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lip;"
    )
    IndexDataBase field3636;
-   @ObfuscatedName("e")
-   HashMap field3639;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   IndexDataBase field3638;
+   @ObfuscatedName("q")
+   HashMap field3637;
 
    @ObfuscatedSignature(
-      signature = "(Lit;Lit;)V"
+      signature = "(Lip;Lip;)V"
    )
    public class262(IndexDataBase var1, IndexDataBase var2) {
-      this.field3637 = var1;
-      this.field3636 = var2;
-      this.field3639 = new HashMap();
+      this.field3636 = var1;
+      this.field3638 = var2;
+      this.field3637 = new HashMap();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "([Ljk;I)Ljava/util/HashMap;",
-      garbageValue = "-65225994"
+      signature = "([Ljz;I)Ljava/util/HashMap;",
+      garbageValue = "-2099682264"
    )
-   public HashMap method4822(class261[] var1) {
+   public HashMap method4823(class261[] var1) {
       HashMap var2 = new HashMap();
       class261[] var3 = var1;
 
       for(int var4 = 0; var4 < var3.length; ++var4) {
          class261 var5 = var3[var4];
-         if(this.field3639.containsKey(var5)) {
-            var2.put(var5, this.field3639.get(var5));
+         if(this.field3637.containsKey(var5)) {
+            var2.put(var5, this.field3637.get(var5));
          } else {
-            Font var6 = class47.method720(this.field3637, this.field3636, var5.field3630, "");
+            Font var6 = class14.method86(this.field3636, this.field3638, var5.field3629, "");
             if(var6 != null) {
-               this.field3639.put(var5, var6);
+               this.field3637.put(var5, var6);
                var2.put(var5, var6);
             }
          }
