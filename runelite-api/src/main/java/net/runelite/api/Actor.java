@@ -56,5 +56,7 @@ public interface Actor extends Renderable
 
 	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
 
+	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
+
 	Point getMinimapLocation();
 }

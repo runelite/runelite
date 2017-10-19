@@ -307,4 +307,32 @@ public class Perspective
 		return new Point(xOffset, yOffset);
 	}
 
+	/**
+	 * Calculates sprite position and centers depending on sprite size.
+	 *
+	 * @param client
+	 * @param graphics
+	 * @param localLocation local location of the tile
+	 * @param sprite SpritePixel for size measurement
+	 * @param zOffset offset from ground plane
+	 * @return a {@link Point} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Point getCanvasSpriteLocation(Client client, Graphics2D graphics, Point localLocation, SpritePixels sprite, int zOffset)
+	{
+		int plane = client.getPlane();
+
+		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+
+		if (p == null)
+		{
+			return null;
+		}
+
+		int xOffset = p.getX() - sprite.getWidth() / 2;
+		int yOffset = p.getY() - sprite.getHeight() / 2;
+
+		return new Point(xOffset, yOffset);
+	}
+
 }

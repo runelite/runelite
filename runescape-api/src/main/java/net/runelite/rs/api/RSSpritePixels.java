@@ -32,4 +32,12 @@ public interface RSSpritePixels extends SpritePixels
 	@Import("drawAt")
 	@Override
 	void drawAt(int x, int y);
+
+	@Import("height")
+	@Override
+	int getHeight();
+
+	@Import("width")
+	@Override
+	int getWidth();
 }
