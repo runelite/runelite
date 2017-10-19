@@ -528,6 +528,21 @@ public class Inject
 		}
 	}
 
+	ClassFile toDeobClass(ClassFile obClass)
+	{
+		for (ClassFile cf : deobfuscated.getClasses())
+		{
+			String obfuscatedName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+
+			if (obClass.getClassName().equalsIgnoreCase(obfuscatedName))
+			{
+				return cf;
+			}
+		}
+
+		return null;
+	}
+
 	Field toObField(Field field)
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
