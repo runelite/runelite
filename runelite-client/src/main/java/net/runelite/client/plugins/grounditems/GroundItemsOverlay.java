@@ -151,7 +151,7 @@ public class GroundItemsOverlay extends Overlay
 		String configItems = config.getHiddenItems();
 		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
 		// note: both of these lists are immutable
-		configItems = config.getHighlightItems();
+		configItems = config.getHighlightItems().toLowerCase();
 		List<String> highlightedItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
 
 		Region region = client.getRegion();
@@ -289,7 +289,7 @@ public class GroundItemsOverlay extends Overlay
 							.append(" gp)");
 					}
 
-					if (highlightedItems.contains(item.getName()))
+					if (highlightedItems.contains(item.getName().toLowerCase()))
 					{
 						textColor = PURPLE;
 					}
