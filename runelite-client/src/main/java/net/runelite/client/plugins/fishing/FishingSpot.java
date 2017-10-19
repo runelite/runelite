@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import net.runelite.api.ItemID;
+
 import java.util.HashMap;
 import java.util.Map;
 import static net.runelite.api.NpcID.FISHING_SPOT_1506;
@@ -58,32 +60,32 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7734;
 
 public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies", "shrimp",
+	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1518, FISHING_SPOT_1525, FISHING_SPOT_1528,
 		FISHING_SPOT_1530, FISHING_SPOT_1544, FISHING_SPOT_7155,
 		FISHING_SPOT_7469
 	),
-	LOBSTER("Lobster, Swordfish, Tuna", "lobster",
+	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1521,
 		FISHING_SPOT_1522, FISHING_SPOT_7199, FISHING_SPOT_7470
 	),
-	SHARK("Shark, Bass", "shark",
+	SHARK("Shark, Bass", ItemID.RAW_SHARK,
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_7200
 	),
-	MONKFISH("Monkfish", "monkfish",
+	MONKFISH("Monkfish", ItemID.RAW_MONKFISH,
 		FISHING_SPOT_4316
 	),
-	SALMON("Salmon, Trout", "salmon",
+	SALMON("Salmon, Trout", ItemID.RAW_SALMON,
 		FISHING_SPOT_1506, FISHING_SPOT_1508, FISHING_SPOT_1515,
 		FISHING_SPOT_1526, FISHING_SPOT_1527
 	),
-	BARB_FISH("Sturgeon, Salmon, Trout", "barb",
+	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
 		FISHING_SPOT_1542
 	),
-	ANGLERFISH("Anglerfish", "anglerfish",
+	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH,
 		FISHING_SPOT_6825
 	),
-	MINNOW("Minnow", "minnow",
+	MINNOW("Minnow", ItemID.MINNOW,
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
 	);
 
@@ -91,7 +93,7 @@ public enum FishingSpot
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
 
 	private final String name;
-	private final String image;
+	private final int itemSpriteId;
 	private final int[] spots;
 
 	static
@@ -107,10 +109,10 @@ public enum FishingSpot
 		}
 	}
 
-	FishingSpot(String spot, String image, int... spots)
+	FishingSpot(String spot, int itemSpriteId, int... spots)
 	{
 		this.name = spot;
-		this.image = image;
+		this.itemSpriteId = itemSpriteId;
 		this.spots = spots;
 	}
 
@@ -119,9 +121,9 @@ public enum FishingSpot
 		return name;
 	}
 
-	public String getImage()
+	public int getItemSpriteId()
 	{
-		return image;
+		return itemSpriteId;
 	}
 
 	public int[] getIds()

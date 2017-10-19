@@ -5999,7 +5999,7 @@ public final class Client extends GameEngine {
          Graphics3D.method2644(16, 16);
          Graphics3D.rasterGouraudLowRes = false;
          if(var9.field3543 != -1) {
-            var22.method5174(0, 0);
+            var22.drawAt(0, 0);
          }
 
          int var16 = var9.zoom2d;
@@ -6014,7 +6014,7 @@ public final class Client extends GameEngine {
          var21.method2558();
          var21.method2571(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var21.modelHeight / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
          if(var9.notedId != -1) {
-            var22.method5174(0, 0);
+            var22.drawAt(0, 0);
          }
 
          if(var2 >= 1) {
@@ -6031,7 +6031,7 @@ public final class Client extends GameEngine {
 
          Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
          if(var9.notedTemplate != -1) {
-            var22.method5174(0, 0);
+            var22.drawAt(0, 0);
          }
 
          if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {

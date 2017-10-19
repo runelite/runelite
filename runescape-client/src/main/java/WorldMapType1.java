@@ -304,7 +304,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       if(Client.field940 == 2) {
          class148.method2941(Client.field946 + (Client.hintArrowX - class22.baseX * 411265 << 7), (Client.hintArrowY - class273.baseY << 7) + Client.field1139, Client.hintArrowType * 2);
          if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            class14.pkIcons[0].method5174(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+            class14.pkIcons[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
          }
 
       }

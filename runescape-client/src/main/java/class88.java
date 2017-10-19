@@ -444,11 +444,11 @@ public class class88 {
                               WorldMapType1.method275(var46, var20);
                               ((TextureProvider)Graphics3D.textureLoader).method2439(Client.field1004);
                               if(Client.cursorState == 1) {
-                                 GroundObject.field1854[Client.field1023 / 100].method5174(Client.field1047 - 8, Client.field1022 - 8);
+                                 GroundObject.field1854[Client.field1023 / 100].drawAt(Client.field1047 - 8, Client.field1022 - 8);
                               }
 
                               if(Client.cursorState == 2) {
-                                 GroundObject.field1854[Client.field1023 / 100 + 4].method5174(Client.field1047 - 8, Client.field1022 - 8);
+                                 GroundObject.field1854[Client.field1023 / 100 + 4].drawAt(Client.field1047 - 8, Client.field1022 - 8);
                               }
 
                               class48.method718();
@@ -572,7 +572,7 @@ public class class88 {
                                     if(var10.field2656 != null && var46 < 20) {
                                        SpritePixels var63 = var10.method4081(var46);
                                        if(var63 != null) {
-                                          var63.method5174(var22, var23);
+                                          var63.drawAt(var22, var23);
                                        } else if(Widget.field2640) {
                                           class45.method647(var10);
                                        }
@@ -642,7 +642,7 @@ public class class88 {
                                           } else if(var10 == class72.field882 && var46 == Client.field1026) {
                                              var27.method5179(var22, var23, 128);
                                           } else {
-                                             var27.method5174(var22, var23);
+                                             var27.drawAt(var22, var23);
                                           }
                                        } else {
                                           class45.method647(var10);
@@ -747,7 +747,7 @@ public class class88 {
                               if(!var10.hasScript) {
                                  var57 = var10.method4087(class2.method2(var10));
                                  if(var57 != null) {
-                                    var57.method5174(var12, var13);
+                                    var57.drawAt(var12, var13);
                                  } else if(Widget.field2640) {
                                     class45.method647(var10);
                                  }
@@ -772,7 +772,7 @@ public class class88 {
                                        } else if(var14 != 0) {
                                           var57.method5181(var12, var13, var10.width, var10.height, 256 - (var14 & 255));
                                        } else if(var20 == var10.width && var21 == var10.height) {
-                                          var57.method5174(var12, var13);
+                                          var57.drawAt(var12, var13);
                                        } else {
                                           var57.method5231(var12, var13, var10.width, var10.height);
                                        }
@@ -788,7 +788,7 @@ public class class88 {
                                              } else if(var14 != 0) {
                                                 var57.method5179(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
-                                                var57.method5174(var12 + var20 * var24, var13 + var21 * var25);
+                                                var57.drawAt(var12 + var20 * var24, var13 + var21 * var25);
                                              }
                                           }
                                        }

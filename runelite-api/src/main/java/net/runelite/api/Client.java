@@ -82,6 +82,8 @@ public interface Client
 
 	ItemComposition getItemDefinition(int id);
 
+	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted);
+
 	int getBaseX();
 
 	int getBaseY();

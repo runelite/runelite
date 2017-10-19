@@ -153,9 +153,9 @@ public class class1 {
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var20 + var88, var21 + var22);
                         var13.method5179(var20, var21, var16);
                      } else {
-                        var12.method5174(var20, var21);
+                        var12.drawAt(var20, var21);
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var88 + var20, var22 + var21);
-                        var13.method5174(var20, var21);
+                        var13.drawAt(var20, var21);
                      }
 
                      Rasterizer2D.setDrawRegion(var2, var3, var2 + var4, var3 + var5);
@@ -186,12 +186,12 @@ public class class1 {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
                   if(var85.skullIcon != -1) {
-                     GZipDecompressor.mapfunctions[var85.skullIcon].method5174(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     GZipDecompressor.mapfunctions[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                      var8 += 25;
                   }
 
                   if(var85.overheadIcon != -1) {
-                     WorldMapType1.hitmarks[var85.overheadIcon].method5174(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     WorldMapType1.hitmarks[var85.overheadIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                      var8 += 25;
                   }
                }
@@ -200,7 +200,7 @@ public class class1 {
             if(var1 >= 0 && Client.field940 == 10 && var7[var1] == Client.field1053) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  class14.pkIcons[1].method5174(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                  class14.pkIcons[1].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                }
             }
          } else {
@@ -212,14 +212,14 @@ public class class1 {
             if(var86.field3577 >= 0 && var86.field3577 < WorldMapType1.hitmarks.length) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  WorldMapType1.hitmarks[var86.field3577].method5174(var2 + Client.screenY - 12, var3 + Client.screenX - 30);
+                  WorldMapType1.hitmarks[var86.field3577].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 30);
                }
             }
 
             if(Client.field940 == 1 && Client.npcIndices[var1 - var74] == Client.field941 && Client.gameCycle % 20 < 10) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  class14.pkIcons[0].method5174(var2 + Client.screenY - 12, var3 + Client.screenX - 28);
+                  class14.pkIcons[0].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 28);
                }
             }
          }
@@ -596,41 +596,41 @@ public class class1 {
                         }
                      } else {
                         if(var80 != null) {
-                           var80.method5174(var51 + var64 - var25, var65);
+                           var80.drawAt(var51 + var64 - var25, var65);
                         }
 
                         if(var82 != null) {
-                           var82.method5174(var52 + var64 - var27, var65);
+                           var82.drawAt(var52 + var64 - var27, var65);
                         }
 
                         if(var81 != null) {
                            for(var73 = 0; var73 < var48; ++var73) {
-                              var81.method5174(var22 * var73 + (var53 + var64 - var26), var65);
+                              var81.drawAt(var22 * var73 + (var53 + var64 - var26), var65);
                            }
                         }
 
                         if(var83 != null) {
-                           var83.method5174(var55 + var64 - var28, var65);
+                           var83.drawAt(var55 + var64 - var28, var65);
                         }
 
                         var84.method4842(var44, var54 + var64, var68, var87.field3426 | -16777216, 0);
                         if(var79 != null) {
                            if(var29 != null) {
-                              var29.method5174(var64 + var56 - var37, var65);
+                              var29.drawAt(var64 + var56 - var37, var65);
                            }
 
                            if(var31 != null) {
-                              var31.method5174(var64 + var57 - var39, var65);
+                              var31.drawAt(var64 + var57 - var39, var65);
                            }
 
                            if(var30 != null) {
                               for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method5174(var34 * var73 + (var58 + var64 - var38), var65);
+                                 var30.drawAt(var34 * var73 + (var58 + var64 - var38), var65);
                               }
                            }
 
                            if(var32 != null) {
-                              var32.method5174(var64 + var59 - var40, var65);
+                              var32.drawAt(var64 + var59 - var40, var65);
                            }
 
                            var43.method4842(var45, var64 + var60, var71, var79.field3426 | -16777216, 0);

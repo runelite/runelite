@@ -311,7 +311,7 @@ public class class34 {
       if(var4 != null) {
          int var5 = this.method382(var4, var1.field3294);
          int var6 = this.method383(var4, var1.field3301);
-         var4.method5174(var5 + var2, var3 + var6);
+         var4.drawAt(var5 + var2, var3 + var6);
       }
 
    }
@@ -795,7 +795,7 @@ public class class34 {
    void method350(Area var1, int var2, int var3, int var4, int var5) {
       SpritePixels var6 = var1.method4368(false);
       if(var6 != null) {
-         var6.method5174(var2 - var6.width / 2, var3 - var6.height / 2);
+         var6.drawAt(var2 - var6.width / 2, var3 - var6.height / 2);
          if(var4 % var5 < var5 / 2) {
             Rasterizer2D.method5039(var2, var3, 15, 16776960, 128);
             Rasterizer2D.method5039(var2, var3, 7, 16777215, 256);

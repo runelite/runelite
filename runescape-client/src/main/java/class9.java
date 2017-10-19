@@ -221,7 +221,7 @@ public abstract class class9 extends Node {
             if(var7 > 2500) {
                var4.method5234(var10 + var5.field2589 / 2 - var4.maxWidth / 2, var5.field2592 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2589, var5.field2592, var5.field2594, var5.field2591);
             } else {
-               var4.method5174(var0 + var10 + var5.field2589 / 2 - var4.maxWidth / 2, var5.field2592 / 2 + var1 - var11 - var4.maxHeight / 2);
+               var4.drawAt(var0 + var10 + var5.field2589 / 2 - var4.maxWidth / 2, var5.field2592 / 2 + var1 - var11 - var4.maxHeight / 2);
             }
 
          }

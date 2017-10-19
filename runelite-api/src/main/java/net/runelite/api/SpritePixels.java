@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,39 +24,13 @@
  */
 package net.runelite.api;
 
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-
-public interface Actor extends Renderable
+public interface SpritePixels
 {
-	int getCombatLevel();
+	int DEFAULT_SHADOW_COLOR = 3153952;
 
-	String getName();
+	void drawAt(int x, int y);
 
-	Actor getInteracting();
+	int getWidth();
 
-	int getHealthRatio();
-
-	int getHealth();
-
-	Point getLocalLocation();
-
-	int getOrientation();
-
-	int getAnimation();
-
-	int getGraphic();
-
-	int getModelHeight();
-
-	Polygon getCanvasTilePoly();
-
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
-
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
-
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
-
-	Point getMinimapLocation();
+	int getHeight();
 }
