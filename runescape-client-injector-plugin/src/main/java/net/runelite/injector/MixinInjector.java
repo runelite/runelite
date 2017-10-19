@@ -279,7 +279,7 @@ public class MixinInjector
 				String deobMethodName = (String) copyAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = deobCf.findMethod(deobMethodName, method.getDescriptor());
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 				if (deobMethod == null)
 				{
@@ -298,12 +298,13 @@ public class MixinInjector
 
 				if (obMethod == null)
 				{
-					throw new InjectionException("Failed to find the ob method " + deobMethodName + " for mixin " + mixinCf);
+					throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
 				}
 
 				Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
 				copy.setCode(obMethod.getCode());
 				copy.setAccessFlags(obMethod.getAccessFlags());
+				copy.setPublic();
 				copy.getExceptions().getExceptions().addAll(obMethod.getExceptions().getExceptions());
 				copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
 				cf.addMethod(copy);
@@ -334,16 +335,17 @@ public class MixinInjector
 				String deobMethodName = (String) copyAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = deobCf.findMethod(deobMethodName, method.getDescriptor());
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
 
 				if (deobMethod == null)
 				{
-					throw new InjectionException("Failed to find the method " + deobMethodName + " for mixin " + mixinCf);
+					throw new InjectionException("Failed to find the deob method " + deobMethodName + " for mixin " + mixinCf);
 				}
 
 				String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
 				Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
 
+				// Deob signature is the same as ob signature
 				if (obMethodSignature == null)
 				{
 					obMethodSignature = deobMethod.getDescriptor();
@@ -376,9 +378,12 @@ public class MixinInjector
 								));
 
 								// Pass through garbage value if the method has one
-								if (deobMethod.getDescriptor().size() != obMethodSignature.size())
+								if (deobMethod.getDescriptor().size() < obMethodSignature.size())
 								{
-									int garbageIndex = obMethod.getDescriptor().size();
+									int garbageIndex = obMethod.isStatic()
+											? obMethod.getDescriptor().size() - 1
+											: obMethod.getDescriptor().size();
+
 									iterator.previous();
 									iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
 									iterator.next();
@@ -433,6 +438,30 @@ public class MixinInjector
 
 			verify(mixinCf, i);
 		}
+	}
+
+	private Method findDeobMethod(ClassFile deobCf, String deobMethodName, Signature descriptor)
+	{
+		Method method = deobCf.findMethod(deobMethodName, descriptor);
+
+		if (method == null)
+		{
+			// Look for static methods if an instance method couldn't be found
+			for (ClassFile deobCf2 : inject.getDeobfuscated().getClasses())
+			{
+				if (deobCf2 != deobCf)
+				{
+					method = deobCf2.findMethod(deobMethodName, descriptor);
+
+					if (method != null)
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		return method;
 	}
 
 	private void verify(ClassFile mixinCf, Instruction i) throws InjectionException
