@@ -45,7 +45,7 @@ public final class SpritePixels extends Rasterizer2D {
 
    @ObfuscatedName("i")
    @Export("drawAt")
-   public void method5174(int var1, int var2) {
+   public void drawAt(int var1, int var2) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
@@ -1202,7 +1202,7 @@ public final class SpritePixels extends Rasterizer2D {
    @ObfuscatedName("y")
    public void method5177(int var1, int var2, int var3, int var4) {
       if(var3 == 256) {
-         this.method5174(var1, var2);
+         this.drawAt(var1, var2);
       } else {
          var1 += this.offsetX;
          var2 += this.offsetY;
