@@ -44,6 +44,7 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("i")
+   @Export("drawAt")
    public void method5174(int var1, int var2) {
       var1 += this.offsetX;
       var2 += this.offsetY;
