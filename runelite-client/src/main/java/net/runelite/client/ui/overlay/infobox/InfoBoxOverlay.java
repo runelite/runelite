@@ -121,14 +121,14 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
-			Rectangle bounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
-			if (bounds.contains(mouse.getX(), mouse.getY()))
+			Rectangle infoboxBounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
+			if (infoboxBounds.contains(mouseX, mouseY))
 			{
 				int tooltipWidth = metrics.stringWidth(tooltip);
 				int height = metrics.getHeight();
 
-				int tooltipX = mouseX - (int) bounds.getX();
-				int tooltipY = mouseY - (int) bounds.getY();
+				int tooltipX = mouseX - (int) infoboxBounds.getX();
+				int tooltipY = mouseY - (int) infoboxBounds.getY();
 				if (tooltipY - height < 0)
 					tooltipY = height;
 
