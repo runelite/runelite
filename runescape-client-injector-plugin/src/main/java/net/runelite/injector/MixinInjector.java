@@ -279,12 +279,21 @@ public class MixinInjector
 				String deobMethodName = (String) copyAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName);
 
 				if (deobMethod == null)
 				{
 					throw new InjectionException("Failed to find the deob method " + deobMethodName + " for mixin " + mixinCf);
 				}
+
+				if (method.isStatic() != deobMethod.isStatic())
+				{
+					throw new InjectionException("Mixin method " + method + " should be " + (deobMethod.isStatic() ? "static" : "non-static"));
+				}
+
+				// Find the vanilla class where the method to copy is in
+				String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+				ClassFile obCf = inject.getVanilla().findClass(obClassName);
 
 				String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
 				Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
@@ -294,20 +303,20 @@ public class MixinInjector
 					obMethodSignature = deobMethod.getDescriptor();
 				}
 
-				Method obMethod = cf.findMethod(obMethodName, obMethodSignature);
+				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 
 				if (obMethod == null)
 				{
 					throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
 				}
 
-				Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
+				Method copy = new Method(obCf, "copy$" + deobMethodName, obMethodSignature);
 				copy.setCode(obMethod.getCode());
 				copy.setAccessFlags(obMethod.getAccessFlags());
 				copy.setPublic();
 				copy.getExceptions().getExceptions().addAll(obMethod.getExceptions().getExceptions());
 				copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
-				cf.addMethod(copy);
+				obCf.addMethod(copy);
 
 				copiedMethods.put(obMethod, copy);
 			}
@@ -335,11 +344,17 @@ public class MixinInjector
 				String deobMethodName = (String) copyAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = findDeobMethod(deobCf, deobMethodName, method.getDescriptor());
+				Method deobMethod = findDeobMethod(deobCf, deobMethodName);
 
 				if (deobMethod == null)
 				{
 					throw new InjectionException("Failed to find the deob method " + deobMethodName + " for mixin " + mixinCf);
+				}
+
+				if (method.isStatic() != deobMethod.isStatic())
+				{
+					throw new InjectionException("Mixin method " + method + " should be "
+							+ (deobMethod.isStatic() ? "static" : "non-static"));
 				}
 
 				String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
@@ -351,7 +366,11 @@ public class MixinInjector
 					obMethodSignature = deobMethod.getDescriptor();
 				}
 
-				Method obMethod = cf.findMethod(obMethodName, obMethodSignature);
+				// Find the vanilla class where the method to copy is in
+				String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+				ClassFile obCf = inject.getVanilla().findClass(obClassName);
+
+				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 				obMethod.setCode(method.getCode());
 
 				if (copiedMethods.containsKey(obMethod))
@@ -368,8 +387,7 @@ public class MixinInjector
 
 							if (ii.getMethod() != null
 									&& ii.getMethod().getClazz().getName().equals(mixinCf.getName())
-									&& ii.getMethod().getName().equals(deobMethodName)
-									&& ii.getMethod().getType().equals(deobMethod.getDescriptor()))
+									&& ii.getMethod().getName().equals(deobMethodName))
 							{
 								ii.setMethod(new net.runelite.asm.pool.Method(
 										obMethod.getClassFile().getPoolClass(),
@@ -440,9 +458,9 @@ public class MixinInjector
 		}
 	}
 
-	private Method findDeobMethod(ClassFile deobCf, String deobMethodName, Signature descriptor)
+	private Method findDeobMethod(ClassFile deobCf, String deobMethodName)
 	{
-		Method method = deobCf.findMethod(deobMethodName, descriptor);
+		Method method = deobCf.findMethod(deobMethodName);
 
 		if (method == null)
 		{
@@ -451,7 +469,7 @@ public class MixinInjector
 			{
 				if (deobCf2 != deobCf)
 				{
-					method = deobCf2.findMethod(deobMethodName, descriptor);
+					method = deobCf2.findMethod(deobMethodName);
 
 					if (method != null)
 					{
