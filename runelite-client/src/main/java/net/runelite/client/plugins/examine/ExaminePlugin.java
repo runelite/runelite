@@ -37,6 +37,7 @@ import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.examine.ExamineClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Adam
  */
+@PluginDescriptor(
+	name = "Examine plugin"
+)
 public class ExaminePlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExaminePlugin.class);

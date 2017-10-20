@@ -28,11 +28,15 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Config plugin"
+)
 public class ConfigPlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPlugin.class);

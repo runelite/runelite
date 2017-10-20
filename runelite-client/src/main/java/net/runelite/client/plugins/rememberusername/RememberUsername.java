@@ -30,7 +30,11 @@ import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 
+@PluginDescriptor(
+	name = "Remember username plugin"
+)
 public class RememberUsername extends Plugin
 {
 	private final Client client = RuneLite.getClient();

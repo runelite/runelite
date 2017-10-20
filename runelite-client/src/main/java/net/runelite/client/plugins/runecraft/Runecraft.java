@@ -34,8 +34,12 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Runecraft plugin"
+)
 public class Runecraft extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");

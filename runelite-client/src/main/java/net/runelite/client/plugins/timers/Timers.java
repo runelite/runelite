@@ -30,9 +30,13 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+@PluginDescriptor(
+	name = "Timers plugin"
+)
 public class Timers extends Plugin
 {
 	private final TimersConfig config = RuneLite.getRunelite().getConfigManager().getConfig(TimersConfig.class);

@@ -31,11 +31,16 @@ import net.runelite.api.widgets.Widget;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Developer tools",
+	developerPlugin = true
+)
 public class DevTools extends Plugin
 {
 	private final DevToolsOverlay overlay = new DevToolsOverlay(this);

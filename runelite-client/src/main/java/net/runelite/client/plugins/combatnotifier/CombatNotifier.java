@@ -35,8 +35,12 @@ import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+@PluginDescriptor(
+	name = "Combat notifier"
+)
 public class CombatNotifier extends Plugin
 {
 	private final Client client = RuneLite.getClient();

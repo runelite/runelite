@@ -25,6 +25,10 @@
 package net.runelite.client.plugins.xpglobes;
 
 import com.google.common.eventbus.Subscribe;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -32,13 +36,12 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+@PluginDescriptor(
+	name = "Xp Globes plugin"
+)
 public class XpGlobes extends Plugin
 {
 

@@ -26,9 +26,13 @@ package net.runelite.client.plugins.pestcontrol;
 
 import java.awt.Font;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Pest control plugin"
+)
 public class PestControl extends Plugin
 {
 	private final Overlay overlay = new PestControlOverlay(this);

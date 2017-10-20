@@ -39,6 +39,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.events.SetMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
@@ -50,6 +51,9 @@ import net.runelite.http.api.item.SearchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Chat commands"
+)
 public class ChatCommands extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ChatCommands.class);

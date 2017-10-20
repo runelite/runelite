@@ -35,7 +35,11 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 import java.time.temporal.ChronoUnit;
+import net.runelite.client.plugins.PluginDescriptor;
 
+@PluginDescriptor(
+	name = "Fight cave plugin"
+)
 public class FightCave extends Plugin
 {
 	private final RuneLite runelite = RuneLite.getRunelite();

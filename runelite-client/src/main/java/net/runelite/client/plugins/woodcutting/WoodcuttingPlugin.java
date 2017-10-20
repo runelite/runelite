@@ -32,9 +32,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Woodcutting plugin"
+)
 public class WoodcuttingPlugin extends Plugin
 {
 	private final RuneLite runelite = RuneLite.getRunelite();

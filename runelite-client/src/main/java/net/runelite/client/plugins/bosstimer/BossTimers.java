@@ -30,10 +30,14 @@ import net.runelite.api.Actor;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Boss timers"
+)
 public class BossTimers extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(BossTimers.class);

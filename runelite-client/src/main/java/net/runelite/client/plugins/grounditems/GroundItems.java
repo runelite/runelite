@@ -26,8 +26,12 @@ package net.runelite.client.plugins.grounditems;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Ground items plugin"
+)
 public class GroundItems extends Plugin
 {
 	private final GroundItemsConfig config = RuneLite.getRunelite().getConfigManager()

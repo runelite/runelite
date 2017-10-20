@@ -24,46 +24,19 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.ServiceManager;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.account.AccountPlugin;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.bosstimer.BossTimers;
-import net.runelite.client.plugins.chatcommands.ChatCommands;
-import net.runelite.client.plugins.clanchat.ClanChat;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.combatnotifier.CombatNotifier;
-import net.runelite.client.plugins.config.ConfigPlugin;
-import net.runelite.client.plugins.devtools.DevTools;
-import net.runelite.client.plugins.examine.ExaminePlugin;
-import net.runelite.client.plugins.fightcave.FightCave;
-import net.runelite.client.plugins.fishing.FishingPlugin;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.grounditems.GroundItems;
-import net.runelite.client.plugins.hiscore.Hiscore;
-import net.runelite.client.plugins.idlenotifier.IdleNotifier;
-import net.runelite.client.plugins.implings.Implings;
-import net.runelite.client.plugins.jewelrycount.JewelryCount;
-import net.runelite.client.plugins.mousehighlight.MouseHighlight;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
-import net.runelite.client.plugins.pestcontrol.PestControl;
-import net.runelite.client.plugins.chatcommands.ChatCommands;
-import net.runelite.client.plugins.rememberusername.RememberUsername;
-import net.runelite.client.plugins.runecraft.Runecraft;
-import net.runelite.client.plugins.runepouch.Runepouch;
-import net.runelite.client.plugins.timers.Timers;
-import net.runelite.client.plugins.woodcutting.WoodcuttingPlugin;
-import net.runelite.client.plugins.xpglobes.XpGlobes;
-import net.runelite.client.plugins.xptracker.XPTracker;
-import net.runelite.client.plugins.xtea.Xtea;
-import net.runelite.client.plugins.zulrah.Zulrah;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import org.slf4j.Logger;
@@ -72,6 +45,8 @@ import org.slf4j.LoggerFactory;
 public class PluginManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+
+	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final RuneLite runelite;
 	private ServiceManager manager;
@@ -82,42 +57,58 @@ public class PluginManager
 		this.runelite = runelite;
 	}
 
-	public void loadPlugins()
+	public void loadPlugins() throws IOException
 	{
-		plugins.add(new Boosts());
-		plugins.add(new OpponentInfo());
-		plugins.add(new FPS());
-		plugins.add(new Hiscore());
-		plugins.add(new BossTimers());
-		plugins.add(new Xtea());
-		plugins.add(new IdleNotifier());
-		plugins.add(new Runecraft());
-		plugins.add(new MouseHighlight());
-		plugins.add(new PestControl());
-		plugins.add(new ClanChat());
-		plugins.add(new Zulrah());
-		plugins.add(new AccountPlugin());
-		plugins.add(new ConfigPlugin());
-		plugins.add(new GroundItems());
-		plugins.add(new Implings());
-		plugins.add(new XpGlobes());
-		plugins.add(new CombatNotifier());
-		plugins.add(new JewelryCount());
-		plugins.add(new XPTracker());
-		plugins.add(new ExaminePlugin());
-		plugins.add(new FishingPlugin());
-		plugins.add(new WoodcuttingPlugin());
-		plugins.add(new RememberUsername());
-		plugins.add(new ChatCommands());
-		plugins.add(new ClueScrollPlugin());
-		plugins.add(new Timers());
-		plugins.add(new Runepouch());
-		plugins.add(new FightCave());
-
+		boolean developerPlugins = false;
 		if (RuneLite.getOptions().has("developer-mode"))
 		{
 			logger.info("Loading developer plugins");
-			plugins.add(new DevTools());
+			developerPlugins = true;
+		}
+
+		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
+
+		ImmutableSet<ClassInfo> classes = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE);
+		for (ClassInfo classInfo : classes)
+		{
+			Class<?> clazz = classInfo.load();
+			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
+
+			if (pluginDescriptor == null)
+			{
+				if (clazz.getSuperclass() == Plugin.class)
+				{
+					logger.warn("Class {} is a plugin, but has no plugin descriptor",
+						clazz);
+				}
+				continue;
+			}
+
+			if (clazz.getSuperclass() != Plugin.class)
+			{
+				logger.warn("Class {} has plugin descriptor, but is not a plugin",
+					clazz);
+				continue;
+			}
+
+			if (pluginDescriptor.developerPlugin() && !developerPlugins)
+			{
+				continue;
+			}
+
+			Plugin plugin;
+			try
+			{
+				plugin = (Plugin) clazz.newInstance();
+			}
+			catch (InstantiationException | IllegalAccessException ex)
+			{
+				logger.warn("error initializing plugin", ex);
+				continue;
+			}
+
+			plugins.add(plugin);
+			logger.debug("Loaded plugin {}", pluginDescriptor.name());
 		}
 	}
 
