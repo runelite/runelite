@@ -108,6 +108,8 @@ public class InfoBoxOverlay extends Overlay
 			graphics.setColor(color);
 			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2), BOXSIZE - SEPARATOR);
 
+			x += BOXSIZE + SEPARATOR;
+
 			if (overlayBounds == null)
 			{
 				continue;
@@ -144,8 +146,6 @@ public class InfoBoxOverlay extends Overlay
 				graphics.setColor(Color.WHITE);
 				graphics.drawString(tooltip, tooltipX + 3, tooltipY - height / 2 + 5);
 			}
-
-			x += BOXSIZE + SEPARATOR;
 		}
 
 		return new Dimension(width, BOXSIZE);
