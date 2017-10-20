@@ -32,10 +32,7 @@ import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.asm.attributes.code.instructions.GetField;
-import net.runelite.asm.attributes.code.instructions.ILoad;
-import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
-import net.runelite.asm.attributes.code.instructions.PutField;
+import net.runelite.asm.attributes.code.instructions.*;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.visitors.ClassFileVisitor;
 import net.runelite.deob.DeobAnnotations;
@@ -268,7 +265,8 @@ public class MixinInjector
 		group.addClass(mixinCf);
 		group.initialize();
 
-		Map<Method, Method> copiedMethods = new HashMap<>();
+		// Keeps mappings between methods annotated with @Copy -> the copied method within the vanilla pack
+		Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods = new HashMap<>();
 
 		// Handle the copy mixins first, so all other mixins know of the copies
 		for (Method method : mixinCf.getMethods())
@@ -304,21 +302,21 @@ public class MixinInjector
 				}
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
-
 				if (obMethod == null)
 				{
 					throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
 				}
 
-				Method copy = new Method(obCf, "copy$" + deobMethodName, obMethodSignature);
+				Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
 				copy.setCode(obMethod.getCode());
 				copy.setAccessFlags(obMethod.getAccessFlags());
 				copy.setPublic();
 				copy.getExceptions().getExceptions().addAll(obMethod.getExceptions().getExceptions());
 				copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
-				obCf.addMethod(copy);
+				cf.addMethod(copy);
 
-				copiedMethods.put(obMethod, copy);
+				boolean hasGarbageValue = deobMethod.getDescriptor().size() < obMethodSignature.size();
+				copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
 			}
 		}
 
@@ -332,7 +330,7 @@ public class MixinInjector
 				copy.setAccessFlags(method.getAccessFlags());
 				assert method.getExceptions().getExceptions().isEmpty();
 
-				setOwnersToTargetClass(mixinCf, cf, copy, shadowFields);
+				setOwnersToTargetClass(mixinCf, cf, copy, shadowFields, copiedMethods);
 
 				cf.addMethod(copy);
 
@@ -373,56 +371,53 @@ public class MixinInjector
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 				obMethod.setCode(method.getCode());
 
-				if (copiedMethods.containsKey(obMethod))
-				{
-					ListIterator<Instruction> iterator = method.getCode().getInstructions().getInstructions().listIterator();
-
-					while (iterator.hasNext())
-					{
-						Instruction i = iterator.next();
-
-						if (i instanceof InvokeInstruction)
-						{
-							InvokeInstruction ii = (InvokeInstruction) i;
-
-							if (ii.getMethod() != null
-									&& ii.getMethod().getClazz().getName().equals(mixinCf.getName())
-									&& ii.getMethod().getName().equals(deobMethodName))
-							{
-								ii.setMethod(new net.runelite.asm.pool.Method(
-										obMethod.getClassFile().getPoolClass(),
-										"copy$" + ii.getMethod().getName(),
-										obMethod.getDescriptor()
-								));
-
-								// Pass through garbage value if the method has one
-								if (deobMethod.getDescriptor().size() < obMethodSignature.size())
-								{
-									int garbageIndex = obMethod.isStatic()
-											? obMethod.getDescriptor().size() - 1
-											: obMethod.getDescriptor().size();
-
-									iterator.previous();
-									iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
-									iterator.next();
-								}
-							}
-						}
-					}
-				}
-
-				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields);
+				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
 			}
 		}
 	}
 
 	private void setOwnersToTargetClass(ClassFile mixinCf, ClassFile cf, Method method,
-										Map<net.runelite.asm.pool.Field, Field> shadowFields)
+										Map<net.runelite.asm.pool.Field, Field> shadowFields,
+										Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
 			throws InjectionException {
 
-		for (Instruction i : method.getCode().getInstructions().getInstructions())
+		ListIterator<Instruction> iterator = method.getCode().getInstructions().getInstructions().listIterator();
+
+		while (iterator.hasNext())
 		{
-			if (i instanceof FieldInstruction)
+			Instruction i = iterator.next();
+
+			if (i instanceof InvokeInstruction)
+			{
+				InvokeInstruction ii = (InvokeInstruction) i;
+
+				CopiedMethod copiedMethod = copiedMethods.get(ii.getMethod());
+				if (copiedMethod != null)
+				{
+					ii.setMethod(copiedMethod.obMethod.getPoolMethod());
+
+					// Pass through garbage value if the method has one
+					if (copiedMethod.hasGarbageValue)
+					{
+						int garbageIndex = copiedMethod.obMethod.isStatic()
+								? copiedMethod.obMethod.getDescriptor().size() - 1
+								: copiedMethod.obMethod.getDescriptor().size();
+
+						iterator.previous();
+						iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
+						iterator.next();
+					}
+				}
+				else if (ii.getMethod() != null && ii.getMethod().getClazz().getName().equals(mixinCf.getName()))
+				{
+					ii.setMethod(new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class(cf.getName()),
+							ii.getMethod().getName(),
+							ii.getMethod().getType()
+					));
+				}
+			}
+			else if (i instanceof FieldInstruction)
 			{
 				FieldInstruction fi = (FieldInstruction) i;
 
@@ -431,25 +426,12 @@ public class MixinInjector
 				{
 					fi.setField(shadowed.getPoolField());
 				}
-				else if(fi.getField() != null && fi.getField().getClazz().getName().equals(mixinCf.getName()))
+				else if (fi.getField() != null && fi.getField().getClazz().getName().equals(mixinCf.getName()))
 				{
 					fi.setField(new net.runelite.asm.pool.Field(
 							new net.runelite.asm.pool.Class(cf.getName()),
 							fi.getField().getName(),
 							fi.getField().getType()
-					));
-				}
-			}
-			else if (i instanceof InvokeInstruction)
-			{
-				InvokeInstruction ii = (InvokeInstruction) i;
-
-				if (ii.getMethod() != null && ii.getMethod().getClazz().getName().equals(mixinCf.getName()))
-				{
-					ii.setMethod(new net.runelite.asm.pool.Method(
-							new net.runelite.asm.pool.Class(cf.getName()),
-							ii.getMethod().getName(),
-							ii.getMethod().getType()
 					));
 				}
 			}
@@ -502,11 +484,33 @@ public class MixinInjector
 				}
 			}
 		}
+		else if (i instanceof InvokeStatic)
+		{
+			InvokeStatic is = (InvokeStatic) i;
+
+			if (is.getMethod().getClazz() != mixinCf.getPoolClass()
+					&& is.getMethod().getClazz().getName().startsWith(MIXIN_BASE.replace(".", "/")))
+			{
+				throw new InjectionException("Invoking static methods of other mixins is not supported");
+			}
+		}
 		else if (i instanceof InvokeDynamic)
 		{
 			// RS classes don't verify under java 7+ due to the
 			// super() invokespecial being inside of a try{}
 			throw new InjectionException("Injected bytecode must be Java 6 compatible");
+		}
+	}
+
+	private static class CopiedMethod
+	{
+		private Method obMethod;
+		private boolean hasGarbageValue;
+
+		private CopiedMethod(Method obMethod, boolean hasGarbageValue)
+		{
+			this.obMethod = obMethod;
+			this.hasGarbageValue = hasGarbageValue;
 		}
 	}
 }
