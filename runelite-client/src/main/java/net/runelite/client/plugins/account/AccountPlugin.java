@@ -39,6 +39,7 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
@@ -49,6 +50,9 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Account plugin"
+)
 public class AccountPlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(AccountPlugin.class);

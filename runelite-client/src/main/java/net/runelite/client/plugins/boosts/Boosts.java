@@ -27,8 +27,12 @@ package net.runelite.client.plugins.boosts;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Boosts plugin"
+)
 public class Boosts extends Plugin
 {
 	private final BoostsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(BoostsConfig.class);

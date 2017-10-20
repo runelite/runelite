@@ -34,8 +34,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+@PluginDescriptor(
+	name = "Clue scroll plugin"
+)
 public class ClueScrollPlugin extends Plugin
 {
 	private final Client client = RuneLite.getClient();

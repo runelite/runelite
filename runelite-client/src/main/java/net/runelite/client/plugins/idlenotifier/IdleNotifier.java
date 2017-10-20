@@ -35,8 +35,12 @@ import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+@PluginDescriptor(
+	name = "Idle notifier"
+)
 public class IdleNotifier extends Plugin
 {
 	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);

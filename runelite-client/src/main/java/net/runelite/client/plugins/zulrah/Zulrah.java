@@ -37,6 +37,7 @@ import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
@@ -47,6 +48,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Zulrah plugin"
+)
 public class Zulrah extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);

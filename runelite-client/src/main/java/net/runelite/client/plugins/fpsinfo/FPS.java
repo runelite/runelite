@@ -27,9 +27,13 @@ package net.runelite.client.plugins.fpsinfo;
 
 import java.awt.Font;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Frames per second"
+)
 public class FPS extends Plugin
 {
 	private final Overlay overlay = new FPSOverlay(this);

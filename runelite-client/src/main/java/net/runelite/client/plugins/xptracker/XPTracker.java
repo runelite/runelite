@@ -35,8 +35,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import java.time.temporal.ChronoUnit;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+@PluginDescriptor(
+	name = "XP Tracker plugin"
+)
 public class XPTracker extends Plugin
 {
 	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall

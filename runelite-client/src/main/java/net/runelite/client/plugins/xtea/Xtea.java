@@ -33,11 +33,15 @@ import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@PluginDescriptor(
+	name = "Xtea plugin"
+)
 public class Xtea extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Xtea.class);

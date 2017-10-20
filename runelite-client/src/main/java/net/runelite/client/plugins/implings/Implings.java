@@ -28,12 +28,16 @@ import com.google.common.eventbus.Subscribe;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 /**
  *
  * @author robin
  */
+@PluginDescriptor(
+	name = "Implings plugin"
+)
 public class Implings extends Plugin
 {
 

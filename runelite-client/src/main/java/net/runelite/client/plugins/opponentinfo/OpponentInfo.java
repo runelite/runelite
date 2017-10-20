@@ -32,8 +32,12 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Opponent information plugin"
+)
 public class OpponentInfo extends Plugin
 {
 	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);

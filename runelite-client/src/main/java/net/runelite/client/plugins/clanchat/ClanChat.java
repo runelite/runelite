@@ -30,8 +30,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+@PluginDescriptor(
+	name = "Clan chat plugin"
+)
 public class ClanChat extends Plugin
 {
 	@Override

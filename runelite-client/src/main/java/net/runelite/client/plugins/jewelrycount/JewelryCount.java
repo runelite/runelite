@@ -26,8 +26,12 @@ package net.runelite.client.plugins.jewelrycount;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+@PluginDescriptor(
+	name = "Jewelry plugin"
+)
 public class JewelryCount extends Plugin
 {
 	private final JewelryCountConfig config = RuneLite.getRunelite().getConfigManager().getConfig(JewelryCountConfig.class);

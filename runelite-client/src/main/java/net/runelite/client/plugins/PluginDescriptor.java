@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch;
+package net.runelite.client.plugins;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@PluginDescriptor(
-	name = "Runepouch plugin"
-)
-public class Runepouch extends Plugin
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Documented
+public @interface PluginDescriptor
 {
-	private final RunepouchConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunepouchConfig.class);
-	private final RunepouchOverlay overlay = new RunepouchOverlay(this);
+	String name();
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public RunepouchConfig getConfig()
-	{
-		return config;
-	}
+	boolean developerPlugin() default false;
 }
