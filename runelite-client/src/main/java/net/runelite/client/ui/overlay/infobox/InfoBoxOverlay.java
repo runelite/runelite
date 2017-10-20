@@ -125,19 +125,24 @@ public class InfoBoxOverlay extends Overlay
 				int tooltipWidth = metrics.stringWidth(tooltip);
 				int height = metrics.getHeight();
 
+				int tooltipX = mouseX - (int) bounds.getX();
+				int tooltipY = mouseY - (int) bounds.getY();
+				if (tooltipY - height < 0)
+					tooltipY = height;
+
 				Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
 				graphics.setColor(gray);
 
 				// Draws the background rect
-				graphics.fillRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+				graphics.fillRect(tooltipX, tooltipY - height, tooltipWidth + 6, height);
 
 				// Draws the outline of the rect
-				graphics.setColor(Color.BLACK);
-				graphics.drawRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+				graphics.setColor(Color.yellow);
+				graphics.drawRect(tooltipX, tooltipY - height, tooltipWidth + 6, height);
 
 				// Tooltip text
 				graphics.setColor(Color.WHITE);
-				graphics.drawString(tooltip, mouseX + 3, mouseY + 5);
+				graphics.drawString(tooltip, tooltipX + 3, tooltipY - height / 2 + 5);
 			}
 
 			x += BOXSIZE + SEPARATOR;
