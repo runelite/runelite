@@ -51,7 +51,7 @@ public class InjectHookMethod
 		this.inject = inject;
 	}
 
-	public void process(Method method)
+	public void process(Method method) throws InjectionException
 	{
 		Annotations an = method.getAnnotations();
 		if (an == null || an.find(DeobAnnotations.HOOK) == null)
@@ -73,6 +73,7 @@ public class InjectHookMethod
 			obfuscatedMethodName = "<init>";
 		}
 
+		assert obfuscatedClassName != null : "hook on method in class with no obfuscated name";
 		assert obfuscatedMethodName != null : "hook on method with no obfuscated name";
 
 		Signature obfuscatedSignature = inject.getMethodSignature(method);
@@ -85,13 +86,17 @@ public class InjectHookMethod
 		injectHookMethod(hookName, method, vanillaMethod);
 	}
 
-	private void injectHookMethod(String hookName, Method deobMethod, Method vanillaMethod)
+	private void injectHookMethod(String hookName, Method deobMethod, Method vanillaMethod) throws InjectionException
 	{
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
 		Signature.Builder builder = new Signature.Builder()
-			.setReturnType(Type.VOID) // Hooks always return void
-			.addArguments(deobMethod.getDescriptor().getArguments());
+			.setReturnType(Type.VOID); // Hooks always return void
+
+		for (Type type : deobMethod.getDescriptor().getArguments())
+		{
+			builder.addArgument(inject.deobfuscatedTypeToApiType(type));
+		}
 
 		int insertPos = findHookLocation(vanillaMethod);
 

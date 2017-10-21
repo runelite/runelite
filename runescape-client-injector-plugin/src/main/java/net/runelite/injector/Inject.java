@@ -68,6 +68,7 @@ public class Inject
 	public static final java.lang.Class<?> CLIENT_CLASS = RSClient.class;
 
 	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
+	public static final String RL_API_PACKAGE_BASE = "net.runelite.api.";
 
 	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
@@ -540,6 +541,47 @@ public class Inject
 		assert obfuscatedField != null;
 
 		return obfuscatedField;
+	}
+
+	Type deobfuscatedTypeToApiType(Type type) throws InjectionException
+	{
+		if (type.isPrimitive())
+		{
+			return type;
+		}
+
+		ClassFile cf = deobfuscated.findClass(type.getInternalName());
+		if (cf == null)
+		{
+			return type; // not my type
+		}
+
+		java.lang.Class<?> rsApiType;
+		try
+		{
+			rsApiType = java.lang.Class.forName(API_PACKAGE_BASE + cf.getName());
+		}
+		catch (ClassNotFoundException ex)
+		{
+			throw new InjectionException("Deobfuscated type " + type.getInternalName() + " has no API type", ex);
+		}
+
+		java.lang.Class<?> rlApiType = null;
+
+		for (java.lang.Class<?> inter : rsApiType.getInterfaces())
+		{
+			if (inter.getName().startsWith(RL_API_PACKAGE_BASE))
+			{
+				rlApiType = inter;
+			}
+		}
+
+		if (rlApiType == null)
+		{
+			throw new InjectionException("RS API type " + rsApiType + " does not extend RL API interface");
+		}
+
+		return Type.getType("L" + rlApiType.getName().replace('.', '/') + ";", type.getDimensions());
 	}
 
 	private boolean validateTypeIsConvertibleTo(Type from, Type to) throws InjectionException
