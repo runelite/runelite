@@ -41,6 +41,7 @@
 		</module>
 		<module name="WhitespaceAround"/>
 		<module name="UnusedImports"/>
+		<module name="SuppressionCommentFilter"/>
 	</module>
 	<module name="RegexpMultiline">
 		<property name="format" value="else[ \t]*[\r\n]+[ \t]*if"/>
