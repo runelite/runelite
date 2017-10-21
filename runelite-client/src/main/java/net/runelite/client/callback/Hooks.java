@@ -27,6 +27,7 @@ package net.runelite.client.callback;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
@@ -51,7 +52,7 @@ public class Hooks
 
 	private static long lastCheck;
 
-	public static void clientMainLoop(Object client, boolean arg1)
+	public static void clientMainLoop(Client client, boolean arg1)
 	{
 		long now = System.currentTimeMillis();
 
@@ -80,11 +81,9 @@ public class Hooks
 		infoBoxManager.cull();
 	}
 
-	public static void draw(Object provider, Graphics graphics, int x, int y)
+	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
-		// XXX fix injector to use interface in signature
-		MainBufferProvider mpb = (MainBufferProvider) provider;
-		BufferedImage image = (BufferedImage) mpb.getImage();
+		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 
 		OverlayRenderer renderer = runelite.getRenderer();
 
@@ -198,10 +197,8 @@ public class Hooks
 		runelite.getEventBus().post(chatMessage);
 	}
 
-	public static void setMessage(Object object, int type, String name, String sender, String value)
+	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
 	{
-		MessageNode messageNode = (MessageNode) object;
-
 		// Hook is fired prior to actually setting these on the MessageNode, so send them
 		// in the event too.
 		SetMessage setMessage = new SetMessage();

@@ -105,7 +105,7 @@ public class InjectHookMethod
 		if (!deobMethod.isStatic())
 		{
 			// Add variable to signature
-			builder.addArgument(0, Type.OBJECT); // XXX this should be the API class..
+			builder.addArgument(0, inject.deobfuscatedTypeToApiType(new Type(deobMethod.getClassFile().getName())));
 			instructions.addInstruction(insertPos++, new ALoad(instructions, 0));
 		}
 
