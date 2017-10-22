@@ -89,8 +89,6 @@ public class class56 {
          if(!Client.socketError && class15.rssocket != null) {
             Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
 
-	    // no need to finish packet here as keepalive is length zero
-
             try {
                class15.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
                Client.secretPacketBuffer1.offset = 0;

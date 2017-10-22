@@ -4318,6 +4318,7 @@ public final class Client extends GameEngine {
             field968.putShort(0);
             var2 = field968.offset;
             field968.putInt(156);
+            secretPacketBuffer1.runeliteFinishPacket();
             field968.putBytes(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
             var3 = field968.offset;
             field968.putString(class90.username);
@@ -4358,6 +4359,7 @@ public final class Client extends GameEngine {
             field968.putInt(class232.indexWorldMap.crc);
             field968.encryptXtea(var9, var3, field968.offset);
             field968.putShortLength(field968.offset - var2);
+            field968.runeliteFinishPacket();
             class15.rssocket.queueForWrite(field968.payload, 0, field968.offset);
             secretPacketBuffer1.seed(var9);
 
@@ -5399,7 +5401,7 @@ public final class Client extends GameEngine {
 
                                              try {
                                                 if(class15.rssocket != null && secretPacketBuffer1.offset > 0) {
-                                                   // finish outstanding packets here
+                                                   secretPacketBuffer1.runeliteFinishPacket();
                                                    class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
                                                    secretPacketBuffer1.offset = 0;
                                                    audioEffectCount = 0;
