@@ -125,7 +125,7 @@ public class MixinInjector
 					// so they don't share Code references
 					ClassFile mixinCf = loadClass(mixinClass);
 
-					inject(mixinCf, cf, shadowFields);
+					injectMethods(mixinCf, cf, shadowFields);
 				}
 			}
 			catch (IOException ex)
@@ -290,13 +290,9 @@ public class MixinInjector
 		return null;
 	}
 
-	private void inject(ClassFile mixinCf, ClassFile cf, Map<net.runelite.asm.pool.Field, Field> shadowFields)
+	private void injectMethods(ClassFile mixinCf, ClassFile cf, Map<net.runelite.asm.pool.Field, Field> shadowFields)
 		throws InjectionException
 	{
-		ClassGroup group = new ClassGroup();
-		group.addClass(mixinCf);
-		group.initialize();
-
 		// Keeps mappings between methods annotated with @Copy -> the copied method within the vanilla pack
 		Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods = new HashMap<>();
 
