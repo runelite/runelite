@@ -33,10 +33,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Replace
 {
-    /**
-     * Method to replace
-     *
-     * @return
-     */
-    String value();
+	/**
+	 * Method to replace
+	 *
+	 * @return
+	 */
+	String value();
 }

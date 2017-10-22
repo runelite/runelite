@@ -33,10 +33,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Copy
 {
-    /**
-     * Method to copy
-     *
-     * @return
-     */
-    String value();
+	/**
+	 * Method to copy
+	 *
+	 * @return
+	 */
+	String value();
 }

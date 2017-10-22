@@ -386,8 +386,8 @@ public class MixinInjector
 	private void setOwnersToTargetClass(ClassFile mixinCf, ClassFile cf, Method method,
 										Map<net.runelite.asm.pool.Field, Field> shadowFields,
 										Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
-			throws InjectionException {
-
+			throws InjectionException
+	{
 		ListIterator<Instruction> iterator = method.getCode().getInstructions().getInstructions().listIterator();
 
 		while (iterator.hasNext())
