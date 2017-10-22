@@ -350,6 +350,8 @@ public class MixinInjector
 
 			boolean hasGarbageValue = deobMethod.getDescriptor().size() < obMethodSignature.size();
 			copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
+
+			logger.debug("Injected copy of {} to {}", obMethod, copy);
 		}
 
 		// Handle the rest of the mixin types
@@ -406,6 +408,8 @@ public class MixinInjector
 				obMethod.setCode(method.getCode());
 
 				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
+
+				logger.debug("Replaced method {} with mixin method {}", obMethod, method);
 			}
 		}
 	}
