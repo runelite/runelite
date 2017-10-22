@@ -244,18 +244,16 @@ public class class132 {
                var9 = var6 & 16383;
                var10 = (var8 + class22.baseX * 411265 + var4.pathX[0] & 16383) - class22.baseX * 411265;
                var11 = (var9 + class273.baseY + var4.pathY[0] & 16383) - class273.baseY;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field886 = true;
-                     var4.field911 = var10;
-                     var4.field899 = var11;
-                  } else {
-                     var4.field886 = false;
-                     var4.method1118(var10, var11, class94.field1487[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1114(var10, var11);
                   var4.field886 = false;
+               } else if(var2) {
+                  var4.field886 = true;
+                  var4.field911 = var10;
+                  var4.field899 = var11;
+               } else {
+                  var4.field886 = false;
+                  var4.method1118(var10, var11, class94.field1487[var1]);
                }
 
                var4.field908 = (byte)(var7 + var4.field908 & 3);

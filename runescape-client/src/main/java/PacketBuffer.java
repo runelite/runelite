@@ -52,7 +52,15 @@ public final class PacketBuffer extends Buffer {
    )
    @Export("putOpcode")
    public void putOpcode(int var1) {
+      if(Client.RUNELITE_PACKET) {
+         this.runeliteFinishPacket();
+      }
+
       super.payload[++super.offset - 1] = (byte)(var1 + this.cipher.nextInt());
+      if(Client.RUNELITE_PACKET) {
+         this.runeliteInitPacket();
+      }
+
    }
 
    @ObfuscatedName("iy")

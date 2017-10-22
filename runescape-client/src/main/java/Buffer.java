@@ -29,6 +29,7 @@ public class Buffer extends Node {
    )
    @Export("offset")
    public int offset;
+   private int runeliteLengthOffset;
 
    static {
       crc32Table = new int[256];
@@ -1079,6 +1080,25 @@ public class Buffer extends Node {
       for(int var5 = 0; var5 < var4; ++var5) {
          byte var6 = var3[var5];
          this.payload[this.offset++] = var6;
+      }
+
+   }
+
+   void runeliteInitPacket() {
+      this.runeliteLengthOffset = this.offset;
+      this.runeliteWriteShort((short)0);
+   }
+
+   void runeliteFinishPacket() {
+      if(this.runeliteLengthOffset > 0) {
+         int var1 = this.offset - this.runeliteLengthOffset - 2;
+         if(var1 < 0) {
+            return;
+         }
+
+         this.payload[this.runeliteLengthOffset++] = (byte)(var1 >> 8);
+         this.payload[this.runeliteLengthOffset++] = (byte)var1;
+         this.runeliteLengthOffset = 0;
       }
 
    }

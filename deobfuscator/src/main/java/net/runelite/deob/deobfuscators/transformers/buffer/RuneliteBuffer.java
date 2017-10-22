@@ -36,6 +36,37 @@ public class RuneliteBuffer
 	// so that it compiles
 	private int offset;
 	private byte[] payload;
+	private int runeliteLengthOffset;
+
+	public int getOffset()
+	{
+		return offset;
+	}
+
+	public void setOffset(int offset)
+	{
+		this.offset = offset;
+	}
+
+	public byte[] getPayload()
+	{
+		return payload;
+	}
+
+	public void setPayload(byte[] payload)
+	{
+		this.payload = payload;
+	}
+
+	public int getRuneliteLengthOffset()
+	{
+		return runeliteLengthOffset;
+	}
+
+	public void setRuneliteLengthOffset(int runeliteLengthOffset)
+	{
+		this.runeliteLengthOffset = runeliteLengthOffset;
+	}
 
 	public byte runeliteReadByte()
 	{
@@ -139,6 +170,29 @@ public class RuneliteBuffer
 		for (byte b : bytes)
 		{
 			payload[offset++] = b;
+		}
+	}
+
+	public void runeliteInitPacket()
+	{
+		runeliteLengthOffset = offset;
+		runeliteWriteShort((short) 0); // flush() relies on default length of 0
+	}
+
+	public void runeliteFinishPacket()
+	{
+		if (runeliteLengthOffset > 0)
+		{
+			int length = offset - runeliteLengthOffset - 2;
+			if (length < 0)
+			{
+				// on flush() it sets offset = 0
+				// but runeliteLengthOffset remains >0
+				return;
+			}
+			payload[runeliteLengthOffset++] = (byte) (length >> 8);
+			payload[runeliteLengthOffset++] = (byte) length;
+			runeliteLengthOffset = 0;
 		}
 	}
 }
