@@ -102,6 +102,11 @@ public class MixinInjector
 			mixinClasses.put(mixinClass, mixinTargets);
 		}
 
+		inject(mixinClasses);
+	}
+
+	public void inject(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
+	{
 		Map<String, Field> injectedFields = new HashMap<>();
 
 		// Inject fields, and put them in injectedFields if they can be used by other mixins
