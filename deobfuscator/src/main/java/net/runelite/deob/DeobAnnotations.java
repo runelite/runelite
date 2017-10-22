@@ -43,8 +43,6 @@ public class DeobAnnotations
 	public static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
 	public static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
 	public static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
-	public static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
-	public static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
 
 	public static Signature getObfuscatedSignature(Method m)
 	{

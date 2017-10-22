@@ -245,16 +245,6 @@ public class Inject
 			ClassFile other = vanilla.findClass(obfuscatedName);
 			assert other != null : "unable to find vanilla class from obfuscated name: " + obfuscatedName;
 
-			InjectReplace ij = new InjectReplace(cf, other);
-			try
-			{
-				ij.run();
-			}
-			catch (ClassNotFoundException | IOException ex)
-			{
-				throw new InjectionException("error running inject replace", ex);
-			}
-
 			for (Field f : cf.getFields())
 			{
 				an = f.getAnnotations();

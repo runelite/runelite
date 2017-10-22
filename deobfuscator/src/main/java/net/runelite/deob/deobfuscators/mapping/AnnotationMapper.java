@@ -156,8 +156,6 @@ public class AnnotationMapper
 	{
 		return a.getType().equals(DeobAnnotations.EXPORT)
 			|| a.getType().equals(DeobAnnotations.IMPLEMENTS)
-			|| a.getType().equals(DeobAnnotations.REPLACE)
-			|| a.getType().equals(DeobAnnotations.OBFUSCATED_OVERRIDE)
 			|| a.getType().equals(DeobAnnotations.HOOK);
 	}
 }
