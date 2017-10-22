@@ -534,7 +534,7 @@ public class Inject
 		{
 			String obfuscatedName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
-			if (obClass.getClassName().equalsIgnoreCase(obfuscatedName))
+			if (obClass.getName().equalsIgnoreCase(obfuscatedName))
 			{
 				return cf;
 			}
