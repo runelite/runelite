@@ -127,6 +127,7 @@ public class MixinInjector
 						{
 							Field copy = new Field(cf, field.getName(), field.getType());
 							copy.setAccessFlags(field.getAccessFlags());
+							copy.setPublic();
 							copy.setValue(field.getValue());
 							cf.addField(copy);
 
@@ -333,6 +334,7 @@ public class MixinInjector
 				Method copy = new Method(cf, method.getName(), method.getDescriptor());
 				copy.setCode(method.getCode());
 				copy.setAccessFlags(method.getAccessFlags());
+				copy.setPublic();
 				assert method.getExceptions().getExceptions().isEmpty();
 
 				setOwnersToTargetClass(mixinCf, cf, copy, shadowFields, copiedMethods);
