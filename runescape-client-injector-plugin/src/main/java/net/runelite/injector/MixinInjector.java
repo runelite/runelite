@@ -57,6 +57,11 @@ public class MixinInjector
 
 	private final Inject inject;
 
+	// field name -> Field of injected fields
+	private final Map<String, Field> injectedFields = new HashMap<>();
+	// Use net.runelite.asm.pool.Field instead of Field because the pool version has hashcode implemented
+	private final Map<net.runelite.asm.pool.Field, Field> shadowFields = new HashMap<>();
+
 	public MixinInjector(Inject inject)
 	{
 		this.inject = inject;
@@ -107,99 +112,8 @@ public class MixinInjector
 
 	public void inject(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
 	{
-		Map<String, Field> injectedFields = new HashMap<>();
-
-		// Inject fields, and put them in injectedFields if they can be used by other mixins
-		for (Class<?> mixinClass : mixinClasses.keySet())
-		{
-			try
-			{
-				ClassFile mixinCf = loadClass(mixinClass);
-
-				List<ClassFile> targetCfs = mixinClasses.get(mixinClass);
-
-				for (ClassFile cf : targetCfs)
-				{
-					for (Field field : mixinCf.getFields())
-					{
-						Annotation inject = field.getAnnotations().find(INJECT);
-						if (inject != null)
-						{
-							Field copy = new Field(cf, field.getName(), field.getType());
-							copy.setAccessFlags(field.getAccessFlags());
-							copy.setPublic();
-							copy.setValue(field.getValue());
-							cf.addField(copy);
-
-							if (field.isStatic())
-							{
-								// Only let other mixins use this field if it's injected in a single target class
-								if (targetCfs.size() == 1)
-								{
-									injectedFields.put(field.getName(), copy);
-								}
-							}
-						}
-					}
-				}
-			}
-			catch (IOException ex)
-			{
-				throw new InjectionException(ex);
-			}
-		}
-
-		// Use net.runelite.asm.pool.Field instead of Field because the pool version has hashcode implemented
-		Map<net.runelite.asm.pool.Field, Field> shadowFields = new HashMap<>();
-
-		// Find shadow fields
-		// Injected static fields take precedence when looking up shadowed fields
-		for (Class<?> mixinClass : mixinClasses.keySet())
-		{
-			try
-			{
-				ClassFile mixinCf = loadClass(mixinClass);
-
-				for (Field field : mixinCf.getFields())
-				{
-					Annotation shadow = field.getAnnotations().find(SHADOW);
-					if (shadow != null)
-					{
-						if (!field.isStatic())
-						{
-							throw new InjectionException("Can only shadow static fields");
-						}
-
-						String shadowName = shadow.getElement().getString(); // shadow this field
-
-						Field injectedField = injectedFields.get(shadowName);
-						if (injectedField != null)
-						{
-							// Shadow a field injected by a mixin
-							shadowFields.put(field.getPoolField(), injectedField);
-						}
-						else
-						{
-							// Shadow a field already in the gamepack
-							Field shadowField = findDeobField(shadowName);
-
-							if (shadowField == null)
-							{
-								throw new InjectionException("Shadow of nonexistent field " + shadowName);
-							}
-
-							Field obShadow = inject.toObField(shadowField);
-							assert obShadow != null;
-							shadowFields.put(field.getPoolField(), obShadow);
-						}
-					}
-				}
-			}
-			catch (IOException ex)
-			{
-				throw new InjectionException(ex);
-			}
-		}
+		injectFields(mixinClasses);
+		findShadowFields(mixinClasses);
 
 		for (Class<?> mixinClass : mixinClasses.keySet())
 		{
@@ -217,6 +131,120 @@ public class MixinInjector
 			catch (IOException ex)
 			{
 				throw new InjectionException(ex);
+			}
+		}
+	}
+
+	/**
+	 * Finds fields that are marked @Inject and inject them into the target
+	 *
+	 * @param mixinClasses
+	 * @throws InjectionException
+	 */
+	private void injectFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
+	{
+		// Inject fields, and put them in injectedFields if they can be used by other mixins
+		for (Class<?> mixinClass : mixinClasses.keySet())
+		{
+			ClassFile mixinCf;
+
+			try
+			{
+				mixinCf = loadClass(mixinClass);
+			}
+			catch (IOException ex)
+			{
+				throw new InjectionException(ex);
+			}
+
+			List<ClassFile> targetCfs = mixinClasses.get(mixinClass);
+
+			for (ClassFile cf : targetCfs)
+			{
+				for (Field field : mixinCf.getFields())
+				{
+					Annotation inject = field.getAnnotations().find(INJECT);
+					if (inject == null)
+					{
+						continue;
+					}
+
+					Field copy = new Field(cf, field.getName(), field.getType());
+					copy.setAccessFlags(field.getAccessFlags());
+					copy.setPublic();
+					copy.setValue(field.getValue());
+					cf.addField(copy);
+
+					if (field.isStatic())
+					{
+						// Only let other mixins use this field if it's injected in a single target class
+						if (targetCfs.size() == 1)
+						{
+							injectedFields.put(field.getName(), copy);
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * Find fields which are marked @Shadow, and what they shadow
+	 *
+	 * @param mixinClasses
+	 * @throws InjectionException
+	 */
+	private void findShadowFields(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
+	{
+		// Find shadow fields
+		// Injected static fields take precedence when looking up shadowed fields
+		for (Class<?> mixinClass : mixinClasses.keySet())
+		{
+			ClassFile mixinCf;
+
+			try
+			{
+				mixinCf = loadClass(mixinClass);
+			}
+			catch (IOException ex)
+			{
+				throw new InjectionException(ex);
+			}
+
+			for (Field field : mixinCf.getFields())
+			{
+				Annotation shadow = field.getAnnotations().find(SHADOW);
+				if (shadow != null)
+				{
+					if (!field.isStatic())
+					{
+						throw new InjectionException("Can only shadow static fields");
+					}
+
+					String shadowName = shadow.getElement().getString(); // shadow this field
+
+					Field injectedField = injectedFields.get(shadowName);
+					if (injectedField != null)
+					{
+						// Shadow a field injected by a mixin
+						shadowFields.put(field.getPoolField(), injectedField);
+					}
+					else
+					{
+						// Shadow a field already in the gamepack
+						Field shadowField = findDeobField(shadowName);
+
+						if (shadowField == null)
+						{
+							throw new InjectionException("Shadow of nonexistent field " + shadowName);
+						}
+
+						Field obShadow = inject.toObField(shadowField);
+						assert obShadow != null;
+						shadowFields.put(field.getPoolField(), obShadow);
+					}
+				}
 			}
 		}
 	}
@@ -265,7 +293,7 @@ public class MixinInjector
 	}
 
 	private void inject(ClassFile mixinCf, ClassFile cf, Map<net.runelite.asm.pool.Field, Field> shadowFields)
-			throws InjectionException
+		throws InjectionException
 	{
 		ClassGroup group = new ClassGroup();
 		group.addClass(mixinCf);
@@ -359,7 +387,7 @@ public class MixinInjector
 				if (method.isStatic() != deobMethod.isStatic())
 				{
 					throw new InjectionException("Mixin method " + method + " should be "
-							+ (deobMethod.isStatic() ? "static" : "non-static"));
+						+ (deobMethod.isStatic() ? "static" : "non-static"));
 				}
 
 				String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
@@ -384,9 +412,9 @@ public class MixinInjector
 	}
 
 	private void setOwnersToTargetClass(ClassFile mixinCf, ClassFile cf, Method method,
-										Map<net.runelite.asm.pool.Field, Field> shadowFields,
-										Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
-			throws InjectionException
+		Map<net.runelite.asm.pool.Field, Field> shadowFields,
+		Map<net.runelite.asm.pool.Method, CopiedMethod> copiedMethods)
+		throws InjectionException
 	{
 		ListIterator<Instruction> iterator = method.getCode().getInstructions().getInstructions().listIterator();
 
@@ -407,8 +435,8 @@ public class MixinInjector
 					if (copiedMethod.hasGarbageValue)
 					{
 						int garbageIndex = copiedMethod.obMethod.isStatic()
-								? copiedMethod.obMethod.getDescriptor().size() - 1
-								: copiedMethod.obMethod.getDescriptor().size();
+							? copiedMethod.obMethod.getDescriptor().size() - 1
+							: copiedMethod.obMethod.getDescriptor().size();
 
 						iterator.previous();
 						iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
@@ -418,9 +446,9 @@ public class MixinInjector
 				else if (ii.getMethod() != null && ii.getMethod().getClazz().getName().equals(mixinCf.getName()))
 				{
 					ii.setMethod(new net.runelite.asm.pool.Method(
-							new net.runelite.asm.pool.Class(cf.getName()),
-							ii.getMethod().getName(),
-							ii.getMethod().getType()
+						new net.runelite.asm.pool.Class(cf.getName()),
+						ii.getMethod().getName(),
+						ii.getMethod().getType()
 					));
 				}
 			}
@@ -436,9 +464,9 @@ public class MixinInjector
 				else if (fi.getField() != null && fi.getField().getClazz().getName().equals(mixinCf.getName()))
 				{
 					fi.setField(new net.runelite.asm.pool.Field(
-							new net.runelite.asm.pool.Class(cf.getName()),
-							fi.getField().getName(),
-							fi.getField().getType()
+						new net.runelite.asm.pool.Class(cf.getName()),
+						fi.getField().getName(),
+						fi.getField().getType()
 					));
 				}
 			}
@@ -496,7 +524,7 @@ public class MixinInjector
 			InvokeStatic is = (InvokeStatic) i;
 
 			if (is.getMethod().getClazz() != mixinCf.getPoolClass()
-					&& is.getMethod().getClazz().getName().startsWith(MIXIN_BASE.replace(".", "/")))
+				&& is.getMethod().getClazz().getName().startsWith(MIXIN_BASE.replace(".", "/")))
 			{
 				throw new InjectionException("Invoking static methods of other mixins is not supported");
 			}
