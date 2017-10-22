@@ -175,14 +175,12 @@ public class MixinInjector
 					copy.setValue(field.getValue());
 					cf.addField(copy);
 
-					if (field.isStatic())
+					if (injectedFields.containsKey(field.getName()))
 					{
-						// Only let other mixins use this field if it's injected in a single target class
-						if (targetCfs.size() == 1)
-						{
-							injectedFields.put(field.getName(), copy);
-						}
+						throw new InjectionException("Injected field names must be globally unique");
 					}
+
+					injectedFields.put(field.getName(), copy);
 				}
 			}
 
