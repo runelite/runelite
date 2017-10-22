@@ -57,9 +57,19 @@ public class BufferMethodInjector
 
 		ClassFile bufferClass = buffer.getClassFile();
 
+		for (Field f : runeliteBuffer.getFields())
+		{
+			if (!f.getName().startsWith("runelite"))
+			{
+				continue;
+			}
+
+			inject(bufferClass, f);
+		}
+
 		for (Method m : runeliteBuffer.getMethods())
 		{
-			if (m.getName().startsWith("<"))
+			if (!m.getName().startsWith("runelite"))
 			{
 				continue;
 			}
@@ -95,6 +105,10 @@ public class BufferMethodInjector
 					{
 						fi.setField(bp.getBuffer().getPoolField());
 					}
+					else if (fi.getField().getName().equals("runeliteLengthOffset"))
+					{
+						fi.setField(bufferClass.findField("runeliteLengthOffset").getPoolField());
+					}
 				}
 
 				i.setInstructions(code.getInstructions());
@@ -104,6 +118,14 @@ public class BufferMethodInjector
 		code.getExceptions().getExceptions().addAll(method.getCode().getExceptions().getExceptions());
 
 		bufferClass.addMethod(newMethod);
+	}
+
+	private void inject(ClassFile bufferClass, Field field)
+	{
+		Field newField = new Field(bufferClass, field.getName(), field.getType());
+		newField.setAccessFlags(field.getAccessFlags());
+		newField.setValue(field.getValue());
+		bufferClass.addField(newField);
 	}
 
 	static ClassFile loadClass(InputStream in) throws IOException

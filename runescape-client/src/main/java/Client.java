@@ -5399,6 +5399,7 @@ public final class Client extends GameEngine {
 
                                              try {
                                                 if(class15.rssocket != null && secretPacketBuffer1.offset > 0) {
+                                                   // finish outstanding packets here
                                                    class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
                                                    secretPacketBuffer1.offset = 0;
                                                    audioEffectCount = 0;
