@@ -44,8 +44,8 @@ public final class ClientUI extends JFrame
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientUI.class);
 
-	private static final int PANEL_WIDTH = 805;
-	private static final int PANEL_HEIGHT = 541;
+	private static final int PANEL_WIDTH = 809;
+	private static final int PANEL_HEIGHT = 536;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
 
 	private JPanel container;
