@@ -30,8 +30,14 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 
+import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
+import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+
 public class Field
 {
+	public static final int ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
+
 	private final ClassFile classFile;
 
 	private int accessFlags;
@@ -78,6 +84,11 @@ public class Field
 	public boolean isPublic()
 	{
 		return (accessFlags & Opcodes.ACC_PUBLIC) != 0;
+	}
+
+	public void setPublic()
+	{
+		accessFlags = (short) ((accessFlags & ~ACCESS_MODIFIERS) | ACC_PUBLIC);
 	}
 
 	public boolean isStatic()
