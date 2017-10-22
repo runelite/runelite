@@ -110,34 +110,40 @@ public class InfoBoxOverlay extends Overlay
 
 			if (overlayBounds == null)
 			{
+				x += BOXSIZE + SEPARATOR;
 				continue;
 			}
 
 			String tooltip = box.getTooltip();
 			if (tooltip == null || tooltip.isEmpty())
 			{
+				x += BOXSIZE + SEPARATOR;
 				continue;
 			}
 
-			Rectangle bounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
-			if (bounds.contains(mouse.getX(), mouse.getY()))
+			Rectangle infoboxBounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
+			if (infoboxBounds.contains(mouseX, mouseY))
 			{
 				int tooltipWidth = metrics.stringWidth(tooltip);
 				int height = metrics.getHeight();
+
+				int tooltipY = mouseY - (int) infoboxBounds.getY();
+				if (tooltipY - height < 0)
+					tooltipY = height;
 
 				Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
 				graphics.setColor(gray);
 
 				// Draws the background rect
-				graphics.fillRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+				graphics.fillRect(mouseX, tooltipY - height, tooltipWidth + 6, height);
 
 				// Draws the outline of the rect
-				graphics.setColor(Color.BLACK);
-				graphics.drawRect(mouseX, mouseY - (height / 2), tooltipWidth + 6, height);
+				graphics.setColor(Color.yellow);
+				graphics.drawRect(mouseX, tooltipY - height, tooltipWidth + 6, height);
 
 				// Tooltip text
 				graphics.setColor(Color.WHITE);
-				graphics.drawString(tooltip, mouseX + 3, mouseY + 5);
+				graphics.drawString(tooltip, mouseX + 3, tooltipY - height / 2 + 5);
 			}
 
 			x += BOXSIZE + SEPARATOR;
