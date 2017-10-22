@@ -305,53 +305,57 @@ public class MixinInjector
 		// Handle the copy mixins first, so all other mixins know of the copies
 		for (Method method : mixinCf.getMethods())
 		{
-			if (method.getAnnotations().find(COPY) != null)
+			Annotation copyAnnotation = method.getAnnotations().find(COPY);
+
+			if (copyAnnotation == null)
 			{
-				Annotation copyAnnotation = method.getAnnotations().find(COPY);
-				String deobMethodName = (String) copyAnnotation.getElement().getValue();
-
-				ClassFile deobCf = inject.toDeobClass(cf);
-				Method deobMethod = findDeobMethod(deobCf, deobMethodName);
-
-				if (deobMethod == null)
-				{
-					throw new InjectionException("Failed to find the deob method " + deobMethodName + " for mixin " + mixinCf);
-				}
-
-				if (method.isStatic() != deobMethod.isStatic())
-				{
-					throw new InjectionException("Mixin method " + method + " should be " + (deobMethod.isStatic() ? "static" : "non-static"));
-				}
-
-				// Find the vanilla class where the method to copy is in
-				String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
-				ClassFile obCf = inject.getVanilla().findClass(obClassName);
-
-				String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
-				Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
-
-				if (obMethodSignature == null)
-				{
-					obMethodSignature = deobMethod.getDescriptor();
-				}
-
-				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
-				if (obMethod == null)
-				{
-					throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
-				}
-
-				Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
-				copy.setCode(obMethod.getCode());
-				copy.setAccessFlags(obMethod.getAccessFlags());
-				copy.setPublic();
-				copy.getExceptions().getExceptions().addAll(obMethod.getExceptions().getExceptions());
-				copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
-				cf.addMethod(copy);
-
-				boolean hasGarbageValue = deobMethod.getDescriptor().size() < obMethodSignature.size();
-				copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
+				continue;
 			}
+
+			String deobMethodName = (String) copyAnnotation.getElement().getValue();
+
+			ClassFile deobCf = inject.toDeobClass(cf);
+			Method deobMethod = findDeobMethod(deobCf, deobMethodName);
+
+			if (deobMethod == null)
+			{
+				throw new InjectionException("Failed to find the deob method " + deobMethodName + " for mixin " + mixinCf);
+			}
+
+			if (method.isStatic() != deobMethod.isStatic())
+			{
+				throw new InjectionException("Mixin method " + method + " should be " + (deobMethod.isStatic() ? "static" : "non-static"));
+			}
+
+			// Find the vanilla class where the method to copy is in
+			String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+			ClassFile obCf = inject.getVanilla().findClass(obClassName);
+			assert obCf != null : "unable to find vanilla class from obfuscated name " + obClassName;
+
+			String obMethodName = DeobAnnotations.getObfuscatedName(deobMethod.getAnnotations());
+			Signature obMethodSignature = DeobAnnotations.getObfuscatedSignature(deobMethod);
+
+			if (obMethodSignature == null)
+			{
+				obMethodSignature = deobMethod.getDescriptor();
+			}
+
+			Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
+			if (obMethod == null)
+			{
+				throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
+			}
+
+			Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
+			copy.setCode(obMethod.getCode());
+			copy.setAccessFlags(obMethod.getAccessFlags());
+			copy.setPublic();
+			copy.getExceptions().getExceptions().addAll(obMethod.getExceptions().getExceptions());
+			copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
+			cf.addMethod(copy);
+
+			boolean hasGarbageValue = deobMethod.getDescriptor().size() < obMethodSignature.size();
+			copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
 		}
 
 		// Handle the rest of the mixin types
@@ -373,8 +377,8 @@ public class MixinInjector
 			}
 			else if (method.getAnnotations().find(REPLACE) != null)
 			{
-				Annotation copyAnnotation = method.getAnnotations().find(REPLACE);
-				String deobMethodName = (String) copyAnnotation.getElement().getValue();
+				Annotation replaceAnnotation = method.getAnnotations().find(REPLACE);
+				String deobMethodName = (String) replaceAnnotation.getElement().getValue();
 
 				ClassFile deobCf = inject.toDeobClass(cf);
 				Method deobMethod = findDeobMethod(deobCf, deobMethodName);
@@ -404,6 +408,7 @@ public class MixinInjector
 				ClassFile obCf = inject.getVanilla().findClass(obClassName);
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
+				assert obMethod != null : "obfuscated method " + obMethodName + obMethodSignature + " does not exist";
 				obMethod.setCode(method.getCode());
 
 				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
@@ -443,7 +448,7 @@ public class MixinInjector
 						iterator.next();
 					}
 				}
-				else if (ii.getMethod() != null && ii.getMethod().getClazz().getName().equals(mixinCf.getName()))
+				else if (ii.getMethod().getClazz().getName().equals(mixinCf.getName()))
 				{
 					ii.setMethod(new net.runelite.asm.pool.Method(
 						new net.runelite.asm.pool.Class(cf.getName()),
@@ -461,7 +466,7 @@ public class MixinInjector
 				{
 					fi.setField(shadowed.getPoolField());
 				}
-				else if (fi.getField() != null && fi.getField().getClazz().getName().equals(mixinCf.getName()))
+				else if (fi.getField().getClazz().getName().equals(mixinCf.getName()))
 				{
 					fi.setField(new net.runelite.asm.pool.Field(
 						new net.runelite.asm.pool.Class(cf.getName()),
