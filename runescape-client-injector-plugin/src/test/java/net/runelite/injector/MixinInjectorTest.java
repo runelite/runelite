@@ -24,26 +24,29 @@
  */
 package net.runelite.injector;
 
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.asm.*;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.ClassUtil;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import static net.runelite.asm.Type.INT;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.signature.Signature;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import org.junit.Test;
-
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static net.runelite.asm.Type.INT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 
@@ -52,8 +55,8 @@ class DeobTarget
 {
 	@ObfuscatedName("ob_foo3")
 	@ObfuscatedSignature(
-			signature = "(I)V",
-			garbageValue = "123"
+		signature = "(I)V",
+		garbageValue = "123"
 	)
 	private void foo3()
 	{
@@ -93,7 +96,7 @@ abstract class Source
 	@Copy("foo3")
 	abstract void foo3();
 
-	@net.runelite.api.mixins.Replace("foo3")
+	@Replace("foo3")
 	private void rl$foo3()
 	{
 		System.out.println("replaced");
@@ -165,66 +168,68 @@ public class MixinInjectorTest
 		assertNotNull(ob_foo3);
 		assertEquals(new Signature("(I)V"), ob_foo3.getDescriptor());
 		assertEquals(ob_foo3
-				.getCode()
-				.getInstructions()
-				.getInstructions()
-				.stream()
-				.filter(i -> i instanceof LDC && ((LDC) i).getConstant().equals("replaced"))
-				.count(), 1);
+			.getCode()
+			.getInstructions()
+			.getInstructions()
+			.stream()
+			.filter(i -> i instanceof LDC && ((LDC) i).getConstant().equals("replaced"))
+			.count(), 1);
 		// Check that the "foo4" field access in the new code body was mapped correctly
 		assertEquals(ob_foo3
-				.getCode()
-				.getInstructions()
-				.getInstructions()
-				.stream()
-				.filter(i -> {
-					if (!(i instanceof GetStatic))
-					{
-						return false;
-					}
+			.getCode()
+			.getInstructions()
+			.getInstructions()
+			.stream()
+			.filter(i ->
+			{
+				if (!(i instanceof GetStatic))
+				{
+					return false;
+				}
 
-					net.runelite.asm.pool.Field field = ((GetStatic) i).getField();
+				net.runelite.asm.pool.Field field = ((GetStatic) i).getField();
 
-					if (!field.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
-					{
-						return false;
-					}
+				if (!field.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
+				{
+					return false;
+				}
 
-					if (!field.getName().equals("ob_foo4"))
-					{
-						return false;
-					}
+				if (!field.getName().equals("ob_foo4"))
+				{
+					return false;
+				}
 
-					return true;
-				})
-				.count(), 1);
+				return true;
+			})
+			.count(), 1);
 		// Check that the "foo3()" call in the new code body was mapped to the copy
 		assertEquals(ob_foo3
-				.getCode()
-				.getInstructions()
-				.getInstructions()
-				.stream()
-				.filter(i -> {
-					if (!(i instanceof InvokeVirtual))
-					{
-						return false;
-					}
+			.getCode()
+			.getInstructions()
+			.getInstructions()
+			.stream()
+			.filter(i ->
+			{
+				if (!(i instanceof InvokeVirtual))
+				{
+					return false;
+				}
 
-					net.runelite.asm.pool.Method method = ((InvokeVirtual) i).getMethod();
+				net.runelite.asm.pool.Method method = ((InvokeVirtual) i).getMethod();
 
-					if (!method.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
-					{
-						return false;
-					}
+				if (!method.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
+				{
+					return false;
+				}
 
-					if (!method.getName().equals("copy$foo3"))
-					{
-						return false;
-					}
+				if (!method.getName().equals("copy$foo3"))
+				{
+					return false;
+				}
 
-					return true;
-				})
-				.count(), 1);
+				return true;
+			})
+			.count(), 1);
 
 		// Check if "foo5()V" was injected
 		Method foo5 = vanillaTarget.findMethod("foo5");
@@ -233,30 +238,31 @@ public class MixinInjectorTest
 		assertEquals(ACC_PUBLIC, foo5.getAccessFlags());
 		// Check that the shadow "foo" field access was mapped correctly
 		assertEquals(foo5
-				.getCode()
-				.getInstructions()
-				.getInstructions()
-				.stream()
-				.filter(i -> {
-					if (!(i instanceof GetStatic))
-					{
-						return false;
-					}
+			.getCode()
+			.getInstructions()
+			.getInstructions()
+			.stream()
+			.filter(i ->
+			{
+				if (!(i instanceof GetStatic))
+				{
+					return false;
+				}
 
-					net.runelite.asm.pool.Field field = ((GetStatic) i).getField();
+				net.runelite.asm.pool.Field field = ((GetStatic) i).getField();
 
-					if (!field.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
-					{
-						return false;
-					}
+				if (!field.getClazz().getName().equals("net/runelite/injector/VanillaTarget"))
+				{
+					return false;
+				}
 
-					if (!field.getName().equals("foo"))
-					{
-						return false;
-					}
+				if (!field.getName().equals("foo"))
+				{
+					return false;
+				}
 
-					return true;
-				})
-				.count(), 1);
+				return true;
+			})
+			.count(), 1);
 	}
 }
