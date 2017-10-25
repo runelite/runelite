@@ -211,10 +211,10 @@ public class MilliTimer extends Timer {
          var2.height = class56.field700[var1];
          int var3 = var2.width * var2.height;
          byte[] var4 = class227.spritePixels[var1];
-         var2.image = new int[var3];
+         var2.pixels = new int[var3];
 
          for(int var5 = 0; var5 < var3; ++var5) {
-            var2.image[var5] = class114.field1675[var4[var5] & 255];
+            var2.pixels[var5] = class114.field1675[var4[var5] & 255];
          }
       }
 

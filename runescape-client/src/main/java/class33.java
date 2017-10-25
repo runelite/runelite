@@ -90,7 +90,7 @@ public class class33 {
             var9 = var4;
          }
 
-         int[] var10 = ScriptVarType.field85.image;
+         int[] var10 = ScriptVarType.field85.pixels;
          var11 = var1 * 4 + (103 - var2) * 2048 + 24624;
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = CollisionData.getObjectDefinition(var12);
@@ -185,7 +185,7 @@ public class class33 {
                var11 = 15597568;
             }
 
-            int[] var22 = ScriptVarType.field85.image;
+            int[] var22 = ScriptVarType.field85.pixels;
             var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
