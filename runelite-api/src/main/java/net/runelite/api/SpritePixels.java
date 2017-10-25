@@ -33,4 +33,6 @@ public interface SpritePixels
 	int getWidth();
 
 	int getHeight();
+
+	int[] getPixels();
 }

@@ -40,4 +40,8 @@ public interface RSSpritePixels extends SpritePixels
 	@Import("width")
 	@Override
 	int getWidth();
+
+	@Import("pixels")
+	@Override
+	int[] getPixels();
 }

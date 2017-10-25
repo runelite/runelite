@@ -28,14 +28,15 @@ import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.SpritePixels;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -81,10 +82,10 @@ class FishingSpotOverlay extends Overlay
 			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
 			if (config.showIcons())
 			{
-				SpritePixels fishSprite = getFishSprite(spot);
-				if (fishSprite != null)
+				BufferedImage fishImage = getFishImage(spot);
+				if (fishImage != null)
 				{
-					OverlayUtil.renderActorOverlaySprite(graphics, npc, fishSprite, color.darker());
+					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker());
 				}
 			}
 			else
@@ -97,9 +98,10 @@ class FishingSpotOverlay extends Overlay
 		return null;
 	}
 
-	private SpritePixels getFishSprite(FishingSpot spot)
+	private BufferedImage getFishImage(FishingSpot spot)
 	{
-		return client.createItemSprite(spot.getItemSpriteId(), 5, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
+		BufferedImage fishImage = ItemManager.getImage(spot.getFishSpriteId());
+		return fishImage;
 	}
 
 	public void updateConfig()
