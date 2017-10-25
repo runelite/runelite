@@ -93,7 +93,7 @@ public enum FishingSpot
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
 
 	private final String name;
-	private final int itemSpriteId;
+	private final int fishSpriteId;
 	private final int[] spots;
 
 	static
@@ -109,10 +109,10 @@ public enum FishingSpot
 		}
 	}
 
-	FishingSpot(String spot, int itemSpriteId, int... spots)
+	FishingSpot(String spot, int fishSpriteId, int... spots)
 	{
 		this.name = spot;
-		this.itemSpriteId = itemSpriteId;
+		this.fishSpriteId = fishSpriteId;
 		this.spots = spots;
 	}
 
@@ -121,9 +121,9 @@ public enum FishingSpot
 		return name;
 	}
 
-	public int getItemSpriteId()
+	public int getFishSpriteId()
 	{
-		return itemSpriteId;
+		return fishSpriteId;
 	}
 
 	public int[] getIds()
