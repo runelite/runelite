@@ -71,10 +71,10 @@ public class BuildType {
          var4.height = class56.field700[0];
          int var5 = var4.height * var4.width;
          byte[] var6 = class227.spritePixels[0];
-         var4.image = new int[var5];
+         var4.pixels = new int[var5];
 
          for(int var7 = 0; var7 < var5; ++var7) {
-            var4.image[var7] = class114.field1675[var6[var7] & 255];
+            var4.pixels[var7] = class114.field1675[var6[var7] & 255];
          }
 
          class249.method4493();

@@ -123,7 +123,7 @@ public class class219 implements class218 {
       garbageValue = "-39856878"
    )
    static final void method4134(int var0) {
-      int[] var1 = ScriptVarType.field85.image;
+      int[] var1 = ScriptVarType.field85.pixels;
       int var2 = var1.length;
 
       int var3;

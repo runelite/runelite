@@ -5996,7 +5996,7 @@ public final class Client extends GameEngine {
          int[] var15 = new int[4];
          Rasterizer2D.copyDrawRegion(var15);
          var8 = new SpritePixels(36, 32);
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
+         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
          Rasterizer2D.reset();
          Graphics3D.method2676();
          Graphics3D.method2644(16, 16);
@@ -6032,7 +6032,7 @@ public final class Client extends GameEngine {
             var8.method5171(var3);
          }
 
-         Rasterizer2D.setRasterBuffer(var8.image, 36, 32);
+         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
          if(var9.notedTemplate != -1) {
             var22.drawAt(0, 0);
          }
