@@ -25,9 +25,16 @@
 package net.runelite.client.game;
 
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import net.runelite.api.Client;
+import net.runelite.api.SpritePixels;
 import net.runelite.client.RuneLite;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
@@ -44,15 +51,30 @@ public class ItemManager
 	 */
 	static final ItemPrice NONE = new ItemPrice();
 
-	private final ItemClient client = new ItemClient();
+
+	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
+
+	private static LoadingCache<Integer, BufferedImage> itemImages;
 
 	public ItemManager(RuneLite runelite)
 	{
 		itemPrices = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new ItemPriceLoader(runelite, client));
+			.build(new ItemPriceLoader(runelite, itemClient));
+
+		itemImages = CacheBuilder.newBuilder()
+			.maximumSize(200)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<Integer, BufferedImage>()
+			{
+				@Override
+				public BufferedImage load(Integer itemId) throws Exception
+				{
+					return loadImage(itemId);
+				}
+			});
 	}
 
 	/**
@@ -88,7 +110,7 @@ public class ItemManager
 			return itemPrice == NONE ? null : itemPrice;
 		}
 
-		itemPrice = client.lookupItemPrice(itemId);
+		itemPrice = itemClient.lookupItemPrice(itemId);
 		itemPrices.put(itemId, itemPrice);
 		return itemPrice;
 	}
@@ -112,5 +134,49 @@ public class ItemManager
 		}
 
 		return "" + quantity;
+	}
+
+	/**
+	 * Loads item sprite from game, makes transparent, and generates image
+	 * @param itemId
+	 * @return
+	 */
+	private BufferedImage loadImage(int itemId)
+	{
+		Client client = RuneLite.getClient();
+		SpritePixels sprite = client.createItemSprite(itemId, 1, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
+		int[] pixels = sprite.getPixels();
+		int[] transPixels = new int[pixels.length];
+		BufferedImage img = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		for (int i = 0; i < pixels.length; i++)
+		{
+			if (pixels[i] != 0)
+			{
+				transPixels[i] = pixels[i] | 0xff000000;
+			}
+		}
+
+		img.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), transPixels, 0, sprite.getWidth());
+
+		return img;
+	}
+
+	/**
+	 * Get item sprite image as BufferedImage
+	 *
+	 * @param itemId
+	 * @return
+	 */
+	public static BufferedImage getImage(int itemId)
+	{
+		try
+		{
+			return itemImages.get(itemId);
+		}
+		catch (ExecutionException ex)
+		{
+			return null;
+		}
 	}
 }
