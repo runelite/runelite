@@ -42,6 +42,7 @@ class WidgetID
 	static final int PRAYER_GROUP_ID = 541;
 	static final int SHOP_GROUP_ID = 300;
 	static final int SHOP_INVENTORY_GROUP_ID = 301;
+	static final int COMBAT_GROUP_ID = 593;
 
 	static class PestControl
 	{
@@ -151,5 +152,11 @@ class WidgetID
 		static final int PIETY = 29;
 		static final int RIGOUR = 30;
 		static final int AUGURY = 31;
+	}
+
+	static class Combat
+	{
+		static final int WEAPON_NAME = 1;
+		static final int LEVEL = 2;
 	}
 }
