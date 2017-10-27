@@ -7,16 +7,17 @@ If you have any questions please join our IRC channel on [irc.rizon.net #runelit
 
 ## Project Layout
 
-- cache - libraries used for reading/writing cache files, as well as the data in it
-- deobfuscator - contains bytecode deobfuscator, mapper for handling updates, and the injector
+- cache - Libraries used for reading/writing cache files, as well as the data in it
+- deobfuscator - Contains bytecode deobfuscator, mapper for handling updates, and the injector
 - http-api - API for api.runelite.net
 - http-service - Service for api.runelite.net
 - model-viewer - RS Model, NPC/Object, and terrain viewer
-- runelite-api - runelite api, use this for plugin development
+- runelite-api - RuneLite API, interfaces for accessing the client
 - runelite-mixins - Mixins which are injected into the injected client's classes
-- runescape-api - mappings correspond to these interfaces, runelite-api is a subset of this
-- runescape-client-injector - builds the injected client from the vanilla client and the mappings
-- runescape-client - decompiled RuneScape client, contains mappings
+- runescape-api - Mappings correspond to these interfaces, runelite-api is a subset of this
+- runelite-client - Game client with plugins
+- runescape-client-injector - Builds the injected client from the vanilla client and the mappings
+- runescape-client - Decompiled RuneScape client, contains mappings
 
 ## Usage
 
