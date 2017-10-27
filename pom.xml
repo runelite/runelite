@@ -105,7 +105,6 @@
 		<module>cache</module>
 		<module>deobfuscator</module>
 		<module>model-viewer</module>
-		<module>model-viewer-rsmv</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
