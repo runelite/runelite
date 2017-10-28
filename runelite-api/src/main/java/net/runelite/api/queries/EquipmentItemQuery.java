@@ -86,12 +86,15 @@ public class EquipmentItemQuery extends WidgetItemQuery
 			}
 			for (WidgetInfo slot : slots)
 			{
-				Widget widget = client.getWidget(slot).getChild(1);
+				Widget parentWidget = client.getWidget(slot);
+				Widget itemWidget = parentWidget.getChild(1);
+				// Check if background icon is hidden. if hidden, item is equipped.
+				boolean equipped = parentWidget.getChild(2).isHidden();
 				// set bounds to same size as default inventory
-				Rectangle bounds = widget.getBounds();
+				Rectangle bounds = itemWidget.getBounds();
 				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
 				// Index is set to 0 because there is no set in stone order of equipment slots
-				widgetItems.add(new WidgetItem(widget.getItemId(), widget.getItemQuantity(), 0, bounds));
+				widgetItems.add(new WidgetItem(equipped ? itemWidget.getItemId() : -1, itemWidget.getItemQuantity(), 0, bounds));
 			}
 		}
 		return widgetItems;
