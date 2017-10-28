@@ -35,6 +35,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
+import java.text.DecimalFormat;
 import java.time.temporal.ChronoUnit;
 
 @PluginDescriptor(
@@ -44,6 +45,7 @@ public class CombatLevel extends Plugin
 {
 	private final CombatLevelConfig config = RuneLite.getRunelite().getConfigManager().getConfig(CombatLevelConfig.class);
 	private final Client client = RuneLite.getClient();
+	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
 	@Override
 	protected void startUp() throws Exception
@@ -85,7 +87,7 @@ public class CombatLevel extends Plugin
 				client.getRealSkillLevel(Skill.RANGED),
 				client.getRealSkillLevel(Skill.PRAYER)
 			);
-			combatLevelWidget.setText("Combat Lvl: " + combatLevelPrecise);
+			combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
 		}
 		else
 		{
