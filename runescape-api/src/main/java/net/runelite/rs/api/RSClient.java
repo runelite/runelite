@@ -27,272 +27,272 @@ package net.runelite.rs.api;
 import net.runelite.api.Client;
 import net.runelite.mapping.Import;
 
-public interface RSClient extends RSGameEngine, Client
-{
-	@Import("cameraX")
-	@Override
-	int getCameraX();
+public interface RSClient extends RSGameEngine, Client {
+  @Import("cameraX")
+  @Override
+  int getCameraX();
 
-	@Import("cameraY")
-	@Override
-	int getCameraY();
+  @Import("cameraY")
+  @Override
+  int getCameraY();
 
-	@Import("cameraZ")
-	@Override
-	int getCameraZ();
+  @Import("cameraZ")
+  @Override
+  int getCameraZ();
 
-	@Import("plane")
-	@Override
-	int getPlane();
+  @Import("plane")
+  @Override
+  int getPlane();
 
-	@Import("cameraPitch")
-	@Override
-	int getCameraPitch();
+  @Import("cameraPitch")
+  @Override
+  int getCameraPitch();
 
-	@Import("cameraYaw")
-	@Override
-	int getCameraYaw();
+  @Import("cameraYaw")
+  @Override
+  int getCameraYaw();
 
-	@Import("world")
-	int getWorld();
+  @Import("world")
+  int getWorld();
 
-	@Import("FPS")
-	@Override
-	int getFPS();
+  @Import("FPS")
+  @Override
+  int getFPS();
 
-	@Import("mapAngle")
-	@Override
-	int getMapAngle();
+  @Import("mapAngle")
+  @Override
+  int getMapAngle();
 
-	@Import("tileHeights")
-	@Override
-	int[][][] getTileHeights();
+  @Import("tileHeights")
+  @Override
+  int[][][] getTileHeights();
 
-	@Import("tileSettings")
-	@Override
-	byte[][][] getTileSettings();
+  @Import("tileSettings")
+  @Override
+  byte[][][] getTileSettings();
 
-	@Import("settings")
-	@Override
-	int[] getSettings();
+  @Import("settings")
+  @Override
+  int[] getSettings();
 
-	@Import("widgetSettings")
-	@Override
-	int[] getWidgetSettings();
+  @Import("widgetSettings")
+  @Override
+  int[] getWidgetSettings();
 
-	@Import("energy")
-	int getEnergy();
+  @Import("energy")
+  int getEnergy();
 
-	@Import("weight")
-	int getWeight();
+  @Import("weight")
+  int getWeight();
 
-	@Import("baseX")
-	@Override
-	int getBaseX();
+  @Import("baseX")
+  @Override
+  int getBaseX();
 
-	@Import("baseY")
-	@Override
-	int getBaseY();
+  @Import("baseY")
+  @Override
+  int getBaseY();
 
-	@Import("boostedSkillLevels")
-	int[] getBoostedSkillLevels();
+  @Import("boostedSkillLevels")
+  int[] getBoostedSkillLevels();
 
-	@Import("realSkillLevels")
-	int[] getRealSkillLevels();
+  @Import("realSkillLevels")
+  int[] getRealSkillLevels();
 
-	@Import("skillExperiences")
-	int[] getSkillExperiences();
+  @Import("skillExperiences")
+  int[] getSkillExperiences();
 
-	@Import("gameState")
-	int getRSGameState();
+  @Import("gameState")
+  int getRSGameState();
 
-	@Import("widgets")
-	RSWidget[][] getWidgets();
+  @Import("widgets")
+  RSWidget[][] getWidgets();
 
-	@Import("region")
-	@Override
-	RSRegion getRegion();
+  @Import("region")
+  @Override
+  RSRegion getRegion();
 
-	@Import("localPlayer")
-	@Override
-	RSPlayer getLocalPlayer();
+  @Import("localPlayer")
+  @Override
+  RSPlayer getLocalPlayer();
 
-	@Import("npcIndexesCount")
-	int getNpcIndexesCount();
+  @Import("npcIndexesCount")
+  int getNpcIndexesCount();
 
-	@Import("npcIndices")
-	int[] getNpcIndices();
+  @Import("npcIndices")
+  int[] getNpcIndices();
 
-	@Import("cachedNPCs")
-	RSNPC[] getCachedNPCs();
+  @Import("cachedNPCs")
+  RSNPC[] getCachedNPCs();
 
-	@Import("collisionMaps")
-	RSCollisionData[] getCollisionMaps();
-	
-	@Import("playerIndexesCount")
-	int getPlayerIndexesCount();
-	
-	@Import("playerIndices")
-	int[] getPlayerIndices();
+  @Import("collisionMaps")
+  RSCollisionData[] getCollisionMaps();
 
-	@Import("cachedPlayers")
-	RSPlayer[] getCachedPlayers();
+  @Import("playerIndexesCount")
+  int getPlayerIndexesCount();
 
-	@Import("groundItemDeque")
-	RSDeque[][][] getGroundItemDeque();
+  @Import("playerIndices")
+  int[] getPlayerIndices();
 
-	@Import("username")
-	@Override
-	String getUsername();
+  @Import("cachedPlayers")
+  RSPlayer[] getCachedPlayers();
 
-	@Import(value = "username", setter = true)
-	@Override
-	void setUsername(String username);
+  @Import("groundItemDeque")
+  RSDeque[][][] getGroundItemDeque();
 
-	@Import("playerOptions")
-	@Override
-	String[] getPlayerOptions();
+  @Import("username")
+  @Override
+  String getUsername();
 
-	@Import("playerOptionsPriorities")
-	@Override
-	boolean[] getPlayerOptionsPriorities();
+  @Import(value = "username", setter = true)
+  @Override
+  void setUsername(String username);
 
-	@Import("playerMenuTypes")
-	@Override
-	int[] getPlayerMenuTypes();
+  @Import("playerOptions")
+  @Override
+  String[] getPlayerOptions();
 
-	@Import("menuTargets")
-	@Override
-	String[] getMenuTargets();
+  @Import("playerOptionsPriorities")
+  @Override
+  boolean[] getPlayerOptionsPriorities();
 
-	@Import("menuOptions")
-	@Override
-	String[] getMenuOptions();
+  @Import("playerMenuTypes")
+  @Override
+  int[] getPlayerMenuTypes();
 
-	@Import("mouseX")
-	int getMouseX();
+  @Import("menuTargets")
+  @Override
+  String[] getMenuTargets();
 
-	@Import("mouseY")
-	int getMouseY();
+  @Import("menuOptions")
+  @Override
+  String[] getMenuOptions();
 
-	@Import("menuOptionCount")
-	int getMenuOptionCount();
+  @Import("mouseX")
+  int getMouseX();
 
-	@Import("menuTypes")
-	int[] getMenuTypes();
+  @Import("mouseY")
+  int getMouseY();
 
-	@Import("menuIdentifiers")
-	int[] getMenuIdentifiers();
+  @Import("menuOptionCount")
+  int getMenuOptionCount();
 
-	@Import("friends")
-	RSFriend[] getFriends();
+  @Import("menuTypes")
+  int[] getMenuTypes();
 
-	@Import("ignores")
-	RSIgnore[] getIgnores();
+  @Import("menuIdentifiers")
+  int[] getMenuIdentifiers();
 
-	@Import("worldList")
-	RSWorld[] getWorldList();
+  @Import("friends")
+  RSFriend[] getFriends();
 
-	@Import("sendGameMessage")
-	void sendGameMessage(int var1, String var2, String var3);
+  @Import("ignores")
+  RSIgnore[] getIgnores();
 
-	@Import("getObjectDefinition")
-	RSObjectComposition getObjectDefinition(int objectId);
+  @Import("worldList")
+  RSWorld[] getWorldList();
 
-	@Import("scale")
-	@Override
-	int getScale();
+  @Import("sendGameMessage")
+  void sendGameMessage(int var1, String var2, String var3);
 
-	@Import("viewportHeight")
-	@Override
-	int getViewportHeight();
+  @Import("getObjectDefinition")
+  RSObjectComposition getObjectDefinition(int objectId);
 
-	@Import("viewportWidth")
-	@Override
-	int getViewportWidth();
+  @Import("scale")
+  @Override
+  int getScale();
 
-	@Import("isResized")
-	@Override
-	boolean isResized();
+  @Import("viewportHeight")
+  @Override
+  int getViewportHeight();
 
-	@Import("widgetPositionX")
-	@Override
-	int[] getWidgetPositionsX();
+  @Import("viewportWidth")
+  @Override
+  int getViewportWidth();
 
-	@Import("widgetPositionY")
-	@Override
-	int[] getWidgetPositionsY();
+  @Import("isResized")
+  @Override
+  boolean isResized();
 
-	@Import("itemContainers")
-	RSHashTable getItemContainers();
+  @Import("widgetPositionX")
+  @Override
+  int[] getWidgetPositionsX();
 
-	@Import("getItemDefinition")
-	@Override
-	RSItemComposition getItemDefinition(int itemId);
+  @Import("widgetPositionY")
+  @Override
+  int[] getWidgetPositionsY();
 
-	@Import("createSprite")
-	@Override
-	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
+  @Import("itemContainers")
+  RSHashTable getItemContainers();
 
-	@Import("componentTable")
-	@Override
-	RSHashTable getComponentTable();
+  @Import("getItemDefinition")
+  @Override
+  RSItemComposition getItemDefinition(int itemId);
 
-	@Import("grandExchangeOffers")
-	RSGrandExchangeOffer[] getGrandExchangeOffers();
+  @Import("createSprite")
+  @Override
+  RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
-	@Import("clanChatCount")
-	@Override
-	int getClanChatCount();
+  @Import("componentTable")
+  @Override
+  RSHashTable getComponentTable();
 
-	@Import("clanMembers")
-	RSClanMember[] getClanMembers();
+  @Import("grandExchangeOffers")
+  @Override
+  RSGrandExchangeOffer[] getGrandExchangeOffers();
 
-	@Import("isMenuOpen")
-	@Override
-	boolean isMenuOpen();
+  @Import("clanChatCount")
+  @Override
+  int getClanChatCount();
 
-	@Import("gameCycle")
-	int getGameCycle();
+  @Import("clanMembers")
+  RSClanMember[] getClanMembers();
 
-	@Import("packetHandler")
-	void packetHandler();
+  @Import("isMenuOpen")
+  @Override
+  boolean isMenuOpen();
 
-	@Import("revision")
-	@Override
-	int getRevision();
+  @Import("gameCycle")
+  int getGameCycle();
 
-	@Import("mapRegions")
-	@Override
-	int[] getMapRegions();
+  @Import("packetHandler")
+  void packetHandler();
 
-	@Import("xteaKeys")
-	@Override
-	int[][] getXteaKeys();
+  @Import("revision")
+  @Override
+  int getRevision();
 
-	@Import("gameDrawingMode")
-	@Override
-	int getGameDrawingMode();
+  @Import("mapRegions")
+  @Override
+  int[] getMapRegions();
 
-	@Import(
-		value = "gameDrawingMode",
-		setter = true
-	)
-	@Override
-	void setGameDrawingMode(int gameDrawingMode);
+  @Import("xteaKeys")
+  @Override
+  int[][] getXteaKeys();
 
-	@Import("cycleCntr")
-	int getCycleCntr();
+  @Import("gameDrawingMode")
+  @Override
+  int getGameDrawingMode();
 
-	@Import(value = "chatCycle", setter = true)
-	void setChatCycle(int value);
+  @Import(
+      value = "gameDrawingMode",
+      setter = true
+  )
+  @Override
+  void setGameDrawingMode(int gameDrawingMode);
 
-	/**
-	 * Get the widget top group. widgets[topGroup] contains widgets with
-	 * parentId -1, which are the widget roots.
-	 *
-	 * @return
-	 */
-	@Import("widgetRoot")
-	int getWidgetRoot();
+  @Import("cycleCntr")
+  int getCycleCntr();
+
+  @Import(value = "chatCycle", setter = true)
+  void setChatCycle(int value);
+
+  /**
+   * Get the widget top group. widgets[topGroup] contains widgets with
+   * parentId -1, which are the widget roots.
+   *
+   * @return
+   */
+  @Import("widgetRoot")
+  int getWidgetRoot();
 }

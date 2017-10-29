@@ -24,9 +24,8 @@
  */
 package net.runelite.api;
 
-import java.awt.Canvas;
+import java.awt.*;
 import java.util.List;
-
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -133,6 +132,8 @@ public interface Client
 	int getClanChatCount();
 
 	HashTable getComponentTable();
+
+	GrandExchangeOffer[] getGrandExchangeOffers();
 
 	boolean isPrayerActive(Prayer prayer);
 
