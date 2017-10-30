@@ -40,7 +40,6 @@ import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.attributes.code.instructions.PutStatic;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
-
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +49,8 @@ public class InjectSetter
 	private static final Logger logger = LoggerFactory.getLogger(InjectSetter.class);
 
 	private final Inject inject;
+	
+	private int injectedSetters;
 
 	public InjectSetter(Inject inject)
 	{
@@ -95,6 +96,7 @@ public class InjectSetter
 		Method setterMethod = new Method(targetClass, method.getName(), sig);
 		setterMethod.setAccessFlags(ACC_PUBLIC);
 		targetClass.addMethod(setterMethod);
+		++injectedSetters;
 
 		Code code = new Code(setterMethod);
 		setterMethod.setCode(code);
@@ -137,5 +139,10 @@ public class InjectSetter
 		}
 
 		ins.add(new VReturn(instructions));
+	}
+
+	public int getInjectedSetters()
+	{
+		return injectedSetters;
 	}
 }
