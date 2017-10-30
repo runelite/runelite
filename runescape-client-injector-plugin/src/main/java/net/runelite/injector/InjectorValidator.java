@@ -61,7 +61,7 @@ public class InjectorValidator
 			validate(cf);
 		}
 
-		logger.info("{} injected methods, {} missing", okay, missing);
+		logger.info("{} overridden methods, {} missing", okay, missing);
 	}
 
 	private void validate(ClassFile cf)
