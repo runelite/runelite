@@ -126,12 +126,10 @@ class MouseHighlightOverlay extends Overlay
 		int height = fm.getHeight();
 
 		if (config.display_left())
-			x -= total_width + 6; //Draw to the left of the mouse
-		y -= height / 2; // Draw slightly above the mouse
-
-		// Don't draw off of the screen (left and right)
-		if (config.display_left())
 		{
+			x -= total_width + 6; // Draw to the left of the mouse
+
+			// Don't draw off of the screen (left)
 			if (x < 0)
 			{
 				x = 0;
@@ -139,12 +137,15 @@ class MouseHighlightOverlay extends Overlay
 		}
 		else
 		{
+			// Don't draw off of the screen (right)
 			int canvas_width = client.getCanvas().getWidth();
 			if (x + total_width + 7 > canvas_width)
 			{
 				x = canvas_width - total_width - 7;
 			}
 		}
+
+		y -= height / 2; // Draw slightly above the mouse
 
 		// Don't draw off of the screen (top)
 		if (y < height / 2)
