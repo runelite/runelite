@@ -317,9 +317,9 @@ public class Inject
 			}
 		}
 		
-		logger.info("Injected {} hooks, {} getters, {} settters",
+		logger.info("Injected {} hooks, {} getters, {} settters, {} invokers",
 			hooks.getInjectedHooks(), getters.getInjectedGetters(),
-			setters.getInjectedSetters());
+			setters.getInjectedSetters(), invokes.getInjectedInvokers());
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
