@@ -147,9 +147,9 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		// Don't draw off of the screen (top)
-		if (y < 0)
+		if (y < height / 2)
 		{
-			y = 0;
+			y = height / 2;
 		}
 
 		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
