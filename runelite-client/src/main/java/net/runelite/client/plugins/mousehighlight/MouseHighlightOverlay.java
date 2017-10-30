@@ -129,11 +129,24 @@ class MouseHighlightOverlay extends Overlay
 			x -= total_width + 6; //Draw to the left of the mouse
 		y -= height / 2; // Draw slightly above the mouse
 
-		// Don't draw off of the screen
-		if (x < 0)
+		// Don't draw off of the screen (left and right)
+		if (config.display_left())
 		{
-			x = 0;
+			if (x < 0)
+			{
+				x = 0;
+			}
 		}
+		else
+		{
+			int canvas_width = client.getCanvas().getWidth();
+			if (x + total_width + 7 > canvas_width)
+			{
+				x = canvas_width - total_width - 7;
+			}
+		}
+
+		// Don't draw off of the screen (top)
 		if (y < 0)
 		{
 			y = 0;
