@@ -63,6 +63,8 @@ public class InjectHook
 
 	private final Inject inject;
 	private final Map<Field, Field> hooked = new HashMap<>();
+	
+	private int injectedHooks;
 
 	public InjectHook(Inject inject)
 	{
@@ -88,30 +90,8 @@ public class InjectHook
 	{
 		index();
 
-		for (ClassFile cf : inject.getVanilla().getClasses())
-		{
-			for (Method method : cf.getMethods())
-			{
-				Code code = method.getCode();
-
-				if (code == null || method.getName().equals(CLINIT))
-				{
-					continue;
-				}
-
-				injectSetField(method);
-			}
-		}
-	}
-
-	private void injectSetField(Method method)
-	{
-		Code code = method.getCode();
-		Instructions ins = code.getInstructions();
-
 		Execution e = new Execution(inject.getVanilla());
-		e.noInvoke = true;
-		e.addMethod(method);
+		e.populateInitialMethods();
 
 		Set<Instruction> done = new HashSet<>();
 		Set<Instruction> doneIh = new HashSet<>();
@@ -119,6 +99,14 @@ public class InjectHook
 		e.addExecutionVisitor((InstructionContext ic) ->
 		{
 			Instruction i = ic.getInstruction();
+			Instructions ins = i.getInstructions();
+			Code code = ins.getCode();
+			Method method = code.getMethod();
+			
+			if (method.getName().equals(CLINIT))
+			{
+				return;
+			}
 
 			if (!(i instanceof SetFieldInstruction))
 			{
@@ -133,7 +121,7 @@ public class InjectHook
 			SetFieldInstruction sfi = (SetFieldInstruction) i;
 			Field fieldBeingSet = sfi.getMyField();
 
-			if (fieldBeingSet == null)// || !hooked.contains(fieldBeingSet))
+			if (fieldBeingSet == null)
 			{
 				return;
 			}
@@ -148,6 +136,7 @@ public class InjectHook
 			assert hookName != null;
 
 			logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
+			++injectedHooks;
 
 			Instruction objectInstruction = new AConstNull(ins);
 			if (sfi instanceof PutField)
@@ -184,6 +173,14 @@ public class InjectHook
 		e.addExecutionVisitor((InstructionContext ic) ->
 		{
 			Instruction i = ic.getInstruction();
+			Instructions ins = i.getInstructions();
+			Code code = ins.getCode();
+			Method method = code.getMethod();
+			
+			if (method.getName().equals(CLINIT))
+			{
+				return;
+			}
 
 			if (!(i instanceof ArrayStore))
 			{
@@ -210,7 +207,6 @@ public class InjectHook
 			}
 
 			String hookName = DeobAnnotations.getHookName(deobField.getAnnotations()); // hook name
-			//if (hookName == null)return;
 
 			// assume this is always at index 1
 			StackContext index = ic.getPops().get(1);
@@ -218,6 +214,7 @@ public class InjectHook
 
 			// inject hook after 'i'
 			logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
+			++injectedHooks;
 
 			int idx = ins.getInstructions().indexOf(i);
 			assert idx != -1;
@@ -270,5 +267,10 @@ public class InjectHook
 		}
 		ins.getInstructions().add(idx++, objectPusher);
 		ins.getInstructions().add(idx++, invoke);
+	}
+
+	public int getInjectedHooks()
+	{
+		return injectedHooks;
 	}
 }

@@ -325,6 +325,8 @@ public class Inject
 				invokes.process(m, other, implementingClass);
 			}
 		}
+		
+		logger.info("Injected {} hooks", hooks.getInjectedHooks());
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
