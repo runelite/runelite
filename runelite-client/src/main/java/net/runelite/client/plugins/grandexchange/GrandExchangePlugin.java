@@ -12,7 +12,8 @@ import net.runelite.client.ui.NavigationButton;
  * @author Robbie, created on 29/10/2017 09:59 AM
  */
 @PluginDescriptor(name = "Grand Exchange offer plugin")
-public class GrandExchangePlugin extends Plugin {
+public class GrandExchangePlugin extends Plugin
+{
 
   private ImageIcon icon;
   private NavigationButton button;
@@ -21,7 +22,8 @@ public class GrandExchangePlugin extends Plugin {
   private ClientUI ui;
 
   @Override
-  protected void startUp() throws Exception {
+  protected void startUp() throws Exception
+  {
     runelite = RuneLite.getRunelite();
     ui = runelite.getGui();
 
@@ -33,11 +35,13 @@ public class GrandExchangePlugin extends Plugin {
   }
 
   @Override
-  protected void shutDown() throws Exception {
+  protected void shutDown() throws Exception
+  {
 
   }
 
-  private GrandExchangePanel doPanel() {
+  private GrandExchangePanel doPanel()
+  {
     GrandExchangePanel panel = GrandExchangePanel.getInstance();
     panel.init();
     return panel;

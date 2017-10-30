@@ -21,7 +21,8 @@ import net.runelite.client.ui.PluginPanel;
 /**
  * @author Robbie, created on 29/10/2017 09:58 AM
  */
-public class GrandExchangePanel extends PluginPanel {
+public class GrandExchangePanel extends PluginPanel
+{
 
   private Client client;
 
@@ -33,21 +34,26 @@ public class GrandExchangePanel extends PluginPanel {
   private ImageIcon[] offerImages;
   private JLabel[] itemNameLabels;
   private JLabel[] offerPriceLabels;
+  private JLabel[] statusIndicators;
+  private JProgressBar[] progressBars;
 
-  private GrandExchangePanel() {
+  private GrandExchangePanel()
+  {
     setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
     setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
     setSize(PANEL_WIDTH, PANEL_HEIGHT);
     setVisible(true);
   }
 
-  public static GrandExchangePanel getInstance() {
+  public static GrandExchangePanel getInstance()
+  {
     return instance == null
         ? instance = new GrandExchangePanel()
         : instance;
   }
 
-  public void init() {
+  public void init()
+  {
     if (component == null) {
       client = RuneLite.getClient();
       populate();
@@ -57,11 +63,14 @@ public class GrandExchangePanel extends PluginPanel {
     }
   }
 
-  private void populate() {
+  private void populate()
+  {
     this.offerImages = new ImageIcon[8];
     this.imageLabels = new JLabel[8];
     this.itemNameLabels = new JLabel[8];
     this.offerPriceLabels = new JLabel[8];
+    this.statusIndicators = new JLabel[8];
+    this.progressBars = new JProgressBar[8];
 
     //TODO: via java 8 stream?
     for (int i = 0; i < offerImages.length; i++) {
@@ -69,60 +78,89 @@ public class GrandExchangePanel extends PluginPanel {
       imageLabels[i] = new JLabel(); //holds icon
       itemNameLabels[i] = new JLabel(); //holds item name
       offerPriceLabels[i] = new JLabel(); //holds offer price
+      statusIndicators[i] = new JLabel(); //holds quantity bought/sold
+      progressBars[i] = new JProgressBar();
     }
 
   }
 
-  private void handleLogic() {
+  private void handleLogic()
+  {
     ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
     ses.scheduleWithFixedDelay(() -> updateUI.accept(client.getGrandExchangeOffers()), 0, 1000, TimeUnit.MILLISECONDS);
   }
 
-  private Consumer<GrandExchangeOffer[]> updateUI = (offers) -> {
-    System.out.println("Started call to updateUI consumer");
-    Arrays.stream(offers)
-        .filter(Objects::nonNull)
-        .forEach(offer -> {
+  private Consumer<GrandExchangeOffer[]> updateUI = (offers) ->
+      Arrays.stream(offers)
+          .filter(Objects::nonNull)
+          .forEach(offer -> {
 
-              int idx = Arrays.asList(offers).indexOf(offer);
+            int idx = Arrays.asList(offers).indexOf(offer);
 
-              //TODO: add Selling/Buying indicator? Sell/Buy Flag is decoded as below...
-//              switch (offer.getProgress()) {
-//                case 2:
-//                  System.out.println("BUY OFFER @ "+client.getItemDefinition(offer.getItemId()).getName());
-//                  break;
-//
-//                case 10:
-//                  System.out.println("SELL OFFER @ "+client.getItemDefinition(offer.getItemId()).getName());
-//                  break;
-//
-//                case 0:
-//                  System.out.println("< Empty slot >");
-//                  break;
-//              }
+            offerImages[idx] = new ImageIcon(
+                client.getGrandExchangeOffers() == null || client.getGrandExchangeOffers()[idx] == null
+                    ? ItemManager.getImage(0)
+                    : ItemManager.getImage(client.getGrandExchangeOffers()[idx].getItemId())
+            );
 
-              System.out.println(offer.getQuantitySold()+", "+offer.getTotalQuantity());
+            //TODO: "empty slot" image [instead of dwarf remains image]?
+            imageLabels[idx].setIcon(offer.getItemId() == 0 ? new ImageIcon(ItemManager.getImage(0)) : offerImages[idx]);
 
+            itemNameLabels[idx].setText(offer.getItemId() == 0 ? "Empty" : offer.getTotalQuantity() + "x " + client.getItemDefinition(offer.getItemId()).getName());
 
-              offerImages[idx] = new ImageIcon(
-                  client.getGrandExchangeOffers() == null || client.getGrandExchangeOffers()[idx] == null
-                      ? ItemManager.getImage(0)
-                      : ItemManager.getImage(client.getGrandExchangeOffers()[idx].getItemId())
-              );
+            offerPriceLabels[idx].setText(ItemManager.quantityToStackSize(offer.getPrice()).endsWith("M")
+                || ItemManager.quantityToStackSize(offer.getPrice()).endsWith("K")
+                ? ItemManager.quantityToStackSize(offer.getPrice())
+                : ItemManager.quantityToStackSize(offer.getPrice()) + " gp");
 
-              //TODO: "empty slot" image [instead of dwarf remains image]?
-              imageLabels[idx].setIcon(offer.getItemId() == 0 ? new ImageIcon(ItemManager.getImage(0)) : offerImages[idx]);
+            statusIndicators[idx].setText(getIsBuySell(offer));
 
-              itemNameLabels[idx].setText(offer.getItemId() == 0 ? "Empty" : client.getItemDefinition(offer.getItemId()).getName());
+            EventQueue.invokeLater(() -> progressBars[idx].setValue(offer.getTotalQuantity() == 0 ? 0 : (offer.getQuantitySold() / offer.getTotalQuantity()) * 100));
 
-              offerPriceLabels[idx].setText(ItemManager.quantityToStackSize(offer.getPrice())+" gp");
+            progressBars[idx].setStringPainted(true);
+            progressBars[idx].setBackground(decodeColour(progressBars[idx]));
+            progressBars[idx].setForeground(Color.white);
+            progressBars[idx].setString(offer.getQuantitySold() + " / " + offer.getTotalQuantity());
 
-            }
-        ); //update our map
-    System.out.println("Finished call to updateUI consumer");
-  };
+          });
 
-  private Function<GrandExchangeOffer[], String> getOfferStrings = (offers) -> {
+  private String getIsBuySell(GrandExchangeOffer offer)
+  {
+    switch (offer.getProgress()) {
+      case 2:
+        return "Buy";
+
+      case 5:
+        return "Bought";
+
+      case 10:
+        return "Sell";
+
+      case 13:
+        return "Sold";
+
+      case 0:
+      default:
+        return "";
+    }
+  }
+
+  private Color decodeColour(JProgressBar offerBar)
+  {
+    switch ((int) offerBar.getPercentComplete() * 100) {
+      case 0:
+        return Color.GRAY;
+
+      case 100:
+        return Color.GREEN;
+
+      default:
+        return Color.ORANGE;
+    }
+  }
+
+  private Function<GrandExchangeOffer[], String> getOfferStrings = (offers) ->
+  {
     for (GrandExchangeOffer offer : offers) {
       if (offer != null) {
         return "GrandExchangeOffer{" +
@@ -136,11 +174,12 @@ public class GrandExchangePanel extends PluginPanel {
     return null;
   };
 
-  private JComponent buildPanel() {
+  private JComponent buildPanel()
+  {
 
     JFrame frame = new JFrame();
     frame.setBounds(100, 100, 225, 555);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     JPanel panel = new JPanel();
     frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -158,11 +197,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[1] = new JLabel("Empty");
 
-    JProgressBar progressBar_1 = new JProgressBar();
+    progressBars[1] = new JProgressBar();
 
     offerPriceLabels[1] = new JLabel("");
 
-    JLabel label_4 = new JLabel("258 / 3849");
+    statusIndicators[1] = new JLabel("");
     GroupLayout gl_panel_2 = new GroupLayout(panel_2);
     gl_panel_2.setHorizontalGroup(
         gl_panel_2.createParallelGroup(Alignment.LEADING)
@@ -178,8 +217,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(Alignment.LEADING, gl_panel_2.createSequentialGroup()
                         .addComponent(offerPriceLabels[1])
                         .addPreferredGap(ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(label_4))
-                    .addComponent(progressBar_1, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[1]))
+                    .addComponent(progressBars[1], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_2.setVerticalGroup(
@@ -190,9 +229,9 @@ public class GrandExchangePanel extends PluginPanel {
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
                     .addComponent(offerPriceLabels[1])
-                    .addComponent(label_4))
+                    .addComponent(statusIndicators[1]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_1, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[1], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_2.createSequentialGroup()
                 .addContainerGap(43, Short.MAX_VALUE)
                 .addComponent(imageLabels[1])
@@ -209,11 +248,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[2] = new JLabel("Empty");
 
-    JProgressBar progressBar_2 = new JProgressBar();
+    progressBars[2] = new JProgressBar();
 
     offerPriceLabels[2] = new JLabel("");
 
-    JLabel label_8 = new JLabel("258 / 3849");
+    statusIndicators[2] = new JLabel("");
     GroupLayout gl_panel_3 = new GroupLayout(panel_3);
     gl_panel_3.setHorizontalGroup(
         gl_panel_3.createParallelGroup(Alignment.LEADING)
@@ -229,8 +268,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(Alignment.LEADING, gl_panel_3.createSequentialGroup()
                         .addComponent(offerPriceLabels[2])
                         .addPreferredGap(ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(label_8))
-                    .addComponent(progressBar_2, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[2]))
+                    .addComponent(progressBars[2], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_3.setVerticalGroup(
@@ -241,9 +280,9 @@ public class GrandExchangePanel extends PluginPanel {
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
                     .addComponent(offerPriceLabels[2])
-                    .addComponent(label_8))
+                    .addComponent(statusIndicators[2]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_2, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[2], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_3.createSequentialGroup()
                 .addContainerGap(43, Short.MAX_VALUE)
                 .addComponent(imageLabels[2])
@@ -260,11 +299,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[3] = new JLabel("Empty");
 
-    JProgressBar progressBar_3 = new JProgressBar();
+    progressBars[3] = new JProgressBar();
 
     offerPriceLabels[3] = new JLabel("");
 
-    JLabel label_12 = new JLabel("258 / 3849");
+    statusIndicators[3] = new JLabel("");
     GroupLayout gl_panel_4 = new GroupLayout(panel_4);
     gl_panel_4.setHorizontalGroup(
         gl_panel_4.createParallelGroup(Alignment.LEADING)
@@ -278,8 +317,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_4.createSequentialGroup()
                         .addComponent(offerPriceLabels[3])
                         .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(label_12))
-                    .addComponent(progressBar_3, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[3]))
+                    .addComponent(progressBars[3], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_4.setVerticalGroup(
@@ -289,10 +328,10 @@ public class GrandExchangePanel extends PluginPanel {
                 .addComponent(itemNameLabels[3], GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_4.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(label_12)
+                    .addComponent(statusIndicators[3])
                     .addComponent(offerPriceLabels[3]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_3, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[3], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_4.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabels[3])
@@ -309,11 +348,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[4] = new JLabel("Empty");
 
-    JProgressBar progressBar_4 = new JProgressBar();
+    progressBars[4] = new JProgressBar();
 
     offerPriceLabels[4] = new JLabel("");
 
-    JLabel label_17 = new JLabel("258 / 3849");
+    statusIndicators[4] = new JLabel("");
     GroupLayout gl_panel_5 = new GroupLayout(panel_5);
     gl_panel_5.setHorizontalGroup(
         gl_panel_5.createParallelGroup(Alignment.LEADING)
@@ -327,8 +366,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_5.createSequentialGroup()
                         .addComponent(offerPriceLabels[4])
                         .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(label_17))
-                    .addComponent(progressBar_4, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[4]))
+                    .addComponent(progressBars[4], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_5.setVerticalGroup(
@@ -338,10 +377,10 @@ public class GrandExchangePanel extends PluginPanel {
                 .addComponent(itemNameLabels[4], GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_5.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(label_17)
+                    .addComponent(statusIndicators[4])
                     .addComponent(offerPriceLabels[4]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_4, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[4], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_5.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabels[4])
@@ -358,11 +397,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[5] = new JLabel("Empty");
 
-    JProgressBar progressBar_5 = new JProgressBar();
+    progressBars[5] = new JProgressBar();
 
     offerPriceLabels[5] = new JLabel("");
 
-    JLabel label_21 = new JLabel("258 / 3849");
+    statusIndicators[5] = new JLabel("");
     GroupLayout gl_panel_6 = new GroupLayout(panel_6);
     gl_panel_6.setHorizontalGroup(
         gl_panel_6.createParallelGroup(Alignment.LEADING)
@@ -376,8 +415,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_6.createSequentialGroup()
                         .addComponent(offerPriceLabels[5])
                         .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(label_21))
-                    .addComponent(progressBar_5, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[5]))
+                    .addComponent(progressBars[5], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_6.setVerticalGroup(
@@ -387,10 +426,10 @@ public class GrandExchangePanel extends PluginPanel {
                 .addComponent(itemNameLabels[5], GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_6.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(label_21)
+                    .addComponent(statusIndicators[5])
                     .addComponent(offerPriceLabels[5]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_5, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[5], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_6.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabels[5])
@@ -407,11 +446,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[6] = new JLabel("Empty");
 
-    JProgressBar progressBar_6 = new JProgressBar();
+    progressBars[6] = new JProgressBar();
 
     offerPriceLabels[6] = new JLabel("");
 
-    JLabel label_25 = new JLabel("258 / 3849");
+    statusIndicators[6] = new JLabel("");
     GroupLayout gl_panel_7 = new GroupLayout(panel_7);
     gl_panel_7.setHorizontalGroup(
         gl_panel_7.createParallelGroup(Alignment.LEADING)
@@ -425,8 +464,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_7.createSequentialGroup()
                         .addComponent(offerPriceLabels[6])
                         .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(label_25))
-                    .addComponent(progressBar_6, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[6]))
+                    .addComponent(progressBars[6], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_7.setVerticalGroup(
@@ -436,10 +475,10 @@ public class GrandExchangePanel extends PluginPanel {
                 .addComponent(itemNameLabels[6], GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_7.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(label_25)
+                    .addComponent(statusIndicators[6])
                     .addComponent(offerPriceLabels[6]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_6, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[6], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_7.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabels[6])
@@ -456,11 +495,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[7] = new JLabel("Empty");
 
-    JProgressBar progressBar_7 = new JProgressBar();
+    progressBars[7] = new JProgressBar();
 
     offerPriceLabels[7] = new JLabel("");
 
-    JLabel label_29 = new JLabel("258 / 3849");
+    statusIndicators[7] = new JLabel("");
     GroupLayout gl_panel_8 = new GroupLayout(panel_8);
     gl_panel_8.setHorizontalGroup(
         gl_panel_8.createParallelGroup(Alignment.LEADING)
@@ -474,8 +513,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_8.createSequentialGroup()
                         .addComponent(offerPriceLabels[7])
                         .addPreferredGap(ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(label_29))
-                    .addComponent(progressBar_7, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(statusIndicators[7]))
+                    .addComponent(progressBars[7], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
     );
     gl_panel_8.setVerticalGroup(
@@ -485,10 +524,10 @@ public class GrandExchangePanel extends PluginPanel {
                 .addComponent(itemNameLabels[7], GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(label_29)
+                    .addComponent(statusIndicators[7])
                     .addComponent(offerPriceLabels[7]))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar_7, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                .addComponent(progressBars[7], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
             .addGroup(gl_panel_8.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(imageLabels[7])
@@ -538,11 +577,11 @@ public class GrandExchangePanel extends PluginPanel {
 
     itemNameLabels[0] = new JLabel("Empty");
 
-    JProgressBar progressBar = new JProgressBar();
+    progressBars[0] = new JProgressBar();
 
-    JLabel label_15 = new JLabel("258 / 3849");
+    statusIndicators[0] = new JLabel("");
 
-    offerPriceLabels[0] = new JLabel("3539 gp");
+    offerPriceLabels[0] = new JLabel("");
     GroupLayout gl_panel_1 = new GroupLayout(panel_1);
     gl_panel_1.setHorizontalGroup(
         gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -554,8 +593,8 @@ public class GrandExchangePanel extends PluginPanel {
                     .addGroup(gl_panel_1.createSequentialGroup()
                         .addComponent(offerPriceLabels[0])
                         .addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(label_15))
-                    .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(statusIndicators[0]))
+                    .addComponent(progressBars[0], GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
                     .addComponent(itemNameLabels[0], GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
                 .addContainerGap())
     );
@@ -569,9 +608,9 @@ public class GrandExchangePanel extends PluginPanel {
                         .addPreferredGap(ComponentPlacement.RELATED)
                         .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
                             .addComponent(offerPriceLabels[0])
-                            .addComponent(label_15))
+                            .addComponent(statusIndicators[0]))
                         .addGap(2)
-                        .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
+                        .addComponent(progressBars[0], GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE))
                     .addGroup(gl_panel_1.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(imageLabels[0])))
