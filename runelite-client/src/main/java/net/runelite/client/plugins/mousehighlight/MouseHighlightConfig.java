@@ -47,6 +47,16 @@ public interface MouseHighlightConfig
 	}
 
 	@ConfigItem(
+		keyName = "display_left",
+		name = "Display to the left of mouse?",
+		description = "Display to the left of the mouse or the right?"
+	)
+	default boolean display_left()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "border",
 		name = "Border Color",
 		description = "Color of the mouse hover border"

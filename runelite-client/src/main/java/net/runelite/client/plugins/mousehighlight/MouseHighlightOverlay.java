@@ -125,17 +125,32 @@ class MouseHighlightOverlay extends Overlay
 		}
 		int height = fm.getHeight();
 
-		x -= total_width + 6; // Draw to the left of the mouse
+		if (config.display_left())
+		{
+			x -= total_width + 6; // Draw to the left of the mouse
+
+			// Don't draw off of the screen (left)
+			if (x < 0)
+			{
+				x = 0;
+			}
+		}
+		else
+		{
+			// Don't draw off of the screen (right)
+			int canvas_width = client.getCanvas().getWidth();
+			if (x + total_width + 7 > canvas_width)
+			{
+				x = canvas_width - total_width - 7;
+			}
+		}
+
 		y -= height / 2; // Draw slightly above the mouse
 
-		// Don't draw off of the screen
-		if (x < 0)
+		// Don't draw off of the screen (top)
+		if (y < height / 2)
 		{
-			x = 0;
-		}
-		if (y < 0)
-		{
-			y = 0;
+			y = height / 2;
 		}
 
 		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
