@@ -465,6 +465,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -728024509
    )
+   @Export("hintArrowOffsetY")
    static int hintArrowOffsetY;
    @ObfuscatedName("lv")
    @ObfuscatedGetter(
