@@ -175,7 +175,7 @@ public class class219 implements class218 {
                var7 = var7 >> 14 & 32767;
                int var8 = CollisionData.getObjectDefinition(var7).mapIconId;
                if(var8 >= 0) {
-                  Client.field1145[Client.field1164] = Area.field3285[var8].method4368(false);
+                  Client.mapIcons[Client.field1164] = Area.field3285[var8].method4368(false);
                   Client.field1143[Client.field1164] = var5;
                   Client.field1179[Client.field1164] = var6;
                   ++Client.field1164;

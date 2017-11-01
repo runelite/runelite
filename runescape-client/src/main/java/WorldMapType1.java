@@ -21,8 +21,8 @@ public class WorldMapType1 implements WorldMapSectionBase {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   @Export("hitmarks")
-   static SpritePixels[] hitmarks;
+   @Export("headIconsPrayer")
+   static SpritePixels[] headIconsPrayer;
    @ObfuscatedName("dk")
    @ObfuscatedSignature(
       signature = "Lih;"
@@ -301,10 +301,10 @@ public class WorldMapType1 implements WorldMapSectionBase {
       garbageValue = "1182563306"
    )
    static final void method275(int var0, int var1) {
-      if(Client.field940 == 2) {
-         class148.method2941(Client.field946 + (Client.hintArrowX - class22.baseX * 411265 << 7), (Client.hintArrowY - class273.baseY << 7) + Client.field1139, Client.hintArrowType * 2);
+      if(Client.hintArrowTargetType == 2) {
+         class148.method2941(Client.hintArrowOffsetX + (Client.hintArrowX - class22.baseX * 411265 << 7), (Client.hintArrowY - class273.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
          if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            class14.pkIcons[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+            class14.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
          }
 
       }

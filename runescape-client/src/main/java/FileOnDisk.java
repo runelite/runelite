@@ -438,32 +438,32 @@ public final class FileOnDisk {
                      ++var0;
                   }
 
-                  if(class220.field2801 == null) {
-                     class220.field2801 = class219.method4135(class3.indexSprites, "mapscene", "");
+                  if(class220.mapscene == null) {
+                     class220.mapscene = class219.method4135(class3.indexSprites, "mapscene", "");
                   } else {
                      ++var0;
                   }
 
-                  if(GZipDecompressor.mapfunctions == null) {
-                     GZipDecompressor.mapfunctions = SceneTilePaint.method2714(class3.indexSprites, "headicons_pk", "");
+                  if(GZipDecompressor.headIconsPk == null) {
+                     GZipDecompressor.headIconsPk = SceneTilePaint.method2714(class3.indexSprites, "headicons_pk", "");
                   } else {
                      ++var0;
                   }
 
-                  if(WorldMapType1.hitmarks == null) {
-                     WorldMapType1.hitmarks = SceneTilePaint.method2714(class3.indexSprites, "headicons_prayer", "");
+                  if(WorldMapType1.headIconsPrayer == null) {
+                     WorldMapType1.headIconsPrayer = SceneTilePaint.method2714(class3.indexSprites, "headicons_prayer", "");
                   } else {
                      ++var0;
                   }
 
-                  if(class14.pkIcons == null) {
-                     class14.pkIcons = SceneTilePaint.method2714(class3.indexSprites, "headicons_hint", "");
+                  if(class14.headIconsHint == null) {
+                     class14.headIconsHint = SceneTilePaint.method2714(class3.indexSprites, "headicons_hint", "");
                   } else {
                      ++var0;
                   }
 
-                  if(class202.field2484 == null) {
-                     class202.field2484 = SceneTilePaint.method2714(class3.indexSprites, "mapmarker", "");
+                  if(class202.mapMarkers == null) {
+                     class202.mapMarkers = SceneTilePaint.method2714(class3.indexSprites, "mapmarker", "");
                   } else {
                      ++var0;
                   }
@@ -502,7 +502,7 @@ public final class FileOnDisk {
                      var2 = (int)(Math.random() * 21.0D) - 10;
                      var3 = (int)(Math.random() * 21.0D) - 10;
                      var4 = (int)(Math.random() * 41.0D) - 20;
-                     class220.field2801[0].method5136(var4 + var1, var2 + var4, var3 + var4);
+                     class220.mapscene[0].method5136(var4 + var1, var2 + var4, var3 + var4);
                      class90.loadingText = "Loaded sprites";
                      class90.loadingBarPercentage = 70;
                      Client.loadingStage = 90;
@@ -558,7 +558,7 @@ public final class FileOnDisk {
                   } else {
                      if(Client.renderOverview == null) {
                         Client.renderOverview = new RenderOverview();
-                        Client.renderOverview.method5294(class232.indexWorldMap, class155.field2238, Client.field980, class220.field2801);
+                        Client.renderOverview.method5294(class232.indexWorldMap, class155.field2238, Client.field980, class220.mapscene);
                      }
 
                      var0 = Client.renderOverview.method5295();

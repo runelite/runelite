@@ -338,7 +338,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -2002714747
    )
-   static int field940;
+   @Export("hintArrowTargetType")
+   static int hintArrowTargetType;
    @ObfuscatedName("id")
    @ObfuscatedGetter(
       intValue = 1251584657
@@ -351,7 +352,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1317239145
    )
-   static int field941;
+   @Export("hintArrowNpcTargetIdx")
+   static int hintArrowNpcTargetIdx;
    @ObfuscatedName("jw")
    @Export("boostedSkillLevels")
    static int[] boostedSkillLevels;
@@ -359,7 +361,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -601246665
    )
-   static int field1053;
+   @Export("hintArrowPlayerTargetIdx")
+   static int hintArrowPlayerTargetIdx;
    @ObfuscatedName("ms")
    @Export("widgetPositionY")
    static int[] widgetPositionY;
@@ -446,7 +449,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1732448659
    )
-   static int field946;
+   @Export("hintArrowOffsetX")
+   static int hintArrowOffsetX;
    @ObfuscatedName("ln")
    @ObfuscatedSignature(
       signature = "Lhj;"
@@ -461,7 +465,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -728024509
    )
-   static int field1139;
+   static int hintArrowOffsetY;
    @ObfuscatedName("lv")
    @ObfuscatedGetter(
       intValue = -14083199
@@ -958,7 +962,8 @@ public final class Client extends GameEngine {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   static SpritePixels[] field1145;
+   @Export("mapIcons")
+   static SpritePixels[] mapIcons;
    @ObfuscatedName("gp")
    static boolean field1132;
    @ObfuscatedName("gg")
@@ -1204,14 +1209,14 @@ public final class Client extends GameEngine {
       field937 = true;
       displayFps = false;
       field1030 = 0;
-      field940 = 0;
-      field941 = 0;
-      field1053 = 0;
+      hintArrowTargetType = 0;
+      hintArrowNpcTargetIdx = 0;
+      hintArrowPlayerTargetIdx = 0;
       hintArrowX = 0;
       hintArrowY = 0;
       hintArrowType = 0;
-      field946 = 0;
-      field1139 = 0;
+      hintArrowOffsetX = 0;
+      hintArrowOffsetY = 0;
       field948 = class89.field1406;
       field949 = class89.field1406;
       loadingStage = 0;
@@ -1407,7 +1412,7 @@ public final class Client extends GameEngine {
       field1164 = 0;
       field1143 = new int[1000];
       field1179 = new int[1000];
-      field1145 = new SpritePixels[1000];
+      mapIcons = new SpritePixels[1000];
       destinationX = 0;
       destinationY = 0;
       field1148 = 0;
@@ -3072,45 +3077,45 @@ public final class Client extends GameEngine {
                }
 
                if(packetType == Opcodes.PACKET_SERVER_140) {
-                  field940 = secretPacketBuffer2.readUnsignedByte();
-                  if(field940 == 1) {
-                     field941 = secretPacketBuffer2.readUnsignedShort();
+                  hintArrowTargetType = secretPacketBuffer2.readUnsignedByte();
+                  if(hintArrowTargetType == 1) {
+                     hintArrowNpcTargetIdx = secretPacketBuffer2.readUnsignedShort();
                   }
 
-                  if(field940 >= 2 && field940 <= 6) {
-                     if(field940 == 2) {
-                        field946 = 64;
-                        field1139 = 64;
+                  if(hintArrowTargetType >= 2 && hintArrowTargetType <= 6) {
+                     if(hintArrowTargetType == 2) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 3) {
-                        field946 = 0;
-                        field1139 = 64;
+                     if(hintArrowTargetType == 3) {
+                        hintArrowOffsetX = 0;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 4) {
-                        field946 = 128;
-                        field1139 = 64;
+                     if(hintArrowTargetType == 4) {
+                        hintArrowOffsetX = 128;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 5) {
-                        field946 = 64;
-                        field1139 = 0;
+                     if(hintArrowTargetType == 5) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 0;
                      }
 
-                     if(field940 == 6) {
-                        field946 = 64;
-                        field1139 = 128;
+                     if(hintArrowTargetType == 6) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 128;
                      }
 
-                     field940 = 2;
+                     hintArrowTargetType = 2;
                      hintArrowX = secretPacketBuffer2.readUnsignedShort();
                      hintArrowY = secretPacketBuffer2.readUnsignedShort();
                      hintArrowType = secretPacketBuffer2.readUnsignedByte();
                   }
 
-                  if(field940 == 10) {
-                     field1053 = secretPacketBuffer2.readUnsignedShort();
+                  if(hintArrowTargetType == 10) {
+                     hintArrowPlayerTargetIdx = secretPacketBuffer2.readUnsignedShort();
                   }
 
                   packetType = -1;
@@ -4484,7 +4489,7 @@ public final class Client extends GameEngine {
                   field1118 = 0;
                   field1030 = 0;
                   field977 = 0;
-                  field940 = 0;
+                  hintArrowTargetType = 0;
                   class148.method2940();
                   class175.method3455(0);
                   RSCanvas.method769();

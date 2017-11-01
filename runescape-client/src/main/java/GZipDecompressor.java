@@ -12,8 +12,8 @@ public class GZipDecompressor {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   @Export("mapfunctions")
-   static SpritePixels[] mapfunctions;
+   @Export("headIconsPk")
+   static SpritePixels[] headIconsPk;
    @ObfuscatedName("au")
    @ObfuscatedGetter(
       intValue = -2072355635
