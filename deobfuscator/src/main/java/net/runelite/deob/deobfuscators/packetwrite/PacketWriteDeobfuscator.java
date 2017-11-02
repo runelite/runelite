@@ -96,6 +96,16 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 			return;
 		}
 
+		if (!(ctx.getInstruction() instanceof InvokeVirtual))
+		{
+			return;
+		}
+
+		if (!ii.getMethod().getClazz().getName().equals(rw.getWriteOpcode().getClassFile().getSuperName()))
+		{
+			return;
+		}
+
 		write.writes.add(ctx);
 	}
 
