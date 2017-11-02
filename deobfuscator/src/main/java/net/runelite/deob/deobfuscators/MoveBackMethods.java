@@ -28,9 +28,11 @@ package net.runelite.deob.deobfuscators;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.signature.Signature;
 import net.runelite.deob.Deob;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
@@ -79,15 +81,7 @@ public class MoveBackMethods implements Deobfuscator
 
 			for (Method m2 : unusedMethods)
 			{
-				if (!m.getDescriptor().getReturnValue().equals(m2.getDescriptor().getReturnValue()))
-				{
-					continue;
-				}
-
-				// Used methods can have an extra parameter (the opaque predicate)
-				// Dummy methods cannot
-				if (m.getDescriptor().size() + 1 < m2.getDescriptor().size()
-						|| m.getDescriptor().size() - 1 > m2.getDescriptor().size())
+				if (!equalsDescriptors(m.getDescriptor(), m2.getDescriptor()))
 				{
 					continue;
 				}
@@ -232,6 +226,46 @@ public class MoveBackMethods implements Deobfuscator
 	private List<Integer> getLineNumbers(Method method)
 	{
 		return new ArrayList<>(method.getLineNumbers().getLineNumbers().values());
+	}
+
+	private boolean equalsDescriptors(Signature s, Signature s2)
+	{
+		if (!s.getReturnValue().equals(s2.getReturnValue()))
+		{
+			return false;
+		}
+
+		int commonDescSize = Math.min(s.size(), s2.size());
+
+		for (int i = 0; i < commonDescSize; i++)
+		{
+			if (!s.getArguments().get(i).equals(s2.getArguments().get(i)))
+			{
+				return false;
+			}
+		}
+
+		// Used methods can have an extra parameter (the opaque predicate)
+		// Dummy methods cannot
+		if (s.size() != s2.size()
+				&& s.size() != s2.size() + 1)
+		{
+			return false;
+		}
+
+		if (s.size() == s2.size() + 1)
+		{
+			Type lastArgType = s.getTypeOfArg(s.size() - 1);
+
+			if (!lastArgType.equals(Type.INT)
+					&& !lastArgType.equals(Type.BYTE)
+					&& !lastArgType.equals(Type.SHORT))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private void regeneratePool(ClassGroup group)
