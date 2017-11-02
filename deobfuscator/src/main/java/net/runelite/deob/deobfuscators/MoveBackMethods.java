@@ -29,9 +29,11 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.Deob;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,6 +134,18 @@ public class MoveBackMethods implements Deobfuscator
 			m.getClassFile().removeMethod(m);
 			cf.addMethod(m);
 			m.setClassFile(cf);
+
+			if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
+			{
+				String oldOwnerName = DeobAnnotations.getObfuscatedName(oldOwner.getAnnotations());
+
+				if (oldOwnerName == null) {
+					oldOwnerName = oldOwner.getName();
+				}
+
+				// Put the annotation first in the list to get owner, name, signature order
+				m.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
+			}
 
 			logger.info("Moved {}.{}{} to {}",
 					oldOwner.getName(), m.getName(), m.getDescriptor(), cf.getName());

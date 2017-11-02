@@ -43,7 +43,12 @@ public class Annotations
 	
 	public void addAnnotation(Annotation annotation)
 	{
-		annotations.add(annotation);
+		addAnnotation(annotations.size(), annotation);
+	}
+
+	public void addAnnotation(int idx, Annotation annotation)
+	{
+		annotations.add(idx, annotation);
 	}
 
 	public void removeAnnotation(Annotation annotation)
@@ -68,12 +73,17 @@ public class Annotations
 	{
 		return annotations.size();
 	}
-	
+
 	public Annotation addAnnotation(Type type, String name, Object value)
+	{
+		return addAnnotation(annotations.size(), type, name, value);
+	}
+	
+	public Annotation addAnnotation(int idx, Type type, String name, Object value)
 	{
 		Annotation annotation = new Annotation(this);
 		annotation.setType(type);
-		addAnnotation(annotation);
+		addAnnotation(idx, annotation);
 		
 		Element element = new Element(annotation);
 		element.setName(name);

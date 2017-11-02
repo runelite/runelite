@@ -37,6 +37,7 @@ import java.util.List;
 
 public class DeobAnnotations
 {
+	public static final Type OBFUSCATED_OWNER = new Type("Lnet/runelite/mapping/ObfuscatedOwner;");
 	public static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	public static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	public static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
