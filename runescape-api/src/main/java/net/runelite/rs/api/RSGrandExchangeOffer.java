@@ -27,23 +27,24 @@ package net.runelite.rs.api;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.mapping.Import;
 
-public interface RSGrandExchangeOffer extends GrandExchangeOffer {
-  @Import("quantitySold")
-  int getQuantitySold();
+public interface RSGrandExchangeOffer extends GrandExchangeOffer
+{
+	@Import("quantitySold")
+	int getQuantitySold();
 
-  @Import("itemId")
-  int getItemId();
+	@Import("itemId")
+	int getItemId();
 
-  @Import("totalQuantity")
-  int getTotalQuantity();
+	@Import("totalQuantity")
+	int getTotalQuantity();
 
-  @Import("price")
-  int getPrice();
+	@Import("price")
+	int getPrice();
 
-  @Import("spent")
-  int getSpent();
+	@Import("spent")
+	int getSpent();
 
-  @Import("progress")
-  byte getProgress();
+	@Import("progress")
+	byte getProgress();
 
 }

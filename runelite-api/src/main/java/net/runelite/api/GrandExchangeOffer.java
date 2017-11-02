@@ -6,16 +6,18 @@ package net.runelite.api;
 public interface GrandExchangeOffer
 {
 
-  int getQuantitySold();
+	int getQuantitySold();
 
-  int getItemId();
+	int getItemId();
 
-  int getTotalQuantity();
+	int getTotalQuantity();
 
-  int getPrice();
+	int getPrice();
 
-  int getSpent();
+	int getSpent();
 
-  byte getProgress();
+	byte getProgress();
+
+
 
 }
