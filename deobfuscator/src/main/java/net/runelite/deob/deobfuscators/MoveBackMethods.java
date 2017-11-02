@@ -54,6 +54,8 @@ public class MoveBackMethods implements Deobfuscator
 	private final Set<Method> unusedMethods = new HashSet<>();
 	private final Set<Method> usedMethods = new HashSet<>();
 
+	private final Map<Method, List<Method>> realMethodDummies = new HashMap<>();
+
 	@Override
 	public void run(ClassGroup group)
 	{
@@ -72,31 +74,9 @@ public class MoveBackMethods implements Deobfuscator
 			removeUnusedInstructions(m);
 		}
 
-		Map<Method, List<Method>> realMethodDummies = new HashMap<>();
-
 		for (Method m : usedMethods)
 		{
-			List<Integer> lineNumbers = getLineNumbers(m);
-
-			for (Method m2 : unusedMethods)
-			{
-				if (!equalsDescriptors(m.getDescriptor(), m2.getDescriptor()))
-				{
-					continue;
-				}
-
-				List<Integer> lineNumbers2 = getLineNumbers(m2);
-
-				if (lineNumbers.size() != lineNumbers2.size()
-						|| !lineNumbers.containsAll(lineNumbers2))
-				{
-					continue;
-				}
-
-				realMethodDummies
-						.computeIfAbsent(m, k -> new ArrayList<>())
-						.add(m2);
-			}
+			findDummies(m);
 		}
 
 		AtomicInteger movedCount = new AtomicInteger();
@@ -178,45 +158,6 @@ public class MoveBackMethods implements Deobfuscator
 		this.regeneratePool(group);
 	}
 
-	private void removeUnusedInstructions(Method m)
-	{
-		Instructions ins = m.getCode().getInstructions();
-
-		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
-
-		for (int j = 0; j < insCopy.size(); ++j)
-		{
-			Instruction i = insCopy.get(j);
-
-			if (!execution.executed.contains(i))
-			{
-				// if this is an exception handler, the exception handler is never used...
-				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
-				{
-					if (e.getStart().next() == i)
-					{
-						e.setStart(ins.createLabelFor(insCopy.get(j + 1)));
-
-						if (e.getStart().next() == e.getEnd().next())
-						{
-							m.getCode().getExceptions().remove(e);
-							continue;
-						}
-					}
-					if (e.getHandler().next() == i)
-					{
-						m.getCode().getExceptions().remove(e);
-					}
-				}
-
-				if (i instanceof Label)
-					continue;
-
-				ins.remove(i);
-			}
-		}
-	}
-
 	private void findUnusedMethods(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
@@ -279,6 +220,69 @@ public class MoveBackMethods implements Deobfuscator
 
 				usedMethods.add(m);
 			}
+		}
+	}
+
+	private void removeUnusedInstructions(Method m)
+	{
+		Instructions ins = m.getCode().getInstructions();
+
+		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
+
+		for (int j = 0; j < insCopy.size(); ++j)
+		{
+			Instruction i = insCopy.get(j);
+
+			if (!execution.executed.contains(i))
+			{
+				// if this is an exception handler, the exception handler is never used...
+				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
+				{
+					if (e.getStart().next() == i)
+					{
+						e.setStart(ins.createLabelFor(insCopy.get(j + 1)));
+
+						if (e.getStart().next() == e.getEnd().next())
+						{
+							m.getCode().getExceptions().remove(e);
+							continue;
+						}
+					}
+					if (e.getHandler().next() == i)
+					{
+						m.getCode().getExceptions().remove(e);
+					}
+				}
+
+				if (i instanceof Label)
+					continue;
+
+				ins.remove(i);
+			}
+		}
+	}
+
+	private void findDummies(Method m) {
+		List<Integer> lineNumbers = getLineNumbers(m);
+
+		for (Method m2 : unusedMethods)
+		{
+			if (!equalsDescriptors(m.getDescriptor(), m2.getDescriptor()))
+			{
+				continue;
+			}
+
+			List<Integer> lineNumbers2 = getLineNumbers(m2);
+
+			if (lineNumbers.size() != lineNumbers2.size()
+					|| !lineNumbers.containsAll(lineNumbers2))
+			{
+				continue;
+			}
+
+			realMethodDummies
+					.computeIfAbsent(m, k -> new ArrayList<>())
+					.add(m2);
 		}
 	}
 
