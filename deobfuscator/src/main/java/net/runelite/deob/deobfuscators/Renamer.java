@@ -25,6 +25,8 @@
 package net.runelite.deob.deobfuscators;
 
 import java.util.List;
+import java.util.ListIterator;
+
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -40,6 +42,7 @@ import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
+import net.runelite.deob.util.OwnerMappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +50,22 @@ public class Renamer implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(Renamer.class);
 
+	private final OwnerMappings ownerMappings;
 	private final NameMappings mappings;
+
+	public Renamer(OwnerMappings ownerMappings)
+	{
+		this(ownerMappings, new NameMappings());
+	}
 
 	public Renamer(NameMappings mappings)
 	{
+		this(new OwnerMappings(), mappings);
+	}
+
+	public Renamer(OwnerMappings ownerMappings, NameMappings mappings)
+	{
+		this.ownerMappings = ownerMappings;
 		this.mappings = mappings;
 	}
 
@@ -196,34 +211,66 @@ public class Renamer implements Deobfuscator
 		group.lookup();
 
 		int classes = 0, fields = 0, methods = 0;
+		int fieldOwners = 0, methodOwners = 0;
 
 		// rename fields
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Field field : cf.getFields())
+			ListIterator<Field> iterator = cf.getFields().listIterator();
+
+			while (iterator.hasNext())
 			{
+				Field field = iterator.next();
+
 				String newName = mappings.get(field.getPoolField());
-				if (newName == null)
+
+				if (newName != null)
 				{
-					continue;
+					if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
+					{
+						field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", field.getName());
+					}
+
+					field.setName(newName);
+					++fields;
 				}
 
-				if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
-				{
-					field.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", field.getName());
-				}
+				String newOwner = ownerMappings.get(field.getPoolField());
 
-				field.setName(newName);
-				++fields;
+				if (newOwner != null)
+				{
+					ClassFile newOwnerClass = group.findClass(newOwner);
+
+					iterator.remove();
+					newOwnerClass.addField(field);
+					field.setClassFile(newOwnerClass);
+
+					if (field.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
+					{
+						String oldOwnerName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+
+						if (oldOwnerName == null)
+						{
+							oldOwnerName = cf.getName();
+						}
+
+						// Put the annotation first in the list to get owner, name, signature order
+						field.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
+					}
+
+					fieldOwners++;
+				}
 			}
 		}
 
 		// rename methods
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method method : cf.getMethods())
+			ListIterator<Method> iterator = cf.getMethods().listIterator();
+
+			while (iterator.hasNext())
 			{
-				String newName = mappings.get(method.getPoolMethod());
+				Method method = iterator.next();
 
 				// rename on obfuscated signature
 				Annotation an = method.getAnnotations().find(DeobAnnotations.OBFUSCATED_SIGNATURE);
@@ -234,25 +281,51 @@ public class Renamer implements Deobfuscator
 					an.getElement().setValue(updatedSig.toString());
 				}
 
-				if (newName == null)
-				{
-					continue;
-				}
+				String newName = mappings.get(method.getPoolMethod());
 
-				List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
-				assert !virtualMethods.isEmpty();
-
-				for (Method m : virtualMethods)
+				if (newName != null)
 				{
-					if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
+					List<Method> virtualMethods = VirtualMethods.getVirtualMethods(method);
+					assert !virtualMethods.isEmpty();
+
+					for (Method m : virtualMethods)
 					{
-						m.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", m.getName());
+						if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_NAME) == null)
+						{
+							m.getAnnotations().addAnnotation(DeobAnnotations.OBFUSCATED_NAME, "value", m.getName());
+						}
+
+						m.setName(newName);
 					}
 
-					m.setName(newName);
+					methods += virtualMethods.size();
 				}
 
-				methods += virtualMethods.size();
+				String newOwner = ownerMappings.get(method.getPoolMethod());
+
+				if (newOwner != null)
+				{
+					ClassFile newOwnerClass = group.findClass(newOwner);
+
+					iterator.remove();
+					newOwnerClass.addMethod(method);
+					method.setClassFile(newOwnerClass);
+
+					if (method.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
+					{
+						String oldOwnerName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+
+						if (oldOwnerName == null)
+						{
+							oldOwnerName = cf.getName();
+						}
+
+						// Put the annotation first in the list to get owner, name, signature order
+						method.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
+					}
+
+					methodOwners++;
+				}
 			}
 		}
 
@@ -270,7 +343,14 @@ public class Renamer implements Deobfuscator
 
 		this.regeneratePool(group);
 
-		logger.info("Renamed {} classes, {} fields, and {} methods", classes, fields, methods);
+		if (!mappings.getMap().isEmpty())
+		{
+			logger.info("Renamed {} classes, {} fields, and {} methods", classes, fields, methods);
+		}
+		if (!ownerMappings.getMap().isEmpty())
+		{
+			logger.info("Moved {} fields and {} methods", fieldOwners, methodOwners);
+		}
 	}
 
 	private Type renameType(Type t)

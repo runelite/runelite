@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob.deobfuscators.membermover;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -35,15 +35,15 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
+import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import net.runelite.deob.util.OwnerMappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MoveBackMethods implements Deobfuscator
 {
@@ -55,6 +55,7 @@ public class MoveBackMethods implements Deobfuscator
 	private final Set<Method> usedMethods = new HashSet<>();
 
 	private final Map<Method, List<Method>> realMethodDummies = new HashMap<>();
+	private final Set<Method> movedMethods = new HashSet<>();
 
 	@Override
 	public void run(ClassGroup group)
@@ -79,7 +80,7 @@ public class MoveBackMethods implements Deobfuscator
 			findDummies(m);
 		}
 
-		findAndMoveBackMethods();
+		findAndMoveBackMethods(group);
 
 		this.regeneratePool(group);
 	}
@@ -258,10 +259,9 @@ public class MoveBackMethods implements Deobfuscator
 		return true;
 	}
 
-	private void findAndMoveBackMethods()
+	private void findAndMoveBackMethods(ClassGroup group)
 	{
-		AtomicInteger movedCount = new AtomicInteger();
-		AtomicInteger foundRealClassCount = new AtomicInteger();
+		OwnerMappings ownerMappings = new OwnerMappings();
 
 		realMethodDummies.forEach((m, ml) ->
 		{
@@ -275,7 +275,7 @@ public class MoveBackMethods implements Deobfuscator
 
 			if (singleTarget)
 			{
-				foundRealClassCount.incrementAndGet();
+				movedMethods.add(m);
 
 				ClassFile cf = ml.get(0).getClassFile();
 
@@ -306,35 +306,17 @@ public class MoveBackMethods implements Deobfuscator
 				}
 
 				newOwner = highest.m2.getClassFile();
+
+				movedMethods.add(m);
 			}
 
-			ClassFile oldOwner = m.getClassFile();
-
-			m.getClassFile().removeMethod(m);
-			newOwner.addMethod(m);
-			m.setClassFile(newOwner);
-
-			if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
-			{
-				String oldOwnerName = DeobAnnotations.getObfuscatedName(oldOwner.getAnnotations());
-
-				if (oldOwnerName == null)
-				{
-					oldOwnerName = oldOwner.getName();
-				}
-
-				// Put the annotation first in the list to get owner, name, signature order
-				m.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
-			}
-
-			logger.info("Moved {}.{}{} to {}",
-					oldOwner.getName(), m.getName(), m.getDescriptor(), newOwner.getName());
-
-			movedCount.incrementAndGet();
+			ownerMappings.map(m.getPoolMethod(), newOwner.getName());
 		});
 
-		logger.info("Found the original class for {}/{} static methods", foundRealClassCount, usedMethods.size());
-		logger.info("Moved {}/{} static methods back to their original classes", movedCount, usedMethods.size());
+		Renamer renamer = new Renamer(ownerMappings);
+		renamer.run(group);
+
+		logger.info("Found the original class for {}/{} static methods", movedMethods.size(), usedMethods.size());
 	}
 
 	private void regeneratePool(ClassGroup group)
@@ -352,5 +334,15 @@ public class MoveBackMethods implements Deobfuscator
 				c.getInstructions().regeneratePool();
 			}
 		}
+	}
+
+	public Set<Method> getUsedMethods()
+	{
+		return usedMethods;
+	}
+
+	public Set<Method> getMovedMethods()
+	{
+		return movedMethods;
 	}
 }

@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.deobfuscators.membermover.MemberMover;
 import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.constparam.ConstantParameter;
@@ -41,7 +42,6 @@ import net.runelite.deob.deobfuscators.PacketHandlerOrder;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
-import net.runelite.deob.deobfuscators.MoveBackMethods;
 import net.runelite.deob.deobfuscators.UnusedClass;
 import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
@@ -94,9 +94,9 @@ public class Deob
 		// remove illegal state exceptions, frees up some parameters
 		run(group, new IllegalStateExceptions());
 
-		// moves back static methods to their original classes
+		// moves static members to either their original classes or the Static class
 		// this also removes unused instructions in reached methods
-		run(group, new MoveBackMethods());
+		run(group, new MemberMover());
 
 		// remove unused methods - this leaves Code with no instructions,
 		// which is not valid, so unused methods is run after
