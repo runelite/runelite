@@ -48,7 +48,7 @@ public class Method
 {
 	public static final int ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
 
-	private final ClassFile classFile;
+	private ClassFile classFile;
 
 	private int accessFlags;
 	private String name;
@@ -71,6 +71,11 @@ public class Method
 	public ClassFile getClassFile()
 	{
 		return classFile;
+	}
+
+	public void setClassFile(ClassFile classFile)
+	{
+		this.classFile = classFile;
 	}
 
 	@Override

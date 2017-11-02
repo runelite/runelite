@@ -41,6 +41,7 @@ import net.runelite.deob.deobfuscators.PacketHandlerOrder;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
+import net.runelite.deob.deobfuscators.MoveBackMethods;
 import net.runelite.deob.deobfuscators.UnusedClass;
 import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
@@ -93,6 +94,7 @@ public class Deob
 		// remove unused methods - this leaves Code with no instructions,
 		// which is not valid, so unused methods is run after
 		run(group, new UnreachedCode());
+		run(group, new MoveBackMethods());
 		run(group, new UnusedMethods());
 
 		// remove illegal state exceptions, frees up some parameters
