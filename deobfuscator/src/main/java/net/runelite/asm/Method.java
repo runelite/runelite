@@ -29,6 +29,7 @@ import java.util.List;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
+import net.runelite.asm.attributes.LineNumbers;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -54,6 +55,7 @@ public class Method
 	private Signature arguments;
 	private Exceptions exceptions;
 	private Annotations annotations;
+	private LineNumbers lineNumbers;
 	private Code code;
 
 	public Method(ClassFile classFile, String name, Signature signature)
@@ -63,6 +65,7 @@ public class Method
 		this.arguments = signature;
 		exceptions = new Exceptions();
 		annotations = new Annotations();
+		lineNumbers = new LineNumbers();
 	}
 
 	public ClassFile getClassFile()
@@ -225,6 +228,11 @@ public class Method
 	public Annotations getAnnotations()
 	{
 		return annotations;
+	}
+
+	public LineNumbers getLineNumbers()
+	{
+		return lineNumbers;
 	}
 
 	@SuppressWarnings("unchecked")
