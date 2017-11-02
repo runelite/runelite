@@ -304,6 +304,14 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 				new Signature("(J)V")
 			);
 		}
+		else if (argumentType.equals(Type.STRING))
+		{
+			invokeMethod = new Method(
+				ii.getMethod().getClazz(),
+				"runeliteWriteString",
+				new Signature("(Ljava/lang/String;)V")
+			);
+		}
 		else
 		{
 			throw new IllegalStateException("Unknown type " + ii.getMethod().getType().getReturnValue());
