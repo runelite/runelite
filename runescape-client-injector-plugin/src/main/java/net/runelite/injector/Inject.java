@@ -219,17 +219,12 @@ public class Inject
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
 			java.lang.Class implementingClass = implemented.get(cf);
-			Annotations an = cf.getAnnotations();
 
-			if (an == null || an.size() == 0)
+			String obfuscatedName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+
+			if (obfuscatedName == null && !cf.getName().equals("Static"))
 			{
 				continue;
-			}
-
-			String obfuscatedName = DeobAnnotations.getObfuscatedName(an);
-			if (obfuscatedName == null)
-			{
-				obfuscatedName = cf.getName();
 			}
 
 			ClassFile other = vanilla.findClass(obfuscatedName);
@@ -237,7 +232,7 @@ public class Inject
 
 			for (Field f : cf.getFields())
 			{
-				an = f.getAnnotations();
+				Annotations an = f.getAnnotations();
 
 				if (an == null || an.find(DeobAnnotations.EXPORT) == null)
 				{
@@ -253,23 +248,38 @@ public class Inject
 					isSetter = (boolean) exportAnnotation.getElements().get(1).getValue();
 				}
 
-				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
-
 				Annotation getterAnnotation = an.find(DeobAnnotations.OBFUSCATED_GETTER);
 				Number getter = null;
 				if (getterAnnotation != null)
 				{
 					getter = (Number) getterAnnotation.getElement().getValue();
 				}
-				// the ob jar is the same as the vanilla so this field must exist in this class.
 
-				Type obType = getFieldType(f);
-				Field otherf = other.findField(obfuscatedName, obType);
-				assert otherf != null;
+				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 
-				assert f.isStatic() == otherf.isStatic();
+				Field otherf;
+				ClassFile targetClass;
 
-				ClassFile targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
+				String obfuscatedOwner = DeobAnnotations.getObfuscatedOwner(f.getAnnotations());
+
+				if (obfuscatedOwner != null)
+				{
+					ClassFile realOther = vanilla.findClass(obfuscatedOwner);
+
+					otherf = realOther.findField(obfuscatedName, getFieldType(f));
+					assert otherf != null;
+					assert f.isStatic() == otherf.isStatic();
+					targetClass = f.isStatic() ? vanilla.findClass("client") : realOther; // target class for getter
+				}
+				else
+				{
+					otherf = other.findField(obfuscatedName, getFieldType(f));
+					assert otherf != null;
+					assert f.isStatic() == otherf.isStatic();
+					targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
+				}
+
+
 				java.lang.Class targetApiClass = f.isStatic() ? CLIENT_CLASS : implementingClass; // target api class for getter
 				if (targetApiClass == null)
 				{
@@ -449,7 +459,13 @@ public class Inject
 
 	Field toObField(Field field)
 	{
-		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
+		String obfuscatedClassName = DeobAnnotations.getObfuscatedOwner(field.getAnnotations());
+
+		if (obfuscatedClassName == null)
+		{
+			obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
+		}
+
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
 		Type type = getFieldType(field);
 
