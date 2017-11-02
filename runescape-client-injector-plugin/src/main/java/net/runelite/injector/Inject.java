@@ -313,7 +313,17 @@ public class Inject
 			for (Method m : cf.getMethods())
 			{
 				hookMethod.process(m);
-				invokes.process(m, other, implementingClass);
+
+				String obfuscatedOwner = DeobAnnotations.getObfuscatedOwner(m.getAnnotations());
+
+				if (obfuscatedOwner != null)
+				{
+					invokes.process(m, vanilla.findClass(obfuscatedOwner), implementingClass);
+				}
+				else
+				{
+					invokes.process(m, other, implementingClass);
+				}
 			}
 		}
 		

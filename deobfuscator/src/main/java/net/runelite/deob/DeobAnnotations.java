@@ -69,6 +69,11 @@ public class DeobAnnotations
 		return new Type(str);
 	}
 
+	public static String getObfuscatedOwner(Annotations an)
+	{
+		return getAnnotationValue(an, OBFUSCATED_OWNER);
+	}
+
 	public static String getObfuscatedName(Annotations an)
 	{
 		return getAnnotationValue(an, OBFUSCATED_NAME);
