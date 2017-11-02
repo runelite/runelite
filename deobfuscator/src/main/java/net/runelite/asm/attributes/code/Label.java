@@ -93,6 +93,11 @@ public class Label extends NOP
 		Instruction next;
 		do
 		{
+			if (i + 1 >= ins.getInstructions().size())
+			{
+				return null;
+			}
+
 			next = ins.getInstructions().get(i + 1);
 			++i;
 		}
