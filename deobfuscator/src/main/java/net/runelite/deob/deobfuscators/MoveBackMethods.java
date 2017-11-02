@@ -29,7 +29,6 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
-import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.Deob;
@@ -139,7 +138,8 @@ public class MoveBackMethods implements Deobfuscator
 			{
 				String oldOwnerName = DeobAnnotations.getObfuscatedName(oldOwner.getAnnotations());
 
-				if (oldOwnerName == null) {
+				if (oldOwnerName == null)
+				{
 					oldOwnerName = oldOwner.getName();
 				}
 
