@@ -116,6 +116,14 @@ public abstract class RSActorMixin implements RSActor
 		return -1;
 	}
 
+	@Override
+	@Inject
+	public Point getWorldLocation()
+	{
+		Point localLocation = getLocalLocation();
+		return Perspective.localToWorld(client, localLocation);
+	}
+
 	@Inject
 	@Override
 	public Point getLocalLocation()
