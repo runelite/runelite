@@ -184,6 +184,7 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 		opcodeReplacer.run(group, writes.values());
 
 		int count = 0;
+		int writesCount = 0;
 
 		for (PacketWrite write : writes.values())
 		{
@@ -194,9 +195,10 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 
 			insert(group, write);
 			++count;
+			writesCount += write.writes.size();
 		}
 
-		logger.info("Converted buffer write methods for {} opcodes", count);
+		logger.info("Converted buffer write methods for {} opcodes ({} writes)", count, writesCount);
 	}
 
 	private void insert(ClassGroup group, PacketWrite write)
@@ -314,7 +316,7 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 		}
 		else
 		{
-			throw new IllegalStateException("Unknown type " + ii.getMethod().getType().getReturnValue());
+			throw new IllegalStateException("Unknown type " + argumentType);
 		}
 
 		return new InvokeVirtual(i.getInstructions(), invokeMethod);
