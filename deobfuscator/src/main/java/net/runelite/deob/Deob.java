@@ -91,14 +91,17 @@ public class Deob
 		// remove except RuntimeException
 		run(group, new RuntimeExceptions());
 
+		// remove illegal state exceptions, frees up some parameters
+		run(group, new IllegalStateExceptions());
+
+		// moves back static methods to their original classes
+		// this also removes unused instructions in reached methods
+		run(group, new MoveBackMethods());
+
 		// remove unused methods - this leaves Code with no instructions,
 		// which is not valid, so unused methods is run after
 		run(group, new UnreachedCode());
-		run(group, new MoveBackMethods());
 		run(group, new UnusedMethods());
-
-		// remove illegal state exceptions, frees up some parameters
-		run(group, new IllegalStateExceptions());
 
 		// remove constant logically dead parameters
 		run(group, new ConstantParameter());

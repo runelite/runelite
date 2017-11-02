@@ -31,23 +31,25 @@ import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.execution.Execution;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.Deob;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class MoveBackMethods implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(MoveBackMethods.class);
 
-	private final Set<Method> methods = new HashSet<>();
+	private Execution execution;
 
 	private final Set<Method> unusedMethods = new HashSet<>();
 	private final Set<Method> usedMethods = new HashSet<>();
@@ -58,20 +60,17 @@ public class MoveBackMethods implements Deobfuscator
 		group.buildClassGraph();
 		group.lookup();
 
-		for (ClassFile cf : group.getClasses())
-		{
-			for (Method method : cf.getMethods())
-			{
-				findMethods(method);
-			}
-		}
+		execution = new Execution(group);
+		execution.populateInitialMethods();
+		execution.run();
 
-		for (ClassFile cf : group.getClasses())
-		{
-			findUnusedMethods(cf);
-		}
+		findUnusedMethods(group);
+		findUsedMethods(group);
 
-		findUsedMethods();
+		for (Method m : usedMethods)
+		{
+			removeUnusedInstructions(m);
+		}
 
 		Map<Method, List<Method>> realMethodDummies = new HashMap<>();
 
@@ -100,33 +99,59 @@ public class MoveBackMethods implements Deobfuscator
 			}
 		}
 
-		AtomicInteger count = new AtomicInteger();
+		AtomicInteger movedCount = new AtomicInteger();
+		AtomicInteger foundRealClassCount = new AtomicInteger();
 
 		realMethodDummies.forEach((m, ml) ->
 		{
-			ClassFile cf = ml.get(0).getClassFile();
-
-			if (cf.getName().equals(m.getClassFile().getName()))
-			{
-				return;
-			}
-
 			boolean singleTarget = ml
 					.stream()
 					.map(m2 -> m2.getClassFile().getName())
 					.distinct()
 					.count() == 1;
 
-			if (!singleTarget)
+			ClassFile newOwner;
+
+			if (singleTarget)
 			{
-				return;
+				foundRealClassCount.incrementAndGet();
+
+				ClassFile cf = ml.get(0).getClassFile();
+
+				if (cf.getName().equals(m.getClassFile().getName()))
+				{
+					return;
+				}
+
+				newOwner = cf;
+			}
+			else
+			{
+				ParallelExecutorMapping highest = null;
+
+				for (Method m2 : ml)
+				{
+					ParallelExecutorMapping mapping = MappingExecutorUtil.map(m, m2);
+
+					if (highest == null || mapping.same > highest.same)
+					{
+						highest = mapping;
+					}
+				}
+
+				if (highest == null)
+				{
+					return;
+				}
+
+				newOwner = highest.m2.getClassFile();
 			}
 
 			ClassFile oldOwner = m.getClassFile();
 
 			m.getClassFile().removeMethod(m);
-			cf.addMethod(m);
-			m.setClassFile(cf);
+			newOwner.addMethod(m);
+			m.setClassFile(newOwner);
 
 			if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
 			{
@@ -142,85 +167,119 @@ public class MoveBackMethods implements Deobfuscator
 			}
 
 			logger.info("Moved {}.{}{} to {}",
-					oldOwner.getName(), m.getName(), m.getDescriptor(), cf.getName());
+					oldOwner.getName(), m.getName(), m.getDescriptor(), newOwner.getName());
 
-			count.incrementAndGet();
+			movedCount.incrementAndGet();
 		});
 
-		logger.info("Moved {}/{} static methods back to their original classes", count, usedMethods.size());
+		logger.info("Found the original class for {}/{} static methods", foundRealClassCount, usedMethods.size());
+		logger.info("Moved {}/{} static methods back to their original classes", movedCount, usedMethods.size());
 
 		this.regeneratePool(group);
 	}
 
-	private void findMethods(Method method)
+	private void removeUnusedInstructions(Method m)
 	{
-		Code code = method.getCode();
+		Instructions ins = m.getCode().getInstructions();
 
-		if (code == null)
+		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
+
+		for (int j = 0; j < insCopy.size(); ++j)
 		{
-			return;
-		}
+			Instruction i = insCopy.get(j);
 
-		for (Instruction i : code.getInstructions().getInstructions())
-		{
-			if (!(i instanceof InvokeInstruction))
+			if (!execution.executed.contains(i))
 			{
-				continue;
-			}
+				// if this is an exception handler, the exception handler is never used...
+				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
+				{
+					if (e.getStart().next() == i)
+					{
+						e.setStart(ins.createLabelFor(insCopy.get(j + 1)));
 
-			InvokeInstruction ii = (InvokeInstruction) i;
+						if (e.getStart().next() == e.getEnd().next())
+						{
+							m.getCode().getExceptions().remove(e);
+							continue;
+						}
+					}
+					if (e.getHandler().next() == i)
+					{
+						m.getCode().getExceptions().remove(e);
+					}
+				}
 
-			methods.addAll(ii.getMethods());
-		}
-	}
+				if (i instanceof Label)
+					continue;
 
-	private void findUnusedMethods(ClassFile cf)
-	{
-		boolean extendsApplet = extendsApplet(cf);
-
-		for (Method method : new ArrayList<>(cf.getMethods()))
-		{
-			if (!method.isStatic())
-			{
-				continue;
-			}
-
-			// constructors can't be renamed, but are obfuscated
-			if (!Deob.isObfuscated(method.getName()) && !method.getName().equals("<init>"))
-			{
-				continue;
-			}
-
-			if (extendsApplet && method.getName().equals("<init>"))
-			{
-				continue;
-			}
-
-			if (!methods.contains(method))
-			{
-				unusedMethods.add(method);
+				ins.remove(i);
 			}
 		}
 	}
 
-	private static boolean extendsApplet(ClassFile cf)
+	private void findUnusedMethods(ClassGroup group)
 	{
-		if (cf.getParent() != null)
+		for (ClassFile cf : group.getClasses())
 		{
-			return extendsApplet(cf.getParent());
+			for (Method m : cf.getMethods())
+			{
+				if (m.getCode() == null)
+				{
+					continue;
+				}
+
+				if (!m.isStatic())
+				{
+					continue;
+				}
+
+				if (m.getName().equals("<clinit>"))
+				{
+					continue;
+				}
+
+				List<Instruction> instructions = m.getCode().getInstructions().getInstructions();
+
+				if (instructions.size() > 0)
+				{
+					if (!execution.executed.contains(instructions.get(0)))
+					{
+						unusedMethods.add(m);
+					}
+				}
+			}
 		}
-		return cf.getSuperName().equals("java/applet/Applet");
 	}
 
-	private void findUsedMethods()
+	private void findUsedMethods(ClassGroup group)
 	{
-		Set<Method> usedMethods = methods
-				.stream()
-				.filter(Method::isStatic)
-				.filter(m -> !unusedMethods.contains(m))
-				.collect(Collectors.toSet());
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : cf.getMethods())
+			{
+				if (m.getCode() == null)
+				{
+					continue;
+				}
 
-		this.usedMethods.addAll(usedMethods);
+				if (!m.isStatic())
+				{
+					continue;
+				}
+
+				if (m.getName().equals("<clinit>"))
+				{
+					continue;
+				}
+
+				if (unusedMethods.contains(m))
+				{
+					continue;
+				}
+
+				usedMethods.add(m);
+			}
+		}
 	}
 
 	private List<Integer> getLineNumbers(Method method)
