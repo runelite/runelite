@@ -79,81 +79,7 @@ public class MoveBackMethods implements Deobfuscator
 			findDummies(m);
 		}
 
-		AtomicInteger movedCount = new AtomicInteger();
-		AtomicInteger foundRealClassCount = new AtomicInteger();
-
-		realMethodDummies.forEach((m, ml) ->
-		{
-			boolean singleTarget = ml
-					.stream()
-					.map(m2 -> m2.getClassFile().getName())
-					.distinct()
-					.count() == 1;
-
-			ClassFile newOwner;
-
-			if (singleTarget)
-			{
-				foundRealClassCount.incrementAndGet();
-
-				ClassFile cf = ml.get(0).getClassFile();
-
-				if (cf.getName().equals(m.getClassFile().getName()))
-				{
-					return;
-				}
-
-				newOwner = cf;
-			}
-			else
-			{
-				ParallelExecutorMapping highest = null;
-
-				for (Method m2 : ml)
-				{
-					ParallelExecutorMapping mapping = MappingExecutorUtil.map(m, m2);
-
-					if (highest == null || mapping.same > highest.same)
-					{
-						highest = mapping;
-					}
-				}
-
-				if (highest == null)
-				{
-					return;
-				}
-
-				newOwner = highest.m2.getClassFile();
-			}
-
-			ClassFile oldOwner = m.getClassFile();
-
-			m.getClassFile().removeMethod(m);
-			newOwner.addMethod(m);
-			m.setClassFile(newOwner);
-
-			if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
-			{
-				String oldOwnerName = DeobAnnotations.getObfuscatedName(oldOwner.getAnnotations());
-
-				if (oldOwnerName == null)
-				{
-					oldOwnerName = oldOwner.getName();
-				}
-
-				// Put the annotation first in the list to get owner, name, signature order
-				m.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
-			}
-
-			logger.info("Moved {}.{}{} to {}",
-					oldOwner.getName(), m.getName(), m.getDescriptor(), newOwner.getName());
-
-			movedCount.incrementAndGet();
-		});
-
-		logger.info("Found the original class for {}/{} static methods", foundRealClassCount, usedMethods.size());
-		logger.info("Moved {}/{} static methods back to their original classes", movedCount, usedMethods.size());
+		findAndMoveBackMethods();
 
 		this.regeneratePool(group);
 	}
@@ -262,7 +188,8 @@ public class MoveBackMethods implements Deobfuscator
 		}
 	}
 
-	private void findDummies(Method m) {
+	private void findDummies(Method m)
+	{
 		List<Integer> lineNumbers = getLineNumbers(m);
 
 		for (Method m2 : unusedMethods)
@@ -329,6 +256,85 @@ public class MoveBackMethods implements Deobfuscator
 		}
 
 		return true;
+	}
+
+	private void findAndMoveBackMethods()
+	{
+		AtomicInteger movedCount = new AtomicInteger();
+		AtomicInteger foundRealClassCount = new AtomicInteger();
+
+		realMethodDummies.forEach((m, ml) ->
+		{
+			boolean singleTarget = ml
+					.stream()
+					.map(m2 -> m2.getClassFile().getName())
+					.distinct()
+					.count() == 1;
+
+			ClassFile newOwner;
+
+			if (singleTarget)
+			{
+				foundRealClassCount.incrementAndGet();
+
+				ClassFile cf = ml.get(0).getClassFile();
+
+				if (cf.getName().equals(m.getClassFile().getName()))
+				{
+					return;
+				}
+
+				newOwner = cf;
+			}
+			else
+			{
+				ParallelExecutorMapping highest = null;
+
+				for (Method m2 : ml)
+				{
+					ParallelExecutorMapping mapping = MappingExecutorUtil.map(m, m2);
+
+					if (highest == null || mapping.same > highest.same)
+					{
+						highest = mapping;
+					}
+				}
+
+				if (highest == null)
+				{
+					return;
+				}
+
+				newOwner = highest.m2.getClassFile();
+			}
+
+			ClassFile oldOwner = m.getClassFile();
+
+			m.getClassFile().removeMethod(m);
+			newOwner.addMethod(m);
+			m.setClassFile(newOwner);
+
+			if (m.getAnnotations().find(DeobAnnotations.OBFUSCATED_OWNER) == null)
+			{
+				String oldOwnerName = DeobAnnotations.getObfuscatedName(oldOwner.getAnnotations());
+
+				if (oldOwnerName == null)
+				{
+					oldOwnerName = oldOwner.getName();
+				}
+
+				// Put the annotation first in the list to get owner, name, signature order
+				m.getAnnotations().addAnnotation(0, DeobAnnotations.OBFUSCATED_OWNER, "value", oldOwnerName);
+			}
+
+			logger.info("Moved {}.{}{} to {}",
+					oldOwner.getName(), m.getName(), m.getDescriptor(), newOwner.getName());
+
+			movedCount.incrementAndGet();
+		});
+
+		logger.info("Found the original class for {}/{} static methods", foundRealClassCount, usedMethods.size());
+		logger.info("Moved {}/{} static methods back to their original classes", movedCount, usedMethods.size());
 	}
 
 	private void regeneratePool(ClassGroup group)
