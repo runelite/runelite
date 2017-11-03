@@ -192,7 +192,8 @@ public class Hooks
 			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
 		}
 
-		ChatMessage chatMessage = new ChatMessage(type, sender, message, clan);
+		ChatMessageType chatMessageType = ChatMessageType.of(type);
+		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
 
 		runelite.getEventBus().post(chatMessage);
 	}
