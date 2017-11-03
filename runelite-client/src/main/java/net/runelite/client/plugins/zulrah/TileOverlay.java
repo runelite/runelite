@@ -104,7 +104,9 @@ public class TileOverlay extends Overlay
 			graphics.drawString(str, location.getX(), location.getY());
 		}
 
-		renderTileOverlay(graphics, next.getStandLoc(startLocationWorld), new Color(255, 0, 0, 150));
+		renderTileOverlay(graphics, next.getStandLoc(startLocationWorld), next.getZulrahColor(true));
+		renderTileOverlay(graphics, next.getZulrahLoc(startLocationWorld), next.getZulrahColor(true));
+
 
 		return null;
 	}
