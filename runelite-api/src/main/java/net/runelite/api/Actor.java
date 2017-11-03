@@ -40,6 +40,8 @@ public interface Actor extends Renderable
 
 	int getHealth();
 
+	Point getWorldLocation();
+
 	Point getLocalLocation();
 
 	int getOrientation();

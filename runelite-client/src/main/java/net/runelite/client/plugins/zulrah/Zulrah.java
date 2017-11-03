@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,14 +26,9 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
@@ -43,10 +39,13 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternC;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
+import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.temporal.ChronoUnit;
 
 @PluginDescriptor(
 	name = "Zulrah plugin"
@@ -56,35 +55,34 @@ public class Zulrah extends Plugin
 	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
 
 	private final RuneLite runelite = RuneLite.getRunelite();
+	private final ZulrahConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ZulrahConfig.class);
 	private final Client client = RuneLite.getClient();
-
-	private final StatusOverlay overlay = new StatusOverlay(this);
-	private final TileOverlay tileOverlay = new TileOverlay(this);
-
-	private final ZulrahPattern[] patterns = new ZulrahPattern[]
-	{
-		new ZulrahPatternA(),
-		new ZulrahPatternB(),
-		new ZulrahPatternC(),
-		new ZulrahPatternD()
+	private final ZulrahOverlay overlay = new ZulrahOverlay(this);
+	private final ZulrahPattern[] patterns = new ZulrahPattern[]{
+			new ZulrahPatternA(),
+			new ZulrahPatternB(),
+			new ZulrahPatternC(),
+			new ZulrahPatternD()
 	};
 
-	private Fight fight;
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, tileOverlay);
-	}
+	private ZulrahInstance instance;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
 	}
 
 	@Schedule(
@@ -93,51 +91,43 @@ public class Zulrah extends Plugin
 	)
 	public void update()
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled() || client == null || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
 		NPC zulrah = findZulrah();
-
 		if (zulrah == null)
 		{
-			if (fight != null)
+			if (instance != null)
 			{
-				logger.debug("Fight has ended!");
-
-				fight = null;
+				logger.debug("Zulrah encounter has ended.");
+				instance = null;
 			}
 			return;
 		}
 
-		if (fight == null)
+		if (instance == null)
 		{
-			Point startTile = zulrah.getLocalLocation();
-			startTile = Perspective.localToWorld(client, startTile);
-
-			fight = new Fight(startTile);
-
-			logger.debug("Fight has begun!");
+			instance = new ZulrahInstance(zulrah);
+			logger.debug("Zulrah encounter has started.");
 		}
 
-		ZulrahInstance currentZulrah = ZulrahInstance.of(zulrah, fight.getStartLocationWorld());
-
-		if (fight.getZulrah() == null)
+		ZulrahPhase currentPhase = ZulrahPhase.valueOf(zulrah, instance.getStartLocation());
+		if (instance.getPhase() == null)
 		{
-			fight.setZulrah(currentZulrah);
+			instance.setPhase(currentPhase);
 		}
-		else if (!fight.getZulrah().equals(currentZulrah))
+		else if (!instance.getPhase().equals(currentPhase))
 		{
-			ZulrahInstance previousInstance = fight.getZulrah();
-			fight.setZulrah(currentZulrah);
-			fight.nextStage();
+			ZulrahPhase previousPhase = instance.getPhase();
+			instance.setPhase(currentPhase);
+			instance.nextStage();
 
-			logger.debug("Zulrah has moved from {} -> {}, index now {}",
-				previousInstance, currentZulrah, fight.getStage());
+			logger.debug("Zulrah phase has moved from {} -> {}, stage: {}", previousPhase, currentPhase, instance.getStage());
 		}
 
-		ZulrahPattern pattern = fight.getPattern();
+		ZulrahPattern pattern = instance.getPattern();
 		if (pattern == null)
 		{
 			int potential = 0;
@@ -145,7 +135,7 @@ public class Zulrah extends Plugin
 
 			for (ZulrahPattern p : patterns)
 			{
-				if (p.stageMatches(fight.getStage(), fight.getZulrah()))
+				if (p.stageMatches(instance.getStage(), instance.getPhase()))
 				{
 					potential++;
 					potentialPattern = p;
@@ -156,20 +146,14 @@ public class Zulrah extends Plugin
 			{
 				logger.debug("Zulrah pattern identified: {}", potentialPattern);
 
-				fight.setPattern(potentialPattern);
+				instance.setPattern(potentialPattern);
 			}
 		}
-		else
+		else if (pattern.canReset(instance.getStage()) && (instance.getPhase() == null || instance.getPhase().equals(pattern.get(0))))
 		{
-			if (pattern.canReset(fight.getStage()))
-			{
-				if (fight.getZulrah().equals(pattern.get(0)))
-				{
-					logger.debug("Fight has reset");
+			logger.debug("Zulrah pattern has reset.");
 
-					fight.reset();
-				}
-			}
+			instance.reset();
 		}
 	}
 
@@ -180,8 +164,8 @@ public class Zulrah extends Plugin
 		return result.length == 1 ? result[0] : null;
 	}
 
-	public Fight getFight()
+	public ZulrahInstance getInstance()
 	{
-		return fight;
+		return instance;
 	}
 }

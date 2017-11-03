@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,196 +25,114 @@
  */
 package net.runelite.client.plugins.zulrah;
 
-import java.util.Objects;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.client.RuneLite;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.api.Prayer;
+import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
+import net.runelite.client.plugins.zulrah.phase.StandLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
+import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 
-/*
-    Original code: https://github.com/LoveLeAnon/OSLoader
- */
 public class ZulrahInstance
 {
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahInstance.class);
+	private static final ZulrahPhase NO_PATTERN_MAGIC_PHASE = new ZulrahPhase(
+		ZulrahLocation.NORTH,
+		ZulrahType.MAGIC,
+		false,
+		StandLocation.PILLAR_WEST_OUTSIDE,
+		Prayer.PROTECT_FROM_MAGIC
+	);
+	private static final ZulrahPhase NO_PATTERN_RANGE_PHASE = new ZulrahPhase(
+		ZulrahLocation.NORTH,
+		ZulrahType.RANGE,
+		false,
+		StandLocation.TOP_EAST,
+		Prayer.PROTECT_FROM_MISSILES
+	);
+	private static final ZulrahPhase PATTERN_A_OR_B_RANGE_PHASE = new ZulrahPhase(
+		ZulrahLocation.NORTH,
+		ZulrahType.RANGE,
+		false,
+		StandLocation.PILLAR_WEST_OUTSIDE,
+		Prayer.PROTECT_FROM_MISSILES
+	);
 
-	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
-	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2043;
-	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_2044;
+	private final Point startLocation;
+	private ZulrahPattern pattern;
+	private int stage;
+	private ZulrahPhase phase;
 
-	private final ZulrahLocation loc;
-	private final ZulrahType type;
-	private final boolean jad;
-	private final StandLocation standLoc;
-
-	public ZulrahInstance(ZulrahLocation loc, ZulrahType type, boolean jad, StandLocation standLoc)
+	public ZulrahInstance(NPC zulrah)
 	{
-		this.loc = loc;
-		this.type = type;
-		this.jad = jad;
-		this.standLoc = standLoc;
+		this.startLocation = zulrah.getWorldLocation();
 	}
 
-	@Override
-	public String toString()
+	public Point getStartLocation()
 	{
-		return "ZulrahInstance{" + "loc=" + loc + ", type=" + type + '}';
+		return startLocation;
 	}
 
-	public Point getZulrahLoc(Point startLoc)
+	public ZulrahPattern getPattern()
 	{
-		// NORTH doesn't need changing because it is the start
-		switch (loc)
-		{
-			case SOUTH:
-				return new Point(startLoc.getX(), startLoc.getY() - 11);
-			case EAST:
-				return new Point(startLoc.getX() + 10, startLoc.getY() - 2);
-			case WEST:
-				return new Point(startLoc.getX() - 10, startLoc.getY() - 2);
-		}
-		return startLoc;
+		return pattern;
 	}
 
-	public Point getStandLoc(Point startLoc)
+	public void setPattern(ZulrahPattern pattern)
 	{
-		switch (standLoc)
-		{
-			case WEST:
-				return new Point(startLoc.getX() - 5, startLoc.getY() - 2);
-			case EAST:
-				return new Point(startLoc.getX() + 5, startLoc.getY() - 2);
-			case SOUTH:
-				return new Point(startLoc.getX(), startLoc.getY() - 6);
-			case TOP_EAST:
-				return new Point(startLoc.getX() + 6, startLoc.getY() + 2);
-			case TOP_WEST:
-				return new Point(startLoc.getX() - 4, startLoc.getY() + 3);
-			case PILLAR_WEST_INSIDE:
-				return new Point(startLoc.getX() - 3, startLoc.getY() - 5);
-			case PILLAR_WEST_OUTSIDE:
-				return new Point(startLoc.getX() - 4, startLoc.getY() - 3);
-			case PILLAR_EAST_INSIDE:
-				return new Point(startLoc.getX() + 3, startLoc.getY() - 5);
-			case PILLAR_EAST_OUTSIDE:
-				return new Point(startLoc.getX() + 4, startLoc.getY() - 3);
-		}
-		return startLoc;
+		this.pattern = pattern;
 	}
 
-	public ZulrahLocation getLoc()
+	public int getStage()
 	{
-		return loc;
+		return stage;
 	}
 
-	public ZulrahType getType()
+	public void nextStage()
 	{
-		return type;
+		++stage;
 	}
 
-	public boolean isJad()
+	public void reset()
 	{
-		return jad;
+		pattern = null;
+		stage = 0;
 	}
 
-	public StandLocation getStandLoc()
+	public ZulrahPhase getPhase()
 	{
-		return standLoc;
+		ZulrahPhase patternPhase = null;
+		if (pattern != null)
+		{
+			patternPhase = pattern.get(stage);
+		}
+		return patternPhase != null ? patternPhase : phase;
 	}
 
-	@Override
-	public int hashCode()
+	public void setPhase(ZulrahPhase phase)
 	{
-		int hash = 3;
-		hash = 17 * hash + Objects.hashCode(this.loc);
-		hash = 17 * hash + Objects.hashCode(this.type);
-		hash = 17 * hash + (this.jad ? 1 : 0);
-		return hash;
+		this.phase = phase;
 	}
 
-	@Override
-	public boolean equals(Object obj)
+	public ZulrahPhase getNextPhase()
 	{
-		if (this == obj)
+		if (pattern != null)
 		{
-			return true;
+			return pattern.get(stage + 1);
 		}
-		if (obj == null)
+		else if (phase != null)
 		{
-			return false;
+			ZulrahType type = phase.getType();
+			StandLocation standLocation = phase.getStandLocation();
+			if (type == ZulrahType.MELEE)
+			{
+				return standLocation == StandLocation.TOP_EAST ? NO_PATTERN_MAGIC_PHASE : NO_PATTERN_RANGE_PHASE;
+			}
+			if (type == ZulrahType.MAGIC)
+			{
+				return standLocation == StandLocation.TOP_EAST ? NO_PATTERN_RANGE_PHASE : PATTERN_A_OR_B_RANGE_PHASE;
+			}
 		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final ZulrahInstance other = (ZulrahInstance) obj;
-		if (this.jad != other.jad)
-		{
-			return false;
-		}
-		if (this.loc != other.loc)
-		{
-			return false;
-		}
-		if (this.type != other.type)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public static ZulrahInstance of(NPC npc, Point start)
-	{
-		Point t = npc.getLocalLocation();
-		t = Perspective.localToWorld(RuneLite.getClient(), t);
-		int dx = start.getX() - t.getX();
-		int dy = start.getY() - t.getY();
-
-		ZulrahLocation loc;
-		ZulrahType type;
-
-		if (dx == -10 && dy == 2)
-		{
-			loc = ZulrahLocation.EAST;
-		}
-		else if (dx == 10 && dy == 2)
-		{
-			loc = ZulrahLocation.WEST;
-		}
-		else if (dx == 0 && dy == 11)
-		{
-			loc = ZulrahLocation.SOUTH;
-		}
-		else if (dx == 0 && dy == 0)
-		{
-			loc = ZulrahLocation.NORTH;
-		}
-		else
-		{
-			logger.debug("Unknown zulrah location! dx: {}, dy: {}", dx, dy);
-			return null;
-		}
-
-		int id = npc.getId();
-		switch (id)
-		{
-			case ZULRAH_RANGE:
-				type = ZulrahType.RANGE;
-				break;
-			case ZULRAH_MELEE:
-				type = ZulrahType.MELEE;
-				break;
-			case ZULRAH_MAGIC:
-				type = ZulrahType.MAGIC;
-				break;
-			default:
-				logger.debug("Unknown Zulrah npc! {}", id);
-				return null;
-		}
-
-		return new ZulrahInstance(loc, type, false, null);
+		return null;
 	}
 }

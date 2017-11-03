@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,31 +27,32 @@ package net.runelite.client.plugins.zulrah.patterns;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.client.plugins.zulrah.StandLocation;
-import net.runelite.client.plugins.zulrah.ZulrahInstance;
-import net.runelite.client.plugins.zulrah.ZulrahLocation;
-import net.runelite.client.plugins.zulrah.ZulrahType;
+import net.runelite.api.Prayer;
+import net.runelite.client.plugins.zulrah.phase.StandLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
+import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 
 public abstract class ZulrahPattern
 {
-	private final List<ZulrahInstance> pattern = new ArrayList<>();
+	private final List<ZulrahPhase> pattern = new ArrayList<>();
 
-	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
-		add(loc, type, standLoc, false);
+		add(loc, type, standLocation, false, prayer);
 	}
 
-	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLoc)
+	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
-		add(loc, type, standLoc, true);
+		add(loc, type, standLocation, true, prayer);
 	}
 
-	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLoc, boolean jad)
+	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, boolean jad, Prayer prayer)
 	{
-		pattern.add(new ZulrahInstance(loc, type, jad, standLoc));
+		pattern.add(new ZulrahPhase(loc, type, jad, standLocation, prayer));
 	}
 
-	public ZulrahInstance get(int index)
+	public ZulrahPhase get(int index)
 	{
 		if (index >= pattern.size())
 		{
@@ -60,9 +62,9 @@ public abstract class ZulrahPattern
 		return pattern.get(index);
 	}
 
-	public boolean stageMatches(int index, ZulrahInstance instance)
+	public boolean stageMatches(int index, ZulrahPhase instance)
 	{
-		ZulrahInstance patternInstance = get(index);
+		ZulrahPhase patternInstance = get(index);
 		return patternInstance != null && patternInstance.equals(instance);
 	}
 
