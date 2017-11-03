@@ -1521,9 +1521,9 @@ public final class Client extends GameEngine {
       }
 
       class56.field695 = null;
-      if(class15.rssocket != null) {
-         class15.rssocket.close();
-         class15.rssocket = null;
+      if(class15.rssocket2 != null) {
+         class15.rssocket2.close();
+         class15.rssocket2 = null;
       }
 
       WallObject.method2901();
@@ -1742,19 +1742,19 @@ public final class Client extends GameEngine {
    )
    @Export("processServerPacket")
    final boolean processServerPacket() {
-      if(class15.rssocket == null) {
+      if(class15.rssocket2 == null) {
          return false;
       } else {
          int var3;
          String var23;
          try {
-            int var1 = class15.rssocket.available();
+            int var1 = class15.rssocket2.available();
             if(var1 == 0) {
                return false;
             }
 
             if(packetType == -1) {
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
                packetType = secretPacketBuffer2.readOpcode();
                packetLength = RUNELITE_PACKET?-2:class272.field3703[packetType];
@@ -1766,7 +1766,7 @@ public final class Client extends GameEngine {
                   return false;
                }
 
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                packetLength = secretPacketBuffer2.payload[0] & 255;
                --var1;
             }
@@ -1776,7 +1776,7 @@ public final class Client extends GameEngine {
                   return false;
                }
 
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                secretPacketBuffer2.offset = 0;
                packetLength = secretPacketBuffer2.readUnsignedShort();
                var1 -= 2;
@@ -1787,7 +1787,7 @@ public final class Client extends GameEngine {
             }
 
             secretPacketBuffer2.offset = 0;
-            class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+            class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
             field979.method4991();
             field1118 = 0;
             thridLastFrameId = secondLastFrameId;
@@ -2700,8 +2700,8 @@ public final class Client extends GameEngine {
                   var3 = secretPacketBuffer2.readInt();
                   var88.mask = var3;
                   class72.setGameState(45);
-                  class15.rssocket.close();
-                  class15.rssocket = null;
+                  class15.rssocket2.close();
+                  class15.rssocket2 = null;
                   CombatInfoListHolder.method1686(var88);
                   packetType = -1;
                   return false;
@@ -4192,9 +4192,9 @@ public final class Client extends GameEngine {
    final void method1272() {
       try {
          if(loginState == 0) {
-            if(class15.rssocket != null) {
-               class15.rssocket.close();
-               class15.rssocket = null;
+            if(class15.rssocket2 != null) {
+               class15.rssocket2.close();
+               class15.rssocket2 = null;
             }
 
             class132.field1990 = null;
@@ -4213,7 +4213,7 @@ public final class Client extends GameEngine {
             }
 
             if(class132.field1990.status == 1) {
-               class15.rssocket = new RSSocket((Socket)class132.field1990.value, GameEngine.taskManager);
+               class15.rssocket2 = new RSSocket((Socket)class132.field1990.value, GameEngine.taskManager);
                class132.field1990 = null;
                loginState = 2;
             }
@@ -4222,7 +4222,7 @@ public final class Client extends GameEngine {
          if(loginState == 2) {
             secretPacketBuffer1.offset = 0;
             secretPacketBuffer1.putByte(14);
-            class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, 1);
+            class15.rssocket2.queueForWrite(secretPacketBuffer1.payload, 0, 1);
             secretPacketBuffer2.offset = 0;
             loginState = 3;
          }
@@ -4237,7 +4237,7 @@ public final class Client extends GameEngine {
                class1.soundSystem1.method2089();
             }
 
-            var1 = class15.rssocket.readByte();
+            var1 = class15.rssocket2.readByte();
             if(ItemLayer.soundSystem0 != null) {
                ItemLayer.soundSystem0.method2089();
             }
@@ -4257,13 +4257,13 @@ public final class Client extends GameEngine {
 
          if(loginState == 4) {
             if(secretPacketBuffer2.offset < 8) {
-               var1 = class15.rssocket.available();
+               var1 = class15.rssocket2.available();
                if(var1 > 8 - secretPacketBuffer2.offset) {
                   var1 = 8 - secretPacketBuffer2.offset;
                }
 
                if(var1 > 0) {
-                  class15.rssocket.read(secretPacketBuffer2.payload, secretPacketBuffer2.offset, var1);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, secretPacketBuffer2.offset, var1);
                   secretPacketBuffer2.offset += var1;
                }
             }
@@ -4366,7 +4366,7 @@ public final class Client extends GameEngine {
             field968.encryptXtea(var9, var3, field968.offset);
             field968.putShortLength(field968.offset - var2);
             field968.runeliteFinishPacket();
-            class15.rssocket.queueForWrite(field968.payload, 0, field968.offset);
+            class15.rssocket2.queueForWrite(field968.payload, 0, field968.offset);
             secretPacketBuffer1.seed(var9);
 
             for(var6 = 0; var6 < 4; ++var6) {
@@ -4377,8 +4377,8 @@ public final class Client extends GameEngine {
             loginState = 6;
          }
 
-         if(loginState == 6 && class15.rssocket.available() > 0) {
-            var1 = class15.rssocket.readByte();
+         if(loginState == 6 && class15.rssocket2.available() > 0) {
+            var1 = class15.rssocket2.readByte();
             if(var1 == 21 && gameState == 20) {
                loginState = 7;
             } else if(var1 == 2) {
@@ -4399,8 +4399,8 @@ public final class Client extends GameEngine {
             }
          }
 
-         if(loginState == 7 && class15.rssocket.available() > 0) {
-            field959 = (class15.rssocket.readByte() + 3) * 60;
+         if(loginState == 7 && class15.rssocket2.available() > 0) {
+            field959 = (class15.rssocket2.readByte() + 3) * 60;
             loginState = 8;
          }
 
@@ -4412,9 +4412,9 @@ public final class Client extends GameEngine {
             }
 
          } else {
-            if(loginState == 9 && class15.rssocket.available() >= 13) {
-               boolean var18 = class15.rssocket.readByte() == 1;
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 4);
+            if(loginState == 9 && class15.rssocket2.available() >= 13) {
+               boolean var18 = class15.rssocket2.readByte() == 1;
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 4);
                secretPacketBuffer2.offset = 0;
                boolean var17 = false;
                if(var18) {
@@ -4446,16 +4446,16 @@ public final class Client extends GameEngine {
                }
 
                WorldMapType3.method215();
-               rights = class15.rssocket.readByte();
-               field1083 = class15.rssocket.readByte() == 1;
-               localInteractingIndex = class15.rssocket.readByte();
+               rights = class15.rssocket2.readByte();
+               field1083 = class15.rssocket2.readByte() == 1;
+               localInteractingIndex = class15.rssocket2.readByte();
                localInteractingIndex <<= 8;
-               localInteractingIndex += class15.rssocket.readByte();
-               field1036 = class15.rssocket.readByte();
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               localInteractingIndex += class15.rssocket2.readByte();
+               field1036 = class15.rssocket2.readByte();
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
                packetType = secretPacketBuffer2.readOpcode();
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                secretPacketBuffer2.offset = 0;
                packetLength = secretPacketBuffer2.readUnsignedShort();
 
@@ -4470,9 +4470,9 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(class15.rssocket.available() >= packetLength) {
+               if(class15.rssocket2.available() >= packetLength) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
                   field979.method4994();
                   field1142 = 1L;
                   field978 = -1;
@@ -4588,17 +4588,17 @@ public final class Client extends GameEngine {
                }
 
             } else {
-               if(loginState == 11 && class15.rssocket.available() >= 2) {
+               if(loginState == 11 && class15.rssocket2.available() >= 2) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                   secretPacketBuffer2.offset = 0;
                   class93.field1482 = secretPacketBuffer2.readUnsignedShort();
                   loginState = 12;
                }
 
-               if(loginState == 12 && class15.rssocket.available() >= class93.field1482) {
+               if(loginState == 12 && class15.rssocket2.available() >= class93.field1482) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, class93.field1482);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, class93.field1482);
                   secretPacketBuffer2.offset = 0;
                   String var22 = secretPacketBuffer2.readString();
                   String var24 = secretPacketBuffer2.readString();
@@ -4625,17 +4625,17 @@ public final class Client extends GameEngine {
                   }
                } else {
                   if(packetLength == -1) {
-                     if(class15.rssocket.available() < 2) {
+                     if(class15.rssocket2.available() < 2) {
                         return;
                      }
 
-                     class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+                     class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                      secretPacketBuffer2.offset = 0;
                      packetLength = secretPacketBuffer2.readUnsignedShort();
                   }
 
-                  if(class15.rssocket.available() >= packetLength) {
-                     class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+                  if(class15.rssocket2.available() >= packetLength) {
+                     class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
                      secretPacketBuffer2.offset = 0;
                      var1 = packetLength;
                      field979.method4996();
@@ -5406,9 +5406,9 @@ public final class Client extends GameEngine {
                                              }
 
                                              try {
-                                                if(class15.rssocket != null && secretPacketBuffer1.offset > 0) {
+                                                if(class15.rssocket2 != null && secretPacketBuffer1.offset > 0) {
                                                    secretPacketBuffer1.runeliteFinishPacket();
-                                                   class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
+                                                   class15.rssocket2.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
                                                    secretPacketBuffer1.offset = 0;
                                                    audioEffectCount = 0;
                                                 }

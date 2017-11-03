@@ -86,11 +86,11 @@ public class class56 {
       ++Client.audioEffectCount;
       if(Client.audioEffectCount >= 50 || var0) {
          Client.audioEffectCount = 0;
-         if(!Client.socketError && class15.rssocket != null) {
+         if(!Client.socketError && class15.rssocket2 != null) {
             Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
 
             try {
-               class15.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+               class15.rssocket2.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
                Client.secretPacketBuffer1.offset = 0;
             } catch (IOException var2) {
                Client.socketError = true;
