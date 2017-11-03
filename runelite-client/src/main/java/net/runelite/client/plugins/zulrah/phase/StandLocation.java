@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,68 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zulrah;
+package net.runelite.client.plugins.zulrah.phase;
 
-import java.time.Instant;
-import net.runelite.api.Point;
-import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
-
-public class Fight
+public enum StandLocation
 {
-	private final Point startLocationWorld;
-	private final Instant startTime = Instant.now();
-	private ZulrahPattern pattern;
-	private int stage;
-	private ZulrahInstance zulrah;
-
-	public Fight(Point startLocationWorld)
-	{
-		this.startLocationWorld = startLocationWorld;
-	}
-
-	public Point getStartLocationWorld()
-	{
-		return startLocationWorld;
-	}
-
-	public Instant getStartTime()
-	{
-		return startTime;
-	}
-
-	public ZulrahPattern getPattern()
-	{
-		return pattern;
-	}
-
-	public void setPattern(ZulrahPattern pattern)
-	{
-		this.pattern = pattern;
-	}
-
-	public ZulrahInstance getZulrah()
-	{
-		return zulrah;
-	}
-
-	public void setZulrah(ZulrahInstance zulrah)
-	{
-		this.zulrah = zulrah;
-	}
-
-	public int getStage()
-	{
-		return stage;
-	}
-
-	public void nextStage()
-	{
-		++stage;
-	}
-
-	public void reset()
-	{
-		pattern = null;
-		stage = 0;
-	}
+	WEST,
+	EAST,
+	SOUTH,
+	SOUTH_WEST,
+	SOUTH_EAST,
+	TOP_EAST,
+	TOP_WEST,
+	PILLAR_WEST_INSIDE,
+	PILLAR_WEST_OUTSIDE,
+	PILLAR_EAST_INSIDE,
+	PILLAR_EAST_OUTSIDE
 }

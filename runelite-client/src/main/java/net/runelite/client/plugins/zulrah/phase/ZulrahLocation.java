@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +23,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zulrah;
+package net.runelite.client.plugins.zulrah.phase;
 
-public enum StandLocation
+import net.runelite.api.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public enum ZulrahLocation
 {
-	WEST,
-	EAST,
-	SOUTH,
-	TOP_EAST,
-	TOP_WEST,
-	PILLAR_WEST_INSIDE,
-	PILLAR_WEST_OUTSIDE,
-	PILLAR_EAST_INSIDE,
-	PILLAR_EAST_OUTSIDE;
+	NORTH, SOUTH, EAST, WEST;
+
+	private static final Logger logger = LoggerFactory.getLogger(ZulrahLocation.class);
+
+	public static ZulrahLocation valueOf(Point start, Point current)
+	{
+		int dx = start.getX() - current.getX();
+		int dy = start.getY() - current.getY();
+		if (dx == -10 && dy == 2)
+		{
+			return ZulrahLocation.EAST;
+		}
+		else if (dx == 10 && dy == 2)
+		{
+			return ZulrahLocation.WEST;
+		}
+		else if (dx == 0 && dy == 11)
+		{
+			return ZulrahLocation.SOUTH;
+		}
+		else if (dx == 0 && dy == 0)
+		{
+			return ZulrahLocation.NORTH;
+		}
+		else
+		{
+			logger.debug("Unknown Zulrah location dx: {}, dy: {}", dx, dy);
+			return null;
+		}
+	}
 }
