@@ -15,7 +15,8 @@ public class class202 {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   static SpritePixels[] field2484;
+   @Export("mapMarkers")
+   static SpritePixels[] mapMarkers;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1848804389

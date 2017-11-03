@@ -338,7 +338,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -2002714747
    )
-   static int field940;
+   @Export("hintArrowTargetType")
+   static int hintArrowTargetType;
    @ObfuscatedName("id")
    @ObfuscatedGetter(
       intValue = 1251584657
@@ -351,7 +352,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1317239145
    )
-   static int field941;
+   @Export("hintArrowNpcTargetIdx")
+   static int hintArrowNpcTargetIdx;
    @ObfuscatedName("jw")
    @Export("boostedSkillLevels")
    static int[] boostedSkillLevels;
@@ -359,7 +361,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -601246665
    )
-   static int field1053;
+   @Export("hintArrowPlayerTargetIdx")
+   static int hintArrowPlayerTargetIdx;
    @ObfuscatedName("ms")
    @Export("widgetPositionY")
    static int[] widgetPositionY;
@@ -446,7 +449,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1732448659
    )
-   static int field946;
+   @Export("hintArrowOffsetX")
+   static int hintArrowOffsetX;
    @ObfuscatedName("ln")
    @ObfuscatedSignature(
       signature = "Lhj;"
@@ -461,7 +465,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -728024509
    )
-   static int field1139;
+   @Export("hintArrowOffsetY")
+   static int hintArrowOffsetY;
    @ObfuscatedName("lv")
    @ObfuscatedGetter(
       intValue = -14083199
@@ -958,7 +963,8 @@ public final class Client extends GameEngine {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   static SpritePixels[] field1145;
+   @Export("mapIcons")
+   static SpritePixels[] mapIcons;
    @ObfuscatedName("gp")
    static boolean field1132;
    @ObfuscatedName("gg")
@@ -1204,14 +1210,14 @@ public final class Client extends GameEngine {
       field937 = true;
       displayFps = false;
       field1030 = 0;
-      field940 = 0;
-      field941 = 0;
-      field1053 = 0;
+      hintArrowTargetType = 0;
+      hintArrowNpcTargetIdx = 0;
+      hintArrowPlayerTargetIdx = 0;
       hintArrowX = 0;
       hintArrowY = 0;
       hintArrowType = 0;
-      field946 = 0;
-      field1139 = 0;
+      hintArrowOffsetX = 0;
+      hintArrowOffsetY = 0;
       field948 = class89.field1406;
       field949 = class89.field1406;
       loadingStage = 0;
@@ -1407,7 +1413,7 @@ public final class Client extends GameEngine {
       field1164 = 0;
       field1143 = new int[1000];
       field1179 = new int[1000];
-      field1145 = new SpritePixels[1000];
+      mapIcons = new SpritePixels[1000];
       destinationX = 0;
       destinationY = 0;
       field1148 = 0;
@@ -1515,9 +1521,9 @@ public final class Client extends GameEngine {
       }
 
       class56.field695 = null;
-      if(class15.rssocket != null) {
-         class15.rssocket.close();
-         class15.rssocket = null;
+      if(class15.rssocket2 != null) {
+         class15.rssocket2.close();
+         class15.rssocket2 = null;
       }
 
       WallObject.method2901();
@@ -1736,19 +1742,19 @@ public final class Client extends GameEngine {
    )
    @Export("processServerPacket")
    final boolean processServerPacket() {
-      if(class15.rssocket == null) {
+      if(class15.rssocket2 == null) {
          return false;
       } else {
          int var3;
          String var23;
          try {
-            int var1 = class15.rssocket.available();
+            int var1 = class15.rssocket2.available();
             if(var1 == 0) {
                return false;
             }
 
             if(packetType == -1) {
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
                packetType = secretPacketBuffer2.readOpcode();
                packetLength = RUNELITE_PACKET?-2:class272.field3703[packetType];
@@ -1760,7 +1766,7 @@ public final class Client extends GameEngine {
                   return false;
                }
 
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                packetLength = secretPacketBuffer2.payload[0] & 255;
                --var1;
             }
@@ -1770,7 +1776,7 @@ public final class Client extends GameEngine {
                   return false;
                }
 
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                secretPacketBuffer2.offset = 0;
                packetLength = secretPacketBuffer2.readUnsignedShort();
                var1 -= 2;
@@ -1781,7 +1787,7 @@ public final class Client extends GameEngine {
             }
 
             secretPacketBuffer2.offset = 0;
-            class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+            class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
             field979.method4991();
             field1118 = 0;
             thridLastFrameId = secondLastFrameId;
@@ -2694,8 +2700,8 @@ public final class Client extends GameEngine {
                   var3 = secretPacketBuffer2.readInt();
                   var88.mask = var3;
                   class72.setGameState(45);
-                  class15.rssocket.close();
-                  class15.rssocket = null;
+                  class15.rssocket2.close();
+                  class15.rssocket2 = null;
                   CombatInfoListHolder.method1686(var88);
                   packetType = -1;
                   return false;
@@ -3072,45 +3078,45 @@ public final class Client extends GameEngine {
                }
 
                if(packetType == Opcodes.PACKET_SERVER_140) {
-                  field940 = secretPacketBuffer2.readUnsignedByte();
-                  if(field940 == 1) {
-                     field941 = secretPacketBuffer2.readUnsignedShort();
+                  hintArrowTargetType = secretPacketBuffer2.readUnsignedByte();
+                  if(hintArrowTargetType == 1) {
+                     hintArrowNpcTargetIdx = secretPacketBuffer2.readUnsignedShort();
                   }
 
-                  if(field940 >= 2 && field940 <= 6) {
-                     if(field940 == 2) {
-                        field946 = 64;
-                        field1139 = 64;
+                  if(hintArrowTargetType >= 2 && hintArrowTargetType <= 6) {
+                     if(hintArrowTargetType == 2) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 3) {
-                        field946 = 0;
-                        field1139 = 64;
+                     if(hintArrowTargetType == 3) {
+                        hintArrowOffsetX = 0;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 4) {
-                        field946 = 128;
-                        field1139 = 64;
+                     if(hintArrowTargetType == 4) {
+                        hintArrowOffsetX = 128;
+                        hintArrowOffsetY = 64;
                      }
 
-                     if(field940 == 5) {
-                        field946 = 64;
-                        field1139 = 0;
+                     if(hintArrowTargetType == 5) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 0;
                      }
 
-                     if(field940 == 6) {
-                        field946 = 64;
-                        field1139 = 128;
+                     if(hintArrowTargetType == 6) {
+                        hintArrowOffsetX = 64;
+                        hintArrowOffsetY = 128;
                      }
 
-                     field940 = 2;
+                     hintArrowTargetType = 2;
                      hintArrowX = secretPacketBuffer2.readUnsignedShort();
                      hintArrowY = secretPacketBuffer2.readUnsignedShort();
                      hintArrowType = secretPacketBuffer2.readUnsignedByte();
                   }
 
-                  if(field940 == 10) {
-                     field1053 = secretPacketBuffer2.readUnsignedShort();
+                  if(hintArrowTargetType == 10) {
+                     hintArrowPlayerTargetIdx = secretPacketBuffer2.readUnsignedShort();
                   }
 
                   packetType = -1;
@@ -4186,9 +4192,9 @@ public final class Client extends GameEngine {
    final void method1272() {
       try {
          if(loginState == 0) {
-            if(class15.rssocket != null) {
-               class15.rssocket.close();
-               class15.rssocket = null;
+            if(class15.rssocket2 != null) {
+               class15.rssocket2.close();
+               class15.rssocket2 = null;
             }
 
             class132.field1990 = null;
@@ -4207,7 +4213,7 @@ public final class Client extends GameEngine {
             }
 
             if(class132.field1990.status == 1) {
-               class15.rssocket = new RSSocket((Socket)class132.field1990.value, GameEngine.taskManager);
+               class15.rssocket2 = new RSSocket((Socket)class132.field1990.value, GameEngine.taskManager);
                class132.field1990 = null;
                loginState = 2;
             }
@@ -4216,7 +4222,7 @@ public final class Client extends GameEngine {
          if(loginState == 2) {
             secretPacketBuffer1.offset = 0;
             secretPacketBuffer1.putByte(14);
-            class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, 1);
+            class15.rssocket2.queueForWrite(secretPacketBuffer1.payload, 0, 1);
             secretPacketBuffer2.offset = 0;
             loginState = 3;
          }
@@ -4231,7 +4237,7 @@ public final class Client extends GameEngine {
                class1.soundSystem1.method2089();
             }
 
-            var1 = class15.rssocket.readByte();
+            var1 = class15.rssocket2.readByte();
             if(ItemLayer.soundSystem0 != null) {
                ItemLayer.soundSystem0.method2089();
             }
@@ -4251,13 +4257,13 @@ public final class Client extends GameEngine {
 
          if(loginState == 4) {
             if(secretPacketBuffer2.offset < 8) {
-               var1 = class15.rssocket.available();
+               var1 = class15.rssocket2.available();
                if(var1 > 8 - secretPacketBuffer2.offset) {
                   var1 = 8 - secretPacketBuffer2.offset;
                }
 
                if(var1 > 0) {
-                  class15.rssocket.read(secretPacketBuffer2.payload, secretPacketBuffer2.offset, var1);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, secretPacketBuffer2.offset, var1);
                   secretPacketBuffer2.offset += var1;
                }
             }
@@ -4360,7 +4366,7 @@ public final class Client extends GameEngine {
             field968.encryptXtea(var9, var3, field968.offset);
             field968.putShortLength(field968.offset - var2);
             field968.runeliteFinishPacket();
-            class15.rssocket.queueForWrite(field968.payload, 0, field968.offset);
+            class15.rssocket2.queueForWrite(field968.payload, 0, field968.offset);
             secretPacketBuffer1.seed(var9);
 
             for(var6 = 0; var6 < 4; ++var6) {
@@ -4371,8 +4377,8 @@ public final class Client extends GameEngine {
             loginState = 6;
          }
 
-         if(loginState == 6 && class15.rssocket.available() > 0) {
-            var1 = class15.rssocket.readByte();
+         if(loginState == 6 && class15.rssocket2.available() > 0) {
+            var1 = class15.rssocket2.readByte();
             if(var1 == 21 && gameState == 20) {
                loginState = 7;
             } else if(var1 == 2) {
@@ -4393,8 +4399,8 @@ public final class Client extends GameEngine {
             }
          }
 
-         if(loginState == 7 && class15.rssocket.available() > 0) {
-            field959 = (class15.rssocket.readByte() + 3) * 60;
+         if(loginState == 7 && class15.rssocket2.available() > 0) {
+            field959 = (class15.rssocket2.readByte() + 3) * 60;
             loginState = 8;
          }
 
@@ -4406,9 +4412,9 @@ public final class Client extends GameEngine {
             }
 
          } else {
-            if(loginState == 9 && class15.rssocket.available() >= 13) {
-               boolean var18 = class15.rssocket.readByte() == 1;
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 4);
+            if(loginState == 9 && class15.rssocket2.available() >= 13) {
+               boolean var18 = class15.rssocket2.readByte() == 1;
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 4);
                secretPacketBuffer2.offset = 0;
                boolean var17 = false;
                if(var18) {
@@ -4440,16 +4446,16 @@ public final class Client extends GameEngine {
                }
 
                WorldMapType3.method215();
-               rights = class15.rssocket.readByte();
-               field1083 = class15.rssocket.readByte() == 1;
-               localInteractingIndex = class15.rssocket.readByte();
+               rights = class15.rssocket2.readByte();
+               field1083 = class15.rssocket2.readByte() == 1;
+               localInteractingIndex = class15.rssocket2.readByte();
                localInteractingIndex <<= 8;
-               localInteractingIndex += class15.rssocket.readByte();
-               field1036 = class15.rssocket.readByte();
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 1);
+               localInteractingIndex += class15.rssocket2.readByte();
+               field1036 = class15.rssocket2.readByte();
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 1);
                secretPacketBuffer2.offset = 0;
                packetType = secretPacketBuffer2.readOpcode();
-               class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+               class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                secretPacketBuffer2.offset = 0;
                packetLength = secretPacketBuffer2.readUnsignedShort();
 
@@ -4464,9 +4470,9 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(class15.rssocket.available() >= packetLength) {
+               if(class15.rssocket2.available() >= packetLength) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
                   field979.method4994();
                   field1142 = 1L;
                   field978 = -1;
@@ -4484,7 +4490,7 @@ public final class Client extends GameEngine {
                   field1118 = 0;
                   field1030 = 0;
                   field977 = 0;
-                  field940 = 0;
+                  hintArrowTargetType = 0;
                   class148.method2940();
                   class175.method3455(0);
                   RSCanvas.method769();
@@ -4582,17 +4588,17 @@ public final class Client extends GameEngine {
                }
 
             } else {
-               if(loginState == 11 && class15.rssocket.available() >= 2) {
+               if(loginState == 11 && class15.rssocket2.available() >= 2) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                   secretPacketBuffer2.offset = 0;
                   class93.field1482 = secretPacketBuffer2.readUnsignedShort();
                   loginState = 12;
                }
 
-               if(loginState == 12 && class15.rssocket.available() >= class93.field1482) {
+               if(loginState == 12 && class15.rssocket2.available() >= class93.field1482) {
                   secretPacketBuffer2.offset = 0;
-                  class15.rssocket.read(secretPacketBuffer2.payload, 0, class93.field1482);
+                  class15.rssocket2.read(secretPacketBuffer2.payload, 0, class93.field1482);
                   secretPacketBuffer2.offset = 0;
                   String var22 = secretPacketBuffer2.readString();
                   String var24 = secretPacketBuffer2.readString();
@@ -4619,17 +4625,17 @@ public final class Client extends GameEngine {
                   }
                } else {
                   if(packetLength == -1) {
-                     if(class15.rssocket.available() < 2) {
+                     if(class15.rssocket2.available() < 2) {
                         return;
                      }
 
-                     class15.rssocket.read(secretPacketBuffer2.payload, 0, 2);
+                     class15.rssocket2.read(secretPacketBuffer2.payload, 0, 2);
                      secretPacketBuffer2.offset = 0;
                      packetLength = secretPacketBuffer2.readUnsignedShort();
                   }
 
-                  if(class15.rssocket.available() >= packetLength) {
-                     class15.rssocket.read(secretPacketBuffer2.payload, 0, packetLength);
+                  if(class15.rssocket2.available() >= packetLength) {
+                     class15.rssocket2.read(secretPacketBuffer2.payload, 0, packetLength);
                      secretPacketBuffer2.offset = 0;
                      var1 = packetLength;
                      field979.method4996();
@@ -5400,9 +5406,9 @@ public final class Client extends GameEngine {
                                              }
 
                                              try {
-                                                if(class15.rssocket != null && secretPacketBuffer1.offset > 0) {
+                                                if(class15.rssocket2 != null && secretPacketBuffer1.offset > 0) {
                                                    secretPacketBuffer1.runeliteFinishPacket();
-                                                   class15.rssocket.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
+                                                   class15.rssocket2.queueForWrite(secretPacketBuffer1.payload, 0, secretPacketBuffer1.offset);
                                                    secretPacketBuffer1.offset = 0;
                                                    audioEffectCount = 0;
                                                 }

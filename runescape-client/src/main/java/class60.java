@@ -25,8 +25,8 @@ public final class class60 {
       } else {
          Client.field979.method4995();
          class72.setGameState(40);
-         class17.field324 = class15.rssocket;
-         class15.rssocket = null;
+         class17.field324 = class15.rssocket2;
+         class15.rssocket2 = null;
       }
    }
 }

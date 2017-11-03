@@ -420,7 +420,7 @@ final class class5 implements class0 {
             for(var8 = 0; var8 < Client.field1164; ++var8) {
                var9 = Client.field1143[var8] * 4 + 2 - class66.localPlayer.x / 32;
                var10 = Client.field1179[var8] * 4 + 2 - class66.localPlayer.y / 32;
-               class9.drawDot(var1, var2, var9, var10, Client.field1145[var8], var4);
+               class9.drawDot(var1, var2, var9, var10, Client.mapIcons[var8], var4);
             }
 
             int var11;
@@ -491,28 +491,28 @@ final class class5 implements class0 {
                }
             }
 
-            if(Client.field940 != 0 && Client.gameCycle % 20 < 10) {
-               if(Client.field940 == 1 && Client.field941 >= 0 && Client.field941 < Client.cachedNPCs.length) {
-                  NPC var23 = Client.cachedNPCs[Client.field941];
+            if(Client.hintArrowTargetType != 0 && Client.gameCycle % 20 < 10) {
+               if(Client.hintArrowTargetType == 1 && Client.hintArrowNpcTargetIdx >= 0 && Client.hintArrowNpcTargetIdx < Client.cachedNPCs.length) {
+                  NPC var23 = Client.cachedNPCs[Client.hintArrowNpcTargetIdx];
                   if(var23 != null) {
                      var11 = var23.x / 32 - class66.localPlayer.x / 32;
                      var12 = var23.y / 32 - class66.localPlayer.y / 32;
-                     class18.method138(var1, var2, var11, var12, class202.field2484[1], var4);
+                     class18.method138(var1, var2, var11, var12, class202.mapMarkers[1], var4);
                   }
                }
 
-               if(Client.field940 == 2) {
+               if(Client.hintArrowTargetType == 2) {
                   var10 = Client.hintArrowX * 4 - class22.baseX * 1645060 + 2 - class66.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - class273.baseY * 4 + 2 - class66.localPlayer.y / 32;
-                  class18.method138(var1, var2, var10, var11, class202.field2484[1], var4);
+                  class18.method138(var1, var2, var10, var11, class202.mapMarkers[1], var4);
                }
 
-               if(Client.field940 == 10 && Client.field1053 >= 0 && Client.field1053 < Client.cachedPlayers.length) {
-                  Player var24 = Client.cachedPlayers[Client.field1053];
+               if(Client.hintArrowTargetType == 10 && Client.hintArrowPlayerTargetIdx >= 0 && Client.hintArrowPlayerTargetIdx < Client.cachedPlayers.length) {
+                  Player var24 = Client.cachedPlayers[Client.hintArrowPlayerTargetIdx];
                   if(var24 != null) {
                      var11 = var24.x / 32 - class66.localPlayer.x / 32;
                      var12 = var24.y / 32 - class66.localPlayer.y / 32;
-                     class18.method138(var1, var2, var11, var12, class202.field2484[1], var4);
+                     class18.method138(var1, var2, var11, var12, class202.mapMarkers[1], var4);
                   }
                }
             }
@@ -520,7 +520,7 @@ final class class5 implements class0 {
             if(Client.destinationX != 0) {
                var10 = Client.destinationX * 4 + 2 - class66.localPlayer.x / 32;
                var11 = Client.destinationY * 4 + 2 - class66.localPlayer.y / 32;
-               class9.drawDot(var1, var2, var10, var11, class202.field2484[0], var4);
+               class9.drawDot(var1, var2, var10, var11, class202.mapMarkers[0], var4);
             }
 
             if(!class66.localPlayer.hidden) {

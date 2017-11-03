@@ -15,8 +15,8 @@ public class class14 {
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   @Export("pkIcons")
-   static SpritePixels[] pkIcons;
+   @Export("headIconsHint")
+   static SpritePixels[] headIconsHint;
    @ObfuscatedName("pb")
    @ObfuscatedGetter(
       intValue = 1470002847

@@ -10,8 +10,8 @@ final class class15 implements Comparator {
    @ObfuscatedSignature(
       signature = "Lfe;"
    )
-   @Export("rssocket")
-   static RSSocket rssocket;
+   @Export("rssocket2")
+   static RSSocket rssocket2;
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
       signature = "Lih;"

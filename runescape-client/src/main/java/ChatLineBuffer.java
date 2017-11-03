@@ -79,9 +79,9 @@ public class ChatLineBuffer {
       garbageValue = "1023197937"
    )
    static final void method1916() {
-      if(class15.rssocket != null) {
-         class15.rssocket.close();
-         class15.rssocket = null;
+      if(class15.rssocket2 != null) {
+         class15.rssocket2.close();
+         class15.rssocket2 = null;
       }
 
       WorldMapType2.method521();

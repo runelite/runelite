@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -7,5 +8,6 @@ public class class220 {
    @ObfuscatedSignature(
       signature = "[Ljo;"
    )
-   static IndexedSprite[] field2801;
+   @Export("mapscene")
+   static IndexedSprite[] mapscene;
 }
