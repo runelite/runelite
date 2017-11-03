@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.slayer;
 
-import net.runelite.api.ChatMessageType;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class ChatMessage
+import java.awt.image.BufferedImage;
+
+public class TaskCounter extends Counter
 {
-	private ChatMessageType type;
-	private String sender;
-	private String message;
-	private String clan;
-
-	public ChatMessage(ChatMessageType type, String sender, String message, String clan)
+	public TaskCounter(BufferedImage img, int amount)
 	{
-		this.type = type;
-		this.sender = sender;
-		this.message = message;
-		this.clan = clan;
+		super(img, String.valueOf(amount));
 	}
-
-	public ChatMessageType getType()
-	{
-		return this.type;
-	}
-
-	public String getSender()
-	{
-		return this.sender;
-	}
-
-	public String getMessage()
-	{
-		return this.message;
-	}
-
-	public String getClan()
-	{
-		return this.clan;
-	}
-
 }

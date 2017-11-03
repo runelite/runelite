@@ -349,6 +349,11 @@ public class RuneLite
 		return runelite;
 	}
 
+	public static void setRunelite(RuneLite runelite)
+	{
+		RuneLite.runelite = runelite;
+	}
+
 	public RuneliteProperties getProperties()
 	{
 		return properties;
