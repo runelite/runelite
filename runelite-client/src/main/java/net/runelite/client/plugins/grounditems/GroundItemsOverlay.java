@@ -148,7 +148,7 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		// gets the hidden/highlighted items from the text box in the config
-		String configItems = config.getHiddenItems();
+		String configItems = config.getHiddenItems().toLowerCase();
 		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
 		// note: both of these lists are immutable
 		configItems = config.getHighlightItems().toLowerCase();
@@ -198,7 +198,7 @@ public class GroundItemsOverlay extends Overlay
 					ItemComposition itemDefinition = itemCache.getUnchecked(itemId);
 
 					Integer currentQuantity = items.get(itemId);
-					if (!hiddenItems.contains(itemDefinition.getName()))
+					if (!hiddenItems.contains(itemDefinition.getName().toLowerCase()))
 					{
 						if (currentQuantity == null)
 						{
