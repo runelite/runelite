@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -132,7 +133,7 @@ public final class Projectile extends Renderable {
    )
    @Export("animationSequence")
    Sequence animationSequence;
-
+   @Hook("projectileSpawned")
    Projectile(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
       this.isMoving = false;
       this.field1475 = 0;

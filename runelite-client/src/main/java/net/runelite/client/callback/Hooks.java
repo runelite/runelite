@@ -185,6 +185,17 @@ public class Hooks
 		runelite.getEventBus().post(menuOptionClicked);
 	}
 
+	public static void projectileSpawned(Object projectile, int id, int floor, int x1, int y1, int height, int startTime, int cycle, int slope, int start, int interacting, int endHeight)
+	{
+		if (logger.isDebugEnabled())
+		{
+			logger.debug("Projectile Spawned at {}, {}", x1, y1);
+		}
+
+		ProjectileSpawned projSpawn = new ProjectileSpawned(id, floor, x1, y1, height, startTime, cycle, slope, start, interacting, endHeight);
+		runelite.getEventBus().post(projSpawn);
+	}
+
 	public static void addChatMessage(int type, String sender, String message, String clan)
 	{
 		if (logger.isDebugEnabled())

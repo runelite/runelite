@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Cameron <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,89 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.events;
 
-import net.runelite.mapping.Import;
-
-public interface RSProjectile
+public class ProjectileSpawned
 {
-	@Import("isMoving")
-	boolean isMoving();
+	private int id;
+	private int floor;
+	private int startX;
+	private int startY;
+	private int height;
+	private int startTime;
+	private int cycle;
+	private int slope;
+	private int start;
+	private int interacting;
+	private int endHeight;
 
-	@Import("animationSequence")
-	RSSequence getAnimationSequence();
+	public ProjectileSpawned(int id, int floor, int startX, int startY, int height, int startTime, int cycle, int slope, int start, int interacting, int endHeight)
+	{
+		this.id = id;
+		this.floor = floor;
+		this.startX = startX;
+		this.startY = startY;
+		this.height = height;
+		this.startTime = startTime;
+		this.cycle = cycle;
+		this.slope = slope;
+		this.start = start;
+		this.interacting = interacting;
+		this.endHeight = endHeight;
+	}
 
-	@Import("velocityY")
-	double getVelocityY();
+	public int getId()
+	{
+		return id;
+	}
 
-	@Import("velocityX")
-	double getVelocityX();
+	public int getFloor()
+	{
+		return floor;
+	}
 
-	@Import("velocityZ")
-	double getVelocityZ();
+	public int getStartX()
+	{
+		return startX;
+	}
 
-	@Import("scalar")
-	double getScalar();
+	public int getStartY()
+	{
+		return startY;
+	}
 
-	@Import("x1")
-	int getStartX();
+	public int getHeight()
+	{
+		return height;
+	}
 
-	@Import("y1")
-	int getStartY();
+	public int getStartTime()
+	{
+		return startTime;
+	}
+
+	public int getCycle()
+	{
+		return cycle;
+	}
+
+	public int getSlope()
+	{
+		return slope;
+	}
+
+	public int getStart()
+	{
+		return start;
+	}
+
+	public int getInteracting()
+	{
+		return interacting;
+	}
+
+	public int getEndHeight()
+	{
+		return endHeight;
+	}
 }
