@@ -15,48 +15,48 @@ import net.runelite.rs.Opcodes;
 public final class RSSocket implements Runnable {
    @ObfuscatedName("ak")
    protected static boolean field2267;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 260987813
-   )
-   @Export("outbufLen")
-   int outbufLen;
-   @ObfuscatedName("o")
-   @Export("closed")
-   boolean closed;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -925728497
-   )
-   @Export("streamOffset")
-   int streamOffset;
-   @ObfuscatedName("x")
-   @Export("throwException")
-   boolean throwException;
    @ObfuscatedName("w")
    @Export("inputStream")
    InputStream inputStream;
-   @ObfuscatedName("p")
-   @Export("outbuffer")
-   byte[] outbuffer;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Let;"
-   )
-   @Export("socketThread")
-   Task socketThread;
    @ObfuscatedName("s")
    @Export("outputStream")
    OutputStream outputStream;
+   @ObfuscatedName("q")
+   @Export("socket")
+   Socket socket;
+   @ObfuscatedName("o")
+   @Export("closed")
+   boolean closed;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Lem;"
    )
    @Export("manager")
    Signlink manager;
-   @ObfuscatedName("q")
-   @Export("socket")
-   Socket socket;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Let;"
+   )
+   @Export("socketThread")
+   Task socketThread;
+   @ObfuscatedName("p")
+   @Export("outbuffer")
+   byte[] outbuffer;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -925728497
+   )
+   @Export("streamOffset")
+   int streamOffset;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 260987813
+   )
+   @Export("outbufLen")
+   int outbufLen;
+   @ObfuscatedName("x")
+   @Export("throwException")
+   boolean throwException;
 
    @ObfuscatedSignature(
       signature = "(Ljava/net/Socket;Lem;)V"
@@ -105,6 +105,16 @@ public final class RSSocket implements Runnable {
 
          this.socketThread = null;
       }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1184455604"
+   )
+   @Export("readByte")
+   public int readByte() throws IOException {
+      return this.closed?0:this.inputStream.read();
    }
 
    @ObfuscatedName("q")
@@ -171,16 +181,6 @@ public final class RSSocket implements Runnable {
             }
          }
       }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1184455604"
-   )
-   @Export("readByte")
-   public int readByte() throws IOException {
-      return this.closed?0:this.inputStream.read();
    }
 
    protected void finalize() {

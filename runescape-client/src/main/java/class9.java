@@ -4,17 +4,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("x")
 public abstract class class9 extends Node {
+   @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "[Ljo;"
+   )
+   static IndexedSprite[] field263;
    @ObfuscatedName("ez")
    @ObfuscatedSignature(
       signature = "Ljh;"
    )
    @Export("font_p12full")
    static Font font_p12full;
-   @ObfuscatedName("bx")
-   @ObfuscatedSignature(
-      signature = "[Ljo;"
-   )
-   static IndexedSprite[] field263;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -22,6 +22,22 @@ public abstract class class9 extends Node {
       garbageValue = "-2004882891"
    )
    public abstract void vmethod57();
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIIIII)I",
+      garbageValue = "-1920647440"
+   )
+   public static int method55(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
+
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
 
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
@@ -226,21 +242,5 @@ public abstract class class9 extends Node {
 
          }
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIIIIII)I",
-      garbageValue = "-1920647440"
-   )
-   public static int method55(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
    }
 }

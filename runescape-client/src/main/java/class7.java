@@ -16,19 +16,21 @@ public class class7 {
       signature = "Ln;"
    )
    public static class11 field240;
-   @ObfuscatedName("cr")
-   static boolean field244;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgq;"
+   )
+   public static CombatInfoList field241;
+   @ObfuscatedName("e")
+   static byte[][][] field248;
    @ObfuscatedName("an")
    @Export("clientInstance")
    @ObfuscatedSignature(
       signature = "Lclient;"
    )
    static Client clientInstance;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lgq;"
-   )
-   public static CombatInfoList field241;
+   @ObfuscatedName("cr")
+   static boolean field244;
    @ObfuscatedName("ea")
    @ObfuscatedGetter(
       longValue = 5050311703199981383L
@@ -39,8 +41,6 @@ public class class7 {
       signature = "Ljd;"
    )
    static class262 field246;
-   @ObfuscatedName("e")
-   static byte[][][] field248;
 
    static {
       field245 = false;

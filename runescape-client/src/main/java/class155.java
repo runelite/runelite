@@ -7,18 +7,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ee")
 public class class155 {
+   @ObfuscatedName("g")
+   public static File field2237;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ldv;"
    )
    static CacheFile field2240;
-   @ObfuscatedName("et")
-   @ObfuscatedSignature(
-      signature = "Ljh;"
-   )
-   static Font field2238;
-   @ObfuscatedName("g")
-   public static File field2237;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ldv;"
@@ -29,6 +24,11 @@ public class class155 {
       signature = "Ldv;"
    )
    public static CacheFile field2241;
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "Ljh;"
+   )
+   static Font field2238;
 
    static {
       field2240 = null;

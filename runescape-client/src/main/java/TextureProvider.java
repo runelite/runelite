@@ -7,15 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dc")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 543891083
-   )
-   @Export("width")
-   int width;
-   @ObfuscatedName("g")
-   @Export("brightness")
-   double brightness;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "[Ldu;"
@@ -28,18 +19,27 @@ public class TextureProvider implements ITextureLoader {
    )
    @Export("deque")
    Deque deque;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1360794351
-   )
-   @Export("size")
-   int size;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1757174191
    )
    @Export("maxSize")
    int maxSize;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1360794351
+   )
+   @Export("size")
+   int size;
+   @ObfuscatedName("g")
+   @Export("brightness")
+   double brightness;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 543891083
+   )
+   @Export("width")
+   int width;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lip;"
@@ -71,31 +71,11 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-12356"
-   )
-   @Export("reset")
-   public void reset() {
-      for(int var1 = 0; var1 < this.textures.length; ++var1) {
-         if(this.textures[var1] != null) {
-            this.textures[var1].resetPixels();
-         }
-      }
-
-      this.deque = new Deque();
-      this.size = this.maxSize;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1098741737"
-   )
-   @Export("getAverageTextureRGB")
-   public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1864:0;
+   @ObfuscatedName("w")
+   @Export("brightness")
+   public void brightness(double var1) {
+      this.brightness = var1;
+      this.reset();
    }
 
    @ObfuscatedName("s")
@@ -131,13 +111,14 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1046953986"
+      signature = "(II)I",
+      garbageValue = "-1098741737"
    )
-   public boolean vmethod2911(int var1) {
-      return this.width == 64;
+   @Export("getAverageTextureRGB")
+   public int getAverageTextureRGB(int var1) {
+      return this.textures[var1] != null?this.textures[var1].field1864:0;
    }
 
    @ObfuscatedName("o")
@@ -149,11 +130,30 @@ public class TextureProvider implements ITextureLoader {
       return this.textures[var1].field1865;
    }
 
-   @ObfuscatedName("w")
-   @Export("brightness")
-   public void brightness(double var1) {
-      this.brightness = var1;
-      this.reset();
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "1046953986"
+   )
+   public boolean vmethod2911(int var1) {
+      return this.width == 64;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "-12356"
+   )
+   @Export("reset")
+   public void reset() {
+      for(int var1 = 0; var1 < this.textures.length; ++var1) {
+         if(this.textures[var1] != null) {
+            this.textures[var1].resetPixels();
+         }
+      }
+
+      this.deque = new Deque();
+      this.size = this.maxSize;
    }
 
    @ObfuscatedName("p")

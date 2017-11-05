@@ -27,36 +27,12 @@ public final class SceneTileModel {
    @ObfuscatedName("w")
    @Export("vertexX")
    int[] vertexX;
-   @ObfuscatedName("z")
-   @Export("flatShade")
-   boolean flatShade;
-   @ObfuscatedName("p")
-   int[] field1835;
-   @ObfuscatedName("n")
-   @Export("shape")
-   int shape;
    @ObfuscatedName("s")
    @Export("vertexY")
    int[] vertexY;
-   @ObfuscatedName("u")
-   @Export("rotation")
-   int rotation;
-   @ObfuscatedName("e")
-   int[] field1836;
-   @ObfuscatedName("t")
-   @Export("underlay")
-   int underlay;
-   @ObfuscatedName("d")
-   int[] field1829;
    @ObfuscatedName("q")
    @Export("vertexZ")
    int[] vertexZ;
-   @ObfuscatedName("a")
-   @Export("overlay")
-   int overlay;
-   @ObfuscatedName("x")
-   @Export("triangleTextureId")
-   int[] triangleTextureId;
    @ObfuscatedName("o")
    @Export("triangleColorA")
    int[] triangleColorA;
@@ -66,6 +42,30 @@ public final class SceneTileModel {
    @ObfuscatedName("v")
    @Export("triangleColorC")
    int[] triangleColorC;
+   @ObfuscatedName("p")
+   int[] field1835;
+   @ObfuscatedName("e")
+   int[] field1836;
+   @ObfuscatedName("d")
+   int[] field1829;
+   @ObfuscatedName("x")
+   @Export("triangleTextureId")
+   int[] triangleTextureId;
+   @ObfuscatedName("z")
+   @Export("flatShade")
+   boolean flatShade;
+   @ObfuscatedName("n")
+   @Export("shape")
+   int shape;
+   @ObfuscatedName("u")
+   @Export("rotation")
+   int rotation;
+   @ObfuscatedName("t")
+   @Export("underlay")
+   int underlay;
+   @ObfuscatedName("a")
+   @Export("overlay")
+   int overlay;
 
    static {
       tmpScreenX = new int[6];

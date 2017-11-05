@@ -18,59 +18,69 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    )
    @Export("mouse")
    public static MouseInput mouse;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1725731803
-   )
-   public static volatile int field760;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -294107055
    )
    @Export("mouseIdleTicks")
    public static volatile int mouseIdleTicks;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1725731803
+   )
+   public static volatile int field760;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1491322179
    )
    @Export("mouseX")
    public static volatile int mouseX;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 905144935
-   )
-   public static volatile int field753;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1983285637
-   )
-   public static int field743;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1726188587
    )
    @Export("mouseY")
    public static volatile int mouseY;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 377595057
-   )
-   public static int field756;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1876800097
-   )
-   public static volatile int field744;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 136586683
-   )
-   public static int field741;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -157286495
    )
    public static int field750;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 136586683
+   )
+   public static int field741;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 377595057
+   )
+   public static int field756;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1231717261
+   )
+   public static volatile int field752;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 905144935
+   )
+   public static volatile int field753;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1876800097
+   )
+   public static volatile int field744;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      longValue = -4745726906387913125L
+   )
+   public static volatile long field755;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1983285637
+   )
+   public static int field743;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 912886423
@@ -81,16 +91,6 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       intValue = 261836997
    )
    public static int field758;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1231717261
-   )
-   public static volatile int field752;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      longValue = -4745726906387913125L
-   )
-   public static volatile long field755;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       longValue = 656430533231465849L

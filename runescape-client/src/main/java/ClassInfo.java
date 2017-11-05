@@ -19,12 +19,12 @@ public class ClassInfo extends Node {
    )
    @Export("count")
    int count;
-   @ObfuscatedName("o")
-   @Export("errorIdentifiers")
-   int[] errorIdentifiers;
    @ObfuscatedName("q")
    @Export("type")
    int[] type;
+   @ObfuscatedName("o")
+   @Export("errorIdentifiers")
+   int[] errorIdentifiers;
    @ObfuscatedName("g")
    @Export("fields")
    Field[] fields;

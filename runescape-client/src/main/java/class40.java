@@ -14,16 +14,16 @@ public class class40 {
       signature = "Laj;"
    )
    public static final class40 field564;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Laj;"
-   )
-   public static final class40 field566;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Laj;"
    )
    public static final class40 field565;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Laj;"
+   )
+   public static final class40 field566;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Laj;"

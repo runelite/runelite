@@ -46,13 +46,6 @@ public enum class232 implements RSEnum {
    )
    field3191("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("p")
-   public final String field3192;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -76893317
-   )
-   final int field3193;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lag;"
@@ -64,6 +57,13 @@ public enum class232 implements RSEnum {
    )
    @Export("indexWorldMap")
    static IndexData indexWorldMap;
+   @ObfuscatedName("p")
+   public final String field3192;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -76893317
+   )
+   final int field3193;
 
    class232(String var3, String var4, int var5) {
       this.field3192 = var3;

@@ -44,6 +44,20 @@ public class class87 {
       class56.field692 = var1;
    }
 
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(ILct;ZB)I",
+      garbageValue = "120"
+   )
+   static int method1720(int var0, Script var1, boolean var2) {
+      if(var0 == 5630) {
+         Client.field977 = 250;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
    @ObfuscatedName("hh")
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -94,20 +108,6 @@ public class class87 {
             int var9 = var0 + (var1 << 7) + 1610612736;
             class3.region.addItemPile(class46.plane, var0, var1, class41.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class46.plane), var5, var9, var11, var10);
          }
-      }
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZB)I",
-      garbageValue = "120"
-   )
-   static int method1720(int var0, Script var1, boolean var2) {
-      if(var0 == 5630) {
-         Client.field977 = 250;
-         return 1;
-      } else {
-         return 2;
       }
    }
 }

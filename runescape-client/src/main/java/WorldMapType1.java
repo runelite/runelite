@@ -17,86 +17,68 @@ public class WorldMapType1 implements WorldMapSectionBase {
       signature = "[Ljo;"
    )
    static IndexedSprite[] field438;
-   @ObfuscatedName("ga")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("headIconsPrayer")
-   static SpritePixels[] headIconsPrayer;
    @ObfuscatedName("dk")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    @Export("indexScripts")
    static IndexData indexScripts;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -333902201
+   @ObfuscatedName("ga")
+   @ObfuscatedSignature(
+      signature = "[Lky;"
    )
-   int field444;
+   @Export("headIconsPrayer")
+   static SpritePixels[] headIconsPrayer;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1213657445
    )
    int field447;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1295949911
-   )
-   int field440;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1478621425
    )
    int field439;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -521167555
-   )
-   int field445;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1029040305
    )
    int field450;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1713890983
-   )
-   int field441;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1503012511
-   )
-   int field453;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1085610451
    )
    int field442;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1503012511
+   )
+   int field453;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1277519197
    )
    int field443;
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "2005574810"
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -333902201
    )
-   public boolean vmethod700(int var1, int var2) {
-      return var1 >> 6 >= this.field444 && var1 >> 6 <= this.field440 && var2 >> 6 >= this.field445 && var2 >> 6 <= this.field441;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "2147483647"
+   int field444;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -521167555
    )
-   public boolean vmethod699(int var1, int var2, int var3) {
-      return var1 >= this.field447 && var1 < this.field447 + this.field439?var2 >> 6 >= this.field450 && var2 >> 6 <= this.field453 && var3 >> 6 >= this.field442 && var3 >> 6 <= this.field443:false;
-   }
+   int field445;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1295949911
+   )
+   int field440;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1713890983
+   )
+   int field441;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -122,19 +104,22 @@ public class WorldMapType1 implements WorldMapSectionBase {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)Lhg;",
-      garbageValue = "-1413226110"
+      signature = "(IIII)Z",
+      garbageValue = "2147483647"
    )
-   public Coordinates vmethod702(int var1, int var2) {
-      if(!this.vmethod700(var1, var2)) {
-         return null;
-      } else {
-         int var3 = this.field450 * 64 - this.field444 * 64 + var1;
-         int var4 = this.field442 * 64 - this.field445 * 64 + var2;
-         return new Coordinates(this.field447, var3, var4);
-      }
+   public boolean vmethod699(int var1, int var2, int var3) {
+      return var1 >= this.field447 && var1 < this.field447 + this.field439?var2 >> 6 >= this.field450 && var2 >> 6 <= this.field453 && var3 >> 6 >= this.field442 && var3 >> 6 <= this.field443:false;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "2005574810"
+   )
+   public boolean vmethod700(int var1, int var2) {
+      return var1 >> 6 >= this.field444 && var1 >> 6 <= this.field440 && var2 >> 6 >= this.field445 && var2 >> 6 <= this.field441;
    }
 
    @ObfuscatedName("o")
@@ -148,6 +133,21 @@ public class WorldMapType1 implements WorldMapSectionBase {
       } else {
          int[] var4 = new int[]{this.field444 * 64 - this.field450 * 64 + var2, var3 + (this.field445 * 64 - this.field442 * 64)};
          return var4;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(III)Lhg;",
+      garbageValue = "-1413226110"
+   )
+   public Coordinates vmethod702(int var1, int var2) {
+      if(!this.vmethod700(var1, var2)) {
+         return null;
+      } else {
+         int var3 = this.field450 * 64 - this.field444 * 64 + var1;
+         int var4 = this.field442 * 64 - this.field445 * 64 + var2;
+         return new Coordinates(this.field447, var3, var4);
       }
    }
 
@@ -295,6 +295,15 @@ public class WorldMapType1 implements WorldMapSectionBase {
       }
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(CI)C",
+      garbageValue = "-896154779"
+   )
+   public static char method267(char var0) {
+      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
+   }
+
    @ObfuscatedName("gs")
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -308,14 +317,5 @@ public class WorldMapType1 implements WorldMapSectionBase {
          }
 
       }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-896154779"
-   )
-   public static char method267(char var0) {
-      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
    }
 }

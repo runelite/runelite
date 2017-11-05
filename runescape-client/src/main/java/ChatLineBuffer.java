@@ -73,6 +73,18 @@ public class ChatLineBuffer {
       return this.length;
    }
 
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "-124899442"
+   )
+   static byte[] method1912(byte[] var0) {
+      int var1 = var0.length;
+      byte[] var2 = new byte[var1];
+      System.arraycopy(var0, 0, var2, 0, var1);
+      return var2;
+   }
+
    @ObfuscatedName("fc")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -97,17 +109,5 @@ public class ChatLineBuffer {
       Client.field1151 = false;
       class27.method218();
       class72.setGameState(10);
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-124899442"
-   )
-   static byte[] method1912(byte[] var0) {
-      int var1 = var0.length;
-      byte[] var2 = new byte[var1];
-      System.arraycopy(var0, 0, var2, 0, var1);
-      return var2;
    }
 }

@@ -12,6 +12,64 @@ final class class5 implements class0 {
    @Export("selectedItemIndex")
    static int selectedItemIndex;
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lip;I)V",
+      garbageValue = "-1175049252"
+   )
+   public static void method17(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IIIZIZI)V",
+      garbageValue = "83319532"
+   )
+   static void method15(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = class266.worldList[var6];
+         class266.worldList[var6] = class266.worldList[var1];
+         class266.worldList[var1] = var8;
+
+         for(int var9 = var0; var9 < var1; ++var9) {
+            World var11 = class266.worldList[var9];
+            int var12 = FileOnDisk.method2410(var11, var8, var2, var3);
+            int var10;
+            if(var12 != 0) {
+               if(var3) {
+                  var10 = -var12;
+               } else {
+                  var10 = var12;
+               }
+            } else if(var4 == -1) {
+               var10 = 0;
+            } else {
+               int var13 = FileOnDisk.method2410(var11, var8, var4, var5);
+               if(var5) {
+                  var10 = -var13;
+               } else {
+                  var10 = var13;
+               }
+            }
+
+            if(var10 <= 0) {
+               World var14 = class266.worldList[var9];
+               class266.worldList[var9] = class266.worldList[var7];
+               class266.worldList[var7++] = var14;
+            }
+         }
+
+         class266.worldList[var1] = class266.worldList[var7];
+         class266.worldList[var7] = var8;
+         method15(var0, var7 - 1, var2, var3, var4, var5);
+         method15(var7 + 1, var1, var2, var3, var4, var5);
+      }
+
+   }
+
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(Ljh;Ljh;Ljh;ZI)V",
@@ -532,63 +590,5 @@ final class class5 implements class0 {
 
          Client.field1120[var3] = true;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lip;I)V",
-      garbageValue = "-1175049252"
-   )
-   public static void method17(IndexDataBase var0) {
-      Varbit.varbit_ref = var0;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IIIZIZI)V",
-      garbageValue = "83319532"
-   )
-   static void method15(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
-         World var8 = class266.worldList[var6];
-         class266.worldList[var6] = class266.worldList[var1];
-         class266.worldList[var1] = var8;
-
-         for(int var9 = var0; var9 < var1; ++var9) {
-            World var11 = class266.worldList[var9];
-            int var12 = FileOnDisk.method2410(var11, var8, var2, var3);
-            int var10;
-            if(var12 != 0) {
-               if(var3) {
-                  var10 = -var12;
-               } else {
-                  var10 = var12;
-               }
-            } else if(var4 == -1) {
-               var10 = 0;
-            } else {
-               int var13 = FileOnDisk.method2410(var11, var8, var4, var5);
-               if(var5) {
-                  var10 = -var13;
-               } else {
-                  var10 = var13;
-               }
-            }
-
-            if(var10 <= 0) {
-               World var14 = class266.worldList[var9];
-               class266.worldList[var9] = class266.worldList[var7];
-               class266.worldList[var7++] = var14;
-            }
-         }
-
-         class266.worldList[var1] = class266.worldList[var7];
-         class266.worldList[var7] = var8;
-         method15(var0, var7 - 1, var2, var3, var4, var5);
-         method15(var7 + 1, var1, var2, var3, var4, var5);
-      }
-
    }
 }

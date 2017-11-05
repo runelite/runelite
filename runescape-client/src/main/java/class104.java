@@ -4,8 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("df")
 public class class104 extends Node {
-   @ObfuscatedName("b")
-   static boolean field1565;
    @ObfuscatedName("p")
    @Export("payload")
    static byte[] payload;
@@ -15,86 +13,88 @@ public class class104 extends Node {
    @ObfuscatedName("d")
    @Export("bitPosition")
    static int bitPosition;
+   @ObfuscatedName("x")
+   @Export("blockSize0")
+   static int blockSize0;
+   @ObfuscatedName("z")
+   @Export("blockSize1")
+   static int blockSize1;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "[Lcf;"
    )
    @Export("codeBooks")
    static CodeBook[] codeBooks;
-   @ObfuscatedName("z")
-   @Export("blockSize1")
-   static int blockSize1;
-   @ObfuscatedName("h")
-   @Export("modeMappings")
-   static int[] modeMappings;
-   @ObfuscatedName("x")
-   @Export("blockSize0")
-   static int blockSize0;
-   @ObfuscatedName("r")
-   static float[] field1587;
-   @ObfuscatedName("i")
-   @Export("modeBlockFlags")
-   static boolean[] modeBlockFlags;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "[Ldd;"
-   )
-   @Export("mappings")
-   static Mapping[] mappings;
-   @ObfuscatedName("m")
-   static float[] field1588;
-   @ObfuscatedName("ap")
-   static float[] field1591;
-   @ObfuscatedName("l")
-   static float[] field1594;
-   @ObfuscatedName("af")
-   static float[] field1576;
-   @ObfuscatedName("f")
-   static float[] field1583;
-   @ObfuscatedName("aa")
-   static float[] field1593;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "[Ldp;"
    )
    @Export("floors")
    static Floor1[] floors;
-   @ObfuscatedName("ay")
-   static int[] field1590;
-   @ObfuscatedName("aw")
-   static int[] field1579;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "[Ldn;"
    )
    @Export("residues")
    static Residue[] residues;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "[Ldd;"
+   )
+   @Export("mappings")
+   static Mapping[] mappings;
+   @ObfuscatedName("i")
+   @Export("modeBlockFlags")
+   static boolean[] modeBlockFlags;
+   @ObfuscatedName("h")
+   @Export("modeMappings")
+   static int[] modeMappings;
+   @ObfuscatedName("b")
+   static boolean field1565;
+   @ObfuscatedName("r")
+   static float[] field1587;
+   @ObfuscatedName("m")
+   static float[] field1588;
+   @ObfuscatedName("l")
+   static float[] field1594;
+   @ObfuscatedName("f")
+   static float[] field1583;
+   @ObfuscatedName("ap")
+   static float[] field1591;
+   @ObfuscatedName("af")
+   static float[] field1576;
+   @ObfuscatedName("aa")
+   static float[] field1593;
+   @ObfuscatedName("ay")
+   static int[] field1590;
+   @ObfuscatedName("aw")
+   static int[] field1579;
    @ObfuscatedName("w")
    byte[][] field1584;
-   @ObfuscatedName("az")
-   byte[] field1596;
-   @ObfuscatedName("y")
-   int field1572;
-   @ObfuscatedName("ao")
-   int field1598;
    @ObfuscatedName("s")
    int field1566;
-   @ObfuscatedName("j")
-   float[] field1595;
    @ObfuscatedName("q")
    int field1567;
-   @ObfuscatedName("at")
-   int field1597;
    @ObfuscatedName("o")
    int field1568;
    @ObfuscatedName("g")
    int field1569;
    @ObfuscatedName("v")
    boolean field1570;
-   @ObfuscatedName("c")
-   boolean field1586;
+   @ObfuscatedName("j")
+   float[] field1595;
+   @ObfuscatedName("y")
+   int field1572;
    @ObfuscatedName("k")
    int field1585;
+   @ObfuscatedName("c")
+   boolean field1586;
+   @ObfuscatedName("az")
+   byte[] field1596;
+   @ObfuscatedName("at")
+   int field1597;
+   @ObfuscatedName("ao")
+   int field1598;
 
    static {
       field1565 = false;
@@ -133,59 +133,6 @@ public class class104 extends Node {
          this.field1584[var4] = var7;
       }
 
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([I)Ldi;"
-   )
-   class105 method2001(int[] var1) {
-      if(var1 != null && var1[0] <= 0) {
-         return null;
-      } else {
-         if(this.field1596 == null) {
-            this.field1572 = 0;
-            this.field1595 = new float[blockSize1];
-            this.field1596 = new byte[this.field1567];
-            this.field1597 = 0;
-            this.field1598 = 0;
-         }
-
-         for(; this.field1598 < this.field1584.length; ++this.field1598) {
-            if(var1 != null && var1[0] <= 0) {
-               return null;
-            }
-
-            float[] var2 = this.method1998(this.field1598);
-            if(var2 != null) {
-               int var3 = this.field1597;
-               int var4 = var2.length;
-               if(var4 > this.field1567 - var3) {
-                  var4 = this.field1567 - var3;
-               }
-
-               for(int var5 = 0; var5 < var4; ++var5) {
-                  int var6 = (int)(128.0F + var2[var5] * 128.0F);
-                  if((var6 & -256) != 0) {
-                     var6 = ~var6 >> 31;
-                  }
-
-                  this.field1596[var3++] = (byte)(var6 - 128);
-               }
-
-               if(var1 != null) {
-                  var1[0] -= var3 - this.field1597;
-               }
-
-               this.field1597 = var3;
-            }
-         }
-
-         this.field1595 = null;
-         byte[] var7 = this.field1596;
-         this.field1596 = null;
-         return new class105(this.field1566, var7, this.field1568, this.field1569, this.field1570);
-      }
    }
 
    @ObfuscatedName("p")
@@ -439,6 +386,80 @@ public class class104 extends Node {
       return var42;
    }
 
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([I)Ldi;"
+   )
+   class105 method2001(int[] var1) {
+      if(var1 != null && var1[0] <= 0) {
+         return null;
+      } else {
+         if(this.field1596 == null) {
+            this.field1572 = 0;
+            this.field1595 = new float[blockSize1];
+            this.field1596 = new byte[this.field1567];
+            this.field1597 = 0;
+            this.field1598 = 0;
+         }
+
+         for(; this.field1598 < this.field1584.length; ++this.field1598) {
+            if(var1 != null && var1[0] <= 0) {
+               return null;
+            }
+
+            float[] var2 = this.method1998(this.field1598);
+            if(var2 != null) {
+               int var3 = this.field1597;
+               int var4 = var2.length;
+               if(var4 > this.field1567 - var3) {
+                  var4 = this.field1567 - var3;
+               }
+
+               for(int var5 = 0; var5 < var4; ++var5) {
+                  int var6 = (int)(128.0F + var2[var5] * 128.0F);
+                  if((var6 & -256) != 0) {
+                     var6 = ~var6 >> 31;
+                  }
+
+                  this.field1596[var3++] = (byte)(var6 - 128);
+               }
+
+               if(var1 != null) {
+                  var1[0] -= var3 - this.field1597;
+               }
+
+               this.field1597 = var3;
+            }
+         }
+
+         this.field1595 = null;
+         byte[] var7 = this.field1596;
+         this.field1596 = null;
+         return new class105(this.field1566, var7, this.field1568, this.field1569, this.field1570);
+      }
+   }
+
+   @ObfuscatedName("w")
+   @Export("float32Unpack")
+   static float float32Unpack(int var0) {
+      int var1 = var0 & 2097151;
+      int var2 = var0 & Integer.MIN_VALUE;
+      int var3 = (var0 & 2145386496) >> 21;
+      if(var2 != 0) {
+         var1 = -var1;
+      }
+
+      return (float)((double)var1 * Math.pow(2.0D, (double)(var3 - 788)));
+   }
+
+   @ObfuscatedName("s")
+   @Export("setBytes")
+   static void setBytes(byte[] var0, int var1) {
+      payload = var0;
+      position = var1;
+      bitPosition = 0;
+   }
+
    @ObfuscatedName("q")
    @Export("getBit")
    static int getBit() {
@@ -472,46 +493,6 @@ public class class104 extends Node {
       }
 
       return var1;
-   }
-
-   @ObfuscatedName("s")
-   @Export("setBytes")
-   static void setBytes(byte[] var0, int var1) {
-      payload = var0;
-      position = var1;
-      bitPosition = 0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lip;)Z"
-   )
-   static boolean method1999(IndexDataBase var0) {
-      if(!field1565) {
-         byte[] var1 = var0.getConfigData(0, 0);
-         if(var1 == null) {
-            return false;
-         }
-
-         method1997(var1);
-         field1565 = true;
-      }
-
-      return true;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lip;II)Ldf;"
-   )
-   static class104 method2000(IndexDataBase var0, int var1, int var2) {
-      if(!method1999(var0)) {
-         var0.method4192(var1, var2);
-         return null;
-      } else {
-         byte[] var3 = var0.getConfigData(var1, var2);
-         return var3 == null?null:new class104(var3);
-      }
    }
 
    @ObfuscatedName("v")
@@ -628,16 +609,35 @@ public class class104 extends Node {
 
    }
 
-   @ObfuscatedName("w")
-   @Export("float32Unpack")
-   static float float32Unpack(int var0) {
-      int var1 = var0 & 2097151;
-      int var2 = var0 & Integer.MIN_VALUE;
-      int var3 = (var0 & 2145386496) >> 21;
-      if(var2 != 0) {
-         var1 = -var1;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Lip;)Z"
+   )
+   static boolean method1999(IndexDataBase var0) {
+      if(!field1565) {
+         byte[] var1 = var0.getConfigData(0, 0);
+         if(var1 == null) {
+            return false;
+         }
+
+         method1997(var1);
+         field1565 = true;
       }
 
-      return (float)((double)var1 * Math.pow(2.0D, (double)(var3 - 788)));
+      return true;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lip;II)Ldf;"
+   )
+   static class104 method2000(IndexDataBase var0, int var1, int var2) {
+      if(!method1999(var0)) {
+         var0.method4192(var1, var2);
+         return null;
+      } else {
+         byte[] var3 = var0.getConfigData(var1, var2);
+         return var3 == null?null:new class104(var3);
+      }
    }
 }

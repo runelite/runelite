@@ -12,17 +12,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("p")
 @Implements("ScriptVarType")
 public class ScriptVarType implements RSEnum, class293 {
-   @ObfuscatedName("gh")
+   @ObfuscatedName("oe")
    @ObfuscatedSignature(
-      signature = "[Lp;"
+      signature = "Lky;"
    )
-   static ScriptVarType[] field234;
-   @ObfuscatedName("jp")
-   @ObfuscatedGetter(
-      intValue = 701281191
-   )
-   @Export("menuWidth")
-   static int menuWidth;
+   static SpritePixels field85;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lp;"
@@ -48,11 +42,6 @@ public class ScriptVarType implements RSEnum, class293 {
       signature = "Lp;"
    )
    static final ScriptVarType field159;
-   @ObfuscatedName("oe")
-   @ObfuscatedSignature(
-      signature = "Lky;"
-   )
-   static SpritePixels field85;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lp;"
@@ -953,6 +942,17 @@ public class ScriptVarType implements RSEnum, class293 {
       signature = "Lp;"
    )
    static final ScriptVarType field231;
+   @ObfuscatedName("gh")
+   @ObfuscatedSignature(
+      signature = "[Lp;"
+   )
+   static ScriptVarType[] field234;
+   @ObfuscatedName("jp")
+   @ObfuscatedGetter(
+      intValue = 701281191
+   )
+   @Export("menuWidth")
+   static int menuWidth;
    @ObfuscatedName("gb")
    @ObfuscatedGetter(
       intValue = 1797759817
@@ -1187,60 +1187,6 @@ public class ScriptVarType implements RSEnum, class293 {
       return this.id;
    }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lp;I)V",
-      garbageValue = "-1976433895"
-   )
-   static void method21(ScriptVarType var0) {
-      if(field234 == null) {
-         field234 = new ScriptVarType[256];
-      }
-
-      field234[class28.method246(var0.typeChar) & 255] = var0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2147423003"
-   )
-   public static void method29() {
-      try {
-         if(class203.field2500 == 1) {
-            int var0 = class203.field2499.method3859();
-            if(var0 > 0 && class203.field2499.method3877()) {
-               var0 -= class36.field523;
-               if(var0 < 0) {
-                  var0 = 0;
-               }
-
-               class203.field2499.method3834(var0);
-               return;
-            }
-
-            class203.field2499.method3787();
-            class203.field2499.method3785();
-            if(class87.field1392 != null) {
-               class203.field2500 = 2;
-            } else {
-               class203.field2500 = 0;
-            }
-
-            Ignore.field863 = null;
-            class203.field2504 = null;
-         }
-      } catch (Exception var2) {
-         var2.printStackTrace();
-         class203.field2499.method3787();
-         class203.field2500 = 0;
-         Ignore.field863 = null;
-         class203.field2504 = null;
-         class87.field1392 = null;
-      }
-
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lip;Lip;ZII)V",
@@ -1381,6 +1327,60 @@ public class ScriptVarType implements RSEnum, class293 {
          class8.field250.method5172(class90.field1413 + 382, 0);
          class29.logoSprite.method5147(class90.field1413 + 382 - class29.logoSprite.originalWidth / 2, 18);
       }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lp;I)V",
+      garbageValue = "-1976433895"
+   )
+   static void method21(ScriptVarType var0) {
+      if(field234 == null) {
+         field234 = new ScriptVarType[256];
+      }
+
+      field234[class28.method246(var0.typeChar) & 255] = var0;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2147423003"
+   )
+   public static void method29() {
+      try {
+         if(class203.field2500 == 1) {
+            int var0 = class203.field2499.method3859();
+            if(var0 > 0 && class203.field2499.method3877()) {
+               var0 -= class36.field523;
+               if(var0 < 0) {
+                  var0 = 0;
+               }
+
+               class203.field2499.method3834(var0);
+               return;
+            }
+
+            class203.field2499.method3787();
+            class203.field2499.method3785();
+            if(class87.field1392 != null) {
+               class203.field2500 = 2;
+            } else {
+               class203.field2500 = 0;
+            }
+
+            Ignore.field863 = null;
+            class203.field2504 = null;
+         }
+      } catch (Exception var2) {
+         var2.printStackTrace();
+         class203.field2499.method3787();
+         class203.field2500 = 0;
+         Ignore.field863 = null;
+         class203.field2504 = null;
+         class87.field1392 = null;
+      }
+
    }
 
    @ObfuscatedName("fa")

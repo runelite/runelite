@@ -3,16 +3,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("di")
 public class class105 extends class120 {
-   @ObfuscatedName("s")
-   public byte[] field1600;
    @ObfuscatedName("w")
    public int field1602;
-   @ObfuscatedName("g")
-   public boolean field1603;
+   @ObfuscatedName("s")
+   public byte[] field1600;
    @ObfuscatedName("q")
    public int field1599;
    @ObfuscatedName("o")
    int field1601;
+   @ObfuscatedName("g")
+   public boolean field1603;
 
    class105(int var1, byte[] var2, int var3, int var4) {
       this.field1602 = var1;

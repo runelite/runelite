@@ -24,17 +24,6 @@ public class class25 {
       this.field383 = var2;
    }
 
-   @ObfuscatedName("jq")
-   @ObfuscatedSignature(
-      signature = "(Lhj;B)I",
-      garbageValue = "22"
-   )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)I",
@@ -138,5 +127,16 @@ public class class25 {
             }
          }
       }
+   }
+
+   @ObfuscatedName("jq")
+   @ObfuscatedSignature(
+      signature = "(Lhj;B)I",
+      garbageValue = "22"
+   )
+   @Export("getWidgetConfig")
+   static int getWidgetConfig(Widget var0) {
+      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.value:var0.config;
    }
 }

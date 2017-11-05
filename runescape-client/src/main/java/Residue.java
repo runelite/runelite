@@ -5,26 +5,26 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("dn")
 @Implements("Residue")
 public class Residue {
-   @ObfuscatedName("v")
-   @Export("classBook")
-   int classBook;
    @ObfuscatedName("w")
    @Export("type")
    int type;
-   @ObfuscatedName("q")
-   @Export("end")
-   int end;
    @ObfuscatedName("s")
    @Export("begin")
    int begin;
+   @ObfuscatedName("q")
+   @Export("end")
+   int end;
    @ObfuscatedName("o")
    @Export("partitionSize")
    int partitionSize;
-   @ObfuscatedName("p")
-   int[] field1664;
    @ObfuscatedName("g")
    @Export("classification")
    int classification;
+   @ObfuscatedName("v")
+   @Export("classBook")
+   int classBook;
+   @ObfuscatedName("p")
+   int[] field1664;
 
    Residue() {
       this.type = class104.getInt(16);

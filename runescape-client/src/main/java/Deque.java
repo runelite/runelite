@@ -6,18 +6,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gz")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   @Export("current")
-   Node current;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgd;"
    )
    @Export("head")
    public Node head;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   @Export("current")
+   Node current;
 
    public Deque() {
       this.head = new Node();
@@ -25,51 +25,17 @@ public class Deque {
       this.head.previous = this.head;
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lgd;)V"
-   )
-   @Export("addTail")
-   public void addTail(Node var1) {
-      if(var1.previous != null) {
+   @ObfuscatedName("w")
+   @Export("clear")
+   public void clear() {
+      while(true) {
+         Node var1 = this.head.next;
+         if(var1 == this.head) {
+            this.current = null;
+            return;
+         }
+
          var1.unlink();
-      }
-
-      var1.previous = this.head;
-      var1.next = this.head.next;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "()Lgd;"
-   )
-   @Export("getFront")
-   public Node getFront() {
-      Node var1 = this.head.next;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.next;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "()Lgd;"
-   )
-   @Export("getNext")
-   public Node getNext() {
-      Node var1 = this.current;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.next;
-         return var1;
       }
    }
 
@@ -89,6 +55,22 @@ public class Deque {
       var1.next.previous = var1;
    }
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lgd;)V"
+   )
+   @Export("addTail")
+   public void addTail(Node var1) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      var1.previous = this.head;
+      var1.next = this.head.next;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+   }
+
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "()Lgd;"
@@ -100,6 +82,37 @@ public class Deque {
          return null;
       } else {
          var1.unlink();
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Lgd;"
+   )
+   @Export("popTail")
+   public Node popTail() {
+      Node var1 = this.head.previous;
+      if(var1 == this.head) {
+         return null;
+      } else {
+         var1.unlink();
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "()Lgd;"
+   )
+   @Export("getFront")
+   public Node getFront() {
+      Node var1 = this.head.next;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.next;
          return var1;
       }
    }
@@ -120,17 +133,18 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "()Lgd;"
    )
-   @Export("popTail")
-   public Node popTail() {
-      Node var1 = this.head.previous;
+   @Export("getNext")
+   public Node getNext() {
+      Node var1 = this.current;
       if(var1 == this.head) {
+         this.current = null;
          return null;
       } else {
-         var1.unlink();
+         this.current = var1.next;
          return var1;
       }
    }
@@ -148,20 +162,6 @@ public class Deque {
       } else {
          this.current = var1.previous;
          return var1;
-      }
-   }
-
-   @ObfuscatedName("w")
-   @Export("clear")
-   public void clear() {
-      while(true) {
-         Node var1 = this.head.next;
-         if(var1 == this.head) {
-            this.current = null;
-            return;
-         }
-
-         var1.unlink();
       }
    }
 

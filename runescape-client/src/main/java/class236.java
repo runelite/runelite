@@ -14,13 +14,13 @@ public class class236 implements Runnable {
       signature = "Lgz;"
    )
    static Deque field3227;
-   @ObfuscatedName("o")
-   public static Object field3231;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1776284767
    )
    public static int field3228;
+   @ObfuscatedName("o")
+   public static Object field3231;
 
    static {
       field3229 = new Deque();

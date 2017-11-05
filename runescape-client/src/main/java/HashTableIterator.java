@@ -7,27 +7,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gi")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lgd;"
-   )
-   @Export("head")
-   Node head;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgk;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("q")
-   @Export("index")
-   int index;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lgd;"
    )
    @Export("tail")
    Node tail;
+   @ObfuscatedName("q")
+   @Export("index")
+   int index;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lgd;"
+   )
+   @Export("head")
+   Node head;
 
    @ObfuscatedSignature(
       signature = "(Lgk;)V"

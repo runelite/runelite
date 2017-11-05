@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("av")
 public class class36 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lav;"
-   )
-   static final class36 field516;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lav;"
    )
    static final class36 field521;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lav;"
+   )
+   static final class36 field516;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 39136011
@@ -34,31 +34,6 @@ public class class36 {
 
    class36(int var1) {
       this.field515 = var1;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "18"
-   )
-   static void method481(String var0, String var1, String var2) {
-      class90.loginMessage1 = var0;
-      class90.loginMessage2 = var1;
-      class90.loginMessage3 = var2;
-   }
-
-   @ObfuscatedName("hf")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-965603903"
-   )
-   static final void method480(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1117; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1119[var4] = true;
-         }
-      }
-
    }
 
    @ObfuscatedName("o")
@@ -120,6 +95,17 @@ public class class36 {
       } else {
          return 2;
       }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "18"
+   )
+   static void method481(String var0, String var1, String var2) {
+      class90.loginMessage1 = var0;
+      class90.loginMessage2 = var1;
+      class90.loginMessage3 = var2;
    }
 
    @ObfuscatedName("fd")
@@ -494,6 +480,20 @@ public class class36 {
 
       if(var0.actionAnimationDisable > 0) {
          --var0.actionAnimationDisable;
+      }
+
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-965603903"
+   )
+   static final void method480(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field1117; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1119[var4] = true;
+         }
       }
 
    }

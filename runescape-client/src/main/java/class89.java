@@ -26,11 +26,6 @@ public enum class89 implements RSEnum {
    )
    field1406(3);
 
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 21562613
-   )
-   final int field1407;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lip;"
@@ -42,6 +37,11 @@ public enum class89 implements RSEnum {
       signature = "Lih;"
    )
    static IndexData field1409;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 21562613
+   )
+   final int field1407;
 
    class89(int var3) {
       this.field1407 = var3;

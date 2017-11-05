@@ -18,6 +18,15 @@ public class NanoTimer extends Timer {
       this.nanoTime = System.nanoTime();
    }
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-120"
+   )
+   public void vmethod3029() {
+      this.nanoTime = System.nanoTime();
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)I",
@@ -43,14 +52,5 @@ public class NanoTimer extends Timer {
       }
 
       return var9;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-120"
-   )
-   public void vmethod3029() {
-      this.nanoTime = System.nanoTime();
    }
 }

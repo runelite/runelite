@@ -9,8 +9,6 @@ public class class210 extends CacheableNode {
       intValue = -749905481
    )
    static int field2590;
-   @ObfuscatedName("o")
-   public final int[] field2594;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -28782361
@@ -23,6 +21,8 @@ public class class210 extends CacheableNode {
    public final int field2592;
    @ObfuscatedName("q")
    public final int[] field2591;
+   @ObfuscatedName("o")
+   public final int[] field2594;
 
    class210(int var1, int var2, int[] var3, int[] var4, int var5) {
       this.field2589 = var1;

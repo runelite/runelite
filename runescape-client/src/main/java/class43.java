@@ -23,10 +23,10 @@ public class class43 {
    int field588;
    @ObfuscatedName("q")
    int[][] field589;
-   @ObfuscatedName("g")
-   int[][] field587;
    @ObfuscatedName("o")
    int[][] field594;
+   @ObfuscatedName("g")
+   int[][] field587;
    @ObfuscatedName("v")
    int[][] field592;
 
@@ -37,26 +37,6 @@ public class class43 {
       this.field594 = new int[var1][var2];
       this.field587 = new int[var1][var2];
       this.field592 = new int[var1][var2];
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "6625"
-   )
-   int method608(int var1, int var2) {
-      if(var1 >= 0 && var2 >= 0 && var1 < this.field591 && var2 < this.field588) {
-         if(this.field587[var1][var2] == 0) {
-            return 0;
-         } else {
-            int var3 = this.field589[var1][var2] / this.field592[var1][var2];
-            int var4 = this.field594[var1][var2] / this.field592[var1][var2];
-            int var5 = this.field587[var1][var2] / this.field592[var1][var2];
-            return class28.method247((double)var3 / 256.0D, (double)var4 / 256.0D, (double)var5 / 256.0D);
-         }
-      } else {
-         return 0;
-      }
    }
 
    @ObfuscatedName("w")
@@ -84,6 +64,49 @@ public class class43 {
 
             }
          }
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIS)I",
+      garbageValue = "6625"
+   )
+   int method608(int var1, int var2) {
+      if(var1 >= 0 && var2 >= 0 && var1 < this.field591 && var2 < this.field588) {
+         if(this.field587[var1][var2] == 0) {
+            return 0;
+         } else {
+            int var3 = this.field589[var1][var2] / this.field592[var1][var2];
+            int var4 = this.field594[var1][var2] / this.field592[var1][var2];
+            int var5 = this.field587[var1][var2] / this.field592[var1][var2];
+            return class28.method247((double)var3 / 256.0D, (double)var4 / 256.0D, (double)var5 / 256.0D);
+         }
+      } else {
+         return 0;
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Ljava/io/File;ZS)Z",
+      garbageValue = "6627"
+   )
+   public static boolean method607(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
+         return true;
+      } catch (Exception var4) {
+         return false;
       }
    }
 
@@ -120,28 +143,5 @@ public class class43 {
          }
       }
 
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZS)Z",
-      garbageValue = "6627"
-   )
-   public static boolean method607(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
-
-         return true;
-      } catch (Exception var4) {
-         return false;
-      }
    }
 }

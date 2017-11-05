@@ -6,6 +6,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("go")
 @Implements("NodeCache")
 public final class NodeCache {
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
+   )
+   CacheableNode field2454;
+   @ObfuscatedName("s")
+   int field2452;
    @ObfuscatedName("q")
    int field2451;
    @ObfuscatedName("o")
@@ -20,13 +27,6 @@ public final class NodeCache {
    )
    @Export("list")
    Node2LinkedList list;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lgp;"
-   )
-   CacheableNode field2454;
-   @ObfuscatedName("s")
-   int field2452;
 
    public NodeCache(int var1) {
       this.field2454 = new CacheableNode();
@@ -54,6 +54,18 @@ public final class NodeCache {
       }
 
       return var3;
+   }
+
+   @ObfuscatedName("s")
+   @Export("remove")
+   public void remove(long var1) {
+      CacheableNode var3 = (CacheableNode)this.table.get(var1);
+      if(var3 != null) {
+         var3.unlink();
+         var3.unlinkDual();
+         ++this.field2451;
+      }
+
    }
 
    @ObfuscatedName("q")
@@ -86,17 +98,5 @@ public final class NodeCache {
       this.table.method3636();
       this.field2454 = new CacheableNode();
       this.field2451 = this.field2452;
-   }
-
-   @ObfuscatedName("s")
-   @Export("remove")
-   public void remove(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.get(var1);
-      if(var3 != null) {
-         var3.unlink();
-         var3.unlinkDual();
-         ++this.field2451;
-      }
-
    }
 }

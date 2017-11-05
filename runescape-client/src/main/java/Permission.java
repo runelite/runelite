@@ -42,8 +42,6 @@ public enum Permission implements RSEnum {
       signature = "Lkp;"
    )
    static class290 field3169;
-   @ObfuscatedName("x")
-   public final boolean field3172;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 951129097
@@ -56,6 +54,8 @@ public enum Permission implements RSEnum {
    public final int field3176;
    @ObfuscatedName("d")
    public final boolean field3179;
+   @ObfuscatedName("x")
+   public final boolean field3172;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
       this.field3175 = var3;

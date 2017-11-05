@@ -15,14 +15,14 @@ public class FileSystem extends Node {
       intValue = 275421763
    )
    int field3200;
+   @ObfuscatedName("s")
+   byte[] field3197;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
    @Export("index")
    IndexFile index;
-   @ObfuscatedName("s")
-   byte[] field3197;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lih;"

@@ -8,6 +8,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("co")
 @Implements("World")
 public class World {
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1293;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1993179921
@@ -23,11 +28,8 @@ public class World {
    static int[] field1284;
    @ObfuscatedName("d")
    static int[] field1286;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field1293;
+   @ObfuscatedName("aw")
+   static int[] field1285;
    @ObfuscatedName("dt")
    @ObfuscatedSignature(
       signature = "Lih;"
@@ -44,20 +46,18 @@ public class World {
    )
    @Export("cameraY")
    static int cameraY;
-   @ObfuscatedName("aw")
-   static int[] field1285;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1492516791
+   )
+   @Export("id")
+   int id;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1943864787
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1161696173
-   )
-   @Export("index")
-   int index;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1436804291
@@ -67,12 +67,6 @@ public class World {
    @ObfuscatedName("t")
    @Export("address")
    String address;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1492516791
-   )
-   @Export("id")
-   int id;
    @ObfuscatedName("a")
    @Export("activity")
    String activity;
@@ -82,6 +76,12 @@ public class World {
    )
    @Export("location")
    int location;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1161696173
+   )
+   @Export("index")
+   int index;
 
    static {
       worldCount = 0;
@@ -99,22 +99,13 @@ public class World {
       return (1 & this.mask) != 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "616538404"
+      garbageValue = "430992285"
    )
-   boolean method1551() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-25570557"
-   )
-   boolean method1550() {
-      return (536870912 & this.mask) != 0;
+   boolean method1547() {
+      return (2 & this.mask) != 0;
    }
 
    @ObfuscatedName("d")
@@ -135,13 +126,22 @@ public class World {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "430992285"
+      garbageValue = "-25570557"
    )
-   boolean method1547() {
-      return (2 & this.mask) != 0;
+   boolean method1550() {
+      return (536870912 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "616538404"
+   )
+   boolean method1551() {
+      return (33554432 & this.mask) != 0;
    }
 
    @ObfuscatedName("o")

@@ -30,16 +30,16 @@ public enum class284 implements RSEnum {
    )
    field3784(4, 4);
 
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1448519065
-   )
-   final int field3778;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 345093823
    )
    public final int field3783;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1448519065
+   )
+   final int field3778;
 
    class284(int var3, int var4) {
       this.field3783 = var3;

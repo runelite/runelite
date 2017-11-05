@@ -234,6 +234,23 @@ public class class85 {
       }
    }
 
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(Lfz;II)V",
+      garbageValue = "-1486850703"
+   )
+   public static void method1708(Buffer var0, int var1) {
+      if(class155.field2240 != null) {
+         try {
+            class155.field2240.seek(0L);
+            class155.field2240.write(var0.payload, var1, 24);
+         } catch (Exception var3) {
+            ;
+         }
+      }
+
+   }
+
    @ObfuscatedName("im")
    @ObfuscatedSignature(
       signature = "(Lhj;III)V",
@@ -317,22 +334,5 @@ public class class85 {
          }
 
       }
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "-1486850703"
-   )
-   public static void method1708(Buffer var0, int var1) {
-      if(class155.field2240 != null) {
-         try {
-            class155.field2240.seek(0L);
-            class155.field2240.write(var0.payload, var1, 24);
-         } catch (Exception var3) {
-            ;
-         }
-      }
-
    }
 }

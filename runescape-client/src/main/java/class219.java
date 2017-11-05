@@ -9,11 +9,6 @@ public class class219 implements class218 {
       signature = "Lhy;"
    )
    public static final class219 field2779;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhy;"
-   )
-   public static final class219 field2787;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lhy;"
@@ -54,6 +49,11 @@ public class class219 implements class218 {
       signature = "Lhy;"
    )
    static final class219 field2786;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   public static final class219 field2787;
    @ObfuscatedName("l")
    static int[] field2789;
    @ObfuscatedName("z")
@@ -115,6 +115,15 @@ public class class219 implements class218 {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return Projectile.method1782(var0, var3, var4);
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IS)I",
+      garbageValue = "710"
+   )
+   public static int method4137(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
    }
 
    @ObfuscatedName("ge")
@@ -185,14 +194,5 @@ public class class219 implements class218 {
       }
 
       GameEngine.field733.setRaster();
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "710"
-   )
-   public static int method4137(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
    }
 }

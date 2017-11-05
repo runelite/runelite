@@ -102,6 +102,57 @@ public class Huffman {
 
    }
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BII[BII)I",
+      garbageValue = "1652483314"
+   )
+   @Export("compress")
+   public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
+      int var6 = 0;
+      int var7 = var5 << 3;
+
+      for(var3 += var2; var2 < var3; ++var2) {
+         int var8 = var1[var2] & 255;
+         int var9 = this.masks[var8];
+         byte var10 = this.bits[var8];
+         if(var10 == 0) {
+            throw new RuntimeException("");
+         }
+
+         int var11 = var7 >> 3;
+         int var12 = var7 & 7;
+         var6 &= -var12 >> 31;
+         int var13 = (var10 + var12 - 1 >> 3) + var11;
+         var12 += 24;
+         var4[var11] = (byte)(var6 |= var9 >>> var12);
+         if(var11 < var13) {
+            ++var11;
+            var12 -= 8;
+            var4[var11] = (byte)(var6 = var9 >>> var12);
+            if(var11 < var13) {
+               ++var11;
+               var12 -= 8;
+               var4[var11] = (byte)(var6 = var9 >>> var12);
+               if(var11 < var13) {
+                  ++var11;
+                  var12 -= 8;
+                  var4[var11] = (byte)(var6 = var9 >>> var12);
+                  if(var11 < var13) {
+                     ++var11;
+                     var12 -= 8;
+                     var4[var11] = (byte)(var6 = var9 << -var12);
+                  }
+               }
+            }
+         }
+
+         var7 += var10;
+      }
+
+      return (var7 + 7 >> 3) - var5;
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
@@ -244,57 +295,6 @@ public class Huffman {
 
          return var7 + 1 - var2;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([BII[BII)I",
-      garbageValue = "1652483314"
-   )
-   @Export("compress")
-   public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
-      int var6 = 0;
-      int var7 = var5 << 3;
-
-      for(var3 += var2; var2 < var3; ++var2) {
-         int var8 = var1[var2] & 255;
-         int var9 = this.masks[var8];
-         byte var10 = this.bits[var8];
-         if(var10 == 0) {
-            throw new RuntimeException("");
-         }
-
-         int var11 = var7 >> 3;
-         int var12 = var7 & 7;
-         var6 &= -var12 >> 31;
-         int var13 = (var10 + var12 - 1 >> 3) + var11;
-         var12 += 24;
-         var4[var11] = (byte)(var6 |= var9 >>> var12);
-         if(var11 < var13) {
-            ++var11;
-            var12 -= 8;
-            var4[var11] = (byte)(var6 = var9 >>> var12);
-            if(var11 < var13) {
-               ++var11;
-               var12 -= 8;
-               var4[var11] = (byte)(var6 = var9 >>> var12);
-               if(var11 < var13) {
-                  ++var11;
-                  var12 -= 8;
-                  var4[var11] = (byte)(var6 = var9 >>> var12);
-                  if(var11 < var13) {
-                     ++var11;
-                     var12 -= 8;
-                     var4[var11] = (byte)(var6 = var9 << -var12);
-                  }
-               }
-            }
-         }
-
-         var7 += var10;
-      }
-
-      return (var7 + 7 >> 3) - var5;
    }
 
    @ObfuscatedName("s")

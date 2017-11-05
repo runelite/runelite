@@ -5,22 +5,22 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("cf")
 @Implements("CodeBook")
 public class CodeBook {
-   @ObfuscatedName("g")
-   @Export("valueVector")
-   float[][] valueVector;
-   @ObfuscatedName("s")
-   @Export("entries")
-   int entries;
-   @ObfuscatedName("v")
-   int[] field1560;
-   @ObfuscatedName("q")
-   @Export("entryLengths")
-   int[] entryLengths;
    @ObfuscatedName("w")
    @Export("dimensions")
    int dimensions;
+   @ObfuscatedName("s")
+   @Export("entries")
+   int entries;
+   @ObfuscatedName("q")
+   @Export("entryLengths")
+   int[] entryLengths;
    @ObfuscatedName("o")
    int[] field1558;
+   @ObfuscatedName("g")
+   @Export("valueVector")
+   float[][] valueVector;
+   @ObfuscatedName("v")
+   int[] field1560;
 
    CodeBook() {
       class104.getInt(24);
@@ -112,22 +112,6 @@ public class CodeBook {
          }
       }
 
-   }
-
-   @ObfuscatedName("q")
-   @Export("getHuffmanRoot")
-   int getHuffmanRoot() {
-      int var1;
-      for(var1 = 0; this.field1560[var1] >= 0; var1 = class104.getBit() != 0?this.field1560[var1]:var1 + 1) {
-         ;
-      }
-
-      return ~this.field1560[var1];
-   }
-
-   @ObfuscatedName("o")
-   float[] method1967() {
-      return this.valueVector[this.getHuffmanRoot()];
    }
 
    @ObfuscatedName("s")
@@ -223,6 +207,22 @@ public class CodeBook {
          }
       }
 
+   }
+
+   @ObfuscatedName("q")
+   @Export("getHuffmanRoot")
+   int getHuffmanRoot() {
+      int var1;
+      for(var1 = 0; this.field1560[var1] >= 0; var1 = class104.getBit() != 0?this.field1560[var1]:var1 + 1) {
+         ;
+      }
+
+      return ~this.field1560[var1];
+   }
+
+   @ObfuscatedName("o")
+   float[] method1967() {
+      return this.valueVector[this.getHuffmanRoot()];
    }
 
    @ObfuscatedName("w")

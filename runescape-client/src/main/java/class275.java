@@ -4,13 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jj")
 public class class275 {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      longValue = 653291847198752043L
-   )
-   long field3730;
-   @ObfuscatedName("q")
-   public boolean field3732;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       longValue = 6691804990526158911L
@@ -21,21 +14,18 @@ public class class275 {
       longValue = -3808860700115427123L
    )
    long field3731;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1080619477
-   )
-   int field3737;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -886140301
-   )
-   int field3738;
+   @ObfuscatedName("q")
+   public boolean field3732;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       longValue = 6582958372533018075L
    )
    long field3733;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      longValue = 653291847198752043L
+   )
+   long field3730;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       longValue = 3324687787754482331L
@@ -46,6 +36,16 @@ public class class275 {
       intValue = 481770167
    )
    int field3740;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1080619477
+   )
+   int field3737;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -886140301
+   )
+   int field3738;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1275284283
@@ -65,19 +65,13 @@ public class class275 {
       this.field3736 = 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "529648922"
+      signature = "(B)V",
+      garbageValue = "34"
    )
-   public void method4994() {
-      if(this.field3731 != -1L) {
-         this.field3733 = class174.currentTimeMs() - this.field3731;
-         this.field3731 = -1L;
-      }
-
-      ++this.field3738;
-      this.field3732 = true;
+   public void method4991() {
+      this.field3734 = class174.currentTimeMs();
    }
 
    @ObfuscatedName("s")
@@ -101,6 +95,40 @@ public class class275 {
    public void method4993(int var1) {
       this.field3731 = class174.currentTimeMs();
       this.field3740 = var1;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "529648922"
+   )
+   public void method4994() {
+      if(this.field3731 != -1L) {
+         this.field3733 = class174.currentTimeMs() - this.field3731;
+         this.field3731 = -1L;
+      }
+
+      ++this.field3738;
+      this.field3732 = true;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "61"
+   )
+   public void method5009() {
+      this.field3732 = false;
+      this.field3737 = 0;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "67"
+   )
+   public void method4996() {
+      this.method4994();
    }
 
    @ObfuscatedName("p")
@@ -140,33 +168,5 @@ public class class275 {
       var1.putShort(this.field3737);
       var1.putShort(this.field3738);
       var1.putShort(this.field3736);
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "61"
-   )
-   public void method5009() {
-      this.field3732 = false;
-      this.field3737 = 0;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "34"
-   )
-   public void method4991() {
-      this.field3734 = class174.currentTimeMs();
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "67"
-   )
-   public void method4996() {
-      this.method4994();
    }
 }

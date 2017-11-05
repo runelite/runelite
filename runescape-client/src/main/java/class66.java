@@ -5,17 +5,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bo")
 public class class66 extends class196 {
+   @ObfuscatedName("pc")
+   @ObfuscatedGetter(
+      intValue = -289344427
+   )
+   static int field830;
    @ObfuscatedName("ik")
    @ObfuscatedSignature(
       signature = "Lbk;"
    )
    @Export("localPlayer")
    static Player localPlayer;
-   @ObfuscatedName("pc")
-   @ObfuscatedGetter(
-      intValue = -289344427
-   )
-   static int field830;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1663828241

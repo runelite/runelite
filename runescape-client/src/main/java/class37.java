@@ -16,15 +16,6 @@ public class class37 {
    @Export("indexTrack1")
    static IndexData indexTrack1;
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lip;III)[Lky;",
-      garbageValue = "-1130716731"
-   )
-   static SpritePixels[] method483(IndexDataBase var0, int var1, int var2) {
-      return !class261.method4822(var0, var1, var2)?null:MilliTimer.method2965();
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Lip;Lip;S)V",
@@ -34,6 +25,15 @@ public class class37 {
       KitDefinition.identKit_ref = var0;
       KitDefinition.field3346 = var1;
       KitDefinition.field3347 = KitDefinition.identKit_ref.fileCount(3);
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lip;III)[Lky;",
+      garbageValue = "-1130716731"
+   )
+   static SpritePixels[] method483(IndexDataBase var0, int var1, int var2) {
+      return !class261.method4822(var0, var1, var2)?null:MilliTimer.method2965();
    }
 
    @ObfuscatedName("j")

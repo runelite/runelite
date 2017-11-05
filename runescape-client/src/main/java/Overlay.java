@@ -7,69 +7,69 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("if")
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   @Export("overlays")
-   public static NodeCache overlays;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    @Export("overlay_ref")
    public static IndexDataBase overlay_ref;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -845438965
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
    )
-   @Export("otherRgbColor")
-   public int otherRgbColor;
+   @Export("overlays")
+   public static NodeCache overlays;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -425750761
    )
    @Export("color")
    public int color;
-   @ObfuscatedName("g")
-   @Export("isHidden")
-   public boolean isHidden;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1895686665
    )
    @Export("texture")
    public int texture;
+   @ObfuscatedName("g")
+   @Export("isHidden")
+   public boolean isHidden;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -845438965
+   )
+   @Export("otherRgbColor")
+   public int otherRgbColor;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1197665845
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -483147391
-   )
-   @Export("otherHue")
-   public int otherHue;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 292935481
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1518055999
-   )
-   @Export("otherSaturation")
-   public int otherSaturation;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 236577373
    )
    @Export("lightness")
    public int lightness;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -483147391
+   )
+   @Export("otherHue")
+   public int otherHue;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1518055999
+   )
+   @Export("otherSaturation")
+   public int otherSaturation;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 757414795
@@ -86,6 +86,40 @@ public class Overlay extends CacheableNode {
       this.texture = -1;
       this.isHidden = true;
       this.otherRgbColor = -1;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1623234497"
+   )
+   @Export("post")
+   void post() {
+      if(this.otherRgbColor != -1) {
+         this.setHSL(this.otherRgbColor);
+         this.otherHue = this.hue;
+         this.otherSaturation = this.saturation;
+         this.otherLightness = this.lightness;
+      }
+
+      this.setHSL(this.color);
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfz;IB)V",
+      garbageValue = "-111"
+   )
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
+      while(true) {
+         int var3 = var1.readUnsignedByte();
+         if(var3 == 0) {
+            return;
+         }
+
+         this.method4762(var1, var3, var2);
+      }
    }
 
    @ObfuscatedName("o")
@@ -173,40 +207,6 @@ public class Overlay extends CacheableNode {
          this.lightness = 255;
       }
 
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1623234497"
-   )
-   @Export("post")
-   void post() {
-      if(this.otherRgbColor != -1) {
-         this.setHSL(this.otherRgbColor);
-         this.otherHue = this.hue;
-         this.otherSaturation = this.saturation;
-         this.otherLightness = this.lightness;
-      }
-
-      this.setHSL(this.color);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfz;IB)V",
-      garbageValue = "-111"
-   )
-   @Export("decode")
-   void decode(Buffer var1, int var2) {
-      while(true) {
-         int var3 = var1.readUnsignedByte();
-         if(var3 == 0) {
-            return;
-         }
-
-         this.method4762(var1, var3, var2);
-      }
    }
 
    @ObfuscatedName("w")

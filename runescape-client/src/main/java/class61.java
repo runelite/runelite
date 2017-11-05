@@ -16,6 +16,19 @@ public final class class61 {
       intValue = -445336753
    )
    static int field770;
+   @ObfuscatedName("g")
+   @Export("overlayIds")
+   static byte[][][] overlayIds;
+   @ObfuscatedName("p")
+   @Export("overlayRotations")
+   static byte[][][] overlayRotations;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -432197985
+   )
+   static int field783;
+   @ObfuscatedName("u")
+   static int[] field777;
    @ObfuscatedName("j")
    static final int[] field774;
    @ObfuscatedName("y")
@@ -38,19 +51,6 @@ public final class class61 {
       intValue = -1764912815
    )
    static int field781;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -432197985
-   )
-   static int field783;
-   @ObfuscatedName("g")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
-   @ObfuscatedName("p")
-   @Export("overlayRotations")
-   static byte[][][] overlayRotations;
-   @ObfuscatedName("u")
-   static int[] field777;
 
    static {
       tileHeights = new int[4][105][105];
@@ -64,6 +64,53 @@ public final class class61 {
       field775 = new int[]{-1, -1, 1, 1};
       field779 = (int)(Math.random() * 17.0D) - 8;
       field781 = (int)(Math.random() * 33.0D) - 16;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lip;I)V",
+      garbageValue = "2147391919"
+   )
+   public static void method1066(IndexDataBase var0) {
+      InvType.field3276 = var0;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(ILct;ZB)I",
+      garbageValue = "126"
+   )
+   static int method1064(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 == 2700) {
+         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
+         class81.intStack[++class278.intStackSize - 1] = var3.itemId;
+         return 1;
+      } else if(var0 == 2701) {
+         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
+         if(var3.itemId != -1) {
+            class81.intStack[++class278.intStackSize - 1] = var3.itemQuantity;
+         } else {
+            class81.intStack[++class278.intStackSize - 1] = 0;
+         }
+
+         return 1;
+      } else if(var0 == 2702) {
+         int var5 = class81.intStack[--class278.intStackSize];
+         WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var5);
+         if(var4 != null) {
+            class81.intStack[++class278.intStackSize - 1] = 1;
+         } else {
+            class81.intStack[++class278.intStackSize - 1] = 0;
+         }
+
+         return 1;
+      } else if(var0 == 2706) {
+         class81.intStack[++class278.intStackSize - 1] = Client.widgetRoot;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 
    @ObfuscatedName("ix")
@@ -124,52 +171,5 @@ public final class class61 {
          Client.field1113.addFront(var6);
       }
 
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lip;I)V",
-      garbageValue = "2147391919"
-   )
-   public static void method1066(IndexDataBase var0) {
-      InvType.field3276 = var0;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZB)I",
-      garbageValue = "126"
-   )
-   static int method1064(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 == 2700) {
-         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
-         class81.intStack[++class278.intStackSize - 1] = var3.itemId;
-         return 1;
-      } else if(var0 == 2701) {
-         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
-         if(var3.itemId != -1) {
-            class81.intStack[++class278.intStackSize - 1] = var3.itemQuantity;
-         } else {
-            class81.intStack[++class278.intStackSize - 1] = 0;
-         }
-
-         return 1;
-      } else if(var0 == 2702) {
-         int var5 = class81.intStack[--class278.intStackSize];
-         WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var5);
-         if(var4 != null) {
-            class81.intStack[++class278.intStackSize - 1] = 1;
-         } else {
-            class81.intStack[++class278.intStackSize - 1] = 0;
-         }
-
-         return 1;
-      } else if(var0 == 2706) {
-         class81.intStack[++class278.intStackSize - 1] = Client.widgetRoot;
-         return 1;
-      } else {
-         return 2;
-      }
    }
 }

@@ -13,12 +13,12 @@ public final class ItemLayer {
    )
    @Export("soundSystem0")
    static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Len;"
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1130465413
    )
-   @Export("bottom")
-   Renderable bottom;
+   @Export("hash")
+   int hash;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1451545287
@@ -31,18 +31,12 @@ public final class ItemLayer {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1130465413
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Len;"
    )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -137711895
-   )
-   @Export("flags")
-   int flags;
+   @Export("bottom")
+   Renderable bottom;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Len;"
@@ -55,6 +49,12 @@ public final class ItemLayer {
    )
    @Export("top")
    Renderable top;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -137711895
+   )
+   @Export("flags")
+   int flags;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2094860075
@@ -94,6 +94,41 @@ public final class ItemLayer {
       return class215.widgets[var1][var2];
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Ljv;",
+      garbageValue = "1424639255"
+   )
+   public static class277 method2453(int var0) {
+      class277[] var1 = NPC.method1698();
+
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         class277 var3 = var1[var2];
+         if(var0 == var3.field3743) {
+            return var3;
+         }
+      }
+
+      return null;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)Lco;",
+      garbageValue = "589398177"
+   )
+   static World method2451() {
+      World.field1283 = 0;
+      World var0;
+      if(World.field1283 < World.worldCount) {
+         var0 = class266.worldList[++World.field1283 - 1];
+      } else {
+         var0 = null;
+      }
+
+      return var0;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(ILct;ZI)I",
@@ -122,40 +157,5 @@ public final class ItemLayer {
       } else {
          return 2;
       }
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)Lco;",
-      garbageValue = "589398177"
-   )
-   static World method2451() {
-      World.field1283 = 0;
-      World var0;
-      if(World.field1283 < World.worldCount) {
-         var0 = class266.worldList[++World.field1283 - 1];
-      } else {
-         var0 = null;
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)Ljv;",
-      garbageValue = "1424639255"
-   )
-   public static class277 method2453(int var0) {
-      class277[] var1 = NPC.method1698();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class277 var3 = var1[var2];
-         if(var0 == var3.field3743) {
-            return var3;
-         }
-      }
-
-      return null;
    }
 }

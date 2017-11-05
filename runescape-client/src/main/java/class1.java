@@ -5,6 +5,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("s")
 public class class1 {
+   @ObfuscatedName("oq")
+   @ObfuscatedSignature(
+      signature = "Ldk;"
+   )
+   @Export("soundSystem1")
+   static AbstractSoundSystem soundSystem1;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ls;"
@@ -40,12 +46,6 @@ public class class1 {
       signature = "Ls;"
    )
    static final class1 field6;
-   @ObfuscatedName("oq")
-   @ObfuscatedSignature(
-      signature = "Ldk;"
-   )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1371561427

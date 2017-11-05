@@ -5,17 +5,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("d")
 public final class class8 extends class9 {
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static SpritePixels field250;
    @ObfuscatedName("ct")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    @Export("configsIndex")
    static IndexData configsIndex;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lky;"
-   )
-   static SpritePixels field250;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -129520815
@@ -59,18 +59,24 @@ public final class class8 extends class9 {
       Rasterizer2D.drawRectangle(this.field258 + Rasterizer2D.draw_region_x, this.field252 + Rasterizer2D.drawingAreaTop, this.field251 - this.field258, this.field253 - this.field252, this.field254);
    }
 
-   @ObfuscatedName("if")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-57"
+      signature = "([Ljava/lang/String;[SI)V",
+      garbageValue = "-1068259475"
    )
-   static void method40(int var0) {
-      class170.field2344 = new class87();
-      class170.field2344.field1389 = Client.menuActionParams0[var0];
-      class170.field2344.field1396 = Client.menuActionParams1[var0];
-      class170.field2344.field1391 = Client.menuTypes[var0];
-      class170.field2344.field1390 = Client.menuIdentifiers[var0];
-      class170.field2344.field1393 = Client.menuOptions[var0];
+   public static void method39(String[] var0, short[] var1) {
+      class45.method642(var0, var1, 0, var0.length - 1);
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(ILip;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "1634458397"
+   )
+   public static void method42(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.getFile(var2);
+      int var7 = var1.getChild(var6, var3);
+      IndexFile.method3070(var0, var1, var6, var7, var4, var5);
    }
 
    @ObfuscatedName("af")
@@ -430,15 +436,18 @@ public final class class8 extends class9 {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "(ILip;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "1634458397"
+      signature = "(IB)V",
+      garbageValue = "-57"
    )
-   public static void method42(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getFile(var2);
-      int var7 = var1.getChild(var6, var3);
-      IndexFile.method3070(var0, var1, var6, var7, var4, var5);
+   static void method40(int var0) {
+      class170.field2344 = new class87();
+      class170.field2344.field1389 = Client.menuActionParams0[var0];
+      class170.field2344.field1396 = Client.menuActionParams1[var0];
+      class170.field2344.field1391 = Client.menuTypes[var0];
+      class170.field2344.field1390 = Client.menuIdentifiers[var0];
+      class170.field2344.field1393 = Client.menuOptions[var0];
    }
 
    @ObfuscatedName("jd")
@@ -457,14 +466,5 @@ public final class class8 extends class9 {
       }
 
       return var1;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SI)V",
-      garbageValue = "-1068259475"
-   )
-   public static void method39(String[] var0, short[] var1) {
-      class45.method642(var0, var1, 0, var0.length - 1);
    }
 }

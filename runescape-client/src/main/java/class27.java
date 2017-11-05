@@ -29,13 +29,13 @@ public enum class27 implements RSEnum {
    )
    field409(3, (byte)3);
 
-   @ObfuscatedName("v")
-   final byte field408;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -365676159
    )
    final int field410;
+   @ObfuscatedName("v")
+   final byte field408;
 
    class27(int var3, byte var4) {
       this.field410 = var3;
@@ -49,15 +49,6 @@ public enum class27 implements RSEnum {
    )
    public int rsOrdinal() {
       return this.field408;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-612438083"
-   )
-   public static boolean method222(int var0) {
-      return var0 >= class221.field2822.field2825 && var0 <= class221.field2823.field2825;
    }
 
    @ObfuscatedName("w")
@@ -115,5 +106,14 @@ public enum class27 implements RSEnum {
       } catch (Exception var9) {
          return 0L;
       }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-612438083"
+   )
+   public static boolean method222(int var0) {
+      return var0 >= class221.field2822.field2825 && var0 <= class221.field2823.field2825;
    }
 }

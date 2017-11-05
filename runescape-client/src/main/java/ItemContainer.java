@@ -41,19 +41,67 @@ public class ItemContainer extends Node {
       this.stackSizes = new int[]{0};
    }
 
-   @ObfuscatedName("fb")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-805543986"
+      signature = "(Lfz;IIIIIII)V",
+      garbageValue = "256562957"
    )
-   static final void method1077() {
-      int var0 = class94.playerIndexesCount;
-      int[] var1 = class94.playerIndices;
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class61.tileSettings[var1][var2][var3] = 0;
 
-      for(int var2 = 0; var2 < var0; ++var2) {
-         Player var3 = Client.cachedPlayers[var1[var2]];
-         if(var3 != null) {
-            class36.method479(var3, 1);
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -class164.method3141(var4 + 932731 + var2, var3 + 556238 + var5) * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var8 = var0.readUnsignedByte();
+               if(var8 == 1) {
+                  var8 = 0;
+               }
+
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -var8 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class61.overlayIds[var1][var2][var3] = var0.readByte();
+               Huffman.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class2.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
          }
       }
 
@@ -177,6 +225,24 @@ public class ItemContainer extends Node {
       }
    }
 
+   @ObfuscatedName("fb")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-805543986"
+   )
+   static final void method1077() {
+      int var0 = class94.playerIndexesCount;
+      int[] var1 = class94.playerIndices;
+
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(var3 != null) {
+            class36.method479(var3, 1);
+         }
+      }
+
+   }
+
    @ObfuscatedName("ju")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
@@ -218,72 +284,6 @@ public class ItemContainer extends Node {
 
          }
       }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfz;IIIIIII)V",
-      garbageValue = "256562957"
-   )
-   @Export("loadTerrain")
-   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class61.tileSettings[var1][var2][var3] = 0;
-
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -class164.method3141(var4 + 932731 + var2, var3 + 556238 + var5) * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
-
-            if(var7 == 1) {
-               int var8 = var0.readUnsignedByte();
-               if(var8 == 1) {
-                  var8 = 0;
-               }
-
-               if(var1 == 0) {
-                  class61.tileHeights[0][var2][var3] = -var8 * 8;
-               } else {
-                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var8 * 8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class61.overlayIds[var1][var2][var3] = var0.readByte();
-               Huffman.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class61.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               class2.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
-            }
-         }
-      } else {
-         while(true) {
-            var7 = var0.readUnsignedByte();
-            if(var7 == 0) {
-               break;
-            }
-
-            if(var7 == 1) {
-               var0.readUnsignedByte();
-               break;
-            }
-
-            if(var7 <= 49) {
-               var0.readUnsignedByte();
-            }
-         }
-      }
-
    }
 
    @ObfuscatedName("ko")

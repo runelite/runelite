@@ -13,6 +13,17 @@ public final class ISAACCipher {
    )
    @Export("valuesRemaining")
    int valuesRemaining;
+   @ObfuscatedName("g")
+   @Export("randResult")
+   int[] randResult;
+   @ObfuscatedName("v")
+   @Export("mm")
+   int[] mm;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1400927513
+   )
+   int field2426;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -2081425597
@@ -23,17 +34,6 @@ public final class ISAACCipher {
       intValue = 2051052159
    )
    int field2422;
-   @ObfuscatedName("v")
-   @Export("mm")
-   int[] mm;
-   @ObfuscatedName("g")
-   @Export("randResult")
-   int[] randResult;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1400927513
-   )
-   int field2426;
 
    ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -44,6 +44,21 @@ public final class ISAACCipher {
       }
 
       this.method3519();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-44"
+   )
+   @Export("nextInt")
+   final int nextInt() {
+      if(0 == --this.valuesRemaining + 1) {
+         this.generateMoreResults();
+         this.valuesRemaining = 255;
+      }
+
+      return this.randResult[this.valuesRemaining];
    }
 
    @ObfuscatedName("s")
@@ -208,21 +223,6 @@ public final class ISAACCipher {
 
       this.generateMoreResults();
       this.valuesRemaining = 256;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-44"
-   )
-   @Export("nextInt")
-   final int nextInt() {
-      if(0 == --this.valuesRemaining + 1) {
-         this.generateMoreResults();
-         this.valuesRemaining = 255;
-      }
-
-      return this.randResult[this.valuesRemaining];
    }
 
    @ObfuscatedName("ht")

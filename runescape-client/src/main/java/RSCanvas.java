@@ -25,6 +25,27 @@ public final class RSCanvas extends Canvas {
       this.component.update(var1);
    }
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(ZZI)Ljo;",
+      garbageValue = "-960172217"
+   )
+   static IndexedSprite method776(boolean var0, boolean var1) {
+      return var0?(var1?class90.field1419:class29.field430):(var1?class90.field1418:class90.field1417);
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "16711680"
+   )
+   static void method769() {
+      class96.chatLineMap.clear();
+      class96.field1516.clear();
+      class96.field1517.method3757();
+      class96.field1515 = 0;
+   }
+
    @ObfuscatedName("hg")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -89,26 +110,5 @@ public final class RSCanvas extends Canvas {
          }
 
       }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(ZZI)Ljo;",
-      garbageValue = "-960172217"
-   )
-   static IndexedSprite method776(boolean var0, boolean var1) {
-      return var0?(var1?class90.field1419:class29.field430):(var1?class90.field1418:class90.field1417);
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "16711680"
-   )
-   static void method769() {
-      class96.chatLineMap.clear();
-      class96.field1516.clear();
-      class96.field1517.method3757();
-      class96.field1515 = 0;
    }
 }

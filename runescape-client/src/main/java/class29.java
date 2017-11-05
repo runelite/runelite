@@ -5,12 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
 public final class class29 {
-   @ObfuscatedName("jn")
-   @ObfuscatedGetter(
-      intValue = 1570994549
-   )
-   @Export("menuY")
-   static int menuY;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Ljo;"
@@ -22,31 +16,37 @@ public final class class29 {
       signature = "Ljo;"
    )
    static IndexedSprite field430;
-   // $FF: synthetic field
-   @ObfuscatedSignature(
-      signature = "Lac;"
-   )
-   final class41 this$0;
-   @ObfuscatedName("q")
+   @ObfuscatedName("jn")
    @ObfuscatedGetter(
-      intValue = -1749118415
+      intValue = 1570994549
    )
-   int field428;
+   @Export("menuY")
+   static int menuY;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 784638285
    )
    int field437;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1263190717
-   )
-   int field435;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 577821165
    )
    int field436;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1749118415
+   )
+   int field428;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1263190717
+   )
+   int field435;
+   // $FF: synthetic field
+   @ObfuscatedSignature(
+      signature = "Lac;"
+   )
+   final class41 this$0;
 
    @ObfuscatedSignature(
       signature = "(Lac;)V"

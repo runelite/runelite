@@ -15,25 +15,6 @@ public class class223 {
    )
    public static int field2836;
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IZB)Ljava/lang/String;",
-      garbageValue = "6"
-   )
-   public static String method4148(int var0, boolean var1) {
-      return var1 && var0 >= 0?class174.method3447(var0, 10, var1):Integer.toString(var0);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1891971066"
-   )
-   public static void method4150() {
-      Sequence.sequences.reset();
-      Sequence.skeletons.reset();
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lfz;II)V",
@@ -146,5 +127,24 @@ public class class223 {
       }
 
       class281.field3766.method3651(var2);
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IZB)Ljava/lang/String;",
+      garbageValue = "6"
+   )
+   public static String method4148(int var0, boolean var1) {
+      return var1 && var0 >= 0?class174.method3447(var0, 10, var1):Integer.toString(var0);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1891971066"
+   )
+   public static void method4150() {
+      Sequence.sequences.reset();
+      Sequence.skeletons.reset();
    }
 }

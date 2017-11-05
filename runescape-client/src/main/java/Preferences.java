@@ -21,6 +21,12 @@ public class Preferences {
       signature = "Lhr;"
    )
    static BuildType field1308;
+   @ObfuscatedName("q")
+   @Export("hideRoofs")
+   boolean hideRoofs;
+   @ObfuscatedName("o")
+   @Export("muted")
+   boolean muted;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1288277255
@@ -29,17 +35,11 @@ public class Preferences {
    int screenType;
    @ObfuscatedName("v")
    String field1299;
-   @ObfuscatedName("q")
-   @Export("hideRoofs")
-   boolean hideRoofs;
    @ObfuscatedName("p")
    boolean field1305;
    @ObfuscatedName("e")
    @Export("preferences")
    LinkedHashMap preferences;
-   @ObfuscatedName("o")
-   @Export("muted")
-   boolean muted;
 
    static {
       field1301 = 6;

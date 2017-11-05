@@ -4,28 +4,28 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dt")
 public class class110 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   @Export("vorbis_index")
-   IndexDataBase vorbis_index;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    @Export("sfx_index")
    IndexDataBase sfx_index;
-   @ObfuscatedName("o")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lip;"
    )
-   HashTable field1654;
+   @Export("vorbis_index")
+   IndexDataBase vorbis_index;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
    HashTable field1653;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   HashTable field1654;
 
    @ObfuscatedSignature(
       signature = "(Lip;Lip;)V"

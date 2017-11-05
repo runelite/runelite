@@ -14,31 +14,31 @@ public class Signlink implements Runnable {
    @ObfuscatedName("w")
    @Export("javaVendor")
    public static String javaVendor;
+   @ObfuscatedName("c")
+   static int[] field2231;
    @ObfuscatedName("ds")
    @ObfuscatedGetter(
       intValue = 1027755043
    )
    static int field2230;
-   @ObfuscatedName("c")
-   static int[] field2231;
-   @ObfuscatedName("v")
-   @Export("closed")
-   boolean closed;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Let;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("g")
-   @Export("sysEventQueue")
-   Thread sysEventQueue;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Let;"
    )
    @Export("cachedTask")
    Task cachedTask;
+   @ObfuscatedName("g")
+   @Export("sysEventQueue")
+   Thread sysEventQueue;
+   @ObfuscatedName("v")
+   @Export("closed")
+   boolean closed;
 
    public Signlink() {
       this.currentTask = null;
@@ -59,6 +59,26 @@ public class Signlink implements Runnable {
       this.sysEventQueue.setPriority(10);
       this.sysEventQueue.setDaemon(true);
       this.sysEventQueue.start();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "94442798"
+   )
+   @Export("join")
+   public final void join() {
+      synchronized(this) {
+         this.closed = true;
+         this.notifyAll();
+      }
+
+      try {
+         this.sysEventQueue.join();
+      } catch (InterruptedException var3) {
+         ;
+      }
+
    }
 
    @ObfuscatedName("s")
@@ -84,36 +104,6 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Let;",
-      garbageValue = "-1094648036"
-   )
-   @Export("createRunnable")
-   public final Task createRunnable(Runnable var1, int var2) {
-      return this.method2977(2, var2, 0, var1);
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "94442798"
-   )
-   @Export("join")
-   public final void join() {
-      synchronized(this) {
-         this.closed = true;
-         this.notifyAll();
-      }
-
-      try {
-         this.sysEventQueue.join();
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;II)Let;",
@@ -122,6 +112,16 @@ public class Signlink implements Runnable {
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.method2977(1, var2, 0, var1);
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Runnable;II)Let;",
+      garbageValue = "-1094648036"
+   )
+   @Export("createRunnable")
+   public final Task createRunnable(Runnable var1, int var2) {
+      return this.method2977(2, var2, 0, var1);
    }
 
    @ObfuscatedName("g")

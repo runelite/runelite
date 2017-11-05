@@ -15,6 +15,25 @@ public class class175 {
    )
    static long field2404;
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "-18176"
+   )
+   public static final void method3459() {
+      class132.field1988 = false;
+      class132.field1981 = 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-1092213840"
+   )
+   public static void method3455(int var0) {
+      MouseInput.mouseIdleTicks = var0;
+   }
+
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)Ljo;",
@@ -32,24 +51,5 @@ public class class175 {
       var0.pixels = class227.spritePixels[0];
       class249.method4493();
       return var0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1092213840"
-   )
-   public static void method3455(int var0) {
-      MouseInput.mouseIdleTicks = var0;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-18176"
-   )
-   public static final void method3459() {
-      class132.field1988 = false;
-      class132.field1981 = 0;
    }
 }
