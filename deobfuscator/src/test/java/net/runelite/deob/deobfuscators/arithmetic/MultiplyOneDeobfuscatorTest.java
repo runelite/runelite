@@ -97,7 +97,7 @@ public class MultiplyOneDeobfuscatorTest
 		e.populateInitialMethods();
 		e.run();
 		
-		Deobfuscator d = new MultiplyOneDeobfuscator();
+		Deobfuscator d = new MultiplyOneDeobfuscator(false);
 		d.run(group);
 		
 		Assert.assertTrue(one.getInstructions() != null);
@@ -150,7 +150,7 @@ public class MultiplyOneDeobfuscatorTest
 		e.populateInitialMethods();
 		e.run();
 		
-		Deobfuscator d = new MultiplyOneDeobfuscator();
+		Deobfuscator d = new MultiplyOneDeobfuscator(false);
 		d.run(group);
 		
 		Assert.assertTrue(one.getInstructions() == null);
@@ -244,7 +244,7 @@ public class MultiplyOneDeobfuscatorTest
 		e.populateInitialMethods();
 		e.run();
 		
-		Deobfuscator d = new MultiplyOneDeobfuscator();
+		Deobfuscator d = new MultiplyOneDeobfuscator(false);
 		d.run(group);
 		
 		Assert.assertTrue(one.getInstructions() == null);

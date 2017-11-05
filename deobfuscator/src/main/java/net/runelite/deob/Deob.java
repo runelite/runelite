@@ -115,27 +115,7 @@ public class Deob
 
 		run(group, new UnusedClass());
 
-		ModArith mod = new ModArith();
-		mod.run(group);
-
-		int last = -1, cur;
-		while ((cur = mod.runOnce()) > 0)
-		{
-			new MultiplicationDeobfuscator().run(group);
-
-			new MultiplyOneDeobfuscator().run(group);
-
-			new MultiplyZeroDeobfuscator().run(group);
-
-			if (last == cur)
-			{
-				break;
-			}
-
-			last = cur;
-		}
-
-		mod.annotateEncryption();
+		runMath(group);
 
 		run(group, new ExprArgOrder());
 
@@ -168,6 +148,36 @@ public class Deob
 	public static boolean isObfuscated(String name)
 	{
 		return name.length() <= OBFUSCATED_NAME_MAX_LEN || name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
+	}
+
+	private static void runMath(ClassGroup group)
+	{
+		ModArith mod = new ModArith();
+		mod.run(group);
+
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{
+			new MultiplicationDeobfuscator().run(group);
+
+			// do not remove 1 * field so that ModArith can detect
+			// the change in guessDecreasesConstants()
+			new MultiplyOneDeobfuscator(true).run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+
+			if (last == cur)
+			{
+				break;
+			}
+
+			last = cur;
+		}
+
+		// now that modarith is done, remove field * 1
+		new MultiplyOneDeobfuscator(false).run(group);
+
+		mod.annotateEncryption();
 	}
 
 	private static void run(ClassGroup group, Deobfuscator deob)

@@ -72,7 +72,7 @@ public class ModArithTest
 		{
 			new MultiplicationDeobfuscator().run(group);
 
-			new MultiplyOneDeobfuscator().run(group);
+			new MultiplyOneDeobfuscator(true).run(group);
 
 			new MultiplyZeroDeobfuscator().run(group);
 

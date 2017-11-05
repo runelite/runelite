@@ -22,36 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.asm.pool.Field;
-
-class Encryption
-{	
-	private final Map<Field, Pair> fields = new HashMap<>();
-	
-	void addPair(Pair pair)
-	{
-		assert pair.field != null;
-		
-		Pair existing = fields.get(pair.field);
-		if (existing != null)
-		{
-			// if this is a subsequent guess, then the new guess
-			// is multiplied into the old guess
-			fields.put(pair.field, new Pair(pair, existing));
-		}
-		else
-		{
-			fields.put(pair.field, pair);
-		}
-	}
-	
-	Pair getField(Field field)
-	{
-		return fields.get(field);
-	}
+// a constant associated to a field
+class AssociatedConstant
+{
+	Number value;
+	boolean other; // whether or not another field is involved
+	boolean constant; // whether or not the constant is a constant field assignment
+	boolean getter; // whether or not this is associated as a getter
+	boolean setter; // whether or not this is associated as a setter
 }

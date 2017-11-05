@@ -45,6 +45,7 @@ import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LStore;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.Pop2;
+import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
@@ -847,6 +848,53 @@ public class MultiplicationDeobfuscatorTest
 			constant2,
 			new IMul(ins),
 			new Pop2(ins), // putfield
+
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+		{
+			ins.addInstruction(i);
+		}
+
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+	}
+
+	//sipush                512
+	//ldc                   -688421113
+	//imul
+	//ldc                   -585812297
+	//imul
+	//putstatic             class134/field2009 I
+	@Test
+	public void test13()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(2);
+
+		LDC constant1 = new LDC(ins, -688421113);
+		LDC constant2 = new LDC(ins, -585812297);
+
+		Instruction body[] =
+		{
+			new SiPush(ins, (short) 512),
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IMul(ins),
 
 			new VReturn(ins)
 		};
