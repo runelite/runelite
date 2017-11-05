@@ -41,6 +41,7 @@ public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery
 		return getGameObjects(client).stream()
 			.filter(Objects::nonNull)
 			.filter(predicate)
+			.distinct()
 			.toArray(GameObject[]::new);
 	}
 
