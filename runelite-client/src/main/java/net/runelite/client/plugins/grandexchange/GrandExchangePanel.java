@@ -49,7 +49,6 @@ class GrandExchangePanel extends PluginPanel
 		add(component);
 	}
 
-	//Scheduled @ (1 sec)
 	void updateOffers()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)

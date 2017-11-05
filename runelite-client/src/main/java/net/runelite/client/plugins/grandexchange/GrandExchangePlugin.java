@@ -1,12 +1,12 @@
 package net.runelite.client.plugins.grandexchange;
 
-import java.time.temporal.ChronoUnit;
+import com.google.common.eventbus.Subscribe;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.GrandExchangeOfferChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
@@ -42,11 +42,8 @@ public class GrandExchangePlugin extends Plugin
 
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void doUpdate()
+	@Subscribe
+	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged grandExchangeOfferChanged)
 	{
 		panel.updateOffers();
 	}

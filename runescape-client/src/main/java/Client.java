@@ -472,6 +472,7 @@ public final class Client extends GameEngine {
       signature = "[Lh;"
    )
    @Export("grandExchangeOffers")
+   @Hook("grandExchangeOffers")
    static GrandExchangeOffer[] grandExchangeOffers;
    @ObfuscatedName("ns")
    static String field990;

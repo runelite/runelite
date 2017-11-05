@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
@@ -147,6 +148,16 @@ public class Hooks
 				GameStateChanged gameStateChange = new GameStateChanged();
 				gameStateChange.setGameState(RuneLite.getClient().getGameState());
 				runelite.getEventBus().post(gameStateChange);
+				break;
+			}
+			case "grandExchangeOffers":
+			{
+				Client client = RuneLite.getClient();
+				GrandExchangeOffer grandExchangeOffer = client.getGrandExchangeOffers()[idx];
+
+				GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
+				grandExchangeOfferChanged.setOffer(grandExchangeOffer);
+				runelite.getEventBus().post(grandExchangeOfferChanged);
 				break;
 			}
 			default:
