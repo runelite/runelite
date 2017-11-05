@@ -36,7 +36,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -100,7 +99,7 @@ class FishingSpotOverlay extends Overlay
 
 	private BufferedImage getFishImage(FishingSpot spot)
 	{
-		BufferedImage fishImage = ItemManager.getImage(spot.getFishSpriteId());
+		BufferedImage fishImage = runelite.getItemManager().getImage(spot.getFishSpriteId());
 		return fishImage;
 	}
 

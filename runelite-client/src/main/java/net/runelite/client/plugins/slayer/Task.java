@@ -138,7 +138,6 @@ enum Task
 	private static final Map<String, Task> tasks = new HashMap<>();
 
 	private final String name;
-
 	private final int itemSpriteId;
 
 	static
@@ -165,12 +164,8 @@ enum Task
 		return this.name;
 	}
 
-	public BufferedImage getImage()
+	public int getItemSpriteId()
 	{
-		if (itemSpriteId == -1)
-		{
-			return ItemManager.getImage(ItemID.ENCHANTED_GEM);
-		}
-		return ItemManager.getImage(itemSpriteId);
+		return itemSpriteId;
 	}
 }
