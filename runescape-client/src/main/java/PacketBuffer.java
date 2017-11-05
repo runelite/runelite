@@ -14,18 +14,18 @@ public final class PacketBuffer extends Buffer {
       signature = "[Ldv;"
    )
    public static CacheFile[] field2417;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 63638249
-   )
-   @Export("bitPosition")
-   int bitPosition;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lft;"
    )
    @Export("cipher")
    ISAACCipher cipher;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 63638249
+   )
+   @Export("bitPosition")
+   int bitPosition;
 
    static {
       field2416 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
@@ -35,14 +35,14 @@ public final class PacketBuffer extends Buffer {
       super(var1);
    }
 
-   @ObfuscatedName("ir")
+   @ObfuscatedName("ib")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1670331873"
+      signature = "([II)V",
+      garbageValue = "1121402426"
    )
-   @Export("readOpcode")
-   public int readOpcode() {
-      return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
+   @Export("seed")
+   public void seed(int[] var1) {
+      this.cipher = new ISAACCipher(var1);
    }
 
    @ObfuscatedName("io")
@@ -61,6 +61,16 @@ public final class PacketBuffer extends Buffer {
          this.runeliteInitPacket();
       }
 
+   }
+
+   @ObfuscatedName("ir")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1670331873"
+   )
+   @Export("readOpcode")
+   public int readOpcode() {
+      return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
    }
 
    @ObfuscatedName("iy")
@@ -98,16 +108,6 @@ public final class PacketBuffer extends Buffer {
       return var4;
    }
 
-   @ObfuscatedName("in")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-668683206"
-   )
-   @Export("bitsAvail")
-   public int bitsAvail(int var1) {
-      return var1 * 8 - this.bitPosition;
-   }
-
    @ObfuscatedName("ie")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -118,13 +118,13 @@ public final class PacketBuffer extends Buffer {
       super.offset = (this.bitPosition + 7) / 8;
    }
 
-   @ObfuscatedName("ib")
+   @ObfuscatedName("in")
    @ObfuscatedSignature(
-      signature = "([II)V",
-      garbageValue = "1121402426"
+      signature = "(II)I",
+      garbageValue = "-668683206"
    )
-   @Export("seed")
-   public void seed(int[] var1) {
-      this.cipher = new ISAACCipher(var1);
+   @Export("bitsAvail")
+   public int bitsAvail(int var1) {
+      return var1 * 8 - this.bitPosition;
    }
 }

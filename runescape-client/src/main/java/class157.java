@@ -7,10 +7,10 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class157 {
    @ObfuscatedName("w")
    public static boolean field2248;
-   @ObfuscatedName("q")
-   static Hashtable field2246;
    @ObfuscatedName("s")
    public static File field2245;
+   @ObfuscatedName("q")
+   static Hashtable field2246;
 
    static {
       field2248 = false;

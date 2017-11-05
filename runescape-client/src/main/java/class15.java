@@ -6,17 +6,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("i")
 final class class15 implements Comparator {
-   @ObfuscatedName("ei")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   @Export("rssocket")
-   static RSSocket rssocket;
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    static IndexData field310;
+   @ObfuscatedName("ei")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
+   @Export("rssocket2")
+   static RSSocket rssocket2;
    @ObfuscatedName("fn")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")
@@ -37,29 +37,6 @@ final class class15 implements Comparator {
 
    public int compare(Object var1, Object var2) {
       return this.method89((class14)var1, (class14)var2);
-   }
-
-   @ObfuscatedName("gc")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1404435572"
-   )
-   static final void method96() {
-      for(GraphicsObject var0 = (GraphicsObject)Client.graphicsObjectDeque.getFront(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjectDeque.getNext()) {
-         if(var0.level == class46.plane && !var0.finished) {
-            if(Client.gameCycle >= var0.startCycle) {
-               var0.method1675(Client.field1004);
-               if(var0.finished) {
-                  var0.unlink();
-               } else {
-                  class3.region.method2718(var0.level, var0.x, var0.y, var0.height, 60, var0, 0, -1, false);
-               }
-            }
-         } else {
-            var0.unlink();
-         }
-      }
-
    }
 
    @ObfuscatedName("v")
@@ -118,5 +95,28 @@ final class class15 implements Comparator {
 
          return 1;
       }
+   }
+
+   @ObfuscatedName("gc")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1404435572"
+   )
+   static final void method96() {
+      for(GraphicsObject var0 = (GraphicsObject)Client.graphicsObjectDeque.getFront(); var0 != null; var0 = (GraphicsObject)Client.graphicsObjectDeque.getNext()) {
+         if(var0.level == class46.plane && !var0.finished) {
+            if(Client.gameCycle >= var0.startCycle) {
+               var0.method1675(Client.field1004);
+               if(var0.finished) {
+                  var0.unlink();
+               } else {
+                  class3.region.method2718(var0.level, var0.x, var0.y, var0.height, 60, var0, 0, -1, false);
+               }
+            }
+         } else {
+            var0.unlink();
+         }
+      }
+
    }
 }

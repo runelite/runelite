@@ -7,18 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eo")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("dq")
-   @ObfuscatedGetter(
-      intValue = -219223207
-   )
-   static int field2120;
-   @ObfuscatedName("af")
-   static int[] field2125;
    @ObfuscatedName("pj")
    @ObfuscatedGetter(
       intValue = 1900192155
    )
    static int field2124;
+   @ObfuscatedName("af")
+   static int[] field2125;
+   @ObfuscatedName("dq")
+   @ObfuscatedGetter(
+      intValue = -219223207
+   )
+   static int field2120;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "[Ldb;"

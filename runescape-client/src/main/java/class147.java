@@ -10,18 +10,32 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ed")
 public class class147 implements Runnable {
+   @ObfuscatedName("w")
+   final Thread field2182;
    @ObfuscatedName("s")
    volatile boolean field2181;
    @ObfuscatedName("q")
    Queue field2183;
-   @ObfuscatedName("w")
-   final Thread field2182;
 
    public class147() {
       this.field2183 = new LinkedList();
       this.field2182 = new Thread(this);
       this.field2182.setPriority(1);
       this.field2182.start();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljava/net/URL;I)Lex;",
+      garbageValue = "-953503801"
+   )
+   public class148 method2932(URL var1) {
+      class148 var2 = new class148(var1);
+      synchronized(this) {
+         this.field2183.add(var2);
+         this.notify();
+         return var2;
+      }
    }
 
    @ObfuscatedName("s")
@@ -42,20 +56,6 @@ public class class147 implements Runnable {
          ;
       }
 
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Lex;",
-      garbageValue = "-953503801"
-   )
-   public class148 method2932(URL var1) {
-      class148 var2 = new class148(var1);
-      synchronized(this) {
-         this.field2183.add(var2);
-         this.notify();
-         return var2;
-      }
    }
 
    public void run() {

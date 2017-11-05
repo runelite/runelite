@@ -25,7 +25,6 @@
 package net.runelite.injector;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -34,29 +33,20 @@ import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.DLoad;
 import net.runelite.asm.attributes.code.instructions.FLoad;
-import net.runelite.asm.attributes.code.instructions.GetField;
-import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.ILoad;
-import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LLoad;
-import net.runelite.asm.attributes.code.instructions.LMul;
-import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.RSClient;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +62,7 @@ public class Inject
 	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
+	private final InjectGetter getters = new InjectGetter(this);
 	private final InjectSetter setters = new InjectSetter(this);
 	private final InjectInvoker invokes = new InjectInvoker(this);
 
@@ -316,7 +307,7 @@ public class Inject
 					throw new InjectionException("Type " + fieldType + " is not convertable to " + returnType + " for getter " + apiMethod);
 				}
 
-				injectGetter(targetClass, apiMethod, otherf, getter);
+				getters.injectGetter(targetClass, apiMethod, otherf, getter);
 			}
 
 			for (Method m : cf.getMethods())
@@ -325,6 +316,10 @@ public class Inject
 				invokes.process(m, other, implementingClass);
 			}
 		}
+		
+		logger.info("Injected {} hooks, {} getters, {} settters, {} invokers",
+			hooks.getInjectedHooks(), getters.getInjectedGetters(),
+			setters.getInjectedSetters(), invokes.getInjectedInvokers());
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -391,96 +386,6 @@ public class Inject
 		}
 
 		return null;
-	}
-
-	private void injectGetter(ClassFile clazz, java.lang.reflect.Method method, Field field, Number getter)
-	{
-		// clazz = class file we're injecting the method into.
-		// method = api method (java reflect) that we're overriding
-		// field = field we're getting. might not be in this class if static.
-		// getter = encryption getter
-
-		assert clazz.findMethod(method.getName()) == null;
-		assert field.isStatic() || field.getClassFile() == clazz;
-
-		Signature sig = new Signature.Builder()
-			.setReturnType(classToType(method.getReturnType()))
-			.build();
-		Method getterMethod = new Method(clazz, method.getName(), sig);
-		getterMethod.setAccessFlags(ACC_PUBLIC);
-
-		// create code
-		Code code = new Code(getterMethod);
-		getterMethod.setCode(code);
-
-		Instructions instructions = code.getInstructions();
-		List<Instruction> ins = instructions.getInstructions();
-
-		if (field.isStatic())
-		{
-			code.setMaxStack(1);
-
-			ins.add(new GetStatic(instructions, field.getPoolField()));
-		}
-		else
-		{
-			code.setMaxStack(2);
-
-			ins.add(new ALoad(instructions, 0));
-			ins.add(new GetField(instructions, field.getPoolField()));
-		}
-
-		if (getter != null)
-		{
-			code.setMaxStack(2);
-
-			assert getter instanceof Integer || getter instanceof Long;
-
-			if (getter instanceof Integer)
-			{
-				ins.add(new LDC(instructions, (int) getter));
-				ins.add(new IMul(instructions));
-			}
-			else
-			{
-				ins.add(new LDC(instructions, (long) getter));
-				ins.add(new LMul(instructions));
-			}
-		}
-
-		InstructionType returnType;
-		if (field.getType().isPrimitive() && field.getType().getDimensions() == 0)
-		{
-			switch (field.getType().toString())
-			{
-				case "B":
-				case "C":
-				case "I":
-				case "S":
-				case "Z":
-					returnType = InstructionType.IRETURN;
-					break;
-				case "D":
-					returnType = InstructionType.DRETURN;
-					break;
-				case "F":
-					returnType = InstructionType.FRETURN;
-					break;
-				case "J":
-					returnType = InstructionType.LRETURN;
-					break;
-				default:
-					throw new RuntimeException("Unknown type");
-			}
-		}
-		else
-		{
-			returnType = InstructionType.ARETURN;
-		}
-
-		ins.add(new Return(instructions, returnType));
-
-		clazz.addMethod(getterMethod);
 	}
 
 	/**

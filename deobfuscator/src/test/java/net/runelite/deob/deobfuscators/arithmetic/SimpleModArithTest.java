@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.io.IOException;
@@ -37,6 +36,7 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.deob.Deobfuscator;
 import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 class TestClass
@@ -83,9 +83,9 @@ class TestClass2
 	public void test()
 	{
 		TestClass2 tc = new TestClass2();
-		
+
 		field2863 = -1446933277;
-		
+
 		array[378529589 * tc.field2863] = 1;
 
 		int var = 32;
@@ -98,6 +98,15 @@ class TestClass2
 
 public class SimpleModArithTest
 {
+	static boolean isBig(int val)
+	{
+		if ((val & 0x80000000) != 0)
+		{
+			val = ~val + 1;
+		}
+		return (val & 0x7ff00000) != 0;
+	}
+
 	private void checkConstants(ClassFile cf)
 	{
 		for (Method m : cf.getMethods())
@@ -109,7 +118,8 @@ public class SimpleModArithTest
 				if (i instanceof LDC)
 				{
 					LDC ldc = (LDC) i;
-					Assert.assertFalse(DMath.isBig(ldc.getConstantAsInt()));
+					Integer value = (Integer) ldc.getConstantAsInt();
+					assertFalse(isBig(value));
 				}
 			}
 		}
@@ -150,14 +160,14 @@ public class SimpleModArithTest
 		ModArith d1 = new ModArith();
 		d1.run(group);
 		d1.runOnce();
-		
+
 		Deobfuscator d2 = new MultiplicationDeobfuscator();
 		d2.run(group);
-		
+
 		Encryption e = d1.getEncryption();
-		
+
 		Pair pair = e.getField(cf.findField("field2863").getPoolField());
-		
+
 		Assert.assertEquals(378529589, (int) pair.getter);
 	}
 }

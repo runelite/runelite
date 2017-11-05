@@ -24,35 +24,6 @@ final class class12 implements Comparator {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-1496084024"
-   )
-   @Export("getString")
-   public static String getString(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class266.field3666[var6 - 128];
-               if(var7 == 0) {
-                  var7 = '?';
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
@@ -188,32 +159,33 @@ final class class12 implements Comparator {
       return new File(var4);
    }
 
-   @ObfuscatedName("js")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-      garbageValue = "-7"
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "-1496084024"
    )
-   static String method71(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
+   @Export("getString")
+   public static String getString(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var5 + var1] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class266.field3666[var6 - 128];
+               if(var7 == 0) {
+                  var7 = '?';
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
       }
 
-      String var3 = "";
-      if(Timer.sessionToken != null) {
-         var3 = "/p=" + Timer.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + Client.field929 + var3 + "/";
+      return new String(var3, 0, var4);
    }
 
    @ObfuscatedName("g")
@@ -397,5 +369,33 @@ final class class12 implements Comparator {
             return 2;
          }
       }
+   }
+
+   @ObfuscatedName("js")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+      garbageValue = "-7"
+   )
+   static String method71(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(Timer.sessionToken != null) {
+         var3 = "/p=" + Timer.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + Client.field929 + var3 + "/";
    }
 }

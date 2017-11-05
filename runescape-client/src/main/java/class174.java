@@ -16,12 +16,6 @@ public class class174 {
       intValue = -1730540891
    )
    static int field2398;
-   @ObfuscatedName("cx")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   @Export("rssocket")
-   static RSSocket rssocket;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1822949883
@@ -33,14 +27,20 @@ public class class174 {
    static byte[][] field2397;
    @ObfuscatedName("v")
    static byte[][] field2393;
+   @ObfuscatedName("ar")
+   protected static GarbageCollectorMXBean field2394;
+   @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
+   )
+   @Export("rssocket")
+   static RSSocket rssocket;
    @ObfuscatedName("ca")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    @Export("indexInterfaces")
    static IndexData indexInterfaces;
-   @ObfuscatedName("ar")
-   protected static GarbageCollectorMXBean field2394;
 
    static {
       field2399 = 0;
@@ -91,37 +91,14 @@ public class class174 {
       }
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-1718527911"
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-359418221"
    )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3223 != 0 && var3 > IndexDataBase.field3223) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
-      } else {
-         int var6 = var1.readInt();
-         if(var6 < 0 || IndexDataBase.field3223 != 0 && var6 > IndexDataBase.field3223) {
-            throw new RuntimeException();
-         } else {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class167.method3161(var5, var6, var0, var3, 9);
-            } else {
-               IndexDataBase.gzip.decompress(var1, var5);
-            }
-
-            return var5;
-         }
-      }
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      class39.addChatMessage(var0, var1, var2, (String)null);
    }
 
    @ObfuscatedName("g")
@@ -161,13 +138,36 @@ public class class174 {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-359418221"
+      signature = "([BI)[B",
+      garbageValue = "-1718527911"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class39.addChatMessage(var0, var1, var2, (String)null);
+   @Export("decodeContainer")
+   static final byte[] decodeContainer(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 < 0 || IndexDataBase.field3223 != 0 && var3 > IndexDataBase.field3223) {
+         throw new RuntimeException();
+      } else if(var2 == 0) {
+         byte[] var4 = new byte[var3];
+         var1.readBytes(var4, 0, var3);
+         return var4;
+      } else {
+         int var6 = var1.readInt();
+         if(var6 < 0 || IndexDataBase.field3223 != 0 && var6 > IndexDataBase.field3223) {
+            throw new RuntimeException();
+         } else {
+            byte[] var5 = new byte[var6];
+            if(var2 == 1) {
+               class167.method3161(var5, var6, var0, var3, 9);
+            } else {
+               IndexDataBase.gzip.decompress(var1, var5);
+            }
+
+            return var5;
+         }
+      }
    }
 }

@@ -17,45 +17,28 @@ public class Friend {
       intValue = -1017991757
    )
    static int field824;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1781525527
-   )
-   @Export("world")
-   int world;
-   @ObfuscatedName("g")
-   boolean field819;
-   @ObfuscatedName("v")
-   boolean field820;
    @ObfuscatedName("w")
    @Export("name")
    String name;
    @ObfuscatedName("s")
    @Export("previousName")
    String previousName;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 1781525527
+   )
+   @Export("world")
+   int world;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 757368741
    )
    @Export("rank")
    int rank;
-
-   @ObfuscatedName("hp")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-63"
-   )
-   static final void method1083(int var0) {
-      if(var0 >= 0) {
-         int var1 = Client.menuActionParams0[var0];
-         int var2 = Client.menuActionParams1[var0];
-         int var3 = Client.menuTypes[var0];
-         int var4 = Client.menuIdentifiers[var0];
-         String var5 = Client.menuOptions[var0];
-         String var6 = Client.menuTargets[var0];
-         class48.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field757, MouseInput.field758);
-      }
-   }
+   @ObfuscatedName("g")
+   boolean field819;
+   @ObfuscatedName("v")
+   boolean field820;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -75,6 +58,23 @@ public class Friend {
 
          VarPlayerType.varplayers.put(var1, (long)var0);
          return var1;
+      }
+   }
+
+   @ObfuscatedName("hp")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-63"
+   )
+   static final void method1083(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class48.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field757, MouseInput.field758);
       }
    }
 }

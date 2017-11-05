@@ -15,26 +15,51 @@ public final class class80 extends Node {
       signature = "Lgz;"
    )
    static Deque field1323;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 412654087
-   )
-   int field1318;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Liv;"
-   )
-   ObjectComposition field1325;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1897888823
-   )
-   int field1311;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 603531549
    )
    int field1320;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -826668209
+   )
+   int field1312;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 465855675
+   )
+   int field1313;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 30451021
+   )
+   int field1314;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -356907703
+   )
+   int field1315;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1574220845
+   )
+   int field1316;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1897888823
+   )
+   int field1311;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 412654087
+   )
+   int field1318;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Ldl;"
+   )
+   class115 field1317;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -670463325
@@ -42,46 +67,21 @@ public final class class80 extends Node {
    int field1321;
    @ObfuscatedName("n")
    int[] field1319;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   class115 field1317;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -356907703
-   )
-   int field1315;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 465855675
-   )
-   int field1313;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1574220845
-   )
-   int field1316;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 30451021
-   )
-   int field1314;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -826668209
-   )
-   int field1312;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   class115 field1324;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1513890913
    )
    int field1322;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Ldl;"
+   )
+   class115 field1324;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Liv;"
+   )
+   ObjectComposition field1325;
 
    static {
       field1323 = new Deque();
@@ -137,6 +137,15 @@ public final class class80 extends Node {
       }
    }
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lip;I)V",
+      garbageValue = "1343097181"
+   )
+   public static void method1606(IndexDataBase var0) {
+      FloorUnderlayDefinition.underlay_ref = var0;
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;I)V",
@@ -146,6 +155,45 @@ public final class class80 extends Node {
       var0.setFocusTraversalKeysEnabled(false);
       var0.addKeyListener(KeyFocusListener.keyboard);
       var0.addFocusListener(KeyFocusListener.keyboard);
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-849234993"
+   )
+   public static void method1594() {
+      try {
+         File var0 = new File(class33.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class155.field2240 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         } else {
+            label37:
+            for(int var4 = 0; var4 < class267.field3671.length; ++var4) {
+               for(var2 = 0; var2 < class277.cacheLocations.length; ++var2) {
+                  File var3 = new File(class277.cacheLocations[var2] + class267.field3671[var4] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class155.field2240 = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label37;
+                  }
+               }
+            }
+         }
+
+         if(class155.field2240 == null) {
+            RandomAccessFile var1 = new RandomAccessFile(var0, "rw");
+            var2 = var1.read();
+            var1.seek(0L);
+            var1.write(var2);
+            var1.seek(0L);
+            var1.close();
+            class155.field2240 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         }
+      } catch (IOException var5) {
+         ;
+      }
+
    }
 
    @ObfuscatedName("f")
@@ -193,53 +241,5 @@ public final class class80 extends Node {
       } else {
          throw new IllegalArgumentException();
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lip;I)V",
-      garbageValue = "1343097181"
-   )
-   public static void method1606(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-849234993"
-   )
-   public static void method1594() {
-      try {
-         File var0 = new File(class33.userHome, "random.dat");
-         int var2;
-         if(var0.exists()) {
-            class155.field2240 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         } else {
-            label37:
-            for(int var4 = 0; var4 < class267.field3671.length; ++var4) {
-               for(var2 = 0; var2 < class277.cacheLocations.length; ++var2) {
-                  File var3 = new File(class277.cacheLocations[var2] + class267.field3671[var4] + File.separatorChar + "random.dat");
-                  if(var3.exists()) {
-                     class155.field2240 = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label37;
-                  }
-               }
-            }
-         }
-
-         if(class155.field2240 == null) {
-            RandomAccessFile var1 = new RandomAccessFile(var0, "rw");
-            var2 = var1.read();
-            var1.seek(0L);
-            var1.write(var2);
-            var1.seek(0L);
-            var1.close();
-            class155.field2240 = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         }
-      } catch (IOException var5) {
-         ;
-      }
-
    }
 }

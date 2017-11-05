@@ -5,11 +5,53 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ch")
 public class class90 {
+   @ObfuscatedName("pd")
+   @ObfuscatedGetter(
+      intValue = 1360976181
+   )
+   static int field1448;
+   @ObfuscatedName("kz")
+   @ObfuscatedGetter(
+      intValue = -171984717
+   )
+   static int field1421;
+   @ObfuscatedName("w")
+   static boolean field1440;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 802800573
    )
    static int field1413;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1414;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "[Ljo;"
+   )
+   static IndexedSprite[] field1415;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lky;"
+   )
+   static SpritePixels field1427;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1417;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1418;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Ljo;"
+   )
+   static IndexedSprite field1419;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1949073269
@@ -18,12 +60,6 @@ public class class90 {
    static int loginWindowX;
    @ObfuscatedName("k")
    static int[] field1443;
-   @ObfuscatedName("al")
-   @ObfuscatedGetter(
-      intValue = 1898131193
-   )
-   @Export("loginIndex")
-   static int loginIndex;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -711567673
@@ -34,6 +70,8 @@ public class class90 {
       intValue = -998485217
    )
    static int field1424;
+   @ObfuscatedName("ay")
+   static int[] field1425;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = 955073511
@@ -63,6 +101,12 @@ public class class90 {
    @ObfuscatedName("av")
    @Export("loadingText")
    static String loadingText;
+   @ObfuscatedName("al")
+   @ObfuscatedGetter(
+      intValue = 1898131193
+   )
+   @Export("loginIndex")
+   static int loginIndex;
    @ObfuscatedName("ae")
    static String field1442;
    @ObfuscatedName("ab")
@@ -80,9 +124,6 @@ public class class90 {
       setter = true
    )
    static String username;
-   @ObfuscatedName("bz")
-   @Export("worldSelectShown")
-   static boolean worldSelectShown;
    @ObfuscatedName("am")
    @Export("password")
    static String password;
@@ -99,55 +140,14 @@ public class class90 {
       intValue = -904804285
    )
    static int field1422;
+   @ObfuscatedName("bz")
+   @Export("worldSelectShown")
+   static boolean worldSelectShown;
    @ObfuscatedName("bo")
    @ObfuscatedGetter(
       intValue = 1421698321
    )
    static int field1428;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lky;"
-   )
-   static SpritePixels field1427;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field1414;
-   @ObfuscatedName("ay")
-   static int[] field1425;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "[Ljo;"
-   )
-   static IndexedSprite[] field1415;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field1417;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field1418;
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field1419;
-   @ObfuscatedName("pd")
-   @ObfuscatedGetter(
-      intValue = 1360976181
-   )
-   static int field1448;
-   @ObfuscatedName("w")
-   static boolean field1440;
-   @ObfuscatedName("kz")
-   @ObfuscatedGetter(
-      intValue = -171984717
-   )
-   static int field1421;
 
    static {
       field1413 = 0;

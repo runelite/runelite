@@ -8,6 +8,8 @@ public class Floor1 {
    @ObfuscatedName("w")
    @Export("RANGES")
    static final int[] RANGES;
+   @ObfuscatedName("s")
+   static final float[] field1605;
    @ObfuscatedName("x")
    @Export("xList")
    static int[] xList;
@@ -16,8 +18,6 @@ public class Floor1 {
    static int[] yList;
    @ObfuscatedName("n")
    static boolean[] field1609;
-   @ObfuscatedName("s")
-   static final float[] field1605;
    @ObfuscatedName("q")
    int[] field1606;
    @ObfuscatedName("o")
@@ -116,33 +116,14 @@ public class Floor1 {
       }
    }
 
-   @ObfuscatedName("g")
-   void method2033(int var1, int var2) {
-      if(var1 < var2) {
-         int var3 = var1;
-         int var4 = xList[var1];
-         int var5 = yList[var1];
-         boolean var6 = field1609[var1];
-
-         for(int var7 = var1 + 1; var7 <= var2; ++var7) {
-            int var8 = xList[var7];
-            if(var8 < var4) {
-               xList[var3] = var8;
-               yList[var3] = yList[var7];
-               field1609[var3] = field1609[var7];
-               ++var3;
-               xList[var7] = xList[var3];
-               yList[var7] = yList[var3];
-               field1609[var7] = field1609[var3];
-            }
-         }
-
-         xList[var3] = var4;
-         yList[var3] = var5;
-         field1609[var3] = var6;
-         this.method2033(var1, var3 - 1);
-         this.method2033(var3 + 1, var2);
-      }
+   @ObfuscatedName("q")
+   int method2036(int var1, int var2, int var3, int var4, int var5) {
+      int var6 = var4 - var2;
+      int var7 = var3 - var1;
+      int var8 = var6 < 0?-var6:var6;
+      int var9 = (var5 - var1) * var8;
+      int var10 = var9 / var7;
+      return var6 < 0?var2 - var10:var10 + var2;
    }
 
    @ObfuscatedName("o")
@@ -174,14 +155,33 @@ public class Floor1 {
 
    }
 
-   @ObfuscatedName("q")
-   int method2036(int var1, int var2, int var3, int var4, int var5) {
-      int var6 = var4 - var2;
-      int var7 = var3 - var1;
-      int var8 = var6 < 0?-var6:var6;
-      int var9 = (var5 - var1) * var8;
-      int var10 = var9 / var7;
-      return var6 < 0?var2 - var10:var10 + var2;
+   @ObfuscatedName("g")
+   void method2033(int var1, int var2) {
+      if(var1 < var2) {
+         int var3 = var1;
+         int var4 = xList[var1];
+         int var5 = yList[var1];
+         boolean var6 = field1609[var1];
+
+         for(int var7 = var1 + 1; var7 <= var2; ++var7) {
+            int var8 = xList[var7];
+            if(var8 < var4) {
+               xList[var3] = var8;
+               yList[var3] = yList[var7];
+               field1609[var3] = field1609[var7];
+               ++var3;
+               xList[var7] = xList[var3];
+               yList[var7] = yList[var3];
+               field1609[var7] = field1609[var3];
+            }
+         }
+
+         xList[var3] = var4;
+         yList[var3] = var5;
+         field1609[var3] = var6;
+         this.method2033(var1, var3 - 1);
+         this.method2033(var3 + 1, var2);
+      }
    }
 
    @ObfuscatedName("v")

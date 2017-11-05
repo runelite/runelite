@@ -11,18 +11,18 @@ public class class114 {
       signature = "Ljh;"
    )
    static Font field1673;
-   @ObfuscatedName("v")
-   int[][] field1670;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 223668797
-   )
-   int field1667;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1268044521
    )
    int field1672;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 223668797
+   )
+   int field1667;
+   @ObfuscatedName("v")
+   int[][] field1670;
 
    public class114(int var1, int var2) {
       if(var2 != var1) {
@@ -144,6 +144,39 @@ public class class114 {
       return var1;
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "116"
+   )
+   public static void method2167(int var0, int var1) {
+      Varbit var3 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var2;
+      if(var3 != null) {
+         var2 = var3;
+      } else {
+         byte[] var8 = Varbit.varbit_ref.getConfigData(14, var0);
+         var3 = new Varbit();
+         if(var8 != null) {
+            var3.decode(new Buffer(var8));
+         }
+
+         Varbit.varbits.put(var3, (long)var0);
+         var2 = var3;
+      }
+
+      int var4 = var2.configId;
+      int var5 = var2.leastSignificantBit;
+      int var6 = var2.mostSignificantBit;
+      int var7 = class211.field2596[var6 - var5];
+      if(var1 < 0 || var1 > var7) {
+         var1 = 0;
+      }
+
+      var7 <<= var5;
+      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
+   }
+
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(III)I",
@@ -190,38 +223,5 @@ public class class114 {
       var0.field1204 = var2;
       var0.field1199 = var3;
       var0.field1198 = var4;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "116"
-   )
-   public static void method2167(int var0, int var1) {
-      Varbit var3 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var2;
-      if(var3 != null) {
-         var2 = var3;
-      } else {
-         byte[] var8 = Varbit.varbit_ref.getConfigData(14, var0);
-         var3 = new Varbit();
-         if(var8 != null) {
-            var3.decode(new Buffer(var8));
-         }
-
-         Varbit.varbits.put(var3, (long)var0);
-         var2 = var3;
-      }
-
-      int var4 = var2.configId;
-      int var5 = var2.leastSignificantBit;
-      int var6 = var2.mostSignificantBit;
-      int var7 = class211.field2596[var6 - var5];
-      if(var1 < 0 || var1 > var7) {
-         var1 = 0;
-      }
-
-      var7 <<= var5;
-      class211.widgetSettings[var4] = class211.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
    }
 }

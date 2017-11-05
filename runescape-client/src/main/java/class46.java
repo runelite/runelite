@@ -5,33 +5,95 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ar")
 public class class46 {
-   @ObfuscatedName("io")
-   @ObfuscatedGetter(
-      intValue = -230003367
+   @ObfuscatedName("cm")
+   @ObfuscatedSignature(
+      signature = "Let;"
    )
-   @Export("plane")
-   static int plane;
+   static Task field609;
    @ObfuscatedName("ft")
    @ObfuscatedSignature(
       signature = "Lky;"
    )
    @Export("mapedge")
    static SpritePixels mapedge;
-   @ObfuscatedName("cm")
-   @ObfuscatedSignature(
-      signature = "Let;"
+   @ObfuscatedName("io")
+   @ObfuscatedGetter(
+      intValue = -230003367
    )
-   static Task field609;
-   @ObfuscatedName("s")
-   byte[][][] field607;
+   @Export("plane")
+   static int plane;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1548222003
    )
    int field610;
+   @ObfuscatedName("s")
+   byte[][][] field607;
 
    class46(int var1) {
       this.field610 = var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIII)V",
+      garbageValue = "-1081422886"
+   )
+   void method655(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      if(var7 != 0 && this.field610 != 0 && this.field607 != null) {
+         var8 = this.method670(var8, var7);
+         var7 = this.method657(var7);
+         Rasterizer2D.method5050(var1, var2, var5, var6, var3, var4, this.field607[var7 - 1][var8], this.field610);
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIS)I",
+      garbageValue = "134"
+   )
+   int method670(int var1, int var2) {
+      if(var2 == 9) {
+         var1 = var1 + 1 & 3;
+      }
+
+      if(var2 == 10) {
+         var1 = var1 + 3 & 3;
+      }
+
+      if(var2 == 11) {
+         var1 = var1 + 3 & 3;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-1018720661"
+   )
+   int method657(int var1) {
+      return var1 != 9 && var1 != 10?(var1 == 11?8:var1):1;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1460583618"
+   )
+   void method658() {
+      if(this.field607 == null) {
+         this.field607 = new byte[8][4][];
+         this.method685();
+         this.method660();
+         this.method661();
+         this.method662();
+         this.method669();
+         this.method696();
+         this.method664();
+         this.method663();
+      }
    }
 
    @ObfuscatedName("g")
@@ -98,27 +160,6 @@ public class class46 {
       }
 
       this.field607[0][3] = var1;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "134"
-   )
-   int method670(int var1, int var2) {
-      if(var2 == 9) {
-         var1 = var1 + 1 & 3;
-      }
-
-      if(var2 == 10) {
-         var1 = var1 + 3 & 3;
-      }
-
-      if(var2 == 11) {
-         var1 = var1 + 3 & 3;
-      }
-
-      return var1;
    }
 
    @ObfuscatedName("v")
@@ -189,15 +230,6 @@ public class class46 {
       }
 
       this.field607[1][3] = var1;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1018720661"
-   )
-   int method657(int var1) {
-      return var1 != 9 && var1 != 10?(var1 == 11?8:var1):1;
    }
 
    @ObfuscatedName("p")
@@ -602,38 +634,6 @@ public class class46 {
       this.field607[7][3] = var1;
    }
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1460583618"
-   )
-   void method658() {
-      if(this.field607 == null) {
-         this.field607 = new byte[8][4][];
-         this.method685();
-         this.method660();
-         this.method661();
-         this.method662();
-         this.method669();
-         this.method696();
-         this.method664();
-         this.method663();
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIII)V",
-      garbageValue = "-1081422886"
-   )
-   void method655(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      if(var7 != 0 && this.field610 != 0 && this.field607 != null) {
-         var8 = this.method670(var8, var7);
-         var7 = this.method657(var7);
-         Rasterizer2D.method5050(var1, var2, var5, var6, var3, var4, this.field607[var7 - 1][var8], this.field610);
-      }
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
@@ -641,27 +641,6 @@ public class class46 {
    )
    public static void method680(String var0, Throwable var1) {
       var1.printStackTrace();
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
-   )
-   static void method694() {
-      if(class70.loadWorlds()) {
-         class90.worldSelectShown = true;
-      }
-
-   }
-
-   @ObfuscatedName("hr")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-315687682"
-   )
-   static boolean method693(int var0) {
-      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
    }
 
    @ObfuscatedName("w")
@@ -733,5 +712,26 @@ public class class46 {
       }
 
       return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "1"
+   )
+   static void method694() {
+      if(class70.loadWorlds()) {
+         class90.worldSelectShown = true;
+      }
+
+   }
+
+   @ObfuscatedName("hr")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-315687682"
+   )
+   static boolean method693(int var0) {
+      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
    }
 }

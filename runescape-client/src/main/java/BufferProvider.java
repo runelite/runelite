@@ -23,16 +23,6 @@ public abstract class BufferProvider {
    @Export("height")
    public int height;
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1969740140"
-   )
-   @Export("setRaster")
-   public final void setRaster() {
-      Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -46,4 +36,14 @@ public abstract class BufferProvider {
       garbageValue = "-1204560851"
    )
    public abstract void vmethod5123(int var1, int var2, int var3, int var4);
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1969740140"
+   )
+   @Export("setRaster")
+   public final void setRaster() {
+      Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
+   }
 }

@@ -5,18 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("a")
 public class class14 {
-   @ObfuscatedName("cf")
-   @ObfuscatedSignature(
-      signature = "Lih;"
-   )
-   @Export("indexModels")
-   static IndexData indexModels;
-   @ObfuscatedName("gj")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("pkIcons")
-   static SpritePixels[] pkIcons;
    @ObfuscatedName("pb")
    @ObfuscatedGetter(
       intValue = 1470002847
@@ -27,25 +15,37 @@ public class class14 {
       intValue = -995736971
    )
    static int field300;
-   @ObfuscatedName("g")
-   String field304;
-   @ObfuscatedName("o")
-   String field295;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      longValue = -8704949915974274793L
+   @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Lih;"
    )
-   public final long field293;
+   @Export("indexModels")
+   static IndexData indexModels;
+   @ObfuscatedName("gj")
+   @ObfuscatedSignature(
+      signature = "[Lky;"
+   )
+   @Export("headIconsHint")
+   static SpritePixels[] headIconsHint;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -2140382519
    )
    public final int field296;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      longValue = -8704949915974274793L
+   )
+   public final long field293;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lh;"
    )
    public final GrandExchangeOffer field294;
+   @ObfuscatedName("o")
+   String field295;
+   @ObfuscatedName("g")
+   String field304;
 
    @ObfuscatedSignature(
       signature = "(Lfz;BI)V"

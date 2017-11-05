@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zulrah;
+package net.runelite.client.plugins.zulrah.phase;
+
+import net.runelite.api.NpcID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum ZulrahType
 {
-	RANGE,
-	MAGIC,
-	MELEE
+	RANGE, MAGIC, MELEE;
+
+	private static final Logger logger = LoggerFactory.getLogger(ZulrahType.class);
+
+	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
+	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2043;
+	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_2044;
+
+	public static ZulrahType valueOf(int zulrahId)
+	{
+		switch (zulrahId)
+		{
+			case ZULRAH_RANGE:
+				return ZulrahType.RANGE;
+			case ZULRAH_MELEE:
+				return ZulrahType.MELEE;
+			case ZULRAH_MAGIC:
+				return ZulrahType.MAGIC;
+		}
+		logger.debug("Unknown Zulrah Id: {}", zulrahId);
+		return null;
+	}
 }

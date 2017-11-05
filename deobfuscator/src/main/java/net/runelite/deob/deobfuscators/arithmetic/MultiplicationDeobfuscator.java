@@ -139,7 +139,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			{
 				if (i.getInstruction() instanceof Swap)
 				{
-					String mname = i.getInstruction().getInstructions().getCode().getMethod().getName();
 					logger.debug("Resolving swap");
 					
 					Swap swap = (Swap) i.getInstruction();
@@ -149,8 +148,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 
 				if (i.getInstruction() instanceof PushConstantInstruction)
 				{
+					// bipush/sipush are always not obfuscated
 					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
-						throw new IllegalStateException();
+						continue;
 					
 					// a constant of imul
 					me.instructions.add(i);

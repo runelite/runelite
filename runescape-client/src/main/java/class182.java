@@ -20,16 +20,6 @@ public class class182 {
       field2438 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "39"
-   )
-   public static void method3533() {
-      CombatInfo2.field3360.reset();
-      CombatInfo2.spriteCache.reset();
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)Lik;",
@@ -50,6 +40,16 @@ public class class182 {
          class251.field3387.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "39"
+   )
+   public static void method3533() {
+      CombatInfo2.field3360.reset();
+      CombatInfo2.spriteCache.reset();
    }
 
    @ObfuscatedName("i")

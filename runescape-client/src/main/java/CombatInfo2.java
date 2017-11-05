@@ -7,6 +7,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("io")
 @Implements("CombatInfo2")
 public class CombatInfo2 extends CacheableNode {
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   static IndexDataBase field3367;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   static IndexDataBase field3369;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgo;"
@@ -18,26 +28,11 @@ public class CombatInfo2 extends CacheableNode {
    )
    @Export("spriteCache")
    static NodeCache spriteCache;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   static IndexDataBase field3367;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   static IndexDataBase field3369;
-   @ObfuscatedName("u")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -75760411
+      intValue = 2067937291
    )
-   int field3359;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1177676849
-   )
-   int field3372;
+   public int field3362;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 686934467
@@ -53,21 +48,26 @@ public class CombatInfo2 extends CacheableNode {
       intValue = -1663135793
    )
    public int field3366;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1453356703
-   )
-   public int field3368;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 2067937291
-   )
-   public int field3362;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1566433677
    )
    public int field3370;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1453356703
+   )
+   public int field3368;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -75760411
+   )
+   int field3359;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1177676849
+   )
+   int field3372;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 451550863
@@ -95,6 +95,22 @@ public class CombatInfo2 extends CacheableNode {
       this.field3372 = -1;
       this.healthScale = 30;
       this.field3364 = 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfz;B)V",
+      garbageValue = "89"
+   )
+   void method4482(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4466(var1, var2);
+      }
    }
 
    @ObfuscatedName("o")
@@ -129,19 +145,26 @@ public class CombatInfo2 extends CacheableNode {
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfz;B)V",
-      garbageValue = "89"
+      signature = "(I)Lky;",
+      garbageValue = "-32747742"
    )
-   void method4482(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
+   public SpritePixels method4484() {
+      if(this.field3359 < 0) {
+         return null;
+      } else {
+         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3359);
+         if(var1 != null) {
+            return var1;
+         } else {
+            var1 = BuildType.method4173(field3369, this.field3359, 0);
+            if(var1 != null) {
+               spriteCache.put(var1, (long)this.field3359);
+            }
 
-         this.method4466(var1, var2);
+            return var1;
+         }
       }
    }
 
@@ -161,29 +184,6 @@ public class CombatInfo2 extends CacheableNode {
             var1 = BuildType.method4173(field3369, this.field3372, 0);
             if(var1 != null) {
                spriteCache.put(var1, (long)this.field3372);
-            }
-
-            return var1;
-         }
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)Lky;",
-      garbageValue = "-32747742"
-   )
-   public SpritePixels method4484() {
-      if(this.field3359 < 0) {
-         return null;
-      } else {
-         SpritePixels var1 = (SpritePixels)spriteCache.get((long)this.field3359);
-         if(var1 != null) {
-            return var1;
-         } else {
-            var1 = BuildType.method4173(field3369, this.field3359, 0);
-            if(var1 != null) {
-               spriteCache.put(var1, (long)this.field3359);
             }
 
             return var1;

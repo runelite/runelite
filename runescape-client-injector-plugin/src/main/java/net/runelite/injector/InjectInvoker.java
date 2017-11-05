@@ -55,6 +55,8 @@ public class InjectInvoker
 	private static final Logger logger = LoggerFactory.getLogger(InjectInvoker.class);
 
 	private final Inject inject;
+	
+	private int injectedInvokers;
 
 	public InjectInvoker(Inject inject)
 	{
@@ -114,6 +116,7 @@ public class InjectInvoker
 		}
 
 		injectInvoker(targetClass, apiMethod, m, otherm, garbage);
+		++injectedInvokers;
 	}
 
 	private void injectInvoker(ClassFile clazz, java.lang.reflect.Method method, Method deobfuscatedMethod, Method invokeMethod, String garbage)
@@ -265,5 +268,10 @@ public class InjectInvoker
 		ins.add(new Return(instructions, returnType));
 
 		clazz.addMethod(invokerMethodSignature);
+	}
+
+	public int getInjectedInvokers()
+	{
+		return injectedInvokers;
 	}
 }

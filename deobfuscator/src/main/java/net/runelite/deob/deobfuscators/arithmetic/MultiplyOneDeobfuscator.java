@@ -43,7 +43,13 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(MultiplyOneDeobfuscator.class);
 
+	private final boolean onlyConstants;
 	private int count;
+
+	public MultiplyOneDeobfuscator(boolean onlyConstants)
+	{
+		this.onlyConstants = onlyConstants;
+	}
 
 	private void visit(MethodContext mctx)
 	{
@@ -72,19 +78,27 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 			StackContext one = ictx.getPops().get(0);
 			StackContext two = ictx.getPops().get(1);
 
+			StackContext other = null;
 			int removeIdx = -1;
 			if (one.getPushed().getInstruction() instanceof PushConstantInstruction
 				&& DMath.equals((Number) ((PushConstantInstruction) one.getPushed().getInstruction()).getConstant(), 1))
 			{
 				removeIdx = 0;
+				other = two;
 			}
 			else if (two.getPushed().getInstruction() instanceof PushConstantInstruction
 				&& DMath.equals((Number) ((PushConstantInstruction) two.getPushed().getInstruction()).getConstant(), 1))
 			{
 				removeIdx = 1;
+				other = one;
 			}
 
 			if (removeIdx == -1)
+			{
+				continue;
+			}
+
+			if (onlyConstants && !(other.getPushed().getInstruction() instanceof PushConstantInstruction))
 			{
 				continue;
 			}

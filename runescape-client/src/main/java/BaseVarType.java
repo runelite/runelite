@@ -26,21 +26,21 @@ public enum BaseVarType implements RSEnum {
    @Export("STRING")
    STRING(2, 2, String.class, new class5());
 
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1185107347
-   )
-   final int field37;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 993275761
-   )
-   final int field40;
    @ObfuscatedName("de")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    static IndexData field41;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 993275761
+   )
+   final int field40;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1185107347
+   )
+   final int field37;
 
    @ObfuscatedSignature(
       signature = "(IILjava/lang/Class;Lw;)V"

@@ -5,21 +5,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ao")
 public class class33 {
-   @ObfuscatedName("r")
-   @Export("userHome")
-   public static String userHome;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 823164335
    )
    public static int field483;
+   @ObfuscatedName("r")
+   @Export("userHome")
+   public static String userHome;
    @ObfuscatedName("w")
    String field482;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ll;"
-   )
-   class24 field477;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1060406681
@@ -30,6 +25,11 @@ public class class33 {
       intValue = -869683857
    )
    int field478;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
+   class24 field477;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILl;)V"
@@ -95,7 +95,7 @@ public class class33 {
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = CollisionData.getObjectDefinition(var12);
          if(var13.mapSceneId != -1) {
-            IndexedSprite var14 = class220.field2801[var13.mapSceneId];
+            IndexedSprite var14 = class220.mapscene[var13.mapSceneId];
             if(var14 != null) {
                int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
                int var16 = (var13.sizeY * 4 - var14.height) / 2;
@@ -173,7 +173,7 @@ public class class33 {
          ObjectComposition var23 = CollisionData.getObjectDefinition(var9);
          int var18;
          if(var23.mapSceneId != -1) {
-            IndexedSprite var17 = class220.field2801[var23.mapSceneId];
+            IndexedSprite var17 = class220.mapscene[var23.mapSceneId];
             if(var17 != null) {
                var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
                var18 = (var23.sizeY * 4 - var17.height) / 2;
@@ -206,7 +206,7 @@ public class class33 {
          var6 = var5 >> 14 & 32767;
          ObjectComposition var19 = CollisionData.getObjectDefinition(var6);
          if(var19.mapSceneId != -1) {
-            IndexedSprite var20 = class220.field2801[var19.mapSceneId];
+            IndexedSprite var20 = class220.mapscene[var19.mapSceneId];
             if(var20 != null) {
                var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
                int var21 = (var19.sizeY * 4 - var20.height) / 2;

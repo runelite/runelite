@@ -6,18 +6,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gp")
 @Implements("CacheableNode")
 public class CacheableNode extends Node {
-   @ObfuscatedName("cc")
-   @ObfuscatedSignature(
-      signature = "Lgp;"
-   )
-   @Export("next")
-   public CacheableNode next;
    @ObfuscatedName("cd")
    @ObfuscatedSignature(
       signature = "Lgp;"
    )
    @Export("previous")
    public CacheableNode previous;
+   @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
+   )
+   @Export("next")
+   public CacheableNode next;
 
    @ObfuscatedName("ct")
    @Export("unlinkDual")

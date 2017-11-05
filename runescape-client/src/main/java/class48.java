@@ -12,16 +12,6 @@ public class class48 implements WorldMapSectionBase {
       intValue = 1547177185
    )
    int field630;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 487677787
-   )
-   int field626;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -174989799
-   )
-   int field629;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1259968469
@@ -32,49 +22,41 @@ public class class48 implements WorldMapSectionBase {
       intValue = 1041630369
    )
    int field628;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -2060211549
-   )
-   int field632;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1634887405
-   )
-   int field631;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 510927507
-   )
-   int field635;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1210120331
    )
    int field634;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 487677787
+   )
+   int field626;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1634887405
+   )
+   int field631;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -2060211549
+   )
+   int field632;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -929734891
    )
    int field633;
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "2005574810"
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -174989799
    )
-   public boolean vmethod700(int var1, int var2) {
-      return var1 >= (this.field626 << 6) + (this.field629 << 3) && var1 <= (this.field626 << 6) + (this.field629 << 3) + 7 && var2 >= (this.field631 << 6) + (this.field635 << 3) && var2 <= (this.field631 << 6) + (this.field635 << 3) + 7;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "2147483647"
+   int field629;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 510927507
    )
-   public boolean vmethod699(int var1, int var2, int var3) {
-      return var1 >= this.field630 && var1 < this.field627 + this.field630?var2 >= (this.field628 << 6) + (this.field632 << 3) && var2 <= (this.field628 << 6) + (this.field632 << 3) + 7 && var3 >= (this.field634 << 6) + (this.field633 << 3) && var3 <= (this.field634 << 6) + (this.field633 << 3) + 7:false;
-   }
+   int field635;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -100,19 +82,22 @@ public class class48 implements WorldMapSectionBase {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)Lhg;",
-      garbageValue = "-1413226110"
+      signature = "(IIII)Z",
+      garbageValue = "2147483647"
    )
-   public Coordinates vmethod702(int var1, int var2) {
-      if(!this.vmethod700(var1, var2)) {
-         return null;
-      } else {
-         int var3 = this.field628 * 64 - this.field626 * 64 + (this.field632 * 8 - this.field629 * 8) + var1;
-         int var4 = this.field634 * 64 - this.field631 * 64 + var2 + (this.field633 * 8 - this.field635 * 8);
-         return new Coordinates(this.field630, var3, var4);
-      }
+   public boolean vmethod699(int var1, int var2, int var3) {
+      return var1 >= this.field630 && var1 < this.field627 + this.field630?var2 >= (this.field628 << 6) + (this.field632 << 3) && var2 <= (this.field628 << 6) + (this.field632 << 3) + 7 && var3 >= (this.field634 << 6) + (this.field633 << 3) && var3 <= (this.field634 << 6) + (this.field633 << 3) + 7:false;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "2005574810"
+   )
+   public boolean vmethod700(int var1, int var2) {
+      return var1 >= (this.field626 << 6) + (this.field629 << 3) && var1 <= (this.field626 << 6) + (this.field629 << 3) + 7 && var2 >= (this.field631 << 6) + (this.field635 << 3) && var2 <= (this.field631 << 6) + (this.field635 << 3) + 7;
    }
 
    @ObfuscatedName("o")
@@ -126,6 +111,21 @@ public class class48 implements WorldMapSectionBase {
       } else {
          int[] var4 = new int[]{this.field626 * 64 - this.field628 * 64 + var2 + (this.field629 * 8 - this.field632 * 8), var3 + (this.field631 * 64 - this.field634 * 64) + (this.field635 * 8 - this.field633 * 8)};
          return var4;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(III)Lhg;",
+      garbageValue = "-1413226110"
+   )
+   public Coordinates vmethod702(int var1, int var2) {
+      if(!this.vmethod700(var1, var2)) {
+         return null;
+      } else {
+         int var3 = this.field628 * 64 - this.field626 * 64 + (this.field632 * 8 - this.field629 * 8) + var1;
+         int var4 = this.field634 * 64 - this.field631 * 64 + var2 + (this.field633 * 8 - this.field635 * 8);
+         return new Coordinates(this.field630, var3, var4);
       }
    }
 
@@ -171,6 +171,55 @@ public class class48 implements WorldMapSectionBase {
       return var0 + 1;
    }
 
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "-1717399863"
+   )
+   static void method719(boolean var0) {
+      class90.loginMessage1 = "";
+      class90.loginMessage2 = "Enter your username/email & password.";
+      class90.loginMessage3 = "";
+      class90.loginIndex = 2;
+      if(var0) {
+         class90.password = "";
+      }
+
+      if(class90.username == null || class90.username.length() <= 0) {
+         if(class70.preferences.field1299 != null) {
+            class90.username = class70.preferences.field1299;
+            class90.field1439 = true;
+         } else {
+            class90.field1439 = false;
+         }
+      }
+
+      Ignore.method1103();
+   }
+
+   @ObfuscatedName("gd")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-35"
+   )
+   static final void method718() {
+      Client.field1033 = 0;
+      int var0 = (class66.localPlayer.x >> 7) + class22.baseX;
+      int var1 = (class66.localPlayer.y >> 7) + class273.baseY;
+      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+         Client.field1033 = 1;
+      }
+
+      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+         Client.field1033 = 1;
+      }
+
+      if(Client.field1033 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.field1033 = 0;
+      }
+
+   }
+
    @ObfuscatedName("hd")
    @ObfuscatedSignature(
       signature = "(IIIILjava/lang/String;Ljava/lang/String;IIB)V",
@@ -193,10 +242,10 @@ public class class48 implements WorldMapSectionBase {
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_ON_OBSTACLE);
          if(Client.RUNELITE_PACKET) {
             Client.secretPacketBuffer1.runeliteWriteInt(FileRequest.field3204);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.putShort(FileRequest.field3204);
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
@@ -217,13 +266,13 @@ public class class48 implements WorldMapSectionBase {
             Client.secretPacketBuffer1.runeliteWriteInt(class56.field696);
             Client.secretPacketBuffer1.runeliteWriteInt(Client.field1070);
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.method3254(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3392(class56.field696);
             Client.secretPacketBuffer1.putShortLE(Client.field1070);
             Client.secretPacketBuffer1.putShortLE(class273.baseY + var1);
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?1:0);
@@ -236,11 +285,11 @@ public class class48 implements WorldMapSectionBase {
          Client.destinationY = var1;
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_FIRST_OBSTACLE_ACTION);
          if(Client.RUNELITE_PACKET) {
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
             Client.secretPacketBuffer1.runeliteWriteInt(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
          } else {
-            Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
             Client.secretPacketBuffer1.putShortLE(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.putShort(class273.baseY + var1);
          }
@@ -256,10 +305,10 @@ public class class48 implements WorldMapSectionBase {
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SECOND_OBSTACLE_ACTION);
          if(Client.RUNELITE_PACKET) {
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.method3254(class273.baseY + var1);
-            Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field659[82]?1:0);
@@ -279,7 +328,7 @@ public class class48 implements WorldMapSectionBase {
          }
 
          Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
-         Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX * 411265);
+         Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX);
          Client.secretPacketBuffer1.method3254(var3 >> 14 & 32767);
       } else if(var2 == 6) {
          Client.field1047 = var6;
@@ -290,9 +339,9 @@ public class class48 implements WorldMapSectionBase {
          Client.destinationY = var1;
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_37);
          if(Client.RUNELITE_PACKET) {
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field659[82]?1:0);
@@ -473,7 +522,7 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_162);
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                Client.secretPacketBuffer1.putShortLE(class273.baseY + var1);
                Client.secretPacketBuffer1.method3342(FileRequest.field3204);
                Client.secretPacketBuffer1.method3254(class5.selectedItemIndex);
@@ -488,11 +537,11 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM);
                if(Client.RUNELITE_PACKET) {
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                   Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
                   Client.secretPacketBuffer1.runeliteWriteInt(class56.field696);
                } else {
-                  Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
                   Client.secretPacketBuffer1.method3254(class273.baseY + var1);
                   Client.secretPacketBuffer1.method3275(class56.field696);
                }
@@ -509,9 +558,9 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_102);
                if(Client.RUNELITE_PACKET) {
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                } else {
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                }
 
                Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
@@ -527,11 +576,11 @@ public class class48 implements WorldMapSectionBase {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_172);
                if(Client.RUNELITE_PACKET) {
                   Client.secretPacketBuffer1.runeliteWriteInt(var3);
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                   Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
                } else {
                   Client.secretPacketBuffer1.method3342(var3);
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                   Client.secretPacketBuffer1.method3342(class273.baseY + var1);
                }
 
@@ -551,7 +600,7 @@ public class class48 implements WorldMapSectionBase {
                }
 
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                Client.secretPacketBuffer1.putShort(class273.baseY + var1);
             } else if(var2 == 21) {
                Client.field1047 = var6;
@@ -563,10 +612,10 @@ public class class48 implements WorldMapSectionBase {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_180);
                if(Client.RUNELITE_PACKET) {
                   Client.secretPacketBuffer1.runeliteWriteInt(var3);
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                } else {
                   Client.secretPacketBuffer1.method3342(var3);
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                }
 
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
@@ -588,7 +637,7 @@ public class class48 implements WorldMapSectionBase {
                }
 
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX);
             } else if(var2 == 23) {
                if(Client.isMenuOpen) {
                   class3.region.method2755();
@@ -1058,9 +1107,9 @@ public class class48 implements WorldMapSectionBase {
                                     Client.destinationY = var1;
                                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_145);
                                     if(Client.RUNELITE_PACKET) {
-                                       Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                                       Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                                     } else {
-                                       Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+                                       Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
                                     }
 
                                     Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
@@ -1172,55 +1221,6 @@ public class class48 implements WorldMapSectionBase {
 
       if(class72.field882 != null && Client.field1025 == 0) {
          class45.method647(class72.field882);
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1717399863"
-   )
-   static void method719(boolean var0) {
-      class90.loginMessage1 = "";
-      class90.loginMessage2 = "Enter your username/email & password.";
-      class90.loginMessage3 = "";
-      class90.loginIndex = 2;
-      if(var0) {
-         class90.password = "";
-      }
-
-      if(class90.username == null || class90.username.length() <= 0) {
-         if(class70.preferences.field1299 != null) {
-            class90.username = class70.preferences.field1299;
-            class90.field1439 = true;
-         } else {
-            class90.field1439 = false;
-         }
-      }
-
-      Ignore.method1103();
-   }
-
-   @ObfuscatedName("gd")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-35"
-   )
-   static final void method718() {
-      Client.field1033 = 0;
-      int var0 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
-      int var1 = (class66.localPlayer.y >> 7) + class273.baseY;
-      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-         Client.field1033 = 1;
-      }
-
-      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-         Client.field1033 = 1;
-      }
-
-      if(Client.field1033 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-         Client.field1033 = 0;
       }
 
    }

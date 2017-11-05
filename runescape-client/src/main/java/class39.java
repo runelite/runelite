@@ -11,46 +11,46 @@ public class class39 {
       intValue = -1291016165
    )
    static int field554;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lao;"
-   )
-   final class33 field551;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 360184711
    )
    public final int field556;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1720115233
-   )
-   int field552;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lhg;"
-   )
-   public final Coordinates field559;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lhg;"
    )
    public final Coordinates field548;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhg;"
+   )
+   public final Coordinates field559;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1397565909
    )
    final int field547;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -574248361
-   )
-   int field549;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1225890451
    )
    final int field550;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lao;"
+   )
+   final class33 field551;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1720115233
+   )
+   int field552;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -574248361
+   )
+   int field549;
 
    @ObfuscatedSignature(
       signature = "(ILhg;Lhg;Lao;)V"
@@ -70,6 +70,15 @@ public class class39 {
          this.field550 = 0;
       }
 
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "-73"
+   )
+   boolean method523(int var1, int var2) {
+      return this.method525(var1, var2)?true:this.method537(var1, var2);
    }
 
    @ObfuscatedName("s")
@@ -128,24 +137,6 @@ public class class39 {
       return this.field551 == null?false:(var1 >= this.field552 - this.field551.field479 / 2 && var1 <= this.field551.field479 / 2 + this.field552?var2 >= this.field549 && var2 <= this.field551.field478 + this.field549:false);
    }
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-73"
-   )
-   boolean method523(int var1, int var2) {
-      return this.method525(var1, var2)?true:this.method537(var1, var2);
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lip;II)Ljo;",
-      garbageValue = "202545142"
-   )
-   public static IndexedSprite method530(IndexDataBase var0, int var1) {
-      return !CombatInfo1.method1542(var0, var1)?null:class175.method3460();
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
@@ -164,6 +155,15 @@ public class class39 {
       class96.field1516.put(var5, (long)var5.id);
       class96.field1517.method3752(var5);
       Client.chatCycle = Client.cycleCntr;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lip;II)Ljo;",
+      garbageValue = "202545142"
+   )
+   public static IndexedSprite method530(IndexDataBase var0, int var1) {
+      return !CombatInfo1.method1542(var0, var1)?null:class175.method3460();
    }
 
    @ObfuscatedName("gu")

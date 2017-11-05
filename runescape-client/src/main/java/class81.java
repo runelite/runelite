@@ -6,6 +6,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ce")
 public class class81 {
+   @ObfuscatedName("q")
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
    @ObfuscatedName("g")
    static int[] field1329;
    @ObfuscatedName("v")
@@ -38,9 +41,6 @@ public class class81 {
       intValue = -1094425107
    )
    static int field1337;
-   @ObfuscatedName("q")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
 
    static {
       field1329 = new int[5];

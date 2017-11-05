@@ -12,36 +12,36 @@ public final class GroundObject {
       signature = "[Lky;"
    )
    static SpritePixels[] field1854;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Len;"
-   )
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1065573783
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1485454357
-   )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 944584781
-   )
-   @Export("y")
-   int y;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1342595845
    )
    @Export("floor")
    int floor;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1065573783
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 944584781
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1485454357
+   )
+   @Export("hash")
+   public int hash;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -279196355
@@ -56,6 +56,42 @@ public final class GroundObject {
    )
    static boolean method2540(int var0, int var1) {
       return var0 != 4 || var1 < 8;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-1375116879"
+   )
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new ItemContainer();
+         ItemContainer.itemContainers.put(var4, (long)var0);
+      }
+
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
    }
 
    @ObfuscatedName("g")
@@ -118,13 +154,13 @@ public final class GroundObject {
          class94.field1500 = var1;
          class72.setGameState(25);
          class24.drawStatusBox("Loading - please wait.", true);
-         int var3 = class22.baseX * 411265;
+         int var3 = class22.baseX;
          int var4 = class273.baseY;
-         class22.baseX = (var0 - 6) * 1981795336;
+         class22.baseX = (var0 - 6) * 8;
          class273.baseY = (var1 - 6) * 8;
-         int var5 = class22.baseX * 411265 - var3;
+         int var5 = class22.baseX - var3;
          int var6 = class273.baseY - var4;
-         var3 = class22.baseX * 411265;
+         var3 = class22.baseX;
          var4 = class273.baseY;
 
          int var7;
@@ -213,41 +249,5 @@ public final class GroundObject {
          }
 
       }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1375116879"
-   )
-   @Export("setItemTableSlot")
-   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
-      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var4 == null) {
-         var4 = new ItemContainer();
-         ItemContainer.itemContainers.put(var4, (long)var0);
-      }
-
-      if(var4.itemIds.length <= var1) {
-         int[] var5 = new int[var1 + 1];
-         int[] var6 = new int[var1 + 1];
-
-         int var7;
-         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
-            var5[var7] = var4.itemIds[var7];
-            var6[var7] = var4.stackSizes[var7];
-         }
-
-         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
-            var5[var7] = -1;
-            var6[var7] = 0;
-         }
-
-         var4.itemIds = var5;
-         var4.stackSizes = var6;
-      }
-
-      var4.itemIds[var1] = var2;
-      var4.stackSizes[var1] = var3;
    }
 }

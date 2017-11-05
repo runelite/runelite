@@ -5,42 +5,42 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("z")
 public final class class10 extends class9 {
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 107240741
+   )
+   public static int field268;
    @ObfuscatedName("jg")
    @ObfuscatedGetter(
       intValue = -368899267
    )
    @Export("menuX")
    static int menuX;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 107240741
-   )
-   public static int field268;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1704824157
    )
    final int field265;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1776350297
-   )
-   final int field273;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1443305465
    )
    final int field266;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1393811009
-   )
-   final int field269;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 459839033
    )
    final int field267;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1776350297
+   )
+   final int field273;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1393811009
+   )
+   final int field269;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1228618253

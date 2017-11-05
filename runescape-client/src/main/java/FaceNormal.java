@@ -16,6 +16,12 @@ public class FaceNormal {
    )
    @Export("priority")
    public static int priority;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1647043993
+   )
+   @Export("x")
+   int x;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1365181493
@@ -28,12 +34,6 @@ public class FaceNormal {
    )
    @Export("z")
    int z;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1647043993
-   )
-   @Export("x")
-   int x;
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
@@ -93,27 +93,6 @@ public class FaceNormal {
 
          ItemComposition.items.put(var1, (long)var0);
          return var1;
-      }
-   }
-
-   @ObfuscatedName("he")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
-      garbageValue = "-92"
-   )
-   static final void method2904(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            Client.field1161[Client.menuOptionCount] = var6;
-            ++Client.menuOptionCount;
-         }
-
       }
    }
 
@@ -259,6 +238,27 @@ public class FaceNormal {
                }
             }
          }
+      }
+   }
+
+   @ObfuscatedName("he")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
+      garbageValue = "-92"
+   )
+   static final void method2904(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            Client.field1161[Client.menuOptionCount] = var6;
+            ++Client.menuOptionCount;
+         }
+
       }
    }
 }

@@ -8,17 +8,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fn")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("mapfunctions")
-   static SpritePixels[] mapfunctions;
    @ObfuscatedName("au")
    @ObfuscatedGetter(
       intValue = -2072355635
    )
    static int field2325;
+   @ObfuscatedName("gr")
+   @ObfuscatedSignature(
+      signature = "[Lky;"
+   )
+   @Export("headIconsPk")
+   static SpritePixels[] headIconsPk;
    @ObfuscatedName("w")
    @Export("inflator")
    Inflater inflator;

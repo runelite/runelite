@@ -27,10 +27,10 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import net.runelite.asm.pool.Field;
 
-public class Pair
+class Pair
 {
-	public Field field;
-	public Number getter, setter;
+	Field field;
+	Number getter, setter;
 	
 	public Pair()
 	{

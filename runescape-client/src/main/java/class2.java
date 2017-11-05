@@ -5,59 +5,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("q")
 final class class2 implements class0 {
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   public static IndexDataBase field21;
-   @ObfuscatedName("c")
-   @Export("osName")
-   public static String osName;
-   @ObfuscatedName("fj")
-   @Export("landRegionFielIds")
-   static int[] landRegionFielIds;
-   @ObfuscatedName("o")
-   @Export("underlayIds")
-   static byte[][][] underlayIds;
    @ObfuscatedName("nw")
    @ObfuscatedGetter(
       intValue = 144073137
    )
    @Export("clanChatCount")
    static int clanChatCount;
-
-   @ObfuscatedName("ir")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lhj;B)Z",
-      garbageValue = "30"
+      signature = "Lip;"
    )
-   static final boolean method2(Widget var0) {
-      if(var0.tableActions == null) {
-         return false;
-      } else {
-         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
-            int var2 = class9.method52(var0, var1);
-            int var3 = var0.field2756[var1];
-            if(var0.tableActions[var1] == 2) {
-               if(var2 >= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 3) {
-               if(var2 <= var3) {
-                  return false;
-               }
-            } else if(var0.tableActions[var1] == 4) {
-               if(var2 == var3) {
-                  return false;
-               }
-            } else if(var2 != var3) {
-               return false;
-            }
-         }
-
-         return true;
-      }
-   }
+   public static IndexDataBase field21;
+   @ObfuscatedName("o")
+   @Export("underlayIds")
+   static byte[][][] underlayIds;
+   @ObfuscatedName("c")
+   @Export("osName")
+   public static String osName;
+   @ObfuscatedName("fj")
+   @Export("landRegionFielIds")
+   static int[] landRegionFielIds;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -111,5 +78,38 @@ final class class2 implements class0 {
       }
 
       return var2;
+   }
+
+   @ObfuscatedName("ir")
+   @ObfuscatedSignature(
+      signature = "(Lhj;B)Z",
+      garbageValue = "30"
+   )
+   static final boolean method2(Widget var0) {
+      if(var0.tableActions == null) {
+         return false;
+      } else {
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
+            int var2 = class9.method52(var0, var1);
+            int var3 = var0.field2756[var1];
+            if(var0.tableActions[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.tableActions[var1] == 4) {
+               if(var2 == var3) {
+                  return false;
+               }
+            } else if(var2 != var3) {
+               return false;
+            }
+         }
+
+         return true;
+      }
    }
 }

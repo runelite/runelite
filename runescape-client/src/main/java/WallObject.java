@@ -12,18 +12,12 @@ import net.runelite.rs.Opcodes;
 public final class WallObject {
    @ObfuscatedName("nm")
    static byte field2109;
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 396011703
+      intValue = 711197065
    )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1531671981
-   )
-   @Export("config")
-   int config;
+   @Export("floor")
+   int floor;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -945213695
@@ -36,24 +30,6 @@ public final class WallObject {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Len;"
-   )
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 711197065
-   )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Len;"
-   )
-   @Export("renderable2")
-   public Renderable renderable2;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1546000493
@@ -66,25 +42,34 @@ public final class WallObject {
    )
    @Export("orientationB")
    int orientationB;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 396011703
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1531671981
+   )
+   @Export("config")
+   int config;
 
    WallObject() {
       this.hash = 0;
       this.config = 0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1094089874"
-   )
-   public static void method2901() {
-      if(KeyFocusListener.keyboard != null) {
-         KeyFocusListener var0 = KeyFocusListener.keyboard;
-         synchronized(KeyFocusListener.keyboard) {
-            KeyFocusListener.keyboard = null;
-         }
-      }
-
    }
 
    @ObfuscatedName("w")
@@ -131,6 +116,21 @@ public final class WallObject {
             }
          }
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1094089874"
+   )
+   public static void method2901() {
+      if(KeyFocusListener.keyboard != null) {
+         KeyFocusListener var0 = KeyFocusListener.keyboard;
+         synchronized(KeyFocusListener.keyboard) {
+            KeyFocusListener.keyboard = null;
+         }
+      }
+
    }
 
    @ObfuscatedName("l")

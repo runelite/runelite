@@ -17,17 +17,17 @@ public abstract class Timer {
    @Export("sessionToken")
    static String sessionToken;
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1716430231"
-   )
-   public abstract int vmethod3025(int var1, int var2);
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)V",
       garbageValue = "-120"
    )
    public abstract void vmethod3029();
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1716430231"
+   )
+   public abstract int vmethod3025(int var1, int var2);
 }

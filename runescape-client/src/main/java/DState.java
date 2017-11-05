@@ -20,83 +20,62 @@ public final class DState {
    final int field2350;
    @ObfuscatedName("v")
    final int field2359;
+   @ObfuscatedName("p")
+   @Export("strm")
+   byte[] strm;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1437739887
    )
    @Export("next_in")
    int next_in;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -945229029
-   )
-   @Export("next_out")
-   int next_out;
-   @ObfuscatedName("c")
-   int[] field2347;
-   @ObfuscatedName("m")
-   int[] field2383;
-   @ObfuscatedName("ap")
-   @Export("inUse")
-   boolean[] inUse;
-   @ObfuscatedName("af")
-   boolean[] field2372;
-   @ObfuscatedName("aa")
-   @Export("seqToUnseq")
-   byte[] seqToUnseq;
-   @ObfuscatedName("ay")
-   byte[] field2374;
-   @ObfuscatedName("p")
-   @Export("strm")
-   byte[] strm;
-   @ObfuscatedName("aw")
-   int[] field2375;
-   @ObfuscatedName("az")
-   byte[] field2376;
-   @ObfuscatedName("at")
-   byte[] field2349;
-   @ObfuscatedName("x")
-   @Export("out")
-   byte[] out;
-   @ObfuscatedName("ao")
-   byte[][] field2378;
-   @ObfuscatedName("aq")
-   int[][] field2379;
-   @ObfuscatedName("ax")
-   int[][] field2357;
-   @ObfuscatedName("av")
-   int[][] field2381;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 2128885409
-   )
-   int field2369;
-   @ObfuscatedName("al")
-   int[] field2382;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -677955593
-   )
-   @Export("total_in_lo32")
-   int total_in_lo32;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -177674679
-   )
-   @Export("total_in_hi32")
-   int total_in_hi32;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -151271297
    )
    @Export("total_out_lo32")
    int total_out_lo32;
+   @ObfuscatedName("x")
+   @Export("out")
+   byte[] out;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -945229029
+   )
+   @Export("next_out")
+   int next_out;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 2128885409
+   )
+   int field2369;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1539829691
    )
    @Export("total_out_hi32")
    int total_out_hi32;
+   @ObfuscatedName("t")
+   @Export("out_ch")
+   byte out_ch;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -332012265
+   )
+   @Export("out_len")
+   int out_len;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -177674679
+   )
+   @Export("total_in_hi32")
+   int total_in_hi32;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -677955593
+   )
+   @Export("total_in_lo32")
+   int total_in_lo32;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1662362007
@@ -108,39 +87,60 @@ public final class DState {
       intValue = -1273807889
    )
    int field2364;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -892530251
-   )
-   @Export("nInUse")
-   int nInUse;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -332012265
-   )
-   @Export("out_len")
-   int out_len;
-   @ObfuscatedName("t")
-   @Export("out_ch")
-   byte out_ch;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -2128180009
    )
    @Export("tPos")
    int tPos;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1988434537
-   )
-   @Export("nblock_used")
-   int nblock_used;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 883899617
    )
    @Export("k0")
    int k0;
+   @ObfuscatedName("c")
+   int[] field2347;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1988434537
+   )
+   @Export("nblock_used")
+   int nblock_used;
+   @ObfuscatedName("m")
+   int[] field2383;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -892530251
+   )
+   @Export("nInUse")
+   int nInUse;
+   @ObfuscatedName("ap")
+   @Export("inUse")
+   boolean[] inUse;
+   @ObfuscatedName("af")
+   boolean[] field2372;
+   @ObfuscatedName("aa")
+   @Export("seqToUnseq")
+   byte[] seqToUnseq;
+   @ObfuscatedName("ay")
+   byte[] field2374;
+   @ObfuscatedName("aw")
+   int[] field2375;
+   @ObfuscatedName("az")
+   byte[] field2376;
+   @ObfuscatedName("at")
+   byte[] field2349;
+   @ObfuscatedName("ao")
+   byte[][] field2378;
+   @ObfuscatedName("aq")
+   int[][] field2379;
+   @ObfuscatedName("ax")
+   int[][] field2357;
+   @ObfuscatedName("av")
+   int[][] field2381;
+   @ObfuscatedName("al")
+   int[] field2382;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
       intValue = -245599409

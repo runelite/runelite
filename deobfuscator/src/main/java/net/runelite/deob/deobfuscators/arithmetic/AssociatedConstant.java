@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zulrah;
+package net.runelite.deob.deobfuscators.arithmetic;
 
-public enum ZulrahLocation
+// a constant associated to a field
+class AssociatedConstant
 {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST
+	Number value;
+	boolean other; // whether or not another field is involved
+	boolean constant; // whether or not the constant is a constant field assignment
+	boolean getter; // whether or not this is associated as a getter
+	boolean setter; // whether or not this is associated as a setter
 }

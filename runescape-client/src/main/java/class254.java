@@ -4,21 +4,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ic")
 public class class254 extends CacheableNode {
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   public static NodeCache field3412;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   public static NodeCache field3413;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   public static NodeCache field3414;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
@@ -34,48 +19,26 @@ public class class254 extends CacheableNode {
       signature = "Lip;"
    )
    public static IndexDataBase field3433;
-   @ObfuscatedName("c")
-   String field3427;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 2014983513
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
    )
-   int field3431;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -181675123
+   public static NodeCache field3413;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
    )
-   int field3420;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 685042417
+   public static NodeCache field3414;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
    )
-   int field3415;
+   public static NodeCache field3412;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 2005300625
    )
    int field3417;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -600104261
-   )
-   int field3423;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1293231189
-   )
-   int field3422;
-   @ObfuscatedName("ap")
-   @ObfuscatedGetter(
-      intValue = -1661052787
-   )
-   int field3411;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1954691845
-   )
-   public int field3428;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1553777277
@@ -86,28 +49,65 @@ public class class254 extends CacheableNode {
       intValue = 430018005
    )
    public int field3419;
-   @ObfuscatedName("l")
-   public int[] field3418;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -181675123
+   )
+   int field3420;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 685042417
+   )
+   int field3415;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1293231189
+   )
+   int field3422;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -600104261
+   )
+   int field3423;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1383729319
    )
    public int field3424;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 611184249
-   )
-   public int field3410;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -293434253
    )
    public int field3425;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 611184249
+   )
+   public int field3410;
+   @ObfuscatedName("c")
+   String field3427;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1954691845
+   )
+   public int field3428;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1241813815
    )
    public int field3429;
+   @ObfuscatedName("l")
+   public int[] field3418;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 2014983513
+   )
+   int field3431;
+   @ObfuscatedName("ap")
+   @ObfuscatedGetter(
+      intValue = -1661052787
+   )
+   int field3411;
 
    static {
       field3413 = new NodeCache(64);
@@ -131,6 +131,22 @@ public class class254 extends CacheableNode {
       this.field3429 = 0;
       this.field3431 = -1;
       this.field3411 = -1;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lfz;S)V",
+      garbageValue = "136"
+   )
+   void method4559(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4560(var1, var2);
+      }
    }
 
    @ObfuscatedName("q")
@@ -201,22 +217,6 @@ public class class254 extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfz;S)V",
-      garbageValue = "136"
-   )
-   void method4559(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4560(var1, var2);
-      }
-   }
-
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)Lic;",
@@ -238,6 +238,24 @@ public class class254 extends CacheableNode {
       }
 
       return var2 != -1?class205.method3904(var2):null;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "107"
+   )
+   public String method4562(int var1) {
+      String var2 = this.field3427;
+
+      while(true) {
+         int var3 = var2.indexOf("%1");
+         if(var3 < 0) {
+            return var2;
+         }
+
+         var2 = var2.substring(0, var3) + class223.method4148(var1, false) + var2.substring(var3 + 2);
+      }
    }
 
    @ObfuscatedName("v")
@@ -374,33 +392,6 @@ public class class254 extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "107"
-   )
-   public String method4562(int var1) {
-      String var2 = this.field3427;
-
-      while(true) {
-         int var3 = var2.indexOf("%1");
-         if(var3 < 0) {
-            return var2;
-         }
-
-         var2 = var2.substring(0, var3) + class223.method4148(var1, false) + var2.substring(var3 + 2);
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Z",
-      garbageValue = "-2090936165"
-   )
-   static boolean method4577(String var0, int var1) {
-      return Parameters.method4989(var0, var1, "openjs");
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(CI)C",
@@ -478,5 +469,14 @@ public class class254 extends CacheableNode {
       default:
          return Character.toLowerCase(var0);
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "-2090936165"
+   )
+   static boolean method4577(String var0, int var1) {
+      return Parameters.method4989(var0, var1, "openjs");
    }
 }

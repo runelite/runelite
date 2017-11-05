@@ -12,21 +12,11 @@ public class WorldMapType2 implements WorldMapSectionBase {
       intValue = 1262344403
    )
    int field536;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1380009489
-   )
-   int field540;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 778738125
    )
    int field537;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 266401761
-   )
-   int field538;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 774198755
@@ -37,24 +27,16 @@ public class WorldMapType2 implements WorldMapSectionBase {
       intValue = -1171584329
    )
    int field539;
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "2005574810"
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1380009489
    )
-   public boolean vmethod700(int var1, int var2) {
-      return var1 >> 6 == this.field540 && var2 >> 6 == this.field538;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIII)Z",
-      garbageValue = "2147483647"
+   int field540;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 266401761
    )
-   public boolean vmethod699(int var1, int var2, int var3) {
-      return var1 >= this.field536 && var1 < this.field537 + this.field536?var2 >> 6 == this.field543 && var3 >> 6 == this.field539:false;
-   }
+   int field538;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -80,19 +62,22 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)Lhg;",
-      garbageValue = "-1413226110"
+      signature = "(IIII)Z",
+      garbageValue = "2147483647"
    )
-   public Coordinates vmethod702(int var1, int var2) {
-      if(!this.vmethod700(var1, var2)) {
-         return null;
-      } else {
-         int var3 = this.field543 * 64 - this.field540 * 64 + var1;
-         int var4 = this.field539 * 64 - this.field538 * 64 + var2;
-         return new Coordinates(this.field536, var3, var4);
-      }
+   public boolean vmethod699(int var1, int var2, int var3) {
+      return var1 >= this.field536 && var1 < this.field537 + this.field536?var2 >> 6 == this.field543 && var3 >> 6 == this.field539:false;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "2005574810"
+   )
+   public boolean vmethod700(int var1, int var2) {
+      return var1 >> 6 == this.field540 && var2 >> 6 == this.field538;
    }
 
    @ObfuscatedName("o")
@@ -109,12 +94,19 @@ public class WorldMapType2 implements WorldMapSectionBase {
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-50"
+      signature = "(III)Lhg;",
+      garbageValue = "-1413226110"
    )
-   void method501() {
+   public Coordinates vmethod702(int var1, int var2) {
+      if(!this.vmethod700(var1, var2)) {
+         return null;
+      } else {
+         int var3 = this.field543 * 64 - this.field540 * 64 + var1;
+         int var4 = this.field539 * 64 - this.field538 * 64 + var2;
+         return new Coordinates(this.field536, var3, var4);
+      }
    }
 
    @ObfuscatedName("v")
@@ -130,6 +122,14 @@ public class WorldMapType2 implements WorldMapSectionBase {
       this.field540 = var1.readUnsignedShort();
       this.field538 = var1.readUnsignedShort();
       this.method501();
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-50"
+   )
+   void method501() {
    }
 
    @ObfuscatedName("s")
@@ -238,6 +238,105 @@ public class WorldMapType2 implements WorldMapSectionBase {
       WorldMapType1.indexScripts.reset();
    }
 
+   @ObfuscatedName("fz")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1328599719"
+   )
+   static final void method518() {
+      int var0 = class66.localPlayer.x;
+      int var1 = class66.localPlayer.y;
+      if(Occluder.field2148 - var0 < -500 || Occluder.field2148 - var0 > 500 || class181.field2432 - var1 < -500 || class181.field2432 - var1 > 500) {
+         Occluder.field2148 = var0;
+         class181.field2432 = var1;
+      }
+
+      if(var0 != Occluder.field2148) {
+         Occluder.field2148 += (var0 - Occluder.field2148) / 16;
+      }
+
+      if(var1 != class181.field2432) {
+         class181.field2432 += (var1 - class181.field2432) / 16;
+      }
+
+      int var2;
+      int var3;
+      if(MouseInput.field750 == 4 && class7.field244) {
+         var2 = MouseInput.field741 - Client.field995;
+         Client.field1000 = var2 * 2;
+         Client.field995 = var2 != -1 && var2 != 1?(Client.field995 + MouseInput.field741) / 2:MouseInput.field741;
+         var3 = Client.field1001 - MouseInput.field756;
+         Client.field994 = var3 * 2;
+         Client.field1001 = var3 != -1 && var3 != 1?(MouseInput.field756 + Client.field1001) / 2:MouseInput.field756;
+      } else {
+         if(KeyFocusListener.field659[96]) {
+            Client.field994 += (-24 - Client.field994) / 2;
+         } else if(KeyFocusListener.field659[97]) {
+            Client.field994 += (24 - Client.field994) / 2;
+         } else {
+            Client.field994 /= 2;
+         }
+
+         if(KeyFocusListener.field659[98]) {
+            Client.field1000 += (12 - Client.field1000) / 2;
+         } else if(KeyFocusListener.field659[99]) {
+            Client.field1000 += (-12 - Client.field1000) / 2;
+         } else {
+            Client.field1000 /= 2;
+         }
+
+         Client.field995 = MouseInput.field741;
+         Client.field1001 = MouseInput.field756;
+      }
+
+      Client.mapAngle = Client.field994 / 2 + Client.mapAngle & 2047;
+      Client.field997 += Client.field1000 / 2;
+      if(Client.field997 < 128) {
+         Client.field997 = 128;
+      }
+
+      if(Client.field997 > 383) {
+         Client.field997 = 383;
+      }
+
+      var2 = Occluder.field2148 >> 7;
+      var3 = class181.field2432 >> 7;
+      int var4 = class41.getTileHeight(Occluder.field2148, class181.field2432, class46.plane);
+      int var5 = 0;
+      int var6;
+      if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
+         for(var6 = var2 - 4; var6 <= var2 + 4; ++var6) {
+            for(int var7 = var3 - 4; var7 <= var3 + 4; ++var7) {
+               int var8 = class46.plane;
+               if(var8 < 3 && (class61.tileSettings[1][var6][var7] & 2) == 2) {
+                  ++var8;
+               }
+
+               int var9 = var4 - class61.tileHeights[var8][var6][var7];
+               if(var9 > var5) {
+                  var5 = var9;
+               }
+            }
+         }
+      }
+
+      var6 = var5 * 192;
+      if(var6 > 98048) {
+         var6 = 98048;
+      }
+
+      if(var6 < 32768) {
+         var6 = 32768;
+      }
+
+      if(var6 > Client.field958) {
+         Client.field958 += (var6 - Client.field958) / 24;
+      } else if(var6 < Client.field958) {
+         Client.field958 += (var6 - Client.field958) / 80;
+      }
+
+   }
+
    @ObfuscatedName("gv")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -278,7 +377,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
          for(var1 = 0; var1 < class36.field519.length; ++var1) {
             byte[] var2 = ScriptEvent.field856[var1];
             if(var2 != null) {
-               var3 = (class15.mapRegions[var1] >> 8) * 64 - class22.baseX * 411265;
+               var3 = (class15.mapRegions[var1] >> 8) * 64 - class22.baseX;
                var4 = (class15.mapRegions[var1] & 255) * 64 - class273.baseY;
                if(Client.isDynamicRegion) {
                   var3 = 10;
@@ -350,7 +449,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
             if(!Client.isDynamicRegion) {
                byte[] var5;
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                   var4 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                   var5 = class36.field519[var44];
                   if(var5 != null) {
@@ -360,7 +459,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                }
 
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                   var4 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                   var5 = class36.field519[var44];
                   if(var5 == null && class94.field1500 < 800) {
@@ -374,7 +473,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                for(var44 = 0; var44 < var1; ++var44) {
                   byte[] var46 = ScriptEvent.field856[var44];
                   if(var46 != null) {
-                     var4 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                     var4 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                      var45 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                      KeyFocusListener.method756();
                      Region var48 = class3.region;
@@ -1086,105 +1185,6 @@ public class WorldMapType2 implements WorldMapSectionBase {
             AbstractSoundSystem.method2116();
          }
       }
-   }
-
-   @ObfuscatedName("fz")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1328599719"
-   )
-   static final void method518() {
-      int var0 = class66.localPlayer.x;
-      int var1 = class66.localPlayer.y;
-      if(Occluder.field2148 - var0 < -500 || Occluder.field2148 - var0 > 500 || class181.field2432 - var1 < -500 || class181.field2432 - var1 > 500) {
-         Occluder.field2148 = var0;
-         class181.field2432 = var1;
-      }
-
-      if(var0 != Occluder.field2148) {
-         Occluder.field2148 += (var0 - Occluder.field2148) / 16;
-      }
-
-      if(var1 != class181.field2432) {
-         class181.field2432 += (var1 - class181.field2432) / 16;
-      }
-
-      int var2;
-      int var3;
-      if(MouseInput.field750 == 4 && class7.field244) {
-         var2 = MouseInput.field741 - Client.field995;
-         Client.field1000 = var2 * 2;
-         Client.field995 = var2 != -1 && var2 != 1?(Client.field995 + MouseInput.field741) / 2:MouseInput.field741;
-         var3 = Client.field1001 - MouseInput.field756;
-         Client.field994 = var3 * 2;
-         Client.field1001 = var3 != -1 && var3 != 1?(MouseInput.field756 + Client.field1001) / 2:MouseInput.field756;
-      } else {
-         if(KeyFocusListener.field659[96]) {
-            Client.field994 += (-24 - Client.field994) / 2;
-         } else if(KeyFocusListener.field659[97]) {
-            Client.field994 += (24 - Client.field994) / 2;
-         } else {
-            Client.field994 /= 2;
-         }
-
-         if(KeyFocusListener.field659[98]) {
-            Client.field1000 += (12 - Client.field1000) / 2;
-         } else if(KeyFocusListener.field659[99]) {
-            Client.field1000 += (-12 - Client.field1000) / 2;
-         } else {
-            Client.field1000 /= 2;
-         }
-
-         Client.field995 = MouseInput.field741;
-         Client.field1001 = MouseInput.field756;
-      }
-
-      Client.mapAngle = Client.field994 / 2 + Client.mapAngle & 2047;
-      Client.field997 += Client.field1000 / 2;
-      if(Client.field997 < 128) {
-         Client.field997 = 128;
-      }
-
-      if(Client.field997 > 383) {
-         Client.field997 = 383;
-      }
-
-      var2 = Occluder.field2148 >> 7;
-      var3 = class181.field2432 >> 7;
-      int var4 = class41.getTileHeight(Occluder.field2148, class181.field2432, class46.plane);
-      int var5 = 0;
-      int var6;
-      if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
-         for(var6 = var2 - 4; var6 <= var2 + 4; ++var6) {
-            for(int var7 = var3 - 4; var7 <= var3 + 4; ++var7) {
-               int var8 = class46.plane;
-               if(var8 < 3 && (class61.tileSettings[1][var6][var7] & 2) == 2) {
-                  ++var8;
-               }
-
-               int var9 = var4 - class61.tileHeights[var8][var6][var7];
-               if(var9 > var5) {
-                  var5 = var9;
-               }
-            }
-         }
-      }
-
-      var6 = var5 * 192;
-      if(var6 > 98048) {
-         var6 = 98048;
-      }
-
-      if(var6 < 32768) {
-         var6 = 32768;
-      }
-
-      if(var6 > Client.field958) {
-         Client.field958 += (var6 - Client.field958) / 24;
-      } else if(var6 < Client.field958) {
-         Client.field958 += (var6 - Client.field958) / 80;
-      }
-
    }
 
    @ObfuscatedName("hk")

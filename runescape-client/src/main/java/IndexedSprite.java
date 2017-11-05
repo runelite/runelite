@@ -5,30 +5,30 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("jo")
 @Implements("IndexedSprite")
 public final class IndexedSprite extends Rasterizer2D {
-   @ObfuscatedName("g")
-   @Export("offsetX")
-   public int offsetX;
+   @ObfuscatedName("w")
+   @Export("pixels")
+   public byte[] pixels;
    @ObfuscatedName("s")
    @Export("palette")
    public int[] palette;
    @ObfuscatedName("q")
    @Export("originalWidth")
    public int originalWidth;
-   @ObfuscatedName("p")
-   @Export("width")
-   public int width;
    @ObfuscatedName("o")
    @Export("height")
    public int height;
+   @ObfuscatedName("g")
+   @Export("offsetX")
+   public int offsetX;
    @ObfuscatedName("v")
    @Export("offsetY")
    public int offsetY;
+   @ObfuscatedName("p")
+   @Export("width")
+   public int width;
    @ObfuscatedName("e")
    @Export("originalHeight")
    public int originalHeight;
-   @ObfuscatedName("w")
-   @Export("pixels")
-   public byte[] pixels;
 
    @ObfuscatedName("w")
    public void method5157() {
@@ -48,6 +48,38 @@ public final class IndexedSprite extends Rasterizer2D {
          this.offsetX = 0;
          this.offsetY = 0;
       }
+   }
+
+   @ObfuscatedName("s")
+   public void method5136(int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < this.palette.length; ++var4) {
+         int var5 = this.palette[var4] >> 16 & 255;
+         var5 += var1;
+         if(var5 < 0) {
+            var5 = 0;
+         } else if(var5 > 255) {
+            var5 = 255;
+         }
+
+         int var6 = this.palette[var4] >> 8 & 255;
+         var6 += var2;
+         if(var6 < 0) {
+            var6 = 0;
+         } else if(var6 > 255) {
+            var6 = 255;
+         }
+
+         int var7 = this.palette[var4] & 255;
+         var7 += var3;
+         if(var7 < 0) {
+            var7 = 0;
+         } else if(var7 > 255) {
+            var7 = 255;
+         }
+
+         this.palette[var4] = var7 + (var6 << 8) + (var5 << 16);
+      }
+
    }
 
    @ObfuscatedName("q")
@@ -155,38 +187,6 @@ public final class IndexedSprite extends Rasterizer2D {
       }
 
       method5139(Rasterizer2D.graphicsPixels, this.pixels, this.palette, var7, var8, var13, var14, var3, var4, var11, var12, var5);
-   }
-
-   @ObfuscatedName("s")
-   public void method5136(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.palette.length; ++var4) {
-         int var5 = this.palette[var4] >> 16 & 255;
-         var5 += var1;
-         if(var5 < 0) {
-            var5 = 0;
-         } else if(var5 > 255) {
-            var5 = 255;
-         }
-
-         int var6 = this.palette[var4] >> 8 & 255;
-         var6 += var2;
-         if(var6 < 0) {
-            var6 = 0;
-         } else if(var6 > 255) {
-            var6 = 255;
-         }
-
-         int var7 = this.palette[var4] & 255;
-         var7 += var3;
-         if(var7 < 0) {
-            var7 = 0;
-         } else if(var7 > 255) {
-            var7 = 255;
-         }
-
-         this.palette[var4] = var7 + (var6 << 8) + (var5 << 16);
-      }
-
    }
 
    @ObfuscatedName("o")

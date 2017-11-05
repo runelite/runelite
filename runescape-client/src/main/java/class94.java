@@ -28,11 +28,6 @@ public class class94 {
       intValue = 1321394161
    )
    static int field1491;
-   @ObfuscatedName("ip")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   static Widget field1498;
    @ObfuscatedName("d")
    static int[] field1492;
    @ObfuscatedName("x")
@@ -58,6 +53,11 @@ public class class94 {
       intValue = -706811263
    )
    static int field1500;
+   @ObfuscatedName("ip")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   static Widget field1498;
 
    static {
       field1497 = new byte[2048];

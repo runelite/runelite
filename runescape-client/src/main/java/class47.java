@@ -5,8 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
 public class class47 {
-   @ObfuscatedName("ck")
-   public static char field618;
    @ObfuscatedName("pq")
    @ObfuscatedGetter(
       intValue = 1759095677
@@ -15,6 +13,8 @@ public class class47 {
    @ObfuscatedName("z")
    @Export("blendedSaturation")
    static int[] blendedSaturation;
+   @ObfuscatedName("ck")
+   public static char field618;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 2101651201

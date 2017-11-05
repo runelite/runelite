@@ -7,6 +7,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("id")
 @Implements("Area")
 public class Area extends CacheableNode {
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   public static IndexDataBase field3300;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "[Lid;"
@@ -18,85 +23,80 @@ public class Area extends CacheableNode {
    )
    @Export("skeletonsIndex")
    public static NodeCache skeletonsIndex;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1488076803
    )
-   public static IndexDataBase field3300;
+   public final int field3287;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -993020471
    )
    @Export("spriteId")
    public int spriteId;
-   @ObfuscatedName("t")
-   int[] field3305;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1488076803
-   )
-   public final int field3287;
-   @ObfuscatedName("e")
-   @Export("name")
-   public String name;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   public class257 field3294;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 766711877
    )
    int field3289;
+   @ObfuscatedName("e")
+   @Export("name")
+   public String name;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1524780187
    )
    public int field3292;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1214140793
-   )
-   int field3296;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1549248241
    )
    public int field3284;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lij;"
-   )
-   public class239 field3301;
    @ObfuscatedName("n")
    public String[] field3293;
-   @ObfuscatedName("h")
+   @ObfuscatedName("u")
+   public String field3291;
+   @ObfuscatedName("t")
+   int[] field3305;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1448371723
+      intValue = 1214140793
    )
-   int field3295;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 693992411
-   )
-   public int field3304;
+   int field3296;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -444852659
    )
    int field3298;
-   @ObfuscatedName("u")
-   public String field3291;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1448371723
+   )
+   int field3295;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = -1025542915
    )
    int field3299;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   public class257 field3294;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lij;"
+   )
+   public class239 field3301;
    @ObfuscatedName("k")
    int[] field3302;
    @ObfuscatedName("c")
    byte[] field3286;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 693992411
+   )
+   public int field3304;
 
    static {
       skeletonsIndex = new NodeCache(256);
@@ -117,36 +117,19 @@ public class Area extends CacheableNode {
       this.field3287 = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ZI)Lky;",
-      garbageValue = "-536155849"
+      signature = "(Lfz;I)V",
+      garbageValue = "1603377583"
    )
-   public SpritePixels method4368(boolean var1) {
-      int var2 = this.spriteId;
-      return this.method4380(var2);
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)Lky;",
-      garbageValue = "-910904890"
-   )
-   SpritePixels method4380(int var1) {
-      if(var1 < 0) {
-         return null;
-      } else {
-         SpritePixels var2 = (SpritePixels)skeletonsIndex.get((long)var1);
-         if(var2 != null) {
-            return var2;
-         } else {
-            var2 = BuildType.method4173(field3300, var1, 0);
-            if(var2 != null) {
-               skeletonsIndex.put(var2, (long)var1);
-            }
-
-            return var2;
+   public void method4365(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
          }
+
+         this.method4364(var1, var2);
       }
    }
 
@@ -238,31 +221,6 @@ public class Area extends CacheableNode {
 
    }
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "0"
-   )
-   public int method4381() {
-      return this.field3287;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lfz;I)V",
-      garbageValue = "1603377583"
-   )
-   public void method4365(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4364(var1, var2);
-      }
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(B)V",
@@ -285,5 +243,47 @@ public class Area extends CacheableNode {
          }
       }
 
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(ZI)Lky;",
+      garbageValue = "-536155849"
+   )
+   public SpritePixels method4368(boolean var1) {
+      int var2 = this.spriteId;
+      return this.method4380(var2);
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)Lky;",
+      garbageValue = "-910904890"
+   )
+   SpritePixels method4380(int var1) {
+      if(var1 < 0) {
+         return null;
+      } else {
+         SpritePixels var2 = (SpritePixels)skeletonsIndex.get((long)var1);
+         if(var2 != null) {
+            return var2;
+         } else {
+            var2 = BuildType.method4173(field3300, var1, 0);
+            if(var2 != null) {
+               skeletonsIndex.put(var2, (long)var1);
+            }
+
+            return var2;
+         }
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "0"
+   )
+   public int method4381() {
+      return this.field3287;
    }
 }

@@ -5,37 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aa")
 public abstract class class28 {
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1161783375
-   )
-   int field418;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1296165415
-   )
-   int field420;
-   @ObfuscatedName("p")
-   short[][][] field421;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -272331149
-   )
-   int field415;
-   @ObfuscatedName("e")
-   short[][][] field417;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "[[[[Laz;"
-   )
-   class31[][][][] field425;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 2115076539
-   )
-   int field419;
-   @ObfuscatedName("d")
-   byte[][][] field422;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 96817447
@@ -46,20 +15,59 @@ public abstract class class28 {
       intValue = 4094535
    )
    int field416;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1296165415
+   )
+   int field420;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1161783375
+   )
+   int field418;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 2115076539
+   )
+   int field419;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -272331149
+   )
+   int field415;
+   @ObfuscatedName("p")
+   short[][][] field421;
+   @ObfuscatedName("e")
+   short[][][] field417;
+   @ObfuscatedName("d")
+   byte[][][] field422;
    @ObfuscatedName("x")
    byte[][][] field424;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "[[[[Laz;"
+   )
+   class31[][][][] field425;
 
    class28() {
       new LinkedList();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-967849777"
+      signature = "(IILfz;I)V",
+      garbageValue = "543157646"
    )
-   int method227(int var1, int var2) {
-      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field421[0][var1][var2] - 1:-1):-1;
+   void method239(int var1, int var2, Buffer var3) {
+      int var4 = var3.readUnsignedByte();
+      if(var4 != 0) {
+         if((var4 & 1) != 0) {
+            this.method225(var1, var2, var3, var4);
+         } else {
+            this.method243(var1, var2, var3, var4);
+         }
+
+      }
    }
 
    @ObfuscatedName("q")
@@ -120,6 +128,15 @@ public abstract class class28 {
 
    }
 
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-967849777"
+   )
+   int method227(int var1, int var2) {
+      return var1 >= 0 && var2 >= 0?(var1 < 64 && var2 < 64?this.field421[0][var1][var2] - 1:-1):-1;
+   }
+
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)I",
@@ -136,23 +153,6 @@ public abstract class class28 {
    )
    int method229() {
       return this.field418;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IILfz;I)V",
-      garbageValue = "543157646"
-   )
-   void method239(int var1, int var2, Buffer var3) {
-      int var4 = var3.readUnsignedByte();
-      if(var4 != 0) {
-         if((var4 & 1) != 0) {
-            this.method225(var1, var2, var3, var4);
-         } else {
-            this.method243(var1, var2, var3, var4);
-         }
-
-      }
    }
 
    @ObfuscatedName("w")

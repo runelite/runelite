@@ -17,6 +17,43 @@ public class class54 {
       return var0 == class221.field2824.field2825;
    }
 
+   @ObfuscatedName("gn")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1185476756"
+   )
+   static final void method780() {
+      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
+         if(var0.hitpoints == -1) {
+            var0.delay = 0;
+            class114.method2166(var0);
+         } else {
+            var0.unlink();
+         }
+      }
+
+   }
+
+   @ObfuscatedName("ha")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "226214383"
+   )
+   static void method777() {
+      if(Client.spellSelected) {
+         Widget var0 = class215.method4064(class56.field696, Client.field1070);
+         if(var0 != null && var0.field2719 != null) {
+            ScriptEvent var1 = new ScriptEvent();
+            var1.widget = var0;
+            var1.field849 = var0.field2719;
+            class56.method817(var1);
+         }
+
+         Client.spellSelected = false;
+         class45.method647(var0);
+      }
+   }
+
    @ObfuscatedName("it")
    @ObfuscatedSignature(
       signature = "(IIIIIIIII)V",
@@ -41,42 +78,5 @@ public class class54 {
          }
 
       }
-   }
-
-   @ObfuscatedName("ha")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "226214383"
-   )
-   static void method777() {
-      if(Client.spellSelected) {
-         Widget var0 = class215.method4064(class56.field696, Client.field1070);
-         if(var0 != null && var0.field2719 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.field849 = var0.field2719;
-            class56.method817(var1);
-         }
-
-         Client.spellSelected = false;
-         class45.method647(var0);
-      }
-   }
-
-   @ObfuscatedName("gn")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1185476756"
-   )
-   static final void method780() {
-      for(PendingSpawn var0 = (PendingSpawn)Client.pendingSpawns.getFront(); var0 != null; var0 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0.hitpoints == -1) {
-            var0.delay = 0;
-            class114.method2166(var0);
-         } else {
-            var0.unlink();
-         }
-      }
-
    }
 }

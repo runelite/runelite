@@ -13,11 +13,6 @@ public class class56 {
    static Applet field693;
    @ObfuscatedName("s")
    static String field692;
-   @ObfuscatedName("bg")
-   @ObfuscatedSignature(
-      signature = "Lbm;"
-   )
-   static class70 field695;
    @ObfuscatedName("p")
    public static int[] field700;
    @ObfuscatedName("bt")
@@ -25,6 +20,11 @@ public class class56 {
       signature = "[Ljo;"
    )
    static IndexedSprite[] field697;
+   @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "Lbm;"
+   )
+   static class70 field695;
    @ObfuscatedName("ke")
    @ObfuscatedGetter(
       intValue = 475226431
@@ -45,6 +45,19 @@ public class class56 {
       Actor.method1541(var0, 200000);
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "856711815"
+   )
+   public static final void method814(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
+      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
+      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
+      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
+      class7.field241.method3651(new class8(var7, var9, var8, var10, -49088));
+   }
+
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lih;II)V",
@@ -59,156 +72,6 @@ public class class56 {
       } else {
          class14.method87((IndexData)null, 255, 255, 0, (byte)0, true);
          class238.field3260[var1] = var0;
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "856711815"
-   )
-   public static final void method814(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      class7.field241.method3651(new class8(var7, var9, var8, var10, -49088));
-   }
-
-   @ObfuscatedName("gx")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "54"
-   )
-   @Export("flush")
-   static final void flush(boolean var0) {
-      KeyFocusListener.method756();
-      ++Client.audioEffectCount;
-      if(Client.audioEffectCount >= 50 || var0) {
-         Client.audioEffectCount = 0;
-         if(!Client.socketError && class15.rssocket != null) {
-            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
-
-            try {
-               class15.rssocket.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
-               Client.secretPacketBuffer1.offset = 0;
-            } catch (IOException var2) {
-               Client.socketError = true;
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("go")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "10"
-   )
-   static final int method812() {
-      if(class70.preferences.hideRoofs) {
-         return class46.plane;
-      } else {
-         int var0 = 3;
-         if(class18.cameraPitch < 310) {
-            int var1 = AbstractByteBuffer.cameraX >> 7;
-            int var2 = World.cameraY >> 7;
-            int var3 = class66.localPlayer.x >> 7;
-            int var4 = class66.localPlayer.y >> 7;
-            if(var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
-               return class46.plane;
-            }
-
-            if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
-               var0 = class46.plane;
-            }
-
-            int var5;
-            if(var3 > var1) {
-               var5 = var3 - var1;
-            } else {
-               var5 = var1 - var3;
-            }
-
-            int var6;
-            if(var4 > var2) {
-               var6 = var4 - var2;
-            } else {
-               var6 = var2 - var4;
-            }
-
-            int var7;
-            int var8;
-            if(var5 > var6) {
-               var7 = var6 * 65536 / var5;
-               var8 = 32768;
-
-               while(var3 != var1) {
-                  if(var1 < var3) {
-                     ++var1;
-                  } else if(var1 > var3) {
-                     --var1;
-                  }
-
-                  if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
-                     var0 = class46.plane;
-                  }
-
-                  var8 += var7;
-                  if(var8 >= 65536) {
-                     var8 -= 65536;
-                     if(var2 < var4) {
-                        ++var2;
-                     } else if(var2 > var4) {
-                        --var2;
-                     }
-
-                     if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
-                        var0 = class46.plane;
-                     }
-                  }
-               }
-            } else {
-               var7 = var5 * 65536 / var6;
-               var8 = 32768;
-
-               while(var4 != var2) {
-                  if(var2 < var4) {
-                     ++var2;
-                  } else if(var2 > var4) {
-                     --var2;
-                  }
-
-                  if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
-                     var0 = class46.plane;
-                  }
-
-                  var8 += var7;
-                  if(var8 >= 65536) {
-                     var8 -= 65536;
-                     if(var1 < var3) {
-                        ++var1;
-                     } else if(var1 > var3) {
-                        --var1;
-                     }
-
-                     if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
-                        var0 = class46.plane;
-                     }
-                  }
-               }
-            }
-         }
-
-         if(class66.localPlayer.x >= 0 && class66.localPlayer.y >= 0 && class66.localPlayer.x < 13312 && class66.localPlayer.y < 13312) {
-            if((class61.tileSettings[class46.plane][class66.localPlayer.x >> 7][class66.localPlayer.y >> 7] & 4) != 0) {
-               var0 = class46.plane;
-            }
-
-            return var0;
-         } else {
-            return class46.plane;
-         }
       }
    }
 
@@ -494,6 +357,143 @@ public class class56 {
                }
             }
          }
+      }
+   }
+
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "10"
+   )
+   static final int method812() {
+      if(class70.preferences.hideRoofs) {
+         return class46.plane;
+      } else {
+         int var0 = 3;
+         if(class18.cameraPitch < 310) {
+            int var1 = AbstractByteBuffer.cameraX >> 7;
+            int var2 = World.cameraY >> 7;
+            int var3 = class66.localPlayer.x >> 7;
+            int var4 = class66.localPlayer.y >> 7;
+            if(var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
+               return class46.plane;
+            }
+
+            if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
+               var0 = class46.plane;
+            }
+
+            int var5;
+            if(var3 > var1) {
+               var5 = var3 - var1;
+            } else {
+               var5 = var1 - var3;
+            }
+
+            int var6;
+            if(var4 > var2) {
+               var6 = var4 - var2;
+            } else {
+               var6 = var2 - var4;
+            }
+
+            int var7;
+            int var8;
+            if(var5 > var6) {
+               var7 = var6 * 65536 / var5;
+               var8 = 32768;
+
+               while(var3 != var1) {
+                  if(var1 < var3) {
+                     ++var1;
+                  } else if(var1 > var3) {
+                     --var1;
+                  }
+
+                  if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
+                     var0 = class46.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var2 < var4) {
+                        ++var2;
+                     } else if(var2 > var4) {
+                        --var2;
+                     }
+
+                     if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
+                        var0 = class46.plane;
+                     }
+                  }
+               }
+            } else {
+               var7 = var5 * 65536 / var6;
+               var8 = 32768;
+
+               while(var4 != var2) {
+                  if(var2 < var4) {
+                     ++var2;
+                  } else if(var2 > var4) {
+                     --var2;
+                  }
+
+                  if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
+                     var0 = class46.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var1 < var3) {
+                        ++var1;
+                     } else if(var1 > var3) {
+                        --var1;
+                     }
+
+                     if((class61.tileSettings[class46.plane][var1][var2] & 4) != 0) {
+                        var0 = class46.plane;
+                     }
+                  }
+               }
+            }
+         }
+
+         if(class66.localPlayer.x >= 0 && class66.localPlayer.y >= 0 && class66.localPlayer.x < 13312 && class66.localPlayer.y < 13312) {
+            if((class61.tileSettings[class46.plane][class66.localPlayer.x >> 7][class66.localPlayer.y >> 7] & 4) != 0) {
+               var0 = class46.plane;
+            }
+
+            return var0;
+         } else {
+            return class46.plane;
+         }
+      }
+   }
+
+   @ObfuscatedName("gx")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "54"
+   )
+   @Export("flush")
+   static final void flush(boolean var0) {
+      KeyFocusListener.method756();
+      ++Client.audioEffectCount;
+      if(Client.audioEffectCount >= 50 || var0) {
+         Client.audioEffectCount = 0;
+         if(!Client.socketError && class15.rssocket2 != null) {
+            Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_KEEPALIVE);
+
+            try {
+               class15.rssocket2.queueForWrite(Client.secretPacketBuffer1.payload, 0, Client.secretPacketBuffer1.offset);
+               Client.secretPacketBuffer1.offset = 0;
+            } catch (IOException var2) {
+               Client.socketError = true;
+            }
+         }
+
       }
    }
 

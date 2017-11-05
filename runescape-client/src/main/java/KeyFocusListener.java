@@ -17,13 +17,11 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    )
    @Export("keyboard")
    public static KeyFocusListener keyboard;
-   @ObfuscatedName("cx")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1507021157
+      intValue = -301087595
    )
-   public static int field662;
-   @ObfuscatedName("cy")
-   static int[] field669;
+   public static int field645;
    @ObfuscatedName("cn")
    public static boolean[] field659;
    @ObfuscatedName("cw")
@@ -33,43 +31,45 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       intValue = 345386375
    )
    public static int field653;
-   @ObfuscatedName("ct")
+   @ObfuscatedName("cx")
    @ObfuscatedGetter(
-      intValue = 868770429
+      intValue = 1507021157
    )
-   public static int field661;
+   public static int field662;
    @ObfuscatedName("cd")
    static char[] field646;
+   @ObfuscatedName("cc")
+   static int[] field664;
+   @ObfuscatedName("cq")
+   public static int[] field671;
+   @ObfuscatedName("ca")
+   @ObfuscatedGetter(
+      intValue = -1601557415
+   )
+   public static int field666;
    @ObfuscatedName("cz")
    @ObfuscatedGetter(
       intValue = 107316193
    )
    public static int field667;
-   @ObfuscatedName("cc")
-   static int[] field664;
-   @ObfuscatedName("cq")
-   public static int[] field671;
+   @ObfuscatedName("ct")
+   @ObfuscatedGetter(
+      intValue = 868770429
+   )
+   public static int field661;
+   @ObfuscatedName("ci")
+   @ObfuscatedGetter(
+      intValue = 591715025
+   )
+   public static int field639;
    @ObfuscatedName("cv")
    @ObfuscatedGetter(
       intValue = 1156889777
    )
    @Export("keyboardIdleTicks")
    public static volatile int keyboardIdleTicks;
-   @ObfuscatedName("ca")
-   @ObfuscatedGetter(
-      intValue = -1601557415
-   )
-   public static int field666;
-   @ObfuscatedName("ci")
-   @ObfuscatedGetter(
-      intValue = 591715025
-   )
-   public static int field639;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -301087595
-   )
-   public static int field645;
+   @ObfuscatedName("cy")
+   static int[] field669;
 
    static {
       keyboard = new KeyFocusListener();
@@ -196,6 +196,15 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       var1.consume();
    }
 
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)[Lij;",
+      garbageValue = "1"
+   )
+   static class239[] method755() {
+      return new class239[]{class239.field3267, class239.field3270, class239.field3268};
+   }
+
    @ObfuscatedName("fj")
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -210,14 +219,5 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          ItemLayer.soundSystem0.method2059();
       }
 
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)[Lij;",
-      garbageValue = "1"
-   )
-   static class239[] method755() {
-      return new class239[]{class239.field3267, class239.field3270, class239.field3268};
    }
 }

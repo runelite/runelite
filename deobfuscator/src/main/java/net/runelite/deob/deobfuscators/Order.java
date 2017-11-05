@@ -25,18 +25,23 @@
 package net.runelite.deob.deobfuscators;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Sort fields and methods based on the order encountered by the executor
+ * Sort fields and methods based first on the name order of the classes, and
+ * then based on the order the executor encounters them.
  *
  * @author Adam
  */
@@ -46,10 +51,7 @@ public class Order implements Deobfuscator
 
 	private Execution execution;
 
-	public Execution getExecution()
-	{
-		return execution;
-	}
+	private final Map<String, Integer> nameIndices = new HashMap<>();
 
 	@Override
 	public void run(ClassGroup group)
@@ -58,6 +60,13 @@ public class Order implements Deobfuscator
 		execution.staticStep = true;
 		execution.populateInitialMethods();
 		execution.run();
+
+		for (int i = 0; i < group.getClasses().size(); i++)
+		{
+			ClassFile cf = group.getClasses().get(i);
+			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
+			nameIndices.put(className, i);
+		}
 
 		int sortedMethods = 0, sortedFields = 0;
 
@@ -91,6 +100,14 @@ public class Order implements Deobfuscator
 			return Integer.compare(i1, i2);
 		}
 
+		int nameIdx1 = getNameIdx(m1.getAnnotations());
+		int nameIdx2 = getNameIdx(m2.getAnnotations());
+
+		if (nameIdx1 != nameIdx2)
+		{
+			return Integer.compare(nameIdx1, nameIdx2);
+		}
+
 		return compareOrder(m1, m2);
 	}
 
@@ -103,7 +120,24 @@ public class Order implements Deobfuscator
 			return Integer.compare(i1, i2);
 		}
 
+		int nameIdx1 = getNameIdx(f1.getAnnotations());
+		int nameIdx2 = getNameIdx(f2.getAnnotations());
+
+		if (nameIdx1 != nameIdx2)
+		{
+			return Integer.compare(nameIdx1, nameIdx2);
+		}
+
 		return compareOrder(f1, f2);
+	}
+
+	private int getNameIdx(Annotations annotations)
+	{
+		String name = DeobAnnotations.getObfuscatedName(annotations);
+
+		Integer nameIdx = nameIndices.get(name);
+
+		return nameIdx != null ? nameIdx : -1;
 	}
 
 	private int getType(Method m)

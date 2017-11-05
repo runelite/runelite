@@ -8,29 +8,29 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class Texture extends Node {
    @ObfuscatedName("a")
    static int[] field1874;
+   @ObfuscatedName("g")
+   int field1864;
+   @ObfuscatedName("v")
+   boolean field1865;
    @ObfuscatedName("p")
    @Export("fileIds")
    int[] fileIds;
-   @ObfuscatedName("u")
-   @Export("pixels")
-   int[] pixels;
-   @ObfuscatedName("v")
-   boolean field1865;
-   @ObfuscatedName("z")
-   int field1866;
-   @ObfuscatedName("t")
-   @Export("loaded")
-   boolean loaded;
-   @ObfuscatedName("g")
-   int field1864;
-   @ObfuscatedName("n")
-   int field1871;
-   @ObfuscatedName("x")
-   int[] field1869;
    @ObfuscatedName("e")
    int[] field1867;
    @ObfuscatedName("d")
    int[] field1868;
+   @ObfuscatedName("x")
+   int[] field1869;
+   @ObfuscatedName("z")
+   int field1866;
+   @ObfuscatedName("n")
+   int field1871;
+   @ObfuscatedName("u")
+   @Export("pixels")
+   int[] pixels;
+   @ObfuscatedName("t")
+   @Export("loaded")
+   boolean loaded;
 
    @ObfuscatedSignature(
       signature = "(Lfz;)V"
@@ -76,12 +76,6 @@ public class Texture extends Node {
       } else {
          throw new RuntimeException();
       }
-   }
-
-   @ObfuscatedName("s")
-   @Export("resetPixels")
-   void resetPixels() {
-      this.pixels = null;
    }
 
    @ObfuscatedName("w")
@@ -182,6 +176,12 @@ public class Texture extends Node {
       }
 
       return true;
+   }
+
+   @ObfuscatedName("s")
+   @Export("resetPixels")
+   void resetPixels() {
+      this.pixels = null;
    }
 
    @ObfuscatedName("q")

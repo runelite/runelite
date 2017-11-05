@@ -8,17 +8,6 @@ public class class21 {
    @Export("offsetsY")
    public static int[] offsetsY;
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1834504326"
-   )
-   static final void method163(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int[] var7 = Region.method2770(var0, var1, var2);
-      int[] var8 = Region.method2770(var3, var4, var5);
-      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BILjava/lang/CharSequence;I)I",
@@ -43,6 +32,17 @@ public class class21 {
       }
 
       return var4 - var1;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "-1834504326"
+   )
+   static final void method163(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2770(var0, var1, var2);
+      int[] var8 = Region.method2770(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
    }
 
    @ObfuscatedName("hs")
@@ -163,7 +163,7 @@ public class class21 {
          if((var3 & 4) != 0) {
             var4 = Client.secretPacketBuffer2.method3259();
             var5 = Client.secretPacketBuffer2.readUnsignedShort();
-            var6 = var2.x - (var4 - class22.baseX * 411265 - class22.baseX * 411265) * 64;
+            var6 = var2.x - (var4 - class22.baseX - class22.baseX) * 64;
             var7 = var2.y - (var5 - class273.baseY - class273.baseY) * 64;
             if(var6 != 0 || var7 != 0) {
                var2.field1249 = (int)(Math.atan2((double)var6, (double)var7) * 325.949D) & 2047;

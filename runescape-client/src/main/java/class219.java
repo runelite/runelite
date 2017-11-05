@@ -9,11 +9,6 @@ public class class219 implements class218 {
       signature = "Lhy;"
    )
    public static final class219 field2779;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhy;"
-   )
-   public static final class219 field2787;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lhy;"
@@ -54,6 +49,11 @@ public class class219 implements class218 {
       signature = "Lhy;"
    )
    static final class219 field2786;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   public static final class219 field2787;
    @ObfuscatedName("l")
    static int[] field2789;
    @ObfuscatedName("z")
@@ -117,6 +117,15 @@ public class class219 implements class218 {
       return Projectile.method1782(var0, var3, var4);
    }
 
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IS)I",
+      garbageValue = "710"
+   )
+   public static int method4137(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
+   }
+
    @ObfuscatedName("ge")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -175,7 +184,7 @@ public class class219 implements class218 {
                var7 = var7 >> 14 & 32767;
                int var8 = CollisionData.getObjectDefinition(var7).mapIconId;
                if(var8 >= 0) {
-                  Client.field1145[Client.field1164] = Area.field3285[var8].method4368(false);
+                  Client.mapIcons[Client.field1164] = Area.field3285[var8].method4368(false);
                   Client.field1143[Client.field1164] = var5;
                   Client.field1179[Client.field1164] = var6;
                   ++Client.field1164;
@@ -185,14 +194,5 @@ public class class219 implements class218 {
       }
 
       GameEngine.field733.setRaster();
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "710"
-   )
-   public static int method4137(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
    }
 }

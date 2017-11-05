@@ -4,33 +4,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fk")
 public class class164 {
-   @ObfuscatedName("aa")
-   static int[] field2312;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lhj;"
    )
    static Widget field2314;
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "-14986289"
-   )
-   @Export("toByteArray")
-   public static byte[] toByteArray(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
-         return var1?ChatLineBuffer.method1912(var3):var3;
-      } else if(var0 instanceof AbstractByteBuffer) {
-         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
-         return var2.get();
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
+   @ObfuscatedName("aa")
+   static int[] field2312;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
@@ -62,5 +42,25 @@ public class class164 {
       }
 
       return var2;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Object;ZI)[B",
+      garbageValue = "-14986289"
+   )
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var1?ChatLineBuffer.method1912(var3):var3;
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

@@ -5,6 +5,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("s")
 public class class1 {
+   @ObfuscatedName("oq")
+   @ObfuscatedSignature(
+      signature = "Ldk;"
+   )
+   @Export("soundSystem1")
+   static AbstractSoundSystem soundSystem1;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ls;"
@@ -40,12 +46,6 @@ public class class1 {
       signature = "Ls;"
    )
    static final class1 field6;
-   @ObfuscatedName("oq")
-   @ObfuscatedSignature(
-      signature = "Ldk;"
-   )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1371561427
@@ -186,21 +186,21 @@ public class class1 {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
                   if(var85.skullIcon != -1) {
-                     GZipDecompressor.mapfunctions[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     GZipDecompressor.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                      var8 += 25;
                   }
 
                   if(var85.overheadIcon != -1) {
-                     WorldMapType1.hitmarks[var85.overheadIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     WorldMapType1.headIconsPrayer[var85.overheadIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                      var8 += 25;
                   }
                }
             }
 
-            if(var1 >= 0 && Client.field940 == 10 && var7[var1] == Client.field1053) {
+            if(var1 >= 0 && Client.hintArrowTargetType == 10 && var7[var1] == Client.hintArrowPlayerTargetIdx) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  class14.pkIcons[1].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                  class14.headIconsHint[1].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                }
             }
          } else {
@@ -209,17 +209,17 @@ public class class1 {
                var86 = var86.transform();
             }
 
-            if(var86.field3577 >= 0 && var86.field3577 < WorldMapType1.hitmarks.length) {
+            if(var86.field3577 >= 0 && var86.field3577 < WorldMapType1.headIconsPrayer.length) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  WorldMapType1.hitmarks[var86.field3577].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 30);
+                  WorldMapType1.headIconsPrayer[var86.field3577].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 30);
                }
             }
 
-            if(Client.field940 == 1 && Client.npcIndices[var1 - var74] == Client.field941 && Client.gameCycle % 20 < 10) {
+            if(Client.hintArrowTargetType == 1 && Client.npcIndices[var1 - var74] == Client.hintArrowNpcTargetIdx && Client.gameCycle % 20 < 10) {
                WallObject.characterToScreen(var0, var0.field1228 + 15);
                if(Client.screenY > -1) {
-                  class14.pkIcons[0].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 28);
+                  class14.headIconsHint[0].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 28);
                }
             }
          }

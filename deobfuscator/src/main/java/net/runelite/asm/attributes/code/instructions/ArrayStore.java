@@ -48,7 +48,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 		StackContext sctx = thisIc.getPops().get(2);
 		InstructionContext pushed = sctx.getPushed();
 		
-		InstructionContext r = MappingExecutorUtil.resolve(pushed, sctx);
+		InstructionContext r = pushed.resolve(sctx);
 		
 		if (r.getInstruction() instanceof GetFieldInstruction)
 		{

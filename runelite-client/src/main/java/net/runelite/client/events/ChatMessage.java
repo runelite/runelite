@@ -33,9 +33,9 @@ public class ChatMessage
 	private String message;
 	private String clan;
 
-	public ChatMessage(int type, String sender, String message, String clan)
+	public ChatMessage(ChatMessageType type, String sender, String message, String clan)
 	{
-		this.type = ChatMessageType.of(type);
+		this.type = type;
 		this.sender = sender;
 		this.message = message;
 		this.clan = clan;

@@ -7,6 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("b")
 final class class17 implements Comparator {
+   @ObfuscatedName("m")
+   static int[] field322;
    @ObfuscatedName("eg")
    @ObfuscatedSignature(
       signature = "Lfe;"
@@ -18,8 +20,6 @@ final class class17 implements Comparator {
    )
    @Export("menuHeight")
    static int menuHeight;
-   @ObfuscatedName("m")
-   static int[] field322;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
