@@ -5,21 +5,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ao")
 public class class33 {
-   @ObfuscatedName("r")
-   @Export("userHome")
-   public static String userHome;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 823164335
    )
    public static int field483;
+   @ObfuscatedName("r")
+   @Export("userHome")
+   public static String userHome;
    @ObfuscatedName("w")
    String field482;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ll;"
-   )
-   class24 field477;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1060406681
@@ -30,6 +25,11 @@ public class class33 {
       intValue = -869683857
    )
    int field478;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ll;"
+   )
+   class24 field477;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILl;)V"

@@ -7,36 +7,36 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ix")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   @Export("underlays")
-   public static NodeCache underlays;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    @Export("underlay_ref")
    static IndexDataBase underlay_ref;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   @Export("underlays")
+   public static NodeCache underlays;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1535374769
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1289687633
-   )
-   @Export("saturation")
-   public int saturation;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -130637247
    )
    @Export("hue")
    public int hue;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1289687633
+   )
+   @Export("saturation")
+   public int saturation;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 38048895
@@ -56,6 +56,46 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    FloorUnderlayDefinition() {
       this.rgbColor = 0;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "343148870"
+   )
+   @Export("post")
+   void post() {
+      this.setHSL(this.rgbColor);
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Lfz;II)V",
+      garbageValue = "1744721365"
+   )
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
+      while(true) {
+         int var3 = var1.readUnsignedByte();
+         if(var3 == 0) {
+            return;
+         }
+
+         this.decode(var1, var3, var2);
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lfz;IIS)V",
+      garbageValue = "-21317"
+   )
+   @Export("decode")
+   void decode(Buffer var1, int var2, int var3) {
+      if(var2 == 1) {
+         this.rgbColor = var1.read24BitInt();
+      }
+
    }
 
    @ObfuscatedName("v")
@@ -133,45 +173,5 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       this.hue = (int)((double)this.hueMultiplier * var12);
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lfz;IIS)V",
-      garbageValue = "-21317"
-   )
-   @Export("decode")
-   void decode(Buffer var1, int var2, int var3) {
-      if(var2 == 1) {
-         this.rgbColor = var1.read24BitInt();
-      }
-
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "343148870"
-   )
-   @Export("post")
-   void post() {
-      this.setHSL(this.rgbColor);
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "1744721365"
-   )
-   @Export("decode")
-   void decode(Buffer var1, int var2) {
-      while(true) {
-         int var3 = var1.readUnsignedByte();
-         if(var3 == 0) {
-            return;
-         }
-
-         this.decode(var1, var3, var2);
-      }
    }
 }

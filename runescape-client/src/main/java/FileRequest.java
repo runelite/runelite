@@ -12,9 +12,6 @@ public class FileRequest extends CacheableNode {
       intValue = -1000645349
    )
    static int field3204;
-   @ObfuscatedName("q")
-   @Export("padding")
-   byte padding;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lih;"
@@ -27,6 +24,9 @@ public class FileRequest extends CacheableNode {
    )
    @Export("crc")
    int crc;
+   @ObfuscatedName("q")
+   @Export("padding")
+   byte padding;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(

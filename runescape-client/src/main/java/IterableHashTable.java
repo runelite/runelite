@@ -10,9 +10,6 @@ public final class IterableHashTable implements Iterable {
    @ObfuscatedName("w")
    @Export("size")
    int size;
-   @ObfuscatedName("g")
-   @Export("index")
-   int index;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "[Lgd;"
@@ -31,6 +28,9 @@ public final class IterableHashTable implements Iterable {
    )
    @Export("tail")
    Node tail;
+   @ObfuscatedName("g")
+   @Export("index")
+   int index;
 
    public IterableHashTable(int var1) {
       this.index = 0;
@@ -65,6 +65,54 @@ public final class IterableHashTable implements Iterable {
       return null;
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lgd;J)V"
+   )
+   @Export("put")
+   public void put(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
+   }
+
+   @ObfuscatedName("q")
+   @Export("clear")
+   public void clear() {
+      for(int var1 = 0; var1 < this.size; ++var1) {
+         Node var2 = this.buckets[var1];
+
+         while(true) {
+            Node var3 = var2.next;
+            if(var3 == var2) {
+               break;
+            }
+
+            var3.unlink();
+         }
+      }
+
+      this.head = null;
+      this.tail = null;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "()Lgd;"
+   )
+   @Export("getHead")
+   public Node getHead() {
+      this.index = 0;
+      return this.getTail();
+   }
+
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "()Lgd;"
@@ -88,54 +136,6 @@ public final class IterableHashTable implements Iterable {
          this.tail = var1.next;
          return var1;
       }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lgd;J)V"
-   )
-   @Export("put")
-   public void put(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "()Lgd;"
-   )
-   @Export("getHead")
-   public Node getHead() {
-      this.index = 0;
-      return this.getTail();
-   }
-
-   @ObfuscatedName("q")
-   @Export("clear")
-   public void clear() {
-      for(int var1 = 0; var1 < this.size; ++var1) {
-         Node var2 = this.buckets[var1];
-
-         while(true) {
-            Node var3 = var2.next;
-            if(var3 == var2) {
-               break;
-            }
-
-            var3.unlink();
-         }
-      }
-
-      this.head = null;
-      this.tail = null;
    }
 
    public Iterator iterator() {

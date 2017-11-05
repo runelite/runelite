@@ -7,8 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bq")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("q")
-   boolean field839;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 500626991
@@ -21,9 +19,123 @@ public class WidgetNode extends Node {
    )
    @Export("owner")
    int owner;
+   @ObfuscatedName("q")
+   boolean field839;
 
    WidgetNode() {
       this.field839 = false;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Lkp;I)Ljava/lang/String;",
+      garbageValue = "-426262579"
+   )
+   public static String method1087(CharSequence var0, class290 var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         int var2 = 0;
+
+         int var3;
+         boolean var4;
+         char var5;
+         for(var3 = var0.length(); var2 < var3; ++var2) {
+            var5 = var0.charAt(var2);
+            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
+            if(!var4) {
+               break;
+            }
+         }
+
+         while(var3 > var2) {
+            var5 = var0.charAt(var3 - 1);
+            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
+            if(!var4) {
+               break;
+            }
+
+            --var3;
+         }
+
+         int var14 = var3 - var2;
+         if(var14 >= 1) {
+            byte var6;
+            if(var1 == null) {
+               var6 = 12;
+            } else {
+               switch(var1.field3874) {
+               case 1:
+                  var6 = 20;
+                  break;
+               default:
+                  var6 = 12;
+               }
+            }
+
+            if(var14 <= var6) {
+               StringBuilder var13 = new StringBuilder(var14);
+
+               for(int var15 = var2; var15 < var3; ++var15) {
+                  char var7 = var0.charAt(var15);
+                  boolean var8;
+                  if(Character.isISOControl(var7)) {
+                     var8 = false;
+                  } else {
+                     boolean var9 = var7 >= '0' && var7 <= '9' || var7 >= 'A' && var7 <= 'Z' || var7 >= 'a' && var7 <= 'z';
+                     if(var9) {
+                        var8 = true;
+                     } else {
+                        char[] var10 = class267.field3667;
+                        int var11 = 0;
+
+                        label105:
+                        while(true) {
+                           char var12;
+                           if(var11 >= var10.length) {
+                              var10 = class267.field3668;
+
+                              for(var11 = 0; var11 < var10.length; ++var11) {
+                                 var12 = var10[var11];
+                                 if(var12 == var7) {
+                                    var8 = true;
+                                    break label105;
+                                 }
+                              }
+
+                              var8 = false;
+                              break;
+                           }
+
+                           var12 = var10[var11];
+                           if(var12 == var7) {
+                              var8 = true;
+                              break;
+                           }
+
+                           ++var11;
+                        }
+                     }
+                  }
+
+                  if(var8) {
+                     char var16 = class254.method4597(var7);
+                     if(var16 != 0) {
+                        var13.append(var16);
+                     }
+                  }
+               }
+
+               if(var13.length() == 0) {
+                  return null;
+               }
+
+               return var13.toString();
+            }
+         }
+
+         return null;
+      }
    }
 
    @ObfuscatedName("gj")
@@ -163,117 +275,5 @@ public class WidgetNode extends Node {
          GroundObject.method2539(var3, var1, !var14);
       }
 
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lkp;I)Ljava/lang/String;",
-      garbageValue = "-426262579"
-   )
-   public static String method1087(CharSequence var0, class290 var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         int var2 = 0;
-
-         int var3;
-         boolean var4;
-         char var5;
-         for(var3 = var0.length(); var2 < var3; ++var2) {
-            var5 = var0.charAt(var2);
-            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-            if(!var4) {
-               break;
-            }
-         }
-
-         while(var3 > var2) {
-            var5 = var0.charAt(var3 - 1);
-            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
-            if(!var4) {
-               break;
-            }
-
-            --var3;
-         }
-
-         int var14 = var3 - var2;
-         if(var14 >= 1) {
-            byte var6;
-            if(var1 == null) {
-               var6 = 12;
-            } else {
-               switch(var1.field3874) {
-               case 1:
-                  var6 = 20;
-                  break;
-               default:
-                  var6 = 12;
-               }
-            }
-
-            if(var14 <= var6) {
-               StringBuilder var13 = new StringBuilder(var14);
-
-               for(int var15 = var2; var15 < var3; ++var15) {
-                  char var7 = var0.charAt(var15);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
-                  } else {
-                     boolean var9 = var7 >= '0' && var7 <= '9' || var7 >= 'A' && var7 <= 'Z' || var7 >= 'a' && var7 <= 'z';
-                     if(var9) {
-                        var8 = true;
-                     } else {
-                        char[] var10 = class267.field3667;
-                        int var11 = 0;
-
-                        label105:
-                        while(true) {
-                           char var12;
-                           if(var11 >= var10.length) {
-                              var10 = class267.field3668;
-
-                              for(var11 = 0; var11 < var10.length; ++var11) {
-                                 var12 = var10[var11];
-                                 if(var12 == var7) {
-                                    var8 = true;
-                                    break label105;
-                                 }
-                              }
-
-                              var8 = false;
-                              break;
-                           }
-
-                           var12 = var10[var11];
-                           if(var12 == var7) {
-                              var8 = true;
-                              break;
-                           }
-
-                           ++var11;
-                        }
-                     }
-                  }
-
-                  if(var8) {
-                     char var16 = class254.method4597(var7);
-                     if(var16 != 0) {
-                        var13.append(var16);
-                     }
-                  }
-               }
-
-               if(var13.length() == 0) {
-                  return null;
-               }
-
-               return var13.toString();
-            }
-         }
-
-         return null;
-      }
    }
 }

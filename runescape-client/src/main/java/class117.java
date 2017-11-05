@@ -5,11 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 public abstract class class117 extends Node {
    @ObfuscatedName("w")
    volatile boolean field1704;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lds;"
-   )
-   class120 field1705;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Ldm;"
@@ -17,16 +12,41 @@ public abstract class class117 extends Node {
    class117 field1703;
    @ObfuscatedName("b")
    int field1706;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lds;"
+   )
+   class120 field1705;
 
    protected class117() {
       this.field1704 = true;
    }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "()Ldm;"
+   )
+   protected abstract class117 vmethod3966();
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "()Ldm;"
+   )
+   protected abstract class117 vmethod3967();
+
+   @ObfuscatedName("e")
+   protected abstract int vmethod3974();
 
    @ObfuscatedName("d")
    protected abstract void vmethod3968(int[] var1, int var2, int var3);
 
    @ObfuscatedName("u")
    protected abstract void vmethod3981(int var1);
+
+   @ObfuscatedName("ag")
+   int vmethod2359() {
+      return 255;
+   }
 
    @ObfuscatedName("fw")
    final void method2353(int[] var1, int var2, int var3) {
@@ -37,24 +57,4 @@ public abstract class class117 extends Node {
       }
 
    }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "()Ldm;"
-   )
-   protected abstract class117 vmethod3967();
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "()Ldm;"
-   )
-   protected abstract class117 vmethod3966();
-
-   @ObfuscatedName("ag")
-   int vmethod2359() {
-      return 255;
-   }
-
-   @ObfuscatedName("e")
-   protected abstract int vmethod3974();
 }

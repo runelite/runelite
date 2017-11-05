@@ -3,16 +3,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iq")
 public class class243 extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   public static NodeCache field3313;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    public static IndexDataBase field3310;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   public static NodeCache field3313;
    @ObfuscatedName("q")
    public boolean field3311;
 
@@ -22,18 +22,6 @@ public class class243 extends CacheableNode {
 
    public class243() {
       this.field3311 = false;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "1030138405"
-   )
-   void method4386(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3311 = true;
-      }
-
    }
 
    @ObfuscatedName("w")
@@ -50,5 +38,17 @@ public class class243 extends CacheableNode {
 
          this.method4386(var1, var2);
       }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lfz;II)V",
+      garbageValue = "1030138405"
+   )
+   void method4386(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3311 = true;
+      }
+
    }
 }

@@ -7,9 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eg")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("v")
-   @Export("flatShade")
-   boolean flatShade;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1014251003
@@ -22,12 +19,6 @@ public final class SceneTilePaint {
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1113816907
-   )
-   @Export("rgb")
-   int rgb;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1193680813
@@ -46,6 +37,15 @@ public final class SceneTilePaint {
    )
    @Export("texture")
    int texture;
+   @ObfuscatedName("v")
+   @Export("flatShade")
+   boolean flatShade;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1113816907
+   )
+   @Export("rgb")
+   int rgb;
 
    SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
       this.flatShade = true;
@@ -58,15 +58,6 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("fs")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-854795150"
-   )
-   static int method2713() {
-      return Client.isResized?2:1;
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)[Lky;",
@@ -76,5 +67,14 @@ public final class SceneTilePaint {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return class37.method483(var0, var3, var4);
+   }
+
+   @ObfuscatedName("fs")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-854795150"
+   )
+   static int method2713() {
+      return Client.isResized?2:1;
    }
 }

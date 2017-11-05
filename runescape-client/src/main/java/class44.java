@@ -12,32 +12,12 @@ public class class44 extends WorldMapData {
       intValue = -1087500159
    )
    static int field596;
-   @ObfuscatedName("a")
-   List field598;
    @ObfuscatedName("u")
    HashSet field600;
    @ObfuscatedName("t")
    HashSet field599;
-
-   @ObfuscatedName("bh")
-   @ObfuscatedSignature(
-      signature = "(Lfz;ZB)V",
-      garbageValue = "51"
-   )
-   void method622(Buffer var1, boolean var2) {
-      this.field598 = new LinkedList();
-      int var3 = var1.readUnsignedShort();
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         int var5 = var1.method3264();
-         Coordinates var6 = new Coordinates(var1.readInt());
-         boolean var7 = var1.readUnsignedByte() == 1;
-         if(var2 || !var7) {
-            this.field598.add(new class25(var5, var6));
-         }
-      }
-
-   }
+   @ObfuscatedName("a")
+   List field598;
 
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
@@ -80,18 +60,24 @@ public class class44 extends WorldMapData {
       this.method622(var2, var5);
    }
 
-   @ObfuscatedName("hz")
+   @ObfuscatedName("bh")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-358019367"
+      signature = "(Lfz;ZB)V",
+      garbageValue = "51"
    )
-   static void method615() {
-      class148.method2940();
-      Client.menuOptions[0] = "Cancel";
-      Client.menuTargets[0] = "";
-      Client.menuTypes[0] = 1006;
-      Client.field1161[0] = false;
-      Client.menuOptionCount = 1;
+   void method622(Buffer var1, boolean var2) {
+      this.field598 = new LinkedList();
+      int var3 = var1.readUnsignedShort();
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         int var5 = var1.method3264();
+         Coordinates var6 = new Coordinates(var1.readInt());
+         boolean var7 = var1.readUnsignedByte() == 1;
+         if(var2 || !var7) {
+            this.field598.add(new class25(var5, var6));
+         }
+      }
+
    }
 
    @ObfuscatedName("w")
@@ -123,5 +109,19 @@ public class class44 extends WorldMapData {
    )
    static void method621() {
       class29.method249(class66.localPlayer, false);
+   }
+
+   @ObfuscatedName("hz")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-358019367"
+   )
+   static void method615() {
+      class148.method2940();
+      Client.menuOptions[0] = "Cancel";
+      Client.menuTargets[0] = "";
+      Client.menuTypes[0] = 1006;
+      Client.field1161[0] = false;
+      Client.menuOptionCount = 1;
    }
 }

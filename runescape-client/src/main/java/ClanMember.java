@@ -15,6 +15,8 @@ public class ClanMember extends Node {
    @ObfuscatedName("w")
    @Export("username")
    String username;
+   @ObfuscatedName("s")
+   String field919;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1909463667
@@ -24,34 +26,6 @@ public class ClanMember extends Node {
    @ObfuscatedName("o")
    @Export("rank")
    byte rank;
-   @ObfuscatedName("s")
-   String field919;
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1788669673"
-   )
-   static int method1139(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
@@ -158,6 +132,32 @@ public class ClanMember extends Node {
       class162.field2296 = var4;
       class162.field2292 = var5;
       return false;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "1788669673"
+   )
+   static int method1139(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 
    @ObfuscatedName("p")

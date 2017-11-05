@@ -4,6 +4,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
 public class class11 {
+   @ObfuscatedName("oi")
+   @ObfuscatedSignature(
+      signature = "Lcy;"
+   )
+   static class100 field278;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ln;"
@@ -14,11 +19,6 @@ public class class11 {
       signature = "Ln;"
    )
    public static final class11 field275;
-   @ObfuscatedName("oi")
-   @ObfuscatedSignature(
-      signature = "Lcy;"
-   )
-   static class100 field278;
    @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "[Lky;"

@@ -12,11 +12,6 @@ public class class132 {
       intValue = -1821659089
    )
    public static int field1993;
-   @ObfuscatedName("es")
-   @ObfuscatedSignature(
-      signature = "Let;"
-   )
-   static Task field1990;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1985377155
@@ -24,13 +19,6 @@ public class class132 {
    public static int field1986;
    @ObfuscatedName("o")
    public static boolean field1983;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 645147759
-   )
-   public static int field1981;
-   @ObfuscatedName("a")
-   public static int[] field1989;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1368271539
@@ -41,16 +29,28 @@ public class class132 {
       intValue = 1617312235
    )
    static int field1987;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1139816195
-   )
-   static int field1980;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 912514527
    )
    static int field1985;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1139816195
+   )
+   static int field1980;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 645147759
+   )
+   public static int field1981;
+   @ObfuscatedName("a")
+   public static int[] field1989;
+   @ObfuscatedName("es")
+   @ObfuscatedSignature(
+      signature = "Let;"
+   )
+   static Task field1990;
 
    static {
       field1988 = false;
@@ -244,18 +244,16 @@ public class class132 {
                var9 = var6 & 16383;
                var10 = (var8 + class22.baseX + var4.pathX[0] & 16383) - class22.baseX;
                var11 = (var9 + class273.baseY + var4.pathY[0] & 16383) - class273.baseY;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field886 = true;
-                     var4.field911 = var10;
-                     var4.field899 = var11;
-                  } else {
-                     var4.field886 = false;
-                     var4.method1118(var10, var11, class94.field1487[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1114(var10, var11);
                   var4.field886 = false;
+               } else if(var2) {
+                  var4.field886 = true;
+                  var4.field911 = var10;
+                  var4.field899 = var11;
+               } else {
+                  var4.field886 = false;
+                  var4.method1118(var10, var11, class94.field1487[var1]);
                }
 
                var4.field908 = (byte)(var7 + var4.field908 & 3);

@@ -16,11 +16,11 @@ public class class35 {
       signature = "Lax;"
    )
    static final class35 field506;
+   @ObfuscatedName("o")
+   static File field512;
    @ObfuscatedName("dd")
    @Export("host")
    static String host;
-   @ObfuscatedName("o")
-   static File field512;
    @ObfuscatedName("fv")
    @Export("xteaKeys")
    static int[][] xteaKeys;

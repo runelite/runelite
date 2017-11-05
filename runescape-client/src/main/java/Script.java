@@ -18,6 +18,9 @@ public class Script extends CacheableNode {
    @ObfuscatedName("q")
    @Export("intOperands")
    int[] intOperands;
+   @ObfuscatedName("o")
+   @Export("stringOperands")
+   String[] stringOperands;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 924257005
@@ -30,15 +33,6 @@ public class Script extends CacheableNode {
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("o")
-   @Export("stringOperands")
-   String[] stringOperands;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "[Lgk;"
-   )
-   @Export("switches")
-   IterableHashTable[] switches;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1231872303
@@ -51,6 +45,12 @@ public class Script extends CacheableNode {
    )
    @Export("stringStackCount")
    int stringStackCount;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "[Lgk;"
+   )
+   @Export("switches")
+   IterableHashTable[] switches;
 
    static {
       field1522 = new NodeCache(128);
@@ -63,15 +63,6 @@ public class Script extends CacheableNode {
    )
    IterableHashTable[] method1882(int var1) {
       return new IterableHashTable[var1];
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Lcs;B)V",
-      garbageValue = "4"
-   )
-   public static final void method1895(class101 var0) {
-      AbstractSoundSystem.field1618 = var0;
    }
 
    @ObfuscatedName("q")
@@ -214,5 +205,14 @@ public class Script extends CacheableNode {
    static int method1898(int var0) {
       MessageNode var1 = (MessageNode)class96.field1516.get((long)var0);
       return var1 == null?-1:(var1.previous == class96.field1517.field2483?-1:((MessageNode)var1.previous).id);
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lcs;B)V",
+      garbageValue = "4"
+   )
+   public static final void method1895(class101 var0) {
+      AbstractSoundSystem.field1618 = var0;
    }
 }

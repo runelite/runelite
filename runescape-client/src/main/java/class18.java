@@ -90,31 +90,6 @@ final class class18 implements Comparator {
       return (var0 >> 28 & 1) != 0;
    }
 
-   @ObfuscatedName("jr")
-   @ObfuscatedSignature(
-      signature = "(IIIILky;Lhh;I)V",
-      garbageValue = "-283737240"
-   )
-   static final void method138(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2589 / 2 - 25;
-         int var15 = (int)(Math.sin(var12) * (double)var14);
-         int var16 = (int)(Math.cos(var12) * (double)var14);
-         byte var17 = 20;
-         class46.mapedge.method5176(var15 + (var0 + var5.field2589 / 2 - var17 / 2), var5.field2592 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-      } else {
-         class9.drawDot(var0, var1, var2, var3, var4, var5);
-      }
-
-   }
-
    @ObfuscatedName("hu")
    @ObfuscatedSignature(
       signature = "(Lia;IIIS)V",
@@ -270,5 +245,30 @@ final class class18 implements Comparator {
             return false;
          }
       }
+   }
+
+   @ObfuscatedName("jr")
+   @ObfuscatedSignature(
+      signature = "(IIIILky;Lhh;I)V",
+      garbageValue = "-283737240"
+   )
+   static final void method138(int var0, int var1, int var2, int var3, SpritePixels var4, class210 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2589 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         class46.mapedge.method5176(var15 + (var0 + var5.field2589 / 2 - var17 / 2), var5.field2592 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+      } else {
+         class9.drawDot(var0, var1, var2, var3, var4, var5);
+      }
+
    }
 }

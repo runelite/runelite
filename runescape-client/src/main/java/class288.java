@@ -4,20 +4,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("kv")
 public class class288 {
-   @ObfuscatedName("d")
-   boolean field3811;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 817525333
-   )
-   int field3817;
+   @ObfuscatedName("v")
+   String field3816;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    IndexDataBase field3815;
-   @ObfuscatedName("v")
-   String field3816;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 817525333
+   )
+   int field3817;
+   @ObfuscatedName("d")
+   boolean field3811;
 
    @ObfuscatedSignature(
       signature = "(Lip;)V"
@@ -26,6 +26,22 @@ public class class288 {
       this.field3817 = 0;
       this.field3811 = false;
       this.field3815 = var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "2007625071"
+   )
+   void method5279(String var1) {
+      if(var1 != null && !var1.isEmpty()) {
+         if(var1 != this.field3816) {
+            this.field3816 = var1;
+            this.field3817 = 0;
+            this.field3811 = false;
+            this.method5290();
+         }
+      }
    }
 
    @ObfuscatedName("s")
@@ -77,22 +93,6 @@ public class class288 {
    )
    boolean method5289() {
       return this.field3811;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "2007625071"
-   )
-   void method5279(String var1) {
-      if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.field3816) {
-            this.field3816 = var1;
-            this.field3817 = 0;
-            this.field3811 = false;
-            this.method5290();
-         }
-      }
    }
 
    @ObfuscatedName("o")

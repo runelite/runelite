@@ -12,12 +12,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("dw")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      longValue = 690544057869974923L
-   )
-   @Export("position")
-   long position;
    @ObfuscatedName("w")
    @Export("file")
    RandomAccessFile file;
@@ -27,6 +21,12 @@ public final class FileOnDisk {
    )
    @Export("length")
    long length;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      longValue = 690544057869974923L
+   )
+   @Export("position")
+   long position;
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
       if(var3 == -1L) {
@@ -47,6 +47,40 @@ public final class FileOnDisk {
       }
 
       this.file.seek(0L);
+   }
+
+   @ObfuscatedName("w")
+   @Export("seek")
+   final void seek(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "([BIIB)V",
+      garbageValue = "25"
+   )
+   @Export("write")
+   public final void write(byte[] var1, int var2, int var3) throws IOException {
+      if(this.position + (long)var3 > this.length) {
+         this.file.seek(1L + this.length);
+         this.file.write(1);
+         throw new EOFException();
+      } else {
+         this.file.write(var1, var2, var3);
+         this.position += (long)var3;
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "127"
+   )
+   @Export("close")
+   public final void close() throws IOException {
+      this.method2406(false);
    }
 
    @ObfuscatedName("o")
@@ -80,16 +114,6 @@ public final class FileOnDisk {
       return this.file.length();
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "127"
-   )
-   @Export("close")
-   public final void close() throws IOException {
-      this.method2406(false);
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "([BIII)I",
@@ -103,30 +127,6 @@ public final class FileOnDisk {
       }
 
       return var4;
-   }
-
-   @ObfuscatedName("w")
-   @Export("seek")
-   final void seek(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "25"
-   )
-   @Export("write")
-   public final void write(byte[] var1, int var2, int var3) throws IOException {
-      if(this.position + (long)var3 > this.length) {
-         this.file.seek(1L + this.length);
-         this.file.write(1);
-         throw new EOFException();
-      } else {
-         this.file.write(var1, var2, var3);
-         this.position += (long)var3;
-      }
    }
 
    protected void finalize() throws Throwable {
@@ -164,6 +164,52 @@ public final class FileOnDisk {
       }
 
       return var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Lin;",
+      garbageValue = "156445311"
+   )
+   public static Enum method2428(int var0) {
+      Enum var1 = (Enum)Enum.field3408.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Enum.field3398.getConfigData(8, var0);
+         var1 = new Enum();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         Enum.field3408.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lco;Lco;IZB)I",
+      garbageValue = "7"
+   )
+   static int method2410(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1545()?(var1.method1545()?0:1):(var1.method1545()?-1:0)):(var2 == 5?(var0.method1547()?(var1.method1547()?0:1):(var1.method1547()?-1:0)):(var2 == 6?(var0.method1548()?(var1.method1548()?0:1):(var1.method1548()?-1:0)):(var2 == 7?(var0.method1546()?(var1.method1546()?0:1):(var1.method1546()?-1:0)):var0.id - var1.id)))));
+      }
    }
 
    @ObfuscatedName("fe")
@@ -577,50 +623,6 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("jy")
-   @ObfuscatedSignature(
-      signature = "(Lhj;I)V",
-      garbageValue = "-1972454804"
-   )
-   static final void method2403(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 324) {
-         if(Client.field956 == -1) {
-            Client.field956 = var0.spriteId;
-            Client.field1187 = var0.field2678;
-         }
-
-         if(Client.field1185.isFemale) {
-            var0.spriteId = Client.field956;
-         } else {
-            var0.spriteId = Client.field1187;
-         }
-
-      } else if(var1 == 325) {
-         if(Client.field956 == -1) {
-            Client.field956 = var0.spriteId;
-            Client.field1187 = var0.field2678;
-         }
-
-         if(Client.field1185.isFemale) {
-            var0.spriteId = Client.field1187;
-         } else {
-            var0.spriteId = Client.field956;
-         }
-
-      } else if(var1 == 327) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 0;
-      } else if(var1 == 328) {
-         var0.rotationX = 150;
-         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
-         var0.modelType = 5;
-         var0.modelId = 1;
-      }
-   }
-
    @ObfuscatedName("ii")
    @ObfuscatedSignature(
       signature = "([Lhj;II)V",
@@ -667,49 +669,47 @@ public final class FileOnDisk {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "(II)Lin;",
-      garbageValue = "156445311"
+      signature = "(Lhj;I)V",
+      garbageValue = "-1972454804"
    )
-   public static Enum method2428(int var0) {
-      Enum var1 = (Enum)Enum.field3408.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Enum.field3398.getConfigData(8, var0);
-         var1 = new Enum();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+   static final void method2403(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 324) {
+         if(Client.field956 == -1) {
+            Client.field956 = var0.spriteId;
+            Client.field1187 = var0.field2678;
          }
 
-         Enum.field3408.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lco;Lco;IZB)I",
-      garbageValue = "7"
-   )
-   static int method2410(World var0, World var1, int var2, boolean var3) {
-      if(var2 == 1) {
-         int var4 = var0.playerCount;
-         int var5 = var1.playerCount;
-         if(!var3) {
-            if(var4 == -1) {
-               var4 = 2001;
-            }
-
-            if(var5 == -1) {
-               var5 = 2001;
-            }
+         if(Client.field1185.isFemale) {
+            var0.spriteId = Client.field956;
+         } else {
+            var0.spriteId = Client.field1187;
          }
 
-         return var4 - var5;
-      } else {
-         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1545()?(var1.method1545()?0:1):(var1.method1545()?-1:0)):(var2 == 5?(var0.method1547()?(var1.method1547()?0:1):(var1.method1547()?-1:0)):(var2 == 6?(var0.method1548()?(var1.method1548()?0:1):(var1.method1548()?-1:0)):(var2 == 7?(var0.method1546()?(var1.method1546()?0:1):(var1.method1546()?-1:0)):var0.id - var1.id)))));
+      } else if(var1 == 325) {
+         if(Client.field956 == -1) {
+            Client.field956 = var0.spriteId;
+            Client.field1187 = var0.field2678;
+         }
+
+         if(Client.field1185.isFemale) {
+            var0.spriteId = Client.field1187;
+         } else {
+            var0.spriteId = Client.field956;
+         }
+
+      } else if(var1 == 327) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 0;
+      } else if(var1 == 328) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 1;
       }
    }
 }

@@ -5,30 +5,28 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ik")
 public class class251 extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   static NodeCache field3387;
    @ObfuscatedName("pp")
    @ObfuscatedSignature(
       signature = "Ldx;"
    )
    static class114 field3390;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   static Widget field3392;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    static IndexDataBase field3385;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   static NodeCache field3387;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   static Widget field3392;
    @ObfuscatedName("q")
    char field3384;
-   @ObfuscatedName("v")
-   boolean field3389;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 38985783
@@ -36,6 +34,8 @@ public class class251 extends CacheableNode {
    public int field3386;
    @ObfuscatedName("g")
    public String field3388;
+   @ObfuscatedName("v")
+   boolean field3389;
 
    static {
       field3387 = new NodeCache(64);
@@ -43,6 +43,30 @@ public class class251 extends CacheableNode {
 
    class251() {
       this.field3389 = true;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1889035302"
+   )
+   void method4507() {
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Lfz;I)V",
+      garbageValue = "-124268171"
+   )
+   void method4508(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4509(var1, var2);
+      }
    }
 
    @ObfuscatedName("g")
@@ -70,30 +94,6 @@ public class class251 extends CacheableNode {
    )
    public boolean method4510() {
       return this.field3384 == 's';
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1889035302"
-   )
-   void method4507() {
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lfz;I)V",
-      garbageValue = "-124268171"
-   )
-   void method4508(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4509(var1, var2);
-      }
    }
 
    @ObfuscatedName("g")

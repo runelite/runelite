@@ -7,6 +7,9 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bk")
 @Implements("Player")
 public final class Player extends Actor {
+   @ObfuscatedName("w")
+   @Export("name")
+   String name;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lhs;"
@@ -25,8 +28,6 @@ public final class Player extends Actor {
    )
    @Export("overheadIcon")
    int overheadIcon;
-   @ObfuscatedName("y")
-   boolean field905;
    @ObfuscatedName("v")
    @Export("actions")
    String[] actions;
@@ -42,12 +43,11 @@ public final class Player extends Actor {
    )
    @Export("totalLevel")
    int totalLevel;
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1081358129
+      intValue = 1433313599
    )
-   @Export("team")
-   int team;
+   int field894;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 1894464263
@@ -58,17 +58,6 @@ public final class Player extends Actor {
       intValue = 44024975
    )
    int field903;
-   @ObfuscatedName("c")
-   @Export("hidden")
-   boolean hidden;
-   @ObfuscatedName("l")
-   boolean field886;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Leh;"
-   )
-   @Export("model")
-   Model model;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 685611895
@@ -79,29 +68,17 @@ public final class Player extends Actor {
       intValue = -1581139783
    )
    int field898;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1433313599
-   )
-   int field894;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -2007387177
    )
    int field897;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1051809229
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Leh;"
    )
-   int field908;
-   @ObfuscatedName("w")
-   @Export("name")
-   String name;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 275015843
-   )
-   int field913;
+   @Export("model")
+   Model model;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1652007423
@@ -122,6 +99,29 @@ public final class Player extends Actor {
       intValue = 91366807
    )
    int field904;
+   @ObfuscatedName("y")
+   boolean field905;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1081358129
+   )
+   @Export("team")
+   int team;
+   @ObfuscatedName("c")
+   @Export("hidden")
+   boolean hidden;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1051809229
+   )
+   int field908;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 275015843
+   )
+   int field913;
+   @ObfuscatedName("l")
+   boolean field886;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1457569189
@@ -150,134 +150,6 @@ public final class Player extends Actor {
       this.team = 0;
       this.hidden = false;
       this.field886 = false;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)Leh;",
-      garbageValue = "0"
-   )
-   @Export("getModel")
-   protected final Model getModel() {
-      if(this.composition == null) {
-         return null;
-      } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?NPCComposition.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && !this.field905 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?NPCComposition.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4032(var1, super.actionFrame, var2, super.poseFrame);
-         if(var3 == null) {
-            return null;
-         } else {
-            var3.method2558();
-            super.field1228 = var3.modelHeight;
-            Model var4;
-            Model[] var5;
-            if(!this.field905 && super.graphic != -1 && super.field1215 != -1) {
-               var4 = class244.getSpotAnimType(super.graphic).method4404(super.field1215);
-               if(var4 != null) {
-                  var4.method2569(0, -super.field1250, 0);
-                  var5 = new Model[]{var3, var4};
-                  var3 = new Model(var5, 2);
-               }
-            }
-
-            if(!this.field905 && this.model != null) {
-               if(Client.gameCycle >= this.field903) {
-                  this.model = null;
-               }
-
-               if(Client.gameCycle >= this.field895 && Client.gameCycle < this.field903) {
-                  var4 = this.model;
-                  var4.method2569(this.field909 - super.x, this.field898 - this.field894, this.field897 - super.y);
-                  if(super.orientation == 512) {
-                     var4.method2565();
-                     var4.method2565();
-                     var4.method2565();
-                  } else if(super.orientation == 1024) {
-                     var4.method2565();
-                     var4.method2565();
-                  } else if(super.orientation == 1536) {
-                     var4.method2565();
-                  }
-
-                  var5 = new Model[]{var3, var4};
-                  var3 = new Model(var5, 2);
-                  if(super.orientation == 512) {
-                     var4.method2565();
-                  } else if(super.orientation == 1024) {
-                     var4.method2565();
-                     var4.method2565();
-                  } else if(super.orientation == 1536) {
-                     var4.method2565();
-                     var4.method2565();
-                     var4.method2565();
-                  }
-
-                  var4.method2569(super.x - this.field909, this.field894 - this.field898, super.y - this.field897);
-               }
-            }
-
-            var3.field1936 = true;
-            return var3;
-         }
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1981906163"
-   )
-   void method1114(int var1, int var2) {
-      super.queueSize = 0;
-      super.field1213 = 0;
-      super.field1267 = 0;
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
-      int var3 = this.getSize();
-      super.x = super.pathX[0] * 128 + var3 * 64;
-      super.y = super.pathY[0] * 128 + var3 * 64;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "76"
-   )
-   @Export("getSize")
-   int getSize() {
-      return this.composition != null && this.composition.transformedNpcId != -1?class17.getNpcDefinition(this.composition.transformedNpcId).field3555:1;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(IIBI)V",
-      garbageValue = "887268453"
-   )
-   final void method1133(int var1, int var2, byte var3) {
-      if(super.queueSize < 9) {
-         ++super.queueSize;
-      }
-
-      for(int var4 = super.queueSize; var4 > 0; --var4) {
-         super.pathX[var4] = super.pathX[var4 - 1];
-         super.pathY[var4] = super.pathY[var4 - 1];
-         super.field1258[var4] = super.field1258[var4 - 1];
-      }
-
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
-      super.field1258[0] = var3;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "246459077"
-   )
-   @Export("hasConfig")
-   final boolean hasConfig() {
-      return this.composition != null;
    }
 
    @ObfuscatedName("w")
@@ -384,6 +256,87 @@ public final class Player extends Actor {
       this.composition.method4030(var4, var9, var2 == 1, var3);
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "76"
+   )
+   @Export("getSize")
+   int getSize() {
+      return this.composition != null && this.composition.transformedNpcId != -1?class17.getNpcDefinition(this.composition.transformedNpcId).field3555:1;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)Leh;",
+      garbageValue = "0"
+   )
+   @Export("getModel")
+   protected final Model getModel() {
+      if(this.composition == null) {
+         return null;
+      } else {
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?NPCComposition.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && !this.field905 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?NPCComposition.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.method4032(var1, super.actionFrame, var2, super.poseFrame);
+         if(var3 == null) {
+            return null;
+         } else {
+            var3.method2558();
+            super.field1228 = var3.modelHeight;
+            Model var4;
+            Model[] var5;
+            if(!this.field905 && super.graphic != -1 && super.field1215 != -1) {
+               var4 = class244.getSpotAnimType(super.graphic).method4404(super.field1215);
+               if(var4 != null) {
+                  var4.method2569(0, -super.field1250, 0);
+                  var5 = new Model[]{var3, var4};
+                  var3 = new Model(var5, 2);
+               }
+            }
+
+            if(!this.field905 && this.model != null) {
+               if(Client.gameCycle >= this.field903) {
+                  this.model = null;
+               }
+
+               if(Client.gameCycle >= this.field895 && Client.gameCycle < this.field903) {
+                  var4 = this.model;
+                  var4.method2569(this.field909 - super.x, this.field898 - this.field894, this.field897 - super.y);
+                  if(super.orientation == 512) {
+                     var4.method2565();
+                     var4.method2565();
+                     var4.method2565();
+                  } else if(super.orientation == 1024) {
+                     var4.method2565();
+                     var4.method2565();
+                  } else if(super.orientation == 1536) {
+                     var4.method2565();
+                  }
+
+                  var5 = new Model[]{var3, var4};
+                  var3 = new Model(var5, 2);
+                  if(super.orientation == 512) {
+                     var4.method2565();
+                  } else if(super.orientation == 1024) {
+                     var4.method2565();
+                     var4.method2565();
+                  } else if(super.orientation == 1536) {
+                     var4.method2565();
+                     var4.method2565();
+                     var4.method2565();
+                  }
+
+                  var4.method2569(super.x - this.field909, this.field894 - this.field898, super.y - this.field897);
+               }
+            }
+
+            var3.field1936 = true;
+            return var3;
+         }
+      }
+   }
+
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(IIBI)V",
@@ -428,25 +381,51 @@ public final class Player extends Actor {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "314537245"
+      signature = "(III)V",
+      garbageValue = "1981906163"
    )
-   public static void method1137() {
-      try {
-         class155.field2239.method2398();
+   void method1114(int var1, int var2) {
+      super.queueSize = 0;
+      super.field1213 = 0;
+      super.field1267 = 0;
+      super.pathX[0] = var1;
+      super.pathY[0] = var2;
+      int var3 = this.getSize();
+      super.x = super.pathX[0] * 128 + var3 * 64;
+      super.y = super.pathY[0] * 128 + var3 * 64;
+   }
 
-         for(int var0 = 0; var0 < class223.field2836; ++var0) {
-            PacketBuffer.field2417[var0].method2398();
-         }
-
-         class155.field2241.method2398();
-         class155.field2240.method2398();
-      } catch (Exception var2) {
-         ;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IIBI)V",
+      garbageValue = "887268453"
+   )
+   final void method1133(int var1, int var2, byte var3) {
+      if(super.queueSize < 9) {
+         ++super.queueSize;
       }
 
+      for(int var4 = super.queueSize; var4 > 0; --var4) {
+         super.pathX[var4] = super.pathX[var4 - 1];
+         super.pathY[var4] = super.pathY[var4 - 1];
+         super.field1258[var4] = super.field1258[var4 - 1];
+      }
+
+      super.pathX[0] = var1;
+      super.pathY[0] = var2;
+      super.field1258[0] = var3;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "246459077"
+   )
+   @Export("hasConfig")
+   final boolean hasConfig() {
+      return this.composition != null;
    }
 
    @ObfuscatedName("q")
@@ -572,5 +551,26 @@ public final class Player extends Actor {
             }
          }
       }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "314537245"
+   )
+   public static void method1137() {
+      try {
+         class155.field2239.method2398();
+
+         for(int var0 = 0; var0 < class223.field2836; ++var0) {
+            PacketBuffer.field2417[var0].method2398();
+         }
+
+         class155.field2241.method2398();
+         class155.field2240.method2398();
+      } catch (Exception var2) {
+         ;
+      }
+
    }
 }

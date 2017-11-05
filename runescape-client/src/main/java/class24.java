@@ -26,11 +26,6 @@ public class class24 {
       signature = "Ll;"
    )
    public static final class24 field370;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 578711229
-   )
-   final int field368;
    @ObfuscatedName("o")
    final String field371;
    @ObfuscatedName("g")
@@ -43,6 +38,11 @@ public class class24 {
       intValue = -1018189985
    )
    final int field373;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 578711229
+   )
+   final int field368;
 
    static {
       field378 = new class24("SMALL", 2, 0, 4);
@@ -73,30 +73,6 @@ public class class24 {
    )
    static class24[] method179() {
       return new class24[]{field369, field378, field370};
-   }
-
-   @ObfuscatedName("ft")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "723071518"
-   )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = class9.font_p12full.method4839(var0, 250);
-      int var6 = class9.font_p12full.method4840(var0, 250) * 13;
-      Rasterizer2D.method5045(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2, 16777215);
-      class9.font_p12full.method4915(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class36.method480(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var2 + var6);
-      if(var1) {
-         GameEngine.field733.vmethod5121(0, 0);
-      } else {
-         ISAACCipher.method3525(var3, var4, var5, var6);
-      }
-
    }
 
    @ObfuscatedName("s")
@@ -148,5 +124,29 @@ public class class24 {
       } else {
          return 2;
       }
+   }
+
+   @ObfuscatedName("ft")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "723071518"
+   )
+   @Export("drawStatusBox")
+   static final void drawStatusBox(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = var2 + 6;
+      int var4 = var2 + 6;
+      int var5 = class9.font_p12full.method4839(var0, 250);
+      int var6 = class9.font_p12full.method4840(var0, 250) * 13;
+      Rasterizer2D.method5045(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2, 16777215);
+      class9.font_p12full.method4915(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      class36.method480(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var2 + var6);
+      if(var1) {
+         GameEngine.field733.vmethod5121(0, 0);
+      } else {
+         ISAACCipher.method3525(var3, var4, var5, var6);
+      }
+
    }
 }

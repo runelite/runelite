@@ -12,24 +12,12 @@ public final class DecorativeObject {
       signature = "Lih;"
    )
    static IndexData field2162;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 256448349
+      intValue = -741340865
    )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1853368037
-   )
-   @Export("renderInfoBitPacked")
-   int renderInfoBitPacked;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -364698591
-   )
-   @Export("offsetX")
-   int offsetX;
+   @Export("floor")
+   int floor;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1221186097
@@ -42,30 +30,6 @@ public final class DecorativeObject {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1856849269
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -741340865
-   )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Len;"
-   )
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Len;"
-   )
-   @Export("renderable2")
-   public Renderable renderable2;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1285683311
@@ -78,6 +42,42 @@ public final class DecorativeObject {
    )
    @Export("rotation")
    int rotation;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -364698591
+   )
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1856849269
+   )
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Len;"
+   )
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 256448349
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1853368037
+   )
+   @Export("renderInfoBitPacked")
+   int renderInfoBitPacked;
 
    DecorativeObject() {
       this.hash = 0;

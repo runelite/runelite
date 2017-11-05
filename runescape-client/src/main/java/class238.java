@@ -6,42 +6,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ig")
 public class class238 {
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -502064433
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
    )
-   public static int field3263;
+   public static RSSocket field3255;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 175288755
    )
    public static int field3245;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lgs;"
-   )
-   public static HashTable field3252;
-   @ObfuscatedName("m")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1572068145
+      longValue = -6446435534470100275L
    )
-   public static int field3264;
+   public static long field3258;
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
    public static HashTable field3247;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lgj;"
-   )
-   public static Node2LinkedList field3261;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lis;"
-   )
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1570656921
@@ -52,41 +36,44 @@ public class class238 {
       signature = "Lgs;"
    )
    public static HashTable field3244;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      longValue = -6446435534470100275L
-   )
-   public static long field3258;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1826581109
    )
    public static int field3250;
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgj;"
+   )
+   public static Node2LinkedList field3261;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lgs;"
    )
-   public static HashTable field3254;
+   public static HashTable field3252;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -135001399
    )
    public static int field3253;
-   @ObfuscatedName("k")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "[Lih;"
+      signature = "Lgs;"
    )
-   static IndexData[] field3260;
+   public static HashTable field3254;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -285986479
    )
    public static int field3259;
-   @ObfuscatedName("w")
+   @ObfuscatedName("u")
+   static boolean field3256;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lis;"
    )
-   public static RSSocket field3255;
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lfz;"
@@ -99,10 +86,23 @@ public class class238 {
    public static int field3251;
    @ObfuscatedName("j")
    static CRC32 field3265;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "[Lih;"
+   )
+   static IndexData[] field3260;
    @ObfuscatedName("c")
    public static byte field3262;
-   @ObfuscatedName("u")
-   static boolean field3256;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -502064433
+   )
+   public static int field3263;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1572068145
+   )
+   public static int field3264;
 
    static {
       field3245 = 0;

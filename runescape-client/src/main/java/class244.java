@@ -4,21 +4,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iw")
 public class class244 extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   static NodeCache field3315;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   public static IndexDataBase field3316;
    @ObfuscatedName("ni")
    @ObfuscatedSignature(
       signature = "Ljv;"
    )
    static class277 field3317;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   public static IndexDataBase field3316;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   static NodeCache field3315;
    @ObfuscatedName("q")
    public boolean field3319;
 
@@ -28,18 +28,6 @@ public class class244 extends CacheableNode {
 
    class244() {
       this.field3319 = false;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfz;IB)V",
-      garbageValue = "-72"
-   )
-   void method4391(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3319 = true;
-      }
-
    }
 
    @ObfuscatedName("s")
@@ -56,6 +44,18 @@ public class class244 extends CacheableNode {
 
          this.method4391(var1, var2);
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfz;IB)V",
+      garbageValue = "-72"
+   )
+   void method4391(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field3319 = true;
+      }
+
    }
 
    @ObfuscatedName("w")

@@ -4,22 +4,31 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("o")
 final class class3 implements class0 {
-   @ObfuscatedName("fi")
-   @ObfuscatedSignature(
-      signature = "Leu;"
-   )
-   @Export("region")
-   static Region region;
+   @ObfuscatedName("rc")
+   static short[] field31;
+   @ObfuscatedName("t")
+   static int[] field25;
    @ObfuscatedName("cb")
    @ObfuscatedSignature(
       signature = "Lih;"
    )
    @Export("indexSprites")
    static IndexData indexSprites;
-   @ObfuscatedName("t")
-   static int[] field25;
-   @ObfuscatedName("rc")
-   static short[] field31;
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "Leu;"
+   )
+   @Export("region")
+   static Region region;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lfz;I)Ljava/lang/String;",
+      garbageValue = "-382224339"
+   )
+   public static String method7(Buffer var0) {
+      return Coordinates.method4026(var0, 32767);
+   }
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
@@ -51,15 +60,6 @@ final class class3 implements class0 {
             }
          }
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lfz;I)Ljava/lang/String;",
-      garbageValue = "-382224339"
-   )
-   public static String method7(Buffer var0) {
-      return Coordinates.method4026(var0, 32767);
    }
 
    @ObfuscatedName("ff")

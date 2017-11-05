@@ -20,9 +20,6 @@ public class Frame {
    )
    @Export("skin")
    FrameMap skin;
-   @ObfuscatedName("z")
-   @Export("showing")
-   boolean showing;
    @ObfuscatedName("v")
    int field1880;
    @ObfuscatedName("p")
@@ -36,6 +33,9 @@ public class Frame {
    @ObfuscatedName("x")
    @Export("translator_z")
    int[] translator_z;
+   @ObfuscatedName("z")
+   @Export("showing")
+   boolean showing;
 
    static {
       field1882 = new int[500];

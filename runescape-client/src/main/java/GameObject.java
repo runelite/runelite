@@ -7,48 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("el")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1329892511
-   )
-   @Export("relativeX")
-   int relativeX;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1606333247
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -860923379
-   )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -86285207
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 262140159
-   )
-   @Export("relativeY")
-   int relativeY;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 737228437
-   )
-   @Export("offsetY")
-   int offsetY;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -604076057
    )
    @Export("plane")
    int plane;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1495885479
+   )
+   @Export("height")
+   int height;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 754706703
@@ -61,12 +31,6 @@ public final class GameObject {
    )
    @Export("y")
    int y;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1495885479
-   )
-   @Export("height")
-   int height;
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "Len;"
@@ -79,18 +43,54 @@ public final class GameObject {
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -2044543599
+      intValue = -1329892511
    )
-   @Export("cycle")
-   int cycle;
+   @Export("relativeX")
+   int relativeX;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1606333247
+   )
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 262140159
+   )
+   @Export("relativeY")
+   int relativeY;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 737228437
+   )
+   @Export("offsetY")
+   int offsetY;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1867691603
    )
    @Export("drawPriority")
    int drawPriority;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -2044543599
+   )
+   @Export("cycle")
+   int cycle;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -860923379
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -86285207
+   )
+   @Export("flags")
+   int flags;
 
    GameObject() {
       this.hash = 0;

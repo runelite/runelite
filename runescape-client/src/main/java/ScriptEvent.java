@@ -25,13 +25,10 @@ public class ScriptEvent extends Node {
    static IndexData indexTrack2;
    @ObfuscatedName("fm")
    static byte[][] field856;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhy;"
-   )
-   class219 field844;
    @ObfuscatedName("w")
    Object[] field849;
+   @ObfuscatedName("s")
+   boolean field846;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lhj;"
@@ -48,23 +45,16 @@ public class ScriptEvent extends Node {
       intValue = -749393269
    )
    int field848;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   Widget field855;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1817595007
-   )
-   int field854;
-   @ObfuscatedName("x")
-   String field853;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1540056343
    )
    int field851;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   Widget field855;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -259873379
@@ -75,8 +65,18 @@ public class ScriptEvent extends Node {
       intValue = -620532887
    )
    int field852;
-   @ObfuscatedName("s")
-   boolean field846;
+   @ObfuscatedName("x")
+   String field853;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1817595007
+   )
+   int field854;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhy;"
+   )
+   class219 field844;
 
    public ScriptEvent() {
       this.field844 = class219.field2787;
@@ -98,6 +98,17 @@ public class ScriptEvent extends Node {
    )
    public void method1096(class219 var1) {
       this.field844 = var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "397781024"
+   )
+   public static void method1092(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
+      CombatInfoListHolder.method1691(var0, var5, var6, var3, var4);
    }
 
    @ObfuscatedName("q")
@@ -183,16 +194,5 @@ public class ScriptEvent extends Node {
       }
 
       return var0.isHidden;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "397781024"
-   )
-   public static void method1092(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.getFile(var1);
-      int var6 = var0.getChild(var5, var2);
-      CombatInfoListHolder.method1691(var0, var5, var6, var3, var4);
    }
 }

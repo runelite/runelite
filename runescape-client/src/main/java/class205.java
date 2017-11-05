@@ -9,11 +9,11 @@ public class class205 extends Node {
       signature = "Lgf;"
    )
    class202 field2537;
-   @ObfuscatedName("z")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1551196891
+      intValue = 717127085
    )
-   int field2534;
+   int field2549;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgt;"
@@ -24,66 +24,41 @@ public class class205 extends Node {
       signature = "Ldi;"
    )
    class105 field2536;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   class115 field2552;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1483672565
-   )
-   int field2542;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 717127085
-   )
-   int field2549;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -8855109
-   )
-   int field2541;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 637317575
-   )
-   int field2544;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 865361469
-   )
-   int field2535;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1882551857
-   )
-   int field2543;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1426805589
    )
    int field2538;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 434238685
-   )
-   int field2540;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -818501461
-   )
-   int field2554;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -250241659
    )
    int field2539;
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1133965931
+      intValue = 434238685
    )
-   int field2550;
+   int field2540;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1882551857
+   )
+   int field2543;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -8855109
+   )
+   int field2541;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1483672565
+   )
+   int field2542;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1551196891
+   )
+   int field2534;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1415069567
@@ -94,21 +69,46 @@ public class class205 extends Node {
       intValue = -1636988085
    )
    int field2546;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1770665375
-   )
-   int field2553;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -608150529
    )
    int field2547;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 637317575
+   )
+   int field2544;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 939398725
    )
    int field2548;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1133965931
+   )
+   int field2550;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1770665375
+   )
+   int field2553;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ldl;"
+   )
+   class115 field2552;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 865361469
+   )
+   int field2535;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -818501461
+   )
+   int field2554;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(

@@ -14,6 +14,16 @@ public class class227 {
    )
    static int field3145;
 
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lip;Lip;S)V",
+      garbageValue = "256"
+   )
+   public static void method4158(IndexDataBase var0, IndexDataBase var1) {
+      CombatInfo2.field3367 = var0;
+      CombatInfo2.field3369 = var1;
+   }
+
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lgk;IIB)I",
@@ -26,16 +36,6 @@ public class class227 {
          IntegerNode var3 = (IntegerNode)var0.get((long)var1);
          return var3 == null?var2:var3.value;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lip;Lip;S)V",
-      garbageValue = "256"
-   )
-   public static void method4158(IndexDataBase var0, IndexDataBase var1) {
-      CombatInfo2.field3367 = var0;
-      CombatInfo2.field3369 = var1;
    }
 
    @ObfuscatedName("ky")

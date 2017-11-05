@@ -5,6 +5,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("a")
 public class class14 {
+   @ObfuscatedName("pb")
+   @ObfuscatedGetter(
+      intValue = 1470002847
+   )
+   static int field292;
+   @ObfuscatedName("rp")
+   @ObfuscatedGetter(
+      intValue = -995736971
+   )
+   static int field300;
    @ObfuscatedName("cf")
    @ObfuscatedSignature(
       signature = "Lih;"
@@ -17,35 +27,25 @@ public class class14 {
    )
    @Export("headIconsHint")
    static SpritePixels[] headIconsHint;
-   @ObfuscatedName("pb")
-   @ObfuscatedGetter(
-      intValue = 1470002847
-   )
-   static int field292;
-   @ObfuscatedName("rp")
-   @ObfuscatedGetter(
-      intValue = -995736971
-   )
-   static int field300;
-   @ObfuscatedName("g")
-   String field304;
-   @ObfuscatedName("o")
-   String field295;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      longValue = -8704949915974274793L
-   )
-   public final long field293;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -2140382519
    )
    public final int field296;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      longValue = -8704949915974274793L
+   )
+   public final long field293;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lh;"
    )
    public final GrandExchangeOffer field294;
+   @ObfuscatedName("o")
+   String field295;
+   @ObfuscatedName("g")
+   String field304;
 
    @ObfuscatedSignature(
       signature = "(Lfz;BI)V"

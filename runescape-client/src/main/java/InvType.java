@@ -7,20 +7,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iu")
 @Implements("InvType")
 public class InvType extends CacheableNode {
+   @ObfuscatedName("nx")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lip;"
+   )
+   public static IndexDataBase field3276;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lgo;"
    )
    @Export("inventoryCache")
    public static NodeCache inventoryCache;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   public static IndexDataBase field3276;
-   @ObfuscatedName("nx")
-   @Export("clanChatRank")
-   static byte clanChatRank;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1626334629
@@ -34,18 +34,6 @@ public class InvType extends CacheableNode {
 
    public InvType() {
       this.size = 0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfz;IB)V",
-      garbageValue = "0"
-   )
-   void method4344(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.size = var1.readUnsignedShort();
-      }
-
    }
 
    @ObfuscatedName("s")
@@ -63,6 +51,18 @@ public class InvType extends CacheableNode {
 
          this.method4344(var1, var2);
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfz;IB)V",
+      garbageValue = "0"
+   )
+   void method4344(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.size = var1.readUnsignedShort();
+      }
+
    }
 
    @ObfuscatedName("g")

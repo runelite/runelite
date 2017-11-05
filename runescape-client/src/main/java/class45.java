@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ak")
 public class class45 extends class28 {
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1864419113
-   )
-   int field603;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 674352101
    )
    int field604;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1864419113
+   )
+   int field603;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
       intValue = -1227908357
@@ -24,33 +24,6 @@ public class class45 extends class28 {
       intValue = -1192514489
    )
    int field605;
-
-   @ObfuscatedName("aw")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-354967826"
-   )
-   int method649() {
-      return this.field602;
-   }
-
-   @ObfuscatedName("af")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-55"
-   )
-   boolean method633(int var1, int var2) {
-      return var1 < this.field602 * 8?false:(var2 < this.field605 * 8?false:(var1 >= this.field602 * 8 + 8?false:var2 < this.field605 * 8 + 8));
-   }
-
-   @ObfuscatedName("az")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-234704773"
-   )
-   int method631() {
-      return this.field605;
-   }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
@@ -100,6 +73,15 @@ public class class45 extends class28 {
       }
    }
 
+   @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "-55"
+   )
+   boolean method633(int var1, int var2) {
+      return var1 < this.field602 * 8?false:(var2 < this.field605 * 8?false:(var1 >= this.field602 * 8 + 8?false:var2 < this.field605 * 8 + 8));
+   }
+
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "(B)I",
@@ -118,6 +100,24 @@ public class class45 extends class28 {
       return this.field603;
    }
 
+   @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-354967826"
+   )
+   int method649() {
+      return this.field602;
+   }
+
+   @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-234704773"
+   )
+   int method631() {
+      return this.field605;
+   }
+
    public int hashCode() {
       return super.field420 | super.field418 << 8 | this.field602 << 16 | this.field605 << 24;
    }
@@ -129,6 +129,60 @@ public class class45 extends class28 {
          class45 var2 = (class45)var1;
          return var2.field420 == super.field420 && super.field418 == var2.field418?var2.field602 == this.field602 && this.field605 == var2.field605:false;
       }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "-255236574"
+   )
+   static void method642(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
+         }
+
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method642(var0, var1, var2, var5 - 1);
+         method642(var0, var1, var5 + 1, var3);
+      }
+
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-1780688822"
+   )
+   public static String method653(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = '*';
+      }
+
+      String var1 = new String(var3);
+      return var1;
    }
 
    @ObfuscatedName("jt")
@@ -304,59 +358,5 @@ public class class45 extends class28 {
          }
 
       }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1780688822"
-   )
-   public static String method653(CharSequence var0) {
-      int var2 = var0.length();
-      char[] var3 = new char[var2];
-
-      for(int var4 = 0; var4 < var2; ++var4) {
-         var3[var4] = '*';
-      }
-
-      String var1 = new String(var3);
-      return var1;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "-255236574"
-   )
-   static void method642(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
-         }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method642(var0, var1, var2, var5 - 1);
-         method642(var0, var1, var5 + 1, var3);
-      }
-
    }
 }

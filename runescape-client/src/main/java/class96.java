@@ -7,11 +7,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cz")
 public class class96 {
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 792831739
-   )
-   static int field1515;
    @ObfuscatedName("w")
    @Export("chatLineMap")
    static final Map chatLineMap;
@@ -25,12 +20,26 @@ public class class96 {
       signature = "Lge;"
    )
    static final class201 field1517;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 792831739
+   )
+   static int field1515;
 
    static {
       chatLineMap = new HashMap();
       field1516 = new IterableHashTable(1024);
       field1517 = new class201();
       field1515 = 0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BI)Ljava/lang/String;",
+      garbageValue = "1561622273"
+   )
+   public static String method1880(byte[] var0) {
+      return DecorativeObject.method2923(var0, 0, var0.length);
    }
 
    @ObfuscatedName("s")
@@ -54,14 +63,5 @@ public class class96 {
 
          return (char)var1;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "1561622273"
-   )
-   public static String method1880(byte[] var0) {
-      return DecorativeObject.method2923(var0, 0, var0.length);
    }
 }

@@ -7,6 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ci")
 @Implements("DynamicObject")
 public class DynamicObject extends Renderable {
+   @ObfuscatedName("z")
+   public static boolean field1539;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lfx;"
@@ -18,24 +20,12 @@ public class DynamicObject extends Renderable {
       intValue = 1925052983
    )
    public static int field1533;
-   @ObfuscatedName("z")
-   public static boolean field1539;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   Sequence field1544;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 383855755
    )
    @Export("id")
    int id;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1493316481
-   )
-   int field1541;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -31861719
@@ -54,11 +44,6 @@ public class DynamicObject extends Renderable {
    )
    @Export("level")
    int level;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 131880007
-   )
-   int field1540;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -905457245
@@ -71,6 +56,21 @@ public class DynamicObject extends Renderable {
    )
    @Export("sceneY")
    int sceneY;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
+   )
+   Sequence field1544;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 131880007
+   )
+   int field1540;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1493316481
+   )
+   int field1541;
 
    @ObfuscatedSignature(
       signature = "(IIIIIIIZLen;)V"

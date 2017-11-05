@@ -13,38 +13,46 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iz")
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
-   @ObfuscatedName("o")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lip;"
    )
-   static NodeCache field3323;
+   public static IndexDataBase field3333;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgo;"
    )
    @Export("spotanims")
    static NodeCache spotanims;
-   @ObfuscatedName("s")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lgo;"
    )
-   public static IndexDataBase field3333;
+   static NodeCache field3323;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -236911803
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1109844119
-   )
-   public int field3325;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -2119226021
    )
    int field3332;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1109844119
+   )
+   public int field3325;
+   @ObfuscatedName("e")
+   short[] field3326;
+   @ObfuscatedName("d")
+   short[] field3327;
+   @ObfuscatedName("x")
+   short[] field3328;
+   @ObfuscatedName("z")
+   short[] field3322;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -650337775
@@ -70,14 +78,6 @@ public class Spotanim extends CacheableNode {
       intValue = -660562343
    )
    int field3334;
-   @ObfuscatedName("e")
-   short[] field3326;
-   @ObfuscatedName("x")
-   short[] field3328;
-   @ObfuscatedName("d")
-   short[] field3327;
-   @ObfuscatedName("z")
-   short[] field3322;
 
    static {
       spotanims = new NodeCache(64);
@@ -91,6 +91,23 @@ public class Spotanim extends CacheableNode {
       this.field3329 = 0;
       this.field3324 = 0;
       this.field3334 = 0;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lfz;I)V",
+      garbageValue = "1345376364"
+   )
+   @Export("decode")
+   void decode(Buffer var1) {
+      while(true) {
+         int var2 = var1.readUnsignedByte();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method4403(var1, var2);
+      }
    }
 
    @ObfuscatedName("q")
@@ -198,23 +215,6 @@ public class Spotanim extends CacheableNode {
       }
 
       return var5;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfz;I)V",
-      garbageValue = "1345376364"
-   )
-   @Export("decode")
-   void decode(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4403(var1, var2);
-      }
    }
 
    @ObfuscatedName("s")

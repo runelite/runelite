@@ -6,26 +6,26 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cg")
 @Implements("CombatInfoListHolder")
 public class CombatInfoListHolder extends Node {
+   @ObfuscatedName("x")
+   @Export("blendedHue")
+   static int[] blendedHue;
    @ObfuscatedName("go")
    @ObfuscatedSignature(
       signature = "[Ljo;"
    )
    static IndexedSprite[] field1360;
-   @ObfuscatedName("x")
-   @Export("blendedHue")
-   static int[] blendedHue;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lgq;"
-   )
-   @Export("combatInfo1")
-   CombatInfoList combatInfo1;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lio;"
    )
    @Export("combatInfo2")
    CombatInfo2 combatInfo2;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lgq;"
+   )
+   @Export("combatInfo1")
+   CombatInfoList combatInfo1;
 
    @ObfuscatedSignature(
       signature = "(Lio;)V"
@@ -127,38 +127,6 @@ public class CombatInfoListHolder extends Node {
       class36.field523 = 10000;
    }
 
-   @ObfuscatedName("jz")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "25"
-   )
-   static void method1688() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3637(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3638()) {
-         int var1 = var0.id;
-         if(WorldMapData.loadWidget(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = class215.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].hasScript;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = ItemLayer.method2454(var4);
-               if(var5 != null) {
-                  class45.method647(var5);
-               }
-            }
-         }
-      }
-
-   }
-
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)Ljava/lang/String;",
@@ -204,6 +172,29 @@ public class CombatInfoListHolder extends Node {
       return new String(var2);
    }
 
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(Lco;I)V",
+      garbageValue = "746408263"
+   )
+   static void method1686(World var0) {
+      if(var0.method1546() != Client.isMembers) {
+         Client.isMembers = var0.method1546();
+         boolean var1 = var0.method1546();
+         if(var1 != ItemComposition.isMembersWorld) {
+            class208.method3989();
+            ItemComposition.isMembersWorld = var1;
+         }
+      }
+
+      class35.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      Frames.field2120 = Client.socketType == 0?43594:var0.id + 40000;
+      Signlink.field2230 = Client.socketType == 0?443:var0.id + 50000;
+      class51.myWorldPort = Frames.field2120;
+   }
+
    @ObfuscatedName("gk")
    @ObfuscatedSignature(
       signature = "(ZB)V",
@@ -236,26 +227,35 @@ public class CombatInfoListHolder extends Node {
 
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("jz")
    @ObfuscatedSignature(
-      signature = "(Lco;I)V",
-      garbageValue = "746408263"
+      signature = "(B)V",
+      garbageValue = "25"
    )
-   static void method1686(World var0) {
-      if(var0.method1546() != Client.isMembers) {
-         Client.isMembers = var0.method1546();
-         boolean var1 = var0.method1546();
-         if(var1 != ItemComposition.isMembersWorld) {
-            class208.method3989();
-            ItemComposition.isMembersWorld = var1;
+   static void method1688() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3637(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3638()) {
+         int var1 = var0.id;
+         if(WorldMapData.loadWidget(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = class215.widgets[var1];
+
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].hasScript;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = ItemLayer.method2454(var4);
+               if(var5 != null) {
+                  class45.method647(var5);
+               }
+            }
          }
       }
 
-      class35.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      Frames.field2120 = Client.socketType == 0?43594:var0.id + 40000;
-      Signlink.field2230 = Client.socketType == 0?443:var0.id + 50000;
-      class51.myWorldPort = Frames.field2120;
    }
 }

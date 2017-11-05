@@ -59,15 +59,6 @@ public class Coordinates {
 
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2144079491"
-   )
-   public int method4014() {
-      return this.plane << 28 | this.worldX << 14 | this.worldY;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIII)V",
@@ -77,6 +68,15 @@ public class Coordinates {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2144079491"
+   )
+   public int method4014() {
+      return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
    @ObfuscatedName("q")

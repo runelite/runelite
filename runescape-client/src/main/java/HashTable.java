@@ -15,9 +15,6 @@ public final class HashTable {
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("g")
-   @Export("index")
-   int index;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lgd;"
@@ -28,6 +25,9 @@ public final class HashTable {
       signature = "Lgd;"
    )
    Node field2459;
+   @ObfuscatedName("g")
+   @Export("index")
+   int index;
 
    public HashTable(int var1) {
       this.index = 0;
@@ -40,15 +40,6 @@ public final class HashTable {
          var3.previous = var3;
       }
 
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "()Lgd;"
-   )
-   public Node method3637() {
-      this.index = 0;
-      return this.method3638();
    }
 
    @ObfuscatedName("w")
@@ -69,6 +60,52 @@ public final class HashTable {
 
       this.field2457 = null;
       return null;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lgd;J)V"
+   )
+   @Export("put")
+   public void put(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
+   }
+
+   @ObfuscatedName("q")
+   void method3636() {
+      for(int var1 = 0; var1 < this.size; ++var1) {
+         Node var2 = this.buckets[var1];
+
+         while(true) {
+            Node var3 = var2.next;
+            if(var3 == var2) {
+               break;
+            }
+
+            var3.unlink();
+         }
+      }
+
+      this.field2457 = null;
+      this.field2459 = null;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "()Lgd;"
+   )
+   public Node method3637() {
+      this.index = 0;
+      return this.method3638();
    }
 
    @ObfuscatedName("g")
@@ -93,42 +130,5 @@ public final class HashTable {
          this.field2459 = var1.next;
          return var1;
       }
-   }
-
-   @ObfuscatedName("q")
-   void method3636() {
-      for(int var1 = 0; var1 < this.size; ++var1) {
-         Node var2 = this.buckets[var1];
-
-         while(true) {
-            Node var3 = var2.next;
-            if(var3 == var2) {
-               break;
-            }
-
-            var3.unlink();
-         }
-      }
-
-      this.field2457 = null;
-      this.field2459 = null;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lgd;J)V"
-   )
-   @Export("put")
-   public void put(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
    }
 }

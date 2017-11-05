@@ -30,6 +30,23 @@ public class class51 implements class101 {
       return new SourceDataSoundSystem();
    }
 
+   @ObfuscatedName("hn")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1751943647"
+   )
+   static void method761(int var0, int var1) {
+      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADVANCE_DIALOGUE);
+      if(Client.RUNELITE_PACKET) {
+         Client.secretPacketBuffer1.runeliteWriteInt(var1);
+         Client.secretPacketBuffer1.runeliteWriteInt(var0);
+      } else {
+         Client.secretPacketBuffer1.method3342(var1);
+         Client.secretPacketBuffer1.method3392(var0);
+      }
+
+   }
+
    @ObfuscatedName("jh")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -48,22 +65,5 @@ public class class51 implements class101 {
          }
 
       }
-   }
-
-   @ObfuscatedName("hn")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1751943647"
-   )
-   static void method761(int var0, int var1) {
-      Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ADVANCE_DIALOGUE);
-      if(Client.RUNELITE_PACKET) {
-         Client.secretPacketBuffer1.runeliteWriteInt(var1);
-         Client.secretPacketBuffer1.runeliteWriteInt(var0);
-      } else {
-         Client.secretPacketBuffer1.method3342(var1);
-         Client.secretPacketBuffer1.method3392(var0);
-      }
-
    }
 }

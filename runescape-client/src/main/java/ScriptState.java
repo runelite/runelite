@@ -13,18 +13,18 @@ public class ScriptState {
       signature = "Lhj;"
    )
    static Widget field787;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1238152133
-   )
-   @Export("invokedFromPc")
-   int invokedFromPc;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lct;"
    )
    @Export("invokedFromScript")
    Script invokedFromScript;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1238152133
+   )
+   @Export("invokedFromPc")
+   int invokedFromPc;
    @ObfuscatedName("q")
    @Export("savedLocalInts")
    int[] savedLocalInts;

@@ -18,18 +18,18 @@ public class SoundEffect3 {
    @ObfuscatedName("d")
    @Export("fowardMultiplier")
    static int fowardMultiplier;
-   @ObfuscatedName("o")
-   @Export("magnitudes")
-   int[][][] magnitudes;
-   @ObfuscatedName("q")
-   @Export("phases")
-   int[][][] phases;
-   @ObfuscatedName("g")
-   @Export("unity")
-   int[] unity;
    @ObfuscatedName("w")
    @Export("pairs")
    int[] pairs;
+   @ObfuscatedName("q")
+   @Export("phases")
+   int[][][] phases;
+   @ObfuscatedName("o")
+   @Export("magnitudes")
+   int[][][] magnitudes;
+   @ObfuscatedName("g")
+   @Export("unity")
+   int[] unity;
 
    static {
       minimisedCoefficients = new float[2][8];

@@ -9,10 +9,6 @@ public class class162 {
    static int[][] field2302;
    @ObfuscatedName("o")
    static int[][] field2295;
-   @ObfuscatedName("e")
-   static int[] field2298;
-   @ObfuscatedName("d")
-   static int[] field2299;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1157522711
@@ -23,6 +19,10 @@ public class class162 {
       intValue = 219591655
    )
    static int field2292;
+   @ObfuscatedName("e")
+   static int[] field2298;
+   @ObfuscatedName("d")
+   static int[] field2299;
    @ObfuscatedName("kk")
    @ObfuscatedSignature(
       signature = "Lhj;"
@@ -45,16 +45,6 @@ public class class162 {
       var0.addMouseListener(MouseInput.mouse);
       var0.addMouseMotionListener(MouseInput.mouse);
       var0.addFocusListener(MouseInput.mouse);
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(III)Lbb;",
-      garbageValue = "-374382109"
-   )
-   static MessageNode method3123(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method1917(var1);
    }
 
    @ObfuscatedName("w")
@@ -94,5 +84,15 @@ public class class162 {
       }
 
       return var2.toString();
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(III)Lbb;",
+      garbageValue = "-374382109"
+   )
+   static MessageNode method3123(int var0, int var1) {
+      ChatLineBuffer var2 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
+      return var2.method1917(var1);
    }
 }

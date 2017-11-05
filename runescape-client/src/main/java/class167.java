@@ -36,6 +36,138 @@ public final class class167 {
       }
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)V"
+   )
+   static void method3185(DState var0) {
+      byte var2 = var0.out_ch;
+      int var3 = var0.out_len;
+      int var4 = var0.nblock_used;
+      int var5 = var0.k0;
+      int[] var6 = class40.tt;
+      int var7 = var0.tPos;
+      byte[] var8 = var0.out;
+      int var9 = var0.next_out;
+      int var10 = var0.field2369;
+      int var12 = var0.field2353 + 1;
+
+      label65:
+      while(true) {
+         if(var3 > 0) {
+            while(true) {
+               if(var10 == 0) {
+                  break label65;
+               }
+
+               if(var3 == 1) {
+                  if(var10 == 0) {
+                     var3 = 1;
+                     break label65;
+                  }
+
+                  var8[var9] = var2;
+                  ++var9;
+                  --var10;
+                  break;
+               }
+
+               var8[var9] = var2;
+               --var3;
+               ++var9;
+               --var10;
+            }
+         }
+
+         boolean var14 = true;
+
+         byte var1;
+         while(var14) {
+            var14 = false;
+            if(var4 == var12) {
+               var3 = 0;
+               break label65;
+            }
+
+            var2 = (byte)var5;
+            var7 = var6[var7];
+            var1 = (byte)(var7 & 255);
+            var7 >>= 8;
+            ++var4;
+            if(var1 != var5) {
+               var5 = var1;
+               if(var10 == 0) {
+                  var3 = 1;
+                  break label65;
+               }
+
+               var8[var9] = var2;
+               ++var9;
+               --var10;
+               var14 = true;
+            } else if(var4 == var12) {
+               if(var10 == 0) {
+                  var3 = 1;
+                  break label65;
+               }
+
+               var8[var9] = var2;
+               ++var9;
+               --var10;
+               var14 = true;
+            }
+         }
+
+         var3 = 2;
+         var7 = var6[var7];
+         var1 = (byte)(var7 & 255);
+         var7 >>= 8;
+         ++var4;
+         if(var4 != var12) {
+            if(var1 != var5) {
+               var5 = var1;
+            } else {
+               var3 = 3;
+               var7 = var6[var7];
+               var1 = (byte)(var7 & 255);
+               var7 >>= 8;
+               ++var4;
+               if(var4 != var12) {
+                  if(var1 != var5) {
+                     var5 = var1;
+                  } else {
+                     var7 = var6[var7];
+                     var1 = (byte)(var7 & 255);
+                     var7 >>= 8;
+                     ++var4;
+                     var3 = (var1 & 255) + 4;
+                     var7 = var6[var7];
+                     var5 = (byte)(var7 & 255);
+                     var7 >>= 8;
+                     ++var4;
+                  }
+               }
+            }
+         }
+      }
+
+      int var13 = var0.total_out_hi32;
+      var0.total_out_hi32 += var10 - var10;
+      if(var0.total_out_hi32 < var13) {
+         ;
+      }
+
+      var0.out_ch = var2;
+      var0.out_len = var3;
+      var0.nblock_used = var4;
+      var0.k0 = var5;
+      class40.tt = var6;
+      var0.tPos = var7;
+      var0.out = var8;
+      var0.next_out = var9;
+      var0.field2369 = var10;
+   }
+
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(Lfi;)V"
@@ -416,6 +548,14 @@ public final class class167 {
       return (byte)method3166(8, var0);
    }
 
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lfi;)B"
+   )
+   static byte method3164(DState var0) {
+      return (byte)method3166(1, var0);
+   }
+
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(ILfi;)I"
@@ -434,14 +574,6 @@ public final class class167 {
       int var3 = var1.total_in_hi32 >> var1.total_in_lo32 - var0 & (1 << var0) - 1;
       var1.total_in_lo32 -= var0;
       return var3;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)B"
-   )
-   static byte method3164(DState var0) {
-      return (byte)method3166(1, var0);
    }
 
    @ObfuscatedName("p")
@@ -502,137 +634,5 @@ public final class class167 {
          var1[var8] = (var0[var8 - 1] + 1 << 1) - var1[var8];
       }
 
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)V"
-   )
-   static void method3185(DState var0) {
-      byte var2 = var0.out_ch;
-      int var3 = var0.out_len;
-      int var4 = var0.nblock_used;
-      int var5 = var0.k0;
-      int[] var6 = class40.tt;
-      int var7 = var0.tPos;
-      byte[] var8 = var0.out;
-      int var9 = var0.next_out;
-      int var10 = var0.field2369;
-      int var12 = var0.field2353 + 1;
-
-      label65:
-      while(true) {
-         if(var3 > 0) {
-            while(true) {
-               if(var10 == 0) {
-                  break label65;
-               }
-
-               if(var3 == 1) {
-                  if(var10 == 0) {
-                     var3 = 1;
-                     break label65;
-                  }
-
-                  var8[var9] = var2;
-                  ++var9;
-                  --var10;
-                  break;
-               }
-
-               var8[var9] = var2;
-               --var3;
-               ++var9;
-               --var10;
-            }
-         }
-
-         boolean var14 = true;
-
-         byte var1;
-         while(var14) {
-            var14 = false;
-            if(var4 == var12) {
-               var3 = 0;
-               break label65;
-            }
-
-            var2 = (byte)var5;
-            var7 = var6[var7];
-            var1 = (byte)(var7 & 255);
-            var7 >>= 8;
-            ++var4;
-            if(var1 != var5) {
-               var5 = var1;
-               if(var10 == 0) {
-                  var3 = 1;
-                  break label65;
-               }
-
-               var8[var9] = var2;
-               ++var9;
-               --var10;
-               var14 = true;
-            } else if(var4 == var12) {
-               if(var10 == 0) {
-                  var3 = 1;
-                  break label65;
-               }
-
-               var8[var9] = var2;
-               ++var9;
-               --var10;
-               var14 = true;
-            }
-         }
-
-         var3 = 2;
-         var7 = var6[var7];
-         var1 = (byte)(var7 & 255);
-         var7 >>= 8;
-         ++var4;
-         if(var4 != var12) {
-            if(var1 != var5) {
-               var5 = var1;
-            } else {
-               var3 = 3;
-               var7 = var6[var7];
-               var1 = (byte)(var7 & 255);
-               var7 >>= 8;
-               ++var4;
-               if(var4 != var12) {
-                  if(var1 != var5) {
-                     var5 = var1;
-                  } else {
-                     var7 = var6[var7];
-                     var1 = (byte)(var7 & 255);
-                     var7 >>= 8;
-                     ++var4;
-                     var3 = (var1 & 255) + 4;
-                     var7 = var6[var7];
-                     var5 = (byte)(var7 & 255);
-                     var7 >>= 8;
-                     ++var4;
-                  }
-               }
-            }
-         }
-      }
-
-      int var13 = var0.total_out_hi32;
-      var0.total_out_hi32 += var10 - var10;
-      if(var0.total_out_hi32 < var13) {
-         ;
-      }
-
-      var0.out_ch = var2;
-      var0.out_len = var3;
-      var0.nblock_used = var4;
-      var0.k0 = var5;
-      class40.tt = var6;
-      var0.tPos = var7;
-      var0.out = var8;
-      var0.next_out = var9;
-      var0.field2369 = var10;
    }
 }

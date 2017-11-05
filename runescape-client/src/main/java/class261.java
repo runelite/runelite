@@ -6,28 +6,11 @@ import netscape.javascript.JSObject;
 
 @ObfuscatedName("jz")
 public class class261 {
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   public static final class261 field3628;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Ljz;"
    )
    public static final class261 field3634;
-   @ObfuscatedName("ay")
-   static java.awt.Font field3631;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   public static final class261 field3622;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Ljz;"
-   )
-   public static final class261 field3627;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Ljz;"
@@ -38,6 +21,23 @@ public class class261 {
       signature = "Ljz;"
    )
    public static final class261 field3624;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class261 field3628;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class261 field3622;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ljz;"
+   )
+   public static final class261 field3627;
+   @ObfuscatedName("ay")
+   static java.awt.Font field3631;
    @ObfuscatedName("cu")
    @ObfuscatedGetter(
       intValue = 1921213987
@@ -62,15 +62,23 @@ public class class261 {
       this.field3629 = var2;
    }
 
-   @ObfuscatedName("iw")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIIZB)V",
-      garbageValue = "1"
+      signature = "(I)[Ljz;",
+      garbageValue = "-1187394211"
    )
-   static final void method4814(int var0, int var1, int var2, boolean var3) {
-      if(WorldMapData.loadWidget(var0)) {
-         class43.method614(class215.widgets[var0], -1, var1, var2, var3);
-      }
+   public static class261[] method4816() {
+      return new class261[]{field3628, field3622, field3624, field3623, field3627, field3634};
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1761706863"
+   )
+   static int method4820(int var0, int var1) {
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
    }
 
    @ObfuscatedName("i")
@@ -86,54 +94,6 @@ public class class261 {
          class93.decodeSprite(var3);
          return true;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)[Ljz;",
-      garbageValue = "-1187394211"
-   )
-   public static class261[] method4816() {
-      return new class261[]{field3628, field3622, field3624, field3623, field3627, field3634};
-   }
-
-   @ObfuscatedName("jo")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1056693131"
-   )
-   static void method4821(String var0) {
-      Timer.sessionToken = var0;
-
-      try {
-         String var1 = class7.clientInstance.getParameter(Parameters.field3721.key);
-         String var2 = class7.clientInstance.getParameter(Parameters.field3726.key);
-         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-         String var5;
-         if(var0.length() == 0) {
-            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-         } else {
-            String var4 = var3 + "; Expires=";
-            long var6 = class174.currentTimeMs() + 94608000000L;
-            class182.field2438.setTime(new Date(var6));
-            int var8 = class182.field2438.get(7);
-            int var9 = class182.field2438.get(5);
-            int var10 = class182.field2438.get(2);
-            int var11 = class182.field2438.get(1);
-            int var12 = class182.field2438.get(11);
-            int var13 = class182.field2438.get(12);
-            int var14 = class182.field2438.get(13);
-            var5 = class182.field2439[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + class182.field2436[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
-            var3 = var4 + var5 + "; Max-Age=" + 94608000L;
-         }
-
-         Client var16 = class7.clientInstance;
-         var5 = "document.cookie=\"" + var3 + "\"";
-         JSObject.getWindow(var16).eval(var5);
-      } catch (Throwable var15) {
-         ;
-      }
-
    }
 
    @ObfuscatedName("gh")
@@ -176,13 +136,53 @@ public class class261 {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("iw")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1761706863"
+      signature = "(IIIZB)V",
+      garbageValue = "1"
    )
-   static int method4820(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
+   static final void method4814(int var0, int var1, int var2, boolean var3) {
+      if(WorldMapData.loadWidget(var0)) {
+         class43.method614(class215.widgets[var0], -1, var1, var2, var3);
+      }
+   }
+
+   @ObfuscatedName("jo")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1056693131"
+   )
+   static void method4821(String var0) {
+      Timer.sessionToken = var0;
+
+      try {
+         String var1 = class7.clientInstance.getParameter(Parameters.field3721.key);
+         String var2 = class7.clientInstance.getParameter(Parameters.field3726.key);
+         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
+         String var5;
+         if(var0.length() == 0) {
+            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
+         } else {
+            String var4 = var3 + "; Expires=";
+            long var6 = class174.currentTimeMs() + 94608000000L;
+            class182.field2438.setTime(new Date(var6));
+            int var8 = class182.field2438.get(7);
+            int var9 = class182.field2438.get(5);
+            int var10 = class182.field2438.get(2);
+            int var11 = class182.field2438.get(1);
+            int var12 = class182.field2438.get(11);
+            int var13 = class182.field2438.get(12);
+            int var14 = class182.field2438.get(13);
+            var5 = class182.field2439[var8 - 1] + ", " + var9 / 10 + var9 % 10 + "-" + class182.field2436[0][var10] + "-" + var11 + " " + var12 / 10 + var12 % 10 + ":" + var13 / 10 + var13 % 10 + ":" + var14 / 10 + var14 % 10 + " GMT";
+            var3 = var4 + var5 + "; Max-Age=" + 94608000L;
+         }
+
+         Client var16 = class7.clientInstance;
+         var5 = "document.cookie=\"" + var3 + "\"";
+         JSObject.getWindow(var16).eval(var5);
+      } catch (Throwable var15) {
+         ;
+      }
+
    }
 }

@@ -4,16 +4,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fv")
 public class class169 {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1053367025
-   )
-   static int field2339;
    @ObfuscatedName("rd")
    @ObfuscatedGetter(
       intValue = -517158157
    )
    static int field2340;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1053367025
+   )
+   static int field2339;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(

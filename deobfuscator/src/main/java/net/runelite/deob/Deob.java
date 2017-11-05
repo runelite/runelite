@@ -113,6 +113,10 @@ public class Deob
 
 		run(group, new FieldInliner());
 
+		// order uses class name order for sorting fields/methods,
+		// so run it before removing classes below
+		run(group, new Order());
+
 		run(group, new UnusedClass());
 
 		runMath(group);
@@ -124,8 +128,6 @@ public class Deob
 		run(group, new CastNull());
 
 		run(group, new EnumDeobfuscator());
-
-		run(group, new Order());
 
 		new OpcodesTransformer().transform(group);
 		run(group, new PacketHandlerOrder());

@@ -7,18 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iy")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
-   )
-   @Export("varbits")
-   public static NodeCache varbits;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lip;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgo;"
+   )
+   @Export("varbits")
+   public static NodeCache varbits;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 1132565087
@@ -42,20 +42,6 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "395008886"
-   )
-   void method4496(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.configId = var1.readUnsignedShort();
-         this.leastSignificantBit = var1.readUnsignedByte();
-         this.mostSignificantBit = var1.readUnsignedByte();
-      }
-
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lfz;I)V",
@@ -71,5 +57,19 @@ public class Varbit extends CacheableNode {
 
          this.method4496(var1, var2);
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lfz;II)V",
+      garbageValue = "395008886"
+   )
+   void method4496(Buffer var1, int var2) {
+      if(var2 == 1) {
+         this.configId = var1.readUnsignedShort();
+         this.leastSignificantBit = var1.readUnsignedByte();
+         this.mostSignificantBit = var1.readUnsignedByte();
+      }
+
    }
 }

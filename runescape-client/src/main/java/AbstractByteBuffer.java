@@ -36,15 +36,6 @@ public abstract class AbstractByteBuffer {
    @Export("put")
    abstract void put(byte[] var1);
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1797966404"
-   )
-   public static void method3472() {
-      KitDefinition.identKits.reset();
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)Ljava/lang/String;",
@@ -52,5 +43,14 @@ public abstract class AbstractByteBuffer {
    )
    static String method3475(int var0) {
       return "<img=" + var0 + ">";
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1797966404"
+   )
+   public static void method3472() {
+      KitDefinition.identKits.reset();
    }
 }

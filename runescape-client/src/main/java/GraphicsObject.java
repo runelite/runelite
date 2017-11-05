@@ -7,39 +7,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cj")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Renderable {
-   @ObfuscatedName("k")
-   @Export("osNameLC")
-   public static String osNameLC;
    @ObfuscatedName("ng")
    @ObfuscatedSignature(
       signature = "[Lbh;"
    )
    @Export("clanMembers")
    static ClanMember[] clanMembers;
+   @ObfuscatedName("k")
+   @Export("osNameLC")
+   public static String osNameLC;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1091697919
    )
    @Export("id")
    int id;
-   @ObfuscatedName("x")
-   @Export("finished")
-   boolean finished;
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1318309111
+      intValue = -1761706863
    )
-   int field1342;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1514763711
-   )
-   int field1346;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Ljt;"
-   )
-   Sequence field1341;
+   @Export("startCycle")
+   int startCycle;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -696049155
@@ -64,12 +52,24 @@ public final class GraphicsObject extends Renderable {
    )
    @Export("height")
    int height;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1761706863
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Ljt;"
    )
-   @Export("startCycle")
-   int startCycle;
+   Sequence field1341;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1514763711
+   )
+   int field1346;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1318309111
+   )
+   int field1342;
+   @ObfuscatedName("x")
+   @Export("finished")
+   boolean finished;
 
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.field1346 = 0;
@@ -91,23 +91,6 @@ public final class GraphicsObject extends Renderable {
 
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)Leh;",
-      garbageValue = "0"
-   )
-   protected final Model getModel() {
-      Spotanim var1 = class244.getSpotAnimType(this.id);
-      Model var2;
-      if(!this.finished) {
-         var2 = var1.method4404(this.field1346);
-      } else {
-         var2 = var1.method4404(-1);
-      }
-
-      return var2 == null?null:var2;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -127,6 +110,23 @@ public final class GraphicsObject extends Renderable {
          }
 
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)Leh;",
+      garbageValue = "0"
+   )
+   protected final Model getModel() {
+      Spotanim var1 = class244.getSpotAnimType(this.id);
+      Model var2;
+      if(!this.finished) {
+         var2 = var1.method4404(this.field1346);
+      } else {
+         var2 = var1.method4404(-1);
+      }
+
+      return var2 == null?null:var2;
    }
 
    @ObfuscatedName("w")

@@ -8,31 +8,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("kb")
 @Implements("MachineInfo")
 public class MachineInfo extends Node {
-   @ObfuscatedName("am")
-   String field3892;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 711393113
    )
    @Export("osType")
    int osType;
-   @ObfuscatedName("bj")
-   int[] field3914;
-   @ObfuscatedName("ah")
-   String field3905;
    @ObfuscatedName("p")
    @Export("os64Bit")
    boolean os64Bit;
-   @ObfuscatedName("ak")
-   String field3912;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
       intValue = 346699729
    )
    @Export("osVersionType")
    int osVersionType;
-   @ObfuscatedName("ar")
-   String field3890;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = 1693993181
@@ -45,16 +35,12 @@ public class MachineInfo extends Node {
    )
    @Export("javaVersionMajor")
    int javaVersionMajor;
-   @ObfuscatedName("as")
-   String field3893;
    @ObfuscatedName("aq")
    @ObfuscatedGetter(
       intValue = 817199065
    )
    @Export("javaVersionMinor")
    int javaVersionMinor;
-   @ObfuscatedName("br")
-   String field3913;
    @ObfuscatedName("ax")
    @ObfuscatedGetter(
       intValue = -1341242037
@@ -84,16 +70,24 @@ public class MachineInfo extends Node {
       intValue = -1474171127
    )
    int field3903;
-   @ObfuscatedName("ai")
-   @ObfuscatedGetter(
-      intValue = -1860541795
-   )
-   int field3909;
+   @ObfuscatedName("am")
+   String field3892;
+   @ObfuscatedName("ah")
+   String field3905;
+   @ObfuscatedName("ak")
+   String field3912;
+   @ObfuscatedName("ar")
+   String field3890;
    @ObfuscatedName("ag")
    @ObfuscatedGetter(
       intValue = -1512070695
    )
    int field3908;
+   @ObfuscatedName("ai")
+   @ObfuscatedGetter(
+      intValue = -1860541795
+   )
+   int field3909;
    @ObfuscatedName("au")
    @ObfuscatedGetter(
       intValue = 427866337
@@ -104,6 +98,12 @@ public class MachineInfo extends Node {
       intValue = -1819444627
    )
    int field3889;
+   @ObfuscatedName("as")
+   String field3893;
+   @ObfuscatedName("br")
+   String field3913;
+   @ObfuscatedName("bj")
+   int[] field3914;
    @ObfuscatedName("bf")
    @ObfuscatedGetter(
       intValue = 181973077
@@ -328,34 +328,6 @@ public class MachineInfo extends Node {
 
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-571738487"
-   )
-   public int method5502() {
-      byte var1 = 38;
-      String var4 = this.field3892;
-      int var3 = var4.length() + 2;
-      int var20 = var3 + var1;
-      String var7 = this.field3905;
-      int var6 = var7.length() + 2;
-      var20 += var6;
-      String var10 = this.field3912;
-      int var9 = var10.length() + 2;
-      var20 += var9;
-      String var13 = this.field3890;
-      int var12 = var13.length() + 2;
-      var20 += var12;
-      String var16 = this.field3893;
-      int var15 = var16.length() + 2;
-      var20 += var15;
-      String var19 = this.field3913;
-      int var18 = var19.length() + 2;
-      var20 += var18;
-      return var20;
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lfz;I)V",
@@ -391,5 +363,33 @@ public class MachineInfo extends Node {
       }
 
       var1.putInt(this.field3915);
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-571738487"
+   )
+   public int method5502() {
+      byte var1 = 38;
+      String var4 = this.field3892;
+      int var3 = var4.length() + 2;
+      int var20 = var3 + var1;
+      String var7 = this.field3905;
+      int var6 = var7.length() + 2;
+      var20 += var6;
+      String var10 = this.field3912;
+      int var9 = var10.length() + 2;
+      var20 += var9;
+      String var13 = this.field3890;
+      int var12 = var13.length() + 2;
+      var20 += var12;
+      String var16 = this.field3893;
+      int var15 = var16.length() + 2;
+      var20 += var15;
+      String var19 = this.field3913;
+      int var18 = var19.length() + 2;
+      var20 += var18;
+      return var20;
    }
 }

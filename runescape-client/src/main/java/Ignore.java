@@ -6,35 +6,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bg")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lhm;"
-   )
-   public static Track1 field863;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lex;"
    )
    @Export("listFetcher")
    static class148 listFetcher;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhm;"
+   )
+   public static Track1 field863;
    @ObfuscatedName("w")
    @Export("name")
    String name;
    @ObfuscatedName("s")
    @Export("previousName")
    String previousName;
-
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1975058231"
-   )
-   static void method1100() {
-      if(class66.localPlayer.x >> 7 == Client.destinationX && class66.localPlayer.y >> 7 == Client.destinationY) {
-         Client.destinationX = 0;
-      }
-
-   }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
@@ -80,6 +68,27 @@ public class Ignore {
       } else {
          return 2;
       }
+   }
+
+   @ObfuscatedName("et")
+   @ObfuscatedSignature(
+      signature = "(I)Lkk;",
+      garbageValue = "-1709423928"
+   )
+   static RenderOverview method1102() {
+      return Client.renderOverview;
+   }
+
+   @ObfuscatedName("gr")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1975058231"
+   )
+   static void method1100() {
+      if(class66.localPlayer.x >> 7 == Client.destinationX && class66.localPlayer.y >> 7 == Client.destinationY) {
+         Client.destinationX = 0;
+      }
+
    }
 
    @ObfuscatedName("hm")
@@ -378,14 +387,5 @@ public class Ignore {
          }
       }
 
-   }
-
-   @ObfuscatedName("et")
-   @ObfuscatedSignature(
-      signature = "(I)Lkk;",
-      garbageValue = "-1709423928"
-   )
-   static RenderOverview method1102() {
-      return Client.renderOverview;
    }
 }

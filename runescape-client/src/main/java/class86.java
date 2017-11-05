@@ -4,14 +4,41 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cn")
 public class class86 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "873978136"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-2110216567"
    )
-   @Export("getLength")
-   public static int getLength(String var0) {
-      return var0.length() + 1;
+   public static String method1719(CharSequence var0) {
+      long var3 = 0L;
+      int var5 = var0.length();
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         var3 *= 37L;
+         char var7 = var0.charAt(var6);
+         if(var7 >= 'A' && var7 <= 'Z') {
+            var3 += (long)(var7 + 1 - 65);
+         } else if(var7 >= 'a' && var7 <= 'z') {
+            var3 += (long)(var7 + 1 - 97);
+         } else if(var7 >= '0' && var7 <= '9') {
+            var3 += (long)(var7 + 27 - 48);
+         }
+
+         if(var3 >= 177917621779460413L) {
+            break;
+         }
+      }
+
+      while(var3 % 37L == 0L && 0L != var3) {
+         var3 /= 37L;
+      }
+
+      String var8 = Overlay.method4776(var3);
+      if(var8 == null) {
+         var8 = "";
+      }
+
+      return var8;
    }
 
    @ObfuscatedName("p")
@@ -67,40 +94,13 @@ public class class86 {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2110216567"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "873978136"
    )
-   public static String method1719(CharSequence var0) {
-      long var3 = 0L;
-      int var5 = var0.length();
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         var3 *= 37L;
-         char var7 = var0.charAt(var6);
-         if(var7 >= 'A' && var7 <= 'Z') {
-            var3 += (long)(var7 + 1 - 65);
-         } else if(var7 >= 'a' && var7 <= 'z') {
-            var3 += (long)(var7 + 1 - 97);
-         } else if(var7 >= '0' && var7 <= '9') {
-            var3 += (long)(var7 + 27 - 48);
-         }
-
-         if(var3 >= 177917621779460413L) {
-            break;
-         }
-      }
-
-      while(var3 % 37L == 0L && 0L != var3) {
-         var3 /= 37L;
-      }
-
-      String var8 = Overlay.method4776(var3);
-      if(var8 == null) {
-         var8 = "";
-      }
-
-      return var8;
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
    }
 }

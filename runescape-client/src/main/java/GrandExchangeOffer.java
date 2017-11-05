@@ -14,24 +14,24 @@ public class GrandExchangeOffer {
    @ObfuscatedName("w")
    @Export("progress")
    byte progress;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 300768847
-   )
-   @Export("totalQuantity")
-   public int totalQuantity;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -706180633
-   )
-   @Export("price")
-   public int price;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -1204360795
    )
    @Export("itemId")
    public int itemId;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -706180633
+   )
+   @Export("price")
+   public int price;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 300768847
+   )
+   @Export("totalQuantity")
+   public int totalQuantity;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 823310939
@@ -61,6 +61,24 @@ public class GrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "36289353"
+   )
+   public int method99() {
+      return this.progress & 7;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2037759900"
+   )
+   public int method100() {
+      return (this.progress & 8) == 8?1:0;
+   }
+
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)V",
@@ -84,22 +102,13 @@ public class GrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2037759900"
+      signature = "(I)V",
+      garbageValue = "-1853304022"
    )
-   public int method100() {
-      return (this.progress & 8) == 8?1:0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "36289353"
-   )
-   public int method99() {
-      return this.progress & 7;
+   public static void method116() {
+      class281.field3766 = new CombatInfoList();
    }
 
    @ObfuscatedName("s")
@@ -114,15 +123,6 @@ public class GrandExchangeOffer {
       MouseInput.field760 = 0;
    }
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1853304022"
-   )
-   public static void method116() {
-      class281.field3766 = new CombatInfoList();
-   }
-
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IS)V",
@@ -135,6 +135,39 @@ public class GrandExchangeOffer {
          class203.field2499.method3834(var0);
       }
 
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(ILhy;I)Lct;",
+      garbageValue = "2080282077"
+   )
+   static Script method113(int var0, class219 var1) {
+      Script var2 = (Script)Script.field1522.get((long)(var0 << 16));
+      if(var2 != null) {
+         return var2;
+      } else {
+         String var3 = String.valueOf(var0);
+         int var4 = WorldMapType1.indexScripts.getFile(var3);
+         if(var4 == -1) {
+            return null;
+         } else {
+            byte[] var5 = WorldMapType1.indexScripts.method4230(var4);
+            if(var5 != null) {
+               if(var5.length <= 1) {
+                  return null;
+               }
+
+               var2 = class22.method172(var5);
+               if(var2 != null) {
+                  Script.field1522.put(var2, (long)(var0 << 16));
+                  return var2;
+               }
+            }
+
+            return null;
+         }
+      }
    }
 
    @ObfuscatedName("jx")
@@ -176,39 +209,6 @@ public class GrandExchangeOffer {
                }
             }
 
-         }
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(ILhy;I)Lct;",
-      garbageValue = "2080282077"
-   )
-   static Script method113(int var0, class219 var1) {
-      Script var2 = (Script)Script.field1522.get((long)(var0 << 16));
-      if(var2 != null) {
-         return var2;
-      } else {
-         String var3 = String.valueOf(var0);
-         int var4 = WorldMapType1.indexScripts.getFile(var3);
-         if(var4 == -1) {
-            return null;
-         } else {
-            byte[] var5 = WorldMapType1.indexScripts.method4230(var4);
-            if(var5 != null) {
-               if(var5.length <= 1) {
-                  return null;
-               }
-
-               var2 = class22.method172(var5);
-               if(var2 != null) {
-                  Script.field1522.put(var2, (long)(var0 << 16));
-                  return var2;
-               }
-            }
-
-            return null;
          }
       }
    }

@@ -14,40 +14,27 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class SourceDataSoundSystem extends AbstractSoundSystem {
    @ObfuscatedName("w")
    AudioFormat field687;
+   @ObfuscatedName("s")
+   @Export("source")
+   SourceDataLine source;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -393362063
    )
    @Export("size")
    int size;
-   @ObfuscatedName("s")
-   @Export("source")
-   SourceDataLine source;
    @ObfuscatedName("o")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "37"
+      garbageValue = "10"
    )
-   protected void vmethod2099() {
-      this.source.flush();
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1706331776"
-   )
-   @Export("close")
-   protected void close() {
-      if(this.source != null) {
-         this.source.close();
-         this.source = null;
-      }
-
+   protected void vmethod2104() {
+      this.field687 = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
+      this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
    }
 
    @ObfuscatedName("s")
@@ -104,13 +91,26 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1706331776"
+   )
+   @Export("close")
+   protected void close() {
+      if(this.source != null) {
+         this.source.close();
+         this.source = null;
+      }
+
+   }
+
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "10"
+      garbageValue = "37"
    )
-   protected void vmethod2104() {
-      this.field687 = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
-      this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
+   protected void vmethod2099() {
+      this.source.flush();
    }
 }

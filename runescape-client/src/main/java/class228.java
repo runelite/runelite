@@ -45,16 +45,16 @@ public enum class228 implements RSEnum {
    )
    field3157(1, 7);
 
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 269789679
-   )
-   final int field3148;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1145751383
    )
    public final int field3156;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 269789679
+   )
+   final int field3148;
 
    class228(int var3, int var4) {
       this.field3156 = var3;

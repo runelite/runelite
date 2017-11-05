@@ -7,6 +7,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eq")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
+   @ObfuscatedName("w")
+   long[] field2209;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 313549463
@@ -18,19 +20,17 @@ public class MilliTimer extends Timer {
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("w")
-   long[] field2209;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 670672845
-   )
-   int field2207;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       longValue = 5532409806969849003L
    )
    @Export("milliTime")
    long milliTime;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 670672845
+   )
+   int field2207;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1626940207
@@ -46,6 +46,18 @@ public class MilliTimer extends Timer {
 
       for(int var1 = 0; var1 < 10; ++var1) {
          this.field2209[var1] = this.milliTime;
+      }
+
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-120"
+   )
+   public void vmethod3029() {
+      for(int var1 = 0; var1 < 10; ++var1) {
+         this.field2209[var1] = 0L;
       }
 
    }
@@ -106,16 +118,13 @@ public class MilliTimer extends Timer {
       return var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-120"
+      signature = "(II)I",
+      garbageValue = "50987591"
    )
-   public void vmethod3029() {
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2209[var1] = 0L;
-      }
-
+   public static int method2964(int var0) {
+      return var0 >> 17 & 7;
    }
 
    @ObfuscatedName("q")
@@ -182,15 +191,6 @@ public class MilliTimer extends Timer {
       } else {
          throw new IllegalArgumentException("");
       }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "50987591"
-   )
-   public static int method2964(int var0) {
-      return var0 >> 17 & 7;
    }
 
    @ObfuscatedName("u")

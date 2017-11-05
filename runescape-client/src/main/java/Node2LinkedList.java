@@ -19,34 +19,6 @@ public final class Node2LinkedList {
       this.sentinel.next = this.sentinel;
    }
 
-   @ObfuscatedName("g")
-   @Export("clear")
-   void clear() {
-      while(true) {
-         CacheableNode var1 = this.sentinel.previous;
-         if(var1 == this.sentinel) {
-            return;
-         }
-
-         var1.unlinkDual();
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "()Lgp;"
-   )
-   @Export("pop")
-   CacheableNode pop() {
-      CacheableNode var1 = this.sentinel.previous;
-      if(var1 == this.sentinel) {
-         return null;
-      } else {
-         var1.unlinkDual();
-         return var1;
-      }
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Lgp;)V"
@@ -79,6 +51,21 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "()Lgp;"
+   )
+   @Export("pop")
+   CacheableNode pop() {
+      CacheableNode var1 = this.sentinel.previous;
+      if(var1 == this.sentinel) {
+         return null;
+      } else {
+         var1.unlinkDual();
+         return var1;
+      }
+   }
+
    @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "()Lgp;"
@@ -87,5 +74,18 @@ public final class Node2LinkedList {
    public CacheableNode peek() {
       CacheableNode var1 = this.sentinel.previous;
       return var1 == this.sentinel?null:var1;
+   }
+
+   @ObfuscatedName("g")
+   @Export("clear")
+   void clear() {
+      while(true) {
+         CacheableNode var1 = this.sentinel.previous;
+         if(var1 == this.sentinel) {
+            return;
+         }
+
+         var1.unlinkDual();
+      }
    }
 }

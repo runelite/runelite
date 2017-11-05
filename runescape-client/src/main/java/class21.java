@@ -8,17 +8,6 @@ public class class21 {
    @Export("offsetsY")
    public static int[] offsetsY;
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1834504326"
-   )
-   static final void method163(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int[] var7 = Region.method2770(var0, var1, var2);
-      int[] var8 = Region.method2770(var3, var4, var5);
-      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BILjava/lang/CharSequence;I)I",
@@ -43,6 +32,17 @@ public class class21 {
       }
 
       return var4 - var1;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "-1834504326"
+   )
+   static final void method163(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2770(var0, var1, var2);
+      int[] var8 = Region.method2770(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
    }
 
    @ObfuscatedName("hs")

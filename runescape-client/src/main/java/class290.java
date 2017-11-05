@@ -50,14 +50,14 @@ public class class290 {
       signature = "Lkp;"
    )
    public static final class290 field3873;
-   @ObfuscatedName("z")
-   @Export("identifier")
-   final String identifier;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -557331373
    )
    public final int field3874;
+   @ObfuscatedName("z")
+   @Export("identifier")
+   final String identifier;
 
    static {
       field3872 = new class290(3, 0, "", "");

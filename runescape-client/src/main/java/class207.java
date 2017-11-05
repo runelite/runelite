@@ -9,8 +9,11 @@ public class class207 extends Node {
       signature = "Lt;"
    )
    static class13 field2580;
-   @ObfuscatedName("e")
-   int[] field2577;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1837206515
+   )
+   int field2576;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "[Ldi;"
@@ -29,11 +32,8 @@ public class class207 extends Node {
    class202[] field2574;
    @ObfuscatedName("p")
    byte[] field2572;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1837206515
-   )
-   int field2576;
+   @ObfuscatedName("e")
+   int[] field2577;
 
    class207(byte[] var1) {
       this.field2571 = new class105[128];
@@ -486,15 +486,6 @@ public class class207 extends Node {
 
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-100"
-   )
-   void method3956() {
-      this.field2577 = null;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Ldt;[B[IS)Z",
@@ -531,6 +522,15 @@ public class class207 extends Node {
       }
 
       return var4;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-100"
+   )
+   void method3956() {
+      this.field2577 = null;
    }
 
    @ObfuscatedName("w")

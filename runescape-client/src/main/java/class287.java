@@ -3,6 +3,11 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ko")
 public class class287 {
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 2037184131
+   )
+   static int field3805;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -18842901
@@ -17,9 +22,4 @@ public class class287 {
    public static int[] field3808;
    @ObfuscatedName("v")
    public static int[] field3806;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 2037184131
-   )
-   static int field3805;
 }

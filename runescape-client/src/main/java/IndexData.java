@@ -11,32 +11,34 @@ public class IndexData extends IndexDataBase {
    @ObfuscatedName("f")
    @Export("crc32")
    static CRC32 crc32;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lfr;"
-   )
-   IndexFile field3233;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
    IndexFile field3235;
-   @ObfuscatedName("ap")
-   @ObfuscatedGetter(
-      intValue = 641015623
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lfr;"
    )
-   @Export("crcValue")
-   int crcValue;
-   @ObfuscatedName("r")
-   volatile boolean field3232;
+   IndexFile field3233;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -225565581
    )
    @Export("index")
    int index;
+   @ObfuscatedName("r")
+   volatile boolean field3232;
+   @ObfuscatedName("m")
+   boolean field3236;
    @ObfuscatedName("l")
    volatile boolean[] field3237;
+   @ObfuscatedName("ap")
+   @ObfuscatedGetter(
+      intValue = 641015623
+   )
+   @Export("crcValue")
+   int crcValue;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 1054200217
@@ -47,8 +49,6 @@ public class IndexData extends IndexDataBase {
       intValue = 1829580295
    )
    int field3234;
-   @ObfuscatedName("m")
-   boolean field3236;
 
    static {
       crc32 = new CRC32();
@@ -69,6 +69,30 @@ public class IndexData extends IndexDataBase {
       class56.method816(this, this.index);
    }
 
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "609099973"
+   )
+   void vmethod4299(int var1) {
+      int var2 = this.index;
+      long var3 = (long)((var2 << 16) + var1);
+      FileRequest var5 = (FileRequest)class238.field3252.get(var3);
+      if(var5 != null) {
+         class238.field3261.setHead(var5);
+      }
+
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IS)I",
+      garbageValue = "6612"
+   )
+   int vmethod4320(int var1) {
+      return super.field3219[var1] != null?100:(this.field3237[var1]?100:class114.method2168(this.index, var1));
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IB)V",
@@ -83,58 +107,90 @@ public class IndexData extends IndexDataBase {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("ct")
    @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "6612"
+      signature = "(B)I",
+      garbageValue = "-88"
    )
-   int vmethod4320(int var1) {
-      return super.field3219[var1] != null?100:(this.field3237[var1]?100:class114.method2168(this.index, var1));
+   @Export("percentage")
+   public int percentage() {
+      if(this.field3232) {
+         return 100;
+      } else if(super.field3219 != null) {
+         return 99;
+      } else {
+         int var1 = class114.method2168(255, this.index);
+         if(var1 >= 100) {
+            var1 = 99;
+         }
+
+         return var1;
+      }
    }
 
-   @ObfuscatedName("cs")
+   @ObfuscatedName("ci")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1960709689"
+      signature = "(IIB)V",
+      garbageValue = "2"
    )
-   void method4313() {
-      this.field3237 = new boolean[super.field3219.length];
-
-      int var1;
-      for(var1 = 0; var1 < this.field3237.length; ++var1) {
-         this.field3237[var1] = false;
-      }
-
-      if(this.field3235 == null) {
-         this.field3232 = true;
-      } else {
-         this.field3234 = -1;
-
-         for(var1 = 0; var1 < this.field3237.length; ++var1) {
-            if(super.archiveNumberOfFiles[var1] > 0) {
-               class18.method139(var1, this.field3235, this);
-               this.field3234 = var1;
+   @Export("setInformation")
+   void setInformation(int var1, int var2) {
+      this.crcValue = var1;
+      this.field3240 = var2;
+      if(this.field3233 != null) {
+         int var3 = this.index;
+         IndexFile var4 = this.field3233;
+         byte[] var6 = null;
+         Deque var7 = class236.field3229;
+         synchronized(class236.field3229) {
+            for(FileSystem var8 = (FileSystem)class236.field3229.getFront(); var8 != null; var8 = (FileSystem)class236.field3229.getNext()) {
+               if(var8.hash == (long)var3 && var4 == var8.index && var8.field3200 == 0) {
+                  var6 = var8.field3197;
+                  break;
+               }
             }
          }
 
-         if(this.field3234 == -1) {
-            this.field3232 = true;
+         if(var6 != null) {
+            this.method4298(var4, var3, var6, true);
+         } else {
+            byte[] var11 = var4.method3060(var3);
+            this.method4298(var4, var3, var11, true);
          }
-
+      } else {
+         class14.method87(this, 255, this.index, this.crcValue, (byte)0, true);
       }
+
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "609099973"
+      signature = "(I[BZZI)V",
+      garbageValue = "-1551921869"
    )
-   void vmethod4299(int var1) {
-      int var2 = this.index;
-      long var3 = (long)((var2 << 16) + var1);
-      FileRequest var5 = (FileRequest)class238.field3252.get(var3);
-      if(var5 != null) {
-         class238.field3261.setHead(var5);
+   void method4321(int var1, byte[] var2, boolean var3, boolean var4) {
+      if(var3) {
+         if(this.field3232) {
+            throw new RuntimeException();
+         }
+
+         if(this.field3233 != null) {
+            class224.method4155(this.index, var2, this.field3233);
+         }
+
+         this.method4239(var2);
+         this.method4313();
+      } else {
+         var2[var2.length - 2] = (byte)(super.archiveRevisions[var1] >> 8);
+         var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
+         if(this.field3235 != null) {
+            class224.method4155(var1, var2, this.field3235);
+            this.field3237[var1] = true;
+         }
+
+         if(var4) {
+            super.field3219[var1] = GameEngine.method934(var2, false);
+         }
       }
 
    }
@@ -212,59 +268,35 @@ public class IndexData extends IndexDataBase {
 
    }
 
-   @ObfuscatedName("ci")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "-1960709689"
    )
-   @Export("setInformation")
-   void setInformation(int var1, int var2) {
-      this.crcValue = var1;
-      this.field3240 = var2;
-      if(this.field3233 != null) {
-         int var3 = this.index;
-         IndexFile var4 = this.field3233;
-         byte[] var6 = null;
-         Deque var7 = class236.field3229;
-         synchronized(class236.field3229) {
-            for(FileSystem var8 = (FileSystem)class236.field3229.getFront(); var8 != null; var8 = (FileSystem)class236.field3229.getNext()) {
-               if(var8.hash == (long)var3 && var4 == var8.index && var8.field3200 == 0) {
-                  var6 = var8.field3197;
-                  break;
-               }
+   void method4313() {
+      this.field3237 = new boolean[super.field3219.length];
+
+      int var1;
+      for(var1 = 0; var1 < this.field3237.length; ++var1) {
+         this.field3237[var1] = false;
+      }
+
+      if(this.field3235 == null) {
+         this.field3232 = true;
+      } else {
+         this.field3234 = -1;
+
+         for(var1 = 0; var1 < this.field3237.length; ++var1) {
+            if(super.archiveNumberOfFiles[var1] > 0) {
+               class18.method139(var1, this.field3235, this);
+               this.field3234 = var1;
             }
          }
 
-         if(var6 != null) {
-            this.method4298(var4, var3, var6, true);
-         } else {
-            byte[] var11 = var4.method3060(var3);
-            this.method4298(var4, var3, var11, true);
-         }
-      } else {
-         class14.method87(this, 255, this.index, this.crcValue, (byte)0, true);
-      }
-
-   }
-
-   @ObfuscatedName("ct")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-88"
-   )
-   @Export("percentage")
-   public int percentage() {
-      if(this.field3232) {
-         return 100;
-      } else if(super.field3219 != null) {
-         return 99;
-      } else {
-         int var1 = class114.method2168(255, this.index);
-         if(var1 >= 100) {
-            var1 = 99;
+         if(this.field3234 == -1) {
+            this.field3232 = true;
          }
 
-         return var1;
       }
    }
 
@@ -291,38 +323,6 @@ public class IndexData extends IndexDataBase {
          var3 = var2 * 100 / var1;
          return var3;
       }
-   }
-
-   @ObfuscatedName("cv")
-   @ObfuscatedSignature(
-      signature = "(I[BZZI)V",
-      garbageValue = "-1551921869"
-   )
-   void method4321(int var1, byte[] var2, boolean var3, boolean var4) {
-      if(var3) {
-         if(this.field3232) {
-            throw new RuntimeException();
-         }
-
-         if(this.field3233 != null) {
-            class224.method4155(this.index, var2, this.field3233);
-         }
-
-         this.method4239(var2);
-         this.method4313();
-      } else {
-         var2[var2.length - 2] = (byte)(super.archiveRevisions[var1] >> 8);
-         var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
-         if(this.field3235 != null) {
-            class224.method4155(var1, var2, this.field3235);
-            this.field3237[var1] = true;
-         }
-
-         if(var4) {
-            super.field3219[var1] = GameEngine.method934(var2, false);
-         }
-      }
-
    }
 
    @ObfuscatedName("ij")

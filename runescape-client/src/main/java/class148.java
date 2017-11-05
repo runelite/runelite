@@ -4,12 +4,12 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ex")
 public class class148 {
-   @ObfuscatedName("q")
-   volatile byte[] field2190;
-   @ObfuscatedName("s")
-   volatile boolean field2192;
    @ObfuscatedName("w")
    final URL field2188;
+   @ObfuscatedName("s")
+   volatile boolean field2192;
+   @ObfuscatedName("q")
+   volatile byte[] field2190;
 
    class148(URL var1) {
       this.field2188 = var1;
@@ -31,16 +31,6 @@ public class class148 {
    )
    public byte[] method2935() {
       return this.field2190;
-   }
-
-   @ObfuscatedName("hi")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-98"
-   )
-   static void method2940() {
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
    }
 
    @ObfuscatedName("fp")
@@ -90,5 +80,15 @@ public class class148 {
          Client.screenY = -1;
          Client.screenX = -1;
       }
+   }
+
+   @ObfuscatedName("hi")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-98"
+   )
+   static void method2940() {
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
    }
 }

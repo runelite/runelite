@@ -13,51 +13,6 @@ public final class NPC extends Actor {
    @Export("composition")
    NPCComposition composition;
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)Leh;",
-      garbageValue = "0"
-   )
-   protected final Model getModel() {
-      if(this.composition == null) {
-         return null;
-      } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?NPCComposition.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?NPCComposition.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4728(var1, super.actionFrame, var2, super.poseFrame);
-         if(var3 == null) {
-            return null;
-         } else {
-            var3.method2558();
-            super.field1228 = var3.modelHeight;
-            if(super.graphic != -1 && super.field1215 != -1) {
-               Model var4 = class244.getSpotAnimType(super.graphic).method4404(super.field1215);
-               if(var4 != null) {
-                  var4.method2569(0, -super.field1250, 0);
-                  Model[] var5 = new Model[]{var3, var4};
-                  var3 = new Model(var5, 2);
-               }
-            }
-
-            if(this.composition.field3555 == 1) {
-               var3.field1936 = true;
-            }
-
-            return var3;
-         }
-      }
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "246459077"
-   )
-   @Export("hasConfig")
-   final boolean hasConfig() {
-      return this.composition != null;
-   }
-
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IBI)V",
@@ -159,6 +114,51 @@ public final class NPC extends Actor {
       super.pathY[0] = var2;
       super.x = super.field1221 * 64 + super.pathX[0] * 128;
       super.y = super.field1221 * 64 + super.pathY[0] * 128;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(B)Leh;",
+      garbageValue = "0"
+   )
+   protected final Model getModel() {
+      if(this.composition == null) {
+         return null;
+      } else {
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?NPCComposition.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.poseAnimation != super.idlePoseAnimation || var1 == null)?NPCComposition.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.method4728(var1, super.actionFrame, var2, super.poseFrame);
+         if(var3 == null) {
+            return null;
+         } else {
+            var3.method2558();
+            super.field1228 = var3.modelHeight;
+            if(super.graphic != -1 && super.field1215 != -1) {
+               Model var4 = class244.getSpotAnimType(super.graphic).method4404(super.field1215);
+               if(var4 != null) {
+                  var4.method2569(0, -super.field1250, 0);
+                  Model[] var5 = new Model[]{var3, var4};
+                  var3 = new Model(var5, 2);
+               }
+            }
+
+            if(this.composition.field3555 == 1) {
+               var3.field1936 = true;
+            }
+
+            return var3;
+         }
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "246459077"
+   )
+   @Export("hasConfig")
+   final boolean hasConfig() {
+      return this.composition != null;
    }
 
    @ObfuscatedName("w")
