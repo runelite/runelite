@@ -29,6 +29,7 @@ class GrandExchangePanel extends PluginPanel
 	private static final Logger logger = LoggerFactory.getLogger(GrandExchangePanel.class);
 	private static final int OFFERS = 8;
 
+	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
 	private GrandExchangeOfferSlot[] offers = new GrandExchangeOfferSlot[OFFERS];
 
@@ -79,7 +80,7 @@ class GrandExchangePanel extends PluginPanel
 			int total = offer.getTotalQuantity();
 
 			final String itemName = client.getItemDefinition(itemId).getName();
-			final Image itemImage = ItemManager.getImage(itemId);
+			final Image itemImage = runelite.getItemManager().getImage(itemId);
 
 			EventQueue.invokeLater(() ->
 			{
