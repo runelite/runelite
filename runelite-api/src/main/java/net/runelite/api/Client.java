@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-import java.awt.*;
+import java.awt.Canvas;
 import java.util.List;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;

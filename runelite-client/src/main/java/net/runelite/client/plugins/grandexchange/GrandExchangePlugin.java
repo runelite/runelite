@@ -37,20 +37,23 @@ public class GrandExchangePlugin extends Plugin
 		ui.getPluginToolbar().addNavigation(button);
 	}
 
-	@Schedule(
-			period = 1000,
-			unit = ChronoUnit.MILLIS
-	)
-	public void doUpdate()
-	{
-		if (!isInitialized) return;
-		panel.updateOffers();
-	}
-
 	@Override
 	protected void shutDown() throws Exception
 	{
 
+	}
+
+	@Schedule(
+		period = 1000,
+		unit = ChronoUnit.MILLIS
+	)
+	public void doUpdate()
+	{
+		if (!isInitialized)
+		{
+			return;
+		}
+		panel.updateOffers();
 	}
 
 	private GrandExchangePanel doPanel()
@@ -60,6 +63,5 @@ public class GrandExchangePlugin extends Plugin
 		isInitialized = true;
 		return panel;
 	}
-
 
 }

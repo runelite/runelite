@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.grandexchange;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.awt.*;
 import java.util.Arrays;
 import javax.swing.*;
@@ -88,7 +87,7 @@ public class GrandExchangeOfferSlot
 
 	public String getStatusIndicatorAsString()
 	{
-		return StringUtils.capitalize(this.statusIndicator.toString().toLowerCase());
+		return this.statusIndicator.toString();
 	}
 
 	public void setStatusIndicatorLabel(JLabel statusIndicatorLabel)
