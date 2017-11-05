@@ -71,6 +71,7 @@ public class ReflectionTransformer implements Transformer
 			transformMethodName(ins, i);
 			transformGetParameterTypes(ins, i);
 			transformGetDeclaredField(ins, i);
+			transformGetDeclaredMethods(ins, i);
 			transformSetInt(ins, i);
 			transformGetInt(ins, i);
 			transformInvokeVirtual(ins, i);
@@ -177,6 +178,32 @@ public class ReflectionTransformer implements Transformer
 			instructions.replace(iv, is);
 
 			logger.info("Transformed Class.getDeclaredField call");
+		}
+	}
+
+	// invokevirtual         java/lang/Class/getDeclaredMethods(;)[Ljava/lang/reflect/Method;
+	// to
+	// invokestatic          net/runelite/rs/Reflection/findMethods
+	private void transformGetDeclaredMethods(Instructions instructions, Instruction i)
+	{
+		if (!(i instanceof InvokeVirtual))
+		{
+			return;
+		}
+
+		InvokeVirtual iv = (InvokeVirtual) i;
+
+		if (iv.getMethod().getClazz().getName().equals("java/lang/Class")
+				&& iv.getMethod().getName().equals("getDeclaredMethods"))
+		{
+			InvokeStatic is = new InvokeStatic(instructions,
+					new net.runelite.asm.pool.Method(
+							new net.runelite.asm.pool.Class("net/runelite/rs/Reflection"), "findMethods", new Signature("(Ljava/lang/Class;)[Ljava/lang/reflect/Method;")
+					)
+			);
+			instructions.replace(iv, is);
+
+			logger.info("Transformed Class.getDeclaredMethods call");
 		}
 	}
 
