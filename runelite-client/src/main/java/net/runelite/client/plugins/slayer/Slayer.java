@@ -41,7 +41,6 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -69,10 +68,11 @@ public class Slayer extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final Client client = RuneLite.getClient();
 	private final InfoBoxManager infoBoxManager = RuneLite.getRunelite().getInfoBoxManager();
 	private final SlayerConfig config = RuneLite.getRunelite().getConfigManager().getConfig(SlayerConfig.class);
 	private final SlayerOverlay overlay = new SlayerOverlay(this);
-	private final Client client = RuneLite.getClient();
 
 	private String taskName;
 	private int amount;
@@ -268,11 +268,17 @@ public class Slayer extends Plugin
 		}
 
 		Task task = Task.getTask(taskName);
+		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task == null)
 		{
 			logger.warn("No slayer task for {} in the Task database", taskName);
 		}
-		BufferedImage taskImg = task != null ? task.getImage() : ItemManager.getImage(ItemID.ENCHANTED_GEM);
+		else
+		{
+			itemSpriteId = task.getItemSpriteId();
+		}
+
+		BufferedImage taskImg = runelite.getItemManager().getImage(itemSpriteId);
 		counter = new TaskCounter(taskImg, amount);
 		counter.setTooltip(capsString(taskName));
 

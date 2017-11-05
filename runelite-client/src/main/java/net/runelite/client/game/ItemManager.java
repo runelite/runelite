@@ -27,12 +27,10 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
 import net.runelite.api.Client;
 import net.runelite.api.SpritePixels;
 import net.runelite.client.RuneLite;
@@ -54,8 +52,7 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
-
-	private static LoadingCache<Integer, BufferedImage> itemImages;
+	private final LoadingCache<Integer, BufferedImage> itemImages;
 
 	public ItemManager(RuneLite runelite)
 	{
@@ -168,7 +165,7 @@ public class ItemManager
 	 * @param itemId
 	 * @return
 	 */
-	public static BufferedImage getImage(int itemId)
+	public BufferedImage getImage(int itemId)
 	{
 		try
 		{
