@@ -185,9 +185,18 @@ public class RuneliteBufferTransformer implements Transformer
 		{
 			Instruction before = queueForWriteCtx.getPops().get(3) // socket
 				.getPushed().getInstruction();
-			GetStatic getBuffer = (GetStatic) queueForWriteCtx.getPops().get(2) // buffer
-				.getPushed().getPops().get(0) // getstatic
-				.getPushed().getInstruction();
+			GetStatic getBuffer;
+
+			try
+			{
+				getBuffer = (GetStatic) queueForWriteCtx.getPops().get(2) // buffer
+					.getPushed().getPops().get(0) // getstatic
+					.getPushed().getInstruction();
+			}
+			catch (ClassCastException ex)
+			{
+				continue;
+			}
 
 			Instructions instructions = before.getInstructions();
 
