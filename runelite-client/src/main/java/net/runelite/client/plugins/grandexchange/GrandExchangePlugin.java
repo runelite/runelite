@@ -2,7 +2,7 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.time.temporal.ChronoUnit;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -13,7 +13,9 @@ import net.runelite.client.ui.NavigationButton;
 /**
  * @author Robbie, created on 29/10/2017 09:59 AM
  */
-@PluginDescriptor(name = "Grand Exchange offer plugin")
+@PluginDescriptor(
+	name = "Grand Exchange offer plugin"
+)
 public class GrandExchangePlugin extends Plugin
 {
 	private ImageIcon icon;
@@ -41,8 +43,8 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Schedule(
-		period = 1000,
-		unit = ChronoUnit.MILLIS
+		period = 1,
+		unit = ChronoUnit.SECONDS
 	)
 	public void doUpdate()
 	{

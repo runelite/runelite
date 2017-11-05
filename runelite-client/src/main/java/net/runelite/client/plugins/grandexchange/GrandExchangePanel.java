@@ -1,13 +1,19 @@
 package net.runelite.client.plugins.grandexchange;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.IntStream;
-import javax.swing.*;
+import com.google.common.base.Preconditions;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Image;
+import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -15,19 +21,16 @@ import net.runelite.api.GrandExchangeOffer;
 import net.runelite.client.RuneLite;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class GrandExchangePanel extends PluginPanel
 {
 	private static final Logger logger = LoggerFactory.getLogger(GrandExchangePanel.class);
+	private static final int OFFERS = 8;
 
 	private final Client client = RuneLite.getClient();
-
-	private JComponent component;
-
-	private ArrayList<MutablePair<GrandExchangeOffer, GrandExchangeOfferSlot>> grandExchangeOffers;
+	private GrandExchangeOfferSlot[] offers = new GrandExchangeOfferSlot[OFFERS];
 
 	GrandExchangePanel()
 	{
@@ -36,35 +39,39 @@ class GrandExchangePanel extends PluginPanel
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		setVisible(true);
 
-		populate();
-		component = buildPanel();
-		add(component);
-	}
-
-	private void populate()
-	{
-		this.grandExchangeOffers = new ArrayList<>(8);
-		IntStream.range(0, 8)
-			.forEach(i -> grandExchangeOffers.add(i, new MutablePair<GrandExchangeOffer, GrandExchangeOfferSlot>(new GrandExchangeOfferImpl()
+		for (int i = 0; i < offers.length; ++i)
 		{
-		}, new GrandExchangeOfferSlot())));
+			offers[i] = new GrandExchangeOfferSlot();
+		}
+
+		JComponent component = buildPanel();
+		add(component);
 	}
 
 	//Scheduled @ (1 sec)
 	void updateOffers()
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			//TODO: only repaint/update if offer changed.
 			return;
 		}
 
-		updateConsumer.accept(getGrandExchangeOffers.get());
-
-		grandExchangeOffers.forEach(pair ->
+		GrandExchangeOffer[] geOffers = client.getGrandExchangeOffers();
+		if (geOffers == null)
 		{
-			GrandExchangeOffer offer = pair.getLeft();
-			GrandExchangeOfferSlot slot = pair.getRight();
+			return;
+		}
+
+		// update offers
+		for (int i = 0; i < OFFERS; ++i)
+		{
+			offers[i].offer = geOffers[i];
+		}
+
+		for (GrandExchangeOfferSlot slot : offers)
+		{
+			GrandExchangeOffer offer = slot.offer;
 
 			int itemId = offer.getItemId();
 			int price = offer.getPrice();
@@ -80,21 +87,20 @@ class GrandExchangePanel extends PluginPanel
 				{
 					slot.setItemNameLabel(itemId == 0 ? "Empty" : itemName);
 					slot.setOfferImage(new ImageIcon(itemImage));
-					slot.setOfferPriceLabel(ItemManager.quantityToStackSize(price).endsWith("M")
-						|| ItemManager.quantityToStackSize(price).endsWith("K")
-						? ItemManager.quantityToStackSize(price)
-						: ItemManager.quantityToStackSize(price) + " gp");
+					String stackSize = ItemManager.quantityToStackSize(price);
+					slot.setOfferPriceLabel(stackSize.endsWith("M") || stackSize.endsWith("K")
+						? stackSize
+						: stackSize + " gp");
 					slot.getProgressBar().setString(sold + " / " + total);
 					slot.setProgressBar(total == 0 ? 0 : (sold / total) * 100);
-					slot.setStatusIndicator(OfferState.codeToInstance(offer.getProgress()));
+					slot.setStatusIndicator(offer.getState());
 				}
 				catch (Exception ex)
 				{
 					logger.warn("error updating slot", ex);
 				}
 			});
-
-		});
+		}
 
 	}
 
@@ -107,8 +113,8 @@ class GrandExchangePanel extends PluginPanel
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-		JPanel[] panelSlots = new JPanel[8];
-		for (int i = 0; i < 8; i++)
+		JPanel[] panelSlots = new JPanel[OFFERS];
+		for (int i = 0; i < OFFERS; i++)
 		{
 			panelSlots[i] = buildSlot(i);
 		}
@@ -202,24 +208,10 @@ class GrandExchangePanel extends PluginPanel
 		return panel;
 	}
 
-	private Supplier<GrandExchangeOffer[]> getGrandExchangeOffers = () -> client.getGrandExchangeOffers();
-
-	private Consumer<GrandExchangeOffer[]> updateConsumer = (newOffers) ->
-	{
-		if (newOffers == null)
-		{
-			return;
-		}
-		IntStream.range(0, newOffers.length).forEach(i -> grandExchangeOffers.get(i).setLeft(newOffers[i]));
-	};
-
 	private GrandExchangeOfferSlot getSlot(int slotNumber)
 	{
-		return grandExchangeOffers.stream()
-			.filter(pair -> this.grandExchangeOffers.get(slotNumber).equals(pair))
-			.findFirst()
-			.get()
-			.getRight();
+		Preconditions.checkArgument(slotNumber >= 0 && slotNumber < OFFERS);
+		return offers[slotNumber];
 	}
 
 }

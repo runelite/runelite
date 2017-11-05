@@ -30,18 +30,23 @@ import net.runelite.mapping.Import;
 public interface RSGrandExchangeOffer extends GrandExchangeOffer
 {
 	@Import("quantitySold")
+	@Override
 	int getQuantitySold();
 
 	@Import("itemId")
+	@Override
 	int getItemId();
 
 	@Import("totalQuantity")
+	@Override
 	int getTotalQuantity();
 
 	@Import("price")
+	@Override
 	int getPrice();
 
 	@Import("spent")
+	@Override
 	int getSpent();
 
 	@Import("progress")

@@ -1,35 +1,28 @@
 package net.runelite.client.plugins.grandexchange;
 
-import java.awt.*;
-import java.util.Arrays;
-import javax.swing.*;
+import java.awt.Color;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 
 /**
  * @author Robbie, created on 30/10/2017 10:51 PM
  */
 public class GrandExchangeOfferSlot
 {
-
-	private JLabel imageLabel;
-	private ImageIcon offerImage;
-	private JLabel itemNameLabel;
-	private JLabel offerPriceLabel;
-	private OfferState statusIndicator;
-	private JLabel statusIndicatorLabel;
-	private JProgressBar progressBar;
+	GrandExchangeOffer offer;
+	private JLabel imageLabel = new JLabel("");
+	private ImageIcon offerImage = new ImageIcon();
+	private JLabel itemNameLabel = new JLabel("");
+	private JLabel offerPriceLabel = new JLabel("");
+	private GrandExchangeOfferState statusIndicator = GrandExchangeOfferState.EMPTY;
+	private JLabel statusIndicatorLabel = new JLabel("");
+	private JProgressBar progressBar = new JProgressBar();
 
 	public GrandExchangeOfferSlot()
 	{
-		this.imageLabel = new JLabel("");
-		this.statusIndicatorLabel = new JLabel("");
-		this.offerImage = new ImageIcon();
-		this.itemNameLabel = new JLabel("");
-		this.offerPriceLabel = new JLabel("");
-		this.progressBar = new JProgressBar();
-		this.progressBar.setStringPainted(true);
-		this.progressBar.setForeground(Color.WHITE);
-		this.statusIndicator = OfferState.EMPTY;
-
 		imageLabel.setIcon(offerImage);
 	}
 
@@ -70,12 +63,12 @@ public class GrandExchangeOfferSlot
 		this.offerPriceLabel.setText(newOfferPriceLabel);
 	}
 
-	public OfferState getStatusIndicator()
+	public GrandExchangeOfferState getStatusIndicator()
 	{
 		return statusIndicator;
 	}
 
-	public void setStatusIndicator(OfferState statusIndicator)
+	public void setStatusIndicator(GrandExchangeOfferState statusIndicator)
 	{
 		this.statusIndicator = statusIndicator;
 	}
@@ -122,69 +115,4 @@ public class GrandExchangeOfferSlot
 	}
 }
 
-/**
- * Describes the state of a
- * Grand Exchange offer
- */
-enum OfferState
-{
-	/**
-	 * An empty slot.
-	 */
-	EMPTY(-1),
 
-	/**
-	 * A buy offer that
-	 * is currently in progress.
-	 */
-	BUYING(2),
-
-	/**
-	 * A buy offer that
-	 * has completed.
-	 */
-	BOUGHT(5),
-
-	/**
-	 * A sell offer that
-	 * is currently in progress.
-	 */
-	SELLING(10),
-
-	/**
-	 * A sell offer that
-	 * has completed.
-	 */
-	SOLD(13);
-
-	private int code;
-
-	OfferState(int code)
-	{
-		this.code = code;
-	}
-
-	/**
-	 * The offer code given
-	 * by #getProgress();
-	 */
-	public int getCode()
-	{
-		return code;
-	}
-
-	/**
-	 * Returns the OfferState instance
-	 * associated with the given code.
-	 *
-	 * @param code The code to search for
-	 * @return The respective OfferState instance
-	 */
-	public static OfferState codeToInstance(byte code)
-	{
-		return Arrays.stream(OfferState.values())
-				.filter(offerState -> offerState.getCode() == code)
-				.findFirst()
-				.orElse(OfferState.EMPTY);
-	}
-}

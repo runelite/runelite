@@ -36,5 +36,5 @@ public interface GrandExchangeOffer
 
 	int getSpent();
 
-	byte getProgress();
+	GrandExchangeOfferState getState();
 }
