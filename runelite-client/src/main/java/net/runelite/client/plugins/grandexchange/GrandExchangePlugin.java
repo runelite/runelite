@@ -16,24 +16,21 @@ import net.runelite.client.ui.NavigationButton;
 @PluginDescriptor(name = "Grand Exchange offer plugin")
 public class GrandExchangePlugin extends Plugin
 {
-
 	private ImageIcon icon;
 	private NavigationButton button;
 
-	GrandExchangePanel panel;
-
-	private ClientUI ui;
-	private boolean isInitialized = false;
+	private GrandExchangePanel panel;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		ui = RuneLite.getRunelite().getGui();
+		panel = new GrandExchangePanel();
 
-		button = new NavigationButton("GE Offers", this::doPanel);
+		button = new NavigationButton("GE Offers", () -> panel);
 		icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("ge_icon.png")));
 		button.getButton().setIcon(icon);
 
+		ClientUI ui = RuneLite.getRunelite().getGui();
 		ui.getPluginToolbar().addNavigation(button);
 	}
 
@@ -49,19 +46,7 @@ public class GrandExchangePlugin extends Plugin
 	)
 	public void doUpdate()
 	{
-		if (!isInitialized)
-		{
-			return;
-		}
 		panel.updateOffers();
-	}
-
-	private GrandExchangePanel doPanel()
-	{
-		panel = panel == null ? panel = GrandExchangePanel.getInstance() : panel;
-		panel.init();
-		isInitialized = true;
-		return panel;
 	}
 
 }
