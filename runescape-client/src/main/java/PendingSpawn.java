@@ -100,7 +100,7 @@ public final class PendingSpawn extends Node {
    static void method1524(int var0, Coordinates var1, boolean var2) {
       WorldMapData var3 = Ignore.method1102().method5319(var0);
       int var4 = class66.localPlayer.field908;
-      int var5 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
+      int var5 = (class66.localPlayer.x >> 7) + class22.baseX;
       int var6 = (class66.localPlayer.y >> 7) + class273.baseY;
       Coordinates var7 = new Coordinates(var4, var5, var6);
       Ignore.method1102().method5309(var3, var7, var1, var2);

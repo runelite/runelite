@@ -1347,7 +1347,7 @@ public abstract class Actor extends Renderable {
                                                                                                             var13 = 1;
                                                                                                          } else if(var45 == 3308) {
                                                                                                             var14 = class46.plane;
-                                                                                                            var31 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
+                                                                                                            var31 = (class66.localPlayer.x >> 7) + class22.baseX;
                                                                                                             var16 = (class66.localPlayer.y >> 7) + class273.baseY;
                                                                                                             class81.intStack[++class278.intStackSize - 1] = (var31 << 14) + var16 + (var14 << 28);
                                                                                                             var13 = 1;

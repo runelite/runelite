@@ -114,7 +114,7 @@ public class class217 {
 
                               Client.secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?(KeyFocusListener.field659[81]?2:1):0);
                               Client.secretPacketBuffer1.putShortLE(var28 + class273.baseY);
-                              Client.secretPacketBuffer1.method3342(var27 + class22.baseX * 411265);
+                              Client.secretPacketBuffer1.method3342(var27 + class22.baseX);
                               Client.secretPacketBuffer1.putByte(var37);
                               Client.secretPacketBuffer1.putByte(var36);
                               Client.secretPacketBuffer1.putShort(Client.mapAngle);

@@ -82,7 +82,7 @@ public final class class8 extends class9 {
       int var3;
       if(var0 == 6600) {
          var3 = class46.plane;
-         int var9 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
+         int var9 = (class66.localPlayer.x >> 7) + class22.baseX;
          int var5 = (class66.localPlayer.y >> 7) + class273.baseY;
          Ignore.method1102().method5366(var3, var9, var5, true);
          return 1;

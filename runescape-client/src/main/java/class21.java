@@ -163,7 +163,7 @@ public class class21 {
          if((var3 & 4) != 0) {
             var4 = Client.secretPacketBuffer2.method3259();
             var5 = Client.secretPacketBuffer2.readUnsignedShort();
-            var6 = var2.x - (var4 - class22.baseX * 411265 - class22.baseX * 411265) * 64;
+            var6 = var2.x - (var4 - class22.baseX - class22.baseX) * 64;
             var7 = var2.y - (var5 - class273.baseY - class273.baseY) * 64;
             if(var6 != 0 || var7 != 0) {
                var2.field1249 = (int)(Math.atan2((double)var6, (double)var7) * 325.949D) & 2047;

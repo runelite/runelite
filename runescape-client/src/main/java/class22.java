@@ -11,6 +11,9 @@ public class class22 extends class28 {
    )
    static int field348;
    @ObfuscatedName("fy")
+   @ObfuscatedGetter(
+      intValue = 411265
+   )
    @Export("baseX")
    static int baseX;
 

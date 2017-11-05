@@ -118,13 +118,13 @@ public final class GroundObject {
          class94.field1500 = var1;
          class72.setGameState(25);
          class24.drawStatusBox("Loading - please wait.", true);
-         int var3 = class22.baseX * 411265;
+         int var3 = class22.baseX;
          int var4 = class273.baseY;
-         class22.baseX = (var0 - 6) * 1981795336;
+         class22.baseX = (var0 - 6) * 8;
          class273.baseY = (var1 - 6) * 8;
-         int var5 = class22.baseX * 411265 - var3;
+         int var5 = class22.baseX - var3;
          int var6 = class273.baseY - var4;
-         var3 = class22.baseX * 411265;
+         var3 = class22.baseX;
          var4 = class273.baseY;
 
          int var7;

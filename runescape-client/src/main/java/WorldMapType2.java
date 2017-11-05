@@ -278,7 +278,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
          for(var1 = 0; var1 < class36.field519.length; ++var1) {
             byte[] var2 = ScriptEvent.field856[var1];
             if(var2 != null) {
-               var3 = (class15.mapRegions[var1] >> 8) * 64 - class22.baseX * 411265;
+               var3 = (class15.mapRegions[var1] >> 8) * 64 - class22.baseX;
                var4 = (class15.mapRegions[var1] & 255) * 64 - class273.baseY;
                if(Client.isDynamicRegion) {
                   var3 = 10;
@@ -350,7 +350,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
             if(!Client.isDynamicRegion) {
                byte[] var5;
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                   var4 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                   var5 = class36.field519[var44];
                   if(var5 != null) {
@@ -360,7 +360,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                }
 
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                  var3 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                   var4 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                   var5 = class36.field519[var44];
                   if(var5 == null && class94.field1500 < 800) {
@@ -374,7 +374,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
                for(var44 = 0; var44 < var1; ++var44) {
                   byte[] var46 = ScriptEvent.field856[var44];
                   if(var46 != null) {
-                     var4 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX * 411265;
+                     var4 = (class15.mapRegions[var44] >> 8) * 64 - class22.baseX;
                      var45 = (class15.mapRegions[var44] & 255) * 64 - class273.baseY;
                      KeyFocusListener.method756();
                      Region var48 = class3.region;

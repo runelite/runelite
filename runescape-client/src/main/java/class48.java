@@ -193,10 +193,10 @@ public class class48 implements WorldMapSectionBase {
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_ITEM_ON_OBSTACLE);
          if(Client.RUNELITE_PACKET) {
             Client.secretPacketBuffer1.runeliteWriteInt(FileRequest.field3204);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.putShort(FileRequest.field3204);
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
@@ -217,13 +217,13 @@ public class class48 implements WorldMapSectionBase {
             Client.secretPacketBuffer1.runeliteWriteInt(class56.field696);
             Client.secretPacketBuffer1.runeliteWriteInt(Client.field1070);
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.method3254(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.method3392(class56.field696);
             Client.secretPacketBuffer1.putShortLE(Client.field1070);
             Client.secretPacketBuffer1.putShortLE(class273.baseY + var1);
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?1:0);
@@ -236,11 +236,11 @@ public class class48 implements WorldMapSectionBase {
          Client.destinationY = var1;
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_FIRST_OBSTACLE_ACTION);
          if(Client.RUNELITE_PACKET) {
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
             Client.secretPacketBuffer1.runeliteWriteInt(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
          } else {
-            Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
             Client.secretPacketBuffer1.putShortLE(var3 >> 14 & 32767);
             Client.secretPacketBuffer1.putShort(class273.baseY + var1);
          }
@@ -256,10 +256,10 @@ public class class48 implements WorldMapSectionBase {
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_SECOND_OBSTACLE_ACTION);
          if(Client.RUNELITE_PACKET) {
             Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
             Client.secretPacketBuffer1.method3254(class273.baseY + var1);
-            Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field659[82]?1:0);
@@ -279,7 +279,7 @@ public class class48 implements WorldMapSectionBase {
          }
 
          Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
-         Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX * 411265);
+         Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX);
          Client.secretPacketBuffer1.method3254(var3 >> 14 & 32767);
       } else if(var2 == 6) {
          Client.field1047 = var6;
@@ -290,9 +290,9 @@ public class class48 implements WorldMapSectionBase {
          Client.destinationY = var1;
          Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_37);
          if(Client.RUNELITE_PACKET) {
-            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
          } else {
-            Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+            Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
          }
 
          Client.secretPacketBuffer1.putLEInt(KeyFocusListener.field659[82]?1:0);
@@ -473,7 +473,7 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_162);
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                Client.secretPacketBuffer1.putShortLE(class273.baseY + var1);
                Client.secretPacketBuffer1.method3342(FileRequest.field3204);
                Client.secretPacketBuffer1.method3254(class5.selectedItemIndex);
@@ -488,11 +488,11 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_CAST_SPELL_ON_FLOORITEM);
                if(Client.RUNELITE_PACKET) {
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                   Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
                   Client.secretPacketBuffer1.runeliteWriteInt(class56.field696);
                } else {
-                  Client.secretPacketBuffer1.method3342(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3342(var0 + class22.baseX);
                   Client.secretPacketBuffer1.method3254(class273.baseY + var1);
                   Client.secretPacketBuffer1.method3275(class56.field696);
                }
@@ -509,9 +509,9 @@ public class class48 implements WorldMapSectionBase {
                Client.destinationY = var1;
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_102);
                if(Client.RUNELITE_PACKET) {
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                } else {
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                }
 
                Client.secretPacketBuffer1.method3225(KeyFocusListener.field659[82]?1:0);
@@ -527,11 +527,11 @@ public class class48 implements WorldMapSectionBase {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_172);
                if(Client.RUNELITE_PACKET) {
                   Client.secretPacketBuffer1.runeliteWriteInt(var3);
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                   Client.secretPacketBuffer1.runeliteWriteInt(class273.baseY + var1);
                } else {
                   Client.secretPacketBuffer1.method3342(var3);
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                   Client.secretPacketBuffer1.method3342(class273.baseY + var1);
                }
 
@@ -551,7 +551,7 @@ public class class48 implements WorldMapSectionBase {
                }
 
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                Client.secretPacketBuffer1.putShort(class273.baseY + var1);
             } else if(var2 == 21) {
                Client.field1047 = var6;
@@ -563,10 +563,10 @@ public class class48 implements WorldMapSectionBase {
                Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_180);
                if(Client.RUNELITE_PACKET) {
                   Client.secretPacketBuffer1.runeliteWriteInt(var3);
-                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                } else {
                   Client.secretPacketBuffer1.method3342(var3);
-                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX * 411265);
+                  Client.secretPacketBuffer1.method3254(var0 + class22.baseX);
                }
 
                Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
@@ -588,7 +588,7 @@ public class class48 implements WorldMapSectionBase {
                }
 
                Client.secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?1:0);
-               Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX * 411265);
+               Client.secretPacketBuffer1.putShortLE(var0 + class22.baseX);
             } else if(var2 == 23) {
                if(Client.isMenuOpen) {
                   class3.region.method2755();
@@ -1058,9 +1058,9 @@ public class class48 implements WorldMapSectionBase {
                                     Client.destinationY = var1;
                                     Client.secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_145);
                                     if(Client.RUNELITE_PACKET) {
-                                       Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX * 411265);
+                                       Client.secretPacketBuffer1.runeliteWriteInt(var0 + class22.baseX);
                                     } else {
-                                       Client.secretPacketBuffer1.putShort(var0 + class22.baseX * 411265);
+                                       Client.secretPacketBuffer1.putShort(var0 + class22.baseX);
                                     }
 
                                     Client.secretPacketBuffer1.method3246(KeyFocusListener.field659[82]?1:0);
@@ -1209,7 +1209,7 @@ public class class48 implements WorldMapSectionBase {
    )
    static final void method718() {
       Client.field1033 = 0;
-      int var0 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
+      int var0 = (class66.localPlayer.x >> 7) + class22.baseX;
       int var1 = (class66.localPlayer.y >> 7) + class273.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
          Client.field1033 = 1;

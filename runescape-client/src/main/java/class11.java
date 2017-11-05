@@ -98,7 +98,7 @@ public class class11 {
       byte var4 = (byte)(var3 >> 28);
       int var5 = var3 >> 14 & 16383;
       int var6 = var3 & 16383;
-      var2.pathX[0] = var5 - class22.baseX * 411265;
+      var2.pathX[0] = var5 - class22.baseX;
       var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
       var2.pathY[0] = var6 - class273.baseY;
       var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);

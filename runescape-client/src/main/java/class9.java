@@ -162,7 +162,7 @@ public abstract class class9 extends Node {
                }
 
                if(var6 == 18) {
-                  var7 = (class66.localPlayer.x >> 7) + class22.baseX * 411265;
+                  var7 = (class66.localPlayer.x >> 7) + class22.baseX;
                }
 
                if(var6 == 19) {

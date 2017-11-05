@@ -19,6 +19,9 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @Export("mouse")
    public static MouseInput mouse;
    @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1725731803
+   )
    public static volatile int field760;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
@@ -184,7 +187,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
          field755 = class174.currentTimeMs();
          field752 = this.method1016(var1);
          if(field752 != 0) {
-            field760 = field752 * 851890093;
+            field760 = field752;
          }
       }
 

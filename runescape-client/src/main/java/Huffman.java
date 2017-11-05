@@ -464,7 +464,7 @@ public class Huffman {
             var10 = var7 & 255;
             var6.field1258[0] = class94.field1487[var1];
             var6.field908 = (byte)var8;
-            var6.method1114((var9 << 13) + var3 - class22.baseX * 411265, (var10 << 13) + var4 - class273.baseY);
+            var6.method1114((var9 << 13) + var3 - class22.baseX, (var10 << 13) + var4 - class273.baseY);
             var6.field886 = false;
             return true;
          }

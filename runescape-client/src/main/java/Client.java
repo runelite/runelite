@@ -3501,15 +3501,6 @@ public final class Client extends GameEngine {
                   return true;
                }
 
-               if(packetType == Opcodes.PACKET_SERVER_143) {
-                  WidgetNode.xteaChanged(false);
-                  secretPacketBuffer2.readOpcode();
-                  var2 = secretPacketBuffer2.readUnsignedShort();
-                  class81.method1665(secretPacketBuffer2, var2);
-                  packetType = -1;
-                  return true;
-               }
-
                if(packetType == Opcodes.PACKET_SERVER_168) {
                   WidgetNode.xteaChanged(true);
                   secretPacketBuffer2.readOpcode();
@@ -3519,14 +3510,23 @@ public final class Client extends GameEngine {
                   return true;
                }
 
-               if(packetType == Opcodes.PACKET_SERVER_31) {
-                  class23.method175(true);
+               if(packetType == Opcodes.PACKET_SERVER_143) {
+                  WidgetNode.xteaChanged(false);
+                  secretPacketBuffer2.readOpcode();
+                  var2 = secretPacketBuffer2.readUnsignedShort();
+                  class81.method1665(secretPacketBuffer2, var2);
                   packetType = -1;
                   return true;
                }
 
                if(packetType == Opcodes.PACKET_SERVER_220) {
                   class23.method175(false);
+                  packetType = -1;
+                  return true;
+               }
+
+               if(packetType == Opcodes.PACKET_SERVER_31) {
+                  class23.method175(true);
                   packetType = -1;
                   return true;
                }
@@ -3557,7 +3557,7 @@ public final class Client extends GameEngine {
          } catch (IOException var50) {
             class60.method1028();
          } catch (Exception var51) {
-            var23 = "" + packetType + "," + secondLastFrameId + "," + thridLastFrameId + "," + packetLength + "," + (class66.localPlayer.pathX[0] + class22.baseX * 411265) + "," + (class66.localPlayer.pathY[0] + class273.baseY) + ",";
+            var23 = "" + packetType + "," + secondLastFrameId + "," + thridLastFrameId + "," + packetLength + "," + (class66.localPlayer.pathX[0] + class22.baseX) + "," + (class66.localPlayer.pathY[0] + class273.baseY) + ",";
 
             for(var3 = 0; var3 < packetLength && var3 < 50; ++var3) {
                var23 = var23 + secretPacketBuffer2.payload[var3] + ",";
@@ -3674,7 +3674,7 @@ public final class Client extends GameEngine {
 
       MouseInput var8 = MouseInput.mouse;
       synchronized(MouseInput.mouse) {
-         MouseInput.field750 = MouseInput.field760 * -1725731803;
+         MouseInput.field750 = MouseInput.field760;
          MouseInput.field756 = MouseInput.mouseX;
          MouseInput.field741 = MouseInput.mouseY;
          MouseInput.field743 = MouseInput.field752;
@@ -5090,7 +5090,7 @@ public final class Client extends GameEngine {
                      }
 
                      if(var4 != class66.localPlayer.field908) {
-                        var5 = class66.localPlayer.pathX[0] + class22.baseX * 411265;
+                        var5 = class66.localPlayer.pathX[0] + class22.baseX;
                         var6 = class66.localPlayer.pathY[0] + class273.baseY;
                         secretPacketBuffer1.putOpcode(Opcodes.PACKET_CLIENT_30);
                         if(RUNELITE_PACKET) {
@@ -5130,7 +5130,7 @@ public final class Client extends GameEngine {
                                           if(var37 == null) {
                                              this.method1438();
                                              if(renderOverview != null) {
-                                                renderOverview.method5366(class46.plane, (class66.localPlayer.x >> 7) + class22.baseX * 411265, (class66.localPlayer.y >> 7) + class273.baseY, false);
+                                                renderOverview.method5366(class46.plane, (class66.localPlayer.x >> 7) + class22.baseX, (class66.localPlayer.y >> 7) + class273.baseY, false);
                                                 renderOverview.method5367();
                                              }
 
@@ -5221,7 +5221,7 @@ public final class Client extends GameEngine {
 
                                                 secretPacketBuffer1.putByte(KeyFocusListener.field659[82]?(KeyFocusListener.field659[81]?2:1):0);
                                                 secretPacketBuffer1.putShortLE(var5 + class273.baseY);
-                                                secretPacketBuffer1.method3342(var4 + class22.baseX * 411265);
+                                                secretPacketBuffer1.method3342(var4 + class22.baseX);
                                                 Region.method2731();
                                                 field1047 = MouseInput.field757;
                                                 field1022 = MouseInput.field758;

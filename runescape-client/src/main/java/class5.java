@@ -502,7 +502,7 @@ final class class5 implements class0 {
                }
 
                if(Client.hintArrowTargetType == 2) {
-                  var10 = Client.hintArrowX * 4 - class22.baseX * 1645060 + 2 - class66.localPlayer.x / 32;
+                  var10 = Client.hintArrowX * 4 - class22.baseX * 4 + 2 - class66.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - class273.baseY * 4 + 2 - class66.localPlayer.y / 32;
                   class18.method138(var1, var2, var10, var11, class202.mapMarkers[1], var4);
                }
