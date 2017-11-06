@@ -28,7 +28,9 @@ import net.runelite.api.GrandExchangeOffer;
 
 public class GrandExchangeOfferChanged
 {
+
 	private GrandExchangeOffer offer;
+	private int index;
 
 	public GrandExchangeOffer getOffer()
 	{
@@ -39,4 +41,15 @@ public class GrandExchangeOfferChanged
 	{
 		this.offer = offer;
 	}
+
+	public int getIndex()
+	{
+		return index;
+	}
+
+	public void setIndex(int index)
+	{
+		this.index = index;
+	}
+
 }

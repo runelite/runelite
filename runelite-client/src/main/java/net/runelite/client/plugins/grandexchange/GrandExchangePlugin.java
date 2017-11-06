@@ -2,7 +2,7 @@ package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.eventbus.Subscribe;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.GrandExchangeOfferChanged;
 import net.runelite.client.plugins.Plugin;
@@ -45,7 +45,7 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged grandExchangeOfferChanged)
 	{
-		panel.updateOffers();
+		panel.updateConsumer.accept(grandExchangeOfferChanged);
 	}
 
 }

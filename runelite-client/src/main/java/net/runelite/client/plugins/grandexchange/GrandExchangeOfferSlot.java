@@ -1,9 +1,7 @@
 package net.runelite.client.plugins.grandexchange;
 
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
+import java.awt.*;
+import javax.swing.*;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 
@@ -95,6 +93,7 @@ public class GrandExchangeOfferSlot
 
 	public void setProgressBar(int newValue)
 	{
+		if (!this.progressBar.isStringPainted()) this.progressBar.setStringPainted(true);
 		this.progressBar.setValue(newValue);
 		this.progressBar.setBackground(getProgressBarColour());
 	}

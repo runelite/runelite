@@ -24,7 +24,7 @@
  */
 package net.runelite.client.callback;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -34,7 +34,15 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
-import net.runelite.client.events.*;
+import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.events.ChatMessage;
+import net.runelite.client.events.ExperienceChanged;
+import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.GrandExchangeOfferChanged;
+import net.runelite.client.events.MapRegionChanged;
+import net.runelite.client.events.MenuOptionClicked;
+import net.runelite.client.events.PlayerMenuOptionsChanged;
+import net.runelite.client.events.SetMessage;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -157,6 +165,8 @@ public class Hooks
 
 				GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
 				grandExchangeOfferChanged.setOffer(grandExchangeOffer);
+				grandExchangeOfferChanged.setIndex(idx);
+
 				runelite.getEventBus().post(grandExchangeOfferChanged);
 				break;
 			}
