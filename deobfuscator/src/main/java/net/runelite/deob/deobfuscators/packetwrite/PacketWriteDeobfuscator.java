@@ -33,6 +33,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.code.Instruction;
+import static net.runelite.asm.attributes.code.InstructionType.INVOKEVIRTUAL;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
@@ -75,7 +76,7 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 			return;
 		}
 
-		if (!(ctx.getInstruction() instanceof InvokeInstruction))
+		if (ctx.getInstruction().getType() != INVOKEVIRTUAL)
 		{
 			return;
 		}
@@ -92,6 +93,11 @@ public class PacketWriteDeobfuscator implements Deobfuscator
 
 		PacketWrite write = cur;
 		if (write == null)
+		{
+			return;
+		}
+
+		if (!ii.getMethod().getClazz().getName().equals(rw.getWriteOpcode().getClassFile().getSuperName()))
 		{
 			return;
 		}
