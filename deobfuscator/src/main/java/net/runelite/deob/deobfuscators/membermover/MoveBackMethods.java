@@ -31,8 +31,6 @@ import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.Deobfuscator;
@@ -69,11 +67,6 @@ public class MoveBackMethods implements Deobfuscator
 
 		findUnusedMethods(group);
 		findUsedMethods(group);
-
-		for (Method m : usedMethods)
-		{
-			removeUnusedInstructions(m);
-		}
 
 		for (Method m : usedMethods)
 		{
@@ -146,45 +139,6 @@ public class MoveBackMethods implements Deobfuscator
 				}
 
 				usedMethods.add(m);
-			}
-		}
-	}
-
-	private void removeUnusedInstructions(Method m)
-	{
-		Instructions ins = m.getCode().getInstructions();
-
-		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
-
-		for (int j = 0; j < insCopy.size(); ++j)
-		{
-			Instruction i = insCopy.get(j);
-
-			if (!execution.executed.contains(i))
-			{
-				// if this is an exception handler, the exception handler is never used...
-				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
-				{
-					if (e.getStart().next() == i)
-					{
-						e.setStart(ins.createLabelFor(insCopy.get(j + 1)));
-
-						if (e.getStart().next() == e.getEnd().next())
-						{
-							m.getCode().getExceptions().remove(e);
-							continue;
-						}
-					}
-					if (e.getHandler().next() == i)
-					{
-						m.getCode().getExceptions().remove(e);
-					}
-				}
-
-				if (i instanceof Label)
-					continue;
-
-				ins.remove(i);
 			}
 		}
 	}

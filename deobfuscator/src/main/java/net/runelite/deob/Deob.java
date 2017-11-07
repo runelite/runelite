@@ -95,7 +95,7 @@ public class Deob
 		run(group, new IllegalStateExceptions());
 
 		// moves static members to either their original classes or the Static class
-		// this also removes unused instructions in reached methods
+		// this must be run before unreached code is removed
 		run(group, new MemberMover());
 
 		// remove unused methods - this leaves Code with no instructions,
