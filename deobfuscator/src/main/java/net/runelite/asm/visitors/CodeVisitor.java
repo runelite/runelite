@@ -365,6 +365,12 @@ public class CodeVisitor extends MethodVisitor
 	}
 
 	@Override
+	public void visitLineNumber(int line, Label start)
+	{
+		method.getLineNumbers().setLineNumber(code.getInstructions().findOrCreateLabel(start), line);
+	}
+
+	@Override
 	public void visitTryCatchBlock(Label start, Label end, Label handler, String type)
 	{
 		Exceptions exceptions = code.getExceptions();

@@ -29,6 +29,7 @@ import java.util.List;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
+import net.runelite.asm.attributes.LineNumbers;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -47,13 +48,14 @@ public class Method
 {
 	public static final int ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
 
-	private final ClassFile classFile;
+	private ClassFile classFile;
 
 	private int accessFlags;
 	private String name;
 	private Signature arguments;
 	private Exceptions exceptions;
 	private Annotations annotations;
+	private LineNumbers lineNumbers;
 	private Code code;
 
 	public Method(ClassFile classFile, String name, Signature signature)
@@ -63,11 +65,17 @@ public class Method
 		this.arguments = signature;
 		exceptions = new Exceptions();
 		annotations = new Annotations();
+		lineNumbers = new LineNumbers();
 	}
 
 	public ClassFile getClassFile()
 	{
 		return classFile;
+	}
+
+	public void setClassFile(ClassFile classFile)
+	{
+		this.classFile = classFile;
 	}
 
 	@Override
@@ -225,6 +233,11 @@ public class Method
 	public Annotations getAnnotations()
 	{
 		return annotations;
+	}
+
+	public LineNumbers getLineNumbers()
+	{
+		return lineNumbers;
 	}
 
 	@SuppressWarnings("unchecked")

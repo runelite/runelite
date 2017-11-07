@@ -38,9 +38,13 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedOwner;
 import net.runelite.mapping.ObfuscatedSignature;
 
 public class Reflection
@@ -48,6 +52,8 @@ public class Reflection
 	private static final boolean PRINT_DEBUG_MESSAGES = true;
 
 	private static Map<String, Class<?>> classes = new HashMap<>();
+	private static Map<Class<?>, Field[]> fields = new HashMap<>();
+	private static Map<Class<?>, Method[]> methods = new HashMap<>();
 
 	static
 	{
@@ -91,6 +97,10 @@ public class Reflection
 							{
 								classes.put(obfuscatedName.value(), clazz);
 							}
+							else if (className.equals("Static"))
+							{
+								classes.put(className, clazz);
+							}
 						}
 						catch (ClassNotFoundException ignore)
 						{
@@ -102,6 +112,45 @@ public class Reflection
 		{
 			e.printStackTrace();
 		}
+
+		Map<Class<?>, Set<Field>> setFields = new HashMap<>();
+		Map<Class<?>, Set<Method>> setMethods = new HashMap<>();
+
+		classes.forEach((name, clazz) ->
+		{
+			for (Field f : clazz.getDeclaredFields())
+			{
+				ObfuscatedOwner obfuscatedOwner = f
+						.getAnnotation(ObfuscatedOwner.class);
+
+				Class<?> owner = clazz;
+
+				if (obfuscatedOwner != null)
+				{
+					owner = classes.get(obfuscatedOwner.value());
+				}
+
+				setFields.computeIfAbsent(owner, k -> new HashSet<>()).add(f);
+			}
+
+			for (Method m : clazz.getDeclaredMethods())
+			{
+				ObfuscatedOwner obfuscatedOwner = m
+						.getAnnotation(ObfuscatedOwner.class);
+
+				Class<?> owner = clazz;
+
+				if (obfuscatedOwner != null)
+				{
+					owner = classes.get(obfuscatedOwner.value());
+				}
+
+				setMethods.computeIfAbsent(owner, k -> new HashSet<>()).add(m);
+			}
+		});
+
+		setFields.forEach((clazz, set) -> fields.put(clazz, set.toArray(new Field[set.size()])));
+		setMethods.forEach((clazz, set) -> methods.put(clazz, set.toArray(new Method[set.size()])));
 	}
 
 	public static Class<?> findClass(String name) throws ClassNotFoundException
@@ -128,7 +177,7 @@ public class Reflection
 			System.out.println("Looking for field " + name + " in " + clazz);
 		}
 
-		for (Field f : clazz.getDeclaredFields())
+		for (Field f : fields.get(clazz))
 		{
 			ObfuscatedName annotation = f.getAnnotation(ObfuscatedName.class);
 			if (annotation != null && annotation.value().equals(name))
@@ -143,6 +192,16 @@ public class Reflection
 		}
 
 		return clazz.getDeclaredField(name);
+	}
+
+	public static Method[] findMethods(Class<?> clazz)
+	{
+		if (PRINT_DEBUG_MESSAGES)
+		{
+			System.out.println("Looking for declared methods in " + clazz);
+		}
+
+		return Reflection.methods.get(clazz);
 	}
 
 	public static String getMethodName(Method method)

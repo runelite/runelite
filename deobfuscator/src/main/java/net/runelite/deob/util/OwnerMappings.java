@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,73 +24,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.asm.attributes;
+package net.runelite.deob.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.runelite.asm.pool.Field;
+import net.runelite.asm.pool.Method;
 
-import net.runelite.asm.Type;
-import net.runelite.asm.attributes.annotation.Annotation;
-import net.runelite.asm.attributes.annotation.Element;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Annotations
+public class OwnerMappings
 {
-	private final List<Annotation> annotations = new ArrayList<>();
+	private final Map<Object, String> map = new HashMap<>();
 
-	public List<Annotation> getAnnotations()
+	public void map(Field field, String name)
 	{
-		return annotations;
+		map.put(field, name);
 	}
 	
-	public void addAnnotation(Annotation annotation)
+	public void map(Method method, String name)
 	{
-		addAnnotation(annotations.size(), annotation);
-	}
-
-	public void addAnnotation(int idx, Annotation annotation)
-	{
-		annotations.add(idx, annotation);
-	}
-
-	public void removeAnnotation(Annotation annotation)
-	{
-		annotations.remove(annotation);
-	}
-
-	public void clearAnnotations()
-	{
-		annotations.clear();
+		map.put(method, name);
 	}
 	
-	public Annotation find(Type type)
+	public String get(Object object)
 	{
-		for (Annotation a : annotations)
-			if (a.getType().equals(type))
-				return a;
-		return null;
+		return map.get(object);
 	}
 
-	public int size()
+	public Map<Object, String> getMap()
 	{
-		return annotations.size();
-	}
-
-	public Annotation addAnnotation(Type type, String name, Object value)
-	{
-		return addAnnotation(annotations.size(), type, name, value);
-	}
-	
-	public Annotation addAnnotation(int idx, Type type, String name, Object value)
-	{
-		Annotation annotation = new Annotation(this);
-		annotation.setType(type);
-		addAnnotation(idx, annotation);
-		
-		Element element = new Element(annotation);
-		element.setName(name);
-		element.setValue(value);
-		annotation.addElement(element);
-
-		return annotation;
+		return map;
 	}
 }

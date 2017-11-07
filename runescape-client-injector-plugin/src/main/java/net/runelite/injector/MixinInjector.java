@@ -322,7 +322,11 @@ public class MixinInjector
 			}
 
 			// Find the vanilla class where the method to copy is in
-			String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+			String obClassName = DeobAnnotations.getObfuscatedOwner(deobMethod.getAnnotations());
+			if (obClassName == null)
+			{
+				obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+			}
 			ClassFile obCf = inject.getVanilla().findClass(obClassName);
 			assert obCf != null : "unable to find vanilla class from obfuscated name " + obClassName;
 
@@ -400,7 +404,11 @@ public class MixinInjector
 				}
 
 				// Find the vanilla class where the method to copy is in
-				String obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+				String obClassName = DeobAnnotations.getObfuscatedOwner(deobMethod.getAnnotations());
+				if (obClassName == null)
+				{
+					obClassName = DeobAnnotations.getObfuscatedName(deobMethod.getClassFile().getAnnotations());
+				}
 				ClassFile obCf = inject.getVanilla().findClass(obClassName);
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
