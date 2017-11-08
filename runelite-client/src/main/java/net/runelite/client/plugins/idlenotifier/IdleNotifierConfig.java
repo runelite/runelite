@@ -88,4 +88,26 @@ public interface IdleNotifierConfig
 	{
 		return 5000;
 	}
+
+	@ConfigItem(
+		keyName = "hitpoints",
+		name = "Hitpoints Threshold",
+		description = "The amount of hitpoints to send a notification at",
+		position = 6
+	)
+	default int getHitpointsThreshold()
+	{
+		return 15;
+	}
+
+	@ConfigItem(
+		keyName = "prayer",
+		name = "Prayer Threshold",
+		description = "The amount of prayer points to send a notification at",
+		position = 7
+	)
+	default int getPrayerThreshold()
+	{
+		return 15;
+	}
 }

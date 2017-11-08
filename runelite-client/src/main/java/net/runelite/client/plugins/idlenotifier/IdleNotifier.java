@@ -35,6 +35,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.events.GameStateChanged;
@@ -55,7 +56,11 @@ public class IdleNotifier extends Plugin
 
 	private Instant lastAnimating;
 	private Instant lastInteracting;
+	private Instant lastHitpoints;
+	private Instant lastPrayer;
 	private boolean notifyIdle = false;
+	private boolean notifyHitpoints = true;
+	private boolean notifyPrayer = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -157,7 +162,7 @@ public class IdleNotifier extends Plugin
 	}
 
 	@Schedule(
-		period = 2,
+		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
 	public void checkIdle()
@@ -187,6 +192,40 @@ public class IdleNotifier extends Plugin
 			sendNotification("[" + local.getName() + "] is now out of combat!");
 			lastInteracting = null;
 		}
+
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
+			{
+				if (!notifyHitpoints && Instant.now().compareTo(lastHitpoints.plus(waitDuration)) >= 0)
+				{
+					sendNotification("[" + local.getName() + "] has low hitpoints!");
+					notifyHitpoints = true;
+				}
+			}
+			else
+			{
+				lastHitpoints = Instant.now();
+				notifyHitpoints = false;
+			}
+		}
+
+		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
+			{
+				if (!notifyPrayer && Instant.now().compareTo(lastPrayer.plus(waitDuration)) >= 0)
+				{
+					sendNotification("[" + local.getName() + "] has low prayer!");
+					notifyPrayer = true;
+				}
+			}
+			else
+			{
+				lastPrayer = Instant.now();
+				notifyPrayer = false;
+			}
+		}
 	}
 
 	private void sendNotification(String message)
@@ -204,5 +243,4 @@ public class IdleNotifier extends Plugin
 			runelite.notify(message);
 		}
 	}
-
 }
