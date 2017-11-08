@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
+ * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,11 +30,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import static net.runelite.api.AnimationID.*;
+
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -43,12 +47,12 @@ import net.runelite.client.task.Schedule;
 )
 public class IdleNotifier extends Plugin
 {
-	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
-
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
+	private final IdleNotifierConfig config = runelite.getConfigManager().getConfig(IdleNotifierConfig.class);
 
 	private Instant lastAnimating;
+	private Instant lastInteracting;
 	private boolean notifyIdle = false;
 
 	@Override
@@ -64,7 +68,7 @@ public class IdleNotifier extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -144,18 +148,42 @@ public class IdleNotifier extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		lastInteracting = null;
+	}
+
 	@Schedule(
 		period = 2,
 		unit = ChronoUnit.SECONDS
 	)
 	public void checkIdle()
 	{
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		Duration waitDuration = Duration.ofMillis(config.getTimeout());
 		Player local = client.getLocalPlayer();
 		if (notifyIdle && local.getAnimation() == IDLE
-			&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
+			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{
 			runelite.notify("[" + local.getName() + "] is now idle!");
 			notifyIdle = false;
+		}
+
+		Actor opponent = local.getInteracting();
+		if (opponent != null && opponent.getCombatLevel() > 0)
+		{
+			lastInteracting = Instant.now();
+		}
+
+		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+		{
+			runelite.notify("[" + local.getName() + "] is now out of combat!");
+			lastInteracting = null;
 		}
 	}
 
