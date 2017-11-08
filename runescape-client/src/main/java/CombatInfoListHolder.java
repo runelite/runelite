@@ -119,7 +119,7 @@ public class CombatInfoListHolder extends Node {
    )
    public static void method1691(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
       class203.field2500 = 1;
-      class87.field1392 = var0;
+      ContextMenuRow.field1392 = var0;
       class203.field2502 = var1;
       class203.field2505 = var2;
       class10.field268 = var3;

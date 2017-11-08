@@ -2152,7 +2152,7 @@ public abstract class Actor extends Renderable {
 
                                                                                                             var12 = var13;
                                                                                                          } else if(var45 < 5700) {
-                                                                                                            var12 = class87.method1720(var45, var3, var48);
+                                                                                                            var12 = ContextMenuRow.method1720(var45, var3, var48);
                                                                                                          } else if(var45 < 6300) {
                                                                                                             var12 = class89.method1733(var45, var3, var48);
                                                                                                          } else if(var45 < 6600) {

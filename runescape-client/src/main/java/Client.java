@@ -1524,7 +1524,7 @@ public final class Client extends GameEngine {
 
       class70.preferences = var3;
       this.method840();
-      class87.method1721(this, class276.field3741);
+      ContextMenuRow.method1721(this, class276.field3741);
       if(socketType != 0) {
          displayFps = true;
       }
@@ -1654,7 +1654,7 @@ public final class Client extends GameEngine {
          try {
             if(class203.field2500 == 2) {
                if(Ignore.field863 == null) {
-                  Ignore.field863 = Track1.getMusicFile(class87.field1392, class203.field2502, class203.field2505);
+                  Ignore.field863 = Track1.getMusicFile(ContextMenuRow.field1392, class203.field2502, class203.field2505);
                   if(Ignore.field863 == null) {
                      var2 = false;
                      break label186;
@@ -1672,7 +1672,7 @@ public final class Client extends GameEngine {
                   class203.field2500 = 0;
                   Ignore.field863 = null;
                   class203.field2504 = null;
-                  class87.field1392 = null;
+                  ContextMenuRow.field1392 = null;
                   var2 = true;
                   break label186;
                }
@@ -1683,7 +1683,7 @@ public final class Client extends GameEngine {
             class203.field2500 = 0;
             Ignore.field863 = null;
             class203.field2504 = null;
-            class87.field1392 = null;
+            ContextMenuRow.field1392 = null;
          }
 
          var2 = false;
@@ -3238,9 +3238,9 @@ public final class Client extends GameEngine {
                                                    } else if(menuOptionCount > 0) {
                                                       var4 = field1028;
                                                       var5 = field1131;
-                                                      class87 var41 = class170.field2344;
-                                                      class48.menuAction(var41.field1389, var41.field1396, var41.field1391, var41.field1390, var41.field1393, var41.field1393, var4, var5);
-                                                      class170.field2344 = null;
+                                                      ContextMenuRow var41 = class170.topContextMenuRow;
+                                                      class48.menuAction(var41.param0, var41.param1, var41.type, var41.identifier, var41.option, var41.option, var4, var5);
+                                                      class170.topContextMenuRow = null;
                                                    }
 
                                                    field1025 = 10;
@@ -4355,7 +4355,7 @@ public final class Client extends GameEngine {
                      for(var3 = World.field1296; var3 < World.field1296 + 8; ++var3) {
                         if(groundItemDeque[class46.plane][var2][var3] != null) {
                            groundItemDeque[class46.plane][var2][var3] = null;
-                           class87.groundItemSpawned(var2, var3);
+                           ContextMenuRow.groundItemSpawned(var2, var3);
                         }
                      }
                   }
@@ -5650,9 +5650,9 @@ public final class Client extends GameEngine {
                         if(ScriptState.field787 != null && !field1031 && menuOptionCount > 0 && !this.method1199()) {
                            var8 = field1028;
                            var9 = field1131;
-                           class87 var10 = class170.field2344;
-                           class48.menuAction(var10.field1389, var10.field1396, var10.field1391, var10.field1390, var10.field1393, var10.field1393, var8, var9);
-                           class170.field2344 = null;
+                           ContextMenuRow var10 = class170.topContextMenuRow;
+                           class48.menuAction(var10.param0, var10.param1, var10.type, var10.identifier, var10.option, var10.option, var8, var9);
+                           class170.topContextMenuRow = null;
                         }
 
                         field1031 = false;
@@ -5921,9 +5921,9 @@ public final class Client extends GameEngine {
             } else if(menuOptionCount > 0) {
                int var12 = field1096 + field1089;
                int var13 = field1168 + field1097;
-               class87 var14 = class170.field2344;
-               class48.menuAction(var14.field1389, var14.field1396, var14.field1391, var14.field1390, var14.field1393, var14.field1393, var12, var13);
-               class170.field2344 = null;
+               ContextMenuRow var14 = class170.topContextMenuRow;
+               class48.menuAction(var14.param0, var14.param1, var14.type, var14.identifier, var14.option, var14.option, var12, var13);
+               class170.topContextMenuRow = null;
             }
 
             field1158 = null;

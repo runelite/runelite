@@ -1363,7 +1363,7 @@ public class ScriptVarType implements RSEnum, class293 {
 
             class203.field2499.method3787();
             class203.field2499.method3785();
-            if(class87.field1392 != null) {
+            if(ContextMenuRow.field1392 != null) {
                class203.field2500 = 2;
             } else {
                class203.field2500 = 0;
@@ -1378,7 +1378,7 @@ public class ScriptVarType implements RSEnum, class293 {
          class203.field2500 = 0;
          Ignore.field863 = null;
          class203.field2504 = null;
-         class87.field1392 = null;
+         ContextMenuRow.field1392 = null;
       }
 
    }

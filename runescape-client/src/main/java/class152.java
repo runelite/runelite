@@ -21,6 +21,6 @@ public class class152 extends RuntimeException {
    public static void method2974() {
       class203.field2499.method3787();
       class203.field2500 = 1;
-      class87.field1392 = null;
+      ContextMenuRow.field1392 = null;
    }
 }

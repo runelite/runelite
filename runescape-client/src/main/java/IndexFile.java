@@ -298,7 +298,7 @@ public final class IndexFile {
    )
    public static void method3070(int var0, IndexDataBase var1, int var2, int var3, int var4, boolean var5) {
       class203.field2500 = 1;
-      class87.field1392 = var1;
+      ContextMenuRow.field1392 = var1;
       class203.field2502 = var2;
       class203.field2505 = var3;
       class10.field268 = var4;

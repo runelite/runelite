@@ -133,7 +133,7 @@ public class class72 extends class163 {
                      Client.groundItemDeque[class46.plane][var1][var2] = null;
                   }
 
-                  class87.groundItemSpawned(var1, var2);
+                  ContextMenuRow.groundItemSpawned(var1, var2);
                }
             }
 
@@ -259,7 +259,7 @@ public class class72 extends class163 {
                   }
 
                   Client.groundItemDeque[class46.plane][var1][var2].addFront(var5);
-                  class87.groundItemSpawned(var1, var2);
+                  ContextMenuRow.groundItemSpawned(var1, var2);
                }
 
             } else {
@@ -348,7 +348,7 @@ public class class72 extends class163 {
                            }
                         }
 
-                        class87.groundItemSpawned(var1, var2);
+                        ContextMenuRow.groundItemSpawned(var1, var2);
                      }
                   }
 

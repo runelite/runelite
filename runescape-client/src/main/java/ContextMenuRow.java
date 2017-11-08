@@ -1,11 +1,13 @@
 import java.applet.Applet;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ck")
-public class class87 {
+@Implements("ContextMenuRow")
+public class ContextMenuRow {
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lip;"
@@ -15,24 +17,29 @@ public class class87 {
    @ObfuscatedGetter(
       intValue = -989869689
    )
-   int field1389;
+   @Export("param0")
+   int param0;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1895250863
    )
-   int field1396;
+   @Export("param1")
+   int param1;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1188294673
    )
-   int field1391;
+   @Export("type")
+   int type;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -1224095481
    )
-   int field1390;
+   @Export("identifier")
+   int identifier;
    @ObfuscatedName("g")
-   String field1393;
+   @Export("option")
+   String option;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(

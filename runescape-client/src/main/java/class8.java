@@ -442,12 +442,12 @@ public final class class8 extends class9 {
       garbageValue = "-57"
    )
    static void method40(int var0) {
-      class170.field2344 = new class87();
-      class170.field2344.field1389 = Client.menuActionParams0[var0];
-      class170.field2344.field1396 = Client.menuActionParams1[var0];
-      class170.field2344.field1391 = Client.menuTypes[var0];
-      class170.field2344.field1390 = Client.menuIdentifiers[var0];
-      class170.field2344.field1393 = Client.menuOptions[var0];
+      class170.topContextMenuRow = new ContextMenuRow();
+      class170.topContextMenuRow.param0 = Client.menuActionParams0[var0];
+      class170.topContextMenuRow.param1 = Client.menuActionParams1[var0];
+      class170.topContextMenuRow.type = Client.menuTypes[var0];
+      class170.topContextMenuRow.identifier = Client.menuIdentifiers[var0];
+      class170.topContextMenuRow.option = Client.menuOptions[var0];
    }
 
    @ObfuscatedName("jd")

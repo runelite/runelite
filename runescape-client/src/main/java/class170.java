@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -12,7 +13,8 @@ public class class170 {
    @ObfuscatedSignature(
       signature = "Lck;"
    )
-   static class87 field2344;
+   @Export("topContextMenuRow")
+   static ContextMenuRow topContextMenuRow;
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(

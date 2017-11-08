@@ -1135,7 +1135,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
             for(var45 = 0; var45 < 104; ++var45) {
                for(var6 = 0; var6 < 104; ++var6) {
-                  class87.groundItemSpawned(var45, var6);
+                  ContextMenuRow.groundItemSpawned(var45, var6);
                }
             }
 

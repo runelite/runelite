@@ -19,7 +19,7 @@ public class class164 {
    )
    public static void method3140(int var0) {
       class203.field2500 = 1;
-      class87.field1392 = null;
+      ContextMenuRow.field1392 = null;
       class203.field2502 = -1;
       class203.field2505 = -1;
       class10.field268 = 0;
