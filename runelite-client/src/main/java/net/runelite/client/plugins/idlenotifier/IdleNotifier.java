@@ -110,6 +110,7 @@ public class IdleNotifier extends Plugin
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
+			case SMITHING_CANNONBALL:
 			/* Fishing */
 			case FISHING_NET:
 			case FISHING_HARPOON:
