@@ -37,7 +37,8 @@ public interface IdleNotifierConfig
 	@ConfigItem(
 		keyName = "enabled",
 		name = "Enabled",
-		description = "Toggles idle notifications"
+		description = "Toggles idle notifications",
+		position = 1
 	)
 	default boolean isEnabled()
 	{
@@ -45,9 +46,43 @@ public interface IdleNotifierConfig
 	}
 
 	@ConfigItem(
+		keyName = "tray",
+		name = "Send Tray Notification",
+		description = "Toggles tray notifications",
+		position = 2
+	)
+	default boolean sendTrayNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "focused",
+		name = "Alert When Focused",
+		description = "Toggles idle notifications for when the client is focused",
+		position = 3
+	)
+	default boolean alertWhenFocused()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "request",
+		name = "Request Window Focus",
+		description = "Toggles window focus request",
+		position = 4
+	)
+	default boolean requestFocus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "timeout",
 		name = "Idle Timeout (ms)",
-		description = "The notification delay after the player is idle"
+		description = "The notification delay after the player is idle",
+		position = 5
 	)
 	default int getTimeout()
 	{

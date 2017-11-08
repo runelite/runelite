@@ -41,6 +41,7 @@ import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
 	name = "Idle notifier"
@@ -50,6 +51,7 @@ public class IdleNotifier extends Plugin
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final IdleNotifierConfig config = runelite.getConfigManager().getConfig(IdleNotifierConfig.class);
+	private final ClientUI gui = runelite.getGui();
 
 	private Instant lastAnimating;
 	private Instant lastInteracting;
@@ -170,7 +172,7 @@ public class IdleNotifier extends Plugin
 		if (notifyIdle && local.getAnimation() == IDLE
 			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{
-			runelite.notify("[" + local.getName() + "] is now idle!");
+			sendNotification("[" + local.getName() + "] is now idle!");
 			notifyIdle = false;
 		}
 
@@ -182,8 +184,24 @@ public class IdleNotifier extends Plugin
 
 		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
 		{
-			runelite.notify("[" + local.getName() + "] is now out of combat!");
+			sendNotification("[" + local.getName() + "] is now out of combat!");
 			lastInteracting = null;
+		}
+	}
+
+	private void sendNotification(String message)
+	{
+		if (!config.alertWhenFocused() && gui.isFocused())
+		{
+			return;
+		}
+		if (config.requestFocus())
+		{
+			gui.requestFocus();
+		}
+		if (config.sendTrayNotification())
+		{
+			runelite.notify(message);
 		}
 	}
 
