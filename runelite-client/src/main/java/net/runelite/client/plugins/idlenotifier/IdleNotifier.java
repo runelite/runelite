@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2017, Abel Briggs
+ * Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,27 +30,37 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import static net.runelite.api.AnimationID.*;
+
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.AnimationChanged;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
 	name = "Idle notifier"
 )
 public class IdleNotifier extends Plugin
 {
-	private static final Duration WAIT_DURATION = Duration.ofMillis(2500L);
-
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
+	private final IdleNotifierConfig config = runelite.getConfigManager().getConfig(IdleNotifierConfig.class);
+	private final ClientUI gui = runelite.getGui();
 
 	private Instant lastAnimating;
+	private Instant lastInteracting;
+	private Instant lastHitpoints;
+	private Instant lastPrayer;
 	private boolean notifyIdle = false;
+	private boolean notifyHitpoints = true;
+	private boolean notifyPrayer = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,7 +75,7 @@ public class IdleNotifier extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -110,6 +121,7 @@ public class IdleNotifier extends Plugin
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
+			case SMITHING_CANNONBALL:
 			/* Fishing */
 			case FISHING_NET:
 			case FISHING_HARPOON:
@@ -143,19 +155,92 @@ public class IdleNotifier extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		lastInteracting = null;
+	}
+
 	@Schedule(
-		period = 2,
+		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
 	public void checkIdle()
 	{
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		Duration waitDuration = Duration.ofMillis(config.getTimeout());
 		Player local = client.getLocalPlayer();
 		if (notifyIdle && local.getAnimation() == IDLE
-			&& Instant.now().compareTo(lastAnimating.plus(WAIT_DURATION)) >= 0)
+			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{
-			runelite.notify("[" + local.getName() + "] is now idle!");
+			sendNotification("[" + local.getName() + "] is now idle!");
 			notifyIdle = false;
+		}
+
+		Actor opponent = local.getInteracting();
+		if (opponent != null && opponent.getCombatLevel() > 0)
+		{
+			lastInteracting = Instant.now();
+		}
+
+		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
+		{
+			sendNotification("[" + local.getName() + "] is now out of combat!");
+			lastInteracting = null;
+		}
+
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
+			{
+				if (!notifyHitpoints && Instant.now().compareTo(lastHitpoints.plus(waitDuration)) >= 0)
+				{
+					sendNotification("[" + local.getName() + "] has low hitpoints!");
+					notifyHitpoints = true;
+				}
+			}
+			else
+			{
+				lastHitpoints = Instant.now();
+				notifyHitpoints = false;
+			}
+		}
+
+		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
+			{
+				if (!notifyPrayer && Instant.now().compareTo(lastPrayer.plus(waitDuration)) >= 0)
+				{
+					sendNotification("[" + local.getName() + "] has low prayer!");
+					notifyPrayer = true;
+				}
+			}
+			else
+			{
+				lastPrayer = Instant.now();
+				notifyPrayer = false;
+			}
 		}
 	}
 
+	private void sendNotification(String message)
+	{
+		if (!config.alertWhenFocused() && gui.isFocused())
+		{
+			return;
+		}
+		if (config.requestFocus())
+		{
+			gui.requestFocus();
+		}
+		if (config.sendTrayNotification())
+		{
+			runelite.notify(message);
+		}
+	}
 }
