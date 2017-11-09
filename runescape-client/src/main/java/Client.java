@@ -512,7 +512,7 @@ public final class Client extends GameEngine {
    static int gameCycle;
    @ObfuscatedName("bi")
    @ObfuscatedGetter(
-      longValue = 3435045014420733095L
+      longValue = -3435045014420733095L
    )
    static long field879;
    @ObfuscatedName("bb")
@@ -1143,7 +1143,7 @@ public final class Client extends GameEngine {
       gameState = 0;
       field877 = true;
       gameCycle = 0;
-      field879 = -1L;
+      field879 = 1L;
       field1090 = -1;
       field1054 = -1;
       field882 = -1;
@@ -2367,7 +2367,7 @@ public final class Client extends GameEngine {
                   var2.offset = 0;
                   var1.read(var2.payload, 0, field952.packetId);
                   field970.method5098();
-                  field879 = -1L;
+                  field879 = 1L;
                   field882 = -1;
                   class5.field31.field811 = 0;
                   class35.field474 = true;
@@ -2754,12 +2754,12 @@ public final class Client extends GameEngine {
 
                   PacketNode var16;
                   if(MouseInput.field713 == 1 || !Item.field1399 && MouseInput.field713 == 4 || MouseInput.field713 == 2) {
-                     long var14 = (MouseInput.field701 - field879) / 50L;
+                     long var14 = (MouseInput.field701 - field879 * -1L) / 50L;
                      if(var14 > 4095L) {
                         var14 = 4095L;
                      }
 
-                     field879 = MouseInput.field701;
+                     field879 = MouseInput.field701 * -1L;
                      var3 = MouseInput.field715;
                      if(var3 < 0) {
                         var3 = 0;

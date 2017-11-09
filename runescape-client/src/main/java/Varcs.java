@@ -224,7 +224,7 @@ public class Varcs {
    void deserialize() {
       FileOnDisk var1 = this.getVarPrefs(false);
 
-      label198: {
+      label186: {
          try {
             byte[] var2 = new byte[(int)var1.length()];
 
@@ -237,12 +237,12 @@ public class Varcs {
             }
 
             Buffer var13 = new Buffer(var2);
-            if(var13.payload.length - var13.offset < 1) {
-               return;
-            }
+            if(var13.payload.length - var13.offset >= 1) {
+               int var5 = var13.readUnsignedByte();
+               if(var5 < 0 || var5 > 1) {
+                  return;
+               }
 
-            int var5 = var13.readUnsignedByte();
-            if(var5 >= 0 && var5 <= 1) {
                int var6 = var13.readUnsignedShort();
 
                int var7;
@@ -261,7 +261,7 @@ public class Varcs {
 
                while(true) {
                   if(var8 >= var7) {
-                     break label198;
+                     break label186;
                   }
 
                   var9 = var13.readUnsignedShort();
@@ -274,7 +274,7 @@ public class Varcs {
                }
             }
          } catch (Exception var24) {
-            break label198;
+            break label186;
          } finally {
             try {
                var1.close();
