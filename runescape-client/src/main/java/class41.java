@@ -532,7 +532,7 @@ public final class class41 {
       int var7;
       int var8;
       int var9;
-      while(var1.bitsAvail(Client.field952.field1471) >= 27) {
+      while(var1.bitsAvail(Client.field952.packetId) >= 27) {
          var2 = var1.getBits(15);
          if(var2 == 32767) {
             break;
@@ -739,8 +739,8 @@ public final class class41 {
          }
       }
 
-      if(var1.offset != Client.field952.field1471) {
-         throw new RuntimeException(var1.offset + "," + Client.field952.field1471);
+      if(var1.offset != Client.field952.packetId) {
+         throw new RuntimeException(var1.offset + "," + Client.field952.packetId);
       } else {
          for(var2 = 0; var2 < Client.npcIndexesCount; ++var2) {
             if(Client.cachedNPCs[Client.npcIndices[var2]] == null) {

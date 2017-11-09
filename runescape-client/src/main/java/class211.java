@@ -1068,7 +1068,7 @@ public class class211 extends class118 {
          int var1 = Client.npcIndices[var0];
          NPC var2 = Client.cachedNPCs[var1];
          if(var2 != null) {
-            class166.method3181(var2, var2.composition.field3625);
+            ServerPacket.method3181(var2, var2.composition.field3625);
          }
       }
 

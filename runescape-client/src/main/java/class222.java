@@ -21,7 +21,7 @@ public class class222 {
       for(int var2 = 0; var2 < var0; ++var2) {
          Player var3 = Client.cachedPlayers[var1[var2]];
          if(var3 != null) {
-            class166.method3181(var3, 1);
+            ServerPacket.method3181(var3, 1);
          }
       }
 

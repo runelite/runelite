@@ -2275,7 +2275,7 @@ public final class Client extends GameEngine {
             } else if(var11 == 2) {
                loginState = 9;
             } else if(var11 == 15 && gameState == 40) {
-               field952.field1471 = -1;
+               field952.packetId = -1;
                loginState = 13;
             } else if(var11 == 23 && field902 < 1) {
                ++field902;
@@ -2341,17 +2341,17 @@ public final class Client extends GameEngine {
                field971 = var1.readByte();
                var1.read(var2.payload, 0, 1);
                var2.offset = 0;
-               class166[] var5 = DecorativeObject.method3001();
+               ServerPacket[] var5 = DecorativeObject.method3001();
                int var14 = var2.method3564();
                if(var14 < 0 || var14 >= var5.length) {
                   throw new IOException(var14 + " " + var2.offset);
                }
 
                field952.field1470 = var5[var14];
-               field952.field1471 = field952.field1470.field2304;
+               field952.packetId = field952.field1470.packetType;
                var1.read(var2.payload, 0, 2);
                var2.offset = 0;
-               field952.field1471 = var2.readUnsignedShort();
+               field952.packetId = var2.readUnsignedShort();
 
                try {
                   class52.method847(class9.clientInstance, "zap");
@@ -2363,9 +2363,9 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(var1.available() >= field952.field1471) {
+               if(var1.available() >= field952.packetId) {
                   var2.offset = 0;
-                  var1.read(var2.payload, 0, field952.field1471);
+                  var1.read(var2.payload, 0, field952.packetId);
                   field970.method5098();
                   field879 = -1L;
                   field882 = -1;
@@ -2380,7 +2380,7 @@ public final class Client extends GameEngine {
                   field952.field1464 = null;
                   field952.field1476 = null;
                   field952.field1477 = null;
-                  field952.field1471 = 0;
+                  field952.packetId = 0;
                   field952.field1475 = 0;
                   field1095 = 0;
                   field912 = 0;
@@ -2545,20 +2545,20 @@ public final class Client extends GameEngine {
                      }
                   }
                } else {
-                  if(field952.field1471 == -1) {
+                  if(field952.packetId == -1) {
                      if(var1.available() < 2) {
                         return;
                      }
 
                      var1.read(var2.payload, 0, 2);
                      var2.offset = 0;
-                     field952.field1471 = var2.readUnsignedShort();
+                     field952.packetId = var2.readUnsignedShort();
                   }
 
-                  if(var1.available() >= field952.field1471) {
-                     var1.read(var2.payload, 0, field952.field1471);
+                  if(var1.available() >= field952.packetId) {
+                     var1.read(var2.payload, 0, field952.packetId);
                      var2.offset = 0;
-                     var11 = field952.field1471;
+                     var11 = field952.packetId;
                      field970.method5118();
                      field952.method1949();
                      field952.field1469.offset = 0;
@@ -2566,7 +2566,7 @@ public final class Client extends GameEngine {
                      field952.field1464 = null;
                      field952.field1476 = null;
                      field952.field1477 = null;
-                     field952.field1471 = 0;
+                     field952.packetId = 0;
                      field952.field1475 = 0;
                      field1095 = 0;
                      class34.method495();
@@ -3342,41 +3342,41 @@ public final class Client extends GameEngine {
                }
 
                var1.field1474 = true;
-               class166[] var4 = DecorativeObject.method3001();
+               ServerPacket[] var4 = DecorativeObject.method3001();
                var5 = var3.method3564();
                if(var5 < 0 || var5 >= var4.length) {
                   throw new IOException(var5 + " " + var3.offset);
                }
 
                var1.field1470 = var4[var5];
-               var1.field1471 = var1.field1470.field2304;
+               var1.packetId = var1.field1470.packetType;
             }
 
-            if(var1.field1471 == -1) {
+            if(var1.packetId == -1) {
                if(!var2.method3101(1)) {
                   return false;
                }
 
                var1.method1954().read(var3.payload, 0, 1);
-               var1.field1471 = var3.payload[0] & 255;
+               var1.packetId = var3.payload[0] & 255;
             }
 
-            if(var1.field1471 == -2) {
+            if(var1.packetId == -2) {
                if(!var2.method3101(2)) {
                   return false;
                }
 
                var1.method1954().read(var3.payload, 0, 2);
                var3.offset = 0;
-               var1.field1471 = var3.readUnsignedShort();
+               var1.packetId = var3.readUnsignedShort();
             }
 
-            if(!var2.method3101(var1.field1471)) {
+            if(!var2.method3101(var1.packetId)) {
                return false;
             }
 
             var3.offset = 0;
-            var2.read(var3.payload, 0, var1.field1471);
+            var2.read(var3.payload, 0, var1.packetId);
             var1.field1475 = 0;
             field970.method5106();
             var1.field1477 = var1.field1476;
@@ -3384,7 +3384,7 @@ public final class Client extends GameEngine {
             var1.field1464 = var1.field1470;
             int var23;
             Widget var63;
-            if(class166.field2251 == var1.field1470) {
+            if(ServerPacket.field2251 == var1.field1470) {
                var23 = var3.readUnsignedShortOb1();
                var5 = var3.method3331();
                var63 = PendingSpawn.method1612(var5);
@@ -3408,7 +3408,7 @@ public final class Client extends GameEngine {
             }
 
             int var62;
-            if(class166.field2281 == var1.field1470) {
+            if(ServerPacket.field2281 == var1.field1470) {
                var23 = var3.readUnsignedByte();
                var5 = var3.readUnsignedByte();
                var24 = var3.readUnsignedByte();
@@ -3422,7 +3422,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2289 == var1.field1470) {
+            if(ServerPacket.field2289 == var1.field1470) {
                var23 = var3.method3326();
                var5 = var3.readInt();
                var63 = PendingSpawn.method1612(var5);
@@ -3437,7 +3437,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2284 == var1.field1470) {
+            if(ServerPacket.field2284 == var1.field1470) {
                class35.method542();
                weight = var3.readShort();
                field1046 = cycleCntr;
@@ -3445,7 +3445,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2239 == var1.field1470) {
+            if(ServerPacket.field2239 == var1.field1470) {
                for(var23 = 0; var23 < class218.widgetSettings.length; ++var23) {
                   if(class218.widgetSettings[var23] != class218.settings[var23]) {
                      class218.widgetSettings[var23] = class218.settings[var23];
@@ -3458,13 +3458,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2230 == var1.field1470) {
+            if(ServerPacket.field2230 == var1.field1470) {
                ScriptVarType.method18(class169.field2410);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2283 == var1.field1470) {
+            if(ServerPacket.field2283 == var1.field1470) {
                var23 = var3.readUnsignedShort();
                var5 = var3.readUnsignedByte();
                var24 = var3.readUnsignedShort();
@@ -3481,7 +3481,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2279 == var1.field1470) {
+            if(ServerPacket.field2279 == var1.field1470) {
                hintArrowTargetType = var3.readUnsignedByte();
                if(hintArrowTargetType == 1) {
                   hintArrowNpcTargetIdx = var3.readUnsignedShort();
@@ -3528,7 +3528,7 @@ public final class Client extends GameEngine {
             }
 
             WidgetNode var80;
-            if(class166.field2244 == var1.field1470) {
+            if(ServerPacket.field2244 == var1.field1470) {
                var23 = var3.method3313();
                var5 = var3.method3322();
                var24 = var3.method3292();
@@ -3542,13 +3542,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2261 == var1.field1470) {
+            if(ServerPacket.field2261 == var1.field1470) {
                ScriptVarType.method18(class169.field2415);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2276 == var1.field1470) {
+            if(ServerPacket.field2276 == var1.field1470) {
                for(var23 = 0; var23 < VarPlayerType.field3344; ++var23) {
                   VarPlayerType var103 = ClanMember.method1228(var23);
                   if(var103 != null) {
@@ -3563,14 +3563,14 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2277 == var1.field1470) {
+            if(ServerPacket.field2277 == var1.field1470) {
                field1085 = var3.readUnsignedByte();
                var1.field1470 = null;
                return true;
             }
 
             boolean var81;
-            if(class166.field2282 == var1.field1470) {
+            if(ServerPacket.field2282 == var1.field1470) {
                var81 = var3.method3407() == 1;
                var5 = var3.method3292();
                var63 = PendingSpawn.method1612(var5);
@@ -3583,7 +3583,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2299 == var1.field1470) {
+            if(ServerPacket.field2299 == var1.field1470) {
                class35.method542();
                var23 = var3.method3331();
                var5 = var3.method3314();
@@ -3603,7 +3603,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2294 == var1.field1470) {
+            if(ServerPacket.field2294 == var1.field1470) {
                var23 = var3.method3322();
                byte var77 = var3.method3316();
                class218.settings[var23] = var77;
@@ -3620,7 +3620,7 @@ public final class Client extends GameEngine {
             int var9;
             int var10;
             int var64;
-            if(class166.field2266 == var1.field1470) {
+            if(ServerPacket.field2266 == var1.field1470) {
                field1097 = true;
                class34.field467 = var3.readUnsignedByte();
                class64.field761 = var3.readUnsignedByte();
@@ -3651,7 +3651,7 @@ public final class Client extends GameEngine {
             }
 
             Widget var91;
-            if(class166.field2253 == var1.field1470) {
+            if(ServerPacket.field2253 == var1.field1470) {
                var23 = var3.readInt();
                var91 = PendingSpawn.method1612(var23);
 
@@ -3670,8 +3670,8 @@ public final class Client extends GameEngine {
             boolean var67;
             int var68;
             boolean var76;
-            if(class166.field2300 == var1.field1470) {
-               while(var3.offset < var1.field1471) {
+            if(ServerPacket.field2300 == var1.field1470) {
+               while(var3.offset < var1.packetId) {
                   var81 = var3.readUnsignedByte() == 1;
                   var26 = var3.readString();
                   var6 = var3.readString();
@@ -3788,7 +3788,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2267 == var1.field1470) {
+            if(ServerPacket.field2267 == var1.field1470) {
                if(widgetRoot != -1) {
                   var23 = widgetRoot;
                   if(CombatInfoListHolder.loadWidget(var23)) {
@@ -3801,7 +3801,7 @@ public final class Client extends GameEngine {
             }
 
             String var58;
-            if(class166.field2236 == var1.field1470) {
+            if(ServerPacket.field2236 == var1.field1470) {
                var58 = var3.readString();
                var26 = FontTypeFace.appendTags(ObjectComposition.method4745(IndexFile.method3133(var3)));
                class96.sendGameMessage(6, var58, var26);
@@ -3810,8 +3810,8 @@ public final class Client extends GameEngine {
             }
 
             boolean var61;
-            if(class166.field2287 == var1.field1470) {
-               while(var3.offset < var1.field1471) {
+            if(ServerPacket.field2287 == var1.field1470) {
+               while(var3.offset < var1.packetId) {
                   var23 = var3.readUnsignedByte();
                   var61 = (var23 & 1) == 1;
                   var6 = var3.readString();
@@ -3849,13 +3849,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2302 == var1.field1470) {
-               class82.method1744(var3, var1.field1471);
+            if(ServerPacket.field2302 == var1.field1470) {
+               class82.method1744(var3, var1.packetId);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2297 == var1.field1470) {
+            if(ServerPacket.field2297 == var1.field1470) {
                var23 = var3.readInt();
                var5 = var3.readUnsignedShort();
                if(var23 < -70000) {
@@ -3868,7 +3868,7 @@ public final class Client extends GameEngine {
                   var63 = null;
                }
 
-               for(; var3.offset < var1.field1471; class10.setItemTableSlot(var5, var62, var64 - 1, var9)) {
+               for(; var3.offset < var1.packetId; class10.setItemTableSlot(var5, var62, var64 - 1, var9)) {
                   var62 = var3.getUSmart();
                   var64 = var3.readUnsignedShort();
                   var9 = 0;
@@ -3896,7 +3896,7 @@ public final class Client extends GameEngine {
             }
 
             Widget var25;
-            if(class166.field2252 == var1.field1470) {
+            if(ServerPacket.field2252 == var1.field1470) {
                var23 = var3.method3426();
                var5 = var3.method3326();
                var24 = var3.readInt();
@@ -3917,7 +3917,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2274 == var1.field1470) {
+            if(ServerPacket.field2274 == var1.field1470) {
                var23 = var3.method3324();
                ItemContainer var93 = (ItemContainer)ItemContainer.itemContainers.get((long)var23);
                if(var93 != null) {
@@ -3929,7 +3929,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2248 == var1.field1470) {
+            if(ServerPacket.field2248 == var1.field1470) {
                class94.playerIndexesCount = 0;
 
                for(var23 = 0; var23 < 2048; ++var23) {
@@ -3948,8 +3948,8 @@ public final class Client extends GameEngine {
 
             int var11;
             long var31;
-            if(class166.field2242 == var1.field1470) {
-               var23 = var3.offset + var1.field1471;
+            if(ServerPacket.field2242 == var1.field1470) {
+               var23 = var3.offset + var1.packetId;
                var5 = var3.readUnsignedShort();
                var24 = var3.readUnsignedShort();
                if(var5 != widgetRoot) {
@@ -4005,13 +4005,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2241 == var1.field1470) {
+            if(ServerPacket.field2241 == var1.field1470) {
                ScriptVarType.method18(class169.field2412);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2254 == var1.field1470) {
+            if(ServerPacket.field2254 == var1.field1470) {
                var23 = var3.readInt();
                var5 = var3.method3322();
                if(var5 == 65535) {
@@ -4064,7 +4064,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2280 == var1.field1470) {
+            if(ServerPacket.field2280 == var1.field1470) {
                var23 = var3.readUnsignedByte();
                if(var3.readUnsignedByte() == 0) {
                   grandExchangeOffers[var23] = new GrandExchangeOffer();
@@ -4079,7 +4079,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2259 == var1.field1470) {
+            if(ServerPacket.field2259 == var1.field1470) {
                var23 = var3.method3333();
                var91 = PendingSpawn.method1612(var23);
                var91.modelType = 3;
@@ -4089,13 +4089,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2298 == var1.field1470) {
+            if(ServerPacket.field2298 == var1.field1470) {
                class41.method599(true, var3);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2296 == var1.field1470) {
+            if(ServerPacket.field2296 == var1.field1470) {
                var23 = var3.readInt();
                var5 = var3.readUnsignedShort();
                if(var23 < -70000) {
@@ -4143,14 +4143,14 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2295 == var1.field1470) {
+            if(ServerPacket.field2295 == var1.field1470) {
                class56.field655 = var3.readUnsignedByte();
                GameObject.field2105 = var3.method3407();
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2292 == var1.field1470) {
+            if(ServerPacket.field2292 == var1.field1470) {
                var23 = var3.readUnsignedShort();
                if(var23 == 65535) {
                   var23 = -1;
@@ -4161,7 +4161,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2291 == var1.field1470) {
+            if(ServerPacket.field2291 == var1.field1470) {
                var23 = var3.read24BitInt();
                var5 = var3.readUnsignedShort();
                if(var5 == 65535) {
@@ -4177,13 +4177,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2233 == var1.field1470) {
+            if(ServerPacket.field2233 == var1.field1470) {
                ScriptVarType.method18(class169.field2413);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2246 == var1.field1470) {
+            if(ServerPacket.field2246 == var1.field1470) {
                var58 = var3.readString();
                Object[] var88 = new Object[var58.length() + 1];
 
@@ -4203,7 +4203,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2257 == var1.field1470) {
+            if(ServerPacket.field2257 == var1.field1470) {
                var23 = var3.method3322();
                var5 = var3.method3333();
                var24 = var23 >> 10 & 31;
@@ -4221,7 +4221,7 @@ public final class Client extends GameEngine {
             }
 
             Widget var89;
-            if(class166.field2285 == var1.field1470) {
+            if(ServerPacket.field2285 == var1.field1470) {
                var23 = var3.method3292();
                var5 = var3.method3292();
                WidgetNode var65 = (WidgetNode)componentTable.get((long)var5);
@@ -4257,7 +4257,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2220 == var1.field1470) {
+            if(ServerPacket.field2220 == var1.field1470) {
                destinationX = var3.readUnsignedByte();
                if(destinationX == 255) {
                   destinationX = 0;
@@ -4272,14 +4272,14 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2288 == var1.field1470) {
+            if(ServerPacket.field2288 == var1.field1470) {
                field1057 = var3.method3407();
                field905 = var3.method3314();
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2243 == var1.field1470) {
+            if(ServerPacket.field2243 == var1.field1470) {
                var23 = var3.readInt();
                WidgetNode var87 = (WidgetNode)componentTable.get((long)var23);
                if(var87 != null) {
@@ -4295,13 +4295,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2275 == var1.field1470) {
+            if(ServerPacket.field2275 == var1.field1470) {
                WallObject.xteaChanged(false, var1.field1469);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2245 == var1.field1470) {
+            if(ServerPacket.field2245 == var1.field1470) {
                var23 = var3.readUnsignedShortOb1();
                widgetRoot = var23;
                this.method1248(false);
@@ -4316,7 +4316,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2286 == var1.field1470) {
+            if(ServerPacket.field2286 == var1.field1470) {
                class35.method542();
                energy = var3.readUnsignedByte();
                field1046 = cycleCntr;
@@ -4324,7 +4324,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2293 == var1.field1470) {
+            if(ServerPacket.field2293 == var1.field1470) {
                var23 = var3.readUnsignedShortOb1();
                var5 = var3.method3292();
                class218.settings[var23] = var5;
@@ -4338,26 +4338,26 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2227 == var1.field1470) {
+            if(ServerPacket.field2227 == var1.field1470) {
                ScriptVarType.method18(class169.field2418);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2223 == var1.field1470) {
+            if(ServerPacket.field2223 == var1.field1470) {
                class181.method3514();
                var1.field1470 = null;
                return false;
             }
 
-            if(class166.field2225 == var1.field1470) {
+            if(ServerPacket.field2225 == var1.field1470) {
                var23 = var3.readInt();
                FileSystem.field3271 = GameEngine.taskManager.createHost(var23);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2269 == var1.field1470) {
+            if(ServerPacket.field2269 == var1.field1470) {
                var23 = var3.readInt();
                var5 = var3.readInt();
                var24 = Renderable.method2972();
@@ -4371,7 +4371,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2250 == var1.field1470) {
+            if(ServerPacket.field2250 == var1.field1470) {
                var23 = var3.method3292();
                var5 = var3.method3324();
                var24 = var3.method3322();
@@ -4394,7 +4394,7 @@ public final class Client extends GameEngine {
             long var35;
             long var37;
             int var40;
-            if(class166.field2272 == var1.field1470) {
+            if(ServerPacket.field2272 == var1.field1470) {
                var58 = var3.readString();
                var33 = var3.readLong();
                var35 = (long)var3.readUnsignedShort();
@@ -4431,7 +4431,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2235 == var1.field1470) {
+            if(ServerPacket.field2235 == var1.field1470) {
                class56.field655 = var3.method3407();
                GameObject.field2105 = var3.method3407();
 
@@ -4454,19 +4454,19 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2234 == var1.field1470) {
+            if(ServerPacket.field2234 == var1.field1470) {
                ScriptVarType.method18(class169.field2414);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2232 == var1.field1470) {
+            if(ServerPacket.field2232 == var1.field1470) {
                class13.method81(var3.readString());
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2222 == var1.field1470) {
+            if(ServerPacket.field2222 == var1.field1470) {
                World var59 = new World();
                var59.address = var3.readString();
                var59.id = var3.readUnsignedShort();
@@ -4480,7 +4480,7 @@ public final class Client extends GameEngine {
                return false;
             }
 
-            if(class166.field2260 == var1.field1470) {
+            if(ServerPacket.field2260 == var1.field1470) {
                var23 = var3.method3322();
                var5 = var3.readUnsignedShortOb1();
                var24 = var3.method3333();
@@ -4490,7 +4490,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2255 == var1.field1470) {
+            if(ServerPacket.field2255 == var1.field1470) {
                field1097 = true;
                class188.field2532 = var3.readUnsignedByte();
                class18.field309 = var3.readUnsignedByte();
@@ -4507,7 +4507,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2247 == var1.field1470) {
+            if(ServerPacket.field2247 == var1.field1470) {
                var23 = var3.readUnsignedShortOb1();
                if(var23 == 65535) {
                   var23 = -1;
@@ -4535,7 +4535,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2262 == var1.field1470) {
+            if(ServerPacket.field2262 == var1.field1470) {
                var23 = var3.method3324();
                var5 = var3.method3331();
                var63 = PendingSpawn.method1612(var5);
@@ -4549,19 +4549,19 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2249 == var1.field1470) {
+            if(ServerPacket.field2249 == var1.field1470) {
                class41.method599(false, var3);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2290 == var1.field1470) {
+            if(ServerPacket.field2290 == var1.field1470) {
                ScriptVarType.method18(class169.field2417);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2265 == var1.field1470) {
+            if(ServerPacket.field2265 == var1.field1470) {
                field1097 = false;
 
                for(var23 = 0; var23 < 5; ++var23) {
@@ -4572,11 +4572,11 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2238 == var1.field1470) {
+            if(ServerPacket.field2238 == var1.field1470) {
                class56.field655 = var3.method3407();
                GameObject.field2105 = var3.method3407();
 
-               while(var3.offset < var1.field1471) {
+               while(var3.offset < var1.packetId) {
                   var23 = var3.readUnsignedByte();
                   class169 var86 = Script.method1918()[var23];
                   ScriptVarType.method18(var86);
@@ -4586,14 +4586,14 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2240 == var1.field1470) {
+            if(ServerPacket.field2240 == var1.field1470) {
                field1021 = 1;
                field1042 = cycleCntr;
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2258 == var1.field1470) {
+            if(ServerPacket.field2258 == var1.field1470) {
                var81 = var3.readUnsignedByte() == 1;
                if(var81) {
                   class61.field735 = class268.currentTimeMs() - var3.readLong();
@@ -4607,7 +4607,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2256 == var1.field1470) {
+            if(ServerPacket.field2256 == var1.field1470) {
                for(var23 = 0; var23 < cachedPlayers.length; ++var23) {
                   if(cachedPlayers[var23] != null) {
                      cachedPlayers[var23].animation = -1;
@@ -4625,7 +4625,7 @@ public final class Client extends GameEngine {
             }
 
             String var85;
-            if(class166.field2301 == var1.field1470) {
+            if(ServerPacket.field2301 == var1.field1470) {
                var23 = var3.getUSmart();
                var61 = var3.readUnsignedByte() == 1;
                var6 = "";
@@ -4646,7 +4646,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2264 == var1.field1470) {
+            if(ServerPacket.field2264 == var1.field1470) {
                var3.offset += 28;
                if(var3.checkCrc()) {
                   var23 = var3.offset - 28;
@@ -4671,8 +4671,8 @@ public final class Client extends GameEngine {
             }
 
             int var73;
-            if(class166.field2278 == var1.field1470) {
-               var23 = var1.field1471;
+            if(ServerPacket.field2278 == var1.field1470) {
+               var23 = var1.packetId;
                ClassInfo var82 = new ClassInfo();
                var82.count = var3.readUnsignedByte();
                var82.field3798 = var3.readInt();
@@ -4780,13 +4780,13 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2228 == var1.field1470) {
+            if(ServerPacket.field2228 == var1.field1470) {
                ScriptVarType.method18(class169.field2416);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2263 == var1.field1470) {
+            if(ServerPacket.field2263 == var1.field1470) {
                var23 = var3.method3292();
                var26 = var3.readString();
                var63 = PendingSpawn.method1612(var23);
@@ -4799,7 +4799,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2226 == var1.field1470) {
+            if(ServerPacket.field2226 == var1.field1470) {
                var23 = var3.method3324();
                var5 = var3.method3331();
                var63 = PendingSpawn.method1612(var5);
@@ -4813,7 +4813,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2231 == var1.field1470) {
+            if(ServerPacket.field2231 == var1.field1470) {
                var23 = var3.method3314();
                var5 = var3.method3314();
                var6 = var3.readString();
@@ -4832,9 +4832,9 @@ public final class Client extends GameEngine {
 
             long var45;
             int var47;
-            if(class166.field2271 == var1.field1470) {
+            if(ServerPacket.field2271 == var1.field1470) {
                field1043 = cycleCntr;
-               if(var1.field1471 == 0) {
+               if(var1.packetId == 0) {
                   clanChatOwner = null;
                   clanChatName = null;
                   clanChatCount = 0;
@@ -4919,7 +4919,7 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2270 == var1.field1470) {
+            if(ServerPacket.field2270 == var1.field1470) {
                var58 = var3.readString();
                var5 = var3.readUnsignedShort();
                byte var78 = var3.readByte();
@@ -5001,25 +5001,25 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2221 == var1.field1470) {
+            if(ServerPacket.field2221 == var1.field1470) {
                WallObject.xteaChanged(true, var1.field1469);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2229 == var1.field1470) {
+            if(ServerPacket.field2229 == var1.field1470) {
                ScriptVarType.method18(class169.field2411);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2268 == var1.field1470) {
+            if(ServerPacket.field2268 == var1.field1470) {
                Huffman.field2432 = VarPlayerType.method4465(var3.readUnsignedByte());
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2273 == var1.field1470) {
+            if(ServerPacket.field2273 == var1.field1470) {
                var58 = var3.readString();
                var33 = (long)var3.readUnsignedShort();
                var35 = (long)var3.read24BitInt();
@@ -5062,27 +5062,27 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            if(class166.field2237 == var1.field1470) {
+            if(ServerPacket.field2237 == var1.field1470) {
                ScriptVarType.method18(class169.field2419);
                var1.field1470 = null;
                return true;
             }
 
-            if(class166.field2224 == var1.field1470) {
+            if(ServerPacket.field2224 == var1.field1470) {
                field1095 = var3.readUnsignedShortOb1() * 30;
                field1046 = cycleCntr;
                var1.field1470 = null;
                return true;
             }
 
-            class33.method396("" + (var1.field1470 != null?var1.field1470.field2303:-1) + "," + (var1.field1476 != null?var1.field1476.field2303:-1) + "," + (var1.field1477 != null?var1.field1477.field2303:-1) + "," + var1.field1471, (Throwable)null);
+            class33.method396("" + (var1.field1470 != null?var1.field1470.packetId:-1) + "," + (var1.field1476 != null?var1.field1476.packetId:-1) + "," + (var1.field1477 != null?var1.field1477.packetId:-1) + "," + var1.packetId, (Throwable)null);
             class181.method3514();
          } catch (IOException var56) {
             WidgetNode.method1156();
          } catch (Exception var57) {
-            var26 = "" + (var1.field1470 != null?var1.field1470.field2303:-1) + "," + (var1.field1476 != null?var1.field1476.field2303:-1) + "," + (var1.field1477 != null?var1.field1477.field2303:-1) + "," + var1.field1471 + "," + (class48.localPlayer.pathX[0] + ItemLayer.baseX) + "," + (class48.localPlayer.pathY[0] + ItemLayer.baseY) + ",";
+            var26 = "" + (var1.field1470 != null?var1.field1470.packetId:-1) + "," + (var1.field1476 != null?var1.field1476.packetId:-1) + "," + (var1.field1477 != null?var1.field1477.packetId:-1) + "," + var1.packetId + "," + (class48.localPlayer.pathX[0] + ItemLayer.baseX) + "," + (class48.localPlayer.pathY[0] + ItemLayer.baseY) + ",";
 
-            for(var24 = 0; var24 < var1.field1471 && var24 < 50; ++var24) {
+            for(var24 = 0; var24 < var1.packetId && var24 < 50; ++var24) {
                var26 = var26 + var3.payload[var24] + ",";
             }
 

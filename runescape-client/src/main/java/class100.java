@@ -40,12 +40,13 @@ public class class100 {
    @ObfuscatedSignature(
       signature = "Lfw;"
    )
-   class166 field1470;
+   ServerPacket field1470;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 957088099
    )
-   int field1471;
+   @Export("packetId")
+   int packetId;
    @ObfuscatedName("b")
    boolean field1474;
    @ObfuscatedName("n")
@@ -62,17 +63,17 @@ public class class100 {
    @ObfuscatedSignature(
       signature = "Lfw;"
    )
-   class166 field1464;
+   ServerPacket field1464;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lfw;"
    )
-   class166 field1476;
+   ServerPacket field1476;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lfw;"
    )
-   class166 field1477;
+   ServerPacket field1477;
 
    class100() {
       this.field1465 = new CombatInfoList();
@@ -80,7 +81,7 @@ public class class100 {
       this.field1467 = new Buffer(5000);
       this.field1469 = new PacketBuffer(40000);
       this.field1470 = null;
-      this.field1471 = 0;
+      this.packetId = 0;
       this.field1474 = true;
       this.field1475 = 0;
       this.field1466 = 0;
