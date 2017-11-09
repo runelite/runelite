@@ -2,90 +2,146 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
-public class class210 extends CacheableNode {
-   @ObfuscatedName("pf")
-   @ObfuscatedGetter(
-      intValue = -749905481
+@ObfuscatedName("hb")
+public class class210 {
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lik;"
    )
-   static int field2590;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -28782361
+   public static IndexDataBase field2600;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lik;"
    )
-   public final int field2589;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -253317073
+   public static IndexDataBase field2597;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhp;"
    )
-   public final int field2592;
-   @ObfuscatedName("q")
-   public final int[] field2591;
-   @ObfuscatedName("o")
-   public final int[] field2594;
+   public static class211 field2596;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 497449019
+   )
+   public static int field2594;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1260621381
+   )
+   public static int field2598;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -363515367
+   )
+   public static int field2599;
+   @ObfuscatedName("c")
+   public static boolean field2595;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhv;"
+   )
+   public static Track1 field2601;
 
-   class210(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2589 = var1;
-      this.field2592 = var2;
-      this.field2591 = var3;
-      this.field2594 = var4;
+   static {
+      field2594 = 0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("fx")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "160971214"
+      signature = "(I)V",
+      garbageValue = "1575455560"
    )
-   public boolean method4001(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2594.length) {
-         int var3 = this.field2594[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2591[var2]) {
-            return true;
-         }
+   static final void method3852() {
+      int var0 = class48.localPlayer.x;
+      int var1 = class48.localPlayer.y;
+      if(WorldMapType3.field375 - var0 < -500 || WorldMapType3.field375 - var0 > 500 || class34.field465 - var1 < -500 || class34.field465 - var1 > 500) {
+         WorldMapType3.field375 = var0;
+         class34.field465 = var1;
       }
 
-      return false;
-   }
+      if(var0 != WorldMapType3.field375) {
+         WorldMapType3.field375 += (var0 - WorldMapType3.field375) / 16;
+      }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "78"
-   )
-   static void method4000() {
-      class90.username = class90.username.trim();
-      if(class90.username.length() == 0) {
-         class36.method481("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      if(var1 != class34.field465) {
+         class34.field465 += (var1 - class34.field465) / 16;
+      }
+
+      int var2;
+      int var3;
+      if(MouseInput.field706 == 4 && Item.field1399) {
+         var2 = MouseInput.field708 - Client.field1019;
+         Client.field1077 = var2 * 2;
+         Client.field1019 = var2 != -1 && var2 != 1?(MouseInput.field708 + Client.field1019) / 2:MouseInput.field708;
+         var3 = Client.field936 - MouseInput.field704;
+         Client.field934 = var3 * 2;
+         Client.field936 = var3 != -1 && var3 != 1?(Client.field936 + MouseInput.field704) / 2:MouseInput.field704;
       } else {
-         long var1 = class27.method221();
-         int var0;
-         if(0L == var1) {
-            var0 = 5;
+         if(KeyFocusListener.field618[96]) {
+            Client.field934 += (-24 - Client.field934) / 2;
+         } else if(KeyFocusListener.field618[97]) {
+            Client.field934 += (24 - Client.field934) / 2;
          } else {
-            var0 = Spotanim.method4414(var1, class90.username);
+            Client.field934 /= 2;
          }
 
-         switch(var0) {
-         case 2:
-            class36.method481("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class90.loginIndex = 6;
-            break;
-         case 3:
-            class36.method481("", "Error connecting to server.", "");
-            break;
-         case 4:
-            class36.method481("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-            break;
-         case 5:
-            class36.method481("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-            break;
-         case 6:
-            class36.method481("", "Error connecting to server.", "");
-            break;
-         case 7:
-            class36.method481("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         if(KeyFocusListener.field618[98]) {
+            Client.field1077 += (12 - Client.field1077) / 2;
+         } else if(KeyFocusListener.field618[99]) {
+            Client.field1077 += (-12 - Client.field1077) / 2;
+         } else {
+            Client.field1077 /= 2;
          }
 
+         Client.field1019 = MouseInput.field708;
+         Client.field936 = MouseInput.field704;
       }
+
+      Client.mapAngle = Client.field934 / 2 + Client.mapAngle & 2047;
+      Client.field932 += Client.field1077 / 2;
+      if(Client.field932 < 128) {
+         Client.field932 = 128;
+      }
+
+      if(Client.field932 > 383) {
+         Client.field932 = 383;
+      }
+
+      var2 = WorldMapType3.field375 >> 7;
+      var3 = class34.field465 >> 7;
+      int var4 = class70.getTileHeight(WorldMapType3.field375, class34.field465, Ignore.plane);
+      int var5 = 0;
+      int var6;
+      if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
+         for(var6 = var2 - 4; var6 <= var2 + 4; ++var6) {
+            for(int var7 = var3 - 4; var7 <= var3 + 4; ++var7) {
+               int var8 = Ignore.plane;
+               if(var8 < 3 && (class61.tileSettings[1][var6][var7] & 2) == 2) {
+                  ++var8;
+               }
+
+               int var9 = var4 - class61.tileHeights[var8][var6][var7];
+               if(var9 > var5) {
+                  var5 = var9;
+               }
+            }
+         }
+      }
+
+      var6 = var5 * 192;
+      if(var6 > 98048) {
+         var6 = 98048;
+      }
+
+      if(var6 < 32768) {
+         var6 = 32768;
+      }
+
+      if(var6 > Client.field1102) {
+         Client.field1102 += (var6 - Client.field1102) / 24;
+      } else if(var6 < Client.field1102) {
+         Client.field1102 += (var6 - Client.field1102) / 80;
+      }
+
    }
 }

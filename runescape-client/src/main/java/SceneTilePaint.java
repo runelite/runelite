@@ -4,45 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ed")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1014251003
+      intValue = 329415925
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1919953237
+      intValue = -1359823575
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1193680813
+      intValue = -1307430307
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -189714385
+      intValue = 1843697791
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1986091021
+      intValue = -627951817
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1113816907
+      intValue = 187024375
    )
    @Export("rgb")
    int rgb;
@@ -58,23 +58,12 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lip;Ljava/lang/String;Ljava/lang/String;I)[Lky;",
-      garbageValue = "657373595"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "25"
    )
-   public static SpritePixels[] method2714(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return class37.method483(var0, var3, var4);
-   }
-
-   @ObfuscatedName("fs")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-854795150"
-   )
-   static int method2713() {
-      return Client.isResized?2:1;
+   public static String method2776(int var0) {
+      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
    }
 }

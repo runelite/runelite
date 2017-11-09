@@ -1,26 +1,107 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fv")
+@ObfuscatedName("fi")
 public class class169 {
-   @ObfuscatedName("rd")
-   @ObfuscatedGetter(
-      intValue = -517158157
-   )
-   static int field2340;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1053367025
-   )
-   static int field2339;
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)[Lim;",
-      garbageValue = "1524361877"
+      signature = "Lfi;"
    )
-   static class257[] method3190() {
-      return new class257[]{class257.field3548, class257.field3546, class257.field3545};
+   public static final class169 field2412;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2411;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2410;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2413;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2414;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2417;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2416;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2415;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2418;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lfi;"
+   )
+   public static final class169 field2419;
+   @ObfuscatedName("hw")
+   @ObfuscatedSignature(
+      signature = "Lhk;"
+   )
+   static Widget field2420;
+
+   static {
+      field2412 = new class169(5);
+      field2411 = new class169(7);
+      field2410 = new class169(14);
+      field2413 = new class169(6);
+      field2414 = new class169(15);
+      field2417 = new class169(3);
+      field2416 = new class169(5);
+      field2415 = new class169(4);
+      field2418 = new class169(2);
+      field2419 = new class169(4);
+   }
+
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "5"
+   )
+   class169(int var1) {
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "1"
+   )
+   static void method3187() {
+      FileOnDisk var0 = null;
+
+      try {
+         var0 = CollisionData.getPreferencesFile("", class41.field528.field3261, true);
+         Buffer var1 = Buffer.preferences.serialize();
+         var0.write(var1.payload, 0, var1.offset);
+      } catch (Exception var3) {
+         ;
+      }
+
+      try {
+         if(var0 != null) {
+            var0.method2475(true);
+         }
+      } catch (Exception var2) {
+         ;
+      }
+
    }
 }

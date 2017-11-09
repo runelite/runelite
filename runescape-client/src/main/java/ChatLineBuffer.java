@@ -4,18 +4,20 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cs")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
    @ObfuscatedName("s")
+   static int[] field1458;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "[Lbb;"
+      signature = "[Lbx;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1416661767
+      intValue = 528648965
    )
    @Export("length")
    int length;
@@ -24,10 +26,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbb;",
-      garbageValue = "-95"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbx;",
+      garbageValue = "-2133375856"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -55,59 +57,30 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IB)Lbb;",
-      garbageValue = "-10"
+      signature = "(II)Lbx;",
+      garbageValue = "2022353157"
    )
-   MessageNode method1917(int var1) {
+   MessageNode method1940(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "-7970"
+      signature = "(I)I",
+      garbageValue = "-1088046528"
    )
-   int method1908() {
+   int method1941() {
       return this.length;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-124899442"
+      signature = "(II)Z",
+      garbageValue = "-1032473279"
    )
-   static byte[] method1912(byte[] var0) {
-      int var1 = var0.length;
-      byte[] var2 = new byte[var1];
-      System.arraycopy(var0, 0, var2, 0, var1);
-      return var2;
-   }
-
-   @ObfuscatedName("fc")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1023197937"
-   )
-   static final void method1916() {
-      if(class15.rssocket2 != null) {
-         class15.rssocket2.close();
-         class15.rssocket2 = null;
-      }
-
-      WorldMapType2.method521();
-      class3.region.reset();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].reset();
-      }
-
-      System.gc();
-      class164.method3140(2);
-      Client.field1150 = -1;
-      Client.field1151 = false;
-      class27.method218();
-      class72.setGameState(10);
+   public static boolean method1947(int var0) {
+      return (var0 & 1) != 0;
    }
 }

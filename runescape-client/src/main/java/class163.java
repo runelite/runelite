@@ -2,59 +2,46 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
-public abstract class class163 {
-   @ObfuscatedName("w")
+@ObfuscatedName("fd")
+public class class163 {
+   @ObfuscatedName("i")
+   static int[][] field2204;
+   @ObfuscatedName("j")
+   static int[][] field2207;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1881125395
+      intValue = 1982131395
    )
-   public int field2307;
-   @ObfuscatedName("s")
+   static int field2208;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 470607731
+      intValue = 1117522083
    )
-   public int field2306;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1027906555
-   )
-   public int field2309;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 308370027
-   )
-   public int field2308;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIILfw;B)Z",
-      garbageValue = "66"
-   )
-   protected abstract boolean vmethod3126(int var1, int var2, int var3, CollisionData var4);
-
+   static int field2209;
+   @ObfuscatedName("l")
+   static int[] field2211;
    @ObfuscatedName("b")
+   static int[] field2212;
+
+   static {
+      field2204 = new int[128][128];
+      field2207 = new int[128][128];
+      field2211 = new int[4096];
+      field2212 = new int[4096];
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "1002047179"
+      signature = "(II)I",
+      garbageValue = "1002241105"
    )
-   static final int method3128(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
+   public static int method3173(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
    }
 }

@@ -1,52 +1,67 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ey")
-public enum class149 implements RSEnum {
+public class class149 {
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Liu;"
    )
-   field2197(1, 0),
-   @ObfuscatedName("s")
+   @Export("currentRequest")
+   public static FileRequest currentRequest;
+   @ObfuscatedName("cq")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Liy;"
    )
-   field2195(3, 1),
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Ley;"
-   )
-   field2196(0, 2),
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Ley;"
-   )
-   field2194(2, 3);
+   static IndexData field2115;
+   @ObfuscatedName("m")
+   final URL field2111;
+   @ObfuscatedName("p")
+   volatile boolean field2114;
+   @ObfuscatedName("i")
+   volatile byte[] field2113;
 
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 169656379
-   )
-   public final int field2198;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -422360003
-   )
-   final int field2199;
-
-   class149(int var3, int var4) {
-      this.field2198 = var3;
-      this.field2199 = var4;
+   class149(URL var1) {
+      this.field2111 = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "6"
+      signature = "(I)Z",
+      garbageValue = "-2128019411"
    )
-   public int rsOrdinal() {
-      return this.field2199;
+   public boolean method3015() {
+      return this.field2114;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)[B",
+      garbageValue = "-551650513"
+   )
+   public byte[] method3016() {
+      return this.field2113;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Object;ZI)[B",
+      garbageValue = "-417050690"
+   )
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var1?class89.method1798(var3):var3;
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

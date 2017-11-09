@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("is")
+@ObfuscatedName("iu")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = -1000645349
-   )
-   static int field3204;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lih;"
+      signature = "Liy;"
    )
    @Export("index")
    IndexData index;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -412311545
+      intValue = 742677959
    )
    @Export("crc")
    int crc;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("padding")
    byte padding;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("gl")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-2008589117"
+      signature = "(I)I",
+      garbageValue = "-140770075"
    )
-   public static boolean method4186(char var0) {
-      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+   static final int method4275() {
+      if(Buffer.preferences.hideRoofs) {
+         return Ignore.plane;
+      } else {
+         int var0 = class70.getTileHeight(class29.cameraX, Player.cameraY, Ignore.plane);
+         return var0 - class70.cameraZ < 800 && (class61.tileSettings[Ignore.plane][class29.cameraX >> 7][Player.cameraY >> 7] & 4) != 0?Ignore.plane:3;
+      }
    }
 }

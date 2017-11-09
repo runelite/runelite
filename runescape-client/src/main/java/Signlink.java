@@ -4,39 +4,34 @@ import java.net.Socket;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("er")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("c")
-   static int[] field2231;
-   @ObfuscatedName("ds")
-   @ObfuscatedGetter(
-      intValue = 1027755043
-   )
-   static int field2230;
-   @ObfuscatedName("q")
+   @ObfuscatedName("p")
+   @Export("javaVersion")
+   public static String javaVersion;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Let;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Let;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @Export("closed")
    boolean closed;
 
@@ -45,11 +40,11 @@ public class Signlink implements Runnable {
       this.cachedTask = null;
       this.closed = false;
       javaVendor = "Unknown";
-      class18.javaVersion = "1.6";
+      javaVersion = "1.6";
 
       try {
          javaVendor = System.getProperty("java.vendor");
-         class18.javaVersion = System.getProperty("java.version");
+         javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
       }
@@ -61,10 +56,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "94442798"
+      garbageValue = "1510336973"
    )
    @Export("join")
    public final void join() {
@@ -81,16 +76,16 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(IIILjava/lang/Object;I)Let;",
-      garbageValue = "-1698095252"
+      garbageValue = "-10721981"
    )
-   final Task method2977(int var1, int var2, int var3, Object var4) {
+   final Task method3067(int var1, int var2, int var3, Object var4) {
       Task var5 = new Task();
       var5.type = var1;
-      var5.field2222 = var2;
-      var5.field2223 = var4;
+      var5.field2144 = var2;
+      var5.field2145 = var4;
       synchronized(this) {
          if(this.cachedTask != null) {
             this.cachedTask.task = var5;
@@ -104,34 +99,34 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;II)Let;",
-      garbageValue = "1571435179"
+      garbageValue = "-334463944"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
-      return this.method2977(1, var2, 0, var1);
+      return this.method3067(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Runnable;II)Let;",
-      garbageValue = "-1094648036"
+      garbageValue = "-299461880"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
-      return this.method2977(2, var2, 0, var1);
+      return this.method3067(2, var2, 0, var1);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(IS)Let;",
-      garbageValue = "31658"
+      signature = "(IB)Let;",
+      garbageValue = "83"
    )
    @Export("createHost")
    public final Task createHost(int var1) {
-      return this.method2977(3, var1, 0, (Object)null);
+      return this.method3067(3, var1, 0, (Object)null);
    }
 
    public final void run() {
@@ -163,17 +158,17 @@ public class Signlink implements Runnable {
          try {
             int var5 = var1.type;
             if(var5 == 1) {
-               var1.value = new Socket(InetAddress.getByName((String)var1.field2223), var1.field2222);
+               var1.value = new Socket(InetAddress.getByName((String)var1.field2145), var1.field2144);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2223);
+               Thread var3 = new Thread((Runnable)var1.field2145);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2222);
+               var3.setPriority(var1.field2144);
                var1.value = var3;
             } else if(var5 == 4) {
-               var1.value = new DataInputStream(((URL)var1.field2223).openStream());
+               var1.value = new DataInputStream(((URL)var1.field2145).openStream());
             } else if(var5 == 3) {
-               String var10 = (var1.field2222 >> 24 & 255) + "." + (var1.field2222 >> 16 & 255) + "." + (var1.field2222 >> 8 & 255) + "." + (var1.field2222 & 255);
+               String var10 = (var1.field2144 >> 24 & 255) + "." + (var1.field2144 >> 16 & 255) + "." + (var1.field2144 >> 8 & 255) + "." + (var1.field2144 & 255);
                var1.value = InetAddress.getByName(var10).getHostName();
             }
 
@@ -184,112 +179,5 @@ public class Signlink implements Runnable {
             var1.status = 2;
          }
       }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IILfc;Lfw;I)Z",
-      garbageValue = "1512527763"
-   )
-   static final boolean method2991(int var0, int var1, class163 var2, CollisionData var3) {
-      int var4 = var0;
-      int var5 = var1;
-      byte var6 = 64;
-      byte var7 = 64;
-      int var8 = var0 - var6;
-      int var9 = var1 - var7;
-      class162.field2302[var6][var7] = 99;
-      class162.field2295[var6][var7] = 0;
-      byte var10 = 0;
-      int var11 = 0;
-      class162.field2298[var10] = var0;
-      byte var10001 = var10;
-      int var18 = var10 + 1;
-      class162.field2299[var10001] = var1;
-      int[][] var12 = var3.flags;
-
-      while(var18 != var11) {
-         var4 = class162.field2298[var11];
-         var5 = class162.field2299[var11];
-         var11 = var11 + 1 & 4095;
-         int var16 = var4 - var8;
-         int var17 = var5 - var9;
-         int var13 = var4 - var3.x;
-         int var14 = var5 - var3.y;
-         if(var2.vmethod3126(2, var4, var5, var3)) {
-            class162.field2296 = var4;
-            class162.field2292 = var5;
-            return true;
-         }
-
-         int var15 = class162.field2295[var16][var17] + 1;
-         if(var16 > 0 && class162.field2302[var16 - 1][var17] == 0 && (var12[var13 - 1][var14] & 19136782) == 0 && (var12[var13 - 1][var14 + 1] & 19136824) == 0) {
-            class162.field2298[var18] = var4 - 1;
-            class162.field2299[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 - 1][var17] = 2;
-            class162.field2295[var16 - 1][var17] = var15;
-         }
-
-         if(var16 < 126 && class162.field2302[var16 + 1][var17] == 0 && (var12[var13 + 2][var14] & 19136899) == 0 && (var12[var13 + 2][var14 + 1] & 19136992) == 0) {
-            class162.field2298[var18] = var4 + 1;
-            class162.field2299[var18] = var5;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 + 1][var17] = 8;
-            class162.field2295[var16 + 1][var17] = var15;
-         }
-
-         if(var17 > 0 && class162.field2302[var16][var17 - 1] == 0 && (var12[var13][var14 - 1] & 19136782) == 0 && (var12[var13 + 1][var14 - 1] & 19136899) == 0) {
-            class162.field2298[var18] = var4;
-            class162.field2299[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16][var17 - 1] = 1;
-            class162.field2295[var16][var17 - 1] = var15;
-         }
-
-         if(var17 < 126 && class162.field2302[var16][var17 + 1] == 0 && (var12[var13][var14 + 2] & 19136824) == 0 && (var12[var13 + 1][var14 + 2] & 19136992) == 0) {
-            class162.field2298[var18] = var4;
-            class162.field2299[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16][var17 + 1] = 4;
-            class162.field2295[var16][var17 + 1] = var15;
-         }
-
-         if(var16 > 0 && var17 > 0 && class162.field2302[var16 - 1][var17 - 1] == 0 && (var12[var13 - 1][var14] & 19136830) == 0 && (var12[var13 - 1][var14 - 1] & 19136782) == 0 && (var12[var13][var14 - 1] & 19136911) == 0) {
-            class162.field2298[var18] = var4 - 1;
-            class162.field2299[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 - 1][var17 - 1] = 3;
-            class162.field2295[var16 - 1][var17 - 1] = var15;
-         }
-
-         if(var16 < 126 && var17 > 0 && class162.field2302[var16 + 1][var17 - 1] == 0 && (var12[var13 + 1][var14 - 1] & 19136911) == 0 && (var12[var13 + 2][var14 - 1] & 19136899) == 0 && (var12[var13 + 2][var14] & 19136995) == 0) {
-            class162.field2298[var18] = var4 + 1;
-            class162.field2299[var18] = var5 - 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 + 1][var17 - 1] = 9;
-            class162.field2295[var16 + 1][var17 - 1] = var15;
-         }
-
-         if(var16 > 0 && var17 < 126 && class162.field2302[var16 - 1][var17 + 1] == 0 && (var12[var13 - 1][var14 + 1] & 19136830) == 0 && (var12[var13 - 1][var14 + 2] & 19136824) == 0 && (var12[var13][var14 + 2] & 19137016) == 0) {
-            class162.field2298[var18] = var4 - 1;
-            class162.field2299[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 - 1][var17 + 1] = 6;
-            class162.field2295[var16 - 1][var17 + 1] = var15;
-         }
-
-         if(var16 < 126 && var17 < 126 && class162.field2302[var16 + 1][var17 + 1] == 0 && (var12[var13 + 1][var14 + 2] & 19137016) == 0 && (var12[var13 + 2][var14 + 2] & 19136992) == 0 && (var12[var13 + 2][var14 + 1] & 19136995) == 0) {
-            class162.field2298[var18] = var4 + 1;
-            class162.field2299[var18] = var5 + 1;
-            var18 = var18 + 1 & 4095;
-            class162.field2302[var16 + 1][var17 + 1] = 12;
-            class162.field2295[var16 + 1][var17 + 1] = var15;
-         }
-      }
-
-      class162.field2296 = var4;
-      class162.field2292 = var5;
-      return false;
    }
 }

@@ -1,25 +1,13 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fr")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("au")
-   @ObfuscatedGetter(
-      intValue = -2072355635
-   )
-   static int field2325;
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("headIconsPk")
-   static SpritePixels[] headIconsPk;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("inflator")
    Inflater inflator;
 
@@ -34,10 +22,10 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lfz;[BI)V",
-      garbageValue = "-762882727"
+      signature = "(Lfv;[BI)V",
+      garbageValue = "1264007475"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -58,29 +46,5 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
-   }
-
-   @ObfuscatedName("iq")
-   @ObfuscatedSignature(
-      signature = "([Lhj;Lhj;ZI)V",
-      garbageValue = "-2118962620"
-   )
-   static void method3159(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class43.method614(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         class43.method614(var1.children, var1.id, var3, var4, var2);
-      }
-
-      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
-      if(var5 != null) {
-         class261.method4814(var5.id, var3, var4, var2);
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
    }
 }

@@ -4,48 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("iw")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lip;"
+      signature = "Lik;"
    )
    @Export("underlay_ref")
-   static IndexDataBase underlay_ref;
-   @ObfuscatedName("s")
+   public static IndexDataBase underlay_ref;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgr;"
    )
    @Export("underlays")
-   public static NodeCache underlays;
-   @ObfuscatedName("q")
+   static NodeCache underlays;
+   @ObfuscatedName("y")
+   static int[] field3399;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1535374769
+      intValue = -527868175
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -130637247
+      intValue = -1697975217
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1289687633
+      intValue = -1408999013
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 38048895
+      intValue = 1807127125
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -635045375
+      intValue = -307868515
    )
    @Export("hueMultiplier")
    public int hueMultiplier;
@@ -58,20 +60,20 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.rgbColor = 0;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "343148870"
+      garbageValue = "-2031854317"
    )
    @Export("post")
    void post() {
       this.setHSL(this.rgbColor);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "1744721365"
+      signature = "(Lfv;II)V",
+      garbageValue = "-641119795"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -85,10 +87,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfz;IIS)V",
-      garbageValue = "-21317"
+      signature = "(Lfv;III)V",
+      garbageValue = "-1252471479"
    )
    @Export("decode")
    void decode(Buffer var1, int var2, int var3) {
@@ -101,7 +103,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1983594199"
+      garbageValue = "-1603428512"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -129,9 +131,9 @@ public class FloorUnderlayDefinition extends CacheableNode {
       double var12 = 0.0D;
       double var14 = 0.0D;
       double var16 = (var10 + var8) / 2.0D;
-      if(var10 != var8) {
+      if(var8 != var10) {
          if(var16 < 0.5D) {
-            var14 = (var10 - var8) / (var10 + var8);
+            var14 = (var10 - var8) / (var8 + var10);
          }
 
          if(var16 >= 0.5D) {
@@ -140,15 +142,15 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
          if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
-         } else if(var10 == var4) {
+         } else if(var4 == var10) {
             var12 = 2.0D + (var6 - var2) / (var10 - var8);
-         } else if(var6 == var10) {
+         } else if(var10 == var6) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
-      this.saturation = (int)(var14 * 256.0D);
+      this.saturation = (int)(256.0D * var14);
       this.lightness = (int)(var16 * 256.0D);
       if(this.saturation < 0) {
          this.saturation = 0;
@@ -163,7 +165,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       if(var16 > 0.5D) {
-         this.hueMultiplier = (int)(512.0D * (1.0D - var16) * var14);
+         this.hueMultiplier = (int)(var14 * (1.0D - var16) * 512.0D);
       } else {
          this.hueMultiplier = (int)(var16 * var14 * 512.0D);
       }

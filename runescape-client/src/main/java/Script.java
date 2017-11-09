@@ -4,215 +4,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cw")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgr;"
    )
-   static NodeCache field1522;
-   @ObfuscatedName("s")
+   static NodeCache field1445;
+   @ObfuscatedName("fs")
+   static int[] field1444;
+   @ObfuscatedName("p")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 924257005
+      intValue = 2037752291
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 663833861
+      intValue = 1605158983
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1231872303
+      intValue = -596211317
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1090992437
+      intValue = 1932965255
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "[Lgk;"
+      signature = "[Lgd;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1522 = new NodeCache(128);
+      field1445 = new NodeCache(128);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(II)[Lgk;",
-      garbageValue = "-2008049021"
+      signature = "(IB)[Lgd;",
+      garbageValue = "48"
    )
-   IterableHashTable[] method1882(int var1) {
+   IterableHashTable[] method1919(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "([Lco;II[I[II)V",
-      garbageValue = "2043682542"
+      signature = "(B)[Lfi;",
+      garbageValue = "1"
    )
-   static void method1897(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
-
-         while(var5 < var6) {
-            boolean var9 = true;
-
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1546()?1:0;
-                     var12 = var8.method1546()?1:0;
-                  } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1546()?1:0;
-                     var12 = var8.method1546()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var12 != var11) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
-            }
-         }
-
-         method1897(var0, var1, var6, var3, var4);
-         method1897(var0, var6 + 1, var2, var3, var4);
-      }
-
+   public static class169[] method1918() {
+      return new class169[]{class169.field2412, class169.field2411, class169.field2410, class169.field2413, class169.field2414, class169.field2417, class169.field2416, class169.field2415, class169.field2418, class169.field2419};
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jx")
    @ObfuscatedSignature(
-      signature = "(Lfg;I)I",
-      garbageValue = "897121551"
+      signature = "(IIIILkd;Lhm;I)V",
+      garbageValue = "190302259"
    )
-   static int method1896(PacketBuffer var0) {
-      int var1 = var0.getBits(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.getBits(5);
-      } else if(var1 == 2) {
-         var2 = var0.getBits(8);
+   static final void method1928(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2683 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         class36.mapedge.method5365(var15 + (var0 + var5.field2683 / 2 - var17 / 2), var5.field2680 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
       } else {
-         var2 = var0.getBits(11);
+         class56.drawDot(var0, var1, var2, var3, var4, var5);
       }
 
-      return var2;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-492487402"
-   )
-   static int method1898(int var0) {
-      MessageNode var1 = (MessageNode)class96.field1516.get((long)var0);
-      return var1 == null?-1:(var1.previous == class96.field1517.field2483?-1:((MessageNode)var1.previous).id);
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Lcs;B)V",
-      garbageValue = "4"
-   )
-   public static final void method1895(class101 var0) {
-      AbstractSoundSystem.field1618 = var0;
    }
 }

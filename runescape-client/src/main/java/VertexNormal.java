@@ -4,30 +4,30 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("ev")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1712914027
+      intValue = 414861777
    )
    @Export("x")
    int x;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1280131315
+      intValue = -452402409
    )
    @Export("y")
    int y;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -26542267
+      intValue = 1994923257
    )
    @Export("z")
    int z;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -118907961
+      intValue = 970067579
    )
    @Export("magnitude")
    int magnitude;
@@ -36,12 +36,26 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Les;)V"
+      signature = "(Lev;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
       this.y = var1.y;
       this.z = var1.z;
       this.magnitude = var1.magnitude;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lgd;ILjava/lang/String;I)Ljava/lang/String;",
+      garbageValue = "1950367367"
+   )
+   static String method2702(IterableHashTable var0, int var1, String var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+         return var3 == null?var2:(String)var3.value;
+      }
    }
 }

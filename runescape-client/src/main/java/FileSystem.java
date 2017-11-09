@@ -4,50 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("ii")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("p")
-   @Export("validInterfaces")
-   static boolean[] validInterfaces;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 275421763
-   )
-   int field3200;
-   @ObfuscatedName("s")
-   byte[] field3197;
-   @ObfuscatedName("q")
+   @ObfuscatedName("cy")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Let;"
+   )
+   static Task field3271;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1218501315
+   )
+   int field3267;
+   @ObfuscatedName("p")
+   public byte[] field3265;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lfe;"
    )
    @Export("index")
-   IndexFile index;
-   @ObfuscatedName("o")
+   public IndexFile index;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lih;"
+      signature = "Liy;"
    )
    @Export("data")
-   IndexData data;
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)Lio;",
-      garbageValue = "247927451"
-   )
-   public static CombatInfo2 method4185(int var0) {
-      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field3360.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = CombatInfo2.field3367.getConfigData(33, var0);
-         var1 = new CombatInfo2();
-         if(var2 != null) {
-            var1.method4482(new Buffer(var2));
-         }
-
-         CombatInfo2.field3360.put(var1, (long)var0);
-         return var1;
-      }
-   }
+   public IndexData data;
 }

@@ -1,106 +1,144 @@
-import net.runelite.mapping.Export;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("ck")
 public class class86 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-2110216567"
-   )
-   public static String method1719(CharSequence var0) {
-      long var3 = 0L;
-      int var5 = var0.length();
+   @ObfuscatedName("v")
+   static final BigInteger field1304;
+   @ObfuscatedName("x")
+   static final BigInteger field1299;
 
-      for(int var6 = 0; var6 < var5; ++var6) {
-         var3 *= 37L;
-         char var7 = var0.charAt(var6);
-         if(var7 >= 'A' && var7 <= 'Z') {
-            var3 += (long)(var7 + 1 - 65);
-         } else if(var7 >= 'a' && var7 <= 'z') {
-            var3 += (long)(var7 + 1 - 97);
-         } else if(var7 >= '0' && var7 <= '9') {
-            var3 += (long)(var7 + 27 - 48);
-         }
-
-         if(var3 >= 177917621779460413L) {
-            break;
-         }
-      }
-
-      while(var3 % 37L == 0L && 0L != var3) {
-         var3 /= 37L;
-      }
-
-      String var8 = Overlay.method4776(var3);
-      if(var8 == null) {
-         var8 = "";
-      }
-
-      return var8;
+   static {
+      field1304 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+      field1299 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILct;ZI)I",
-      garbageValue = "-1818381209"
+      signature = "(I)[Lid;",
+      garbageValue = "1884593103"
    )
-   static int method1718(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = ItemLayer.method2454(class81.intStack[--class278.intStackSize]);
-      } else {
-         var3 = var2?class251.field3392:class164.field2314;
-      }
-
-      int var4;
-      if(var0 == 1300) {
-         var4 = class81.intStack[--class278.intStackSize] - 1;
-         if(var4 >= 0 && var4 <= 9) {
-            var3.method4077(var4, class81.scriptStringStack[--class266.scriptStringStackSize]);
-            return 1;
-         } else {
-            --class266.scriptStringStackSize;
-            return 1;
-         }
-      } else if(var0 == 1301) {
-         class278.intStackSize -= 2;
-         var4 = class81.intStack[class278.intStackSize];
-         int var5 = class81.intStack[class278.intStackSize + 1];
-         var3.dragParent = class215.method4064(var4, var5);
-         return 1;
-      } else if(var0 == 1302) {
-         var3.field2720 = class81.intStack[--class278.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1303) {
-         var3.field2718 = class81.intStack[--class278.intStackSize];
-         return 1;
-      } else if(var0 == 1304) {
-         var3.field2688 = class81.intStack[--class278.intStackSize];
-         return 1;
-      } else if(var0 == 1305) {
-         var3.name = class81.scriptStringStack[--class266.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1306) {
-         var3.selectedAction = class81.scriptStringStack[--class266.scriptStringStackSize];
-         return 1;
-      } else if(var0 == 1307) {
-         var3.actions = null;
-         return 1;
-      } else {
-         return 2;
-      }
+   static BuildType[] method1792() {
+      return new BuildType[]{BuildType.RC, BuildType.WIP, BuildType.BUILD_LIVE, BuildType.LIVE};
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "873978136"
+      signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
+      garbageValue = "578782654"
    )
-   @Export("getLength")
-   public static int getLength(String var0) {
-      return var0.length() + 1;
+   public static File method1785(String var0, String var1, int var2) {
+      String var3 = var2 == 0?"":"" + var2;
+      WidgetNode.field781 = new File(class115.userHome, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
+      String var4 = null;
+      String var5 = null;
+      boolean var6 = false;
+      File var22;
+      if(WidgetNode.field781.exists()) {
+         try {
+            FileOnDisk var7 = new FileOnDisk(WidgetNode.field781, "rw", 10000L);
+
+            Buffer var8;
+            int var9;
+            for(var8 = new Buffer((int)var7.length()); var8.offset < var8.payload.length; var8.offset += var9) {
+               var9 = var7.read(var8.payload, var8.offset, var8.payload.length - var8.offset);
+               if(var9 == -1) {
+                  throw new IOException();
+               }
+            }
+
+            var8.offset = 0;
+            var9 = var8.readUnsignedByte();
+            if(var9 < 1 || var9 > 3) {
+               throw new IOException("" + var9);
+            }
+
+            int var10 = 0;
+            if(var9 > 1) {
+               var10 = var8.readUnsignedByte();
+            }
+
+            if(var9 <= 2) {
+               var4 = var8.getJagString();
+               if(var10 == 1) {
+                  var5 = var8.getJagString();
+               }
+            } else {
+               var4 = var8.getCESU8();
+               if(var10 == 1) {
+                  var5 = var8.getCESU8();
+               }
+            }
+
+            var7.close();
+         } catch (IOException var20) {
+            var20.printStackTrace();
+         }
+
+         if(var4 != null) {
+            var22 = new File(var4);
+            if(!var22.exists()) {
+               var4 = null;
+            }
+         }
+
+         if(var4 != null) {
+            var22 = new File(var4, "test.dat");
+            if(!WorldMapType3.method231(var22, true)) {
+               var4 = null;
+            }
+         }
+      }
+
+      if(var4 == null && var2 == 0) {
+         label124:
+         for(int var15 = 0; var15 < class156.field2164.length; ++var15) {
+            for(int var16 = 0; var16 < class44.cacheLocations.length; ++var16) {
+               File var17 = new File(class44.cacheLocations[var16] + class156.field2164[var15] + File.separatorChar + var0 + File.separatorChar);
+               if(var17.exists() && WorldMapType3.method231(new File(var17, "test.dat"), true)) {
+                  var4 = var17.toString();
+                  var6 = true;
+                  break label124;
+               }
+            }
+         }
+      }
+
+      if(var4 == null) {
+         var4 = class115.userHome + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
+         var6 = true;
+      }
+
+      if(var5 != null) {
+         File var21 = new File(var5);
+         var22 = new File(var4);
+
+         try {
+            File[] var23 = var21.listFiles();
+            File[] var18 = var23;
+
+            for(int var11 = 0; var11 < var18.length; ++var11) {
+               File var12 = var18[var11];
+               File var13 = new File(var22, var12.getName());
+               boolean var14 = var12.renameTo(var13);
+               if(!var14) {
+                  throw new IOException();
+               }
+            }
+         } catch (Exception var19) {
+            var19.printStackTrace();
+         }
+
+         var6 = true;
+      }
+
+      if(var6) {
+         class14.method86(new File(var4), (File)null);
+      }
+
+      return new File(var4);
    }
 }

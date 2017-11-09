@@ -4,20 +4,20 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gq")
+@ObfuscatedName("go")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgh;"
    )
    @Export("node")
    Node node;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgh;"
    )
-   Node field2461;
+   Node field2560;
 
    public CombatInfoList() {
       this.node = new Node();
@@ -25,11 +25,19 @@ public class CombatInfoList implements Iterable {
       this.node.previous = this.node;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
+   public void method3736() {
+      while(this.node.next != this.node) {
+         this.node.next.unlink();
+      }
+
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lgd;)V"
+      signature = "(Lgh;)V"
    )
-   public void method3651(Node var1) {
+   public void method3749(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -40,11 +48,11 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgd;)V"
+      signature = "(Lgh;)V"
    )
-   public void method3652(Node var1) {
+   public void method3740(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -55,11 +63,11 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "()Lgd;"
+      signature = "()Lgh;"
    )
-   public Node method3654() {
+   public Node method3756() {
       Node var1 = this.node.next;
       if(var1 == this.node) {
          return null;
@@ -69,19 +77,19 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "()Lgd;"
+      signature = "()Lgh;"
    )
-   public Node method3655() {
-      return this.method3656((Node)null);
+   public Node method3741() {
+      return this.method3742((Node)null);
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgd;)Lgd;"
+      signature = "(Lgh;)Lgh;"
    )
-   Node method3656(Node var1) {
+   Node method3742(Node var1) {
       Node var2;
       if(var1 == null) {
          var2 = this.node.next;
@@ -90,43 +98,43 @@ public class CombatInfoList implements Iterable {
       }
 
       if(var2 == this.node) {
-         this.field2461 = null;
+         this.field2560 = null;
          return null;
       } else {
-         this.field2461 = var2.next;
+         this.field2560 = var2.next;
          return var2;
       }
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "()Lgd;"
+      signature = "()Lgh;"
    )
-   public Node method3677() {
-      Node var1 = this.field2461;
+   public Node method3743() {
+      Node var1 = this.field2560;
       if(var1 == this.node) {
-         this.field2461 = null;
+         this.field2560 = null;
          return null;
       } else {
-         this.field2461 = var1.next;
+         this.field2560 = var1.next;
          return var1;
       }
    }
 
-   @ObfuscatedName("e")
-   public boolean method3658() {
+   @ObfuscatedName("b")
+   public boolean method3744() {
       return this.node.next == this.node;
    }
 
    public Iterator iterator() {
-      return new class188(this);
+      return new class195(this);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lgd;Lgd;)V"
+      signature = "(Lgh;Lgh;)V"
    )
-   public static void method3680(Node var0, Node var1) {
+   public static void method3738(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

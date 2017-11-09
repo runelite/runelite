@@ -1,71 +1,53 @@
+import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jg")
+@ObfuscatedName("jp")
 public class class269 {
-   @ObfuscatedName("w")
-   static char[] field3677;
-   @ObfuscatedName("s")
-   static char[] field3676;
-   @ObfuscatedName("q")
-   static int[] field3678;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   IndexDataBase field3693;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   IndexDataBase field3688;
+   @ObfuscatedName("i")
+   HashMap field3690;
 
-   static {
-      field3677 = new char[64];
+   @ObfuscatedSignature(
+      signature = "(Lik;Lik;)V"
+   )
+   public class269(IndexDataBase var1, IndexDataBase var2) {
+      this.field3693 = var1;
+      this.field3688 = var2;
+      this.field3690 = new HashMap();
+   }
 
-      int var0;
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3677[var0] = (char)(var0 + 65);
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "([Ljd;I)Ljava/util/HashMap;",
+      garbageValue = "2124380261"
+   )
+   public HashMap method4915(class268[] var1) {
+      HashMap var2 = new HashMap();
+      class268[] var3 = var1;
+
+      for(int var4 = 0; var4 < var3.length; ++var4) {
+         class268 var5 = var3[var4];
+         if(this.field3690.containsKey(var5)) {
+            var2.put(var5, this.field3690.get(var5));
+         } else {
+            Font var6 = class279.method5095(this.field3693, this.field3688, var5.field3680, "");
+            if(var6 != null) {
+               this.field3690.put(var5, var6);
+               var2.put(var5, var6);
+            }
+         }
       }
 
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3677[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3677[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3677[62] = '+';
-      field3677[63] = '/';
-      field3676 = new char[64];
-
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3676[var0] = (char)(var0 + 65);
-      }
-
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3676[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3676[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3676[62] = '*';
-      field3676[63] = '-';
-      field3678 = new int[128];
-
-      for(var0 = 0; var0 < field3678.length; ++var0) {
-         field3678[var0] = -1;
-      }
-
-      for(var0 = 65; var0 <= 90; ++var0) {
-         field3678[var0] = var0 - 65;
-      }
-
-      for(var0 = 97; var0 <= 122; ++var0) {
-         field3678[var0] = var0 - 97 + 26;
-      }
-
-      for(var0 = 48; var0 <= 57; ++var0) {
-         field3678[var0] = var0 - 48 + 52;
-      }
-
-      int[] var2 = field3678;
-      field3678[43] = 62;
-      var2[42] = 62;
-      int[] var1 = field3678;
-      field3678[47] = 63;
-      var1[45] = 63;
+      return var2;
    }
 }

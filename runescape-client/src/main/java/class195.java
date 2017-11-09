@@ -1,67 +1,58 @@
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gg")
-public class class195 {
-   @ObfuscatedName("w")
+@ObfuscatedName("gc")
+public class class195 implements Iterator {
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lgw;"
+      signature = "Lgo;"
    )
-   class196 field2471;
-   @ObfuscatedName("s")
+   CombatInfoList field2546;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgw;"
+      signature = "Lgh;"
    )
-   class196 field2470;
+   Node field2547;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lgh;"
+   )
+   Node field2548;
 
-   public class195() {
-      this.field2471 = new class196();
-      this.field2471.field2472 = this.field2471;
-      this.field2471.field2473 = this.field2471;
+   @ObfuscatedSignature(
+      signature = "(Lgo;)V"
+   )
+   class195(CombatInfoList var1) {
+      this.field2548 = null;
+      this.field2546 = var1;
+      this.field2547 = this.field2546.node.next;
+      this.field2548 = null;
    }
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Lgw;)V"
-   )
-   public void method3721(class196 var1) {
-      if(var1.field2473 != null) {
-         var1.method3726();
+   public Object next() {
+      Node var1 = this.field2547;
+      if(var1 == this.field2546.node) {
+         var1 = null;
+         this.field2547 = null;
+      } else {
+         this.field2547 = var1.next;
       }
 
-      var1.field2473 = this.field2471.field2473;
-      var1.field2472 = this.field2471;
-      var1.field2473.field2472 = var1;
-      var1.field2472.field2473 = var1;
+      this.field2548 = var1;
+      return var1;
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "()Lgw;"
-   )
-   public class196 method3722() {
-      class196 var1 = this.field2471.field2472;
-      if(var1 == this.field2471) {
-         this.field2470 = null;
-         return null;
-      } else {
-         this.field2470 = var1.field2472;
-         return var1;
-      }
+   public boolean hasNext() {
+      return this.field2546.node != this.field2547;
    }
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "()Lgw;"
-   )
-   public class196 method3725() {
-      class196 var1 = this.field2470;
-      if(var1 == this.field2471) {
-         this.field2470 = null;
-         return null;
+   public void remove() {
+      if(this.field2548 == null) {
+         throw new IllegalStateException();
       } else {
-         this.field2470 = var1.field2472;
-         return var1;
+         this.field2548.unlink();
+         this.field2548 = null;
       }
    }
 }

@@ -4,42 +4,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("id")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lid;"
    )
    @Export("RC")
    static final BuildType RC;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lid;"
    )
    @Export("WIP")
    static final BuildType WIP;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lid;"
    )
    @Export("LIVE")
    static final BuildType LIVE;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lhr;"
+      signature = "Lid;"
    )
    @Export("BUILD_LIVE")
    static final BuildType BUILD_LIVE;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
+   static int[] field3245;
+   @ObfuscatedName("el")
+   @ObfuscatedSignature(
+      signature = "Les;"
+   )
+   static class148 field3253;
+   @ObfuscatedName("fy")
+   @ObfuscatedSignature(
+      signature = "[Lko;"
+   )
+   @Export("mapscene")
+   static IndexedSprite[] mapscene;
+   @ObfuscatedName("v")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -732504795
+      intValue = 1270254443
    )
    @Export("ordinal")
-   public final int ordinal;
+   final int ordinal;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -51,51 +64,5 @@ public class BuildType {
    BuildType(String var1, int var2) {
       this.identifier = var1;
       this.ordinal = var2;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lip;IIB)Lky;",
-      garbageValue = "95"
-   )
-   public static SpritePixels method4173(IndexDataBase var0, int var1, int var2) {
-      if(!class261.method4822(var0, var1, var2)) {
-         return null;
-      } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = class287.field3809;
-         var4.maxHeight = class287.field3807;
-         var4.offsetX = class287.field3808[0];
-         var4.offsetY = class21.offsetsY[0];
-         var4.width = class287.field3806[0];
-         var4.height = class56.field700[0];
-         int var5 = var4.height * var4.width;
-         byte[] var6 = class227.spritePixels[0];
-         var4.pixels = new int[var5];
-
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.pixels[var7] = class114.field1675[var6[var7] & 255];
-         }
-
-         class249.method4493();
-         return var4;
-      }
-   }
-
-   @ObfuscatedName("jp")
-   @ObfuscatedSignature(
-      signature = "(Lhj;IIII)V",
-      garbageValue = "-1014087476"
-   )
-   static final void method4177(Widget var0, int var1, int var2, int var3) {
-      class210 var4 = var0.method4076(false);
-      if(var4 != null) {
-         if(Client.field1148 < 3) {
-            class202.compass.method5184(var1, var2, var4.field2589, var4.field2592, 25, 25, Client.mapAngle, 256, var4.field2594, var4.field2591);
-         } else {
-            Rasterizer2D.method5059(var1, var2, 0, var4.field2594, var4.field2591);
-         }
-
-      }
    }
 }

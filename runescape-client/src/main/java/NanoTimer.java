@@ -4,42 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("ek")
 @Implements("NanoTimer")
 public class NanoTimer extends Timer {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      longValue = -3376090268130629231L
+      longValue = 332395258898066207L
    )
    @Export("nanoTime")
    long nanoTime;
 
-   NanoTimer() {
+   public NanoTimer() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-120"
+      garbageValue = "-3"
    )
-   public void vmethod3029() {
+   public void vmethod3096() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "1716430231"
+      garbageValue = "-553632509"
    )
-   public int vmethod3025(int var1, int var2) {
+   public int vmethod3095(int var1, int var2) {
       long var3 = (long)var2 * 1000000L;
       long var5 = this.nanoTime - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      class94.method1823(var5 / 1000000L);
+      class61.method1130(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;

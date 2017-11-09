@@ -1,21 +1,14 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("dm")
 @Implements("SoundTask")
 public class SoundTask implements Runnable {
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -306760097
-   )
-   @Export("revision")
-   public static int revision;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "[Ldk;"
+      signature = "[Ldi;"
    )
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
@@ -29,12 +22,21 @@ public class SoundTask implements Runnable {
          for(int var1 = 0; var1 < 2; ++var1) {
             AbstractSoundSystem var2 = this.systems[var1];
             if(var2 != null) {
-               var2.method2059();
+               var2.method2106();
             }
          }
       } catch (Exception var4) {
-         class46.method680((String)null, var4);
+         class33.method396((String)null, var4);
       }
 
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-2017970206"
+   )
+   public static boolean method2168(int var0) {
+      return var0 >= class228.field2888.field2887 && var0 <= class228.field2883.field2887 || var0 == class228.field2884.field2887;
    }
 }

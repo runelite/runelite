@@ -5,63 +5,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("cl")
 public class class96 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("chatLineMap")
    static final Map chatLineMap;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgk;"
+      signature = "Lgd;"
    )
-   static final IterableHashTable field1516;
-   @ObfuscatedName("q")
+   static final IterableHashTable field1433;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lge;"
+      signature = "Lha;"
    )
-   static final class201 field1517;
-   @ObfuscatedName("o")
+   static final class208 field1427;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 792831739
+      intValue = 1606969191
    )
-   static int field1515;
+   static int field1428;
+   @ObfuscatedName("bk")
+   @ObfuscatedGetter(
+      intValue = -1838596207
+   )
+   static int field1429;
+   @ObfuscatedName("cv")
+   @ObfuscatedSignature(
+      signature = "Liy;"
+   )
+   @Export("indexSprites")
+   static IndexData indexSprites;
 
    static {
       chatLineMap = new HashMap();
-      field1516 = new IterableHashTable(1024);
-      field1517 = new class201();
-      field1515 = 0;
+      field1433 = new IterableHashTable(1024);
+      field1427 = new class208();
+      field1428 = 0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "1561622273"
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-517583751"
    )
-   public static String method1880(byte[] var0) {
-      return DecorativeObject.method2923(var0, 0, var0.length);
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      DynamicObject.addChatMessage(var0, var1, var2, (String)null);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("ik")
    @ObfuscatedSignature(
-      signature = "(BB)C",
-      garbageValue = "25"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "-103"
    )
-   public static char method1879(byte var0) {
-      int var1 = var0 & 255;
-      if(var1 == 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         if(var1 >= 128 && var1 < 160) {
-            char var2 = class266.field3666[var1 - 128];
-            if(var2 == 0) {
-               var2 = '?';
-            }
-
-            var1 = var2;
-         }
-
-         return (char)var1;
-      }
+   static final String method1906(int var0) {
+      return var0 < 999999999?Integer.toString(var0):"*";
    }
 }

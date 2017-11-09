@@ -3,13 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("gn")
 @Implements("RSEnum")
 public interface RSEnum {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "6"
+      signature = "(I)I",
+      garbageValue = "369425307"
    )
    @Export("rsOrdinal")
    int rsOrdinal();

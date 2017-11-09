@@ -4,29 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("il")
+@ObfuscatedName("it")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1893767125
+      intValue = 1170437943
    )
-   public static int field3280;
-   @ObfuscatedName("q")
+   public static int field3344;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgr;"
    )
    @Export("varplayers")
-   static NodeCache varplayers;
-   @ObfuscatedName("o")
+   public static NodeCache varplayers;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 564470825
+      intValue = 551148241
+   )
+   public static int field3342;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 2139471647
    )
    @Export("configType")
    public int configType;
@@ -39,10 +38,10 @@ public class VarPlayerType extends CacheableNode {
       this.configType = 0;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lfz;I)V",
-      garbageValue = "381533877"
+      signature = "(Lfv;I)V",
+      garbageValue = "1081552324"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -56,10 +55,10 @@ public class VarPlayerType extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "1726361591"
+      signature = "(Lfv;II)V",
+      garbageValue = "1369179074"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -67,5 +66,23 @@ public class VarPlayerType extends CacheableNode {
          this.configType = var1.readUnsignedShort();
       }
 
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)Ljw;",
+      garbageValue = "956826945"
+   )
+   public static class285 method4465(int var0) {
+      class285[] var1 = class100.method1969();
+
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         class285 var3 = var1[var2];
+         if(var0 == var3.field3785) {
+            return var3;
+         }
+      }
+
+      return null;
    }
 }

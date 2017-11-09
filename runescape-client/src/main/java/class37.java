@@ -1,257 +1,206 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("ah")
 public class class37 {
-   @ObfuscatedName("qu")
-   @ObfuscatedSignature(
-      signature = "Lfr;"
+   @ObfuscatedName("v")
+   @Export("offsetsY")
+   static int[] offsetsY;
+   @ObfuscatedName("e")
+   static byte[][][] field490;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1095180709
    )
-   static IndexFile field534;
-   @ObfuscatedName("cs")
-   @ObfuscatedSignature(
-      signature = "Lih;"
-   )
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
+   public static int field485;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lip;Lip;S)V",
-      garbageValue = "-11876"
+      signature = "(II)V",
+      garbageValue = "-1751083468"
    )
-   public static void method492(IndexDataBase var0, IndexDataBase var1) {
-      KitDefinition.identKit_ref = var0;
-      KitDefinition.field3346 = var1;
-      KitDefinition.field3347 = KitDefinition.identKit_ref.fileCount(3);
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lip;III)[Lky;",
-      garbageValue = "-1130716731"
-   )
-   static SpritePixels[] method483(IndexDataBase var0, int var1, int var2) {
-      return !class261.method4822(var0, var1, var2)?null:MilliTimer.method2965();
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZS)I",
-      garbageValue = "20735"
-   )
-   static int method491(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      int var6;
-      if(var0 == 3400) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         Enum var5 = FileOnDisk.method2428(var3);
-         if(var5.valType != 's') {
-            ;
+   static void method551(int var0) {
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var1 != null) {
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
          }
 
-         for(var6 = 0; var6 < var5.size; ++var6) {
-            if(var4 == var5.keys[var6]) {
-               class81.scriptStringStack[++class266.scriptStringStackSize - 1] = var5.stringVals[var6];
-               var5 = null;
-               break;
-            }
-         }
-
-         if(var5 != null) {
-            class81.scriptStringStack[++class266.scriptStringStackSize - 1] = var5.defaultString;
-         }
-
-         return 1;
-      } else if(var0 != 3408) {
-         return 2;
-      } else {
-         class278.intStackSize -= 4;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         int var9 = class81.intStack[class278.intStackSize + 2];
-         var6 = class81.intStack[class278.intStackSize + 3];
-         Enum var7 = FileOnDisk.method2428(var9);
-         if(var3 == var7.keyType && var4 == var7.valType) {
-            for(int var8 = 0; var8 < var7.size; ++var8) {
-               if(var6 == var7.keys[var8]) {
-                  if(var4 == 115) {
-                     class81.scriptStringStack[++class266.scriptStringStackSize - 1] = var7.stringVals[var8];
-                  } else {
-                     class81.intStack[++class278.intStackSize - 1] = var7.intVals[var8];
-                  }
-
-                  var7 = null;
-                  break;
-               }
-            }
-
-            if(var7 != null) {
-               if(var4 == 115) {
-                  class81.scriptStringStack[++class266.scriptStringStackSize - 1] = var7.defaultString;
-               } else {
-                  class81.intStack[++class278.intStackSize - 1] = var7.defaultInt;
-               }
-            }
-
-            return 1;
-         } else {
-            if(var4 == 115) {
-               class81.scriptStringStack[++class266.scriptStringStackSize - 1] = "null";
-            } else {
-               class81.intStack[++class278.intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(ILct;ZB)I",
-      garbageValue = "-26"
+      signature = "(II)V",
+      garbageValue = "-346256032"
    )
-   static int method493(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if(var0 == 4000) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 + var4;
-         return 1;
-      } else if(var0 == 4001) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 - var4;
-         return 1;
-      } else if(var0 == 4002) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 * var4;
-         return 1;
-      } else if(var0 == 4003) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 / var4;
-         return 1;
-      } else if(var0 == 4004) {
-         var3 = class81.intStack[--class278.intStackSize];
-         class81.intStack[++class278.intStackSize - 1] = (int)(Math.random() * (double)var3);
-         return 1;
-      } else if(var0 == 4005) {
-         var3 = class81.intStack[--class278.intStackSize];
-         class81.intStack[++class278.intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
-         return 1;
-      } else if(var0 == 4006) {
-         class278.intStackSize -= 5;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         int var5 = class81.intStack[class278.intStackSize + 2];
-         int var6 = class81.intStack[class278.intStackSize + 3];
-         int var7 = class81.intStack[class278.intStackSize + 4];
-         class81.intStack[++class278.intStackSize - 1] = var3 + (var7 - var5) * (var4 - var3) / (var6 - var5);
-         return 1;
-      } else if(var0 == 4007) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 + var3 * var4 / 100;
-         return 1;
-      } else if(var0 == 4008) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 | 1 << var4;
-         return 1;
-      } else if(var0 == 4009) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 & -1 - (1 << var4);
-         return 1;
-      } else if(var0 == 4010) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = (var3 & 1 << var4) != 0?1:0;
-         return 1;
-      } else if(var0 == 4011) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 % var4;
-         return 1;
-      } else if(var0 == 4012) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         if(var3 == 0) {
-            class81.intStack[++class278.intStackSize - 1] = 0;
-         } else {
-            class81.intStack[++class278.intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
-         }
+   public static void method552(int var0) {
+      class210.field2594 = 1;
+      class184.field2516 = null;
+      class210.field2598 = -1;
+      class210.field2599 = -1;
+      field485 = 0;
+      class210.field2595 = false;
+      class47.field584 = var0;
+   }
 
-         return 1;
-      } else if(var0 == 4013) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         if(var3 == 0) {
-            class81.intStack[++class278.intStackSize - 1] = 0;
-            return 1;
-         } else {
-            switch(var4) {
-            case 0:
-               class81.intStack[++class278.intStackSize - 1] = Integer.MAX_VALUE;
-               break;
-            case 1:
-               class81.intStack[++class278.intStackSize - 1] = var3;
-               break;
-            case 2:
-               class81.intStack[++class278.intStackSize - 1] = (int)Math.sqrt((double)var3);
-               break;
-            case 3:
-               class81.intStack[++class278.intStackSize - 1] = (int)Math.cbrt((double)var3);
-               break;
-            case 4:
-               class81.intStack[++class278.intStackSize - 1] = (int)Math.sqrt(Math.sqrt((double)var3));
-               break;
-            default:
-               class81.intStack[++class278.intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1268726361"
+   )
+   public static void method553() {
+      try {
+         if(class210.field2594 == 1) {
+            int var0 = class210.field2596.method3855();
+            if(var0 > 0 && class210.field2596.method3861()) {
+               var0 -= class47.field584;
+               if(var0 < 0) {
+                  var0 = 0;
+               }
+
+               class210.field2596.method3854(var0);
+               return;
             }
 
-            return 1;
+            class210.field2596.method3969();
+            class210.field2596.method3858();
+            if(class184.field2516 != null) {
+               class210.field2594 = 2;
+            } else {
+               class210.field2594 = 0;
+            }
+
+            class210.field2601 = null;
+            class43.field539 = null;
          }
-      } else if(var0 == 4014) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 & var4;
-         return 1;
-      } else if(var0 == 4015) {
-         class278.intStackSize -= 2;
-         var3 = class81.intStack[class278.intStackSize];
-         var4 = class81.intStack[class278.intStackSize + 1];
-         class81.intStack[++class278.intStackSize - 1] = var3 | var4;
-         return 1;
-      } else if(var0 == 4018) {
-         class278.intStackSize -= 3;
-         long var9 = (long)class81.intStack[class278.intStackSize];
-         long var11 = (long)class81.intStack[class278.intStackSize + 1];
-         long var13 = (long)class81.intStack[class278.intStackSize + 2];
-         class81.intStack[++class278.intStackSize - 1] = (int)(var13 * var9 / var11);
-         return 1;
+      } catch (Exception var2) {
+         var2.printStackTrace();
+         class210.field2596.method3969();
+         class210.field2594 = 0;
+         class210.field2601 = null;
+         class43.field539 = null;
+         class184.field2516 = null;
+      }
+
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lgi;IB)Z",
+      garbageValue = "83"
+   )
+   @Export("decodeRegionHash")
+   static boolean decodeRegionHash(PacketBuffer var0, int var1) {
+      int var2 = var0.getBits(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.getBits(1) != 0) {
+            decodeRegionHash(var0, var1);
+         }
+
+         var3 = var0.getBits(13);
+         var4 = var0.getBits(13);
+         boolean var12 = var0.getBits(1) == 1;
+         if(var12) {
+            class94.field1415[++class94.field1408 - 1] = var1;
+         }
+
+         if(Client.cachedPlayers[var1] != null) {
+            throw new RuntimeException();
+         } else {
+            Player var6 = Client.cachedPlayers[var1] = new Player();
+            var6.field853 = var1;
+            if(class94.field1404[var1] != null) {
+               var6.decodeApperance(class94.field1404[var1]);
+            }
+
+            var6.orientation = class94.field1410[var1];
+            var6.interacting = class94.field1412[var1];
+            var7 = class94.field1409[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.field1189[0] = class94.field1411[var1];
+            var6.field852 = (byte)var8;
+            var6.method1191((var9 << 13) + var3 - ItemLayer.baseX, (var10 << 13) + var4 - ItemLayer.baseY);
+            var6.field854 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.getBits(2);
+         var4 = class94.field1409[var1];
+         class94.field1409[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+         return false;
       } else {
-         return 2;
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.getBits(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class94.field1409[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
+            }
+
+            if(var5 == 1) {
+               --var9;
+            }
+
+            if(var5 == 2) {
+               ++var8;
+               --var9;
+            }
+
+            if(var5 == 3) {
+               --var8;
+            }
+
+            if(var5 == 4) {
+               ++var8;
+            }
+
+            if(var5 == 5) {
+               --var8;
+               ++var9;
+            }
+
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class94.field1409[var1] = (var8 << 14) + var9 + (var7 << 28);
+            return false;
+         } else {
+            var3 = var0.getBits(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class94.field1409[var1];
+            var8 = (var7 >> 28) + var4 & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var7 + var11 & 255;
+            class94.field1409[var1] = (var9 << 14) + var10 + (var8 << 28);
+            return false;
+         }
       }
    }
 }

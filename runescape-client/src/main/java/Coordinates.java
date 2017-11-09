@@ -1,30 +1,33 @@
-import java.awt.Image;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hq")
 @Implements("Coordinates")
 public class Coordinates {
-   @ObfuscatedName("aq")
-   static Image field2603;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "[Lcd;"
+   )
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1618545837
+      intValue = 1307901353
    )
    @Export("plane")
    public int plane;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1001188867
+      intValue = 699218057
    )
    @Export("worldX")
    public int worldX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2124670595
+      intValue = 992215149
    )
    @Export("worldY")
    public int worldY;
@@ -34,7 +37,7 @@ public class Coordinates {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lhg;)V"
+      signature = "(Lhq;)V"
    )
    public Coordinates(Coordinates var1) {
       this.plane = var1.plane;
@@ -59,37 +62,33 @@ public class Coordinates {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1973556883"
+      garbageValue = "1514742160"
    )
-   public void method4013(int var1, int var2, int var3) {
+   public void method4092(int var1, int var2, int var3) {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2144079491"
+      signature = "(B)I",
+      garbageValue = "-86"
    )
-   public int method4014() {
+   public int method4093() {
       return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lhg;I)Z",
-      garbageValue = "-1942401287"
+      signature = "(Lhq;I)Z",
+      garbageValue = "226148438"
    )
-   boolean method4015(Coordinates var1) {
+   boolean method4094(Coordinates var1) {
       return this.plane != var1.plane?false:(this.worldX != var1.worldX?false:this.worldY == var1.worldY);
-   }
-
-   public boolean equals(Object var1) {
-      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method4015((Coordinates)var1));
    }
 
    public String toString() {
@@ -97,27 +96,69 @@ public class Coordinates {
    }
 
    public int hashCode() {
-      return this.method4014();
+      return this.method4093();
    }
 
-   @ObfuscatedName("s")
+   public boolean equals(Object var1) {
+      return this == var1?true:(!(var1 instanceof Coordinates)?false:this.method4094((Coordinates)var1));
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lfz;IB)Ljava/lang/String;",
-      garbageValue = "-53"
+      signature = "(II)Lib;",
+      garbageValue = "1254175424"
    )
-   static String method4026(Buffer var0, int var1) {
-      try {
-         int var2 = var0.getUSmart();
-         if(var2 > var1) {
-            var2 = var1;
+   public static Varbit method4096(int var0) {
+      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class12.varbit_ref.getConfigData(14, var0);
+         var1 = new Varbit();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
 
-         byte[] var3 = new byte[var2];
-         var0.offset += class265.field3661.decompress(var0.payload, var0.offset, var3, 0, var2);
-         String var4 = class12.getString(var3, 0, var2);
-         return var4;
-      } catch (Exception var6) {
-         return "Cabbage";
+         Varbit.varbits.put(var1, (long)var0);
+         return var1;
       }
+   }
+
+   @ObfuscatedName("gw")
+   @ObfuscatedSignature(
+      signature = "(Lbv;I)V",
+      garbageValue = "-1786022024"
+   )
+   static final void method4109(PendingSpawn var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.type == 0) {
+         var1 = class56.region.method2814(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 1) {
+         var1 = class56.region.method2808(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 2) {
+         var1 = class56.region.method2851(var0.level, var0.x, var0.y);
+      }
+
+      if(var0.type == 3) {
+         var1 = class56.region.method2942(var0.level, var0.x, var0.y);
+      }
+
+      if(var1 != 0) {
+         int var5 = class56.region.method2912(var0.level, var0.x, var0.y, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field1135 = var2;
+      var0.field1134 = var3;
+      var0.field1136 = var4;
    }
 }

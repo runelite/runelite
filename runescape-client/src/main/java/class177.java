@@ -1,16 +1,11 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fk")
 public class class177 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
-      signature = "(Lip;Lip;Lip;I)V",
-      garbageValue = "1885068895"
+      signature = "Liy;"
    )
-   public static void method3489(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      Sequence.seq_ref = var0;
-      Sequence.skel_ref = var1;
-      Sequence.skin_ref = var2;
-   }
+   static IndexData field2452;
 }

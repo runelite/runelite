@@ -1,638 +1,601 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
-public final class class167 {
-   @ObfuscatedName("d")
+@ObfuscatedName("fo")
+public class class167 implements class165 {
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Lfo;"
    )
-   @Export("state")
-   static DState state;
-
-   static {
-      state = new DState();
-   }
-
-   @ObfuscatedName("w")
-   public static int method3161(byte[] var0, int var1, byte[] var2, int var3, int var4) {
-      DState var5 = state;
-      synchronized(state) {
-         state.strm = var2;
-         state.next_in = var4;
-         state.out = var0;
-         state.next_out = 0;
-         state.field2369 = var1;
-         state.total_in_lo32 = 0;
-         state.total_in_hi32 = 0;
-         state.total_out_lo32 = 0;
-         state.total_out_hi32 = 0;
-         method3179(state);
-         var1 -= state.field2369;
-         state.strm = null;
-         state.out = null;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)V"
-   )
-   static void method3185(DState var0) {
-      byte var2 = var0.out_ch;
-      int var3 = var0.out_len;
-      int var4 = var0.nblock_used;
-      int var5 = var0.k0;
-      int[] var6 = class40.tt;
-      int var7 = var0.tPos;
-      byte[] var8 = var0.out;
-      int var9 = var0.next_out;
-      int var10 = var0.field2369;
-      int var12 = var0.field2353 + 1;
-
-      label65:
-      while(true) {
-         if(var3 > 0) {
-            while(true) {
-               if(var10 == 0) {
-                  break label65;
-               }
-
-               if(var3 == 1) {
-                  if(var10 == 0) {
-                     var3 = 1;
-                     break label65;
-                  }
-
-                  var8[var9] = var2;
-                  ++var9;
-                  --var10;
-                  break;
-               }
-
-               var8[var9] = var2;
-               --var3;
-               ++var9;
-               --var10;
-            }
-         }
-
-         boolean var14 = true;
-
-         byte var1;
-         while(var14) {
-            var14 = false;
-            if(var4 == var12) {
-               var3 = 0;
-               break label65;
-            }
-
-            var2 = (byte)var5;
-            var7 = var6[var7];
-            var1 = (byte)(var7 & 255);
-            var7 >>= 8;
-            ++var4;
-            if(var1 != var5) {
-               var5 = var1;
-               if(var10 == 0) {
-                  var3 = 1;
-                  break label65;
-               }
-
-               var8[var9] = var2;
-               ++var9;
-               --var10;
-               var14 = true;
-            } else if(var4 == var12) {
-               if(var10 == 0) {
-                  var3 = 1;
-                  break label65;
-               }
-
-               var8[var9] = var2;
-               ++var9;
-               --var10;
-               var14 = true;
-            }
-         }
-
-         var3 = 2;
-         var7 = var6[var7];
-         var1 = (byte)(var7 & 255);
-         var7 >>= 8;
-         ++var4;
-         if(var4 != var12) {
-            if(var1 != var5) {
-               var5 = var1;
-            } else {
-               var3 = 3;
-               var7 = var6[var7];
-               var1 = (byte)(var7 & 255);
-               var7 >>= 8;
-               ++var4;
-               if(var4 != var12) {
-                  if(var1 != var5) {
-                     var5 = var1;
-                  } else {
-                     var7 = var6[var7];
-                     var1 = (byte)(var7 & 255);
-                     var7 >>= 8;
-                     ++var4;
-                     var3 = (var1 & 255) + 4;
-                     var7 = var6[var7];
-                     var5 = (byte)(var7 & 255);
-                     var7 >>= 8;
-                     ++var4;
-                  }
-               }
-            }
-         }
-      }
-
-      int var13 = var0.total_out_hi32;
-      var0.total_out_hi32 += var10 - var10;
-      if(var0.total_out_hi32 < var13) {
-         ;
-      }
-
-      var0.out_ch = var2;
-      var0.out_len = var3;
-      var0.nblock_used = var4;
-      var0.k0 = var5;
-      class40.tt = var6;
-      var0.tPos = var7;
-      var0.out = var8;
-      var0.next_out = var9;
-      var0.field2369 = var10;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)V"
-   )
-   static void method3179(DState var0) {
-      boolean var4 = false;
-      boolean var5 = false;
-      boolean var6 = false;
-      boolean var7 = false;
-      boolean var8 = false;
-      boolean var9 = false;
-      boolean var10 = false;
-      boolean var11 = false;
-      boolean var12 = false;
-      boolean var13 = false;
-      boolean var14 = false;
-      boolean var15 = false;
-      boolean var16 = false;
-      boolean var17 = false;
-      boolean var18 = false;
-      boolean var19 = false;
-      boolean var20 = false;
-      boolean var21 = false;
-      int var22 = 0;
-      int[] var23 = null;
-      int[] var24 = null;
-      int[] var25 = null;
-      var0.blockSize100k = 1;
-      if(class40.tt == null) {
-         class40.tt = new int[var0.blockSize100k * 100000];
-      }
-
-      boolean var26 = true;
-
-      while(true) {
-         while(var26) {
-            byte var1 = method3167(var0);
-            if(var1 == 23) {
-               return;
-            }
-
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3167(var0);
-            var1 = method3164(var0);
-            if(var1 != 0) {
-               ;
-            }
-
-            var0.field2364 = 0;
-            var1 = method3167(var0);
-            var0.field2364 = var0.field2364 << 8 | var1 & 255;
-            var1 = method3167(var0);
-            var0.field2364 = var0.field2364 << 8 | var1 & 255;
-            var1 = method3167(var0);
-            var0.field2364 = var0.field2364 << 8 | var1 & 255;
-
-            int var36;
-            for(var36 = 0; var36 < 16; ++var36) {
-               var1 = method3164(var0);
-               if(var1 == 1) {
-                  var0.field2372[var36] = true;
-               } else {
-                  var0.field2372[var36] = false;
-               }
-            }
-
-            for(var36 = 0; var36 < 256; ++var36) {
-               var0.inUse[var36] = false;
-            }
-
-            int var37;
-            for(var36 = 0; var36 < 16; ++var36) {
-               if(var0.field2372[var36]) {
-                  for(var37 = 0; var37 < 16; ++var37) {
-                     var1 = method3164(var0);
-                     if(var1 == 1) {
-                        var0.inUse[var37 + var36 * 16] = true;
-                     }
-                  }
-               }
-            }
-
-            method3177(var0);
-            int var39 = var0.nInUse + 2;
-            int var40 = method3166(3, var0);
-            int var41 = method3166(15, var0);
-
-            for(var36 = 0; var36 < var41; ++var36) {
-               var37 = 0;
-
-               while(true) {
-                  var1 = method3164(var0);
-                  if(var1 == 0) {
-                     var0.field2349[var36] = (byte)var37;
-                     break;
-                  }
-
-                  ++var37;
-               }
-            }
-
-            byte[] var27 = new byte[6];
-
-            byte var29;
-            for(var29 = 0; var29 < var40; var27[var29] = var29++) {
-               ;
-            }
-
-            for(var36 = 0; var36 < var41; ++var36) {
-               var29 = var0.field2349[var36];
-
-               byte var28;
-               for(var28 = var27[var29]; var29 > 0; --var29) {
-                  var27[var29] = var27[var29 - 1];
-               }
-
-               var27[0] = var28;
-               var0.field2376[var36] = var28;
-            }
-
-            int var38;
-            for(var38 = 0; var38 < var40; ++var38) {
-               int var50 = method3166(5, var0);
-
-               for(var36 = 0; var36 < var39; ++var36) {
-                  while(true) {
-                     var1 = method3164(var0);
-                     if(var1 == 0) {
-                        var0.field2378[var38][var36] = (byte)var50;
-                        break;
-                     }
-
-                     var1 = method3164(var0);
-                     if(var1 == 0) {
-                        ++var50;
-                     } else {
-                        --var50;
-                     }
-                  }
-               }
-            }
-
-            for(var38 = 0; var38 < var40; ++var38) {
-               byte var2 = 32;
-               byte var3 = 0;
-
-               for(var36 = 0; var36 < var39; ++var36) {
-                  if(var0.field2378[var38][var36] > var3) {
-                     var3 = var0.field2378[var38][var36];
-                  }
-
-                  if(var0.field2378[var38][var36] < var2) {
-                     var2 = var0.field2378[var38][var36];
-                  }
-               }
-
-               method3183(var0.field2379[var38], var0.field2357[var38], var0.field2381[var38], var0.field2378[var38], var2, var3, var39);
-               var0.field2382[var38] = var2;
-            }
-
-            int var42 = var0.nInUse + 1;
-            int var43 = -1;
-            byte var44 = 0;
-
-            for(var36 = 0; var36 <= 255; ++var36) {
-               var0.field2347[var36] = 0;
-            }
-
-            int var56 = 4095;
-
-            int var35;
-            int var55;
-            for(var35 = 15; var35 >= 0; --var35) {
-               for(var55 = 15; var55 >= 0; --var55) {
-                  var0.field2374[var56] = (byte)(var55 + var35 * 16);
-                  --var56;
-               }
-
-               var0.field2375[var35] = var56 + 1;
-            }
-
-            int var47 = 0;
-            byte var54;
-            if(var44 == 0) {
-               ++var43;
-               var44 = 50;
-               var54 = var0.field2376[var43];
-               var22 = var0.field2382[var54];
-               var23 = var0.field2379[var54];
-               var25 = var0.field2381[var54];
-               var24 = var0.field2357[var54];
-            }
-
-            int var45 = var44 - 1;
-            int var51 = var22;
-
-            int var52;
-            byte var53;
-            for(var52 = method3166(var22, var0); var52 > var23[var51]; var52 = var52 << 1 | var53) {
-               ++var51;
-               var53 = method3164(var0);
-            }
-
-            int var46 = var25[var52 - var24[var51]];
-
-            while(true) {
-               while(var46 != var42) {
-                  if(var46 != 0 && var46 != 1) {
-                     int var33 = var46 - 1;
-                     int var30;
-                     if(var33 < 16) {
-                        var30 = var0.field2375[0];
-
-                        for(var1 = var0.field2374[var30 + var33]; var33 > 3; var33 -= 4) {
-                           int var34 = var30 + var33;
-                           var0.field2374[var34] = var0.field2374[var34 - 1];
-                           var0.field2374[var34 - 1] = var0.field2374[var34 - 2];
-                           var0.field2374[var34 - 2] = var0.field2374[var34 - 3];
-                           var0.field2374[var34 - 3] = var0.field2374[var34 - 4];
-                        }
-
-                        while(var33 > 0) {
-                           var0.field2374[var30 + var33] = var0.field2374[var30 + var33 - 1];
-                           --var33;
-                        }
-
-                        var0.field2374[var30] = var1;
-                     } else {
-                        int var31 = var33 / 16;
-                        int var32 = var33 % 16;
-                        var30 = var0.field2375[var31] + var32;
-
-                        for(var1 = var0.field2374[var30]; var30 > var0.field2375[var31]; --var30) {
-                           var0.field2374[var30] = var0.field2374[var30 - 1];
-                        }
-
-                        ++var0.field2375[var31];
-
-                        while(var31 > 0) {
-                           --var0.field2375[var31];
-                           var0.field2374[var0.field2375[var31]] = var0.field2374[var0.field2375[var31 - 1] + 16 - 1];
-                           --var31;
-                        }
-
-                        --var0.field2375[0];
-                        var0.field2374[var0.field2375[0]] = var1;
-                        if(var0.field2375[0] == 0) {
-                           var56 = 4095;
-
-                           for(var35 = 15; var35 >= 0; --var35) {
-                              for(var55 = 15; var55 >= 0; --var55) {
-                                 var0.field2374[var56] = var0.field2374[var0.field2375[var35] + var55];
-                                 --var56;
-                              }
-
-                              var0.field2375[var35] = var56 + 1;
-                           }
-                        }
-                     }
-
-                     ++var0.field2347[var0.seqToUnseq[var1 & 255] & 255];
-                     class40.tt[var47] = var0.seqToUnseq[var1 & 255] & 255;
-                     ++var47;
-                     if(var45 == 0) {
-                        ++var43;
-                        var45 = 50;
-                        var54 = var0.field2376[var43];
-                        var22 = var0.field2382[var54];
-                        var23 = var0.field2379[var54];
-                        var25 = var0.field2381[var54];
-                        var24 = var0.field2357[var54];
-                     }
-
-                     --var45;
-                     var51 = var22;
-
-                     for(var52 = method3166(var22, var0); var52 > var23[var51]; var52 = var52 << 1 | var53) {
-                        ++var51;
-                        var53 = method3164(var0);
-                     }
-
-                     var46 = var25[var52 - var24[var51]];
-                  } else {
-                     int var48 = -1;
-                     int var49 = 1;
-
-                     do {
-                        if(var46 == 0) {
-                           var48 += var49;
-                        } else if(var46 == 1) {
-                           var48 += var49 * 2;
-                        }
-
-                        var49 *= 2;
-                        if(var45 == 0) {
-                           ++var43;
-                           var45 = 50;
-                           var54 = var0.field2376[var43];
-                           var22 = var0.field2382[var54];
-                           var23 = var0.field2379[var54];
-                           var25 = var0.field2381[var54];
-                           var24 = var0.field2357[var54];
-                        }
-
-                        --var45;
-                        var51 = var22;
-
-                        for(var52 = method3166(var22, var0); var52 > var23[var51]; var52 = var52 << 1 | var53) {
-                           ++var51;
-                           var53 = method3164(var0);
-                        }
-
-                        var46 = var25[var52 - var24[var51]];
-                     } while(var46 == 0 || var46 == 1);
-
-                     ++var48;
-                     var1 = var0.seqToUnseq[var0.field2374[var0.field2375[0]] & 255];
-
-                     for(var0.field2347[var1 & 255] += var48; var48 > 0; --var48) {
-                        class40.tt[var47] = var1 & 255;
-                        ++var47;
-                     }
-                  }
-               }
-
-               var0.out_len = 0;
-               var0.out_ch = 0;
-               var0.field2383[0] = 0;
-
-               for(var36 = 1; var36 <= 256; ++var36) {
-                  var0.field2383[var36] = var0.field2347[var36 - 1];
-               }
-
-               for(var36 = 1; var36 <= 256; ++var36) {
-                  var0.field2383[var36] += var0.field2383[var36 - 1];
-               }
-
-               for(var36 = 0; var36 < var47; ++var36) {
-                  var1 = (byte)(class40.tt[var36] & 255);
-                  class40.tt[var0.field2383[var1 & 255]] |= var36 << 8;
-                  ++var0.field2383[var1 & 255];
-               }
-
-               var0.tPos = class40.tt[var0.field2364] >> 8;
-               var0.nblock_used = 0;
-               var0.tPos = class40.tt[var0.tPos];
-               var0.k0 = (byte)(var0.tPos & 255);
-               var0.tPos >>= 8;
-               ++var0.nblock_used;
-               var0.field2353 = var47;
-               method3185(var0);
-               if(var0.field2353 + 1 == var0.nblock_used && var0.out_len == 0) {
-                  var26 = true;
-                  break;
-               }
-
-               var26 = false;
-               break;
-            }
-         }
-
-         return;
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)B"
-   )
-   static byte method3167(DState var0) {
-      return (byte)method3166(8, var0);
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lfi;)B"
-   )
-   static byte method3164(DState var0) {
-      return (byte)method3166(1, var0);
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(ILfi;)I"
-   )
-   static int method3166(int var0, DState var1) {
-      while(var1.total_in_lo32 < var0) {
-         var1.total_in_hi32 = var1.total_in_hi32 << 8 | var1.strm[var1.next_in] & 255;
-         var1.total_in_lo32 += 8;
-         ++var1.next_in;
-         ++var1.total_out_lo32;
-         if(var1.total_out_lo32 == 0) {
-            ;
-         }
-      }
-
-      int var3 = var1.total_in_hi32 >> var1.total_in_lo32 - var0 & (1 << var0) - 1;
-      var1.total_in_lo32 -= var0;
-      return var3;
-   }
-
+   public static final class167 field2307;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lfi;)V"
+      signature = "Lfo;"
    )
-   static void method3177(DState var0) {
-      var0.nInUse = 0;
+   public static final class167 field2306;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2353;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2308;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2309;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2310;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2311;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2312;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2313;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2357;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2315;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2321;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2330;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2318;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2319;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2372;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2392;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2322;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2323;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2324;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2398;
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2326;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2327;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2351;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2329;
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2320;
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2331;
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2332;
+   @ObfuscatedName("aq")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2325;
+   @ObfuscatedName("ab")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2334;
+   @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2335;
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2393;
+   @ObfuscatedName("ap")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2337;
+   @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2338;
+   @ObfuscatedName("ak")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2317;
+   @ObfuscatedName("at")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2314;
+   @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2341;
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2389;
+   @ObfuscatedName("am")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2340;
+   @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2366;
+   @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2349;
+   @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2377;
+   @ObfuscatedName("au")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2347;
+   @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2348;
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2333;
+   @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2350;
+   @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2378;
+   @ObfuscatedName("aa")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2352;
+   @ObfuscatedName("ad")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2343;
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2395;
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2355;
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2356;
+   @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2305;
+   @ObfuscatedName("bk")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2358;
+   @ObfuscatedName("bo")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2344;
+   @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2360;
+   @ObfuscatedName("bw")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2361;
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2362;
+   @ObfuscatedName("bn")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2363;
+   @ObfuscatedName("bt")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2364;
+   @ObfuscatedName("bz")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2365;
+   @ObfuscatedName("be")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2373;
+   @ObfuscatedName("bm")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2359;
+   @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2368;
+   @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2369;
+   @ObfuscatedName("br")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2370;
+   @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2371;
+   @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2380;
+   @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2339;
+   @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2374;
+   @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2375;
+   @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2367;
+   @ObfuscatedName("by")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2394;
+   @ObfuscatedName("bq")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2386;
+   @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2379;
+   @ObfuscatedName("bs")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2376;
+   @ObfuscatedName("bv")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2381;
+   @ObfuscatedName("bf")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2382;
+   @ObfuscatedName("cn")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2383;
+   @ObfuscatedName("cd")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2316;
+   @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2385;
+   @ObfuscatedName("ce")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2328;
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2387;
+   @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2388;
+   @ObfuscatedName("cy")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2354;
+   @ObfuscatedName("cp")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2390;
+   @ObfuscatedName("ck")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2391;
+   @ObfuscatedName("cj")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2346;
+   @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2384;
+   @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2342;
+   @ObfuscatedName("co")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2336;
+   @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2396;
+   @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2397;
+   @ObfuscatedName("ch")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2345;
+   @ObfuscatedName("cg")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2399;
+   @ObfuscatedName("cu")
+   @ObfuscatedSignature(
+      signature = "Lfo;"
+   )
+   public static final class167 field2400;
+   @ObfuscatedName("cl")
+   @ObfuscatedGetter(
+      intValue = 1439051351
+   )
+   final int field2401;
+   @ObfuscatedName("cw")
+   @ObfuscatedGetter(
+      intValue = 254112467
+   )
+   final int field2402;
 
-      for(int var1 = 0; var1 < 256; ++var1) {
-         if(var0.inUse[var1]) {
-            var0.seqToUnseq[var0.nInUse] = (byte)var1;
-            ++var0.nInUse;
-         }
-      }
-
+   static {
+      field2307 = new class167(0, 0);
+      field2306 = new class167(1, -2);
+      field2353 = new class167(2, 0);
+      field2308 = new class167(3, 6);
+      field2309 = new class167(4, -1);
+      field2310 = new class167(5, 1);
+      field2311 = new class167(6, 4);
+      field2312 = new class167(7, 4);
+      field2313 = new class167(8, 5);
+      field2357 = new class167(9, 10);
+      field2315 = new class167(10, -1);
+      field2321 = new class167(11, -1);
+      field2330 = new class167(12, 16);
+      field2318 = new class167(13, 16);
+      field2319 = new class167(14, 8);
+      field2372 = new class167(15, 8);
+      field2392 = new class167(16, 8);
+      field2322 = new class167(17, 8);
+      field2323 = new class167(18, 8);
+      field2324 = new class167(19, 8);
+      field2398 = new class167(20, 8);
+      field2326 = new class167(21, 8);
+      field2327 = new class167(22, 8);
+      field2351 = new class167(23, 8);
+      field2329 = new class167(24, 7);
+      field2320 = new class167(25, 7);
+      field2331 = new class167(26, 7);
+      field2332 = new class167(27, 7);
+      field2325 = new class167(28, 7);
+      field2334 = new class167(29, 13);
+      field2335 = new class167(30, 15);
+      field2393 = new class167(31, 3);
+      field2337 = new class167(32, 3);
+      field2338 = new class167(33, 3);
+      field2317 = new class167(34, 3);
+      field2314 = new class167(35, 3);
+      field2341 = new class167(36, 9);
+      field2389 = new class167(37, 11);
+      field2340 = new class167(38, 7);
+      field2366 = new class167(39, 7);
+      field2349 = new class167(40, 7);
+      field2377 = new class167(41, 7);
+      field2347 = new class167(42, 7);
+      field2348 = new class167(43, 13);
+      field2333 = new class167(44, 15);
+      field2350 = new class167(45, 3);
+      field2378 = new class167(46, 3);
+      field2352 = new class167(47, 3);
+      field2343 = new class167(48, 3);
+      field2395 = new class167(49, 3);
+      field2355 = new class167(50, 3);
+      field2356 = new class167(51, 3);
+      field2305 = new class167(52, 3);
+      field2358 = new class167(53, 9);
+      field2344 = new class167(54, 11);
+      field2360 = new class167(55, 8);
+      field2361 = new class167(56, 8);
+      field2362 = new class167(57, 8);
+      field2363 = new class167(58, 8);
+      field2364 = new class167(59, 8);
+      field2365 = new class167(60, 14);
+      field2373 = new class167(61, 16);
+      field2359 = new class167(62, 8);
+      field2368 = new class167(63, 8);
+      field2369 = new class167(64, 8);
+      field2370 = new class167(65, 8);
+      field2371 = new class167(66, 8);
+      field2380 = new class167(67, 4);
+      field2339 = new class167(68, 6);
+      field2374 = new class167(69, 0);
+      field2375 = new class167(70, 4);
+      field2367 = new class167(71, -2);
+      field2394 = new class167(72, -1);
+      field2386 = new class167(73, 5);
+      field2379 = new class167(74, 2);
+      field2376 = new class167(75, -1);
+      field2381 = new class167(76, -1);
+      field2382 = new class167(77, -1);
+      field2383 = new class167(78, -1);
+      field2316 = new class167(79, 2);
+      field2385 = new class167(80, 2);
+      field2328 = new class167(81, 2);
+      field2387 = new class167(82, 0);
+      field2388 = new class167(83, -1);
+      field2354 = new class167(84, -1);
+      field2390 = new class167(85, 9);
+      field2391 = new class167(86, -1);
+      field2346 = new class167(87, -1);
+      field2384 = new class167(88, 13);
+      field2342 = new class167(89, 3);
+      field2336 = new class167(90, -2);
+      field2396 = new class167(91, -1);
+      field2397 = new class167(92, -1);
+      field2345 = new class167(93, -1);
+      field2399 = new class167(94, -1);
+      field2400 = new class167(95, -1);
    }
 
-   @ObfuscatedName("e")
-   static void method3183(int[] var0, int[] var1, int[] var2, byte[] var3, int var4, int var5, int var6) {
-      int var7 = 0;
-
-      int var8;
-      for(var8 = var4; var8 <= var5; ++var8) {
-         for(int var9 = 0; var9 < var6; ++var9) {
-            if(var8 == var3[var9]) {
-               var2[var7] = var9;
-               ++var7;
-            }
-         }
-      }
-
-      for(var8 = 0; var8 < 23; ++var8) {
-         var1[var8] = 0;
-      }
-
-      for(var8 = 0; var8 < var6; ++var8) {
-         ++var1[var3[var8] + 1];
-      }
-
-      for(var8 = 1; var8 < 23; ++var8) {
-         var1[var8] += var1[var8 - 1];
-      }
-
-      for(var8 = 0; var8 < 23; ++var8) {
-         var0[var8] = 0;
-      }
-
-      int var10 = 0;
-
-      for(var8 = var4; var8 <= var5; ++var8) {
-         var10 += var1[var8 + 1] - var1[var8];
-         var0[var8] = var10 - 1;
-         var10 <<= 1;
-      }
-
-      for(var8 = var4 + 1; var8 <= var5; ++var8) {
-         var1[var8] = (var0[var8 - 1] + 1 << 1) - var1[var8];
-      }
-
+   class167(int var1, int var2) {
+      this.field2401 = var1;
+      this.field2402 = var2;
    }
 }

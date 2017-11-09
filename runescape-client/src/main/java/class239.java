@@ -2,46 +2,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("ig")
 public enum class239 implements RSEnum {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lig;"
    )
-   field3267(0, 0),
-   @ObfuscatedName("s")
+   field3255("runescape", "RuneScape", 0),
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lig;"
    )
-   field3268(2, 1),
-   @ObfuscatedName("q")
+   field3256("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lig;"
    )
-   field3270(1, 2);
+   field3257("game3", "Game 3", 2),
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
+   field3258("game4", "Game 4", 3),
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
+   field3263("game5", "Game 5", 4),
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "Lig;"
+   )
+   field3260("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1884697263
+      intValue = 61320803
    )
-   public final int field3266;
-   @ObfuscatedName("g")
+   static int field3259;
+   @ObfuscatedName("e")
+   public final String field3261;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -5663731
+      intValue = 1687907787
    )
-   final int field3269;
+   final int field3262;
 
-   class239(int var3, int var4) {
-      this.field3266 = var3;
-      this.field3269 = var4;
+   class239(String var3, String var4, int var5) {
+      this.field3261 = var3;
+      this.field3262 = var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "6"
+      signature = "(I)I",
+      garbageValue = "369425307"
    )
    public int rsOrdinal() {
-      return this.field3269;
+      return this.field3262;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(ZZI)I",
+      garbageValue = "-487339094"
+   )
+   public static int method4274(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class245.field3323 + class245.field3320;
+      return var3;
    }
 }

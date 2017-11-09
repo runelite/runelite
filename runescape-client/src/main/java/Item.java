@@ -4,92 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("ch")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("cp")
+   static boolean field1399;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -24083525
+      intValue = -196392353
    )
    @Export("id")
    int id;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 628658673
+      intValue = -205096159
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)Leh;",
-      garbageValue = "0"
+      signature = "(I)Len;",
+      garbageValue = "-1864051962"
    )
    protected final Model getModel() {
-      return FaceNormal.getItemDefinition(this.id).getModel(this.quantity);
+      return class250.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1894168426"
+      signature = "(II)I",
+      garbageValue = "1935416466"
    )
-   public static void method1794() {
-      Spotanim.spotanims.reset();
-      Spotanim.field3323.reset();
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(ILct;ZI)I",
-      garbageValue = "-1717259771"
-   )
-   static int method1795(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class251.field3392:class164.field2314;
-      if(var0 == 1600) {
-         class81.intStack[++class278.intStackSize - 1] = var3.scrollX;
-         return 1;
-      } else if(var0 == 1601) {
-         class81.intStack[++class278.intStackSize - 1] = var3.scrollY;
-         return 1;
-      } else if(var0 == 1602) {
-         class81.scriptStringStack[++class266.scriptStringStackSize - 1] = var3.text;
-         return 1;
-      } else if(var0 == 1603) {
-         class81.intStack[++class278.intStackSize - 1] = var3.scrollWidth;
-         return 1;
-      } else if(var0 == 1604) {
-         class81.intStack[++class278.intStackSize - 1] = var3.scrollHeight;
-         return 1;
-      } else if(var0 == 1605) {
-         class81.intStack[++class278.intStackSize - 1] = var3.modelZoom;
-         return 1;
-      } else if(var0 == 1606) {
-         class81.intStack[++class278.intStackSize - 1] = var3.rotationX;
-         return 1;
-      } else if(var0 == 1607) {
-         class81.intStack[++class278.intStackSize - 1] = var3.rotationY;
-         return 1;
-      } else if(var0 == 1608) {
-         class81.intStack[++class278.intStackSize - 1] = var3.rotationZ;
-         return 1;
-      } else if(var0 == 1609) {
-         class81.intStack[++class278.intStackSize - 1] = var3.opacity;
-         return 1;
-      } else if(var0 == 1610) {
-         class81.intStack[++class278.intStackSize - 1] = var3.field2674;
-         return 1;
-      } else if(var0 == 1611) {
-         class81.intStack[++class278.intStackSize - 1] = var3.textColor;
-         return 1;
-      } else if(var0 == 1612) {
-         class81.intStack[++class278.intStackSize - 1] = var3.field2668;
-         return 1;
-      } else if(var0 == 1613) {
-         class81.intStack[++class278.intStackSize - 1] = var3.field2672.rsOrdinal();
-         return 1;
+   public static int method1849(int var0) {
+      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var1;
+      if(var2 != null) {
+         var1 = var2;
       } else {
-         return 2;
+         byte[] var7 = class12.varbit_ref.getConfigData(14, var0);
+         var2 = new Varbit();
+         if(var7 != null) {
+            var2.decode(new Buffer(var7));
+         }
+
+         Varbit.varbits.put(var2, (long)var0);
+         var1 = var2;
       }
+
+      int var3 = var1.configId;
+      int var4 = var1.leastSignificantBit;
+      int var5 = var1.mostSignificantBit;
+      int var6 = class218.field2689[var5 - var4];
+      return class218.widgetSettings[var3] >> var4 & var6;
    }
 }

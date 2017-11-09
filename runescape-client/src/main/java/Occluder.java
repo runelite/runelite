@@ -4,127 +4,127 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("eg")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("ho")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1675011633
-   )
-   static int field2148;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1563554767
+      intValue = -1056255967
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -614446609
+      intValue = -594595681
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1907771027
+      intValue = 414439451
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1701914367
+      intValue = -272588949
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1308835421
+      intValue = -982928651
    )
    @Export("type")
    int type;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -70538753
+      intValue = 1663289561
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1306127215
+      intValue = -1060161977
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1353275461
+      intValue = 456325405
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 315451681
+      intValue = -62430139
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("x")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 919985115
+      intValue = -39616601
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("z")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 2011735051
+      intValue = -879608465
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1677198477
+      intValue = 357701387
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("u")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 303707881
+      intValue = 1817392473
    )
-   int field2130;
-   @ObfuscatedName("t")
+   int field2061;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1473430507
+      intValue = -775752639
    )
-   int field2143;
-   @ObfuscatedName("a")
+   int field2072;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -892469509
+      intValue = -712735129
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -807794627
+      intValue = -630875917
    )
    @Export("maxNormalX")
    int maxNormalX;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -399616409
+      intValue = 129962779
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("b")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 87949545
+      intValue = -1366677633
    )
    @Export("maxNormalY")
    int maxNormalY;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)[Lcw;",
-      garbageValue = "-1961182814"
+      signature = "(Lgd;III)I",
+      garbageValue = "1407630225"
    )
-   static class89[] method2921() {
-      return new class89[]{class89.field1404, class89.field1406, class89.field1403, class89.field1405};
+   static int method2998(IterableHashTable var0, int var1, int var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
+         return var3 == null?var2:var3.value;
+      }
    }
 }

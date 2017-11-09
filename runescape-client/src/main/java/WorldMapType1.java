@@ -1,321 +1,271 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("as")
 @Implements("WorldMapType1")
 public class WorldMapType1 implements WorldMapSectionBase {
-   @ObfuscatedName("bs")
-   @ObfuscatedSignature(
-      signature = "Lhq;"
-   )
-   static class232 field452;
-   @ObfuscatedName("bc")
-   @ObfuscatedSignature(
-      signature = "[Ljo;"
-   )
-   static IndexedSprite[] field438;
-   @ObfuscatedName("dk")
-   @ObfuscatedSignature(
-      signature = "Lih;"
-   )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("ga")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("headIconsPrayer")
-   static SpritePixels[] headIconsPrayer;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1213657445
+      intValue = -1908284879
    )
-   int field447;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1478621425
-   )
-   int field439;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1029040305
-   )
-   int field450;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1085610451
-   )
-   int field442;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1503012511
-   )
-   int field453;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1277519197
-   )
-   int field443;
+   int field417;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -333902201
+      intValue = 1595455973
    )
-   int field444;
-   @ObfuscatedName("e")
+   int field412;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -521167555
+      intValue = 1665489701
    )
-   int field445;
-   @ObfuscatedName("d")
+   int field413;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1295949911
+      intValue = 84455001
    )
-   int field440;
+   int field414;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 35617695
+   )
+   int field415;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1713890983
+      intValue = 883667397
    )
-   int field441;
+   int field411;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1579127191
+   )
+   int field416;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 659642279
+   )
+   int field418;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1623922793
+   )
+   int field419;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1128778799
+   )
+   int field420;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lat;I)V",
-      garbageValue = "1123585680"
+      signature = "(Lap;I)V",
+      garbageValue = "-695326084"
    )
-   public void vmethod720(WorldMapData var1) {
-      if(var1.field464 > this.field444) {
-         var1.field464 = this.field444;
+   public void vmethod772(WorldMapData var1) {
+      if(var1.field430 > this.field416) {
+         var1.field430 = this.field416;
       }
 
-      if(var1.field468 < this.field440) {
-         var1.field468 = this.field440;
+      if(var1.field432 < this.field419) {
+         var1.field432 = this.field419;
       }
 
-      if(var1.field469 > this.field445) {
-         var1.field469 = this.field445;
+      if(var1.field438 > this.field418) {
+         var1.field438 = this.field418;
       }
 
-      if(var1.field461 < this.field441) {
-         var1.field461 = this.field441;
+      if(var1.field439 < this.field420) {
+         var1.field439 = this.field420;
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "2147483647"
+      garbageValue = "2104062915"
    )
-   public boolean vmethod699(int var1, int var2, int var3) {
-      return var1 >= this.field447 && var1 < this.field447 + this.field439?var2 >> 6 >= this.field450 && var2 >> 6 <= this.field453 && var3 >> 6 >= this.field442 && var3 >> 6 <= this.field443:false;
+   public boolean vmethod778(int var1, int var2, int var3) {
+      return var1 >= this.field417 && var1 < this.field417 + this.field412?var2 >> 6 >= this.field413 && var2 >> 6 <= this.field415 && var3 >> 6 >= this.field414 && var3 >> 6 <= this.field411:false;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "2005574810"
+      signature = "(IIB)Z",
+      garbageValue = "0"
    )
-   public boolean vmethod700(int var1, int var2) {
-      return var1 >> 6 >= this.field444 && var1 >> 6 <= this.field440 && var2 >> 6 >= this.field445 && var2 >> 6 <= this.field441;
+   public boolean vmethod774(int var1, int var2) {
+      return var1 >> 6 >= this.field416 && var1 >> 6 <= this.field419 && var2 >> 6 >= this.field418 && var2 >> 6 <= this.field420;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "880778915"
+      garbageValue = "-579666919"
    )
-   public int[] vmethod709(int var1, int var2, int var3) {
-      if(!this.vmethod699(var1, var2, var3)) {
+   public int[] vmethod775(int var1, int var2, int var3) {
+      if(!this.vmethod778(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field444 * 64 - this.field450 * 64 + var2, var3 + (this.field445 * 64 - this.field442 * 64)};
+         int[] var4 = new int[]{this.field416 * 64 - this.field413 * 64 + var2, var3 + (this.field418 * 64 - this.field414 * 64)};
          return var4;
       }
    }
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(III)Lhg;",
-      garbageValue = "-1413226110"
-   )
-   public Coordinates vmethod702(int var1, int var2) {
-      if(!this.vmethod700(var1, var2)) {
-         return null;
-      } else {
-         int var3 = this.field450 * 64 - this.field444 * 64 + var1;
-         int var4 = this.field442 * 64 - this.field445 * 64 + var2;
-         return new Coordinates(this.field447, var3, var4);
-      }
-   }
-
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lfz;B)V",
-      garbageValue = "15"
-   )
-   public void vmethod703(Buffer var1) {
-      this.field447 = var1.readUnsignedByte();
-      this.field439 = var1.readUnsignedByte();
-      this.field450 = var1.readUnsignedShort();
-      this.field442 = var1.readUnsignedShort();
-      this.field453 = var1.readUnsignedShort();
-      this.field443 = var1.readUnsignedShort();
-      this.field444 = var1.readUnsignedShort();
-      this.field445 = var1.readUnsignedShort();
-      this.field440 = var1.readUnsignedShort();
-      this.field441 = var1.readUnsignedShort();
-      this.method257();
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1517425253"
-   )
-   void method257() {
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIILfc;Lfw;Z[I[IB)I",
+      signature = "(IIB)Lhq;",
       garbageValue = "1"
    )
-   public static int method274(int var0, int var1, int var2, class163 var3, CollisionData var4, boolean var5, int[] var6, int[] var7) {
-      int var9;
-      for(int var8 = 0; var8 < 128; ++var8) {
-         for(var9 = 0; var9 < 128; ++var9) {
-            class162.field2302[var8][var9] = 0;
-            class162.field2295[var8][var9] = 99999999;
-         }
-      }
-
-      boolean var27;
-      if(var2 == 1) {
-         var27 = ClanMember.method1138(var0, var1, var3, var4);
-      } else if(var2 == 2) {
-         var27 = Signlink.method2991(var0, var1, var3, var4);
+   public Coordinates vmethod797(int var1, int var2) {
+      if(!this.vmethod774(var1, var2)) {
+         return null;
       } else {
-         var27 = class85.method1712(var0, var1, var2, var3, var4);
-      }
-
-      var9 = var0 - 64;
-      int var10 = var1 - 64;
-      int var11 = class162.field2296;
-      int var12 = class162.field2292;
-      int var13;
-      int var14;
-      int var16;
-      if(!var27) {
-         var13 = Integer.MAX_VALUE;
-         var14 = Integer.MAX_VALUE;
-         byte var15 = 10;
-         var16 = var3.field2307;
-         int var17 = var3.field2306;
-         int var18 = var3.field2309;
-         int var19 = var3.field2308;
-
-         for(int var20 = var16 - var15; var20 <= var16 + var15; ++var20) {
-            for(int var21 = var17 - var15; var21 <= var15 + var17; ++var21) {
-               int var22 = var20 - var9;
-               int var23 = var21 - var10;
-               if(var22 >= 0 && var23 >= 0 && var22 < 128 && var23 < 128 && class162.field2295[var22][var23] < 100) {
-                  int var24 = 0;
-                  if(var20 < var16) {
-                     var24 = var16 - var20;
-                  } else if(var20 > var16 + var18 - 1) {
-                     var24 = var20 - (var16 + var18 - 1);
-                  }
-
-                  int var25 = 0;
-                  if(var21 < var17) {
-                     var25 = var17 - var21;
-                  } else if(var21 > var17 + var19 - 1) {
-                     var25 = var21 - (var17 + var19 - 1);
-                  }
-
-                  int var26 = var25 * var25 + var24 * var24;
-                  if(var26 < var13 || var13 == var26 && class162.field2295[var22][var23] < var14) {
-                     var13 = var26;
-                     var14 = class162.field2295[var22][var23];
-                     var11 = var20;
-                     var12 = var21;
-                  }
-               }
-            }
-         }
-
-         if(var13 == Integer.MAX_VALUE) {
-            return -1;
-         }
-      }
-
-      if(var0 == var11 && var12 == var1) {
-         return 0;
-      } else {
-         byte var28 = 0;
-         class162.field2298[var28] = var11;
-         var13 = var28 + 1;
-         class162.field2299[var28] = var12;
-
-         int var29;
-         for(var14 = var29 = class162.field2302[var11 - var9][var12 - var10]; var0 != var11 || var12 != var1; var14 = class162.field2302[var11 - var9][var12 - var10]) {
-            if(var29 != var14) {
-               var29 = var14;
-               class162.field2298[var13] = var11;
-               class162.field2299[var13++] = var12;
-            }
-
-            if((var14 & 2) != 0) {
-               ++var11;
-            } else if((var14 & 8) != 0) {
-               --var11;
-            }
-
-            if((var14 & 1) != 0) {
-               ++var12;
-            } else if((var14 & 4) != 0) {
-               --var12;
-            }
-         }
-
-         var16 = 0;
-
-         while(var13-- > 0) {
-            var6[var16] = class162.field2298[var13];
-            var7[var16++] = class162.field2299[var13];
-            if(var16 >= var6.length) {
-               break;
-            }
-         }
-
-         return var16;
+         int var3 = this.field413 * 64 - this.field416 * 64 + var1;
+         int var4 = this.field414 * 64 - this.field418 * 64 + var2;
+         return new Coordinates(this.field417, var3, var4);
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-896154779"
+      signature = "(Lfv;S)V",
+      garbageValue = "256"
    )
-   public static char method267(char var0) {
-      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
+   public void vmethod777(Buffer var1) {
+      this.field417 = var1.readUnsignedByte();
+      this.field412 = var1.readUnsignedByte();
+      this.field413 = var1.readUnsignedShort();
+      this.field414 = var1.readUnsignedShort();
+      this.field415 = var1.readUnsignedShort();
+      this.field411 = var1.readUnsignedShort();
+      this.field416 = var1.readUnsignedShort();
+      this.field418 = var1.readUnsignedShort();
+      this.field419 = var1.readUnsignedShort();
+      this.field420 = var1.readUnsignedShort();
+      this.method286();
    }
 
-   @ObfuscatedName("gs")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1182563306"
+      signature = "(I)V",
+      garbageValue = "-129170663"
    )
-   static final void method275(int var0, int var1) {
-      if(Client.hintArrowTargetType == 2) {
-         class148.method2941((Client.hintArrowX - class22.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - class273.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            class14.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+   void method286() {
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "2141114245"
+   )
+   static final int method292() {
+      return class133.field1912;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "-1700394310"
+   )
+   static void method288(boolean var0) {
+      class91.loginMessage1 = "";
+      class91.loginMessage2 = "Enter your username/email & password.";
+      class91.loginMessage3 = "";
+      class91.loginIndex = 2;
+      if(var0) {
+         class91.password = "";
+      }
+
+      class23.method190();
+      class72.method1183();
+   }
+
+   @ObfuscatedName("fe")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1666424450"
+   )
+   static void method293(int var0) {
+      if(var0 == -3) {
+         class8.method43("Connection timed out.", "Please try using a different world.", "");
+      } else if(var0 == -2) {
+         class8.method43("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         class8.method43("No response from server.", "Please try using a different world.", "");
+      } else if(var0 == 3) {
+         class91.loginIndex = 3;
+      } else if(var0 == 4) {
+         class8.method43("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         class8.method43("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
+      } else if(var0 == 6) {
+         class8.method43("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         class8.method43("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         class8.method43("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         class8.method43("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(var0 == 10) {
+         class8.method43("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         class8.method43("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         class8.method43("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(var0 == 13) {
+         class8.method43("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         class8.method43("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 16) {
+         class8.method43("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(var0 == 17) {
+         class8.method43("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         class8.method43("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         class8.method43("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(var0 == 20) {
+         class8.method43("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         class8.method43("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         class8.method43("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         class8.method43("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         class8.method43("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(var0 == 26) {
+         class8.method43("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         class8.method43("", "Service unavailable.", "");
+      } else if(var0 == 31) {
+         class8.method43("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(var0 == 32) {
+         class8.method43("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         class8.method43("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         class8.method43("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(var0 == 55) {
+         class8.method43("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+      } else {
+         if(var0 == 56) {
+            class8.method43("Enter the 6-digit code generated by your", "authenticator app.", "");
+            class287.setGameState(11);
+            return;
          }
 
+         if(var0 == 57) {
+            class8.method43("The code you entered was incorrect.", "Please try again.", "");
+            class287.setGameState(11);
+            return;
+         }
+
+         class8.method43("Unexpected server response", "Please try using a different world.", "");
       }
+
+      class287.setGameState(10);
    }
 }

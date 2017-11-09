@@ -1,94 +1,124 @@
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.LinkedList;
+import java.util.Queue;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
-public class class148 {
-   @ObfuscatedName("w")
-   final URL field2188;
-   @ObfuscatedName("s")
-   volatile boolean field2192;
-   @ObfuscatedName("q")
-   volatile byte[] field2190;
+@ObfuscatedName("es")
+public class class148 implements Runnable {
+   @ObfuscatedName("ft")
+   static byte[][] field2107;
+   @ObfuscatedName("m")
+   final Thread field2110;
+   @ObfuscatedName("p")
+   volatile boolean field2109;
+   @ObfuscatedName("i")
+   Queue field2108;
 
-   class148(URL var1) {
-      this.field2188 = var1;
+   public class148() {
+      this.field2108 = new LinkedList();
+      this.field2110 = new Thread(this);
+      this.field2110.setPriority(1);
+      this.field2110.start();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "0"
+      signature = "(Ljava/net/URL;I)Ley;",
+      garbageValue = "1445815700"
    )
-   public boolean method2933() {
-      return this.field2192;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-108"
-   )
-   public byte[] method2935() {
-      return this.field2190;
-   }
-
-   @ObfuscatedName("fp")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1978123503"
-   )
-   static void method2942(int var0) {
-      if(var0 == -1 && !Client.field1151) {
-         class152.method2974();
-      } else if(var0 != -1 && var0 != Client.field1150 && Client.field1149 != 0 && !Client.field1151) {
-         IndexFile.method3070(2, class37.indexTrack1, var0, 0, Client.field1149, false);
+   public class149 method3006(URL var1) {
+      class149 var2 = new class149(var1);
+      synchronized(this) {
+         this.field2108.add(var2);
+         this.notify();
+         return var2;
       }
-
-      Client.field1150 = var0;
    }
 
-   @ObfuscatedName("gp")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "-1299228607"
+      signature = "(I)V",
+      garbageValue = "-2050864375"
    )
-   static final void method2941(int var0, int var1, int var2) {
-      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class41.getTileHeight(var0, var1, class46.plane) - var2;
-         var0 -= AbstractByteBuffer.cameraX;
-         var3 -= class229.cameraZ;
-         var1 -= World.cameraY;
-         int var4 = Graphics3D.SINE[class18.cameraPitch];
-         int var5 = Graphics3D.COSINE[class18.cameraPitch];
-         int var6 = Graphics3D.SINE[CombatInfo1.cameraYaw];
-         int var7 = Graphics3D.COSINE[CombatInfo1.cameraYaw];
-         int var8 = var6 * var1 + var0 * var7 >> 16;
-         var1 = var7 * var1 - var0 * var6 >> 16;
-         var0 = var8;
-         var8 = var3 * var5 - var4 * var1 >> 16;
-         var1 = var5 * var1 + var4 * var3 >> 16;
-         if(var1 >= 50) {
-            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenX = Client.viewportWidth / 2 + var8 * Client.scale / var1;
-         } else {
-            Client.screenY = -1;
-            Client.screenX = -1;
+   public void method3011() {
+      this.field2109 = true;
+
+      try {
+         synchronized(this) {
+            this.notify();
          }
 
-      } else {
-         Client.screenY = -1;
-         Client.screenX = -1;
+         this.field2110.join();
+      } catch (InterruptedException var4) {
+         ;
       }
+
    }
 
-   @ObfuscatedName("hi")
+   public void run() {
+      while(!this.field2109) {
+         try {
+            class149 var1;
+            synchronized(this) {
+               var1 = (class149)this.field2108.poll();
+               if(var1 == null) {
+                  try {
+                     this.wait();
+                  } catch (InterruptedException var13) {
+                     ;
+                  }
+                  continue;
+               }
+            }
+
+            DataInputStream var2 = null;
+            URLConnection var3 = null;
+
+            try {
+               var3 = var1.field2111.openConnection();
+               var3.setConnectTimeout(5000);
+               var3.setReadTimeout(5000);
+               var3.setUseCaches(false);
+               var3.setRequestProperty("Connection", "close");
+               int var4 = var3.getContentLength();
+               if(var4 >= 0) {
+                  byte[] var5 = new byte[var4];
+                  var2 = new DataInputStream(var3.getInputStream());
+                  var2.readFully(var5);
+                  var1.field2113 = var5;
+               }
+
+               var1.field2114 = true;
+            } catch (IOException var14) {
+               var1.field2114 = true;
+            } finally {
+               if(var2 != null) {
+                  var2.close();
+               }
+
+               if(var3 != null && var3 instanceof HttpURLConnection) {
+                  ((HttpURLConnection)var3).disconnect();
+               }
+
+            }
+         } catch (Exception var17) {
+            class33.method396((String)null, var17);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-98"
+      signature = "(II)Z",
+      garbageValue = "2142850105"
    )
-   static void method2940() {
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
+   public static boolean method3010(int var0) {
+      return var0 == class228.field2903.field2887;
    }
 }

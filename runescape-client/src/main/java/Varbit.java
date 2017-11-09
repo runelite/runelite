@@ -4,36 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iy")
+@ObfuscatedName("ib")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lip;"
-   )
-   @Export("varbit_ref")
-   public static IndexDataBase varbit_ref;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgo;"
+      signature = "Lgr;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("q")
+   @ObfuscatedName("fq")
+   static int[] field3438;
+   @ObfuscatedName("fp")
+   static int[] field3439;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1132565087
+      intValue = 1161268307
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1344468855
+      intValue = 1774287533
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1239467697
+      intValue = -1111708313
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,10 +40,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lfz;I)V",
-      garbageValue = "-2085991396"
+      signature = "(Lfv;I)V",
+      garbageValue = "-1468485951"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -55,16 +53,16 @@ public class Varbit extends CacheableNode {
             return;
          }
 
-         this.method4496(var1, var2);
+         this.method4601(var1, var2);
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lfz;II)V",
-      garbageValue = "395008886"
+      signature = "(Lfv;IB)V",
+      garbageValue = "-120"
    )
-   void method4496(Buffer var1, int var2) {
+   void method4601(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();

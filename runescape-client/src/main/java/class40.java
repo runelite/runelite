@@ -2,72 +2,90 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
+@ObfuscatedName("az")
 public class class40 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Laz;"
    )
-   public static final class40 field567;
-   @ObfuscatedName("s")
+   public static final class40 field514;
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Laz;"
    )
-   public static final class40 field564;
-   @ObfuscatedName("q")
+   public static final class40 field510;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Laz;"
    )
-   public static final class40 field565;
-   @ObfuscatedName("o")
+   public static final class40 field509;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Laz;"
    )
-   public static final class40 field566;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Laj;"
-   )
-   public static final class40 field568;
-   @ObfuscatedName("l")
-   @Export("tt")
-   static int[] tt;
+   public static final class40 field515;
    @ObfuscatedName("v")
-   public final String field563;
+   @ObfuscatedSignature(
+      signature = "Laz;"
+   )
+   public static final class40 field513;
+   @ObfuscatedName("bm")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("x")
+   public final String field512;
 
    static {
-      field567 = new class40("details");
-      field564 = new class40("compositemap");
-      field565 = new class40("compositetexture");
-      field566 = new class40("area");
-      field568 = new class40("labels");
+      field514 = new class40("details");
+      field510 = new class40("compositemap");
+      field509 = new class40("compositetexture");
+      field515 = new class40("area");
+      field513 = new class40("labels");
    }
 
    class40(String var1) {
-      this.field563 = var1;
+      this.field512 = var1;
    }
 
-   @ObfuscatedName("fv")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljt;IIII)V",
-      garbageValue = "1956452072"
+      signature = "(CI)C",
+      garbageValue = "2072615435"
    )
-   static void method539(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field1154 < 50 && Client.field922 != 0) {
-         if(var0.field3609 != null && var1 < var0.field3609.length) {
-            int var4 = var0.field3609[var1];
+   static char method595(char var0) {
+      return var0 != 181 && var0 != 131?Character.toTitleCase(var0):var0;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(CI)Z",
+      garbageValue = "16711935"
+   )
+   public static boolean method597(char var0) {
+      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
+   }
+
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "(Ljf;IIIS)V",
+      garbageValue = "1700"
+   )
+   static void method596(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field1091 < 50 && Client.field1067 != 0) {
+         if(var0.field3662 != null && var1 < var0.field3662.length) {
+            int var4 = var0.field3662[var1];
             if(var4 != 0) {
                int var5 = var4 >> 8;
                int var6 = var4 >> 4 & 7;
                int var7 = var4 & 15;
-               Client.field1098[Client.field1154] = var5;
-               Client.field1156[Client.field1154] = var6;
-               Client.field1136[Client.field1154] = 0;
-               Client.audioEffects[Client.field1154] = null;
+               Client.field910[Client.field1091] = var5;
+               Client.field1093[Client.field1091] = var6;
+               Client.field1094[Client.field1091] = 0;
+               Client.audioEffects[Client.field1091] = null;
                int var8 = (var2 - 64) / 128;
                int var9 = (var3 - 64) / 128;
-               Client.field1040[Client.field1154] = var7 + (var9 << 8) + (var8 << 16);
-               ++Client.field1154;
+               Client.field1033[Client.field1091] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.field1091;
             }
          }
       }

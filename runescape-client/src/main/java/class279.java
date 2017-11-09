@@ -1,44 +1,19 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jx")
+@ObfuscatedName("js")
 public class class279 {
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -533984679
-   )
-   public int field3756;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1938888847
-   )
-   public int field3754;
+   @ObfuscatedName("n")
+   public static short[][] field3739;
 
-   class279(int var1, int var2, int var3, int var4) {
-      this.method5023(var1, var2);
-      this.method5021(var3, var4);
-   }
-
-   public class279(int var1, int var2) {
-      this(0, 0, var1, var2);
-   }
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "355627596"
+      signature = "(Lik;Lik;Ljava/lang/String;Ljava/lang/String;I)Ljt;",
+      garbageValue = "1076405766"
    )
-   void method5023(int var1, int var2) {
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "1"
-   )
-   void method5021(int var1, int var2) {
-      this.field3756 = var1;
-      this.field3754 = var2;
+   public static Font method5095(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
+      int var4 = var0.getFile(var2);
+      int var5 = var0.getChild(var4, var3);
+      return class232.method4242(var0, var1, var4, var5);
    }
 }

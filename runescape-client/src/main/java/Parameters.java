@@ -1,172 +1,129 @@
-import java.applet.Applet;
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("ja")
+@ObfuscatedName("jn")
 @Implements("Parameters")
 public class Parameters {
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3716;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   static final Parameters field3715;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   static final Parameters field3727;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   static final Parameters field3717;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   static final Parameters field3718;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   static final Parameters field3719;
+   public static final Parameters field3768;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3720;
-   @ObfuscatedName("e")
+   public static final Parameters field3763;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3722;
-   @ObfuscatedName("d")
+   public static final Parameters field3771;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3714;
+   public static final Parameters field3761;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3765;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3723;
-   @ObfuscatedName("z")
+   public static final Parameters field3758;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3724;
+   public static final Parameters field3764;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3760;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3766;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3725;
-   @ObfuscatedName("u")
+   public static final Parameters field3767;
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   public static final Parameters field3721;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lja;"
-   )
-   public static final Parameters field3726;
+   public static final Parameters field3759;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lja;"
+      signature = "Ljn;"
    )
-   static final Parameters field3728;
-   @ObfuscatedName("i")
+   public static final Parameters field3769;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3770;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3762;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   public static final Parameters field3772;
+   @ObfuscatedName("t")
    @Export("key")
    public final String key;
 
    static {
-      field3716 = new Parameters("4", "4");
-      field3715 = new Parameters("13", "13");
-      field3727 = new Parameters("10", "10");
-      field3717 = new Parameters("5", "5");
-      field3718 = new Parameters("15", "15");
-      field3719 = new Parameters("11", "11");
-      field3720 = new Parameters("8", "8");
-      field3722 = new Parameters("12", "12");
-      field3714 = new Parameters("7", "7");
-      field3723 = new Parameters("14", "14");
-      field3724 = new Parameters("1", "1");
-      field3725 = new Parameters("6", "6");
-      field3721 = new Parameters("3", "3");
-      field3726 = new Parameters("9", "9");
-      field3728 = new Parameters("2", "2");
+      field3768 = new Parameters("11", "11");
+      field3763 = new Parameters("2", "2");
+      field3771 = new Parameters("15", "15");
+      field3761 = new Parameters("6", "6");
+      field3765 = new Parameters("5", "5");
+      field3758 = new Parameters("12", "12");
+      field3764 = new Parameters("1", "1");
+      field3760 = new Parameters("8", "8");
+      field3766 = new Parameters("4", "4");
+      field3767 = new Parameters("9", "9");
+      field3759 = new Parameters("7", "7");
+      field3769 = new Parameters("3", "3");
+      field3770 = new Parameters("13", "13");
+      field3762 = new Parameters("14", "14");
+      field3772 = new Parameters("10", "10");
    }
 
    Parameters(String var1, String var2) {
       this.key = var2;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-      garbageValue = "-562115419"
+      signature = "(III)I",
+      garbageValue = "1574994827"
    )
-   static boolean method4989(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class56.field692.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var11.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
-               }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
-            }
-         } catch (Throwable var5) {
-            return false;
-         }
-      } else if(var1 == 1) {
-         try {
-            Object var10 = class52.method763(class56.field693, var2, new Object[]{(new URL(class56.field693.getCodeBase(), var0)).toString()});
-            return var10 != null;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class56.field693.getAppletContext().showDocument(new URL(class56.field693.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            Applet var3 = class56.field693;
-            JSObject.getWindow(var3).call("loggedout", (Object[])null);
-         } catch (Throwable var9) {
-            ;
-         }
-
-         try {
-            class56.field693.getAppletContext().showDocument(new URL(class56.field693.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
+   static final int method5097(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
       } else {
-         throw new IllegalArgumentException();
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
       }
    }
 }

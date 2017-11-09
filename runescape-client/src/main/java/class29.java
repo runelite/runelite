@@ -1,113 +1,125 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ay")
+@ObfuscatedName("ab")
 public final class class29 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("be")
    @ObfuscatedSignature(
-      signature = "Ljo;"
+      signature = "[Lkd;"
    )
-   @Export("logoSprite")
-   static IndexedSprite logoSprite;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Ljo;"
-   )
-   static IndexedSprite field430;
-   @ObfuscatedName("jn")
+   static SpritePixels[] field410;
+   @ObfuscatedName("gi")
    @ObfuscatedGetter(
-      intValue = 1570994549
+      intValue = 1840628677
    )
-   @Export("menuY")
-   static int menuY;
-   @ObfuscatedName("w")
+   @Export("cameraX")
+   static int cameraX;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 784638285
+      intValue = -1279813339
    )
-   int field437;
-   @ObfuscatedName("s")
+   int field404;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 577821165
+      intValue = -33423579
    )
-   int field436;
-   @ObfuscatedName("q")
+   int field407;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1749118415
+      intValue = -995433483
    )
-   int field428;
-   @ObfuscatedName("o")
+   int field405;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1263190717
+      intValue = -892777777
    )
-   int field435;
+   int field406;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Law;"
    )
    final class41 this$0;
 
    @ObfuscatedSignature(
-      signature = "(Lac;)V"
+      signature = "(Law;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "([Lfl;II)Lfl;",
-      garbageValue = "-2140920394"
+      signature = "(ZI)V",
+      garbageValue = "-967778924"
    )
-   @Export("forOrdinal")
-   public static RSEnum forOrdinal(RSEnum[] var0, int var1) {
-      RSEnum[] var2 = var0;
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(class245.field3316 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class245.field3316.queueForWrite(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class245.field3316.close();
+            } catch (Exception var3) {
+               ;
+            }
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         RSEnum var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
+            ++class245.field3331;
+            class245.field3316 = null;
          }
-      }
 
-      return null;
+      }
    }
 
-   @ObfuscatedName("gb")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lbk;ZB)V",
-      garbageValue = "96"
+      signature = "(IB)V",
+      garbageValue = "1"
    )
-   static void method249(Player var0, boolean var1) {
-      if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field913 << 14;
-         var0.field905 = false;
-         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
-            var0.field905 = true;
-         }
+   static void method272(int var0) {
+      if(var0 != -1) {
+         if(CombatInfoListHolder.loadWidget(var0)) {
+            Widget[] var1 = class243.widgets[var0];
 
-         int var3 = var0.x >> 7;
-         int var4 = var0.y >> 7;
-         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.field895 && Client.gameCycle < var0.field903) {
-               var0.field905 = false;
-               var0.field894 = class41.getTileHeight(var0.x, var0.y, class46.plane);
-               class3.region.method2729(class46.plane, var0.x, var0.y, var0.field894, 60, var0, var0.angle, var2, var0.field901, var0.field902, var0.field892, var0.field904);
-            } else {
-               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-                  if(Client.field1017[var3][var4] == Client.field1018) {
-                     return;
-                  }
-
-                  Client.field1017[var3][var4] = Client.field1018;
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.field2807 != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.field791 = var3.field2807;
+                  class64.method1147(var4, 2000000);
                }
-
-               var0.field894 = class41.getTileHeight(var0.x, var0.y, class46.plane);
-               class3.region.method2718(class46.plane, var0.x, var0.y, var0.field894, 60, var0, var0.angle, var2, var0.field1212);
             }
+
          }
       }
+   }
 
+   @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "(Lbf;I)V",
+      garbageValue = "-30177101"
+   )
+   static final void method271(Actor var0) {
+      if(var0.field1177 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1179 + 1 > ItemLayer.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+         int var1 = var0.field1177 - var0.field1164;
+         int var2 = Client.gameCycle - var0.field1164;
+         int var3 = var0.field1185 * 128 + var0.field1201 * 64;
+         int var4 = var0.field1159 * 128 + var0.field1201 * 64;
+         int var5 = var0.field1143 * 128 + var0.field1201 * 64;
+         int var6 = var0.field1199 * 128 + var0.field1201 * 64;
+         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
+         var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;
+      }
+
+      var0.field1157 = 0;
+      var0.orientation = var0.field1191;
+      var0.angle = var0.orientation;
    }
 }

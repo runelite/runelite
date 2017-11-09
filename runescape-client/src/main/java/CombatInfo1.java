@@ -4,69 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("cn")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("gv")
+   @ObfuscatedName("pw")
    @ObfuscatedGetter(
-      intValue = 752206111
+      intValue = 646541439
    )
-   @Export("cameraYaw")
-   static int cameraYaw;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1309587599
+   static int field1207;
+   @ObfuscatedName("qr")
+   @ObfuscatedSignature(
+      signature = "Lkh;"
    )
-   int field1275;
-   @ObfuscatedName("s")
+   static MachineInfo field1203;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1105050915
+      intValue = 1142309639
+   )
+   int field1205;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 20090089
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("q")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 111613453
+      intValue = 2029892367
    )
    @Export("health")
    int health;
-   @ObfuscatedName("o")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -618945733
+      intValue = 1771396945
    )
-   int field1272;
+   int field1206;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field1275 = var1;
+      this.field1205 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1272 = var4;
+      this.field1206 = var4;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "818066540"
+      signature = "(IIIIB)V",
+      garbageValue = "-1"
    )
-   void method1543(int var1, int var2, int var3, int var4) {
-      this.field1275 = var1;
+   void method1633(int var1, int var2, int var3, int var4) {
+      this.field1205 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1272 = var4;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(Lip;II)Z",
-      garbageValue = "113739466"
-   )
-   static boolean method1542(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.method4230(var1);
-      if(var2 == null) {
-         return false;
-      } else {
-         class93.decodeSprite(var2);
-         return true;
-      }
+      this.field1206 = var4;
    }
 }

@@ -1,28 +1,12 @@
-import java.io.File;
-import java.util.Hashtable;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fy")
-public class class157 {
-   @ObfuscatedName("w")
-   public static boolean field2248;
-   @ObfuscatedName("s")
-   public static File field2245;
-   @ObfuscatedName("q")
-   static Hashtable field2246;
-
-   static {
-      field2248 = false;
-      field2246 = new Hashtable(16);
-   }
-
-   @ObfuscatedName("o")
+@ObfuscatedName("fq")
+public interface class157 {
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1589346319"
+      signature = "(B)I",
+      garbageValue = "16"
    )
-   static String method3022() {
-      return class70.preferences.field1305?class45.method653(class90.username):class90.username;
-   }
+   int vmethod3080();
 }
