@@ -255,9 +255,9 @@ public class class35 {
       garbageValue = "-35"
    )
    static void method541(int var0, int var1) {
-      class170 var2 = Actor.method1628(ClientPacket.field2339, Client.field952.field1478);
-      var2.field2423.method3289(var0);
-      var2.field2423.method3319(var1);
+      PacketNode var2 = Actor.method1628(ClientPacket.field2339, Client.field952.field1478);
+      var2.packetBuffer.method3289(var0);
+      var2.packetBuffer.method3319(var1);
       Client.field952.method1951(var2);
    }
 

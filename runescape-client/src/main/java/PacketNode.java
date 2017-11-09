@@ -1,14 +1,17 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fg")
-public class class170 extends Node {
+@Implements("PacketNode")
+public class PacketNode extends Node {
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "[Lfg;"
    )
-   static class170[] field2425;
+   static PacketNode[] field2425;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -885501379
@@ -18,7 +21,8 @@ public class class170 extends Node {
    @ObfuscatedSignature(
       signature = "Lfo;"
    )
-   public ClientPacket field2424;
+   @Export("clientPacket")
+   public ClientPacket clientPacket;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 670145281
@@ -33,10 +37,11 @@ public class class170 extends Node {
    @ObfuscatedSignature(
       signature = "Lgi;"
    )
-   public PacketBuffer field2423;
+   @Export("packetBuffer")
+   public PacketBuffer packetBuffer;
 
    static {
-      field2425 = new class170[300];
+      field2425 = new PacketNode[300];
       field2422 = 0;
    }
 

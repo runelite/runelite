@@ -39,7 +39,7 @@ public class Ignore {
          var2 -= 2000;
       }
 
-      class170 var8;
+      PacketNode var8;
       if(var2 == 1) {
          Client.field956 = var6;
          Client.field957 = var7;
@@ -48,13 +48,13 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2333, Client.field952.field1478);
-         var8.field2423.method3340(var3 >> 14 & 32767);
-         var8.field2423.putShort(GameEngine.selectedItemIndex);
-         var8.field2423.method3340(ItemLayer.baseY + var1);
-         var8.field2423.putInt(class5.field33);
-         var8.field2423.method3403(KeyFocusListener.field618[82]?1:0);
-         var8.field2423.method3319(var0 + ItemLayer.baseX);
-         var8.field2423.method3319(KeyFocusListener.field624);
+         var8.packetBuffer.method3340(var3 >> 14 & 32767);
+         var8.packetBuffer.putShort(GameEngine.selectedItemIndex);
+         var8.packetBuffer.method3340(ItemLayer.baseY + var1);
+         var8.packetBuffer.putInt(class5.field33);
+         var8.packetBuffer.method3403(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.method3319(var0 + ItemLayer.baseX);
+         var8.packetBuffer.method3319(KeyFocusListener.field624);
          Client.field952.method1951(var8);
       } else if(var2 == 2) {
          Client.field956 = var6;
@@ -64,12 +64,12 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2348, Client.field952.field1478);
-         var8.field2423.putShort(var0 + ItemLayer.baseX);
-         var8.field2423.putShortLE(ItemLayer.baseY + var1);
-         var8.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-         var8.field2423.putShortLE(var3 >> 14 & 32767);
-         var8.field2423.putInt(class11.field267);
-         var8.field2423.putShortLE(Client.field1005);
+         var8.packetBuffer.putShort(var0 + ItemLayer.baseX);
+         var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+         var8.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
+         var8.packetBuffer.putInt(class11.field267);
+         var8.packetBuffer.putShortLE(Client.field1005);
          Client.field952.method1951(var8);
       } else if(var2 == 3) {
          Client.field956 = var6;
@@ -79,10 +79,10 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2340, Client.field952.field1478);
-         var8.field2423.putShortLE(var0 + ItemLayer.baseX);
-         var8.field2423.putShort(var3 >> 14 & 32767);
-         var8.field2423.putShortLE(ItemLayer.baseY + var1);
-         var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.putShortLE(var0 + ItemLayer.baseX);
+         var8.packetBuffer.putShort(var3 >> 14 & 32767);
+         var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+         var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
          Client.field952.method1951(var8);
       } else if(var2 == 4) {
          Client.field956 = var6;
@@ -92,10 +92,10 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2366, Client.field952.field1478);
-         var8.field2423.method3319(var0 + ItemLayer.baseX);
-         var8.field2423.method3319(ItemLayer.baseY + var1);
-         var8.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-         var8.field2423.putShort(var3 >> 14 & 32767);
+         var8.packetBuffer.method3319(var0 + ItemLayer.baseX);
+         var8.packetBuffer.method3319(ItemLayer.baseY + var1);
+         var8.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.putShort(var3 >> 14 & 32767);
          Client.field952.method1951(var8);
       } else if(var2 == 5) {
          Client.field956 = var6;
@@ -105,10 +105,10 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2349, Client.field952.field1478);
-         var8.field2423.putShortLE(var3 >> 14 & 32767);
-         var8.field2423.method3374(KeyFocusListener.field618[82]?1:0);
-         var8.field2423.method3340(ItemLayer.baseY + var1);
-         var8.field2423.putShortLE(var0 + ItemLayer.baseX);
+         var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
+         var8.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.method3340(ItemLayer.baseY + var1);
+         var8.packetBuffer.putShortLE(var0 + ItemLayer.baseX);
          Client.field952.method1951(var8);
       } else if(var2 == 6) {
          Client.field956 = var6;
@@ -118,13 +118,13 @@ public class Ignore {
          Client.destinationX = var0;
          Client.destinationY = var1;
          var8 = Actor.method1628(ClientPacket.field2377, Client.field952.field1478);
-         var8.field2423.putShortLE(ItemLayer.baseY + var1);
-         var8.field2423.putShortLE(var3 >> 14 & 32767);
-         var8.field2423.method3319(var0 + ItemLayer.baseX);
-         var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
+         var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+         var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
+         var8.packetBuffer.method3319(var0 + ItemLayer.baseX);
+         var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
          Client.field952.method1951(var8);
       } else {
-         class170 var9;
+         PacketNode var9;
          NPC var15;
          if(var2 == 7) {
             var15 = Client.cachedNPCs[var3];
@@ -136,11 +136,11 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2389, Client.field952.field1478);
-               var9.field2423.putShort(GameEngine.selectedItemIndex);
-               var9.field2423.method3340(KeyFocusListener.field624);
-               var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-               var9.field2423.putInt(class5.field33);
-               var9.field2423.method3340(var3);
+               var9.packetBuffer.putShort(GameEngine.selectedItemIndex);
+               var9.packetBuffer.method3340(KeyFocusListener.field624);
+               var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.putInt(class5.field33);
+               var9.packetBuffer.method3340(var3);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 8) {
@@ -153,10 +153,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2341, Client.field952.field1478);
-               var9.field2423.method3340(var3);
-               var9.field2423.method3446(class11.field267);
-               var9.field2423.method3340(Client.field1005);
-               var9.field2423.method3374(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.method3340(var3);
+               var9.packetBuffer.method3446(class11.field267);
+               var9.packetBuffer.method3340(Client.field1005);
+               var9.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 9) {
@@ -169,8 +169,8 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2393, Client.field952.field1478);
-               var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-               var9.field2423.method3340(var3);
+               var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.method3340(var3);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 10) {
@@ -183,8 +183,8 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2337, Client.field952.field1478);
-               var9.field2423.method3340(var3);
-               var9.field2423.method3403(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.method3340(var3);
+               var9.packetBuffer.method3403(KeyFocusListener.field618[82]?1:0);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 11) {
@@ -197,8 +197,8 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2338, Client.field952.field1478);
-               var9.field2423.putShortLE(var3);
-               var9.field2423.method3374(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.putShortLE(var3);
+               var9.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 12) {
@@ -211,8 +211,8 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2317, Client.field952.field1478);
-               var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-               var9.field2423.putShort(var3);
+               var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.putShort(var3);
                Client.field952.method1951(var9);
             }
          } else if(var2 == 13) {
@@ -225,8 +225,8 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var9 = Actor.method1628(ClientPacket.field2314, Client.field952.field1478);
-               var9.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-               var9.field2423.method3340(var3);
+               var9.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+               var9.packetBuffer.method3340(var3);
                Client.field952.method1951(var9);
             }
          } else {
@@ -241,11 +241,11 @@ public class Ignore {
                   Client.destinationX = var0;
                   Client.destinationY = var1;
                   var9 = Actor.method1628(ClientPacket.field2344, Client.field952.field1478);
-                  var9.field2423.method3319(KeyFocusListener.field624);
-                  var9.field2423.putShortLE(var3);
-                  var9.field2423.method3340(GameEngine.selectedItemIndex);
-                  var9.field2423.method3446(class5.field33);
-                  var9.field2423.putByte(KeyFocusListener.field618[82]?1:0);
+                  var9.packetBuffer.method3319(KeyFocusListener.field624);
+                  var9.packetBuffer.putShortLE(var3);
+                  var9.packetBuffer.method3340(GameEngine.selectedItemIndex);
+                  var9.packetBuffer.method3446(class5.field33);
+                  var9.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
                   Client.field952.method1951(var9);
                }
             } else if(var2 == 15) {
@@ -258,10 +258,10 @@ public class Ignore {
                   Client.destinationX = var0;
                   Client.destinationY = var1;
                   var9 = Actor.method1628(ClientPacket.field2358, Client.field952.field1478);
-                  var9.field2423.method3446(class11.field267);
-                  var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-                  var9.field2423.putShort(var3);
-                  var9.field2423.putShort(Client.field1005);
+                  var9.packetBuffer.method3446(class11.field267);
+                  var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+                  var9.packetBuffer.putShort(var3);
+                  var9.packetBuffer.putShort(Client.field1005);
                   Client.field952.method1951(var9);
                }
             } else if(var2 == 16) {
@@ -272,13 +272,13 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2335, Client.field952.field1478);
-               var8.field2423.method3374(KeyFocusListener.field618[82]?1:0);
-               var8.field2423.method3446(class5.field33);
-               var8.field2423.method3340(var0 + ItemLayer.baseX);
-               var8.field2423.method3340(var3);
-               var8.field2423.method3319(ItemLayer.baseY + var1);
-               var8.field2423.method3340(GameEngine.selectedItemIndex);
-               var8.field2423.method3319(KeyFocusListener.field624);
+               var8.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.method3446(class5.field33);
+               var8.packetBuffer.method3340(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3340(var3);
+               var8.packetBuffer.method3319(ItemLayer.baseY + var1);
+               var8.packetBuffer.method3340(GameEngine.selectedItemIndex);
+               var8.packetBuffer.method3319(KeyFocusListener.field624);
                Client.field952.method1951(var8);
             } else if(var2 == 17) {
                Client.field956 = var6;
@@ -288,12 +288,12 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2334, Client.field952.field1478);
-               var8.field2423.putShortLE(ItemLayer.baseY + var1);
-               var8.field2423.method3340(var0 + ItemLayer.baseX);
-               var8.field2423.method3319(Client.field1005);
-               var8.field2423.method3289(class11.field267);
-               var8.field2423.putShort(var3);
-               var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+               var8.packetBuffer.method3340(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3319(Client.field1005);
+               var8.packetBuffer.method3289(class11.field267);
+               var8.packetBuffer.putShort(var3);
+               var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
                Client.field952.method1951(var8);
             } else if(var2 == 18) {
                Client.field956 = var6;
@@ -303,10 +303,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2329, Client.field952.field1478);
-               var8.field2423.method3340(var0 + ItemLayer.baseX);
-               var8.field2423.putShortLE(ItemLayer.baseY + var1);
-               var8.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-               var8.field2423.method3319(var3);
+               var8.packetBuffer.method3340(var0 + ItemLayer.baseX);
+               var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+               var8.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.method3319(var3);
                Client.field952.method1951(var8);
             } else if(var2 == 19) {
                Client.field956 = var6;
@@ -316,10 +316,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2320, Client.field952.field1478);
-               var8.field2423.method3340(var3);
-               var8.field2423.method3319(var0 + ItemLayer.baseX);
-               var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-               var8.field2423.method3319(ItemLayer.baseY + var1);
+               var8.packetBuffer.method3340(var3);
+               var8.packetBuffer.method3319(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.method3319(ItemLayer.baseY + var1);
                Client.field952.method1951(var8);
             } else if(var2 == 20) {
                Client.field956 = var6;
@@ -329,10 +329,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2331, Client.field952.field1478);
-               var8.field2423.putShortLE(ItemLayer.baseY + var1);
-               var8.field2423.method3319(var0 + ItemLayer.baseX);
-               var8.field2423.method3319(var3);
-               var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.putShortLE(ItemLayer.baseY + var1);
+               var8.packetBuffer.method3319(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3319(var3);
+               var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
                Client.field952.method1951(var8);
             } else if(var2 == 21) {
                Client.field956 = var6;
@@ -342,10 +342,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2332, Client.field952.field1478);
-               var8.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-               var8.field2423.method3340(ItemLayer.baseY + var1);
-               var8.field2423.putShort(var0 + ItemLayer.baseX);
-               var8.field2423.method3319(var3);
+               var8.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.method3340(ItemLayer.baseY + var1);
+               var8.packetBuffer.putShort(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3319(var3);
                Client.field952.method1951(var8);
             } else if(var2 == 22) {
                Client.field956 = var6;
@@ -355,10 +355,10 @@ public class Ignore {
                Client.destinationX = var0;
                Client.destinationY = var1;
                var8 = Actor.method1628(ClientPacket.field2325, Client.field952.field1478);
-               var8.field2423.method3319(var3);
-               var8.field2423.method3374(KeyFocusListener.field618[82]?1:0);
-               var8.field2423.putShortLE(var0 + ItemLayer.baseX);
-               var8.field2423.method3340(ItemLayer.baseY + var1);
+               var8.packetBuffer.method3319(var3);
+               var8.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
+               var8.packetBuffer.putShortLE(var0 + ItemLayer.baseX);
+               var8.packetBuffer.method3340(ItemLayer.baseY + var1);
                Client.field952.method1951(var8);
             } else if(var2 == 23) {
                if(Client.isMenuOpen) {
@@ -367,7 +367,7 @@ public class Ignore {
                   class56.region.method2818(plane, var0, var1, true);
                }
             } else {
-               class170 var10;
+               PacketNode var10;
                Widget var20;
                if(var2 == 24) {
                   var20 = PendingSpawn.method1612(var1);
@@ -378,7 +378,7 @@ public class Ignore {
 
                   if(var14) {
                      var10 = Actor.method1628(ClientPacket.field2380, Client.field952.field1478);
-                     var10.field2423.putInt(var1);
+                     var10.packetBuffer.putInt(var1);
                      Client.field952.method1951(var10);
                   }
                } else {
@@ -437,7 +437,7 @@ public class Ignore {
                      Widget var18;
                      if(var2 == 28) {
                         var8 = Actor.method1628(ClientPacket.field2380, Client.field952.field1478);
-                        var8.field2423.putInt(var1);
+                        var8.packetBuffer.putInt(var1);
                         Client.field952.method1951(var8);
                         var18 = PendingSpawn.method1612(var1);
                         if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
@@ -447,7 +447,7 @@ public class Ignore {
                         }
                      } else if(var2 == 29) {
                         var8 = Actor.method1628(ClientPacket.field2380, Client.field952.field1478);
-                        var8.field2423.putInt(var1);
+                        var8.packetBuffer.putInt(var1);
                         Client.field952.method1951(var8);
                         var18 = PendingSpawn.method1612(var1);
                         if(var18.dynamicValues != null && var18.dynamicValues[0][0] == 5) {
@@ -465,68 +465,68 @@ public class Ignore {
                         }
                      } else if(var2 == 31) {
                         var8 = Actor.method1628(ClientPacket.field2373, Client.field952.field1478);
-                        var8.field2423.putShort(var0);
-                        var8.field2423.method3319(var3);
-                        var8.field2423.putShortLE(KeyFocusListener.field624);
-                        var8.field2423.putShort(GameEngine.selectedItemIndex);
-                        var8.field2423.putInt(var1);
-                        var8.field2423.method3295(class5.field33);
+                        var8.packetBuffer.putShort(var0);
+                        var8.packetBuffer.method3319(var3);
+                        var8.packetBuffer.putShortLE(KeyFocusListener.field624);
+                        var8.packetBuffer.putShort(GameEngine.selectedItemIndex);
+                        var8.packetBuffer.putInt(var1);
+                        var8.packetBuffer.method3295(class5.field33);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 32) {
                         var8 = Actor.method1628(ClientPacket.field2365, Client.field952.field1478);
-                        var8.field2423.method3446(class11.field267);
-                        var8.field2423.method3319(var3);
-                        var8.field2423.putShortLE(var0);
-                        var8.field2423.putShort(Client.field1005);
-                        var8.field2423.putInt(var1);
+                        var8.packetBuffer.method3446(class11.field267);
+                        var8.packetBuffer.method3319(var3);
+                        var8.packetBuffer.putShortLE(var0);
+                        var8.packetBuffer.putShort(Client.field1005);
+                        var8.packetBuffer.putInt(var1);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 33) {
                         var8 = Actor.method1628(ClientPacket.field2360, Client.field952.field1478);
-                        var8.field2423.putShortLE(var3);
-                        var8.field2423.method3446(var1);
-                        var8.field2423.method3340(var0);
+                        var8.packetBuffer.putShortLE(var3);
+                        var8.packetBuffer.method3446(var1);
+                        var8.packetBuffer.method3340(var0);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 34) {
                         var8 = Actor.method1628(ClientPacket.field2361, Client.field952.field1478);
-                        var8.field2423.putInt(var1);
-                        var8.field2423.putShort(var3);
-                        var8.field2423.putShort(var0);
+                        var8.packetBuffer.putInt(var1);
+                        var8.packetBuffer.putShort(var3);
+                        var8.packetBuffer.putShort(var0);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 35) {
                         var8 = Actor.method1628(ClientPacket.field2362, Client.field952.field1478);
-                        var8.field2423.putShort(var3);
-                        var8.field2423.method3319(var0);
-                        var8.field2423.method3446(var1);
+                        var8.packetBuffer.putShort(var3);
+                        var8.packetBuffer.method3319(var0);
+                        var8.packetBuffer.method3446(var1);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 36) {
                         var8 = Actor.method1628(ClientPacket.field2363, Client.field952.field1478);
-                        var8.field2423.method3295(var1);
-                        var8.field2423.method3319(var3);
-                        var8.field2423.method3340(var0);
+                        var8.packetBuffer.method3295(var1);
+                        var8.packetBuffer.method3319(var3);
+                        var8.packetBuffer.method3340(var0);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
                         Client.field961 = var0;
                      } else if(var2 == 37) {
                         var8 = Actor.method1628(ClientPacket.field2364, Client.field952.field1478);
-                        var8.field2423.method3340(var3);
-                        var8.field2423.method3295(var1);
-                        var8.field2423.method3340(var0);
+                        var8.packetBuffer.method3340(var3);
+                        var8.packetBuffer.method3295(var1);
+                        var8.packetBuffer.method3340(var0);
                         Client.field952.method1951(var8);
                         Client.field1066 = 0;
                         class169.field2420 = PendingSpawn.method1612(var1);
@@ -550,45 +550,45 @@ public class Ignore {
 
                         if(var2 == 39) {
                            var8 = Actor.method1628(ClientPacket.field2359, Client.field952.field1478);
-                           var8.field2423.method3340(var3);
-                           var8.field2423.method3319(var0);
-                           var8.field2423.method3295(var1);
+                           var8.packetBuffer.method3340(var3);
+                           var8.packetBuffer.method3319(var0);
+                           var8.packetBuffer.method3295(var1);
                            Client.field952.method1951(var8);
                            Client.field1066 = 0;
                            class169.field2420 = PendingSpawn.method1612(var1);
                            Client.field961 = var0;
                         } else if(var2 == 40) {
                            var8 = Actor.method1628(ClientPacket.field2368, Client.field952.field1478);
-                           var8.field2423.putShortLE(var0);
-                           var8.field2423.putInt(var1);
-                           var8.field2423.putShortLE(var3);
+                           var8.packetBuffer.putShortLE(var0);
+                           var8.packetBuffer.putInt(var1);
+                           var8.packetBuffer.putShortLE(var3);
                            Client.field952.method1951(var8);
                            Client.field1066 = 0;
                            class169.field2420 = PendingSpawn.method1612(var1);
                            Client.field961 = var0;
                         } else if(var2 == 41) {
                            var8 = Actor.method1628(ClientPacket.field2369, Client.field952.field1478);
-                           var8.field2423.method3340(var3);
-                           var8.field2423.putShort(var0);
-                           var8.field2423.method3446(var1);
+                           var8.packetBuffer.method3340(var3);
+                           var8.packetBuffer.putShort(var0);
+                           var8.packetBuffer.method3446(var1);
                            Client.field952.method1951(var8);
                            Client.field1066 = 0;
                            class169.field2420 = PendingSpawn.method1612(var1);
                            Client.field961 = var0;
                         } else if(var2 == 42) {
                            var8 = Actor.method1628(ClientPacket.field2370, Client.field952.field1478);
-                           var8.field2423.putShortLE(var3);
-                           var8.field2423.putShortLE(var0);
-                           var8.field2423.method3446(var1);
+                           var8.packetBuffer.putShortLE(var3);
+                           var8.packetBuffer.putShortLE(var0);
+                           var8.packetBuffer.method3446(var1);
                            Client.field952.method1951(var8);
                            Client.field1066 = 0;
                            class169.field2420 = PendingSpawn.method1612(var1);
                            Client.field961 = var0;
                         } else if(var2 == 43) {
                            var8 = Actor.method1628(ClientPacket.field2371, Client.field952.field1478);
-                           var8.field2423.method3446(var1);
-                           var8.field2423.method3319(var3);
-                           var8.field2423.putShortLE(var0);
+                           var8.packetBuffer.method3446(var1);
+                           var8.packetBuffer.method3319(var3);
+                           var8.packetBuffer.putShortLE(var0);
                            Client.field952.method1951(var8);
                            Client.field1066 = 0;
                            class169.field2420 = PendingSpawn.method1612(var1);
@@ -603,8 +603,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2350, Client.field952.field1478);
-                              var9.field2423.method3403(KeyFocusListener.field618[82]?1:0);
-                              var9.field2423.putShortLE(var3);
+                              var9.packetBuffer.method3403(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.putShortLE(var3);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 45) {
@@ -617,8 +617,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2378, Client.field952.field1478);
-                              var9.field2423.method3319(var3);
-                              var9.field2423.method3374(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.method3319(var3);
+                              var9.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 46) {
@@ -631,8 +631,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2352, Client.field952.field1478);
-                              var9.field2423.putShort(var3);
-                              var9.field2423.method3403(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.putShort(var3);
+                              var9.packetBuffer.method3403(KeyFocusListener.field618[82]?1:0);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 47) {
@@ -645,8 +645,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2343, Client.field952.field1478);
-                              var9.field2423.method3319(var3);
-                              var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.method3319(var3);
+                              var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 48) {
@@ -659,8 +659,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2395, Client.field952.field1478);
-                              var9.field2423.method3403(KeyFocusListener.field618[82]?1:0);
-                              var9.field2423.method3340(var3);
+                              var9.packetBuffer.method3403(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.method3340(var3);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 49) {
@@ -673,8 +673,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2355, Client.field952.field1478);
-                              var9.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-                              var9.field2423.method3319(var3);
+                              var9.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.method3319(var3);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 50) {
@@ -687,8 +687,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2356, Client.field952.field1478);
-                              var9.field2423.method3374(KeyFocusListener.field618[82]?1:0);
-                              var9.field2423.putShortLE(var3);
+                              var9.packetBuffer.method3374(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.putShortLE(var3);
                               Client.field952.method1951(var9);
                            }
                         } else if(var2 == 51) {
@@ -701,8 +701,8 @@ public class Ignore {
                               Client.destinationX = var0;
                               Client.destinationY = var1;
                               var9 = Actor.method1628(ClientPacket.field2305, Client.field952.field1478);
-                              var9.field2423.putByte(KeyFocusListener.field618[82]?1:0);
-                              var9.field2423.method3340(var3);
+                              var9.packetBuffer.putByte(KeyFocusListener.field618[82]?1:0);
+                              var9.packetBuffer.method3340(var3);
                               Client.field952.method1951(var9);
                            }
                         } else {
@@ -712,12 +712,12 @@ public class Ignore {
                                     var20 = class189.method3613(var1, var0);
                                     if(var20 != null) {
                                        var9 = Actor.method1628(ClientPacket.field2318, Client.field952.field1478);
-                                       var9.field2423.method3446(class11.field267);
-                                       var9.field2423.putShort(Client.field1006);
-                                       var9.field2423.putShort(var20.itemId);
-                                       var9.field2423.method3340(var0);
-                                       var9.field2423.putShort(Client.field1005);
-                                       var9.field2423.method3289(var1);
+                                       var9.packetBuffer.method3446(class11.field267);
+                                       var9.packetBuffer.putShort(Client.field1006);
+                                       var9.packetBuffer.putShort(var20.itemId);
+                                       var9.packetBuffer.method3340(var0);
+                                       var9.packetBuffer.putShort(Client.field1005);
+                                       var9.packetBuffer.method3289(var1);
                                        Client.field952.method1951(var9);
                                     }
                                     break label807;
@@ -731,10 +731,10 @@ public class Ignore {
                                     Client.destinationX = var0;
                                     Client.destinationY = var1;
                                     var8 = Actor.method1628(ClientPacket.field2347, Client.field952.field1478);
-                                    var8.field2423.putShort(var3 >> 14 & 32767);
-                                    var8.field2423.method3311(KeyFocusListener.field618[82]?1:0);
-                                    var8.field2423.putShort(var0 + ItemLayer.baseX);
-                                    var8.field2423.method3319(ItemLayer.baseY + var1);
+                                    var8.packetBuffer.putShort(var3 >> 14 & 32767);
+                                    var8.packetBuffer.method3311(KeyFocusListener.field618[82]?1:0);
+                                    var8.packetBuffer.putShort(var0 + ItemLayer.baseX);
+                                    var8.packetBuffer.method3319(ItemLayer.baseY + var1);
                                     Client.field952.method1951(var8);
                                     break label807;
                                  }
@@ -745,7 +745,7 @@ public class Ignore {
                                     Client.cursorState = 2;
                                     Client.field937 = 0;
                                     var8 = Actor.method1628(ClientPacket.field2316, Client.field952.field1478);
-                                    var8.field2423.method3340(var3 >> 14 & 32767);
+                                    var8.packetBuffer.method3340(var3 >> 14 & 32767);
                                     Client.field952.method1951(var8);
                                     break label807;
                                  }
@@ -764,7 +764,7 @@ public class Ignore {
 
                                        if(var21 != null) {
                                           var10 = Actor.method1628(ClientPacket.field2385, Client.field952.field1478);
-                                          var10.field2423.method3340(var21.id);
+                                          var10.packetBuffer.method3340(var21.id);
                                           Client.field952.method1951(var10);
                                        }
                                     }
@@ -777,7 +777,7 @@ public class Ignore {
                                     Client.cursorState = 2;
                                     Client.field937 = 0;
                                     var8 = Actor.method1628(ClientPacket.field2328, Client.field952.field1478);
-                                    var8.field2423.method3319(var3);
+                                    var8.packetBuffer.method3319(var3);
                                     Client.field952.method1951(var8);
                                     break label807;
                                  }
@@ -788,7 +788,7 @@ public class Ignore {
                                        class96.sendGameMessage(27, "", var20.itemQuantities[var0] + " x " + class250.getItemDefinition(var3).name);
                                     } else {
                                        var9 = Actor.method1628(ClientPacket.field2328, Client.field952.field1478);
-                                       var9.field2423.method3319(var3);
+                                       var9.packetBuffer.method3319(var3);
                                        Client.field952.method1951(var9);
                                     }
 
@@ -868,8 +868,8 @@ public class Ignore {
          }
 
          if(var1 == 326) {
-            class170 var4 = Actor.method1628(ClientPacket.field2384, Client.field952.field1478);
-            Client.field1122.method4143(var4.field2423);
+            PacketNode var4 = Actor.method1628(ClientPacket.field2384, Client.field952.field1478);
+            Client.field1122.method4143(var4.packetBuffer);
             Client.field952.method1951(var4);
             return true;
          } else {

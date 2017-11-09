@@ -359,8 +359,8 @@ public class Varcs {
       garbageValue = "126"
    )
    static final void method1904() {
-      class170 var0 = Actor.method1628(ClientPacket.field2376, Client.field952.field1478);
-      var0.field2423.putByte(0);
+      PacketNode var0 = Actor.method1628(ClientPacket.field2376, Client.field952.field1478);
+      var0.packetBuffer.putByte(0);
       Client.field952.method1951(var0);
    }
 }

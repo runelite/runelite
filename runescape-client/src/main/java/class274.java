@@ -27,7 +27,7 @@ public class class274 {
       if(Client.field952.field1466 >= 50 || var0) {
          Client.field952.field1466 = 0;
          if(!Client.socketError && Client.field952.method1954() != null) {
-            class170 var1 = Actor.method1628(ClientPacket.field2307, Client.field952.field1478);
+            PacketNode var1 = Actor.method1628(ClientPacket.field2307, Client.field952.field1478);
             Client.field952.method1951(var1);
 
             try {

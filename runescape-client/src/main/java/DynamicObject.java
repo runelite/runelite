@@ -1055,10 +1055,10 @@ public class DynamicObject extends Renderable {
             }
 
             ObjectComposition.field3490.reset();
-            class170 var65;
+            PacketNode var65;
             if(class9.clientInstance.method924()) {
                var65 = Actor.method1628(ClientPacket.field2312, Client.field952.field1478);
-               var65.field2423.putInt(1057001181);
+               var65.packetBuffer.putInt(1057001181);
                Client.field952.method1951(var65);
             }
 

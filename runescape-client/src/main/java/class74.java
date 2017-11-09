@@ -70,7 +70,7 @@ public class class74 implements Comparator {
       } else if(var0 < 1300) {
          return class36.method544(var0, var1, var2);
       } else if(var0 < 1400) {
-         return class170.method3195(var0, var1, var2);
+         return PacketNode.method3195(var0, var1, var2);
       } else if(var0 < 1500) {
          return MessageNode.method1175(var0, var1, var2);
       } else {
@@ -165,7 +165,7 @@ public class class74 implements Comparator {
             } else if(var0 < 2300) {
                return class36.method544(var0, var1, var2);
             } else if(var0 < 2400) {
-               return class170.method3195(var0, var1, var2);
+               return PacketNode.method3195(var0, var1, var2);
             } else if(var0 < 2500) {
                return MessageNode.method1175(var0, var1, var2);
             } else if(var0 < 2600) {
@@ -264,10 +264,10 @@ public class class74 implements Comparator {
                   boolean var16;
                   int[] var32;
                   String var33;
-                  class170 var47;
+                  PacketNode var47;
                   String var57;
                   int var58;
-                  class170 var63;
+                  PacketNode var63;
                   String var64;
                   if(var0 < 3200) {
                      if(var0 == 3100) {
@@ -279,7 +279,7 @@ public class class74 implements Comparator {
                         class34.method503(class48.localPlayer, class82.intStack[class56.intStackSize], class82.intStack[class56.intStackSize + 1]);
                         var3 = 1;
                      } else if(var0 == 3103) {
-                        class170 var76 = Actor.method1628(ClientPacket.field2374, Client.field952.field1478);
+                        PacketNode var76 = Actor.method1628(ClientPacket.field2374, Client.field952.field1478);
                         Client.field952.method1951(var76);
 
                         for(var52 = (WidgetNode)Client.componentTable.method3721(); var52 != null; var52 = (WidgetNode)Client.componentTable.method3728()) {
@@ -302,23 +302,23 @@ public class class74 implements Comparator {
                         }
 
                         var63 = Actor.method1628(ClientPacket.field2375, Client.field952.field1478);
-                        var63.field2423.putInt(var58);
+                        var63.packetBuffer.putInt(var58);
                         Client.field952.method1951(var63);
                         var3 = 1;
                      } else {
-                        class170 var54;
+                        PacketNode var54;
                         if(var0 == 3105) {
                            var57 = class82.scriptStringStack[--class24.scriptStringStackSize];
                            var54 = Actor.method1628(ClientPacket.field2394, Client.field952.field1478);
-                           var54.field2423.putByte(var57.length() + 1);
-                           var54.field2423.putString(var57);
+                           var54.packetBuffer.putByte(var57.length() + 1);
+                           var54.packetBuffer.putString(var57);
                            Client.field952.method1951(var54);
                            var3 = 1;
                         } else if(var0 == 3106) {
                            var57 = class82.scriptStringStack[--class24.scriptStringStackSize];
                            var54 = Actor.method1628(ClientPacket.field2382, Client.field952.field1478);
-                           var54.field2423.putByte(var57.length() + 1);
-                           var54.field2423.putString(var57);
+                           var54.packetBuffer.putByte(var57.length() + 1);
+                           var54.packetBuffer.putString(var57);
                            Client.field952.method1951(var54);
                            var3 = 1;
                         } else if(var0 == 3107) {
@@ -333,23 +333,23 @@ public class class74 implements Comparator {
                               if(var53 != null && var53 != class48.localPlayer && var53.name != null && var53.name.equalsIgnoreCase(var33)) {
                                  if(var4 == 1) {
                                     var47 = Actor.method1628(ClientPacket.field2350, Client.field952.field1478);
-                                    var47.field2423.method3403(0);
-                                    var47.field2423.putShortLE(var32[var9]);
+                                    var47.packetBuffer.method3403(0);
+                                    var47.packetBuffer.putShortLE(var32[var9]);
                                     Client.field952.method1951(var47);
                                  } else if(var4 == 4) {
                                     var47 = Actor.method1628(ClientPacket.field2343, Client.field952.field1478);
-                                    var47.field2423.method3319(var32[var9]);
-                                    var47.field2423.method3311(0);
+                                    var47.packetBuffer.method3319(var32[var9]);
+                                    var47.packetBuffer.method3311(0);
                                     Client.field952.method1951(var47);
                                  } else if(var4 == 6) {
                                     var47 = Actor.method1628(ClientPacket.field2355, Client.field952.field1478);
-                                    var47.field2423.method3311(0);
-                                    var47.field2423.method3319(var32[var9]);
+                                    var47.packetBuffer.method3311(0);
+                                    var47.packetBuffer.method3319(var32[var9]);
                                     Client.field952.method1951(var47);
                                  } else if(var4 == 7) {
                                     var47 = Actor.method1628(ClientPacket.field2356, Client.field952.field1478);
-                                    var47.field2423.method3374(0);
-                                    var47.field2423.putShortLE(var32[var9]);
+                                    var47.packetBuffer.method3374(0);
+                                    var47.packetBuffer.putShortLE(var32[var9]);
                                     Client.field952.method1951(var47);
                                  }
 
@@ -396,7 +396,7 @@ public class class74 implements Comparator {
                         } else if(var0 == 3115) {
                            var4 = class82.intStack[--class56.intStackSize];
                            var54 = Actor.method1628(ClientPacket.field2379, Client.field952.field1478);
-                           var54.field2423.putShort(var4);
+                           var54.packetBuffer.putShort(var4);
                            Client.field952.method1951(var54);
                            var3 = 1;
                         } else if(var0 == 3116) {
@@ -409,11 +409,11 @@ public class class74 implements Comparator {
                            } else if(var64.length() > 500) {
                               var3 = 1;
                            } else {
-                              class170 var49 = Actor.method1628(ClientPacket.field2367, Client.field952.field1478);
-                              var49.field2423.putShort(1 + Projectile.getLength(var33) + Projectile.getLength(var64));
-                              var49.field2423.putByte(var4);
-                              var49.field2423.putString(var33);
-                              var49.field2423.putString(var64);
+                              PacketNode var49 = Actor.method1628(ClientPacket.field2367, Client.field952.field1478);
+                              var49.packetBuffer.putShort(1 + Projectile.getLength(var33) + Projectile.getLength(var64));
+                              var49.packetBuffer.putByte(var4);
+                              var49.packetBuffer.putString(var33);
+                              var49.packetBuffer.putString(var64);
                               Client.field952.method1951(var49);
                               var3 = 1;
                            }
@@ -796,9 +796,9 @@ public class class74 implements Comparator {
                               var57 = class82.scriptStringStack[--class24.scriptStringStackSize];
                               var58 = class82.intStack[--class56.intStackSize];
                               var63 = Actor.method1628(ClientPacket.field2383, Client.field952.field1478);
-                              var63.field2423.putByte(Projectile.getLength(var57) + 1);
-                              var63.field2423.method3374(var58);
-                              var63.field2423.putString(var57);
+                              var63.packetBuffer.putByte(Projectile.getLength(var57) + 1);
+                              var63.packetBuffer.method3374(var58);
+                              var63.packetBuffer.putString(var57);
                               Client.field952.method1951(var63);
                               var3 = 1;
                            } else {
@@ -836,8 +836,8 @@ public class class74 implements Comparator {
                                                    class96.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                                 } else {
                                                    var63 = Actor.method1628(ClientPacket.field2397, Client.field952.field1478);
-                                                   var63.field2423.putByte(Projectile.getLength(var57));
-                                                   var63.field2423.putString(var57);
+                                                   var63.packetBuffer.putByte(Projectile.getLength(var57));
+                                                   var63.packetBuffer.putString(var57);
                                                    Client.field952.method1951(var63);
                                                 }
                                                 break;
@@ -896,8 +896,8 @@ public class class74 implements Comparator {
 
                                              Client.field1042 = Client.cycleCntr;
                                              var47 = Actor.method1628(ClientPacket.field2396, Client.field952.field1478);
-                                             var47.field2423.putByte(Projectile.getLength(var57));
-                                             var47.field2423.putString(var57);
+                                             var47.packetBuffer.putByte(Projectile.getLength(var57));
+                                             var47.packetBuffer.putString(var57);
                                              Client.field952.method1951(var47);
                                              break;
                                           }

@@ -342,10 +342,10 @@ public class RenderOverview {
                int var6 = this.field3864.worldX;
                int var7 = this.field3864.worldY;
                int var8 = this.field3864.plane;
-               class170 var9 = Actor.method1628(ClientPacket.field2386, Client.field952.field1478);
-               var9.field2423.putShort(var7);
-               var9.field2423.method3340(var6);
-               var9.field2423.putByte(var8);
+               PacketNode var9 = Actor.method1628(ClientPacket.field2386, Client.field952.field1478);
+               var9.packetBuffer.putShort(var7);
+               var9.packetBuffer.method3340(var6);
+               var9.packetBuffer.putByte(var8);
                Client.field952.method1951(var9);
             }
          } else {

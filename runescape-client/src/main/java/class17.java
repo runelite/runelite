@@ -62,9 +62,9 @@ final class class17 implements Comparator {
                   }
 
                   Client.field1042 = Client.cycleCntr;
-                  class170 var8 = Actor.method1628(ClientPacket.field2391, Client.field952.field1478);
-                  var8.field2423.putByte(Projectile.getLength(var0));
-                  var8.field2423.putString(var0);
+                  PacketNode var8 = Actor.method1628(ClientPacket.field2391, Client.field952.field1478);
+                  var8.packetBuffer.putByte(Projectile.getLength(var0));
+                  var8.packetBuffer.putString(var0);
                   Client.field952.method1951(var8);
                   break;
                }

@@ -107,17 +107,17 @@ public class class100 {
          this.field1467.offset = 0;
 
          while(true) {
-            class170 var1 = (class170)this.field1465.method3741();
+            PacketNode var1 = (PacketNode)this.field1465.method3741();
             if(var1 == null || var1.field2426 > this.field1467.payload.length - this.field1467.offset) {
                this.field1468.queueForWrite(this.field1467.payload, 0, this.field1467.offset);
                this.field1466 = 0;
                break;
             }
 
-            this.field1467.putBytes(var1.field2423.payload, 0, var1.field2426);
+            this.field1467.putBytes(var1.packetBuffer.payload, 0, var1.field2426);
             this.field1472 -= var1.field2426;
             var1.unlink();
-            var1.field2423.method3505();
+            var1.packetBuffer.method3505();
             var1.method3193();
          }
       }
@@ -129,10 +129,10 @@ public class class100 {
       signature = "(Lfg;B)V",
       garbageValue = "3"
    )
-   public final void method1951(class170 var1) {
+   public final void method1951(PacketNode var1) {
       this.field1465.method3749(var1);
-      var1.field2426 = var1.field2423.offset;
-      var1.field2423.offset = 0;
+      var1.field2426 = var1.packetBuffer.offset;
+      var1.packetBuffer.offset = 0;
       this.field1472 += var1.field2426;
    }
 

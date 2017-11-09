@@ -536,24 +536,24 @@ public abstract class Actor extends Renderable {
       signature = "(Lfo;Lga;B)Lfg;",
       garbageValue = "1"
    )
-   public static class170 method1628(ClientPacket var0, ISAACCipher var1) {
-      class170 var2 = class11.method60();
-      var2.field2424 = var0;
+   public static PacketNode method1628(ClientPacket var0, ISAACCipher var1) {
+      PacketNode var2 = class11.method60();
+      var2.clientPacket = var0;
       var2.field2427 = var0.packetLength;
       if(var2.field2427 == -1) {
-         var2.field2423 = new PacketBuffer(260);
+         var2.packetBuffer = new PacketBuffer(260);
       } else if(var2.field2427 == -2) {
-         var2.field2423 = new PacketBuffer(10000);
+         var2.packetBuffer = new PacketBuffer(10000);
       } else if(var2.field2427 <= 18) {
-         var2.field2423 = new PacketBuffer(20);
+         var2.packetBuffer = new PacketBuffer(20);
       } else if(var2.field2427 <= 98) {
-         var2.field2423 = new PacketBuffer(100);
+         var2.packetBuffer = new PacketBuffer(100);
       } else {
-         var2.field2423 = new PacketBuffer(260);
+         var2.packetBuffer = new PacketBuffer(260);
       }
 
-      var2.field2423.method3568(var1);
-      var2.field2423.putOpcode(var2.field2424.packetId);
+      var2.packetBuffer.method3568(var1);
+      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
       var2.field2426 = 0;
       return var2;
    }

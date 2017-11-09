@@ -1661,7 +1661,7 @@ public final class Client extends GameEngine {
 
       class5.field31 = null;
       field952.method1970();
-      class170.method3194();
+      PacketNode.method3194();
       if(MouseInput.mouse != null) {
          MouseInput var1 = MouseInput.mouse;
          synchronized(MouseInput.mouse) {
@@ -2122,11 +2122,11 @@ public final class Client extends GameEngine {
 
          if(loginState == 2) {
             field952.method1949();
-            class170 var4 = class11.method60();
-            var4.field2424 = null;
+            PacketNode var4 = class11.method60();
+            var4.clientPacket = null;
             var4.field2427 = 0;
-            var4.field2423 = new PacketBuffer(5000);
-            var4.field2423.putByte(class168.field2407.field2408);
+            var4.packetBuffer = new PacketBuffer(5000);
+            var4.packetBuffer.putByte(class168.field2407.field2408);
             field952.method1951(var4);
             field952.method1958();
             var2.offset = 0;
@@ -2209,53 +2209,53 @@ public final class Client extends GameEngine {
 
             var3.putString(class91.password);
             var3.encryptRsa(class89.field1321, class89.field1322);
-            class170 var6 = class11.method60();
-            var6.field2424 = null;
+            PacketNode var6 = class11.method60();
+            var6.clientPacket = null;
             var6.field2427 = 0;
-            var6.field2423 = new PacketBuffer(5000);
-            var6.field2423.offset = 0;
+            var6.packetBuffer = new PacketBuffer(5000);
+            var6.packetBuffer.offset = 0;
             if(gameState == 40) {
-               var6.field2423.putByte(class168.field2404.field2408);
+               var6.packetBuffer.putByte(class168.field2404.field2408);
             } else {
-               var6.field2423.putByte(class168.field2406.field2408);
+               var6.packetBuffer.putByte(class168.field2406.field2408);
             }
 
-            var6.field2423.putShort(0);
-            int var7 = var6.field2423.offset;
-            var6.field2423.putInt(157);
-            var6.field2423.putBytes(var3.payload, 0, var3.offset);
-            int var8 = var6.field2423.offset;
-            var6.field2423.putString(class91.username);
-            var6.field2423.putByte((isResized?1:0) << 1 | (lowMemory?1:0));
-            var6.field2423.putShort(Tile.canvasWidth);
-            var6.field2423.putShort(class89.canvasHeight);
-            class214.method4045(var6.field2423);
-            var6.field2423.putString(class40.sessionToken);
-            var6.field2423.putInt(class36.field480);
+            var6.packetBuffer.putShort(0);
+            int var7 = var6.packetBuffer.offset;
+            var6.packetBuffer.putInt(157);
+            var6.packetBuffer.putBytes(var3.payload, 0, var3.offset);
+            int var8 = var6.packetBuffer.offset;
+            var6.packetBuffer.putString(class91.username);
+            var6.packetBuffer.putByte((isResized?1:0) << 1 | (lowMemory?1:0));
+            var6.packetBuffer.putShort(Tile.canvasWidth);
+            var6.packetBuffer.putShort(class89.canvasHeight);
+            class214.method4045(var6.packetBuffer);
+            var6.packetBuffer.putString(class40.sessionToken);
+            var6.packetBuffer.putInt(class36.field480);
             Buffer var9 = new Buffer(CombatInfo1.field1203.method5603());
             CombatInfo1.field1203.method5602(var9);
-            var6.field2423.putBytes(var9.payload, 0, var9.payload.length);
-            var6.field2423.putByte(class175.field2443);
-            var6.field2423.putInt(0);
-            var6.field2423.putInt(Varcs.indexInterfaces.crc);
-            var6.field2423.putInt(class31.indexSoundEffects.crc);
-            var6.field2423.putInt(GrandExchangeOffer.configsIndex.crc);
-            var6.field2423.putInt(class149.field2115.crc);
-            var6.field2423.putInt(Tile.field1838.crc);
-            var6.field2423.putInt(class56.indexMaps.crc);
-            var6.field2423.putInt(class21.indexTrack1.crc);
-            var6.field2423.putInt(class48.indexModels.crc);
-            var6.field2423.putInt(class96.indexSprites.crc);
-            var6.field2423.putInt(class12.indexTextures.crc);
-            var6.field2423.putInt(AbstractSoundSystem.field1563.crc);
-            var6.field2423.putInt(class236.indexTrack2.crc);
-            var6.field2423.putInt(class43.indexScripts.crc);
-            var6.field2423.putInt(class27.field382.crc);
-            var6.field2423.putInt(WorldMapType2.vorbisIndex.crc);
-            var6.field2423.putInt(class177.field2452.crc);
-            var6.field2423.putInt(RSCanvas.indexWorldMap.crc);
-            var6.field2423.encryptXtea(var20, var8, var6.field2423.offset);
-            var6.field2423.method3410(var6.field2423.offset - var7);
+            var6.packetBuffer.putBytes(var9.payload, 0, var9.payload.length);
+            var6.packetBuffer.putByte(class175.field2443);
+            var6.packetBuffer.putInt(0);
+            var6.packetBuffer.putInt(Varcs.indexInterfaces.crc);
+            var6.packetBuffer.putInt(class31.indexSoundEffects.crc);
+            var6.packetBuffer.putInt(GrandExchangeOffer.configsIndex.crc);
+            var6.packetBuffer.putInt(class149.field2115.crc);
+            var6.packetBuffer.putInt(Tile.field1838.crc);
+            var6.packetBuffer.putInt(class56.indexMaps.crc);
+            var6.packetBuffer.putInt(class21.indexTrack1.crc);
+            var6.packetBuffer.putInt(class48.indexModels.crc);
+            var6.packetBuffer.putInt(class96.indexSprites.crc);
+            var6.packetBuffer.putInt(class12.indexTextures.crc);
+            var6.packetBuffer.putInt(AbstractSoundSystem.field1563.crc);
+            var6.packetBuffer.putInt(class236.indexTrack2.crc);
+            var6.packetBuffer.putInt(class43.indexScripts.crc);
+            var6.packetBuffer.putInt(class27.field382.crc);
+            var6.packetBuffer.putInt(WorldMapType2.vorbisIndex.crc);
+            var6.packetBuffer.putInt(class177.field2452.crc);
+            var6.packetBuffer.putInt(RSCanvas.indexWorldMap.crc);
+            var6.packetBuffer.encryptXtea(var20, var8, var6.packetBuffer.offset);
+            var6.packetBuffer.method3410(var6.packetBuffer.offset - var7);
             field952.method1951(var6);
             field952.method1958();
             field952.field1478 = new ISAACCipher(var20);
@@ -2661,16 +2661,16 @@ public final class Client extends GameEngine {
                }
 
                int var3;
-               class170 var28;
+               PacketNode var28;
                if(!var27) {
-                  class170 var12;
+                  PacketNode var12;
                   int var13;
                   if(field970.field3776) {
                      var12 = Actor.method1628(ClientPacket.field2321, field952.field1478);
-                     var12.field2423.putByte(0);
-                     var13 = var12.field2423.offset;
-                     field970.method5105(var12.field2423);
-                     var12.field2423.method3287(var12.field2423.offset - var13);
+                     var12.packetBuffer.putByte(0);
+                     var13 = var12.packetBuffer.offset;
+                     field970.method5105(var12.packetBuffer);
+                     var12.packetBuffer.method3287(var12.packetBuffer.offset - var13);
                      field952.method1951(var12);
                      field970.method5103();
                   }
@@ -2686,11 +2686,11 @@ public final class Client extends GameEngine {
                         class5.field31.field811 = 0;
                      } else if(MouseInput.field713 != 0 || class5.field31.field811 >= 40) {
                         var28 = Actor.method1628(ClientPacket.field2309, field952.field1478);
-                        var28.field2423.putByte(0);
-                        var3 = var28.field2423.offset;
+                        var28.packetBuffer.putByte(0);
+                        var3 = var28.packetBuffer.offset;
                         var4 = 0;
 
-                        for(var5 = 0; var5 < class5.field31.field811 && var28.field2423.offset - var3 < 240; ++var5) {
+                        for(var5 = 0; var5 < class5.field31.field811 && var28.packetBuffer.offset - var3 < 240; ++var5) {
                            ++var4;
                            var6 = class5.field31.field807[var5];
                            if(var6 < 0) {
@@ -2725,19 +2725,19 @@ public final class Client extends GameEngine {
                               if(field882 < 8 && var9 >= -32 && var9 <= 31 && var10 >= -32 && var10 <= 31) {
                                  var9 += 32;
                                  var10 += 32;
-                                 var28.field2423.putShort(var10 + (field882 << 12) + (var9 << 6));
+                                 var28.packetBuffer.putShort(var10 + (field882 << 12) + (var9 << 6));
                                  field882 = 0;
                               } else if(field882 < 8) {
-                                 var28.field2423.put24bitInt((field882 << 19) + var8 + 8388608);
+                                 var28.packetBuffer.put24bitInt((field882 << 19) + var8 + 8388608);
                                  field882 = 0;
                               } else {
-                                 var28.field2423.putInt((field882 << 19) + var8 + -1073741824);
+                                 var28.packetBuffer.putInt((field882 << 19) + var8 + -1073741824);
                                  field882 = 0;
                               }
                            }
                         }
 
-                        var28.field2423.method3287(var28.field2423.offset - var3);
+                        var28.packetBuffer.method3287(var28.packetBuffer.offset - var3);
                         field952.method1951(var28);
                         if(var4 >= class5.field31.field811) {
                            class5.field31.field811 = 0;
@@ -2752,7 +2752,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  class170 var16;
+                  PacketNode var16;
                   if(MouseInput.field713 == 1 || !Item.field1399 && MouseInput.field713 == 4 || MouseInput.field713 == 2) {
                      long var14 = (MouseInput.field701 - field879) / 50L;
                      if(var14 > 4095L) {
@@ -2776,16 +2776,16 @@ public final class Client extends GameEngine {
 
                      var5 = (int)var14;
                      var16 = Actor.method1628(ClientPacket.field2308, field952.field1478);
-                     var16.field2423.putShort((MouseInput.field713 == 2?1:0) + (var5 << 1));
-                     var16.field2423.putShort(var4);
-                     var16.field2423.putShort(var3);
+                     var16.packetBuffer.putShort((MouseInput.field713 == 2?1:0) + (var5 << 1));
+                     var16.packetBuffer.putShort(var4);
+                     var16.packetBuffer.putShort(var3);
                      field952.method1951(var16);
                   }
 
                   if(KeyFocusListener.field605 > 0) {
                      var12 = Actor.method1628(ClientPacket.field2306, field952.field1478);
-                     var12.field2423.putShort(0);
-                     var13 = var12.field2423.offset;
+                     var12.packetBuffer.putShort(0);
+                     var13 = var12.packetBuffer.offset;
                      long var17 = class268.currentTimeMs();
 
                      for(var5 = 0; var5 < KeyFocusListener.field605; ++var5) {
@@ -2795,11 +2795,11 @@ public final class Client extends GameEngine {
                         }
 
                         field1052 = var17;
-                        var12.field2423.method3327((int)var19);
-                        var12.field2423.method3311(KeyFocusListener.field614[var5]);
+                        var12.packetBuffer.method3327((int)var19);
+                        var12.packetBuffer.method3311(KeyFocusListener.field614[var5]);
                      }
 
-                     var12.field2423.method3410(var12.field2423.offset - var13);
+                     var12.packetBuffer.method3410(var12.packetBuffer.offset - var13);
                      field952.method1951(var12);
                   }
 
@@ -2815,22 +2815,22 @@ public final class Client extends GameEngine {
                      field939 = 20;
                      field983 = false;
                      var12 = Actor.method1628(ClientPacket.field2311, field952.field1478);
-                     var12.field2423.method3319(field932);
-                     var12.field2423.method3340(mapAngle);
+                     var12.packetBuffer.method3319(field932);
+                     var12.packetBuffer.method3340(mapAngle);
                      field952.method1951(var12);
                   }
 
                   if(class35.field474 && !field883) {
                      field883 = true;
                      var12 = Actor.method1628(ClientPacket.field2310, field952.field1478);
-                     var12.field2423.putByte(1);
+                     var12.packetBuffer.putByte(1);
                      field952.method1951(var12);
                   }
 
                   if(!class35.field474 && field883) {
                      field883 = false;
                      var12 = Actor.method1628(ClientPacket.field2310, field952.field1478);
-                     var12.field2423.putByte(0);
+                     var12.packetBuffer.putByte(0);
                      field952.method1951(var12);
                   }
 
@@ -2952,9 +2952,9 @@ public final class Client extends GameEngine {
                         var4 = class48.localPlayer.pathX[0] + ItemLayer.baseX;
                         var5 = class48.localPlayer.pathY[0] + ItemLayer.baseY;
                         var16 = Actor.method1628(ClientPacket.field2386, field952.field1478);
-                        var16.field2423.putShort(var5);
-                        var16.field2423.method3340(var4);
-                        var16.field2423.putByte(var3);
+                        var16.packetBuffer.putShort(var5);
+                        var16.packetBuffer.method3340(var4);
+                        var16.packetBuffer.putByte(var3);
                         field952.method1951(var16);
                      }
 
@@ -3034,11 +3034,11 @@ public final class Client extends GameEngine {
                                                             var40.method4193(field965, field894);
                                                          }
 
-                                                         class170 var24 = Actor.method1628(ClientPacket.field2390, field952.field1478);
-                                                         var24.field2423.method3289(ClanMember.field864.id);
-                                                         var24.field2423.method3403(var30);
-                                                         var24.field2423.method3319(field965);
-                                                         var24.field2423.method3340(field894);
+                                                         PacketNode var24 = Actor.method1628(ClientPacket.field2390, field952.field1478);
+                                                         var24.packetBuffer.method3289(ClanMember.field864.id);
+                                                         var24.packetBuffer.method3403(var30);
+                                                         var24.packetBuffer.method3319(field965);
+                                                         var24.packetBuffer.method3340(field894);
                                                          field952.method1951(var24);
                                                       }
                                                    } else if(this.method1246()) {
@@ -3062,11 +3062,11 @@ public final class Client extends GameEngine {
                                              if(Region.method2780()) {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
-                                                class170 var44 = Actor.method1628(ClientPacket.field2400, field952.field1478);
-                                                var44.field2423.putByte(5);
-                                                var44.field2423.method3340(var4 + ItemLayer.baseY);
-                                                var44.field2423.method3340(var3 + ItemLayer.baseX);
-                                                var44.field2423.method3374(KeyFocusListener.field618[82]?(KeyFocusListener.field618[81]?2:1):0);
+                                                PacketNode var44 = Actor.method1628(ClientPacket.field2400, field952.field1478);
+                                                var44.packetBuffer.putByte(5);
+                                                var44.packetBuffer.method3340(var4 + ItemLayer.baseY);
+                                                var44.packetBuffer.method3340(var3 + ItemLayer.baseX);
+                                                var44.packetBuffer.method3374(KeyFocusListener.field618[82]?(KeyFocusListener.field618[81]?2:1):0);
                                                 field952.method1951(var44);
                                                 Region.method2821();
                                                 field956 = MouseInput.field714;
@@ -3193,10 +3193,10 @@ public final class Client extends GameEngine {
                }
 
                var28 = Actor.method1628(ClientPacket.field2315, field952.field1478);
-               var28.field2423.putByte(0);
-               var3 = var28.field2423.offset;
-               World.encodeClassVerifier(var28.field2423);
-               var28.field2423.method3287(var28.field2423.offset - var3);
+               var28.packetBuffer.putByte(0);
+               var3 = var28.packetBuffer.offset;
+               World.encodeClassVerifier(var28.packetBuffer);
+               var28.packetBuffer.method3287(var28.packetBuffer.offset - var3);
                field952.method1951(var28);
             }
          }
@@ -4361,11 +4361,11 @@ public final class Client extends GameEngine {
                var23 = var3.readInt();
                var5 = var3.readInt();
                var24 = Renderable.method2972();
-               class170 var79 = Actor.method1628(ClientPacket.field2357, field952.field1478);
-               var79.field2423.method3311(GameEngine.FPS);
-               var79.field2423.method3403(var24);
-               var79.field2423.method3289(var23);
-               var79.field2423.method3295(var5);
+               PacketNode var79 = Actor.method1628(ClientPacket.field2357, field952.field1478);
+               var79.packetBuffer.method3311(GameEngine.FPS);
+               var79.packetBuffer.method3403(var24);
+               var79.packetBuffer.method3289(var23);
+               var79.packetBuffer.method3295(var5);
                field952.method1951(var79);
                var1.field1470 = null;
                return true;
@@ -5446,13 +5446,13 @@ public final class Client extends GameEngine {
                   }
 
                   if(var17 != null) {
-                     class170 var18 = Actor.method1628(ClientPacket.field2330, field952.field1478);
-                     var18.field2423.method3319(field1041.itemId);
-                     var18.field2423.method3295(field1041.id);
-                     var18.field2423.putShortLE(field1022.itemId);
-                     var18.field2423.method3319(field1041.index);
-                     var18.field2423.putInt(field1022.id);
-                     var18.field2423.putShortLE(field1022.index);
+                     PacketNode var18 = Actor.method1628(ClientPacket.field2330, field952.field1478);
+                     var18.packetBuffer.method3319(field1041.itemId);
+                     var18.packetBuffer.method3295(field1041.id);
+                     var18.packetBuffer.putShortLE(field1022.itemId);
+                     var18.packetBuffer.method3319(field1041.index);
+                     var18.packetBuffer.putInt(field1022.id);
+                     var18.packetBuffer.putShortLE(field1022.index);
                      field952.method1951(var18);
                   }
                }

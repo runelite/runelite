@@ -37,8 +37,8 @@ public class class11 {
       signature = "(B)Lfg;",
       garbageValue = "21"
    )
-   public static class170 method60() {
-      return class170.field2422 == 0?new class170():class170.field2425[--class170.field2422];
+   public static PacketNode method60() {
+      return PacketNode.field2422 == 0?new PacketNode():PacketNode.field2425[--PacketNode.field2422];
    }
 
    @ObfuscatedName("gd")

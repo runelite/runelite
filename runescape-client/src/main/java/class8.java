@@ -132,10 +132,10 @@ public final class class8 extends class9 {
          }
 
          Client.field905 = class82.intStack[class56.intStackSize + 2];
-         class170 var30 = Actor.method1628(ClientPacket.field2342, Client.field952.field1478);
-         var30.field2423.putByte(Client.field1057);
-         var30.field2423.putByte(Huffman.field2432.field3785);
-         var30.field2423.putByte(Client.field905);
+         PacketNode var30 = Actor.method1628(ClientPacket.field2342, Client.field952.field1478);
+         var30.packetBuffer.putByte(Client.field1057);
+         var30.packetBuffer.putByte(Huffman.field2432.field3785);
+         var30.packetBuffer.putByte(Client.field905);
          Client.field952.method1951(var30);
          return 1;
       } else {
@@ -147,11 +147,11 @@ public final class class8 extends class9 {
             class56.intStackSize -= 2;
             var4 = class82.intStack[class56.intStackSize];
             var5 = class82.intStack[class56.intStackSize + 1];
-            class170 var28 = Actor.method1628(ClientPacket.field2388, Client.field952.field1478);
-            var28.field2423.putByte(Projectile.getLength(var3) + 2);
-            var28.field2423.putString(var3);
-            var28.field2423.putByte(var4 - 1);
-            var28.field2423.putByte(var5);
+            PacketNode var28 = Actor.method1628(ClientPacket.field2388, Client.field952.field1478);
+            var28.packetBuffer.putByte(Projectile.getLength(var3) + 2);
+            var28.packetBuffer.putString(var3);
+            var28.packetBuffer.putByte(var4 - 1);
+            var28.packetBuffer.putByte(var5);
             Client.field952.method1951(var28);
             return 1;
          } else {
@@ -320,13 +320,13 @@ public final class class8 extends class9 {
                   }
                }
 
-               class170 var8 = Actor.method1628(ClientPacket.field2399, Client.field952.field1478);
-               var8.field2423.putByte(0);
-               int var9 = var8.field2423.offset;
-               var8.field2423.putByte(var4);
-               var8.field2423.putByte(var35);
-               var8.field2423.putByte(var7);
-               PacketBuffer var10 = var8.field2423;
+               PacketNode var8 = Actor.method1628(ClientPacket.field2399, Client.field952.field1478);
+               var8.packetBuffer.putByte(0);
+               int var9 = var8.packetBuffer.offset;
+               var8.packetBuffer.putByte(var4);
+               var8.packetBuffer.putByte(var35);
+               var8.packetBuffer.putByte(var7);
+               PacketBuffer var10 = var8.packetBuffer;
                int var11 = var10.offset;
                int var29 = var3.length();
                byte[] var14 = new byte[var29];
@@ -398,7 +398,7 @@ public final class class8 extends class9 {
 
                var10.putShortSmart(var14.length);
                var10.offset += class272.field3717.compress(var14, 0, var14.length, var10.payload, var10.offset);
-               var8.field2423.method3287(var8.field2423.offset - var9);
+               var8.packetBuffer.method3287(var8.packetBuffer.offset - var9);
                Client.field952.method1951(var8);
                return 1;
             } else {
@@ -407,11 +407,11 @@ public final class class8 extends class9 {
                   class24.scriptStringStackSize -= 2;
                   var3 = class82.scriptStringStack[class24.scriptStringStackSize];
                   String var33 = class82.scriptStringStack[class24.scriptStringStackSize + 1];
-                  class170 var18 = Actor.method1628(ClientPacket.field2336, Client.field952.field1478);
-                  var18.field2423.putShort(0);
-                  var20 = var18.field2423.offset;
-                  var18.field2423.putString(var3);
-                  PacketBuffer var36 = var18.field2423;
+                  PacketNode var18 = Actor.method1628(ClientPacket.field2336, Client.field952.field1478);
+                  var18.packetBuffer.putShort(0);
+                  var20 = var18.packetBuffer.offset;
+                  var18.packetBuffer.putString(var3);
+                  PacketBuffer var36 = var18.packetBuffer;
                   int var23 = var36.offset;
                   int var24 = var33.length();
                   byte[] var25 = new byte[var24];
@@ -483,7 +483,7 @@ public final class class8 extends class9 {
 
                   var36.putShortSmart(var25.length);
                   var36.offset += class272.field3717.compress(var25, 0, var25.length, var36.payload, var36.offset);
-                  var18.field2423.method3410(var18.field2423.offset - var20);
+                  var18.packetBuffer.method3410(var18.packetBuffer.offset - var20);
                   Client.field952.method1951(var18);
                   return 1;
                } else if(var0 != 5015) {
@@ -548,9 +548,9 @@ public final class class8 extends class9 {
    )
    static final void method45(String var0) {
       if(DynamicObject.clanMembers != null) {
-         class170 var1 = Actor.method1628(ClientPacket.field2381, Client.field952.field1478);
-         var1.field2423.putByte(Projectile.getLength(var0));
-         var1.field2423.putString(var0);
+         PacketNode var1 = Actor.method1628(ClientPacket.field2381, Client.field952.field1478);
+         var1.packetBuffer.putByte(Projectile.getLength(var0));
+         var1.packetBuffer.putString(var0);
          Client.field952.method1951(var1);
       }
    }

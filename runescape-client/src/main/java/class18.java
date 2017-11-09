@@ -56,9 +56,9 @@ final class class18 implements Comparator {
    )
    static final void method157(String var0) {
       if(!var0.equals("")) {
-         class170 var1 = Actor.method1628(ClientPacket.field2376, Client.field952.field1478);
-         var1.field2423.putByte(Projectile.getLength(var0));
-         var1.field2423.putString(var0);
+         PacketNode var1 = Actor.method1628(ClientPacket.field2376, Client.field952.field1478);
+         var1.packetBuffer.putByte(Projectile.getLength(var0));
+         var1.packetBuffer.putString(var0);
          Client.field952.method1951(var1);
       }
    }
