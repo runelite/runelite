@@ -130,8 +130,8 @@ public class Deob
 		run(group, new EnumDeobfuscator());
 
 		new OpcodesTransformer().transform(group);
-		run(group, new PacketHandlerOrder());
-		run(group, new PacketWriteDeobfuscator());
+		//run(group, new PacketHandlerOrder());
+		//run(group, new PacketWriteDeobfuscator());
 
 		run(group, new MenuActionDeobfuscator());
 
@@ -139,7 +139,7 @@ public class Deob
 		new ClientErrorTransformer().transform(group);
 		new ReflectionTransformer().transform(group);
 		new MaxMemoryTransformer().transform(group);
-		new RuneliteBufferTransformer().transform(group);
+		//new RuneliteBufferTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
 

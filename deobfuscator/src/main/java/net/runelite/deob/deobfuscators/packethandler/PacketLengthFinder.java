@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 public class PacketLengthFinder
 {
-	private static final Logger logger = LoggerFactory.getLogger(PacketTypeFinder.class);
+	private static final Logger logger = LoggerFactory.getLogger(PacketLengthFinder.class);
 
 	private final ClassGroup group;
 	private final PacketTypeFinder packetType;
