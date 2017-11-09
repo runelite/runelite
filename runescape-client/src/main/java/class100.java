@@ -10,7 +10,8 @@ public class class100 {
    @ObfuscatedSignature(
       signature = "Lft;"
    )
-   RSSocket field1468;
+   @Export("rssocket")
+   RSSocket rssocket;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgo;"
@@ -40,13 +41,14 @@ public class class100 {
    @ObfuscatedSignature(
       signature = "Lfw;"
    )
-   ServerPacket field1470;
+   @Export("serverPacket")
+   ServerPacket serverPacket;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 957088099
    )
-   @Export("packetId")
-   int packetId;
+   @Export("packetLength")
+   int packetLength;
    @ObfuscatedName("b")
    boolean field1474;
    @ObfuscatedName("n")
@@ -80,8 +82,8 @@ public class class100 {
       this.field1472 = 0;
       this.field1467 = new Buffer(5000);
       this.field1469 = new PacketBuffer(40000);
-      this.field1470 = null;
-      this.packetId = 0;
+      this.serverPacket = null;
+      this.packetLength = 0;
       this.field1474 = true;
       this.field1475 = 0;
       this.field1466 = 0;
@@ -103,13 +105,13 @@ public class class100 {
       garbageValue = "265169248"
    )
    final void method1958() throws IOException {
-      if(this.field1468 != null && this.field1472 > 0) {
+      if(this.rssocket != null && this.field1472 > 0) {
          this.field1467.offset = 0;
 
          while(true) {
             PacketNode var1 = (PacketNode)this.field1465.method3741();
             if(var1 == null || var1.field2426 > this.field1467.payload.length - this.field1467.offset) {
-               this.field1468.queueForWrite(this.field1467.payload, 0, this.field1467.offset);
+               this.rssocket.queueForWrite(this.field1467.payload, 0, this.field1467.offset);
                this.field1466 = 0;
                break;
             }
@@ -142,7 +144,7 @@ public class class100 {
       garbageValue = "1969782925"
    )
    void method1952(RSSocket var1) {
-      this.field1468 = var1;
+      this.rssocket = var1;
    }
 
    @ObfuscatedName("v")
@@ -151,9 +153,9 @@ public class class100 {
       garbageValue = "497573931"
    )
    void method1970() {
-      if(this.field1468 != null) {
-         this.field1468.close();
-         this.field1468 = null;
+      if(this.rssocket != null) {
+         this.rssocket.close();
+         this.rssocket = null;
       }
 
    }
@@ -164,7 +166,7 @@ public class class100 {
       garbageValue = "1"
    )
    void method1953() {
-      this.field1468 = null;
+      this.rssocket = null;
    }
 
    @ObfuscatedName("e")
@@ -173,7 +175,7 @@ public class class100 {
       garbageValue = "-1669589735"
    )
    RSSocket method1954() {
-      return this.field1468;
+      return this.rssocket;
    }
 
    @ObfuscatedName("m")

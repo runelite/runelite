@@ -432,8 +432,8 @@ public class ServerPacket {
    @ObfuscatedGetter(
       intValue = 348458607
    )
-   @Export("packetType")
-   public final int packetType;
+   @Export("packetLength")
+   public final int packetLength;
 
    static {
       field2275 = new ServerPacket(0, -2);
@@ -523,7 +523,7 @@ public class ServerPacket {
 
    ServerPacket(int var1, int var2) {
       this.packetId = var1;
-      this.packetType = var2;
+      this.packetLength = var2;
    }
 
    @ObfuscatedName("fk")
