@@ -123,9 +123,9 @@ public final class WallObject {
             }
          }
 
-         Script.field1444 = new int[var4];
-         Varbit.field3438 = new int[var4];
-         Varbit.field3439 = new int[var4];
+         Script.mapRegions = new int[var4];
+         Varbit.landMapFileIds = new int[var4];
+         Varbit.landRegionFileIds = new int[var4];
          class148.field2107 = new byte[var4][];
          class36.field482 = new byte[var4][];
          boolean var16 = false;
@@ -143,9 +143,9 @@ public final class WallObject {
             for(var7 = (var2 - 6) / 8; var7 <= (var2 + 6) / 8; ++var7) {
                var8 = var7 + (var6 << 8);
                if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
-                  Script.field1444[var4] = var8;
-                  Varbit.field3438[var4] = class56.indexMaps.getFile("m" + var6 + "_" + var7);
-                  Varbit.field3439[var4] = class56.indexMaps.getFile("l" + var6 + "_" + var7);
+                  Script.mapRegions[var4] = var8;
+                  Varbit.landMapFileIds[var4] = class56.indexMaps.getFile("m" + var6 + "_" + var7);
+                  Varbit.landRegionFileIds[var4] = class56.indexMaps.getFile("l" + var6 + "_" + var7);
                   ++var4;
                }
             }
@@ -182,9 +182,9 @@ public final class WallObject {
             }
          }
 
-         Script.field1444 = new int[var5];
-         Varbit.field3438 = new int[var5];
-         Varbit.field3439 = new int[var5];
+         Script.mapRegions = new int[var5];
+         Varbit.landMapFileIds = new int[var5];
+         Varbit.landRegionFileIds = new int[var5];
          class148.field2107 = new byte[var5][];
          class36.field482 = new byte[var5][];
          var5 = 0;
@@ -200,18 +200,18 @@ public final class WallObject {
 
                      int var13;
                      for(var13 = 0; var13 < var5; ++var13) {
-                        if(Script.field1444[var13] == var12) {
+                        if(Script.mapRegions[var13] == var12) {
                            var12 = -1;
                            break;
                         }
                      }
 
                      if(var12 != -1) {
-                        Script.field1444[var5] = var12;
+                        Script.mapRegions[var5] = var12;
                         var13 = var12 >> 8 & 255;
                         int var14 = var12 & 255;
-                        Varbit.field3438[var5] = class56.indexMaps.getFile("m" + var13 + "_" + var14);
-                        Varbit.field3439[var5] = class56.indexMaps.getFile("l" + var13 + "_" + var14);
+                        Varbit.landMapFileIds[var5] = class56.indexMaps.getFile("m" + var13 + "_" + var14);
+                        Varbit.landRegionFileIds[var5] = class56.indexMaps.getFile("l" + var13 + "_" + var14);
                         ++var5;
                      }
                   }

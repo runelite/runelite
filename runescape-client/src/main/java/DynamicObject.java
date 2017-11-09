@@ -287,16 +287,16 @@ public class DynamicObject extends Renderable {
 
       int var1;
       for(var1 = 0; var1 < class148.field2107.length; ++var1) {
-         if(Varbit.field3438[var1] != -1 && class148.field2107[var1] == null) {
-            class148.field2107[var1] = class56.indexMaps.getConfigData(Varbit.field3438[var1], 0);
+         if(Varbit.landMapFileIds[var1] != -1 && class148.field2107[var1] == null) {
+            class148.field2107[var1] = class56.indexMaps.getConfigData(Varbit.landMapFileIds[var1], 0);
             if(class148.field2107[var1] == null) {
                var0 = false;
                ++Client.field1029;
             }
          }
 
-         if(Varbit.field3439[var1] != -1 && class36.field482[var1] == null) {
-            class36.field482[var1] = class56.indexMaps.getConfigData(Varbit.field3439[var1], 0, class21.xteaKeys[var1]);
+         if(Varbit.landRegionFileIds[var1] != -1 && class36.field482[var1] == null) {
+            class36.field482[var1] = class56.indexMaps.getConfigData(Varbit.landRegionFileIds[var1], 0, class21.xteaKeys[var1]);
             if(class36.field482[var1] == null) {
                var0 = false;
                ++Client.field1029;
@@ -324,8 +324,8 @@ public class DynamicObject extends Renderable {
          for(var1 = 0; var1 < class148.field2107.length; ++var1) {
             byte[] var2 = class36.field482[var1];
             if(var2 != null) {
-               var3 = (Script.field1444[var1] >> 8) * 64 - ItemLayer.baseX;
-               var4 = (Script.field1444[var1] & 255) * 64 - ItemLayer.baseY;
+               var3 = (Script.mapRegions[var1] >> 8) * 64 - ItemLayer.baseX;
+               var4 = (Script.mapRegions[var1] & 255) * 64 - ItemLayer.baseY;
                if(Client.isDynamicRegion) {
                   var3 = 10;
                   var4 = 10;
@@ -420,8 +420,8 @@ public class DynamicObject extends Renderable {
             if(!Client.isDynamicRegion) {
                byte[] var45;
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (Script.field1444[var44] >> 8) * 64 - ItemLayer.baseX;
-                  var4 = (Script.field1444[var44] & 255) * 64 - ItemLayer.baseY;
+                  var3 = (Script.mapRegions[var44] >> 8) * 64 - ItemLayer.baseX;
+                  var4 = (Script.mapRegions[var44] & 255) * 64 - ItemLayer.baseY;
                   var45 = class148.field2107[var44];
                   if(var45 != null) {
                      class90.method1801();
@@ -430,8 +430,8 @@ public class DynamicObject extends Renderable {
                }
 
                for(var44 = 0; var44 < var1; ++var44) {
-                  var3 = (Script.field1444[var44] >> 8) * 64 - ItemLayer.baseX;
-                  var4 = (Script.field1444[var44] & 255) * 64 - ItemLayer.baseY;
+                  var3 = (Script.mapRegions[var44] >> 8) * 64 - ItemLayer.baseX;
+                  var4 = (Script.mapRegions[var44] & 255) * 64 - ItemLayer.baseY;
                   var45 = class148.field2107[var44];
                   if(var45 == null && class91.field1367 < 800) {
                      class90.method1801();
@@ -444,8 +444,8 @@ public class DynamicObject extends Renderable {
                for(var44 = 0; var44 < var1; ++var44) {
                   byte[] var46 = class36.field482[var44];
                   if(var46 != null) {
-                     var4 = (Script.field1444[var44] >> 8) * 64 - ItemLayer.baseX;
-                     var5 = (Script.field1444[var44] & 255) * 64 - ItemLayer.baseY;
+                     var4 = (Script.mapRegions[var44] >> 8) * 64 - ItemLayer.baseX;
+                     var5 = (Script.mapRegions[var44] & 255) * 64 - ItemLayer.baseY;
                      class90.method1801();
                      class39.method593(var46, var4, var5, class56.region, Client.collisionMaps);
                   }
@@ -484,8 +484,8 @@ public class DynamicObject extends Renderable {
                            var10 = var6 >> 3 & 2047;
                            var11 = (var9 / 8 << 8) + var10 / 8;
 
-                           for(var58 = 0; var58 < Script.field1444.length; ++var58) {
-                              if(Script.field1444[var58] == var11 && class148.field2107[var58] != null) {
+                           for(var58 = 0; var58 < Script.mapRegions.length; ++var58) {
+                              if(Script.mapRegions[var58] == var11 && class148.field2107[var58] != null) {
                                  Client.method1542(class148.field2107[var58], var44, var3 * 8, var4 * 8, var57, (var9 & 7) * 8, (var10 & 7) * 8, var47, Client.collisionMaps);
                                  var56 = true;
                                  break;
@@ -525,8 +525,8 @@ public class DynamicObject extends Renderable {
                            var9 = var5 >> 3 & 2047;
                            var10 = (var47 / 8 << 8) + var9 / 8;
 
-                           for(var11 = 0; var11 < Script.field1444.length; ++var11) {
-                              if(Script.field1444[var11] == var10 && class36.field482[var11] != null) {
+                           for(var11 = 0; var11 < Script.mapRegions.length; ++var11) {
+                              if(Script.mapRegions[var11] == var10 && class36.field482[var11] != null) {
                                  byte[] var49 = class36.field482[var11];
                                  var13 = var3 * 8;
                                  var14 = var4 * 8;

@@ -13,7 +13,8 @@ public class Script extends CacheableNode {
    )
    static NodeCache field1445;
    @ObfuscatedName("fs")
-   static int[] field1444;
+   @Export("mapRegions")
+   static int[] mapRegions;
    @ObfuscatedName("p")
    @Export("instructions")
    int[] instructions;

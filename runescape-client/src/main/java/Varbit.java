@@ -14,9 +14,11 @@ public class Varbit extends CacheableNode {
    @Export("varbits")
    public static NodeCache varbits;
    @ObfuscatedName("fq")
-   static int[] field3438;
+   @Export("landMapFileIds")
+   static int[] landMapFileIds;
    @ObfuscatedName("fp")
-   static int[] field3439;
+   @Export("landRegionFileIds")
+   static int[] landRegionFileIds;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1161268307
