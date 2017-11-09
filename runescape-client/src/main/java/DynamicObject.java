@@ -296,7 +296,7 @@ public class DynamicObject extends Renderable {
          }
 
          if(Varbit.field3439[var1] != -1 && class36.field482[var1] == null) {
-            class36.field482[var1] = class56.indexMaps.getConfigData(Varbit.field3439[var1], 0, class21.field335[var1]);
+            class36.field482[var1] = class56.indexMaps.getConfigData(Varbit.field3439[var1], 0, class21.xteaKeys[var1]);
             if(class36.field482[var1] == null) {
                var0 = false;
                ++Client.field1029;

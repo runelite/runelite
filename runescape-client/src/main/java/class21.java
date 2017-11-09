@@ -11,7 +11,8 @@ public class class21 {
    @Export("indexTrack1")
    static IndexData indexTrack1;
    @ObfuscatedName("ff")
-   static int[][] field335;
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(

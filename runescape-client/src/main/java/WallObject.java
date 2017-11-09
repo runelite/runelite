@@ -115,11 +115,11 @@ public final class WallObject {
          int var2 = var1.method3322();
          var3 = var1.readUnsignedShortOb1();
          var4 = var1.readUnsignedShort();
-         class21.field335 = new int[var4][4];
+         class21.xteaKeys = new int[var4][4];
 
          for(var5 = 0; var5 < var4; ++var5) {
             for(var6 = 0; var6 < 4; ++var6) {
-               class21.field335[var5][var6] = var1.readInt();
+               class21.xteaKeys[var5][var6] = var1.readInt();
             }
          }
 
@@ -174,11 +174,11 @@ public final class WallObject {
          }
 
          var1.byteAccess();
-         class21.field335 = new int[var5][4];
+         class21.xteaKeys = new int[var5][4];
 
          for(var6 = 0; var6 < var5; ++var6) {
             for(var7 = 0; var7 < 4; ++var7) {
-               class21.field335[var6][var7] = var1.readInt();
+               class21.xteaKeys[var6][var7] = var1.readInt();
             }
          }
 
