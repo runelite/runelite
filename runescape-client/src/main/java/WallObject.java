@@ -102,7 +102,8 @@ public final class WallObject {
       signature = "(ZLgi;B)V",
       garbageValue = "94"
    )
-   static final void method2975(boolean var0, PacketBuffer var1) {
+   @Export("xteaChanged")
+   static final void xteaChanged(boolean var0, PacketBuffer var1) {
       Client.field958 = var0;
       int var3;
       int var4;

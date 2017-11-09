@@ -2503,7 +2503,7 @@ public final class Client extends GameEngine {
                   class175.field2446 = null;
                   class229.initializeGPI(var2);
                   class231.field2918 = -1;
-                  WallObject.method2975(false, var2);
+                  WallObject.xteaChanged(false, var2);
                   field952.field1470 = null;
                }
 
@@ -4295,7 +4295,7 @@ public final class Client extends GameEngine {
             }
 
             if(class166.field2275 == var1.field1470) {
-               WallObject.method2975(false, var1.field1469);
+               WallObject.xteaChanged(false, var1.field1469);
                var1.field1470 = null;
                return true;
             }
@@ -5001,7 +5001,7 @@ public final class Client extends GameEngine {
             }
 
             if(class166.field2221 == var1.field1470) {
-               WallObject.method2975(true, var1.field1469);
+               WallObject.xteaChanged(true, var1.field1469);
                var1.field1470 = null;
                return true;
             }
