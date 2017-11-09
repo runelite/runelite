@@ -536,10 +536,10 @@ public abstract class Actor extends Renderable {
       signature = "(Lfo;Lga;B)Lfg;",
       garbageValue = "1"
    )
-   public static class170 method1628(class167 var0, ISAACCipher var1) {
+   public static class170 method1628(ClientPacket var0, ISAACCipher var1) {
       class170 var2 = class11.method60();
       var2.field2424 = var0;
-      var2.field2427 = var0.field2402;
+      var2.field2427 = var0.packetLength;
       if(var2.field2427 == -1) {
          var2.field2423 = new PacketBuffer(260);
       } else if(var2.field2427 == -2) {
@@ -553,7 +553,7 @@ public abstract class Actor extends Renderable {
       }
 
       var2.field2423.method3568(var1);
-      var2.field2423.putOpcode(var2.field2424.field2401);
+      var2.field2423.putOpcode(var2.field2424.packetId);
       var2.field2426 = 0;
       return var2;
    }

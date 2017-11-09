@@ -1057,7 +1057,7 @@ public class DynamicObject extends Renderable {
             ObjectComposition.field3490.reset();
             class170 var65;
             if(class9.clientInstance.method924()) {
-               var65 = Actor.method1628(class167.field2312, Client.field952.field1478);
+               var65 = Actor.method1628(ClientPacket.field2312, Client.field952.field1478);
                var65.field2423.putInt(1057001181);
                Client.field952.method1951(var65);
             }
@@ -1081,7 +1081,7 @@ public class DynamicObject extends Renderable {
             class287.setGameState(30);
             class90.method1801();
             class44.method689();
-            var65 = Actor.method1628(class167.field2387, Client.field952.field1478);
+            var65 = Actor.method1628(ClientPacket.field2387, Client.field952.field1478);
             Client.field952.method1951(var65);
             GameEngine.timer.vmethod3096();
 

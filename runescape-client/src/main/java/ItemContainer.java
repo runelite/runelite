@@ -330,7 +330,7 @@ public class ItemContainer extends Node {
                            var26 = var21 * var24 - var20 * var23 >> 11;
                            int var51 = var25 + class48.localPlayer.x >> 7;
                            var28 = class48.localPlayer.y - var26 >> 7;
-                           class170 var29 = Actor.method1628(class167.field2354, Client.field952.field1478);
+                           class170 var29 = Actor.method1628(ClientPacket.field2354, Client.field952.field1478);
                            var29.field2423.putByte(18);
                            var29.field2423.method3340(var28 + ItemLayer.baseY);
                            var29.field2423.method3340(var51 + ItemLayer.baseX);

@@ -256,7 +256,7 @@ public enum class27 implements RSEnum {
             if(class115.method2210(Preferences.getWidgetConfig(var5), var0 - 1)) {
                class170 var7;
                if(var0 == 1) {
-                  var7 = Actor.method1628(class167.field2319, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2319, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -264,7 +264,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 2) {
-                  var7 = Actor.method1628(class167.field2372, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2372, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -272,7 +272,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 3) {
-                  var7 = Actor.method1628(class167.field2392, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2392, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -280,7 +280,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 4) {
-                  var7 = Actor.method1628(class167.field2322, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2322, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -288,7 +288,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 5) {
-                  var7 = Actor.method1628(class167.field2323, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2323, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -296,7 +296,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 6) {
-                  var7 = Actor.method1628(class167.field2324, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2324, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -304,7 +304,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 7) {
-                  var7 = Actor.method1628(class167.field2398, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2398, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -312,7 +312,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 8) {
-                  var7 = Actor.method1628(class167.field2326, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2326, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -320,7 +320,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 9) {
-                  var7 = Actor.method1628(class167.field2327, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2327, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);
@@ -328,7 +328,7 @@ public enum class27 implements RSEnum {
                }
 
                if(var0 == 10) {
-                  var7 = Actor.method1628(class167.field2351, Client.field952.field1478);
+                  var7 = Actor.method1628(ClientPacket.field2351, Client.field952.field1478);
                   var7.field2423.putInt(var1);
                   var7.field2423.putShort(var2);
                   var7.field2423.putShort(var3);

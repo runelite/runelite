@@ -142,7 +142,7 @@ public class class268 {
          }
       }
 
-      class170 var1 = Actor.method1628(class167.field2345, Client.field952.field1478);
+      class170 var1 = Actor.method1628(ClientPacket.field2345, Client.field952.field1478);
       var1.field2423.putByte(var0.length() + 1);
       var1.field2423.putString(var0);
       Client.field952.method1951(var1);

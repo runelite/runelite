@@ -2666,7 +2666,7 @@ public final class Client extends GameEngine {
                   class170 var12;
                   int var13;
                   if(field970.field3776) {
-                     var12 = Actor.method1628(class167.field2321, field952.field1478);
+                     var12 = Actor.method1628(ClientPacket.field2321, field952.field1478);
                      var12.field2423.putByte(0);
                      var13 = var12.field2423.offset;
                      field970.method5105(var12.field2423);
@@ -2685,7 +2685,7 @@ public final class Client extends GameEngine {
                      if(!field1080) {
                         class5.field31.field811 = 0;
                      } else if(MouseInput.field713 != 0 || class5.field31.field811 >= 40) {
-                        var28 = Actor.method1628(class167.field2309, field952.field1478);
+                        var28 = Actor.method1628(ClientPacket.field2309, field952.field1478);
                         var28.field2423.putByte(0);
                         var3 = var28.field2423.offset;
                         var4 = 0;
@@ -2775,7 +2775,7 @@ public final class Client extends GameEngine {
                      }
 
                      var5 = (int)var14;
-                     var16 = Actor.method1628(class167.field2308, field952.field1478);
+                     var16 = Actor.method1628(ClientPacket.field2308, field952.field1478);
                      var16.field2423.putShort((MouseInput.field713 == 2?1:0) + (var5 << 1));
                      var16.field2423.putShort(var4);
                      var16.field2423.putShort(var3);
@@ -2783,7 +2783,7 @@ public final class Client extends GameEngine {
                   }
 
                   if(KeyFocusListener.field605 > 0) {
-                     var12 = Actor.method1628(class167.field2306, field952.field1478);
+                     var12 = Actor.method1628(ClientPacket.field2306, field952.field1478);
                      var12.field2423.putShort(0);
                      var13 = var12.field2423.offset;
                      long var17 = class268.currentTimeMs();
@@ -2814,7 +2814,7 @@ public final class Client extends GameEngine {
                   if(field983 && field939 <= 0) {
                      field939 = 20;
                      field983 = false;
-                     var12 = Actor.method1628(class167.field2311, field952.field1478);
+                     var12 = Actor.method1628(ClientPacket.field2311, field952.field1478);
                      var12.field2423.method3319(field932);
                      var12.field2423.method3340(mapAngle);
                      field952.method1951(var12);
@@ -2822,14 +2822,14 @@ public final class Client extends GameEngine {
 
                   if(class35.field474 && !field883) {
                      field883 = true;
-                     var12 = Actor.method1628(class167.field2310, field952.field1478);
+                     var12 = Actor.method1628(ClientPacket.field2310, field952.field1478);
                      var12.field2423.putByte(1);
                      field952.method1951(var12);
                   }
 
                   if(!class35.field474 && field883) {
                      field883 = false;
-                     var12 = Actor.method1628(class167.field2310, field952.field1478);
+                     var12 = Actor.method1628(ClientPacket.field2310, field952.field1478);
                      var12.field2423.putByte(0);
                      field952.method1951(var12);
                   }
@@ -2951,7 +2951,7 @@ public final class Client extends GameEngine {
                      if(var3 != class48.localPlayer.field852) {
                         var4 = class48.localPlayer.pathX[0] + ItemLayer.baseX;
                         var5 = class48.localPlayer.pathY[0] + ItemLayer.baseY;
-                        var16 = Actor.method1628(class167.field2386, field952.field1478);
+                        var16 = Actor.method1628(ClientPacket.field2386, field952.field1478);
                         var16.field2423.putShort(var5);
                         var16.field2423.method3340(var4);
                         var16.field2423.putByte(var3);
@@ -3034,7 +3034,7 @@ public final class Client extends GameEngine {
                                                             var40.method4193(field965, field894);
                                                          }
 
-                                                         class170 var24 = Actor.method1628(class167.field2390, field952.field1478);
+                                                         class170 var24 = Actor.method1628(ClientPacket.field2390, field952.field1478);
                                                          var24.field2423.method3289(ClanMember.field864.id);
                                                          var24.field2423.method3403(var30);
                                                          var24.field2423.method3319(field965);
@@ -3062,7 +3062,7 @@ public final class Client extends GameEngine {
                                              if(Region.method2780()) {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
-                                                class170 var44 = Actor.method1628(class167.field2400, field952.field1478);
+                                                class170 var44 = Actor.method1628(ClientPacket.field2400, field952.field1478);
                                                 var44.field2423.putByte(5);
                                                 var44.field2423.method3340(var4 + ItemLayer.baseY);
                                                 var44.field2423.method3340(var3 + ItemLayer.baseX);
@@ -3123,7 +3123,7 @@ public final class Client extends GameEngine {
                                              if(var3 > 15000 && var5 > 15000) {
                                                 field912 = 250;
                                                 MouseInput.mouseIdleTicks = 14500;
-                                                var16 = Actor.method1628(class167.field2353, field952.field1478);
+                                                var16 = Actor.method1628(ClientPacket.field2353, field952.field1478);
                                                 field952.method1951(var16);
                                              }
 
@@ -3143,7 +3143,7 @@ public final class Client extends GameEngine {
 
                                              ++field952.field1466;
                                              if(field952.field1466 > 50) {
-                                                var16 = Actor.method1628(class167.field2307, field952.field1478);
+                                                var16 = Actor.method1628(ClientPacket.field2307, field952.field1478);
                                                 field952.method1951(var16);
                                              }
 
@@ -3192,7 +3192,7 @@ public final class Client extends GameEngine {
                   }
                }
 
-               var28 = Actor.method1628(class167.field2315, field952.field1478);
+               var28 = Actor.method1628(ClientPacket.field2315, field952.field1478);
                var28.field2423.putByte(0);
                var3 = var28.field2423.offset;
                World.encodeClassVerifier(var28.field2423);
@@ -4361,7 +4361,7 @@ public final class Client extends GameEngine {
                var23 = var3.readInt();
                var5 = var3.readInt();
                var24 = Renderable.method2972();
-               class170 var79 = Actor.method1628(class167.field2357, field952.field1478);
+               class170 var79 = Actor.method1628(ClientPacket.field2357, field952.field1478);
                var79.field2423.method3311(GameEngine.FPS);
                var79.field2423.method3403(var24);
                var79.field2423.method3289(var23);
@@ -5446,7 +5446,7 @@ public final class Client extends GameEngine {
                   }
 
                   if(var17 != null) {
-                     class170 var18 = Actor.method1628(class167.field2330, field952.field1478);
+                     class170 var18 = Actor.method1628(ClientPacket.field2330, field952.field1478);
                      var18.field2423.method3319(field1041.itemId);
                      var18.field2423.method3295(field1041.id);
                      var18.field2423.putShortLE(field1022.itemId);

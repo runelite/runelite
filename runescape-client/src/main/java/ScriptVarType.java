@@ -1243,7 +1243,7 @@ public class ScriptVarType implements RSEnum, class301 {
       garbageValue = "236318945"
    )
    static void method24() {
-      class170 var0 = Actor.method1628(class167.field2313, Client.field952.field1478);
+      class170 var0 = Actor.method1628(ClientPacket.field2313, Client.field952.field1478);
       PacketBuffer var1 = var0.field2423;
       int var2 = Client.isResized?2:1;
       var1.putByte(var2);

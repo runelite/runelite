@@ -18,7 +18,7 @@ public class class170 extends Node {
    @ObfuscatedSignature(
       signature = "Lfo;"
    )
-   public class167 field2424;
+   public ClientPacket field2424;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 670145281

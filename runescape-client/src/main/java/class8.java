@@ -132,7 +132,7 @@ public final class class8 extends class9 {
          }
 
          Client.field905 = class82.intStack[class56.intStackSize + 2];
-         class170 var30 = Actor.method1628(class167.field2342, Client.field952.field1478);
+         class170 var30 = Actor.method1628(ClientPacket.field2342, Client.field952.field1478);
          var30.field2423.putByte(Client.field1057);
          var30.field2423.putByte(Huffman.field2432.field3785);
          var30.field2423.putByte(Client.field905);
@@ -147,7 +147,7 @@ public final class class8 extends class9 {
             class56.intStackSize -= 2;
             var4 = class82.intStack[class56.intStackSize];
             var5 = class82.intStack[class56.intStackSize + 1];
-            class170 var28 = Actor.method1628(class167.field2388, Client.field952.field1478);
+            class170 var28 = Actor.method1628(ClientPacket.field2388, Client.field952.field1478);
             var28.field2423.putByte(Projectile.getLength(var3) + 2);
             var28.field2423.putString(var3);
             var28.field2423.putByte(var4 - 1);
@@ -320,7 +320,7 @@ public final class class8 extends class9 {
                   }
                }
 
-               class170 var8 = Actor.method1628(class167.field2399, Client.field952.field1478);
+               class170 var8 = Actor.method1628(ClientPacket.field2399, Client.field952.field1478);
                var8.field2423.putByte(0);
                int var9 = var8.field2423.offset;
                var8.field2423.putByte(var4);
@@ -407,7 +407,7 @@ public final class class8 extends class9 {
                   class24.scriptStringStackSize -= 2;
                   var3 = class82.scriptStringStack[class24.scriptStringStackSize];
                   String var33 = class82.scriptStringStack[class24.scriptStringStackSize + 1];
-                  class170 var18 = Actor.method1628(class167.field2336, Client.field952.field1478);
+                  class170 var18 = Actor.method1628(ClientPacket.field2336, Client.field952.field1478);
                   var18.field2423.putShort(0);
                   var20 = var18.field2423.offset;
                   var18.field2423.putString(var3);
@@ -548,7 +548,7 @@ public final class class8 extends class9 {
    )
    static final void method45(String var0) {
       if(DynamicObject.clanMembers != null) {
-         class170 var1 = Actor.method1628(class167.field2381, Client.field952.field1478);
+         class170 var1 = Actor.method1628(ClientPacket.field2381, Client.field952.field1478);
          var1.field2423.putByte(Projectile.getLength(var0));
          var1.field2423.putString(var0);
          Client.field952.method1951(var1);
