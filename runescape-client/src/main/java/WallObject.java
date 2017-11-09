@@ -104,14 +104,14 @@ public final class WallObject {
    )
    @Export("xteaChanged")
    static final void xteaChanged(boolean var0, PacketBuffer var1) {
-      Client.field958 = var0;
+      Client.isDynamicRegion = var0;
       int var3;
       int var4;
       int var5;
       int var6;
       int var7;
       int var8;
-      if(!Client.field958) {
+      if(!Client.isDynamicRegion) {
          int var2 = var1.method3322();
          var3 = var1.readUnsignedShortOb1();
          var4 = var1.readUnsignedShort();

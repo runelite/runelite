@@ -326,7 +326,7 @@ public class DynamicObject extends Renderable {
             if(var2 != null) {
                var3 = (Script.field1444[var1] >> 8) * 64 - ItemLayer.baseX;
                var4 = (Script.field1444[var1] & 255) * 64 - ItemLayer.baseY;
-               if(Client.field958) {
+               if(Client.isDynamicRegion) {
                   var3 = 10;
                   var4 = 10;
                }
@@ -417,7 +417,7 @@ public class DynamicObject extends Renderable {
             CombatInfo2.method4592();
             class274.flush(true);
             int var5;
-            if(!Client.field958) {
+            if(!Client.isDynamicRegion) {
                byte[] var45;
                for(var44 = 0; var44 < var1; ++var44) {
                   var3 = (Script.field1444[var44] >> 8) * 64 - ItemLayer.baseX;
@@ -469,7 +469,7 @@ public class DynamicObject extends Renderable {
             int var47;
             int var57;
             int var58;
-            if(Client.field958) {
+            if(Client.isDynamicRegion) {
                for(var44 = 0; var44 < 4; ++var44) {
                   class90.method1801();
 
@@ -1062,7 +1062,7 @@ public class DynamicObject extends Renderable {
                Client.field952.method1951(var65);
             }
 
-            if(!Client.field958) {
+            if(!Client.isDynamicRegion) {
                var5 = (class231.field2918 - 6) / 8;
                var6 = (class231.field2918 + 6) / 8;
                var57 = (class91.field1367 - 6) / 8;

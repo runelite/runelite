@@ -718,7 +718,8 @@ public final class Client extends GameEngine {
    )
    static int field920;
    @ObfuscatedName("fd")
-   static boolean field958;
+   @Export("isDynamicRegion")
+   static boolean isDynamicRegion;
    @ObfuscatedName("fm")
    static int[][][] field884;
    @ObfuscatedName("fh")
@@ -1185,7 +1186,7 @@ public final class Client extends GameEngine {
       field919 = 1;
       field920 = 0;
       collisionMaps = new CollisionData[4];
-      field958 = false;
+      isDynamicRegion = false;
       field884 = new int[4][13][13];
       field955 = new int[]{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
       field925 = 0;
