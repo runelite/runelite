@@ -28,17 +28,18 @@ import java.awt.image.BufferedImage;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
 public class OverlayRenderer
 {
-	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay();
+	private final TooltipRenderer tooltipRenderer = new TooltipRenderer();
+	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay(tooltipRenderer);
 
 	public void render(BufferedImage clientBuffer)
 	{
 		TopDownRendererLeft tdl = new TopDownRendererLeft();
 		TopDownRendererRight tdr = new TopDownRendererRight();
 		DynamicRenderer dr = new DynamicRenderer();
-
 		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
 		{
 			for (Overlay overlay : plugin.getOverlays())
@@ -63,5 +64,13 @@ public class OverlayRenderer
 		tdl.render(clientBuffer);
 		tdr.render(clientBuffer);
 		dr.render(clientBuffer);
+
+		// tooltips are always rendered on top of other overlays
+		tooltipRenderer.render(clientBuffer);
+	}
+
+	public TooltipRenderer getTooltipRenderer()
+	{
+		return tooltipRenderer;
 	}
 }
