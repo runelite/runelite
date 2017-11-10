@@ -33,6 +33,7 @@ enum SkillAbbreviations
 	RANGE("Ranged"),
 	WC("Woodcutting"),
 	FM("Firemaking"),
+	RUNECRAFTING("Runecraft"),
 	RC("Runecraft"),
 	CON("Construction"),
 	TOTAL("Overall");

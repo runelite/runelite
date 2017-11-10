@@ -33,4 +33,8 @@ public interface MessageNode
 	String getValue();
 
 	void setValue(String value);
+
+	String getRuneLiteFormatMessage();
+
+	void setRuneLiteFormatMessage(String runeLiteFormatMessage);
 }
