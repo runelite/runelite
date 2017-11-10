@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017. l2-
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +23,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.client.plugins.chatcommands;
 
+import java.awt.Color;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSMessageNode;
 
-@Mixin(RSMessageNode.class)
-public abstract class RSMessageNodeMixin implements RSMessageNode
+class ChatColor
 {
-	@Inject
-	private String runeLiteFormatMessage;
+	Color color;
+	ChatMessageType type;
+	boolean transparent;
+	boolean highlight;
 
-	@Inject
-	@Override
-	public ChatMessageType getType()
+	ChatColor(Color color, ChatMessageType type, boolean transparent, boolean highlight)
 	{
-		return ChatMessageType.of(getRSType());
-	}
-
-	@Inject
-	@Override
-	public String getRuneLiteFormatMessage()
-	{
-		return runeLiteFormatMessage;
-	}
-
-	@Inject
-	@Override
-	public void setRuneLiteFormatMessage(String runeLiteFormatMessage)
-	{
-		this.runeLiteFormatMessage = runeLiteFormatMessage;
+		this.color = color;
+		this.type = type;
+		this.transparent = transparent;
+		this.highlight = highlight;
 	}
 }
