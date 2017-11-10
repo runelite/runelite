@@ -42,6 +42,9 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.tooltips.Tooltip;
+import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
+import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
 public class RunepouchOverlay extends Overlay
 {
@@ -56,6 +59,7 @@ public class RunepouchOverlay extends Overlay
 
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
+	private final TooltipRenderer toolripRenderer = new TooltipRenderer();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
 	private final RunepouchConfig config;
 
@@ -93,16 +97,19 @@ public class RunepouchOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
+		StringBuilder tooltipBuilder = new StringBuilder();
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
-			Varbits runeVarbit = RUNE_VARBITS[i];
 
 			int amount = client.getSetting(amountVarbit);
 			if (amount <= 0)
 			{
 				continue;
 			}
+
+			Varbits runeVarbit = RUNE_VARBITS[i];
+			int runeId = client.getSetting(runeVarbit);
 
 			graphics.setColor(Color.black);
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
@@ -112,12 +119,16 @@ public class RunepouchOverlay extends Overlay
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
 				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
 
+			tooltipBuilder
+				.append(amount)
+				.append(" <col=ffff00>")
+				.append(runeImageCache.getName(runeId))
+				.append("</col></br>");
+
 			if (!config.showIcons())
 			{
 				continue;
 			}
-
-			int runeId = client.getSetting(runeVarbit);
 
 			BufferedImage runeImg = runeImageCache.getImage(runeId);
 			if (runeImg != null)
@@ -126,6 +137,13 @@ public class RunepouchOverlay extends Overlay
 					new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
 					runeImg);
 			}
+		}
+
+		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			String tooltipText = tooltipBuilder.toString();
+			Tooltip tooltip = new Tooltip(TooltipPriority.HIGH, tooltipText);
+			toolripRenderer.add(tooltip);
 		}
 		return null;
 	}
