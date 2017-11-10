@@ -96,4 +96,9 @@ public class RuneImageCache
 			return null;
 		}
 	}
+
+	public String getName(int runeId)
+	{
+		return RUNE_NAMES[runeId];
+	}
 }

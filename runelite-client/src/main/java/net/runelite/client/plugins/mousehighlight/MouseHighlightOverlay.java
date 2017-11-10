@@ -24,27 +24,25 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Point;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.tooltips.Tooltip;
+import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
+import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
 class MouseHighlightOverlay extends Overlay
 {
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
-	private final Pattern p = Pattern.compile("<col=([^>]+)>([^<]*)");
 	private final MouseHighlightConfig config;
+	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite = RuneLite.getRunelite();
+	private final TooltipRenderer tooltipRenderer = runelite.getRenderer().getTooltipRenderer();
 
 	MouseHighlightOverlay(MouseHighlight plugin)
 	{
@@ -54,8 +52,6 @@ class MouseHighlightOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Client client = RuneLite.getClient();
-
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;
@@ -92,95 +88,9 @@ class MouseHighlightOverlay extends Overlay
 				return null;
 		}
 
-		Matcher m = p.matcher(target);
-
-		List<String> parts = new ArrayList<>();
-		List<String> colours = new ArrayList<>();
-
-		while (m.find())
-		{
-			colours.add(m.group(1));
-			parts.add(m.group(2));
-		}
-
-		if (parts.isEmpty())
-		{
-			return null;
-		}
-
-		// Remove colour text from option
-		option = option.replaceAll("<col=([^>]+)>", "");
-
-		Point mouse = client.getMouseCanvasPosition();
-		int x = mouse.getX();
-		int y = mouse.getY();
-
-		FontMetrics fm = graphics.getFontMetrics();
-		// Gets the widths of the various strings we will be displaying
-		int option_width = fm.stringWidth(option + " ");
-		int total_width = option_width;
-		for (String part : parts)
-		{
-			total_width += fm.stringWidth(part);
-		}
-		int height = fm.getHeight();
-
-		if (config.display_left())
-		{
-			x -= total_width + 6; // Draw to the left of the mouse
-
-			// Don't draw off of the screen (left)
-			if (x < 0)
-			{
-				x = 0;
-			}
-		}
-		else
-		{
-			// Don't draw off of the screen (right)
-			int canvas_width = client.getCanvas().getWidth();
-			if (x + total_width + 7 > canvas_width)
-			{
-				x = canvas_width - total_width - 7;
-			}
-		}
-
-		y -= height / 2; // Draw slightly above the mouse
-
-		// Don't draw off of the screen (top)
-		if (y < height / 2)
-		{
-			y = height / 2;
-		}
-
-		Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
-		graphics.setColor(gray);
-
-		// Draws the background rect
-		graphics.fillRect(x, y - (height / 2), total_width + 6, height);
-
-		// Draws the outline of the rect
-		graphics.setColor(config.borderColor());
-		graphics.drawRect(x, y - (height / 2), total_width + 6, height);
-		x += 3;
-		y += 5;
-
-		graphics.setColor(Color.white);
-		// Draws the option (Use, Walk here, Wield)
-		graphics.drawString(option + " ", x, y);
-		// Write text
-		int parts_width = 0;
-		for (int i = 0; i < parts.size(); i++)
-		{
-			// Sets the string colour to the colour the game uses.
-			graphics.setColor(Color.decode("#" + colours.get(i)));
-			// Draws the target (Player, item)
-			graphics.drawString(parts.get(i), x + option_width + parts_width, y);
-
-			parts_width += fm.stringWidth(parts.get(i));
-		}
-
-		graphics.setColor(Color.white);
+		Tooltip tooltip = new Tooltip(TooltipPriority.LOW,
+			option + " " + target);
+		tooltipRenderer.add(tooltip);
 
 		return null;
 	}
