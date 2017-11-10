@@ -24,6 +24,7 @@
  */
 package net.runelite.rs.api;
 
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.mapping.Import;
 
@@ -257,6 +258,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("packetHandler")
 	void packetHandler();
+
+	@Import("chatLineMap")
+	@Override
+	Map getChatLineMap();
 
 	@Import("revision")
 	@Override

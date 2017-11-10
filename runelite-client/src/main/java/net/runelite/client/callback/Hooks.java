@@ -149,6 +149,20 @@ public class Hooks
 				runelite.getEventBus().post(gameStateChange);
 				break;
 			}
+			case "varbitChanged":
+			{
+				VarbitChanged varbitChanged = new VarbitChanged();
+				runelite.getEventBus().post(varbitChanged);
+				break;
+			}
+			case "resizeChanged":
+			{
+				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
+				ResizeableChanged resizeableChanged = new ResizeableChanged();
+				resizeableChanged.setResized(RuneLite.getClient().isResized());
+				runelite.getEventBus().post(resizeableChanged);
+				break;
+			}
 			default:
 				logger.warn("Unknown event {} triggered on {}", name, object);
 				return;

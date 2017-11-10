@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -8,6 +9,7 @@ public class class218 {
    static int[] field2689;
    @ObfuscatedName("p")
    @Export("settings")
+   @Hook("varbitChanged")
    public static int[] settings;
    @ObfuscatedName("i")
    @Export("widgetSettings")
