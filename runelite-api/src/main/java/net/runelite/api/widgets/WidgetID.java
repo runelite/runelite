@@ -45,6 +45,7 @@ class WidgetID
 	static final int COMBAT_GROUP_ID = 593;
 	static final int DIALOG_NPC_GROUP_ID = 231;
 	static final int SLAYER_REWARDS_GROUP_ID = 426;
+	static final int PRIVATE_CHAT = 163;
 
 	static class SlayerRewards
 	{
