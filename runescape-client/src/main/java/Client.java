@@ -47,6 +47,7 @@ public final class Client extends GameEngine {
    static boolean field1068;
    @ObfuscatedName("mt")
    @Export("isResized")
+   @Hook("resizeChanged")
    static boolean isResized;
    @ObfuscatedName("ke")
    static boolean field1027;
