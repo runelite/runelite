@@ -27,8 +27,6 @@ package net.runelite.client.plugins.mousehighlight;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.Color;
-
 @ConfigGroup(
 	keyName = "mousehighlight",
 	name = "Mouse Highlighting",
@@ -44,25 +42,5 @@ public interface MouseHighlightConfig
 	default boolean enabled()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "display_left",
-		name = "Display to the left of mouse?",
-		description = "Display to the left of the mouse or the right?"
-	)
-	default boolean display_left()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "border",
-		name = "Border Color",
-		description = "Color of the mouse hover border"
-	)
-	default Color borderColor()
-	{
-		return Color.cyan;
 	}
 }
