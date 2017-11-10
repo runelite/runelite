@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -14,6 +15,7 @@ public class Script extends CacheableNode {
    static NodeCache field1445;
    @ObfuscatedName("fs")
    @Export("mapRegions")
+   @Hook("mapRegionsChanged")
    static int[] mapRegions;
    @ObfuscatedName("p")
    @Export("instructions")
