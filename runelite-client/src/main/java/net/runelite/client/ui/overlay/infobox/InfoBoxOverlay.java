@@ -39,6 +39,9 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.tooltips.Tooltip;
+import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
+import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
 public class InfoBoxOverlay extends Overlay
 {
@@ -48,10 +51,12 @@ public class InfoBoxOverlay extends Overlay
 
 	private final RuneLite runelite = RuneLite.getRunelite();
 	private final Client client = RuneLite.getClient();
+	private final TooltipRenderer tooltipRenderer;
 
-	public InfoBoxOverlay()
+	public InfoBoxOverlay(TooltipRenderer tooltipRenderer)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		this.tooltipRenderer = tooltipRenderer;
 	}
 
 	@Override
@@ -114,8 +119,8 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
-			String tooltip = box.getTooltip();
-			if (tooltip == null || tooltip.isEmpty())
+			String tooltipText = box.getTooltip();
+			if (tooltipText == null || tooltipText.isEmpty())
 			{
 				x += BOXSIZE + SEPARATOR;
 				continue;
@@ -124,26 +129,9 @@ public class InfoBoxOverlay extends Overlay
 			Rectangle infoboxBounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
 			if (infoboxBounds.contains(mouseX, mouseY))
 			{
-				int tooltipWidth = metrics.stringWidth(tooltip);
-				int height = metrics.getHeight();
-
-				int tooltipY = mouseY - (int) infoboxBounds.getY();
-				if (tooltipY - height < 0)
-					tooltipY = height;
-
-				Color gray = new Color(Color.darkGray.getRed(), Color.darkGray.getGreen(), Color.darkGray.getBlue(), 190);
-				graphics.setColor(gray);
-
-				// Draws the background rect
-				graphics.fillRect(mouseX, tooltipY - height, tooltipWidth + 6, height);
-
-				// Draws the outline of the rect
-				graphics.setColor(Color.yellow);
-				graphics.drawRect(mouseX, tooltipY - height, tooltipWidth + 6, height);
-
-				// Tooltip text
-				graphics.setColor(Color.WHITE);
-				graphics.drawString(tooltip, mouseX + 3, tooltipY - height / 2 + 5);
+				Tooltip tooltip = new Tooltip(TooltipPriority.HIGH,
+					tooltipText);
+				tooltipRenderer.add(tooltip);
 			}
 
 			x += BOXSIZE + SEPARATOR;
