@@ -50,7 +50,7 @@ public class CacheDAO
 
 	public CacheEntry findMostRecent(Connection con)
 	{
-		return con.createQuery("select id from cache order by revision,date desc limit 1")
+		return con.createQuery("select id, revision, date from cache order by revision desc, date desc limit 1")
 			.executeAndFetchFirst(CacheEntry.class);
 	}
 
