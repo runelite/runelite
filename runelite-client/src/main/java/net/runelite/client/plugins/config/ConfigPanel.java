@@ -37,7 +37,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -91,7 +91,7 @@ public class ConfigPanel extends PluginPanel
 		add(createConfigPanel(), BorderLayout.NORTH);
 	}
 
-	private Collection<ConfigDescriptor> getConfig()
+	private List<ConfigDescriptor> getConfig()
 	{
 		List<ConfigDescriptor> list = new ArrayList<>();
 		for (Object config : runelite.getConfigManager().getConfigProxies())
@@ -112,7 +112,12 @@ public class ConfigPanel extends PluginPanel
 		panel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
 
 		ConfigManager configManager = runelite.getConfigManager();
-		Collection<ConfigDescriptor> config = getConfig();
+		List<ConfigDescriptor> config = getConfig();
+
+		// Sort by name
+		Comparator<ConfigDescriptor> comparator = (ConfigDescriptor left, ConfigDescriptor right) -> left.getGroup().name().compareTo(right.getGroup().name());
+		config.sort(comparator);
+
 		for (ConfigDescriptor cd : config)
 		{
 			JPanel groupPanel = new JPanel();
