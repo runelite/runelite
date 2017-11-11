@@ -68,7 +68,18 @@ final class ClientPanel extends JPanel
 		else
 		{
 			logger.debug("Runelite is up to date");
-			rs = loader.loadRunelite();
+
+			try
+			{
+				rs = loader.loadRunelite();
+			}
+			catch (ClassNotFoundException ex)
+			{
+				logger.error("Unable to load client - class not found. This means you"
+					+ " are not running RuneLite with Maven as the injected client"
+					+ " is not in your classpath.");
+				throw new ClassNotFoundException("Unable to load injected client", ex);
+			}
 		}
 
 		rs.setLayout(null);
@@ -87,7 +98,7 @@ final class ClientPanel extends JPanel
 		if (!(rs instanceof Client))
 		{
 			logger.error("Injected client does not implement Client!");
-			System.exit(-1);
+			return;
 		}
 
 		Client client = (Client) rs;
