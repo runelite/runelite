@@ -95,7 +95,8 @@ public final class ClientUI extends JFrame
 			}
 			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
 			{
-				logger.warn("Error loading RS!", ex);
+				logger.error("Error loading RS!", ex);
+				System.exit(-1);
 			}
 		}
 		container.add(panel, BorderLayout.CENTER);
