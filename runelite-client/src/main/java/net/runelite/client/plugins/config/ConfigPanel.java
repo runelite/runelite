@@ -131,6 +131,7 @@ public class ConfigPanel extends PluginPanel
 		//Make the panel scrollable
 		scrollPane = new JScrollPane(panel);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		scrollPane.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
 		return scrollPane;
 	}
