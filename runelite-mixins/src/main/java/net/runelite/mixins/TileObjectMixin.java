@@ -119,21 +119,21 @@ public abstract class TileObjectMixin implements TileObject
 		// models are orientated north (1024) and there are 2048 angles total
 		orientation = (orientation + 1024) % 2048;
 
-		List<Vertex> verticies = model.getVertices();
+		List<Vertex> vertices = model.getVertices();
 
 		if (orientation != 0)
 		{
-			// rotate verticies
-			for (int i = 0; i < verticies.size(); ++i)
+			// rotate vertices
+			for (int i = 0; i < vertices.size(); ++i)
 			{
-				Vertex v = verticies.get(i);
-				verticies.set(i, v.rotate(orientation));
+				Vertex v = vertices.get(i);
+				vertices.set(i, v.rotate(orientation));
 			}
 		}
 
 		List<Point> points = new ArrayList<Point>();
 
-		for (Vertex v : verticies)
+		for (Vertex v : vertices)
 		{
 			// Compute canvas location of vertex
 			Point p = Perspective.worldToCanvas(client,
