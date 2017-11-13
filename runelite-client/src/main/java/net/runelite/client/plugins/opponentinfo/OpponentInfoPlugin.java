@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fpsinfo;
+package net.runelite.client.plugins.opponentinfo;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Binder;
-import java.awt.Font;
+import com.google.inject.Provides;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
 import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Frames per second"
+	name = "Opponent information plugin"
 )
-public class FPS extends Plugin
+public class OpponentInfoPlugin extends Plugin
 {
 	@Inject
-	FPSOverlay overlay;
-
-	private Font font;
+	OpponentInfoOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(FPSOverlay.class);
+		binder.bind(OpponentInfoOverlay.class);
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@Provides
+	OpponentConfig getConfig(ConfigManager configManager)
 	{
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
+		return configManager.getConfig(OpponentConfig.class);
 	}
 
 	@Override
@@ -61,8 +64,14 @@ public class FPS extends Plugin
 		return overlay;
 	}
 
-	public Font getFont()
+	public static Map<String, Integer> loadNpcHealth()
 	{
-		return font;
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
+		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }

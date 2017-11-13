@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Runecraft plugin"
 )
-public class Runecraft extends Plugin
+public class RunecraftPlugin extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
 

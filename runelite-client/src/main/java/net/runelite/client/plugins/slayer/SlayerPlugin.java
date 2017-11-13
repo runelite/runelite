@@ -57,9 +57,9 @@ import org.slf4j.LoggerFactory;
 @PluginDescriptor(
 	name = "Slayer plugin"
 )
-public class Slayer extends Plugin
+public class SlayerPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Slayer.class);
+	private static final Logger logger = LoggerFactory.getLogger(SlayerPlugin.class);
 
 	//Chat messages
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");

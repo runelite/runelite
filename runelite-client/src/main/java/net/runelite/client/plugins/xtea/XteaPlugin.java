@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,82 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberusername;
+package net.runelite.client.plugins.xtea;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.http.api.xtea.XteaClient;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Remember username plugin"
+	name = "Xtea plugin"
 )
-public class RememberUsername extends Plugin
+public class XteaPlugin extends Plugin
 {
+	private static final Logger logger = LoggerFactory.getLogger(XteaPlugin.class);
+
+	private final XteaClient xteaClient = new XteaClient();
+
+	private final Set<Integer> sentRegions = new HashSet<>();
+
 	@Inject
 	@Nullable
 	Client client;
 
 	@Inject
-	RememberUsernameConfig config;
-
-	@Provides
-	RememberUsernameConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(RememberUsernameConfig.class);
-	}
+	ScheduledExecutorService executor;
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onMapRegionChanged(MapRegionChanged event)
 	{
-		if (!config.enabled())
+		int idx = event.getIndex();
+
+		if (idx == -1)
+		{
+			return; // this is the new array being assigned to the field
+		}
+
+		int revision = client.getRevision();
+		int[] regions = client.getMapRegions();
+		int[][] xteaKeys = client.getXteaKeys();
+
+		int region = regions[idx];
+		int[] keys = xteaKeys[idx];
+
+		logger.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+		// No need to ever send more than once
+		if (sentRegions.contains(region))
 		{
 			return;
 		}
 
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		sentRegions.add(region);
+
+		executor.execute(() ->
 		{
-			if (config.username() == null || config.username().isEmpty())
+			try (Response response = xteaClient.submit(revision, region, keys))
 			{
-				return;
+				if (!response.isSuccessful())
+				{
+					logger.debug("unsuccessful xtea response");
+				}
 			}
-
-			client.setUsername(config.username());
-		}
-
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			if (config.username().equals(client.getUsername()))
+			catch (IOException ex)
 			{
-				return;
+				logger.debug("unable to submit xtea keys", ex);
 			}
-
-			config.username(client.getUsername());
-		}
+		});
 	}
 }

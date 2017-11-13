@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,64 +23,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hiscore;
+package net.runelite.client.plugins.bosstimer;
 
 import com.google.common.eventbus.Subscribe;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
-import net.runelite.client.events.PlayerMenuOptionClicked;
-import net.runelite.client.menus.MenuManager;
+import net.runelite.api.Actor;
+import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Hiscore plugin"
+	name = "Boss timers plugin"
 )
-public class Hiscore extends Plugin
+public class BossTimersPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hiscore.class);
-
-	private static final String LOOKUP = "Lookup";
+	private static final Logger logger = LoggerFactory.getLogger(BossTimersPlugin.class);
 
 	@Inject
-	ClientUI ui;
-
-	@Inject
-	MenuManager menuManager;
-
-	@Inject
-	ScheduledExecutorService executor;
-
-	private NavigationButton navButton;
-	private HiscorePanel hiscorePanel;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
-		hiscorePanel = injector.getInstance(HiscorePanel.class);
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
-		navButton.getButton().setIcon(icon);
-
-		ui.getPluginToolbar().addNavigation(navButton);
-
-		menuManager.addPlayerMenuItem(LOOKUP);
-	}
+	InfoBoxManager infoBoxManager;
 
 	@Subscribe
-	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	public void onActorDeath(ActorDeath death)
 	{
-		if (event.getMenuOption().equals(LOOKUP))
-		{
-			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
-		}
-	}
+		Actor actor = death.getActor();
 
+		Boss boss = Boss.find(actor.getName());
+		if (boss == null)
+		{
+			return;
+		}
+
+		// remove existing timer
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+
+		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
+
+		RespawnTimer timer = new RespawnTimer(boss);
+		infoBoxManager.addInfoBox(timer);
+	}
 }

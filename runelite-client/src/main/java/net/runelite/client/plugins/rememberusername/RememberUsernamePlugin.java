@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,63 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.rememberusername;
 
-import com.google.inject.Binder;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Boosts plugin"
+	name = "Remember username plugin"
 )
-public class Boosts extends Plugin
+public class RememberUsernamePlugin extends Plugin
 {
 	@Inject
-	BoostsOverlay boostsOverlay;
+	@Nullable
+	Client client;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(BoostsOverlay.class);
-	}
+	@Inject
+	RememberUsernameConfig config;
 
 	@Provides
-	BoostsConfig provideConfig(ConfigManager configManager)
+	RememberUsernameConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(BoostsConfig.class);
+		return configManager.getConfig(RememberUsernameConfig.class);
 	}
 
-	@Override
-	public Overlay getOverlay()
+	@Subscribe
+	public void onGameStateChange(GameStateChanged event)
 	{
-		return boostsOverlay;
+		if (!config.enabled())
+		{
+			return;
+		}
+
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			if (config.username() == null || config.username().isEmpty())
+			{
+				return;
+			}
+
+			client.setUsername(config.username());
+		}
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			if (config.username().equals(client.getUsername()))
+			{
+				return;
+			}
+
+			config.username(client.getUsername());
+		}
 	}
 }

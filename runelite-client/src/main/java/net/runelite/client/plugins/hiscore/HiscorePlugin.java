@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.hiscore;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
+import com.google.common.eventbus.Subscribe;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
+import javax.swing.ImageIcon;
+import net.runelite.client.events.PlayerMenuOptionClicked;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Ground items plugin"
+	name = "Hiscore plugin"
 )
-public class GroundItems extends Plugin
+public class HiscorePlugin extends Plugin
 {
-	@Inject
-	ConfigManager configManager;
+	private static final Logger logger = LoggerFactory.getLogger(HiscorePlugin.class);
+
+	private static final String LOOKUP = "Lookup";
 
 	@Inject
-	GroundItemsOverlay overlay;
+	ClientUI ui;
+
+	@Inject
+	MenuManager menuManager;
+
+	@Inject
+	ScheduledExecutorService executor;
+
+	private NavigationButton navButton;
+	private HiscorePanel hiscorePanel;
 
 	@Override
-	public void configure(Binder binder)
+	protected void startUp() throws Exception
 	{
-		binder.bind(GroundItemsOverlay.class);
+		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
+		hiscorePanel = injector.getInstance(HiscorePanel.class);
+
+		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
+		navButton.getButton().setIcon(icon);
+
+		ui.getPluginToolbar().addNavigation(navButton);
+
+		menuManager.addPlayerMenuItem(LOOKUP);
 	}
 
-	@Provides
-	GroundItemsConfig provideConfig(ConfigManager configManager)
+	@Subscribe
+	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
 	{
-		return configManager.getConfig(GroundItemsConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
+		if (event.getMenuOption().equals(LOOKUP))
+		{
+			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
+		}
 	}
 
 }

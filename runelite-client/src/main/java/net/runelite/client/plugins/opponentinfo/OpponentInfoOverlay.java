@@ -65,7 +65,7 @@ class OpponentInfoOverlay extends Overlay
 	private float lastRatio = 0;
 	private Instant lastTime = Instant.now();
 	private String opponentName;
-	private Map<String, Integer> oppInfoHealth = OpponentInfo.loadNpcHealth();
+	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	@Inject
 	OpponentInfoOverlay(@Nullable Client client, OpponentConfig config)

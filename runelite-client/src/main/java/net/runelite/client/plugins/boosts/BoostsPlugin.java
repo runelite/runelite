@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch;
+package net.runelite.client.plugins.boosts;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -33,31 +33,28 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Runepouch plugin"
+	name = "Boosts plugin"
 )
-public class Runepouch extends Plugin
+public class BoostsPlugin extends Plugin
 {
 	@Inject
-	ConfigManager configManager;
-
-	@Inject
-	RunepouchOverlay overlay;
+	BoostsOverlay boostsOverlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(RunepouchOverlay.class);
+		binder.bind(BoostsOverlay.class);
 	}
 
 	@Provides
-	RunepouchConfig getConfig(ConfigManager configManager)
+	BoostsConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RunepouchConfig.class);
+		return configManager.getConfig(BoostsConfig.class);
 	}
 
 	@Override
 	public Overlay getOverlay()
 	{
-		return overlay;
+		return boostsOverlay;
 	}
 }
