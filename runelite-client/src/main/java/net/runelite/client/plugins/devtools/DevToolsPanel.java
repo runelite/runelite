@@ -27,6 +27,8 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.*;
 import java.util.Collection;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -37,7 +39,6 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.PluginPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,6 @@ public class DevToolsPanel extends PluginPanel
 	private static final Logger logger = LoggerFactory.getLogger(DevToolsPanel.class);
 
 	private final EmptyBorder PADDING_BORDER = new EmptyBorder(3, 3, 3, 3);
-
-	private final Client client = RuneLite.getClient();
 
 	private JButton renderPlayersBtn = new JButton();
 	private JButton renderNpcsBtn = new JButton();
@@ -69,13 +68,18 @@ public class DevToolsPanel extends PluginPanel
 	private JLabel typeLbl = new JLabel();
 	private JLabel contentTypeLbl = new JLabel();
 
-	private DevTools plugin;
+	private final Client client;
+	private final DevTools plugin;
 
-	private final SettingsTracker settingsTracker = new SettingsTracker(client);
+	private final SettingsTracker settingsTracker;
 
-	public DevToolsPanel(DevTools plugin)
+	@Inject
+	public DevToolsPanel(@Nullable Client client, DevTools plugin)
 	{
+		this.client = client;
 		this.plugin = plugin;
+
+		settingsTracker = new SettingsTracker(client);
 
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));

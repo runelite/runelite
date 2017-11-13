@@ -25,13 +25,15 @@
 package net.runelite.client.plugins.runecraft;
 
 import com.google.common.eventbus.Subscribe;
-
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -44,29 +46,28 @@ public class Runecraft extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
 
-	private final RunecraftConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunecraftConfig.class);
-	private final RunecraftOverlay overlay = new RunecraftOverlay(this);
-	private final BindNeckOverlay bindNeckOverlay = new BindNeckOverlay(this);
+	@Inject
+	RunecraftOverlay overlay;
+
+	@Inject
+	BindNeckOverlay bindNeckOverlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(RunecraftOverlay.class);
+	}
+
+	@Provides
+	RunecraftConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RunecraftConfig.class);
+	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(overlay, bindNeckOverlay);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public RunecraftConfig getConfig()
-	{
-		return config;
 	}
 
 	@Subscribe
@@ -87,11 +88,11 @@ public class Runecraft extends Plugin
 		if (event.getMessage().contains("You bind the temple's power"))
 		{
 			if (event.getMessage().contains("mud")
-					|| event.getMessage().contains("lava")
-					|| event.getMessage().contains("steam")
-					|| event.getMessage().contains("dust")
-					|| event.getMessage().contains("smoke")
-					|| event.getMessage().contains("mist"))
+				|| event.getMessage().contains("lava")
+				|| event.getMessage().contains("steam")
+				|| event.getMessage().contains("dust")
+				|| event.getMessage().contains("smoke")
+				|| event.getMessage().contains("mist"))
 			{
 				bindNeckOverlay.bindingCharges -= 1;
 				return;

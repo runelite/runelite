@@ -26,13 +26,17 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -42,32 +46,32 @@ import net.runelite.client.task.Schedule;
 )
 public class ClueScrollPlugin extends Plugin
 {
-	private final Client client = RuneLite.getClient();
+	@Inject
+	@Nullable
+	Client client;
 
-	private final ClueScrollConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ClueScrollConfig.class);
-	private final ClueScrollOverlay overlay = new ClueScrollOverlay(this);
+	@Inject
+	ClueScrollConfig config;
+
+	@Inject
+	ClueScrollOverlay clueScrollOverlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(ClueScrollOverlay.class);
+	}
+
+	@Provides
+	ClueScrollConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ClueScrollConfig.class);
+	}
 
 	@Override
 	public ClueScrollOverlay getOverlay()
 	{
-		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
-	}
-
-	public ClueScrollConfig getConfig()
-	{
-		return config;
+		return clueScrollOverlay;
 	}
 
 	@Schedule(
@@ -93,19 +97,19 @@ public class ClueScrollPlugin extends Plugin
 
 		if (clue == null)
 		{
-			overlay.clue = null;
+			clueScrollOverlay.clue = null;
 			return;
 		}
 
 		if (clue.getType() == ClueScrollType.EMOTE)
 		{
-			overlay.clue = clue;
+			clueScrollOverlay.clue = clue;
 
-			overlay.clueTimeout = Instant.now();
+			clueScrollOverlay.clueTimeout = Instant.now();
 			return;
 		}
 
-		overlay.clue = null;
+		clueScrollOverlay.clue = null;
 
 		//check for <col=ffffff> which tells us if the string has already been built
 		if (clueScroll.getText().contains("<col=ffffff>"))

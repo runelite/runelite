@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Fishing",
 	description = "Configuration for the fishing plugin"
 )
-public interface FishingConfig
+public interface FishingConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

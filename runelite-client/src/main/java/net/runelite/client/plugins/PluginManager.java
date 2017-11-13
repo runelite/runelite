@@ -25,37 +25,45 @@
 package net.runelite.client.plugins;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.eventbus.EventBus;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.ServiceManager;
+import com.google.inject.Binder;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.inject.Singleton;
 import net.runelite.client.RuneLite;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
+import net.runelite.client.task.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class PluginManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
 
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
-	private final RuneLite runelite;
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private Scheduler scheduler;
+
 	private ServiceManager manager;
 	private final List<Plugin> plugins = new ArrayList<>();
-
-	public PluginManager(RuneLite runelite)
-	{
-		this.runelite = runelite;
-	}
 
 	public void loadPlugins() throws IOException
 	{
@@ -108,6 +116,16 @@ public class PluginManager
 			}
 
 			plugins.add(plugin);
+
+			Module pluginModule = (Binder binder) ->
+			{
+				binder.bind((Class<Plugin>) clazz).toInstance(plugin);
+				binder.install(plugin);
+			};
+			Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
+			pluginInjector.injectMembers(plugin);
+			plugin.injector = pluginInjector;
+
 			logger.debug("Loaded plugin {}", pluginDescriptor.name());
 		}
 	}
@@ -123,7 +141,7 @@ public class PluginManager
 				public void running()
 				{
 					logger.debug("Plugin {} is now running", plugin);
-					runelite.getEventBus().register(plugin);
+					eventBus.register(plugin);
 
 					schedule(plugin);
 				}
@@ -132,7 +150,7 @@ public class PluginManager
 				public void stopping(Service.State from)
 				{
 					logger.debug("Plugin {} is stopping", plugin);
-					runelite.getEventBus().unregister(plugin);
+					eventBus.unregister(plugin);
 					unschedule(plugin);
 				}
 
@@ -143,7 +161,7 @@ public class PluginManager
 
 					if (from == Service.State.RUNNING)
 					{
-						runelite.getEventBus().unregister(plugin);
+						eventBus.unregister(plugin);
 						unschedule(plugin);
 					}
 				}
@@ -158,6 +176,21 @@ public class PluginManager
 		manager.startAsync();
 	}
 
+	/**
+	 * Get all plugins regardless of state
+	 *
+	 * @return
+	 */
+	public Collection<Plugin> getAllPlugins()
+	{
+		return plugins;
+	}
+
+	/**
+	 * Get running plugins
+	 *
+	 * @return
+	 */
 	public Collection<Plugin> getPlugins()
 	{
 		return manager.servicesByState().get(Service.State.RUNNING)
@@ -180,13 +213,13 @@ public class PluginManager
 			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
 			logger.debug("Scheduled task {}", scheduledMethod);
 
-			runelite.getScheduler().addScheduledMethod(scheduledMethod);
+			scheduler.addScheduledMethod(scheduledMethod);
 		}
 	}
 
 	private void unschedule(Plugin plugin)
 	{
-		List<ScheduledMethod> methods = new ArrayList<>(runelite.getScheduler().getScheduledMethods());
+		List<ScheduledMethod> methods = new ArrayList<>(scheduler.getScheduledMethods());
 
 		for (ScheduledMethod method : methods)
 		{
@@ -196,7 +229,7 @@ public class PluginManager
 			}
 
 			logger.debug("Removing scheduled task {}", method);
-			runelite.getScheduler().removeScheduledMethod(method);
+			scheduler.removeScheduledMethod(method);
 		}
 	}
 }

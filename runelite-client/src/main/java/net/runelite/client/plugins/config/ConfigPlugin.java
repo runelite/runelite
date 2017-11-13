@@ -25,8 +25,9 @@
 package net.runelite.client.plugins.config;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -41,8 +42,11 @@ public class ConfigPlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigPlugin.class);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final ClientUI ui = runelite.getGui();
+	@Inject
+	ClientUI ui;
+
+	@Inject
+	ConfigManager configManager;
 
 	private NavigationButton navButton;
 
@@ -57,14 +61,9 @@ public class ConfigPlugin extends Plugin
 		ui.getPluginToolbar().addNavigation(navButton);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
 	private ConfigPanel buildPanel()
 	{
-		ConfigPanel panel = new ConfigPanel();
+		ConfigPanel panel = new ConfigPanel(configManager);
 		panel.init();
 		return panel;
 	}

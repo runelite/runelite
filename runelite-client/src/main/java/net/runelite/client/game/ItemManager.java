@@ -30,13 +30,17 @@ import com.google.common.cache.LoadingCache;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.SpritePixels;
-import net.runelite.client.RuneLite;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 
+@Singleton
 public class ItemManager
 {
 	/**
@@ -49,17 +53,19 @@ public class ItemManager
 	 */
 	static final ItemPrice NONE = new ItemPrice();
 
-
+	private final Client client;
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
 	private final LoadingCache<Integer, BufferedImage> itemImages;
 
-	public ItemManager(RuneLite runelite)
+	@Inject
+	public ItemManager(@Nullable Client client, ScheduledExecutorService executor)
 	{
+		this.client = client;
 		itemPrices = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new ItemPriceLoader(runelite, itemClient));
+			.build(new ItemPriceLoader(executor, itemClient));
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(200)
@@ -135,12 +141,12 @@ public class ItemManager
 
 	/**
 	 * Loads item sprite from game, makes transparent, and generates image
+	 *
 	 * @param itemId
 	 * @return
 	 */
 	private BufferedImage loadImage(int itemId)
 	{
-		Client client = RuneLite.getClient();
 		SpritePixels sprite = client.createItemSprite(itemId, 1, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
 		int[] pixels = sprite.getPixels();
 		int[] transPixels = new int[pixels.length];

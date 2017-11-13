@@ -25,14 +25,39 @@
 package net.runelite.client.plugins;
 
 import com.google.common.util.concurrent.AbstractIdleService;
+import com.google.inject.Binder;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Executor;
 import javax.swing.SwingUtilities;
 import net.runelite.client.ui.overlay.Overlay;
 
-public abstract class Plugin extends AbstractIdleService
+public abstract class Plugin extends AbstractIdleService implements Module
 {
+	protected Injector injector;
+
+	@Override
+	public void configure(Binder binder)
+	{
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+	}
+
+	public final Injector getInjector()
+	{
+		return injector;
+	}
+
 	public Overlay getOverlay()
 	{
 		return null;
@@ -46,9 +71,7 @@ public abstract class Plugin extends AbstractIdleService
 
 	/**
 	 * Override AbstractIdleService's default executor to instead execute in
-	 * the main thread. Prevents plugins from all being initialized from
-	 * different threads, which causes the plugin order on the navbar to be
-	 * undefined
+	 * the AWT event dispatch thread.
 	 *
 	 * @return
 	 */

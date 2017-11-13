@@ -32,7 +32,6 @@ import java.io.IOException;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
-import net.runelite.client.RuneLite;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +42,12 @@ final class ClientPanel extends JPanel
 
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
 
+	private final ClientUI ui;
 	private Applet rs;
 
-	public ClientPanel()
+	public ClientPanel(ClientUI ui)
 	{
+		this.ui = ui;
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -103,7 +104,7 @@ final class ClientPanel extends JPanel
 
 		Client client = (Client) rs;
 
-		RuneLite.setClient(client);
+		ui.getRunelite().setClient(client);
 
 		// This causes the whole game frame to be redrawn each frame instead
 		// of only the viewport, so we can hook to MainBufferProvider#draw

@@ -26,12 +26,18 @@
  */
 package net.runelite.client.plugins.zulrah;
 
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
@@ -45,8 +51,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.temporal.ChronoUnit;
-
 @PluginDescriptor(
 	name = "Zulrah plugin"
 )
@@ -54,29 +58,39 @@ public class Zulrah extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final ZulrahConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ZulrahConfig.class);
-	private final Client client = RuneLite.getClient();
-	private final ZulrahOverlay overlay = new ZulrahOverlay(this);
-	private final ZulrahPattern[] patterns = new ZulrahPattern[]{
-			new ZulrahPatternA(),
-			new ZulrahPatternB(),
-			new ZulrahPatternC(),
-			new ZulrahPatternD()
+	@Inject
+	RuneLite runelite;
+
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	ZulrahConfig config;
+
+	@Inject
+	ZulrahOverlay overlay;
+
+	private final ZulrahPattern[] patterns = new ZulrahPattern[]
+	{
+		new ZulrahPatternA(),
+		new ZulrahPatternB(),
+		new ZulrahPatternC(),
+		new ZulrahPatternD()
 	};
 
 	private ZulrahInstance instance;
 
 	@Override
-	protected void startUp() throws Exception
+	public void configure(Binder binder)
 	{
-
+		binder.bind(ZulrahOverlay.class);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@Provides
+	ZulrahConfig getConfig(ConfigManager configManager)
 	{
-
+		return configManager.getConfig(ZulrahConfig.class);
 	}
 
 	@Override

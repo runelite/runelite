@@ -22,10 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.boosts;
 
-import net.runelite.client.RuneLite;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -35,27 +37,24 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class Boosts extends Plugin
 {
-	private final BoostsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(BoostsConfig.class);
-	private final Overlay overlay = new BoostsOverlay(this);
+	@Inject
+	BoostsOverlay boostsOverlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(BoostsOverlay.class);
+	}
+
+	@Provides
+	BoostsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BoostsConfig.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
-		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public BoostsConfig getConfig()
-	{
-		return config;
+		return boostsOverlay;
 	}
 }

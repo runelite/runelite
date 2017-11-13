@@ -25,8 +25,9 @@
 package net.runelite.client.config;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 import java.awt.Color;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,27 +38,38 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class ConfigManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
 
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 
-	private final EventBus eventBus;
+	@Inject
+	EventBus eventBus;
+
+	@Inject
+	ScheduledExecutorService executor;
+
+	@Inject
+	PluginManager pluginManager;
+
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
@@ -65,11 +77,8 @@ public class ConfigManager
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 
-	private final List<Object> configProxies = new ArrayList<>();
-
-	public ConfigManager(EventBus eventBus)
+	public ConfigManager()
 	{
-		this.eventBus = eventBus;
 		this.propertiesFile = getPropertiesFile();
 	}
 
@@ -79,14 +88,31 @@ public class ConfigManager
 		switchSession(session);
 	}
 
-	public Collection<Object> getConfigProxies()
+	public List<Config> getConfigProxies()
 	{
-		return Collections.unmodifiableCollection(configProxies);
+		List<Injector> injectors = new ArrayList<>();
+		injectors.add(RuneLite.getInjector());
+		pluginManager.getAllPlugins().forEach(pl -> injectors.add(pl.getInjector()));
+
+		List<Config> list = new ArrayList<>();
+		for (Injector injector : injectors)
+		{
+			for (Key<?> key : injector.getAllBindings().keySet())
+			{
+				Class<?> type = key.getTypeLiteral().getRawType();
+				if (Config.class.isAssignableFrom(type))
+				{
+					Config config = (Config) injector.getInstance(key);
+					list.add(config);
+				}
+			}
+		}
+		return list;
 	}
 
 	public void loadDefault()
 	{
-		for (Object config : configProxies)
+		for (Object config : getConfigProxies())
 		{
 			setDefaultConfiguration(config);
 		}
@@ -214,8 +240,6 @@ public class ConfigManager
 			clazz
 		}, handler);
 
-		configProxies.add(t);
-
 		return t;
 	}
 
@@ -243,7 +267,7 @@ public class ConfigManager
 					logger.warn("unable to set configuration item", ex);
 				}
 			};
-			RuneLite.getRunelite().getExecutor().execute(task);
+			executor.execute(task);
 
 		}
 
@@ -312,16 +336,16 @@ public class ConfigManager
 
 		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
-			.sorted((m1, m2) ->
-				Integer.compare(
-					m1.getDeclaredAnnotation(ConfigItem.class).position(),
-					m2.getDeclaredAnnotation(ConfigItem.class).position()
-				)
+			.sorted((m1, m2)
+				-> Integer.compare(
+				m1.getDeclaredAnnotation(ConfigItem.class).position(),
+				m2.getDeclaredAnnotation(ConfigItem.class).position()
+			)
 			)
 			.map(m -> new ConfigItemDescriptor(
-					m.getDeclaredAnnotation(ConfigItem.class),
-					m.getReturnType()
-				))
+			m.getDeclaredAnnotation(ConfigItem.class),
+			m.getReturnType()
+		))
 			.collect(Collectors.toList());
 		return new ConfigDescriptor(group, items);
 	}

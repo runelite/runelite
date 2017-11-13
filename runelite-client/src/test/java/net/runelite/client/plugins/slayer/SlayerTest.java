@@ -24,15 +24,19 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
-import net.runelite.client.RuneLite;
+import net.runelite.api.Client;
 import net.runelite.client.events.ChatMessage;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -47,22 +51,34 @@ public class SlayerTest
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
 
-	@Mock(answer = RETURNS_DEEP_STUBS)
-	private RuneLite runeLite;
+	@Mock
+	@Bind
+	Client client;
 
 	@Mock
-	private SlayerConfig slayerConfig;
+	@Bind
+	SlayerConfig slayerConfig;
 
-	private Slayer slayerPlugin;
+	@Mock
+	@Bind
+	SlayerOverlay overlay;
+
+	@Mock
+	@Bind
+	InfoBoxManager infoBoxManager;
+
+	@Mock
+	@Bind
+	ItemManager itemManager;
+
+	@Inject
+	Slayer slayerPlugin;
 
 	@Before
 	public void before()
 	{
-		RuneLite.setRunelite(runeLite);
-		when(runeLite.getConfigManager().getConfig(Matchers.any(Class.class))).thenReturn(slayerConfig);
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(slayerConfig.enabled()).thenReturn(true);
-
-		slayerPlugin = new Slayer();
 	}
 
 	@Test

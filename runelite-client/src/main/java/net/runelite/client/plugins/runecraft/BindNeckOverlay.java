@@ -34,11 +34,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.BINDING_NECKLACE;
-
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -51,16 +50,19 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class BindNeckOverlay extends Overlay
 {
-	private final Client client = RuneLite.getClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
+	private final RuneLite runelite;
+	private final Client client;
 	private final RunecraftConfig config;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 	int bindingCharges;
 
-	BindNeckOverlay(Runecraft plugin)
+	@Inject
+	BindNeckOverlay(RuneLite runelite, RunecraftConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.runelite = runelite;
+		this.client = runelite.getClient();
+		this.config = config;
 	}
 
 	@Override

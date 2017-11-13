@@ -35,6 +35,8 @@ import java.awt.Rectangle;
 
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -51,7 +53,6 @@ import net.runelite.api.WallObject;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -74,12 +75,14 @@ public class DevToolsOverlay extends Overlay
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 
+	private final Client client;
 	private final DevTools plugin;
-	private final Client client = RuneLite.getClient();
 
-	public DevToolsOverlay(DevTools plugin)
+	@Inject
+	public DevToolsOverlay(@Nullable Client client, DevTools plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.client = client;
 		this.plugin = plugin;
 	}
 

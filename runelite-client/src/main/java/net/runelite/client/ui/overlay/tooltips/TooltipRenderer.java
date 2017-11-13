@@ -32,7 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.ui.overlay.Renderer;
 
@@ -47,10 +46,16 @@ public class TooltipRenderer implements Renderer
 	private static final Color BORDER_COLOR = Color.black;
 	private static final Color FONT_COLOR = Color.white;
 
-	private final Client client = RuneLite.getClient();
-	private final RuneliteConfig config = RuneLite.getRunelite().getConfig();
+	private final Client client;
+	private final RuneliteConfig config;
 
 	private Tooltip tooltip;
+
+	public TooltipRenderer(Client client, RuneliteConfig config)
+	{
+		this.client = client;
+		this.config = config;
+	}
 
 	@Override
 	public void render(BufferedImage clientBuffer)

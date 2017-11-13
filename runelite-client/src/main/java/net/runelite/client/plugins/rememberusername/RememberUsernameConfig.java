@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.rememberusername;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Remember Username",
 	description = "Configuration for the remember username plugin"
 )
-public interface RememberUsernameConfig
+public interface RememberUsernameConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

@@ -29,8 +29,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -46,21 +47,16 @@ public class Xtea extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(Xtea.class);
 
-	private final RuneLite runeLite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
 	private final XteaClient xteaClient = new XteaClient();
 
 	private final Set<Integer> sentRegions = new HashSet<>();
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
+	@Inject
+	@Nullable
+	Client client;
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
+	@Inject
+	ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onMapRegionChanged(MapRegionChanged event)
@@ -89,7 +85,6 @@ public class Xtea extends Plugin
 
 		sentRegions.add(region);
 
-		ScheduledExecutorService executor = runeLite.getExecutor();
 		executor.execute(() ->
 		{
 			try (Response response = xteaClient.submit(revision, region, keys))

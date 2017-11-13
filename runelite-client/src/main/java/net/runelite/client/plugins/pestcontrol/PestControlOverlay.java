@@ -32,6 +32,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -54,17 +55,20 @@ public class PestControlOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(PestControlOverlay.class);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite;
+	private final Client client;
 
 	private final PestControl plugin;
 
 	// Pest control game
 	private Game game;
 
-	public PestControlOverlay(PestControl plugin)
+	@Inject
+	public PestControlOverlay(RuneLite runelite, PestControl plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.runelite = runelite;
+		this.client = runelite.getClient();
 		this.plugin = plugin;
 	}
 

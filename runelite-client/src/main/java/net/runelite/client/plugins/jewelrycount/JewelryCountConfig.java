@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.jewelrycount;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Jewelry Count",
 	description = "Configuration for the jewelry count plugin"
 )
-public interface JewelryCountConfig
+public interface JewelryCountConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

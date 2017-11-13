@@ -25,11 +25,15 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -41,31 +45,33 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class WoodcuttingPlugin extends Plugin
 {
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final WoodcuttingConfig config = runelite.getConfigManager().getConfig(WoodcuttingConfig.class);
-	private final WoodcuttingOverlay overlay = new WoodcuttingOverlay(this);
+	@Inject
+	RuneLite runelite;
 
-	private WoodcuttingSession session = new WoodcuttingSession();
+	@Inject
+	WoodcuttingOverlay overlay;
+
+	@Inject
+	WoodcuttingConfig config;
+
+	private final WoodcuttingSession session = new WoodcuttingSession();
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(WoodcuttingOverlay.class);
+	}
+
+	@Provides
+	WoodcuttingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WoodcuttingConfig.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public WoodcuttingConfig getConfig()
-	{
-		return config;
 	}
 
 	public WoodcuttingSession getSession()

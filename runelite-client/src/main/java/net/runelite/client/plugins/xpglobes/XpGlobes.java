@@ -25,14 +25,18 @@
 package net.runelite.client.plugins.xpglobes;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
@@ -44,26 +48,32 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class XpGlobes extends Plugin
 {
-
-	private final XpGlobesConfig config = RuneLite.getRunelite().getConfigManager()
-			.getConfig(XpGlobesConfig.class);
-	private final Overlay overlay = new XpGlobesOverlay(this);
-	private final Client client = RuneLite.getClient();
-	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
-	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
-	@Override
-	protected void startUp() throws Exception
-	{
+	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	XpGlobesConfig config;
+
+	@Inject
+	XpGlobesOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(XpGlobesOverlay.class);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@Provides
+	XpGlobesConfig getConfig(ConfigManager configManager)
 	{
-
+		return configManager.getConfig(XpGlobesConfig.class);
 	}
 
 	@Override
@@ -158,11 +168,6 @@ public class XpGlobes extends Plugin
 				it.remove();
 			}
 		}
-	}
-
-	public XpGlobesConfig getConfig()
-	{
-		return config;
 	}
 
 	public void resetGlobeState()

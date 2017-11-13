@@ -31,10 +31,11 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.stream.IntStream;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -58,16 +59,17 @@ class WoodcuttingOverlay extends Overlay
 		WOODCUTTING_INFERNAL
 	};
 
-	private final Client client = RuneLite.getClient();
-
+	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
 
-	public WoodcuttingOverlay(WoodcuttingPlugin plugin)
+	@Inject
+	public WoodcuttingOverlay(@Nullable Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		this.client = client;
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
+		this.config = config;
 	}
 
 	@Override

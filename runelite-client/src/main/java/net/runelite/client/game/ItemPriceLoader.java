@@ -29,7 +29,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import java.io.IOException;
-import net.runelite.client.RuneLite;
+import java.util.concurrent.ScheduledExecutorService;
 import static net.runelite.client.game.ItemManager.EMPTY;
 import static net.runelite.client.game.ItemManager.NONE;
 import net.runelite.http.api.item.ItemClient;
@@ -44,9 +44,9 @@ class ItemPriceLoader extends CacheLoader<Integer, ItemPrice>
 	private final ListeningExecutorService executorService;
 	private final ItemClient client;
 
-	ItemPriceLoader(RuneLite runelite, ItemClient client)
+	ItemPriceLoader(ScheduledExecutorService executor, ItemClient client)
 	{
-		this.executorService = MoreExecutors.listeningDecorator(runelite.getExecutor());
+		this.executorService = MoreExecutors.listeningDecorator(executor);
 		this.client = client;
 	}
 

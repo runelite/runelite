@@ -40,7 +40,7 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ClientUI extends JFrame
+public class ClientUI extends JFrame
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientUI.class);
 
@@ -48,14 +48,16 @@ public final class ClientUI extends JFrame
 	private static final int PANEL_HEIGHT = 536;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
 
+	private final RuneLite runelite;
 	private JPanel container;
 	private JPanel navContainer;
 	private ClientPanel panel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
-	public ClientUI()
+	public ClientUI(RuneLite runelite)
 	{
+		this.runelite = runelite;
 		init();
 		pack();
 		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
@@ -86,7 +88,7 @@ public final class ClientUI extends JFrame
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
 
-		panel = new ClientPanel();
+		panel = new ClientPanel(this);
 		if (!RuneLite.getOptions().has("no-rs"))
 		{
 			try
@@ -139,7 +141,7 @@ public final class ClientUI extends JFrame
 
 	private void checkExit()
 	{
-		Client client = RuneLite.getClient();
+		Client client = runelite.getClient();
 		int result = JOptionPane.OK_OPTION;
 
 		// only ask if not logged out
@@ -162,5 +164,10 @@ public final class ClientUI extends JFrame
 	public PluginPanel getPluginPanel()
 	{
 		return pluginPanel;
+	}
+
+	RuneLite getRunelite()
+	{
+		return runelite;
 	}
 }

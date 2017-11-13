@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.clanchat;
 
 import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -38,15 +40,9 @@ import net.runelite.client.task.Schedule;
 )
 public class ClanChat extends Plugin
 {
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
+	@Inject
+	@Nullable
+	Client client;
 
 	@Schedule(
 		period = 600,
@@ -54,15 +50,15 @@ public class ClanChat extends Plugin
 	)
 	public void updateClanChatTitle()
 	{
-		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		Widget clanChatTitleWidget = RuneLite.getClient().getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
 		if (clanChatTitleWidget != null)
 		{
-			clanChatTitleWidget.setText("Clan Chat (" + RuneLite.getClient().getClanChatCount() + "/100)");
+			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
 		}
 	}
 }

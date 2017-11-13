@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import net.runelite.client.RuneLite;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -34,15 +37,22 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class GroundItems extends Plugin
 {
-	private final GroundItemsConfig config = RuneLite.getRunelite().getConfigManager()
-		.getConfig(GroundItemsConfig.class);
+	@Inject
+	ConfigManager configManager;
 
-	private final Overlay overlay = new GroundItemsOverlay(this);
+	@Inject
+	GroundItemsOverlay overlay;
 
 	@Override
-	protected void startUp()
+	public void configure(Binder binder)
 	{
+		binder.bind(GroundItemsOverlay.class);
+	}
 
+	@Provides
+	GroundItemsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(GroundItemsConfig.class);
 	}
 
 	@Override
@@ -51,14 +61,4 @@ public class GroundItems extends Plugin
 		return overlay;
 	}
 
-	@Override
-	protected void shutDown()
-	{
-
-	}
-
-	public GroundItemsConfig getConfig()
-	{
-		return config;
-	}
 }

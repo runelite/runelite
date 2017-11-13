@@ -26,11 +26,14 @@ package net.runelite.client.plugins.opponentinfo;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
-import net.runelite.client.RuneLite;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,28 +43,25 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class OpponentInfo extends Plugin
 {
-	private final OpponentConfig config = RuneLite.getRunelite().getConfigManager().getConfig(OpponentConfig.class);
-	private final Overlay overlay = new OpponentInfoOverlay(this);
+	@Inject
+	OpponentInfoOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(OpponentInfoOverlay.class);
+	}
+
+	@Provides
+	OpponentConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(OpponentConfig.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public OpponentConfig getConfig()
-	{
-		return config;
 	}
 
 	public static Map<String, Integer> loadNpcHealth()

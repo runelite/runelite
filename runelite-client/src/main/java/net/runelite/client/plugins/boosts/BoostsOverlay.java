@@ -25,18 +25,18 @@
 package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ObjectArrays;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Skill;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 
 class BoostsOverlay extends Overlay
 {
@@ -62,19 +62,20 @@ class BoostsOverlay extends Overlay
 
 	private static final int SEPARATOR = 2;
 
+	private final Client client;
 	private final BoostsConfig config;
 
-	BoostsOverlay(Boosts plugin)
+	@Inject
+	BoostsOverlay(@Nullable Client client, BoostsConfig config)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.MED);
-		this.config = plugin.getConfig();
+		this.client = client;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Client client = RuneLite.getClient();
-
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
 			return null;

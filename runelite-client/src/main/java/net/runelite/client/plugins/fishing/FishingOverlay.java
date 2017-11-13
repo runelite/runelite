@@ -30,9 +30,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -50,16 +51,17 @@ class FishingOverlay extends Overlay
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 	private static final String FISHING_SPOT = "Fishing spot";
 
-	private final Client client = RuneLite.getClient();
-
+	private final Client client;
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
 
-	public FishingOverlay(FishingPlugin plugin)
+	@Inject
+	public FishingOverlay(@Nullable Client client, FishingPlugin plugin, FishingConfig config)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		this.client = client;
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
+		this.config = config;
 	}
 
 	@Override

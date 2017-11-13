@@ -35,6 +35,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Set;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -50,8 +51,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class SlayerOverlay extends Overlay
 {
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite;
+	private final Client client;
 	private final SlayerConfig config;
 	private final Slayer plugin;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
@@ -83,11 +84,14 @@ class SlayerOverlay extends Overlay
 		ItemID.ETERNAL_GEM
 	);
 
-	SlayerOverlay(Slayer plugin)
+	@Inject
+	SlayerOverlay(RuneLite runelite, Slayer plugin, SlayerConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.runelite = runelite;
+		this.client = runelite.getClient();
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
+		this.config = config;
 	}
 
 	@Override

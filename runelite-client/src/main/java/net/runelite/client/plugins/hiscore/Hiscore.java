@@ -27,9 +27,10 @@ package net.runelite.client.plugins.hiscore;
 import com.google.common.eventbus.Subscribe;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.PlayerMenuOptionClicked;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -46,8 +47,14 @@ public class Hiscore extends Plugin
 
 	private static final String LOOKUP = "Lookup";
 
-	private final RuneLite runeLite = RuneLite.getRunelite();
-	private final ClientUI ui = runeLite.getGui();
+	@Inject
+	ClientUI ui;
+
+	@Inject
+	MenuManager menuManager;
+
+	@Inject
+	ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
@@ -56,19 +63,14 @@ public class Hiscore extends Plugin
 	protected void startUp() throws Exception
 	{
 		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
-		hiscorePanel = new HiscorePanel(runeLite);
+		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
 		navButton.getButton().setIcon(icon);
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		runeLite.getMenuManager().addPlayerMenuItem(LOOKUP);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
+		menuManager.addPlayerMenuItem(LOOKUP);
 	}
 
 	@Subscribe
@@ -76,7 +78,6 @@ public class Hiscore extends Plugin
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			ScheduledExecutorService executor = runeLite.getExecutor();
 			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
 		}
 	}

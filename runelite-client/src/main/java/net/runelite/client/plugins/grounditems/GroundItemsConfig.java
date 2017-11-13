@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.grounditems;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -33,7 +34,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Ground Items",
 	description = "Configuration for the ground items plugin"
 )
-public interface GroundItemsConfig
+public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

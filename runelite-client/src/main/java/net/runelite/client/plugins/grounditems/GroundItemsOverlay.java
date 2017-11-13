@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -52,7 +54,6 @@ import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.http.api.item.ItemPrice;
@@ -86,9 +87,8 @@ public class GroundItemsOverlay extends Overlay
 	// Regex for splitting the hidden items in the config.
 	private static final String DELIMITER_REGEX = "\\s*,\\s*";
 
-	private final Client client = RuneLite.getClient();
+	private final Client client;
 	private final GroundItemsConfig config;
-	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final LoadingCache<Integer, ItemComposition> itemCache = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
@@ -102,10 +102,15 @@ public class GroundItemsOverlay extends Overlay
 			}
 		});
 
-	public GroundItemsOverlay(GroundItems plugin)
+	@Inject
+	ItemManager itemManager;
+
+	@Inject
+	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.client = client;
+		this.config = config;
 	}
 
 	@Override

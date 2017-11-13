@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.base.Strings;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -34,18 +33,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
-
 import net.runelite.api.Experience;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.*;
-
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +64,8 @@ public class HiscorePanel extends PluginPanel
 		CONSTRUCTION, HUNTER
 	};
 
-	private final RuneLite runelite;
+	@Inject
+	ScheduledExecutorService executor;
 
 	private final IconTextField input;
 
@@ -81,10 +78,8 @@ public class HiscorePanel extends PluginPanel
 	private final HiscoreClient client = new HiscoreClient();
 	private HiscoreResult result;
 
-	public HiscorePanel(RuneLite runelite)
+	public HiscorePanel()
 	{
-		this.runelite = runelite;
-
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
 		Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
@@ -125,11 +120,7 @@ public class HiscorePanel extends PluginPanel
 		input = new IconTextField();
 		input.setIcon(search);
 		input.setFont(labelFont.deriveFont(Font.BOLD));
-		input.addActionListener(e ->
-		{
-			ScheduledExecutorService executor = runelite.getExecutor();
-			executor.execute(this::lookup);
-		});
+		input.addActionListener(e -> executor.execute(this::lookup));
 		inputPanel.add(input, BorderLayout.CENTER);
 
 		c.gridx = 0;
@@ -229,11 +220,7 @@ public class HiscorePanel extends PluginPanel
 				button.setFocusPainted(false);
 				button.setActionCommand(endpoint.name());
 				button.setToolTipText(endpoint.getName() + " Hiscores");
-				button.addActionListener((e ->
-				{
-					ScheduledExecutorService executor = runelite.getExecutor();
-					executor.execute(this::lookup);
-				}));
+				button.addActionListener((e -> executor.execute(this::lookup)));
 				endpointButtons.add(button);
 				endpointButtonGroup.add(button);
 				endpointPanel.add(button);

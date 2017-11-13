@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Combat Level",
 	description = "Configuration for the precise combat level plugin"
 )
-public interface CombatLevelConfig
+public interface CombatLevelConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.implings;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -36,7 +37,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Implings",
 	description = "Configuration for the implings plugin"
 )
-public interface ImplingsConfig
+public interface ImplingsConfig extends Config
 {
 
 	@ConfigItem(

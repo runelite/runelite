@@ -26,8 +26,10 @@ package net.runelite.client;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.gson.Gson;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import java.awt.AWTException;
 import java.awt.Frame;
 import java.awt.Image;
@@ -41,9 +43,9 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -55,21 +57,17 @@ import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.overlay.OverlayRenderer;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class RuneLite
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
@@ -80,26 +78,34 @@ public class RuneLite
 
 	public static Image ICON;
 
+	private static Injector injector;
+
 	private static OptionSet options;
-	private static Client client;
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
 	private final RuneliteProperties properties = new RuneliteProperties();
+	private Client client;
 	private ClientUI gui;
-	private RuneliteConfig config;
+
+	@Inject
 	private PluginManager pluginManager;
-	private final MenuManager menuManager = new MenuManager(this);
-	private OverlayRenderer renderer;
-	private final EventBus eventBus = new EventBus(this::eventExceptionHandler);
-	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-	private final Scheduler scheduler = new Scheduler(this);
+
+	@Inject
+	private MenuManager menuManager;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
+
 	private WSClient wsclient;
 
 	private AccountSession accountSession;
-	private final ConfigManager configManager = new ConfigManager(eventBus);
-	private final ItemManager itemManager = new ItemManager(this);
-	private final InfoBoxManager infoBoxManager = new InfoBoxManager();
 
 	static
 	{
@@ -126,7 +132,8 @@ public class RuneLite
 
 		PROFILES_DIR.mkdirs();
 
-		runelite = new RuneLite();
+		injector = Guice.createInjector(new RuneliteModule());
+		runelite = injector.getInstance(RuneLite.class);
 		runelite.start();
 	}
 
@@ -146,7 +153,7 @@ public class RuneLite
 				logger.warn("unable to set look and feel", ex);
 			}
 
-			gui = new ClientUI();
+			gui = new ClientUI(this);
 			setTitle(null);
 
 			setupTrayIcon();
@@ -154,18 +161,13 @@ public class RuneLite
 
 		configManager.load();
 
-		config = configManager.getConfig(RuneliteConfig.class);
-
 		eventBus.register(menuManager);
-
-		renderer = new OverlayRenderer();
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		pluginManager = new PluginManager(this);
 		pluginManager.loadPlugins();
 
-		// Plugins have registered their config, so set default config
+		// Plugins have provided their config, so set default config
 		// to main settings
 		configManager.loadDefault();
 
@@ -294,7 +296,7 @@ public class RuneLite
 				wsclient.close();
 			}
 
-			wsclient = new WSClient(session);
+			wsclient = new WSClient(eventBus, executor, session);
 			wsclient.connect();
 		}
 
@@ -333,34 +335,14 @@ public class RuneLite
 		eventBus.post(new SessionClose());
 	}
 
-	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
-	{
-		logger.warn("uncaught exception in event subscriber", exception);
-	}
-
-	public static Client getClient()
+	public Client getClient()
 	{
 		return client;
 	}
 
-	public static void setClient(Client client)
+	public void setClient(Client client)
 	{
-		RuneLite.client = client;
-	}
-
-	public static RuneLite getRunelite()
-	{
-		return runelite;
-	}
-
-	public static void setRunelite(RuneLite runelite)
-	{
-		RuneLite.runelite = runelite;
-	}
-
-	public RuneliteProperties getProperties()
-	{
-		return properties;
+		this.client = client;
 	}
 
 	public ClientUI getGui()
@@ -368,24 +350,19 @@ public class RuneLite
 		return gui;
 	}
 
-	public PluginManager getPluginManager()
+	public void setGui(ClientUI gui)
 	{
-		return pluginManager;
+		this.gui = gui;
 	}
 
-	public MenuManager getMenuManager()
+	public static Injector getInjector()
 	{
-		return menuManager;
+		return injector;
 	}
 
-	public OverlayRenderer getRenderer()
+	public static void setInjector(Injector injector)
 	{
-		return renderer;
-	}
-
-	public EventBus getEventBus()
-	{
-		return eventBus;
+		RuneLite.injector = injector;
 	}
 
 	public static OptionSet getOptions()
@@ -393,14 +370,9 @@ public class RuneLite
 		return options;
 	}
 
-	public ScheduledExecutorService getExecutor()
+	public static void setOptions(OptionSet options)
 	{
-		return executor;
-	}
-
-	public Scheduler getScheduler()
-	{
-		return scheduler;
+		RuneLite.options = options;
 	}
 
 	public static TrayIcon getTrayIcon()
@@ -422,26 +394,6 @@ public class RuneLite
 	public AccountSession getAccountSession()
 	{
 		return accountSession;
-	}
-
-	public ConfigManager getConfigManager()
-	{
-		return configManager;
-	}
-
-	public RuneliteConfig getConfig()
-	{
-		return config;
-	}
-
-	public ItemManager getItemManager()
-	{
-		return itemManager;
-	}
-
-	public InfoBoxManager getInfoBoxManager()
-	{
-		return infoBoxManager;
 	}
 
 	public <T> T[] runQuery(Query query)

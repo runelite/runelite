@@ -26,13 +26,14 @@ package net.runelite.client.plugins.boosts;
 
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Config;
 
 @ConfigGroup(
 	keyName = "boosts",
 	name = "Boosts Info",
 	description = "Configuration for the Boosts plugin"
 )
-public interface BoostsConfig
+public interface BoostsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

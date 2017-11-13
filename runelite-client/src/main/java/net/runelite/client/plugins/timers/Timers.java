@@ -25,8 +25,10 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
@@ -39,23 +41,16 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class Timers extends Plugin
 {
-	private final TimersConfig config = RuneLite.getRunelite().getConfigManager().getConfig(TimersConfig.class);
+	@Inject
+	TimersConfig config;
 
-	private final InfoBoxManager infoBoxManager = RuneLite.getRunelite().getInfoBoxManager();
+	@Inject
+	InfoBoxManager infoBoxManager;
 
-	@Override
-	protected void startUp() throws Exception
+	@Provides
+	TimersConfig getConfig(ConfigManager configManager)
 	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public TimersConfig getConfig()
-	{
-		return config;
+		return configManager.getConfig(TimersConfig.class);
 	}
 
 	@Subscribe

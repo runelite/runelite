@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "XP Globes",
 	description = "Configuration for the xp globes plugin"
 )
-public interface XpGlobesConfig
+public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

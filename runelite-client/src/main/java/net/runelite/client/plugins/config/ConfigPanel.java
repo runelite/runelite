@@ -57,7 +57,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
@@ -73,12 +72,13 @@ public class ConfigPanel extends PluginPanel
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
-	private final RuneLite runelite = RuneLite.getRunelite();
+	private final ConfigManager configManager;
 
 	private JScrollPane scrollPane;
 
-	public ConfigPanel()
+	public ConfigPanel(ConfigManager configManager)
 	{
+		this.configManager = configManager;
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
@@ -94,9 +94,8 @@ public class ConfigPanel extends PluginPanel
 	private List<ConfigDescriptor> getConfig()
 	{
 		List<ConfigDescriptor> list = new ArrayList<>();
-		for (Object config : runelite.getConfigManager().getConfigProxies())
+		for (Object config : configManager.getConfigProxies())
 		{
-			ConfigManager configManager = runelite.getConfigManager();
 			ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
 
 			list.add(configDescriptor);
@@ -111,7 +110,6 @@ public class ConfigPanel extends PluginPanel
 		panel.setLayout(new GridLayout(0, 1, 0, 3));
 		panel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
 
-		ConfigManager configManager = runelite.getConfigManager();
 		List<ConfigDescriptor> config = getConfig();
 
 		// Sort by name
@@ -138,7 +136,6 @@ public class ConfigPanel extends PluginPanel
 
 	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		ConfigManager configManager = runelite.getConfigManager();
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
@@ -237,7 +234,6 @@ public class ConfigPanel extends PluginPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						final JFrame parent = new JFrame();
-						parent.setLocation(RuneLite.getRunelite().getGui().getX(), RuneLite.getRunelite().getGui().getY());
 						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
 						jColorChooser.getSelectionModel().addChangeListener(new ChangeListener()
 						{

@@ -26,17 +26,20 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import static net.runelite.api.AnimationID.*;
-
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Actor;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
@@ -49,10 +52,18 @@ import net.runelite.client.ui.ClientUI;
 )
 public class IdleNotifier extends Plugin
 {
-	private final Client client = RuneLite.getClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final IdleNotifierConfig config = runelite.getConfigManager().getConfig(IdleNotifierConfig.class);
-	private final ClientUI gui = runelite.getGui();
+	@Inject
+	RuneLite runelite;
+
+	@Inject
+	ClientUI gui;
+
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	IdleNotifierConfig config;
 
 	private Instant lastAnimating;
 	private Instant lastInteracting;
@@ -62,14 +73,10 @@ public class IdleNotifier extends Plugin
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 
-	@Override
-	protected void startUp() throws Exception
+	@Provides
+	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
+		return configManager.getConfig(IdleNotifierConfig.class);
 	}
 
 	@Subscribe

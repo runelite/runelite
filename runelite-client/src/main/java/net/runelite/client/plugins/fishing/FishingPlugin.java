@@ -25,13 +25,17 @@
 package net.runelite.client.plugins.fishing;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
@@ -42,19 +46,30 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Fishing plugin"
 )
+@Singleton
 public class FishingPlugin extends Plugin
 {
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final FishingConfig config = runelite.getConfigManager().getConfig(FishingConfig.class);
-	private final FishingOverlay overlay = new FishingOverlay(this);
-	private final FishingSpotOverlay spotOverlay = new FishingSpotOverlay(this);
+	@Inject
+	FishingConfig config;
 
-	private FishingSession session = new FishingSession();
+	@Inject
+	FishingOverlay overlay;
+
+	@Inject
+	FishingSpotOverlay spotOverlay;
+
+	private final FishingSession session = new FishingSession();
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	public void configure(Binder binder)
 	{
-		return Arrays.asList(overlay, spotOverlay);
+		binder.bind(FishingOverlay.class);
+	}
+
+	@Provides
+	FishingConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FishingConfig.class);
 	}
 
 	@Override
@@ -65,13 +80,9 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public Collection<Overlay> getOverlays()
 	{
-	}
-
-	public FishingConfig getConfig()
-	{
-		return config;
+		return Arrays.asList(overlay, spotOverlay);
 	}
 
 	public FishingSession getSession()

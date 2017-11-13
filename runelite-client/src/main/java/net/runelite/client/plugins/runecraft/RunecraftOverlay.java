@@ -30,7 +30,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -50,24 +50,27 @@ public class RunecraftOverlay extends Overlay
 	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
 	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
-	private final Client client = RuneLite.getClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
+	private final RuneLite runelite;
+	private final Client client;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final RunecraftConfig config;
 
-	RunecraftOverlay(Runecraft plugin)
+	@Inject
+	RunecraftOverlay(RuneLite runelite, RunecraftConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.runelite = runelite;
+		this.client = runelite.getClient();
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
-				|| !config.showPouch()
-				|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+			|| !config.showPouch()
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
 			return null;
 		}

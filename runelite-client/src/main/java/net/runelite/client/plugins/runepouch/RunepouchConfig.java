@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.runepouch;
 
 import java.awt.Color;
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -33,7 +34,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Runepouch",
 	description = "Configuration for the Runepouch plugin"
 )
-public interface RunepouchConfig
+public interface RunepouchConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

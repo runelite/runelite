@@ -24,11 +24,11 @@
  */
 package net.runelite.client.game;
 
+import com.google.common.eventbus.EventBus;
 import java.lang.ref.WeakReference;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.ActorDeath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,14 @@ public class DeathChecker
 {
 	private static final Logger logger = LoggerFactory.getLogger(DeathChecker.class);
 
-	private final RuneLite runelite;
-	private final Client client = RuneLite.getClient();
+	private final EventBus eventBus;
+	private final Client client;
 	private WeakReference<Actor> last = new WeakReference<>(null);
 
-	public DeathChecker(RuneLite runelite)
+	public DeathChecker(Client client, EventBus eventBus)
 	{
-		this.runelite = runelite;
+		this.client = client;
+		this.eventBus = eventBus;
 	}
 
 	public void check()
@@ -66,7 +67,7 @@ public class DeathChecker
 		ActorDeath death = new ActorDeath();
 		death.setActor(opponent);
 
-		runelite.getEventBus().post(death);
+		eventBus.post(death);
 	}
 
 	private Actor getOpponent()
