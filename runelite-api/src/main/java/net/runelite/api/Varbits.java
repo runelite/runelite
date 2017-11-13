@@ -92,6 +92,21 @@ public enum Varbits
 	VENOM(102, 6, 9),
 
 	/**
+	 * Attack Style
+	 */
+	ATTACK_STYLE(43, 0, 7),
+
+	/**
+	 * Equipped weapon type
+	 */
+	EQUIPPED_WEAPON_TYPE(357, 843, 0, 5),
+
+	/**
+	 * Defensive casting mode
+	 */
+	DEFENSIVE_CASTING_MODE(2668, 439, 8, 8),
+
+	/**
 	 * Options
 	 */
 	SIDE_PANELS(4607, 1055, 8, 8);

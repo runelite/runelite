@@ -46,6 +46,7 @@ class WidgetID
 	static final int DIALOG_NPC_GROUP_ID = 231;
 	static final int SLAYER_REWARDS_GROUP_ID = 426;
 	static final int PRIVATE_CHAT = 163;
+	static final int CHATBOX_GROUP_ID = 162;
 
 	static class SlayerRewards
 	{
@@ -135,6 +136,12 @@ class WidgetID
 		static final int FIXED_VIEWPORT = 20;
 		static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12;
 		static final int RESIZABLE_VIEWPORT_BOTTOM_LINE = 12;
+	}
+
+	static class Chatbox
+	{
+		static final int CHATBOX_MESSAGES = 29;
+		static final int CHATBOX_BUTTONS = 1;
 	}
 
 	static class Prayer
