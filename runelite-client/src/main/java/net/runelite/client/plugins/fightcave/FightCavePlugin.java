@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,82 +22,90 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xtea;
+package net.runelite.client.plugins.fightcave;
 
-import com.google.common.eventbus.Subscribe;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
+import com.google.inject.Binder;
+import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.events.MapRegionChanged;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Query;
+import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.http.api.xtea.XteaClient;
-import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Xtea plugin"
+	name = "Fight cave plugin"
 )
-public class Xtea extends Plugin
+public class FightCavePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Xtea.class);
-
-	private final XteaClient xteaClient = new XteaClient();
-
-	private final Set<Integer> sentRegions = new HashSet<>();
-
 	@Inject
 	@Nullable
 	Client client;
 
 	@Inject
-	ScheduledExecutorService executor;
+	RuneLite runelite;
 
-	@Subscribe
-	public void onMapRegionChanged(MapRegionChanged event)
+	@Inject
+	FightCaveOverlay overlay;
+
+	private JadAttack attack;
+
+	@Override
+	public void configure(Binder binder)
 	{
-		int idx = event.getIndex();
+		binder.bind(FightCaveOverlay.class);
+	}
 
-		if (idx == -1)
-		{
-			return; // this is the new array being assigned to the field
-		}
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-		int revision = client.getRevision();
-		int[] regions = client.getMapRegions();
-		int[][] xteaKeys = client.getXteaKeys();
-
-		int region = regions[idx];
-		int[] keys = xteaKeys[idx];
-
-		logger.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
-
-		// No need to ever send more than once
-		if (sentRegions.contains(region))
+	@Schedule(
+		period = 600,
+		unit = ChronoUnit.MILLIS
+	)
+	public void update()
+	{
+		if (client == null || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		sentRegions.add(region);
-
-		executor.execute(() ->
+		NPC jad = findJad();
+		if (jad != null)
 		{
-			try (Response response = xteaClient.submit(revision, region, keys))
+			if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
 			{
-				if (!response.isSuccessful())
-				{
-					logger.debug("unsuccessful xtea response");
-				}
+				attack = JadAttack.MAGIC;
 			}
-			catch (IOException ex)
+			else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
 			{
-				logger.debug("unable to submit xtea keys", ex);
+				attack = JadAttack.RANGE;
 			}
-		});
+		}
+		else
+		{
+			attack = null;
+		}
+	}
+
+	private NPC findJad()
+	{
+		Query query = new NPCQuery().nameContains("TzTok-Jad");
+		NPC[] result = runelite.runQuery(query);
+		return result.length >= 1 ? result[0] : null;
+	}
+
+	JadAttack getAttack()
+	{
+		return attack;
 	}
 }

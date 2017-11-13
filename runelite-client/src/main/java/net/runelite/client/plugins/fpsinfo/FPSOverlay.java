@@ -43,10 +43,10 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 public class FPSOverlay extends Overlay
 {
 	private final Client client;
-	private final FPS plugin;
+	private final FPSPlugin plugin;
 
 	@Inject
-	public FPSOverlay(@Nullable Client client, FPS plugin)
+	public FPSOverlay(@Nullable Client client, FPSPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
 		this.client = client;

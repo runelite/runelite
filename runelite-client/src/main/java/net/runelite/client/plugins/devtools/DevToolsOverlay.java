@@ -32,7 +32,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -76,10 +75,10 @@ public class DevToolsOverlay extends Overlay
 	private static final int MAX_DISTANCE = 2400;
 
 	private final Client client;
-	private final DevTools plugin;
+	private final DevToolsPlugin plugin;
 
 	@Inject
-	public DevToolsOverlay(@Nullable Client client, DevTools plugin)
+	public DevToolsOverlay(@Nullable Client client, DevToolsPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;

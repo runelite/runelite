@@ -53,7 +53,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
 
 	private final Client client;
-	private final XpGlobes plugin;
+	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 
 	private static final int DEFAULT_CIRCLE_WIDTH = 40;
@@ -76,7 +76,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int TOOLTIP_RECT_SIZE_Y = 80;
 
 	@Inject
-	public XpGlobesOverlay(@Nullable Client client, XpGlobes plugin, XpGlobesConfig config)
+	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;

@@ -54,9 +54,9 @@ import org.slf4j.LoggerFactory;
 @PluginDescriptor(
 	name = "Zulrah plugin"
 )
-public class Zulrah extends Plugin
+public class ZulrahPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Zulrah.class);
+	private static final Logger logger = LoggerFactory.getLogger(ZulrahPlugin.class);
 
 	@Inject
 	RuneLite runelite;

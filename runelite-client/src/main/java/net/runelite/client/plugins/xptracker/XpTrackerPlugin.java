@@ -40,9 +40,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "XP Tracker plugin"
+	name = "XP tracker plugin"
 )
-public class XPTracker extends Plugin
+public class XpTrackerPlugin extends Plugin
 {
 	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
 
@@ -54,15 +54,14 @@ public class XPTracker extends Plugin
 	Client client;
 
 	private NavigationButton navButton;
-	private XPPanel xpPanel;
+	private XpPanel xpPanel;
 	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		navButton = new NavigationButton("XP Tracker", () -> xpPanel);
-		xpPanel = injector.getInstance(XPPanel.class);
-
+		xpPanel = injector.getInstance(XpPanel.class);
 		navButton.getButton().setText("XP");
 		ui.getPluginToolbar().addNavigation(navButton);
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
+package net.runelite.client.plugins.fpsinfo;
 
 import com.google.inject.Binder;
-import com.google.inject.Provides;
+import java.awt.Font;
 import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Mouse highlight plugin"
+	name = "Frames per second plugin"
 )
-public class MouseHighlight extends Plugin
+public class FPSPlugin extends Plugin
 {
 	@Inject
-	MouseHighlightConfig config;
+	FPSOverlay overlay;
 
-	@Inject
-	MouseHighlightOverlay overlay;
+	private Font font;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(MouseHighlightOverlay.class);
+		binder.bind(FPSOverlay.class);
 	}
 
-	@Provides
-	MouseHighlightConfig getConfig(ConfigManager configManager)
+	@Override
+	protected void startUp() throws Exception
 	{
-		return configManager.getConfig(MouseHighlightConfig.class);
+		font = FontManager.getRunescapeFont()
+			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	public Font getFont()
+	{
+		return font;
 	}
 }

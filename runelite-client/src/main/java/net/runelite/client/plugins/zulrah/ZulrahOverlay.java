@@ -69,13 +69,13 @@ public class ZulrahOverlay extends Overlay
 	private static final Color JAD_BACKGROUND_COLOR = new Color(255, 115, 0, 100);
 
 	private final Client client;
-	private final Zulrah plugin;
+	private final ZulrahPlugin plugin;
 	private final Image[] zulrahImages = new Image[3];
 	private final Image[] smallZulrahImages = new Image[3];
 	private final Image[] prayerImages = new Image[2];
 
 	@Inject
-	ZulrahOverlay(@Nullable Client client, Zulrah plugin)
+	ZulrahOverlay(@Nullable Client client, ZulrahPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
