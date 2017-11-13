@@ -126,9 +126,10 @@ public class InjectInvoker
 		// deobfuscatedMethod = deobfuscated method, used to get the deobfuscated signature
 		// invokeMethod = method to invoke, obfuscated
 
-		if (clazz.findMethod(method.getName()) != null)
+		if (clazz.findMethod(method.getName(), deobfuscatedMethod.getDescriptor()) != null)
 		{
-			return; // hmm. this might be due to an export/import of a non obfuscated method
+			logger.warn("Not injecting method {} because it already exists!", method);
+			return; // this can happen from exporting a field and method with the same name
 		}
 
 		assert invokeMethod.isStatic() == deobfuscatedMethod.isStatic();
