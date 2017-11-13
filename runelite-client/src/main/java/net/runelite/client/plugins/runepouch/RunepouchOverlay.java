@@ -59,7 +59,7 @@ public class RunepouchOverlay extends Overlay
 
 	private final Client client = RuneLite.getClient();
 	private final RuneLite runelite = RuneLite.getRunelite();
-	private final TooltipRenderer toolripRenderer = new TooltipRenderer();
+	private final TooltipRenderer toolripRenderer = runelite.getRenderer().getTooltipRenderer();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
 	private final RunepouchConfig config;
 
