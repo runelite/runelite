@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.chatcommands;
 
 import java.awt.Color;
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -33,7 +34,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Chat commands",
 	description = "Configuration for chat commands"
 )
-public interface ChatCommandsConfig
+public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,

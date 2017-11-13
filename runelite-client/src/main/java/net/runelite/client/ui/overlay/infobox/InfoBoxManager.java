@@ -29,9 +29,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class InfoBoxManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(InfoBoxManager.class);

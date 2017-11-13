@@ -32,7 +32,7 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
-import net.runelite.client.RuneLite;
+import javax.inject.Inject;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.MenuOptionClicked;
@@ -54,22 +54,14 @@ public class ExaminePlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(ExaminePlugin.class);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
 	private final ExamineClient client = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
+	@Inject
+	ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
@@ -149,7 +141,6 @@ public class ExaminePlugin extends Plugin
 
 		cache.put(key, Boolean.TRUE);
 
-		ScheduledExecutorService executor = runelite.getExecutor();
 		executor.submit(() -> submit(pendingExamine, event.getMessage()));
 	}
 

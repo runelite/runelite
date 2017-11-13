@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.fightcave;
 
+import com.google.inject.Binder;
+import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -31,39 +35,37 @@ import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Fight cave plugin"
 )
 public class FightCave extends Plugin
 {
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
-	private final FightCaveOverlay overlay = new FightCaveOverlay(this);
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	RuneLite runelite;
+
+	@Inject
+	FightCaveOverlay overlay;
 
 	private JadAttack attack;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(FightCaveOverlay.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
 	}
 
 	@Schedule(

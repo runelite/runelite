@@ -30,30 +30,32 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
 public class FPSOverlay extends Overlay
 {
-	private static final Client client = RuneLite.getClient();
+	private final Client client;
 	private final FPS plugin;
 
-	public FPSOverlay(FPS plugin)
+	@Inject
+	public FPSOverlay(@Nullable Client client, FPS plugin)
 	{
 		super(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
+		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return null;

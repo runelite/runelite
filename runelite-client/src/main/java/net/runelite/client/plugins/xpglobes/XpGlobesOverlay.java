@@ -24,27 +24,27 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Skill;
-import net.runelite.api.Point;
-import net.runelite.api.Experience;
-import net.runelite.client.RuneLite;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.FontMetrics;
-import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.GameState;
+import net.runelite.api.Point;
+import net.runelite.api.Skill;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,8 +52,8 @@ public class XpGlobesOverlay extends Overlay
 {
 	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
 
+	private final Client client;
 	private final XpGlobes plugin;
-	private final Client client = RuneLite.getClient();
 	private final XpGlobesConfig config;
 
 	private static final int DEFAULT_CIRCLE_WIDTH = 40;
@@ -75,11 +75,13 @@ public class XpGlobesOverlay extends Overlay
 	private static final int TOOLTIP_TEXT_RECT_SIZE_X = TOOLTIP_RECT_SIZE_X - 10;
 	private static final int TOOLTIP_RECT_SIZE_Y = 80;
 
-	public XpGlobesOverlay(XpGlobes plugin)
+	@Inject
+	public XpGlobesOverlay(@Nullable Client client, XpGlobes plugin, XpGlobesConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
@@ -242,7 +244,6 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawRect(x, y, TOOLTIP_RECT_SIZE_X, TOOLTIP_RECT_SIZE_Y);
 
-
 		//draw the text
 		graphics.setPaint(Color.WHITE);
 		graphics.drawString(mouseOverSkill.getSkillName(), stringX, y + stringHeight);
@@ -265,7 +266,7 @@ public class XpGlobesOverlay extends Overlay
 		int progressTextX = barX + (barWidth / 2) - (progressTextLength / 2);
 		int progressTextY = barY + 12;
 
-		int progressFill = (int)((barWidth / 100F) * progress);
+		int progressFill = (int) ((barWidth / 100F) * progress);
 
 		graphics.setColor(Color.WHITE);
 		graphics.fillRect(barX, barY, barWidth, barHeight);

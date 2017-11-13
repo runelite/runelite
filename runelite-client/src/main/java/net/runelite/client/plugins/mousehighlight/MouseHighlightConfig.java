@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Mouse Highlighting",
 	description = "Configuration for the mouse Highlight plugin"
 )
-public interface MouseHighlightConfig
+public interface MouseHighlightConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

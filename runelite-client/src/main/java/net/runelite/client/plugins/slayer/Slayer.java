@@ -25,25 +25,31 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,11 +74,21 @@ public class Slayer extends Plugin
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
-	private final InfoBoxManager infoBoxManager = RuneLite.getRunelite().getInfoBoxManager();
-	private final SlayerConfig config = RuneLite.getRunelite().getConfigManager().getConfig(SlayerConfig.class);
-	private final SlayerOverlay overlay = new SlayerOverlay(this);
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	SlayerConfig config;
+
+	@Inject
+	SlayerOverlay overlay;
+
+	@Inject
+	InfoBoxManager infoBoxManager;
+
+	@Inject
+	ItemManager itemManager;
 
 	private String taskName;
 	private int amount;
@@ -82,15 +98,15 @@ public class Slayer extends Plugin
 	private int cachedXp;
 
 	@Override
-	protected void startUp() throws Exception
+	public void configure(Binder binder)
 	{
-
+		binder.bind(SlayerOverlay.class);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@Provides
+	SlayerConfig getConfig(ConfigManager configManager)
 	{
-
+		return configManager.getConfig(SlayerConfig.class);
 	}
 
 	@Subscribe
@@ -278,7 +294,7 @@ public class Slayer extends Plugin
 			itemSpriteId = task.getItemSpriteId();
 		}
 
-		BufferedImage taskImg = runelite.getItemManager().getImage(itemSpriteId);
+		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
 		counter = new TaskCounter(taskImg, amount);
 		counter.setTooltip(String.format("<col=ff7700>%s</br><col=ffff00>Pts:</col> %s</br><col=ffff00>Streak:</col> %s",
 			capsString(taskName), points, streak));
@@ -287,13 +303,8 @@ public class Slayer extends Plugin
 	}
 
 	//Getters
-	public SlayerConfig getConfig()
-	{
-		return config;
-	}
-
 	@Override
-	public SlayerOverlay getOverlay()
+	public Overlay getOverlay()
 	{
 		return overlay;
 	}

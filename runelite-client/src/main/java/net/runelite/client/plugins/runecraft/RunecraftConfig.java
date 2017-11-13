@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -33,7 +34,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Runecraft",
 	description = "Configuration for the runecrafting plugin"
 )
-public interface RunecraftConfig
+public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showPouch",

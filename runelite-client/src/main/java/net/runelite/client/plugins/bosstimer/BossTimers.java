@@ -26,8 +26,8 @@
 package net.runelite.client.plugins.bosstimer;
 
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 import net.runelite.api.Actor;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,17 +42,8 @@ public class BossTimers extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(BossTimers.class);
 
-	private final InfoBoxManager infoBoxManager = RuneLite.getRunelite().getInfoBoxManager();
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
+	@Inject
+	InfoBoxManager infoBoxManager;
 
 	@Subscribe
 	public void onActorDeath(ActorDeath death)

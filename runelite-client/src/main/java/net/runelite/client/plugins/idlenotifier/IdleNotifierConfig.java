@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Idle Notifier",
 	description = "Configuration for the idle notifier plugin"
 )
-public interface IdleNotifierConfig
+public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

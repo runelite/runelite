@@ -28,13 +28,14 @@ import com.google.common.eventbus.Subscribe;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
@@ -45,9 +46,12 @@ public class XPTracker extends Plugin
 {
 	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
 
-	private final RuneLite runeLite = RuneLite.getRunelite();
-	private final ClientUI ui = runeLite.getGui();
-	private final Client client = RuneLite.getClient();
+	@Inject
+	ClientUI ui;
+
+	@Inject
+	@Nullable
+	Client client;
 
 	private NavigationButton navButton;
 	private XPPanel xpPanel;
@@ -57,15 +61,10 @@ public class XPTracker extends Plugin
 	protected void startUp() throws Exception
 	{
 		navButton = new NavigationButton("XP Tracker", () -> xpPanel);
-		xpPanel = new XPPanel(runeLite, this);
+		xpPanel = injector.getInstance(XPPanel.class);
 
 		navButton.getButton().setText("XP");
 		ui.getPluginToolbar().addNavigation(navButton);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
 	}
 
 	@Subscribe

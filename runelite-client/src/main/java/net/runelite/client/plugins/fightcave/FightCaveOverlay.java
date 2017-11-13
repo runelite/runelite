@@ -26,7 +26,6 @@ package net.runelite.client.plugins.fightcave;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import org.slf4j.Logger;
@@ -41,25 +40,30 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 public class FightCaveOverlay extends Overlay
 {
+	private static final Logger logger = LoggerFactory.getLogger(FightCaveOverlay.class);
+
 	private static final int WIDTH = 70;
 	private static final int SPACER = 6;
 	private static final int BOTTOM_BORDER = 4;
 	private static final Color GREEN_BACKGROUND = new Color(0, 255, 0, 100);
 	private static final Color RED_BACKGROUND = new Color(255, 0, 0, 100);
 
-	private static final Logger logger = LoggerFactory.getLogger(FightCaveOverlay.class);
-
+	private final Client client;
 	private final FightCave plugin;
-	private final Client client = RuneLite.getClient();
+
 	private Image protectFromMagicImg;
 	private Image protectFromMissilesImg;
 
-	FightCaveOverlay(FightCave plugin)
+	@Inject
+	FightCaveOverlay(@Nullable Client client, FightCave plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.client = client;
 		this.plugin = plugin;
 	}
 

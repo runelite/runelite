@@ -26,30 +26,42 @@ package net.runelite.client.plugins.xptracker;
 
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.PluginPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class XPPanel extends PluginPanel
 {
-	private static final Client client = RuneLite.getClient();
 	private static final Logger logger = LoggerFactory.getLogger(XPPanel.class);
 	private Map<Skill, JPanel> labelMap = new HashMap<>();
 	private final XPTracker xpTracker;
 	private JPanel statsPanel;
 
-	public XPPanel(RuneLite runelite, XPTracker xpTracker)
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	ScheduledExecutorService executor;
+
+	@Inject
+	public XPPanel(XPTracker xpTracker)
 	{
 		this.xpTracker = xpTracker;
 
@@ -65,7 +77,9 @@ public class XPPanel extends PluginPanel
 			for (Skill skill : Skill.values())
 			{
 				if (skill == Skill.OVERALL)
+				{
 					break;
+				}
 
 				JLabel skillLabel = new JLabel();
 				labelMap.put(skill, makeSkillPanel(skill, skillLabel));
@@ -78,8 +92,7 @@ public class XPPanel extends PluginPanel
 
 		JButton resetButton = new JButton("Reset All");
 		resetButton.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
-		resetButton.addActionListener((ActionEvent e) ->
-				runelite.getExecutor().execute(this::resetAllSkillXpHr));
+		resetButton.addActionListener((e) -> executor.execute(this::resetAllSkillXpHr));
 
 		statsPanel.add(resetButton);
 		JScrollPane scroll = new JScrollPane(statsPanel);
@@ -129,7 +142,9 @@ public class XPPanel extends PluginPanel
 		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
 		{
 			if (skillInfo != null && skillInfo.getSkillTimeStart() != null)
+			{
 				resetSkillXpHr(skillInfo.getSkill());
+			}
 		}
 	}
 
@@ -137,9 +152,11 @@ public class XPPanel extends PluginPanel
 	{
 		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
 		{
-			if (skillInfo != null && skillInfo.getSkillTimeStart() != null &&
-					skillInfo.getXpGained() != 0)
+			if (skillInfo != null && skillInfo.getSkillTimeStart() != null
+				&& skillInfo.getXpGained() != 0)
+			{
 				updateSkillXpHr(skillInfo);
+			}
 		}
 	}
 
@@ -157,4 +174,3 @@ public class XPPanel extends PluginPanel
 		}
 	}
 }
-

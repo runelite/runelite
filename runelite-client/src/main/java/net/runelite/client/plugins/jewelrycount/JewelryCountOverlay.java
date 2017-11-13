@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.jewelrycount;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Query;
@@ -43,20 +48,22 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class JewelryCountOverlay extends Overlay
 {
-	private final RuneLite runelite = RuneLite.getRunelite();
+	private final RuneLite runelite;
 	private final JewelryCountConfig config;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
-	JewelryCountOverlay(JewelryCount plugin)
+	@Inject
+	JewelryCountOverlay(RuneLite runelite, JewelryCountConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.runelite = runelite;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Client client = RuneLite.getClient();
+		Client client = runelite.getClient();
 
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| !config.enabled()

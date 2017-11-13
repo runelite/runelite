@@ -25,16 +25,42 @@
 package net.runelite.client.config;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Inject;
 import net.runelite.client.account.AccountSession;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ConfigManagerTest
 {
+	@Mock
+	@Bind
+	EventBus eventBus;
+
+	@Mock
+	@Bind
+	ScheduledExecutorService executor;
+
+	@Inject
+	ConfigManager manager;
+
+	@Before
+	public void before()
+	{
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
+
 	@Test
 	public void testGetConfig() throws IOException
 	{
@@ -43,7 +69,6 @@ public class ConfigManagerTest
 		accountSession.setUsername("test");
 		accountSession.setCreated(Instant.now());
 
-		ConfigManager manager = new ConfigManager(mock(EventBus.class));
 		manager.setConfiguration("test", "key", "moo");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
@@ -58,8 +83,6 @@ public class ConfigManagerTest
 		accountSession.setUsername("test");
 		accountSession.setCreated(Instant.now());
 
-		ConfigManager manager = new ConfigManager(mock(EventBus.class));
-
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		Assert.assertEquals("default", conf.key());
 	}
@@ -71,8 +94,6 @@ public class ConfigManagerTest
 		accountSession.setUuid(UUID.randomUUID());
 		accountSession.setUsername("test");
 		accountSession.setCreated(Instant.now());
-
-		ConfigManager manager = new ConfigManager(mock(EventBus.class));
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		conf.key("new value");
@@ -87,8 +108,6 @@ public class ConfigManagerTest
 		accountSession.setUuid(UUID.randomUUID());
 		accountSession.setUsername("test");
 		accountSession.setCreated(Instant.now());
-
-		ConfigManager manager = new ConfigManager(mock(EventBus.class));
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		ConfigDescriptor descriptor = manager.getConfigDescriptor(conf);

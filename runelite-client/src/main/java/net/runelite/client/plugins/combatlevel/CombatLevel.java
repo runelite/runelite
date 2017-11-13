@@ -24,39 +24,40 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
+import com.google.inject.Provides;
+import java.text.DecimalFormat;
+import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-
-import java.text.DecimalFormat;
-import java.time.temporal.ChronoUnit;
 
 @PluginDescriptor(
 	name = "Combat level plugin"
 )
 public class CombatLevel extends Plugin
 {
-	private final CombatLevelConfig config = RuneLite.getRunelite().getConfigManager().getConfig(CombatLevelConfig.class);
-	private final Client client = RuneLite.getClient();
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
-	@Override
-	protected void startUp() throws Exception
+	@Inject
+	@Nullable
+	Client client;
+
+	@Inject
+	CombatLevelConfig config;
+
+	@Provides
+	CombatLevelConfig provideConfig(ConfigManager configManager)
 	{
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
+		return configManager.getConfig(CombatLevelConfig.class);
 	}
 
 	@Schedule(

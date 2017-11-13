@@ -32,6 +32,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -54,17 +56,18 @@ public class ImplingsOverlay extends Overlay
 	private static final int STATIC_SPAWN = 1618;
 	private static final int DYNAMIC_SPAWN = 1633;
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
-
+	private final RuneLite runelite;
+	private final Client client;
 	private final ImplingsConfig config;
-	private final List<Integer> ids;
+	private final List<Integer> ids = new LinkedList<>();
 
-	public ImplingsOverlay(Implings plugin)
+	@Inject
+	public ImplingsOverlay(RuneLite runelite, @Nullable Client client, ImplingsConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
-		ids = new LinkedList<>();
+		this.runelite = runelite;
+		this.client = client;
+		this.config = config;
 	}
 
 	@Override

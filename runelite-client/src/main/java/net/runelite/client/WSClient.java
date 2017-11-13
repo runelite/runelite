@@ -52,17 +52,17 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private static final Duration PING_TIME = Duration.ofSeconds(30);
 
 	private static final Gson gson = WebsocketGsonFactory.build();
-	private static final EventBus eventBus = RuneLite.getRunelite().getEventBus();
-	private static final ScheduledExecutorService executor = RuneLite.getRunelite().getExecutor();
 
 	private final OkHttpClient client = new OkHttpClient();
 
+	private final EventBus eventBus;
 	private final AccountSession session;
 	private WebSocket webSocket;
 	private final ScheduledFuture pingFuture;
 
-	public WSClient(AccountSession session)
+	public WSClient(EventBus eventBus, ScheduledExecutorService executor, AccountSession session)
 	{
+		this.eventBus = eventBus;
 		this.session = session;
 		this.pingFuture = executor.scheduleWithFixedDelay(this::ping, PING_TIME.getSeconds(), PING_TIME.getSeconds(), TimeUnit.SECONDS);
 	}

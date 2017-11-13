@@ -31,7 +31,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
 
 public class TopDownRendererRight implements Renderer
 {
@@ -39,7 +38,13 @@ public class TopDownRendererRight implements Renderer
 	private static final int BORDER_RIGHT = 10;
 	private static final int PADDING = 10;
 
+	private final Client client;
 	private final List<Overlay> overlays = new ArrayList<>();
+
+	public TopDownRendererRight(Client client)
+	{
+		this.client = client;
+	}
 
 	public void add(Overlay overlay)
 	{
@@ -49,7 +54,6 @@ public class TopDownRendererRight implements Renderer
 	@Override
 	public void render(BufferedImage clientBuffer)
 	{
-		Client client = RuneLite.getClient();
 		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
 
 		int y = BORDER_TOP;

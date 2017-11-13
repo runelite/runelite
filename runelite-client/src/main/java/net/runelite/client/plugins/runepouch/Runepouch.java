@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.runepouch;
 
-import net.runelite.client.RuneLite;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -34,27 +37,27 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class Runepouch extends Plugin
 {
-	private final RunepouchConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RunepouchConfig.class);
-	private final RunepouchOverlay overlay = new RunepouchOverlay(this);
+	@Inject
+	ConfigManager configManager;
+
+	@Inject
+	RunepouchOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(RunepouchOverlay.class);
+	}
+
+	@Provides
+	RunepouchConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RunepouchConfig.class);
+	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public RunepouchConfig getConfig()
-	{
-		return config;
 	}
 }

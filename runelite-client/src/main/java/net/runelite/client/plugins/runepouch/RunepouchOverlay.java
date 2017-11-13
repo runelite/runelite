@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -41,6 +42,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltips.Tooltip;
 import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
@@ -57,16 +59,21 @@ public class RunepouchOverlay extends Overlay
 		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
 	};
 
-	private final Client client = RuneLite.getClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final TooltipRenderer toolripRenderer = runelite.getRenderer().getTooltipRenderer();
 	private final RuneImageCache runeImageCache = new RuneImageCache();
-	private final RunepouchConfig config;
 
-	RunepouchOverlay(Runepouch plugin)
+	private final RuneLite runelite;
+	private final Client client;
+	private final RunepouchConfig config;
+	private final TooltipRenderer tooltipRenderer;
+
+	@Inject
+	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, OverlayRenderer overlayRenderer)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.runelite = runelite;
+		this.client = runelite.getClient();
+		this.config = config;
+		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
 	}
 
 	@Override
@@ -143,7 +150,7 @@ public class RunepouchOverlay extends Overlay
 		{
 			String tooltipText = tooltipBuilder.toString();
 			Tooltip tooltip = new Tooltip(TooltipPriority.HIGH, tooltipText);
-			toolripRenderer.add(tooltip);
+			tooltipRenderer.add(tooltip);
 		}
 		return null;
 	}

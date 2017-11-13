@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.config;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-
-@PluginDescriptor(
-	name = "Jewelry plugin"
-)
-public class JewelryCount extends Plugin
+public interface Config
 {
-	@Inject
-	JewelryCountConfig config;
 
-	@Inject
-	JewelryCountOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(JewelryCountOverlay.class);
-	}
-
-	@Provides
-	JewelryCountConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(JewelryCountConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
 }

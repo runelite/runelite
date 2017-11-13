@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.inject.Binder;
 import java.awt.Font;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import net.runelite.api.widgets.Widget;
-
-import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -43,10 +43,14 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class DevTools extends Plugin
 {
-	private final DevToolsOverlay overlay = new DevToolsOverlay(this);
-	private DevToolsPanel panel;
+	@Inject
+	ClientUI ui;
+
+	@Inject
+	DevToolsOverlay overlay;
+
 	private NavigationButton navButton;
-	private final ClientUI ui = RuneLite.getRunelite().getGui();
+	private DevToolsPanel panel;
 
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
@@ -63,9 +67,16 @@ public class DevTools extends Plugin
 	private Font font;
 
 	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(DevToolsOverlay.class);
+		binder.bind(DevToolsPanel.class);
+	}
+
+	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new DevToolsPanel(this);
+		panel = injector.getInstance(DevToolsPanel.class);
 		navButton = new NavigationButton("DevTools", () -> panel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
@@ -75,11 +86,6 @@ public class DevTools extends Plugin
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
 	}
 
 	@Override

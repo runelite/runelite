@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Opponent Info",
 	description = "Configuration for the opponent info plugin"
 )
-public interface OpponentConfig
+public interface OpponentConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",

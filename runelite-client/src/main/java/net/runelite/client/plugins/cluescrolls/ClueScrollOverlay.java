@@ -26,13 +26,17 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -49,17 +53,18 @@ public class ClueScrollOverlay extends Overlay
 
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
 
-	private final Client client = RuneLite.getClient();
+	private final Client client;
+	private final ClueScrollConfig config;
 
 	ClueScroll clue;
 	Instant clueTimeout;
 
-	private final ClueScrollConfig config;
-
-	public ClueScrollOverlay(ClueScrollPlugin plugin)
+	@Inject
+	public ClueScrollOverlay(@Nullable Client client, ClueScrollConfig config)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
-		this.config = plugin.getConfig();
+		this.client = client;
+		this.config = config;
 	}
 
 	@Override

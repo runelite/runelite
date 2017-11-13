@@ -24,6 +24,8 @@
  */
 package net.runelite.client.callback;
 
+import com.google.common.eventbus.EventBus;
+import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import net.runelite.api.ChatMessageType;
@@ -47,8 +49,12 @@ public class Hooks
 
 	private static final long CHECK = 600; // ms - how often to run checks
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-	private static final DeathChecker death = new DeathChecker(runelite);
+	private static final Injector injector = RuneLite.getInjector();
+	private static final Client client = injector.getInstance(Client.class);
+	private static final EventBus eventBus = injector.getInstance(EventBus.class);
+	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
+	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
+	private static final DeathChecker death = new DeathChecker(client, eventBus);
 
 	private static long lastCheck;
 
@@ -73,11 +79,9 @@ public class Hooks
 		}
 
 		// tick pending scheduled tasks
-		Scheduler scheduler = runelite.getScheduler();
 		scheduler.tick();
 
 		// cull infoboxes
-		InfoBoxManager infoBoxManager = runelite.getInfoBoxManager();
 		infoBoxManager.cull();
 	}
 
@@ -85,7 +89,7 @@ public class Hooks
 	{
 		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 
-		OverlayRenderer renderer = runelite.getRenderer();
+		OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 
 		try
 		{
@@ -99,12 +103,6 @@ public class Hooks
 
 	public static void callHook(String name, int idx, Object object)
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
-
 		switch (name)
 		{
 			case "experienceChanged":
@@ -117,7 +115,7 @@ public class Hooks
 				{
 					Skill updatedSkill = possibleSkills[idx];
 					experienceChanged.setSkill(updatedSkill);
-					runelite.getEventBus().post(experienceChanged);
+					eventBus.post(experienceChanged);
 				}
 				break;
 			}
@@ -125,42 +123,42 @@ public class Hooks
 			{
 				MapRegionChanged regionChanged = new MapRegionChanged();
 				regionChanged.setIndex(idx);
-				runelite.getEventBus().post(regionChanged);
+				eventBus.post(regionChanged);
 				break;
 			}
 			case "playerMenuOptionsChanged":
 			{
 				PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
 				optionsChanged.setIndex(idx);
-				runelite.getEventBus().post(optionsChanged);
+				eventBus.post(optionsChanged);
 				break;
 			}
 			case "animationChanged":
 			{
 				AnimationChanged animationChange = new AnimationChanged();
 				animationChange.setObject(object);
-				runelite.getEventBus().post(animationChange);
+				eventBus.post(animationChange);
 				break;
 			}
 			case "gameStateChanged":
 			{
 				GameStateChanged gameStateChange = new GameStateChanged();
-				gameStateChange.setGameState(RuneLite.getClient().getGameState());
-				runelite.getEventBus().post(gameStateChange);
+				gameStateChange.setGameState(client.getGameState());
+				eventBus.post(gameStateChange);
 				break;
 			}
 			case "varbitChanged":
 			{
 				VarbitChanged varbitChanged = new VarbitChanged();
-				runelite.getEventBus().post(varbitChanged);
+				eventBus.post(varbitChanged);
 				break;
 			}
 			case "resizeChanged":
 			{
 				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
 				ResizeableChanged resizeableChanged = new ResizeableChanged();
-				resizeableChanged.setResized(RuneLite.getClient().isResized());
-				runelite.getEventBus().post(resizeableChanged);
+				resizeableChanged.setResized(client.isResized());
+				eventBus.post(resizeableChanged);
 				break;
 			}
 			default:
@@ -196,7 +194,7 @@ public class Hooks
 		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
 		menuOptionClicked.setId(id);
 
-		runelite.getEventBus().post(menuOptionClicked);
+		eventBus.post(menuOptionClicked);
 	}
 
 	public static void addChatMessage(int type, String sender, String message, String clan)
@@ -209,7 +207,7 @@ public class Hooks
 		ChatMessageType chatMessageType = ChatMessageType.of(type);
 		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
 
-		runelite.getEventBus().post(chatMessage);
+		eventBus.post(chatMessage);
 	}
 
 	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
@@ -223,6 +221,6 @@ public class Hooks
 		setMessage.setSender(sender);
 		setMessage.setValue(value);
 
-		runelite.getEventBus().post(setMessage);
+		eventBus.post(setMessage);
 	}
 }

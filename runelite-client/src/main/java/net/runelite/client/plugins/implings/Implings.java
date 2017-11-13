@@ -25,7 +25,10 @@
 package net.runelite.client.plugins.implings;
 
 import com.google.common.eventbus.Subscribe;
-import net.runelite.client.RuneLite;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -40,10 +43,20 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class Implings extends Plugin
 {
+	@Inject
+	ImplingsOverlay overlay;
 
-	private final ImplingsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ImplingsConfig.class);
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(ImplingsOverlay.class);
+	}
 
-	private final ImplingsOverlay overlay = new ImplingsOverlay(this);
+	@Provides
+	ImplingsConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ImplingsConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -56,11 +69,6 @@ public class Implings extends Plugin
 	protected void shutDown() throws Exception
 	{
 
-	}
-
-	public ImplingsConfig getConfig()
-	{
-		return config;
 	}
 
 	@Override

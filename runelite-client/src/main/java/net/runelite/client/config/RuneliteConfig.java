@@ -29,7 +29,7 @@ package net.runelite.client.config;
 	name = "Runelite",
 	description = "Configuration for Runelite client options"
 )
-public interface RuneliteConfig
+public interface RuneliteConfig extends Config
 {
 	@ConfigItem(
 		keyName = "tooltipLeft",

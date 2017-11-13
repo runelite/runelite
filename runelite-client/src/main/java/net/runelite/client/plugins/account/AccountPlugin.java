@@ -33,6 +33,7 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
@@ -57,8 +58,14 @@ public class AccountPlugin extends Plugin
 {
 	private static final Logger logger = LoggerFactory.getLogger(AccountPlugin.class);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final ClientUI ui = runelite.getGui();
+	@Inject
+	RuneLite runelite;
+
+	@Inject
+	ClientUI ui;
+
+	@Inject
+	ScheduledExecutorService executor;
 
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;
@@ -83,14 +90,8 @@ public class AccountPlugin extends Plugin
 		ui.getPluginToolbar().addNavigation(loginButton);
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-	}
-
 	private void loginClick(ActionEvent ae)
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
 		executor.execute(RunnableExceptionLogger.wrap(this::openLoginPage));
 	}
 

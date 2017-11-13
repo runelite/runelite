@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,13 +35,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SetMessage;
 import net.runelite.client.events.ResizeableChanged;
 import net.runelite.client.events.ConfigChanged;
@@ -70,22 +73,27 @@ public class ChatCommands extends Plugin
 
 	private final String colKeyword = "<colRegular>";
 	private final String colKeywordHighLight = "<colHighlight>";
-	private final ChatCommandsConfig config = RuneLite.getRunelite().getConfigManager().getConfig(ChatCommandsConfig.class);
-	private final ItemManager itemManager = RuneLite.getRunelite().getItemManager();
 	private final ItemClient itemClient = new ItemClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private int transparancyVarbit = -1;
 
-	@Override
-	protected void startUp() throws Exception
-	{
-	}
+	@Inject
+	@Nullable
+	Client client;
 
-	@Override
-	protected void shutDown() throws Exception
+	@Inject
+	ChatCommandsConfig config;
+
+	@Inject
+	ItemManager itemManager;
+
+	@Inject
+	ScheduledExecutorService executor;
+
+	@Provides
+	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
+		return configManager.getConfig(ChatCommandsConfig.class);
 	}
 
 	/**
@@ -104,7 +112,6 @@ public class ChatCommands extends Plugin
 		else if (transparancyVarbit != client.getSetting(Varbits.TRANSPARANT_CHATBOX))
 		{
 			transparancyVarbit = client.getSetting(Varbits.TRANSPARANT_CHATBOX);
-			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> recolorChat());
 		}
 	}
@@ -112,7 +119,6 @@ public class ChatCommands extends Plugin
 	@Subscribe
 	public void onResizableChanged(ResizeableChanged event)
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
 		executor.submit(() -> recolorChat());
 	}
 
@@ -141,7 +147,6 @@ public class ChatCommands extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		ScheduledExecutorService executor = runelite.getExecutor();
 		executor.submit(() -> recolorChat());
 	}
 
@@ -179,7 +184,6 @@ public class ChatCommands extends Plugin
 		if (config.lvl() && message.toLowerCase().equals("!total"))
 		{
 			logger.debug("Running total level lookup");
-			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
 		}
 		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
@@ -188,7 +192,6 @@ public class ChatCommands extends Plugin
 
 			logger.debug("Running price lookup for {}", search);
 
-			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> lookup(setMessage.getType(), setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
@@ -196,7 +199,6 @@ public class ChatCommands extends Plugin
 			String search = message.substring(5);
 
 			logger.debug("Running level lookup for {}", search);
-			ScheduledExecutorService executor = runelite.getExecutor();
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
 	}

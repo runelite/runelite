@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.rememberusername;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -37,19 +40,17 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class RememberUsername extends Plugin
 {
-	private final Client client = RuneLite.getClient();
-	private final RememberUsernameConfig config = RuneLite.getRunelite().getConfigManager().getConfig(RememberUsernameConfig.class);
+	@Inject
+	@Nullable
+	Client client;
 
-	@Override
-	protected void startUp() throws Exception
+	@Inject
+	RememberUsernameConfig config;
+
+	@Provides
+	RememberUsernameConfig getConfig(ConfigManager configManager)
 	{
-
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-
+		return configManager.getConfig(RememberUsernameConfig.class);
 	}
 
 	@Subscribe

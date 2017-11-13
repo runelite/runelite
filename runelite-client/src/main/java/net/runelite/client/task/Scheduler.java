@@ -32,21 +32,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
-import net.runelite.client.RuneLite;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class Scheduler
 {
 	private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
-	private final RuneLite runelite;
 	private final List<ScheduledMethod> scheduledMethods = new ArrayList<>();
 
-	public Scheduler(RuneLite runelite)
-	{
-		this.runelite = runelite;
-	}
+	@Inject
+	ScheduledExecutorService executor;
 
 	public void addScheduledMethod(ScheduledMethod method)
 	{
@@ -84,7 +83,6 @@ public class Scheduler
 
 				if (schedule.asynchronous())
 				{
-					ScheduledExecutorService executor = runelite.getExecutor();
 					executor.submit(() -> run(scheduledMethod));
 				}
 				else

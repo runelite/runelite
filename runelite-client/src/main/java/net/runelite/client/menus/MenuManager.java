@@ -25,18 +25,22 @@
 package net.runelite.client.menus;
 
 import com.google.common.base.Preconditions;
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.client.RuneLite;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class MenuManager
 {
 	private static final Logger logger = LoggerFactory.getLogger(MenuManager.class);
@@ -47,14 +51,17 @@ public class MenuManager
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
 
-	private final RuneLite runeLite;
+	private final Provider<Client> clientProvider;
+	private final EventBus eventBus;
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 
-	public MenuManager(RuneLite runeLite)
+	@Inject
+	public MenuManager(Provider<Client> clientProvider, EventBus eventBus)
 	{
-		this.runeLite = runeLite;
+		this.clientProvider = clientProvider;
+		this.eventBus = eventBus;
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -110,12 +117,12 @@ public class MenuManager
 		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
 		playerMenuOptionClicked.setMenuTarget(username);
 
-		runeLite.getEventBus().post(playerMenuOptionClicked);
+		eventBus.post(playerMenuOptionClicked);
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)
 	{
-		Client client = RuneLite.getClient();
+		Client client = clientProvider.get();
 
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
@@ -133,7 +140,7 @@ public class MenuManager
 	{
 		int index = IDX_LOWER;
 
-		Client client = RuneLite.getClient();
+		Client client = clientProvider.get();
 		if (client == null)
 		{
 			return IDX_UPPER;

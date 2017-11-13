@@ -31,11 +31,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -48,14 +51,20 @@ class FishingSpotOverlay extends Overlay
 
 	private final List<Integer> ids = new ArrayList<>();
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
+	private final RuneLite runelite;
+	private final Client client;
 	private final FishingConfig config;
 
-	public FishingSpotOverlay(FishingPlugin plugin)
+	@Inject
+	ItemManager itemManager;
+
+	@Inject
+	public FishingSpotOverlay(RuneLite runelite, @Nullable Client client, FishingConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.runelite = runelite;
+		this.client = client;
+		this.config = config;
 	}
 
 	@Override
@@ -99,7 +108,7 @@ class FishingSpotOverlay extends Overlay
 
 	private BufferedImage getFishImage(FishingSpot spot)
 	{
-		BufferedImage fishImage = runelite.getItemManager().getImage(spot.getFishSpriteId());
+		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
 		return fishImage;
 	}
 

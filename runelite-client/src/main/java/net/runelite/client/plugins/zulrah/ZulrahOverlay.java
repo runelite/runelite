@@ -36,7 +36,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -44,7 +46,6 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,15 +68,17 @@ public class ZulrahOverlay extends Overlay
 	private static final Color MELEE_BACKGROUND_COLOR = new Color(180, 50, 20, 100);
 	private static final Color JAD_BACKGROUND_COLOR = new Color(255, 115, 0, 100);
 
-	private final Client client = RuneLite.getClient();
+	private final Client client;
 	private final Zulrah plugin;
 	private final Image[] zulrahImages = new Image[3];
 	private final Image[] smallZulrahImages = new Image[3];
 	private final Image[] prayerImages = new Image[2];
 
-	ZulrahOverlay(Zulrah plugin)
+	@Inject
+	ZulrahOverlay(@Nullable Client client, Zulrah plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
+		this.client = client;
 		this.plugin = plugin;
 	}
 

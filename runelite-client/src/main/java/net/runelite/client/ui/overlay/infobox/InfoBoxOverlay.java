@@ -35,7 +35,6 @@ import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -49,14 +48,16 @@ public class InfoBoxOverlay extends Overlay
 	private static final int SEPARATOR = 2;
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final Client client = RuneLite.getClient();
+	private final Client client;
 	private final TooltipRenderer tooltipRenderer;
+	private final InfoBoxManager infoboxManager;
 
-	public InfoBoxOverlay(TooltipRenderer tooltipRenderer)
+	public InfoBoxOverlay(Client client, TooltipRenderer tooltipRenderer, InfoBoxManager infoboxManager)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		this.client = client;
 		this.tooltipRenderer = tooltipRenderer;
+		this.infoboxManager = infoboxManager;
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		List<InfoBox> infoBoxes = runelite.getInfoBoxManager().getInfoBoxes();
+		List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
 		if (infoBoxes.isEmpty())
 		{

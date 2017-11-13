@@ -26,11 +26,13 @@ package net.runelite.client.plugins.mousehighlight;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.tooltips.Tooltip;
 import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
 import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
@@ -40,15 +42,18 @@ class MouseHighlightOverlay extends Overlay
 	// Grabs the colour and name from a target string
 	// <col=ffffff>Player1
 	private final MouseHighlightConfig config;
-	private final Client client = RuneLite.getClient();
-	private final RuneLite runelite = RuneLite.getRunelite();
-	private final TooltipRenderer tooltipRenderer = runelite.getRenderer().getTooltipRenderer();
+	private final Client client;
+	private final TooltipRenderer tooltipRenderer;
 
-	MouseHighlightOverlay(MouseHighlight plugin)
+	@Inject
+	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, OverlayRenderer overlayRenderer)
 	{
 		super(OverlayPosition.DYNAMIC);
-		this.config = plugin.getConfig();
+		this.client = client;
+		this.config = config;
+		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
 	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{

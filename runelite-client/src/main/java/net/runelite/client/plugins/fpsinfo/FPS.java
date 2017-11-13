@@ -22,10 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.fpsinfo;
 
+import com.google.inject.Binder;
 import java.awt.Font;
+import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -36,20 +37,22 @@ import net.runelite.client.ui.overlay.Overlay;
 )
 public class FPS extends Plugin
 {
-	private final Overlay overlay = new FPSOverlay(this);
+	@Inject
+	FPSOverlay overlay;
 
 	private Font font;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(FPSOverlay.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
 	}
 
 	@Override

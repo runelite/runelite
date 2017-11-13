@@ -25,22 +25,41 @@
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
-import net.runelite.client.RuneLite;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
+@Singleton
 public class OverlayRenderer
 {
-	private final TooltipRenderer tooltipRenderer = new TooltipRenderer();
-	private final InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay(tooltipRenderer);
+	private final Client client;
+	private final TooltipRenderer tooltipRenderer;
+	private final InfoBoxOverlay infoBoxOverlay;
+
+	@Inject
+	PluginManager pluginManager;
+
+	@Inject
+	public OverlayRenderer(@Nullable Client client, InfoBoxManager infoboxManager, RuneliteConfig config)
+	{
+		this.client = client;
+		tooltipRenderer = new TooltipRenderer(client, config);
+		infoBoxOverlay = new InfoBoxOverlay(client, tooltipRenderer, infoboxManager);
+	}
 
 	public void render(BufferedImage clientBuffer)
 	{
 		TopDownRendererLeft tdl = new TopDownRendererLeft();
-		TopDownRendererRight tdr = new TopDownRendererRight();
+		TopDownRendererRight tdr = new TopDownRendererRight(client);
 		DynamicRenderer dr = new DynamicRenderer();
-		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
+		for (Plugin plugin : pluginManager.getPlugins())
 		{
 			for (Overlay overlay : plugin.getOverlays())
 			{

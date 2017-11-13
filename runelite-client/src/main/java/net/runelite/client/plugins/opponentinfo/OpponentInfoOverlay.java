@@ -32,7 +32,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -40,6 +39,8 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -57,6 +58,7 @@ class OpponentInfoOverlay extends Overlay
 
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
+	private final Client client;
 	private final OpponentConfig config;
 	private Integer lastMaxHealth;
 	private DecimalFormat df = new DecimalFormat("0.0");
@@ -65,16 +67,16 @@ class OpponentInfoOverlay extends Overlay
 	private String opponentName;
 	private Map<String, Integer> oppInfoHealth = OpponentInfo.loadNpcHealth();
 
-	OpponentInfoOverlay(OpponentInfo plugin)
+	@Inject
+	OpponentInfoOverlay(@Nullable Client client, OpponentConfig config)
 	{
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
-		this.config = plugin.getConfig();
+		this.client = client;
+		this.config = config;
 	}
 
 	private Actor getOpponent()
 	{
-		Client client = RuneLite.getClient();
-
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{
@@ -87,7 +89,7 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN || config.enabled() == false)
+		if (client.getGameState() != GameState.LOGGED_IN || config.enabled() == false)
 		{
 			return null;
 		}

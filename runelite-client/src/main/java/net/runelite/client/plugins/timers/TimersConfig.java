@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
@@ -32,7 +33,7 @@ import net.runelite.client.config.ConfigItem;
 	name = "Timers",
 	description = "Configuration for the timers plugin"
 )
-public interface TimersConfig
+public interface TimersConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
