@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,45 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bosstimer;
+package net.runelite.client.plugins.fpsinfo;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import java.awt.Font;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Boss timers"
+	name = "Frames per second plugin"
 )
-public class BossTimers extends Plugin
+public class FPSPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(BossTimers.class);
-
 	@Inject
-	InfoBoxManager infoBoxManager;
+	FPSOverlay overlay;
 
-	@Subscribe
-	public void onActorDeath(ActorDeath death)
+	private Font font;
+
+	@Override
+	public void configure(Binder binder)
 	{
-		Actor actor = death.getActor();
+		binder.bind(FPSOverlay.class);
+	}
 
-		Boss boss = Boss.find(actor.getName());
-		if (boss == null)
-		{
-			return;
-		}
+	@Override
+	protected void startUp() throws Exception
+	{
+		font = FontManager.getRunescapeFont()
+			.deriveFont(Font.BOLD, 16);
+	}
 
-		// remove existing timer
-		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
-
-		RespawnTimer timer = new RespawnTimer(boss);
-		infoBoxManager.addInfoBox(timer);
+	public Font getFont()
+	{
+		return font;
 	}
 }

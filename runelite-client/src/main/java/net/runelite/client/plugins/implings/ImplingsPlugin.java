@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Implings plugin"
 )
-public class Implings extends Plugin
+public class ImplingsPlugin extends Plugin
 {
 	@Inject
 	ImplingsOverlay overlay;

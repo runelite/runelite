@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +23,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.bosstimer;
 
-public enum JewelryType
+import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
+import net.runelite.api.Actor;
+import net.runelite.client.events.ActorDeath;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@PluginDescriptor(
+	name = "Boss timers plugin"
+)
+public class BossTimersPlugin extends Plugin
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL
+	private static final Logger logger = LoggerFactory.getLogger(BossTimersPlugin.class);
+
+	@Inject
+	InfoBoxManager infoBoxManager;
+
+	@Subscribe
+	public void onActorDeath(ActorDeath death)
+	{
+		Actor actor = death.getActor();
+
+		Boss boss = Boss.find(actor.getName());
+		if (boss == null)
+		{
+			return;
+		}
+
+		// remove existing timer
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+
+		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
+
+		RespawnTimer timer = new RespawnTimer(boss);
+		infoBoxManager.addInfoBox(timer);
+	}
 }

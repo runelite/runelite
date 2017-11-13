@@ -44,9 +44,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Xp Globes plugin"
+	name = "XP globes plugin"
 )
-public class XpGlobes extends Plugin
+public class XpGlobesPlugin extends Plugin
 {
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;

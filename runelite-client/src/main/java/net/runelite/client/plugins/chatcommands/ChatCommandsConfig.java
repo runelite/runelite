@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "chatcommands",
-	name = "Chat commands",
+	name = "Chat Commands",
 	description = "Configuration for chat commands"
 )
 public interface ChatCommandsConfig extends Config

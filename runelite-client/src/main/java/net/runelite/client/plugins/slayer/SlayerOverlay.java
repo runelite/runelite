@@ -54,7 +54,7 @@ class SlayerOverlay extends Overlay
 	private final RuneLite runelite;
 	private final Client client;
 	private final SlayerConfig config;
-	private final Slayer plugin;
+	private final SlayerPlugin plugin;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final Set<Integer> slayerJewelry = Sets.newHashSet(
@@ -85,7 +85,7 @@ class SlayerOverlay extends Overlay
 	);
 
 	@Inject
-	SlayerOverlay(RuneLite runelite, Slayer plugin, SlayerConfig config)
+	SlayerOverlay(RuneLite runelite, SlayerPlugin plugin, SlayerConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;

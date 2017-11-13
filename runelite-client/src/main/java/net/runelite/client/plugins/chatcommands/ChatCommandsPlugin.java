@@ -63,11 +63,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Chat commands"
+	name = "Chat commands plugin"
 )
-public class ChatCommands extends Plugin
+public class ChatCommandsPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ChatCommands.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatCommandsPlugin.class);
 
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 

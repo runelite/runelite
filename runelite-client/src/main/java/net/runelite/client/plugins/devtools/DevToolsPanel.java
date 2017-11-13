@@ -25,15 +25,21 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.Collection;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
@@ -69,12 +75,12 @@ public class DevToolsPanel extends PluginPanel
 	private JLabel contentTypeLbl = new JLabel();
 
 	private final Client client;
-	private final DevTools plugin;
+	private final DevToolsPlugin plugin;
 
 	private final SettingsTracker settingsTracker;
 
 	@Inject
-	public DevToolsPanel(@Nullable Client client, DevTools plugin)
+	public DevToolsPanel(@Nullable Client client, DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;

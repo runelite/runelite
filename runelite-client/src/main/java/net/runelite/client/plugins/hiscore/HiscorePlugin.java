@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberusername;
+package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.annotation.Nullable;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.GameStateChanged;
+import javax.swing.ImageIcon;
+import net.runelite.client.events.PlayerMenuOptionClicked;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Remember username plugin"
+	name = "Hiscore plugin"
 )
-public class RememberUsername extends Plugin
+public class HiscorePlugin extends Plugin
 {
-	@Inject
-	@Nullable
-	Client client;
+	private static final Logger logger = LoggerFactory.getLogger(HiscorePlugin.class);
+
+	private static final String LOOKUP = "Lookup";
 
 	@Inject
-	RememberUsernameConfig config;
+	ClientUI ui;
 
-	@Provides
-	RememberUsernameConfig getConfig(ConfigManager configManager)
+	@Inject
+	MenuManager menuManager;
+
+	@Inject
+	ScheduledExecutorService executor;
+
+	private NavigationButton navButton;
+	private HiscorePanel hiscorePanel;
+
+	@Override
+	protected void startUp() throws Exception
 	{
-		return configManager.getConfig(RememberUsernameConfig.class);
+		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
+		hiscorePanel = injector.getInstance(HiscorePanel.class);
+
+		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
+		navButton.getButton().setIcon(icon);
+
+		ui.getPluginToolbar().addNavigation(navButton);
+
+		menuManager.addPlayerMenuItem(LOOKUP);
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
 	{
-		if (!config.enabled())
+		if (event.getMenuOption().equals(LOOKUP))
 		{
-			return;
-		}
-
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			if (config.username() == null || config.username().isEmpty())
-			{
-				return;
-			}
-
-			client.setUsername(config.username());
-		}
-
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			if (config.username().equals(client.getUsername()))
-			{
-				return;
-			}
-
-			config.username(client.getUsername());
+			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
 		}
 	}
+
 }

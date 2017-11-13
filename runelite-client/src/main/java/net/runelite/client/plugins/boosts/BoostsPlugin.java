@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fpsinfo;
+package net.runelite.client.plugins.boosts;
 
 import com.google.inject.Binder;
-import java.awt.Font;
+import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Frames per second"
+	name = "Boosts plugin"
 )
-public class FPS extends Plugin
+public class BoostsPlugin extends Plugin
 {
 	@Inject
-	FPSOverlay overlay;
-
-	private Font font;
+	BoostsOverlay boostsOverlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(FPSOverlay.class);
+		binder.bind(BoostsOverlay.class);
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	@Provides
+	BoostsConfig provideConfig(ConfigManager configManager)
 	{
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
+		return configManager.getConfig(BoostsConfig.class);
 	}
 
 	@Override
 	public Overlay getOverlay()
 	{
-		return overlay;
-	}
-
-	public Font getFont()
-	{
-		return font;
+		return boostsOverlay;
 	}
 }

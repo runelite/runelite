@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.mousehighlight;
 
-import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Clan chat plugin"
+	name = "Mouse highlight plugin"
 )
-public class ClanChat extends Plugin
+public class MouseHighlightPlugin extends Plugin
 {
 	@Inject
-	@Nullable
-	Client client;
+	MouseHighlightConfig config;
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateClanChatTitle()
+	@Inject
+	MouseHighlightOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
+		binder.bind(MouseHighlightOverlay.class);
+	}
 
-		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
-		if (clanChatTitleWidget != null)
-		{
-			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
-		}
+	@Provides
+	MouseHighlightConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MouseHighlightConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
 	}
 }
