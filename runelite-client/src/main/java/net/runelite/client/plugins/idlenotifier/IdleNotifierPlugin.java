@@ -48,9 +48,9 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-	name = "Idle notifier"
+	name = "Idle notifier plugin"
 )
-public class IdleNotifier extends Plugin
+public class IdleNotifierPlugin extends Plugin
 {
 	@Inject
 	RuneLite runelite;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,90 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcave;
+package net.runelite.client.plugins.runepouch;
 
 import com.google.inject.Binder;
-import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
+import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Query;
-import net.runelite.api.queries.NPCQuery;
-import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Fight cave plugin"
+	name = "Runepouch plugin"
 )
-public class FightCave extends Plugin
+public class RunepouchPlugin extends Plugin
 {
 	@Inject
-	@Nullable
-	Client client;
+	ConfigManager configManager;
 
 	@Inject
-	RuneLite runelite;
-
-	@Inject
-	FightCaveOverlay overlay;
-
-	private JadAttack attack;
+	RunepouchOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(FightCaveOverlay.class);
+		binder.bind(RunepouchOverlay.class);
+	}
+
+	@Provides
+	RunepouchConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RunepouchConfig.class);
 	}
 
 	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
-	}
-
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void update()
-	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		NPC jad = findJad();
-		if (jad != null)
-		{
-			if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
-			{
-				attack = JadAttack.MAGIC;
-			}
-			else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
-			{
-				attack = JadAttack.RANGE;
-			}
-		}
-		else
-		{
-			attack = null;
-		}
-	}
-
-	private NPC findJad()
-	{
-		Query query = new NPCQuery().nameContains("TzTok-Jad");
-		NPC[] result = runelite.runQuery(query);
-		return result.length >= 1 ? result[0] : null;
-	}
-
-	JadAttack getAttack()
-	{
-		return attack;
 	}
 }

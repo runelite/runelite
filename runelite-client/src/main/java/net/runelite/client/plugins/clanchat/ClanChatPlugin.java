@@ -22,81 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.combatlevel;
+package net.runelite.client.plugins.clanchat;
 
-import com.google.inject.Provides;
-import java.text.DecimalFormat;
 import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.GameState;
-import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Combat level plugin"
+	name = "Clan chat plugin"
 )
-public class CombatLevel extends Plugin
+public class ClanChatPlugin extends Plugin
 {
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
-
 	@Inject
 	@Nullable
 	Client client;
-
-	@Inject
-	CombatLevelConfig config;
-
-	@Provides
-	CombatLevelConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(CombatLevelConfig.class);
-	}
 
 	@Schedule(
 		period = 600,
 		unit = ChronoUnit.MILLIS
 	)
-	public void updateCombatLevel()
+	public void updateClanChatTitle()
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (combatLevelWidget == null)
+		Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
+		if (clanChatTitleWidget != null)
 		{
-			return;
-		}
-
-		if (config.enabled())
-		{
-			double combatLevelPrecise = Experience.getCombatLevelPrecise(
-				client.getRealSkillLevel(Skill.ATTACK),
-				client.getRealSkillLevel(Skill.STRENGTH),
-				client.getRealSkillLevel(Skill.DEFENCE),
-				client.getRealSkillLevel(Skill.HITPOINTS),
-				client.getRealSkillLevel(Skill.MAGIC),
-				client.getRealSkillLevel(Skill.RANGED),
-				client.getRealSkillLevel(Skill.PRAYER)
-			);
-			combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
-		}
-		else
-		{
-			String widgetText = combatLevelWidget.getText();
-			if (widgetText.contains("."))
-			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
-			}
+			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
 		}
 	}
 }

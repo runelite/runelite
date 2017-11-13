@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.opponentinfo;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
-@ConfigGroup(
-	keyName = "jewelrycount",
-	name = "Jewelry Count",
-	description = "Configuration for the jewelry count plugin"
+@PluginDescriptor(
+	name = "Opponent information plugin"
 )
-public interface JewelryCountConfig extends Config
+public class OpponentInfoPlugin extends Plugin
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the jewelry count plugin is displayed"
-	)
-	default boolean enabled()
+	@Inject
+	OpponentInfoOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
 	{
-		return true;
+		binder.bind(OpponentInfoOverlay.class);
+	}
+
+	@Provides
+	OpponentConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(OpponentConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
+
+	public static Map<String, Integer> loadNpcHealth()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>()
+		{
+		}.getType();
+
+		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
+		return gson.fromJson(new InputStreamReader(healthFile), type);
 	}
 }

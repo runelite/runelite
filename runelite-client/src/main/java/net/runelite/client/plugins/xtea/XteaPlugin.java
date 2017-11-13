@@ -22,64 +22,82 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hiscore;
+package net.runelite.client.plugins.xtea;
 
 import com.google.common.eventbus.Subscribe;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
-import net.runelite.client.events.PlayerMenuOptionClicked;
-import net.runelite.client.menus.MenuManager;
+import net.runelite.api.Client;
+import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
+import net.runelite.http.api.xtea.XteaClient;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Hiscore plugin"
+	name = "Xtea plugin"
 )
-public class Hiscore extends Plugin
+public class XteaPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hiscore.class);
+	private static final Logger logger = LoggerFactory.getLogger(XteaPlugin.class);
 
-	private static final String LOOKUP = "Lookup";
+	private final XteaClient xteaClient = new XteaClient();
+
+	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Inject
-	ClientUI ui;
-
-	@Inject
-	MenuManager menuManager;
+	@Nullable
+	Client client;
 
 	@Inject
 	ScheduledExecutorService executor;
 
-	private NavigationButton navButton;
-	private HiscorePanel hiscorePanel;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
-		hiscorePanel = injector.getInstance(HiscorePanel.class);
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
-		navButton.getButton().setIcon(icon);
-
-		ui.getPluginToolbar().addNavigation(navButton);
-
-		menuManager.addPlayerMenuItem(LOOKUP);
-	}
-
 	@Subscribe
-	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
+	public void onMapRegionChanged(MapRegionChanged event)
 	{
-		if (event.getMenuOption().equals(LOOKUP))
-		{
-			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
-		}
-	}
+		int idx = event.getIndex();
 
+		if (idx == -1)
+		{
+			return; // this is the new array being assigned to the field
+		}
+
+		int revision = client.getRevision();
+		int[] regions = client.getMapRegions();
+		int[][] xteaKeys = client.getXteaKeys();
+
+		int region = regions[idx];
+		int[] keys = xteaKeys[idx];
+
+		logger.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+
+		// No need to ever send more than once
+		if (sentRegions.contains(region))
+		{
+			return;
+		}
+
+		sentRegions.add(region);
+
+		executor.execute(() ->
+		{
+			try (Response response = xteaClient.submit(revision, region, keys))
+			{
+				if (!response.isSuccessful())
+				{
+					logger.debug("unsuccessful xtea response");
+				}
+			}
+			catch (IOException ex)
+			{
+				logger.debug("unable to submit xtea keys", ex);
+			}
+		});
+	}
 }

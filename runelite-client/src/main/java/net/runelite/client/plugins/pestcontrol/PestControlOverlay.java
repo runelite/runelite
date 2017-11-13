@@ -58,13 +58,13 @@ public class PestControlOverlay extends Overlay
 	private final RuneLite runelite;
 	private final Client client;
 
-	private final PestControl plugin;
+	private final PestControlPlugin plugin;
 
 	// Pest control game
 	private Game game;
 
 	@Inject
-	public PestControlOverlay(RuneLite runelite, PestControl plugin)
+	public PestControlOverlay(RuneLite runelite, PestControlPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;

@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Timers plugin"
 )
-public class Timers extends Plugin
+public class TimersPlugin extends Plugin
 {
 	@Inject
 	TimersConfig config;

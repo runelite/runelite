@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Aria <aria@ar1as.space>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.grounditems;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -33,26 +33,26 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Jewelry plugin"
+	name = "Ground items plugin"
 )
-public class JewelryCount extends Plugin
+public class GroundItemsPlugin extends Plugin
 {
 	@Inject
-	JewelryCountConfig config;
+	ConfigManager configManager;
 
 	@Inject
-	JewelryCountOverlay overlay;
+	GroundItemsOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(JewelryCountOverlay.class);
+		binder.bind(GroundItemsOverlay.class);
 	}
 
 	@Provides
-	JewelryCountConfig getConfig(ConfigManager configManager)
+	GroundItemsConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(JewelryCountConfig.class);
+		return configManager.getConfig(GroundItemsConfig.class);
 	}
 
 	@Override
@@ -60,4 +60,5 @@ public class JewelryCount extends Plugin
 	{
 		return overlay;
 	}
+
 }

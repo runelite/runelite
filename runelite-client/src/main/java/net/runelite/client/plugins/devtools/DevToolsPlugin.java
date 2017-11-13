@@ -38,10 +38,10 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Developer tools",
+	name = "Developer tools plugin",
 	developerPlugin = true
 )
-public class DevTools extends Plugin
+public class DevToolsPlugin extends Plugin
 {
 	@Inject
 	ClientUI ui;
@@ -77,7 +77,7 @@ public class DevTools extends Plugin
 	protected void startUp() throws Exception
 	{
 		panel = injector.getInstance(DevToolsPanel.class);
-		navButton = new NavigationButton("DevTools", () -> panel);
+		navButton = new NavigationButton("Developer Tools", () -> panel);
 
 		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
 		navButton.getButton().setIcon(icon);

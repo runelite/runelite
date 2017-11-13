@@ -22,15 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.jewellerycount;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.jewelrycount.JewelryType.*;
+import static net.runelite.client.plugins.jewellerycount.JewelleryType.*;
 
-public enum JewelryCharges
+public enum JewelleryCharges
 {
 	GLORY1(GLORY, AMULET_OF_GLORY1, 1),
 	GLORY2(GLORY, AMULET_OF_GLORY2, 2),
@@ -110,28 +110,28 @@ public enum JewelryCharges
 	TCRYSTAL2(TCRYSTAL, TELEPORT_CRYSTAL_2, 2),
 	TCRYSTAL1(TCRYSTAL, TELEPORT_CRYSTAL_1, 1);
 
-	private final JewelryType type;
+	private final JewelleryType type;
 	private final int id;
 	private final int charges;
 
-	private static final Map<Integer, JewelryCharges> ITEM_ID = new HashMap<>();
+	private static final Map<Integer, JewelleryCharges> ITEM_ID = new HashMap<>();
 
 	static
 	{
-		for (JewelryCharges s : values())
+		for (JewelleryCharges s : values())
 		{
 			ITEM_ID.put(s.getId(), s);
 		}
 	}
 
-	JewelryCharges(JewelryType type, int ID, int charges)
+	JewelleryCharges(JewelleryType type, int ID, int charges)
 	{
 		this.type = type;
 		this.id = ID;
 		this.charges = charges;
 	}
 
-	public JewelryType getType()
+	public JewelleryType getType()
 	{
 		return type;
 	}
@@ -146,7 +146,7 @@ public enum JewelryCharges
 		return charges;
 	}
 
-	public static JewelryCharges getCharges(int id)
+	public static JewelleryCharges getCharges(int id)
 	{
 		return ITEM_ID.get(id);
 	}

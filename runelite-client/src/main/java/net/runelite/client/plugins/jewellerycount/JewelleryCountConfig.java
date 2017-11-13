@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
+package net.runelite.client.plugins.jewellerycount;
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Mouse highlight plugin"
+@ConfigGroup(
+	keyName = "jewellerycount",
+	name = "Jewellery Count",
+	description = "Configuration for the jewellery count plugin"
 )
-public class MouseHighlight extends Plugin
+public interface JewelleryCountConfig extends Config
 {
-	@Inject
-	MouseHighlightConfig config;
-
-	@Inject
-	MouseHighlightOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enable",
+		description = "Configures whether or not the jewellery count plugin is displayed"
+	)
+	default boolean enabled()
 	{
-		binder.bind(MouseHighlightOverlay.class);
-	}
-
-	@Provides
-	MouseHighlightConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(MouseHighlightConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
+		return true;
 	}
 }

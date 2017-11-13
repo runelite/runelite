@@ -46,11 +46,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class XPPanel extends PluginPanel
+public class XpPanel extends PluginPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(XPPanel.class);
+	private static final Logger logger = LoggerFactory.getLogger(XpPanel.class);
 	private Map<Skill, JPanel> labelMap = new HashMap<>();
-	private final XPTracker xpTracker;
+	private final XpTrackerPlugin xpTracker;
 	private JPanel statsPanel;
 
 	@Inject
@@ -61,7 +61,7 @@ public class XPPanel extends PluginPanel
 	ScheduledExecutorService executor;
 
 	@Inject
-	public XPPanel(XPTracker xpTracker)
+	public XpPanel(XpTrackerPlugin xpTracker)
 	{
 		this.xpTracker = xpTracker;
 
@@ -119,7 +119,7 @@ public class XPPanel extends PluginPanel
 
 		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
 		logger.debug("Loading skill icon from {}", skillIcon);
-		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XPPanel.class.getResourceAsStream(skillIcon))));
+		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XpPanel.class.getResourceAsStream(skillIcon))));
 		iconLevel.add(icon, BorderLayout.LINE_START);
 
 		iconLevel.add(levelLabel, BorderLayout.CENTER);

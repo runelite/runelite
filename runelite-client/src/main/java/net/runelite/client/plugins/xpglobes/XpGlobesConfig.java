@@ -31,14 +31,14 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(
 	keyName = "xpglobes",
 	name = "XP Globes",
-	description = "Configuration for the xp globes plugin"
+	description = "Configuration for the XP globes plugin"
 )
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
 		name = "Enabled",
-		description = "Configures whether or not xp globes are displayed"
+		description = "Configures whether or not XP globes are displayed"
 	)
 	default boolean enabled()
 	{

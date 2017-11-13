@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.jewellerycount;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -30,35 +30,27 @@ import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Ground items plugin"
+	name = "Jewellery count plugin"
 )
-public class GroundItems extends Plugin
+public class JewelleryCountPlugin extends Plugin
 {
 	@Inject
-	ConfigManager configManager;
+	JewelleryCountConfig config;
 
 	@Inject
-	GroundItemsOverlay overlay;
+	JewelleryCountOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(GroundItemsOverlay.class);
+		binder.bind(JewelleryCountOverlay.class);
 	}
 
 	@Provides
-	GroundItemsConfig provideConfig(ConfigManager configManager)
+	JewelleryCountConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(GroundItemsConfig.class);
+		return configManager.getConfig(JewelleryCountConfig.class);
 	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
 }

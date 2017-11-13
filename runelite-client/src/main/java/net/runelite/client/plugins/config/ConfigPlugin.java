@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
-	name = "Config plugin"
+	name = "Configuration plugin"
 )
 public class ConfigPlugin extends Plugin
 {

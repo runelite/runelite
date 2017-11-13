@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewelrycount;
+package net.runelite.client.plugins.jewellerycount;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,14 +46,14 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class JewelryCountOverlay extends Overlay
+class JewelleryCountOverlay extends Overlay
 {
 	private final RuneLite runelite;
-	private final JewelryCountConfig config;
+	private final JewelleryCountConfig config;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	@Inject
-	JewelryCountOverlay(RuneLite runelite, JewelryCountConfig config)
+	JewelleryCountOverlay(RuneLite runelite, JewelleryCountConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
@@ -74,9 +74,9 @@ class JewelryCountOverlay extends Overlay
 
 		graphics.setFont(font);
 
-		for (WidgetItem item : getJewelryWidgetItems())
+		for (WidgetItem item : getJewelleryWidgetItems())
 		{
-			JewelryCharges charges = JewelryCharges.getCharges(item.getId());
+			JewelleryCharges charges = JewelleryCharges.getCharges(item.getId());
 
 			if (charges == null)
 			{
@@ -90,7 +90,7 @@ class JewelryCountOverlay extends Overlay
 		return null;
 	}
 
-	private Collection<WidgetItem> getJewelryWidgetItems()
+	private Collection<WidgetItem> getJewelleryWidgetItems()
 	{
 		Query inventoryQuery = new InventoryItemQuery();
 		WidgetItem[] inventoryWidgetItems = runelite.runQuery(inventoryQuery);
@@ -102,10 +102,10 @@ class JewelryCountOverlay extends Overlay
 		);
 		WidgetItem[] equipmentWidgetItems = runelite.runQuery(equipmentQuery);
 
-		Collection<WidgetItem> jewelry = new ArrayList<>();
-		jewelry.addAll(Arrays.asList(inventoryWidgetItems));
-		jewelry.addAll(Arrays.asList(equipmentWidgetItems));
-		return jewelry;
+		Collection<WidgetItem> jewellery = new ArrayList<>();
+		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
+		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
+		return jewellery;
 	}
 
 	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
