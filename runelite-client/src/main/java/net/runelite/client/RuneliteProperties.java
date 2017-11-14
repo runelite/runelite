@@ -27,9 +27,12 @@ package net.runelite.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class RuneliteProperties
 {
 	private static final Logger logger = LoggerFactory.getLogger(RuneliteProperties.class);
@@ -38,6 +41,7 @@ public class RuneliteProperties
 
 	private final Properties properties = new Properties();
 
+	@Inject
 	public RuneliteProperties()
 	{
 		InputStream in = getClass().getResourceAsStream("runelite.properties");
