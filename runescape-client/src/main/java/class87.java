@@ -59,7 +59,7 @@ public class class87 {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.field2859 = class82.intStack[--class56.intStackSize] == 1;
+         var4.noClickThrough = class82.intStack[--class56.intStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
          var4.field2733 = class82.intStack[--class56.intStackSize] == 1;

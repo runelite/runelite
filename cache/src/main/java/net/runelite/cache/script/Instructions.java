@@ -56,15 +56,15 @@ public class Instructions
 		add(ISTORE, "istore", 1, 0);
 		add(SLOAD, "sload", 0, 0, 0, 1);
 		add(SSTORE, "sstore", 0, 0, 1, 0);
-		add(STRING_APPEND, 0, 0, -1, 1);
+		add(STRING_APPEND, "string_append", 0, 0, -1, 1);
 		add(POP_INT, "pop_int", 1, 0);
 		add(POP_STRING, "pop_string", 0, 0, 1, 0);
 		add(INVOKE, "invoke", -1, -1, -1, -1);
-		add(42, 0, 1);
-		add(43, 1, 0);
-		add(44, 1, 0);
-		add(45, 1, 1);
-		add(46, 2, 0);
+		add(GET_VARC, "get_varc", 0, 1);
+		add(PUT_VARC, "put_varc", 1, 0);
+		add(ARRAY_INITIALIZE, "array_initialize", 1, 0);
+		add(ARRAY_LOAD, "array_load", 1, 1);
+		add(ARRAY_STORE, "array_store", 2, 0);
 		add(GET_VARC_STRING, "get_varc_string", 0, 0, 0, 1);
 		add(PUT_VARC_STRING, "put_varc_string", 0, 0, 1, 0);
 		add(SWITCH, "switch", 1, 0);
@@ -75,27 +75,27 @@ public class Instructions
 		add(WIDGET_LOAD, "widget_load", 1, 1);
 		// 2000-2100 are the same as 1000-1100, but
 		// pop an additional int which is used to get the current widget
-		add(1000, 4, 0);
-		add(1001, 4, 0);
+		add(WIDGET_PUT_POSITION, "widget_put_position", 4, 0);
+		add(WIDGET_PUT_SIZE, "widget_put_size", 4, 0);
 		add(WIDGET_PUT_HIDDEN, "widget_put_hidden", 1, 0);
-		add(1005, 1, 0);
+		add(WIDGET_PUT_NO_CLICK_THROUGH, "widget_put_no_click_through", 1, 0);
 		add(1006, 1, 0);
 		// 2100-2200 and 1100-1200 do the same thing
 		add(WIDGET_PUT_SCROLL, "widget_put_scroll", 2, 0);
 		add(WIDGET_PUT_TEXTCOLOR, "widget_put_textcolor", 1, 0);
-		add(1102, 1, 0);
+		add(WIDGET_PUT_FILLED, "widget_put_filled", 1, 0);
 		add(WIDGET_PUT_OPACITY, "widget_put_opacity", 1, 0);
-		add(1104, 1, 0);
+		add(WIDGET_PUT_LINE_WIDTH, "widget_put_line_width", 1, 0);
 		add(WIDGET_PUT_SPRITEID, "widget_put_spriteid", 1, 0);
 		add(WIDGET_PUT_TEXTUREID, "widget_put_textureid", 1, 0);
-		add(1107, 1, 0);
+		add(WIDGET_PUT_SPRITE_TILING, "widget_put_sprite_tiling", 1, 0);
 		add(WIDGET_PUT_MODELID_1, "widget_put_modelid_1", 1, 0);
-		add(1109, 6, 0);
-		add(1110, 1, 0);
+		add(WIDGET_PUT_3D_ROTATION, "widget_put_3d_rotation", 6, 0);
+		add(WIDGET_PUT_ANIMATION, "widget_put_animation", 1, 0);
 		add(1111, 1, 0);
 		add(WIDGET_PUT_TEXT, "widget_put_text", 0, 0, 1, 0);
 		add(WIDGET_PUT_FONTID, "widget_put_fontid", 1, 0);
-		add(1114, 3, 0);
+		add(WIDGET_PUT_TEXT_ALIGNMENT, "widget_put_text_alignment", 3, 0);
 		add(WIDGET_PUT_TEXT_SHADOWED, "widget_put_text_shadowed", 1, 0);
 		add(WIDGET_PUT_BORDERTHICKNESS, "widget_put_borderthickness", 1, 0);
 		add(WIDGET_PUT_SPRITE2, "widget_put_sprite2", 1, 0);
@@ -114,7 +114,7 @@ public class Instructions
 		add(1205, 2, 0);
 		add(1212, 2, 0);
 		// and 1300-1400 and 2300-2400
-		add(1300, 1, 0, 1, 0);
+		add(WIDGET_PUT_ACTION, "widget_put_action", 1, 0, 1, 0);
 		add(WIDGET_PUT_DRAG_PARENT, "widget_put_drag_parent", 2, 0);
 		add(1302, 1, 0);
 		add(1303, 1, 0);
@@ -123,6 +123,14 @@ public class Instructions
 		add(WIDGET_PUT_SELECTED_ACTION, "widget_put_selected_action", 0, 0, 1, 0);
 		add(WIDGET_PUT_ACTIONS_NULL, "widget_put_actions_null", 0, 0);
 		// and 1400-1500 and 2400-2500
+		add(WIDGET_PUT_MOUSE_ENTER_LISTENER, "widget_put_mouse_enter_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_EXIT_LISTENER, "widget_put_mouse_exit_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_CONFIG_LISTENER, "widget_put_config_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_RENDER_LISTENER, "widget_put_render_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_HOVER_LISTENER, "widget_put_mouse_hover_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_TABLE_LISTENER, "widget_put_table_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_SKILL_LISTENER, "widget_put_skill_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_SCROLL_LISTENER, "widget_put_scroll_listener", -1, 0, -1, 0);
 		// and 1500-1600 and 2500-2600
 		add(WIDGET_GET_RELATIVEX, "widget_get_relativex", 0, 1);
 		add(WIDGET_GET_RELATIVEY, "widget_get_relativey", 0, 1);
@@ -155,27 +163,27 @@ public class Instructions
 		// and 1900-2000 and 2900-3000
 		add(1927, 0, 0);
 		// 2000-2100
-		add(2000, 5, 0);
-		add(2001, 5, 0);
+		add(WIDGET_PUT_POSITION_WIDGET, "widget_put_position_widget", 5, 0);
+		add(WIDGET_PUT_SIZE_WIDGET, "widget_put_size_widget", 5, 0);
 		add(WIDGET_PUT_HIDDEN_WIDGET, "widget_put_hidden_widget", 2, 0);
-		add(2005, 2, 0);
+		add(WIDGET_PUT_NO_CLICK_THROUGH_WIDGET, "widget_put_no_click_through_widget", 2, 0);
 		add(2006, 2, 0);
 		// 2100-2200
 		add(WIDGET_PUT_SCROLL_WIDGET, "widget_put_scroll_widget", 3, 0);
 		add(WIDGET_PUT_TEXTCOLOR_WIDGET, "widget_put_textcolor_widget", 2, 0);
-		add(2102, 2, 0);
+		add(WIDGET_PUT_FILLED_WIDGET, "widget_put_filled_widget", 2, 0);
 		add(WIDGET_PUT_OPACITY_WIDGET, "widget_put_opacity_widget", 2, 0);
-		add(2104, 2, 0);
+		add(WIDGET_PUT_LINE_WIDTH_WIDGET, "widget_put_line_width_widget", 2, 0);
 		add(WIDGET_PUT_SPRITEID_WIDGET, "widget_put_spriteid_widget", 2, 0);
 		add(WIDGET_PUT_TEXTUREID_WIDGET, "widget_put_textureid_widget", 2, 0);
-		add(2107, 2, 0);
+		add(WIDGET_PUT_SPRITE_TILING_WIDGET, "widget_put_sprite_tiling_widget", 2, 0);
 		add(WIDGET_PUT_MODELID_1_WIDGET, "widget_put_modelid_1_widget", 2, 0);
-		add(2109, 7, 0);
-		add(2110, 2, 0);
+		add(WIDGET_PUT_3D_ROTATION_WIDGET, "widget_put_3d_rotation_widget", 7, 0);
+		add(WIDGET_PUT_ANIMATION_WIDGET, "widget_put_animation_widget", 2, 0);
 		add(2111, 2, 0);
 		add(WIDGET_PUT_TEXT_WIDGET, "widget_put_text_widget", 1, 0, 1, 0);
 		add(WIDGET_PUT_FONTID_WIDGET, "widget_put_fontid_widget", 2, 0);
-		add(2114, 4, 0);
+		add(WIDGET_PUT_TEXT_ALIGNMENT_WIDGET, "widget_put_text_alignment_widget", 4, 0);
 		add(WIDGET_PUT_TEXT_SHADOWED_WIDGET, "widget_put_text_shadowed_widget", 2, 0);
 		add(WIDGET_PUT_BORDERTHICKNESS_WIDGET, "widget_put_borderthickness_widget", 2, 0);
 		add(WIDGET_PUT_SPRITE2_WIDGET, "widget_put_sprite2_widget", 2, 0);
@@ -194,7 +202,7 @@ public class Instructions
 		add(2205, 3, 0);
 		add(2212, 3, 0);
 		// 2300-2400
-		add(2300, 2, 0, 1, 0);
+		add(WIDGET_PUT_ACTION_WIDGET, 2, 0, 1, 0);
 		add(WIDGET_PUT_DRAG_PARENT_WIDGET, "widget_put_drag_parent_widget", 3, 0);
 		add(2302, 2, 0);
 		add(2303, 2, 0);
@@ -203,6 +211,14 @@ public class Instructions
 		add(WIDET_PUT_SELECTED_ACTION_WIDGET, "widget_put_selected_action_widget", 1, 0, 1, 0);
 		add(WIDGET_PUT_ACTIONS_NULL_WIDGET, "widget_put_actions_null_widget", 1, 0);
 		// 2400-2500
+		add(WIDGET_PUT_MOUSE_ENTER_LISTENER_WIDGET, "widget_put_mouse_enter_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_EXIT_LISTENER_WIDGET, "widget_put_mouse_exit_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_CONFIG_LISTENER_WIDGET, "widget_put_config_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_RENDER_LISTENER_WIDGET, "widget_put_render_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_HOVER_LISTENER_WIDGET, "widget_put_mouse_hover_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_TABLE_LISTENER_WIDGET, "widget_put_table_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_SKILL_LISTENER_WIDGET, "widget_put_skill_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_SCROLL_LISTENER_WIDGET, "widget_put_scroll_listener_widget", -1, 0, -1, 0);
 		// 2500-2600
 		add(WIDGET_GET_RELATIVEX_WIDGET, "widget_get_relativex_widget", 1, 1);
 		add(WIDGET_GET_RELATIVEY_WIDGET, "widget_get_relativey_widget", 1, 1);
@@ -284,7 +300,7 @@ public class Instructions
 		add(3325, 4, 1);
 		// 3400-3500
 		add(3400, 2, 0, 0, 1);
-		// 3408 is variable
+		add(GET_ENUM_VALUE, "get_enum_value", 4, -1, 0, -1); // this pushes an int or a string, depending on the argument
 		// 3500-3700
 		add(GET_FRIENDCOUNT, "get_friendcount", 0, 1);
 		add(GET_FRIEND, "get_friend", 1, 0, 0, 2);

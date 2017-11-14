@@ -693,10 +693,10 @@ public class class74 implements Comparator {
                            var3 = 1;
                         } else if(var0 == 3408) {
                            class56.intStackSize -= 4;
-                           var4 = class82.intStack[class56.intStackSize];
-                           var58 = class82.intStack[class56.intStackSize + 1];
-                           var6 = class82.intStack[class56.intStackSize + 2];
-                           var61 = class82.intStack[class56.intStackSize + 3];
+                           var4 = class82.intStack[class56.intStackSize]; // key type
+                           var58 = class82.intStack[class56.intStackSize + 1]; // val type
+                           var6 = class82.intStack[class56.intStackSize + 2]; //enum id
+                           var61 = class82.intStack[class56.intStackSize + 3]; // enum key
                            Enum var73 = (Enum)Enum.field3452.get((long)var6);
                            Enum var71;
                            if(var73 != null) {

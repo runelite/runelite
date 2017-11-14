@@ -1242,7 +1242,7 @@ public final class class41 {
                               }
                            }
 
-                           if(var10.field2814) {
+                           if(var10.filled) {
                               switch(var10.field2756.field3827) {
                               case 1:
                                  Rasterizer2D.method5159(var12, var13, var10.width, var10.height, var10.textColor, var10.field2753, 256 - (var10.opacity & 255), 256 - (var10.field2758 & 255));
@@ -1341,7 +1341,7 @@ public final class class41 {
                                  } else {
                                     var20 = var37.maxWidth;
                                     var21 = var37.maxHeight;
-                                    if(!var10.field2764) {
+                                    if(!var10.spriteTiling) {
                                        var22 = var10.width * 4096 / var20;
                                        if(var10.textureId != 0) {
                                           var37.method5291(var10.width / 2 + var12, var10.height / 2 + var13, var10.textureId, var22);
@@ -1543,10 +1543,10 @@ public final class class41 {
                                        var22 = var13 + var10.height;
                                     }
 
-                                    if(var10.field2759 == 1) {
+                                    if(var10.lineWidth == 1) {
                                        Rasterizer2D.drawLine(var30, var20, var21, var22, var10.textColor);
                                     } else {
-                                       class20.method174(var30, var20, var21, var22, var10.textColor, var10.field2759);
+                                       class20.method174(var30, var20, var21, var22, var10.textColor, var10.lineWidth);
                                     }
                                  }
                               }

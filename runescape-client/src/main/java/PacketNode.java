@@ -89,7 +89,7 @@ public class PacketNode extends Node {
       if(var0 == 1300) {
          var4 = class82.intStack[--class56.intStackSize] - 1;
          if(var4 >= 0 && var4 <= 9) {
-            var3.method4163(var4, class82.scriptStringStack[--class24.scriptStringStackSize]);
+            var3.setAction(var4, class82.scriptStringStack[--class24.scriptStringStackSize]);
             return 1;
          } else {
             --class24.scriptStringStackSize;

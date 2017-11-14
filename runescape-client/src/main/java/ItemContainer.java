@@ -614,7 +614,7 @@ public class ItemContainer extends Node {
 
                   if(var9.hasScript) {
                      ScriptEvent var58;
-                     if(!var9.field2859) {
+                     if(!var9.noClickThrough) {
                         if(var9.field2733 && MouseInput.field704 >= var12 && MouseInput.field708 >= var13 && MouseInput.field704 < var14 && MouseInput.field708 < var15) {
                            for(var58 = (ScriptEvent)Client.field1048.getFront(); var58 != null; var58 = (ScriptEvent)Client.field1048.getNext()) {
                               if(var58.field786 && var58.widget.scrollListener == var58.field791) {

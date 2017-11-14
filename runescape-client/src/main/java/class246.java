@@ -167,7 +167,7 @@ public enum class246 implements RSEnum {
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1102) {
-         var3.field2814 = class82.intStack[--class56.intStackSize] == 1;
+         var3.filled = class82.intStack[--class56.intStackSize] == 1;
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1103) {
@@ -175,7 +175,7 @@ public enum class246 implements RSEnum {
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1104) {
-         var3.field2759 = class82.intStack[--class56.intStackSize];
+         var3.lineWidth = class82.intStack[--class56.intStackSize];
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1105) {
@@ -187,7 +187,7 @@ public enum class246 implements RSEnum {
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1107) {
-         var3.field2764 = class82.intStack[--class56.intStackSize] == 1;
+         var3.spriteTiling = class82.intStack[--class56.intStackSize] == 1;
          WorldMapData.method394(var3);
          return 1;
       } else if(var0 == 1108) {

@@ -204,7 +204,8 @@ public class Widget extends Node {
    )
    public int field2754;
    @ObfuscatedName("af")
-   public boolean field2814;
+   @Export("filled")
+   public boolean filled;
    @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "Lkn;"
@@ -225,7 +226,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1655496661
    )
-   public int field2759;
+   @Export("lineWidth")
+   public int lineWidth;
    @ObfuscatedName("ar")
    public boolean field2760;
    @ObfuscatedName("bu")
@@ -246,7 +248,8 @@ public class Widget extends Node {
    @Export("textureId")
    public int textureId;
    @ObfuscatedName("bl")
-   public boolean field2764;
+   @Export("spriteTiling")
+   public boolean spriteTiling;
    @ObfuscatedName("bw")
    @ObfuscatedGetter(
       intValue = 1325903051
@@ -599,7 +602,8 @@ public class Widget extends Node {
    @Export("loopCycle")
    public int loopCycle;
    @ObfuscatedName("ew")
-   public boolean field2859;
+   @Export("noClickThrough")
+   public boolean noClickThrough;
    @ObfuscatedName("et")
    public boolean field2733;
 
@@ -641,16 +645,16 @@ public class Widget extends Node {
       this.field2753 = 0;
       this.field2809 = 0;
       this.field2754 = 0;
-      this.field2814 = false;
+      this.filled = false;
       this.field2756 = class292.field3826;
       this.opacity = 0;
       this.field2758 = 0;
-      this.field2759 = 1;
+      this.lineWidth = 1;
       this.field2760 = false;
       this.spriteId = -1;
       this.field2860 = -1;
       this.textureId = 0;
-      this.field2764 = false;
+      this.spriteTiling = false;
       this.borderThickness = 0;
       this.sprite2 = 0;
       this.modelType = 1;
@@ -701,7 +705,7 @@ public class Widget extends Node {
       this.field2772 = 0;
       this.boundsIndex = -1;
       this.loopCycle = -1;
-      this.field2859 = false;
+      this.noClickThrough = false;
       this.field2733 = false;
    }
 
@@ -828,7 +832,7 @@ public class Widget extends Node {
       }
 
       if(this.type == 3) {
-         this.field2814 = var1.readUnsignedByte() == 1;
+         this.filled = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 4 || this.type == 1) {
@@ -997,13 +1001,13 @@ public class Widget extends Node {
       if(this.type == 0) {
          this.scrollWidth = var1.readUnsignedShort();
          this.scrollHeight = var1.readUnsignedShort();
-         this.field2859 = var1.readUnsignedByte() == 1;
+         this.noClickThrough = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 5) {
          this.spriteId = var1.readInt();
          this.textureId = var1.readUnsignedShort();
-         this.field2764 = var1.readUnsignedByte() == 1;
+         this.spriteTiling = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
          this.borderThickness = var1.readUnsignedByte();
          this.sprite2 = var1.readInt();
@@ -1056,12 +1060,12 @@ public class Widget extends Node {
 
       if(this.type == 3) {
          this.textColor = var1.readInt();
-         this.field2814 = var1.readUnsignedByte() == 1;
+         this.filled = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
       }
 
       if(this.type == 9) {
-         this.field2759 = var1.readUnsignedByte();
+         this.lineWidth = var1.readUnsignedByte();
          this.textColor = var1.readInt();
          this.field2760 = var1.readUnsignedByte() == 1;
       }
@@ -1423,7 +1427,8 @@ public class Widget extends Node {
       signature = "(ILjava/lang/String;I)V",
       garbageValue = "59558968"
    )
-   public void method4163(int var1, String var2) {
+   @Export("setAction")
+   public void setAction(int var1, String var2) {
       if(this.actions == null || this.actions.length <= var1) {
          String[] var3 = new String[var1 + 1];
          if(this.actions != null) {
