@@ -1,4 +1,8 @@
-   033                   
+.int_stack_count    3
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   0
+   iload                  0
    load_int               1
    if_icmpne              LABEL4
    jump                   LABEL5
@@ -9,42 +13,42 @@ LABEL5:
    load_int               1
    load_int               0
    3200                  
-   033                    1
+   iload                  1
    load_int               1
    if_icmpeq              LABEL13
    jump                   LABEL20
 LABEL13:
-   025                    3985
-   033                    2
+   get_varbit             3985
+   iload                  2
    iadd                  
    load_int               4
    modulo                
-   027                    3985
+   set_varbit             3985
    jump                   LABEL41
 LABEL20:
-   033                    1
+   iload                  1
    load_int               2
    if_icmpeq              LABEL24
    jump                   LABEL31
 LABEL24:
-   025                    3986
-   033                    2
+   get_varbit             3986
+   iload                  2
    iadd                  
    load_int               4
    modulo                
-   027                    3986
+   set_varbit             3986
    jump                   LABEL41
 LABEL31:
-   033                    1
+   iload                  1
    load_int               3
    if_icmpeq              LABEL35
    jump                   LABEL41
 LABEL35:
-   025                    3987
-   033                    2
+   get_varbit             3987
+   iload                  2
    iadd                  
    load_int               4
    modulo                
-   027                    3987
+   set_varbit             3987
 LABEL41:
    return                
