@@ -1,5 +1,6 @@
 import java.util.Calendar;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -89,6 +90,7 @@ public class class82 {
       signature = "(Lgi;IB)V",
       garbageValue = "13"
    )
+   @Hook("onPlayerUpdatePacketHandler")
    static final void method1744(PacketBuffer var0, int var1) {
       int var2 = var0.offset;
       class94.field1408 = 0;

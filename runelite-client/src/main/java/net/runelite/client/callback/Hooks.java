@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
+import net.runelite.api.PacketBuffer;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -174,6 +175,12 @@ public class Hooks
 		{
 			logger.trace("Event {} (idx {}) triggered", name, idx);
 		}
+	}
+
+	public static void onPlayerUpdatePacketHandler(PacketBuffer var0, int var1)
+	{
+		TickUpdate tick = new TickUpdate();
+		eventBus.post(tick);
 	}
 
 	public static void menuActionHook(int var0, int var1, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
