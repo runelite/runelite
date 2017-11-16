@@ -84,7 +84,6 @@ public class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-
 		int orbInnerHeight = (int) bounds.getHeight();
 		int orbInnerWidth = (int) bounds.getHeight();
 		//Purposefully using height twice here as the bounds of the prayer orb includes the number sticking out the side
@@ -113,7 +112,7 @@ public class PrayerFlickOverlay extends Overlay
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
 
-		return null;
+		return new Dimension((int)bounds.getWidth(), (int)bounds.getHeight());
 	}
 
 
