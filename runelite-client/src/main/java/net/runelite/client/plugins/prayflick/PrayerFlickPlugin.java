@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.TickUpdate;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -36,9 +35,7 @@ import net.runelite.client.ui.overlay.Overlay;
 
 import javax.inject.Inject;
 
-@PluginDescriptor(
-		name = "Prayer flicking plugin"
-)
+@PluginDescriptor(name = "Prayer flicking plugin")
 public class PrayerFlickPlugin extends Plugin
 {
 	@Inject

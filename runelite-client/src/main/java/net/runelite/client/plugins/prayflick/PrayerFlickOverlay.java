@@ -27,7 +27,6 @@ package net.runelite.client.plugins.prayflick;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
@@ -41,7 +40,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-public class PrayerFlickOverlay  extends Overlay
+public class PrayerFlickOverlay extends Overlay
 {
 	private final RuneLite runelite;
 	private final Client client;
@@ -94,23 +93,23 @@ public class PrayerFlickOverlay  extends Overlay
 
 		long timeSinceLastTick = System.currentTimeMillis() - startOfLastTick;
 
-		float tickProgress = timeSinceLastTick/600f;
-		tickProgress = Math.min(tickProgress,1);//Cap to 1, so if a tick continues past the expected 600 we don't move the indicator off the orb
+		float tickProgress = timeSinceLastTick / 600f;
+		tickProgress = Math.min(tickProgress, 1);//Cap to 1, so if a tick continues past the expected 600 we don't move the indicator off the orb
 
 		double t = tickProgress * Math.PI;//t on interval [0,pi]
 
-		int xOffset = (int)(-Math.cos(t)*orbInnerWidth/2) + orbInnerWidth/2;
-		int indicatorHeight = (int)(Math.sin(t)*orbInnerHeight);
+		int xOffset = (int) (-Math.cos(t) * orbInnerWidth / 2) + orbInnerWidth / 2;
+		int indicatorHeight = (int) (Math.sin(t) * orbInnerHeight);
 
-		int yOffset = (orbInnerHeight/2)-(indicatorHeight/2);
+		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
 
 
-		graphics.setColor(new Color(255,255,255,100));
-		graphics.fillArc(orbInnerX,orbInnerY,orbInnerWidth,orbInnerHeight,0,360);
+		graphics.setColor(new Color(255, 255, 255, 100));
+		graphics.fillArc(orbInnerX, orbInnerY, orbInnerWidth, orbInnerHeight, 0, 360);
 
 
 		graphics.setColor(Color.cyan);
-		graphics.fillRect(orbInnerX+xOffset,orbInnerY+yOffset,1,indicatorHeight);
+		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
 
 		return null;
 	}
@@ -119,9 +118,9 @@ public class PrayerFlickOverlay  extends Overlay
 	boolean isAnyPrayerActive()
 	{
 
-		for(Prayer pray : Prayer.values())//Check if any prayers are active
+		for (Prayer pray : Prayer.values())//Check if any prayers are active
 		{
-			if(client.isPrayerActive(pray))
+			if (client.isPrayerActive(pray))
 				return true;
 		}
 
