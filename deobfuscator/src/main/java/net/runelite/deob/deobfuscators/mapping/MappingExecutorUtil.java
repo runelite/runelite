@@ -93,7 +93,8 @@ public class MappingExecutorUtil
 				mi2 = (MappableInstruction) p2.getInstruction();
 
 			boolean isSame = mi1.isSame(p1, p2);
-			assert isSame == mi2.isSame(p2, p1);
+			assert isSame == mi2.isSame(p2, p1)
+				: "isSame fail " + p1.getInstruction() + " <> " + p2.getInstruction();
 			
 			if (!isSame)
 			{
