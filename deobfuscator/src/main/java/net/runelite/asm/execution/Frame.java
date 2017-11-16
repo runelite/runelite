@@ -410,4 +410,14 @@ public class Frame
 	{
 		return order++;
 	}
+
+	public Frame getOther()
+	{
+		return other;
+	}
+
+	public void setOther(Frame other)
+	{
+		this.other = other;
+	}
 }

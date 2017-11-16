@@ -84,20 +84,20 @@ public class IfICmpEq extends If
 			return false;
 		}
 
-		Integer i1 = this.getConstantInstruction(thisIc);
-		Integer i2 = this.getConstantInstruction(otherIc);
-
-		// this is to help against the scrambling of the icmps. in every case
-		// except for the packet handler ids the constant is the same.
-		// XX it would be better to have the mapper step over ifs and proceed to
-		// the next one instead of halting
-		if (i1 != null && i2 != null && (int) i1 != (int) i2)
-		{
-			return false;
-		}
-
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 		{
+			//XXX commented due to packet handlers no longer doing icmps
+//			Integer i1 = this.getConstantInstruction(thisIc);
+//			Integer i2 = this.getConstantInstruction(otherIc);
+//
+//			// this is to help against the scrambling of the icmps. in every case
+//			// except for the packet handler ids the constant is the same.
+//			// XX it would be better to have the mapper step over ifs and proceed to
+//			// the next one instead of halting
+//			if (i1 != null && i2 != null && (int) i1 != (int) i2)
+//			{
+//				return false;
+//			}
 			return true;
 		}
 

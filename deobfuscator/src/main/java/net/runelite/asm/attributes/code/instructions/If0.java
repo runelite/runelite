@@ -121,8 +121,8 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		assert branch1.other == null;
 		assert branch2.other == null;
 		
-		branch1.other = branch2;
-		branch2.other = branch1;
+		branch1.setOther(branch2);
+		branch2.setOther(branch1);
 		
 		this.mapArguments(mapping, ctx, other);
 	}
