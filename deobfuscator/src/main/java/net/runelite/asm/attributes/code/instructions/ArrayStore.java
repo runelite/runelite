@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.Field;
@@ -42,21 +41,21 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 	{
 		super(instructions, type);
 	}
-	
+
 	public Field getMyField(InstructionContext thisIc)
 	{
 		StackContext sctx = thisIc.getPops().get(2);
 		InstructionContext pushed = sctx.getPushed();
-		
+
 		InstructionContext r = pushed.resolve(sctx);
-		
+
 		if (r.getInstruction() instanceof GetFieldInstruction)
 		{
 			GetFieldInstruction gf = (GetFieldInstruction) r.getInstruction();
 			Field f = gf.getMyField();
 			return f;
 		}
-		
+
 		return null;
 	}
 
@@ -65,17 +64,18 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 	{
 		return getMyField(thisIc) != null;
 	}
-	
+
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
+		assert ctx.getInstruction().getClass() == other.getInstruction().getClass();
+
 		Field myField = this.getMyField(ctx),
 			otherField = ((ArrayStore) other.getInstruction()).getMyField(other);
-		
-		mapping.map(this, myField, otherField);
-		
-		// map value
 
+		mapping.map(this, myField, otherField);
+
+		// map value
 		StackContext object1 = ctx.getPops().get(0), // value set to.
 			object2 = other.getPops().get(0);
 
@@ -87,8 +87,10 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
 				gf2 = (GetFieldInstruction) base2.getInstruction();
 
-			net.runelite.asm.Field f1 = gf1.getMyField(),
-						f2 = gf2.getMyField();
+			Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+			
+			assert MappingExecutorUtil.isMaybeEqual(f1, f2);
 
 			if (f1 != null && f2 != null)
 			{
@@ -100,6 +102,39 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+		{
+			return false;
+		}
+
+		Field myField = this.getMyField(thisIc),
+			otherField = ((ArrayStore) otherIc.getInstruction()).getMyField(otherIc);
+
+		if (!MappingExecutorUtil.isMaybeEqual(myField, otherField))
+		{
+			return false;
+		}
+
+		StackContext object1 = thisIc.getPops().get(0), // value set to.
+			object2 = otherIc.getPops().get(0);
+
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (!MappingExecutorUtil.isMaybeEqual(f1, f2))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
