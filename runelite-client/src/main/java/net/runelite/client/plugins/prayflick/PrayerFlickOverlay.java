@@ -72,7 +72,7 @@ public class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORB);
+		Widget xpOrb = client.getWidget(WidgetInfo.QUICK_PRAYER_ORB);
 		if (xpOrb == null)
 		{
 			return null;
@@ -85,11 +85,13 @@ public class PrayerFlickOverlay extends Overlay
 		}
 
 
-		int orbInnerHeight = 26;
-		int orbInnerWidth = 26;
+		int orbInnerHeight = (int) bounds.getHeight();
+		int orbInnerWidth = (int) bounds.getHeight();
+		//Purposefully using height twice here as the bounds of the prayer orb includes the number sticking out the side
 
-		int orbInnerX = (int) (bounds.getX() + 28);//x pos of the inside of the prayer orb
-		int orbInnerY = (int) (bounds.getY() + 68);//y pos of the inside of the prayer orb
+
+		int orbInnerX = (int) (bounds.getX() + 24);//x pos of the inside of the prayer orb
+		int orbInnerY = (int) (bounds.getY() - 1);//y pos of the inside of the prayer orb
 
 		long timeSinceLastTick = System.currentTimeMillis() - startOfLastTick;
 
