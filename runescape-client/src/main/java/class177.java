@@ -1,11 +1,28 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fq")
 public class class177 {
-   @ObfuscatedName("dm")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Liy;"
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "-1214711912"
    )
-   static IndexData field2452;
+   public static Object method3156(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !AbstractByteBuffer.field2510) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.field2510 = true;
+            }
+         }
+
+         return var0;
+      }
+   }
 }

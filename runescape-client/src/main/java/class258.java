@@ -1,145 +1,87 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("ii")
 public class class258 extends CacheableNode {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public static IndexDataBase field3446;
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lgr;"
-   )
-   public static NodeCache field3440;
    @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 910364995
+   @ObfuscatedSignature(
+      signature = "Lij;"
    )
-   static int field3444;
-   @ObfuscatedName("i")
-   char field3441;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 139422327
+   public static IndexDataBase field3438;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
    )
-   public int field3443;
-   @ObfuscatedName("v")
-   public String field3442;
+   public static NodeCache field3435;
+   @ObfuscatedName("r")
+   char field3440;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1783477771
+   )
+   public int field3436;
    @ObfuscatedName("x")
-   boolean field3445;
+   public String field3437;
+   @ObfuscatedName("f")
+   boolean field3439;
 
    static {
-      field3440 = new NodeCache(64);
+      field3435 = new NodeCache(64);
    }
 
    class258() {
-      this.field3445 = true;
+      this.field3439 = true;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1397427358"
+      garbageValue = "1667763271"
    )
-   void method4615() {
+   void method4426() {
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "-759710354"
+      signature = "(Lfs;B)V",
+      garbageValue = "-10"
    )
-   void method4612(Buffer var1) {
+   void method4427(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4614(var1, var2);
+         this.method4430(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lfv;IB)V",
-      garbageValue = "17"
+      signature = "(Lfs;II)V",
+      garbageValue = "811269978"
    )
-   void method4614(Buffer var1, int var2) {
+   void method4430(Buffer var1, int var2) {
       if(var2 == 1) {
-         byte var4 = var1.readByte();
-         int var5 = var4 & 255;
-         if(var5 == 0) {
-            throw new IllegalArgumentException("");
-         }
-
-         if(var5 >= 128 && var5 < 160) {
-            char var6 = class273.field3719[var5 - 128];
-            if(var6 == 0) {
-               var6 = '?';
-            }
-
-            var5 = var6;
-         }
-
-         char var3 = (char)var5;
-         this.field3441 = var3;
+         this.field3440 = Script.method1835(var1.readByte());
       } else if(var2 == 2) {
-         this.field3443 = var1.readInt();
+         this.field3436 = var1.readInt();
       } else if(var2 == 4) {
-         this.field3445 = false;
+         this.field3439 = false;
       } else if(var2 == 5) {
-         this.field3442 = var1.readString();
+         this.field3437 = var1.readString();
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "-14813"
+      signature = "(I)Z",
+      garbageValue = "-1032673812"
    )
-   public boolean method4611() {
-      return this.field3441 == 's';
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)I",
-      garbageValue = "-59"
-   )
-   @Export("djb2Hash")
-   public static int djb2Hash(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + class272.method5013(var0.charAt(var3));
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("jr")
-   @ObfuscatedSignature(
-      signature = "(Lhk;B)Z",
-      garbageValue = "112"
-   )
-   static boolean method4629(Widget var0) {
-      if(Client.field1081) {
-         if(Preferences.getWidgetConfig(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
-      }
-
-      return var0.isHidden;
+   public boolean method4429() {
+      return this.field3440 == 's';
    }
 }

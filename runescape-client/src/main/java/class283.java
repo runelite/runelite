@@ -2,142 +2,142 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jl")
+@ObfuscatedName("jg")
 public class class283 {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      longValue = -7589324092182913947L
-   )
-   long field3774;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      longValue = 4368429613995371045L
-   )
-   long field3779;
-   @ObfuscatedName("i")
-   public boolean field3776;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      longValue = 6376518274035108547L
-   )
-   long field3777;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      longValue = -7006512602539418149L
-   )
-   long field3778;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = -7963948879234946269L
-   )
-   long field3775;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1641852997
-   )
-   int field3780;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1598344519
-   )
-   int field3781;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 2015918229
+      longValue = -820030877123638185L
    )
-   int field3782;
+   long field3778;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      longValue = 4188772411303101067L
+   )
+   long field3771;
+   @ObfuscatedName("r")
+   public boolean field3769;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      longValue = 6824773224743381441L
+   )
+   long field3772;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      longValue = 5660252271295283509L
+   )
+   long field3770;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      longValue = -4516234742170545615L
+   )
+   long field3774;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1828821003
+   )
+   int field3775;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1696654311
+   )
+   int field3776;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 832659627
+   )
+   int field3777;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1557012341
+      intValue = -753818383
    )
-   int field3783;
+   int field3773;
 
    public class283() {
-      this.field3774 = -1L;
-      this.field3779 = -1L;
-      this.field3776 = false;
-      this.field3777 = 0L;
-      this.field3778 = 0L;
-      this.field3775 = 0L;
-      this.field3780 = 0;
-      this.field3781 = 0;
-      this.field3782 = 0;
-      this.field3783 = 0;
+      this.field3778 = -1L;
+      this.field3771 = -1L;
+      this.field3769 = false;
+      this.field3772 = 0L;
+      this.field3770 = 0L;
+      this.field3774 = 0L;
+      this.field3775 = 0;
+      this.field3776 = 0;
+      this.field3777 = 0;
+      this.field3773 = 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1937683220"
+      garbageValue = "-1488237381"
    )
-   public void method5106() {
-      this.field3774 = class268.currentTimeMs();
+   public void method4918() {
+      this.field3778 = ChatLineBuffer.currentTimeMs();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "14"
+      garbageValue = "33"
    )
-   public void method5100() {
-      if(this.field3774 != -1L) {
-         this.field3778 = class268.currentTimeMs() - this.field3774;
-         this.field3774 = -1L;
+   public void method4925() {
+      if(-1L != this.field3778) {
+         this.field3770 = ChatLineBuffer.currentTimeMs() - this.field3778;
+         this.field3778 = -1L;
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1021315818"
+      garbageValue = "1582142772"
    )
-   public void method5101(int var1) {
-      this.field3779 = class268.currentTimeMs();
-      this.field3780 = var1;
+   public void method4920(int var1) {
+      this.field3771 = ChatLineBuffer.currentTimeMs();
+      this.field3775 = var1;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-852784300"
+      signature = "(B)V",
+      garbageValue = "119"
    )
-   public void method5098() {
-      if(-1L != this.field3779) {
-         this.field3777 = class268.currentTimeMs() - this.field3779;
-         this.field3779 = -1L;
+   public void method4926() {
+      if(this.field3771 != -1L) {
+         this.field3772 = ChatLineBuffer.currentTimeMs() - this.field3771;
+         this.field3771 = -1L;
       }
 
-      ++this.field3782;
-      this.field3776 = true;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1910187505"
-   )
-   public void method5103() {
-      this.field3776 = false;
-      this.field3781 = 0;
+      ++this.field3777;
+      this.field3769 = true;
    }
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1944751534"
+      garbageValue = "1840343528"
    )
-   public void method5118() {
-      this.method5098();
+   public void method4932() {
+      this.field3769 = false;
+      this.field3776 = 0;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "1900932284"
+      signature = "(I)V",
+      garbageValue = "266630271"
    )
-   public void method5105(Buffer var1) {
-      long var2 = this.field3778;
+   public void method4923() {
+      this.method4926();
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Lfs;I)V",
+      garbageValue = "1359084157"
+   )
+   public void method4924(Buffer var1) {
+      long var2 = this.field3770;
       var2 /= 10L;
       if(var2 < 0L) {
          var2 = 0L;
@@ -146,7 +146,7 @@ public class class283 {
       }
 
       var1.putShort((int)var2);
-      long var4 = this.field3777;
+      long var4 = this.field3772;
       var4 /= 10L;
       if(var4 < 0L) {
          var4 = 0L;
@@ -155,10 +155,18 @@ public class class283 {
       }
 
       var1.putShort((int)var4);
-      PendingSpawn.method1613(var1, this.field3775);
-      var1.putShort(this.field3780);
-      var1.putShort(this.field3781);
-      var1.putShort(this.field3782);
-      var1.putShort(this.field3783);
+      long var6 = this.field3774;
+      var6 /= 10L;
+      if(var6 < 0L) {
+         var6 = 0L;
+      } else if(var6 > 65535L) {
+         var6 = 65535L;
+      }
+
+      var1.putShort((int)var6);
+      var1.putShort(this.field3775);
+      var1.putShort(this.field3776);
+      var1.putShort(this.field3777);
+      var1.putShort(this.field3773);
    }
 }

@@ -4,67 +4,78 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cc")
+@ObfuscatedName("cz")
 @Implements("GraphicsObject")
 public final class GraphicsObject extends Renderable {
-   @ObfuscatedName("m")
+   @ObfuscatedName("nk")
+   @ObfuscatedSignature(
+      signature = "Lkb;"
+   )
+   static SpritePixels field1280;
+   @ObfuscatedName("jk")
    @ObfuscatedGetter(
-      intValue = -1167687871
+      intValue = 410980155
+   )
+   @Export("menuWidth")
+   static int menuWidth;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -28285143
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1329397819
+      intValue = 1014138851
    )
    @Export("startCycle")
    int startCycle;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 575072753
+      intValue = 1599576869
    )
    @Export("level")
    int level;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -974728277
+      intValue = 274878075
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 67811127
+      intValue = -169473045
    )
    @Export("y")
    int y;
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1349999035
+      intValue = -2005972509
    )
    @Export("height")
    int height;
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Ljf;"
+      signature = "Ljh;"
    )
    Sequence field1275;
-   @ObfuscatedName("l")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 954736431
+      intValue = -1179306289
    )
    int field1276;
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -202786333
+      intValue = 1471925407
    )
-   int field1269;
+   int field1277;
    @ObfuscatedName("n")
    @Export("finished")
    boolean finished;
 
    GraphicsObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       this.field1276 = 0;
-      this.field1269 = 0;
+      this.field1277 = 0;
       this.finished = false;
       this.id = var1;
       this.level = var2;
@@ -72,27 +83,27 @@ public final class GraphicsObject extends Renderable {
       this.y = var4;
       this.height = var5;
       this.startCycle = var7 + var6;
-      int var8 = class285.getSpotAnimType(this.id).field3386;
+      int var8 = class245.getSpotAnimType(this.id).field3387;
       if(var8 != -1) {
          this.finished = false;
-         this.field1275 = ItemLayer.getAnimation(var8);
+         this.field1275 = class90.getAnimation(var8);
       } else {
          this.finished = true;
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "874353074"
+      garbageValue = "520686279"
    )
-   final void method1748(int var1) {
+   final void method1635(int var1) {
       if(!this.finished) {
-         this.field1269 += var1;
+         this.field1277 += var1;
 
-         while(this.field1269 > this.field1275.frameLenghts[this.field1276]) {
-            this.field1269 -= this.field1275.frameLenghts[this.field1276];
+         while(this.field1277 > this.field1275.frameLenghts[this.field1276]) {
+            this.field1277 -= this.field1275.frameLenghts[this.field1276];
             ++this.field1276;
             if(this.field1276 >= this.field1275.frameIDs.length) {
                this.finished = true;
@@ -103,29 +114,20 @@ public final class GraphicsObject extends Renderable {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Len;",
-      garbageValue = "-1864051962"
+      signature = "(I)Lev;",
+      garbageValue = "1008738898"
    )
    protected final Model getModel() {
-      Spotanim var1 = class285.getSpotAnimType(this.id);
+      Spotanim var1 = class245.getSpotAnimType(this.id);
       Model var2;
       if(!this.finished) {
-         var2 = var1.method4520(this.field1276);
+         var2 = var1.method4321(this.field1276);
       } else {
-         var2 = var1.method4520(-1);
+         var2 = var1.method4321(-1);
       }
 
       return var2 == null?null:var2;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1906748871"
-   )
-   public static int method1747(int var0) {
-      return var0 >> 11 & 63;
    }
 }

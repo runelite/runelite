@@ -4,121 +4,92 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cc")
 public class class82 {
-   @ObfuscatedName("i")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @Export("scriptLocalStrings")
    static String[] scriptLocalStrings;
-   @ObfuscatedName("v")
-   static int[] field1254;
    @ObfuscatedName("x")
+   static int[] field1258;
+   @ObfuscatedName("f")
    @Export("SHAPE_VERTICES")
    static int[][] SHAPE_VERTICES;
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @Export("intStack")
    static int[] intStack;
-   @ObfuscatedName("b")
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1053971181
+   )
+   @Export("intStackSize")
+   static int intStackSize;
+   @ObfuscatedName("k")
    @Export("scriptStringStack")
    static String[] scriptStringStack;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1762218821
+      intValue = -51860535
    )
    @Export("scriptStackCount")
    static int scriptStackCount;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Lbm;"
+      signature = "[Lbr;"
    )
    @Export("scriptStack")
    static ScriptState[] scriptStack;
-   @ObfuscatedName("y")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lko;"
+      signature = "Lhx;"
    )
-   static IndexedSprite field1265;
-   @ObfuscatedName("k")
-   static Calendar field1261;
-   @ObfuscatedName("t")
-   static final String[] field1266;
-   @ObfuscatedName("u")
+   static Widget field1253;
+   @ObfuscatedName("j")
+   static Calendar field1267;
+   @ObfuscatedName("m")
+   static final String[] field1263;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -287459979
+      intValue = -1341213581
    )
-   static int field1263;
+   static int field1266;
+   @ObfuscatedName("z")
+   static int[] field1265;
 
    static {
-      field1254 = new int[5];
+      field1258 = new int[5];
       SHAPE_VERTICES = new int[5][5000];
       intStack = new int[1000];
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1261 = Calendar.getInstance();
-      field1266 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-      field1263 = 0;
+      field1267 = Calendar.getInstance();
+      field1263 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      field1266 = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("jx")
    @ObfuscatedSignature(
-      signature = "(II)Ljy;",
-      garbageValue = "956826945"
+      signature = "(Ljava/lang/String;ZB)Z",
+      garbageValue = "62"
    )
-   public static Overlay method1733(int var0) {
-      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   @Export("isFriended")
+   static boolean isFriended(String var0, boolean var1) {
+      if(var0 == null) {
+         return false;
       } else {
-         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
-         var1 = new Overlay();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2), var0);
+         String var2 = class226.method4078(var0, class189.field2529);
+
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(class226.method4078(Client.friends[var3].name, class189.field2529)) && (!var1 || Client.friends[var3].world != 0)) {
+               return true;
+            }
          }
 
-         var1.post();
-         Overlay.overlays.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Lgi;IB)V",
-      garbageValue = "13"
-   )
-   static final void method1744(PacketBuffer var0, int var1) {
-      int var2 = var0.offset;
-      class94.field1408 = 0;
-      class31.method308(var0);
-
-      for(int var3 = 0; var3 < class94.field1408; ++var3) {
-         int var4 = class94.field1415[var3];
-         Player var5 = Client.cachedPlayers[var4];
-         int var6 = var0.readUnsignedByte();
-         if((var6 & 1) != 0) {
-            var6 += var0.readUnsignedByte() << 8;
+         if(var2.equalsIgnoreCase(class226.method4078(class275.localPlayer.name, class189.field2529))) {
+            return true;
+         } else {
+            return false;
          }
-
-         class44.method690(var0, var4, var5, var6);
       }
-
-      if(var0.offset - var2 != var1) {
-         throw new RuntimeException(var0.offset - var2 + " " + var1);
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1108213957"
-   )
-   public static void method1724() {
-      if(class245.field3316 != null) {
-         class245.field3316.close();
-      }
-
    }
 }

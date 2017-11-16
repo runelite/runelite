@@ -2,52 +2,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("w")
 public class class25 {
-   @ObfuscatedName("or")
+   @ObfuscatedName("li")
    @ObfuscatedGetter(
-      intValue = 1714735191
+      intValue = 192118161
    )
-   static int field358;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1459656127
-   )
-   int field357;
-   @ObfuscatedName("p")
+   static int field340;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Lax;"
    )
-   Coordinates field359;
+   static class47 field342;
+   @ObfuscatedName("bs")
+   @ObfuscatedGetter(
+      intValue = -619180239
+   )
+   static int field339;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1338055
+   )
+   int field338;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lhk;"
+   )
+   Coordinates field337;
 
    @ObfuscatedSignature(
-      signature = "(ILhq;)V"
+      signature = "(ILhk;)V"
    )
    class25(int var1, Coordinates var2) {
-      this.field357 = var1;
-      this.field359 = var2;
+      this.field338 = var1;
+      this.field337 = var2;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;Lik;Lhp;I)Z",
-      garbageValue = "2102143341"
+      signature = "(II)Z",
+      garbageValue = "799744740"
    )
-   public static boolean method201(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2, class211 var3) {
-      class210.field2600 = var0;
-      class289.field3810 = var1;
-      class210.field2597 = var2;
-      class210.field2596 = var3;
-      return true;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "16711680"
-   )
-   public static void method202() {
-      CombatInfo2.field3416.reset();
-      CombatInfo2.spriteCache.reset();
+   public static boolean method178(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 }

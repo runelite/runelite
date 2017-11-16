@@ -2,39 +2,39 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hd")
 public class class208 implements Iterable {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lgh;"
    )
-   public CacheableNode field2581;
+   public CacheableNode field2574;
 
    public class208() {
-      this.field2581 = new CacheableNode();
-      this.field2581.previous = this.field2581;
-      this.field2581.next = this.field2581;
+      this.field2574 = new CacheableNode();
+      this.field2574.previous = this.field2574;
+      this.field2574.next = this.field2574;
    }
 
-   @ObfuscatedName("m")
-   public void method3832() {
-      while(this.field2581.previous != this.field2581) {
-         this.field2581.previous.unlinkDual();
+   @ObfuscatedName("b")
+   public void method3713() {
+      while(this.field2574.previous != this.field2574) {
+         this.field2574.previous.unlinkDual();
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgu;)V"
+      signature = "(Lgh;)V"
    )
-   public void method3837(CacheableNode var1) {
+   public void method3709(CacheableNode var1) {
       if(var1.next != null) {
          var1.unlinkDual();
       }
 
-      var1.next = this.field2581.next;
-      var1.previous = this.field2581;
+      var1.next = this.field2574.next;
+      var1.previous = this.field2574;
       var1.next.previous = var1;
       var1.previous.next = var1;
    }

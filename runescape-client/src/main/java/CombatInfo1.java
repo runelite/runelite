@@ -4,58 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("ce")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("pw")
+   @ObfuscatedName("pi")
    @ObfuscatedGetter(
-      intValue = 646541439
+      intValue = -554470679
    )
-   static int field1207;
-   @ObfuscatedName("qr")
-   @ObfuscatedSignature(
-      signature = "Lkh;"
-   )
-   static MachineInfo field1203;
-   @ObfuscatedName("m")
+   static int field1209;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1142309639
+      intValue = -1377194971
    )
-   int field1205;
-   @ObfuscatedName("p")
+   static int field1208;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 20090089
+      intValue = -1518985687
+   )
+   int field1207;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1707602189
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2029892367
+      intValue = -1963748325
    )
    @Export("health")
    int health;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1771396945
+      intValue = 1321647439
    )
-   int field1206;
+   int field1210;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field1205 = var1;
+      this.field1207 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1206 = var4;
+      this.field1210 = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(IIIIB)V",
-      garbageValue = "-1"
+      garbageValue = "23"
    )
-   void method1633(int var1, int var2, int var3, int var4) {
-      this.field1205 = var1;
+   void method1514(int var1, int var2, int var3, int var4) {
+      this.field1207 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1206 = var4;
+      this.field1210 = var4;
    }
 }

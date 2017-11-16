@@ -4,95 +4,84 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bg")
 @Implements("ClanMember")
 public class ClanMember extends Node {
-   @ObfuscatedName("d")
-   static int[] field867;
-   @ObfuscatedName("hf")
+   @ObfuscatedName("qg")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lq;"
    )
-   static Widget field864;
-   @ObfuscatedName("m")
+   static class13 field855;
+   @ObfuscatedName("qz")
+   @ObfuscatedGetter(
+      longValue = -6221300841306505341L
+   )
+   static long field860;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1567598093
+   )
+   static int field854;
+   @ObfuscatedName("eh")
+   @ObfuscatedSignature(
+      signature = "Lfx;"
+   )
+   static RSSocket field857;
+   @ObfuscatedName("er")
+   @ObfuscatedGetter(
+      intValue = 1098149175
+   )
+   @Export("baseY")
+   static int baseY;
+   @ObfuscatedName("fv")
+   @ObfuscatedGetter(
+      intValue = -1326284095
+   )
+   static int field861;
+   @ObfuscatedName("b")
    @Export("username")
    String username;
-   @ObfuscatedName("p")
-   String field862;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
+   String field850;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -2125727289
+      intValue = 713778179
    )
    @Export("world")
    int world;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @Export("rank")
    byte rank;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("ie")
    @ObfuscatedSignature(
-      signature = "(IB)Lit;",
-      garbageValue = "4"
+      signature = "(B)V",
+      garbageValue = "41"
    )
-   public static VarPlayerType method1228(int var0) {
-      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class51.varplayer_ref.getConfigData(16, var0);
-         var1 = new VarPlayerType();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
+   static void method1102() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3592(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3593()) {
+         int var1 = var0.id;
+         if(class64.loadWidget(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = Widget.widgets[var1];
 
-         VarPlayerType.varplayers.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Liy;IIIBZI)V",
-      garbageValue = "-2133602171"
-   )
-   static void method1227(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class245.field3322.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class245.field3318.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class245.field3321.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class245.field3322.put(var8, var6);
-                  --class245.field3327;
-                  ++class245.field3320;
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].hasScript;
+                  break;
                }
+            }
 
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class245.field3313.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = class64.method1017(var4);
+               if(var5 != null) {
+                  ScriptEvent.method1038(var5);
                }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class245.field3322.put(var8, var6);
-                  ++class245.field3320;
-               } else {
-                  class245.field3326.push(var8);
-                  class245.field3321.put(var8, var6);
-                  ++class245.field3327;
-               }
-
             }
          }
       }
+
    }
 }

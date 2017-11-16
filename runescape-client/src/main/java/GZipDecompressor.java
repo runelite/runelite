@@ -4,12 +4,19 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fa")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
+   @Export("scriptLocalInts")
+   static int[] scriptLocalInts;
+   @ObfuscatedName("b")
    @Export("inflator")
    Inflater inflator;
+
+   public GZipDecompressor() {
+      this(-1, 1000000, 1000000);
+   }
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -18,14 +25,10 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   public GZipDecompressor() {
-      this(-1, 1000000, 1000000);
-   }
-
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lfv;[BI)V",
-      garbageValue = "1264007475"
+      signature = "(Lfs;[BI)V",
+      garbageValue = "109995211"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -46,5 +49,46 @@ public class GZipDecompressor {
       } else {
          throw new RuntimeException("");
       }
+   }
+
+   @ObfuscatedName("b")
+   public static final void method3129(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            class164.method3084(var0 - 1L);
+            class164.method3084(1L);
+         } else {
+            class164.method3084(var0);
+         }
+
+      }
+   }
+
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+      garbageValue = "-78"
+   )
+   static String method3130(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.socketType == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.socketType == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.socketType == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.socketType == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.socketType == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(SoundTask.sessionToken != null) {
+         var3 = "/p=" + SoundTask.sessionToken;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class25.field339 + var3 + "/";
    }
 }

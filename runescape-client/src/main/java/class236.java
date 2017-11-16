@@ -1,13 +1,20 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("ik")
 public final class class236 {
-   @ObfuscatedName("de")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "Liy;"
+      signature = "Lkn;"
    )
-   @Export("indexTrack2")
-   static IndexData indexTrack2;
+   public static BufferProvider field3227;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "86"
+   )
+   public static void method4096() {
+      class289.field3803 = new CombatInfoList();
+   }
 }

@@ -4,33 +4,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gf")
+@ObfuscatedName("gw")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgu;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgt;"
    )
    @Export("tail")
    Node tail;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @Export("index")
    int index;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgt;"
    )
    @Export("head")
    Node head;
 
    @ObfuscatedSignature(
-      signature = "(Lgd;)V"
+      signature = "(Lgu;)V"
    )
    HashTableIterator(IterableHashTable var1) {
       this.head = null;
@@ -38,7 +38,7 @@ public class HashTableIterator implements Iterator {
       this.reset();
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @Export("reset")
    void reset() {
       this.tail = this.table.buckets[0].next;

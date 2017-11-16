@@ -4,29 +4,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ex")
 @Implements("Task")
 public class Task {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Lex;"
    )
    @Export("task")
    Task task;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @Export("status")
    public volatile int status;
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 2022471267
+      intValue = -2115394685
    )
    @Export("type")
    int type;
-   @ObfuscatedName("e")
-   public int field2144;
-   @ObfuscatedName("l")
-   Object field2145;
-   @ObfuscatedName("b")
+   @ObfuscatedName("u")
+   public int field2129;
+   @ObfuscatedName("t")
+   Object field2131;
+   @ObfuscatedName("k")
    @Export("value")
    public volatile Object value;
 

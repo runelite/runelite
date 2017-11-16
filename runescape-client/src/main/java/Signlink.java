@@ -7,31 +7,39 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eq")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @Export("javaVersion")
    public static String javaVersion;
-   @ObfuscatedName("i")
+   @ObfuscatedName("cy")
+   static boolean field2142;
+   @ObfuscatedName("cu")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Liu;"
+   )
+   @Export("indexSprites")
+   static IndexData indexSprites;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lex;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Lex;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @Export("closed")
    boolean closed;
 
@@ -56,10 +64,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1510336973"
+      signature = "(B)V",
+      garbageValue = "0"
    )
    @Export("join")
    public final void join() {
@@ -76,16 +84,16 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;I)Let;",
-      garbageValue = "-10721981"
+      signature = "(IIILjava/lang/Object;I)Lex;",
+      garbageValue = "520385044"
    )
-   final Task method3067(int var1, int var2, int var3, Object var4) {
+   final Task method2953(int var1, int var2, int var3, Object var4) {
       Task var5 = new Task();
       var5.type = var1;
-      var5.field2144 = var2;
-      var5.field2145 = var4;
+      var5.field2129 = var2;
+      var5.field2131 = var4;
       synchronized(this) {
          if(this.cachedTask != null) {
             this.cachedTask.task = var5;
@@ -99,34 +107,24 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Let;",
-      garbageValue = "-334463944"
+      signature = "(Ljava/lang/String;IB)Lex;",
+      garbageValue = "0"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
-      return this.method3067(1, var2, 0, var1);
+      return this.method2953(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Let;",
-      garbageValue = "-299461880"
+      signature = "(Ljava/lang/Runnable;II)Lex;",
+      garbageValue = "1054312576"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
-      return this.method3067(2, var2, 0, var1);
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(IB)Let;",
-      garbageValue = "83"
-   )
-   @Export("createHost")
-   public final Task createHost(int var1) {
-      return this.method3067(3, var1, 0, (Object)null);
+      return this.method2953(2, var2, 0, var1);
    }
 
    public final void run() {
@@ -158,18 +156,15 @@ public class Signlink implements Runnable {
          try {
             int var5 = var1.type;
             if(var5 == 1) {
-               var1.value = new Socket(InetAddress.getByName((String)var1.field2145), var1.field2144);
+               var1.value = new Socket(InetAddress.getByName((String)var1.field2131), var1.field2129);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2145);
+               Thread var3 = new Thread((Runnable)var1.field2131);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2144);
+               var3.setPriority(var1.field2129);
                var1.value = var3;
             } else if(var5 == 4) {
-               var1.value = new DataInputStream(((URL)var1.field2145).openStream());
-            } else if(var5 == 3) {
-               String var10 = (var1.field2144 >> 24 & 255) + "." + (var1.field2144 >> 16 & 255) + "." + (var1.field2144 >> 8 & 255) + "." + (var1.field2144 & 255);
-               var1.value = InetAddress.getByName(var10).getHostName();
+               var1.value = new DataInputStream(((URL)var1.field2131).openStream());
             }
 
             var1.status = 1;
@@ -179,5 +174,100 @@ public class Signlink implements Runnable {
             var1.status = 2;
          }
       }
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(ILcx;ZI)I",
+      garbageValue = "664356566"
+   )
+   static int method2955(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class82.intStack[--class82.intStackSize];
+         var4 = class64.method1017(var3);
+      } else {
+         var4 = var2?class234.field3210:class82.field1253;
+      }
+
+      if(var0 == 1000) {
+         class82.intStackSize -= 4;
+         var4.originalX = class82.intStack[class82.intStackSize];
+         var4.originalY = class82.intStack[class82.intStackSize + 1];
+         var4.field2718 = class82.intStack[class82.intStackSize + 2];
+         var4.field2721 = class82.intStack[class82.intStackSize + 3];
+         ScriptEvent.method1038(var4);
+         class289.clientInstance.method1340(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class90.method1686(Widget.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1001) {
+         class82.intStackSize -= 4;
+         var4.originalWidth = class82.intStack[class82.intStackSize];
+         var4.field2725 = class82.intStack[class82.intStackSize + 1];
+         var4.field2720 = class82.intStack[class82.intStackSize + 2];
+         var4.buttonType = class82.intStack[class82.intStackSize + 3];
+         ScriptEvent.method1038(var4);
+         class289.clientInstance.method1340(var4);
+         if(var3 != -1 && var4.type == 0) {
+            class90.method1686(Widget.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class82.intStack[--class82.intStackSize] == 1;
+         if(var5 != var4.isHidden) {
+            var4.isHidden = var5;
+            ScriptEvent.method1038(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.noClickThrough = class82.intStack[--class82.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.field2847 = class82.intStack[--class82.intStackSize] == 1;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)Z",
+      garbageValue = "-1404353204"
+   )
+   static final boolean method2969(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = class133.field1906 + var6;
+      if(var7 < var0 && var7 < var1 && var7 < var2) {
+         return false;
+      } else {
+         var7 = class133.field1906 - var6;
+         if(var7 > var0 && var7 > var1 && var7 > var2) {
+            return false;
+         } else {
+            var7 = class133.field1900 + var6;
+            if(var7 < var3 && var7 < var4 && var7 < var5) {
+               return false;
+            } else {
+               var7 = class133.field1900 - var6;
+               return var7 <= var3 || var7 <= var4 || var7 <= var5;
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "-70"
+   )
+   public static boolean method2968(char var0) {
+      return var0 >= ' ' && var0 <= '~'?true:(var0 >= 160 && var0 <= 255?true:var0 == 8364 || var0 == 338 || var0 == 8212 || var0 == 339 || var0 == 376);
    }
 }

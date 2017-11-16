@@ -1,32 +1,36 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gk")
+@ObfuscatedName("gj")
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
-   @ObfuscatedName("p")
-   static boolean field2512;
-   @ObfuscatedName("b")
-   static byte[][][] field2513;
+   @ObfuscatedName("pa")
+   @ObfuscatedGetter(
+      intValue = -1005906405
+   )
+   static int field2511;
+   @ObfuscatedName("s")
+   static boolean field2510;
 
    static {
-      field2512 = false;
+      field2510 = false;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)[B",
-      garbageValue = "2025274732"
+      signature = "(B)[B",
+      garbageValue = "-125"
    )
    @Export("get")
    abstract byte[] get();
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-1395414743"
+      garbageValue = "-539521374"
    )
    @Export("put")
    abstract void put(byte[] var1);

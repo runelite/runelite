@@ -4,110 +4,107 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("ew")
 @Implements("MilliTimer")
 public class MilliTimer extends Timer {
-   @ObfuscatedName("qg")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   static IndexFile field2125;
-   @ObfuscatedName("dq")
-   @Export("host")
-   static String host;
-   @ObfuscatedName("m")
-   long[] field2123;
-   @ObfuscatedName("p")
+   @ObfuscatedName("os")
    @ObfuscatedGetter(
-      intValue = 1790996925
+      intValue = 1732144123
    )
-   int field2124;
-   @ObfuscatedName("i")
+   static int field2117;
+   @ObfuscatedName("b")
+   long[] field2115;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1165597693
+      intValue = -2141924987
+   )
+   int field2112;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -2008380619
    )
    @Export("sleepTime")
    int sleepTime;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      longValue = 2804597818258558931L
+      longValue = -189507246416611979L
    )
    @Export("milliTime")
    long milliTime;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1791229027
-   )
-   int field2127;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 111599639
+      intValue = -1479035195
    )
-   int field2128;
+   int field2118;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1533305935
+   )
+   int field2111;
 
    public MilliTimer() {
-      this.field2123 = new long[10];
-      this.field2124 = 256;
+      this.field2115 = new long[10];
+      this.field2112 = 256;
       this.sleepTime = 1;
-      this.field2127 = 0;
-      this.milliTime = class268.currentTimeMs();
+      this.field2118 = 0;
+      this.milliTime = ChatLineBuffer.currentTimeMs();
 
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2123[var1] = this.milliTime;
+         this.field2115[var1] = this.milliTime;
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-3"
+      signature = "(S)V",
+      garbageValue = "18922"
    )
-   public void vmethod3096() {
+   public void vmethod2996() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field2123[var1] = 0L;
+         this.field2115[var1] = 0L;
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-553632509"
+      garbageValue = "-1469616290"
    )
-   public int vmethod3095(int var1, int var2) {
-      int var3 = this.field2124;
+   public int vmethod2993(int var1, int var2) {
+      int var3 = this.field2112;
       int var4 = this.sleepTime;
-      this.field2124 = 300;
+      this.field2112 = 300;
       this.sleepTime = 1;
-      this.milliTime = class268.currentTimeMs();
-      if(0L == this.field2123[this.field2128]) {
-         this.field2124 = var3;
+      this.milliTime = ChatLineBuffer.currentTimeMs();
+      if(0L == this.field2115[this.field2111]) {
+         this.field2112 = var3;
          this.sleepTime = var4;
-      } else if(this.milliTime > this.field2123[this.field2128]) {
-         this.field2124 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2123[this.field2128]));
+      } else if(this.milliTime > this.field2115[this.field2111]) {
+         this.field2112 = (int)((long)(var1 * 2560) / (this.milliTime - this.field2115[this.field2111]));
       }
 
-      if(this.field2124 < 25) {
-         this.field2124 = 25;
+      if(this.field2112 < 25) {
+         this.field2112 = 25;
       }
 
-      if(this.field2124 > 256) {
-         this.field2124 = 256;
-         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2123[this.field2128]) / 10L);
+      if(this.field2112 > 256) {
+         this.field2112 = 256;
+         this.sleepTime = (int)((long)var1 - (this.milliTime - this.field2115[this.field2111]) / 10L);
       }
 
       if(this.sleepTime > var1) {
          this.sleepTime = var1;
       }
 
-      this.field2123[this.field2128] = this.milliTime;
-      this.field2128 = (this.field2128 + 1) % 10;
+      this.field2115[this.field2111] = this.milliTime;
+      this.field2111 = (this.field2111 + 1) % 10;
       int var5;
       if(this.sleepTime > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(0L != this.field2123[var5]) {
-               this.field2123[var5] += (long)this.sleepTime;
+            if(0L != this.field2115[var5]) {
+               this.field2115[var5] += (long)this.sleepTime;
             }
          }
       }
@@ -116,174 +113,151 @@ public class MilliTimer extends Timer {
          this.sleepTime = var2;
       }
 
-      class61.method1130((long)this.sleepTime);
+      GZipDecompressor.method3129((long)this.sleepTime);
 
-      for(var5 = 0; this.field2127 < 256; this.field2127 += this.field2124) {
+      for(var5 = 0; this.field2118 < 256; this.field2118 += this.field2112) {
          ++var5;
       }
 
-      this.field2127 &= 255;
+      this.field2118 &= 255;
       return var5;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("hm")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-2132736204"
+      signature = "(Ljc;IIIB)V",
+      garbageValue = "8"
    )
-   public static int method3043(int var0, int var1) {
-      int var2;
-      if(var1 > var0) {
-         var2 = var0;
-         var0 = var1;
-         var1 = var2;
-      }
+   static final void method2936(NPCComposition var0, int var1, int var2, int var3) {
+      if(Client.menuOptionCount < 400) {
+         if(var0.configs != null) {
+            var0 = var0.transform();
+         }
 
-      while(var1 != 0) {
-         var2 = var0 % var1;
-         var0 = var1;
-         var1 = var2;
-      }
+         if(var0 != null) {
+            if(var0.field3611) {
+               if(!var0.field3635 || Client.field1015 == var1) {
+                  String var4 = var0.name;
+                  int var7;
+                  int var8;
+                  if(var0.combatLevel != 0) {
+                     var7 = var0.combatLevel;
+                     var8 = class275.localPlayer.combatLevel;
+                     int var9 = var8 - var7;
+                     String var6;
+                     if(var9 < -9) {
+                        var6 = class222.getColTags(16711680);
+                     } else if(var9 < -6) {
+                        var6 = class222.getColTags(16723968);
+                     } else if(var9 < -3) {
+                        var6 = class222.getColTags(16740352);
+                     } else if(var9 < 0) {
+                        var6 = class222.getColTags(16756736);
+                     } else if(var9 > 9) {
+                        var6 = class222.getColTags(65280);
+                     } else if(var9 > 6) {
+                        var6 = class222.getColTags(4259584);
+                     } else if(var9 > 3) {
+                        var6 = class222.getColTags(8453888);
+                     } else if(var9 > 0) {
+                        var6 = class222.getColTags(12648192);
+                     } else {
+                        var6 = class222.getColTags(16776960);
+                     }
 
-      return var0;
-   }
+                     var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
+                  }
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "-25"
-   )
-   static char method3036(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
-      }
-   }
+                  if(var0.field3635 && Client.field994) {
+                     WorldMapData.addMenuEntry("Examine", class222.getColTags(16776960) + var4, 1003, var1, var2, var3);
+                  }
 
-   @ObfuscatedName("ig")
-   @ObfuscatedSignature(
-      signature = "(Lhk;IIZI)V",
-      garbageValue = "1114662171"
-   )
-   static void method3042(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2834 == 0) {
-         var0.width = var0.originalWidth;
-      } else if(var0.field2834 == 1) {
-         var0.width = var1 - var0.originalWidth;
-      } else if(var0.field2834 == 2) {
-         var0.width = var0.originalWidth * var1 >> 14;
-      }
+                  if(Client.itemSelectionState == 1) {
+                     WorldMapData.addMenuEntry("Use", Client.field1001 + " " + "->" + " " + class222.getColTags(16776960) + var4, 7, var1, var2, var3);
+                  } else if(Client.spellSelected) {
+                     if((class28.field387 & 2) == 2) {
+                        WorldMapData.addMenuEntry(Client.field1045, Client.field948 + " " + "->" + " " + class222.getColTags(16776960) + var4, 8, var1, var2, var3);
+                     }
+                  } else {
+                     int var10 = var0.field3635 && Client.field994?2000:0;
+                     String[] var11 = var0.actions;
+                     if(Client.field1018) {
+                        var11 = Area.method4292(var11);
+                     }
 
-      if(var0.buttonType == 0) {
-         var0.height = var0.field2738;
-      } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.field2738;
-      } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.field2738 >> 14;
-      }
+                     if(var11 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var11[var7] != null && !var11[var7].equalsIgnoreCase("Attack")) {
+                              var8 = 0;
+                              if(var7 == 0) {
+                                 var8 = var10 + 9;
+                              }
 
-      if(var0.field2834 == 4) {
-         var0.width = var0.height * var0.field2802 / var0.field2744;
-      }
+                              if(var7 == 1) {
+                                 var8 = var10 + 10;
+                              }
 
-      if(var0.buttonType == 4) {
-         var0.height = var0.field2744 * var0.width / var0.field2802;
-      }
+                              if(var7 == 2) {
+                                 var8 = var10 + 11;
+                              }
 
-      if(Client.field1081 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
-         } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
-            }
+                              if(var7 == 3) {
+                                 var8 = var10 + 12;
+                              }
 
-            if(var0.width <= 0) {
-               var0.width = 5;
+                              if(var7 == 4) {
+                                 var8 = var10 + 13;
+                              }
+
+                              WorldMapData.addMenuEntry(var11[var7], class222.getColTags(16776960) + var4, var8, var1, var2, var3);
+                           }
+                        }
+                     }
+
+                     if(var11 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var11[var7] != null && var11[var7].equalsIgnoreCase("Attack")) {
+                              short var12 = 0;
+                              if(Client.field950 != class90.field1328) {
+                                 if(class90.field1322 == Client.field950 || Client.field950 == class90.field1325 && var0.combatLevel > class275.localPlayer.combatLevel) {
+                                    var12 = 2000;
+                                 }
+
+                                 var8 = 0;
+                                 if(var7 == 0) {
+                                    var8 = var12 + 9;
+                                 }
+
+                                 if(var7 == 1) {
+                                    var8 = var12 + 10;
+                                 }
+
+                                 if(var7 == 2) {
+                                    var8 = var12 + 11;
+                                 }
+
+                                 if(var7 == 3) {
+                                    var8 = var12 + 12;
+                                 }
+
+                                 if(var7 == 4) {
+                                    var8 = var12 + 13;
+                                 }
+
+                                 WorldMapData.addMenuEntry(var11[var7], class222.getColTags(16776960) + var4, var8, var1, var2, var3);
+                              }
+                           }
+                        }
+                     }
+
+                     if(!var0.field3635 || !Client.field994) {
+                        WorldMapData.addMenuEntry("Examine", class222.getColTags(16776960) + var4, 1003, var1, var2, var3);
+                     }
+                  }
+
+               }
             }
          }
       }
-
-      if(var0.contentType == 1337) {
-         Client.field923 = var0;
-      }
-
-      if(var3 && var0.field2835 != null && (var4 != var0.width || var5 != var0.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.field791 = var0.field2835;
-         Client.field1048.addFront(var6);
-      }
-
    }
 }

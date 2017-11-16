@@ -4,58 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("ct")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("cp")
-   static boolean field1399;
-   @ObfuscatedName("m")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -196392353
+      intValue = -2010427827
+   )
+   static int field1392;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -504834051
+   )
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1089175611
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -205096159
+      intValue = 557430893
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Len;",
-      garbageValue = "-1864051962"
+      signature = "(I)Lev;",
+      garbageValue = "1008738898"
    )
    protected final Model getModel() {
-      return class250.getItemDefinition(this.id).getModel(this.quantity);
+      return class139.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1935416466"
+      signature = "(ILhf;I)I",
+      garbageValue = "1351412808"
    )
-   public static int method1849(int var0) {
-      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var1;
-      if(var2 != null) {
-         var1 = var2;
-      } else {
-         byte[] var7 = class12.varbit_ref.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var7 != null) {
-            var2.decode(new Buffer(var7));
-         }
-
-         Varbit.varbits.put(var2, (long)var0);
-         var1 = var2;
-      }
-
-      int var3 = var1.configId;
-      int var4 = var1.leastSignificantBit;
-      int var5 = var1.mostSignificantBit;
-      int var6 = class218.field2689[var5 - var4];
-      return class218.widgetSettings[var3] >> var4 & var6;
+   public static int method1752(int var0, class226 var1) {
+      return var1.field2860 + (var0 + 40000 << 8);
    }
 }

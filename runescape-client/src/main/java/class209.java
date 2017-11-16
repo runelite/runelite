@@ -1,55 +1,45 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("hw")
 public class class209 {
-   @ObfuscatedName("m")
-   byte[] field2590;
-   @ObfuscatedName("p")
-   byte[] field2583;
-   @ObfuscatedName("i")
+   @ObfuscatedName("b")
+   byte[] field2576;
+   @ObfuscatedName("s")
+   byte[] field2579;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -847927107
+      intValue = 2027195651
    )
-   int field2584;
-   @ObfuscatedName("j")
+   int field2577;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -213102127
+      intValue = -2058598879
    )
-   int field2585;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 550678853
-   )
-   int field2582;
+   int field2575;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2071983487
+      intValue = -13440413
    )
-   int field2589;
-   @ObfuscatedName("e")
+   int field2583;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -920185831
+      intValue = 558887939
    )
-   int field2588;
-   @ObfuscatedName("l")
+   int field2578;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 478330219
+      intValue = 950338329
    )
-   int field2586;
-   @ObfuscatedName("b")
+   int field2581;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -434579867
+      intValue = -1870842067
    )
-   int field2587;
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "1002925891"
+   int field2582;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1593568599
    )
-   public static String method3839(CharSequence var0) {
-      return AbstractSoundSystem.method2157('*', var0.length());
-   }
+   int field2584;
 }

@@ -2,53 +2,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fm")
 public class class181 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -37747781
+      intValue = -2121256601
    )
-   static int field2502;
-   @ObfuscatedName("p")
+   static int field2500;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -633177205
+      intValue = 1642021861
    )
-   static int field2503;
-   @ObfuscatedName("i")
+   static int field2499;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1598327787
+      intValue = 669589245
    )
-   static int field2504;
-   @ObfuscatedName("j")
-   static byte[][] field2505;
-   @ObfuscatedName("v")
-   static byte[][] field2506;
+   static int field2498;
+   @ObfuscatedName("g")
+   static byte[][] field2501;
    @ObfuscatedName("x")
-   static byte[][] field2507;
+   static byte[][] field2502;
+   @ObfuscatedName("f")
+   static byte[][] field2503;
+   @ObfuscatedName("t")
+   public static int[] field2504;
 
    static {
-      field2502 = 0;
-      field2503 = 0;
-      field2504 = 0;
-      field2505 = new byte[1000][];
-      field2506 = new byte[250][];
-      field2507 = new byte[50][];
+      field2500 = 0;
+      field2499 = 0;
+      field2498 = 0;
+      field2501 = new byte[1000][];
+      field2502 = new byte[250][];
+      field2503 = new byte[50][];
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(IZI)[B",
-      garbageValue = "-870838298"
+      garbageValue = "2068517718"
    )
-   static synchronized byte[] method3513(int var0, boolean var1) {
+   static synchronized byte[] method3406(int var0, boolean var1) {
       byte[] var2;
       if(var0 != 100) {
          if(var0 < 100) {
             ;
          }
-      } else if(field2502 > 0) {
-         var2 = field2505[--field2502];
-         field2505[field2502] = null;
+      } else if(field2500 > 0) {
+         var2 = field2501[--field2500];
+         field2501[field2500] = null;
          return var2;
       }
 
@@ -56,9 +58,9 @@ public class class181 {
          if(var0 < 5000) {
             ;
          }
-      } else if(field2503 > 0) {
-         var2 = field2506[--field2503];
-         field2506[field2503] = null;
+      } else if(field2499 > 0) {
+         var2 = field2502[--field2499];
+         field2502[field2499] = null;
          return var2;
       }
 
@@ -66,21 +68,21 @@ public class class181 {
          if(var0 < 30000) {
             ;
          }
-      } else if(field2504 > 0) {
-         var2 = field2507[--field2504];
-         field2507[field2504] = null;
+      } else if(field2498 > 0) {
+         var2 = field2503[--field2498];
+         field2503[field2498] = null;
          return var2;
       }
 
-      if(AbstractByteBuffer.field2513 != null) {
-         for(int var4 = 0; var4 < BuildType.field3245.length; ++var4) {
-            if(BuildType.field3245[var4] != var0) {
-               if(var0 < BuildType.field3245[var4]) {
+      if(class90.field1323 != null) {
+         for(int var4 = 0; var4 < FrameMap.field1954.length; ++var4) {
+            if(FrameMap.field1954[var4] != var0) {
+               if(var0 < FrameMap.field1954[var4]) {
                   ;
                }
-            } else if(FaceNormal.field2051[var4] > 0) {
-               byte[] var3 = AbstractByteBuffer.field2513[var4][--FaceNormal.field2051[var4]];
-               AbstractByteBuffer.field2513[var4][FaceNormal.field2051[var4]] = null;
+            } else if(field2504[var4] > 0) {
+               byte[] var3 = class90.field1323[var4][--field2504[var4]];
+               class90.field1323[var4][field2504[var4]] = null;
                return var3;
             }
          }
@@ -89,52 +91,47 @@ public class class181 {
       return new byte[var0];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("ii")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-485669562"
+      signature = "(Lhx;I)V",
+      garbageValue = "-2079441784"
    )
-   public static void method3515() {
-      class259.field3448.reset();
-   }
+   static final void method3415(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 324) {
+         if(Client.field1089 == -1) {
+            Client.field1089 = var0.spriteId;
+            Client.field874 = var0.field2749;
+         }
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lik;II)Lko;",
-      garbageValue = "-788334787"
-   )
-   public static IndexedSprite method3516(IndexDataBase var0, int var1) {
-      byte[] var3 = var0.method4375(var1);
-      boolean var2;
-      if(var3 == null) {
-         var2 = false;
-      } else {
-         DecorativeObject.decodeSprite(var3);
-         var2 = true;
+         if(Client.field1119.isFemale) {
+            var0.spriteId = Client.field1089;
+         } else {
+            var0.spriteId = Client.field874;
+         }
+
+      } else if(var1 == 325) {
+         if(Client.field1089 == -1) {
+            Client.field1089 = var0.spriteId;
+            Client.field874 = var0.field2749;
+         }
+
+         if(Client.field1119.isFemale) {
+            var0.spriteId = Client.field874;
+         } else {
+            var0.spriteId = Client.field1089;
+         }
+
+      } else if(var1 == 327) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 0;
+      } else if(var1 == 328) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 1;
       }
-
-      return !var2?null:class34.method511();
-   }
-
-   @ObfuscatedName("fa")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1283984817"
-   )
-   static final void method3514() {
-      Client.field952.method1970();
-      World.method1669();
-      class56.region.reset();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].reset();
-      }
-
-      System.gc();
-      class37.method552(2);
-      Client.field1026 = -1;
-      Client.field1088 = false;
-      CombatInfo2.method4592();
-      class287.setGameState(10);
    }
 }

@@ -4,95 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("er")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("fo")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1629260605
-   )
-   static int field2105;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 969944669
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1246560289
+      intValue = -1775032785
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1502155677
+      intValue = -1420739951
    )
    @Export("height")
    int height;
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1692951283
+      intValue = -862745741
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 251984857
+      intValue = -1418457301
    )
    @Export("y")
    int y;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Leu;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("e")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1535671359
+      intValue = -224023803
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 2003070571
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("l")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 22585943
+      intValue = 1013359005
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1088565909
+      intValue = -549741375
    )
    @Export("relativeY")
    int relativeY;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 147170553
+      intValue = 1844064793
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -544097231
+      intValue = 555698787
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("a")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 395226911
+      intValue = 455893997
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("y")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -681483349
+      intValue = 1324168645
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -740352485
+      intValue = -665735877
    )
    @Export("flags")
    int flags;
@@ -102,42 +97,19 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([I[IB)V",
-      garbageValue = "-86"
+      signature = "([BIII)I",
+      garbageValue = "-737675861"
    )
-   public static void method3003(int[] var0, int[] var1) {
-      if(var0 != null && var1 != null) {
-         BuildType.field3245 = var0;
-         FaceNormal.field2051 = new int[var0.length];
-         AbstractByteBuffer.field2513 = new byte[var0.length][][];
+   static int method2897(byte[] var0, int var1, int var2) {
+      int var3 = -1;
 
-         for(int var2 = 0; var2 < BuildType.field3245.length; ++var2) {
-            AbstractByteBuffer.field2513[var2] = new byte[var1[var2]][];
-         }
-
-      } else {
-         BuildType.field3245 = null;
-         FaceNormal.field2051 = null;
-         AbstractByteBuffer.field2513 = null;
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
       }
-   }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lhy;III)Lcw;",
-      garbageValue = "1770880737"
-   )
-   static Script method3004(class226 var0, int var1, int var2) {
-      int var3 = class89.method1797(var1, var0);
-      Script var4 = class41.method640(var3, var0);
-      if(var4 != null) {
-         return var4;
-      } else {
-         int var5 = var0.field2871 + (var2 + 40000 << 8);
-         var4 = class41.method640(var5, var0);
-         return var4 != null?var4:null;
-      }
+      var3 = ~var3;
+      return var3;
    }
 }

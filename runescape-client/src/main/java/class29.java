@@ -1,125 +1,168 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("ak")
 public final class class29 {
-   @ObfuscatedName("be")
+   @ObfuscatedName("dn")
    @ObfuscatedSignature(
-      signature = "[Lkd;"
+      signature = "Liu;"
    )
-   static SpritePixels[] field410;
-   @ObfuscatedName("gi")
+   @Export("indexScripts")
+   static IndexData indexScripts;
+   @ObfuscatedName("jm")
+   @ObfuscatedSignature(
+      signature = "Lhx;"
+   )
+   static Widget field394;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1840628677
+      intValue = 620611889
    )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("m")
+   int field395;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1279813339
+      intValue = 1779791055
    )
-   int field404;
-   @ObfuscatedName("p")
+   int field389;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -33423579
+      intValue = -1429560037
    )
-   int field407;
-   @ObfuscatedName("i")
+   int field391;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -995433483
+      intValue = -275117927
    )
-   int field405;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -892777777
-   )
-   int field406;
+   int field390;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Law;"
+      signature = "Laj;"
    )
    final class41 this$0;
 
    @ObfuscatedSignature(
-      signature = "(Law;)V"
+      signature = "(Laj;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-967778924"
+      signature = "(I)V",
+      garbageValue = "-755231269"
    )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class245.field3316 != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class245.field3316.queueForWrite(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class245.field3316.close();
-            } catch (Exception var3) {
-               ;
-            }
-
-            ++class245.field3331;
-            class245.field3316 = null;
+   static void method220() {
+      Object var0 = class243.field3290;
+      synchronized(class243.field3290) {
+         if(class243.field3288 == 0) {
+            class243.field3287 = new Thread(new class243());
+            class243.field3287.setDaemon(true);
+            class243.field3287.start();
+            class243.field3287.setPriority(5);
          }
 
+         class243.field3288 = 600;
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "1"
+      signature = "(IIIIS)V",
+      garbageValue = "-3858"
    )
-   static void method272(int var0) {
-      if(var0 != -1) {
-         if(CombatInfoListHolder.loadWidget(var0)) {
-            Widget[] var1 = class243.widgets[var0];
+   static void method218(int var0, int var1, int var2, int var3) {
+      for(class81 var4 = (class81)class81.field1240.getFront(); var4 != null; var4 = (class81)class81.field1240.getNext()) {
+         if(var4.field1243 != -1 || var4.field1247 != null) {
+            int var5 = 0;
+            if(var1 > var4.field1242) {
+               var5 += var1 - var4.field1242;
+            } else if(var1 < var4.field1248) {
+               var5 += var4.field1248 - var1;
+            }
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2807 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.field791 = var3.field2807;
-                  class64.method1147(var4, 2000000);
+            if(var2 > var4.field1241) {
+               var5 += var2 - var4.field1241;
+            } else if(var2 < var4.field1252) {
+               var5 += var4.field1252 - var2;
+            }
+
+            if(var5 - 64 <= var4.field1238 && Client.field1051 != 0 && var0 == var4.field1239) {
+               var5 -= 64;
+               if(var5 < 0) {
+                  var5 = 0;
+               }
+
+               int var6 = (var4.field1238 - var5) * Client.field1051 / var4.field1238;
+               if(var4.field1244 == null) {
+                  if(var4.field1243 >= 0) {
+                     SoundEffect var7 = SoundEffect.getTrack(class23.field326, var4.field1243, 0);
+                     if(var7 != null) {
+                        class106 var8 = var7.method1936().method1991(class39.field497);
+                        class116 var9 = class116.method2145(var8, 100, var6);
+                        var9.method2191(-1);
+                        Client.field1087.method1914(var9);
+                        var4.field1244 = var9;
+                     }
+                  }
+               } else {
+                  var4.field1244.method2135(var6);
+               }
+
+               if(var4.field1249 == null) {
+                  if(var4.field1247 != null && (var4.field1237 -= var3) <= 0) {
+                     int var11 = (int)(Math.random() * (double)var4.field1247.length);
+                     SoundEffect var12 = SoundEffect.getTrack(class23.field326, var4.field1247[var11], 0);
+                     if(var12 != null) {
+                        class106 var13 = var12.method1936().method1991(class39.field497);
+                        class116 var10 = class116.method2145(var13, 100, var6);
+                        var10.method2191(0);
+                        Client.field1087.method1914(var10);
+                        var4.field1249 = var10;
+                        var4.field1237 = var4.field1245 + (int)(Math.random() * (double)(var4.field1246 - var4.field1245));
+                     }
+                  }
+               } else {
+                  var4.field1249.method2135(var6);
+                  if(!var4.field1249.linked()) {
+                     var4.field1249 = null;
+                  }
+               }
+            } else {
+               if(var4.field1244 != null) {
+                  Client.field1087.method1880(var4.field1244);
+                  var4.field1244 = null;
+               }
+
+               if(var4.field1249 != null) {
+                  Client.field1087.method1880(var4.field1249);
+                  var4.field1249 = null;
                }
             }
-
          }
       }
+
    }
 
-   @ObfuscatedName("fl")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lbf;I)V",
-      garbageValue = "-30177101"
+      signature = "(S)Z",
+      garbageValue = "-18872"
    )
-   static final void method271(Actor var0) {
-      if(var0.field1177 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1179 + 1 > ItemLayer.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
-         int var1 = var0.field1177 - var0.field1164;
-         int var2 = Client.gameCycle - var0.field1164;
-         int var3 = var0.field1185 * 128 + var0.field1201 * 64;
-         int var4 = var0.field1159 * 128 + var0.field1201 * 64;
-         int var5 = var0.field1143 * 128 + var0.field1201 * 64;
-         int var6 = var0.field1199 * 128 + var0.field1201 * 64;
-         var0.x = (var2 * var5 + var3 * (var1 - var2)) / var1;
-         var0.y = (var2 * var6 + var4 * (var1 - var2)) / var1;
-      }
+   public static boolean method219() {
+      return class210.field2585 != 0?true:class210.field2587.method3819();
+   }
 
-      var0.field1157 = 0;
-      var0.orientation = var0.field1191;
-      var0.angle = var0.orientation;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Lij;Ljava/lang/String;Ljava/lang/String;I)Lkb;",
+      garbageValue = "1920428681"
+   )
+   public static SpritePixels method221(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return class163.method3082(var0, var3, var4);
    }
 }

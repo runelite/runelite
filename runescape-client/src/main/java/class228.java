@@ -1,186 +1,166 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
-public enum class228 implements RSEnum {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2888(0, 0),
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2881(1, 0),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2882(2, 0),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2883(3, 0),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2884(9, 2),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2885(4, 1),
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2891(5, 1),
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2886(6, 1),
+@ObfuscatedName("hb")
+public enum class228 implements class185 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2897(7, 1),
-   @ObfuscatedName("n")
+   field2877(0, 0),
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2889(8, 1),
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2890(12, 2),
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2898(13, 2),
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2892(14, 2),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2904(15, 2),
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2894(16, 2),
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2895(17, 2),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2896(18, 2),
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lhz;"
-   )
-   field2893(19, 2),
+   field2873(1, 0),
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2880(20, 2),
+   field2874(2, 0),
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2899(21, 2),
-   @ObfuscatedName("z")
+   field2875(3, 0),
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2900(10, 2),
-   @ObfuscatedName("o")
+   field2872(9, 2),
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2901(11, 2),
+   field2890(4, 1),
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2893(5, 1),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2879(6, 1),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2880(7, 1),
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2889(8, 1),
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lhz;"
+      signature = "Lhb;"
    )
-   field2903(22, 3);
+   field2882(12, 2),
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2883(13, 2),
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2884(14, 2),
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2885(15, 2),
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2886(16, 2),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2887(17, 2),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2878(18, 2),
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2895(19, 2),
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2881(20, 2),
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2891(21, 2),
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2892(10, 2),
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2876(11, 2),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lhb;"
+   )
+   field2894(22, 3);
 
-   @ObfuscatedName("gz")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1903400691
+      intValue = 225085181
    )
-   @Export("cameraYaw")
-   static int cameraYaw;
-   @ObfuscatedName("kr")
-   @ObfuscatedGetter(
-      intValue = 614197031
-   )
-   static int field2902;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -82769569
-   )
-   public final int field2887;
+   public final int field2888;
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class228(int var3, int var4) {
-      this.field2887 = var3;
+      this.field2888 = var3;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "369425307"
+      signature = "(B)I",
+      garbageValue = "-4"
    )
    public int rsOrdinal() {
-      return this.field2887;
+      return this.field2888;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ILfe;Liy;I)V",
-      garbageValue = "1108148398"
+      signature = "(Lgd;I)I",
+      garbageValue = "-387428626"
    )
-   static void method4237(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.field3267 = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = class243.field3297;
-      synchronized(class243.field3297) {
-         class243.field3297.addFront(var3);
+   static int method4085(PacketBuffer var0) {
+      int var1 = var0.getBits(2);
+      int var2;
+      if(var1 == 0) {
+         var2 = 0;
+      } else if(var1 == 1) {
+         var2 = var0.getBits(5);
+      } else if(var1 == 2) {
+         var2 = var0.getBits(8);
+      } else {
+         var2 = var0.getBits(11);
       }
 
-      Object var9 = class243.field3300;
-      synchronized(class243.field3300) {
-         if(class243.field3296 == 0) {
-            class243.field3294 = new Thread(new class243());
-            class243.field3294.setDaemon(true);
-            class243.field3294.start();
-            class243.field3294.setPriority(5);
-         }
-
-         class243.field3296 = 600;
-      }
+      return var2;
    }
 }

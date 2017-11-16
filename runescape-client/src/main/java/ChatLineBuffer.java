@@ -4,20 +4,31 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("co")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("s")
-   static int[] field1458;
-   @ObfuscatedName("p")
+   @ObfuscatedName("qd")
+   static short[] field1454;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lbx;"
+      signature = "Lks;"
+   )
+   static IndexedSprite field1453;
+   @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "[Lbn;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 528648965
+      intValue = 714192897
    )
    @Export("length")
    int length;
@@ -26,10 +37,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbx;",
-      garbageValue = "-2133375856"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbn;",
+      garbageValue = "-1129286777"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -57,30 +68,51 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)Lbx;",
-      garbageValue = "2022353157"
+      signature = "(II)Lbn;",
+      garbageValue = "-1597872251"
    )
-   MessageNode method1940(int var1) {
+   MessageNode method1847(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1088046528"
+      garbageValue = "2016403088"
    )
-   int method1941() {
+   int method1846() {
       return this.length;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1032473279"
+      signature = "(B)J",
+      garbageValue = "-74"
    )
-   public static boolean method1947(int var0) {
-      return (var0 & 1) != 0;
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class182.field2505) {
+         class17.field289 += class182.field2505 - var0;
+      }
+
+      class182.field2505 = var0;
+      return var0 + class17.field289;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Lgu;ILjava/lang/String;I)Ljava/lang/String;",
+      garbageValue = "-2108222027"
+   )
+   static String method1852(IterableHashTable var0, int var1, String var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+         return var3 == null?var2:(String)var3.value;
+      }
    }
 }

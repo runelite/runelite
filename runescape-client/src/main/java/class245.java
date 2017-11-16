@@ -1,117 +1,138 @@
 import java.util.zip.CRC32;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("is")
 public class class245 {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lft;"
-   )
-   public static RSSocket field3316;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 821292545
-   )
-   public static int field3314;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      longValue = 3768611424733971003L
-   )
-   public static long field3315;
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lgx;"
-   )
-   public static HashTable field3322;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -416440143
-   )
-   public static int field3320;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lgx;"
-   )
-   public static HashTable field3318;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1439984721
-   )
-   public static int field3323;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lgq;"
-   )
-   public static Node2LinkedList field3326;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lgx;"
-   )
-   public static HashTable field3321;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 2066853391
-   )
-   public static int field3327;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lgx;"
-   )
-   public static HashTable field3313;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -651948251
-   )
-   public static int field3324;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lfv;"
-   )
-   public static Buffer field3325;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -2085930393
-   )
-   public static int field3317;
-   @ObfuscatedName("r")
-   static CRC32 field3319;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "[Liy;"
-   )
-   static IndexData[] field3328;
-   @ObfuscatedName("o")
-   public static byte field3329;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -532056891
-   )
-   public static int field3330;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -661435083
+      intValue = -1722873529
    )
-   public static int field3331;
+   static int field3307;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      longValue = -8768678816557200249L
+   )
+   static long field3306;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   static HashTable field3318;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1161646003
+   )
+   public static int field3308;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   static HashTable field3309;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1783800711
+   )
+   public static int field3310;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lgr;"
+   )
+   static Node2LinkedList field3305;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   static HashTable field3313;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 563547157
+   )
+   public static int field3322;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lgs;"
+   )
+   static HashTable field3314;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -2019867077
+   )
+   public static int field3315;
+   @ObfuscatedName("a")
+   static boolean field3316;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Lfs;"
+   )
+   static Buffer field3317;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 45414225
+   )
+   static int field3311;
+   @ObfuscatedName("y")
+   static CRC32 field3319;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "[Liu;"
+   )
+   static IndexData[] field3321;
+   @ObfuscatedName("l")
+   static byte field3320;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1840000377
+   )
+   public static int field3323;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1215444427
+   )
+   public static int field3324;
 
    static {
-      field3314 = 0;
-      field3322 = new HashTable(4096);
-      field3320 = 0;
-      field3318 = new HashTable(32);
-      field3323 = 0;
-      field3326 = new Node2LinkedList();
-      field3321 = new HashTable(4096);
-      field3327 = 0;
+      field3307 = 0;
+      field3318 = new HashTable(4096);
+      field3308 = 0;
+      field3309 = new HashTable(32);
+      field3310 = 0;
+      field3305 = new Node2LinkedList();
       field3313 = new HashTable(4096);
-      field3324 = 0;
-      field3325 = new Buffer(8);
-      field3317 = 0;
+      field3322 = 0;
+      field3314 = new HashTable(4096);
+      field3315 = 0;
+      field3317 = new Buffer(8);
+      field3311 = 0;
       field3319 = new CRC32();
-      field3328 = new IndexData[256];
-      field3329 = 0;
-      field3330 = 0;
-      field3331 = 0;
+      field3321 = new IndexData[256];
+      field3320 = 0;
+      field3323 = 0;
+      field3324 = 0;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(II)Lix;",
+      garbageValue = "1974919335"
+   )
+   @Export("getSpotAnimType")
+   public static Spotanim getSpotAnimType(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Spotanim.field3378.getConfigData(13, var0);
+         var1 = new Spotanim();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         Spotanim.spotanims.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

@@ -4,52 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("iy")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Liy;"
    )
    @Export("RC")
    static final BuildType RC;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Liy;"
    )
    @Export("WIP")
    static final BuildType WIP;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Liy;"
    )
    @Export("LIVE")
    static final BuildType LIVE;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Liy;"
    )
    @Export("BUILD_LIVE")
    static final BuildType BUILD_LIVE;
-   @ObfuscatedName("e")
-   static int[] field3245;
-   @ObfuscatedName("el")
-   @ObfuscatedSignature(
-      signature = "Les;"
-   )
-   static class148 field3253;
-   @ObfuscatedName("fy")
-   @ObfuscatedSignature(
-      signature = "[Lko;"
-   )
-   @Export("mapscene")
-   static IndexedSprite[] mapscene;
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1270254443
+      intValue = 2019445297
    )
    @Export("ordinal")
    final int ordinal;

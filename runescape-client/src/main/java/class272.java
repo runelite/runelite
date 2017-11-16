@@ -1,81 +1,49 @@
+import java.lang.management.GarbageCollectorMXBean;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ji")
+@ObfuscatedName("jw")
 public class class272 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lfc;"
+      signature = "Lfb;"
    )
-   public static Huffman field3717;
+   public static Huffman field3707;
+   @ObfuscatedName("ab")
+   static GarbageCollectorMXBean field3708;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(CI)B",
-      garbageValue = "-811562737"
+      signature = "(B)Lks;",
+      garbageValue = "5"
    )
-   public static byte method5013(char var0) {
-      byte var1;
-      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-         var1 = (byte)var0;
-      } else if(var0 == 8364) {
-         var1 = -128;
-      } else if(var0 == 8218) {
-         var1 = -126;
-      } else if(var0 == 402) {
-         var1 = -125;
-      } else if(var0 == 8222) {
-         var1 = -124;
-      } else if(var0 == 8230) {
-         var1 = -123;
-      } else if(var0 == 8224) {
-         var1 = -122;
-      } else if(var0 == 8225) {
-         var1 = -121;
-      } else if(var0 == 710) {
-         var1 = -120;
-      } else if(var0 == 8240) {
-         var1 = -119;
-      } else if(var0 == 352) {
-         var1 = -118;
-      } else if(var0 == 8249) {
-         var1 = -117;
-      } else if(var0 == 338) {
-         var1 = -116;
-      } else if(var0 == 381) {
-         var1 = -114;
-      } else if(var0 == 8216) {
-         var1 = -111;
-      } else if(var0 == 8217) {
-         var1 = -110;
-      } else if(var0 == 8220) {
-         var1 = -109;
-      } else if(var0 == 8221) {
-         var1 = -108;
-      } else if(var0 == 8226) {
-         var1 = -107;
-      } else if(var0 == 8211) {
-         var1 = -106;
-      } else if(var0 == 8212) {
-         var1 = -105;
-      } else if(var0 == 732) {
-         var1 = -104;
-      } else if(var0 == 8482) {
-         var1 = -103;
-      } else if(var0 == 353) {
-         var1 = -102;
-      } else if(var0 == 8250) {
-         var1 = -101;
-      } else if(var0 == 339) {
-         var1 = -100;
-      } else if(var0 == 382) {
-         var1 = -98;
-      } else if(var0 == 376) {
-         var1 = -97;
-      } else {
-         var1 = 63;
+   static IndexedSprite method4852() {
+      IndexedSprite var0 = new IndexedSprite();
+      var0.width = class295.field3846;
+      var0.originalHeight = class224.field2850;
+      var0.offsetX = WidgetNode.field774[0];
+      var0.offsetY = class285.offsetsY[0];
+      var0.originalWidth = class295.field3848[0];
+      var0.height = class295.field3845[0];
+      var0.palette = class278.field3733;
+      var0.pixels = class70.spritePixels[0];
+      class274.method4876();
+      return var0;
+   }
+
+   @ObfuscatedName("eg")
+   @ObfuscatedSignature(
+      signature = "(IZZZI)Liu;",
+      garbageValue = "-1061855817"
+   )
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class156.field2148 != null) {
+         var4 = new IndexFile(var0, class156.field2148, class221.field2700[var0], 1000000);
       }
 
-      return var1;
+      return new IndexData(var4, class7.field223, var0, var1, var2, var3);
    }
 }

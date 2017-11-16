@@ -1,15 +1,13 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gn")
-@Implements("RSEnum")
-public interface RSEnum {
-   @ObfuscatedName("m")
+@ObfuscatedName("gf")
+public interface class185 {
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "369425307"
+      signature = "(B)I",
+      garbageValue = "-4"
    )
    @Export("rsOrdinal")
    int rsOrdinal();

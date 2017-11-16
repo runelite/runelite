@@ -1,75 +1,69 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bh")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
+   static int[] field758;
+   @ObfuscatedName("cx")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Liu;"
    )
-   static Widget field768;
-   @ObfuscatedName("m")
+   static IndexData field759;
+   @ObfuscatedName("b")
    @Export("name")
    String name;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1444684541
+      intValue = -1240668085
    )
    @Export("world")
    int world;
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 2011993031
+      intValue = 545283453
    )
    @Export("rank")
    int rank;
-   @ObfuscatedName("v")
-   boolean field770;
    @ObfuscatedName("x")
-   boolean field771;
+   boolean field755;
+   @ObfuscatedName("f")
+   boolean field757;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;Lik;S)V",
-      garbageValue = "-17180"
+      signature = "(IB)[B",
+      garbageValue = "-54"
    )
-   public static void method1150(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      class261.field3479 = var0;
-      class261.field3462 = var1;
-      class261.field3463 = var2;
+   static synchronized byte[] method1020(int var0) {
+      return class181.method3406(var0, false);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-2138513828"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "1335582404"
    )
-   public static int method1151(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
-   }
-
-   @ObfuscatedName("ir")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
-      garbageValue = "-1224952031"
-   )
-   static final String[] method1149(String[] var0) {
-      String[] var1 = new String[5];
-
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[var2] = var2 + ": ";
-         if(var0 != null && var0[var2] != null) {
-            var1[var2] = var1[var2] + var0[var2];
-         }
+   @Export("addChatMessage")
+   @Hook("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class96.chatLineMap.put(Integer.valueOf(var0), var4);
       }
 
-      return var1;
+      MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
+      class96.field1425.put(var5, (long)var5.id);
+      class96.field1424.method3709(var5);
+      Client.chatCycle = Client.cycleCntr;
    }
 }

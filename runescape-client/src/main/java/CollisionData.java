@@ -1,39 +1,37 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("fy")
 @Implements("CollisionData")
 public class CollisionData {
-   @ObfuscatedName("av")
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = -587660487
+      intValue = -896259097
    )
    @Export("x")
    int x;
-   @ObfuscatedName("ak")
+   @ObfuscatedName("ao")
    @ObfuscatedGetter(
-      intValue = -270477961
+      intValue = -1057025777
    )
    @Export("y")
    int y;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
-      intValue = 1114828831
+      intValue = 898150065
    )
    @Export("width")
    int width;
-   @ObfuscatedName("an")
+   @ObfuscatedName("ac")
    @ObfuscatedGetter(
-      intValue = -1319894107
+      intValue = 864609115
    )
    @Export("height")
    int height;
-   @ObfuscatedName("ah")
+   @ObfuscatedName("as")
    @Export("flags")
    public int[][] flags;
 
@@ -46,10 +44,10 @@ public class CollisionData {
       this.reset();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1610372094"
+      garbageValue = "171264402"
    )
    @Export("reset")
    public void reset() {
@@ -65,10 +63,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIIZI)V",
-      garbageValue = "1432814241"
+      signature = "(IIIIZB)V",
+      garbageValue = "9"
    )
    @Export("addWall")
    public void addWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -218,10 +216,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "885994531"
+      garbageValue = "-65536"
    )
    @Export("addObject")
    public void addObject(int var1, int var2, int var3, int var4, boolean var5) {
@@ -245,21 +243,21 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "77"
+      signature = "(III)V",
+      garbageValue = "497828251"
    )
-   public void method3138(int var1, int var2) {
+   public void method3045(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 2097152;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "115"
+      signature = "(III)V",
+      garbageValue = "1224095238"
    )
    @Export("block")
    public void block(int var1, int var2) {
@@ -268,20 +266,20 @@ public class CollisionData {
       this.flags[var1][var2] |= 262144;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "-1829509007"
+      garbageValue = "-1566185844"
    )
    @Export("add")
    void add(int var1, int var2, int var3) {
       this.flags[var1][var2] |= var3;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIIZB)V",
-      garbageValue = "76"
+      signature = "(IIIIZI)V",
+      garbageValue = "-1831798776"
    )
    @Export("removeWall")
    public void removeWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -431,10 +429,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIIIIZI)V",
-      garbageValue = "-49851323"
+      signature = "(IIIIIZB)V",
+      garbageValue = "63"
    )
    @Export("removeObject")
    public void removeObject(int var1, int var2, int var3, int var4, int var5, boolean var6) {
@@ -464,10 +462,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "-98"
+      signature = "(IIII)V",
+      garbageValue = "1793534422"
    )
    @Export("remove")
    void remove(int var1, int var2, int var3) {
@@ -477,55 +475,12 @@ public class CollisionData {
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-285637732"
+      garbageValue = "-2130925093"
    )
    @Export("unblock")
    public void unblock(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] &= -262145;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldj;",
-      garbageValue = "826999293"
-   )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class20.field328, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
-      }
-
-      String var4 = "";
-      if(VarPlayerType.field3342 == 33) {
-         var4 = "_rc";
-      } else if(VarPlayerType.field3342 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class115.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
    }
 }

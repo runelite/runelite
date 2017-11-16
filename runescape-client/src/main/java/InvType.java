@@ -4,23 +4,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("ih")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lij;"
    )
-   public static IndexDataBase field3340;
-   @ObfuscatedName("p")
+   public static IndexDataBase field3336;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lgp;"
    )
    @Export("inventoryCache")
-   static NodeCache inventoryCache;
-   @ObfuscatedName("i")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1864196567
+      intValue = -1546624351
+   )
+   static int field3334;
+   @ObfuscatedName("eo")
+   @ObfuscatedSignature(
+      signature = "Lef;"
+   )
+   static class148 field3331;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -1807433875
    )
    @Export("size")
    public int size;
@@ -29,33 +39,33 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   InvType() {
+   public InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "1106570618"
+      signature = "(Lfs;B)V",
+      garbageValue = "-120"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4445(var1, var2);
+         this.method4252(var1, var2);
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfv;II)V",
-      garbageValue = "1148810146"
+      signature = "(Lfs;II)V",
+      garbageValue = "148306162"
    )
-   void method4445(Buffer var1, int var2) {
+   void method4252(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }

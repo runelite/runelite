@@ -1,72 +1,79 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("g")
 final class class3 implements class0 {
-   @ObfuscatedName("ow")
+   @ObfuscatedName("oe")
    @ObfuscatedSignature(
-      signature = "Ldi;"
+      signature = "Ldo;"
    )
    @Export("soundSystem0")
    static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   @Export("seq_ref")
-   public static IndexDataBase seq_ref;
-   @ObfuscatedName("fi")
-   @ObfuscatedSignature(
-      signature = "Lkd;"
-   )
-   @Export("compass")
-   static SpritePixels compass;
+   @ObfuscatedName("v")
+   @Export("tt")
+   static int[] tt;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-302199367"
+      signature = "(ZI)V",
+      garbageValue = "1547055431"
    )
-   static final void method7(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      GroundObject.method2599(var7, var9, var8, var10, -49088);
-   }
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(class19.field299 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class19.field299.queueForWrite(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class19.field299.close();
+            } catch (Exception var3) {
+               ;
+            }
 
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "-27"
-   )
-   static final void method6(int var0, int var1, int var2) {
-      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class70.getTileHeight(var0, var1, Ignore.plane) - var2;
-         var0 -= class29.cameraX;
-         var3 -= class70.cameraZ;
-         var1 -= Player.cameraY;
-         int var4 = Graphics3D.SINE[class28.cameraPitch];
-         int var5 = Graphics3D.COSINE[class28.cameraPitch];
-         int var6 = Graphics3D.SINE[class228.cameraYaw];
-         int var7 = Graphics3D.COSINE[class228.cameraYaw];
-         int var8 = var6 * var1 + var0 * var7 >> 16;
-         var1 = var7 * var1 - var0 * var6 >> 16;
-         var0 = var8;
-         var8 = var3 * var5 - var4 * var1 >> 16;
-         var1 = var5 * var1 + var4 * var3 >> 16;
-         if(var1 >= 50) {
-            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenX = Client.viewportWidth / 2 + var8 * Client.scale / var1;
-         } else {
-            Client.screenY = -1;
-            Client.screenX = -1;
+            ++class245.field3324;
+            class19.field299 = null;
          }
 
-      } else {
-         Client.screenY = -1;
-         Client.screenX = -1;
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "1087750097"
+   )
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      Friend.addChatMessage(var0, var1, var2, (String)null);
+   }
+
+   @ObfuscatedName("jc")
+   @ObfuscatedSignature(
+      signature = "(IIIILkb;Lhy;I)V",
+      garbageValue = "-975270201"
+   )
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var3 * var8 + var9 * var2 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5124(var10 + var5.field2673 / 2 - var4.maxWidth / 2, var5.field2672 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2673, var5.field2672, var5.field2675, var5.field2674);
+            } else {
+               var4.drawAt(var0 + var10 + var5.field2673 / 2 - var4.maxWidth / 2, var5.field2672 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
+
+         }
       }
    }
 }

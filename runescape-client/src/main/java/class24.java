@@ -1,167 +1,162 @@
+import java.util.LinkedHashMap;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("v")
 public class class24 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lf;"
+      signature = "Lv;"
    )
-   public static final class24 field356;
-   @ObfuscatedName("p")
+   public static final class24 field335;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lf;"
+      signature = "Lv;"
    )
-   public static final class24 field348;
-   @ObfuscatedName("i")
+   public static final class24 field329;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lf;"
+      signature = "Lv;"
    )
-   public static final class24 field349;
-   @ObfuscatedName("n")
+   public static final class24 field330;
+   @ObfuscatedName("jb")
    @ObfuscatedGetter(
-      intValue = 466745417
+      intValue = -1551980155
    )
-   @Export("scriptStringStackSize")
-   static int scriptStringStackSize;
-   @ObfuscatedName("ba")
-   @ObfuscatedSignature(
-      signature = "[Lko;"
-   )
-   static IndexedSprite[] field350;
-   @ObfuscatedName("j")
-   final String field347;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1043763961
-   )
-   final int field351;
+   @Export("menuHeight")
+   static int menuHeight;
+   @ObfuscatedName("g")
+   final String field331;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1788699117
+      intValue = -1666221925
    )
-   final int field352;
-   @ObfuscatedName("e")
+   final int field332;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 636202763
+      intValue = -665921225
    )
-   final int field353;
+   final int field334;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 767248977
+   )
+   final int field336;
 
    static {
-      field356 = new class24("SMALL", 2, 0, 4);
-      field348 = new class24("MEDIUM", 1, 1, 2);
-      field349 = new class24("LARGE", 0, 2, 0);
+      field335 = new class24("SMALL", 0, 0, 4);
+      field329 = new class24("MEDIUM", 1, 1, 2);
+      field330 = new class24("LARGE", 2, 2, 0);
    }
 
    class24(String var1, int var2, int var3, int var4) {
-      this.field347 = var1;
-      this.field351 = var2;
-      this.field352 = var3;
-      this.field353 = var4;
+      this.field331 = var1;
+      this.field332 = var2;
+      this.field334 = var3;
+      this.field336 = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(FB)Z",
-      garbageValue = "1"
+      signature = "(FI)Z",
+      garbageValue = "220314691"
    )
-   boolean method193(float var1) {
-      return var1 >= (float)this.field353;
+   boolean method171(float var1) {
+      return var1 >= (float)this.field336;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IB)Ljj;",
-      garbageValue = "-61"
+      signature = "(I)V",
+      garbageValue = "1381483975"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
+   public static final void method175() {
+      while(true) {
+         class9 var0 = (class9)class7.field220.method3605();
+         if(var0 == null) {
+            return;
+         }
+
+         var0.vmethod55();
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "([BIIS)Ljava/lang/String;",
+      garbageValue = "-16984"
+   )
+   @Export("getString")
+   public static String getString(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var5 + var1] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class273.field3712[var6 - 128];
+               if(var7 == 0) {
+                  var7 = '?';
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
+      }
+
+      return new String(var3, 0, var4);
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lcg;I)V",
+      garbageValue = "315582119"
+   )
+   static void method176(World var0) {
+      if(var0.method1516() != Client.isMembers) {
+         Client.isMembers = var0.method1516();
+         boolean var1 = var0.method1516();
+         if(var1 != ItemComposition.isMembersWorld) {
+            ItemComposition.items.reset();
+            ItemComposition.itemModelCache.reset();
+            ItemComposition.itemSpriteCache.reset();
+            ItemComposition.isMembersWorld = var1;
+         }
+      }
+
+      Varcs.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      Ignore.field790 = Client.socketType == 0?43594:var0.id + 40000;
+      class12.field257 = Client.socketType == 0?443:var0.id + 50000;
+      class70.myWorldPort = Ignore.field790;
+   }
+
+   @ObfuscatedName("fx")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "4"
+   )
+   static final void method172(boolean var0) {
+      if(var0) {
+         Client.field898 = class91.field1355?class150.field2105:class150.field2104;
       } else {
-         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+         LinkedHashMap var1 = class70.preferences.preferences;
+         String var3 = class91.username;
+         int var4 = var3.length();
+         int var5 = 0;
+
+         for(int var6 = 0; var6 < var4; ++var6) {
+            var5 = (var5 << 5) - var5 + var3.charAt(var6);
          }
 
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3505 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lik;I)V",
-      garbageValue = "-2087498006"
-   )
-   public static void method199(IndexDataBase var0) {
-      class12.varbit_ref = var0;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SB)V",
-      garbageValue = "-84"
-   )
-   public static void method192(String[] var0, short[] var1) {
-      class66.method1154(var0, var1, 0, var0.length - 1);
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)Lf;",
-      garbageValue = "-1131878698"
-   )
-   static class24 method195(int var0) {
-      class24[] var1 = new class24[]{field356, field348, field349};
-      class24[] var2 = var1;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class24 var4 = var2[var3];
-         if(var0 == var4.field352) {
-            return var4;
-         }
+         Client.field898 = var1.containsKey(Integer.valueOf(var5))?class150.field2109:class150.field2103;
       }
 
-      return null;
-   }
-
-   @ObfuscatedName("jv")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-      garbageValue = "2"
-   )
-   static String method198(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(class40.sessionToken != null) {
-         var3 = "/p=" + class40.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class36.field480 + var3 + "/";
    }
 }

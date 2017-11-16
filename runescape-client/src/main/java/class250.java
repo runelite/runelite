@@ -1,130 +1,108 @@
-import net.runelite.mapping.Export;
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ie")
+@ObfuscatedName("ia")
 public class class250 extends CacheableNode {
-   @ObfuscatedName("p")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lij;"
    )
-   static NodeCache field3371;
-   @ObfuscatedName("i")
-   public boolean field3370;
+   public static IndexDataBase field3369;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lgp;"
+   )
+   static NodeCache field3367;
+   @ObfuscatedName("r")
+   public boolean field3368;
 
    static {
-      field3371 = new NodeCache(64);
+      field3367 = new NodeCache(64);
    }
 
    class250() {
-      this.field3370 = false;
+      this.field3368 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "-892885908"
+      signature = "(Lfs;I)V",
+      garbageValue = "-141002358"
    )
-   void method4491(Buffer var1) {
+   void method4302(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4496(var1, var2);
+         this.method4294(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lfv;II)V",
-      garbageValue = "1005303401"
+      signature = "(Lfs;IB)V",
+      garbageValue = "62"
    )
-   void method4496(Buffer var1, int var2) {
+   void method4294(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3370 = true;
+         this.field3368 = true;
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)Ljx;",
-      garbageValue = "-567064807"
+      signature = "(CI)Z",
+      garbageValue = "-1035781250"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
-         }
+   static final boolean method4301(char var0) {
+      return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
+   }
 
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.method4753(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
-         }
+   @ObfuscatedName("ab")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1608865957"
+   )
+   protected static int method4295() {
+      int var0 = 0;
+      if(class272.field3708 == null || !class272.field3708.isValid()) {
+         try {
+            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
 
-         if(var1.notedId != -1) {
-            var1.method4752(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.field3594 != -1) {
-            var1.method4784(getItemDefinition(var1.field3594), getItemDefinition(var1.field3593));
-         }
-
-         if(!class246.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field3590 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.field3588 = 0;
-            if(var1.field3576 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3576.getHead(); var4 != null; var4 = var1.field3576.getTail()) {
-                  class258 var5 = PacketBuffer.method3597((int)var4.hash);
-                  if(var5.field3445) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
-                  }
+            while(var1.hasNext()) {
+               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
+               if(var2.isValid()) {
+                  class272.field3708 = var2;
+                  GameEngine.field672 = -1L;
+                  GameEngine.field671 = -1L;
                }
+            }
+         } catch (Throwable var11) {
+            ;
+         }
+      }
 
-               if(!var3) {
-                  var1.field3576 = null;
-               }
+      if(class272.field3708 != null) {
+         long var9 = ChatLineBuffer.currentTimeMs();
+         long var3 = class272.field3708.getCollectionTime();
+         if(-1L != GameEngine.field671) {
+            long var5 = var3 - GameEngine.field671;
+            long var7 = var9 - GameEngine.field672;
+            if(0L != var7) {
+               var0 = (int)(100L * var5 / var7);
             }
          }
 
-         ItemComposition.items.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(Lik;Ljava/lang/String;Ljava/lang/String;I)Lko;",
-      garbageValue = "-1820090326"
-   )
-   @Export("getSprite")
-   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      IndexedSprite var5;
-      if(!class72.method1184(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = class34.method511();
+         GameEngine.field671 = var3;
+         GameEngine.field672 = var9;
       }
 
-      return var5;
+      return var0;
    }
 }

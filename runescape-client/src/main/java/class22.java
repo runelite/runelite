@@ -1,40 +1,54 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("z")
 public class class22 extends class28 {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lfv;Lfv;I)V",
-      garbageValue = "1256447166"
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1910626575
    )
-   void method178(Buffer var1, Buffer var2) {
+   static int field317;
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexModels")
+   static IndexData indexModels;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lfs;Lfs;B)V",
+      garbageValue = "-8"
+   )
+   void method155(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
-      if(var3 != class36.field479.field481) {
+      if(var3 != class36.field472.field464) {
          throw new IllegalStateException("");
       } else {
-         super.field395 = var2.readUnsignedByte();
-         super.field391 = var2.readUnsignedByte();
-         super.field399 = var2.readUnsignedShort();
-         super.field392 = var2.readUnsignedShort();
-         super.field393 = var2.readUnsignedShort();
-         super.field394 = var2.readUnsignedShort();
-         super.field391 = Math.min(super.field391, 4);
-         super.field396 = new short[1][64][64];
-         super.field397 = new short[super.field391][64][64];
-         super.field398 = new byte[super.field391][64][64];
-         super.field400 = new byte[super.field391][64][64];
-         super.field401 = new class31[super.field391][64][64][];
+         super.field388 = var2.readUnsignedByte();
+         super.field380 = var2.readUnsignedByte();
+         super.field386 = var2.readUnsignedShort();
+         super.field376 = var2.readUnsignedShort();
+         super.field385 = var2.readUnsignedShort();
+         super.field378 = var2.readUnsignedShort();
+         super.field380 = Math.min(super.field380, 4);
+         super.field377 = new short[1][64][64];
+         super.field382 = new short[super.field380][64][64];
+         super.field383 = new byte[super.field380][64][64];
+         super.field379 = new byte[super.field380][64][64];
+         super.field384 = new class31[super.field380][64][64][];
          var3 = var1.readUnsignedByte();
-         if(var3 != class35.field472.field468) {
+         if(var3 != class35.field462.field458) {
             throw new IllegalStateException("");
          } else {
             int var4 = var1.readUnsignedByte();
             int var5 = var1.readUnsignedByte();
-            if(var4 == super.field393 && var5 == super.field394) {
+            if(var4 == super.field385 && var5 == super.field378) {
                for(int var6 = 0; var6 < 64; ++var6) {
                   for(int var7 = 0; var7 < 64; ++var7) {
-                     this.method244(var6, var7, var1);
+                     this.method217(var6, var7, var1);
                   }
                }
 
@@ -45,262 +59,367 @@ public class class22 extends class28 {
       }
    }
 
-   public int hashCode() {
-      return super.field393 | super.field394 << 8;
-   }
-
    public boolean equals(Object var1) {
       if(!(var1 instanceof class22)) {
          return false;
       } else {
          class22 var2 = (class22)var1;
-         return super.field393 == var2.field393 && var2.field394 == super.field394;
+         return var2.field385 == super.field385 && super.field378 == var2.field378;
       }
    }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lik;I)V",
-      garbageValue = "-1949100792"
-   )
-   public static void method189(IndexDataBase var0) {
-      class259.field3447 = var0;
+   public int hashCode() {
+      return super.field385 | super.field378 << 8;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "-840702097"
+      signature = "(IIIIIILeo;Lfy;B)V",
+      garbageValue = "-82"
    )
-   static char method187(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
+   @Export("addObject")
+   static final void addObject(int var0, int var1, int var2, int var3, int var4, int var5, Region var6, CollisionData var7) {
+      if(!Client.lowMemory || (class61.tileSettings[0][var1][var2] & 2) != 0 || (class61.tileSettings[var0][var1][var2] & 16) == 0) {
+         if(var0 < class61.field705) {
+            class61.field705 = var0;
          }
 
-         if(var0 == 199) {
-            return 'C';
+         ObjectComposition var8 = ClientPacket.getObjectDefinition(var3);
+         int var9;
+         int var10;
+         if(var4 != 1 && var4 != 3) {
+            var9 = var8.sizeX;
+            var10 = var8.sizeY;
+         } else {
+            var9 = var8.sizeY;
+            var10 = var8.sizeX;
          }
 
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
+         int var11;
+         int var12;
+         if(var9 + var1 <= 104) {
+            var11 = (var9 >> 1) + var1;
+            var12 = (var9 + 1 >> 1) + var1;
+         } else {
+            var11 = var1;
+            var12 = var1 + 1;
          }
 
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
+         int var13;
+         int var14;
+         if(var10 + var2 <= 104) {
+            var13 = (var10 >> 1) + var2;
+            var14 = var2 + (var10 + 1 >> 1);
+         } else {
+            var13 = var2;
+            var14 = var2 + 1;
          }
 
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
+         int[][] var15 = class61.tileHeights[var0];
+         int var16 = var15[var12][var14] + var15[var11][var14] + var15[var11][var13] + var15[var12][var13] >> 2;
+         int var17 = (var1 << 7) + (var9 << 6);
+         int var18 = (var2 << 7) + (var10 << 6);
+         int var19 = (var3 << 14) + (var2 << 7) + var1 + 1073741824;
+         if(var8.field3486 == 0) {
+            var19 -= Integer.MIN_VALUE;
          }
 
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
+         int var20 = var5 + (var4 << 6);
+         if(var8.field3521 == 1) {
+            var20 += 256;
          }
 
-         if(var0 == 221) {
-            return 'Y';
+         if(var8.method4539()) {
+            class47.method664(var0, var1, var2, var8, var4);
          }
 
-         if(var0 == 223) {
-            return 's';
-         }
+         Object var21;
+         if(var5 == 22) {
+            if(!Client.lowMemory || var8.field3486 != 0 || var8.interactType == 1 || var8.field3524) {
+               if(var8.animationId == -1 && var8.impostorIds == null) {
+                  var21 = var8.getModel(22, var4, var15, var17, var16, var18);
+               } else {
+                  var21 = new DynamicObject(var3, 22, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+               }
 
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
+               var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var21, var19, var20);
+               if(var8.interactType == 1 && var7 != null) {
+                  var7.block(var1, var2);
+               }
 
-         if(var0 == 231) {
-            return 'c';
-         }
+            }
+         } else {
+            int var27;
+            if(var5 != 10 && var5 != 11) {
+               if(var5 >= 12) {
+                  if(var8.animationId == -1 && var8.impostorIds == null) {
+                     var21 = var8.getModel(var5, var4, var15, var17, var16, var18);
+                  } else {
+                     var21 = new DynamicObject(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                  }
 
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
+                  var6.method2698(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
+                  if(var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
+                     class27.field368[var0][var1][var2] |= 2340;
+                  }
 
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
+                  if(var8.interactType != 0 && var7 != null) {
+                     var7.addObject(var1, var2, var9, var10, var8.field3504);
+                  }
 
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
+               } else if(var5 == 0) {
+                  if(var8.animationId == -1 && var8.impostorIds == null) {
+                     var21 = var8.getModel(0, var4, var15, var17, var16, var18);
+                  } else {
+                     var21 = new DynamicObject(var3, 0, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                  }
 
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
+                  var6.addBoundary(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class61.field709[var4], 0, var19, var20);
+                  if(var4 == 0) {
+                     if(var8.clipped) {
+                        class175.field2440[var0][var1][var2] = 50;
+                        class175.field2440[var0][var1][var2 + 1] = 50;
+                     }
 
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
+                     if(var8.modelClipped) {
+                        class27.field368[var0][var1][var2] |= 585;
+                     }
+                  } else if(var4 == 1) {
+                     if(var8.clipped) {
+                        class175.field2440[var0][var1][var2 + 1] = 50;
+                        class175.field2440[var0][var1 + 1][var2 + 1] = 50;
+                     }
+
+                     if(var8.modelClipped) {
+                        class27.field368[var0][var1][var2 + 1] |= 1170;
+                     }
+                  } else if(var4 == 2) {
+                     if(var8.clipped) {
+                        class175.field2440[var0][var1 + 1][var2] = 50;
+                        class175.field2440[var0][var1 + 1][var2 + 1] = 50;
+                     }
+
+                     if(var8.modelClipped) {
+                        class27.field368[var0][var1 + 1][var2] |= 585;
+                     }
+                  } else if(var4 == 3) {
+                     if(var8.clipped) {
+                        class175.field2440[var0][var1][var2] = 50;
+                        class175.field2440[var0][var1 + 1][var2] = 50;
+                     }
+
+                     if(var8.modelClipped) {
+                        class27.field368[var0][var1][var2] |= 1170;
+                     }
+                  }
+
+                  if(var8.interactType != 0 && var7 != null) {
+                     var7.addWall(var1, var2, var5, var4, var8.field3504);
+                  }
+
+                  if(var8.field3515 != 16) {
+                     var6.method2704(var0, var1, var2, var8.field3515);
+                  }
+
+               } else if(var5 == 1) {
+                  if(var8.animationId == -1 && var8.impostorIds == null) {
+                     var21 = var8.getModel(1, var4, var15, var17, var16, var18);
+                  } else {
+                     var21 = new DynamicObject(var3, 1, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                  }
+
+                  var6.addBoundary(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class61.field710[var4], 0, var19, var20);
+                  if(var8.clipped) {
+                     if(var4 == 0) {
+                        class175.field2440[var0][var1][var2 + 1] = 50;
+                     } else if(var4 == 1) {
+                        class175.field2440[var0][var1 + 1][var2 + 1] = 50;
+                     } else if(var4 == 2) {
+                        class175.field2440[var0][var1 + 1][var2] = 50;
+                     } else if(var4 == 3) {
+                        class175.field2440[var0][var1][var2] = 50;
+                     }
+                  }
+
+                  if(var8.interactType != 0 && var7 != null) {
+                     var7.addWall(var1, var2, var5, var4, var8.field3504);
+                  }
+
+               } else {
+                  Object var23;
+                  int var26;
+                  if(var5 == 2) {
+                     var26 = var4 + 1 & 3;
+                     Object var22;
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var22 = var8.getModel(2, var4 + 4, var15, var17, var16, var18);
+                        var23 = var8.getModel(2, var26, var15, var17, var16, var18);
+                     } else {
+                        var22 = new DynamicObject(var3, 2, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var23 = new DynamicObject(var3, 2, var26, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundary(var0, var1, var2, var16, (Renderable)var22, (Renderable)var23, class61.field709[var4], class61.field709[var26], var19, var20);
+                     if(var8.modelClipped) {
+                        if(var4 == 0) {
+                           class27.field368[var0][var1][var2] |= 585;
+                           class27.field368[var0][var1][1 + var2] |= 1170;
+                        } else if(var4 == 1) {
+                           class27.field368[var0][var1][var2 + 1] |= 1170;
+                           class27.field368[var0][var1 + 1][var2] |= 585;
+                        } else if(var4 == 2) {
+                           class27.field368[var0][var1 + 1][var2] |= 585;
+                           class27.field368[var0][var1][var2] |= 1170;
+                        } else if(var4 == 3) {
+                           class27.field368[var0][var1][var2] |= 1170;
+                           class27.field368[var0][var1][var2] |= 585;
+                        }
+                     }
+
+                     if(var8.interactType != 0 && var7 != null) {
+                        var7.addWall(var1, var2, var5, var4, var8.field3504);
+                     }
+
+                     if(var8.field3515 != 16) {
+                        var6.method2704(var0, var1, var2, var8.field3515);
+                     }
+
+                  } else if(var5 == 3) {
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var21 = var8.getModel(3, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new DynamicObject(var3, 3, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundary(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class61.field710[var4], 0, var19, var20);
+                     if(var8.clipped) {
+                        if(var4 == 0) {
+                           class175.field2440[var0][var1][var2 + 1] = 50;
+                        } else if(var4 == 1) {
+                           class175.field2440[var0][var1 + 1][var2 + 1] = 50;
+                        } else if(var4 == 2) {
+                           class175.field2440[var0][var1 + 1][var2] = 50;
+                        } else if(var4 == 3) {
+                           class175.field2440[var0][var1][var2] = 50;
+                        }
+                     }
+
+                     if(var8.interactType != 0 && var7 != null) {
+                        var7.addWall(var1, var2, var5, var4, var8.field3504);
+                     }
+
+                  } else if(var5 == 9) {
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var21 = var8.getModel(var5, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new DynamicObject(var3, var5, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.method2698(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
+                     if(var8.interactType != 0 && var7 != null) {
+                        var7.addObject(var1, var2, var9, var10, var8.field3504);
+                     }
+
+                     if(var8.field3515 != 16) {
+                        var6.method2704(var0, var1, var2, var8.field3515);
+                     }
+
+                  } else if(var5 == 4) {
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var21 = var8.getModel(4, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new DynamicObject(var3, 4, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundaryDecoration(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class61.field709[var4], 0, 0, 0, var19, var20);
+                  } else if(var5 == 5) {
+                     var26 = 16;
+                     var27 = var6.method2714(var0, var1, var2);
+                     if(var27 != 0) {
+                        var26 = ClientPacket.getObjectDefinition(var27 >> 14 & 32767).field3515;
+                     }
+
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var23 = var8.getModel(4, var4, var15, var17, var16, var18);
+                     } else {
+                        var23 = new DynamicObject(var3, 4, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundaryDecoration(var0, var1, var2, var16, (Renderable)var23, (Renderable)null, class61.field709[var4], 0, var26 * class61.field704[var4], var26 * class61.field721[var4], var19, var20);
+                  } else if(var5 == 6) {
+                     var26 = 8;
+                     var27 = var6.method2714(var0, var1, var2);
+                     if(var27 != 0) {
+                        var26 = ClientPacket.getObjectDefinition(var27 >> 14 & 32767).field3515 / 2;
+                     }
+
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var23 = var8.getModel(4, var4 + 4, var15, var17, var16, var18);
+                     } else {
+                        var23 = new DynamicObject(var3, 4, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundaryDecoration(var0, var1, var2, var16, (Renderable)var23, (Renderable)null, 256, var4, var26 * class61.field713[var4], var26 * class61.field714[var4], var19, var20);
+                  } else if(var5 == 7) {
+                     var27 = var4 + 2 & 3;
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var21 = var8.getModel(4, var27 + 4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new DynamicObject(var3, 4, var27 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundaryDecoration(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, 256, var27, 0, 0, var19, var20);
+                  } else if(var5 == 8) {
+                     var26 = 8;
+                     var27 = var6.method2714(var0, var1, var2);
+                     if(var27 != 0) {
+                        var26 = ClientPacket.getObjectDefinition(var27 >> 14 & 32767).field3515 / 2;
+                     }
+
+                     int var25 = var4 + 2 & 3;
+                     Object var29;
+                     if(var8.animationId == -1 && var8.impostorIds == null) {
+                        var23 = var8.getModel(4, var4 + 4, var15, var17, var16, var18);
+                        var29 = var8.getModel(4, var25 + 4, var15, var17, var16, var18);
+                     } else {
+                        var23 = new DynamicObject(var3, 4, var4 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                        var29 = new DynamicObject(var3, 4, var25 + 4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+                     }
+
+                     var6.addBoundaryDecoration(var0, var1, var2, var16, (Renderable)var23, (Renderable)var29, 256, var4, var26 * class61.field713[var4], var26 * class61.field714[var4], var19, var20);
+                  }
+               }
+            } else {
+               if(var8.animationId == -1 && var8.impostorIds == null) {
+                  var21 = var8.getModel(10, var4, var15, var17, var16, var18);
+               } else {
+                  var21 = new DynamicObject(var3, 10, var4, var0, var1, var2, var8.animationId, true, (Renderable)null);
+               }
+
+               if(var21 != null && var6.method2698(var0, var1, var2, var16, var9, var10, (Renderable)var21, var5 == 11?256:0, var19, var20) && var8.clipped) {
+                  var27 = 15;
+                  if(var21 instanceof Model) {
+                     var27 = ((Model)var21).method2513() / 4;
+                     if(var27 > 30) {
+                        var27 = 30;
+                     }
+                  }
+
+                  for(int var28 = 0; var28 <= var9; ++var28) {
+                     for(int var24 = 0; var24 <= var10; ++var24) {
+                        if(var27 > class175.field2440[var0][var28 + var1][var24 + var2]) {
+                           class175.field2440[var0][var28 + var1][var24 + var2] = (byte)var27;
+                        }
+                     }
+                  }
+               }
+
+               if(var8.interactType != 0 && var7 != null) {
+                  var7.addObject(var1, var2, var9, var10, var8.field3504);
+               }
+
+            }
          }
       }
-
-      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2115735631"
-   )
-   public static int method186() {
-      return KeyFocusListener.keyboardIdleTicks;
-   }
-
-   @ObfuscatedName("fr")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1162141264"
-   )
-   static final void method188() {
-      int var0 = class188.field2532 * 128 + 64;
-      int var1 = class18.field309 * 128 + 64;
-      int var2 = class70.getTileHeight(var0, var1, Ignore.plane) - class11.field265;
-      if(class29.cameraX < var0) {
-         class29.cameraX = (var0 - class29.cameraX) * class20.field325 / 1000 + class29.cameraX + class25.field358;
-         if(class29.cameraX > var0) {
-            class29.cameraX = var0;
-         }
-      }
-
-      if(class29.cameraX > var0) {
-         class29.cameraX -= class20.field325 * (class29.cameraX - var0) / 1000 + class25.field358;
-         if(class29.cameraX < var0) {
-            class29.cameraX = var0;
-         }
-      }
-
-      if(class70.cameraZ < var2) {
-         class70.cameraZ = (var2 - class70.cameraZ) * class20.field325 / 1000 + class70.cameraZ + class25.field358;
-         if(class70.cameraZ > var2) {
-            class70.cameraZ = var2;
-         }
-      }
-
-      if(class70.cameraZ > var2) {
-         class70.cameraZ -= class20.field325 * (class70.cameraZ - var2) / 1000 + class25.field358;
-         if(class70.cameraZ < var2) {
-            class70.cameraZ = var2;
-         }
-      }
-
-      if(Player.cameraY < var1) {
-         Player.cameraY = (var1 - Player.cameraY) * class20.field325 / 1000 + Player.cameraY + class25.field358;
-         if(Player.cameraY > var1) {
-            Player.cameraY = var1;
-         }
-      }
-
-      if(Player.cameraY > var1) {
-         Player.cameraY -= class20.field325 * (Player.cameraY - var1) / 1000 + class25.field358;
-         if(Player.cameraY < var1) {
-            Player.cameraY = var1;
-         }
-      }
-
-      var0 = class34.field467 * 128 + 64;
-      var1 = class64.field761 * 128 + 64;
-      var2 = class70.getTileHeight(var0, var1, Ignore.plane) - CombatInfo1.field1207;
-      int var3 = var0 - class29.cameraX;
-      int var4 = var2 - class70.cameraZ;
-      int var5 = var1 - Player.cameraY;
-      int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3));
-      int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
-      int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
-      if(var7 < 128) {
-         var7 = 128;
-      }
-
-      if(var7 > 383) {
-         var7 = 383;
-      }
-
-      if(class28.cameraPitch < var7) {
-         class28.cameraPitch = (var7 - class28.cameraPitch) * class8.field238 / 1000 + class28.cameraPitch + TextureProvider.field1688;
-         if(class28.cameraPitch > var7) {
-            class28.cameraPitch = var7;
-         }
-      }
-
-      if(class28.cameraPitch > var7) {
-         class28.cameraPitch -= class8.field238 * (class28.cameraPitch - var7) / 1000 + TextureProvider.field1688;
-         if(class28.cameraPitch < var7) {
-            class28.cameraPitch = var7;
-         }
-      }
-
-      int var9 = var8 - class228.cameraYaw;
-      if(var9 > 1024) {
-         var9 -= 2048;
-      }
-
-      if(var9 < -1024) {
-         var9 += 2048;
-      }
-
-      if(var9 > 0) {
-         class228.cameraYaw = class228.cameraYaw + TextureProvider.field1688 + var9 * class8.field238 / 1000;
-         class228.cameraYaw &= 2047;
-      }
-
-      if(var9 < 0) {
-         class228.cameraYaw -= TextureProvider.field1688 + -var9 * class8.field238 / 1000;
-         class228.cameraYaw &= 2047;
-      }
-
-      int var10 = var8 - class228.cameraYaw;
-      if(var10 > 1024) {
-         var10 -= 2048;
-      }
-
-      if(var10 < -1024) {
-         var10 += 2048;
-      }
-
-      if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         class228.cameraYaw = var8;
-      }
-
-   }
-
-   @ObfuscatedName("hj")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "548248272"
-   )
-   static final void method180(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field980; ++var4) {
-         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field1055[var4] = true;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("in")
-   @ObfuscatedSignature(
-      signature = "([Lhk;Lhk;ZI)V",
-      garbageValue = "-27709495"
-   )
-   static void method179(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      Timer.method3093(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         Timer.method3093(var1.children, var1.id, var3, var4, var2);
-      }
-
-      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(CombatInfoListHolder.loadWidget(var6)) {
-            Timer.method3093(class243.widgets[var6], -1, var3, var4, var2);
-         }
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
    }
 }

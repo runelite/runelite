@@ -1,29 +1,47 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ht")
 public class class222 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "5"
    )
-   static IndexDataBase field2712;
+   @Export("getColTags")
+   static String getColTags(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
 
-   @ObfuscatedName("fu")
+   @ObfuscatedName("jk")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1682708790"
+      signature = "(IIII)Lbf;",
+      garbageValue = "-2009344614"
    )
-   static final void method4145() {
-      int var0 = class94.playerIndexesCount;
-      int[] var1 = class94.playerIndices;
+   static final WidgetNode method4016(int var0, int var1, int var2) {
+      WidgetNode var3 = new WidgetNode();
+      var3.id = var1;
+      var3.owner = var2;
+      Client.componentTable.put(var3, (long)var0);
+      class51.method724(var1);
+      Widget var4 = class64.method1017(var0);
+      ScriptEvent.method1038(var4);
+      if(Client.field878 != null) {
+         ScriptEvent.method1038(Client.field878);
+         Client.field878 = null;
+      }
 
-      for(int var2 = 0; var2 < var0; ++var2) {
-         Player var3 = Client.cachedPlayers[var1[var2]];
-         if(var3 != null) {
-            ServerPacket.method3181(var3, 1);
+      WidgetNode.method1028();
+      class90.method1686(Widget.widgets[var0 >> 16], var4, false);
+      class37.method479(var1);
+      if(Client.widgetRoot != -1) {
+         int var5 = Client.widgetRoot;
+         if(class64.loadWidget(var5)) {
+            class19.method145(Widget.widgets[var5], 1);
          }
       }
 
+      return var3;
    }
 }

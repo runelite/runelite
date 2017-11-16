@@ -2,56 +2,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kn")
-public enum class292 implements RSEnum {
-   @ObfuscatedName("m")
+@ObfuscatedName("ka")
+public enum class292 implements class185 {
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lka;"
    )
-   field3826(0, 0),
-   @ObfuscatedName("p")
+   field3820(0, 0),
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lka;"
    )
-   field3825(1, 1),
-   @ObfuscatedName("i")
+   field3818(1, 1),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lka;"
    )
-   field3824(2, 2),
-   @ObfuscatedName("j")
+   field3819(2, 2),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lka;"
    )
-   field3822(3, 3),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lkn;"
-   )
-   field3823(4, 4);
-
+   field3821(3, 3),
    @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1762173195
+   @ObfuscatedSignature(
+      signature = "Lka;"
    )
-   public final int field3827;
-   @ObfuscatedName("e")
+   field3822(4, 4);
+
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1067402979
+      intValue = -670856217
    )
-   final int field3828;
+   public final int field3823;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -272370033
+   )
+   final int field3824;
 
    class292(int var3, int var4) {
-      this.field3827 = var3;
-      this.field3828 = var4;
+      this.field3823 = var3;
+      this.field3824 = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "369425307"
+      signature = "(B)I",
+      garbageValue = "-4"
    )
    public int rsOrdinal() {
-      return this.field3828;
+      return this.field3824;
    }
 }
