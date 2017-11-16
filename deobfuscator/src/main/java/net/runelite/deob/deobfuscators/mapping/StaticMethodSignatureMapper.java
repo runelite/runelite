@@ -24,7 +24,7 @@
  */
 package net.runelite.deob.deobfuscators.mapping;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import net.runelite.asm.signature.Signature;
 
 public class StaticMethodSignatureMapper
 {
-	private Multimap<Method, Method> map = ArrayListMultimap.create();
+	private Multimap<Method, Method> map = LinkedHashMultimap.create();
 
 	private List<Method> getStaticMethods(ClassGroup group)
 	{
