@@ -26,6 +26,8 @@ package net.runelite.client.plugins.prayflick;
 
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Prayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
@@ -44,12 +46,14 @@ public class PrayerFlickOverlay  extends Overlay
 	private final RuneLite runelite;
 	private final Client client;
 	private final PrayerFlickConfig config;
+	private boolean prayersActive = false;
 
 	private long startOfLastTick = System.currentTimeMillis();
 
-	public void resetTickIndicator()
+	public void onTick()
 	{
-		startOfLastTick = System.currentTimeMillis();
+		startOfLastTick = System.currentTimeMillis();//Reset the tick timer
+		prayersActive = isAnyPrayerActive();//Check if prayers are active
 	}
 
 	@Inject
@@ -64,7 +68,7 @@ public class PrayerFlickOverlay  extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || !prayersActive)//If there are no prayers active we don't need to be flicking
 		{
 			return null;
 		}
@@ -82,11 +86,11 @@ public class PrayerFlickOverlay  extends Overlay
 		}
 
 
-		int orbInnerHeight = 28;
-		int orbInnerWidth = 29;
+		int orbInnerHeight = 26;
+		int orbInnerWidth = 26;
 
-		int orbInnerX = (int) (bounds.getX() + 26);//x pos of the inside of the prayer orb
-		int orbInnerY = (int) (bounds.getY() + 67);//y pos of the inside of the prayer orb
+		int orbInnerX = (int) (bounds.getX() + 28);//x pos of the inside of the prayer orb
+		int orbInnerY = (int) (bounds.getY() + 68);//y pos of the inside of the prayer orb
 
 		long timeSinceLastTick = System.currentTimeMillis() - startOfLastTick;
 
@@ -101,9 +105,27 @@ public class PrayerFlickOverlay  extends Overlay
 		int yOffset = (orbInnerHeight/2)-(indicatorHeight/2);
 
 
+		graphics.setColor(new Color(255,255,255,100));
+		graphics.fillArc(orbInnerX,orbInnerY,orbInnerWidth,orbInnerHeight,0,360);
+
+
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(orbInnerX+xOffset,orbInnerY+yOffset,1,indicatorHeight);
 
 		return null;
+	}
+
+
+	boolean isAnyPrayerActive()
+	{
+
+		for(Prayer pray : Prayer.values())//Check if any prayers are active
+		{
+			if(client.isPrayerActive(pray))
+				return true;
+		}
+
+		return false;
+
 	}
 }

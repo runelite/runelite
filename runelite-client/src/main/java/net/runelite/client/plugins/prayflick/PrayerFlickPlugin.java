@@ -71,6 +71,6 @@ public class PrayerFlickPlugin extends Plugin
 	@Subscribe
 	public void onTick(TickUpdate tick)
 	{
-		overlay.resetTickIndicator();
+		overlay.onTick();
 	}
 }
