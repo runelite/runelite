@@ -176,7 +176,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int var0, int var1, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
                  * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -186,15 +186,29 @@ public class Hooks
 			menuAction -= 2000;
 		}
 
-		logger.debug("Menu action clicked: {} ({}) on {} ({})", menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id);
+		logger.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
+			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setMenuOption(menuOption);
 		menuOptionClicked.setMenuTarget(menuTarget);
 		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
 		menuOptionClicked.setId(id);
+		menuOptionClicked.setWidgetId(widgetId);
 
 		eventBus.post(menuOptionClicked);
+	}
+
+	public static void addMenuEntry(String option, String target, int type, int identifier, int param0, int param1)
+	{
+		if (logger.isTraceEnabled())
+		{
+			logger.trace("Menu entry added {} {}", option, target);
+		}
+
+		MenuEntryAdded menuEntry = new MenuEntryAdded(option, target, type, identifier, param0, param1);
+
+		eventBus.post(menuEntry);
 	}
 
 	public static void addChatMessage(int type, String sender, String message, String clan)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,68 +24,52 @@
  */
 package net.runelite.client.events;
 
-import net.runelite.api.MenuAction;
-
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class MenuEntryAdded
 {
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
-	private int widgetId;
+	private String option;
+	private String target;
+	private int type;
+	private int identifier;
+	private int actionParam0;
+	private int actionParam1;
 
-	public String getMenuOption()
+	public MenuEntryAdded(String option, String target, int type, int identifier, int actionParam0, int param1)
 	{
-		return menuOption;
+		this.option = option;
+		this.target = target;
+		this.type = type;
+		this.identifier = identifier;
+		this.actionParam0 = actionParam0;
+		this.actionParam1 = param1;
 	}
 
-	public void setMenuOption(String menuOption)
+	public String getOption()
 	{
-		this.menuOption = menuOption;
+		return option;
 	}
 
-	public String getMenuTarget()
+	public String getTarget()
 	{
-		return menuTarget;
+		return target;
 	}
 
-	public void setMenuTarget(String menuTarget)
+	public int getType()
 	{
-		this.menuTarget = menuTarget;
+		return type;
 	}
 
-	public MenuAction getMenuAction()
+	public int getIdentifier()
 	{
-		return menuAction;
+		return identifier;
 	}
 
-	public void setMenuAction(MenuAction menuAction)
+	public int getActionParam0()
 	{
-		this.menuAction = menuAction;
+		return actionParam0;
 	}
 
-	public int getId()
+	public int getActionParam1()
 	{
-		return id;
+		return actionParam1;
 	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getWidgetId()
-	{
-		return widgetId;
-	}
-
-	public void setWidgetId(int widgetId)
-	{
-		this.widgetId = widgetId;
-	}
-
 }
