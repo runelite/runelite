@@ -40,4 +40,6 @@ public interface Tile
 	GroundObject getGroundObject();
 
 	WallObject getWallObject();
+
+	SceneTilePaint getSceneTilePaint();
 }

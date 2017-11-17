@@ -28,6 +28,8 @@ public enum WidgetInfo
 {
 	INVENTORY(WidgetID.INVENTORY_GROUP_ID, 0),
 
+	WORLD_MAP(WidgetID.WORLD_MAP_MENU_GROUP_ID, WidgetID.WorldMap.OPTION),
+
 	CLUE_SCROLL_TEXT(WidgetID.CLUE_SCROLL_GROUP_ID, WidgetID.Cluescroll.CLUE_TEXT),
 
 	EQUIPMENT(WidgetID.EQUIPMENT_GROUP_ID, 0),
@@ -104,6 +106,11 @@ public enum WidgetInfo
 	{
 		this.groupId = groupId;
 		this.childId = childId;
+	}
+
+	public int getId()
+	{
+		return groupId << 16 | childId;
 	}
 
 	public int getGroupId()

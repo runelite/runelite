@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.instancemap;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSTile extends Tile
+@ConfigGroup(
+	keyName = "instancemap",
+	name = "Instance Map",
+	description = "Displays a map of the current instance"
+)
+public interface InstanceMapConfig extends Config
 {
-	@Import("objects")
-	@Override
-	GameObject[] getGameObjects();
-
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
-
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Enables or disables the overlay"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 }

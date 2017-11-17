@@ -25,8 +25,12 @@
 package net.runelite.client.menus;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -34,6 +38,10 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.events.WidgetMenuOptionClicked;
+import net.runelite.client.events.MenuEntryAdded;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
@@ -56,12 +64,77 @@ public class MenuManager
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
+	//Used to manage custom non-player menu options
+	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
 
 	@Inject
 	public MenuManager(Provider<Client> clientProvider, EventBus eventBus)
 	{
 		this.clientProvider = clientProvider;
 		this.eventBus = eventBus;
+	}
+
+	/**
+	 * Adds a CustomMenuOption to the list of managed menu options.
+	 *
+	 * @param customMenuOption The custom menu to add
+	 */
+	public void addManagedCustomMenu(WidgetMenuOption customMenuOption)
+	{
+		WidgetInfo widget = customMenuOption.getWidget();
+		managedMenuOptions.put(widget.getId(), customMenuOption);
+	}
+
+	/**
+	 * Removes a CustomMenuOption from the list of managed menu options.
+	 *
+	 * @param customMenuOption The custom menu to add
+	 */
+	public void removeManagedCustomMenu(WidgetMenuOption customMenuOption)
+	{
+		WidgetInfo widget = customMenuOption.getWidget();
+		managedMenuOptions.remove(widget.getId(), customMenuOption);
+	}
+
+	private boolean menuContainsCustomMenu(WidgetMenuOption customMenuOption)
+	{
+		Client client = clientProvider.get();
+		for (MenuEntry menuEntry : client.getMenuEntries())
+		{
+			String option = menuEntry.getOption();
+			String target = menuEntry.getTarget();
+
+			if (option.equals(customMenuOption.getMenuOption()) && target.equals(customMenuOption.getMenuTarget()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int widgetId = event.getActionParam1();
+		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		for (WidgetMenuOption currentMenu : options)
+		{
+			Client client = clientProvider.get();
+
+			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				menuEntry.setOption(currentMenu.getMenuOption());
+				menuEntry.setParam1(widgetId);
+				menuEntry.setTarget(currentMenu.getMenuTarget());
+				menuEntry.setType(MenuAction.RUNELITE);
+
+				client.setMenuEntries(menuEntries);
+			}
+		}
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -108,6 +181,23 @@ public class MenuManager
 		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{
 			return; // not a player menu
+		}
+
+		int widgetId = event.getWidgetId();
+		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+
+		for (WidgetMenuOption curMenuOption : options)
+		{
+			if (curMenuOption.getMenuTarget().equals(event.getMenuTarget())
+				&& curMenuOption.getMenuOption().equals(event.getMenuOption()))
+			{
+				WidgetMenuOptionClicked customMenu = new WidgetMenuOptionClicked();
+				customMenu.setMenuOption(event.getMenuOption());
+				customMenu.setMenuTarget(event.getMenuTarget());
+				customMenu.setWidget(curMenuOption.getWidget());
+				eventBus.post(customMenu);
+				return; // don't continue because it's not a player option
+			}
 		}
 
 		String target = event.getMenuTarget();

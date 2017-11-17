@@ -47,6 +47,12 @@ class WidgetID
 	static final int SLAYER_REWARDS_GROUP_ID = 426;
 	static final int PRIVATE_CHAT = 163;
 	static final int CHATBOX_GROUP_ID = 162;
+	static final int WORLD_MAP_MENU_GROUP_ID = 160;
+
+	static class WorldMap
+	{
+		static final int OPTION = 29;
+	}
 
 	static class SlayerRewards
 	{

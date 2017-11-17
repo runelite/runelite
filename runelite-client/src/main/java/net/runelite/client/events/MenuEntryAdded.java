@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.events;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
-
-public interface RSTile extends Tile
+public class MenuEntryAdded
 {
-	@Import("objects")
-	@Override
-	GameObject[] getGameObjects();
+	private String option;
+	private String target;
+	private int type;
+	private int identifier;
+	private int actionParam0;
+	private int actionParam1;
 
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
+	public MenuEntryAdded(String option, String target, int type, int identifier, int actionParam0, int param1)
+	{
+		this.option = option;
+		this.target = target;
+		this.type = type;
+		this.identifier = identifier;
+		this.actionParam0 = actionParam0;
+		this.actionParam1 = param1;
+	}
 
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
+	public String getOption()
+	{
+		return option;
+	}
 
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
+	public String getTarget()
+	{
+		return target;
+	}
 
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
+	public int getType()
+	{
+		return type;
+	}
 
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
+	public int getIdentifier()
+	{
+		return identifier;
+	}
 
-	@Import("x")
-	int getX();
+	public int getActionParam0()
+	{
+		return actionParam0;
+	}
 
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	public int getActionParam1()
+	{
+		return actionParam1;
+	}
 }

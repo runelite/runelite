@@ -162,14 +162,6 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int[] getPlayerMenuTypes();
 
-	@Import("menuTargets")
-	@Override
-	String[] getMenuTargets();
-
-	@Import("menuOptions")
-	@Override
-	String[] getMenuOptions();
-
 	@Import("mouseX")
 	int getMouseX();
 
@@ -179,11 +171,29 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuOptionCount")
 	int getMenuOptionCount();
 
-	@Import("menuTypes")
-	int[] getMenuTypes();
+	@Import(
+		value = "menuOptionCount",
+		setter = true
+	)
+	void setMenuOptionCount(int menuOptionCount);
+
+	@Import("menuOptions")
+	String[] getMenuOptions();
+
+	@Import("menuTargets")
+	String[] getMenuTargets();
 
 	@Import("menuIdentifiers")
 	int[] getMenuIdentifiers();
+
+	@Import("menuTypes")
+	int[] getMenuTypes();
+
+	@Import("menuActionParams0")
+	int[] getMenuActionParams0();
+
+	@Import("menuActionParams1")
+	int[] getMenuActionParams1();
 
 	@Import("friends")
 	RSFriend[] getFriends();

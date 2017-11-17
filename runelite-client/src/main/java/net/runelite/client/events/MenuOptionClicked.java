@@ -36,6 +36,7 @@ public class MenuOptionClicked
 	private String menuTarget;
 	private MenuAction menuAction;
 	private int id;
+	private int widgetId;
 
 	public String getMenuOption()
 	{
@@ -75,6 +76,16 @@ public class MenuOptionClicked
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+
+	public int getWidgetId()
+	{
+		return widgetId;
+	}
+
+	public void setWidgetId(int widgetId)
+	{
+		this.widgetId = widgetId;
 	}
 
 }

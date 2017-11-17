@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.events;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
+import net.runelite.api.widgets.WidgetInfo;
 
-public interface RSTile extends Tile
+public class WidgetMenuOptionClicked
 {
-	@Import("objects")
-	@Override
-	GameObject[] getGameObjects();
+	private String menuOption;
+	private String menuTarget;
+	private WidgetInfo widget;
 
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
+	public String getMenuOption()
+	{
+		return menuOption;
+	}
 
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
+	public void setMenuOption(String menuOption)
+	{
+		this.menuOption = menuOption;
+	}
 
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
+	public String getMenuTarget()
+	{
+		return menuTarget;
+	}
 
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
+	public void setMenuTarget(String menuTarget)
+	{
+		this.menuTarget = menuTarget;
+	}
 
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
+	public WidgetInfo getWidget()
+	{
+		return widget;
+	}
 
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	public void setWidget(WidgetInfo widget)
+	{
+		this.widget = widget;
+	}
 }

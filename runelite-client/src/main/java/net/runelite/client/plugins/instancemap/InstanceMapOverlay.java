@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,82 +22,93 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mousehighlight;
+package net.runelite.client.plugins.instancemap;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.Tile;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayRenderer;
-import net.runelite.client.ui.overlay.tooltips.Tooltip;
-import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
 
-class MouseHighlightOverlay extends Overlay
+class InstanceMapOverlay extends Overlay
 {
-	// Grabs the colour and name from a target string
-	// <col=ffffff>Player1
-	private final MouseHighlightConfig config;
+	/**
+	 * Size of the drawn tile in the instance map.
+	 */
+	private static final int tileSize = 3;
+
 	private final Client client;
-	private final TooltipRenderer tooltipRenderer;
+	private final InstanceMapConfig config;
+
+	private boolean showMap = false;
 
 	@Inject
-	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, OverlayRenderer overlayRenderer)
+	InstanceMapOverlay(@Nullable Client client,
+		InstanceMapConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
-		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
+	}
+
+	public boolean isMapShown()
+	{
+		return showMap;
+	}
+
+	public void setShowMap(boolean show)
+	{
+		showMap = show;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || !showMap)
 		{
 			return null;
 		}
 
-		if (client.isMenuOpen())
+		return drawInstanceMap(graphics);
+	}
+
+	/**
+	 * Draws all the tiles on the current plane of client.reigion to the
+	 * screen. This will show instances unlike the world map.
+	 *
+	 * @param graphics graphics to draw to
+	 * @return The dimensions of the map
+	 */
+	private Dimension drawInstanceMap(Graphics2D graphics)
+	{
+		Tile[][][] regionTiles = client.getRegion().getTiles();
+
+		int plane = client.getPlane();
+		Tile[][] tiles = regionTiles[plane];
+
+		Dimension mapOverlaySize = new Dimension(tiles.length * tileSize, tiles[0].length * tileSize);
+
+		graphics.setColor(Color.BLACK);
+		graphics.fillRect(0, 0, mapOverlaySize.width, mapOverlaySize.height);
+
+		for (int x = 0; x < tiles.length; x++)
 		{
-			return null;
+			for (int y = 0; y < tiles[x].length; y++)
+			{
+				Tile curTile = tiles[x][(tiles[x].length - 1) - y]; // flip the y value
+				if (curTile != null && curTile.getSceneTilePaint() != null)
+				{
+					graphics.setColor(new Color(curTile.getSceneTilePaint().getRBG()));
+					graphics.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+				}
+			}
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		int last = menuEntries.length - 1;
-
-		if (last < 0)
-		{
-			return null;
-		}
-
-		MenuEntry menuEntry = menuEntries[last];
-		String target = menuEntry.getTarget();
-		String option = menuEntry.getOption();
-
-		if (target.isEmpty())
-		{
-			return null;
-		}
-
-		// Trivial options that don't need to be highlighted, add more as they appear.
-		switch (option)
-		{
-			case "Walk here":
-			case "Cancel":
-			case "Continue":
-				return null;
-		}
-
-		Tooltip tooltip = new Tooltip(TooltipPriority.LOW,
-			option + " " + target);
-		tooltipRenderer.add(tooltip);
-
-		return null;
+		return mapOverlaySize;
 	}
 }

@@ -22,49 +22,81 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
-
-public interface RSTile extends Tile
+public class MenuEntry
 {
-	@Import("objects")
+	private String option;
+	private String target;
+	private int identifier;
+	private MenuAction type;
+	private int param0;
+	private int param1;
+
 	@Override
-	GameObject[] getGameObjects();
+	public String toString()
+	{
+		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
+	}
 
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
+	public String getOption()
+	{
+		return option;
+	}
 
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
+	public void setOption(String option)
+	{
+		this.option = option;
+	}
 
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
+	public String getTarget()
+	{
+		return target;
+	}
 
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
+	public void setTarget(String target)
+	{
+		this.target = target;
+	}
 
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
+	public int getIdentifier()
+	{
+		return identifier;
+	}
 
-	@Import("x")
-	int getX();
+	public void setIdentifier(int identifier)
+	{
+		this.identifier = identifier;
+	}
 
-	@Import("y")
-	int getY();
+	public MenuAction getType()
+	{
+		return type;
+	}
 
-	@Import("plane")
-	int getPlane();
+	public void setType(MenuAction type)
+	{
+		this.type = type;
+	}
+
+	public int getParam0()
+	{
+		return param0;
+	}
+
+	public void setParam0(int param0)
+	{
+		this.param0 = param0;
+	}
+
+	public int getParam1()
+	{
+		return param1;
+	}
+
+	public void setParam1(int param1)
+	{
+		this.param1 = param1;
+	}
+
 }
