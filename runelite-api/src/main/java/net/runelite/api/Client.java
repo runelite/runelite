@@ -27,7 +27,6 @@ package net.runelite.api;
 import java.awt.Canvas;
 import java.util.List;
 import java.util.Map;
-
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -107,11 +106,9 @@ public interface Client
 
 	int[] getPlayerMenuTypes();
 
-	String[] getMenuOptions();
+	MenuEntry[] getMenuEntries();
 
-	String[] getMenuTargets();
-
-	int getMenuOptionCount();
+	void setMenuEntries(MenuEntry[] entries);
 
 	boolean isMenuOpen();
 

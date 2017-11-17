@@ -27,6 +27,8 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -51,12 +53,12 @@ public abstract class RSClientMixin implements RSClient
 		int[] playerIndexes = getPlayerIndices();
 		Player[] cachedPlayers = getCachedPlayers();
 		List<Player> players = new ArrayList<Player>(validPlayerIndexes);
-		
+
 		for (int i = 0; i < validPlayerIndexes; ++i)
 		{
 			players.add(cachedPlayers[playerIndexes[i]]);
 		}
-		
+
 		return players;
 	}
 
@@ -259,5 +261,57 @@ public abstract class RSClientMixin implements RSClient
 			}
 		}
 		return getWidget(WidgetInfo.FIXED_VIEWPORT);
+	}
+
+	@Inject
+	@Override
+	public MenuEntry[] getMenuEntries()
+	{
+		int count = getMenuOptionCount();
+		String[] menuOptions = getMenuOptions();
+		String[] menuTargets = getMenuTargets();
+		int[] menuIdentifiers = getMenuIdentifiers();
+		int[] menuTypes = getMenuTypes();
+		int[] params0 = getMenuActionParams0();
+		int[] params1 = getMenuActionParams1();
+
+		MenuEntry[] entries = new MenuEntry[count];
+		for (int i = 0; i < count; ++i)
+		{
+			MenuEntry entry = entries[i] = new MenuEntry();
+			entry.setOption(menuOptions[i]);
+			entry.setTarget(menuTargets[i]);
+			entry.setIdentifier(menuIdentifiers[i]);
+			entry.setType(MenuAction.of(menuTypes[i]));
+			entry.setParam0(params0[i]);
+			entry.setParam1(params1[i]);
+		}
+		return entries;
+	}
+
+	@Inject
+	@Override
+	public void setMenuEntries(MenuEntry[] entries)
+	{
+		int count = 0;
+		String[] menuOptions = getMenuOptions();
+		String[] menuTargets = getMenuTargets();
+		int[] menuIdentifiers = getMenuIdentifiers();
+		int[] menuTypes = getMenuTypes();
+		int[] params0 = getMenuActionParams0();
+		int[] params1 = getMenuActionParams1();
+
+		for (MenuEntry entry : entries)
+		{
+			menuOptions[count] = entry.getOption();
+			menuTargets[count] = entry.getTarget();
+			menuIdentifiers[count] = entry.getIdentifier();
+			menuTypes[count] = entry.getType().getId();
+			params0[count] = entry.getParam0();
+			params1[count] = entry.getParam1();
+			++count;
+		}
+
+		setMenuOptionCount(count);
 	}
 }

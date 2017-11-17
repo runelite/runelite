@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -67,17 +68,17 @@ class MouseHighlightOverlay extends Overlay
 			return null;
 		}
 
-		String[] targets = client.getMenuTargets();
-		String[] options = client.getMenuOptions();
-		int count = client.getMenuOptionCount() - 1;
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		int last = menuEntries.length - 1;
 
-		if (count < 0 || count >= targets.length || count >= options.length)
+		if (last < 0)
 		{
 			return null;
 		}
 
-		String target = targets[count];
-		String option = options[count];
+		MenuEntry menuEntry = menuEntries[last];
+		String target = menuEntry.getTarget();
+		String option = menuEntry.getOption();
 
 		if (target.isEmpty())
 		{
