@@ -24,47 +24,12 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
 import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
 import net.runelite.mapping.Import;
 
-public interface RSTile extends Tile
+public interface RSSceneTilePaint extends SceneTilePaint
 {
-	@Import("objects")
+	@Import("rgb")
 	@Override
-	GameObject[] getGameObjects();
-
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
-
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	int getRBG();
 }
