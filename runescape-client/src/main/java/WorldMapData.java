@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -659,6 +660,7 @@ public class WorldMapData {
       garbageValue = "758634566"
    )
    @Export("addMenuEntry")
+   @Hook("addMenuEntry")
    public static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
       class33.method323(var0, var1, var2, var3, var4, var5, false);
    }

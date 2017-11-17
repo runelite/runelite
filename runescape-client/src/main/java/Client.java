@@ -1013,7 +1013,10 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1016488719
    )
-   @Export("menuOptionCount")
+   @Export(
+           value = "menuOptionCount",
+           setter = true
+   )
    static int menuOptionCount;
    @ObfuscatedName("jp")
    @Export("menuActionParams0")
