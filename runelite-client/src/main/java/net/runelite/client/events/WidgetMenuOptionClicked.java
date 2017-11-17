@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,19 +24,13 @@
  */
 package net.runelite.client.events;
 
-import net.runelite.api.MenuAction;
+import net.runelite.api.widgets.WidgetInfo;
 
-/**
- *
- * @author robin
- */
-public class MenuOptionClicked
+public class WidgetMenuOptionClicked
 {
 	private String menuOption;
 	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
-	private int widgetId;
+	private WidgetInfo widget;
 
 	public String getMenuOption()
 	{
@@ -58,34 +52,13 @@ public class MenuOptionClicked
 		this.menuTarget = menuTarget;
 	}
 
-	public MenuAction getMenuAction()
+	public WidgetInfo getWidget()
 	{
-		return menuAction;
+		return widget;
 	}
 
-	public void setMenuAction(MenuAction menuAction)
+	public void setWidget(WidgetInfo widget)
 	{
-		this.menuAction = menuAction;
+		this.widget = widget;
 	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getWidgetId()
-	{
-		return widgetId;
-	}
-
-	public void setWidgetId(int widgetId)
-	{
-		this.widgetId = widgetId;
-	}
-
 }
