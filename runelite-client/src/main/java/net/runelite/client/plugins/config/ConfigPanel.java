@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -43,6 +44,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -55,8 +57,6 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
@@ -159,6 +159,12 @@ public class ConfigPanel extends PluginPanel
 			JColorChooser jColorChooser = (JColorChooser) component;
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), String.valueOf(jColorChooser.getColor().getRGB()));
 		}
+
+		if (component instanceof JComboBox)
+		{
+			JComboBox jComboBox = (JComboBox) component;
+			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+		}
 	}
 
 	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
@@ -166,7 +172,10 @@ public class ConfigPanel extends PluginPanel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setBorder(BORDER_PADDING);
 		itemPanel.setLayout(new GridLayout(0, 1, 0, 6));
-		itemPanel.add(new JLabel(cd.getGroup().name() + " Configuration", SwingConstants.CENTER));
+		String name = cd.getGroup().name() + " Configuration";
+		JLabel title = new JLabel(name);
+		title.setToolTipText(cd.getGroup().description());
+		itemPanel.add(title, SwingConstants.CENTER);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -177,7 +186,10 @@ public class ConfigPanel extends PluginPanel
 
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
-			item.add(new JLabel(cid.getItem().name()), BorderLayout.CENTER);
+			name = cid.getItem().name();
+			JLabel configEntryName = new JLabel(name);
+			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
 			{
@@ -217,9 +229,10 @@ public class ConfigPanel extends PluginPanel
 					public void focusLost(FocusEvent e)
 					{
 						changeConfiguration(textField, cd, cid);
+						textField.setToolTipText(textField.getText());
 					}
 				});
-
+				textField.setToolTipText(textField.getText());
 				item.add(textField, BorderLayout.EAST);
 			}
 
@@ -235,14 +248,7 @@ public class ConfigPanel extends PluginPanel
 					{
 						final JFrame parent = new JFrame();
 						JColorChooser jColorChooser = new JColorChooser(Color.decode(configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName())));
-						jColorChooser.getSelectionModel().addChangeListener(new ChangeListener()
-						{
-							@Override
-							public void stateChanged(ChangeEvent e)
-							{
-								colorPicker.setBackground(jColorChooser.getColor());
-							}
-						});
+						jColorChooser.getSelectionModel().addChangeListener(e1 -> colorPicker.setBackground(jColorChooser.getColor()));
 						parent.addWindowListener(new WindowAdapter()
 						{
 							@Override
@@ -257,6 +263,33 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 				item.add(colorPicker, BorderLayout.EAST);
+			}
+
+			if (cid.getType().isEnum())
+			{
+				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
+				JComboBox box = new JComboBox(type.getEnumConstants());
+				box.setFocusable(false);
+				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+				try
+				{
+					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName()));
+					box.setSelectedItem(selectedItem);
+					box.setToolTipText(selectedItem.toString());
+				}
+				catch (IllegalArgumentException ex)
+				{
+					logger.debug("invalid seleced item", ex);
+				}
+				box.addItemListener(e ->
+				{
+					if (e.getStateChange() == ItemEvent.SELECTED)
+					{
+						changeConfiguration(box, cd, cid);
+						box.setToolTipText(box.getSelectedItem().toString());
+					}
+				});
+				item.add(box, BorderLayout.EAST);
 			}
 
 			itemPanel.add(item);
