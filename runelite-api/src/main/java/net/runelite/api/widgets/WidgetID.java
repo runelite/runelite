@@ -48,6 +48,7 @@ class WidgetID
 	static final int PRIVATE_CHAT = 163;
 	static final int CHATBOX_GROUP_ID = 162;
 	static final int WORLD_MAP_MENU_GROUP_ID = 160;
+	static final int VOLCANIC_MINE_GROUP_ID = 611;
 
 	static class WorldMap
 	{
@@ -187,5 +188,21 @@ class WidgetID
 	{
 		static final int WEAPON_NAME = 1;
 		static final int LEVEL = 2;
+	}
+
+	static class VolcanicMine
+	{
+		static final int GENERAL_INFOBOX_GROUP_ID = 4;
+		static final int TIME_LEFT = 8;
+		static final int POINTS = 10;
+		static final int STABILITY = 12;
+		static final int PLAYER_COUNT = 14;
+		static final int VENTS_INFOBOX_GROUP_ID = 15;
+		static final int VENT_A_PERCENTAGE = 19;
+		static final int VENT_B_PERCENTAGE = 20;
+		static final int VENT_C_PERCENTAGE = 21;
+		static final int VENT_A_STATUS = 23;
+		static final int VENT_B_STATUS = 24;
+		static final int VENT_C_STATUS = 25;
 	}
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.api.queries;
 
+import static java.lang.Math.abs;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
@@ -87,6 +88,25 @@ public abstract class TileObjectQuery<EntityType extends TileObject, QueryType> 
 	public QueryType atLocalLocation(Point location)
 	{
 		predicate = and(object -> object.getLocalLocation().equals(location));
+		return (QueryType) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public QueryType isWithinDistance(Point to, int distance)
+	{
+		predicate = and(a -> a.getLocalLocation().distanceTo(to) <= distance);
+		return (QueryType) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public QueryType isWithinArea(Point from, int area)
+	{
+		predicate = and(a ->
+		{
+			Point localLocation = a.getLocalLocation();
+			return abs(localLocation.getX() - from.getX()) < area
+				&& abs(localLocation.getY() - from.getY()) < area;
+		});
 		return (QueryType) this;
 	}
 }

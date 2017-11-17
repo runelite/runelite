@@ -407,6 +407,10 @@ public class ConfigManager
 		{
 			return Color.decode(str);
 		}
+		if (type.isEnum())
+		{
+			return Enum.valueOf((Class<? extends Enum>) type, str);
+		}
 		return str;
 	}
 
@@ -416,7 +420,10 @@ public class ConfigManager
 		{
 			return String.valueOf(((Color) object).getRGB());
 		}
-
+		if (object instanceof Enum)
+		{
+			return ((Enum) object).name();
+		}
 		return object.toString();
 	}
 }
