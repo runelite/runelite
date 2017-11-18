@@ -1,3 +1,5 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -15,7 +17,9 @@ public abstract class class9 extends Node {
       signature = "(Lgd;II)V",
       garbageValue = "754393096"
    )
-   static final void method46(PacketBuffer var0, int var1) {
+   @Export("playerUpdatePacketHandler")
+   @Hook("onPlayerUpdatePacketHandler")
+   static final void playerUpdatePacketHandler(PacketBuffer var0, int var1) {
       int var2 = var0.offset;
       class94.field1407 = 0;
       int var3 = 0;

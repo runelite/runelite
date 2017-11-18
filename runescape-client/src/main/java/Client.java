@@ -3897,7 +3897,7 @@ public final class Client extends GameEngine {
             var1.field1468 = var1.field1467;
             var1.field1467 = var1.serverPacket;
             if(ServerPacket.field2250 == var1.serverPacket) {
-               class9.method46(var3, var1.packetLength);
+               class9.playerUpdatePacketHandler(var3, var1.packetLength);
                var1.serverPacket = null;
                return true;
             }

@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
+import net.runelite.api.PacketBuffer;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -55,6 +56,7 @@ public class Hooks
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
+	private static final GameTick tick = new GameTick();
 
 	private static long lastCheck;
 
@@ -174,6 +176,11 @@ public class Hooks
 		{
 			logger.trace("Event {} (idx {}) triggered", name, idx);
 		}
+	}
+
+	public static void onPlayerUpdatePacketHandler(PacketBuffer var0, int var1)
+	{
+		eventBus.post(tick);
 	}
 
 	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
