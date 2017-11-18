@@ -52,6 +52,10 @@ public class ConfigManagerTest
 	@Bind
 	ScheduledExecutorService executor;
 
+	@Mock
+	@Bind
+	RuneliteConfig runeliteConfig;
+
 	@Inject
 	ConfigManager manager;
 
