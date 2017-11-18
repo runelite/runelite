@@ -112,6 +112,7 @@
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>
 		<module>runescape-client-injector-plugin</module>
+		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>runelite-proxy</module>
