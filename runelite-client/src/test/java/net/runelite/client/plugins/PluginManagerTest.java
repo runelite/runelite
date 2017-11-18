@@ -74,7 +74,7 @@ public class PluginManagerTest
 	public void testLoadPlugins() throws Exception
 	{
 		PluginManager pluginManager = new PluginManager();
-		pluginManager.loadPlugins();
+		pluginManager.loadCorePlugins();
 	}
 
 	@Test
@@ -85,8 +85,8 @@ public class PluginManagerTest
 		modules.add(new RuneliteModule());
 
 		PluginManager pluginManager = new PluginManager();
-		pluginManager.loadPlugins();
-		for (Plugin p : pluginManager.getAllPlugins())
+		pluginManager.loadCorePlugins();
+		for (Plugin p : pluginManager.getPlugins())
 		{
 			modules.add(p);
 		}

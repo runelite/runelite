@@ -49,6 +49,10 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -58,6 +62,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.PluginPanel;
@@ -136,9 +141,23 @@ public class ConfigPanel extends PluginPanel
 
 	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
+		ConfigItem configItem = cid.getItem();
+
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
+			if (checkbox.isSelected() && !configItem.confirmationWarining().isEmpty())
+			{
+				int value = JOptionPane.showOptionDialog(component, configItem.confirmationWarining(),
+					"Are you sure?", YES_NO_OPTION, WARNING_MESSAGE,
+					null, new String[] { "Yes", "No" }, "No");
+				if (value != YES_OPTION)
+				{
+					checkbox.setSelected(false);
+					return;
+				}
+			}
+
 			configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 
