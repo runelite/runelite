@@ -42,4 +42,10 @@ public interface Tile
 	WallObject getWallObject();
 
 	SceneTilePaint getSceneTilePaint();
+
+	SceneTileModel getSceneTileModel();
+
+	Point getWorldLocation();
+
+	Point getLocalLocation();
 }

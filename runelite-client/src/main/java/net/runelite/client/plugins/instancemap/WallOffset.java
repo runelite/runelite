@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.instancemap;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
+import static net.runelite.client.plugins.instancemap.InstanceMapOverlay.TILE_SIZE;
 
-public interface RSTile extends Tile
+enum WallOffset
 {
-	@Import("objects")
-	@Override
-	GameObject[] getGameObjects();
+	TOP_LEFT(-TILE_SIZE / 2, -TILE_SIZE / 2),
+	TOP_RIGHT(TILE_SIZE / 2, -TILE_SIZE / 2),
+	BOTTOM_LEFT(-TILE_SIZE / 2, TILE_SIZE / 2),
+	BOTTOM_RIGHT(TILE_SIZE / 2, TILE_SIZE / 2),
+	RIGHT(TILE_SIZE / 2, 0),
+	LEFT(-TILE_SIZE / 2, 0),
+	NONE(0, 0);
 
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
+	public final int xOffset;
+	public final int yOffset;
 
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
-
-	@Import("overlay")
-	@Override
-	SceneTileModel getSceneTileModel();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	WallOffset(int xOffset, int yOffset)
+	{
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
 }
