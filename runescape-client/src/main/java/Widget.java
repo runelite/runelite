@@ -370,8 +370,7 @@ public class Widget extends Node {
    public int fontId;
    @ObfuscatedName("bw")
    @Export(
-      value = "text",
-      setter = true
+      value = "text"
    )
    public String text;
    @ObfuscatedName("ce")

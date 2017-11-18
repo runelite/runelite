@@ -34,8 +34,7 @@ public class MessageNode extends CacheableNode {
    String sender;
    @ObfuscatedName("f")
    @Export(
-      value = "value",
-      setter = true
+      value = "value"
    )
    String value;
 

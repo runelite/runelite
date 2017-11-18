@@ -40,10 +40,7 @@ public interface RSMessageNode extends MessageNode
 	@Override
 	String getValue();
 
-	@Import(
-		value = "value",
-		setter = true
-	)
+	@Import("value")
 	@Override
 	void setValue(String value);
 }

@@ -108,7 +108,7 @@ public class InjectInvoker
 			return;
 		}
 
-		java.lang.reflect.Method apiMethod = inject.findImportMethodOnApi(targetClassJava, exportedName, false); // api method to invoke 'otherm'
+		java.lang.reflect.Method apiMethod = inject.findImportMethodOnApi(targetClassJava, exportedName, null); // api method to invoke 'otherm'
 		if (apiMethod == null)
 		{
 			logger.info("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);

@@ -74,8 +74,7 @@ public final class Client extends GameEngine {
       intValue = 1688788375
    )
    @Export(
-      value = "gameDrawingMode",
-      setter = true
+      value = "gameDrawingMode"
    )
    static int gameDrawingMode;
    @ObfuscatedName("mx")
@@ -311,8 +310,7 @@ public final class Client extends GameEngine {
       intValue = -1507826639
    )
    @Export(
-      value = "chatCycle",
-      setter = true
+      value = "chatCycle"
    )
    static int chatCycle;
    @ObfuscatedName("pc")
@@ -1014,8 +1012,7 @@ public final class Client extends GameEngine {
       intValue = -1016488719
    )
    @Export(
-           value = "menuOptionCount",
-           setter = true
+           value = "menuOptionCount"
    )
    static int menuOptionCount;
    @ObfuscatedName("jp")

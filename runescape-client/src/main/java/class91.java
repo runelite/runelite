@@ -98,8 +98,7 @@ public class class91 {
    static String loginMessage3;
    @ObfuscatedName("ap")
    @Export(
-      value = "username",
-      setter = true
+      value = "username"
    )
    static String username;
    @ObfuscatedName("ag")
