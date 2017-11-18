@@ -146,7 +146,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	String getUsername();
 
-	@Import(value = "username", setter = true)
+	@Import("username")
 	@Override
 	void setUsername(String username);
 
@@ -171,10 +171,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuOptionCount")
 	int getMenuOptionCount();
 
-	@Import(
-		value = "menuOptionCount",
-		setter = true
-	)
+	@Import("menuOptionCount")
 	void setMenuOptionCount(int menuOptionCount);
 
 	@Import("menuOptions")
@@ -289,17 +286,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getGameDrawingMode();
 
-	@Import(
-		value = "gameDrawingMode",
-		setter = true
-	)
+	@Import("gameDrawingMode")
 	@Override
 	void setGameDrawingMode(int gameDrawingMode);
 
 	@Import("cycleCntr")
 	int getCycleCntr();
 
-	@Import(value = "chatCycle", setter = true)
+	@Import("chatCycle")
 	void setChatCycle(int value);
 
 	/**
