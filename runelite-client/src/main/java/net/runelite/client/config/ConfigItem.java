@@ -42,4 +42,6 @@ public @interface ConfigItem
 	String description();
 
 	boolean hidden() default false;
+
+	String confirmationWarining() default "";
 }

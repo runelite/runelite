@@ -92,7 +92,7 @@ public class ConfigManager
 	{
 		List<Injector> injectors = new ArrayList<>();
 		injectors.add(RuneLite.getInjector());
-		pluginManager.getAllPlugins().forEach(pl -> injectors.add(pl.getInjector()));
+		pluginManager.getPlugins().forEach(pl -> injectors.add(pl.getInjector()));
 
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
@@ -235,7 +235,7 @@ public class ConfigManager
 			throw new RuntimeException("Non-public configuration classes can't have default methods invoked");
 		}
 
-		T t = (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]
+		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
 		{
 			clazz
 		}, handler);
@@ -350,6 +350,10 @@ public class ConfigManager
 		return new ConfigDescriptor(group, items);
 	}
 
+	/**
+	 * Initialize the configuration from the default settings
+	 * @param proxy
+	 */
 	private void setDefaultConfiguration(Object proxy)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];

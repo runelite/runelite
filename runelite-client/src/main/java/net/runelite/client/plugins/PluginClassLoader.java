@@ -24,46 +24,44 @@
  */
 package net.runelite.client.plugins;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
 import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import net.runelite.client.ui.overlay.Overlay;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-public abstract class Plugin implements Module
+/**
+ * A classloader for external plugins
+ *
+ * @author Adam
+ */
+public class PluginClassLoader extends URLClassLoader
 {
-	protected Injector injector;
-	File file;
-	PluginClassLoader loader;
+	private final ClassLoader parent;
+
+	public PluginClassLoader(File plugin, ClassLoader parent) throws MalformedURLException
+	{
+		super(
+			new URL[]
+			{
+				plugin.toURI().toURL()
+			},
+			null // null or else class path scanning includes everything from the main class loader
+		);
+
+		this.parent = parent;
+	}
 
 	@Override
-	public void configure(Binder binder)
+	public Class<?> loadClass(String name) throws ClassNotFoundException
 	{
-	}
-
-	protected void startUp() throws Exception
-	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
-
-	public Overlay getOverlay()
-	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		try
+		{
+			return super.loadClass(name);
+		}
+		catch (ClassNotFoundException ex)
+		{
+			// fall back to main class loader
+			return parent.loadClass(name);
+		}
 	}
 }
