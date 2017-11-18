@@ -24,52 +24,24 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
 import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
 import net.runelite.mapping.Import;
 
-public interface RSTile extends Tile
+public interface RSSceneTileModel extends SceneTileModel
 {
-	@Import("objects")
+	@Import("underlay")
 	@Override
-	GameObject[] getGameObjects();
-
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
-
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
+	int getModelUnderlay();
 
 	@Import("overlay")
 	@Override
-	SceneTileModel getSceneTileModel();
+	int getModelOverlay();
 
-	@Import("x")
-	int getX();
+	@Import("shape")
+	@Override
+	int getShape();
 
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	@Import("rotation")
+	@Override
+	int getRotation();
 }

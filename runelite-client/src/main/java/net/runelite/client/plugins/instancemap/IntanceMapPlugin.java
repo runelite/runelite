@@ -29,11 +29,14 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.events.WidgetMenuOptionClicked;
-import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.menus.MenuManager;
+import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,6 +47,8 @@ import net.runelite.client.ui.overlay.Overlay;
 public class IntanceMapPlugin extends Plugin
 {
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
+	private final WidgetMenuOption ascendOption = new WidgetMenuOption("Ascend", "Instance Map", WidgetInfo.WORLD_MAP);
+	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
 
 	@Inject
 	InstanceMapConfig config;
@@ -66,13 +71,33 @@ public class IntanceMapPlugin extends Plugin
 		return configManager.getConfig(InstanceMapConfig.class);
 	}
 
+	private void addCustomOptions()
+	{
+		menuManager.addManagedCustomMenu(openMapOption);
+		menuManager.addManagedCustomMenu(descendOption);
+		menuManager.addManagedCustomMenu(ascendOption);
+	}
+
+	private void removeCustomOptions()
+	{
+		menuManager.removeManagedCustomMenu(openMapOption);
+		menuManager.removeManagedCustomMenu(descendOption);
+		menuManager.removeManagedCustomMenu(ascendOption);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		if (config.enabled())
 		{
-			menuManager.addManagedCustomMenu(openMapOption);
+			addCustomOptions();
 		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		removeCustomOptions();
 	}
 
 	@Subscribe
@@ -80,27 +105,43 @@ public class IntanceMapPlugin extends Plugin
 	{
 		if (config.enabled())
 		{
-			menuManager.addManagedCustomMenu(openMapOption);
+			addCustomOptions();
 		}
 		else
 		{
-			menuManager.removeManagedCustomMenu(openMapOption);
+			removeCustomOptions();
 		}
+	}
+
+	@Subscribe
+	public void regionChange(MapRegionChanged event)
+	{
+		overlay.onRegionChange(event);
+	}
+
+	@Subscribe
+	public void gameStateChange(GameStateChanged event)
+	{
+		overlay.onGameStateChange(event);
+	}
+
+	private boolean clickedOptionEquals(WidgetMenuOptionClicked event, WidgetMenuOption widgetMenuOption)
+	{
+		return event.getMenuOption().equals(widgetMenuOption.getMenuOption()) && event.getMenuTarget().equals(widgetMenuOption.getMenuTarget());
 	}
 
 	@Subscribe
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
-		if (!config.enabled())
+		if (!config.enabled() || event.getWidget() != WORLD_MAP)
 		{
 			return;
 		}
 
-		if (event.getMenuOption().equals(openMapOption.getMenuOption())
-			&& event.getMenuTarget().equals(openMapOption.getMenuTarget())
-			&& event.getWidget() == WidgetInfo.WORLD_MAP)
+		if (clickedOptionEquals(event, openMapOption))
 		{
 			overlay.setShowMap(!overlay.isMapShown());
+
 			if (overlay.isMapShown())
 			{
 				openMapOption.setMenuOption("Hide");
@@ -109,6 +150,14 @@ public class IntanceMapPlugin extends Plugin
 			{
 				openMapOption.setMenuOption("Show");
 			}
+		}
+		else if (clickedOptionEquals(event, ascendOption))
+		{
+			overlay.onAscend();
+		}
+		else if (clickedOptionEquals(event, descendOption))
+		{
+			overlay.onDescend();
 		}
 	}
 
