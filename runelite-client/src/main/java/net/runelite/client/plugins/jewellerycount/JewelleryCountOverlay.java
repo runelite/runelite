@@ -49,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 class JewelleryCountOverlay extends Overlay
 {
 	private final RuneLite runelite;
+	private final Client client;
 	private final JewelleryCountConfig config;
 	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
@@ -57,14 +58,13 @@ class JewelleryCountOverlay extends Overlay
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
+		this.client = runelite.getClient();
 		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Client client = runelite.getClient();
-
 		if (client.getGameState() != GameState.LOGGED_IN
 			|| !config.enabled()
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
