@@ -136,6 +136,7 @@ class WidgetID
 	static class Minimap
 	{
 		static final int XP_ORB = 1;
+		static final int QUICK_PRAYER_ORB = 14;
 	}
 
 	static class Viewport
