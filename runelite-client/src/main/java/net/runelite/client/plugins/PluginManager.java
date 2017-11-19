@@ -70,13 +70,14 @@ public class PluginManager
 
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 
-	public List<Plugin> loadCorePlugins() throws IOException
+	public void loadCorePlugins() throws IOException
 	{
-		return scanAndInstantiate(getClass().getClassLoader(), PLUGIN_PACKAGE);
+		plugins.addAll(scanAndInstantiate(getClass().getClassLoader(), PLUGIN_PACKAGE));
 	}
 
-	public void startCorePlugins(List<Plugin> scannedPlugins)
+	public void startCorePlugins()
 	{
+		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
 		for (Plugin plugin : scannedPlugins)
 		{
 			try
@@ -86,10 +87,8 @@ public class PluginManager
 			catch (PluginInstantiationException ex)
 			{
 				logger.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-				continue;
+				plugins.remove(plugin);
 			}
-
-			plugins.add(plugin);
 		}
 	}
 

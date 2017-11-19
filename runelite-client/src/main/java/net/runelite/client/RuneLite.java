@@ -43,7 +43,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
@@ -61,7 +60,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
-import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.http.api.account.AccountClient;
@@ -168,14 +166,14 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		List<Plugin> plugins = pluginManager.loadCorePlugins();
+		pluginManager.loadCorePlugins();
 
 		// Plugins have provided their config, so set default config
 		// to main settings
 		configManager.loadDefault();
 
 		// Start plugins
-		pluginManager.startCorePlugins(plugins);
+		pluginManager.startCorePlugins();
 
 		// Load the session, including saved configuration
 		loadSession();
