@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.volcanicminehelper;
+package net.runelite.client.plugins.volcanicmine;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
 
 public class VolcanicMineOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMineHelperPlugin.class);
+	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
 
 	private static final int THRESH_LOW = 45;
 	private static final int THRESH_MED = 5;
@@ -63,14 +63,14 @@ public class VolcanicMineOverlay extends Overlay
 	private static final int Z_OFFSET_TIMER = 25;
 	private static final String PROTECT_MESSAGE = "Protect!";
 
-	private final VolcanicMineHelperPlugin plugin;
+	private final VolcanicMinePlugin plugin;
 	private final VolcanicMineConfig config;
 
 	private final Client client;
 	private Image protectFromMissilesImg;
 
 	@Inject
-	VolcanicMineOverlay(@Nullable Client client, VolcanicMineHelperPlugin plugin, VolcanicMineConfig config)
+	VolcanicMineOverlay(@Nullable Client client, VolcanicMinePlugin plugin, VolcanicMineConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;

@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.volcanicminehelper;
+package net.runelite.client.plugins.volcanicmine;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
@@ -38,7 +38,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
@@ -68,9 +67,9 @@ import net.runelite.api.queries.NPCQuery;
 @PluginDescriptor(
 	name = "Volcanic mine helper"
 )
-public class VolcanicMineHelperPlugin extends Plugin
+public class VolcanicMinePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMineHelperPlugin.class);
+	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 	private static final int LAVA_ID = 30997;
