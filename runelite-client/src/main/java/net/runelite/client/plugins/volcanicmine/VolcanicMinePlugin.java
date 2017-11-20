@@ -266,7 +266,7 @@ public class VolcanicMinePlugin extends Plugin
 	private boolean isInside()
 	{
 		Widget widget = client.getWidget(WidgetInfo.VOLCANICMINE_GENERAL_INFOBOX_GROUP);
-		return widget != null && !widget.isHidden();
+		return widget != null && !widget.isHidden() && client.getPlane() == 1;
 	}
 
 	private boolean lavaBeastInRange(Player player)
