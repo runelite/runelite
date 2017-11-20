@@ -29,7 +29,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "attackindicator",
+	keyName = "attackIndicator",
 	name = "Attack Indicators",
 	description = "Configuration for the attack indicator plugin"
 )
@@ -37,12 +37,78 @@ public interface AttackIndicatorConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the attack indicator overlay is displayed"
+		name = "Show attack style",
+		description = "Configures whether or not the attack indicator overlay is displayed",
+		position = 1
 	)
 	default boolean enabled()
 	{
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "warnForDefensive",
+		name = "Warn for defensive",
+		description = "Configures whether or not users are warned for selecting a defensive combat option",
+		position = 2
+	)
+	default boolean warnForDefensive()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "warnForAttack",
+		name = "Warn for attack",
+		description = "Configures whether or not users are warned for selecting an attack combat option",
+		position = 3
+	)
+	default boolean warnForAttack()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "warnForStrength",
+		name = "Warn for strength",
+		description = "Configures whether or not users are warned for selecting a strength combat option",
+		position = 4
+	)
+	default boolean warnForStrength()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "warnForRanged",
+		name = "Warn for ranged",
+		description = "Configures whether or not users are warned for selecting a ranged combat option",
+		position = 5
+	)
+	default boolean warnForRanged()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "warnForMagic",
+		name = "Warn for magic",
+		description = "Configures whether or not users are warned for selecting a magic combat option",
+		position = 6
+	)
+	default boolean warnForMagic()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "removeWarnedStyles",
+		name = "Remove warned styles",
+		description = "Configures whether or not warned styles are removed from the combat options tab",
+		position = 7
+	)
+	default boolean removeWarnedStyles()
+	{
+		return false;
+	}
 }
