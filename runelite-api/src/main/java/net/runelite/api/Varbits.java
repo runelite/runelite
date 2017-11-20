@@ -77,9 +77,9 @@ public enum Varbits
 	PRAYER_RETRIBUTION(4119, 83, 15, 15),
 	PRAYER_REDEMPTION(4120, 83, 16, 16),
 	PRAYER_SMITE(4121, 83, 17, 17),
-	PRAYER_CHIVALRY(4128,83,25,25),
-	PRAYER_PIETY(4129,83,26,26),
-	PRAYER_PRESERVE(5466,83,28,28),
+	PRAYER_CHIVALRY(4128, 83, 25, 25),
+	PRAYER_PIETY(4129, 83, 26, 26),
+	PRAYER_PRESERVE(5466, 83, 28, 28),
 
 	/**
 	 * Special Attack
@@ -177,6 +177,7 @@ public enum Varbits
 	 *
 	 * @param varbit The int to set the value on
 	 * @param value The value to set
+	 * @param value  The value to set
 	 * @return
 	 */
 	public int set(int varbit, int value)
