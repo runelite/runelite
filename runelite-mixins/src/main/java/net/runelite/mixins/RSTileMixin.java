@@ -22,54 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
+import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
+import net.runelite.api.Point;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSTile;
 
-public interface RSTile extends Tile
+@Mixin(RSTile.class)
+public abstract class RSTileMixin implements RSTile
 {
-	@Import("objects")
+	@Inject
 	@Override
-	GameObject[] getGameObjects();
+	public Point getWorldLocation()
+	{
+		return new Point(getLocalLocation().getX() << LOCAL_COORD_BITS, getLocalLocation().getX() << LOCAL_COORD_BITS);
+	}
 
-	@Import("itemLayer")
+	@Inject
 	@Override
-	ItemLayer getItemLayer();
-
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
-
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
-
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
-
-	@Import("overlay")
-	@Override
-	SceneTileModel getSceneTileModel();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
+	public Point getLocalLocation()
+	{
+		return new Point(getX(), getY());
+	}
 }

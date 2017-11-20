@@ -31,4 +31,7 @@ package net.runelite.api;
  */
 public interface WallObject extends TileObject
 {
+	int getOrientationA();
+
+	int getOrientationB();
 }

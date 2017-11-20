@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.instancemap;
 
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.SceneTileModel;
-import net.runelite.api.SceneTilePaint;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
-import net.runelite.mapping.Import;
-
-public interface RSTile extends Tile
+/**
+ * Used to represent the wall as a 4x4 set of pixels with an offset
+ */
+class WallShape
 {
-	@Import("objects")
-	@Override
-	GameObject[] getGameObjects();
+	private final int[][] pixels;
+	private final WallOffset offset;
 
-	@Import("itemLayer")
-	@Override
-	ItemLayer getItemLayer();
+	public WallShape(int[][] pixels, WallOffset offset)
+	{
+		this.pixels = pixels;
+		this.offset = offset;
+	}
 
-	@Import("decorativeObject")
-	@Override
-	DecorativeObject getDecorativeObject();
+	public int[][] getPixels()
+	{
+		return pixels;
+	}
 
-	@Import("groundObject")
-	@Override
-	GroundObject getGroundObject();
+	public WallOffset getOffset()
+	{
+		return offset;
+	}
 
-	@Import("wallObject")
-	@Override
-	WallObject getWallObject();
-
-	@Import("paint")
-	@Override
-	SceneTilePaint getSceneTilePaint();
-
-	@Import("overlay")
-	@Override
-	SceneTileModel getSceneTileModel();
-
-	@Import("x")
-	int getX();
-
-	@Import("y")
-	int getY();
-
-	@Import("plane")
-	int getPlane();
 }
