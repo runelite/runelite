@@ -40,6 +40,7 @@ public class OptimalPaths
 		new Point(169, 151),
 		new Point(169, 148),
 		new Point(169, 147),
+		new Point(169, 133),
 		new Point(175, 146),
 		new Point(176, 146),
 		new Point(179, 116),

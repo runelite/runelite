@@ -61,6 +61,7 @@ public class VolcanicMineOverlay extends Overlay
 	private static final int THRESH_LOW = 45;
 	private static final int THRESH_MED = 5;
 
+	private static final int MAX_DISTANCE = 19; //2400/128 rounded up
 	private static final int REGION_SIZE = 104;
 	private static final int Z_OFFSET_TIMER = 25;
 	private static final String PROTECT_MESSAGE = "Protect!";
@@ -152,13 +153,18 @@ public class VolcanicMineOverlay extends Overlay
 
 	private void renderPaths(Graphics2D graphics, Tile tile)
 	{
-		if (config.optimalPaths())
+		if (config.optimalPaths() && !plugin.getObjectTimerMap().containsKey(tile))
 		{
 			Point localLoc = tile.getLocalLocation();
 			Point tempLoc = Perspective.localToWorld(client, localLoc);
 			Point worldLoc = new Point(tempLoc.getX() + localLoc.getX(), tempLoc.getY() + localLoc.getY());
+			if (client.getLocalPlayer().getWorldLocation().distanceTo(worldLoc) > MAX_DISTANCE)
+			{
+				return;
+			}
 			if (OptimalPaths.isOptimalPathTile(worldLoc))
 			{
+				//skipping localtilse and use localLoc instead may seem logical but it didn't work for me. for some reason the locallocation needs to go through localToWorld and worldToLocal.
 				Point localTile = Perspective.worldToLocal(client, worldLoc);
 				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
