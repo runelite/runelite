@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Region;
@@ -142,8 +144,38 @@ public class VolcanicMineOverlay extends Overlay
 				{
 					continue;
 				}
-
+				renderPaths(graphics, tile);
 				renderGameObjects(graphics, tile);
+			}
+		}
+	}
+
+	private void renderPaths(Graphics2D graphics, Tile tile)
+	{
+		if (config.optimalPaths())
+		{
+			Point localLoc = tile.getLocalLocation();
+			Point tempLoc = Perspective.localToWorld(client, localLoc);
+			Point worldLoc = new Point(tempLoc.getX() + localLoc.getX(), tempLoc.getY() + localLoc.getY());
+			if (OptimalPaths.isOptimalPathTile(worldLoc))
+			{
+				Point localTile = Perspective.worldToLocal(client, worldLoc);
+				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.CYAN);
+				}
+			}
+			else if (OptimalPaths.isBoulderRangeTile(worldLoc))
+			{
+				Point localTile = Perspective.worldToLocal(client, worldLoc);
+				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.MAGENTA);
+				}
 			}
 		}
 	}
@@ -155,7 +187,6 @@ public class VolcanicMineOverlay extends Overlay
 		{
 			return;
 		}
-
 		for (GameObject gameObject : gameObjects)
 		{
 			if (gameObject != null && plugin.getObjectTimerMap().containsKey(tile) && config.timerOverlay())
