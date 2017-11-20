@@ -158,7 +158,7 @@ public class VolcanicMineOverlay extends Overlay
 
 		for (GameObject gameObject : gameObjects)
 		{
-			if (gameObject != null && plugin.getObjectTimerMap().containsKey(tile))
+			if (gameObject != null && plugin.getObjectTimerMap().containsKey(tile) && config.timerOverlay())
 			{
 				Duration duration = Duration.between(Instant.now(), plugin.getObjectTimerMap().get(tile));
 				if (!duration.isNegative())
@@ -169,7 +169,7 @@ public class VolcanicMineOverlay extends Overlay
 					Color color;
 					if (seconds > THRESH_LOW)
 					{
-						color = config.platformColorLow();;
+						color = config.platformColorLow();
 					}
 					else if (seconds > THRESH_MED)
 					{
