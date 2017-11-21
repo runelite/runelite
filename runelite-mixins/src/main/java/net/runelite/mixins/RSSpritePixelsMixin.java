@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mixins;
 
 import java.awt.image.BufferedImage;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSSpritePixels;
 
-public interface SpritePixels
+@Mixin(RSSpritePixels.class)
+public abstract class RSSpritePixelsMixin implements RSSpritePixels
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
+	@Inject
+	@Override
+	public BufferedImage toBufferedImage()
+	{
+		int width = getWidth();
+		int height = getHeight();
+		int[] pixels = getPixels();
+		int[] transPixels = new int[pixels.length];
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-	void drawAt(int x, int y);
+		for (int i = 0; i < pixels.length; i++)
+		{
+			if (pixels[i] != 0)
+			{
+				transPixels[i] = pixels[i] | 0xff000000;
+			}
+		}
 
-	int getWidth();
-
-	int getHeight();
-
-	int[] getPixels();
-
-	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
-	 */
-	BufferedImage toBufferedImage();
+		img.setRGB(0, 0, width, height, transPixels, 0, width);
+		return img;
+	}
 }
