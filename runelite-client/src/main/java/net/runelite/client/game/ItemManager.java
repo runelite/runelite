@@ -148,21 +148,7 @@ public class ItemManager
 	private BufferedImage loadImage(int itemId)
 	{
 		SpritePixels sprite = client.createItemSprite(itemId, 1, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
-		int[] pixels = sprite.getPixels();
-		int[] transPixels = new int[pixels.length];
-		BufferedImage img = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		for (int i = 0; i < pixels.length; i++)
-		{
-			if (pixels[i] != 0)
-			{
-				transPixels[i] = pixels[i] | 0xff000000;
-			}
-		}
-
-		img.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), transPixels, 0, sprite.getWidth());
-
-		return img;
+		return sprite.toBufferedImage();
 	}
 
 	/**
