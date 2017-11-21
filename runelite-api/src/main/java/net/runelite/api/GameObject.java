@@ -32,5 +32,20 @@ import java.awt.Polygon;
  */
 public interface GameObject extends TileObject
 {
+	/**
+	 * Returns the min x,y for this game object
+	 *
+	 * @return
+	 */
+	Point getRegionMinLocation();
+
+	/**
+	 * Returns the max x,y for this game object. This is different from
+	 * {@link #getRegionMinLocation()} for objects larger than 1 tile.
+	 *
+	 * @return
+	 */
+	Point getRegionMaxLocation();
+
 	Polygon getConvexHull();
 }
