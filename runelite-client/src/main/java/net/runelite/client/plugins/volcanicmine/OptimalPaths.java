@@ -34,6 +34,7 @@ public class OptimalPaths
 	private final static int INSTANCE_SIZE = 192;
 	public final static Point[] optimalPath = new Point[]
 	{
+		new Point(161, 145),
 		new Point(161, 144),
 		new Point(161, 143),
 		new Point(161, 142),
