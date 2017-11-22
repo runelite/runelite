@@ -232,7 +232,7 @@ public class class34 {
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
          if(var1.contains(Integer.valueOf(var5.field498))) {
-            Area var6 = Area.field3345[var5.field498];
+            Area var6 = Area.mapAreaType[var5.field498];
             this.method431(var6, var5.field495, var5.field490, var2, var3);
          }
       }
@@ -646,7 +646,7 @@ public class class34 {
          if(var12 != null) {
             var12.field495 = var10;
             var12.field490 = var11;
-            Area var13 = Area.field3345[var12.field498];
+            Area var13 = Area.mapAreaType[var12.field498];
             if(!var3.contains(Integer.valueOf(var13.method4273()))) {
                this.method418(var12, var10, var11, var5);
             }
@@ -665,7 +665,7 @@ public class class34 {
 
       while(var4.hasNext()) {
          class39 var5 = (class39)var4.next();
-         Area var6 = Area.field3345[var5.field498];
+         Area var6 = Area.mapAreaType[var5.field498];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4273()))) {
             this.method431(var6, var5.field495, var5.field490, var2, var3);
          }
@@ -679,7 +679,7 @@ public class class34 {
       garbageValue = "-1405466455"
    )
    void method431(Area var1, int var2, int var3, int var4, int var5) {
-      SpritePixels var6 = var1.method4275(false);
+      SpritePixels var6 = var1.getMapIcon(false);
       if(var6 != null) {
          var6.drawAt(var2 - var6.width / 2, var3 - var6.height / 2);
          if(var4 % var5 < var5 / 2) {
@@ -696,7 +696,7 @@ public class class34 {
       garbageValue = "828512744"
    )
    void method418(class39 var1, int var2, int var3, float var4) {
-      Area var5 = Area.field3345[var1.field498];
+      Area var5 = Area.mapAreaType[var1.field498];
       this.method352(var5, var2, var3);
       this.method353(var1, var5, var2, var3, var4);
    }
@@ -707,7 +707,7 @@ public class class34 {
       garbageValue = "1"
    )
    void method352(Area var1, int var2, int var3) {
-      SpritePixels var4 = var1.method4275(false);
+      SpritePixels var4 = var1.getMapIcon(false);
       if(var4 != null) {
          int var5 = this.method357(var4, var1.field3361);
          int var6 = this.method358(var4, var1.field3344);
@@ -886,7 +886,7 @@ public class class34 {
          }
       }
 
-      return var2.mapIconId != -1?Area.field3345[var2.mapIconId]:null;
+      return var2.mapIconId != -1?Area.mapAreaType[var2.mapIconId]:null;
    }
 
    @ObfuscatedName("ah")
@@ -895,7 +895,7 @@ public class class34 {
       garbageValue = "1325498690"
    )
    class33 method394(int var1) {
-      Area var2 = Area.field3345[var1];
+      Area var2 = Area.mapAreaType[var1];
       return this.method380(var2);
    }
 

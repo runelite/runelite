@@ -16,7 +16,8 @@ public class Area extends CacheableNode {
    @ObfuscatedSignature(
       signature = "[Lib;"
    )
-   public static Area[] field3345;
+   @Export("mapAreaType")
+   public static Area[] mapAreaType;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1660740871
@@ -26,8 +27,8 @@ public class Area extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgp;"
    )
-   @Export("skeletonsIndex")
-   static NodeCache skeletonsIndex;
+   @Export("areaSpriteCache")
+   static NodeCache areaSpriteCache;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1303453487
@@ -104,7 +105,7 @@ public class Area extends CacheableNode {
    public int field3365;
 
    static {
-      skeletonsIndex = new NodeCache(256);
+      areaSpriteCache = new NodeCache(256);
    }
 
    public Area(int var1) {
@@ -256,7 +257,8 @@ public class Area extends CacheableNode {
       signature = "(ZI)Lkb;",
       garbageValue = "-1736277370"
    )
-   public SpritePixels method4275(boolean var1) {
+   @Export("getMapIcon")
+   public SpritePixels getMapIcon(boolean var1) {
       int var2 = this.spriteId;
       return this.method4272(var2);
    }
@@ -270,13 +272,13 @@ public class Area extends CacheableNode {
       if(var1 < 0) {
          return null;
       } else {
-         SpritePixels var2 = (SpritePixels)skeletonsIndex.get((long)var1);
+         SpritePixels var2 = (SpritePixels)areaSpriteCache.get((long)var1);
          if(var2 != null) {
             return var2;
          } else {
             var2 = class163.method3082(field3351, var1, 0);
             if(var2 != null) {
-               skeletonsIndex.put(var2, (long)var1);
+               areaSpriteCache.put(var2, (long)var1);
             }
 
             return var2;
