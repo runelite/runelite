@@ -41,6 +41,8 @@ public interface TileObject
 
 	Point getLocalLocation();
 
+	Point getRegionLocation();
+
 	Point getCanvasLocation();
 
 	Polygon getCanvasTilePoly();

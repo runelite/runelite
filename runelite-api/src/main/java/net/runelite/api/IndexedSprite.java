@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.GameObject;
-import net.runelite.api.Renderable;
-import net.runelite.mapping.Import;
-
-public interface RSGameObject extends GameObject
+public interface IndexedSprite
 {
-	@Import("renderable")
-	Renderable getRenderable();
+	byte[] getPixels();
 
-	@Import("plane")
-	int getPlane();
+	int[] getPalette();
 
-	@Import("relativeX")
-	int getRelativeX();
-
-	@Import("relativeY")
-	int getRelativeY();
-
-	@Import("offsetX")
 	int getOffsetX();
 
-	@Import("offsetY")
 	int getOffsetY();
 
-	@Import("x")
-	@Override
-	int getX();
+	int getWidth();
 
-	@Import("y")
-	@Override
-	int getY();
+	int getOriginalWidth();
 
-	@Import("height")
 	int getHeight();
-
-	@Import("orientation")
-	int getOrientation();
-
-	@Import("hash")
-	@Override
-	int getHash();
-
-	@Override
-	@Import("flags")
-	int getFlags();
 }

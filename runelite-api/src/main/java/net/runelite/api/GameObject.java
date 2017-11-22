@@ -32,6 +32,8 @@ import java.awt.Polygon;
  */
 public interface GameObject extends TileObject
 {
+	int getFlags();
+
 	/**
 	 * Returns the min x,y for this game object
 	 *
