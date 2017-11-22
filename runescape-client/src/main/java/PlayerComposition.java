@@ -432,7 +432,7 @@ public class PlayerComposition {
       int var28;
       if(class150.method2926(var0.field786)) {
          class25.field342 = (class47)var2[0];
-         Area var4 = Area.field3345[class25.field342.field559];
+         Area var4 = Area.mapAreaType[class25.field342.field559];
          var3 = class153.method2949(var0.field786, var4.field3348, var4.field3365);
       } else {
          var28 = ((Integer)var2[0]).intValue();
@@ -3156,7 +3156,7 @@ public class PlayerComposition {
                                                                                                                                     Area var122;
                                                                                                                                     if(var57 == 6693) {
                                                                                                                                        var14 = class82.intStack[--class82.intStackSize];
-                                                                                                                                       var122 = Area.field3345[var14];
+                                                                                                                                       var122 = Area.mapAreaType[var14];
                                                                                                                                        if(var122.name == null) {
                                                                                                                                           class82.scriptStringStack[++class259.scriptStringStackSize - 1] = "";
                                                                                                                                        } else {
@@ -3166,12 +3166,12 @@ public class PlayerComposition {
                                                                                                                                        var13 = 1;
                                                                                                                                     } else if(var57 == 6694) {
                                                                                                                                        var14 = class82.intStack[--class82.intStackSize];
-                                                                                                                                       var122 = Area.field3345[var14];
+                                                                                                                                       var122 = Area.mapAreaType[var14];
                                                                                                                                        class82.intStack[++class82.intStackSize - 1] = var122.field3359;
                                                                                                                                        var13 = 1;
                                                                                                                                     } else if(var57 == 6695) {
                                                                                                                                        var14 = class82.intStack[--class82.intStackSize];
-                                                                                                                                       var122 = Area.field3345[var14];
+                                                                                                                                       var122 = Area.mapAreaType[var14];
                                                                                                                                        if(var122 == null) {
                                                                                                                                           class82.intStack[++class82.intStackSize - 1] = -1;
                                                                                                                                        } else {
@@ -3181,7 +3181,7 @@ public class PlayerComposition {
                                                                                                                                        var13 = 1;
                                                                                                                                     } else if(var57 == 6696) {
                                                                                                                                        var14 = class82.intStack[--class82.intStackSize];
-                                                                                                                                       var122 = Area.field3345[var14];
+                                                                                                                                       var122 = Area.mapAreaType[var14];
                                                                                                                                        if(var122 == null) {
                                                                                                                                           class82.intStack[++class82.intStackSize - 1] = -1;
                                                                                                                                        } else {

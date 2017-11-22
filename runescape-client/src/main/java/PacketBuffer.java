@@ -150,6 +150,6 @@ public final class PacketBuffer extends Buffer {
       garbageValue = "605785756"
    )
    public static void method3484() {
-      Area.skeletonsIndex.reset();
+      Area.areaSpriteCache.reset();
    }
 }

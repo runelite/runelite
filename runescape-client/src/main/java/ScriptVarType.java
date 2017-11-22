@@ -1452,14 +1452,14 @@ public class ScriptVarType implements class185, class301 {
                   Area.field3351 = var19;
                   if(var18.method4112()) {
                      Area.field3346 = var18.fileCount(35);
-                     Area.field3345 = new Area[Area.field3346];
+                     Area.mapAreaType = new Area[Area.field3346];
 
                      for(int var20 = 0; var20 < Area.field3346; ++var20) {
                         byte[] var21 = var18.getConfigData(35, var20);
                         if(var21 != null) {
-                           Area.field3345[var20] = new Area(var20);
-                           Area.field3345[var20].method4268(new Buffer(var21));
-                           Area.field3345[var20].method4270();
+                           Area.mapAreaType[var20] = new Area(var20);
+                           Area.mapAreaType[var20].method4268(new Buffer(var21));
+                           Area.mapAreaType[var20].method4270();
                         }
                      }
                   }
