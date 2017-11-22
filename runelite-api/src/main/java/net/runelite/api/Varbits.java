@@ -177,7 +177,6 @@ public enum Varbits
 	 *
 	 * @param varbit The int to set the value on
 	 * @param value The value to set
-	 * @param value  The value to set
 	 * @return
 	 */
 	public int set(int varbit, int value)
