@@ -24,13 +24,23 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.ObjectComposition;
 import net.runelite.mapping.Import;
 
-public interface RSObjectComposition
+public interface RSObjectComposition extends ObjectComposition
 {
 	@Import("name")
+	@Override
 	String getName();
 
 	@Import("actions")
 	String[] getActions();
+
+	@Import("mapSceneId")
+	@Override
+	int getMapSceneId();
+
+	@Import("mapIconId")
+	@Override
+	int getMapIconId();
 }

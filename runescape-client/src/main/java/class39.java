@@ -58,8 +58,8 @@ public class class39 {
       this.field491 = var2;
       this.field492 = var3;
       this.field494 = var4;
-      Area var5 = Area.field3345[this.field498];
-      SpritePixels var6 = var5.method4275(false);
+      Area var5 = Area.mapAreaType[this.field498];
+      SpritePixels var6 = var5.getMapIcon(false);
       if(var6 != null) {
          this.field489 = var6.width;
          this.field493 = var6.height;
@@ -85,7 +85,7 @@ public class class39 {
       garbageValue = "-334438780"
    )
    boolean method511(int var1, int var2) {
-      Area var3 = Area.field3345[this.field498];
+      Area var3 = Area.mapAreaType[this.field498];
       switch(var3.field3361.field3597) {
       case 0:
          if(var1 > this.field495 - this.field489 && var1 <= this.field495) {

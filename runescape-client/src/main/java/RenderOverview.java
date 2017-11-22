@@ -881,9 +881,9 @@ public class RenderOverview {
       this.field3898 = 0;
       this.field3890 = 0;
 
-      for(int var2 = 0; var2 < Area.field3345.length; ++var2) {
-         if(Area.field3345[var2] != null && Area.field3345[var2].field3365 == var1) {
-            this.field3892.add(Integer.valueOf(Area.field3345[var2].field3348));
+      for(int var2 = 0; var2 < Area.mapAreaType.length; ++var2) {
+         if(Area.mapAreaType[var2] != null && Area.mapAreaType[var2].field3365 == var1) {
+            this.field3892.add(Integer.valueOf(Area.mapAreaType[var2].field3348));
          }
       }
 
@@ -934,9 +934,9 @@ public class RenderOverview {
          this.field3862.remove(Integer.valueOf(var1));
       }
 
-      for(int var3 = 0; var3 < Area.field3345.length; ++var3) {
-         if(Area.field3345[var3] != null && Area.field3345[var3].field3365 == var1) {
-            int var4 = Area.field3345[var3].field3348;
+      for(int var3 = 0; var3 < Area.mapAreaType.length; ++var3) {
+         if(Area.mapAreaType[var3] != null && Area.mapAreaType[var3].field3365 == var1) {
+            int var4 = Area.mapAreaType[var3].field3348;
             if(!var2) {
                this.field3899.add(Integer.valueOf(var4));
             } else {
@@ -1006,7 +1006,7 @@ public class RenderOverview {
                }
 
                class39 var11 = (class39)var10.next();
-               Area var12 = Area.field3345[var11.field498];
+               Area var12 = Area.mapAreaType[var11.field498];
                var13 = false;
 
                for(int var14 = this.field3903.length - 1; var14 >= 0; --var14) {

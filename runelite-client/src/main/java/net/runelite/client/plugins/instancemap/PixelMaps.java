@@ -59,8 +59,72 @@ class PixelMaps
 		}
 	};
 
+	static final int[][] TOP_LEFT_DOT = new int[][]
+	{
+		{
+			1, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		}
+	};
+
+	static final int[][] TOP_RIGHT_DOT = new int[][]
+	{
+		{
+			0, 0, 0, 1
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		}
+	};
+
+	static final int[][] BOTTOM_RIGHT_DOT = new int[][]
+	{
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 1
+		}
+	};
+
+	static final int[][] BOTTOM_LEFT_DOT = new int[][]
+	{
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			0, 0, 0, 0
+		},
+		{
+			1, 0, 0, 0
+		}
+	};
+
 	//Diagonal \
-	static final int[][] TOP_RIGHT_TO_BOTTOM_LEFT = new int[][]
+	static final int[][] TOP_LEFT_TO_BOTTOM_RIGHT = new int[][]
 	{
 		{
 			1, 0, 0, 0

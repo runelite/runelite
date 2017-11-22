@@ -31,12 +31,17 @@ import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.GroundObject;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.client.events.GameStateChanged;
@@ -44,14 +49,23 @@ import net.runelite.client.events.MapRegionChanged;
 import static net.runelite.client.plugins.instancemap.PixelMaps.ALL;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_DOT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_TO_TOP_RIGHT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_DOT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.LEFT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.RIGHT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.TOP;
 import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_DOT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_TO_BOTTOM_RIGHT;
 import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_CORNER;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_TO_BOTTOM_LEFT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_DOT;
+import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_LEFT;
+import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_RIGHT;
+import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
+import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
+import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -88,6 +102,7 @@ class InstanceMapOverlay extends Overlay
 
 	private final Client client;
 	private final InstanceMapConfig config;
+	private final InstanceMapPlugin plugin;
 
 	/**
 	 * Saved image of the region, no reason to draw the whole thing every
@@ -97,11 +112,12 @@ class InstanceMapOverlay extends Overlay
 	private boolean showMap = false;
 
 	@Inject
-	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config)
+	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config, InstanceMapPlugin plugin)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 	}
 
 	public boolean isMapShown()
@@ -262,6 +278,7 @@ class InstanceMapOverlay extends Overlay
 		graphics.setColor(Color.white);
 		graphics.drawRect(0, 0, mapOverlaySize.width - 1, mapOverlaySize.height - 1);//draw outline
 
+		//These loops are seperated on purpose to prevent layering issues. This is how it's written in the client
 		//Draw the base colors first
 		for (int x = 0; x < tiles.length; x++)
 		{
@@ -271,7 +288,16 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
-		//Draw walls on top
+		//environment
+		for (int x = 0; x < tiles.length; x++)
+		{
+			for (int y = tiles[x].length - 1; y >= 0; y--)//Flip y value
+			{
+				drawEnvironment(graphics, region, tiles[x][(tiles[x].length - 1) - y], x, y);//draw trees/rocks/bushes
+			}
+		}
+
+		//Draw walls
 		for (int x = 0; x < tiles.length; x++)
 		{
 			for (int y = tiles[x].length - 1; y >= 0; y--)//Flip y value
@@ -280,34 +306,164 @@ class InstanceMapOverlay extends Overlay
 			}
 		}
 
+		//Finally draw map icons on top of that
+		for (int x = 0; x < tiles.length; x++)
+		{
+			for (int y = tiles[x].length - 1; y >= 0; y--)//Flip y value
+			{
+				drawMapIcons(graphics, region, tiles[x][(tiles[x].length - 1) - y], x, y);//draw map icons
+			}
+		}
+
 	}
 
 	private void drawTileWalls(Graphics2D graphics, Tile curTile, int x, int y)
 	{
-		if (curTile != null)
+		if (curTile == null)
 		{
-			WallObject wallObject = curTile.getWallObject();
-			if (wallObject != null)
-			{
-				drawWallObject(graphics, wallObject, curTile, x * TILE_SIZE, y * TILE_SIZE);
-			}
+			return;
+		}
+
+		WallObject wallObject = curTile.getWallObject();
+		if (wallObject != null)
+		{
+			drawWallObject(graphics, wallObject, curTile, x * TILE_SIZE, y * TILE_SIZE);
 		}
 	}
 
 	private void drawTileColor(Graphics2D graphics, Region region, Tile curTile, int x, int y)
 	{
-		if (curTile != null)
+		if (curTile == null)
 		{
-			SceneTilePaint sceneTilePaint = curTile.getSceneTilePaint();
-			SceneTileModel sceneTileModel = curTile.getSceneTileModel();
+			return;
+		}
 
-			if (sceneTilePaint != null)
+		SceneTilePaint sceneTilePaint = curTile.getSceneTilePaint();
+		SceneTileModel sceneTileModel = curTile.getSceneTileModel();
+
+		if (sceneTilePaint != null)
+		{
+			drawMapPixel(graphics, sceneTilePaint, x * TILE_SIZE, y * TILE_SIZE);
+		}
+		else if (sceneTileModel != null)
+		{
+			drawComplexMapPixel(graphics, sceneTileModel, region, x * TILE_SIZE, y * TILE_SIZE);
+		}
+	}
+
+	private void drawMapIcons(Graphics2D graphics, Region region, Tile curTile, int x, int y)
+	{
+		if (curTile == null)
+		{
+			return;
+		}
+
+		//Draw game objects
+		GroundObject groundObject = curTile.getGroundObject();
+		if (groundObject == null)
+		{
+			return;
+		}
+
+		int hash = groundObject.getHash();
+		int objId = groundObject.getId();
+
+		int startX = x * TILE_SIZE;
+		int startY = y * TILE_SIZE;
+
+		if (hash != 0)
+		{
+			ObjectComposition objectComposition = client.getObjectDefinition(objId);
+			int mapIconId = objectComposition.getMapIconId();
+			if (mapIconId >= 0)
 			{
-				drawMapPixel(graphics, sceneTilePaint, x * TILE_SIZE, y * TILE_SIZE);
+				// this parameter is unused
+				SpritePixels sprite = client.getMapAreas()[mapIconId].getMapIcon(false);
+
+				if (sprite == null)
+				{
+					return;
+				}
+
+				BufferedImage img = sprite.toBufferedImage();
+				graphics.drawImage(img, startX - (img.getWidth() / 2), startY - (img.getHeight() / 2), null);
 			}
-			else if (sceneTileModel != null)
+		}
+	}
+
+	private void drawEnvironment(Graphics2D graphics, Region region, Tile curTile, int x, int y)
+	{
+		if (curTile == null)
+		{
+			return;
+		}
+
+		//Draw game objects
+		GameObject[] gameObjects = curTile.getGameObjects();
+		if (gameObjects != null)
+		{
+			Tile[][] tiles = getTiles();
+			for (GameObject gameObject : gameObjects)
 			{
-				drawComplexMapPixel(graphics, sceneTileModel, region, x * TILE_SIZE, y * TILE_SIZE);
+				if (gameObject == null)
+				{
+					continue;
+				}
+
+				int hash = gameObject.getHash();
+				int objId = gameObject.getId();
+
+				int startX = x * TILE_SIZE;
+				int startY = y * TILE_SIZE;
+
+				if (hash == 0)
+				{
+					continue;
+				}
+
+				ObjectComposition objectComposition = client.getObjectDefinition(objId);
+				if (objectComposition.getMapSceneId() != -1)
+				{
+					Point gameObjectLocation = gameObject.getRegionMinLocation();
+					int tileX = x;
+					int tileY = ((tiles[x].length - 1) - y);//flip y value
+
+					if (gameObjectLocation.getX() == tileX && gameObjectLocation.getY() == tileY)
+					{
+
+						IndexedSprite objectMapSprite = client.getMapScene()[objectComposition.getMapSceneId()];
+						if (objectMapSprite != null)
+						{
+							drawIndexedSprite(graphics, objectMapSprite, gameObject, startX, startY);
+						}
+					}
+				}
+
+			}
+		}
+	}
+
+	private void drawIndexedSprite(Graphics2D graphics, IndexedSprite indexedSprite, GameObject gameObject, int startX, int startY)
+	{
+		//Mostly from code in IndexedSprite
+		int sourceOffset = 0;
+
+		//For some reason some sprites don't have a byte array that is the same size as the width*height
+		if (indexedSprite.getPixels().length != indexedSprite.getHeight() * indexedSprite.getWidth())
+		{
+			return;
+		}
+
+		for (int y = -indexedSprite.getHeight(); y < 0; y++)
+		{
+			for (int x = -indexedSprite.getWidth(); x < 0; x++)
+			{
+				int index = indexedSprite.getPixels()[sourceOffset++] & 0xff;
+				if (index != 0)
+				{
+					graphics.setColor(new Color(indexedSprite.getPalette()[index]));//Get color from the pallete
+					drawPoint(graphics, startX + x + indexedSprite.getWidth() + indexedSprite.getOffsetX(), startY + y + indexedSprite.getHeight() / 2 + indexedSprite.getOffsetY());
+				}
 			}
 		}
 	}
@@ -324,82 +480,145 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private void drawMapPixel(Graphics2D graphics, SceneTilePaint sceneTilePaint, int startX, int startY)
 	{
-		Color c = new Color(sceneTilePaint.getRBG());//Normal map pixels have only 1 solid color
+		//Normal map pixels have only 1 solid color
+		Color c = new Color(sceneTilePaint.getRBG());
 		graphics.setColor(c);
 		graphics.fillRect(startX, startY, TILE_SIZE, TILE_SIZE);
 	}
 
-	/**
-	 * Gets the walls shape from the orientation
-	 *
-	 * @param orientationA the wall object's orientationA
-	 * @param orientationB the wall object's orientationB
-	 * @return A WallShape representing the wall as a 4x4 set of pixels with
-	 * an offset
-	 */
-	private WallShape getWallShape(int orientationA, int orientationB)
+	private WallShape getWallShape(WallObject wallObject)
 	{
 		int[][] pixels = ALL;
-		WallOffset wallOffset = WallOffset.NONE;
+		WallOffset wallOffset = NONE;
 
-		switch (orientationA)
+		//Warning: Gower code below
+		int flags = wallObject.getConfig() & 255;
+		int config1 = flags >> 6 & 3;
+		int config2 = flags & 31;
+
+		// Straight walls
+		if (config2 == 0)
 		{
-			case 16:
-				//Diagonal /
-				pixels = BOTTOM_LEFT_TO_TOP_RIGHT;
-				wallOffset = WallOffset.TOP_LEFT;
-				break;
-			case 32:
-				//Diagonal \
-				pixels = TOP_RIGHT_TO_BOTTOM_LEFT;
-				wallOffset = WallOffset.TOP_RIGHT;
-				break;
-			case 64:
-				//Diagonal /
-				pixels = BOTTOM_LEFT_TO_TOP_RIGHT;
-				wallOffset = WallOffset.BOTTOM_RIGHT;
-				break;
-			case 1:
-				//Left wall
-				pixels = LEFT;
-				break;
-			case 2:
-				//Top wall
-				pixels = TOP;
-				break;
-			case 4:
-				//Right wall
-				pixels = RIGHT;
-				break;
-			case 8:
-				//Bottom wall
-				pixels = BOTTOM;
-				break;
-			case 128:
-				//Diagonal \
-				pixels = TOP_RIGHT_TO_BOTTOM_LEFT;
-				wallOffset = WallOffset.BOTTOM_LEFT;
-				break;
+			switch (config1)
+			{
+				case 0:
+					//draw left wall
+					pixels = LEFT;
+					wallOffset = NONE;
+					break;
+				case 1:
+					//draw top wall
+					pixels = TOP;
+					wallOffset = NONE;
+					break;
+				case 2:
+					//draw right wall
+					pixels = RIGHT;
+					wallOffset = NONE;
+					break;
+				case 3:
+					//draw bottom wall
+					pixels = BOTTOM;
+					wallOffset = NONE;
+					break;
+
+			}
 		}
-
-		switch (orientationB)
+		// Corners
+		else if (config2 == 2)
 		{
-			case 2:
-				//top left corner
-				pixels = TOP_LEFT_CORNER;
-				break;
-			case 4:
-				//top right corner
-				pixels = TOP_RIGHT_CORNER;
-				break;
-			case 8:
-				//bottom right corner
-				pixels = BOTTOM_RIGHT_CORNER;
-				break;
-			case 1:
-				//Bottom left corner
-				pixels = BOTTOM_LEFT_CORNER;
-				break;
+			switch (config1)
+			{
+				case 0:
+					pixels = TOP_LEFT_CORNER;
+					break;
+				case 1:
+					pixels = TOP_RIGHT_CORNER;
+					wallOffset = NONE;
+					break;
+				case 2:
+					pixels = BOTTOM_RIGHT_CORNER;
+					wallOffset = NONE;
+					break;
+				case 3:
+					pixels = BOTTOM_LEFT_CORNER;
+					wallOffset = NONE;
+					break;
+				default:
+					break;
+			}
+		}
+		// Dots
+		else if (config2 == 3)
+		{
+			switch (config1)
+			{
+				case 0:
+					//draw dot top left
+					pixels = TOP_LEFT_DOT;
+					wallOffset = NONE;
+					break;
+				case 1:
+					//draw dot top right
+					pixels = TOP_RIGHT_DOT;
+					wallOffset = NONE;
+					break;
+				case 2:
+					//draw dot bottom right
+					pixels = BOTTOM_RIGHT_DOT;
+					wallOffset = NONE;
+					break;
+				case 3:
+					//draw dot bottom left
+					pixels = BOTTOM_LEFT_DOT;
+					wallOffset = NONE;
+					break;
+				default:
+					break;
+			}
+		}
+		//This part never gets called, but it's written in the client. ¯\_(ツ)_/¯
+		else if (config2 == 9)
+		{
+			if (config1 != 0 && config1 != 2)
+			{
+				//draw diagonal \
+				pixels = TOP_LEFT_TO_BOTTOM_RIGHT;
+				wallOffset = NONE;
+			}
+			else
+			{
+				//draw diagonal /
+				pixels = BOTTOM_LEFT_TO_TOP_RIGHT;
+				wallOffset = NONE;
+			}
+		}
+		//Diagonals
+		else if (config2 == 1)
+		{
+			switch (config1)
+			{
+				case 0:
+					//draw diagonal /
+					pixels = BOTTOM_LEFT_TO_TOP_RIGHT;
+					wallOffset = TOP_LEFT;
+					break;
+				case 1:
+					//draw diagonal \
+					pixels = TOP_LEFT_TO_BOTTOM_RIGHT;
+					wallOffset = TOP_RIGHT;
+					break;
+				case 2:
+					pixels = BOTTOM_LEFT_TO_TOP_RIGHT;
+					wallOffset = BOTTOM_RIGHT;
+					break;
+				case 3:
+					pixels = TOP_LEFT_TO_BOTTOM_RIGHT;
+					wallOffset = BOTTOM_LEFT;
+					break;
+				default:
+					break;
+			}
 		}
 
 		return new WallShape(pixels, wallOffset);
@@ -418,10 +637,24 @@ class InstanceMapOverlay extends Overlay
 	{
 		graphics.setColor(Color.white);
 
-		int orientationA = wallObject.getOrientationA();//Orientation is a set of flags stored as an int
-		int orientationB = wallObject.getOrientationB();
+		if (wallObject.getHash() == 0)
+		{
+			return;
+		}
 
-		WallShape wallShape = getWallShape(orientationA, orientationB);
+		//door
+		if (wallObject.getHash() > 0)
+		{
+			graphics.setColor(Color.red);
+		}
+		ObjectComposition objectComposition = client.getObjectDefinition(wallObject.getId());
+
+		if (objectComposition.getMapSceneId() != -1)
+		{
+			return;
+		}
+
+		WallShape wallShape = getWallShape(wallObject);
 		int[][] pixels = wallShape.getPixels();
 
 		for (int i = 0; i < pixels.length; i++)
@@ -471,7 +704,8 @@ class InstanceMapOverlay extends Overlay
 		int shape = sceneTileModel.getShape();
 		int rotation = sceneTileModel.getRotation();
 
-		int overlay = sceneTileModel.getModelOverlay();//SceneTileModels have only two colors, and overlay and underlay.
+		//SceneTileModels have only two colors, and overlay and underlay.
+		int overlay = sceneTileModel.getModelOverlay();
 		int underlay = sceneTileModel.getModelUnderlay();
 
 		int[] shapes = TILE_MASK_2D[shape];

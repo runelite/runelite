@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.Overlay;
 @PluginDescriptor(
 	name = "Instance Map"
 )
-public class IntanceMapPlugin extends Plugin
+public class InstanceMapPlugin extends Plugin
 {
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
 	private final WidgetMenuOption ascendOption = new WidgetMenuOption("Ascend", "Instance Map", WidgetInfo.WORLD_MAP);

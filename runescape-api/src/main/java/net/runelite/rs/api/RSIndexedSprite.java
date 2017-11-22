@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.rs.api;
 
-import java.awt.Polygon;
-import net.runelite.api.Model;
-import net.runelite.api.Point;
-import net.runelite.api.Renderable;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSGameObject;
+import net.runelite.api.IndexedSprite;
+import net.runelite.mapping.Import;
 
-@Mixin(RSGameObject.class)
-public abstract class RSGameObjectMixin implements RSGameObject
+public interface RSIndexedSprite extends IndexedSprite
 {
-	@Inject
+	@Import("pixels")
 	@Override
-	public Point getRegionMinLocation()
-	{
-		return new Point(getRelativeX(), getRelativeY());
-	}
+	byte[] getPixels();
 
-	@Inject
+	@Import("palette")
 	@Override
-	public Point getRegionMaxLocation()
-	{
-		return new Point(getOffsetX(), getOffsetY());
-	}
+	int[] getPalette();
 
-	@Inject
+	@Import("originalWidth")
 	@Override
-	public Polygon getConvexHull()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
-		{
-			return null;
-		}
+	int getOriginalWidth();
 
-		Model model;
+	@Import("height")
+	@Override
+	int getHeight();
 
-		if (renderable instanceof Model)
-		{
-			model = (Model) renderable;
-		}
-		else
-		{
-			model = renderable.getModel();
-		}
+	@Import("offsetX")
+	@Override
+	int getOffsetX();
 
-		if (model == null)
-		{
-			return null;
-		}
+	@Import("offsetY")
+	@Override
+	int getOffsetY();
 
-		return getConvexHull(model, getOrientation());
-	}
+	@Import("width")
+	@Override
+	int getWidth();
 }

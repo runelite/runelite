@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.api;
 
-import java.awt.Polygon;
-import net.runelite.api.Model;
-import net.runelite.api.Point;
-import net.runelite.api.Renderable;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSGameObject;
-
-@Mixin(RSGameObject.class)
-public abstract class RSGameObjectMixin implements RSGameObject
+public interface ObjectComposition
 {
-	@Inject
-	@Override
-	public Point getRegionMinLocation()
-	{
-		return new Point(getRelativeX(), getRelativeY());
-	}
+	String getName();
 
-	@Inject
-	@Override
-	public Point getRegionMaxLocation()
-	{
-		return new Point(getOffsetX(), getOffsetY());
-	}
+	int getMapSceneId();
 
-	@Inject
-	@Override
-	public Polygon getConvexHull()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
-		{
-			return null;
-		}
-
-		Model model;
-
-		if (renderable instanceof Model)
-		{
-			model = (Model) renderable;
-		}
-		else
-		{
-			model = renderable.getModel();
-		}
-
-		if (model == null)
-		{
-			return null;
-		}
-
-		return getConvexHull(model, getOrientation());
-	}
+	int getMapIconId();
 }

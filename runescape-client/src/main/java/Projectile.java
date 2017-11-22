@@ -311,7 +311,7 @@ public final class Projectile extends Renderable {
                   var7 = var7 >> 14 & 32767;
                   int var8 = ClientPacket.getObjectDefinition(var7).mapIconId;
                   if(var8 >= 0) {
-                     Client.mapIcons[Client.field1075] = Area.field3345[var8].method4275(false);
+                     Client.mapIcons[Client.field1075] = Area.mapAreaType[var8].getMapIcon(false);
                      Client.field1060[Client.field1075] = var5;
                      Client.field891[Client.field1075] = var6;
                      ++Client.field1075;

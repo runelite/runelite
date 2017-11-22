@@ -24,57 +24,33 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
-import net.runelite.api.Model;
-import net.runelite.api.Point;
-import net.runelite.api.Renderable;
+import java.awt.image.BufferedImage;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSGameObject;
+import net.runelite.rs.api.RSSpritePixels;
 
-@Mixin(RSGameObject.class)
-public abstract class RSGameObjectMixin implements RSGameObject
+@Mixin(RSSpritePixels.class)
+public abstract class RSSpritePixelsMixin implements RSSpritePixels
 {
 	@Inject
 	@Override
-	public Point getRegionMinLocation()
+	public BufferedImage toBufferedImage()
 	{
-		return new Point(getRelativeX(), getRelativeY());
-	}
+		int width = getWidth();
+		int height = getHeight();
+		int[] pixels = getPixels();
+		int[] transPixels = new int[pixels.length];
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-	@Inject
-	@Override
-	public Point getRegionMaxLocation()
-	{
-		return new Point(getOffsetX(), getOffsetY());
-	}
-
-	@Inject
-	@Override
-	public Polygon getConvexHull()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
+		for (int i = 0; i < pixels.length; i++)
 		{
-			return null;
+			if (pixels[i] != 0)
+			{
+				transPixels[i] = pixels[i] | 0xff000000;
+			}
 		}
 
-		Model model;
-
-		if (renderable instanceof Model)
-		{
-			model = (Model) renderable;
-		}
-		else
-		{
-			model = renderable.getModel();
-		}
-
-		if (model == null)
-		{
-			return null;
-		}
-
-		return getConvexHull(model, getOrientation());
+		img.setRGB(0, 0, width, height, transPixels, 0, width);
+		return img;
 	}
 }
