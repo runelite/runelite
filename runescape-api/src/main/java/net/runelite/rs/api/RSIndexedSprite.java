@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,36 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.GameObject;
-import net.runelite.api.Renderable;
+import net.runelite.api.IndexedSprite;
 import net.runelite.mapping.Import;
 
-public interface RSGameObject extends GameObject
+public interface RSIndexedSprite extends IndexedSprite
 {
-	@Import("renderable")
-	Renderable getRenderable();
+	@Import("pixels")
+	@Override
+	byte[] getPixels();
 
-	@Import("plane")
-	int getPlane();
+	@Import("palette")
+	@Override
+	int[] getPalette();
 
-	@Import("relativeX")
-	int getRelativeX();
+	@Import("originalWidth")
+	@Override
+	int getOriginalWidth();
 
-	@Import("relativeY")
-	int getRelativeY();
+	@Import("height")
+	@Override
+	int getHeight();
 
 	@Import("offsetX")
+	@Override
 	int getOffsetX();
 
 	@Import("offsetY")
+	@Override
 	int getOffsetY();
 
-	@Import("x")
+	@Import("width")
 	@Override
-	int getX();
-
-	@Import("y")
-	@Override
-	int getY();
-
-	@Import("height")
-	int getHeight();
-
-	@Import("orientation")
-	int getOrientation();
-
-	@Import("hash")
-	@Override
-	int getHash();
-
-	@Override
-	@Import("flags")
-	int getFlags();
+	int getWidth();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,12 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.api.GameObject;
-import net.runelite.api.Renderable;
+import net.runelite.api.Area;
 import net.runelite.mapping.Import;
 
-public interface RSGameObject extends GameObject
+public interface RSArea extends RSCacheableNode, Area
 {
-	@Import("renderable")
-	Renderable getRenderable();
-
-	@Import("plane")
-	int getPlane();
-
-	@Import("relativeX")
-	int getRelativeX();
-
-	@Import("relativeY")
-	int getRelativeY();
-
-	@Import("offsetX")
-	int getOffsetX();
-
-	@Import("offsetY")
-	int getOffsetY();
-
-	@Import("x")
+	@Import("getMapIcon")
 	@Override
-	int getX();
-
-	@Import("y")
-	@Override
-	int getY();
-
-	@Import("height")
-	int getHeight();
-
-	@Import("orientation")
-	int getOrientation();
-
-	@Import("hash")
-	@Override
-	int getHash();
-
-	@Override
-	@Import("flags")
-	int getFlags();
+	RSSpritePixels getMapIcon(boolean var1);
 }
