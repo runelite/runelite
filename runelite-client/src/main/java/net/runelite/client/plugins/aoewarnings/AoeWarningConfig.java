@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.aoewarnings;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSProjectile extends Projectile
+@ConfigGroup(
+		keyName = "aoewarning",
+		name = "AoE Projectile Warnings",
+		description = "Configuration for the AoE Projectile Warnings plugin"
+)
+public interface AoeWarningConfig extends Config
 {
-	@Import("isMoving")
-	boolean isMoving();
-
-	@Import("animationSequence")
-	RSSequence getAnimationSequence();
-
-	@Import("velocityY")
-	double getVelocityY();
-
-	@Import("velocityX")
-	double getVelocityX();
-
-	@Import("velocityZ")
-	double getVelocityZ();
-
-	@Import("scalar")
-	double getScalar();
-
-	@Import("cycle")
-	@Override
-	int getCycle();
-
-	@Import("x1")
-	@Override
-	int getX1();
-
-	@Import("y1")
-	@Override
-	int getY1();
-
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("interacting")
-	@Override
-	int getInteracting();
-
-	@Import("endHeight")
-	@Override
-	int getEndHeight();
-
-	@Import("height")
-	@Override
-	int getHeight();
-
+	@ConfigItem(
+			keyName = "enabled",
+			name = "Enabled",
+			description = "Configures whether or not AoE Projectile Warnings plugin is displayed"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 }

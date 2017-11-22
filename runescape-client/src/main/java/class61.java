@@ -353,7 +353,7 @@ public final class class61 {
                var11 = var11 * 128 + 64;
                var9 = var9 * 128 + 64;
                Projectile var15 = new Projectile(var13, class28.plane, var5, var6, class18.getTileHeight(var5, var6, class28.plane) - var38, var31 + Client.gameCycle, var7 + Client.gameCycle, var14, var8, var12, var37);
-               var15.method1747(var11, var9, class18.getTileHeight(var11, var9, class28.plane) - var37, var31 + Client.gameCycle);
+               var15.moveProjectile(var11, var9, class18.getTileHeight(var11, var9, class28.plane) - var37, var31 + Client.gameCycle);
                Client.projectiles.addFront(var15);
             }
 

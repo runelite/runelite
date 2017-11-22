@@ -40,7 +40,7 @@
 		<java.version>1.8</java.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
-		<checkstyle.skip>true</checkstyle.skip>
+		<checkstyle.skip>false</checkstyle.skip>
 
 		<rs.version>158</rs.version>
 	</properties>

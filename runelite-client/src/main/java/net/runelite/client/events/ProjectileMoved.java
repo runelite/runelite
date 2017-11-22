@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.events;
 
 import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
 
-public interface RSProjectile extends Projectile
+public class ProjectileMoved
 {
-	@Import("isMoving")
-	boolean isMoving();
+	private Projectile projectile;
+	private int targetX;
+	private int targetY;
+	private int targetZ;
+	private int cycle;
 
-	@Import("animationSequence")
-	RSSequence getAnimationSequence();
+	public ProjectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
+	{
+		this.projectile = projectile;
+		this.targetX = targetX;
+		this.targetY = targetY;
+		this.targetZ = targetZ;
+		this.cycle = cycle;
+	}
 
-	@Import("velocityY")
-	double getVelocityY();
+	public Projectile getProjectile()
+	{
+		return projectile;
+	}
 
-	@Import("velocityX")
-	double getVelocityX();
+	public void setProjectile(Projectile projectile)
+	{
+		this.projectile = projectile;
+	}
 
-	@Import("velocityZ")
-	double getVelocityZ();
+	public int getTargetX()
+	{
+		return targetX;
+	}
 
-	@Import("scalar")
-	double getScalar();
+	public void setTargetX(int targetX)
+	{
+		this.targetX = targetX;
+	}
 
-	@Import("cycle")
-	@Override
-	int getCycle();
+	public int getTargetY()
+	{
+		return targetY;
+	}
 
-	@Import("x1")
-	@Override
-	int getX1();
+	public void setTargetY(int targetY)
+	{
+		this.targetY = targetY;
+	}
 
-	@Import("y1")
-	@Override
-	int getY1();
+	public int getTargetZ()
+	{
+		return targetZ;
+	}
 
-	@Import("id")
-	@Override
-	int getId();
+	public void setTargetZ(int targetZ)
+	{
+		this.targetZ = targetZ;
+	}
 
-	@Import("interacting")
-	@Override
-	int getInteracting();
+	public int getCycle()
+	{
+		return cycle;
+	}
 
-	@Import("endHeight")
-	@Override
-	int getEndHeight();
-
-	@Import("height")
-	@Override
-	int getHeight();
-
+	public void setCycle(int cycle)
+	{
+		this.cycle = cycle;
+	}
 }

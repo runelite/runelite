@@ -87,7 +87,7 @@ public enum class246 implements class185 {
                if(var27.interacting > 0) {
                   NPC var31 = Client.cachedNPCs[var27.interacting - 1];
                   if(var31 != null && var31.x >= 0 && var31.x < 13312 && var31.y >= 0 && var31.y < 13312) {
-                     var27.method1747(var31.x, var31.y, class18.getTileHeight(var31.x, var31.y, var27.floor) - var27.endHeight, Client.gameCycle);
+                     var27.moveProjectile(var31.x, var31.y, class18.getTileHeight(var31.x, var31.y, var27.floor) - var27.endHeight, Client.gameCycle);
                   }
                }
 
@@ -101,7 +101,7 @@ public enum class246 implements class185 {
                   }
 
                   if(var32 != null && var32.x >= 0 && var32.x < 13312 && var32.y >= 0 && var32.y < 13312) {
-                     var27.method1747(var32.x, var32.y, class18.getTileHeight(var32.x, var32.y, var27.floor) - var27.endHeight, Client.gameCycle);
+                     var27.moveProjectile(var32.x, var32.y, class18.getTileHeight(var32.x, var32.y, var27.floor) - var27.endHeight, Client.gameCycle);
                   }
                }
 

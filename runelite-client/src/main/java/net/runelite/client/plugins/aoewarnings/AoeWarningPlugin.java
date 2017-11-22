@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.aoewarnings;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ProjectileMoved;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
-public interface RSProjectile extends Projectile
+import javax.inject.Inject;
+
+@PluginDescriptor(
+		name = "AoE projectile warning plugin"
+)
+public class AoeWarningPlugin extends Plugin
 {
-	@Import("isMoving")
-	boolean isMoving();
+	@Inject
+	AoeWarningOverlay overlay;
 
-	@Import("animationSequence")
-	RSSequence getAnimationSequence();
-
-	@Import("velocityY")
-	double getVelocityY();
-
-	@Import("velocityX")
-	double getVelocityX();
-
-	@Import("velocityZ")
-	double getVelocityZ();
-
-	@Import("scalar")
-	double getScalar();
-
-	@Import("cycle")
 	@Override
-	int getCycle();
+	public void configure(Binder binder)
+	{
+		binder.bind(AoeWarningOverlay.class);
+	}
 
-	@Import("x1")
+	@Provides
+	AoeWarningConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AoeWarningConfig.class);
+	}
+
 	@Override
-	int getX1();
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 
-	@Import("y1")
-	@Override
-	int getY1();
-
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("interacting")
-	@Override
-	int getInteracting();
-
-	@Import("endHeight")
-	@Override
-	int getEndHeight();
-
-	@Import("height")
-	@Override
-	int getHeight();
-
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event)
+	{
+		overlay.onProjectileMoved(event);
+	}
 }

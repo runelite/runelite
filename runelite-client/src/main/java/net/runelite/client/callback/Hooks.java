@@ -26,14 +26,17 @@ package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
+import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -186,7 +189,7 @@ public class Hooks
 	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-                 * I have no idea why, but it does. Their code contains the same conditional statement.
+		         * I have no idea why, but it does. Their code contains the same conditional statement.
 		 */
 		if (menuAction >= 2000)
 		{
@@ -194,7 +197,7 @@ public class Hooks
 		}
 
 		logger.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
-			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
+				menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setMenuOption(menuOption);
@@ -229,6 +232,21 @@ public class Hooks
 		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
 
 		eventBus.post(chatMessage);
+	}
+
+	/**
+	 * Called when a projectile is set to move towards a point. For projectiles that target the ground, like AoE projectiles from Lizardman Shamans, this is only called once
+	 *
+	 * @param projectile The projectile being moved
+	 * @param targetX
+	 * @param targetY
+	 * @param targetZ
+	 * @param cycle
+	 */
+	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
+	{
+		ProjectileMoved projectileMoved = new ProjectileMoved(projectile, targetX, targetY, targetZ, cycle);
+		eventBus.post(projectileMoved);
 	}
 
 	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
