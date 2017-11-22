@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.image.BufferedImage;
+
 public interface SpritePixels
 {
 	int DEFAULT_SHADOW_COLOR = 3153952;
@@ -35,4 +37,11 @@ public interface SpritePixels
 	int getHeight();
 
 	int[] getPixels();
+
+	/**
+	 * Covert the SpritePixels to a BufferedImage
+	 *
+	 * @return
+	 */
+	BufferedImage toBufferedImage();
 }

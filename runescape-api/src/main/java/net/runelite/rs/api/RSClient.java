@@ -129,10 +129,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("collisionMaps")
 	RSCollisionData[] getCollisionMaps();
-	
+
 	@Import("playerIndexesCount")
 	int getPlayerIndexesCount();
-	
+
 	@Import("playerIndices")
 	int[] getPlayerIndices();
 
@@ -204,6 +204,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
+	@Override
 	@Import("getObjectDefinition")
 	RSObjectComposition getObjectDefinition(int objectId);
 
@@ -304,4 +305,16 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	@Import("widgetRoot")
 	int getWidgetRoot();
+
+	@Import("mapAreaType")
+	@Override
+	RSArea[] getMapAreas();
+
+	@Import("mapscene")
+	@Override
+	RSIndexedSprite[] getMapScene();
+
+	@Import("mapIcons")
+	@Override
+	RSSpritePixels[] getMapIcons();
 }

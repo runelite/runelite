@@ -145,4 +145,12 @@ public interface Client
 	Map<Integer, ChatLineBuffer> getChatLineMap();
 
 	Widget getViewportWidget();
+
+	ObjectComposition getObjectDefinition(int objectId);
+
+	Area[] getMapAreas();
+
+	IndexedSprite[] getMapScene();
+
+	SpritePixels[] getMapIcons();
 }

@@ -30,14 +30,15 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
+import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
-import net.runelite.api.model.Jarvis;
-import net.runelite.api.model.Vertex;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Mixins;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Vertex;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDecorativeObject;
 import net.runelite.rs.api.RSGameObject;
@@ -78,6 +79,14 @@ public abstract class TileObjectMixin implements TileObject
 	public Point getLocalLocation()
 	{
 		return new Point(getX(), getY());
+	}
+
+	@Override
+	@Inject
+	public Point getRegionLocation()
+	{
+		Point locaLocation = getLocalLocation();
+		return new Point(locaLocation.getX() >>> LOCAL_COORD_BITS, locaLocation.getY() >>> LOCAL_COORD_BITS);
 	}
 
 	@Override

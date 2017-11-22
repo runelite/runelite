@@ -34,4 +34,6 @@ public interface WallObject extends TileObject
 	int getOrientationA();
 
 	int getOrientationB();
+
+	int getConfig();
 }
