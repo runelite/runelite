@@ -23,13 +23,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.volcanicminehelper;
+package net.runelite.client.plugins.volcanicmine;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Region;
@@ -54,23 +56,24 @@ import org.slf4j.LoggerFactory;
 
 public class VolcanicMineOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMineHelperPlugin.class);
+	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
 
 	private static final int THRESH_LOW = 45;
 	private static final int THRESH_MED = 5;
 
+	private static final int MAX_DISTANCE = 19; //2400/128 rounded up
 	private static final int REGION_SIZE = 104;
 	private static final int Z_OFFSET_TIMER = 25;
 	private static final String PROTECT_MESSAGE = "Protect!";
 
-	private final VolcanicMineHelperPlugin plugin;
+	private final VolcanicMinePlugin plugin;
 	private final VolcanicMineConfig config;
 
 	private final Client client;
 	private Image protectFromMissilesImg;
 
 	@Inject
-	VolcanicMineOverlay(@Nullable Client client, VolcanicMineHelperPlugin plugin, VolcanicMineConfig config)
+	VolcanicMineOverlay(@Nullable Client client, VolcanicMinePlugin plugin, VolcanicMineConfig config)
 	{
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
@@ -142,8 +145,41 @@ public class VolcanicMineOverlay extends Overlay
 				{
 					continue;
 				}
-
+				renderPaths(graphics, tile);
 				renderGameObjects(graphics, tile);
+			}
+		}
+	}
+
+	private void renderPaths(Graphics2D graphics, Tile tile)
+	{
+		if (config.optimalPaths() && !plugin.getObjectTimerMap().containsKey(tile))
+		{
+			Point worldLoc = tile.getWorldLocation();
+			if (client.getLocalPlayer().getWorldLocation().distanceTo(worldLoc) > MAX_DISTANCE)
+			{
+				return;
+			}
+
+			if (OptimalPaths.isOptimalPathTile(worldLoc))
+			{
+				Point localTile = tile.getLocalLocation();
+				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.CYAN);
+				}
+			}
+			else if (OptimalPaths.isBoulderRangeTile(worldLoc))
+			{
+				Point localTile = tile.getLocalLocation();
+				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.MAGENTA);
+				}
 			}
 		}
 	}
@@ -155,10 +191,9 @@ public class VolcanicMineOverlay extends Overlay
 		{
 			return;
 		}
-
 		for (GameObject gameObject : gameObjects)
 		{
-			if (gameObject != null && plugin.getObjectTimerMap().containsKey(tile))
+			if (gameObject != null && plugin.getObjectTimerMap().containsKey(tile) && config.timerOverlay())
 			{
 				Duration duration = Duration.between(Instant.now(), plugin.getObjectTimerMap().get(tile));
 				if (!duration.isNegative())
@@ -169,7 +204,7 @@ public class VolcanicMineOverlay extends Overlay
 					Color color;
 					if (seconds > THRESH_LOW)
 					{
-						color = config.platformColorLow();;
+						color = config.platformColorLow();
 					}
 					else if (seconds > THRESH_MED)
 					{
