@@ -75,7 +75,7 @@ public class VolcanicMinePlugin extends Plugin
 	private static final int LAVA_ID = 30997;
 	private static final int LAVA_BEAST_ATTACK_RANGE = 1400;
 	private static final int GAS_CHAMBER_ROCK_ID = 31045;
-	public static final int GAS_CHAMBER_NO_ROCK_ID = 31046;
+	private static final int GAS_CHAMBER_NO_ROCK_ID = 31046;
 	private static final int GAS_CHAMBER_ROCK_RESPAWN_TIMER = 15;
 	private static final String LAVA_BEAST = "Lava beast";
 	private static final Pattern coltagPattern = Pattern.compile("((<col=([0-f]){6}>)|(<\\/col>))");
