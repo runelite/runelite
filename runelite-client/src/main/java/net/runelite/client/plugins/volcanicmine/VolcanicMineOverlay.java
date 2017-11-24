@@ -155,17 +155,15 @@ public class VolcanicMineOverlay extends Overlay
 	{
 		if (config.optimalPaths() && !plugin.getObjectTimerMap().containsKey(tile))
 		{
-			Point localLoc = tile.getLocalLocation();
-			Point tempLoc = Perspective.localToWorld(client, localLoc);
-			Point worldLoc = new Point(tempLoc.getX() + localLoc.getX(), tempLoc.getY() + localLoc.getY());
+			Point worldLoc = tile.getWorldLocation();
 			if (client.getLocalPlayer().getWorldLocation().distanceTo(worldLoc) > MAX_DISTANCE)
 			{
 				return;
 			}
+
 			if (OptimalPaths.isOptimalPathTile(worldLoc))
 			{
-				//skipping localtilse and use localLoc instead may seem logical but it didn't work for me. for some reason the locallocation needs to go through localToWorld and worldToLocal.
-				Point localTile = Perspective.worldToLocal(client, worldLoc);
+				Point localTile = tile.getLocalLocation();
 				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 				if (poly != null)
@@ -175,8 +173,7 @@ public class VolcanicMineOverlay extends Overlay
 			}
 			else if (OptimalPaths.isBoulderRangeTile(worldLoc))
 			{
-				Point localTile = Perspective.worldToLocal(client, worldLoc);
-				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				Point localTile = tile.getLocalLocation();
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 				if (poly != null)
 				{

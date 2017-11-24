@@ -23,16 +23,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.volcanicmine;
+
 import net.runelite.api.Point;
 
-public class OptimalPaths
+class OptimalPaths
 {
-	//array over enum because enum.values is reflection which isnt ideal in this case. besides the entries wont be used individually
+	private static final int INSTANCE_SIZE = 192;
 
-	private final static int INSTANCE_SIZE = 192;
-	public final static Point[] optimalPath = new Point[]
+	private static final Point[] OPTIMAL_PATH = new Point[]
 	{
 		new Point(161, 145),
 		new Point(161, 144),
@@ -70,7 +69,7 @@ public class OptimalPaths
 		new Point(149, 76)
 	};
 
-	public final static Point[] boulderRange = new Point[]
+	public final static Point[] BOUNDER_RANGE = new Point[]
 	{
 		new Point(162, 123),
 		new Point(161, 152),
@@ -105,9 +104,11 @@ public class OptimalPaths
 	//only use global location
 	public static boolean isOptimalPathTile(Point point)
 	{
-		for (Point p : optimalPath)
+		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
+
+		for (Point p : OPTIMAL_PATH)
 		{
-			if (new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE).equals(p))
+			if (instanceLocation.equals(p))
 			{
 				return true;
 			}
@@ -118,9 +119,11 @@ public class OptimalPaths
 	//only use global location
 	public static boolean isBoulderRangeTile(Point point)
 	{
-		for (Point p : boulderRange)
+		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
+
+		for (Point p : BOUNDER_RANGE)
 		{
-			if (new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE).equals(p))
+			if (instanceLocation.equals(p))
 			{
 				return true;
 			}
