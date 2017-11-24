@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.volcanicminehelper;
+package net.runelite.client.plugins.volcanicmine;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
@@ -67,13 +67,16 @@ import net.runelite.api.queries.NPCQuery;
 @PluginDescriptor(
 	name = "Volcanic mine helper"
 )
-public class VolcanicMineHelperPlugin extends Plugin
+public class VolcanicMinePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMineHelperPlugin.class);
+	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 	private static final int LAVA_ID = 30997;
 	private static final int LAVA_BEAST_ATTACK_RANGE = 1400;
+	private static final int GAS_CHAMBER_ROCK_ID = 31045;
+	private static final int GAS_CHAMBER_NO_ROCK_ID = 31046;
+	private static final int GAS_CHAMBER_ROCK_RESPAWN_TIMER = 15;
 	private static final String LAVA_BEAST = "Lava beast";
 	private static final Pattern coltagPattern = Pattern.compile("((<col=([0-f]){6}>)|(<\\/col>))");
 
@@ -263,7 +266,7 @@ public class VolcanicMineHelperPlugin extends Plugin
 	private boolean isInside()
 	{
 		Widget widget = client.getWidget(WidgetInfo.VOLCANICMINE_GENERAL_INFOBOX_GROUP);
-		return widget != null && !widget.isHidden();
+		return widget != null && !widget.isHidden() && client.getPlane() == 1;
 	}
 
 	private boolean lavaBeastInRange(Player player)
@@ -322,12 +325,12 @@ public class VolcanicMineHelperPlugin extends Plugin
 					continue;
 				}
 
-				lookForPlatforms(tile, player);
+				lookForGameObjects(tile, player);
 			}
 		}
 	}
 
-	private void lookForPlatforms(Tile tile, Player player)
+	private void lookForGameObjects(Tile tile, Player player)
 	{
 		Point playerLocation = player.getLocalLocation();
 		GameObject[] gameObjects = tile.getGameObjects();
@@ -342,27 +345,36 @@ public class VolcanicMineHelperPlugin extends Plugin
 			{
 				continue;
 			}
-
-			LavaPlatform lavaPlatform = LavaPlatform.fromId(gameObject.getId());
 			Point objectLocation = gameObject.getLocalLocation();
 
-			if (lavaPlatform == null
-				|| abs(playerLocation.getX() - objectLocation.getX()) > MAX_DISTANCE
-				|| abs(playerLocation.getY() - objectLocation.getY()) > MAX_DISTANCE)
+			if (abs(playerLocation.getX() - objectLocation.getX()) < MAX_DISTANCE
+					&& abs(playerLocation.getY() - objectLocation.getY()) < MAX_DISTANCE)
 			{
-				continue;
-			}
+				LavaPlatform lavaPlatform = LavaPlatform.fromId(gameObject.getId());
+				Instant now = Instant.now();
+				Instant vanishTime;
 
-			Instant now = Instant.now();
-			Instant vanishTime = now.plus(lavaPlatform.getTime());
-
-			Instant returnInstant = objectTimerMap.putIfAbsent(tile, vanishTime);
-			if (returnInstant != null)
-			{
-				if (returnInstant.isBefore(now)
-					|| vanishTime.isBefore(returnInstant))
+				if (lavaPlatform != null)
 				{
-					objectTimerMap.replace(tile, vanishTime);
+					vanishTime = now.plus(lavaPlatform.getTime());
+				}
+				else if (gameObject.getId() == GAS_CHAMBER_NO_ROCK_ID)
+				{
+					vanishTime = now.plus(Duration.ofSeconds(GAS_CHAMBER_ROCK_RESPAWN_TIMER));
+				}
+				else
+				{
+					continue;
+				}
+
+				Instant returnInstant = objectTimerMap.putIfAbsent(tile, vanishTime);
+				if (returnInstant != null)
+				{
+					if (returnInstant.isBefore(now)
+							|| vanishTime.isBefore(returnInstant))
+					{
+						objectTimerMap.replace(tile, vanishTime);
+					}
 				}
 			}
 		}
@@ -373,7 +385,7 @@ public class VolcanicMineHelperPlugin extends Plugin
 		//remove the timers which hit 0
 		objectTimerMap = objectTimerMap.entrySet().stream()
 			.filter(entry -> Instant.now().isBefore(entry.getValue()))
-			.filter(v -> v.getKey().getGameObjects() != null && v.getKey().getGameObjects()[0] != null && v.getKey().getGameObjects()[0].getId() != LAVA_ID)
+			.filter(v -> v.getKey().getGameObjects() != null && v.getKey().getGameObjects()[0] != null && v.getKey().getGameObjects()[0].getId() != LAVA_ID && v.getKey().getGameObjects()[0].getId() != GAS_CHAMBER_ROCK_ID)
 			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 	}
 

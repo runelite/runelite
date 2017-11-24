@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.volcanicminehelper;
+package net.runelite.client.plugins.volcanicmine;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
@@ -94,6 +94,28 @@ public interface VolcanicMineConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "timerOverlay",
+		name = "timer overlay",
+		description = "The overlay showing the timers"
+	)
+	default boolean timerOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "optimalPathOverlay",
+		name = "show optimal Paths",
+		description = "The overlay showing the optimal paths"
+	)
+	default boolean optimalPaths()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "platformColorLow",
 		name = "PlatformColor low risk",
 		description = "Configures the color for the platformOverlay"
@@ -104,7 +126,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "platformColorMed",
 		name = "PlatformColor med risk",
 		description = "Configures the color for the platformOverlay"
@@ -115,7 +137,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "platformColorHigh",
 		name = "PlatformColor high risk",
 		description = "Configures the color for the platformOverlay"
@@ -126,7 +148,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "platformTimerThreshold",
 		name = "Platform timer notification threshold",
 		description = "At what time does the plugin notify (in seconds), set to -1 to disable"
@@ -137,7 +159,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "timeLeftThreshold",
 		name = "Time left threshold",
 		description = "At what time does the plugin notify (in seconds), set to -1 to disable"
@@ -148,7 +170,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 12,
 		keyName = "stabilityThreshold",
 		name = "Stability threshold",
 		description = "At what stability does the plugin notify (in percentage), set to -1 to disable"
@@ -159,7 +181,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 13,
 		keyName = "prayer",
 		name = "Prayer warning",
 		description = "Protect prayer warning setting"
@@ -170,7 +192,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 14,
 		keyName = "hotTiles",
 		name = "Hot Tile warning",
 		description = "Hot tile warning setting"
@@ -181,7 +203,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 15,
 		keyName = "timerWarning",
 		name = "timer warning",
 		description = "timer low warning setting"
@@ -192,7 +214,7 @@ public interface VolcanicMineConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 16,
 		keyName = "stabilityWarning",
 		name = "stability warning",
 		description = "stability low warning setting"
