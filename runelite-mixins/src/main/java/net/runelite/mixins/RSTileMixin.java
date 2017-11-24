@@ -42,14 +42,22 @@ public abstract class RSTileMixin implements RSTile
 	@Override
 	public Point getWorldLocation()
 	{
-		Point localLocation = getLocalLocation();
-		return Perspective.localToWorld(client, localLocation);
+		Point regionLocation = getRegionLocation();
+		return Perspective.regionToWorld(client, regionLocation);
 	}
 
 	@Inject
 	@Override
-	public Point getLocalLocation()
+	public Point getRegionLocation()
 	{
 		return new Point(getX(), getY());
+	}
+
+	@Inject
+	@Override
+	public Point getLocalLoction()
+	{
+		Point regionLocation = getRegionLocation();
+		return Perspective.regionToLocal(client, regionLocation);
 	}
 }
