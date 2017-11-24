@@ -4,31 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ch")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("qd")
-   static short[] field1454;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lks;"
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1011803207
    )
-   static IndexedSprite field1453;
-   @ObfuscatedName("cf")
+   public static int field1464;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "[Lbn;"
+      signature = "[Lbh;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 714192897
+      intValue = -445922717
    )
    @Export("length")
    int length;
@@ -37,10 +29,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbn;",
-      garbageValue = "-1129286777"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbh;",
+      garbageValue = "-81"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -68,51 +60,86 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)Lbn;",
-      garbageValue = "-1597872251"
+      signature = "(IB)Lbh;",
+      garbageValue = "-76"
    )
-   MessageNode method1847(int var1) {
+   MessageNode method1921(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "2016403088"
+      garbageValue = "899003134"
    )
-   int method1846() {
+   int method1916() {
       return this.length;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "-74"
+      signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+      garbageValue = "0"
    )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class182.field2505) {
-         class17.field289 += class182.field2505 - var0;
+   public static String method1918(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
+            if(var4 == ' ') {
+               var2.append('+');
+            } else {
+               byte var5 = ItemContainer.method1102(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
       }
 
-      class182.field2505 = var0;
-      return var0 + class17.field289;
+      return var2.toString();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgu;ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-2108222027"
+      signature = "(IIII)I",
+      garbageValue = "-1811706787"
    )
-   static String method1852(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
+   static final int method1923(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
       }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 }

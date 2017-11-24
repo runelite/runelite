@@ -4,58 +4,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cd")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("pi")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -554470679
+      intValue = 255167129
    )
-   static int field1209;
-   @ObfuscatedName("k")
+   int field1206;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1377194971
-   )
-   static int field1208;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1518985687
-   )
-   int field1207;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1707602189
+      intValue = -890855621
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1963748325
+      intValue = 1138941551
    )
    @Export("health")
    int health;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1321647439
+      intValue = -1743110791
    )
-   int field1210;
+   int field1208;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field1207 = var1;
+      this.field1206 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1210 = var4;
+      this.field1208 = var4;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "23"
+      signature = "(IIIII)V",
+      garbageValue = "-313935265"
    )
-   void method1514(int var1, int var2, int var3, int var4) {
-      this.field1207 = var1;
+   void method1591(int var1, int var2, int var3, int var4) {
+      this.field1206 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1210 = var4;
+      this.field1208 = var4;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-23"
+   )
+   public static void method1590() {
+      class289.field3806 = new CombatInfoList();
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1457515005"
+   )
+   static final int method1592(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
+      }
    }
 }

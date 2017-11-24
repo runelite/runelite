@@ -1,30 +1,49 @@
-import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("ef")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("t")
-   static ScheduledExecutorService field2035;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -796082737
+      intValue = 282292665
    )
    @Export("x")
    int x;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1454597047
+      intValue = 1100016869
    )
    @Export("y")
    int y;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -651486251
+      intValue = -237826729
    )
    @Export("z")
    int z;
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-339386545"
+   )
+   public static void method2996() {
+      Object var0 = class243.field3309;
+      synchronized(class243.field3309) {
+         if(class243.field3308 != 0) {
+            class243.field3308 = 1;
+
+            try {
+               class243.field3309.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
+         }
+
+      }
+   }
 }

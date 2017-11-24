@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("il")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lid;"
    )
    @Export("varbit_ref")
    static IndexDataBase varbit_ref;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgx;"
    )
    @Export("varbits")
-   static NodeCache varbits;
-   @ObfuscatedName("r")
+   public static NodeCache varbits;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1193583161
+      intValue = -654770545
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -2092595029
+      intValue = -843777439
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1544369675
+      intValue = -111709351
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,10 +42,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "1110030908"
+      signature = "(Lfr;I)V",
+      garbageValue = "918237428"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -55,16 +55,16 @@ public class Varbit extends CacheableNode {
             return;
          }
 
-         this.method4423(var1, var2);
+         this.method4579(var1, var2);
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lfs;IB)V",
-      garbageValue = "-99"
+      signature = "(Lfr;II)V",
+      garbageValue = "1685092790"
    )
-   void method4423(Buffer var1, int var2) {
+   void method4579(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -73,21 +73,14 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lij;IB)Lks;",
-      garbageValue = "-16"
+      signature = "(S)V",
+      garbageValue = "255"
    )
-   public static IndexedSprite method4421(IndexDataBase var0, int var1) {
-      byte[] var3 = var0.method4114(var1);
-      boolean var2;
-      if(var3 == null) {
-         var2 = false;
-      } else {
-         PendingSpawn.decodeSprite(var3);
-         var2 = true;
-      }
-
-      return !var2?null:class272.method4852();
+   public static void method4577() {
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
    }
 }

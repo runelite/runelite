@@ -4,79 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("be")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("h")
+   @ObfuscatedName("bb")
    @ObfuscatedGetter(
-      intValue = -1690220799
+      intValue = 327012135
    )
-   static int field788;
-   @ObfuscatedName("dk")
-   @ObfuscatedGetter(
-      intValue = -2015977795
-   )
-   static int field790;
-   @ObfuscatedName("b")
+   static int field816;
+   @ObfuscatedName("d")
    @Export("name")
    String name;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @Export("previousName")
    String previousName;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "2100386000"
+      signature = "(B)V",
+      garbageValue = "0"
    )
-   @Export("toByteArray")
-   public static byte[] toByteArray(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
-         }
-      } else if(var0 instanceof AbstractByteBuffer) {
-         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
-         return var2.get();
-      } else {
-         throw new IllegalArgumentException();
-      }
+   public static void method1126() {
+      class210.field2595.method3863();
+      class210.field2598 = 1;
+      class3.field22 = null;
    }
 
-   @ObfuscatedName("fz")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lbd;III)V",
-      garbageValue = "1693724909"
+      signature = "(III)I",
+      garbageValue = "2146752135"
    )
-   static void method1045(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = class90.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field1144 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field1188 = 0;
-         }
-
-         if(var3 == 2) {
-            var0.field1188 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || class90.getAnimation(var1).forcedPriority >= class90.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field1144 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field1188 = 0;
-         var0.field1203 = var0.queueSize;
-      }
-
+   public static int method1125(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
    }
 }

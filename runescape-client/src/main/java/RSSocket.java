@@ -9,64 +9,64 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fa")
 @Implements("RSSocket")
 public final class RSSocket implements Runnable {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("inputStream")
    InputStream inputStream;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @Export("outputStream")
    OutputStream outputStream;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @Export("socket")
    Socket socket;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @Export("closed")
    boolean closed;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Leq;"
+      signature = "Lel;"
    )
    @Export("manager")
    Signlink manager;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lex;"
    )
    @Export("socketThread")
    Task socketThread;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @Export("outbuffer")
    byte[] outbuffer;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1113059485
+      intValue = -434084447
    )
    @Export("streamOffset")
    int streamOffset;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -193026283
+      intValue = -918097731
    )
    @Export("outbufLen")
    int outbufLen;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @Export("throwException")
    boolean throwException;
-   @ObfuscatedName("d")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1043292193
+      intValue = 1326327729
    )
-   final int field2175;
-   @ObfuscatedName("o")
+   final int field2172;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1844046861
+      intValue = -636044789
    )
-   final int field2174;
+   final int field2178;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/net/Socket;Leq;I)V"
+      signature = "(Ljava/net/Socket;Lel;I)V"
    )
    public RSSocket(Socket var1, Signlink var2, int var3) throws IOException {
       this.closed = false;
@@ -75,8 +75,8 @@ public final class RSSocket implements Runnable {
       this.throwException = false;
       this.manager = var2;
       this.socket = var1;
-      this.field2175 = var3;
-      this.field2174 = var3 - 100;
+      this.field2172 = var3;
+      this.field2178 = var3 - 100;
       this.socket.setSoTimeout(30000);
       this.socket.setTcpNoDelay(true);
       this.socket.setReceiveBufferSize(65536);
@@ -85,10 +85,10 @@ public final class RSSocket implements Runnable {
       this.outputStream = this.socket.getOutputStream();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2042172724"
+      signature = "(S)V",
+      garbageValue = "734"
    )
    @Export("close")
    public void close() {
@@ -100,7 +100,7 @@ public final class RSSocket implements Runnable {
 
          if(this.socketThread != null) {
             while(this.socketThread.status == 0) {
-               GZipDecompressor.method3129(1L);
+               BaseVarType.method12(1L);
             }
 
             if(this.socketThread.status == 1) {
@@ -116,32 +116,32 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-276399181"
+      garbageValue = "1914910833"
    )
    @Export("readByte")
    public int readByte() throws IOException {
       return this.closed?0:this.inputStream.read();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "2000"
+      signature = "(I)I",
+      garbageValue = "-2140883812"
    )
    @Export("available")
    public int available() throws IOException {
       return this.closed?0:this.inputStream.available();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(IB)Z",
-      garbageValue = "112"
+      garbageValue = "-127"
    )
-   public boolean method3003(int var1) throws IOException {
+   public boolean method3119(int var1) throws IOException {
       if(this.closed) {
          return false;
       } else {
@@ -153,10 +153,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-278554636"
+      garbageValue = "-9304624"
    )
    @Export("read")
    public void read(byte[] var1, int var2, int var3) throws IOException {
@@ -174,10 +174,10 @@ public final class RSSocket implements Runnable {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-1484328630"
+      garbageValue = "1239279461"
    )
    @Export("queueForWrite")
    public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
@@ -187,14 +187,14 @@ public final class RSSocket implements Runnable {
             throw new IOException();
          } else {
             if(this.outbuffer == null) {
-               this.outbuffer = new byte[this.field2175];
+               this.outbuffer = new byte[this.field2172];
             }
 
             synchronized(this) {
                for(int var5 = 0; var5 < var3; ++var5) {
                   this.outbuffer[this.outbufLen] = var1[var5 + var2];
-                  this.outbufLen = (this.outbufLen + 1) % this.field2175;
-                  if((this.streamOffset + this.field2174) % this.field2175 == this.outbufLen) {
+                  this.outbufLen = (this.outbufLen + 1) % this.field2172;
+                  if((this.streamOffset + this.field2178) % this.field2172 == this.outbufLen) {
                      throw new IOException();
                   }
                }
@@ -216,106 +216,74 @@ public final class RSSocket implements Runnable {
    public void run() {
       try {
          while(true) {
-            int var1;
-            int var2;
-            synchronized(this) {
-               if(this.streamOffset == this.outbufLen) {
-                  if(this.closed) {
-                     break;
+            label79: {
+               int var1;
+               int var2;
+               synchronized(this) {
+                  if(this.streamOffset == this.outbufLen) {
+                     if(this.closed) {
+                        break label79;
+                     }
+
+                     try {
+                        this.wait();
+                     } catch (InterruptedException var10) {
+                        ;
+                     }
                   }
 
-                  try {
-                     this.wait();
-                  } catch (InterruptedException var10) {
-                     ;
+                  var2 = this.streamOffset;
+                  if(this.outbufLen >= this.streamOffset) {
+                     var1 = this.outbufLen - this.streamOffset;
+                  } else {
+                     var1 = this.field2172 - this.streamOffset;
                   }
                }
 
-               var2 = this.streamOffset;
-               if(this.outbufLen >= this.streamOffset) {
-                  var1 = this.outbufLen - this.streamOffset;
-               } else {
-                  var1 = this.field2175 - this.streamOffset;
+               if(var1 <= 0) {
+                  continue;
                }
-            }
 
-            if(var1 > 0) {
                try {
                   this.outputStream.write(this.outbuffer, var2, var1);
                } catch (IOException var9) {
                   this.throwException = true;
                }
 
-               this.streamOffset = (var1 + this.streamOffset) % this.field2175;
+               this.streamOffset = (var1 + this.streamOffset) % this.field2172;
 
                try {
-                  if(this.streamOffset == this.outbufLen) {
+                  if(this.outbufLen == this.streamOffset) {
                      this.outputStream.flush();
                   }
                } catch (IOException var8) {
                   this.throwException = true;
                }
-            }
-         }
-
-         try {
-            if(this.inputStream != null) {
-               this.inputStream.close();
+               continue;
             }
 
-            if(this.outputStream != null) {
-               this.outputStream.close();
-            }
-
-            if(this.socket != null) {
-               this.socket.close();
-            }
-         } catch (IOException var7) {
-            ;
-         }
-
-         this.outbuffer = null;
-      } catch (Exception var12) {
-         class48.method690((String)null, var12);
-      }
-
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "0"
-   )
-   public static String method3027(String var0) {
-      int var1 = var0.length();
-      char[] var2 = new char[var1];
-      byte var3 = 2;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         char var5 = var0.charAt(var4);
-         if(var3 == 0) {
-            var5 = Character.toLowerCase(var5);
-         } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            var5 = class268.method4746(var5);
-         }
-
-         if(Character.isLetter(var5)) {
-            var3 = 0;
-         } else if(var5 != '.' && var5 != '?' && var5 != '!') {
-            if(Character.isSpaceChar(var5)) {
-               if(var3 != 2) {
-                  var3 = 1;
+            try {
+               if(this.inputStream != null) {
+                  this.inputStream.close();
                }
-            } else {
-               var3 = 1;
-            }
-         } else {
-            var3 = 2;
-         }
 
-         var2[var4] = var5;
+               if(this.outputStream != null) {
+                  this.outputStream.close();
+               }
+
+               if(this.socket != null) {
+                  this.socket.close();
+               }
+            } catch (IOException var7) {
+               ;
+            }
+
+            this.outbuffer = null;
+            break;
+         }
+      } catch (Exception var12) {
+         Item.method1829((String)null, var12);
       }
 
-      return new String(var2);
    }
 }

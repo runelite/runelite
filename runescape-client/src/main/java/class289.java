@@ -1,22 +1,23 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kv")
+@ObfuscatedName("kk")
 public class class289 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgl;"
    )
-   public static CombatInfoList field3803;
-   @ObfuscatedName("aa")
-   @Export("clientInstance")
-   @ObfuscatedSignature(
-      signature = "Lclient;"
+   static CombatInfoList field3806;
+   @ObfuscatedName("gh")
+   @ObfuscatedGetter(
+      intValue = 1589273571
    )
-   static Client clientInstance;
+   @Export("cameraY")
+   static int cameraY;
 
    static {
-      field3803 = new CombatInfoList();
+      field3806 = new CombatInfoList();
    }
 }

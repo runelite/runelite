@@ -1,25 +1,25 @@
+import java.awt.FontMetrics;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ej")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("bs")
+   @ObfuscatedName("c")
+   static int[] field2044;
+   @ObfuscatedName("aq")
+   static FontMetrics field2045;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   static IndexedSprite[] field2040;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "[Len;"
+      signature = "[Lep;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lij;Lij;IZ)V"
+      signature = "(Lid;Lid;IZ)V"
    )
    Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
@@ -56,102 +56,58 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1305978530"
+      garbageValue = "-2002573384"
    )
-   public boolean method2874(int var1) {
+   public boolean method2997(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("kp")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1552585542"
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-1481683381"
    )
-   static void method2881() {
-      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.field593[186] = 57;
-         KeyFocusListener.field593[187] = 27;
-         KeyFocusListener.field593[188] = 71;
-         KeyFocusListener.field593[189] = 26;
-         KeyFocusListener.field593[190] = 72;
-         KeyFocusListener.field593[191] = 73;
-         KeyFocusListener.field593[192] = 58;
-         KeyFocusListener.field593[219] = 42;
-         KeyFocusListener.field593[220] = 74;
-         KeyFocusListener.field593[221] = 43;
-         KeyFocusListener.field593[222] = 59;
-         KeyFocusListener.field593[223] = 28;
-      } else {
-         KeyFocusListener.field593[44] = 71;
-         KeyFocusListener.field593[45] = 26;
-         KeyFocusListener.field593[46] = 72;
-         KeyFocusListener.field593[47] = 73;
-         KeyFocusListener.field593[59] = 57;
-         KeyFocusListener.field593[61] = 27;
-         KeyFocusListener.field593[91] = 42;
-         KeyFocusListener.field593[92] = 74;
-         KeyFocusListener.field593[93] = 43;
-         KeyFocusListener.field593[192] = 28;
-         KeyFocusListener.field593[222] = 58;
-         KeyFocusListener.field593[520] = 59;
-      }
+   static void method3000(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
 
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;S)Z",
-      garbageValue = "17099"
-   )
-   public static boolean method2880(CharSequence var0) {
-      return class163.method3077(var0, 10, true);
-   }
-
-   @ObfuscatedName("io")
-   @ObfuscatedSignature(
-      signature = "(Lhx;IIIIIIB)V",
-      garbageValue = "-1"
-   )
-   static final void method2879(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(Client.field927) {
-         Client.field928 = 32;
-      } else {
-         Client.field928 = 0;
-      }
-
-      Client.field927 = false;
-      int var7;
-      if(MouseInput.field689 == 1 || !Signlink.field2142 && MouseInput.field689 == 4) {
-         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
-            var0.scrollY -= 4;
-            ScriptEvent.method1038(var0);
-         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
-            var0.scrollY += 4;
-            ScriptEvent.method1038(var0);
-         } else if(var5 >= var1 - Client.field928 && var5 < Client.field928 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-            var7 = var3 * (var3 - 32) / var4;
-            if(var7 < 8) {
-               var7 = 8;
+      for(int var4 = 0; var4 < ItemComposition.field3559; ++var4) {
+         ItemComposition var5 = WorldMapType2.getItemDefinition(var4);
+         if((!var1 || var5.field3594) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               class229.field2911 = -1;
+               class51.field626 = null;
+               return;
             }
 
-            int var8 = var6 - var2 - 16 - var7 / 2;
-            int var9 = var3 - 32 - var7;
-            var0.scrollY = var8 * (var4 - var3) / var9;
-            ScriptEvent.method1038(var0);
-            Client.field927 = true;
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
          }
       }
 
-      if(Client.field985 != 0) {
-         var7 = var0.width;
-         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
-            var0.scrollY += Client.field985 * 45;
-            ScriptEvent.method1038(var0);
-         }
+      class51.field626 = var2;
+      class20.field321 = 0;
+      class229.field2911 = var3;
+      String[] var8 = new String[class229.field2911];
+
+      for(int var9 = 0; var9 < class229.field2911; ++var9) {
+         var8[var9] = WorldMapType2.getItemDefinition(var2[var9]).name;
       }
 
+      short[] var10 = class51.field626;
+      Script.method1908(var8, var10, 0, var8.length - 1);
    }
 }

@@ -4,33 +4,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ih")
+@ObfuscatedName("ia")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lid;"
    )
-   public static IndexDataBase field3336;
-   @ObfuscatedName("s")
+   static IndexDataBase field3355;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgx;"
    )
    @Export("inventoryCache")
-   public static NodeCache inventoryCache;
-   @ObfuscatedName("j")
+   static NodeCache inventoryCache;
+   @ObfuscatedName("bz")
+   static String field3356;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1546624351
-   )
-   static int field3334;
-   @ObfuscatedName("eo")
-   @ObfuscatedSignature(
-      signature = "Lef;"
-   )
-   static class148 field3331;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1807433875
+      intValue = -39910121
    )
    @Export("size")
    public int size;
@@ -39,33 +31,33 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   public InvType() {
+   InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;B)V",
-      garbageValue = "-120"
+      signature = "(Lfr;I)V",
+      garbageValue = "-1283666949"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4252(var1, var2);
+         this.method4424(var1, var2);
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lfs;II)V",
-      garbageValue = "148306162"
+      signature = "(Lfr;II)V",
+      garbageValue = "2033793817"
    )
-   void method4252(Buffer var1, int var2) {
+   void method4424(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }

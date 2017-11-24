@@ -4,36 +4,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ii")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("t")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1880358887
+      intValue = 2052755499
    )
-   static int field3259;
-   @ObfuscatedName("bb")
+   int field3282;
+   @ObfuscatedName("x")
+   byte[] field3280;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   static class239 field3262;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -300330105
-   )
-   int field3260;
-   @ObfuscatedName("s")
-   public byte[] field3258;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lfw;"
+      signature = "Lff;"
    )
    @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("g")
+   IndexFile index;
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Liv;"
    )
    @Export("data")
-   public IndexData data;
+   IndexData data;
 }

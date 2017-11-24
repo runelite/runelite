@@ -3,166 +3,190 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ak")
+@ObfuscatedName("ax")
 public final class class29 {
-   @ObfuscatedName("dn")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("jm")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   static Widget field394;
-   @ObfuscatedName("b")
+   @ObfuscatedName("bm")
    @ObfuscatedGetter(
-      intValue = 620611889
+      intValue = -166725969
+   )
+   static int field397;
+   @ObfuscatedName("fg")
+   static byte[][] field400;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1290607391
    )
    int field395;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1779791055
+      intValue = -1893640913
    )
-   int field389;
-   @ObfuscatedName("r")
+   int field399;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1429560037
+      intValue = 1524167779
    )
-   int field391;
-   @ObfuscatedName("g")
+   int field401;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -275117927
+      intValue = -19787275
    )
-   int field390;
+   int field398;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Laj;"
+      signature = "Lan;"
    )
    final class41 this$0;
 
    @ObfuscatedSignature(
-      signature = "(Laj;)V"
+      signature = "(Lan;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-755231269"
+      signature = "(Lid;Lid;B)I",
+      garbageValue = "2"
    )
-   static void method220() {
-      Object var0 = class243.field3290;
-      synchronized(class243.field3290) {
-         if(class243.field3288 == 0) {
-            class243.field3287 = new Thread(new class243());
-            class243.field3287.setDaemon(true);
-            class243.field3287.start();
-            class243.field3287.setPriority(5);
-         }
-
-         class243.field3288 = 600;
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIIIS)V",
-      garbageValue = "-3858"
-   )
-   static void method218(int var0, int var1, int var2, int var3) {
-      for(class81 var4 = (class81)class81.field1240.getFront(); var4 != null; var4 = (class81)class81.field1240.getNext()) {
-         if(var4.field1243 != -1 || var4.field1247 != null) {
-            int var5 = 0;
-            if(var1 > var4.field1242) {
-               var5 += var1 - var4.field1242;
-            } else if(var1 < var4.field1248) {
-               var5 += var4.field1248 - var1;
-            }
-
-            if(var2 > var4.field1241) {
-               var5 += var2 - var4.field1241;
-            } else if(var2 < var4.field1252) {
-               var5 += var4.field1252 - var2;
-            }
-
-            if(var5 - 64 <= var4.field1238 && Client.field1051 != 0 && var0 == var4.field1239) {
-               var5 -= 64;
-               if(var5 < 0) {
-                  var5 = 0;
-               }
-
-               int var6 = (var4.field1238 - var5) * Client.field1051 / var4.field1238;
-               if(var4.field1244 == null) {
-                  if(var4.field1243 >= 0) {
-                     SoundEffect var7 = SoundEffect.getTrack(class23.field326, var4.field1243, 0);
-                     if(var7 != null) {
-                        class106 var8 = var7.method1936().method1991(class39.field497);
-                        class116 var9 = class116.method2145(var8, 100, var6);
-                        var9.method2191(-1);
-                        Client.field1087.method1914(var9);
-                        var4.field1244 = var9;
-                     }
-                  }
-               } else {
-                  var4.field1244.method2135(var6);
-               }
-
-               if(var4.field1249 == null) {
-                  if(var4.field1247 != null && (var4.field1237 -= var3) <= 0) {
-                     int var11 = (int)(Math.random() * (double)var4.field1247.length);
-                     SoundEffect var12 = SoundEffect.getTrack(class23.field326, var4.field1247[var11], 0);
-                     if(var12 != null) {
-                        class106 var13 = var12.method1936().method1991(class39.field497);
-                        class116 var10 = class116.method2145(var13, 100, var6);
-                        var10.method2191(0);
-                        Client.field1087.method1914(var10);
-                        var4.field1249 = var10;
-                        var4.field1237 = var4.field1245 + (int)(Math.random() * (double)(var4.field1246 - var4.field1245));
-                     }
-                  }
-               } else {
-                  var4.field1249.method2135(var6);
-                  if(!var4.field1249.linked()) {
-                     var4.field1249 = null;
-                  }
-               }
-            } else {
-               if(var4.field1244 != null) {
-                  Client.field1087.method1880(var4.field1244);
-                  var4.field1244 = null;
-               }
-
-               if(var4.field1249 != null) {
-                  Client.field1087.method1880(var4.field1249);
-                  var4.field1249 = null;
-               }
-            }
-         }
+   static int method242(IndexDataBase var0, IndexDataBase var1) {
+      int var2 = 0;
+      if(var0.method4285("title.jpg", "")) {
+         ++var2;
       }
 
+      if(var1.method4285("logo", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("logo_deadman_mode", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("titlebox", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("titlebutton", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("runes", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("title_mute", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("options_radio_buttons,0", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("options_radio_buttons,2", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("options_radio_buttons,4", "")) {
+         ++var2;
+      }
+
+      if(var1.method4285("options_radio_buttons,6", "")) {
+         ++var2;
+      }
+
+      var1.method4285("sl_back", "");
+      var1.method4285("sl_flags", "");
+      var1.method4285("sl_arrows", "");
+      var1.method4285("sl_stars", "");
+      var1.method4285("sl_button", "");
+      return var2;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "-18872"
+      signature = "(Lfr;Ljava/lang/String;B)I",
+      garbageValue = "30"
    )
-   public static boolean method219() {
-      return class210.field2585 != 0?true:class210.field2587.method3819();
+   public static int method244(Buffer var0, String var1) {
+      int var2 = var0.offset;
+      byte[] var3 = class239.method4260(var1);
+      var0.putShortSmart(var3.length);
+      var0.offset += class272.field3721.compress(var3, 0, var3.length, var0.payload, var0.offset);
+      return var0.offset - var2;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lij;Ljava/lang/String;Ljava/lang/String;I)Lkb;",
-      garbageValue = "1920428681"
+      signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+      garbageValue = "108"
    )
-   public static SpritePixels method221(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return class163.method3082(var0, var3, var4);
+   public static String method245(CharSequence var0) {
+      long var3 = 0L;
+      int var5 = var0.length();
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         var3 *= 37L;
+         char var7 = var0.charAt(var6);
+         if(var7 >= 'A' && var7 <= 'Z') {
+            var3 += (long)(var7 + 1 - 65);
+         } else if(var7 >= 'a' && var7 <= 'z') {
+            var3 += (long)(var7 + 1 - 97);
+         } else if(var7 >= '0' && var7 <= '9') {
+            var3 += (long)(var7 + 27 - 48);
+         }
+
+         if(var3 >= 177917621779460413L) {
+            break;
+         }
+      }
+
+      while(var3 % 37L == 0L && var3 != 0L) {
+         var3 /= 37L;
+      }
+
+      String var8 = class182.method3529(var3);
+      if(var8 == null) {
+         var8 = "";
+      }
+
+      return var8;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)[Ljn;",
+      garbageValue = "-1560291979"
+   )
+   static class264[] method243() {
+      return new class264[]{class264.field3606, class264.field3612, class264.field3607};
+   }
+
+   @ObfuscatedName("ji")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "295297617"
+   )
+   @Export("isIgnored")
+   static boolean isIgnored(String var0) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var1 = GraphicsObject.method1726(var0, class236.field3239);
+
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(GraphicsObject.method1726(var3.name, class236.field3239))) {
+               return true;
+            }
+
+            if(var1.equalsIgnoreCase(GraphicsObject.method1726(var3.previousName, class236.field3239))) {
+               return true;
+            }
+         }
+
+         return false;
+      }
    }
 }

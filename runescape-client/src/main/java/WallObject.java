@@ -4,60 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("ev")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 745043371
+      intValue = 1808888379
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1947237693
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1117100567
+      intValue = -1987614443
    )
    @Export("y")
    int y;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1771751251
+      intValue = -1854590965
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1749495747
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1504871541
+      intValue = 1080317993
    )
    @Export("orientationB")
    int orientationB;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Leu;"
+      signature = "Les;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Leu;"
+      signature = "Les;"
    )
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 358911685
+      intValue = 18406019
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 234724397
+      intValue = 1731653373
    )
    @Export("config")
    int config;
@@ -67,12 +67,14 @@ public final class WallObject {
       this.config = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-253232753"
+      signature = "(Lid;Lid;Lid;I)V",
+      garbageValue = "-602277259"
    )
-   public static void method2872() {
-      Varbit.varbits.reset();
+   public static void method2995(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
+      Sequence.seq_ref = var0;
+      Sequence.skel_ref = var1;
+      class273.skin_ref = var2;
    }
 }

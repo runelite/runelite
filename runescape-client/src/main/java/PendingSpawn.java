@@ -4,82 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bi")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("bk")
-   static String field1139;
-   @ObfuscatedName("do")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("vorbisIndex")
-   static IndexData vorbisIndex;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -192007303
+      intValue = -61945089
    )
    @Export("level")
    int level;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -857676255
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1747003545
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 283970895
+      intValue = -786096809
    )
    @Export("y")
    int y;
-   @ObfuscatedName("x")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1550908355
+      intValue = 1150283509
    )
-   int field1133;
-   @ObfuscatedName("f")
+   @Export("type")
+   int type;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1908693387
+      intValue = -1673432669
    )
-   int field1132;
-   @ObfuscatedName("u")
+   int field1134;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 2147432269
+      intValue = -183754713
    )
-   int field1138;
+   @Export("x")
+   int x;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -466897419
+   )
+   int field1139;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1624842695
+   )
+   int field1140;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1520890741
+      intValue = 1550897371
    )
    @Export("id")
    int id;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 563702817
+      intValue = 1649279443
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -511347447
+      intValue = -105190875
    )
-   int field1136;
-   @ObfuscatedName("d")
+   int field1143;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -626664157
+      intValue = 2029538827
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1988829397
+      intValue = -1060361925
    )
    @Export("hitpoints")
    int hitpoints;
@@ -89,127 +81,101 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILhf;B)Lcx;",
-      garbageValue = "52"
+      signature = "([BIIB)Ljava/lang/String;",
+      garbageValue = "47"
    )
-   static Script method1491(int var0, class226 var1) {
-      Script var2 = (Script)Script.field1436.get((long)(var0 << 16));
-      if(var2 != null) {
-         return var2;
-      } else {
-         String var3 = String.valueOf(var0);
-         int var4 = class29.indexScripts.getFile(var3);
-         if(var4 == -1) {
-            return null;
+   public static String method1571(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+      int var5 = var1;
+
+      int var8;
+      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
+         int var7 = var0[var5++] & 255;
+         if(var7 < 128) {
+            if(var7 == 0) {
+               var8 = 65533;
+            } else {
+               var8 = var7;
+            }
+         } else if(var7 < 192) {
+            var8 = 65533;
+         } else if(var7 < 224) {
+            if(var5 < var6 && (var0[var5] & 192) == 128) {
+               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
+               if(var8 < 128) {
+                  var8 = 65533;
+               }
+            } else {
+               var8 = 65533;
+            }
+         } else if(var7 < 240) {
+            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
+               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 < 2048) {
+                  var8 = 65533;
+               }
+            } else {
+               var8 = 65533;
+            }
+         } else if(var7 < 248) {
+            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
+               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 >= 65536 && var8 <= 1114111) {
+                  var8 = 65533;
+               } else {
+                  var8 = 65533;
+               }
+            } else {
+               var8 = 65533;
+            }
          } else {
-            byte[] var5 = class29.indexScripts.method4114(var4);
-            if(var5 != null) {
-               if(var5.length <= 1) {
-                  return null;
-               }
-
-               var2 = class96.method1822(var5);
-               if(var2 != null) {
-                  Script.field1436.put(var2, (long)(var0 << 16));
-                  return var2;
-               }
-            }
-
-            return null;
+            var8 = 65533;
          }
       }
+
+      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "1579857137"
+      signature = "([BIIII[Lfb;I)V",
+      garbageValue = "-1668332820"
    )
-   @Export("decodeSprite")
-   static void decodeSprite(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      var1.offset = var0.length - 2;
-      class295.field3847 = var1.readUnsignedShort();
-      WidgetNode.field774 = new int[class295.field3847];
-      class285.offsetsY = new int[class295.field3847];
-      class295.field3848 = new int[class295.field3847];
-      class295.field3845 = new int[class295.field3847];
-      class70.spritePixels = new byte[class295.field3847][];
-      var1.offset = var0.length - 7 - class295.field3847 * 8;
-      class295.field3846 = var1.readUnsignedShort();
-      class224.field2850 = var1.readUnsignedShort();
-      int var2 = (var1.readUnsignedByte() & 255) + 1;
-
-      int var3;
-      for(var3 = 0; var3 < class295.field3847; ++var3) {
-         WidgetNode.field774[var3] = var1.readUnsignedShort();
-      }
-
-      for(var3 = 0; var3 < class295.field3847; ++var3) {
-         class285.offsetsY[var3] = var1.readUnsignedShort();
-      }
-
-      for(var3 = 0; var3 < class295.field3847; ++var3) {
-         class295.field3848[var3] = var1.readUnsignedShort();
-      }
-
-      for(var3 = 0; var3 < class295.field3847; ++var3) {
-         class295.field3845[var3] = var1.readUnsignedShort();
-      }
-
-      var1.offset = var0.length - 7 - class295.field3847 * 8 - (var2 - 1) * 3;
-      class278.field3733 = new int[var2];
-
-      for(var3 = 1; var3 < var2; ++var3) {
-         class278.field3733[var3] = var1.read24BitInt();
-         if(class278.field3733[var3] == 0) {
-            class278.field3733[var3] = 1;
+   static final void method1572(byte[] var0, int var1, int var2, int var3, int var4, CollisionData[] var5) {
+      int var7;
+      int var8;
+      for(int var6 = 0; var6 < 4; ++var6) {
+         for(var7 = 0; var7 < 64; ++var7) {
+            for(var8 = 0; var8 < 64; ++var8) {
+               if(var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
+                  var5[var6].flags[var7 + var1][var2 + var8] &= -16777217;
+               }
+            }
          }
       }
 
-      var1.offset = 0;
+      Buffer var10 = new Buffer(var0);
 
-      for(var3 = 0; var3 < class295.field3847; ++var3) {
-         int var4 = class295.field3848[var3];
-         int var5 = class295.field3845[var3];
-         int var6 = var5 * var4;
-         byte[] var7 = new byte[var6];
-         class70.spritePixels[var3] = var7;
-         int var8 = var1.readUnsignedByte();
-         int var9;
-         if(var8 == 0) {
-            for(var9 = 0; var9 < var6; ++var9) {
-               var7[var9] = var1.readByte();
-            }
-         } else if(var8 == 1) {
-            for(var9 = 0; var9 < var4; ++var9) {
-               for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var9 + var10 * var4] = var1.readByte();
-               }
+      for(var7 = 0; var7 < 4; ++var7) {
+         for(var8 = 0; var8 < 64; ++var8) {
+            for(int var9 = 0; var9 < 64; ++var9) {
+               class149.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
             }
          }
       }
 
    }
 
-   @ObfuscatedName("fo")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1020948518"
+      signature = "(IIB)Lbh;",
+      garbageValue = "109"
    )
-   static int method1494() {
-      return Client.isResized?2:1;
-   }
-
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(Lbw;II)V",
-      garbageValue = "35125449"
-   )
-   @Export("characterToScreen")
-   static final void characterToScreen(Actor var0, int var1) {
-      class168.method3096(var0.x, var0.y, var1);
+   static MessageNode method1573(int var0, int var1) {
+      ChatLineBuffer var2 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
+      return var2.method1921(var1);
    }
 }

@@ -1,66 +1,56 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ag")
 public class class37 {
+   @ObfuscatedName("lq")
+   @ObfuscatedGetter(
+      intValue = 355621363
+   )
+   static int field488;
+   @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "[Lkl;"
+   )
+   static IndexedSprite[] field487;
+   @ObfuscatedName("js")
+   @ObfuscatedGetter(
+      intValue = 1317363531
+   )
+   static int field489;
+
    @ObfuscatedName("x")
-   static byte[][][] field474;
-
-   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(ILfw;Liu;B)V",
-      garbageValue = "-50"
+      signature = "(CI)C",
+      garbageValue = "1241125527"
    )
-   static void method483(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = class243.field3291;
-      synchronized(class243.field3291) {
-         for(FileSystem var5 = (FileSystem)class243.field3291.getFront(); var5 != null; var5 = (FileSystem)class243.field3291.getNext()) {
-            if(var5.hash == (long)var0 && var1 == var5.index && var5.field3260 == 0) {
-               var3 = var5.field3258;
-               break;
-            }
-         }
-      }
-
-      if(var3 != null) {
-         var2.method4213(var1, var0, var3, true);
-      } else {
-         byte[] var8 = var1.method3028(var0);
-         var2.method4213(var1, var0, var8, true);
-      }
+   public static char method508(char var0) {
+      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)Lcg;",
-      garbageValue = "1484814533"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1104847124"
    )
-   static World method478() {
-      return World.field1216 < World.worldCount?class54.worldList[++World.field1216 - 1]:null;
+   public static int method510(CharSequence var0) {
+      return Varcs.parseInt(var0, 10, true);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("fk")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1193868149"
+      signature = "(IZZZI)Liv;",
+      garbageValue = "104295054"
    )
-   static void method479(int var0) {
-      if(var0 != -1) {
-         if(class64.loadWidget(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
-
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2829 != null) {
-                  ScriptEvent var4 = new ScriptEvent();
-                  var4.widget = var3;
-                  var4.field785 = var3.field2829;
-                  PlayerComposition.method3988(var4, 2000000);
-               }
-            }
-
-         }
+   @Export("openCacheIndex")
+   static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
+      if(class156.field2157 != null) {
+         var4 = new IndexFile(var0, class156.field2157, ItemContainer.field751[var0], 1000000);
       }
+
+      return new IndexData(var4, GrandExchangeOffer.field299, var0, var1, var2, var3);
    }
 }

@@ -1,81 +1,118 @@
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("ew")
 public class class149 {
-   @ObfuscatedName("b")
-   final URL field2101;
-   @ObfuscatedName("s")
-   volatile boolean field2098;
-   @ObfuscatedName("r")
-   volatile byte[] field2100;
+   @ObfuscatedName("lb")
+   @ObfuscatedSignature(
+      signature = "[Lhx;"
+   )
+   static Widget[] field2108;
+   @ObfuscatedName("d")
+   final URL field2103;
+   @ObfuscatedName("x")
+   volatile boolean field2101;
+   @ObfuscatedName("k")
+   volatile byte[] field2102;
 
    class149(URL var1) {
-      this.field2101 = var1;
+      this.field2103 = var1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1243830410"
+      signature = "(B)Z",
+      garbageValue = "-35"
    )
-   public boolean method2916() {
-      return this.field2098;
+   public boolean method3032() {
+      return this.field2101;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(B)[B",
-      garbageValue = "2"
+      garbageValue = "-11"
    )
-   public byte[] method2919() {
-      return this.field2100;
+   public byte[] method3033() {
+      return this.field2102;
    }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIIB)V",
-      garbageValue = "127"
+      signature = "(Lfr;IIIIIII)V",
+      garbageValue = "-1833369656"
    )
-   public static void method2915(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class61.tileSettings[var1][var2][var3] = 0;
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class61.tileHeights[0][var2];
+                  int var11 = var2 + var4 + 932731;
+                  int var12 = var3 + var5 + 556238;
+                  int var13 = class90.getSmoothNoise(var11 + 45365, 91923 + var12, 4) - 128 + (class90.getSmoothNoise(10294 + var11, 37821 + var12, 2) - 128 >> 1) + (class90.getSmoothNoise(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
+
+                  var8[var3] = -var13 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
+               }
+
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class61.field736[var1][var2][var3] = var0.readByte();
+               class36.field481[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class61.field726[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class61.field724[var1][var2][var3] = (byte)(var7 - 81);
             }
          }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method2915(var0, var1, var2, var5 - 1);
-         method2915(var0, var1, var5 + 1, var3);
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
       }
 
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-622487536"
-   )
-   public static boolean method2922(char var0) {
-      return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

@@ -1,12 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("cf")
 public interface class102 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)Ldo;",
-      garbageValue = "-880282110"
+      garbageValue = "814951557"
    )
-   AbstractSoundSystem vmethod1919();
+   AbstractSoundSystem vmethod1996();
 }

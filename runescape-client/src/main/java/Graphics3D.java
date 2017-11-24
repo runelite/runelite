@@ -3,88 +3,88 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("em")
 @Implements("Graphics3D")
 public class Graphics3D extends Rasterizer2D {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("rasterClipEnable")
    static boolean rasterClipEnable;
-   @ObfuscatedName("s")
-   static boolean field1931;
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
+   static boolean field1918;
+   @ObfuscatedName("k")
    @Export("lowMem")
    static boolean lowMem;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @Export("rasterGouraudLowRes")
    public static boolean rasterGouraudLowRes;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @Export("rasterAlpha")
    static int rasterAlpha;
-   @ObfuscatedName("o")
-   public static int field1926;
-   @ObfuscatedName("a")
+   @ObfuscatedName("u")
+   public static int field1928;
+   @ObfuscatedName("n")
    @Export("centerX")
    static int centerX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @Export("centerY")
    static int centerY;
-   @ObfuscatedName("j")
+   @ObfuscatedName("y")
    @Export("rasterClipX")
    static int rasterClipX;
-   @ObfuscatedName("m")
-   static int field1928;
-   @ObfuscatedName("h")
-   static int field1930;
-   @ObfuscatedName("c")
-   static int field1932;
-   @ObfuscatedName("y")
+   @ObfuscatedName("j")
+   static int field1931;
+   @ObfuscatedName("f")
    static int field1933;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    static int field1934;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
+   static int field1935;
+   @ObfuscatedName("q")
+   static int field1936;
+   @ObfuscatedName("h")
    @Export("rasterClipY")
    static int[] rasterClipY;
-   @ObfuscatedName("l")
+   @ObfuscatedName("i")
    @Export("colorPalette")
    public static int[] colorPalette;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Ley;"
+      signature = "Leu;"
    )
    @Export("textureLoader")
    public static ITextureLoader textureLoader;
-   @ObfuscatedName("e")
-   static int[] field1920;
-   @ObfuscatedName("v")
-   static int[] field1939;
    @ObfuscatedName("w")
+   static int[] field1929;
+   @ObfuscatedName("g")
+   static int[] field1941;
+   @ObfuscatedName("a")
    @Export("SINE")
    public static int[] SINE;
-   @ObfuscatedName("av")
+   @ObfuscatedName("ah")
    @Export("COSINE")
    public static int[] COSINE;
 
    static {
       rasterClipEnable = false;
-      field1931 = false;
+      field1918 = false;
       lowMem = false;
       rasterGouraudLowRes = true;
       rasterAlpha = 0;
-      field1926 = 512;
+      field1928 = 512;
       rasterClipY = new int[1024];
       colorPalette = new int[65536];
-      field1920 = new int[512];
-      field1939 = new int[2048];
+      field1929 = new int[512];
+      field1941 = new int[2048];
       SINE = new int[2048];
       COSINE = new int[2048];
 
       int var0;
       for(var0 = 1; var0 < 512; ++var0) {
-         field1920[var0] = 32768 / var0;
+         field1929[var0] = 32768 / var0;
       }
 
       for(var0 = 1; var0 < 2048; ++var0) {
-         field1939[var0] = 65536 / var0;
+         field1941[var0] = 65536 / var0;
       }
 
       for(var0 = 0; var0 < 2048; ++var0) {
@@ -94,70 +94,70 @@ public class Graphics3D extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("b")
-   public static final void method2601() {
+   @ObfuscatedName("d")
+   public static final void method2739() {
       setRasterClipping(Rasterizer2D.draw_region_x, Rasterizer2D.drawingAreaTop, Rasterizer2D.drawingAreaBottom, Rasterizer2D.drawingAreaRight);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @Export("setRasterClipping")
    static final void setRasterClipping(int var0, int var1, int var2, int var3) {
       rasterClipX = var2 - var0;
-      field1928 = var3 - var1;
-      method2621();
-      if(rasterClipY.length < field1928) {
-         rasterClipY = new int[class23.method168(field1928)];
+      field1931 = var3 - var1;
+      method2716();
+      if(rasterClipY.length < field1931) {
+         rasterClipY = new int[class100.method1943(field1931)];
       }
 
       int var4 = var0 + Rasterizer2D.graphicsPixelsWidth * var1;
 
-      for(int var5 = 0; var5 < field1928; ++var5) {
+      for(int var5 = 0; var5 < field1931; ++var5) {
          rasterClipY[var5] = var4;
          var4 += Rasterizer2D.graphicsPixelsWidth;
       }
 
    }
 
-   @ObfuscatedName("r")
-   public static final void method2621() {
+   @ObfuscatedName("k")
+   public static final void method2716() {
       centerX = rasterClipX / 2;
-      centerY = field1928 / 2;
-      field1930 = -centerX;
-      field1932 = rasterClipX - centerX;
-      field1933 = -centerY;
-      field1934 = field1928 - centerY;
+      centerY = field1931 / 2;
+      field1933 = -centerX;
+      field1934 = rasterClipX - centerX;
+      field1935 = -centerY;
+      field1936 = field1931 - centerY;
    }
 
-   @ObfuscatedName("g")
-   public static final void method2649(int var0, int var1) {
+   @ObfuscatedName("z")
+   public static final void method2724(int var0, int var1) {
       int var2 = rasterClipY[0];
       int var3 = var2 / Rasterizer2D.graphicsPixelsWidth;
       int var4 = var2 - var3 * Rasterizer2D.graphicsPixelsWidth;
       centerX = var0 - var4;
       centerY = var1 - var3;
-      field1930 = -centerX;
-      field1932 = rasterClipX - centerX;
-      field1933 = -centerY;
-      field1934 = field1928 - centerY;
+      field1933 = -centerX;
+      field1934 = rasterClipX - centerX;
+      field1935 = -centerY;
+      field1936 = field1931 - centerY;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Ley;)V"
+      signature = "(Leu;)V"
    )
    @Export("setTextureLoader")
    public static final void setTextureLoader(ITextureLoader var0) {
       textureLoader = var0;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @Export("setBrightness")
    public static final void setBrightness(double var0) {
-      method2674(var0, 0, 512);
+      method2720(var0, 0, 512);
    }
 
-   @ObfuscatedName("u")
-   static final void method2674(double var0, int var2, int var3) {
+   @ObfuscatedName("b")
+   static final void method2720(double var0, int var2, int var3) {
       int var4 = var2 * 128;
 
       for(int var5 = var2; var5 < var3; ++var5) {
@@ -249,13 +249,13 @@ public class Graphics3D extends Rasterizer2D {
       return var11 + (var10 << 8) + (var9 << 16);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("setRasterClippingEnabled")
    public static void setRasterClippingEnabled(int var0, int var1, int var2) {
       rasterClipEnable = var0 < 0 || var0 > rasterClipX || var1 < 0 || var1 > rasterClipX || var2 < 0 || var2 > rasterClipX;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @Export("rasterGouraud")
    static final void rasterGouraud(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = var4 - var3;
@@ -290,13 +290,13 @@ public class Graphics3D extends Rasterizer2D {
          int var19 = (var13 * var12 - var14 * var10 << 8) / var18;
          int var20 = (var14 * var9 - var13 * var11 << 8) / var18;
          if(var0 <= var1 && var0 <= var2) {
-            if(var0 < field1928) {
-               if(var1 > field1928) {
-                  var1 = field1928;
+            if(var0 < field1931) {
+               if(var1 > field1931) {
+                  var1 = field1931;
                }
 
-               if(var2 > field1928) {
-                  var2 = field1928;
+               if(var2 > field1931) {
+                  var2 = field1931;
                }
 
                var6 = var19 + ((var6 << 8) - var3 * var19);
@@ -329,7 +329,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var4 >> 14, var6, var19);
                               var5 += var17;
                               var4 += var15;
                               var6 += var20;
@@ -337,7 +337,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
                         var5 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -357,7 +357,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var5 >> 14, var6, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var5 >> 14, var6, var19);
                               var5 += var17;
                               var4 += var15;
                               var6 += var20;
@@ -365,7 +365,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
                         var5 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -387,7 +387,7 @@ public class Graphics3D extends Rasterizer2D {
                      var2 = 0;
                   }
 
-                  if(var0 != var2 && var17 < var16 || var0 == var2 && var15 > var16) {
+                  if((var0 == var2 || var17 >= var16) && (var0 != var2 || var15 <= var16)) {
                      var1 -= var2;
                      var2 -= var0;
                      var0 = rasterClipY[var0];
@@ -401,7 +401,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
                               var5 += var15;
                               var3 += var16;
                               var6 += var20;
@@ -409,7 +409,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
                         var4 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -429,7 +429,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var5 >> 14, var6, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var5 >> 14, var3 >> 14, var6, var19);
                               var5 += var15;
                               var3 += var16;
                               var6 += var20;
@@ -437,7 +437,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var0, 0, 0, var3 >> 14, var4 >> 14, var6, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var0, 0, 0, var4 >> 14, var3 >> 14, var6, var19);
                         var4 += var17;
                         var3 += var16;
                         var6 += var20;
@@ -447,13 +447,13 @@ public class Graphics3D extends Rasterizer2D {
                }
             }
          } else if(var1 <= var2) {
-            if(var1 < field1928) {
-               if(var2 > field1928) {
-                  var2 = field1928;
+            if(var1 < field1931) {
+               if(var2 > field1931) {
+                  var2 = field1931;
                }
 
-               if(var0 > field1928) {
-                  var0 = field1928;
+               if(var0 > field1931) {
+                  var0 = field1931;
                }
 
                var7 = var19 + ((var7 << 8) - var19 * var4);
@@ -486,7 +486,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var5 >> 14, var7, var19);
                               var3 += var16;
                               var5 += var17;
                               var7 += var20;
@@ -494,7 +494,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
                         var3 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -514,7 +514,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var3 >> 14, var7, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var3 >> 14, var7, var19);
                               var3 += var16;
                               var5 += var17;
                               var7 += var20;
@@ -522,7 +522,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
                         var3 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -558,7 +558,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var3 >> 14, var4 >> 14, var7, var19);
                               var3 += var17;
                               var4 += var15;
                               var7 += var20;
@@ -566,7 +566,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var5 >> 14, var4 >> 14, var7, var19);
                         var5 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -586,7 +586,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
+                              method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var3 >> 14, var7, var19);
                               var3 += var17;
                               var4 += var15;
                               var7 += var20;
@@ -594,7 +594,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2611(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
+                        method2776(Rasterizer2D.graphicsPixels, var1, 0, 0, var4 >> 14, var5 >> 14, var7, var19);
                         var5 += var16;
                         var4 += var15;
                         var7 += var20;
@@ -603,13 +603,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             }
-         } else if(var2 < field1928) {
-            if(var0 > field1928) {
-               var0 = field1928;
+         } else if(var2 < field1931) {
+            if(var0 > field1931) {
+               var0 = field1931;
             }
 
-            if(var1 > field1928) {
-               var1 = field1928;
+            if(var1 > field1931) {
+               var1 = field1931;
             }
 
             var8 = var19 + ((var8 << 8) - var5 * var19);
@@ -642,7 +642,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var3 >> 14, var8, var19);
+                           method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var3 >> 14, var8, var19);
                            var4 += var15;
                            var3 += var16;
                            var8 += var20;
@@ -650,7 +650,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
+                     method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
                      var4 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -670,7 +670,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
+                           method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var4 >> 14, var8, var19);
                            var4 += var15;
                            var3 += var16;
                            var8 += var20;
@@ -678,7 +678,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
+                     method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
                      var4 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -714,7 +714,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
+                           method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var4 >> 14, var5 >> 14, var8, var19);
                            var4 += var16;
                            var5 += var17;
                            var8 += var20;
@@ -722,7 +722,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
+                     method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var3 >> 14, var5 >> 14, var8, var19);
                      var3 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -742,7 +742,7 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
+                           method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var4 >> 14, var8, var19);
                            var4 += var16;
                            var5 += var17;
                            var8 += var20;
@@ -750,7 +750,7 @@ public class Graphics3D extends Rasterizer2D {
                         }
                      }
 
-                     method2611(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
+                     method2776(Rasterizer2D.graphicsPixels, var2, 0, 0, var5 >> 14, var3 >> 14, var8, var19);
                      var3 += var15;
                      var5 += var17;
                      var8 += var20;
@@ -762,8 +762,8 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("d")
-   static final void method2611(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("l")
+   static final void method2776(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(rasterClipEnable) {
          if(var5 > rasterClipX) {
             var5 = rasterClipX;
@@ -864,7 +864,7 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @Export("rasterFlat")
    public static final void rasterFlat(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       int var7 = 0;
@@ -883,13 +883,13 @@ public class Graphics3D extends Rasterizer2D {
       }
 
       if(var0 <= var1 && var0 <= var2) {
-         if(var0 < field1928) {
-            if(var1 > field1928) {
-               var1 = field1928;
+         if(var0 < field1931) {
+            if(var1 > field1931) {
+               var1 = field1931;
             }
 
-            if(var2 > field1928) {
-               var2 = field1928;
+            if(var2 > field1931) {
+               var2 = field1931;
             }
 
             if(var1 < var2) {
@@ -920,14 +920,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var4 >> 14, var5 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var4 >> 14, var5 >> 14);
                            var5 += var9;
                            var4 += var8;
                            var0 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var5 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var5 >> 14);
                      var5 += var9;
                      var3 += var7;
                      var0 += Rasterizer2D.graphicsPixelsWidth;
@@ -946,14 +946,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var4 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var4 >> 14);
                            var5 += var9;
                            var4 += var8;
                            var0 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var3 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var3 >> 14);
                      var5 += var9;
                      var3 += var7;
                      var0 += Rasterizer2D.graphicsPixelsWidth;
@@ -987,14 +987,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var3 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var5 >> 14, var3 >> 14);
                            var5 += var8;
                            var3 += var7;
                            var0 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var4 >> 14, var3 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var4 >> 14, var3 >> 14);
                      var4 += var9;
                      var3 += var7;
                      var0 += Rasterizer2D.graphicsPixelsWidth;
@@ -1013,14 +1013,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var5 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var5 >> 14);
                            var5 += var8;
                            var3 += var7;
                            var0 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var4 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var0, var6, 0, var3 >> 14, var4 >> 14);
                      var4 += var9;
                      var3 += var7;
                      var0 += Rasterizer2D.graphicsPixelsWidth;
@@ -1029,13 +1029,13 @@ public class Graphics3D extends Rasterizer2D {
             }
          }
       } else if(var1 <= var2) {
-         if(var1 < field1928) {
-            if(var2 > field1928) {
-               var2 = field1928;
+         if(var1 < field1931) {
+            if(var2 > field1931) {
+               var2 = field1931;
             }
 
-            if(var0 > field1928) {
-               var0 = field1928;
+            if(var0 > field1931) {
+               var0 = field1931;
             }
 
             if(var2 < var0) {
@@ -1066,14 +1066,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var5 >> 14, var3 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var5 >> 14, var3 >> 14);
                            var3 += var7;
                            var5 += var9;
                            var1 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var3 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var3 >> 14);
                      var3 += var7;
                      var4 += var8;
                      var1 += Rasterizer2D.graphicsPixelsWidth;
@@ -1092,14 +1092,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var5 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var5 >> 14);
                            var3 += var7;
                            var5 += var9;
                            var1 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var4 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var4 >> 14);
                      var3 += var7;
                      var4 += var8;
                      var1 += Rasterizer2D.graphicsPixelsWidth;
@@ -1133,14 +1133,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var4 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var3 >> 14, var4 >> 14);
                            var3 += var9;
                            var4 += var8;
                            var1 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var5 >> 14, var4 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var5 >> 14, var4 >> 14);
                      var5 += var7;
                      var4 += var8;
                      var1 += Rasterizer2D.graphicsPixelsWidth;
@@ -1159,14 +1159,14 @@ public class Graphics3D extends Rasterizer2D {
                               return;
                            }
 
-                           method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var3 >> 14);
+                           method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var3 >> 14);
                            var3 += var9;
                            var4 += var8;
                            var1 += Rasterizer2D.graphicsPixelsWidth;
                         }
                      }
 
-                     method2648(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var5 >> 14);
+                     method2726(Rasterizer2D.graphicsPixels, var1, var6, 0, var4 >> 14, var5 >> 14);
                      var5 += var7;
                      var4 += var8;
                      var1 += Rasterizer2D.graphicsPixelsWidth;
@@ -1174,13 +1174,13 @@ public class Graphics3D extends Rasterizer2D {
                }
             }
          }
-      } else if(var2 < field1928) {
-         if(var0 > field1928) {
-            var0 = field1928;
+      } else if(var2 < field1931) {
+         if(var0 > field1931) {
+            var0 = field1931;
          }
 
-         if(var1 > field1928) {
-            var1 = field1928;
+         if(var1 > field1931) {
+            var1 = field1931;
          }
 
          if(var0 < var1) {
@@ -1211,14 +1211,14 @@ public class Graphics3D extends Rasterizer2D {
                            return;
                         }
 
-                        method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var3 >> 14);
+                        method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var3 >> 14);
                         var4 += var8;
                         var3 += var7;
                         var2 += Rasterizer2D.graphicsPixelsWidth;
                      }
                   }
 
-                  method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var5 >> 14);
+                  method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var5 >> 14);
                   var4 += var8;
                   var5 += var9;
                   var2 += Rasterizer2D.graphicsPixelsWidth;
@@ -1237,14 +1237,14 @@ public class Graphics3D extends Rasterizer2D {
                            return;
                         }
 
-                        method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var3 >> 14, var4 >> 14);
+                        method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var3 >> 14, var4 >> 14);
                         var4 += var8;
                         var3 += var7;
                         var2 += Rasterizer2D.graphicsPixelsWidth;
                      }
                   }
 
-                  method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var4 >> 14);
+                  method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var4 >> 14);
                   var4 += var8;
                   var5 += var9;
                   var2 += Rasterizer2D.graphicsPixelsWidth;
@@ -1278,14 +1278,14 @@ public class Graphics3D extends Rasterizer2D {
                            return;
                         }
 
-                        method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var5 >> 14);
+                        method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var4 >> 14, var5 >> 14);
                         var4 += var7;
                         var5 += var9;
                         var2 += Rasterizer2D.graphicsPixelsWidth;
                      }
                   }
 
-                  method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var3 >> 14, var5 >> 14);
+                  method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var3 >> 14, var5 >> 14);
                   var3 += var8;
                   var5 += var9;
                   var2 += Rasterizer2D.graphicsPixelsWidth;
@@ -1304,14 +1304,14 @@ public class Graphics3D extends Rasterizer2D {
                            return;
                         }
 
-                        method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var4 >> 14);
+                        method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var4 >> 14);
                         var4 += var7;
                         var5 += var9;
                         var2 += Rasterizer2D.graphicsPixelsWidth;
                      }
                   }
 
-                  method2648(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var3 >> 14);
+                  method2726(Rasterizer2D.graphicsPixels, var2, var6, 0, var5 >> 14, var3 >> 14);
                   var3 += var8;
                   var5 += var9;
                   var2 += Rasterizer2D.graphicsPixelsWidth;
@@ -1321,8 +1321,8 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("a")
-   static final void method2648(int[] var0, int var1, int var2, int var3, int var4, int var5) {
+   @ObfuscatedName("c")
+   static final void method2726(int[] var0, int var1, int var2, int var3, int var4, int var5) {
       if(rasterClipEnable) {
          if(var5 > rasterClipX) {
             var5 = rasterClipX;
@@ -1415,17 +1415,17 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("j")
    @Export("rasterTextureAffine")
    static final void rasterTextureAffine(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18) {
       int[] var19 = textureLoader.load(var18);
       int var20;
       if(var19 == null) {
          var20 = textureLoader.getAverageTextureRGB(var18);
-         rasterGouraud(var0, var1, var2, var3, var4, var5, method2618(var20, var6), method2618(var20, var7), method2618(var20, var8));
+         rasterGouraud(var0, var1, var2, var3, var4, var5, method2731(var20, var6), method2731(var20, var7), method2731(var20, var8));
       } else {
-         lowMem = textureLoader.vmethod2885(var18);
-         field1931 = textureLoader.vmethod2893(var18);
+         lowMem = textureLoader.vmethod3004(var18);
+         field1918 = textureLoader.vmethod3003(var18);
          var20 = var4 - var3;
          int var21 = var1 - var0;
          int var22 = var5 - var3;
@@ -1458,23 +1458,23 @@ public class Graphics3D extends Rasterizer2D {
             var14 -= var12;
             var17 -= var15;
             int var32 = var11 * var12 - var9 * var14 << 14;
-            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 3 << 14) / (long)field1926);
-            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1926);
+            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 3 << 14) / (long)field1928);
+            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1928);
             int var35 = var10 * var12 - var13 * var9 << 14;
-            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 3 << 14) / (long)field1926);
-            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1926);
+            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 3 << 14) / (long)field1928);
+            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1928);
             int var38 = var13 * var11 - var10 * var14 << 14;
-            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 3 << 14) / (long)field1926);
-            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1926);
+            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 3 << 14) / (long)field1928);
+            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1928);
             int var41;
             if(var0 <= var1 && var0 <= var2) {
-               if(var0 < field1928) {
-                  if(var1 > field1928) {
-                     var1 = field1928;
+               if(var0 < field1931) {
+                  if(var1 > field1931) {
+                     var1 = field1931;
                   }
 
-                  if(var2 > field1928) {
-                     var2 = field1928;
+                  if(var2 > field1931) {
+                     var2 = field1931;
                   }
 
                   var6 = var30 + ((var6 << 9) - var3 * var30);
@@ -1511,7 +1511,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -1522,7 +1522,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -1545,7 +1545,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -1556,7 +1556,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -1585,7 +1585,7 @@ public class Graphics3D extends Rasterizer2D {
                      var32 += var34 * var41;
                      var35 += var37 * var41;
                      var38 += var40 * var41;
-                     if(var0 != var2 && var28 < var26 || var0 == var2 && var27 > var26) {
+                     if((var0 == var2 || var28 >= var26) && (var0 != var2 || var27 <= var26)) {
                         var1 -= var2;
                         var2 -= var0;
                         var0 = rasterClipY[var0];
@@ -1599,7 +1599,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -1610,7 +1610,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -1633,7 +1633,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -1644,7 +1644,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -1657,13 +1657,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             } else if(var1 <= var2) {
-               if(var1 < field1928) {
-                  if(var2 > field1928) {
-                     var2 = field1928;
+               if(var1 < field1931) {
+                  if(var2 > field1931) {
+                     var2 = field1931;
                   }
 
-                  if(var0 > field1928) {
-                     var0 = field1928;
+                  if(var0 > field1931) {
+                     var0 = field1931;
                   }
 
                   var7 = var30 + ((var7 << 9) - var30 * var4);
@@ -1700,7 +1700,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -1711,7 +1711,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -1734,7 +1734,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -1745,7 +1745,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -1788,7 +1788,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -1799,7 +1799,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -1822,7 +1822,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -1833,7 +1833,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -1845,13 +1845,13 @@ public class Graphics3D extends Rasterizer2D {
                      }
                   }
                }
-            } else if(var2 < field1928) {
-               if(var0 > field1928) {
-                  var0 = field1928;
+            } else if(var2 < field1931) {
+               if(var0 > field1931) {
+                  var0 = field1931;
                }
 
-               if(var1 > field1928) {
-                  var1 = field1928;
+               if(var1 > field1931) {
+                  var1 = field1931;
                }
 
                var8 = (var8 << 9) - var5 * var30 + var30;
@@ -1888,7 +1888,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -1899,7 +1899,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -1922,7 +1922,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -1933,7 +1933,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -1976,7 +1976,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -1987,7 +1987,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -2010,7 +2010,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -2021,7 +2021,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2673(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2728(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -2037,8 +2037,8 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("j")
-   static final void method2673(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
+   @ObfuscatedName("f")
+   static final void method2728(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
       if(rasterClipEnable) {
          if(var6 > rasterClipX) {
             var6 = rasterClipX;
@@ -2103,7 +2103,7 @@ public class Graphics3D extends Rasterizer2D {
             var17 >>= 3;
             var8 <<= 3;
             var15 = var7 >> 8;
-            if(field1931) {
+            if(field1918) {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
@@ -2298,7 +2298,7 @@ public class Graphics3D extends Rasterizer2D {
             var17 >>= 3;
             var8 <<= 3;
             var15 = var7 >> 8;
-            if(field1931) {
+            if(field1918) {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
@@ -2457,17 +2457,17 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @Export("rasterTexture")
    static final void rasterTexture(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18) {
       int[] var19 = textureLoader.load(var18);
       int var20;
       if(var19 == null) {
          var20 = textureLoader.getAverageTextureRGB(var18);
-         rasterGouraud(var0, var1, var2, var3, var4, var5, method2618(var20, var6), method2618(var20, var7), method2618(var20, var8));
+         rasterGouraud(var0, var1, var2, var3, var4, var5, method2731(var20, var6), method2731(var20, var7), method2731(var20, var8));
       } else {
-         lowMem = textureLoader.vmethod2885(var18);
-         field1931 = textureLoader.vmethod2893(var18);
+         lowMem = textureLoader.vmethod3004(var18);
+         field1918 = textureLoader.vmethod3003(var18);
          var20 = var4 - var3;
          int var21 = var1 - var0;
          int var22 = var5 - var3;
@@ -2500,23 +2500,23 @@ public class Graphics3D extends Rasterizer2D {
             var14 -= var12;
             var17 -= var15;
             int var32 = var11 * var12 - var9 * var14 << 14;
-            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 14) / (long)field1926);
-            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1926);
+            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 14) / (long)field1928);
+            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1928);
             int var35 = var10 * var12 - var13 * var9 << 14;
-            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 14) / (long)field1926);
-            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1926);
+            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 14) / (long)field1928);
+            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1928);
             int var38 = var13 * var11 - var10 * var14 << 14;
-            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 14) / (long)field1926);
-            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1926);
+            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 14) / (long)field1928);
+            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1928);
             int var41;
             if(var0 <= var1 && var0 <= var2) {
-               if(var0 < field1928) {
-                  if(var1 > field1928) {
-                     var1 = field1928;
+               if(var0 < field1931) {
+                  if(var1 > field1931) {
+                     var1 = field1931;
                   }
 
-                  if(var2 > field1928) {
-                     var2 = field1928;
+                  if(var2 > field1931) {
+                     var2 = field1931;
                   }
 
                   var6 = var30 + ((var6 << 9) - var3 * var30);
@@ -2553,7 +2553,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -2564,7 +2564,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2587,7 +2587,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var28;
                                  var4 += var27;
                                  var6 += var31;
@@ -2598,7 +2598,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2641,7 +2641,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var5 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -2652,7 +2652,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var4 >> 14, var3 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2675,7 +2675,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var5 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                                  var5 += var27;
                                  var3 += var26;
                                  var6 += var31;
@@ -2686,7 +2686,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var0, var3 >> 14, var4 >> 14, var6, var30, var32, var35, var38, var33, var36, var39);
                            var4 += var28;
                            var3 += var26;
                            var6 += var31;
@@ -2699,13 +2699,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             } else if(var1 <= var2) {
-               if(var1 < field1928) {
-                  if(var2 > field1928) {
-                     var2 = field1928;
+               if(var1 < field1931) {
+                  if(var2 > field1931) {
+                     var2 = field1931;
                   }
 
-                  if(var0 > field1928) {
-                     var0 = field1928;
+                  if(var0 > field1931) {
+                     var0 = field1931;
                   }
 
                   var7 = var30 + ((var7 << 9) - var30 * var4);
@@ -2728,7 +2728,7 @@ public class Graphics3D extends Rasterizer2D {
                      var32 += var34 * var41;
                      var35 += var37 * var41;
                      var38 += var40 * var41;
-                     if(var2 != var1 && var26 < var27 || var2 == var1 && var26 > var28) {
+                     if((var2 == var1 || var26 >= var27) && (var2 != var1 || var26 <= var28)) {
                         var0 -= var2;
                         var2 -= var1;
                         var1 = rasterClipY[var1];
@@ -2742,7 +2742,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -2753,7 +2753,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2776,7 +2776,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var26;
                                  var5 += var28;
                                  var7 += var31;
@@ -2787,7 +2787,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var3 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2830,7 +2830,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var3 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -2841,7 +2841,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var5 >> 14, var4 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2864,7 +2864,7 @@ public class Graphics3D extends Rasterizer2D {
                                     return;
                                  }
 
-                                 method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                                 method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var3 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                                  var3 += var28;
                                  var4 += var27;
                                  var7 += var31;
@@ -2875,7 +2875,7 @@ public class Graphics3D extends Rasterizer2D {
                               }
                            }
 
-                           method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
+                           method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var1, var4 >> 14, var5 >> 14, var7, var30, var32, var35, var38, var33, var36, var39);
                            var5 += var26;
                            var4 += var27;
                            var7 += var31;
@@ -2887,13 +2887,13 @@ public class Graphics3D extends Rasterizer2D {
                      }
                   }
                }
-            } else if(var2 < field1928) {
-               if(var0 > field1928) {
-                  var0 = field1928;
+            } else if(var2 < field1931) {
+               if(var0 > field1931) {
+                  var0 = field1931;
                }
 
-               if(var1 > field1928) {
-                  var1 = field1928;
+               if(var1 > field1931) {
+                  var1 = field1931;
                }
 
                var8 = (var8 << 9) - var5 * var30 + var30;
@@ -2930,7 +2930,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -2941,7 +2941,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -2964,7 +2964,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var27;
                               var3 += var26;
                               var8 += var31;
@@ -2975,7 +2975,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var4 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3018,7 +3018,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var4 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -3029,7 +3029,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var3 >> 14, var5 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3052,7 +3052,7 @@ public class Graphics3D extends Rasterizer2D {
                                  return;
                               }
 
-                              method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                              method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var4 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                               var4 += var26;
                               var5 += var28;
                               var8 += var31;
@@ -3063,7 +3063,7 @@ public class Graphics3D extends Rasterizer2D {
                            }
                         }
 
-                        method2617(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
+                        method2730(Rasterizer2D.graphicsPixels, var19, 0, 0, var2, var5 >> 14, var3 >> 14, var8, var30, var32, var35, var38, var33, var36, var39);
                         var3 += var27;
                         var5 += var28;
                         var8 += var31;
@@ -3079,8 +3079,8 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("i")
-   static final void method2617(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
+   @ObfuscatedName("e")
+   static final void method2730(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14) {
       if(rasterClipEnable) {
          if(var6 > rasterClipX) {
             var6 = rasterClipX;
@@ -3134,7 +3134,7 @@ public class Graphics3D extends Rasterizer2D {
             var17 >>= 3;
             var8 <<= 3;
             var15 = var7 >> 8;
-            if(field1931) {
+            if(field1918) {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 >>> 26) + (var2 & 4032)];
@@ -3277,7 +3277,7 @@ public class Graphics3D extends Rasterizer2D {
             var17 >>= 3;
             var8 <<= 3;
             var15 = var7 >> 8;
-            if(field1931) {
+            if(field1918) {
                if(var17 > 0) {
                   do {
                      var3 = var1[(var2 & 16256) + (var2 >>> 25)];
@@ -3394,8 +3394,8 @@ public class Graphics3D extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("l")
-   static final int method2618(int var0, int var1) {
+   @ObfuscatedName("q")
+   static final int method2731(int var0, int var1) {
       var1 = (var0 & 127) * var1 >> 7;
       if(var1 < 2) {
          var1 = 2;
@@ -3406,33 +3406,33 @@ public class Graphics3D extends Rasterizer2D {
       return (var0 & 65408) + var1;
    }
 
-   @ObfuscatedName("z")
-   static final int method2619(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("h")
+   static final int method2732(int var0, int var1, int var2, int var3) {
       return var0 * var2 + var3 * var1 >> 16;
    }
 
-   @ObfuscatedName("e")
-   static final int method2620(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("i")
+   static final int method2738(int var0, int var1, int var2, int var3) {
       return var2 * var1 - var3 * var0 >> 16;
    }
 
-   @ObfuscatedName("v")
-   static final int method2609(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("o")
+   static final int method2734(int var0, int var1, int var2, int var3) {
       return var0 * var2 - var3 * var1 >> 16;
    }
 
    @ObfuscatedName("w")
-   static final int method2667(int var0, int var1, int var2, int var3) {
+   static final int method2735(int var0, int var1, int var2, int var3) {
       return var3 * var0 + var2 * var1 >> 16;
    }
 
-   @ObfuscatedName("av")
-   static final int method2623(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("ah")
+   static final int method2736(int var0, int var1, int var2, int var3) {
       return var0 * var2 + var3 * var1 >> 16;
    }
 
-   @ObfuscatedName("au")
-   static final int method2624(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("ak")
+   static final int method2737(int var0, int var1, int var2, int var3) {
       return var2 * var1 - var3 * var0 >> 16;
    }
 }

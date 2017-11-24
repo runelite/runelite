@@ -1,44 +1,32 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ir")
+@ObfuscatedName("ib")
 public class class256 {
-   @ObfuscatedName("u")
+   @ObfuscatedName("qd")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lka;"
    )
-   static IndexDataBase field3427;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1606645725
+   static MachineInfo field3447;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IB)Lej;",
+      garbageValue = "-18"
    )
-   static int field3426;
-
-   @ObfuscatedName("b")
-   public static String method4406(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(0L == var0 % 37L) {
-            return null;
-         } else {
-            int var2 = 0;
-
-            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
-               ++var2;
-            }
-
-            StringBuilder var5 = new StringBuilder(var2);
-
-            while(var0 != 0L) {
-               long var6 = var0;
-               var0 /= 37L;
-               var5.append(class275.field3719[(int)(var6 - 37L * var0)]);
-            }
-
-            return var5.reverse().toString();
-         }
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         return null;
+         var1 = class33.method359(Sequence.skel_ref, class273.skin_ref, var0, false);
+         if(var1 != null) {
+            Sequence.skeletons.put(var1, (long)var0);
+         }
+
+         return var1;
       }
    }
 }

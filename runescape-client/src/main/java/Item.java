@@ -4,48 +4,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("ci")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
+   @Export("osName")
+   static String osName;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2010427827
-   )
-   static int field1392;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -504834051
-   )
-   @Export("canvasHeight")
-   protected static int canvasHeight;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1089175611
+      intValue = -1306463285
    )
    @Export("id")
    int id;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 557430893
+      intValue = 1252821907
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)Lev;",
-      garbageValue = "1008738898"
+      signature = "(I)Leh;",
+      garbageValue = "-473112722"
    )
    protected final Model getModel() {
-      return class139.getItemDefinition(this.id).getModel(this.quantity);
+      return WorldMapType2.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ILhf;I)I",
-      garbageValue = "1351412808"
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
+      garbageValue = "1617846097"
    )
-   public static int method1752(int var0, class226 var1) {
-      return var1.field2860 + (var0 + 40000 << 8);
+   public static void method1829(String var0, Throwable var1) {
+      var1.printStackTrace();
    }
 }

@@ -6,42 +6,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("ff")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("b")
-   static byte[] field2180;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
+   static byte[] field2181;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ldz;"
-   )
-   @Export("dataFile")
-   CacheFile dataFile;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ldz;"
+      signature = "Ldl;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ldl;"
+   )
+   @Export("dataFile")
+   CacheFile dataFile;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 2048236785
+      intValue = -228559831
    )
    @Export("index")
    int index;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 988857417
+      intValue = -69742423
    )
    @Export("maxSize")
    int maxSize;
 
    static {
-      field2180 = new byte[520];
+      field2181 = new byte[520];
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdz;Ldz;I)V"
+      signature = "(ILdl;Ldl;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -53,72 +53,70 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-1852661346"
+      garbageValue = "-1309257172"
    )
-   public byte[] method3028(int var1) {
+   public byte[] method3136(int var1) {
       CacheFile var2 = this.dataFile;
       synchronized(this.dataFile) {
          try {
             Object var10000;
-            if(this.indexFile.method2334() < (long)(var1 * 6 + 6)) {
+            if(this.indexFile.method2429() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
             } else {
                this.indexFile.seek((long)(var1 * 6));
-               this.indexFile.method2335(field2180, 0, 6);
-               int var3 = ((field2180[0] & 255) << 16) + (field2180[2] & 255) + ((field2180[1] & 255) << 8);
-               int var4 = (field2180[5] & 255) + ((field2180[3] & 255) << 16) + ((field2180[4] & 255) << 8);
-               if(var3 >= 0 && var3 <= this.maxSize) {
-                  if(var4 > 0 && (long)var4 <= this.dataFile.method2334() / 520L) {
-                     byte[] var5 = new byte[var3];
-                     int var6 = 0;
-
-                     for(int var7 = 0; var6 < var3; ++var7) {
-                        if(var4 == 0) {
-                           var10000 = null;
-                           return (byte[])var10000;
-                        }
-
-                        this.dataFile.seek((long)(var4 * 520));
-                        int var8 = var3 - var6;
-                        if(var8 > 512) {
-                           var8 = 512;
-                        }
-
-                        this.dataFile.method2335(field2180, 0, var8 + 8);
-                        int var9 = (field2180[1] & 255) + ((field2180[0] & 255) << 8);
-                        int var10 = (field2180[3] & 255) + ((field2180[2] & 255) << 8);
-                        int var11 = ((field2180[5] & 255) << 8) + ((field2180[4] & 255) << 16) + (field2180[6] & 255);
-                        int var12 = field2180[7] & 255;
-                        if(var9 != var1 || var7 != var10 || var12 != this.index) {
-                           var10000 = null;
-                           return (byte[])var10000;
-                        }
-
-                        if(var11 < 0 || (long)var11 > this.dataFile.method2334() / 520L) {
-                           var10000 = null;
-                           return (byte[])var10000;
-                        }
-
-                        for(int var13 = 0; var13 < var8; ++var13) {
-                           var5[var6++] = field2180[var13 + 8];
-                        }
-
-                        var4 = var11;
-                     }
-
-                     byte[] var18 = var5;
-                     return var18;
-                  } else {
-                     var10000 = null;
-                     return (byte[])var10000;
-                  }
-               } else {
+               this.indexFile.method2431(field2181, 0, 6);
+               int var3 = ((field2181[0] & 255) << 16) + (field2181[2] & 255) + ((field2181[1] & 255) << 8);
+               int var4 = (field2181[5] & 255) + ((field2181[3] & 255) << 16) + ((field2181[4] & 255) << 8);
+               if(var3 < 0 || var3 > this.maxSize) {
                   var10000 = null;
                   return (byte[])var10000;
+               } else if(var4 <= 0 || (long)var4 > this.dataFile.method2429() / 520L) {
+                  var10000 = null;
+                  return (byte[])var10000;
+               } else {
+                  byte[] var5 = new byte[var3];
+                  int var6 = 0;
+
+                  for(int var7 = 0; var6 < var3; ++var7) {
+                     if(var4 == 0) {
+                        var10000 = null;
+                        return (byte[])var10000;
+                     }
+
+                     this.dataFile.seek((long)(var4 * 520));
+                     int var8 = var3 - var6;
+                     if(var8 > 512) {
+                        var8 = 512;
+                     }
+
+                     this.dataFile.method2431(field2181, 0, var8 + 8);
+                     int var9 = (field2181[1] & 255) + ((field2181[0] & 255) << 8);
+                     int var10 = (field2181[3] & 255) + ((field2181[2] & 255) << 8);
+                     int var11 = ((field2181[5] & 255) << 8) + ((field2181[4] & 255) << 16) + (field2181[6] & 255);
+                     int var12 = field2181[7] & 255;
+                     if(var9 != var1 || var7 != var10 || var12 != this.index) {
+                        var10000 = null;
+                        return (byte[])var10000;
+                     }
+
+                     if(var11 < 0 || (long)var11 > this.dataFile.method2429() / 520L) {
+                        var10000 = null;
+                        return (byte[])var10000;
+                     }
+
+                     for(int var13 = 0; var13 < var8; ++var13) {
+                        var5[var6++] = field2181[var13 + 8];
+                     }
+
+                     var4 = var11;
+                  }
+
+                  byte[] var18 = var5;
+                  return var18;
                }
             }
          } catch (IOException var16) {
@@ -127,18 +125,18 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I[BII)Z",
-      garbageValue = "1687125056"
+      garbageValue = "-1219863226"
    )
-   public boolean method3029(int var1, byte[] var2, int var3) {
+   public boolean method3137(int var1, byte[] var2, int var3) {
       CacheFile var4 = this.dataFile;
       synchronized(this.dataFile) {
          if(var3 >= 0 && var3 <= this.maxSize) {
-            boolean var5 = this.method3038(var1, var2, var3, true);
+            boolean var5 = this.method3138(var1, var2, var3, true);
             if(!var5) {
-               var5 = this.method3038(var1, var2, var3, false);
+               var5 = this.method3138(var1, var2, var3, false);
             }
 
             return var5;
@@ -148,72 +146,72 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I[BIZI)Z",
-      garbageValue = "290730126"
+      garbageValue = "-1437699907"
    )
-   boolean method3038(int var1, byte[] var2, int var3, boolean var4) {
+   boolean method3138(int var1, byte[] var2, int var3, boolean var4) {
       CacheFile var5 = this.dataFile;
       synchronized(this.dataFile) {
          try {
             int var6;
             boolean var10000;
             if(var4) {
-               if(this.indexFile.method2334() < (long)(var1 * 6 + 6)) {
+               if(this.indexFile.method2429() < (long)(var1 * 6 + 6)) {
                   var10000 = false;
                   return var10000;
                }
 
                this.indexFile.seek((long)(var1 * 6));
-               this.indexFile.method2335(field2180, 0, 6);
-               var6 = (field2180[5] & 255) + ((field2180[3] & 255) << 16) + ((field2180[4] & 255) << 8);
-               if(var6 <= 0 || (long)var6 > this.dataFile.method2334() / 520L) {
+               this.indexFile.method2431(field2181, 0, 6);
+               var6 = (field2181[5] & 255) + ((field2181[3] & 255) << 16) + ((field2181[4] & 255) << 8);
+               if(var6 <= 0 || (long)var6 > this.dataFile.method2429() / 520L) {
                   var10000 = false;
                   return var10000;
                }
             } else {
-               var6 = (int)((this.dataFile.method2334() + 519L) / 520L);
+               var6 = (int)((this.dataFile.method2429() + 519L) / 520L);
                if(var6 == 0) {
                   var6 = 1;
                }
             }
 
-            field2180[0] = (byte)(var3 >> 16);
-            field2180[1] = (byte)(var3 >> 8);
-            field2180[2] = (byte)var3;
-            field2180[3] = (byte)(var6 >> 16);
-            field2180[4] = (byte)(var6 >> 8);
-            field2180[5] = (byte)var6;
+            field2181[0] = (byte)(var3 >> 16);
+            field2181[1] = (byte)(var3 >> 8);
+            field2181[2] = (byte)var3;
+            field2181[3] = (byte)(var6 >> 16);
+            field2181[4] = (byte)(var6 >> 8);
+            field2181[5] = (byte)var6;
             this.indexFile.seek((long)(var1 * 6));
-            this.indexFile.write(field2180, 0, 6);
+            this.indexFile.write(field2181, 0, 6);
             int var7 = 0;
             int var8 = 0;
 
             while(true) {
                if(var7 < var3) {
-                  label148: {
+                  label142: {
                      int var9 = 0;
                      int var10;
                      if(var4) {
                         this.dataFile.seek((long)(var6 * 520));
 
                         try {
-                           this.dataFile.method2335(field2180, 0, 8);
+                           this.dataFile.method2431(field2181, 0, 8);
                         } catch (EOFException var16) {
-                           break label148;
+                           break label142;
                         }
 
-                        var10 = (field2180[1] & 255) + ((field2180[0] & 255) << 8);
-                        int var11 = (field2180[3] & 255) + ((field2180[2] & 255) << 8);
-                        var9 = ((field2180[5] & 255) << 8) + ((field2180[4] & 255) << 16) + (field2180[6] & 255);
-                        int var12 = field2180[7] & 255;
-                        if(var10 != var1 || var11 != var8 || var12 != this.index) {
+                        var10 = (field2181[1] & 255) + ((field2181[0] & 255) << 8);
+                        int var11 = (field2181[3] & 255) + ((field2181[2] & 255) << 8);
+                        var9 = ((field2181[5] & 255) << 8) + ((field2181[4] & 255) << 16) + (field2181[6] & 255);
+                        int var12 = field2181[7] & 255;
+                        if(var10 != var1 || var8 != var11 || var12 != this.index) {
                            var10000 = false;
                            return var10000;
                         }
 
-                        if(var9 < 0 || (long)var9 > this.dataFile.method2334() / 520L) {
+                        if(var9 < 0 || (long)var9 > this.dataFile.method2429() / 520L) {
                            var10000 = false;
                            return var10000;
                         }
@@ -221,7 +219,7 @@ public final class IndexFile {
 
                      if(var9 == 0) {
                         var4 = false;
-                        var9 = (int)((this.dataFile.method2334() + 519L) / 520L);
+                        var9 = (int)((this.dataFile.method2429() + 519L) / 520L);
                         if(var9 == 0) {
                            ++var9;
                         }
@@ -235,16 +233,16 @@ public final class IndexFile {
                         var9 = 0;
                      }
 
-                     field2180[0] = (byte)(var1 >> 8);
-                     field2180[1] = (byte)var1;
-                     field2180[2] = (byte)(var8 >> 8);
-                     field2180[3] = (byte)var8;
-                     field2180[4] = (byte)(var9 >> 16);
-                     field2180[5] = (byte)(var9 >> 8);
-                     field2180[6] = (byte)var9;
-                     field2180[7] = (byte)this.index;
+                     field2181[0] = (byte)(var1 >> 8);
+                     field2181[1] = (byte)var1;
+                     field2181[2] = (byte)(var8 >> 8);
+                     field2181[3] = (byte)var8;
+                     field2181[4] = (byte)(var9 >> 16);
+                     field2181[5] = (byte)(var9 >> 8);
+                     field2181[6] = (byte)var9;
+                     field2181[7] = (byte)this.index;
                      this.dataFile.seek((long)(var6 * 520));
-                     this.dataFile.write(field2180, 0, 8);
+                     this.dataFile.write(field2181, 0, 8);
                      var10 = var3 - var7;
                      if(var10 > 512) {
                         var10 = 512;
@@ -267,27 +265,20 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("fm")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-864971467"
+      signature = "(ILid;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "1084065139"
    )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = Tile.font_p12full.method4824(var0, 250);
-      int var6 = Tile.font_p12full.method4768(var0, 250) * 13;
-      Rasterizer2D.method4981(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
-      Tile.font_p12full.method4774(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      Client.method1490(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
-      if(var1) {
-         class236.field3227.vmethod5065(0, 0);
-      } else {
-         class182.method3418(var3, var4, var5, var6);
-      }
-
+   public static void method3146(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.getFile(var2);
+      int var7 = var1.getChild(var6, var3);
+      class210.field2598 = 1;
+      class3.field22 = var1;
+      class8.field237 = var6;
+      class210.field2599 = var7;
+      class111.field1588 = var4;
+      class20.field322 = var5;
+      class164.field2216 = var0;
    }
 }

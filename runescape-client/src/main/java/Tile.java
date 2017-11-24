@@ -4,143 +4,132 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("en")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("br")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   static IndexedSprite[] field1829;
-   @ObfuscatedName("eb")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1301732437
+      intValue = 1854629971
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 492287653
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1072790217
+      intValue = -964365923
    )
    @Export("y")
    int y;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -178216961
+      intValue = 1815659089
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1379576209
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Lea;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Ldk;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Leb;"
+      signature = "Lev;"
    )
    @Export("wallObject")
    WallObject wallObject;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leg;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Ldf;"
+      signature = "Ldd;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldy;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("d")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1087750097
+      intValue = 2131381875
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("o")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Ler;"
+      signature = "[Lek;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("q")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -279791727
+      intValue = 297039203
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("j")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1107176895
+      intValue = 467784211
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("m")
+   @ObfuscatedName("j")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("h")
+   @ObfuscatedName("f")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("y")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 657432429
+      intValue = -418526723
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1308193013
+      intValue = 559829901
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("i")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -2134635245
+      intValue = 686674179
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("l")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1480653171
+      intValue = -852876445
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "Lec;"
+      signature = "Len;"
    )
    @Export("bridge")
    Tile bridge;
@@ -154,25 +143,130 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("ge")
    @ObfuscatedSignature(
-      signature = "(Lij;I)V",
-      garbageValue = "-1576614363"
+      signature = "(ZLgv;I)V",
+      garbageValue = "57703707"
    )
-   public static void method2503(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
-   }
+   @Export("xteaChanged")
+   static final void xteaChanged(boolean var0, PacketBuffer var1) {
+      Client.isDynamicRegion = var0;
+      int var3;
+      int var4;
+      int var5;
+      int var6;
+      int var7;
+      int var8;
+      if(!Client.isDynamicRegion) {
+         int var2 = var1.readUnsignedShort();
+         var3 = var1.method3333();
+         var4 = var1.readUnsignedShort();
+         ScriptEvent.xteaKeys = new int[var4][4];
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIB)V",
-      garbageValue = "48"
-   )
-   static final void method2504(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      class13.method79(var7, var9, var8, var10, -49088);
+         for(var5 = 0; var5 < var4; ++var5) {
+            for(var6 = 0; var6 < 4; ++var6) {
+               ScriptEvent.xteaKeys[var5][var6] = var1.readInt();
+            }
+         }
+
+         VertexNormal.mapRegions = new int[var4];
+         class230.landMapFileIds = new int[var4];
+         GrandExchangeOffer.landRegionFileIds = new int[var4];
+         class29.field400 = new byte[var4][];
+         class250.field3386 = new byte[var4][];
+         boolean var16 = false;
+         if((var3 / 8 == 48 || var3 / 8 == 49) && var2 / 8 == 48) {
+            var16 = true;
+         }
+
+         if(var3 / 8 == 48 && var2 / 8 == 148) {
+            var16 = true;
+         }
+
+         var4 = 0;
+
+         for(var6 = (var3 - 6) / 8; var6 <= (var3 + 6) / 8; ++var6) {
+            for(var7 = (var2 - 6) / 8; var7 <= (var2 + 6) / 8; ++var7) {
+               var8 = var7 + (var6 << 8);
+               if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
+                  VertexNormal.mapRegions[var4] = var8;
+                  class230.landMapFileIds[var4] = PlayerComposition.indexMaps.getFile("m" + var6 + "_" + var7);
+                  GrandExchangeOffer.landRegionFileIds[var4] = PlayerComposition.indexMaps.getFile("l" + var6 + "_" + var7);
+                  ++var4;
+               }
+            }
+         }
+
+         FileOnDisk.method2478(var3, var2, true);
+      } else {
+         boolean var15 = var1.method3457() == 1;
+         var3 = var1.readUnsignedShort();
+         var4 = var1.readUnsignedShortOb1();
+         var5 = var1.readUnsignedShort();
+         var1.bitAccess();
+
+         int var9;
+         for(var6 = 0; var6 < 4; ++var6) {
+            for(var7 = 0; var7 < 13; ++var7) {
+               for(var8 = 0; var8 < 13; ++var8) {
+                  var9 = var1.getBits(1);
+                  if(var9 == 1) {
+                     Client.field928[var6][var7][var8] = var1.getBits(26);
+                  } else {
+                     Client.field928[var6][var7][var8] = -1;
+                  }
+               }
+            }
+         }
+
+         var1.byteAccess();
+         ScriptEvent.xteaKeys = new int[var5][4];
+
+         for(var6 = 0; var6 < var5; ++var6) {
+            for(var7 = 0; var7 < 4; ++var7) {
+               ScriptEvent.xteaKeys[var6][var7] = var1.readInt();
+            }
+         }
+
+         VertexNormal.mapRegions = new int[var5];
+         class230.landMapFileIds = new int[var5];
+         GrandExchangeOffer.landRegionFileIds = new int[var5];
+         class29.field400 = new byte[var5][];
+         class250.field3386 = new byte[var5][];
+         var5 = 0;
+
+         for(var6 = 0; var6 < 4; ++var6) {
+            for(var7 = 0; var7 < 13; ++var7) {
+               for(var8 = 0; var8 < 13; ++var8) {
+                  var9 = Client.field928[var6][var7][var8];
+                  if(var9 != -1) {
+                     int var10 = var9 >> 14 & 1023;
+                     int var11 = var9 >> 3 & 2047;
+                     int var12 = (var10 / 8 << 8) + var11 / 8;
+
+                     int var13;
+                     for(var13 = 0; var13 < var5; ++var13) {
+                        if(VertexNormal.mapRegions[var13] == var12) {
+                           var12 = -1;
+                           break;
+                        }
+                     }
+
+                     if(var12 != -1) {
+                        VertexNormal.mapRegions[var5] = var12;
+                        var13 = var12 >> 8 & 255;
+                        int var14 = var12 & 255;
+                        class230.landMapFileIds[var5] = PlayerComposition.indexMaps.getFile("m" + var13 + "_" + var14);
+                        GrandExchangeOffer.landRegionFileIds[var5] = PlayerComposition.indexMaps.getFile("l" + var13 + "_" + var14);
+                        ++var5;
+                     }
+                  }
+               }
+            }
+         }
+
+         FileOnDisk.method2478(var4, var3, !var15);
+      }
+
    }
 }

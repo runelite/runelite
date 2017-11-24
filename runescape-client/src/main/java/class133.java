@@ -2,96 +2,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("eq")
 public class class133 {
-   @ObfuscatedName("b")
-   public static boolean field1903;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1942696395
-   )
-   static int field1900;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1393692891
-   )
-   static int field1906;
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    static boolean field1908;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -720744231
+      intValue = 505046769
    )
-   static int field1904;
-   @ObfuscatedName("u")
+   static int field1900;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -571131171
-   )
-   static int field1905;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1851971339
+      intValue = -2104861051
    )
    static int field1901;
-   @ObfuscatedName("q")
+   @ObfuscatedName("z")
+   static boolean field1902;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 435464835
+      intValue = 289363889
    )
-   public static int field1907;
-   @ObfuscatedName("j")
-   public static int[] field1902;
+   static int field1899;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1233420019
+   )
+   static int field1904;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -374522265
+   )
+   static int field1905;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1389387171
+   )
+   static int field1906;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -645641585
+   )
+   static int field1907;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1305557085
+   )
+   public static int field1909;
+   @ObfuscatedName("y")
+   public static int[] field1903;
 
    static {
-      field1903 = false;
-      field1900 = 0;
-      field1906 = 0;
       field1908 = false;
-      field1907 = 0;
-      field1902 = new int[1000];
+      field1900 = 0;
+      field1901 = 0;
+      field1902 = false;
+      field1909 = 0;
+      field1903 = new int[1000];
    }
 
-   @ObfuscatedName("eq")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-94"
+      signature = "(I)V",
+      garbageValue = "264910980"
    )
-   static void method2596() {
-      Client.field905.method1868();
-      Client.field905.field1461.offset = 0;
-      Client.field905.serverPacket = null;
-      Client.field905.field1467 = null;
-      Client.field905.field1468 = null;
-      Client.field905.field1459 = null;
-      Client.field905.packetLength = 0;
-      Client.field905.field1457 = 0;
-      Client.field910 = 0;
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
-      Client.field1108 = 0;
-      Client.destinationX = 0;
-
-      int var0;
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Client.cachedPlayers[var0] = null;
-      }
-
-      class275.localPlayer = null;
-
-      for(var0 = 0; var0 < Client.cachedNPCs.length; ++var0) {
-         NPC var1 = Client.cachedNPCs[var0];
-         if(var1 != null) {
-            var1.interacting = -1;
-            var1.field1187 = false;
-         }
-      }
-
-      class17.method121();
-      class2.setGameState(30);
-
-      for(var0 = 0; var0 < 100; ++var0) {
-         Client.field1052[var0] = true;
-      }
-
-      World.method1560();
+   public static void method2710() {
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
    }
 }

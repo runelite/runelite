@@ -5,122 +5,122 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kp")
+@ObfuscatedName("ka")
 @Implements("MachineInfo")
 public class MachineInfo extends Node {
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1311559635
+      intValue = 458916853
    )
    @Export("osType")
    int osType;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @Export("os64Bit")
    boolean os64Bit;
-   @ObfuscatedName("av")
+   @ObfuscatedName("ah")
    @ObfuscatedGetter(
-      intValue = 1950244369
+      intValue = 1937140007
    )
    @Export("osVersionType")
    int osVersionType;
-   @ObfuscatedName("am")
+   @ObfuscatedName("al")
    @ObfuscatedGetter(
-      intValue = 1697101961
+      intValue = 1863978913
    )
    @Export("javaVendorType")
    int javaVendorType;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = -1299524759
+      intValue = 1750432265
    )
    @Export("javaVersionMajor")
    int javaVersionMajor;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("aj")
    @ObfuscatedGetter(
-      intValue = -2048625315
+      intValue = 628955833
    )
    @Export("javaVersionMinor")
    int javaVersionMinor;
-   @ObfuscatedName("at")
+   @ObfuscatedName("as")
    @ObfuscatedGetter(
-      intValue = -1094339411
+      intValue = 1574529329
    )
    @Export("javaVersionPatch")
    int javaVersionPatch;
-   @ObfuscatedName("ac")
-   boolean field3939;
-   @ObfuscatedName("as")
+   @ObfuscatedName("am")
+   boolean field3928;
+   @ObfuscatedName("ag")
    @ObfuscatedGetter(
-      intValue = -1247792979
+      intValue = -677656475
    )
    @Export("maxMemoryMB")
    int maxMemoryMB;
-   @ObfuscatedName("aw")
-   @ObfuscatedGetter(
-      intValue = 1376757839
-   )
-   int field3947;
-   @ObfuscatedName("aj")
-   @ObfuscatedGetter(
-      intValue = -1886561451
-   )
-   int field3952;
    @ObfuscatedName("ap")
    @ObfuscatedGetter(
-      intValue = -2145235525
+      intValue = 1724104549
    )
    int field3941;
-   @ObfuscatedName("ag")
-   String field3944;
-   @ObfuscatedName("af")
-   String field3945;
-   @ObfuscatedName("ay")
-   String field3946;
-   @ObfuscatedName("ab")
-   String field3954;
-   @ObfuscatedName("ax")
+   @ObfuscatedName("an")
    @ObfuscatedGetter(
-      intValue = 1674596925
+      intValue = -1121381813
    )
    int field3942;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
-      intValue = -333316187
+      intValue = -1035705031
    )
-   int field3932;
+   int field3925;
+   @ObfuscatedName("ay")
+   String field3944;
+   @ObfuscatedName("ar")
+   String field3945;
+   @ObfuscatedName("ac")
+   String field3933;
+   @ObfuscatedName("af")
+   String field3947;
+   @ObfuscatedName("ao")
+   @ObfuscatedGetter(
+      intValue = -14628357
+   )
+   int field3943;
+   @ObfuscatedName("av")
+   @ObfuscatedGetter(
+      intValue = -1822587431
+   )
+   int field3949;
+   @ObfuscatedName("ab")
+   @ObfuscatedGetter(
+      intValue = -838944783
+   )
+   int field3950;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
-      intValue = -1246240759
+      intValue = 756049433
    )
-   int field3953;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 2014004159
-   )
-   int field3951;
-   @ObfuscatedName("ad")
-   String field3949;
-   @ObfuscatedName("ba")
-   String field3924;
-   @ObfuscatedName("bi")
-   int[] field3936;
+   int field3936;
+   @ObfuscatedName("at")
+   String field3952;
+   @ObfuscatedName("bj")
+   String field3953;
    @ObfuscatedName("bq")
+   int[] field3954;
+   @ObfuscatedName("bo")
    @ObfuscatedGetter(
-      intValue = 1093963295
+      intValue = -881230983
    )
-   int field3930;
+   int field3955;
 
    @ObfuscatedSignature(
       signature = "(Z)V",
       garbageValue = "1"
    )
    public MachineInfo(boolean var1) {
-      this.field3936 = new int[3];
-      if(class19.osNameLC.startsWith("win")) {
+      this.field3954 = new int[3];
+      if(class45.osNameLC.startsWith("win")) {
          this.osType = 1;
-      } else if(class19.osNameLC.startsWith("mac")) {
+      } else if(class45.osNameLC.startsWith("mac")) {
          this.osType = 2;
-      } else if(class19.osNameLC.startsWith("linux")) {
+      } else if(class45.osNameLC.startsWith("linux")) {
          this.osType = 3;
       } else {
          this.osType = 4;
@@ -223,7 +223,7 @@ public class MachineInfo extends Node {
                break;
             }
 
-            var7 = var7 * 10 + (var8 - '0');
+            var7 = var8 - '0' + var7 * 10;
             ++var6;
          }
       } catch (Exception var16) {
@@ -241,7 +241,7 @@ public class MachineInfo extends Node {
                break;
             }
 
-            var7 = var8 - '0' + var7 * 10;
+            var7 = var7 * 10 + (var8 - '0');
             ++var6;
          }
       } catch (Exception var15) {
@@ -267,16 +267,16 @@ public class MachineInfo extends Node {
       }
 
       this.javaVersionPatch = var7;
-      this.field3939 = false;
+      this.field3928 = false;
       Runtime.getRuntime();
       this.maxMemoryMB = (int)((long)((new Random()).nextInt(31457280) + 230686720) / 1048576L) + 1;
       if(this.javaVersionMajor > 3) {
-         this.field3947 = Runtime.getRuntime().availableProcessors();
+         this.field3941 = Runtime.getRuntime().availableProcessors();
       } else {
-         this.field3947 = 0;
+         this.field3941 = 0;
       }
 
-      this.field3952 = 0;
+      this.field3942 = 0;
       if(this.field3944 == null) {
          this.field3944 = "";
       }
@@ -285,31 +285,31 @@ public class MachineInfo extends Node {
          this.field3945 = "";
       }
 
-      if(this.field3946 == null) {
-         this.field3946 = "";
+      if(this.field3933 == null) {
+         this.field3933 = "";
       }
 
-      if(this.field3954 == null) {
-         this.field3954 = "";
+      if(this.field3947 == null) {
+         this.field3947 = "";
       }
 
-      if(this.field3949 == null) {
-         this.field3949 = "";
+      if(this.field3952 == null) {
+         this.field3952 = "";
       }
 
-      if(this.field3924 == null) {
-         this.field3924 = "";
+      if(this.field3953 == null) {
+         this.field3953 = "";
       }
 
-      this.method5425();
+      this.method5588();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-589531957"
+      signature = "(S)V",
+      garbageValue = "-20226"
    )
-   void method5425() {
+   void method5588() {
       if(this.field3944.length() > 40) {
          this.field3944 = this.field3944.substring(0, 40);
       }
@@ -318,22 +318,22 @@ public class MachineInfo extends Node {
          this.field3945 = this.field3945.substring(0, 40);
       }
 
-      if(this.field3946.length() > 10) {
-         this.field3946 = this.field3946.substring(0, 10);
+      if(this.field3933.length() > 10) {
+         this.field3933 = this.field3933.substring(0, 10);
       }
 
-      if(this.field3954.length() > 10) {
-         this.field3954 = this.field3954.substring(0, 10);
+      if(this.field3947.length() > 10) {
+         this.field3947 = this.field3947.substring(0, 10);
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "124198222"
+      signature = "(Lfr;I)V",
+      garbageValue = "1857668112"
    )
-   public void method5433(Buffer var1) {
+   public void method5589(Buffer var1) {
       var1.putByte(6);
       var1.putByte(this.osType);
       var1.putByte(this.os64Bit?1:0);
@@ -342,54 +342,42 @@ public class MachineInfo extends Node {
       var1.putByte(this.javaVersionMajor);
       var1.putByte(this.javaVersionMinor);
       var1.putByte(this.javaVersionPatch);
-      var1.putByte(this.field3939?1:0);
+      var1.putByte(this.field3928?1:0);
       var1.putShort(this.maxMemoryMB);
-      var1.putByte(this.field3947);
-      var1.put24bitInt(this.field3952);
-      var1.putShort(this.field3941);
+      var1.putByte(this.field3941);
+      var1.put24bitInt(this.field3942);
+      var1.putShort(this.field3925);
       var1.putJagString(this.field3944);
       var1.putJagString(this.field3945);
-      var1.putJagString(this.field3946);
-      var1.putJagString(this.field3954);
-      var1.putByte(this.field3932);
-      var1.putShort(this.field3942);
-      var1.putJagString(this.field3949);
-      var1.putJagString(this.field3924);
-      var1.putByte(this.field3953);
-      var1.putByte(this.field3951);
+      var1.putJagString(this.field3933);
+      var1.putJagString(this.field3947);
+      var1.putByte(this.field3949);
+      var1.putShort(this.field3943);
+      var1.putJagString(this.field3952);
+      var1.putJagString(this.field3953);
+      var1.putByte(this.field3950);
+      var1.putByte(this.field3936);
 
-      for(int var2 = 0; var2 < this.field3936.length; ++var2) {
-         var1.putInt(this.field3936[var2]);
+      for(int var2 = 0; var2 < this.field3954.length; ++var2) {
+         var1.putInt(this.field3954[var2]);
       }
 
-      var1.putInt(this.field3930);
+      var1.putInt(this.field3955);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "563284134"
+      signature = "(B)I",
+      garbageValue = "-37"
    )
-   public int method5427() {
+   public int method5587() {
       byte var1 = 38;
-      String var4 = this.field3944;
-      int var3 = var4.length() + 2;
-      int var20 = var3 + var1;
-      String var7 = this.field3945;
-      int var6 = var7.length() + 2;
-      var20 += var6;
-      String var10 = this.field3946;
-      int var9 = var10.length() + 2;
-      var20 += var9;
-      String var13 = this.field3954;
-      int var12 = var13.length() + 2;
-      var20 += var12;
-      String var16 = this.field3949;
-      int var15 = var16.length() + 2;
-      var20 += var15;
-      String var19 = this.field3924;
-      int var18 = var19.length() + 2;
-      var20 += var18;
-      return var20;
+      int var2 = var1 + SceneTilePaint.method2795(this.field3944);
+      var2 += SceneTilePaint.method2795(this.field3945);
+      var2 += SceneTilePaint.method2795(this.field3933);
+      var2 += SceneTilePaint.method2795(this.field3947);
+      var2 += SceneTilePaint.method2795(this.field3952);
+      var2 += SceneTilePaint.method2795(this.field3953);
+      return var2;
    }
 }

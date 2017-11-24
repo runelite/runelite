@@ -2,48 +2,48 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("ai")
 @Implements("WorldMapSectionBase")
 public interface WorldMapSectionBase {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lam;I)V",
-      garbageValue = "1999614542"
+      signature = "(Lal;I)V",
+      garbageValue = "1038625343"
    )
-   void vmethod670(WorldMapData var1);
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "16"
-   )
-   boolean vmethod667(int var1, int var2, int var3);
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "748684240"
-   )
-   boolean vmethod668(int var1, int var2);
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "1806249195"
-   )
-   int[] vmethod682(int var1, int var2, int var3);
+   void vmethod724(WorldMapData var1);
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(III)Lhk;",
-      garbageValue = "-98479540"
+      signature = "(IIII)Z",
+      garbageValue = "952023960"
    )
-   Coordinates vmethod669(int var1, int var2);
+   boolean vmethod728(int var1, int var2, int var3);
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "-1450864888"
+      signature = "(IIB)Z",
+      garbageValue = "-27"
    )
-   void vmethod665(Buffer var1);
+   boolean vmethod716(int var1, int var2);
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IIII)[I",
+      garbageValue = "-495685061"
+   )
+   int[] vmethod717(int var1, int var2, int var3);
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IIB)Lhp;",
+      garbageValue = "1"
+   )
+   Coordinates vmethod741(int var1, int var2);
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lfr;I)V",
+      garbageValue = "-1975557779"
+   )
+   void vmethod719(Buffer var1);
 }

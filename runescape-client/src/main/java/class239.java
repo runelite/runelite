@@ -1,119 +1,137 @@
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
+@ObfuscatedName("im")
 public enum class239 implements class185 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lim;"
    )
-   field3252("runescape", "RuneScape", 0),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3250("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3253("game3", "Game 3", 2),
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3255("game4", "Game 4", 3),
+   field3270("runescape", "RuneScape", 0),
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lim;"
    )
-   field3254("game5", "Game 5", 4),
-   @ObfuscatedName("f")
+   field3271("stellardawn", "Stellar Dawn", 1),
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lim;"
    )
-   field3257("oldscape", "RuneScape 2007", 5);
+   field3272("game3", "Game 3", 2),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3273("game4", "Game 4", 3),
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3274("game5", "Game 5", 4),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lim;"
+   )
+   field3275("oldscape", "RuneScape 2007", 5);
 
-   @ObfuscatedName("u")
-   public final String field3256;
+   @ObfuscatedName("af")
+   protected static GarbageCollectorMXBean field3279;
+   @ObfuscatedName("b")
+   public final String field3276;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1009020233
+      intValue = 879950033
    )
-   final int field3251;
+   final int field3277;
 
    class239(String var3, String var4, int var5) {
-      this.field3256 = var3;
-      this.field3251 = var5;
+      this.field3276 = var3;
+      this.field3277 = var5;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-4"
+      signature = "(I)I",
+      garbageValue = "-1940611593"
    )
    public int rsOrdinal() {
-      return this.field3251;
+      return this.field3277;
    }
 
-   @ObfuscatedName("iq")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lhx;IIZB)V",
-      garbageValue = "-90"
+      signature = "(Ljava/lang/CharSequence;S)[B",
+      garbageValue = "28789"
    )
-   static void method4101(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2720 == 0) {
-         var0.width = var0.originalWidth;
-      } else if(var0.field2720 == 1) {
-         var0.width = var1 - var0.originalWidth;
-      } else if(var0.field2720 == 2) {
-         var0.width = var0.originalWidth * var1 >> 14;
-      }
+   public static byte[] method4260(CharSequence var0) {
+      int var1 = var0.length();
+      byte[] var2 = new byte[var1];
 
-      if(var0.buttonType == 0) {
-         var0.height = var0.field2725;
-      } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.field2725;
-      } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.field2725 >> 14;
-      }
-
-      if(var0.field2720 == 4) {
-         var0.width = var0.height * var0.field2816 / var0.field2794;
-      }
-
-      if(var0.buttonType == 4) {
-         var0.height = var0.width * var0.field2794 / var0.field2816;
-      }
-
-      if(Client.field1017 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
+            var2[var3] = (byte)var4;
+         } else if(var4 == 8364) {
+            var2[var3] = -128;
+         } else if(var4 == 8218) {
+            var2[var3] = -126;
+         } else if(var4 == 402) {
+            var2[var3] = -125;
+         } else if(var4 == 8222) {
+            var2[var3] = -124;
+         } else if(var4 == 8230) {
+            var2[var3] = -123;
+         } else if(var4 == 8224) {
+            var2[var3] = -122;
+         } else if(var4 == 8225) {
+            var2[var3] = -121;
+         } else if(var4 == 710) {
+            var2[var3] = -120;
+         } else if(var4 == 8240) {
+            var2[var3] = -119;
+         } else if(var4 == 352) {
+            var2[var3] = -118;
+         } else if(var4 == 8249) {
+            var2[var3] = -117;
+         } else if(var4 == 338) {
+            var2[var3] = -116;
+         } else if(var4 == 381) {
+            var2[var3] = -114;
+         } else if(var4 == 8216) {
+            var2[var3] = -111;
+         } else if(var4 == 8217) {
+            var2[var3] = -110;
+         } else if(var4 == 8220) {
+            var2[var3] = -109;
+         } else if(var4 == 8221) {
+            var2[var3] = -108;
+         } else if(var4 == 8226) {
+            var2[var3] = -107;
+         } else if(var4 == 8211) {
+            var2[var3] = -106;
+         } else if(var4 == 8212) {
+            var2[var3] = -105;
+         } else if(var4 == 732) {
+            var2[var3] = -104;
+         } else if(var4 == 8482) {
+            var2[var3] = -103;
+         } else if(var4 == 353) {
+            var2[var3] = -102;
+         } else if(var4 == 8250) {
+            var2[var3] = -101;
+         } else if(var4 == 339) {
+            var2[var3] = -100;
+         } else if(var4 == 382) {
+            var2[var3] = -98;
+         } else if(var4 == 376) {
+            var2[var3] = -97;
          } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
-            }
-
-            if(var0.width <= 0) {
-               var0.width = 5;
-            }
+            var2[var3] = 63;
          }
       }
 
-      if(var0.contentType == 1337) {
-         Client.field1019 = var0;
-      }
-
-      if(var3 && var0.field2822 != null && (var4 != var0.width || var5 != var0.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.field785 = var0.field2822;
-         Client.field862.addFront(var6);
-      }
-
+      return var2;
    }
 }

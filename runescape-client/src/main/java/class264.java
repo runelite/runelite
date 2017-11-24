@@ -2,57 +2,64 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jp")
+@ObfuscatedName("jn")
 public enum class264 implements class185 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ljp;"
+      signature = "Ljn;"
    )
-   field3595(0, 0),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ljp;"
-   )
-   field3596(1, 1),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ljp;"
-   )
-   field3594(2, 2);
-
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -113811557
-   )
-   public final int field3597;
+   field3612(1, 0),
    @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 534173235
+   @ObfuscatedSignature(
+      signature = "Ljn;"
    )
-   final int field3598;
+   field3606(0, 1),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ljn;"
+   )
+   field3607(2, 2);
+
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 752978877
+   )
+   public final int field3609;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 213345935
+   )
+   final int field3610;
 
    class264(int var3, int var4) {
-      this.field3597 = var3;
-      this.field3598 = var4;
+      this.field3609 = var3;
+      this.field3610 = var4;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1940611593"
+   )
+   public int rsOrdinal() {
+      return this.field3610;
    }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-4"
+      signature = "(ZI)V",
+      garbageValue = "1925418882"
    )
-   public int rsOrdinal() {
-      return this.field3598;
-   }
-
-   @ObfuscatedName("is")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "852817846"
-   )
-   static final void method4631(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(class64.loadWidget(var0)) {
-         class148.method2914(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
+   static void method4818(boolean var0) {
+      class91.loginMessage1 = "";
+      class91.loginMessage2 = "Enter your username/email & password.";
+      class91.loginMessage3 = "";
+      class91.loginIndex = 2;
+      if(var0) {
+         class91.password = "";
       }
+
+      Widget.method4169();
+      class72.method1144();
    }
 }

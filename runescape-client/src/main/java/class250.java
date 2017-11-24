@@ -1,108 +1,126 @@
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("if")
 public class class250 extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lid;"
    )
-   public static IndexDataBase field3369;
-   @ObfuscatedName("s")
+   public static IndexDataBase field3387;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgx;"
    )
-   static NodeCache field3367;
-   @ObfuscatedName("r")
-   public boolean field3368;
+   public static NodeCache field3388;
+   @ObfuscatedName("fa")
+   static byte[][] field3386;
+   @ObfuscatedName("k")
+   public boolean field3389;
 
    static {
-      field3367 = new NodeCache(64);
+      field3388 = new NodeCache(64);
    }
 
-   class250() {
-      this.field3368 = false;
+   public class250() {
+      this.field3389 = false;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "-141002358"
+      signature = "(Lfr;I)V",
+      garbageValue = "1700393117"
    )
-   void method4302(Buffer var1) {
+   public void method4468(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4294(var1, var2);
+         this.method4469(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfs;IB)V",
-      garbageValue = "62"
+      signature = "(Lfr;II)V",
+      garbageValue = "-1356725111"
    )
-   void method4294(Buffer var1, int var2) {
+   void method4469(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3368 = true;
+         this.field3389 = true;
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-1035781250"
+      signature = "(Lid;Lid;I)V",
+      garbageValue = "-93768855"
    )
-   static final boolean method4301(char var0) {
-      return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
+   public static void method4477(IndexDataBase var0, IndexDataBase var1) {
+      KitDefinition.identKit_ref = var0;
+      KitDefinition.field3418 = var1;
+      KitDefinition.field3419 = KitDefinition.identKit_ref.fileCount(3);
    }
 
-   @ObfuscatedName("ab")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1608865957"
+      signature = "(IIII)V",
+      garbageValue = "100427489"
    )
-   protected static int method4295() {
-      int var0 = 0;
-      if(class272.field3708 == null || !class272.field3708.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  class272.field3708 = var2;
-                  GameEngine.field672 = -1L;
-                  GameEngine.field671 = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
+   static final void method4474(int var0, int var1, int var2) {
+      int var3;
+      for(var3 = 0; var3 < 8; ++var3) {
+         for(int var4 = 0; var4 < 8; ++var4) {
+            class61.tileHeights[var0][var3 + var1][var4 + var2] = 0;
          }
       }
 
-      if(class272.field3708 != null) {
-         long var9 = ChatLineBuffer.currentTimeMs();
-         long var3 = class272.field3708.getCollectionTime();
-         if(-1L != GameEngine.field671) {
-            long var5 = var3 - GameEngine.field671;
-            long var7 = var9 - GameEngine.field672;
-            if(0L != var7) {
-               var0 = (int)(100L * var5 / var7);
-            }
+      if(var1 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class61.tileHeights[var0][var1][var3 + var2] = class61.tileHeights[var0][var1 - 1][var3 + var2];
          }
-
-         GameEngine.field671 = var3;
-         GameEngine.field672 = var9;
       }
 
+      if(var2 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class61.tileHeights[var0][var3 + var1][var2] = class61.tileHeights[var0][var3 + var1][var2 - 1];
+         }
+      }
+
+      if(var1 > 0 && class61.tileHeights[var0][var1 - 1][var2] != 0) {
+         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1 - 1][var2];
+      } else if(var2 > 0 && class61.tileHeights[var0][var1][var2 - 1] != 0) {
+         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1][var2 - 1];
+      } else if(var1 > 0 && var2 > 0 && class61.tileHeights[var0][var1 - 1][var2 - 1] != 0) {
+         class61.tileHeights[var0][var1][var2] = class61.tileHeights[var0][var1 - 1][var2 - 1];
+      }
+
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)Lkl;",
+      garbageValue = "-1977901791"
+   )
+   public static IndexedSprite method4476() {
+      IndexedSprite var0 = new IndexedSprite();
+      var0.width = class295.field3846;
+      var0.originalHeight = class295.field3847;
+      var0.offsetX = class295.field3848[0];
+      var0.offsetY = class295.offsetsY[0];
+      var0.originalWidth = class295.field3845[0];
+      var0.height = class285.field3788[0];
+      var0.palette = class115.field1599;
+      var0.pixels = class15.spritePixels[0];
+      class295.field3848 = null;
+      class295.offsetsY = null;
+      class295.field3845 = null;
+      class285.field3788 = null;
+      class115.field1599 = null;
+      class15.spritePixels = null;
       return var0;
    }
 }

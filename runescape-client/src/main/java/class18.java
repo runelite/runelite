@@ -1,146 +1,234 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("e")
 final class class18 implements Comparator {
+   @ObfuscatedName("pt")
+   @ObfuscatedGetter(
+      intValue = 1197973043
+   )
+   static int field304;
    @ObfuscatedName("s")
+   static String[] field309;
+   @ObfuscatedName("do")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Liv;"
    )
-   public static IndexDataBase field294;
+   @Export("vorbisIndex")
+   static IndexData vorbisIndex;
+   @ObfuscatedName("gu")
+   @ObfuscatedGetter(
+      intValue = 710716633
+   )
+   @Export("cameraPitch")
+   static int cameraPitch;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lj;Lj;B)I",
-      garbageValue = "14"
+      signature = "(Ly;Ly;I)I",
+      garbageValue = "1184595222"
    )
-   int method132(class14 var1, class14 var2) {
-      return var1.method83().compareTo(var2.method83());
+   int method147(class14 var1, class14 var2) {
+      return var1.method93().compareTo(var2.method93());
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method147((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method132((class14)var1, (class14)var2);
-   }
-
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1074875870"
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "-50"
    )
-   public static int method131(int var0) {
-      Varbit var1 = KeyFocusListener.method715(var0);
-      int var2 = var1.configId;
-      int var3 = var1.leastSignificantBit;
-      int var4 = var1.mostSignificantBit;
-      int var5 = class218.field2680[var4 - var3];
-      return class218.widgetSettings[var2] >> var3 & var5;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lfi;Lgi;I)Lfc;",
-      garbageValue = "-2139945108"
-   )
-   public static PacketNode method133(ClientPacket var0, ISAACCipher var1) {
-      PacketNode var2 = Varcs.method1804();
-      var2.clientPacket = var0;
-      var2.field2416 = var0.packetLength;
-      if(var2.field2416 == -1) {
-         var2.packetBuffer = new PacketBuffer(260);
-      } else if(var2.field2416 == -2) {
-         var2.packetBuffer = new PacketBuffer(10000);
-      } else if(var2.field2416 <= 18) {
-         var2.packetBuffer = new PacketBuffer(20);
-      } else if(var2.field2416 <= 98) {
-         var2.packetBuffer = new PacketBuffer(100);
+   public static Object method157(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         var2.packetBuffer = new PacketBuffer(260);
-      }
-
-      var2.packetBuffer.method3451(var1);
-      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
-      var2.field2423 = 0;
-      return var2;
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;Ljava/io/File;I)V",
-      garbageValue = "-1549166483"
-   )
-   static void method130(File var0, File var1) {
-      try {
-         FileOnDisk var2 = new FileOnDisk(class156.field2154, "rw", 10000L);
-         Buffer var3 = new Buffer(500);
-         var3.putByte(3);
-         var3.putByte(var1 != null?1:0);
-         var3.putCESU8(var0.getPath());
-         if(var1 != null) {
-            var3.putCESU8("");
+         if(var0.length > 136 && !AbstractByteBuffer.field2515) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.field2515 = true;
+            }
          }
 
-         var2.write(var3.payload, 0, var3.offset);
-         var2.close();
-      } catch (IOException var4) {
-         var4.printStackTrace();
-      }
-
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "1613144663"
-   )
-   static boolean method134(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
-
-         return true;
-      } catch (Exception var4) {
-         return false;
+         return var0;
       }
    }
 
-   @ObfuscatedName("gu")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-104"
+      signature = "(ILce;ZI)I",
+      garbageValue = "-1566713171"
    )
-   @Export("getTileHeight")
-   static final int getTileHeight(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class61.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
-         }
-
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = (128 - var6) * class61.tileHeights[var5][var3][var4] + var6 * class61.tileHeights[var5][var3 + 1][var4] >> 7;
-         int var9 = class61.tileHeights[var5][var3][var4 + 1] * (128 - var6) + class61.tileHeights[var5][var3 + 1][var4 + 1] * var6 >> 7;
-         return var8 * (128 - var7) + var9 * var7 >> 7;
+   static int method152(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
       } else {
-         return 0;
+         var3 = var2?class54.field636:class82.field1265;
+      }
+
+      String var4 = class82.scriptStringStack[--class82.scriptStringStackSize];
+      int[] var5 = null;
+      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
+         int var6 = class82.intStack[--class13.intStackSize];
+         if(var6 > 0) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class82.intStack[--class13.intStackSize]) {
+               ;
+            }
+         }
+
+         var4 = var4.substring(0, var4.length() - 1);
+      }
+
+      Object[] var8 = new Object[var4.length() + 1];
+
+      int var7;
+      for(var7 = var8.length - 1; var7 >= 1; --var7) {
+         if(var4.charAt(var7 - 1) == 's') {
+            var8[var7] = class82.scriptStringStack[--class82.scriptStringStackSize];
+         } else {
+            var8[var7] = new Integer(class82.intStack[--class13.intStackSize]);
+         }
+      }
+
+      var7 = class82.intStack[--class13.intStackSize];
+      if(var7 != -1) {
+         var8[0] = new Integer(var7);
+      } else {
+         var8 = null;
+      }
+
+      if(var0 == 1400) {
+         var3.field2806 = var8;
+      } else if(var0 == 1401) {
+         var3.field2760 = var8;
+      } else if(var0 == 1402) {
+         var3.field2852 = var8;
+      } else if(var0 == 1403) {
+         var3.mouseEnterListener = var8;
+      } else if(var0 == 1404) {
+         var3.mouseExitListener = var8;
+      } else if(var0 == 1405) {
+         var3.field2813 = var8;
+      } else if(var0 == 1406) {
+         var3.field2816 = var8;
+      } else if(var0 == 1407) {
+         var3.configListenerArgs = var8;
+         var3.configTriggers = var5;
+      } else if(var0 == 1408) {
+         var3.renderListener = var8;
+      } else if(var0 == 1409) {
+         var3.field2803 = var8;
+      } else if(var0 == 1410) {
+         var3.field2814 = var8;
+      } else if(var0 == 1411) {
+         var3.field2805 = var8;
+      } else if(var0 == 1412) {
+         var3.mouseHoverListener = var8;
+      } else if(var0 == 1414) {
+         var3.tableListenerArgs = var8;
+         var3.tableModTriggers = var5;
+      } else if(var0 == 1415) {
+         var3.skillListenerArgs = var8;
+         var3.skillTriggers = var5;
+      } else if(var0 == 1416) {
+         var3.field2784 = var8;
+      } else if(var0 == 1417) {
+         var3.scrollListener = var8;
+      } else if(var0 == 1418) {
+         var3.field2849 = var8;
+      } else if(var0 == 1419) {
+         var3.field2827 = var8;
+      } else if(var0 == 1420) {
+         var3.field2828 = var8;
+      } else if(var0 == 1421) {
+         var3.field2829 = var8;
+      } else if(var0 == 1422) {
+         var3.field2830 = var8;
+      } else if(var0 == 1423) {
+         var3.field2831 = var8;
+      } else if(var0 == 1424) {
+         var3.field2861 = var8;
+      } else if(var0 == 1425) {
+         var3.field2834 = var8;
+      } else if(var0 == 1426) {
+         var3.field2835 = var8;
+      } else {
+         if(var0 != 1427) {
+            return 2;
+         }
+
+         var3.field2833 = var8;
+      }
+
+      var3.field2770 = true;
+      return 1;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(ILce;ZI)I",
+      garbageValue = "92903918"
+   )
+   static int method155(int var0, Script var1, boolean var2) {
+      Widget var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
+      if(var0 == 2600) {
+         class82.intStack[++class13.intStackSize - 1] = var3.scrollX;
+         return 1;
+      } else if(var0 == 2601) {
+         class82.intStack[++class13.intStackSize - 1] = var3.scrollY;
+         return 1;
+      } else if(var0 == 2602) {
+         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.text;
+         return 1;
+      } else if(var0 == 2603) {
+         class82.intStack[++class13.intStackSize - 1] = var3.scrollWidth;
+         return 1;
+      } else if(var0 == 2604) {
+         class82.intStack[++class13.intStackSize - 1] = var3.scrollHeight;
+         return 1;
+      } else if(var0 == 2605) {
+         class82.intStack[++class13.intStackSize - 1] = var3.modelZoom;
+         return 1;
+      } else if(var0 == 2606) {
+         class82.intStack[++class13.intStackSize - 1] = var3.rotationX;
+         return 1;
+      } else if(var0 == 2607) {
+         class82.intStack[++class13.intStackSize - 1] = var3.rotationY;
+         return 1;
+      } else if(var0 == 2608) {
+         class82.intStack[++class13.intStackSize - 1] = var3.rotationZ;
+         return 1;
+      } else if(var0 == 2609) {
+         class82.intStack[++class13.intStackSize - 1] = var3.opacity;
+         return 1;
+      } else if(var0 == 2610) {
+         class82.intStack[++class13.intStackSize - 1] = var3.field2729;
+         return 1;
+      } else if(var0 == 2611) {
+         class82.intStack[++class13.intStackSize - 1] = var3.textColor;
+         return 1;
+      } else if(var0 == 2612) {
+         class82.intStack[++class13.intStackSize - 1] = var3.field2750;
+         return 1;
+      } else if(var0 == 2613) {
+         class82.intStack[++class13.intStackSize - 1] = var3.field2754.rsOrdinal();
+         return 1;
+      } else {
+         return 2;
       }
    }
 }
