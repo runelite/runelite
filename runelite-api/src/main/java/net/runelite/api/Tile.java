@@ -49,5 +49,5 @@ public interface Tile
 
 	Point getRegionLocation();
 
-	Point getLocalLoction();
+	Point getLocalLocation();
 }

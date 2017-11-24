@@ -55,7 +55,7 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	@Override
-	public Point getLocalLoction()
+	public Point getLocalLocation()
 	{
 		Point regionLocation = getRegionLocation();
 		return Perspective.regionToLocal(client, regionLocation);

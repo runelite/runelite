@@ -26,12 +26,13 @@
 package net.runelite.client.plugins.volcanicmine;
 
 import net.runelite.api.Point;
+import java.util.Arrays;
+import java.util.HashSet;
 
 class OptimalPaths
 {
 	private static final int INSTANCE_SIZE = 192;
-
-	private static final Point[] OPTIMAL_PATH = new Point[]
+	private static final Point[] OPTIMAL_PATH_POINTS = new Point[]
 	{
 		new Point(161, 145),
 		new Point(161, 144),
@@ -68,8 +69,7 @@ class OptimalPaths
 		new Point(152, 100),
 		new Point(149, 76)
 	};
-
-	public final static Point[] BOUNDER_RANGE = new Point[]
+	public final static Point[] BOULDER_RANGE_POINTS = new Point[]
 	{
 		new Point(162, 123),
 		new Point(161, 152),
@@ -101,19 +101,15 @@ class OptimalPaths
 		new Point(162, 124)
 	};
 
+	private static final HashSet<Point> OPTIMAL_PATH = new HashSet<>(Arrays.asList(OPTIMAL_PATH_POINTS));
+	private static final HashSet<Point> BOULDER_RANGE = new HashSet<>(Arrays.asList(BOULDER_RANGE_POINTS));
+
 	//only use global location
 	public static boolean isOptimalPathTile(Point point)
 	{
 		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
 
-		for (Point p : OPTIMAL_PATH)
-		{
-			if (instanceLocation.equals(p))
-			{
-				return true;
-			}
-		}
-		return false;
+		return OPTIMAL_PATH.contains(instanceLocation);
 	}
 
 	//only use global location
@@ -121,13 +117,6 @@ class OptimalPaths
 	{
 		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
 
-		for (Point p : BOUNDER_RANGE)
-		{
-			if (instanceLocation.equals(p))
-			{
-				return true;
-			}
-		}
-		return false;
+		return BOULDER_RANGE.contains(instanceLocation);
 	}
 }

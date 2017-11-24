@@ -174,6 +174,7 @@ public class VolcanicMineOverlay extends Overlay
 			else if (OptimalPaths.isBoulderRangeTile(worldLoc))
 			{
 				Point localTile = tile.getLocalLocation();
+				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 				if (poly != null)
 				{
