@@ -73,6 +73,7 @@ public class SpecOrbOverlay extends Overlay
 		{
 			return null;
 		}
+
 		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORB);
 		if (xpOrb == null)
 			return null;
@@ -89,8 +90,7 @@ public class SpecOrbOverlay extends Overlay
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
 
 
-		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent, SPECIAL_ORB_RECHARGE_COLOR,
-				specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100), specialAttackEnabled);
+		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent, SPECIAL_ORB_RECHARGE_COLOR, specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100), specialAttackEnabled);
 
 		return null;
 	}

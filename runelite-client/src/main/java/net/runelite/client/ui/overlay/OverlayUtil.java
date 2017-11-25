@@ -69,8 +69,7 @@ public class OverlayUtil
 	 * @param minimapOrbBackground  background image of the minimap orb
 	 * @param amount                number to display on the orb
 	 */
-	public static void drawMinimapOrb(Graphics2D graphics, Point pos, double percentFilled, Color rechargeColor, double rechargePercentFilled,
-	                                  Image minimapOrbBackground, Image overlayImage, int amount, boolean enabled)
+	public static void drawMinimapOrb(Graphics2D graphics, Point pos, double percentFilled, Color rechargeColor, double rechargePercentFilled, Image minimapOrbBackground, Image overlayImage, int amount, boolean enabled)
 	{
 
 		Color startColor = graphics.getColor();
