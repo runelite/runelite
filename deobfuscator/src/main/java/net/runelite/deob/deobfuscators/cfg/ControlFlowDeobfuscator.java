@@ -174,6 +174,13 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 
 	private int compareBlock(Block o1, Block o2)
 	{
+		// prioritize blocks with the most exceptions
+		int i = Integer.compare(o2.getExceptions().size(), o1.getExceptions().size());
+		if (i != 0)
+		{
+			return i;
+		}
+
 		if (o1.isHandler() && !o2.isHandler())
 		{
 			// higher numbers have the lowest priority
@@ -183,13 +190,6 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		if (o2.isHandler() && !o1.isHandler())
 		{
 			return -1;
-		}
-
-		// prioritize blocks with the most exceptions
-		int i = Integer.compare(o2.getExceptions().size(), o1.getExceptions().size());
-		if (i != 0)
-		{
-			return i;
 		}
 
 		if (o1.isJumptarget() && !o2.isJumptarget())
@@ -232,12 +232,11 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		List<Block> done = new ArrayList<>();
 		Queue<Block> queue = new PriorityQueue<>(this::compareBlock);
 
-		// add handlers since they aren't reachable normally
+		// mark handlers for prioity queue
 		for (Exception ex : originalExceptions)
 		{
 			Block handler = graph.getBlock(ex.getHandler());
-			handler.setHandler(true); // mark as handler for priority queue
-			queue.add(handler);
+			handler.setHandler(true);
 		}
 
 		// add initial code block
@@ -275,6 +274,14 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 			// add next reachable blocks
 			for (Block bl : next)
 			{
+				queue.add(bl);
+			}
+
+			// add handlers
+			for (ExceptionHandler handler : block.getExceptions())
+			{
+				Block bl = graph.getBlock(handler.getHandler());
+				assert bl != null;
 				queue.add(bl);
 			}
 

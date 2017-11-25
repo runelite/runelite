@@ -4,62 +4,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("jl")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("pe")
-   @ObfuscatedGetter(
-      intValue = 1116468463
-   )
-   static int field3448;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lid;"
    )
-   public static IndexDataBase field3453;
-   @ObfuscatedName("s")
+   public static IndexDataBase field3475;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgx;"
    )
-   public static NodeCache field3456;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 2112759471
-   )
-   static int field3458;
-   @ObfuscatedName("r")
+   public static NodeCache field3466;
+   @ObfuscatedName("o")
+   @Export("userHome")
+   static String userHome;
+   @ObfuscatedName("k")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1210123289
+      intValue = 1709671563
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1953128829
+      intValue = 1222350313
    )
    @Export("size")
    public int size;
    @ObfuscatedName("t")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("n")
+   @ObfuscatedName("r")
    @Export("stringVals")
    public String[] stringVals;
 
    static {
-      field3456 = new NodeCache(64);
+      field3466 = new NodeCache(64);
    }
 
    public Enum() {
@@ -67,10 +60,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "-1085866955"
+      signature = "(Lfr;I)V",
+      garbageValue = "-93868231"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -80,16 +73,16 @@ public class Enum extends CacheableNode {
             return;
          }
 
-         this.method4464(var1, var2);
+         this.method4642(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfs;II)V",
-      garbageValue = "548639951"
+      signature = "(Lfr;II)V",
+      garbageValue = "778882397"
    )
-   void method4464(Buffer var1, int var2) {
+   void method4642(Buffer var1, int var2) {
       if(var2 == 1) {
          this.keyType = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
@@ -121,37 +114,5 @@ public class Enum extends CacheableNode {
          }
       }
 
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-378529997"
-   )
-   public static void method4462(int var0) {
-      if(var0 != -1) {
-         if(class56.validInterfaces[var0]) {
-            TextureProvider.widgetIndex.method4113(var0);
-            if(Widget.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-                  if(Widget.widgets[var0][var2] != null) {
-                     if(Widget.widgets[var0][var2].type != 2) {
-                        Widget.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
-                  }
-               }
-
-               if(var1) {
-                  Widget.widgets[var0] = null;
-               }
-
-               class56.validInterfaces[var0] = false;
-            }
-         }
-      }
    }
 }

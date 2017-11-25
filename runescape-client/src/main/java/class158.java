@@ -1,18 +1,24 @@
 import java.io.File;
 import java.util.Hashtable;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("ft")
 public class class158 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("pr")
+   @ObfuscatedGetter(
+      intValue = -1091119205
+   )
+   static int field2165;
+   @ObfuscatedName("d")
    static boolean field2162;
-   @ObfuscatedName("s")
-   static File field2156;
-   @ObfuscatedName("r")
-   static Hashtable field2157;
+   @ObfuscatedName("x")
+   static File field2163;
+   @ObfuscatedName("k")
+   static Hashtable field2164;
 
    static {
       field2162 = false;
-      field2157 = new Hashtable(16);
+      field2164 = new Hashtable(16);
    }
 }

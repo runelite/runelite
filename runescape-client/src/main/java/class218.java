@@ -1,29 +1,63 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hi")
+@ObfuscatedName("hd")
 public class class218 {
-   @ObfuscatedName("b")
-   public static int[] field2680;
-   @ObfuscatedName("s")
+   @ObfuscatedName("on")
+   @ObfuscatedGetter(
+      intValue = -2047994585
+   )
+   static int field2685;
+   @ObfuscatedName("d")
+   static int[] field2686;
+   @ObfuscatedName("x")
    @Export("settings")
    @Hook("varbitChanged")
    public static int[] settings;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @Export("widgetSettings")
    public static int[] widgetSettings;
 
    static {
-      field2680 = new int[32];
+      field2686 = new int[32];
       int var0 = 2;
 
       for(int var1 = 0; var1 < 32; ++var1) {
-         field2680[var1] = var0 - 1;
+         field2686[var1] = var0 - 1;
          var0 += var0;
       }
 
       settings = new int[2000];
       widgetSettings = new int[2000];
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lfn;Lgh;I)Lfq;",
+      garbageValue = "1436875406"
+   )
+   public static PacketNode method4105(ClientPacket var0, ISAACCipher var1) {
+      PacketNode var2 = class89.method1765();
+      var2.clientPacket = var0;
+      var2.field2421 = var0.packetLength;
+      if(var2.field2421 == -1) {
+         var2.packetBuffer = new PacketBuffer(260);
+      } else if(var2.field2421 == -2) {
+         var2.packetBuffer = new PacketBuffer(10000);
+      } else if(var2.field2421 <= 18) {
+         var2.packetBuffer = new PacketBuffer(20);
+      } else if(var2.field2421 <= 98) {
+         var2.packetBuffer = new PacketBuffer(100);
+      } else {
+         var2.packetBuffer = new PacketBuffer(260);
+      }
+
+      var2.packetBuffer.method3576(var1);
+      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
+      var2.field2423 = 0;
+      return var2;
    }
 }

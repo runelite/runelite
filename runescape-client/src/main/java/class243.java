@@ -2,91 +2,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("in")
 public class class243 implements Runnable {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgg;"
+      signature = "Lgs;"
    )
-   public static Deque field3291;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lgg;"
-   )
-   public static Deque field3289;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -554768641
-   )
-   public static int field3288;
-   @ObfuscatedName("g")
-   public static Object field3290;
+   static Deque field3307;
    @ObfuscatedName("x")
-   static Thread field3287;
-   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lkb;"
+      signature = "Lgs;"
    )
-   static SpritePixels field3292;
+   static Deque field3306;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1650854241
+   )
+   static int field3308;
+   @ObfuscatedName("z")
+   static Object field3309;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1005389043
+   )
+   static int field3310;
+   @ObfuscatedName("n")
+   public static boolean field3311;
 
    static {
-      field3291 = new Deque();
-      field3289 = new Deque();
-      field3288 = 0;
-      field3290 = new Object();
+      field3307 = new Deque();
+      field3306 = new Deque();
+      field3308 = 0;
+      field3309 = new Object();
    }
 
    public void run() {
       try {
          while(true) {
-            Deque var2 = field3291;
+            Deque var2 = field3307;
             FileSystem var1;
-            synchronized(field3291) {
-               var1 = (FileSystem)field3291.getFront();
+            synchronized(field3307) {
+               var1 = (FileSystem)field3307.getFront();
             }
 
             Object var14;
             if(var1 != null) {
-               if(var1.field3260 == 0) {
-                  var1.index.method3029((int)var1.hash, var1.field3258, var1.field3258.length);
-                  var2 = field3291;
-                  synchronized(field3291) {
+               if(var1.field3282 == 0) {
+                  var1.index.method3137((int)var1.hash, var1.field3280, var1.field3280.length);
+                  var2 = field3307;
+                  synchronized(field3307) {
                      var1.unlink();
                   }
-               } else if(var1.field3260 == 1) {
-                  var1.field3258 = var1.index.method3028((int)var1.hash);
-                  var2 = field3291;
-                  synchronized(field3291) {
-                     field3289.addFront(var1);
+               } else if(var1.field3282 == 1) {
+                  var1.field3280 = var1.index.method3136((int)var1.hash);
+                  var2 = field3307;
+                  synchronized(field3307) {
+                     field3306.addFront(var1);
                   }
                }
 
-               var14 = field3290;
-               synchronized(field3290) {
-                  if(field3288 <= 1) {
-                     field3288 = 0;
-                     field3290.notifyAll();
+               var14 = field3309;
+               synchronized(field3309) {
+                  if(field3308 <= 1) {
+                     field3308 = 0;
+                     field3309.notifyAll();
                      return;
                   }
 
-                  field3288 = 600;
+                  field3308 = 600;
                }
             } else {
-               GZipDecompressor.method3129(100L);
-               var14 = field3290;
-               synchronized(field3290) {
-                  if(field3288 <= 1) {
-                     field3288 = 0;
-                     field3290.notifyAll();
+               BaseVarType.method12(100L);
+               var14 = field3309;
+               synchronized(field3309) {
+                  if(field3308 <= 1) {
+                     field3308 = 0;
+                     field3309.notifyAll();
                      return;
                   }
 
-                  --field3288;
+                  --field3308;
                }
             }
          }
       } catch (Exception var13) {
-         class48.method690((String)null, var13);
+         Item.method1829((String)null, var13);
       }
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "99"
+   )
+   public static boolean method4358(int var0) {
+      return (var0 >> 20 & 1) != 0;
    }
 }

@@ -2,57 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gy")
+@ObfuscatedName("gr")
 public class class195 implements Iterator {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgl;"
    )
-   CombatInfoList field2540;
-   @ObfuscatedName("s")
+   CombatInfoList field2550;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lgt;"
+      signature = "Lgf;"
    )
-   Node field2539;
-   @ObfuscatedName("r")
+   Node field2549;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgt;"
+      signature = "Lgf;"
    )
-   Node field2541;
+   Node field2548;
 
    @ObfuscatedSignature(
-      signature = "(Lgx;)V"
+      signature = "(Lgl;)V"
    )
    class195(CombatInfoList var1) {
-      this.field2541 = null;
-      this.field2540 = var1;
-      this.field2539 = this.field2540.node.next;
-      this.field2541 = null;
+      this.field2548 = null;
+      this.field2550 = var1;
+      this.field2549 = this.field2550.node.next;
+      this.field2548 = null;
+   }
+
+   public boolean hasNext() {
+      return this.field2550.node != this.field2549;
    }
 
    public Object next() {
-      Node var1 = this.field2539;
-      if(var1 == this.field2540.node) {
+      Node var1 = this.field2549;
+      if(var1 == this.field2550.node) {
          var1 = null;
-         this.field2539 = null;
+         this.field2549 = null;
       } else {
-         this.field2539 = var1.next;
+         this.field2549 = var1.next;
       }
 
-      this.field2541 = var1;
+      this.field2548 = var1;
       return var1;
    }
 
    public void remove() {
-      if(this.field2541 == null) {
+      if(this.field2548 == null) {
          throw new IllegalStateException();
       } else {
-         this.field2541.unlink();
-         this.field2541 = null;
+         this.field2548.unlink();
+         this.field2548 = null;
       }
-   }
-
-   public boolean hasNext() {
-      return this.field2540.node != this.field2539;
    }
 }

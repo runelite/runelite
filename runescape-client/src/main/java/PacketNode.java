@@ -4,75 +4,103 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fq")
 @Implements("PacketNode")
 public class PacketNode extends Node {
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "[Lfc;"
+      signature = "[Lfq;"
    )
-   static PacketNode[] field2419;
-   @ObfuscatedName("f")
+   static PacketNode[] field2427;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1621553429
+      intValue = 244986515
    )
-   static int field2420;
-   @ObfuscatedName("fh")
-   @ObfuscatedGetter(
-      intValue = -1728680613
-   )
-   static int field2415;
-   @ObfuscatedName("b")
+   static int field2425;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Lfn;"
    )
    @Export("clientPacket")
-   public ClientPacket clientPacket;
-   @ObfuscatedName("s")
+   ClientPacket clientPacket;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1559865493
+      intValue = 1203047415
    )
-   public int field2416;
-   @ObfuscatedName("r")
+   int field2421;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgv;"
    )
    @Export("packetBuffer")
    public PacketBuffer packetBuffer;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1609470239
+      intValue = -1776737313
    )
    public int field2423;
 
    static {
-      field2419 = new PacketNode[300];
-      field2420 = 0;
+      field2427 = new PacketNode[300];
+      field2425 = 0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "316719324"
+      signature = "(B)V",
+      garbageValue = "102"
    )
-   public void method3106() {
-      if(field2420 < field2419.length) {
-         field2419[++field2420 - 1] = this;
+   public void method3212() {
+      if(field2425 < field2427.length) {
+         field2427[++field2425 - 1] = this;
       }
    }
 
-   @ObfuscatedName("gl")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-234897108"
+      signature = "(ILff;Liv;I)V",
+      garbageValue = "-275530401"
    )
-   static final void method3098(int var0, int var1) {
-      if(Client.hintArrowTargetType == 2) {
-         class168.method3096((Client.hintArrowX - class13.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - ClanMember.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            class268.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+   static void method3214(int var0, IndexFile var1, IndexData var2) {
+      FileSystem var3 = new FileSystem();
+      var3.field3282 = 1;
+      var3.hash = (long)var0;
+      var3.index = var1;
+      var3.data = var2;
+      Deque var4 = class243.field3307;
+      synchronized(class243.field3307) {
+         class243.field3307.addFront(var3);
+      }
+
+      class209.method3827();
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "43959931"
+   )
+   static int method3213(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
          }
 
+         var1 = 127 - var1;
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
       }
    }
 }

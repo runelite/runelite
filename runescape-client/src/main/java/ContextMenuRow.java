@@ -4,54 +4,69 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cm")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
+   @Export("cacheLocations")
+   static String[] cacheLocations;
+   @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "Liv;"
+   )
+   @Export("indexSprites")
+   static IndexData indexSprites;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2078937009
+      intValue = -129097769
    )
    @Export("param0")
    int param0;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1747902745
+      intValue = -1218839675
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1994232587
-   )
-   @Export("identifier")
-   int identifier;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 160287915
+      intValue = 894094735
    )
    @Export("type")
    int type;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1768120371
+   )
+   @Export("identifier")
+   int identifier;
+   @ObfuscatedName("v")
    @Export("option")
    String option;
 
-   @ObfuscatedName("hi")
+   @ObfuscatedName("im")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1490134270"
+      garbageValue = "1815964140"
    )
-   static void method1679() {
-      if(Client.spellSelected) {
-         Widget var0 = DecorativeObject.method2896(class47.field562, Client.field1003);
-         if(var0 != null && var0.field2805 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.field785 = var0.field2805;
-            BaseVarType.method11(var1);
-         }
+   static void method1764() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(class25.method189(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+                  Client.field889[var1] = Client.field889[var1 + 1];
+               }
+            }
 
-         Client.spellSelected = false;
-         ScriptEvent.method1038(var0);
+            --Client.menuOptionCount;
+         }
       }
+
    }
 }

@@ -218,6 +218,22 @@ public class Perspective
 		return new Point(x, y);
 	}
 
+	public static Point regionToWorld(Client client, Point point)
+	{
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+		int x = point.getX() + baseX;
+		int y = point.getY() + baseY;
+		return new Point(x, y);
+	}
+
+	public static Point regionToLocal(Client client, Point point)
+	{
+		int x = point.getX() << LOCAL_COORD_BITS;
+		int y = point.getY() << LOCAL_COORD_BITS;
+		return new Point(x, y);
+	}
+
 	/**
 	 * Calculates a tile polygon from offset worldToScreen() points.
 	 *

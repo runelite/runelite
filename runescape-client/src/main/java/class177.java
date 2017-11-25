@@ -1,28 +1,33 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fs")
 public class class177 {
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "([BZI)Ljava/lang/Object;",
-      garbageValue = "-1214711912"
+   @ObfuscatedName("ic")
+   @ObfuscatedGetter(
+      intValue = 1221144581
    )
-   public static Object method3156(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !AbstractByteBuffer.field2510) {
-            try {
-               DirectByteBuffer var2 = new DirectByteBuffer();
-               var2.put(var0);
-               return var2;
-            } catch (Throwable var3) {
-               AbstractByteBuffer.field2510 = true;
-            }
-         }
+   @Export("menuX")
+   static int menuX;
 
-         return var0;
-      }
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)[Ljx;",
+      garbageValue = "-1351819322"
+   )
+   public static class285[] method3269() {
+      return new class285[]{class285.field3786, class285.field3785, class285.field3787};
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "16"
+   )
+   static final int method3267(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var0 & 65280) * var3 + (var1 & 65280) * var2 & 16711680) + ((var1 & 16711935) * var2 + var3 * (var0 & 16711935) & -16711936) >> 8;
    }
 }

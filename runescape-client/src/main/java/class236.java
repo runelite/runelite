@@ -1,20 +1,25 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ik")
+@ObfuscatedName("ig")
 public final class class236 {
-   @ObfuscatedName("al")
+   @ObfuscatedName("ba")
    @ObfuscatedSignature(
-      signature = "Lkn;"
+      signature = "Lku;"
    )
-   public static BufferProvider field3227;
+   static class298 field3239;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("kr")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "86"
+      signature = "(II)V",
+      garbageValue = "-357531925"
    )
-   public static void method4096() {
-      class289.field3803 = new CombatInfoList();
+   static void method4243(int var0) {
+      for(IntegerNode var1 = (IntegerNode)Client.widgetFlags.method3707(); var1 != null; var1 = (IntegerNode)Client.widgetFlags.method3703()) {
+         if((long)var0 == (var1.hash >> 48 & 65535L)) {
+            var1.unlink();
+         }
+      }
+
    }
 }

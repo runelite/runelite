@@ -2,74 +2,100 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bb")
 public class class64 {
+   @ObfuscatedName("cv")
+   @ObfuscatedSignature(
+      signature = "Liv;"
+   )
+   @Export("indexTextures")
+   static IndexData indexTextures;
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)Ljh;",
+      garbageValue = "1644954726"
+   )
+   public static class261 method1105(int var0) {
+      class261 var1 = (class261)class261.field3476.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class261.field3498.getConfigData(32, var0);
+         var1 = new class261();
+         if(var2 != null) {
+            var1.method4686(new Buffer(var2));
+         }
+
+         class261.field3476.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1588862992"
+   )
+   static void method1103() {
+      FileOnDisk var0 = null;
+
+      try {
+         var0 = class46.getPreferencesFile("", class36.field483.field3276, true);
+         Buffer var1 = RSCanvas.preferences.serialize();
+         var0.write(var1.payload, 0, var1.offset);
+      } catch (Exception var3) {
+         ;
+      }
+
+      try {
+         if(var0 != null) {
+            var0.method2467(true);
+         }
+      } catch (Exception var2) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Lfr;I)Ljava/lang/String;",
+      garbageValue = "-2125426952"
+   )
+   public static String method1107(Buffer var0) {
+      return GroundObject.method2599(var0, 32767);
+   }
+
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)Lhx;",
-      garbageValue = "-75"
+      signature = "(CB)Z",
+      garbageValue = "-84"
    )
-   public static Widget method1017(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & 65535;
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = loadWidget(var1);
-         if(!var3) {
-            return null;
-         }
-      }
-
-      return Widget.widgets[var1][var2];
+   public static boolean method1106(char var0) {
+      return var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("fs")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-874781494"
+      signature = "(II)V",
+      garbageValue = "-1997379495"
    )
-   @Export("loadWidget")
-   public static boolean loadWidget(int var0) {
-      if(class56.validInterfaces[var0]) {
-         return true;
-      } else if(!TextureProvider.widgetIndex.containsFile(var0)) {
-         return false;
-      } else {
-         int var1 = TextureProvider.widgetIndex.fileCount(var0);
-         if(var1 == 0) {
-            class56.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(Widget.widgets[var0] == null) {
-               Widget.widgets[var0] = new Widget[var1];
-            }
-
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = TextureProvider.widgetIndex.getConfigData(var0, var2);
-                  if(var3 != null) {
-                     Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        Widget.widgets[var0][var2].decodeActive(new Buffer(var3));
-                     } else {
-                        Widget.widgets[var0][var2].decode(new Buffer(var3));
-                     }
-                  }
-               }
-            }
-
-            class56.validInterfaces[var0] = true;
-            return true;
-         }
+   static void method1104(int var0) {
+      if(var0 == -1 && !Client.field1095) {
+         Ignore.method1126();
+      } else if(var0 != -1 && var0 != Client.field1090 && Client.field1113 != 0 && !Client.field1095) {
+         IndexData var1 = RSCanvas.indexTrack1;
+         int var2 = Client.field1113;
+         class210.field2598 = 1;
+         class3.field22 = var1;
+         class8.field237 = var0;
+         class210.field2599 = 0;
+         class111.field1588 = var2;
+         class20.field322 = false;
+         class164.field2216 = 2;
       }
-   }
 
-   @ObfuscatedName("es")
-   @ObfuscatedSignature(
-      signature = "(I)Lkw;",
-      garbageValue = "225085181"
-   )
-   static RenderOverview method1018() {
-      return ScriptState.renderOverview;
+      Client.field1090 = var0;
    }
 }

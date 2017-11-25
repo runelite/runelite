@@ -24,26 +24,40 @@
  */
 package net.runelite.mixins;
 
-import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSTile;
 
 @Mixin(RSTile.class)
 public abstract class RSTileMixin implements RSTile
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public Point getWorldLocation()
 	{
-		return new Point(getLocalLocation().getX() << LOCAL_COORD_BITS, getLocalLocation().getX() << LOCAL_COORD_BITS);
+		Point regionLocation = getRegionLocation();
+		return Perspective.regionToWorld(client, regionLocation);
+	}
+
+	@Inject
+	@Override
+	public Point getRegionLocation()
+	{
+		return new Point(getX(), getY());
 	}
 
 	@Inject
 	@Override
 	public Point getLocalLocation()
 	{
-		return new Point(getX(), getY());
+		Point regionLocation = getRegionLocation();
+		return Perspective.regionToLocal(client, regionLocation);
 	}
 }

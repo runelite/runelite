@@ -4,45 +4,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ea")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1794297805
+      intValue = -1151718107
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 442795009
+      intValue = 834672307
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1836014679
+      intValue = -2000917347
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 659303565
+      intValue = 891733803
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 752831123
+      intValue = 478219785
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1329158355
+      intValue = 1763148095
    )
    @Export("rgb")
    int rgb;
@@ -58,33 +58,12 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2144370116"
+      signature = "(Ljava/lang/String;B)I",
+      garbageValue = "-1"
    )
-   static final boolean method2684() {
-      return class133.field1903;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIS)V",
-      garbageValue = "255"
-   )
-   static final void method2685(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int[] var7 = Region.method2757(var0, var1, var2);
-      int[] var8 = Region.method2757(var3, var4, var5);
-      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(IIIII)I",
-      garbageValue = "-630723691"
-   )
-   static final int method2686(int var0, int var1, int var2, int var3) {
-      int var4 = 65536 - Graphics3D.COSINE[var2 * 1024 / var3] >> 1;
-      return ((65536 - var4) * var0 >> 16) + (var4 * var1 >> 16);
+   public static int method2795(String var0) {
+      return var0.length() + 2;
    }
 }

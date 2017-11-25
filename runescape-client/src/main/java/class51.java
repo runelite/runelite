@@ -3,202 +3,126 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ad")
+@ObfuscatedName("at")
 public class class51 implements class102 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("qx")
+   static short[] field626;
+   @ObfuscatedName("z")
+   @Export("scriptLocalStrings")
+   static String[] scriptLocalStrings;
+   @ObfuscatedName("go")
+   @ObfuscatedGetter(
+      intValue = -1914160081
+   )
+   @Export("cameraYaw")
+   static int cameraYaw;
+   @ObfuscatedName("hy")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lhx;"
    )
-   public static IndexDataBase field612;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 2134145219
-   )
-   static int field611;
-   @ObfuscatedName("bi")
-   @ObfuscatedGetter(
-      intValue = -186615343
-   )
-   static int field609;
-   @ObfuscatedName("fl")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
+   static Widget field622;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)Ldo;",
-      garbageValue = "-880282110"
+      garbageValue = "814951557"
    )
-   public AbstractSoundSystem vmethod1919() {
+   public AbstractSoundSystem vmethod1996() {
       return new SourceDataSoundSystem();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "90"
+      signature = "(Lid;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "1272031749"
    )
-   static int method719(int var0, int var1) {
-      Overlay var2 = ClientPacket.method3094(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else {
-         int var4;
-         int var5;
-         if(var2.texture >= 0) {
-            var4 = Graphics3D.textureLoader.getAverageTextureRGB(var2.texture);
-            byte var11 = 96;
-            int var3;
-            if(var4 == -2) {
-               var3 = 12345678;
-            } else if(var4 == -1) {
-               if(var11 < 0) {
-                  var11 = 0;
-               } else if(var11 > 127) {
-                  var11 = 127;
-               }
+   public static void method777(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
+      Buffer.method3318(var0, var5, var6, var3, var4);
+   }
 
-               var5 = 127 - var11;
-               var3 = var5;
-            } else {
-               var5 = var11 * (var4 & 127) / 128;
-               if(var5 < 2) {
-                  var5 = 2;
-               } else if(var5 > 126) {
-                  var5 = 126;
-               }
-
-               var3 = var5 + (var4 & 65408);
-            }
-
-            return Graphics3D.colorPalette[var3] | -16777216;
-         } else if(var2.color == 16711935) {
-            return var1;
+   @ObfuscatedName("il")
+   @ObfuscatedSignature(
+      signature = "(Lhx;Ljb;IIZI)V",
+      garbageValue = "340534033"
+   )
+   static final void method780(Widget var0, ItemComposition var1, int var2, int var3, boolean var4) {
+      String[] var5 = var1.inventoryActions;
+      byte var6 = -1;
+      String var7 = null;
+      if(var5 != null && var5[var3] != null) {
+         if(var3 == 0) {
+            var6 = 33;
+         } else if(var3 == 1) {
+            var6 = 34;
+         } else if(var3 == 2) {
+            var6 = 35;
+         } else if(var3 == 3) {
+            var6 = 36;
          } else {
-            var4 = var2.hue;
-            var5 = var2.saturation;
-            int var6 = var2.lightness;
-            if(var6 > 179) {
-               var5 /= 2;
-            }
+            var6 = 37;
+         }
 
-            if(var6 > 192) {
-               var5 /= 2;
-            }
+         var7 = var5[var3];
+      } else if(var3 == 4) {
+         var6 = 37;
+         var7 = "Drop";
+      }
 
-            if(var6 > 217) {
-               var5 /= 2;
-            }
-
-            if(var6 > 243) {
-               var5 /= 2;
-            }
-
-            int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-            byte var9 = 96;
-            int var8;
-            if(var7 == -2) {
-               var8 = 12345678;
-            } else {
-               int var12;
-               if(var7 == -1) {
-                  if(var9 < 0) {
-                     var9 = 0;
-                  } else if(var9 > 127) {
-                     var9 = 127;
-                  }
-
-                  var12 = 127 - var9;
-                  var8 = var12;
-               } else {
-                  var12 = var9 * (var7 & 127) / 128;
-                  if(var12 < 2) {
-                     var12 = 2;
-                  } else if(var12 > 126) {
-                     var12 = 126;
-                  }
-
-                  var8 = var12 + (var7 & 65408);
-               }
-            }
-
-            return Graphics3D.colorPalette[var8] | -16777216;
+      if(var6 != -1 && var7 != null) {
+         String var9 = ISAACCipher.getColTags(16748608) + var1.name;
+         int var11 = var1.id;
+         int var13 = var0.id;
+         if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var7;
+            Client.menuTargets[Client.menuOptionCount] = var9;
+            Client.menuTypes[Client.menuOptionCount] = var6;
+            Client.menuIdentifiers[Client.menuOptionCount] = var11;
+            Client.menuActionParams0[Client.menuOptionCount] = var2;
+            Client.menuActionParams1[Client.menuOptionCount] = var13;
+            Client.field889[Client.menuOptionCount] = var4;
+            ++Client.menuOptionCount;
          }
       }
+
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("jj")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1175761408"
+      signature = "(Lhx;B)Lhx;",
+      garbageValue = "10"
    )
-   @Export("setItemTableSlot")
-   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
-      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var4 == null) {
-         var4 = new ItemContainer();
-         ItemContainer.itemContainers.put(var4, (long)var0);
-      }
+   static Widget method781(Widget var0) {
+      Widget var2 = var0;
+      int var3 = class17.method146(ClanMember.getWidgetConfig(var0));
+      Widget var1;
+      if(var3 == 0) {
+         var1 = null;
+      } else {
+         int var4 = 0;
 
-      if(var4.itemIds.length <= var1) {
-         int[] var5 = new int[var1 + 1];
-         int[] var6 = new int[var1 + 1];
-
-         int var7;
-         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
-            var5[var7] = var4.itemIds[var7];
-            var6[var7] = var4.stackSizes[var7];
-         }
-
-         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
-            var5[var7] = -1;
-            var6[var7] = 0;
-         }
-
-         var4.itemIds = var5;
-         var4.stackSizes = var6;
-      }
-
-      var4.itemIds[var1] = var2;
-      var4.stackSizes[var1] = var3;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1893903156"
-   )
-   static final int method722(int var0, int var1) {
-      int var2 = class21.getSmoothNoise(var0 + 45365, var1 + 91923, 4) - 128 + (class21.getSmoothNoise(10294 + var0, var1 + 37821, 2) - 128 >> 1) + (class21.getSmoothNoise(var0, var1, 1) - 128 >> 2);
-      var2 = (int)((double)var2 * 0.3D) + 35;
-      if(var2 < 10) {
-         var2 = 10;
-      } else if(var2 > 60) {
-         var2 = 60;
-      }
-
-      return var2;
-   }
-
-   @ObfuscatedName("iv")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1056885892"
-   )
-   static final void method724(int var0) {
-      if(class64.loadWidget(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
-
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3 != null) {
-               var3.field2835 = 0;
-               var3.field2723 = 0;
+         while(true) {
+            if(var4 >= var3) {
+               var1 = var2;
+               break;
             }
-         }
 
+            var2 = class87.method1762(var2.parentId);
+            if(var2 == null) {
+               var1 = null;
+               break;
+            }
+
+            ++var4;
+         }
       }
+
+      Widget var5 = var1;
+      if(var1 == null) {
+         var5 = var0.dragParent;
+      }
+
+      return var5;
    }
 }

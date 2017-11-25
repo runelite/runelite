@@ -3,117 +3,113 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("q")
 final class class19 implements Comparator {
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lfx;"
-   )
-   static RSSocket field299;
-   @ObfuscatedName("u")
-   static byte[][][] field296;
-   @ObfuscatedName("i")
-   @Export("osNameLC")
-   public static String osNameLC;
+   @ObfuscatedName("di")
+   @Export("host")
+   static String host;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lj;Lj;I)I",
-      garbageValue = "1804120945"
+      signature = "(Ly;Ly;I)I",
+      garbageValue = "-605006531"
    )
-   int method140(class14 var1, class14 var2) {
-      return var1.field270 < var2.field270?-1:(var1.field270 == var2.field270?0:1);
+   int method158(class14 var1, class14 var2) {
+      return var1.field273 < var2.field273?-1:(var2.field273 == var1.field273?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method140((class14)var1, (class14)var2);
+      return this.method158((class14)var1, (class14)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)[Liw;",
-      garbageValue = "339258079"
+      signature = "(ILce;ZI)I",
+      garbageValue = "-1508624859"
    )
-   public static class235[] method142() {
-      return new class235[]{class235.field3214, class235.field3215, class235.field3216, class235.field3217, class235.field3213, class235.field3212, class235.field3219, class235.field3218};
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1967717931"
-   )
-   static final int method143(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   static int method162(int var0, Script var1, boolean var2) {
+      int var3 = -1;
+      Widget var4;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = class82.intStack[--class13.intStackSize];
+         var4 = class87.method1762(var3);
+      } else {
+         var4 = var2?class54.field636:class82.field1265;
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
-
-   @ObfuscatedName("ih")
-   @ObfuscatedSignature(
-      signature = "([Lhx;II)V",
-      garbageValue = "1186293760"
-   )
-   static final void method145(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(var3.children != null) {
-                  method145(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var4 != null) {
-                  int var5 = var4.id;
-                  if(class64.loadWidget(var5)) {
-                     method145(Widget.widgets[var5], var1);
-                  }
-               }
-            }
-
-            ScriptEvent var6;
-            if(var1 == 0 && var3.field2820 != null) {
-               var6 = new ScriptEvent();
-               var6.widget = var3;
-               var6.field785 = var3.field2820;
-               BaseVarType.method11(var6);
-            }
-
-            if(var1 == 1 && var3.field2821 != null) {
-               if(var3.index >= 0) {
-                  Widget var7 = class64.method1017(var3.id);
-                  if(var7 == null || var7.children == null || var3.index >= var7.children.length || var3 != var7.children[var3.index]) {
-                     continue;
-                  }
-               }
-
-               var6 = new ScriptEvent();
-               var6.widget = var3;
-               var6.field785 = var3.field2821;
-               BaseVarType.method11(var6);
-            }
+      if(var0 == 1000) {
+         class13.intStackSize -= 4;
+         var4.originalX = class82.intStack[class13.intStackSize];
+         var4.originalY = class82.intStack[class13.intStackSize + 1];
+         var4.field2788 = class82.intStack[class13.intStackSize + 2];
+         var4.field2730 = class82.intStack[class13.intStackSize + 3];
+         class40.method556(var4);
+         class287.clientInstance.method1213(var4);
+         if(var3 != -1 && var4.type == 0) {
+            NPCComposition.method4864(class11.widgets[var3 >> 16], var4, false);
          }
+
+         return 1;
+      } else if(var0 == 1001) {
+         class13.intStackSize -= 4;
+         var4.originalWidth = class82.intStack[class13.intStackSize];
+         var4.field2736 = class82.intStack[class13.intStackSize + 1];
+         var4.field2731 = class82.intStack[class13.intStackSize + 2];
+         var4.buttonType = class82.intStack[class13.intStackSize + 3];
+         class40.method556(var4);
+         class287.clientInstance.method1213(var4);
+         if(var3 != -1 && var4.type == 0) {
+            NPCComposition.method4864(class11.widgets[var3 >> 16], var4, false);
+         }
+
+         return 1;
+      } else if(var0 == 1003) {
+         boolean var5 = class82.intStack[--class13.intStackSize] == 1;
+         if(var5 != var4.isHidden) {
+            var4.isHidden = var5;
+            class40.method556(var4);
+         }
+
+         return 1;
+      } else if(var0 == 1005) {
+         var4.noClickThrough = class82.intStack[--class13.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1006) {
+         var4.field2826 = class82.intStack[--class13.intStackSize] == 1;
+         return 1;
+      } else {
+         return 2;
+      }
+   }
+
+   @ObfuscatedName("ia")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-1561945710"
+   )
+   static final String method159(int var0) {
+      String var1 = Integer.toString(var0);
+
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
 
+      return var1.length() > 9?" " + ISAACCipher.getColTags(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + ISAACCipher.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + ISAACCipher.getColTags(16776960) + var1 + "</col>");
+   }
+
+   @ObfuscatedName("jx")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "620481250"
+   )
+   static final void method168() {
+      PacketNode var0 = class218.method4105(ClientPacket.field2315, Client.field916.field1470);
+      var0.packetBuffer.putByte(0);
+      Client.field916.method1925(var0);
    }
 }

@@ -4,42 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("et")
 @Implements("NanoTimer")
 public class NanoTimer extends Timer {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = -8135542824352080067L
+      longValue = -2928871969349444323L
    )
    @Export("nanoTime")
    long nanoTime;
 
-   public NanoTimer() {
+   NanoTimer() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "18922"
+      signature = "(I)V",
+      garbageValue = "1539441859"
    )
-   public void vmethod2996() {
+   public void vmethod3107() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1469616290"
+      garbageValue = "1446056543"
    )
-   public int vmethod2993(int var1, int var2) {
-      long var3 = (long)var2 * 1000000L;
+   public int vmethod3108(int var1, int var2) {
+      long var3 = 1000000L * (long)var2;
       long var5 = this.nanoTime - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      GZipDecompressor.method3129(var5 / 1000000L);
+      BaseVarType.method12(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;

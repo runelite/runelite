@@ -3,21 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fy")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("fd")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   static IndexedSprite[] field2429;
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @Export("keys")
    int[] keys;
 
@@ -104,10 +99,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BII[BII)I",
-      garbageValue = "-1427310242"
+      signature = "([BII[BIS)I",
+      garbageValue = "26319"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -155,10 +150,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([BI[BIIB)I",
-      garbageValue = "-51"
+      signature = "([BI[BIII)I",
+      garbageValue = "-1310847649"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {

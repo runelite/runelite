@@ -4,36 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gh")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("g")
+   @ObfuscatedName("qe")
    @ObfuscatedGetter(
-      intValue = -971642805
+      longValue = -5566583147381084729L
+   )
+   static long field2533;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 667152833
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -945229833
+      intValue = 1923875225
    )
-   int field2522;
+   int field2527;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 57900857
+      intValue = 323058957
    )
-   int field2523;
-   @ObfuscatedName("k")
+   int field2531;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -690481905
+      intValue = -1952330107
    )
-   int field2519;
+   int field2530;
 
    public ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -43,13 +48,13 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3485();
+      this.method3593();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-836488324"
+      garbageValue = "45969391"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -61,12 +66,12 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "1"
+      signature = "(I)I",
+      garbageValue = "-133982423"
    )
-   final int method3496() {
+   final int method3599() {
       if(this.valuesRemaining == 0) {
          this.generateMoreResults();
          this.valuesRemaining = 256;
@@ -75,43 +80,43 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining - 1];
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-1"
+      garbageValue = "1"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2523 += ++this.field2519;
+      this.field2531 += ++this.field2530;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2522 ^= this.field2522 << 13;
+               this.field2527 ^= this.field2527 << 13;
             } else {
-               this.field2522 ^= this.field2522 >>> 6;
+               this.field2527 ^= this.field2527 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2522 ^= this.field2522 << 2;
+            this.field2527 ^= this.field2527 << 2;
          } else {
-            this.field2522 ^= this.field2522 >>> 16;
+            this.field2527 ^= this.field2527 >>> 16;
          }
 
-         this.field2522 += this.mm[128 + var1 & 255];
+         this.field2527 += this.mm[128 + var1 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2522 + this.field2523;
-         this.randResult[var1] = this.field2523 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2531 + this.field2527;
+         this.randResult[var1] = this.field2531 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "72"
+      garbageValue = "9"
    )
-   final void method3485() {
+   final void method3593() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -239,83 +244,64 @@ public final class ISAACCipher {
       this.valuesRemaining = 256;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lfs;Ljava/lang/String;B)I",
-      garbageValue = "-26"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "744969348"
    )
-   public static int method3499(Buffer var0, String var1) {
-      int var2 = var0.offset;
-      int var4 = var1.length();
-      byte[] var5 = new byte[var4];
+   @Export("getColTags")
+   static String getColTags(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
 
-      for(int var6 = 0; var6 < var4; ++var6) {
-         char var7 = var1.charAt(var6);
-         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
-            if(var7 == 8364) {
-               var5[var6] = -128;
-            } else if(var7 == 8218) {
-               var5[var6] = -126;
-            } else if(var7 == 402) {
-               var5[var6] = -125;
-            } else if(var7 == 8222) {
-               var5[var6] = -124;
-            } else if(var7 == 8230) {
-               var5[var6] = -123;
-            } else if(var7 == 8224) {
-               var5[var6] = -122;
-            } else if(var7 == 8225) {
-               var5[var6] = -121;
-            } else if(var7 == 710) {
-               var5[var6] = -120;
-            } else if(var7 == 8240) {
-               var5[var6] = -119;
-            } else if(var7 == 352) {
-               var5[var6] = -118;
-            } else if(var7 == 8249) {
-               var5[var6] = -117;
-            } else if(var7 == 338) {
-               var5[var6] = -116;
-            } else if(var7 == 381) {
-               var5[var6] = -114;
-            } else if(var7 == 8216) {
-               var5[var6] = -111;
-            } else if(var7 == 8217) {
-               var5[var6] = -110;
-            } else if(var7 == 8220) {
-               var5[var6] = -109;
-            } else if(var7 == 8221) {
-               var5[var6] = -108;
-            } else if(var7 == 8226) {
-               var5[var6] = -107;
-            } else if(var7 == 8211) {
-               var5[var6] = -106;
-            } else if(var7 == 8212) {
-               var5[var6] = -105;
-            } else if(var7 == 732) {
-               var5[var6] = -104;
-            } else if(var7 == 8482) {
-               var5[var6] = -103;
-            } else if(var7 == 353) {
-               var5[var6] = -102;
-            } else if(var7 == 8250) {
-               var5[var6] = -101;
-            } else if(var7 == 339) {
-               var5[var6] = -100;
-            } else if(var7 == 382) {
-               var5[var6] = -98;
-            } else if(var7 == 376) {
-               var5[var6] = -97;
-            } else {
-               var5[var6] = 63;
-            }
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-1454295006"
+   )
+   @Export("loadWidget")
+   public static boolean loadWidget(int var0) {
+      if(class56.validInterfaces[var0]) {
+         return true;
+      } else if(!ItemContainer.widgetIndex.containsFile(var0)) {
+         return false;
+      } else {
+         int var1 = ItemContainer.widgetIndex.fileCount(var0);
+         if(var1 == 0) {
+            class56.validInterfaces[var0] = true;
+            return true;
          } else {
-            var5[var6] = (byte)var7;
+            if(class11.widgets[var0] == null) {
+               class11.widgets[var0] = new Widget[var1];
+            }
+
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(class11.widgets[var0][var2] == null) {
+                  byte[] var3 = ItemContainer.widgetIndex.getConfigData(var0, var2);
+                  if(var3 != null) {
+                     class11.widgets[var0][var2] = new Widget();
+                     class11.widgets[var0][var2].id = var2 + (var0 << 16);
+                     if(var3[0] == -1) {
+                        class11.widgets[var0][var2].decodeActive(new Buffer(var3));
+                     } else {
+                        class11.widgets[var0][var2].decode(new Buffer(var3));
+                     }
+                  }
+               }
+            }
+
+            class56.validInterfaces[var0] = true;
+            return true;
          }
       }
+   }
 
-      var0.putShortSmart(var5.length);
-      var0.offset += class272.field3707.compress(var5, 0, var5.length, var0.payload, var0.offset);
-      return var0.offset - var2;
+   @ObfuscatedName("gu")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1259105086"
+   )
+   static int method3604() {
+      return Client.isResized?2:1;
    }
 }

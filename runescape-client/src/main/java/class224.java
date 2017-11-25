@@ -1,21 +1,11 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hh")
 public class class224 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("gn")
    @ObfuscatedGetter(
-      intValue = 896266189
+      intValue = -202478669
    )
-   static int field2850;
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-10"
-   )
-   public static void method4071() {
-      KitDefinition.identKits.reset();
-   }
+   static int field2863;
 }

@@ -1,151 +1,143 @@
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("jq")
+@ObfuscatedName("jx")
 public class class285 {
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Ljq;"
+      signature = "Ljx;"
    )
-   static final class285 field3782;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ljq;"
-   )
-   public static final class285 field3783;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ljq;"
-   )
-   static final class285 field3784;
+   static final class285 field3786;
    @ObfuscatedName("x")
-   @Export("offsetsY")
-   static int[] offsetsY;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 335791991
+   @ObfuscatedSignature(
+      signature = "Ljx;"
    )
-   public final int field3785;
+   public static final class285 field3787;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Ljx;"
+   )
+   static final class285 field3785;
+   @ObfuscatedName("b")
+   public static int[] field3788;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 824333845
+   )
+   public final int field3784;
 
    static {
-      field3782 = new class285(0);
-      field3783 = new class285(1);
-      field3784 = new class285(2);
+      field3786 = new class285(0);
+      field3787 = new class285(1);
+      field3785 = new class285(2);
    }
 
    class285(int var1) {
-      this.field3785 = var1;
+      this.field3784 = var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lgd;I)V",
-      garbageValue = "-1976779099"
+      signature = "(ILce;ZI)I",
+      garbageValue = "1927443945"
    )
-   @Export("encodeClassVerifier")
-   public static void encodeClassVerifier(PacketBuffer var0) {
-      ClassInfo var1 = (ClassInfo)class289.field3803.method3611();
-      if(var1 != null) {
-         int var2 = var0.offset;
-         var0.putInt(var1.field3793);
+   static int method5112(int var0, Script var1, boolean var2) {
+      int var3;
+      int var4;
+      if(var0 == 3400) {
+         class13.intStackSize -= 2;
+         var3 = class82.intStack[class13.intStackSize];
+         var4 = class82.intStack[class13.intStackSize + 1];
+         Enum var6 = (Enum)Enum.field3466.get((long)var3);
+         Enum var5;
+         if(var6 != null) {
+            var5 = var6;
+         } else {
+            byte[] var14 = Enum.field3475.getConfigData(8, var3);
+            var6 = new Enum();
+            if(var14 != null) {
+               var6.decode(new Buffer(var14));
+            }
 
-         for(int var3 = 0; var3 < var1.count; ++var3) {
-            if(var1.errorIdentifiers[var3] != 0) {
-               var0.putByte(var1.errorIdentifiers[var3]);
-            } else {
-               try {
-                  int var4 = var1.type[var3];
-                  Field var5;
-                  int var6;
-                  if(var4 == 0) {
-                     var5 = var1.fields[var3];
-                     var6 = Reflection.getInt(var5, (Object)null);
-                     var0.putByte(0);
-                     var0.putInt(var6);
-                  } else if(var4 == 1) {
-                     var5 = var1.fields[var3];
-                     Reflection.setInt(var5, (Object)null, var1.field3797[var3]);
-                     var0.putByte(0);
-                  } else if(var4 == 2) {
-                     var5 = var1.fields[var3];
-                     var6 = var5.getModifiers();
-                     var0.putByte(0);
-                     var0.putInt(var6);
-                  }
+            Enum.field3466.put(var6, (long)var3);
+            var5 = var6;
+         }
 
-                  Method var25;
-                  if(var4 != 3) {
-                     if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
-                        var0.putByte(0);
-                        var0.putInt(var6);
-                     }
-                  } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.args[var3];
-                     Object[] var7 = new Object[var10.length];
+         var6 = var5;
+         if(var5.valType != 's') {
+            ;
+         }
 
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
-                     }
-
-                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
-                     if(var11 == null) {
-                        var0.putByte(0);
-                     } else if(var11 instanceof Number) {
-                        var0.putByte(1);
-                        var0.putLong(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
-                        var0.putByte(2);
-                        var0.putString((String)var11);
-                     } else {
-                        var0.putByte(4);
-                     }
-                  }
-               } catch (ClassNotFoundException var13) {
-                  var0.putByte(-10);
-               } catch (InvalidClassException var14) {
-                  var0.putByte(-11);
-               } catch (StreamCorruptedException var15) {
-                  var0.putByte(-12);
-               } catch (OptionalDataException var16) {
-                  var0.putByte(-13);
-               } catch (IllegalAccessException var17) {
-                  var0.putByte(-14);
-               } catch (IllegalArgumentException var18) {
-                  var0.putByte(-15);
-               } catch (InvocationTargetException var19) {
-                  var0.putByte(-16);
-               } catch (SecurityException var20) {
-                  var0.putByte(-17);
-               } catch (IOException var21) {
-                  var0.putByte(-18);
-               } catch (NullPointerException var22) {
-                  var0.putByte(-19);
-               } catch (Exception var23) {
-                  var0.putByte(-20);
-               } catch (Throwable var24) {
-                  var0.putByte(-21);
-               }
+         for(int var7 = 0; var7 < var6.size; ++var7) {
+            if(var4 == var6.keys[var7]) {
+               class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var6.stringVals[var7];
+               var6 = null;
+               break;
             }
          }
 
-         var0.putCrc(var2);
-         var1.unlink();
+         if(var6 != null) {
+            class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var6.defaultString;
+         }
+
+         return 1;
+      } else if(var0 == 3408) {
+         class13.intStackSize -= 4;
+         var3 = class82.intStack[class13.intStackSize];
+         var4 = class82.intStack[class13.intStackSize + 1];
+         int var10 = class82.intStack[class13.intStackSize + 2];
+         int var11 = class82.intStack[class13.intStackSize + 3];
+         Enum var8 = (Enum)Enum.field3466.get((long)var10);
+         Enum var12;
+         if(var8 != null) {
+            var12 = var8;
+         } else {
+            byte[] var13 = Enum.field3475.getConfigData(8, var10);
+            var8 = new Enum();
+            if(var13 != null) {
+               var8.decode(new Buffer(var13));
+            }
+
+            Enum.field3466.put(var8, (long)var10);
+            var12 = var8;
+         }
+
+         var8 = var12;
+         if(var3 == var12.keyType && var4 == var12.valType) {
+            for(int var9 = 0; var9 < var8.size; ++var9) {
+               if(var11 == var8.keys[var9]) {
+                  if(var4 == 115) {
+                     class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var8.stringVals[var9];
+                  } else {
+                     class82.intStack[++class13.intStackSize - 1] = var8.intVals[var9];
+                  }
+
+                  var8 = null;
+                  break;
+               }
+            }
+
+            if(var8 != null) {
+               if(var4 == 115) {
+                  class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var8.defaultString;
+               } else {
+                  class82.intStack[++class13.intStackSize - 1] = var8.defaultInt;
+               }
+            }
+
+            return 1;
+         } else {
+            if(var4 == 115) {
+               class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "null";
+            } else {
+               class82.intStack[++class13.intStackSize - 1] = 0;
+            }
+
+            return 1;
+         }
+      } else {
+         return 2;
       }
    }
 }

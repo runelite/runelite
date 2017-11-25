@@ -2,88 +2,66 @@ import java.applet.Applet;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("bv")
 public class class56 {
+   @ObfuscatedName("d")
+   static Applet field653;
+   @ObfuscatedName("x")
+   static String field654;
    @ObfuscatedName("b")
-   static Applet field630;
-   @ObfuscatedName("s")
-   public static String field629;
-   @ObfuscatedName("u")
    @Export("validInterfaces")
    public static boolean[] validInterfaces;
-   @ObfuscatedName("fq")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   static IndexedSprite[] field632;
 
    static {
-      field630 = null;
-      field629 = null;
+      field653 = null;
+      field654 = null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "-420936823"
+      signature = "(Lid;I)V",
+      garbageValue = "1074035972"
    )
-   static Class method775(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
+   public static void method830(IndexDataBase var0) {
+      VarPlayerType.varplayer_ref = var0;
+      VarPlayerType.field3357 = VarPlayerType.varplayer_ref.fileCount(16);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("gg")
    @ObfuscatedSignature(
-      signature = "(ILcx;ZI)I",
-      garbageValue = "-1032388050"
+      signature = "(IIIIIIS)V",
+      garbageValue = "-19891"
    )
-   static int method773(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         class82.intStackSize -= 2;
-         var3 = class82.intStack[class82.intStackSize];
-         int var4 = class82.intStack[class82.intStackSize + 1];
-         if(!Client.field1094) {
-            Client.field930 = var3;
-            Client.mapAngle = var4;
-         }
-
-         return 1;
-      } else if(var0 == 5505) {
-         class82.intStack[++class82.intStackSize - 1] = Client.field930;
-         return 1;
-      } else if(var0 == 5506) {
-         class82.intStack[++class82.intStackSize - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class82.intStack[--class82.intStackSize];
-         if(var3 < 0) {
-            var3 = 0;
-         }
-
-         Client.field902 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class82.intStack[++class82.intStackSize - 1] = Client.field902;
-         return 1;
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("fh")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-88"
-   )
-   static void method770(int var0) {
-      if(var0 == -1 && !Client.field1084) {
-         WorldMapData.method319();
-      } else if(var0 != -1 && var0 != Client.field1083 && Client.field945 != 0 && !Client.field1084) {
-         RSCanvas.method744(2, class45.indexTrack1, var0, 0, Client.field945, false);
+   static final void method835(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 2048 - var3 & 2047;
+      int var7 = 2048 - var4 & 2047;
+      int var8 = 0;
+      int var9 = 0;
+      int var10 = var5;
+      int var11;
+      int var12;
+      int var13;
+      if(var6 != 0) {
+         var11 = Graphics3D.SINE[var6];
+         var12 = Graphics3D.COSINE[var6];
+         var13 = var9 * var12 - var11 * var5 >> 16;
+         var10 = var12 * var5 + var11 * var9 >> 16;
+         var9 = var13;
       }
 
-      Client.field1083 = var0;
+      if(var7 != 0) {
+         var11 = Graphics3D.SINE[var7];
+         var12 = Graphics3D.COSINE[var7];
+         var13 = var12 * var8 + var10 * var11 >> 16;
+         var10 = var10 * var12 - var8 * var11 >> 16;
+         var8 = var13;
+      }
+
+      class214.cameraX = var0 - var8;
+      GameEngine.cameraZ = var1 - var9;
+      class289.cameraY = var2 - var10;
+      class18.cameraPitch = var3;
+      class51.cameraYaw = var4;
    }
 }

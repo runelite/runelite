@@ -2,33 +2,32 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("er")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("u")
-   public static int[] field1954;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 2081768681
+   @ObfuscatedName("eh")
+   @ObfuscatedSignature(
+      signature = "Lex;"
    )
-   public static int field1952;
-   @ObfuscatedName("b")
+   static Task field1951;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1586208119
+      intValue = -2029967707
    )
    @Export("id")
    int id;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -321075403
+      intValue = -716515449
    )
    @Export("count")
    int count;
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @Export("types")
    int[] types;
-   @ObfuscatedName("g")
+   @ObfuscatedName("z")
    @Export("list")
    int[][] list;
 
