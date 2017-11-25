@@ -77,8 +77,6 @@ public class SpecOrbOverlay extends Overlay
 		if (xpOrb == null)
 			return null;
 
-		System.out.println();
-
 		if (client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 0)//if we have spec active change the color
 		{
 			graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
