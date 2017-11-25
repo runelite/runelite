@@ -54,6 +54,7 @@ public class SpecOrbOverlay extends Overlay
 	private static final int ORB_X_OFFSET = 60;
 	private static final int ORB_Y_OFFSET = 123;
 	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
+	private static final Color SPECIAL_ORB_BACKGROUND_ACTIVE_COLOR = new Color(151, 152, 255);
 	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
 
 	@Inject
@@ -76,8 +77,16 @@ public class SpecOrbOverlay extends Overlay
 		if (xpOrb == null)
 			return null;
 
+		System.out.println();
 
-		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
+		if (client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 0)//if we have spec active change the color
+		{
+			graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
+		}
+		else
+		{
+			graphics.setColor(SPECIAL_ORB_BACKGROUND_ACTIVE_COLOR);
+		}
 
 		Point xpOrbPoint = xpOrb.getCanvasLocation();
 
@@ -106,13 +115,9 @@ public class SpecOrbOverlay extends Overlay
 
 	private void onSpecialChange(int dif, int specialPercent)
 	{
-		if (dif > 0)//If we went from 500-60 for example
+		if (dif > 0)//If we went from 500-600 for example
 		{
 			tickCounter = 0;//Rest the tick counter as we just recharged
-		}
-		else //We used spec energy
-		{
-
 		}
 	}
 
