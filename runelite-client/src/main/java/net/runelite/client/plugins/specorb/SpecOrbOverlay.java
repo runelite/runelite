@@ -77,14 +77,9 @@ public class SpecOrbOverlay extends Overlay
 		if (xpOrb == null)
 			return null;
 
-		if (client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 0)//if we have spec active change the color
-		{
-			graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
-		}
-		else
-		{
-			graphics.setColor(SPECIAL_ORB_BACKGROUND_ACTIVE_COLOR);
-		}
+		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
+
+		boolean specialAttackEnabled = client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 1;
 
 		Point xpOrbPoint = xpOrb.getCanvasLocation();
 
@@ -95,7 +90,7 @@ public class SpecOrbOverlay extends Overlay
 
 
 		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent, SPECIAL_ORB_RECHARGE_COLOR,
-				specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100));
+				specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100), specialAttackEnabled);
 
 		return null;
 	}

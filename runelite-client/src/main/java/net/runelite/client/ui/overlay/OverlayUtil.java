@@ -70,7 +70,7 @@ public class OverlayUtil
 	 * @param amount                number to display on the orb
 	 */
 	public static void drawMinimapOrb(Graphics2D graphics, Point pos, double percentFilled, Color rechargeColor, double rechargePercentFilled,
-							Image minimapOrbBackground, Image overlayImage, int amount)
+	                                  Image minimapOrbBackground, Image overlayImage, int amount, boolean enabled)
 	{
 
 		Color startColor = graphics.getColor();
@@ -78,13 +78,13 @@ public class OverlayUtil
 		Point orbPos = new Point(pos.getX() + 26, pos.getY() + 2);
 
 		graphics.setColor(new Color(20, 20, 20));
-		OverlayUtil.renderOrbPercent(graphics, orbPos, 1, 28, false);//draw black background for the orb when it's partially missing
+		OverlayUtil.renderOrbPercent(graphics, orbPos, 1, 28, false, false);//draw black background for the orb when it's partially missing
 		graphics.setColor(startColor);
 
-		OverlayUtil.renderOrbPercent(graphics, orbPos, percentFilled, 28, true);
+		OverlayUtil.renderOrbPercent(graphics, orbPos, percentFilled, 28, true, enabled);//Draw orb with shading
 
 		graphics.setColor(rechargeColor);
-		OverlayUtil.renderOrbPercent(graphics, orbPos, rechargePercentFilled, 28, false);//draw recharge
+		OverlayUtil.renderOrbPercent(graphics, orbPos, rechargePercentFilled, 28, false, false);//draw recharge
 
 		graphics.setColor(startColor);
 
@@ -133,7 +133,7 @@ public class OverlayUtil
 	 * @param diameter diameter of the orb
 	 * @param shadow   draw shadow
 	 */
-	private static void renderOrbPercent(Graphics2D graphics, Point pos, double percent, int diameter, boolean shadow)
+	private static void renderOrbPercent(Graphics2D graphics, Point pos, double percent, int diameter, boolean shadow, boolean enabled)
 	{
 		BufferedImage bufferedImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D bufferedImageGraphics = bufferedImage.createGraphics();
@@ -151,6 +151,15 @@ public class OverlayUtil
 		if (shadow)
 		{
 			float darkenMultiplier = 0.4f;
+			Point2D center = new Point2D.Float(diameter / 2.7f, diameter / 2.7f);
+
+			if (enabled)
+			{
+				darkenMultiplier = 0.20f;
+				center = new Point2D.Float((diameter / 1.8f), (diameter / 1.8f));
+				dist = new float[]{0.7f, 1f};
+				//Darken and move center to make it look like the orb is pressed down
+			}
 
 			r *= darkenMultiplier;//Darken the base color to create a shadow effect on the edges of the orb
 			g *= darkenMultiplier;
@@ -158,8 +167,9 @@ public class OverlayUtil
 
 			Color[] colors = {setColor, new Color(r, g, b, a)};
 
+
 			RadialGradientPaint p =
-					new RadialGradientPaint(new Point2D.Float(diameter / 2.7f, diameter / 2.7f), diameter / 2.0f, dist, colors);//Divided by 2.7f for a gradient in the top left of the orb
+					new RadialGradientPaint(center, diameter / 2.0f, dist, colors);//Divided by 2.7f for a gradient in the top left of the orb
 
 			bufferedImageGraphics.setPaint(p);
 
