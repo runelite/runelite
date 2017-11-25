@@ -84,7 +84,7 @@ public enum Varbits
 	/**
 	 * Special Attack
 	 */
-	SPECIAL_ATTACK_PERCENT(300, 31, 0),
+	SPECIAL_ATTACK_PERCENT(300, 0, 16),
 	SPECIAL_ATTACK_ENABLED(301, 0, 0),
 
 	/**
@@ -113,6 +113,8 @@ public enum Varbits
 	 * Options
 	 */
 	SIDE_PANELS(4607, 1055, 8, 8);
+
+
 
 	/**
 	 * varbit id
