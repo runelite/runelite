@@ -139,6 +139,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("cachedPlayers")
 	RSPlayer[] getCachedPlayers();
 
+	@Import("localInteractingIndex")
+	int getLocalInteractingIndex();
+
 	@Import("groundItemDeque")
 	RSDeque[][][] getGroundItemDeque();
 

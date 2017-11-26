@@ -22,17 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
+import net.runelite.api.Actor;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSNPC;
+import net.runelite.rs.api.RSPlayer;
+import net.runelite.rs.api.RSProjectile;
 
-public interface RSProjectile extends Projectile
+@Mixin(RSProjectile.class)
+public abstract class RSProjectileMixin implements RSProjectile
 {
-	@Import("id")
-	@Override
-	int getId();
+	@Shadow("clientInstance")
+	private static RSClient client;
 
-	@Import("interacting")
-	int getRsInteracting();
+	@Inject
+	@Override
+	public Actor getInteracting()
+	{
+		int interactingIndex = getRsInteracting();
+		if (interactingIndex == 0)
+		{
+			return null;
+		}
+
+		if (interactingIndex > 0)
+		{
+			int idx = interactingIndex - 1;
+			RSNPC[] npcs = client.getCachedNPCs();
+			return npcs[idx];
+		}
+		else
+		{
+			int idx = -interactingIndex - 1;
+
+			if (idx == client.getLocalInteractingIndex())
+			{
+				return client.getLocalPlayer();
+			}
+
+			RSPlayer[] players = client.getCachedPlayers();
+			return players[idx];
+		}
+	}
 }
