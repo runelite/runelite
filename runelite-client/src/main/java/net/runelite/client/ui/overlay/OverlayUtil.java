@@ -77,18 +77,22 @@ public class OverlayUtil
 		Point orbPos = new Point(pos.getX() + 26, pos.getY() + 2);
 
 		graphics.setColor(new Color(20, 20, 20));
-		OverlayUtil.renderOrbPercent(graphics, orbPos, 1, 28, false, false);//draw black background for the orb when it's partially missing
+		// draw black background for the orb when it's partially missing
+		drawOrbPercent(graphics, orbPos, 1, 28, false, false);
 		graphics.setColor(startColor);
 
-		OverlayUtil.renderOrbPercent(graphics, orbPos, percentFilled, 28, true, enabled);//Draw orb with shading
+		// draw orb with shading
+		drawOrbPercent(graphics, orbPos, percentFilled, 28, true, enabled);
 
 		graphics.setColor(rechargeColor);
-		OverlayUtil.renderOrbPercent(graphics, orbPos, rechargePercentFilled, 28, false, false);//draw recharge
-
+		// draw recharge
+		drawOrbPercent(graphics, orbPos, rechargePercentFilled, 28, false, false);
 		graphics.setColor(startColor);
 
-		graphics.drawImage(minimapOrbBackground, pos.getX(), pos.getY(), null);//draw background
-		graphics.drawImage(overlayImage, pos.getX() + 32, pos.getY() + 9, null);//draw overlay
+		// draw background
+		graphics.drawImage(minimapOrbBackground, pos.getX(), pos.getY(), null);
+		// draw overlay
+		graphics.drawImage(overlayImage, pos.getX() + 32, pos.getY() + 9, null);
 
 		drawOrbAmount(graphics, pos, amount);//draw number on orb
 
@@ -105,12 +109,12 @@ public class OverlayUtil
 	{
 		Color startColor = graphics.getColor();
 
-		String numberString = amount + "";
 		Font font = FontManager.getRunescapeSmallFont();
 		graphics.setFont(font);
 
 		FontMetrics fm = graphics.getFontMetrics();
 
+		String numberString = Integer.toString(amount);
 		Point numberPos = new Point(pos.getX() + 22 - fm.stringWidth(numberString), pos.getY() + 26);
 		graphics.setColor(Color.black);
 		graphics.drawString(numberString, numberPos.getX() + 1, numberPos.getY() + 1);//black shadow on text
@@ -130,7 +134,7 @@ public class OverlayUtil
 	 * @param diameter diameter of the orb
 	 * @param shadow   draw shadow
 	 */
-	private static void renderOrbPercent(Graphics2D graphics, Point pos, double percent, int diameter, boolean shadow, boolean enabled)
+	private static void drawOrbPercent(Graphics2D graphics, Point pos, double percent, int diameter, boolean shadow, boolean enabled)
 	{
 		BufferedImage bufferedImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D bufferedImageGraphics = bufferedImage.createGraphics();
@@ -152,21 +156,22 @@ public class OverlayUtil
 
 			if (enabled)
 			{
+				// Darken and move center to make it look like the orb is pressed down
 				darkenMultiplier = 0.20f;
 				center = new Point2D.Float((diameter / 1.8f), (diameter / 1.8f));
 				dist = new float[]{0.7f, 1f};
-				//Darken and move center to make it look like the orb is pressed down
 			}
 
-			r *= darkenMultiplier;//Darken the base color to create a shadow effect on the edges of the orb
+			// Darken the base color to create a shadow effect on the edges of the orb
+			r *= darkenMultiplier;
 			g *= darkenMultiplier;
 			b *= darkenMultiplier;
 
 			Color[] colors = {setColor, new Color(r, g, b, a)};
 
-
-			RadialGradientPaint p =
-					new RadialGradientPaint(center, diameter / 2.0f, dist, colors);//Divided by 2.7f for a gradient in the top left of the orb
+			// Divided by 2.7f for a gradient in the top left of the orb
+			RadialGradientPaint p = new RadialGradientPaint(center,
+				diameter / 2.0f, dist, colors);
 
 			bufferedImageGraphics.setPaint(p);
 
@@ -179,8 +184,9 @@ public class OverlayUtil
 		bufferedImageGraphics.fillArc(0, 0, diameter, diameter, 0, 360);
 		if (percent < 1)
 		{
+			// Clear the top part of the orb. if we input 90% we need to clear the top 10%
 			bufferedImageGraphics.setBackground(new Color(255, 255, 255, 0));
-			bufferedImageGraphics.clearRect(0, 0, diameter, (int) ((diameter) * (1 - percent)));//Clear the top part of the orb. if we input 90% we need to clear the top 10%
+			bufferedImageGraphics.clearRect(0, 0, diameter, (int) ((diameter) * (1 - percent)));
 		}
 
 		graphics.drawImage(bufferedImage, pos.getX(), pos.getY(), null);

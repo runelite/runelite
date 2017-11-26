@@ -83,14 +83,17 @@ public class SpecOrbOverlay extends Overlay
 
 		boolean specialAttackEnabled = client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 1;
 
+		// draw relative to the xp orb
 		Point xpOrbPoint = xpOrb.getCanvasLocation();
-
 		Point specOrbPoint = new Point(xpOrbPoint.getX() + ORB_X_OFFSET, xpOrbPoint.getY() + ORB_Y_OFFSET);
 
 		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
 
-		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent, SPECIAL_ORB_RECHARGE_COLOR, specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100), specialAttackEnabled);
+		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent,
+			SPECIAL_ORB_RECHARGE_COLOR, specialRechargePercent,
+			plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(),
+			(int) (specialPercent * 100), specialAttackEnabled);
 
 		return null;
 	}
@@ -100,24 +103,28 @@ public class SpecOrbOverlay extends Overlay
 		int specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT);
 		if (lastSpecialPercent != specialPercent)
 		{
-			int dif = specialPercent - lastSpecialPercent;
+			int diff = specialPercent - lastSpecialPercent;
 			lastSpecialPercent = specialPercent;
-			onSpecialChange(dif);
+			onSpecialChange(diff);
 		}
 	}
 
-	private void onSpecialChange(int dif)
+	private void onSpecialChange(int diff)
 	{
-		if (dif > 0)//If we went from 500-600 for example
+		// If we went from 500-600 for example
+		if (diff > 0)
 		{
-			tickCounter = 0;//Rest the tick counter as we just recharged
+			// Reset the tick counter as we just recharged
+			tickCounter = 0;
 		}
 	}
 
 	public void onTick(GameTick event)
 	{
-		int specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT);//1000 = 100%, 500 = 50%, 0 = 0%
-		if (specialPercent == 1000)//The recharge doesn't tick when at 100%
+		// 1000 = 100%, 500 = 50%, 0 = 0%
+		int specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT);
+		// The recharge doesn't tick when at 100%
+		if (specialPercent == 1000)
 		{
 			tickCounter = 0;
 		}
