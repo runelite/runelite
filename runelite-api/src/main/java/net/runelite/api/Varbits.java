@@ -114,8 +114,6 @@ public enum Varbits
 	 */
 	SIDE_PANELS(4607, 1055, 8, 8);
 
-
-
 	/**
 	 * varbit id
 	 */

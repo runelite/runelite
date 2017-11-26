@@ -24,6 +24,11 @@
  */
 package net.runelite.client.plugins.specorb;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
@@ -36,26 +41,20 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-
 public class SpecOrbOverlay extends Overlay
 {
-	private final Client client;
-	private final SpecOrbConfig config;
-	private final SpecOrbPlugin plugin;
-	private static int lastSpecialPercent = 0;
-	private static int tickCounter = 0;
 	private static final int RECHARGE_TIME_TICKS = 51;
 
 	private static final int ORB_X_OFFSET = 60;
 	private static final int ORB_Y_OFFSET = 123;
 	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
-	private static final Color SPECIAL_ORB_BACKGROUND_ACTIVE_COLOR = new Color(151, 152, 255);
 	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
+
+	private final Client client;
+	private final SpecOrbConfig config;
+	private final SpecOrbPlugin plugin;
+	private int lastSpecialPercent = 0;
+	private int tickCounter = 0;
 
 	@Inject
 	public SpecOrbOverlay(@Nullable Client client, SpecOrbConfig config, SpecOrbPlugin plugin)
@@ -76,7 +75,9 @@ public class SpecOrbOverlay extends Overlay
 
 		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORB);
 		if (xpOrb == null)
+		{
 			return null;
+		}
 
 		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
 
@@ -88,7 +89,6 @@ public class SpecOrbOverlay extends Overlay
 
 		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
-
 
 		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent, SPECIAL_ORB_RECHARGE_COLOR, specialRechargePercent, plugin.getMinimapOrbBackground(), plugin.getSpecialAttackIcon(), (int) (specialPercent * 100), specialAttackEnabled);
 
@@ -102,11 +102,11 @@ public class SpecOrbOverlay extends Overlay
 		{
 			int dif = specialPercent - lastSpecialPercent;
 			lastSpecialPercent = specialPercent;
-			onSpecialChange(dif, specialPercent);
+			onSpecialChange(dif);
 		}
 	}
 
-	private void onSpecialChange(int dif, int specialPercent)
+	private void onSpecialChange(int dif)
 	{
 		if (dif > 0)//If we went from 500-600 for example
 		{

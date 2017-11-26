@@ -35,7 +35,6 @@ import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-
 import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
@@ -67,11 +66,12 @@ public class OverlayUtil
 	 * @param rechargeColor         color of the recharge meter of this orb. This can be used to track things like hp regen or special regen.
 	 * @param rechargePercentFilled how far through the recharge this stat is
 	 * @param minimapOrbBackground  background image of the minimap orb
+	 * @param overlayImage
 	 * @param amount                number to display on the orb
+	 * @param enabled
 	 */
 	public static void drawMinimapOrb(Graphics2D graphics, Point pos, double percentFilled, Color rechargeColor, double rechargePercentFilled, Image minimapOrbBackground, Image overlayImage, int amount, boolean enabled)
 	{
-
 		Color startColor = graphics.getColor();
 
 		Point orbPos = new Point(pos.getX() + 26, pos.getY() + 2);
@@ -111,13 +111,11 @@ public class OverlayUtil
 
 		FontMetrics fm = graphics.getFontMetrics();
 
-
 		Point numberPos = new Point(pos.getX() + 22 - fm.stringWidth(numberString), pos.getY() + 26);
 		graphics.setColor(Color.black);
 		graphics.drawString(numberString, numberPos.getX() + 1, numberPos.getY() + 1);//black shadow on text
 		graphics.setColor(Color.green);
 		graphics.drawString(numberString, numberPos.getX(), numberPos.getY());
-
 
 		graphics.setColor(startColor);
 	}

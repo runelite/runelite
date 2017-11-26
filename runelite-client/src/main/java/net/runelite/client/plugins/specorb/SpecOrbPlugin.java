@@ -39,14 +39,12 @@ import javax.inject.Inject;
 import java.awt.Image;
 
 @PluginDescriptor(
-		name = "Special Attack Orb plugin"
+	name = "Special Attack Orb plugin"
 )
 public class SpecOrbPlugin extends Plugin
 {
-
 	private Image minimapOrbBackground;
 	private Image specialAttackIcon;
-
 
 	@Inject
 	SpecOrbOverlay overlay;
