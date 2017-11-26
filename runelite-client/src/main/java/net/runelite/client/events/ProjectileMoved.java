@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.events;
 
+import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
 
-public interface RSProjectile extends Projectile
+public class ProjectileMoved
 {
-	@Import("id")
-	@Override
-	int getId();
+	private Projectile projectile;
+	private Point position;
+	private int plane;
 
-	@Import("interacting")
-	int getRsInteracting();
+	public Projectile getProjectile()
+	{
+		return projectile;
+	}
+
+	public void setProjectile(Projectile projectile)
+	{
+		this.projectile = projectile;
+	}
+
+	public Point getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition(Point position)
+	{
+		this.position = position;
+	}
+
+	public int getPlane()
+	{
+		return plane;
+	}
+
+	public void setPlane(int plane)
+	{
+		this.plane = plane;
+	}
 }
