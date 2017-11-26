@@ -200,6 +200,8 @@ public class Disassembler
 			case Opcodes.LOAD_INT:
 			case Opcodes.ILOAD:
 			case Opcodes.SLOAD:
+			case Opcodes.ISTORE:
+			case Opcodes.SSTORE:
 				return true;
 		}
 
