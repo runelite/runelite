@@ -84,7 +84,7 @@ public enum Varbits
 	/**
 	 * Special Attack
 	 */
-	SPECIAL_ATTACK_PERCENT(300, 31, 0),
+	SPECIAL_ATTACK_PERCENT(300, 0, 16),
 	SPECIAL_ATTACK_ENABLED(301, 0, 0),
 
 	/**
@@ -133,6 +133,11 @@ public enum Varbits
 
 	private Varbits(int id, int index, int leastSignificantBit, int mostSignificantBit)
 	{
+		if (mostSignificantBit < leastSignificantBit)
+		{
+			throw new IllegalStateException("MSB < LSB");
+		}
+
 		this.id = id;
 		this.index = index;
 		this.leastSignificantBit = leastSignificantBit;
