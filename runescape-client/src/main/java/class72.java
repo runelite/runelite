@@ -600,7 +600,7 @@ public class class72 extends class164 {
                var40 = var40 * 128 + 64;
                var2 = var2 * 128 + 64;
                Projectile var31 = new Projectile(var38, class233.plane, var8, var9, class41.getTileHeight(var8, var9, class233.plane) - var12, var5 + Client.gameCycle, var6 + Client.gameCycle, var13, var11, var3, var39);
-               var31.method1816(var40, var2, class41.getTileHeight(var40, var2, class233.plane) - var39, var5 + Client.gameCycle);
+               var31.moveProjectile(var40, var2, class41.getTileHeight(var40, var2, class233.plane) - var39, var5 + Client.gameCycle);
                Client.projectiles.addFront(var31);
             }
 

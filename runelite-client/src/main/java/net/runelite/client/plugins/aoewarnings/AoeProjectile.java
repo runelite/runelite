@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.aoewarnings;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
+import java.time.Instant;
+import net.runelite.api.Point;
 
-public interface RSProjectile extends Projectile
+public class AoeProjectile
 {
-	@Import("id")
-	@Override
-	int getId();
+	private final Instant startTime;
+	private final Point targetPoint;
+	private final AoeProjectileInfo aoeProjectileInfo;
 
-	@Import("interacting")
-	int getRsInteracting();
+	public AoeProjectile(Instant startTime, Point targetPoint, AoeProjectileInfo aoeProjectileInfo)
+	{
+		this.startTime = startTime;
+		this.targetPoint = targetPoint;
+		this.aoeProjectileInfo = aoeProjectileInfo;
+	}
+
+	public Instant getStartTime()
+	{
+		return startTime;
+	}
+
+	public Point getTargetPoint()
+	{
+		return targetPoint;
+	}
+
+	public AoeProjectileInfo getAoeProjectileInfo()
+	{
+		return aoeProjectileInfo;
+	}
 }
