@@ -123,14 +123,31 @@ public class Instructions
 		add(WIDGET_PUT_SELECTED_ACTION, "widget_put_selected_action", 0, 0, 1, 0);
 		add(WIDGET_PUT_ACTIONS_NULL, "widget_put_actions_null", 0, 0);
 		// and 1400-1500 and 2400-2500
+		add(WIDGET_PUT_MOUSE_PRESS_LISTENER, "widget_put_mouse_press_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAGGED_OVER_LISTENER, "widget_put_mouse_dragged_over_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_RELEASE_LISTENER, "widget_put_mouse_release_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_ENTER_LISTENER, "widget_put_mouse_enter_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_EXIT_LISTENER, "widget_put_mouse_exit_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_START_LISTENER, "widget_put_drag_start_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_USE_WITH_LISTENER, "widget_put_use_with_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_CONFIG_LISTENER, "widget_put_config_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_RENDER_LISTENER, "widget_put_render_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_OPTION_CLICK_LISTENER, "widget_put_option_click_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_RELEASE_LISTENER, "widget_put_drag_release_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_LISTENER, "widget_put_drag_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_HOVER_LISTENER, "widget_put_mouse_hover_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_TABLE_LISTENER, "widget_put_table_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_SKILL_LISTENER, "widget_put_skill_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_USE_LISTENER, "widget_put_use_listener", -1, 0, -1, 0);
 		add(WIDGET_PUT_SCROLL_LISTENER, "widget_put_scroll_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_MSG_LISTENER, "widget_put_msg_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_KEY_LISTENER, "widget_put_key_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_FRIENDS_LISTENER, "widget_put_friends_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_CLAN_LISTENER, "widget_put_clan_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_DIALOG_ABORT_LISTENER, "widget_put_dialog_abort_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_OPENCLOSE_LISTENER, "widget_put_openclose_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_GE_LISTENER, "widget_put_ge_listener", -1, 0, -1, 0);
+		add(WIDGET_PUT_RESIZE_LISTENER, "widget_put_resize_listener", -1, 0, -1, 0);
 		// and 1500-1600 and 2500-2600
 		add(WIDGET_GET_RELATIVEX, "widget_get_relativex", 0, 1);
 		add(WIDGET_GET_RELATIVEY, "widget_get_relativey", 0, 1);
@@ -202,7 +219,7 @@ public class Instructions
 		add(2205, 3, 0);
 		add(2212, 3, 0);
 		// 2300-2400
-		add(WIDGET_PUT_ACTION_WIDGET, 2, 0, 1, 0);
+		add(WIDGET_PUT_ACTION_WIDGET, "widget_put_action_widget", 2, 0, 1, 0);
 		add(WIDGET_PUT_DRAG_PARENT_WIDGET, "widget_put_drag_parent_widget", 3, 0);
 		add(2302, 2, 0);
 		add(2303, 2, 0);
@@ -211,14 +228,31 @@ public class Instructions
 		add(WIDET_PUT_SELECTED_ACTION_WIDGET, "widget_put_selected_action_widget", 1, 0, 1, 0);
 		add(WIDGET_PUT_ACTIONS_NULL_WIDGET, "widget_put_actions_null_widget", 1, 0);
 		// 2400-2500
+		add(WIDGET_PUT_MOUSE_PRESS_LISTENER_WIDGET, "widget_put_mouse_press_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAGGED_OVER_LISTENER_WIDGET, "widget_put_dragged_over_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_MOUSE_RELEASE_LISTENER_WIDGET, "widget_put_mouse_release_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_ENTER_LISTENER_WIDGET, "widget_put_mouse_enter_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_EXIT_LISTENER_WIDGET, "widget_put_mouse_exit_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_START_LISTENER_WIDGET, "widget_put_drag_start_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_USE_WITH_LISTENER_WIDGET, "widget_put_mouse_use_with_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_CONFIG_LISTENER_WIDGET, "widget_put_config_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_RENDER_LISTENER_WIDGET, "widget_put_render_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_OPTION_CLICK_LISTENER_WIDGET, "widget_put_option_click_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_RELEASE_LISTENER_WIDGET, "widget_put_drag_release_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_DRAG_LISTENER_WIDGET, "widget_put_drag_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_MOUSE_HOVER_LISTENER_WIDGET, "widget_put_mouse_hover_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_TABLE_LISTENER_WIDGET, "widget_put_table_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_SKILL_LISTENER_WIDGET, "widget_put_skill_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_USE_LISTENER_WIDGET, "widget_put_use_listener_widget", -1, 0, -1, 0);
 		add(WIDGET_PUT_SCROLL_LISTENER_WIDGET, "widget_put_scroll_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_MSG_LISTENER_WIDGET, "widget_put_msg_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_KEY_LISTENER_WIDGET, "widget_put_key_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_FRIENDS_LISTENER_WIDGET, "widget_put_friends_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_CLAN_LISTENER_WIDGET, "widget_put_clan_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_DIALOG_ABORT_LISTENER_WIDGET, "widget_put_dialog_abort_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_OPENCLOSE_LISTENER_WIDGET, "widget_put_openclose_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_GE_LISTENER_WIDGET, "widget_put_ge_listener_widget", -1, 0, -1, 0);
+		add(WIDGET_PUT_RESIZE_LISTENER_WIDGET, "widget_put_resize_listener_widget", -1, 0, -1, 0);
 		// 2500-2600
 		add(WIDGET_GET_RELATIVEX_WIDGET, "widget_get_relativex_widget", 1, 1);
 		add(WIDGET_GET_RELATIVEY_WIDGET, "widget_get_relativey_widget", 1, 1);
@@ -245,7 +279,7 @@ public class Instructions
 		add(WIDGET_GET_ITEMID_WIDGET, "widget_get_itemid_widget", 1, 1);
 		add(WIDGET_GET_STACKSIZE_WIDGET, "widget_get_stacksize_widget", 1, 1);
 		add(WIGET_GET_INDEX_WIDGET, "widget_get_index_widget", 1, 1);
-		add(2706, 0, 1);
+		add(GET_WIDGET_ROOT, "get_widget_root", 0, 1);
 		// 2800-2900
 		add(WIDGET_GET_CONFIG_WIGET, "widget_get_config_widget", 1, 1);
 		add(WIDGET_GET_ACTION_WIDGET, "widget_get_action_widget", 2, 0, 0, 1);
@@ -260,17 +294,17 @@ public class Instructions
 		add(STRING_INPUT_1, "string_input_1", 0, 0, 1, 0);
 		add(STRING_INPUT_2, "string_input_2", 0, 0, 1, 0);
 		add(PLAYER_ACTION, "player_action", 1, 0, 1, 0);
-		add(3108, 3, 0);
-		add(3109, 2, 0);
-		add(3110, 1, 0);
+		add(SET_TOP_CONTEXT_MENU_ROW, "set_top_context_menu_row", 3, 0);
+		add(SET_TOP_CONTEXT_MENU_ROW_2, "set_top_context_menu_row_2", 2, 0);
+		add(SET_MOUSE_BUTTON_CONTROLS_CAMERA, "set_mouse_button_controls_camera", 1, 0);
 		add(GET_HIDEROOFS, "get_hideroofs", 0, 1);
 		add(SET_HIDEROOFS, "set_hideroofs", 1, 0);
 		add(OPEN_URL, "open_url", 1, 0, 1, 0);
 		add(ITEM_PRICE, "item_price", 1, 0);
-		add(3116, 1, 0, 2, 0);
-		add(3117, 1, 0);
+		add(SEND_BUG_REPORT, "send_bug_report", 1, 0, 2, 0);
+		add(SET_SHIFT_DROP_ENABLED, "set_shift_drop_enabled", 1, 0);
 		// 3200-3300
-		add(3200, 3, 0);
+		add(PLAY_SOUND_EFFECT, "play_sound_effect", 3, 0);
 		add(3201, 1, 0);
 		add(3202, 2, 0);
 		// 3300-3400
@@ -291,13 +325,13 @@ public class Instructions
 		add(GET_ITEMCONTAINER_STACKSIZE_2, "get_itemcontainer_stacksize_2", 2, 1);
 		add(GET_ITEMCONTAINER_STACKSIZES_TOTAL_2, "get_itemcontainer_stacksizes_total_2", 2, 1);
 		add(GET_RIGHTS, "get_rights", 0, 1);
-		add(3317, 0, 1);
+		add(GET_SYSTEM_UPDATE_TIMER, "get_system_update_timer", 0, 1);
 		add(GET_WORLDNUM, "get_worldnum", 0, 1);
 		add(GET_ENERGY, "get_energy", 0, 1);
 		add(GET_WEIGHT, "get_weight", 0, 1);
-		add(3323, 0, 1);
+		add(GET_PLAYERMOD, "get_playermod", 0, 1);
 		add(GET_FLAGS, "get_flags", 0, 1);
-		add(3325, 4, 1);
+		add(PACK_LOCATION, "pack_location", 4, 1);
 		// 3400-3500
 		add(3400, 2, 0, 0, 1);
 		add(GET_ENUM_VALUE, "get_enum_value", 4, -1, 0, -1); // this pushes an int or a string, depending on the argument
@@ -317,8 +351,8 @@ public class Instructions
 		add(GET_CLAN_MEMBER_NAME, "get_clan_member_name", 1, 0, 0, 1);
 		add(GET_CLAN_MEMBER_WORLD, "get_clan_member_world", 1, 1);
 		add(GET_CLAN_MEMBER_RANK, "get_clan_member_rank", 1, 1);
-		add(3616, 0, 1);
-		add(3617, 0, 0, 1, 0);
+		add(CLANCHAT_KICK_RANK, "clanchat_kick_rank", 0, 1);
+		add(CLANCHAT_KICK_CLANMEMBER, "clanchat_kick_clanmember", 0, 0, 1, 0);
 		add(GET_CLANCHAT_RANK, "get_clanchat_rank", 0, 1);
 		add(JOIN_CLANCHAT, "join_clanchat", 0, 0, 1, 0);
 		add(PART_CLANCHAT, "part_clanchat", 0, 0);
@@ -328,15 +362,15 @@ public class Instructions
 		add(CLANMEMBER_ISME, "clanmember_isme", 1, 1);
 		add(GET_CLANCHATOWNER, "get_clanchatowner", 0, 0, 0, 1);
 		// 3700-4000
-		add(3903, 1, 1);
+		add(GET_GRANDEXCHANGE_OFFER_IS_SELLING, "get_grandexchange_offer_is_selling", 1, 1);
 		add(GET_GRANDEXCHANGE_OFFER_ITEMID, "get_grandexchange_offer_itemid", 1, 1);
 		add(GET_GRANDEXCHANGE_OFFER_PRICE, "get_grandexchange_offer_price", 1, 1);
 		add(GET_GRANDEXCHANGE_OFFER_TOTALQUANTITY, "get_grandexchange_offer_totalquantity", 1, 1);
 		add(GET_GRANDEXCHANGE_OFFER_QUANTITYSOLD, "get_grandexchange_offer_quantitysold", 1, 1);
 		add(GET_GRANDEXCHANGE_OFFER_SPENT, "get_grandexchange_offer_spent", 1, 1);
-		add(3910, 1, 1);
-		add(3911, 1, 1);
-		add(3912, 1, 1);
+		add(GET_GRANDEXCHANGE_OFFER_NOT_STARTED, "get_grandexchange_offer_not_started", 1, 1);
+		add(GET_GRANDEXCHANGE_OFFER_STATUS_2, "get_grandexchange_offer_status_2", 1, 1);
+		add(GET_GRANDEXCHANGE_OFFER_DONE, "get_grandexchange_offer_done", 1, 1);
 		add(3913, 1, 1);
 		add(3914, 1, 0);
 		add(3915, 1, 0);
@@ -358,17 +392,17 @@ public class Instructions
 		add(IDIV, "idiv", 2, 1);
 		add(RAND_EXCL, "rand_excl", 1, 1);
 		add(RAND_INCL, "rand_incl", 1, 1);
-		add(4006, 5, 1);
-		add(4007, 2, 1);
+		add(INTERPOLATE, "interpolate", 5, 1);
+		add(ADD_PERCENT, "add_percent", 2, 1);
 		add(SET_BIT, "set_bit", 2, 1);
 		add(CLEAR_BIT, "clear_bit", 2, 1);
 		add(TEST_BIT, "test_bit", 2, 1);
 		add(MODULO, "modulo", 2, 1);
 		add(POW, "pow", 2, 1);
-		add(4013, 2, 1);
+		add(INVPOW, "invpow", 2, 1);
 		add(AND, "and", 2, 1);
 		add(OR, "or", 2, 1);
-		add(4018, 3, 1);
+		add(SCALE, "scale", 3, 1);
 		// 4100-4200
 		add(CONCAT_INT, "concat_int", 1, 0, 1, 1);
 		add(CONCAT_STRING, "concat_string", 0, 0, 2, 1);
@@ -377,9 +411,9 @@ public class Instructions
 		add(FORMAT_DATE, "format_date", 1, 0, 0, 1);
 		add(SWITCH_MALE_OR_FEMALE, "switch_male_or_female", 0, 0, 2, 1);
 		add(INT_TO_STRING, "int_to_string", 1, 0, 0, 1);
-		add(4107, 0, 1, 2, 0);
-		add(4108, 2, 1, 1, 0);
-		add(4109, 2, 1, 1, 0);
+		add(STRING_COMPARE, "string_compare", 0, 1, 2, 0);
+		add(GET_LINE_COUNT, "get_line_count", 2, 1, 1, 0);
+		add(GET_MAX_LINE_WIDTH, "get_max_line_width", 2, 1, 1, 0);
 		add(SWITCH_STRING, "switch_string", 1, 0, 2, 1);
 		add(APPENDTAGS, "appendtags", 0, 0, 1, 1);
 		add(CONCAT_CHAR, "concat_char", 1, 0, 1, 1);
@@ -403,8 +437,8 @@ public class Instructions
 		add(GET_ITEM_ISMEMBERS, "get_item_ismembers", 1, 1);
 		add(4208, 1, 1);
 		add(4209, 1, 1);
-		add(4210, 1, 1, 1, 0);
-		add(4211, 0, 1);
+		add(SEARCH_ITEM, "search_item", 1, 1, 1, 0);
+		add(NEXT_SEARCH_RESULT, "next_search_result", 0, 1);
 		add(4212, 0, 0);
 		// 4300-5100
 		add(5000, 0, 1);
@@ -435,7 +469,7 @@ public class Instructions
 		add(5530, 1, 0);
 		add(5531, 0, 1);
 		// 5600-5700
-		add(5630, 0, 0);
+		add(CANCEL_LOGIN, "cancel_login", 0, 0);
 		// 5700-6300
 		add(6200, 2, 0);
 		add(6201, 2, 0);
