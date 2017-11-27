@@ -97,6 +97,9 @@ public interface RSWidget extends Widget
 	@Import("isHidden")
 	boolean isRSHidden();
 
+	@Import("isHidden")
+	void setHidden(boolean hidden);
+
 	@Import("index")
 	int getIndex();
 

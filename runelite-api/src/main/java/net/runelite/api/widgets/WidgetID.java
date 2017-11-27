@@ -189,6 +189,18 @@ class WidgetID
 	{
 		static final int WEAPON_NAME = 1;
 		static final int LEVEL = 2;
+		static final int STYLE_ONE = 3;
+		static final int STYLE_TWO = 7;
+		static final int STYLE_THREE = 11;
+		static final int STYLE_FOUR = 15;
+		static final int SPELLS = 19;
+		static final int DEFENSIVE_SPELL_BOX = 20;
+		static final int DEFENSIVE_SPELL_ICON = 21;
+		static final int DEFENSIVE_SPELL_SHIELD = 22;
+		static final int DEFENSIVE_SPELL_TEXT = 23;
+		static final int SPELL_BOX = 24;
+		static final int SPELL_ICON = 25;
+		static final int SPELL_TEXT = 26;
 	}
 
 	static class VolcanicMine
