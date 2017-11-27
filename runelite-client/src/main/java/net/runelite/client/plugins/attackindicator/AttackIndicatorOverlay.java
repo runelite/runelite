@@ -105,7 +105,14 @@ public class AttackIndicatorOverlay extends Overlay
 		// Render text with shadow
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(attackStyleString, anchor.x - background.width + 3, anchor.y);
-		graphics.setColor(Color.WHITE);
+		if (plugin.isWarnedSkillSelected())
+		{
+			graphics.setColor(Color.RED);
+		}
+		else
+		{
+			graphics.setColor(Color.WHITE);
+		}
 		graphics.drawString(attackStyleString, anchor.x - background.width + 2, anchor.y - 1);
 
 		return null;

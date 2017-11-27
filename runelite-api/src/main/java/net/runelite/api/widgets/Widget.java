@@ -66,6 +66,8 @@ public interface Widget
 
 	boolean isHidden();
 
+	void setHidden(boolean hidden);
+
 	Point getCanvasLocation();
 
 	int getWidth();
