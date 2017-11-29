@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -58,16 +57,12 @@ public class InfoBoxOverlay extends Overlay
 		this.client = client;
 		this.tooltipRenderer = tooltipRenderer;
 		this.infoboxManager = infoboxManager;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
 		if (infoBoxes.isEmpty())

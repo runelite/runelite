@@ -32,12 +32,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
@@ -63,14 +61,14 @@ public class RunecraftOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.showPouch()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.showPouch())
 		{
 			return null;
 		}

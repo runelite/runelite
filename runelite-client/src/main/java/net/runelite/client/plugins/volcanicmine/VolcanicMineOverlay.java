@@ -41,7 +41,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -79,12 +78,13 @@ public class VolcanicMineOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN || !plugin.getInside() || !config.enabled())
+		if (client == null || !plugin.getInside() || !config.enabled())
 		{
 			return null;
 		}

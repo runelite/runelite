@@ -35,7 +35,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -60,14 +59,14 @@ class JewelleryCountOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.enabled()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.enabled())
 		{
 			return null;
 		}

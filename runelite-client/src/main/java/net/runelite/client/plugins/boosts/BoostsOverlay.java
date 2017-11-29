@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -71,12 +70,15 @@ class BoostsOverlay extends Overlay
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.MED);
 		this.client = client;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
+		this.setDrawOverBankScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}

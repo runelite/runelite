@@ -35,7 +35,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -70,12 +69,13 @@ class WoodcuttingOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}

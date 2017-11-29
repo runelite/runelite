@@ -34,7 +34,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
@@ -70,16 +69,12 @@ public class PestControlOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.plugin = plugin;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		// See if we are in a game or not
 		if (client.getWidget(WidgetInfo.PESTCONTROL_BLUE_SHIELD) == null)
 		{

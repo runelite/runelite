@@ -33,7 +33,6 @@ import java.awt.geom.Rectangle2D;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -51,16 +50,12 @@ public class FPSOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		Font font = plugin.getFont();
 		if (font != null)
 		{

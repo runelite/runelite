@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
@@ -52,7 +51,6 @@ import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -111,23 +109,14 @@ public class GroundItemsOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
+		this.setDrawOverBankScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// won't draw if not logged in
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
-		{
-			return null;
-		}
-
-		//if the player is logged in but viewing the click to play screen exit
-		if (client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
-		{
-			return null;
-		}
-
 		Widget viewport = client.getViewportWidget();
 
 		if (viewport != null)

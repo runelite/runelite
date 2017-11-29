@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
@@ -92,14 +91,14 @@ class SlayerOverlay extends Overlay
 		this.client = runelite.getClient();
 		this.plugin = plugin;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.enabled()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.enabled())
 		{
 			return null;
 		}

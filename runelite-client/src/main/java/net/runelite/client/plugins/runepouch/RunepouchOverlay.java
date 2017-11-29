@@ -30,13 +30,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
@@ -74,14 +72,14 @@ public class RunepouchOverlay extends Overlay
 		this.client = runelite.getClient();
 		this.config = config;
 		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
+		this.setDrawOverLoginScreen(false);
+		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled()
-			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.enabled())
 		{
 			return null;
 		}

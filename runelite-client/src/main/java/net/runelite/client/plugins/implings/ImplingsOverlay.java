@@ -36,7 +36,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Point;
@@ -68,16 +67,12 @@ public class ImplingsOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = client;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids));
 		NPC[] implings = runelite.runQuery(implingQuery);
 		for (NPC imp : implings)

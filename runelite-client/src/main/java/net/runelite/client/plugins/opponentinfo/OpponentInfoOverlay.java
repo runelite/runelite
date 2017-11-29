@@ -30,7 +30,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -73,6 +72,7 @@ class OpponentInfoOverlay extends Overlay
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 		this.client = client;
 		this.config = config;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	private Actor getOpponent()
@@ -89,7 +89,7 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || config.enabled() == false)
+		if (config.enabled() == false)
 		{
 			return null;
 		}

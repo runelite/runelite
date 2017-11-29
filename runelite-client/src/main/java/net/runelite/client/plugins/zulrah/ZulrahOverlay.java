@@ -40,7 +40,6 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -80,6 +79,7 @@ public class ZulrahOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class ZulrahOverlay extends Overlay
 	{
 		ZulrahInstance instance = plugin.getInstance();
 
-		if (instance == null || client.getGameState() != GameState.LOGGED_IN)
+		if (instance == null)
 		{
 			return null;
 		}

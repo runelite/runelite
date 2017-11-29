@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
@@ -63,12 +62,14 @@ public class SpecOrbOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.setDrawOverClickToPlayScreen(false);
+		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}

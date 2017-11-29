@@ -25,6 +25,11 @@
 
 package net.runelite.client.ui.overlay;
 
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.widgets.WidgetInfo;
+
+import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -34,6 +39,12 @@ public abstract class Overlay
 	private OverlayPosition position; // where to draw it
 	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
 	private Rectangle bounds; //screen bounds of overlay after OverlayRenderer decides location
+	private boolean drawOverLoginScreen = true;
+	private boolean drawOverBankScreen = true;
+	private boolean drawOverClickToPlayScreen = true;
+
+	@Inject
+	Client client;
 
 	public Overlay(OverlayPosition position)
 	{
@@ -76,5 +87,39 @@ public abstract class Overlay
 	public void storeBounds(Rectangle bounds)
 	{
 		this.bounds = bounds;
+	}
+
+	public boolean isDrawn()
+	{
+		if(client == null)
+			return false;
+		if (!drawOverLoginScreen && client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+		if (!drawOverClickToPlayScreen && client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		{
+			return false;
+		}
+		if (!drawOverBankScreen && client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) != null)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public void setDrawOverLoginScreen(boolean drawOverLoginScreen)
+	{
+		this.drawOverLoginScreen = drawOverLoginScreen;
+	}
+
+	public void setDrawOverBankScreen(boolean drawOverBankScreen)
+	{
+		this.drawOverBankScreen = drawOverBankScreen;
+	}
+
+	public void setDrawOverClickToPlayScreen(boolean drawOverClickToPlayScreen)
+	{
+		this.drawOverClickToPlayScreen = drawOverClickToPlayScreen;
 	}
 }
