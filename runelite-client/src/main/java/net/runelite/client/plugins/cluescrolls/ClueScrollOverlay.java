@@ -64,7 +64,6 @@ public class ClueScrollOverlay extends Overlay
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

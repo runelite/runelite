@@ -91,8 +91,6 @@ class SlayerOverlay extends Overlay
 		this.client = runelite.getClient();
 		this.plugin = plugin;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	@Override

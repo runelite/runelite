@@ -81,7 +81,6 @@ public class XpGlobesOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

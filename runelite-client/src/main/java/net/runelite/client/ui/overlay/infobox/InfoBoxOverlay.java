@@ -57,7 +57,6 @@ public class InfoBoxOverlay extends Overlay
 		this.client = client;
 		this.tooltipRenderer = tooltipRenderer;
 		this.infoboxManager = infoboxManager;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

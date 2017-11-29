@@ -61,7 +61,6 @@ public class AttackIndicatorOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

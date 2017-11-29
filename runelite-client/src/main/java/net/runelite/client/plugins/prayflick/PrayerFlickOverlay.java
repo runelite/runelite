@@ -52,8 +52,6 @@ public class PrayerFlickOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
 	}
 
 	public void onTick()

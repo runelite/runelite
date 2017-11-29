@@ -52,7 +52,7 @@ class MouseHighlightOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
-		this.setDrawOverLoginScreen(false);
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override

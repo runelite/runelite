@@ -109,9 +109,6 @@ public class GroundItemsOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
-		this.setDrawOverBankScreen(false);
 	}
 
 	@Override

@@ -50,7 +50,6 @@ public class FPSOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC, OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

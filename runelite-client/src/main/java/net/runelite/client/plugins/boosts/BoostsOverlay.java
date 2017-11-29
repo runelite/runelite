@@ -70,9 +70,6 @@ class BoostsOverlay extends Overlay
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.MED);
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
-		this.setDrawOverBankScreen(false);
 	}
 
 	@Override

@@ -117,7 +117,6 @@ class InstanceMapOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	public boolean isMapShown()

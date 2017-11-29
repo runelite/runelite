@@ -82,7 +82,6 @@ public class DevToolsOverlay extends Overlay
 		super(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

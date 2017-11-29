@@ -64,7 +64,6 @@ class FishingSpotOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

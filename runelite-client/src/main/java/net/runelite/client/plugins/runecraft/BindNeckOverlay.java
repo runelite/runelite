@@ -62,8 +62,7 @@ public class BindNeckOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override

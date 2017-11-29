@@ -39,9 +39,9 @@ public abstract class Overlay
 	private OverlayPosition position; // where to draw it
 	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
 	private Rectangle bounds; //screen bounds of overlay after OverlayRenderer decides location
-	private boolean drawOverLoginScreen = true;
-	private boolean drawOverBankScreen = true;
-	private boolean drawOverClickToPlayScreen = true;
+	private boolean drawOverLoginScreen = false;
+	private boolean drawOverBankScreen = false;
+	private boolean drawOverClickToPlayScreen = false;
 
 	@Inject
 	Client client;
@@ -91,7 +91,7 @@ public abstract class Overlay
 
 	public boolean isDrawn()
 	{
-		if(client == null)
+		if (client == null)
 			return false;
 		if (!drawOverLoginScreen && client.getGameState() != GameState.LOGGED_IN)
 		{

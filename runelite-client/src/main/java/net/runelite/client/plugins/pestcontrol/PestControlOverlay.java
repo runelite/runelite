@@ -69,7 +69,6 @@ public class PestControlOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.plugin = plugin;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

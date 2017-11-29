@@ -72,8 +72,7 @@ public class RunepouchOverlay extends Overlay
 		this.client = runelite.getClient();
 		this.config = config;
 		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
-		this.setDrawOverLoginScreen(false);
-		this.setDrawOverClickToPlayScreen(false);
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override

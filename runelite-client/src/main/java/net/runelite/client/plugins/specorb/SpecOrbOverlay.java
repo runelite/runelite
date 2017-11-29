@@ -62,8 +62,6 @@ public class SpecOrbOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
-		this.setDrawOverClickToPlayScreen(false);
-		this.setDrawOverLoginScreen(false);
 	}
 
 	@Override

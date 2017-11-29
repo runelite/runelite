@@ -72,7 +72,6 @@ class OpponentInfoOverlay extends Overlay
 		super(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 		this.client = client;
 		this.config = config;
-		this.setDrawOverLoginScreen(false);
 	}
 
 	private Actor getOpponent()
