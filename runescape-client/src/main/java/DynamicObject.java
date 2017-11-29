@@ -75,7 +75,7 @@ public class DynamicObject extends Renderable {
       this.sceneX = var5;
       this.sceneY = var6;
       if(var7 != -1) {
-         this.field1456 = class13.getAnimation(var7);
+         this.field1456 = GrandExchangeEvents.getAnimation(var7);
          this.field1457 = 0;
          this.field1458 = Client.gameCycle - 1;
          if(this.field1456.replyMode == 0 && var9 != null && var9 instanceof DynamicObject) {
@@ -219,9 +219,9 @@ public class DynamicObject extends Renderable {
             if(!var9.hasScript || var12 < var14 && var13 < var15) {
                var16 = MouseInput.field703;
                var17 = MouseInput.field715 * 10625923;
-               if(MouseInput.field708 != 0) {
-                  var16 = MouseInput.field709;
-                  var17 = MouseInput.field710;
+               if(MouseInput.mouseLastButton != 0) {
+                  var16 = MouseInput.mouseLastPressedX;
+                  var17 = MouseInput.mouseLastPressedY;
                }
 
                boolean var49 = var16 >= var12 && var17 >= var13 && var16 < var14 && var17 < var15;
@@ -244,15 +244,15 @@ public class DynamicObject extends Renderable {
                      var19 = -1;
                      var20 = -1;
 
-                     for(var21 = 0; var21 < class133.field1909; ++var21) {
-                        var22 = class133.field1903[var21];
+                     for(var21 = 0; var21 < class133.Viewport_entityCountAtMouse; ++var21) {
+                        var22 = class133.Viewport_entityIdsAtMouse[var21];
                         var23 = var22 & 127;
                         var24 = var22 >> 7 & 127;
                         var25 = var22 >> 29 & 3;
                         var26 = var22 >> 14 & 32767;
                         if(var22 != var20) {
                            var20 = var22;
-                           if(var25 == 2 && class14.region.method2827(class233.plane, var23, var24, var22) >= 0) {
+                           if(var25 == 2 && GrandExchangeEvent.region.getObjectFlags(class233.plane, var23, var24, var22) >= 0) {
                               ObjectComposition var52 = class3.getObjectDefinition(var26);
                               if(var52.impostorIds != null) {
                                  var52 = var52.getImpostor();
@@ -263,15 +263,15 @@ public class DynamicObject extends Renderable {
                               }
 
                               if(Client.itemSelectionState == 1) {
-                                 RSCanvas.addMenuEntry("Use", Client.field974 + " " + "->" + " " + ISAACCipher.getColTags(65535) + var52.name, 1, var22, var23, var24);
+                                 RSCanvas.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + ISAACCipher.getColTags(65535) + var52.name, 1, var22, var23, var24);
                               } else if(Client.spellSelected) {
                                  if((class156.field2161 & 4) == 4) {
-                                    RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + ISAACCipher.getColTags(65535) + var52.name, 2, var22, var23, var24);
+                                    RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + ISAACCipher.getColTags(65535) + var52.name, 2, var22, var23, var24);
                                  }
                               } else {
                                  String[] var28 = var52.actions;
-                                 if(Client.field907) {
-                                    var28 = GroundObject.method2602(var28);
+                                 if(Client.numberMenuOptions) {
+                                    var28 = GroundObject.prependIndices(var28);
                                  }
 
                                  if(var28 != null) {
@@ -376,15 +376,15 @@ public class DynamicObject extends Renderable {
                                  for(Item var53 = (Item)var57.getTail(); var53 != null; var53 = (Item)var57.getPrevious()) {
                                     ItemComposition var58 = WorldMapType2.getItemDefinition(var53.id);
                                     if(Client.itemSelectionState == 1) {
-                                       RSCanvas.addMenuEntry("Use", Client.field974 + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var58.name, 16, var53.id, var23, var24);
+                                       RSCanvas.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var58.name, 16, var53.id, var23, var24);
                                     } else if(Client.spellSelected) {
                                        if((class156.field2161 & 1) == 1) {
-                                          RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var58.name, 17, var53.id, var23, var24);
+                                          RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var58.name, 17, var53.id, var23, var24);
                                        }
                                     } else {
                                        String[] var30 = var58.groundActions;
-                                       if(Client.field907) {
-                                          var30 = GroundObject.method2602(var30);
+                                       if(Client.numberMenuOptions) {
+                                          var30 = GroundObject.prependIndices(var30);
                                        }
 
                                        for(var31 = 4; var31 >= 0; --var31) {
@@ -452,7 +452,7 @@ public class DynamicObject extends Renderable {
                         if(var9.field2727 == 2 && !Client.spellSelected) {
                            var39 = DecorativeObject.method3017(var9);
                            if(var39 != null) {
-                              RSCanvas.addMenuEntry(var39, ISAACCipher.getColTags(65280) + var9.field2840, 25, 0, -1, var9.id);
+                              RSCanvas.addMenuEntry(var39, ISAACCipher.getColTags(65280) + var9.spellName, 25, 0, -1, var9.id);
                            }
                         }
 
@@ -496,7 +496,7 @@ public class DynamicObject extends Renderable {
                                              var47 = (var42 >> 30 & 1) != 0;
                                              if(var47) {
                                                 if(var9.id != class214.field2675 || var21 != class34.selectedItemIndex) {
-                                                   RSCanvas.addMenuEntry("Use", Client.field974 + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var46.name, 31, var46.id, var21, var9.id);
+                                                   RSCanvas.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var46.name, 31, var46.id, var21, var9.id);
                                                 }
                                                 break label1750;
                                              }
@@ -507,15 +507,15 @@ public class DynamicObject extends Renderable {
                                              var47 = (var42 >> 30 & 1) != 0;
                                              if(var47) {
                                                 if((class156.field2161 & 16) == 16) {
-                                                   RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var46.name, 32, var46.id, var21, var9.id);
+                                                   RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + ISAACCipher.getColTags(16748608) + var46.name, 32, var46.id, var21, var9.id);
                                                 }
                                                 break label1750;
                                              }
                                           }
 
                                           String[] var27 = var46.inventoryActions;
-                                          if(Client.field907) {
-                                             var27 = GroundObject.method2602(var27);
+                                          if(Client.numberMenuOptions) {
+                                             var27 = GroundObject.prependIndices(var27);
                                           }
 
                                           var42 = -1;
@@ -528,7 +528,7 @@ public class DynamicObject extends Renderable {
                                           if(var40) {
                                              for(var31 = 4; var31 >= 3; --var31) {
                                                 if(var42 != var31) {
-                                                   class51.method780(var9, var46, var21, var31, false);
+                                                   SoundTaskDataProvider.method780(var9, var46, var21, var31, false);
                                                 }
                                              }
                                           }
@@ -545,18 +545,18 @@ public class DynamicObject extends Renderable {
                                           if(var33) {
                                              for(var35 = 2; var35 >= 0; --var35) {
                                                 if(var42 != var35) {
-                                                   class51.method780(var9, var46, var21, var35, false);
+                                                   SoundTaskDataProvider.method780(var9, var46, var21, var35, false);
                                                 }
                                              }
 
                                              if(var42 >= 0) {
-                                                class51.method780(var9, var46, var21, var42, true);
+                                                SoundTaskDataProvider.method780(var9, var46, var21, var42, true);
                                              }
                                           }
 
                                           var27 = var9.configActions;
-                                          if(Client.field907) {
-                                             var27 = GroundObject.method2602(var27);
+                                          if(Client.numberMenuOptions) {
+                                             var27 = GroundObject.prependIndices(var27);
                                           }
 
                                           if(var27 != null) {
@@ -601,11 +601,11 @@ public class DynamicObject extends Renderable {
                         if(var9.hasScript) {
                            if(Client.spellSelected) {
                               if(class171.method3220(ClanMember.getWidgetConfig(var9)) && (class156.field2161 & 32) == 32) {
-                                 RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + var9.name, 58, 0, var9.index, var9.id);
+                                 RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + var9.name, 58, 0, var9.index, var9.id);
                               }
                            } else {
                               for(var21 = 9; var21 >= 5; --var21) {
-                                 String var48 = class8.method44(var9, var21);
+                                 String var48 = BoundingBox2D.method44(var9, var21);
                                  if(var48 != null) {
                                     RSCanvas.addMenuEntry(var48, var9.name, 1007, var21 + 1, var9.index, var9.id);
                                  }
@@ -617,7 +617,7 @@ public class DynamicObject extends Renderable {
                               }
 
                               for(var22 = 4; var22 >= 0; --var22) {
-                                 String var44 = class8.method44(var9, var22);
+                                 String var44 = BoundingBox2D.method44(var9, var22);
                                  if(var44 != null) {
                                     RSCanvas.addMenuEntry(var44, var9.name, 57, var22 + 1, var9.index, var9.id);
                                  }
@@ -645,7 +645,7 @@ public class DynamicObject extends Renderable {
                      if(var37 != null) {
                         if(var37.owner == 0 && MouseInput.field703 >= var12 && MouseInput.field715 * 10625923 >= var13 && MouseInput.field703 < var14 && MouseInput.field715 * 10625923 < var15 && !Client.isMenuOpen && !Client.field967) {
                            for(ScriptEvent var38 = (ScriptEvent)Client.field1010.getFront(); var38 != null; var38 = (ScriptEvent)Client.field1010.getNext()) {
-                              if(var38.field798) {
+                              if(var38.boolean1) {
                                  var38.unlink();
                                  var38.widget.field2720 = false;
                               }
@@ -673,14 +673,14 @@ public class DynamicObject extends Renderable {
                      if(!var9.noClickThrough) {
                         if(var9.field2826 && MouseInput.field703 >= var12 && MouseInput.field715 * 10625923 >= var13 && MouseInput.field703 < var14 && MouseInput.field715 * 10625923 < var15) {
                            for(var61 = (ScriptEvent)Client.field1010.getFront(); var61 != null; var61 = (ScriptEvent)Client.field1010.getNext()) {
-                              if(var61.field798 && var61.widget.scrollListener == var61.field797) {
+                              if(var61.boolean1 && var61.widget.scrollListener == var61.objs) {
                                  var61.unlink();
                               }
                            }
                         }
                      } else if(MouseInput.field703 >= var12 && MouseInput.field715 * 10625923 >= var13 && MouseInput.field703 < var14 && MouseInput.field715 * 10625923 < var15) {
                         for(var61 = (ScriptEvent)Client.field1010.getFront(); var61 != null; var61 = (ScriptEvent)Client.field1010.getNext()) {
-                           if(var61.field798) {
+                           if(var61.boolean1) {
                               var61.unlink();
                               var61.widget.field2720 = false;
                            }
@@ -703,24 +703,24 @@ public class DynamicObject extends Renderable {
                      }
 
                      boolean var50 = false;
-                     if((MouseInput.field705 == 1 || !Client.field956 && MouseInput.field705 == 4) && var49) {
+                     if((MouseInput.mouseCurrentButton == 1 || !Client.field956 && MouseInput.mouseCurrentButton == 4) && var49) {
                         var50 = true;
                      }
 
                      boolean var51 = false;
-                     if((MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) && MouseInput.field709 >= var12 && MouseInput.field710 >= var13 && MouseInput.field709 < var14 && MouseInput.field710 < var15) {
+                     if((MouseInput.mouseLastButton == 1 || !Client.field956 && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= var12 && MouseInput.mouseLastPressedY >= var13 && MouseInput.mouseLastPressedX < var14 && MouseInput.mouseLastPressedY < var15) {
                         var51 = true;
                      }
 
                      if(var51) {
-                        class90.method1767(var9, MouseInput.field709 - var10, MouseInput.field710 - var11);
+                        AttackOption.method1767(var9, MouseInput.mouseLastPressedX - var10, MouseInput.mouseLastPressedY - var11);
                      }
 
                      if(var9.contentType == 1400) {
                         MouseInput.renderOverview.method5497(MouseInput.field703, MouseInput.field715 * 10625923, var49 & var50, var49 & var51);
                      }
 
-                     if(Client.field1027 != null && var9 != Client.field1027 && var49 && class243.method4358(ClanMember.getWidgetConfig(var9))) {
+                     if(Client.field1027 != null && var9 != Client.field1027 && var49 && IndexStoreActionHandler.method4358(ClanMember.getWidgetConfig(var9))) {
                         Client.field890 = var9;
                      }
 
@@ -732,12 +732,12 @@ public class DynamicObject extends Renderable {
 
                      if(var9.field2770) {
                         ScriptEvent var62;
-                        if(var49 && Client.field1052 != 0 && var9.scrollListener != null) {
+                        if(var49 && Client.mouseWheelRotation != 0 && var9.scrollListener != null) {
                            var62 = new ScriptEvent();
-                           var62.field798 = true;
+                           var62.boolean1 = true;
                            var62.widget = var9;
-                           var62.field801 = Client.field1052;
-                           var62.field797 = var9.scrollListener;
+                           var62.field801 = Client.mouseWheelRotation;
+                           var62.objs = var9.scrollListener;
                            Client.field1010.addFront(var62);
                         }
 
@@ -751,22 +751,22 @@ public class DynamicObject extends Renderable {
                            var9.field2719 = true;
                            if(var9.field2806 != null) {
                               var62 = new ScriptEvent();
-                              var62.field798 = true;
+                              var62.boolean1 = true;
                               var62.widget = var9;
-                              var62.field800 = MouseInput.field709 - var10;
-                              var62.field801 = MouseInput.field710 - var11;
-                              var62.field797 = var9.field2806;
+                              var62.field800 = MouseInput.mouseLastPressedX - var10;
+                              var62.field801 = MouseInput.mouseLastPressedY - var11;
+                              var62.objs = var9.field2806;
                               Client.field1010.addFront(var62);
                            }
                         }
 
                         if(var9.field2719 && var50 && var9.field2805 != null) {
                            var62 = new ScriptEvent();
-                           var62.field798 = true;
+                           var62.boolean1 = true;
                            var62.widget = var9;
                            var62.field800 = MouseInput.field703 - var10;
                            var62.field801 = MouseInput.field715 * 10625923 - var11;
-                           var62.field797 = var9.field2805;
+                           var62.objs = var9.field2805;
                            Client.field1010.addFront(var62);
                         }
 
@@ -774,22 +774,22 @@ public class DynamicObject extends Renderable {
                            var9.field2719 = false;
                            if(var9.field2852 != null) {
                               var62 = new ScriptEvent();
-                              var62.field798 = true;
+                              var62.boolean1 = true;
                               var62.widget = var9;
                               var62.field800 = MouseInput.field703 - var10;
                               var62.field801 = MouseInput.field715 * 10625923 - var11;
-                              var62.field797 = var9.field2852;
+                              var62.objs = var9.field2852;
                               Client.field1105.addFront(var62);
                            }
                         }
 
                         if(var50 && var9.field2760 != null) {
                            var62 = new ScriptEvent();
-                           var62.field798 = true;
+                           var62.boolean1 = true;
                            var62.widget = var9;
                            var62.field800 = MouseInput.field703 - var10;
                            var62.field801 = MouseInput.field715 * 10625923 - var11;
-                           var62.field797 = var9.field2760;
+                           var62.objs = var9.field2760;
                            Client.field1010.addFront(var62);
                         }
 
@@ -797,22 +797,22 @@ public class DynamicObject extends Renderable {
                            var9.field2720 = true;
                            if(var9.mouseEnterListener != null) {
                               var62 = new ScriptEvent();
-                              var62.field798 = true;
+                              var62.boolean1 = true;
                               var62.widget = var9;
                               var62.field800 = MouseInput.field703 - var10;
                               var62.field801 = MouseInput.field715 * 10625923 - var11;
-                              var62.field797 = var9.mouseEnterListener;
+                              var62.objs = var9.mouseEnterListener;
                               Client.field1010.addFront(var62);
                            }
                         }
 
                         if(var9.field2720 && var49 && var9.mouseHoverListener != null) {
                            var62 = new ScriptEvent();
-                           var62.field798 = true;
+                           var62.boolean1 = true;
                            var62.widget = var9;
                            var62.field800 = MouseInput.field703 - var10;
                            var62.field801 = MouseInput.field715 * 10625923 - var11;
-                           var62.field797 = var9.mouseHoverListener;
+                           var62.objs = var9.mouseHoverListener;
                            Client.field1010.addFront(var62);
                         }
 
@@ -820,11 +820,11 @@ public class DynamicObject extends Renderable {
                            var9.field2720 = false;
                            if(var9.mouseExitListener != null) {
                               var62 = new ScriptEvent();
-                              var62.field798 = true;
+                              var62.boolean1 = true;
                               var62.widget = var9;
                               var62.field800 = MouseInput.field703 - var10;
                               var62.field801 = MouseInput.field715 * 10625923 - var11;
-                              var62.field797 = var9.mouseExitListener;
+                              var62.objs = var9.mouseExitListener;
                               Client.field1105.addFront(var62);
                            }
                         }
@@ -832,7 +832,7 @@ public class DynamicObject extends Renderable {
                         if(var9.renderListener != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.renderListener;
+                           var62.objs = var9.renderListener;
                            Client.field1054.addFront(var62);
                         }
 
@@ -847,7 +847,7 @@ public class DynamicObject extends Renderable {
                                     if(var22 == var9.configTriggers[var23]) {
                                        var45 = new ScriptEvent();
                                        var45.widget = var9;
-                                       var45.field797 = var9.configListenerArgs;
+                                       var45.objs = var9.configListenerArgs;
                                        Client.field1010.addFront(var45);
                                        break label1421;
                                     }
@@ -856,7 +856,7 @@ public class DynamicObject extends Renderable {
                            } else {
                               var62 = new ScriptEvent();
                               var62.widget = var9;
-                              var62.field797 = var9.configListenerArgs;
+                              var62.objs = var9.configListenerArgs;
                               Client.field1010.addFront(var62);
                            }
 
@@ -873,7 +873,7 @@ public class DynamicObject extends Renderable {
                                     if(var22 == var9.tableModTriggers[var23]) {
                                        var45 = new ScriptEvent();
                                        var45.widget = var9;
-                                       var45.field797 = var9.tableListenerArgs;
+                                       var45.objs = var9.tableListenerArgs;
                                        Client.field1010.addFront(var45);
                                        break label1397;
                                     }
@@ -882,7 +882,7 @@ public class DynamicObject extends Renderable {
                            } else {
                               var62 = new ScriptEvent();
                               var62.widget = var9;
-                              var62.field797 = var9.tableListenerArgs;
+                              var62.objs = var9.tableListenerArgs;
                               Client.field1010.addFront(var62);
                            }
 
@@ -899,7 +899,7 @@ public class DynamicObject extends Renderable {
                                     if(var22 == var9.skillTriggers[var23]) {
                                        var45 = new ScriptEvent();
                                        var45.widget = var9;
-                                       var45.field797 = var9.skillListenerArgs;
+                                       var45.objs = var9.skillListenerArgs;
                                        Client.field1010.addFront(var45);
                                        break label1373;
                                     }
@@ -908,7 +908,7 @@ public class DynamicObject extends Renderable {
                            } else {
                               var62 = new ScriptEvent();
                               var62.widget = var9;
-                              var62.field797 = var9.skillListenerArgs;
+                              var62.objs = var9.skillListenerArgs;
                               Client.field1010.addFront(var62);
                            }
 
@@ -918,42 +918,42 @@ public class DynamicObject extends Renderable {
                         if(Client.chatCycle > var9.field2851 && var9.field2849 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2849;
+                           var62.objs = var9.field2849;
                            Client.field1010.addFront(var62);
                         }
 
                         if(Client.field977 > var9.field2851 && var9.field2828 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2828;
+                           var62.objs = var9.field2828;
                            Client.field1010.addFront(var62);
                         }
 
                         if(Client.field1048 > var9.field2851 && var9.field2829 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2829;
+                           var62.objs = var9.field2829;
                            Client.field1010.addFront(var62);
                         }
 
                         if(Client.field1049 > var9.field2851 && var9.field2834 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2834;
+                           var62.objs = var9.field2834;
                            Client.field1010.addFront(var62);
                         }
 
                         if(Client.field1050 > var9.field2851 && var9.field2835 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2835;
+                           var62.objs = var9.field2835;
                            Client.field1010.addFront(var62);
                         }
 
                         if(Client.field1051 > var9.field2851 && var9.field2830 != null) {
                            var62 = new ScriptEvent();
                            var62.widget = var9;
-                           var62.field797 = var9.field2830;
+                           var62.objs = var9.field2830;
                            Client.field1010.addFront(var62);
                         }
 
@@ -964,7 +964,7 @@ public class DynamicObject extends Renderable {
                               var66.widget = var9;
                               var66.field802 = Client.field1077[var21];
                               var66.field810 = Client.field1055[var21];
-                              var66.field797 = var9.field2827;
+                              var66.objs = var9.field2827;
                               Client.field1010.addFront(var66);
                            }
                         }
@@ -981,7 +981,7 @@ public class DynamicObject extends Renderable {
                      }
 
                      if(var9.type == 8 && MouseInput.field703 >= var12 && MouseInput.field715 * 10625923 >= var13 && MouseInput.field703 < var14 && MouseInput.field715 * 10625923 < var15) {
-                        class14.field279 = var9;
+                        GrandExchangeEvent.field279 = var9;
                      }
 
                      if(var9.scrollHeight > var9.height) {
@@ -997,7 +997,7 @@ public class DynamicObject extends Renderable {
                         }
 
                         Client.field973 = false;
-                        if(MouseInput.field705 == 1 || !Client.field956 && MouseInput.field705 == 4) {
+                        if(MouseInput.mouseCurrentButton == 1 || !Client.field956 && MouseInput.mouseCurrentButton == 4) {
                            if(var22 >= var19 && var22 < var19 + 16 && var23 >= var11 && var23 < var11 + 16) {
                               var9.scrollY -= 4;
                               class40.method556(var9);
@@ -1018,10 +1018,10 @@ public class DynamicObject extends Renderable {
                            }
                         }
 
-                        if(Client.field1052 != 0) {
+                        if(Client.mouseWheelRotation != 0) {
                            var24 = var9.width;
                            if(var22 >= var19 - var24 && var23 >= var11 && var22 < var19 + 16 && var23 <= var20 + var11) {
-                              var9.scrollY += Client.field1052 * 45;
+                              var9.scrollY += Client.mouseWheelRotation * 45;
                               class40.method556(var9);
                            }
                         }

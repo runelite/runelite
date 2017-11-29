@@ -220,7 +220,7 @@ public class class261 extends CacheableNode {
    public final class261 method4661() {
       int var1 = -1;
       if(this.field3488 != -1) {
-         var1 = Friend.method1109(this.field3488);
+         var1 = Friend.getVarbit(this.field3488);
       } else if(this.field3499 != -1) {
          var1 = class218.widgetSettings[this.field3499];
       }
@@ -266,7 +266,7 @@ public class class261 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class2.field15, this.field3487, 0);
+            var1 = ClassInfo.method5123(IntegerToken.field15, this.field3487, 0);
             if(var1 != null) {
                field3479.put(var1, (long)this.field3487);
             }
@@ -289,7 +289,7 @@ public class class261 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class2.field15, this.field3495, 0);
+            var1 = ClassInfo.method5123(IntegerToken.field15, this.field3495, 0);
             if(var1 != null) {
                field3479.put(var1, (long)this.field3495);
             }
@@ -312,7 +312,7 @@ public class class261 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class2.field15, this.field3489, 0);
+            var1 = ClassInfo.method5123(IntegerToken.field15, this.field3489, 0);
             if(var1 != null) {
                field3479.put(var1, (long)this.field3489);
             }
@@ -335,7 +335,7 @@ public class class261 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class2.field15, this.field3490, 0);
+            var1 = ClassInfo.method5123(IntegerToken.field15, this.field3490, 0);
             if(var1 != null) {
                field3479.put(var1, (long)this.field3490);
             }
@@ -358,7 +358,7 @@ public class class261 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            IndexDataBase var3 = class2.field15;
+            IndexDataBase var3 = IntegerToken.field15;
             IndexDataBase var4 = field3477;
             int var5 = this.field3484;
             Font var2;
@@ -370,13 +370,13 @@ public class class261 extends CacheableNode {
                if(var7 == null) {
                   var6 = null;
                } else {
-                  Font var8 = new Font(var7, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, class15.spritePixels);
+                  Font var8 = new Font(var7, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, TotalQuantityComparator.spritePixels);
                   class295.field3848 = null;
                   class295.offsetsY = null;
                   class295.field3845 = null;
                   class285.field3788 = null;
                   class115.field1599 = null;
-                  class15.spritePixels = null;
+                  TotalQuantityComparator.spritePixels = null;
                   var6 = var8;
                }
 

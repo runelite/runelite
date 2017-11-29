@@ -46,7 +46,8 @@ public class class35 {
       signature = "(IIII)V",
       garbageValue = "658311760"
    )
-   static final void method502(int var0, int var1, int var2) {
+   @Export("worldToScreen")
+   static final void worldToScreen(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
          int var3 = class41.getTileHeight(var0, var1, class233.plane) - var2;
          var0 -= class214.cameraX;
@@ -54,8 +55,8 @@ public class class35 {
          var1 -= class289.cameraY;
          int var4 = Graphics3D.SINE[class18.cameraPitch];
          int var5 = Graphics3D.COSINE[class18.cameraPitch];
-         int var6 = Graphics3D.SINE[class51.cameraYaw];
-         int var7 = Graphics3D.COSINE[class51.cameraYaw];
+         int var6 = Graphics3D.SINE[SoundTaskDataProvider.cameraYaw];
+         int var7 = Graphics3D.COSINE[SoundTaskDataProvider.cameraYaw];
          int var8 = var6 * var1 + var0 * var7 >> 16;
          var1 = var7 * var1 - var0 * var6 >> 16;
          var0 = var8;

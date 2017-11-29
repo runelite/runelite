@@ -73,7 +73,7 @@ public final class RSCanvas extends Canvas {
          Client.menuIdentifiers[Client.menuOptionCount] = var3;
          Client.menuActionParams0[Client.menuOptionCount] = var4;
          Client.menuActionParams1[Client.menuOptionCount] = var5;
-         Client.field889[Client.menuOptionCount] = var12;
+         Client.menuBooleanArray[Client.menuOptionCount] = var12;
          ++Client.menuOptionCount;
       }
 

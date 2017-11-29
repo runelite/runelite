@@ -46,21 +46,21 @@ public class class285 {
       int var3;
       int var4;
       if(var0 == 3400) {
-         class13.intStackSize -= 2;
-         var3 = class82.intStack[class13.intStackSize];
-         var4 = class82.intStack[class13.intStackSize + 1];
-         Enum var6 = (Enum)Enum.field3466.get((long)var3);
+         GrandExchangeEvents.intStackSize -= 2;
+         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         Enum var6 = (Enum)Enum.EnumDefinition_cached.get((long)var3);
          Enum var5;
          if(var6 != null) {
             var5 = var6;
          } else {
-            byte[] var14 = Enum.field3475.getConfigData(8, var3);
+            byte[] var14 = Enum.EnumDefinition_indexCache.getConfigData(8, var3);
             var6 = new Enum();
             if(var14 != null) {
                var6.decode(new Buffer(var14));
             }
 
-            Enum.field3466.put(var6, (long)var3);
+            Enum.EnumDefinition_cached.put(var6, (long)var3);
             var5 = var6;
          }
 
@@ -83,23 +83,23 @@ public class class285 {
 
          return 1;
       } else if(var0 == 3408) {
-         class13.intStackSize -= 4;
-         var3 = class82.intStack[class13.intStackSize];
-         var4 = class82.intStack[class13.intStackSize + 1];
-         int var10 = class82.intStack[class13.intStackSize + 2];
-         int var11 = class82.intStack[class13.intStackSize + 3];
-         Enum var8 = (Enum)Enum.field3466.get((long)var10);
+         GrandExchangeEvents.intStackSize -= 4;
+         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         int var10 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
+         int var11 = class82.intStack[GrandExchangeEvents.intStackSize + 3];
+         Enum var8 = (Enum)Enum.EnumDefinition_cached.get((long)var10);
          Enum var12;
          if(var8 != null) {
             var12 = var8;
          } else {
-            byte[] var13 = Enum.field3475.getConfigData(8, var10);
+            byte[] var13 = Enum.EnumDefinition_indexCache.getConfigData(8, var10);
             var8 = new Enum();
             if(var13 != null) {
                var8.decode(new Buffer(var13));
             }
 
-            Enum.field3466.put(var8, (long)var10);
+            Enum.EnumDefinition_cached.put(var8, (long)var10);
             var12 = var8;
          }
 
@@ -110,7 +110,7 @@ public class class285 {
                   if(var4 == 115) {
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var8.stringVals[var9];
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = var8.intVals[var9];
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var8.intVals[var9];
                   }
 
                   var8 = null;
@@ -122,7 +122,7 @@ public class class285 {
                if(var4 == 115) {
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var8.defaultString;
                } else {
-                  class82.intStack[++class13.intStackSize - 1] = var8.defaultInt;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var8.defaultInt;
                }
             }
 
@@ -131,7 +131,7 @@ public class class285 {
             if(var4 == 115) {
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "null";
             } else {
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
             }
 
             return 1;

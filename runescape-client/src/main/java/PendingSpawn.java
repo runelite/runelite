@@ -162,7 +162,7 @@ public final class PendingSpawn extends Node {
       for(var7 = 0; var7 < 4; ++var7) {
          for(var8 = 0; var8 < 64; ++var8) {
             for(int var9 = 0; var9 < 64; ++var9) {
-               class149.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
+               UrlRequest.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
             }
          }
       }
@@ -176,6 +176,6 @@ public final class PendingSpawn extends Node {
    )
    static MessageNode method1573(int var0, int var1) {
       ChatLineBuffer var2 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method1921(var1);
+      return var2.getMessage(var1);
    }
 }

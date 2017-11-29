@@ -86,7 +86,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = 792803111
    )
-   int field1177;
+   @Export("overheadTextCyclesRemaining")
+   int overheadTextCyclesRemaining;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = -704930753
@@ -242,7 +243,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = -210838777
    )
-   int field1195;
+   @Export("npcCycle")
+   int npcCycle;
    @ObfuscatedName("cd")
    @ObfuscatedGetter(
       intValue = 2142258075
@@ -277,7 +279,8 @@ public abstract class Actor extends Renderable {
    @Export("pathY")
    int[] pathY;
    @ObfuscatedName("cj")
-   byte[] field1203;
+   @Export("pathTraversed")
+   byte[] pathTraversed;
    @ObfuscatedName("cn")
    @ObfuscatedGetter(
       intValue = -1269759145
@@ -302,7 +305,7 @@ public abstract class Actor extends Renderable {
       this.field1158 = -1;
       this.overhead = null;
       this.inSequence = false;
-      this.field1177 = 100;
+      this.overheadTextCyclesRemaining = 100;
       this.field1163 = 0;
       this.field1164 = 0;
       this.field1165 = 0;
@@ -326,14 +329,14 @@ public abstract class Actor extends Renderable {
       this.graphic = -1;
       this.field1184 = 0;
       this.field1185 = 0;
-      this.field1195 = 0;
+      this.npcCycle = 0;
       this.field1179 = 200;
       this.field1198 = 0;
       this.field1199 = 32;
       this.queueSize = 0;
       this.pathX = new int[10];
       this.pathY = new int[10];
-      this.field1203 = new byte[10];
+      this.pathTraversed = new byte[10];
       this.field1204 = 0;
       this.field1159 = 0;
    }
@@ -452,7 +455,7 @@ public abstract class Actor extends Renderable {
          byte[] var9 = CombatInfo2.field3442.getConfigData(33, var1);
          var8 = new CombatInfo2();
          if(var9 != null) {
-            var8.method4547(new Buffer(var9));
+            var8.read(new Buffer(var9));
          }
 
          CombatInfo2.field3432.put(var8, (long)var1);
@@ -466,7 +469,7 @@ public abstract class Actor extends Renderable {
       int var12 = 0;
 
       CombatInfoListHolder var13;
-      for(var13 = (CombatInfoListHolder)this.combatInfoList.method3723(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.method3720()) {
+      for(var13 = (CombatInfoListHolder)this.combatInfoList.last(); var13 != null; var13 = (CombatInfoListHolder)this.combatInfoList.previous()) {
          ++var12;
          if(var13.combatInfo2.field3439 == var8.field3439) {
             var13.method1729(var2 + var4, var5, var6, var3);
@@ -486,7 +489,7 @@ public abstract class Actor extends Renderable {
       if(var10 != null || var12 < 4) {
          var13 = new CombatInfoListHolder(var8);
          if(var14 == null) {
-            this.combatInfoList.method3727(var13);
+            this.combatInfoList.addLast(var13);
          } else {
             CombatInfoList.method3721(var13, var14);
          }
@@ -513,7 +516,7 @@ public abstract class Actor extends Renderable {
          byte[] var4 = CombatInfo2.field3442.getConfigData(33, var1);
          var3 = new CombatInfo2();
          if(var4 != null) {
-            var3.method4547(new Buffer(var4));
+            var3.read(new Buffer(var4));
          }
 
          CombatInfo2.field3432.put(var3, (long)var1);
@@ -522,7 +525,7 @@ public abstract class Actor extends Renderable {
 
       var3 = var2;
 
-      for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.method3723(); var5 != null; var5 = (CombatInfoListHolder)this.combatInfoList.method3720()) {
+      for(CombatInfoListHolder var5 = (CombatInfoListHolder)this.combatInfoList.last(); var5 != null; var5 = (CombatInfoListHolder)this.combatInfoList.previous()) {
          if(var3 == var5.combatInfo2) {
             var5.unlink();
             return;

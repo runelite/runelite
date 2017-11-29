@@ -9,7 +9,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("af")
 public class class46 {
    @ObfuscatedName("z")
-   static File field567;
+   @Export("jagexClDat")
+   static File jagexClDat;
    @ObfuscatedName("bz")
    @ObfuscatedSignature(
       signature = "[Lky;"
@@ -642,9 +643,9 @@ public class class46 {
    static boolean loadWorlds() {
       try {
          if(ScriptState.listFetcher == null) {
-            ScriptState.listFetcher = class221.field2711.method3022(new URL(InvType.field3356));
-         } else if(ScriptState.listFetcher.method3032()) {
-            byte[] var0 = ScriptState.listFetcher.method3033();
+            ScriptState.listFetcher = class221.urlRequester.request(new URL(InvType.field3356));
+         } else if(ScriptState.listFetcher.isDone()) {
+            byte[] var0 = ScriptState.listFetcher.getResponse();
             Buffer var1 = new Buffer(var0);
             var1.readInt();
             World.worldCount = var1.readUnsignedShort();
@@ -661,7 +662,7 @@ public class class46 {
                var3.playerCount = var1.readShort();
             }
 
-            class70.method1127(World.worldList, 0, World.worldList.length - 1, World.field1220, World.field1219);
+            MouseRecorder.method1127(World.worldList, 0, World.worldList.length - 1, World.field1220, World.field1219);
             ScriptState.listFetcher = null;
             return true;
          }
@@ -721,7 +722,8 @@ public class class46 {
       signature = "(Lid;Ljava/lang/String;Ljava/lang/String;I)[Lky;",
       garbageValue = "1481371132"
    )
-   public static SpritePixels[] method709(IndexDataBase var0, String var1, String var2) {
+   @Export("getSprites")
+   public static SpritePixels[] getSprites(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return Friend.method1108(var0, var3, var4);
@@ -762,7 +764,7 @@ public class class46 {
 
                NPC var4 = Client.cachedNPCs[var2];
                Client.npcIndices[++Client.npcIndexesCount - 1] = var2;
-               var4.field1195 = Client.gameCycle;
+               var4.npcCycle = Client.gameCycle;
                int var5 = var1.getBits(1);
                var4.composition = class1.getNpcDefinition(var1.getBits(14));
                int var6;

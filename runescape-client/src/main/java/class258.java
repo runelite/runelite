@@ -73,7 +73,7 @@ public class class258 extends CacheableNode {
          }
 
          if(var5 >= 128 && var5 < 160) {
-            char var6 = class273.field3722[var5 - 128];
+            char var6 = class273.cp1252AsciiExtension[var5 - 128];
             if(var6 == 0) {
                var6 = '?';
             }
@@ -112,7 +112,7 @@ public class class258 extends CacheableNode {
       int var4;
       if(var0 == 4100) {
          var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-         var4 = class82.intStack[--class13.intStackSize];
+         var4 = class82.intStack[--GrandExchangeEvents.intStackSize];
          class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3 + var4;
          return 1;
       } else {
@@ -125,7 +125,7 @@ public class class258 extends CacheableNode {
             return 1;
          } else if(var0 == 4102) {
             var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-            var4 = class82.intStack[--class13.intStackSize];
+            var4 = class82.intStack[--GrandExchangeEvents.intStackSize];
             class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3 + Signlink.method3068(var4, true);
             return 1;
          } else if(var0 == 4103) {
@@ -136,7 +136,7 @@ public class class258 extends CacheableNode {
             int var22;
             int var30;
             if(var0 == 4104) {
-               var22 = class82.intStack[--class13.intStackSize];
+               var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
                long var23 = 86400000L * (11745L + (long)var22);
                class82.field1260.setTime(new Date(var23));
                var30 = class82.field1260.get(5);
@@ -156,13 +156,13 @@ public class class258 extends CacheableNode {
 
                return 1;
             } else if(var0 == 4106) {
-               var22 = class82.intStack[--class13.intStackSize];
+               var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = Integer.toString(var22);
                return 1;
             } else if(var0 == 4107) {
                class82.scriptStringStackSize -= 2;
                int[] var29 = class82.intStack;
-               var4 = ++class13.intStackSize - 1;
+               var4 = ++GrandExchangeEvents.intStackSize - 1;
                String var40 = class82.scriptStringStack[class82.scriptStringStackSize];
                String var26 = class82.scriptStringStack[class82.scriptStringStackSize + 1];
                int var9 = Client.languageId;
@@ -268,27 +268,27 @@ public class class258 extends CacheableNode {
                byte[] var27;
                if(var0 == 4108) {
                   var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                  class13.intStackSize -= 2;
-                  var4 = class82.intStack[class13.intStackSize];
-                  var5 = class82.intStack[class13.intStackSize + 1];
-                  var27 = class44.field550.getConfigData(var5, 0);
+                  GrandExchangeEvents.intStackSize -= 2;
+                  var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+                  var5 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+                  var27 = class44.indexCache13.getConfigData(var5, 0);
                   var25 = new Font(var27);
-                  class82.intStack[++class13.intStackSize - 1] = var25.method4929(var3, var4);
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var25.method4929(var3, var4);
                   return 1;
                } else if(var0 == 4109) {
                   var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                  class13.intStackSize -= 2;
-                  var4 = class82.intStack[class13.intStackSize];
-                  var5 = class82.intStack[class13.intStackSize + 1];
-                  var27 = class44.field550.getConfigData(var5, 0);
+                  GrandExchangeEvents.intStackSize -= 2;
+                  var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+                  var5 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+                  var27 = class44.indexCache13.getConfigData(var5, 0);
                   var25 = new Font(var27);
-                  class82.intStack[++class13.intStackSize - 1] = var25.method4928(var3, var4);
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var25.method4928(var3, var4);
                   return 1;
                } else if(var0 == 4110) {
                   class82.scriptStringStackSize -= 2;
                   var3 = class82.scriptStringStack[class82.scriptStringStackSize];
                   var38 = class82.scriptStringStack[class82.scriptStringStackSize + 1];
-                  if(class82.intStack[--class13.intStackSize] == 1) {
+                  if(class82.intStack[--GrandExchangeEvents.intStackSize] == 1) {
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3;
                   } else {
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var38;
@@ -301,7 +301,7 @@ public class class258 extends CacheableNode {
                   return 1;
                } else if(var0 == 4112) {
                   var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                  var4 = class82.intStack[--class13.intStackSize];
+                  var4 = class82.intStack[--GrandExchangeEvents.intStackSize];
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3 + (char)var4;
                   return 1;
                } else {
@@ -309,9 +309,9 @@ public class class258 extends CacheableNode {
                   char var7;
                   int[] var21;
                   if(var0 == 4113) {
-                     var22 = class82.intStack[--class13.intStackSize];
+                     var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
                      var21 = class82.intStack;
-                     var5 = ++class13.intStackSize - 1;
+                     var5 = ++GrandExchangeEvents.intStackSize - 1;
                      var7 = (char)var22;
                      if(var7 >= ' ' && var7 <= '~') {
                         var6 = true;
@@ -326,28 +326,28 @@ public class class258 extends CacheableNode {
                      var21[var5] = var6?1:0;
                      return 1;
                   } else if(var0 == 4114) {
-                     var22 = class82.intStack[--class13.intStackSize];
-                     class82.intStack[++class13.intStackSize - 1] = BufferProvider.method5233((char)var22)?1:0;
+                     var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = BufferProvider.method5233((char)var22)?1:0;
                      return 1;
                   } else if(var0 == 4115) {
-                     var22 = class82.intStack[--class13.intStackSize];
-                     class82.intStack[++class13.intStackSize - 1] = class64.method1106((char)var22)?1:0;
+                     var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class64.method1106((char)var22)?1:0;
                      return 1;
                   } else if(var0 != 4116) {
                      if(var0 == 4117) {
                         var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
                         if(var3 != null) {
-                           class82.intStack[++class13.intStackSize - 1] = var3.length();
+                           class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.length();
                         } else {
-                           class82.intStack[++class13.intStackSize - 1] = 0;
+                           class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                         }
 
                         return 1;
                      } else if(var0 == 4118) {
                         var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                        class13.intStackSize -= 2;
-                        var4 = class82.intStack[class13.intStackSize];
-                        var5 = class82.intStack[class13.intStackSize + 1];
+                        GrandExchangeEvents.intStackSize -= 2;
+                        var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+                        var5 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.substring(var4, var5);
                         return 1;
                      } else if(var0 == 4119) {
@@ -370,23 +370,23 @@ public class class258 extends CacheableNode {
                         return 1;
                      } else if(var0 == 4120) {
                         var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                        var4 = class82.intStack[--class13.intStackSize];
-                        class82.intStack[++class13.intStackSize - 1] = var3.indexOf(var4);
+                        var4 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.indexOf(var4);
                         return 1;
                      } else if(var0 == 4121) {
                         class82.scriptStringStackSize -= 2;
                         var3 = class82.scriptStringStack[class82.scriptStringStackSize];
                         var38 = class82.scriptStringStack[class82.scriptStringStackSize + 1];
-                        var5 = class82.intStack[--class13.intStackSize];
-                        class82.intStack[++class13.intStackSize - 1] = var3.indexOf(var38, var5);
+                        var5 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.indexOf(var38, var5);
                         return 1;
                      } else {
                         return 2;
                      }
                   } else {
-                     var22 = class82.intStack[--class13.intStackSize];
+                     var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
                      var21 = class82.intStack;
-                     var5 = ++class13.intStackSize - 1;
+                     var5 = ++GrandExchangeEvents.intStackSize - 1;
                      var7 = (char)var22;
                      var6 = var7 >= '0' && var7 <= '9';
                      var21[var5] = var6?1:0;

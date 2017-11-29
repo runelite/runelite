@@ -20,7 +20,8 @@ public class class86 {
    @ObfuscatedSignature(
       signature = "Lki;"
    )
-   public static BufferProvider field1309;
+   @Export("rasterProvider")
+   public static BufferProvider rasterProvider;
    @ObfuscatedName("cc")
    @ObfuscatedSignature(
       signature = "Lex;"
@@ -97,12 +98,12 @@ public class class86 {
       int var18 = (var2 << 7) + (var10 << 6);
       int var19 = (var3 << 7) + (var11 << 6);
       int var20 = (var3 << 7) + var2 + (var4 << 14) + 1073741824;
-      if(var9.field3518 == 0) {
+      if(var9.int1 == 0) {
          var20 -= Integer.MIN_VALUE;
       }
 
       int var21 = (var5 << 6) + var6;
-      if(var9.field3539 == 1) {
+      if(var9.int3 == 1) {
          var21 += 256;
       }
 
@@ -116,7 +117,7 @@ public class class86 {
 
          var7.groundObjectSpawned(var0, var2, var3, var17, (Renderable)var22, var20, var21);
          if(var9.interactType == 1) {
-            var8.block(var2, var3);
+            var8.method3152(var2, var3);
          }
 
       } else if(var6 != 10 && var6 != 11) {
@@ -129,7 +130,7 @@ public class class86 {
 
             var7.method2807(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
             if(var9.interactType != 0) {
-               var8.addObject(var2, var3, var10, var11, var9.field3517);
+               var8.addObject(var2, var3, var10, var11, var9.boolean1);
             }
 
          } else if(var6 == 0) {
@@ -141,7 +142,7 @@ public class class86 {
 
             var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field733[var5], 0, var20, var21);
             if(var9.interactType != 0) {
-               var8.addWall(var2, var3, var6, var5, var9.field3517);
+               var8.method3157(var2, var3, var6, var5, var9.boolean1);
             }
 
          } else if(var6 == 1) {
@@ -153,7 +154,7 @@ public class class86 {
 
             var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field729[var5], 0, var20, var21);
             if(var9.interactType != 0) {
-               var8.addWall(var2, var3, var6, var5, var9.field3517);
+               var8.method3157(var2, var3, var6, var5, var9.boolean1);
             }
 
          } else {
@@ -172,7 +173,7 @@ public class class86 {
 
                var7.addBoundary(var0, var2, var3, var17, (Renderable)var23, (Renderable)var24, class61.field733[var5], class61.field733[var27], var20, var21);
                if(var9.interactType != 0) {
-                  var8.addWall(var2, var3, var6, var5, var9.field3517);
+                  var8.method3157(var2, var3, var6, var5, var9.boolean1);
                }
 
             } else if(var6 == 3) {
@@ -184,7 +185,7 @@ public class class86 {
 
                var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field729[var5], 0, var20, var21);
                if(var9.interactType != 0) {
-                  var8.addWall(var2, var3, var6, var5, var9.field3517);
+                  var8.method3157(var2, var3, var6, var5, var9.boolean1);
                }
 
             } else if(var6 == 9) {
@@ -196,7 +197,7 @@ public class class86 {
 
                var7.method2807(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
                if(var9.interactType != 0) {
-                  var8.addObject(var2, var3, var10, var11, var9.field3517);
+                  var8.addObject(var2, var3, var10, var11, var9.boolean1);
                }
 
             } else if(var6 == 4) {
@@ -213,7 +214,7 @@ public class class86 {
                   var27 = 16;
                   var28 = var7.method2823(var0, var2, var3);
                   if(var28 != 0) {
-                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).field3516;
+                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).int2;
                   }
 
                   if(var9.animationId == -1 && var9.impostorIds == null) {
@@ -227,7 +228,7 @@ public class class86 {
                   var27 = 8;
                   var28 = var7.method2823(var0, var2, var3);
                   if(var28 != 0) {
-                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).field3516 / 2;
+                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).int2 / 2;
                   }
 
                   if(var9.animationId == -1 && var9.impostorIds == null) {
@@ -250,7 +251,7 @@ public class class86 {
                   var27 = 8;
                   var28 = var7.method2823(var0, var2, var3);
                   if(var28 != 0) {
-                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).field3516 / 2;
+                     var27 = class3.getObjectDefinition(var28 >> 14 & 32767).int2 / 2;
                   }
 
                   int var26 = var5 + 2 & 3;
@@ -279,7 +280,7 @@ public class class86 {
          }
 
          if(var9.interactType != 0) {
-            var8.addObject(var2, var3, var10, var11, var9.field3517);
+            var8.addObject(var2, var3, var10, var11, var9.boolean1);
          }
 
       }

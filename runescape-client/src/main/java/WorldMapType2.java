@@ -11,7 +11,8 @@ public class WorldMapType2 implements WorldMapSectionBase {
    @ObfuscatedSignature(
       signature = "Liv;"
    )
-   static IndexData field500;
+   @Export("indexCache10")
+   static IndexData indexCache10;
    @ObfuscatedName("hx")
    @ObfuscatedSignature(
       signature = "Lhx;"
@@ -174,17 +175,17 @@ public class WorldMapType2 implements WorldMapSectionBase {
             var1.method4811(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
          }
 
-         if(var1.field3605 != -1) {
-            var1.method4753(getItemDefinition(var1.field3605), getItemDefinition(var1.field3557));
+         if(var1.int3 != -1) {
+            var1.method4753(getItemDefinition(var1.int3), getItemDefinition(var1.int2));
          }
 
          if(!MessageNode.isMembersWorld && var1.isMembers) {
             var1.name = "Members object";
-            var1.field3594 = false;
+            var1.isTradable = false;
             var1.groundActions = null;
             var1.inventoryActions = null;
             var1.team = -1;
-            var1.field3601 = 0;
+            var1.int1 = 0;
             if(var1.field3597 != null) {
                boolean var3 = false;
 
@@ -250,7 +251,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
       garbageValue = "1376302631"
    )
    static void method529() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3707(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3703()) {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.first(); var0 != null; var0 = (WidgetNode)Client.componentTable.next()) {
          int var1 = var0.id;
          if(ISAACCipher.loadWidget(var1)) {
             boolean var2 = true;
@@ -266,7 +267,7 @@ public class WorldMapType2 implements WorldMapSectionBase {
 
             if(!var2) {
                var4 = (int)var0.hash;
-               Widget var5 = class87.method1762(var4);
+               Widget var5 = class87.getWidget(var4);
                if(var5 != null) {
                   class40.method556(var5);
                }

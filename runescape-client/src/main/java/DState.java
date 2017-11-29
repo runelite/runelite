@@ -177,7 +177,7 @@ public final class DState {
       garbageValue = "-607893362"
    )
    static final void method3276(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1035; ++var4) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
          if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
             Client.field1099[var4] = true;
          }

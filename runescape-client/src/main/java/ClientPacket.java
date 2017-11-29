@@ -610,17 +610,17 @@ public class ClientPacket implements class165 {
       garbageValue = "-54"
    )
    static final void method3193() {
-      if(!class133.field1902) {
+      if(!class133.Viewport_false0) {
          int var0 = Region.pitchSin;
          int var1 = Region.pitchCos;
          int var2 = Region.yawSin;
          int var3 = Region.yawCos;
          byte var4 = 50;
          short var5 = 3500;
-         int var6 = (class133.field1900 - Graphics3D.centerX) * var4 / Graphics3D.field1928;
-         int var7 = (class133.field1901 - Graphics3D.centerY) * var4 / Graphics3D.field1928;
-         int var8 = (class133.field1900 - Graphics3D.centerX) * var5 / Graphics3D.field1928;
-         int var9 = (class133.field1901 - Graphics3D.centerY) * var5 / Graphics3D.field1928;
+         int var6 = (class133.Viewport_mouseX - Graphics3D.centerX) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var7 = (class133.Viewport_mouseY - Graphics3D.centerY) * var4 / Graphics3D.Rasterizer3D_zoom;
+         int var8 = (class133.Viewport_mouseX - Graphics3D.centerX) * var5 / Graphics3D.Rasterizer3D_zoom;
+         int var9 = (class133.Viewport_mouseY - Graphics3D.centerY) * var5 / Graphics3D.Rasterizer3D_zoom;
          int var10 = Graphics3D.method2736(var7, var4, var1, var0);
          int var11 = Graphics3D.method2737(var7, var4, var1, var0);
          var7 = var10;
@@ -633,14 +633,14 @@ public class ClientPacket implements class165 {
          var10 = Graphics3D.method2734(var8, var12, var3, var2);
          var12 = Graphics3D.method2735(var8, var12, var3, var2);
          class133.field1899 = (var6 + var10) / 2;
-         class243.field3310 = (var9 + var7) / 2;
+         IndexStoreActionHandler.field3310 = (var9 + var7) / 2;
          class133.field1904 = (var12 + var11) / 2;
          class133.field1905 = (var10 - var6) / 2;
          class133.field1906 = (var9 - var7) / 2;
-         class9.field239 = (var12 - var11) / 2;
+         BoundingBox.field239 = (var12 - var11) / 2;
          WidgetNode.field789 = Math.abs(class133.field1905);
          ItemContainer.field759 = Math.abs(class133.field1906);
-         class133.field1907 = Math.abs(class9.field239);
+         class133.field1907 = Math.abs(BoundingBox.field239);
       }
    }
 }

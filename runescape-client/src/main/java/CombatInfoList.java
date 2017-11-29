@@ -17,7 +17,8 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "Lgf;"
    )
-   Node field2562;
+   @Export("current")
+   Node current;
 
    public CombatInfoList() {
       this.node = new Node();
@@ -37,7 +38,8 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "(Lgf;)V"
    )
-   public void method3725(Node var1) {
+   @Export("addFirst")
+   public void addFirst(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -52,7 +54,8 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "(Lgf;)V"
    )
-   public void method3727(Node var1) {
+   @Export("addLast")
+   public void addLast(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -67,7 +70,8 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lgf;"
    )
-   public Node method3739() {
+   @Export("removeLast")
+   public Node removeLast() {
       Node var1 = this.node.next;
       if(var1 == this.node) {
          return null;
@@ -81,15 +85,17 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lgf;"
    )
-   public Node method3723() {
-      return this.method3724((Node)null);
+   @Export("last")
+   public Node last() {
+      return this.previousOrLast((Node)null);
    }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(Lgf;)Lgf;"
    )
-   Node method3724(Node var1) {
+   @Export("previousOrLast")
+   Node previousOrLast(Node var1) {
       Node var2;
       if(var1 == null) {
          var2 = this.node.next;
@@ -98,10 +104,10 @@ public class CombatInfoList implements Iterable {
       }
 
       if(var2 == this.node) {
-         this.field2562 = null;
+         this.current = null;
          return null;
       } else {
-         this.field2562 = var2.next;
+         this.current = var2.next;
          return var2;
       }
    }
@@ -110,19 +116,21 @@ public class CombatInfoList implements Iterable {
    @ObfuscatedSignature(
       signature = "()Lgf;"
    )
-   public Node method3720() {
-      Node var1 = this.field2562;
+   @Export("previous")
+   public Node previous() {
+      Node var1 = this.current;
       if(var1 == this.node) {
-         this.field2562 = null;
+         this.current = null;
          return null;
       } else {
-         this.field2562 = var1.next;
+         this.current = var1.next;
          return var1;
       }
    }
 
    @ObfuscatedName("p")
-   public boolean method3726() {
+   @Export("isEmpty")
+   public boolean isEmpty() {
       return this.node.next == this.node;
    }
 

@@ -125,7 +125,7 @@ public class class25 {
 
             var9.putLong(var33.nextLong());
             var9.method3284(var33.nextLong());
-            class90.method1776(var9);
+            AttackOption.method1776(var9);
             var9.putLong(var33.nextLong());
             var9.encryptRsa(class86.field1298, class86.field1301);
             var11 = AbstractSoundSystem.getLength(var32);
@@ -251,8 +251,8 @@ public class class25 {
       signature = "(Lcf;I)V",
       garbageValue = "-1497933033"
    )
-   public static final void method191(class102 var0) {
-      class3.field20 = var0;
+   public static final void method191(TaskDataProvider var0) {
+      class3.soundTaskDataProvider = var0;
    }
 
    @ObfuscatedName("fz")

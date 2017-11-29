@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ie")
-public enum class235 implements class185 {
+public enum class235 implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lie;"
@@ -85,7 +85,7 @@ public enum class235 implements class185 {
       Sequence.sequences.reset();
       Sequence.skeletons.reset();
       Spotanim.spotanims.reset();
-      Spotanim.field3396.reset();
+      Spotanim.SpotAnimationDefinition_cachedModels.reset();
       Varbit.varbits.reset();
       VarPlayerType.varplayers.reset();
       class169.method3201();
@@ -95,21 +95,21 @@ public enum class235 implements class185 {
       class72.method1150();
       class212.method3984();
       Widget.field2718.reset();
-      Widget.field2850.reset();
-      Widget.field2735.reset();
+      Widget.Widget_cachedModels.reset();
+      Widget.Widget_cachedFonts.reset();
       Widget.field2797.reset();
       ((TextureProvider)Graphics3D.textureLoader).reset();
       Script.field1441.reset();
       class163.indexInterfaces.reset();
-      class10.indexSoundEffects.reset();
-      class45.field561.reset();
-      class47.field576.reset();
+      BoundingBox3D.indexSoundEffects.reset();
+      class45.indexCache3.reset();
+      class47.indexCache4.reset();
       PlayerComposition.indexMaps.reset();
       RSCanvas.indexTrack1.reset();
       MouseInput.indexModels.reset();
       ContextMenuRow.indexSprites.reset();
       class64.indexTextures.reset();
-      WorldMapType2.field500.reset();
+      WorldMapType2.indexCache10.reset();
       class35.indexTrack2.reset();
       class1.indexScripts.reset();
    }

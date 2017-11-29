@@ -57,7 +57,7 @@ public final class GroundObject {
          }
 
          byte[] var3 = new byte[var2];
-         var0.offset += class272.field3721.decompress(var0.payload, var0.offset, var3, 0, var2);
+         var0.offset += class272.huffman.decompress(var0.payload, var0.offset, var3, 0, var2);
          String var4 = class163.getString(var3, 0, var2);
          return var4;
       } catch (Exception var6) {
@@ -74,14 +74,14 @@ public final class GroundObject {
       int var3;
       int var4;
       if(var0 == 100) {
-         class13.intStackSize -= 3;
-         var3 = class82.intStack[class13.intStackSize];
-         var4 = class82.intStack[class13.intStackSize + 1];
-         int var5 = class82.intStack[class13.intStackSize + 2];
+         GrandExchangeEvents.intStackSize -= 3;
+         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         int var5 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
          if(var4 == 0) {
             throw new RuntimeException();
          } else {
-            Widget var6 = class87.method1762(var3);
+            Widget var6 = class87.getWidget(var3);
             if(var6.children == null) {
                var6.children = new Widget[var5 + 1];
             }
@@ -119,27 +119,27 @@ public final class GroundObject {
          Widget var9;
          if(var0 == 101) {
             var9 = var2?class54.field636:class82.field1265;
-            Widget var10 = class87.method1762(var9.id);
+            Widget var10 = class87.getWidget(var9.id);
             var10.children[var9.index] = null;
             class40.method556(var10);
             return 1;
          } else if(var0 == 102) {
-            var9 = class87.method1762(class82.intStack[--class13.intStackSize]);
+            var9 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
             var9.children = null;
             class40.method556(var9);
             return 1;
          } else if(var0 != 200) {
             if(var0 == 201) {
-               var9 = class87.method1762(class82.intStack[--class13.intStackSize]);
+               var9 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
                if(var9 != null) {
-                  class82.intStack[++class13.intStackSize - 1] = 1;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 1;
                   if(var2) {
                      class54.field636 = var9;
                   } else {
                      class82.field1265 = var9;
                   }
                } else {
-                  class82.intStack[++class13.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                }
 
                return 1;
@@ -147,19 +147,19 @@ public final class GroundObject {
                return 2;
             }
          } else {
-            class13.intStackSize -= 2;
-            var3 = class82.intStack[class13.intStackSize];
-            var4 = class82.intStack[class13.intStackSize + 1];
-            Widget var11 = MilliTimer.method3058(var3, var4);
+            GrandExchangeEvents.intStackSize -= 2;
+            var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+            var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+            Widget var11 = MilliTimer.getWidgetChild(var3, var4);
             if(var11 != null && var4 != -1) {
-               class82.intStack[++class13.intStackSize - 1] = 1;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 1;
                if(var2) {
                   class54.field636 = var11;
                } else {
                   class82.field1265 = var11;
                }
             } else {
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
             }
 
             return 1;
@@ -191,94 +191,94 @@ public final class GroundObject {
       int var34;
       if(class91.worldSelectShown) {
          if(class46.field570 == null) {
-            class46.field570 = class46.method709(ContextMenuRow.indexSprites, "sl_back", "");
+            class46.field570 = class46.getSprites(ContextMenuRow.indexSprites, "sl_back", "");
          }
 
-         if(class31.field423 == null) {
-            class31.field423 = class210.method3855(ContextMenuRow.indexSprites, "sl_flags", "");
+         if(class31.slFlagSprites == null) {
+            class31.slFlagSprites = class210.getIndexedSprites(ContextMenuRow.indexSprites, "sl_flags", "");
          }
 
-         if(class10.field248 == null) {
-            class10.field248 = class210.method3855(ContextMenuRow.indexSprites, "sl_arrows", "");
+         if(BoundingBox3D.slArrowSprites == null) {
+            BoundingBox3D.slArrowSprites = class210.getIndexedSprites(ContextMenuRow.indexSprites, "sl_arrows", "");
          }
 
-         if(class37.field487 == null) {
-            class37.field487 = class210.method3855(ContextMenuRow.indexSprites, "sl_stars", "");
+         if(class37.slStarSprites == null) {
+            class37.slStarSprites = class210.getIndexedSprites(ContextMenuRow.indexSprites, "sl_stars", "");
          }
 
-         Rasterizer2D.method5173(class91.field1354, 23, 765, 480, 0);
+         Rasterizer2D.Rasterizer2D_fillRectangle(class91.field1354, 23, 765, 480, 0);
          Rasterizer2D.method5149(class91.field1354, 0, 125, 23, 12425273, 9135624);
          Rasterizer2D.method5149(class91.field1354 + 125, 0, 640, 23, 5197647, 2697513);
          var0.method4962("Select a world", class91.field1354 + 62, 15, 0, -1);
-         if(class37.field487 != null) {
-            class37.field487[1].method5245(class91.field1354 + 140, 1);
+         if(class37.slStarSprites != null) {
+            class37.slStarSprites[1].method5245(class91.field1354 + 140, 1);
             var1.method4931("Members only world", class91.field1354 + 152, 10, 16777215, -1);
-            class37.field487[0].method5245(class91.field1354 + 140, 12);
+            class37.slStarSprites[0].method5245(class91.field1354 + 140, 12);
             var1.method4931("Free world", class91.field1354 + 152, 21, 16777215, -1);
          }
 
          int var37;
          int var44;
-         if(class10.field248 != null) {
+         if(BoundingBox3D.slArrowSprites != null) {
             var34 = class91.field1354 + 280;
             if(World.field1220[0] == 0 && World.field1219[0] == 0) {
-               class10.field248[2].method5245(var34, 4);
+               BoundingBox3D.slArrowSprites[2].method5245(var34, 4);
             } else {
-               class10.field248[0].method5245(var34, 4);
+               BoundingBox3D.slArrowSprites[0].method5245(var34, 4);
             }
 
             if(World.field1220[0] == 0 && World.field1219[0] == 1) {
-               class10.field248[3].method5245(var34 + 15, 4);
+               BoundingBox3D.slArrowSprites[3].method5245(var34 + 15, 4);
             } else {
-               class10.field248[1].method5245(var34 + 15, 4);
+               BoundingBox3D.slArrowSprites[1].method5245(var34 + 15, 4);
             }
 
             var0.method4931("World", var34 + 32, 17, 16777215, -1);
             var5 = class91.field1354 + 390;
             if(World.field1220[0] == 1 && World.field1219[0] == 0) {
-               class10.field248[2].method5245(var5, 4);
+               BoundingBox3D.slArrowSprites[2].method5245(var5, 4);
             } else {
-               class10.field248[0].method5245(var5, 4);
+               BoundingBox3D.slArrowSprites[0].method5245(var5, 4);
             }
 
             if(World.field1220[0] == 1 && World.field1219[0] == 1) {
-               class10.field248[3].method5245(var5 + 15, 4);
+               BoundingBox3D.slArrowSprites[3].method5245(var5 + 15, 4);
             } else {
-               class10.field248[1].method5245(var5 + 15, 4);
+               BoundingBox3D.slArrowSprites[1].method5245(var5 + 15, 4);
             }
 
             var0.method4931("Players", var5 + 32, 17, 16777215, -1);
             var37 = class91.field1354 + 500;
             if(World.field1220[0] == 2 && World.field1219[0] == 0) {
-               class10.field248[2].method5245(var37, 4);
+               BoundingBox3D.slArrowSprites[2].method5245(var37, 4);
             } else {
-               class10.field248[0].method5245(var37, 4);
+               BoundingBox3D.slArrowSprites[0].method5245(var37, 4);
             }
 
             if(World.field1220[0] == 2 && World.field1219[0] == 1) {
-               class10.field248[3].method5245(var37 + 15, 4);
+               BoundingBox3D.slArrowSprites[3].method5245(var37 + 15, 4);
             } else {
-               class10.field248[1].method5245(var37 + 15, 4);
+               BoundingBox3D.slArrowSprites[1].method5245(var37 + 15, 4);
             }
 
             var0.method4931("Location", var37 + 32, 17, 16777215, -1);
             var44 = class91.field1354 + 610;
             if(World.field1220[0] == 3 && World.field1219[0] == 0) {
-               class10.field248[2].method5245(var44, 4);
+               BoundingBox3D.slArrowSprites[2].method5245(var44, 4);
             } else {
-               class10.field248[0].method5245(var44, 4);
+               BoundingBox3D.slArrowSprites[0].method5245(var44, 4);
             }
 
             if(World.field1220[0] == 3 && World.field1219[0] == 1) {
-               class10.field248[3].method5245(var44 + 15, 4);
+               BoundingBox3D.slArrowSprites[3].method5245(var44 + 15, 4);
             } else {
-               class10.field248[1].method5245(var44 + 15, 4);
+               BoundingBox3D.slArrowSprites[1].method5245(var44 + 15, 4);
             }
 
             var0.method4931("Type", var44 + 32, 17, 16777215, -1);
          }
 
-         Rasterizer2D.method5173(class91.field1354 + 708, 4, 50, 16, 0);
+         Rasterizer2D.Rasterizer2D_fillRectangle(class91.field1354 + 708, 4, 50, 16, 0);
          var1.method4962("Cancel", class91.field1354 + 708 + 25, 16, 16777215, -1);
          class91.field1374 = -1;
          if(class46.field570 != null) {
@@ -368,8 +368,8 @@ public final class GroundObject {
                   class46.field570[var42].method5266(var39, var12);
                }
 
-               if(class31.field423 != null) {
-                  class31.field423[(var41.method1624()?8:0) + var41.location].method5245(var39 + 29, var12);
+               if(class31.slFlagSprites != null) {
+                  class31.slFlagSprites[(var41.method1624()?8:0) + var41.location].method5245(var39 + 29, var12);
                }
 
                var0.method4962(Integer.toString(var41.id), var39 + 15, var38 / 2 + var12 + 5, var43, -1);
@@ -386,13 +386,13 @@ public final class GroundObject {
             if(var15) {
                var16 = var1.method4925(World.worldList[class91.field1374].activity) + 6;
                int var26 = var1.verticalSpace + 8;
-               Rasterizer2D.method5173(MouseInput.field703 - var16 / 2, MouseInput.field715 * 10625923 + 20 + 5, var16, var26, 16777120);
+               Rasterizer2D.Rasterizer2D_fillRectangle(MouseInput.field703 - var16 / 2, MouseInput.field715 * 10625923 + 20 + 5, var16, var26, 16777120);
                Rasterizer2D.drawRectangle(MouseInput.field703 - var16 / 2, MouseInput.field715 * 10625923 + 20 + 5, var16, var26, 0);
                var1.method4962(World.worldList[class91.field1374].activity, MouseInput.field703, MouseInput.field715 * 10625923 + var1.verticalSpace + 20 + 5 + 4, 0, -1);
             }
          }
 
-         class86.field1309.vmethod5222(0, 0);
+         class86.rasterProvider.drawFull(0, 0);
       } else {
          if(var3) {
             class182.field2511.method5266(class91.field1354, 0);
@@ -406,8 +406,8 @@ public final class GroundObject {
             var5 = 253 - var4;
             Rasterizer2D.drawRectangle(class91.loginWindowX + 180 - 152, var5, 304, 34, 9179409);
             Rasterizer2D.drawRectangle(class91.loginWindowX + 180 - 151, var5 + 1, 302, 32, 0);
-            Rasterizer2D.method5173(class91.loginWindowX + 180 - 150, var5 + 2, class91.loadingBarPercentage * 3, 30, 9179409);
-            Rasterizer2D.method5173(class91.loadingBarPercentage * 3 + (class91.loginWindowX + 180 - 150), var5 + 2, 300 - class91.loadingBarPercentage * 3, 30, 0);
+            Rasterizer2D.Rasterizer2D_fillRectangle(class91.loginWindowX + 180 - 150, var5 + 2, class91.loadingBarPercentage * 3, 30, 9179409);
+            Rasterizer2D.Rasterizer2D_fillRectangle(class91.loadingBarPercentage * 3 + (class91.loginWindowX + 180 - 150), var5 + 2, 300 - class91.loadingBarPercentage * 3, 30, 0);
             var0.method4962(class91.loadingText, class91.loginWindowX + 180, 276 - var4, 16777215, -1);
          }
 
@@ -431,7 +431,7 @@ public final class GroundObject {
             if(class91.loginIndex != 4) {
                var0.method4931("Login: ", class91.loginWindowX + 180 - 110, var34, 16777215, 0);
                var35 = 200;
-               if(RSCanvas.preferences.field1237) {
+               if(RSCanvas.preferences.hideUsername) {
                   var9 = class91.username;
                   var8 = class277.method5083('*', var9.length());
                   var7 = var8;
@@ -468,7 +468,7 @@ public final class GroundObject {
                class91.field1340.method5245(var5 - 73, var6 - 20);
                var0.method4935("Existing User", var5 - 73, var6 - 20, 144, 40, 16777215, 0, 1, 1, 0);
             } else if(class91.loginIndex == 1) {
-               var0.method4962(class91.field1357, class91.loginWindowX + 180, 201, 16776960, 0);
+               var0.method4962(class91.Login_response0, class91.loginWindowX + 180, 201, 16776960, 0);
                var33 = 236;
                var0.method4962(class91.loginMessage1, class91.loginWindowX + 180, var33, 16777215, 0);
                var34 = var33 + 15;
@@ -494,7 +494,7 @@ public final class GroundObject {
                var34 += 7;
                var0.method4931("Login: ", class91.field1348 - 110, var34, 16777215, 0);
                var35 = 200;
-               if(RSCanvas.preferences.field1237) {
+               if(RSCanvas.preferences.hideUsername) {
                   var9 = class91.username;
                   var8 = class277.method5083('*', var9.length());
                   var7 = var8;
@@ -515,16 +515,16 @@ public final class GroundObject {
                var34 += 15;
                var33 = 277;
                var12 = class91.field1348 + -117;
-               boolean var14 = class91.field1366;
+               boolean var14 = class91.Login_isUsernameRemembered;
                var15 = class91.field1364;
-               IndexedSprite var29 = var14?(var15?class33.field446:class148.field2098):(var15?class13.field269:class269.field3694);
+               IndexedSprite var29 = var14?(var15?class33.field446:UrlRequester.field2098):(var15?GrandExchangeEvents.field269:Fonts.field3694);
                var29.method5245(var12, var33);
                var12 = var12 + var29.originalWidth + 5;
                var1.method4931("Remember username", var12, var33 + 13, 16776960, 0);
                var12 = class91.field1348 + 24;
-               var18 = RSCanvas.preferences.field1237;
+               var18 = RSCanvas.preferences.hideUsername;
                boolean var31 = class91.field1360;
-               IndexedSprite var17 = var18?(var31?class33.field446:class148.field2098):(var31?class13.field269:class269.field3694);
+               IndexedSprite var17 = var18?(var31?class33.field446:UrlRequester.field2098):(var31?GrandExchangeEvents.field269:Fonts.field3694);
                var17.method5245(var12, var33);
                var12 = var12 + var17.originalWidth + 5;
                var1.method4931("Hide username", var12, var33 + 13, 16776960, 0);
@@ -575,9 +575,9 @@ public final class GroundObject {
                var10 = var34 - var0.verticalSpace;
                IndexedSprite var46;
                if(class91.field1369) {
-                  var46 = class148.field2098;
+                  var46 = UrlRequester.field2098;
                } else {
-                  var46 = class269.field3694;
+                  var46 = Fonts.field3694;
                }
 
                var46.method5245(var25, var10);
@@ -602,7 +602,7 @@ public final class GroundObject {
                var34 += 14;
                var0.method4931("Username/email: ", class91.loginWindowX + 180 - 145, var34, 16777215, 0);
                var35 = 174;
-               if(RSCanvas.preferences.field1237) {
+               if(RSCanvas.preferences.hideUsername) {
                   var9 = class91.username;
                   var8 = class277.method5083('*', var9.length());
                   var7 = var8;
@@ -643,15 +643,15 @@ public final class GroundObject {
             class91.field1368 = 0;
          }
 
-         class10.method62();
+         BoundingBox3D.method62();
          class91.titlemuteSprite[RSCanvas.preferences.muted?1:0].method5245(class91.field1354 + 765 - 40, 463);
          if(Client.gameState > 5 && Client.languageId == 0) {
-            if(class2.field13 != null) {
+            if(IntegerToken.field13 != null) {
                var34 = class91.field1354 + 5;
                var35 = 463;
                byte var36 = 100;
                byte var23 = 35;
-               class2.field13.method5245(var34, var35);
+               IntegerToken.field13.method5245(var34, var35);
                var0.method4962("World" + " " + Client.world, var36 / 2 + var34, var23 / 2 + var35 - 2, 16777215, 0);
                if(ScriptState.listFetcher != null) {
                   var1.method4962("Loading...", var36 / 2 + var34, var23 / 2 + var35 + 12, 16777215, 0);
@@ -659,7 +659,7 @@ public final class GroundObject {
                   var1.method4962("Click to switch", var36 / 2 + var34, var23 / 2 + var35 + 12, 16777215, 0);
                }
             } else {
-               class2.field13 = ClanMember.getSprite(ContextMenuRow.indexSprites, "sl_button", "");
+               IntegerToken.field13 = ClanMember.getSprite(ContextMenuRow.indexSprites, "sl_button", "");
             }
          }
 
@@ -686,7 +686,8 @@ public final class GroundObject {
       signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
       garbageValue = "-697242736"
    )
-   static final String[] method2602(String[] var0) {
+   @Export("prependIndices")
+   static final String[] prependIndices(String[] var0) {
       String[] var1 = new String[5];
 
       for(int var2 = 0; var2 < 5; ++var2) {

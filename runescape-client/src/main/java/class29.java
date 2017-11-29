@@ -52,55 +52,55 @@ public final class class29 {
    )
    static int method242(IndexDataBase var0, IndexDataBase var1) {
       int var2 = 0;
-      if(var0.method4285("title.jpg", "")) {
+      if(var0.tryLoadRecordByNames("title.jpg", "")) {
          ++var2;
       }
 
-      if(var1.method4285("logo", "")) {
+      if(var1.tryLoadRecordByNames("logo", "")) {
          ++var2;
       }
 
-      if(var1.method4285("logo_deadman_mode", "")) {
+      if(var1.tryLoadRecordByNames("logo_deadman_mode", "")) {
          ++var2;
       }
 
-      if(var1.method4285("titlebox", "")) {
+      if(var1.tryLoadRecordByNames("titlebox", "")) {
          ++var2;
       }
 
-      if(var1.method4285("titlebutton", "")) {
+      if(var1.tryLoadRecordByNames("titlebutton", "")) {
          ++var2;
       }
 
-      if(var1.method4285("runes", "")) {
+      if(var1.tryLoadRecordByNames("runes", "")) {
          ++var2;
       }
 
-      if(var1.method4285("title_mute", "")) {
+      if(var1.tryLoadRecordByNames("title_mute", "")) {
          ++var2;
       }
 
-      if(var1.method4285("options_radio_buttons,0", "")) {
+      if(var1.tryLoadRecordByNames("options_radio_buttons,0", "")) {
          ++var2;
       }
 
-      if(var1.method4285("options_radio_buttons,2", "")) {
+      if(var1.tryLoadRecordByNames("options_radio_buttons,2", "")) {
          ++var2;
       }
 
-      if(var1.method4285("options_radio_buttons,4", "")) {
+      if(var1.tryLoadRecordByNames("options_radio_buttons,4", "")) {
          ++var2;
       }
 
-      if(var1.method4285("options_radio_buttons,6", "")) {
+      if(var1.tryLoadRecordByNames("options_radio_buttons,6", "")) {
          ++var2;
       }
 
-      var1.method4285("sl_back", "");
-      var1.method4285("sl_flags", "");
-      var1.method4285("sl_arrows", "");
-      var1.method4285("sl_stars", "");
-      var1.method4285("sl_button", "");
+      var1.tryLoadRecordByNames("sl_back", "");
+      var1.tryLoadRecordByNames("sl_flags", "");
+      var1.tryLoadRecordByNames("sl_arrows", "");
+      var1.tryLoadRecordByNames("sl_stars", "");
+      var1.tryLoadRecordByNames("sl_button", "");
       return var2;
    }
 
@@ -111,9 +111,9 @@ public final class class29 {
    )
    public static int method244(Buffer var0, String var1) {
       int var2 = var0.offset;
-      byte[] var3 = class239.method4260(var1);
+      byte[] var3 = JagexGame.method4260(var1);
       var0.putShortSmart(var3.length);
-      var0.offset += class272.field3721.compress(var3, 0, var3.length, var0.payload, var0.offset);
+      var0.offset += class272.huffman.compress(var3, 0, var3.length, var0.payload, var0.offset);
       return var0.offset - var2;
    }
 
@@ -173,15 +173,15 @@ public final class class29 {
       if(var0 == null) {
          return false;
       } else {
-         String var1 = GraphicsObject.method1726(var0, class236.field3239);
+         String var1 = GraphicsObject.cleanUsername(var0, class236.jagexLoginType);
 
          for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
             Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(GraphicsObject.method1726(var3.name, class236.field3239))) {
+            if(var1.equalsIgnoreCase(GraphicsObject.cleanUsername(var3.name, class236.jagexLoginType))) {
                return true;
             }
 
-            if(var1.equalsIgnoreCase(GraphicsObject.method1726(var3.previousName, class236.field3239))) {
+            if(var1.equalsIgnoreCase(GraphicsObject.cleanUsername(var3.previousName, class236.jagexLoginType))) {
                return true;
             }
          }

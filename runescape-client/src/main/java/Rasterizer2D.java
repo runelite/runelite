@@ -142,7 +142,7 @@ public class Rasterizer2D extends CacheableNode {
    @ObfuscatedName("dc")
    static void method5142(int var0, int var1, int var2, int var3) {
       if(var2 == 0) {
-         method5158(var0, var1, var3);
+         Rasterizer2D_setPixel(var0, var1, var3);
       } else {
          if(var2 < 0) {
             var2 = -var2;
@@ -384,7 +384,8 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dm")
-   public static void method5173(int var0, int var1, int var2, int var3, int var4) {
+   @Export("Rasterizer2D_fillRectangle")
+   public static void Rasterizer2D_fillRectangle(int var0, int var1, int var2, int var3, int var4) {
       if(var0 < draw_region_x) {
          var2 -= draw_region_x - var0;
          var0 = draw_region_x;
@@ -837,12 +838,13 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dp")
-   public static void method5152(int var0, int var1, int var2, int var3, int var4, int var5) {
-      method5153(var0, var1, var2, var4, var5);
-      method5153(var0, var3 + var1 - 1, var2, var4, var5);
+   @Export("Rasterizer2D_drawRectangleAlpha")
+   public static void Rasterizer2D_drawRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
+      Rasterizer2D_drawHorizontalLineAlpha(var0, var1, var2, var4, var5);
+      Rasterizer2D_drawHorizontalLineAlpha(var0, var3 + var1 - 1, var2, var4, var5);
       if(var3 >= 3) {
-         method5156(var0, var1 + 1, var3 - 2, var4, var5);
-         method5156(var0 + var2 - 1, var1 + 1, var3 - 2, var4, var5);
+         Rasterizer2D_drawVerticalLineAlpha(var0, var1 + 1, var3 - 2, var4, var5);
+         Rasterizer2D_drawVerticalLineAlpha(var0 + var2 - 1, var1 + 1, var3 - 2, var4, var5);
       }
 
    }
@@ -869,7 +871,8 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dt")
-   static void method5153(int var0, int var1, int var2, int var3, int var4) {
+   @Export("Rasterizer2D_drawHorizontalLineAlpha")
+   static void Rasterizer2D_drawHorizontalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
       if(var1 >= drawingAreaTop && var1 < drawingAreaRight) {
          if(var0 < draw_region_x) {
             var2 -= draw_region_x - var0;
@@ -919,7 +922,8 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dy")
-   static void method5156(int var0, int var1, int var2, int var3, int var4) {
+   @Export("Rasterizer2D_drawVerticalLineAlpha")
+   static void Rasterizer2D_drawVerticalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
       if(var0 >= draw_region_x && var0 < drawingAreaBottom) {
          if(var1 < drawingAreaTop) {
             var2 -= drawingAreaTop - var1;
@@ -1031,7 +1035,8 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dk")
-   static void method5158(int var0, int var1, int var2) {
+   @Export("Rasterizer2D_setPixel")
+   static void Rasterizer2D_setPixel(int var0, int var1, int var2) {
       if(var0 >= draw_region_x && var1 >= drawingAreaTop && var0 < drawingAreaBottom && var1 < drawingAreaRight) {
          graphicsPixels[var0 + graphicsPixelsWidth * var1] = var2;
       }

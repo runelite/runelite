@@ -8,7 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ObjectComposition")
 public class ObjectComposition extends CacheableNode {
    @ObfuscatedName("d")
-   public static boolean field3523;
+   @Export("ObjectDefinition_isLowDetail")
+   public static boolean ObjectDefinition_isLowDetail;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgx;"
@@ -82,12 +83,14 @@ public class ObjectComposition extends CacheableNode {
    @Export("interactType")
    public int interactType;
    @ObfuscatedName("q")
-   public boolean field3517;
+   @Export("boolean1")
+   public boolean boolean1;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 487037641
    )
-   public int field3518;
+   @Export("int1")
+   public int int1;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 1031362525
@@ -110,7 +113,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -194316979
    )
-   public int field3516;
+   @Export("int2")
+   public int int2;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
       intValue = 1275812285
@@ -181,7 +185,8 @@ public class ObjectComposition extends CacheableNode {
    @Export("offsetY")
    int offsetY;
    @ObfuscatedName("ap")
-   public boolean field3530;
+   @Export("boolean2")
+   public boolean boolean2;
    @ObfuscatedName("ad")
    @Export("isSolid")
    boolean isSolid;
@@ -189,7 +194,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1008323081
    )
-   public int field3539;
+   @Export("int3")
+   public int int3;
    @ObfuscatedName("ai")
    @Export("impostorIds")
    public int[] impostorIds;
@@ -215,17 +221,20 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 224330621
    )
-   public int field3541;
+   @Export("int4")
+   public int int4;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = -1383293339
    )
-   public int field3500;
+   @Export("int5")
+   public int int5;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = 1346356525
    )
-   public int field3546;
+   @Export("int6")
+   public int int6;
    @ObfuscatedName("ab")
    public int[] field3547;
    @ObfuscatedName("az")
@@ -235,7 +244,7 @@ public class ObjectComposition extends CacheableNode {
    IterableHashTable field3537;
 
    static {
-      field3523 = false;
+      ObjectDefinition_isLowDetail = false;
       objects = new NodeCache(4096);
       field3502 = new NodeCache(500);
       cachedModels = new NodeCache(30);
@@ -248,13 +257,13 @@ public class ObjectComposition extends CacheableNode {
       this.sizeX = 1;
       this.sizeY = 1;
       this.interactType = 2;
-      this.field3517 = true;
-      this.field3518 = -1;
+      this.boolean1 = true;
+      this.int1 = -1;
       this.clipType = -1;
       this.nonFlatShading = false;
       this.modelClipped = false;
       this.animationId = -1;
-      this.field3516 = 16;
+      this.int2 = 16;
       this.ambient = 0;
       this.contrast = 0;
       this.actions = new String[5];
@@ -268,15 +277,15 @@ public class ObjectComposition extends CacheableNode {
       this.offsetX = 0;
       this.offsetHeight = 0;
       this.offsetY = 0;
-      this.field3530 = false;
+      this.boolean2 = false;
       this.isSolid = false;
-      this.field3539 = -1;
+      this.int3 = -1;
       this.varpId = -1;
       this.configId = -1;
       this.ambientSoundId = -1;
-      this.field3541 = 0;
-      this.field3500 = 0;
-      this.field3546 = 0;
+      this.int4 = 0;
+      this.int5 = 0;
+      this.int6 = 0;
    }
 
    @ObfuscatedName("x")
@@ -286,21 +295,21 @@ public class ObjectComposition extends CacheableNode {
    )
    @Export("post")
    void post() {
-      if(this.field3518 == -1) {
-         this.field3518 = 0;
+      if(this.int1 == -1) {
+         this.int1 = 0;
          if(this.objectModels != null && (this.objectTypes == null || this.objectTypes[0] == 10)) {
-            this.field3518 = 1;
+            this.int1 = 1;
          }
 
          for(int var1 = 0; var1 < 5; ++var1) {
             if(this.actions[var1] != null) {
-               this.field3518 = 1;
+               this.int1 = 1;
             }
          }
       }
 
-      if(this.field3539 == -1) {
-         this.field3539 = this.interactType != 0?1:0;
+      if(this.int3 == -1) {
+         this.int3 = this.interactType != 0?1:0;
       }
 
    }
@@ -334,7 +343,7 @@ public class ObjectComposition extends CacheableNode {
       if(var2 == 1) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !field3523) {
+            if(this.objectModels != null && !ObjectDefinition_isLowDetail) {
                var1.offset += 3 * var3;
             } else {
                this.objectTypes = new int[var3];
@@ -351,7 +360,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 5) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !field3523) {
+            if(this.objectModels != null && !ObjectDefinition_isLowDetail) {
                var1.offset += 2 * var3;
             } else {
                this.objectTypes = null;
@@ -368,11 +377,11 @@ public class ObjectComposition extends CacheableNode {
          this.sizeY = var1.readUnsignedByte();
       } else if(var2 == 17) {
          this.interactType = 0;
-         this.field3517 = false;
+         this.boolean1 = false;
       } else if(var2 == 18) {
-         this.field3517 = false;
+         this.boolean1 = false;
       } else if(var2 == 19) {
-         this.field3518 = var1.readUnsignedByte();
+         this.int1 = var1.readUnsignedByte();
       } else if(var2 == 21) {
          this.clipType = 0;
       } else if(var2 == 22) {
@@ -387,7 +396,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 27) {
          this.interactType = 1;
       } else if(var2 == 28) {
-         this.field3516 = var1.readUnsignedByte();
+         this.int2 = var1.readUnsignedByte();
       } else if(var2 == 29) {
          this.ambient = var1.readByte();
       } else if(var2 == 39) {
@@ -436,19 +445,19 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 72) {
          this.offsetY = var1.readShort();
       } else if(var2 == 73) {
-         this.field3530 = true;
+         this.boolean2 = true;
       } else if(var2 == 74) {
          this.isSolid = true;
       } else if(var2 == 75) {
-         this.field3539 = var1.readUnsignedByte();
+         this.int3 = var1.readUnsignedByte();
       } else if(var2 != 77 && var2 != 92) {
          if(var2 == 78) {
             this.ambientSoundId = var1.readUnsignedShort();
-            this.field3541 = var1.readUnsignedByte();
+            this.int4 = var1.readUnsignedByte();
          } else if(var2 == 79) {
-            this.field3500 = var1.readUnsignedShort();
-            this.field3546 = var1.readUnsignedShort();
-            this.field3541 = var1.readUnsignedByte();
+            this.int5 = var1.readUnsignedShort();
+            this.int6 = var1.readUnsignedShort();
+            this.int4 = var1.readUnsignedByte();
             var3 = var1.readUnsignedByte();
             this.field3547 = new int[var3];
 
@@ -460,7 +469,7 @@ public class ObjectComposition extends CacheableNode {
          } else if(var2 == 82) {
             this.mapIconId = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3537 = CacheFile.method2453(var1, this.field3537);
+            this.field3537 = CacheFile.readStringIntParameters(var1, this.field3537);
          }
       } else {
          this.varpId = var1.readUnsignedShort();
@@ -505,7 +514,7 @@ public class ObjectComposition extends CacheableNode {
       if(this.objectTypes != null) {
          for(int var4 = 0; var4 < this.objectTypes.length; ++var4) {
             if(this.objectTypes[var4] == var1) {
-               return class54.field638.method4322(this.objectModels[var4] & 65535, 0);
+               return class54.field638.tryLoadRecord(this.objectModels[var4] & 65535, 0);
             }
          }
 
@@ -518,7 +527,7 @@ public class ObjectComposition extends CacheableNode {
          boolean var2 = true;
 
          for(int var3 = 0; var3 < this.objectModels.length; ++var3) {
-            var2 &= class54.field638.method4322(this.objectModels[var3] & 65535, 0);
+            var2 &= class54.field638.tryLoadRecord(this.objectModels[var3] & 65535, 0);
          }
 
          return var2;
@@ -537,7 +546,7 @@ public class ObjectComposition extends CacheableNode {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.objectModels.length; ++var2) {
-            var1 &= class54.field638.method4322(this.objectModels[var2] & 65535, 0);
+            var1 &= class54.field638.tryLoadRecord(this.objectModels[var2] & 65535, 0);
          }
 
          return var1;
@@ -814,7 +823,7 @@ public class ObjectComposition extends CacheableNode {
    public final ObjectComposition getImpostor() {
       int var1 = -1;
       if(this.varpId != -1) {
-         var1 = Friend.method1109(this.varpId);
+         var1 = Friend.getVarbit(this.varpId);
       } else if(this.configId != -1) {
          var1 = class218.widgetSettings[this.configId];
       }

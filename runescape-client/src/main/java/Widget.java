@@ -11,7 +11,8 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   public static IndexDataBase field2858;
+   @Export("ItemDefinition_modelIndexCache")
+   public static IndexDataBase ItemDefinition_modelIndexCache;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lid;"
@@ -26,12 +27,14 @@ public class Widget extends Node {
    @ObfuscatedSignature(
       signature = "Lgx;"
    )
-   public static NodeCache field2850;
+   @Export("Widget_cachedModels")
+   public static NodeCache Widget_cachedModels;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Lgx;"
    )
-   public static NodeCache field2735;
+   @Export("Widget_cachedFonts")
+   public static NodeCache Widget_cachedFonts;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lgx;"
@@ -361,7 +364,8 @@ public class Widget extends Node {
    @Export("text")
    public String text;
    @ObfuscatedName("cd")
-   public String field2785;
+   @Export("string1")
+   public String string1;
    @ObfuscatedName("cw")
    @ObfuscatedGetter(
       intValue = 135399917
@@ -524,7 +528,8 @@ public class Widget extends Node {
    )
    public int field2839;
    @ObfuscatedName("ea")
-   public String field2840;
+   @Export("spellName")
+   public String spellName;
    @ObfuscatedName("er")
    @Export("tooltip")
    public String tooltip;
@@ -606,8 +611,8 @@ public class Widget extends Node {
 
    static {
       field2718 = new NodeCache(200);
-      field2850 = new NodeCache(50);
-      field2735 = new NodeCache(20);
+      Widget_cachedModels = new NodeCache(50);
+      Widget_cachedFonts = new NodeCache(20);
       field2797 = new NodeCache(8);
       field2721 = false;
    }
@@ -672,7 +677,7 @@ public class Widget extends Node {
       this.field2782 = 2;
       this.fontId = -1;
       this.text = "";
-      this.field2785 = "";
+      this.string1 = "";
       this.field2824 = 0;
       this.field2787 = 0;
       this.field2809 = 0;
@@ -688,7 +693,7 @@ public class Widget extends Node {
       this.selectedAction = "";
       this.field2770 = false;
       this.field2839 = -1;
-      this.field2840 = "";
+      this.spellName = "";
       this.tooltip = "Ok";
       this.itemId = -1;
       this.itemQuantity = 0;
@@ -846,7 +851,7 @@ public class Widget extends Node {
 
       if(this.type == 4) {
          this.text = var1.readString();
-         this.field2785 = var1.readString();
+         this.string1 = var1.readString();
       }
 
       if(this.type == 1 || this.type == 3 || this.type == 4) {
@@ -927,7 +932,7 @@ public class Widget extends Node {
 
       if(this.field2727 == 2 || this.type == 2) {
          this.selectedAction = var1.readString();
-         this.field2840 = var1.readString();
+         this.spellName = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
          this.config |= var4 << 11;
       }
@@ -1228,12 +1233,13 @@ public class Widget extends Node {
       signature = "(B)Ljp;",
       garbageValue = "77"
    )
-   public Font method4166() {
+   @Export("getFont")
+   public Font getFont() {
       field2721 = false;
       if(this.fontId == -1) {
          return null;
       } else {
-         Font var1 = (Font)field2735.get((long)this.fontId);
+         Font var1 = (Font)Widget_cachedFonts.get((long)this.fontId);
          if(var1 != null) {
             return var1;
          } else {
@@ -1249,13 +1255,13 @@ public class Widget extends Node {
                if(var7 == null) {
                   var6 = null;
                } else {
-                  Font var8 = new Font(var7, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, class15.spritePixels);
+                  Font var8 = new Font(var7, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, TotalQuantityComparator.spritePixels);
                   class295.field3848 = null;
                   class295.offsetsY = null;
                   class295.field3845 = null;
                   class285.field3788 = null;
                   class115.field1599 = null;
-                  class15.spritePixels = null;
+                  TotalQuantityComparator.spritePixels = null;
                   var6 = var8;
                }
 
@@ -1263,7 +1269,7 @@ public class Widget extends Node {
             }
 
             if(var2 != null) {
-               field2735.put(var2, (long)this.fontId);
+               Widget_cachedFonts.put(var2, (long)this.fontId);
             } else {
                field2721 = true;
             }
@@ -1309,7 +1315,8 @@ public class Widget extends Node {
       signature = "(Ljj;IZLhy;B)Leh;",
       garbageValue = "14"
    )
-   public Model method4168(Sequence var1, int var2, boolean var3, PlayerComposition var4) {
+   @Export("getModel")
+   public Model getModel(Sequence var1, int var2, boolean var3, PlayerComposition var4) {
       field2721 = false;
       int var5;
       int var6;
@@ -1326,7 +1333,7 @@ public class Widget extends Node {
       } else if(var5 == 1 && var6 == -1) {
          return null;
       } else {
-         Model var7 = (Model)field2850.get((long)(var6 + (var5 << 16)));
+         Model var7 = (Model)Widget_cachedModels.get((long)(var6 + (var5 << 16)));
          if(var7 == null) {
             ModelData var8;
             if(var5 == 1) {
@@ -1374,7 +1381,7 @@ public class Widget extends Node {
                var7 = var8.light(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
             }
 
-            field2850.put(var7, (long)(var6 + (var5 << 16)));
+            Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));
          }
 
          if(var1 != null) {
@@ -1469,24 +1476,25 @@ public class Widget extends Node {
       signature = "(Liv;IIIBZB)V",
       garbageValue = "80"
    )
-   static void method4198(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+   @Export("requestNetFile")
+   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
       long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class245.field3323.get(var6);
+      FileRequest var8 = (FileRequest)class245.NetCache_pendingPriorityWrites.get(var6);
       if(var8 == null) {
-         var8 = (FileRequest)class245.field3338.get(var6);
+         var8 = (FileRequest)class245.NetCache_pendingPriorityResponses.get(var6);
          if(var8 == null) {
-            var8 = (FileRequest)class245.field3330.get(var6);
+            var8 = (FileRequest)class245.NetCache_pendingWrites.get(var6);
             if(var8 != null) {
                if(var5) {
                   var8.unlinkDual();
-                  class245.field3323.put(var8, var6);
-                  --class245.field3331;
-                  ++class245.field3341;
+                  class245.NetCache_pendingPriorityWrites.put(var8, var6);
+                  --class245.NetCache_pendingWritesCount;
+                  ++class245.NetCache_pendingPriorityWritesCount;
                }
 
             } else {
                if(!var5) {
-                  var8 = (FileRequest)class245.field3332.get(var6);
+                  var8 = (FileRequest)class245.NetCache_pendingResponses.get(var6);
                   if(var8 != null) {
                      return;
                   }
@@ -1497,12 +1505,12 @@ public class Widget extends Node {
                var8.crc = var3;
                var8.padding = var4;
                if(var5) {
-                  class245.field3323.put(var8, var6);
-                  ++class245.field3341;
+                  class245.NetCache_pendingPriorityWrites.put(var8, var6);
+                  ++class245.NetCache_pendingPriorityWritesCount;
                } else {
-                  class245.field3329.push(var8);
-                  class245.field3330.put(var8, var6);
-                  ++class245.field3331;
+                  class245.NetCache_pendingWritesQueue.push(var8);
+                  class245.NetCache_pendingWrites.put(var8, var6);
+                  ++class245.NetCache_pendingWritesCount;
                }
 
             }
@@ -1517,11 +1525,11 @@ public class Widget extends Node {
    )
    static void method4169() {
       if(class91.username == null || class91.username.length() <= 0) {
-         if(RSCanvas.preferences.field1234 != null) {
-            class91.username = RSCanvas.preferences.field1234;
-            class91.field1366 = true;
+         if(RSCanvas.preferences.rememberedUsername != null) {
+            class91.username = RSCanvas.preferences.rememberedUsername;
+            class91.Login_isUsernameRemembered = true;
          } else {
-            class91.field1366 = false;
+            class91.Login_isUsernameRemembered = false;
          }
 
       }

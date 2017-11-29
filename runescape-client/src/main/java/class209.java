@@ -62,16 +62,16 @@ public class class209 {
       garbageValue = "14722447"
    )
    static void method3827() {
-      Object var0 = class243.field3309;
-      synchronized(class243.field3309) {
-         if(class243.field3308 == 0) {
-            class184.field2516 = new Thread(new class243());
-            class184.field2516.setDaemon(true);
-            class184.field2516.start();
-            class184.field2516.setPriority(5);
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3308 == 0) {
+            class184.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
+            class184.IndexStoreActionHandler_thread.setDaemon(true);
+            class184.IndexStoreActionHandler_thread.start();
+            class184.IndexStoreActionHandler_thread.setPriority(5);
          }
 
-         class243.field3308 = 600;
+         IndexStoreActionHandler.field3308 = 600;
       }
    }
 
@@ -82,7 +82,7 @@ public class class209 {
    )
    static int method3828(int var0, Script var1, boolean var2) {
       if(var0 == 3300) {
-         class82.intStack[++class13.intStackSize - 1] = Client.gameCycle;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.gameCycle;
          return 1;
       } else {
          int var3;
@@ -92,11 +92,11 @@ public class class209 {
          int var7;
          ItemContainer var8;
          if(var0 == 3301) {
-            class13.intStackSize -= 2;
-            var3 = class82.intStack[class13.intStackSize];
-            var4 = class82.intStack[class13.intStackSize + 1];
+            GrandExchangeEvents.intStackSize -= 2;
+            var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+            var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
             var5 = class82.intStack;
-            var6 = ++class13.intStackSize - 1;
+            var6 = ++GrandExchangeEvents.intStackSize - 1;
             var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
             if(var8 == null) {
                var7 = -1;
@@ -109,11 +109,11 @@ public class class209 {
             var5[var6] = var7;
             return 1;
          } else if(var0 == 3302) {
-            class13.intStackSize -= 2;
-            var3 = class82.intStack[class13.intStackSize];
-            var4 = class82.intStack[class13.intStackSize + 1];
+            GrandExchangeEvents.intStackSize -= 2;
+            var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+            var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
             var5 = class82.intStack;
-            var6 = ++class13.intStackSize - 1;
+            var6 = ++GrandExchangeEvents.intStackSize - 1;
             var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
             if(var8 == null) {
                var7 = 0;
@@ -126,26 +126,26 @@ public class class209 {
             var5[var6] = var7;
             return 1;
          } else if(var0 == 3303) {
-            class13.intStackSize -= 2;
-            var3 = class82.intStack[class13.intStackSize];
-            var4 = class82.intStack[class13.intStackSize + 1];
-            class82.intStack[++class13.intStackSize - 1] = class96.method1898(var3, var4);
+            GrandExchangeEvents.intStackSize -= 2;
+            var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+            var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class96.method1898(var3, var4);
             return 1;
          } else if(var0 == 3304) {
-            var3 = class82.intStack[--class13.intStackSize];
-            class82.intStack[++class13.intStackSize - 1] = class90.method1777(var3).size;
+            var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = AttackOption.method1777(var3).size;
             return 1;
          } else if(var0 == 3305) {
-            var3 = class82.intStack[--class13.intStackSize];
-            class82.intStack[++class13.intStackSize - 1] = Client.boostedSkillLevels[var3];
+            var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.boostedSkillLevels[var3];
             return 1;
          } else if(var0 == 3306) {
-            var3 = class82.intStack[--class13.intStackSize];
-            class82.intStack[++class13.intStackSize - 1] = Client.realSkillLevels[var3];
+            var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.realSkillLevels[var3];
             return 1;
          } else if(var0 == 3307) {
-            var3 = class82.intStack[--class13.intStackSize];
-            class82.intStack[++class13.intStackSize - 1] = Client.skillExperiences[var3];
+            var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.skillExperiences[var3];
             return 1;
          } else {
             int var9;
@@ -153,29 +153,29 @@ public class class209 {
                var3 = class233.plane;
                var4 = (class181.localPlayer.x >> 7) + IndexDataBase.baseX;
                var9 = (class181.localPlayer.y >> 7) + Occluder.baseY;
-               class82.intStack[++class13.intStackSize - 1] = (var4 << 14) + var9 + (var3 << 28);
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (var4 << 14) + var9 + (var3 << 28);
                return 1;
             } else if(var0 == 3309) {
-               var3 = class82.intStack[--class13.intStackSize];
-               class82.intStack[++class13.intStackSize - 1] = var3 >> 14 & 16383;
+               var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 >> 14 & 16383;
                return 1;
             } else if(var0 == 3310) {
-               var3 = class82.intStack[--class13.intStackSize];
-               class82.intStack[++class13.intStackSize - 1] = var3 >> 28;
+               var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 >> 28;
                return 1;
             } else if(var0 == 3311) {
-               var3 = class82.intStack[--class13.intStackSize];
-               class82.intStack[++class13.intStackSize - 1] = var3 & 16383;
+               var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 & 16383;
                return 1;
             } else if(var0 == 3312) {
-               class82.intStack[++class13.intStackSize - 1] = Client.isMembers?1:0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.isMembers?1:0;
                return 1;
             } else if(var0 == 3313) {
-               class13.intStackSize -= 2;
-               var3 = class82.intStack[class13.intStackSize] + 32768;
-               var4 = class82.intStack[class13.intStackSize + 1];
+               GrandExchangeEvents.intStackSize -= 2;
+               var3 = class82.intStack[GrandExchangeEvents.intStackSize] + 32768;
+               var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                var5 = class82.intStack;
-               var6 = ++class13.intStackSize - 1;
+               var6 = ++GrandExchangeEvents.intStackSize - 1;
                var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
                if(var8 == null) {
                   var7 = -1;
@@ -189,62 +189,62 @@ public class class209 {
                return 1;
             } else if(var0 != 3314) {
                if(var0 == 3315) {
-                  class13.intStackSize -= 2;
-                  var3 = class82.intStack[class13.intStackSize] + 32768;
-                  var4 = class82.intStack[class13.intStackSize + 1];
-                  class82.intStack[++class13.intStackSize - 1] = class96.method1898(var3, var4);
+                  GrandExchangeEvents.intStackSize -= 2;
+                  var3 = class82.intStack[GrandExchangeEvents.intStackSize] + 32768;
+                  var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class96.method1898(var3, var4);
                   return 1;
                } else if(var0 == 3316) {
                   if(Client.rights >= 2) {
-                     class82.intStack[++class13.intStackSize - 1] = Client.rights;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.rights;
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = 0;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3317) {
-                  class82.intStack[++class13.intStackSize - 1] = Client.field931;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field931;
                   return 1;
                } else if(var0 == 3318) {
-                  class82.intStack[++class13.intStackSize - 1] = Client.world;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.world;
                   return 1;
                } else if(var0 == 3321) {
-                  class82.intStack[++class13.intStackSize - 1] = Client.energy;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.energy;
                   return 1;
                } else if(var0 == 3322) {
-                  class82.intStack[++class13.intStackSize - 1] = Client.weight;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.weight;
                   return 1;
                } else if(var0 == 3323) {
                   if(Client.field1079) {
-                     class82.intStack[++class13.intStackSize - 1] = 1;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 1;
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = 0;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   }
 
                   return 1;
                } else if(var0 == 3324) {
-                  class82.intStack[++class13.intStackSize - 1] = Client.flags;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.flags;
                   return 1;
                } else if(var0 == 3325) {
-                  class13.intStackSize -= 4;
-                  var3 = class82.intStack[class13.intStackSize];
-                  var4 = class82.intStack[class13.intStackSize + 1];
-                  var9 = class82.intStack[class13.intStackSize + 2];
-                  var6 = class82.intStack[class13.intStackSize + 3];
+                  GrandExchangeEvents.intStackSize -= 4;
+                  var3 = class82.intStack[GrandExchangeEvents.intStackSize];
+                  var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+                  var9 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
+                  var6 = class82.intStack[GrandExchangeEvents.intStackSize + 3];
                   var3 += var4 << 14;
                   var3 += var9 << 28;
                   var3 += var6;
-                  class82.intStack[++class13.intStackSize - 1] = var3;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               class13.intStackSize -= 2;
-               var3 = class82.intStack[class13.intStackSize] + 32768;
-               var4 = class82.intStack[class13.intStackSize + 1];
+               GrandExchangeEvents.intStackSize -= 2;
+               var3 = class82.intStack[GrandExchangeEvents.intStackSize] + 32768;
+               var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                var5 = class82.intStack;
-               var6 = ++class13.intStackSize - 1;
+               var6 = ++GrandExchangeEvents.intStackSize - 1;
                var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
                if(var8 == null) {
                   var7 = 0;

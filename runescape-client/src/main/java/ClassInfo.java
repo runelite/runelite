@@ -55,7 +55,7 @@ public class ClassInfo extends Node {
          var4.width = class295.field3845[0];
          var4.height = class285.field3788[0];
          int var5 = var4.width * var4.height;
-         byte[] var6 = class15.spritePixels[0];
+         byte[] var6 = TotalQuantityComparator.spritePixels[0];
          var4.pixels = new int[var5];
 
          for(int var7 = 0; var7 < var5; ++var7) {
@@ -67,7 +67,7 @@ public class ClassInfo extends Node {
          class295.field3845 = null;
          class285.field3788 = null;
          class115.field1599 = null;
-         class15.spritePixels = null;
+         TotalQuantityComparator.spritePixels = null;
          return var4;
       }
    }

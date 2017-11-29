@@ -68,8 +68,7 @@ public class CollisionData {
       signature = "(IIIIZI)V",
       garbageValue = "-1702042153"
    )
-   @Export("addWall")
-   public void addWall(int var1, int var2, int var3, int var4, boolean var5) {
+   public void method3157(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.x;
       var2 -= this.y;
       if(var3 == 0) {
@@ -259,8 +258,7 @@ public class CollisionData {
       signature = "(IIB)V",
       garbageValue = "0"
    )
-   @Export("block")
-   public void block(int var1, int var2) {
+   public void method3152(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 262144;
@@ -477,8 +475,7 @@ public class CollisionData {
       signature = "(IIB)V",
       garbageValue = "69"
    )
-   @Export("unblock")
-   public void unblock(int var1, int var2) {
+   public void method3156(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] &= -262145;

@@ -5,7 +5,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("jm")
 public class class273 {
    @ObfuscatedName("d")
-   public static final char[] field3722;
+   @Export("cp1252AsciiExtension")
+   public static final char[] cp1252AsciiExtension;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lid;"
@@ -14,6 +15,6 @@ public class class273 {
    static IndexDataBase skin_ref;
 
    static {
-      field3722 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
+      cp1252AsciiExtension = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
    }
 }

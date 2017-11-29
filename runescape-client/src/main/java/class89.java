@@ -20,6 +20,6 @@ public class class89 {
       garbageValue = "1940323529"
    )
    static PacketNode method1765() {
-      return PacketNode.field2425 == 0?new PacketNode():PacketNode.field2427[--PacketNode.field2425];
+      return PacketNode.field2425 == 0?new PacketNode():PacketNode.packetBufferNodes[--PacketNode.field2425];
    }
 }

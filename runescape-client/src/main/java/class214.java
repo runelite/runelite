@@ -541,7 +541,8 @@ public class class214 extends Node {
       signature = "(Leh;IIIS)Z",
       garbageValue = "255"
    )
-   public static final boolean method4052(Model var0, int var1, int var2, int var3) {
+   @Export("boundingBox3DContainsMouse")
+   public static final boolean boundingBox3DContainsMouse(Model var0, int var1, int var2, int var3) {
       if(!class87.method1763()) {
          return false;
       } else {
@@ -553,9 +554,9 @@ public class class214 extends Node {
          int var8 = var0.field1865;
          int var9 = var0.field1866;
          int var10 = class133.field1899 - var4;
-         int var11 = class243.field3310 - var5;
+         int var11 = IndexStoreActionHandler.field3310 - var5;
          int var12 = class133.field1904 - var6;
-         return Math.abs(var10) > var7 + WidgetNode.field789?false:(Math.abs(var11) > var8 + ItemContainer.field759?false:(Math.abs(var12) > var9 + class133.field1907?false:(Math.abs(var12 * class133.field1906 - var11 * class9.field239) > var9 * ItemContainer.field759 + var8 * class133.field1907?false:(Math.abs(var10 * class9.field239 - var12 * class133.field1905) > var7 * class133.field1907 + var9 * WidgetNode.field789?false:Math.abs(var11 * class133.field1905 - var10 * class133.field1906) <= var8 * WidgetNode.field789 + var7 * ItemContainer.field759))));
+         return Math.abs(var10) > var7 + WidgetNode.field789?false:(Math.abs(var11) > var8 + ItemContainer.field759?false:(Math.abs(var12) > var9 + class133.field1907?false:(Math.abs(var12 * class133.field1906 - var11 * BoundingBox.field239) > var9 * ItemContainer.field759 + var8 * class133.field1907?false:(Math.abs(var10 * BoundingBox.field239 - var12 * class133.field1905) > var7 * class133.field1907 + var9 * WidgetNode.field789?false:Math.abs(var11 * class133.field1905 - var10 * class133.field1906) <= var8 * WidgetNode.field789 + var7 * ItemContainer.field759))));
       }
    }
 }

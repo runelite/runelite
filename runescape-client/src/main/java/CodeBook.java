@@ -228,7 +228,7 @@ public class CodeBook {
    @ObfuscatedName("d")
    static int method2010(int var0, int var1) {
       int var2;
-      for(var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1; class17.method145(var2, var1) > var0; --var2) {
+      for(var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1; UnitPriceComparator.method145(var2, var1) > var0; --var2) {
          ;
       }
 

@@ -17,13 +17,13 @@ public class class278 {
          if(var5 == null) {
             var4 = null;
          } else {
-            Font var6 = new Font(var5, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, class15.spritePixels);
+            Font var6 = new Font(var5, class295.field3848, class295.offsetsY, class295.field3845, class285.field3788, class115.field1599, TotalQuantityComparator.spritePixels);
             class295.field3848 = null;
             class295.offsetsY = null;
             class295.field3845 = null;
             class285.field3788 = null;
             class115.field1599 = null;
-            class15.spritePixels = null;
+            TotalQuantityComparator.spritePixels = null;
             var4 = var6;
          }
 

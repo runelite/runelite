@@ -85,7 +85,7 @@ public class Texture extends Node {
    boolean method2608(double var1, int var3, IndexDataBase var4) {
       int var5;
       for(var5 = 0; var5 < this.fileIds.length; ++var5) {
-         if(var4.method4273(this.fileIds[var5]) == null) {
+         if(var4.getRecordFlat(this.fileIds[var5]) == null) {
             return false;
          }
       }
@@ -102,7 +102,7 @@ public class Texture extends Node {
             var7 = class250.method4476();
          }
 
-         var7.method5239();
+         var7.normalize();
          byte[] var10 = var7.pixels;
          int[] var11 = var7.palette;
          int var12 = this.field1790[var6];

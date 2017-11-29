@@ -13,12 +13,14 @@ public class class44 extends WorldMapData {
    @ObfuscatedSignature(
       signature = "Lfi;"
    )
-   static class157 field555;
+   @Export("mouseWheel")
+   static MouseWheel mouseWheel;
    @ObfuscatedName("dg")
    @ObfuscatedSignature(
       signature = "Liv;"
    )
-   static IndexData field550;
+   @Export("indexCache13")
+   static IndexData indexCache13;
    @ObfuscatedName("eb")
    @ObfuscatedGetter(
       intValue = 1459680025
@@ -117,7 +119,7 @@ public class class44 extends WorldMapData {
             } else {
                var6 = var0.getBits(1);
                if(var6 == 0) {
-                  var3 = class17.method144(var0);
+                  var3 = UnitPriceComparator.method144(var0);
                   class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
                } else {
                   Coordinates.decodeMovement(var0, var5);
@@ -141,7 +143,7 @@ public class class44 extends WorldMapData {
                } else {
                   var6 = var0.getBits(1);
                   if(var6 == 0) {
-                     var3 = class17.method144(var0);
+                     var3 = UnitPriceComparator.method144(var0);
                      class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
                   } else {
                      Coordinates.decodeMovement(var0, var5);
@@ -165,7 +167,7 @@ public class class44 extends WorldMapData {
                   } else {
                      var6 = var0.getBits(1);
                      if(var6 == 0) {
-                        var3 = class17.method144(var0);
+                        var3 = UnitPriceComparator.method144(var0);
                         class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
                      } else if(class34.decodeRegionHash(var0, var5)) {
                         class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
@@ -189,7 +191,7 @@ public class class44 extends WorldMapData {
                      } else {
                         var6 = var0.getBits(1);
                         if(var6 == 0) {
-                           var3 = class17.method144(var0);
+                           var3 = UnitPriceComparator.method144(var0);
                            class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
                         } else if(class34.decodeRegionHash(var0, var5)) {
                            class94.field1412[var5] = (byte)(class94.field1412[var5] | 2);
@@ -277,7 +279,7 @@ public class class44 extends WorldMapData {
       if((var3 & 1) != 0) {
          var5 = var0.readUnsignedShort();
          Permission var6 = (Permission)class94.forOrdinal(class61.method1087(), var0.method3422());
-         boolean var7 = var0.method3457() == 1;
+         boolean var7 = var0.readUnsignedByteNegate() == 1;
          var8 = var0.method3422();
          var9 = var0.offset;
          if(var2.name != null && var2.composition != null) {
@@ -294,7 +296,7 @@ public class class44 extends WorldMapData {
                var2.overhead = var11.trim();
                var2.field1163 = var5 >> 8;
                var2.field1164 = var5 & 255;
-               var2.field1177 = 150;
+               var2.overheadTextCyclesRemaining = 150;
                var2.field1160 = var7;
                var2.inSequence = var2 != class181.localPlayer && var6.field3259 && "" != Client.field1072 && var11.toLowerCase().indexOf(Client.field1072) == -1;
                if(var6.field3257) {
@@ -315,7 +317,7 @@ public class class44 extends WorldMapData {
       }
 
       if((var3 & 128) != 0) {
-         var5 = var0.method3457();
+         var5 = var0.readUnsignedByteNegate();
          byte[] var16 = new byte[var5];
          Buffer var13 = new Buffer(var16);
          var0.method3345(var16, 0, var5);
@@ -358,7 +360,7 @@ public class class44 extends WorldMapData {
                var9 = var0.getUSmart();
                if(var9 != 32767) {
                   var19 = var0.getUSmart();
-                  var15 = var0.method3457();
+                  var15 = var0.readUnsignedByteNegate();
                   var12 = var9 > 0?var0.method3380():var15;
                   var2.method1578(var8, Client.gameCycle, var9, var19, var15, var12);
                } else {
@@ -405,7 +407,7 @@ public class class44 extends WorldMapData {
          var2.field1160 = false;
          var2.field1163 = 0;
          var2.field1164 = 0;
-         var2.field1177 = 150;
+         var2.overheadTextCyclesRemaining = 150;
       }
 
       if((var3 & 1024) != 0) {
@@ -433,7 +435,7 @@ public class class44 extends WorldMapData {
          }
 
          var14 = var0.readUnsignedByte();
-         class70.method1130(var2, var5, var14);
+         MouseRecorder.method1130(var2, var5, var14);
       }
 
       if(var2.field836) {
@@ -459,7 +461,7 @@ public class class44 extends WorldMapData {
       garbageValue = "120438768"
    )
    static final void method636(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field1035; ++var4) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
          if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
             Client.field1059[var4] = true;
          }

@@ -29,7 +29,7 @@ public class AbstractSoundSystem {
    @ObfuscatedSignature(
       signature = "Ldn;"
    )
-   class118 field1549;
+   TaskDataNode field1549;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1079948135
@@ -92,12 +92,12 @@ public class AbstractSoundSystem {
    @ObfuscatedSignature(
       signature = "[Ldn;"
    )
-   class118[] field1554;
+   TaskDataNode[] field1554;
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "[Ldn;"
    )
-   class118[] field1566;
+   TaskDataNode[] field1566;
 
    protected AbstractSoundSystem() {
       this.field1550 = 32;
@@ -109,8 +109,8 @@ public class AbstractSoundSystem {
       this.field1559 = 0L;
       this.field1560 = true;
       this.field1563 = 0;
-      this.field1554 = new class118[8];
-      this.field1566 = new class118[8];
+      this.field1554 = new TaskDataNode[8];
+      this.field1566 = new TaskDataNode[8];
    }
 
    @ObfuscatedName("d")
@@ -156,7 +156,7 @@ public class AbstractSoundSystem {
       signature = "(B)V",
       garbageValue = "-55"
    )
-   protected void vmethod2106() throws Exception {
+   protected void flush() throws Exception {
    }
 
    @ObfuscatedName("aa")
@@ -164,7 +164,7 @@ public class AbstractSoundSystem {
       signature = "(Ldn;I)V",
       garbageValue = "302028315"
    )
-   public final synchronized void method2094(class118 var1) {
+   public final synchronized void method2094(TaskDataNode var1) {
       this.field1549 = var1;
    }
 
@@ -274,11 +274,12 @@ public class AbstractSoundSystem {
       signature = "(I)V",
       garbageValue = "346188434"
    )
-   public final synchronized void method2140() {
+   @Export("tryFlush")
+   public final synchronized void tryFlush() {
       this.field1560 = true;
 
       try {
-         this.vmethod2106();
+         this.flush();
       } catch (Exception var2) {
          this.close();
          this.field1555 = ServerPacket.currentTimeMs() + 2000L;
@@ -291,7 +292,8 @@ public class AbstractSoundSystem {
       signature = "(I)V",
       garbageValue = "1884305932"
    )
-   public final synchronized void method2097() {
+   @Export("shutdown")
+   public final synchronized void shutdown() {
       if(class33.task != null) {
          boolean var1 = true;
 
@@ -306,8 +308,8 @@ public class AbstractSoundSystem {
          }
 
          if(var1) {
-            class24.field347.shutdownNow();
-            class24.field347 = null;
+            Size.field347.shutdownNow();
+            Size.field347 = null;
             class33.task = null;
          }
       }
@@ -350,7 +352,7 @@ public class AbstractSoundSystem {
          int var5 = 255;
 
          int var6;
-         class118 var10;
+         TaskDataNode var10;
          label104:
          for(var6 = 7; var5 != 0; --var6) {
             int var7;
@@ -367,7 +369,7 @@ public class AbstractSoundSystem {
                if((var9 & 1) != 0) {
                   var5 &= ~(1 << var7);
                   var10 = null;
-                  class118 var11 = this.field1554[var7];
+                  TaskDataNode var11 = this.field1554[var7];
 
                   label98:
                   while(true) {
@@ -376,8 +378,8 @@ public class AbstractSoundSystem {
                            break label98;
                         }
 
-                        class121 var12 = var11.field1634;
-                        if(var12 != null && var12.field1666 > var8) {
+                        AbstractIntegerNode0 var12 = var11.field1634;
+                        if(var12 != null && var12.int1 > var8) {
                            var5 |= 1 << var7;
                            var10 = var11;
                            var11 = var11.field1633;
@@ -386,21 +388,21 @@ public class AbstractSoundSystem {
                            int var13 = var11.vmethod4056();
                            var4 += var13;
                            if(var12 != null) {
-                              var12.field1666 += var13;
+                              var12.int1 += var13;
                            }
 
                            if(var4 >= this.field1550) {
                               break label104;
                            }
 
-                           class118 var14 = var11.vmethod4054();
+                           TaskDataNode var14 = var11.vmethod4054();
                            if(var14 != null) {
                               for(int var15 = var11.field1632; var14 != null; var14 = var11.vmethod4055()) {
                                  this.method2100(var14, var15 * var14.vmethod2413() >> 8);
                               }
                            }
 
-                           class118 var18 = var11.field1633;
+                           TaskDataNode var18 = var11.field1633;
                            var11.field1633 = null;
                            if(var10 == null) {
                               this.field1554[var7] = var18;
@@ -424,8 +426,8 @@ public class AbstractSoundSystem {
          }
 
          for(var6 = 0; var6 < 8; ++var6) {
-            class118 var16 = this.field1554[var6];
-            class118[] var17 = this.field1554;
+            TaskDataNode var16 = this.field1554[var6];
+            TaskDataNode[] var17 = this.field1554;
             this.field1566[var6] = null;
 
             for(var17[var6] = null; var16 != null; var16 = var10) {
@@ -451,9 +453,9 @@ public class AbstractSoundSystem {
       signature = "(Ldn;II)V",
       garbageValue = "112999140"
    )
-   final void method2100(class118 var1, int var2) {
+   final void method2100(TaskDataNode var1, int var2) {
       int var3 = var2 >> 5;
-      class118 var4 = this.field1566[var3];
+      TaskDataNode var4 = this.field1566[var3];
       if(var4 == null) {
          this.field1554[var3] = var1;
       } else {
@@ -542,7 +544,7 @@ public class AbstractSoundSystem {
    )
    public static int method2156(boolean var0, boolean var1) {
       byte var2 = 0;
-      int var3 = var2 + class245.field3328 + class245.field3341;
+      int var3 = var2 + class245.NetCache_pendingPriorityResponsesCount + class245.NetCache_pendingPriorityWritesCount;
       return var3;
    }
 

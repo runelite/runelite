@@ -16,7 +16,8 @@ public final class class174 {
    }
 
    @ObfuscatedName("d")
-   public static int method3238(byte[] var0, int var1, byte[] var2, int var3, int var4) {
+   @Export("Bzip2Decompressor_decompress")
+   public static int Bzip2Decompressor_decompress(byte[] var0, int var1, byte[] var2, int var3, int var4) {
       DState var5 = state;
       synchronized(state) {
          state.strm = var2;

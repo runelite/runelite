@@ -49,7 +49,8 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedGetter(
       intValue = -1369097661
    )
-   static volatile int field704;
+   @Export("MouseHandler_currentButton")
+   static volatile int MouseHandler_currentButton;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 1301319561
@@ -66,47 +67,56 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedGetter(
       intValue = -611046833
    )
-   public static int field705;
+   @Export("mouseCurrentButton")
+   public static int mouseCurrentButton;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 950879603
    )
-   static volatile int field713;
+   @Export("MouseHandler_lastButton")
+   static volatile int MouseHandler_lastButton;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 44956887
    )
-   static volatile int field694;
+   @Export("MouseHandler_lastPressedX")
+   static volatile int MouseHandler_lastPressedX;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -279978491
    )
-   static volatile int field706;
+   @Export("MouseHandler_lastPressedY")
+   static volatile int MouseHandler_lastPressedY;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       longValue = 5150089180744596517L
    )
-   static volatile long field707;
+   @Export("MouseHandler_lastPressedTimeMillis")
+   static volatile long MouseHandler_lastPressedTimeMillis;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -661549847
    )
-   public static int field708;
+   @Export("mouseLastButton")
+   public static int mouseLastButton;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -786964945
    )
-   public static int field709;
+   @Export("mouseLastPressedX")
+   public static int mouseLastPressedX;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 851446851
    )
-   public static int field710;
+   @Export("mouseLastPressedY")
+   public static int mouseLastPressedY;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       longValue = 7402575198471548381L
    )
-   public static long field697;
+   @Export("mouseLastPressedTimeMillis")
+   public static long mouseLastPressedTimeMillis;
    @ObfuscatedName("cu")
    @ObfuscatedSignature(
       signature = "Liv;"
@@ -117,25 +127,26 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedSignature(
       signature = "Lju;"
    )
-   static class269 field716;
+   @Export("fonts")
+   static Fonts fonts;
 
    static {
       mouse = new MouseInput();
       mouseIdleTicks = 0;
-      field704 = 0;
+      MouseHandler_currentButton = 0;
       mouseX = -1;
       mouseY = -1;
-      field705 = 0;
+      mouseCurrentButton = 0;
       field703 = 0;
       field715 = 0;
-      field713 = 0;
-      field694 = 0;
-      field706 = 0;
-      field707 = 0L;
-      field708 = 0;
-      field709 = 0;
-      field710 = 0;
-      field697 = 0L;
+      MouseHandler_lastButton = 0;
+      MouseHandler_lastPressedX = 0;
+      MouseHandler_lastPressedY = 0;
+      MouseHandler_lastPressedTimeMillis = 0L;
+      mouseLastButton = 0;
+      mouseLastPressedX = 0;
+      mouseLastPressedY = 0;
+      mouseLastPressedTimeMillis = 0L;
    }
 
    @ObfuscatedName("v")
@@ -151,7 +162,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    public final synchronized void mouseReleased(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field704 = 0;
+         MouseHandler_currentButton = 0;
       }
 
       if(var1.isPopupTrigger()) {
@@ -187,7 +198,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    public final synchronized void focusLost(FocusEvent var1) {
       if(mouse != null) {
-         field704 = 0;
+         MouseHandler_currentButton = 0;
       }
 
    }
@@ -213,15 +224,17 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    }
 
+   @Export("mousePressed")
+   @ObfuscatedName("mousePressed")
    public final synchronized void mousePressed(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field694 = var1.getX();
-         field706 = var1.getY();
-         field707 = ServerPacket.currentTimeMs();
-         field713 = this.method1008(var1);
-         if(field713 != 0) {
-            field704 = field713;
+         MouseHandler_lastPressedX = var1.getX();
+         MouseHandler_lastPressedY = var1.getY();
+         MouseHandler_lastPressedTimeMillis = ServerPacket.currentTimeMs();
+         MouseHandler_lastButton = this.method1008(var1);
+         if(MouseHandler_lastButton != 0) {
+            MouseHandler_currentButton = MouseHandler_lastButton;
          }
       }
 
@@ -268,7 +281,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
                if(var3.field2761 != null) {
                   ScriptEvent var4 = new ScriptEvent();
                   var4.widget = var3;
-                  var4.field797 = var3.field2761;
+                  var4.objs = var3.field2761;
                   GZipDecompressor.method3234(var4, 2000000);
                }
             }

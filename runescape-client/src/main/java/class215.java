@@ -2,7 +2,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hw")
-public class class215 extends class118 {
+public class class215 extends TaskDataNode {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lhf;"
@@ -111,16 +111,16 @@ public class class215 extends class118 {
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected class118 vmethod4054() {
+   protected TaskDataNode vmethod4054() {
       class212 var1 = (class212)this.field2676.getFront();
-      return (class118)(var1 == null?null:(var1.field2631 != null?var1.field2631:this.vmethod4055()));
+      return (TaskDataNode)(var1 == null?null:(var1.field2631 != null?var1.field2631:this.vmethod4055()));
    }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected class118 vmethod4055() {
+   protected TaskDataNode vmethod4055() {
       class212 var1;
       do {
          var1 = (class212)this.field2676.getNext();

@@ -9,7 +9,8 @@ public class class289 {
    @ObfuscatedSignature(
       signature = "Lgl;"
    )
-   static CombatInfoList field3806;
+   @Export("classInfos")
+   static CombatInfoList classInfos;
    @ObfuscatedName("gh")
    @ObfuscatedGetter(
       intValue = 1589273571
@@ -18,6 +19,6 @@ public class class289 {
    static int cameraY;
 
    static {
-      field3806 = new CombatInfoList();
+      classInfos = new CombatInfoList();
    }
 }

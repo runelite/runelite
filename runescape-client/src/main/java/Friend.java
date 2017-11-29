@@ -40,12 +40,13 @@ public class Friend {
       signature = "(IB)I",
       garbageValue = "39"
    )
-   public static int method1109(int var0) {
+   @Export("getVarbit")
+   public static int getVarbit(int var0) {
       Varbit var1 = class61.method1089(var0);
       int var2 = var1.configId;
       int var3 = var1.leastSignificantBit;
       int var4 = var1.mostSignificantBit;
-      int var5 = class218.field2686[var4 - var3];
+      int var5 = class218.varpsMasks[var4 - var3];
       return class218.widgetSettings[var2] >> var3 & var5;
    }
 
@@ -69,7 +70,7 @@ public class Friend {
             var6.width = class295.field3845[var5];
             var6.height = class285.field3788[var5];
             int var7 = var6.height * var6.width;
-            byte[] var8 = class15.spritePixels[var5];
+            byte[] var8 = TotalQuantityComparator.spritePixels[var5];
             var6.pixels = new int[var7];
 
             for(int var9 = 0; var9 < var7; ++var9) {
@@ -82,7 +83,7 @@ public class Friend {
          class295.field3845 = null;
          class285.field3788 = null;
          class115.field1599 = null;
-         class15.spritePixels = null;
+         TotalQuantityComparator.spritePixels = null;
          return var4;
       }
    }
@@ -92,7 +93,8 @@ public class Friend {
       signature = "(Ljava/lang/CharSequence;II[BII)I",
       garbageValue = "2131642541"
    )
-   public static int method1110(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
+   @Export("encodeStringCp1252")
+   public static int encodeStringCp1252(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
       int var5 = var2 - var1;
 
       for(int var6 = 0; var6 < var5; ++var6) {

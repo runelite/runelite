@@ -2,7 +2,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cu")
-public class class101 extends class118 {
+public class class101 extends TaskDataNode {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lgs;"
@@ -29,7 +29,7 @@ public class class101 extends class118 {
    @ObfuscatedSignature(
       signature = "(Ldn;)V"
    )
-   public final synchronized void method1953(class118 var1) {
+   public final synchronized void method1953(TaskDataNode var1) {
       this.field1479.addTail(var1);
    }
 
@@ -37,7 +37,7 @@ public class class101 extends class118 {
    @ObfuscatedSignature(
       signature = "(Ldn;)V"
    )
-   public final synchronized void method1954(class118 var1) {
+   public final synchronized void method1954(TaskDataNode var1) {
       var1.unlink();
    }
 
@@ -87,16 +87,16 @@ public class class101 extends class118 {
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected class118 vmethod4054() {
-      return (class118)this.field1479.getFront();
+   protected TaskDataNode vmethod4054() {
+      return (TaskDataNode)this.field1479.getFront();
    }
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected class118 vmethod4055() {
-      return (class118)this.field1479.getNext();
+   protected TaskDataNode vmethod4055() {
+      return (TaskDataNode)this.field1479.getNext();
    }
 
    @ObfuscatedName("t")
@@ -141,7 +141,7 @@ public class class101 extends class118 {
 
    @ObfuscatedName("r")
    void method1962(int[] var1, int var2, int var3) {
-      for(class118 var4 = (class118)this.field1479.getFront(); var4 != null; var4 = (class118)this.field1479.getNext()) {
+      for(TaskDataNode var4 = (TaskDataNode)this.field1479.getFront(); var4 != null; var4 = (TaskDataNode)this.field1479.getNext()) {
          var4.method2407(var1, var2, var3);
       }
 
@@ -183,7 +183,7 @@ public class class101 extends class118 {
 
    @ObfuscatedName("u")
    void method1964(int var1) {
-      for(class118 var2 = (class118)this.field1479.getFront(); var2 != null; var2 = (class118)this.field1479.getNext()) {
+      for(TaskDataNode var2 = (TaskDataNode)this.field1479.getFront(); var2 != null; var2 = (TaskDataNode)this.field1479.getNext()) {
          var2.vmethod4058(var1);
       }
 

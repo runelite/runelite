@@ -32,13 +32,13 @@ public class FaceNormal {
       garbageValue = "-339386545"
    )
    public static void method2996() {
-      Object var0 = class243.field3309;
-      synchronized(class243.field3309) {
-         if(class243.field3308 != 0) {
-            class243.field3308 = 1;
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3308 != 0) {
+            IndexStoreActionHandler.field3308 = 1;
 
             try {
-               class243.field3309.wait();
+               IndexStoreActionHandler.IndexStoreActionHandler_lock.wait();
             } catch (InterruptedException var3) {
                ;
             }

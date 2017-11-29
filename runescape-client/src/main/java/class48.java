@@ -9,7 +9,8 @@ public class class48 implements WorldMapSectionBase {
    @ObfuscatedGetter(
       intValue = 493026841
    )
-   static int field591;
+   @Export("port1")
+   static int port1;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1378429875
@@ -195,14 +196,14 @@ public class class48 implements WorldMapSectionBase {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
+         var3 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
       } else {
          var3 = var2?class54.field636:class82.field1265;
       }
 
       int var4;
       if(var0 == 1300) {
-         var4 = class82.intStack[--class13.intStackSize] - 1;
+         var4 = class82.intStack[--GrandExchangeEvents.intStackSize] - 1;
          if(var4 >= 0 && var4 <= 9) {
             var3.setAction(var4, class82.scriptStringStack[--class82.scriptStringStackSize]);
             return 1;
@@ -211,19 +212,19 @@ public class class48 implements WorldMapSectionBase {
             return 1;
          }
       } else if(var0 == 1301) {
-         class13.intStackSize -= 2;
-         var4 = class82.intStack[class13.intStackSize];
-         int var5 = class82.intStack[class13.intStackSize + 1];
-         var3.dragParent = MilliTimer.method3058(var4, var5);
+         GrandExchangeEvents.intStackSize -= 2;
+         var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+         int var5 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         var3.dragParent = MilliTimer.getWidgetChild(var4, var5);
          return 1;
       } else if(var0 == 1302) {
-         var3.field2802 = class82.intStack[--class13.intStackSize] == 1;
+         var3.field2802 = class82.intStack[--GrandExchangeEvents.intStackSize] == 1;
          return 1;
       } else if(var0 == 1303) {
-         var3.field2800 = class82.intStack[--class13.intStackSize];
+         var3.field2800 = class82.intStack[--GrandExchangeEvents.intStackSize];
          return 1;
       } else if(var0 == 1304) {
-         var3.field2801 = class82.intStack[--class13.intStackSize];
+         var3.field2801 = class82.intStack[--GrandExchangeEvents.intStackSize];
          return 1;
       } else if(var0 == 1305) {
          var3.name = class82.scriptStringStack[--class82.scriptStringStackSize];
@@ -260,11 +261,11 @@ public class class48 implements WorldMapSectionBase {
 
          for(var5 = 1; var5 < 103; ++var5) {
             if((class61.tileSettings[var0][var5][var3] & 24) == 0) {
-               class14.region.method2927(var1, var4, 512, var0, var5, var3);
+               GrandExchangeEvent.region.method2927(var1, var4, 512, var0, var5, var3);
             }
 
             if(var0 < 3 && (class61.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
-               class14.region.method2927(var1, var4, 512, var0 + 1, var5, var3);
+               GrandExchangeEvent.region.method2927(var1, var4, 512, var0 + 1, var5, var3);
             }
 
             var4 += 4;
@@ -292,7 +293,7 @@ public class class48 implements WorldMapSectionBase {
 
       for(var5 = 0; var5 < 104; ++var5) {
          for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = class14.region.method2826(class233.plane, var5, var6);
+            int var7 = GrandExchangeEvent.region.method2826(class233.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
                int var8 = class3.getObjectDefinition(var7).mapIconId;
@@ -306,6 +307,6 @@ public class class48 implements WorldMapSectionBase {
          }
       }
 
-      class86.field1309.setRaster();
+      class86.rasterProvider.setRaster();
    }
 }

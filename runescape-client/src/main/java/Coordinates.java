@@ -61,7 +61,8 @@ public class Coordinates {
       signature = "(IIII)V",
       garbageValue = "1983505004"
    )
-   public void method4107(int var1, int var2, int var3) {
+   @Export("set")
+   public void set(int var1, int var2, int var3) {
       this.plane = var1;
       this.worldX = var2;
       this.worldY = var3;
@@ -126,14 +127,14 @@ public class Coordinates {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class94.field1416[var1] = (var4.field853 << 28) + (IndexDataBase.baseX + var4.pathX[0] >> 13 << 14) + (Occluder.baseY + var4.pathY[0] >> 13);
+            class94.Players_regions[var1] = (var4.field853 << 28) + (IndexDataBase.baseX + var4.pathX[0] >> 13 << 14) + (Occluder.baseY + var4.pathY[0] >> 13);
             if(var4.field1174 != -1) {
-               class94.field1417[var1] = var4.field1174;
+               class94.Players_orientations[var1] = var4.field1174;
             } else {
-               class94.field1417[var1] = var4.orientation;
+               class94.Players_orientations[var1] = var4.orientation;
             }
 
-            class94.field1418[var1] = var4.interacting;
+            class94.Players_targetIndices[var1] = var4.interacting;
             Client.cachedPlayers[var1] = null;
             if(var0.getBits(1) != 0) {
                class34.decodeRegionHash(var0, var1);

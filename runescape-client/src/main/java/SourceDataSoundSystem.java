@@ -13,7 +13,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
    @ObfuscatedName("d")
-   AudioFormat field644;
+   @Export("audioFormat")
+   AudioFormat audioFormat;
    @ObfuscatedName("x")
    @Export("source")
    SourceDataLine source;
@@ -33,7 +34,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       garbageValue = "655323066"
    )
    protected void vmethod2118() {
-      this.field644 = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
+      this.audioFormat = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
       this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
    }
 
@@ -45,7 +46,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field644, var1 << (AbstractSoundSystem.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.audioFormat, var1 << (AbstractSoundSystem.highMemory?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
@@ -58,7 +59,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
          var4 += var4 >>> 16;
          int var3 = var4 & 255;
          if(var3 != 1) {
-            this.create(class100.method1943(var1));
+            this.create(NetWriter.nextPowerOfTwo(var1));
          } else {
             this.source = null;
             throw var5;
@@ -116,7 +117,8 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       signature = "(B)V",
       garbageValue = "-55"
    )
-   protected void vmethod2106() {
+   @Export("flush")
+   protected void flush() {
       this.source.flush();
    }
 }

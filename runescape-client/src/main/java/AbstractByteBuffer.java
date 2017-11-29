@@ -7,15 +7,17 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("AbstractByteBuffer")
 public abstract class AbstractByteBuffer {
    @ObfuscatedName("x")
-   static boolean field2515;
+   @Export("directBufferUnavailable")
+   static boolean directBufferUnavailable;
    @ObfuscatedName("fh")
    @ObfuscatedSignature(
       signature = "[Lky;"
    )
-   static SpritePixels[] field2514;
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
 
    static {
-      field2515 = false;
+      directBufferUnavailable = false;
    }
 
    @ObfuscatedName("d")

@@ -13,7 +13,8 @@ public class CacheFile {
    @ObfuscatedSignature(
       signature = "Ldt;"
    )
-   FileOnDisk field1675;
+   @Export("accessFile")
+   FileOnDisk accessFile;
    @ObfuscatedName("x")
    @Export("readPayload")
    byte[] readPayload;
@@ -56,7 +57,8 @@ public class CacheFile {
    @ObfuscatedGetter(
       longValue = 2380844932756416615L
    )
-   long field1673;
+   @Export("capacity")
+   long capacity;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       longValue = 6353558333146110219L
@@ -70,8 +72,8 @@ public class CacheFile {
       this.field1680 = -1L;
       this.field1672 = -1L;
       this.field1676 = 0;
-      this.field1675 = var1;
-      this.field1673 = this.length = var1.length();
+      this.accessFile = var1;
+      this.capacity = this.length = var1.length();
       this.readPayload = new byte[var2];
       this.writePayload = new byte[var3];
       this.position = 0L;
@@ -82,9 +84,10 @@ public class CacheFile {
       signature = "(B)V",
       garbageValue = "108"
    )
-   public void method2427() throws IOException {
-      this.method2434();
-      this.field1675.close();
+   @Export("close")
+   public void close() throws IOException {
+      this.flush();
+      this.accessFile.close();
    }
 
    @ObfuscatedName("x")
@@ -102,8 +105,9 @@ public class CacheFile {
       signature = "(B)J",
       garbageValue = "36"
    )
-   public long method2429() {
-      return this.field1673;
+   @Export("length")
+   public long length() {
+      return this.capacity;
    }
 
    @ObfuscatedName("z")
@@ -113,7 +117,7 @@ public class CacheFile {
    )
    @Export("read")
    public void read(byte[] var1) throws IOException {
-      this.method2431(var1, 0, var1.length);
+      this.read(var1, 0, var1.length);
    }
 
    @ObfuscatedName("v")
@@ -121,7 +125,8 @@ public class CacheFile {
       signature = "([BIII)V",
       garbageValue = "640955248"
    )
-   public void method2431(byte[] var1, int var2, int var3) throws IOException {
+   @Export("read")
+   public void read(byte[] var1, int var2, int var3) throws IOException {
       try {
          if(var3 + var2 > var1.length) {
             throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
@@ -149,10 +154,10 @@ public class CacheFile {
          }
 
          if(var3 > this.readPayload.length) {
-            this.field1675.seek(this.position);
+            this.accessFile.seek(this.position);
 
             for(this.field1677 = this.position; var3 > 0; var3 -= var8) {
-               var8 = this.field1675.read(var1, var2, var3);
+               var8 = this.accessFile.read(var1, var2, var3);
                if(var8 == -1) {
                   break;
                }
@@ -162,7 +167,7 @@ public class CacheFile {
                var2 += var8;
             }
          } else if(var3 > 0) {
-            this.method2432();
+            this.load();
             var8 = var3;
             if(var3 > this.field1670) {
                var8 = this.field1670;
@@ -226,16 +231,17 @@ public class CacheFile {
       signature = "(I)V",
       garbageValue = "-421926192"
    )
-   void method2432() throws IOException {
+   @Export("load")
+   void load() throws IOException {
       this.field1670 = 0;
       if(this.position != this.field1677) {
-         this.field1675.seek(this.position);
+         this.accessFile.seek(this.position);
          this.field1677 = this.position;
       }
 
       int var1;
       for(this.field1680 = this.position; this.field1670 < this.readPayload.length; this.field1670 += var1) {
-         var1 = this.field1675.read(this.readPayload, this.field1670, this.readPayload.length - this.field1670);
+         var1 = this.accessFile.read(this.readPayload, this.field1670, this.readPayload.length - this.field1670);
          if(var1 == -1) {
             break;
          }
@@ -253,12 +259,12 @@ public class CacheFile {
    @Export("write")
    public void write(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if((long)var3 + this.position > this.field1673) {
-            this.field1673 = this.position + (long)var3;
+         if((long)var3 + this.position > this.capacity) {
+            this.capacity = this.position + (long)var3;
          }
 
          if(-1L != this.field1672 && (this.position < this.field1672 || this.position > (long)this.field1676 + this.field1672)) {
-            this.method2434();
+            this.flush();
          }
 
          if(-1L != this.field1672 && this.position + (long)var3 > (long)this.writePayload.length + this.field1672) {
@@ -268,7 +274,7 @@ public class CacheFile {
             var2 += var4;
             var3 -= var4;
             this.field1676 = this.writePayload.length;
-            this.method2434();
+            this.flush();
          }
 
          if(var3 <= this.writePayload.length) {
@@ -286,11 +292,11 @@ public class CacheFile {
             }
          } else {
             if(this.position != this.field1677) {
-               this.field1675.seek(this.position);
+               this.accessFile.seek(this.position);
                this.field1677 = this.position;
             }
 
-            this.field1675.write(var1, var2, var3);
+            this.accessFile.write(var1, var2, var3);
             this.field1677 += (long)var3;
             if(this.field1677 > this.length) {
                this.length = this.field1677;
@@ -328,14 +334,15 @@ public class CacheFile {
       signature = "(I)V",
       garbageValue = "-662000482"
    )
-   void method2434() throws IOException {
+   @Export("flush")
+   void flush() throws IOException {
       if(-1L != this.field1672) {
          if(this.field1677 != this.field1672) {
-            this.field1675.seek(this.field1672);
+            this.accessFile.seek(this.field1672);
             this.field1677 = this.field1672;
          }
 
-         this.field1675.write(this.writePayload, 0, this.field1676);
+         this.accessFile.write(this.writePayload, 0, this.field1676);
          this.field1677 += 1774963635L * (long)(this.field1676 * 1197595515);
          if(this.field1677 > this.length) {
             this.length = this.field1677;
@@ -371,11 +378,12 @@ public class CacheFile {
       signature = "(Lfr;Lgi;B)Lgi;",
       garbageValue = "-43"
    )
-   static final IterableHashTable method2453(Buffer var0, IterableHashTable var1) {
+   @Export("readStringIntParameters")
+   static final IterableHashTable readStringIntParameters(Buffer var0, IterableHashTable var1) {
       int var2 = var0.readUnsignedByte();
       int var3;
       if(var1 == null) {
-         var3 = class100.method1943(var2);
+         var3 = NetWriter.nextPowerOfTwo(var2);
          var1 = new IterableHashTable(var3);
       }
 
@@ -454,7 +462,7 @@ public class CacheFile {
                if(var6 == 4) {
                   var9 = var2[var4++] << 16;
                   var9 += var2[var4++];
-                  var10 = class87.method1762(var9);
+                  var10 = class87.getWidget(var9);
                   var11 = var2[var4++];
                   if(var11 != -1 && (!WorldMapType2.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
@@ -492,7 +500,7 @@ public class CacheFile {
                if(var6 == 10) {
                   var9 = var2[var4++] << 16;
                   var9 += var2[var4++];
-                  var10 = class87.method1762(var9);
+                  var10 = class87.getWidget(var9);
                   var11 = var2[var4++];
                   if(var11 != -1 && (!WorldMapType2.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
@@ -520,7 +528,7 @@ public class CacheFile {
 
                if(var6 == 14) {
                   var9 = var2[var4++];
-                  var7 = Friend.method1109(var9);
+                  var7 = Friend.getVarbit(var9);
                }
 
                if(var6 == 15) {

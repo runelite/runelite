@@ -11,7 +11,8 @@ public class FileSystem extends Node {
    @ObfuscatedGetter(
       intValue = 2052755499
    )
-   int field3282;
+   @Export("type")
+   int type;
    @ObfuscatedName("x")
    byte[] field3280;
    @ObfuscatedName("k")

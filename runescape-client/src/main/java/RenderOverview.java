@@ -16,17 +16,20 @@ public class RenderOverview {
    @ObfuscatedSignature(
       signature = "Ljk;"
    )
-   static final class268 field3902;
+   @Export("fontNameVerdana11")
+   static final FontName fontNameVerdana11;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Ljk;"
    )
-   static final class268 field3896;
+   @Export("fontNameVerdana13")
+   static final FontName fontNameVerdana13;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Ljk;"
    )
-   static final class268 field3868;
+   @Export("fontNameVerdana15")
+   static final FontName fontNameVerdana15;
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "Lid;"
@@ -179,9 +182,9 @@ public class RenderOverview {
    Coordinates field3869;
 
    static {
-      field3902 = class268.field3685;
-      field3896 = class268.field3686;
-      field3868 = class268.field3684;
+      fontNameVerdana11 = FontName.field3685;
+      fontNameVerdana13 = FontName.field3686;
+      fontNameVerdana15 = FontName.field3684;
    }
 
    public RenderOverview() {
@@ -220,9 +223,9 @@ public class RenderOverview {
       this.field3865 = var1;
       this.field3866 = var2;
       this.field3890 = new HashMap();
-      this.field3890.put(class24.field343, var3.get(field3902));
-      this.field3890.put(class24.field341, var3.get(field3896));
-      this.field3890.put(class24.field342, var3.get(field3868));
+      this.field3890.put(Size.field343, var3.get(fontNameVerdana11));
+      this.field3890.put(Size.field341, var3.get(fontNameVerdana13));
+      this.field3890.put(Size.field342, var3.get(fontNameVerdana15));
       this.field3877 = new class296(var1);
       int var5 = this.field3865.getFile(class40.field514.field517);
       int[] var6 = this.field3865.getChilds(var5);
@@ -248,7 +251,7 @@ public class RenderOverview {
       garbageValue = "-1164037371"
    )
    public int method5394() {
-      return this.field3865.method4285(this.field3903.method283(), class40.field519.field517)?100:this.field3865.method4296(this.field3903.method283());
+      return this.field3865.tryLoadRecordByNames(this.field3903.method283(), class40.field519.field517)?100:this.field3865.archiveLoadPercentByName(this.field3903.method283());
    }
 
    @ObfuscatedName("k")
@@ -270,7 +273,7 @@ public class RenderOverview {
             class39 var13;
             ScriptEvent var14;
             class47 var15;
-            for(var12 = var10.iterator(); var12.hasNext(); class14.method95(var14)) {
+            for(var12 = var10.iterator(); var12.hasNext(); GrandExchangeEvent.method95(var14)) {
                var13 = (class39)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
@@ -292,7 +295,7 @@ public class RenderOverview {
                   var15 = new class47(var13.field513, var13.field507, var13.field506);
                   var14.method1122(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1117(class226.field2870);
-                  class14.method95(var14);
+                  GrandExchangeEvent.method95(var14);
                }
             }
 
@@ -564,7 +567,7 @@ public class RenderOverview {
       int[] var6 = new int[4];
       Rasterizer2D.copyDrawRegion(var6);
       Rasterizer2D.setDrawRegion(var1, var2, var3 + var1, var2 + var4);
-      Rasterizer2D.method5173(var1, var2, var3, var4, -16777216);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
       int var7 = this.field3877.method5381();
       if(var7 < 100) {
          this.method5413(var1, var2, var3, var4, var7);
@@ -652,9 +655,9 @@ public class RenderOverview {
       byte var6 = 20;
       int var7 = var3 / 2 + var1;
       int var8 = var4 / 2 + var2 - 18 - var6;
-      Rasterizer2D.method5173(var1, var2, var3, var4, -16777216);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
       Rasterizer2D.drawRectangle(var7 - 152, var8, 304, 34, -65536);
-      Rasterizer2D.method5173(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
       this.field3866.method4962("Loading...", var7, var8 + var6, -1, -1);
    }
 
@@ -1100,7 +1103,7 @@ public class RenderOverview {
          var5.method1117(class226.field2868);
       }
 
-      class14.method95(var5);
+      GrandExchangeEvent.method95(var5);
    }
 
    @ObfuscatedName("ba")

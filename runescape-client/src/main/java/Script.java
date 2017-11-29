@@ -116,7 +116,7 @@ public class Script extends CacheableNode {
       if(class91.field1353 > class234.field3220.length) {
          class91.field1353 -= class234.field3220.length;
          var2 = (int)(Math.random() * 12.0D);
-         class87.method1753(class272.field3720[var2]);
+         class87.method1753(class272.runeSprites[var2]);
       }
 
       var2 = 0;
@@ -244,7 +244,7 @@ public class Script extends CacheableNode {
          }
 
          try {
-            AbstractSoundSystem var3 = class3.field20.vmethod1996();
+            AbstractSoundSystem var3 = class3.soundTaskDataProvider.taskData();
             var3.samples = new int[(AbstractSoundSystem.highMemory?2:1) * 256];
             var3.field1544 = var2;
             var3.vmethod2118();
@@ -256,8 +256,8 @@ public class Script extends CacheableNode {
             var3.create(var3.offset);
             if(AbstractSoundSystem.priority > 0 && class33.task == null) {
                class33.task = new SoundTask();
-               class24.field347 = Executors.newScheduledThreadPool(1);
-               class24.field347.scheduleAtFixedRate(class33.task, 0L, 10L, TimeUnit.MILLISECONDS);
+               Size.field347 = Executors.newScheduledThreadPool(1);
+               Size.field347.scheduleAtFixedRate(class33.task, 0L, 10L, TimeUnit.MILLISECONDS);
             }
 
             if(class33.task != null) {
@@ -284,12 +284,12 @@ public class Script extends CacheableNode {
    )
    static void method1909() {
       if(Client.spellSelected) {
-         Widget var0 = MilliTimer.method3058(class37.field489, Client.field917);
+         Widget var0 = MilliTimer.getWidgetChild(class37.field489, Client.field917);
          if(var0 != null && var0.field2816 != null) {
             ScriptEvent var1 = new ScriptEvent();
             var1.widget = var0;
-            var1.field797 = var0.field2816;
-            class14.method95(var1);
+            var1.objs = var0.field2816;
+            GrandExchangeEvent.method95(var1);
          }
 
          Client.spellSelected = false;

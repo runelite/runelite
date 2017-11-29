@@ -31,12 +31,12 @@ final class class18 implements Comparator {
       signature = "(Ly;Ly;I)I",
       garbageValue = "1184595222"
    )
-   int method147(class14 var1, class14 var2) {
+   int method147(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.method93().compareTo(var2.method93());
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method147((class14)var1, (class14)var2);
+      return this.method147((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
@@ -48,17 +48,18 @@ final class class18 implements Comparator {
       signature = "([BZB)Ljava/lang/Object;",
       garbageValue = "-50"
    )
-   public static Object method157(byte[] var0, boolean var1) {
+   @Export("byteArrayToObject")
+   public static Object byteArrayToObject(byte[] var0, boolean var1) {
       if(var0 == null) {
          return null;
       } else {
-         if(var0.length > 136 && !AbstractByteBuffer.field2515) {
+         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
             try {
                DirectByteBuffer var2 = new DirectByteBuffer();
                var2.put(var0);
                return var2;
             } catch (Throwable var3) {
-               AbstractByteBuffer.field2515 = true;
+               AbstractByteBuffer.directBufferUnavailable = true;
             }
          }
 
@@ -75,7 +76,7 @@ final class class18 implements Comparator {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
+         var3 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
       } else {
          var3 = var2?class54.field636:class82.field1265;
       }
@@ -83,9 +84,9 @@ final class class18 implements Comparator {
       String var4 = class82.scriptStringStack[--class82.scriptStringStackSize];
       int[] var5 = null;
       if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
-         int var6 = class82.intStack[--class13.intStackSize];
+         int var6 = class82.intStack[--GrandExchangeEvents.intStackSize];
          if(var6 > 0) {
-            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class82.intStack[--class13.intStackSize]) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class82.intStack[--GrandExchangeEvents.intStackSize]) {
                ;
             }
          }
@@ -100,11 +101,11 @@ final class class18 implements Comparator {
          if(var4.charAt(var7 - 1) == 's') {
             var8[var7] = class82.scriptStringStack[--class82.scriptStringStackSize];
          } else {
-            var8[var7] = new Integer(class82.intStack[--class13.intStackSize]);
+            var8[var7] = new Integer(class82.intStack[--GrandExchangeEvents.intStackSize]);
          }
       }
 
-      var7 = class82.intStack[--class13.intStackSize];
+      var7 = class82.intStack[--GrandExchangeEvents.intStackSize];
       if(var7 != -1) {
          var8[0] = new Integer(var7);
       } else {
@@ -184,48 +185,48 @@ final class class18 implements Comparator {
       garbageValue = "92903918"
    )
    static int method155(int var0, Script var1, boolean var2) {
-      Widget var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
+      Widget var3 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
       if(var0 == 2600) {
-         class82.intStack[++class13.intStackSize - 1] = var3.scrollX;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.scrollX;
          return 1;
       } else if(var0 == 2601) {
-         class82.intStack[++class13.intStackSize - 1] = var3.scrollY;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
          class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
-         class82.intStack[++class13.intStackSize - 1] = var3.scrollWidth;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.scrollWidth;
          return 1;
       } else if(var0 == 2604) {
-         class82.intStack[++class13.intStackSize - 1] = var3.scrollHeight;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 2605) {
-         class82.intStack[++class13.intStackSize - 1] = var3.modelZoom;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.modelZoom;
          return 1;
       } else if(var0 == 2606) {
-         class82.intStack[++class13.intStackSize - 1] = var3.rotationX;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.rotationX;
          return 1;
       } else if(var0 == 2607) {
-         class82.intStack[++class13.intStackSize - 1] = var3.rotationY;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.rotationY;
          return 1;
       } else if(var0 == 2608) {
-         class82.intStack[++class13.intStackSize - 1] = var3.rotationZ;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.rotationZ;
          return 1;
       } else if(var0 == 2609) {
-         class82.intStack[++class13.intStackSize - 1] = var3.opacity;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.opacity;
          return 1;
       } else if(var0 == 2610) {
-         class82.intStack[++class13.intStackSize - 1] = var3.field2729;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.field2729;
          return 1;
       } else if(var0 == 2611) {
-         class82.intStack[++class13.intStackSize - 1] = var3.textColor;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.textColor;
          return 1;
       } else if(var0 == 2612) {
-         class82.intStack[++class13.intStackSize - 1] = var3.field2750;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.field2750;
          return 1;
       } else if(var0 == 2613) {
-         class82.intStack[++class13.intStackSize - 1] = var3.field2754.rsOrdinal();
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.field2754.rsOrdinal();
          return 1;
       } else {
          return 2;

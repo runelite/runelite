@@ -11,7 +11,8 @@ public class PacketNode extends Node {
    @ObfuscatedSignature(
       signature = "[Lfq;"
    )
-   static PacketNode[] field2427;
+   @Export("packetBufferNodes")
+   static PacketNode[] packetBufferNodes;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 244986515
@@ -41,7 +42,7 @@ public class PacketNode extends Node {
    public int field2423;
 
    static {
-      field2427 = new PacketNode[300];
+      packetBufferNodes = new PacketNode[300];
       field2425 = 0;
    }
 
@@ -51,8 +52,8 @@ public class PacketNode extends Node {
       garbageValue = "102"
    )
    public void method3212() {
-      if(field2425 < field2427.length) {
-         field2427[++field2425 - 1] = this;
+      if(field2425 < packetBufferNodes.length) {
+         packetBufferNodes[++field2425 - 1] = this;
       }
    }
 
@@ -63,13 +64,13 @@ public class PacketNode extends Node {
    )
    static void method3214(int var0, IndexFile var1, IndexData var2) {
       FileSystem var3 = new FileSystem();
-      var3.field3282 = 1;
+      var3.type = 1;
       var3.hash = (long)var0;
       var3.index = var1;
       var3.data = var2;
-      Deque var4 = class243.field3307;
-      synchronized(class243.field3307) {
-         class243.field3307.addFront(var3);
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
       }
 
       class209.method3827();

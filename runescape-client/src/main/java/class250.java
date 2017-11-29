@@ -114,13 +114,13 @@ public class class250 extends CacheableNode {
       var0.originalWidth = class295.field3845[0];
       var0.height = class285.field3788[0];
       var0.palette = class115.field1599;
-      var0.pixels = class15.spritePixels[0];
+      var0.pixels = TotalQuantityComparator.spritePixels[0];
       class295.field3848 = null;
       class295.offsetsY = null;
       class295.field3845 = null;
       class285.field3788 = null;
       class115.field1599 = null;
-      class15.spritePixels = null;
+      TotalQuantityComparator.spritePixels = null;
       return var0;
    }
 }

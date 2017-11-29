@@ -118,7 +118,7 @@ public class Overlay extends CacheableNode {
             return;
          }
 
-         this.method4868(var1, var3, var2);
+         this.readNext(var1, var3, var2);
       }
    }
 
@@ -127,7 +127,8 @@ public class Overlay extends CacheableNode {
       signature = "(Lfr;IIB)V",
       garbageValue = "-125"
    )
-   void method4868(Buffer var1, int var2, int var3) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
          this.color = var1.read24BitInt();
       } else if(var2 == 2) {

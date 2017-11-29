@@ -14,12 +14,13 @@ public class class96 {
    @ObfuscatedSignature(
       signature = "Lgi;"
    )
-   static final IterableHashTable field1434;
+   @Export("messages")
+   static final IterableHashTable messages;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lhu;"
    )
-   static final class208 field1435;
+   static final IterableDualNodeQueue field1435;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = 1040414245
@@ -33,8 +34,8 @@ public class class96 {
 
    static {
       chatLineMap = new HashMap();
-      field1434 = new IterableHashTable(1024);
-      field1435 = new class208();
+      messages = new IterableHashTable(1024);
+      field1435 = new IterableDualNodeQueue();
       field1436 = 0;
    }
 

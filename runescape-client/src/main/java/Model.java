@@ -25,9 +25,11 @@ public class Model extends Renderable {
    @ObfuscatedName("ad")
    static boolean[] field1869;
    @ObfuscatedName("an")
-   static int[] field1870;
+   @Export("modelViewportYs")
+   static int[] modelViewportYs;
    @ObfuscatedName("ai")
-   static int[] field1858;
+   @Export("modelViewportXs")
+   static int[] modelViewportXs;
    @ObfuscatedName("ay")
    static int[] field1872;
    @ObfuscatedName("ar")
@@ -65,17 +67,21 @@ public class Model extends Renderable {
    @ObfuscatedName("bn")
    static int field1889;
    @ObfuscatedName("bz")
-   static boolean field1890;
+   @Export("useBoundingBoxes3D")
+   static boolean useBoundingBoxes3D;
    @ObfuscatedName("bb")
-   static int[] field1873;
+   @Export("Model_sine")
+   static int[] Model_sine;
    @ObfuscatedName("bc")
-   static int[] field1894;
+   @Export("Model_cosine")
+   static int[] Model_cosine;
    @ObfuscatedName("bf")
    static int[] field1895;
    @ObfuscatedName("br")
    static int[] field1896;
    @ObfuscatedName("v")
-   int field1835;
+   @Export("verticesCount")
+   int verticesCount;
    @ObfuscatedName("m")
    @Export("verticesX")
    int[] verticesX;
@@ -86,7 +92,8 @@ public class Model extends Renderable {
    @Export("verticesZ")
    int[] verticesZ;
    @ObfuscatedName("p")
-   int field1837;
+   @Export("indicesCount")
+   int indicesCount;
    @ObfuscatedName("r")
    @Export("indices1")
    int[] indices1;
@@ -127,16 +134,20 @@ public class Model extends Renderable {
    @ObfuscatedName("ah")
    public boolean field1855;
    @ObfuscatedName("ak")
-   int field1888;
+   @Export("boundsType")
+   int boundsType;
    @ObfuscatedName("aa")
-   int field1857;
+   @Export("bottomY")
+   int bottomY;
    @ObfuscatedName("ax")
    @Export("XYZMag")
    int XYZMag;
    @ObfuscatedName("aq")
-   int field1859;
+   @Export("diameter")
+   int diameter;
    @ObfuscatedName("au")
-   int field1860;
+   @Export("radius")
+   int radius;
    @ObfuscatedName("al")
    public int field1831;
    @ObfuscatedName("ae")
@@ -157,8 +168,8 @@ public class Model extends Renderable {
       field1832 = new byte[1];
       field1868 = new boolean[4700];
       field1869 = new boolean[4700];
-      field1870 = new int[4700];
-      field1858 = new int[4700];
+      modelViewportYs = new int[4700];
+      modelViewportXs = new int[4700];
       field1872 = new int[4700];
       yViewportBuffer = new int[4700];
       field1874 = new int[4700];
@@ -173,16 +184,16 @@ public class Model extends Renderable {
       field1884 = new int[10];
       field1885 = new int[10];
       xViewportBuffer = new int[10];
-      field1890 = true;
-      field1873 = Graphics3D.SINE;
-      field1894 = Graphics3D.COSINE;
+      useBoundingBoxes3D = true;
+      Model_sine = Graphics3D.SINE;
+      Model_cosine = Graphics3D.COSINE;
       field1895 = Graphics3D.colorPalette;
       field1896 = Graphics3D.field1941;
    }
 
    Model() {
-      this.field1835 = 0;
-      this.field1837 = 0;
+      this.verticesCount = 0;
+      this.indicesCount = 0;
       this.field1848 = 0;
       this.field1839 = 0;
       this.field1855 = false;
@@ -195,8 +206,8 @@ public class Model extends Renderable {
       signature = "([Leh;I)V"
    )
    public Model(Model[] var1, int var2) {
-      this.field1835 = 0;
-      this.field1837 = 0;
+      this.verticesCount = 0;
+      this.indicesCount = 0;
       this.field1848 = 0;
       this.field1839 = 0;
       this.field1855 = false;
@@ -207,8 +218,8 @@ public class Model extends Renderable {
       boolean var4 = false;
       boolean var5 = false;
       boolean var6 = false;
-      this.field1835 = 0;
-      this.field1837 = 0;
+      this.verticesCount = 0;
+      this.indicesCount = 0;
       this.field1839 = 0;
       this.field1848 = -1;
 
@@ -217,8 +228,8 @@ public class Model extends Renderable {
       for(var7 = 0; var7 < var2; ++var7) {
          var8 = var1[var7];
          if(var8 != null) {
-            this.field1835 += var8.field1835;
-            this.field1837 += var8.field1837;
+            this.verticesCount += var8.verticesCount;
+            this.indicesCount += var8.indicesCount;
             this.field1839 += var8.field1839;
             if(var8.field1844 != null) {
                var3 = true;
@@ -238,29 +249,29 @@ public class Model extends Renderable {
          }
       }
 
-      this.verticesX = new int[this.field1835];
-      this.verticesY = new int[this.field1835];
-      this.verticesZ = new int[this.field1835];
-      this.indices1 = new int[this.field1837];
-      this.indices2 = new int[this.field1837];
-      this.indices3 = new int[this.field1837];
-      this.field1862 = new int[this.field1837];
-      this.field1842 = new int[this.field1837];
-      this.field1843 = new int[this.field1837];
+      this.verticesX = new int[this.verticesCount];
+      this.verticesY = new int[this.verticesCount];
+      this.verticesZ = new int[this.verticesCount];
+      this.indices1 = new int[this.indicesCount];
+      this.indices2 = new int[this.indicesCount];
+      this.indices3 = new int[this.indicesCount];
+      this.field1862 = new int[this.indicesCount];
+      this.field1842 = new int[this.indicesCount];
+      this.field1843 = new int[this.indicesCount];
       if(var3) {
-         this.field1844 = new byte[this.field1837];
+         this.field1844 = new byte[this.indicesCount];
       }
 
       if(var4) {
-         this.field1845 = new byte[this.field1837];
+         this.field1845 = new byte[this.indicesCount];
       }
 
       if(var5) {
-         this.field1847 = new short[this.field1837];
+         this.field1847 = new short[this.indicesCount];
       }
 
       if(var6) {
-         this.field1846 = new byte[this.field1837];
+         this.field1846 = new byte[this.indicesCount];
       }
 
       if(this.field1839 > 0) {
@@ -269,64 +280,64 @@ public class Model extends Renderable {
          this.field1852 = new int[this.field1839];
       }
 
-      this.field1835 = 0;
-      this.field1837 = 0;
+      this.verticesCount = 0;
+      this.indicesCount = 0;
       this.field1839 = 0;
 
       for(var7 = 0; var7 < var2; ++var7) {
          var8 = var1[var7];
          if(var8 != null) {
             int var9;
-            for(var9 = 0; var9 < var8.field1837; ++var9) {
-               this.indices1[this.field1837] = this.field1835 + var8.indices1[var9];
-               this.indices2[this.field1837] = this.field1835 + var8.indices2[var9];
-               this.indices3[this.field1837] = this.field1835 + var8.indices3[var9];
-               this.field1862[this.field1837] = var8.field1862[var9];
-               this.field1842[this.field1837] = var8.field1842[var9];
-               this.field1843[this.field1837] = var8.field1843[var9];
+            for(var9 = 0; var9 < var8.indicesCount; ++var9) {
+               this.indices1[this.indicesCount] = this.verticesCount + var8.indices1[var9];
+               this.indices2[this.indicesCount] = this.verticesCount + var8.indices2[var9];
+               this.indices3[this.indicesCount] = this.verticesCount + var8.indices3[var9];
+               this.field1862[this.indicesCount] = var8.field1862[var9];
+               this.field1842[this.indicesCount] = var8.field1842[var9];
+               this.field1843[this.indicesCount] = var8.field1843[var9];
                if(var3) {
                   if(var8.field1844 != null) {
-                     this.field1844[this.field1837] = var8.field1844[var9];
+                     this.field1844[this.indicesCount] = var8.field1844[var9];
                   } else {
-                     this.field1844[this.field1837] = var8.field1848;
+                     this.field1844[this.indicesCount] = var8.field1848;
                   }
                }
 
                if(var4 && var8.field1845 != null) {
-                  this.field1845[this.field1837] = var8.field1845[var9];
+                  this.field1845[this.indicesCount] = var8.field1845[var9];
                }
 
                if(var5) {
                   if(var8.field1847 != null) {
-                     this.field1847[this.field1837] = var8.field1847[var9];
+                     this.field1847[this.indicesCount] = var8.field1847[var9];
                   } else {
-                     this.field1847[this.field1837] = -1;
+                     this.field1847[this.indicesCount] = -1;
                   }
                }
 
                if(var6) {
                   if(var8.field1846 != null && var8.field1846[var9] != -1) {
-                     this.field1846[this.field1837] = (byte)(this.field1839 + var8.field1846[var9]);
+                     this.field1846[this.indicesCount] = (byte)(this.field1839 + var8.field1846[var9]);
                   } else {
-                     this.field1846[this.field1837] = -1;
+                     this.field1846[this.indicesCount] = -1;
                   }
                }
 
-               ++this.field1837;
+               ++this.indicesCount;
             }
 
             for(var9 = 0; var9 < var8.field1839; ++var9) {
-               this.field1850[this.field1839] = this.field1835 + var8.field1850[var9];
-               this.field1851[this.field1839] = this.field1835 + var8.field1851[var9];
-               this.field1852[this.field1839] = this.field1835 + var8.field1852[var9];
+               this.field1850[this.field1839] = this.verticesCount + var8.field1850[var9];
+               this.field1851[this.field1839] = this.verticesCount + var8.field1851[var9];
+               this.field1852[this.field1839] = this.verticesCount + var8.field1852[var9];
                ++this.field1839;
             }
 
-            for(var9 = 0; var9 < var8.field1835; ++var9) {
-               this.verticesX[this.field1835] = var8.verticesX[var9];
-               this.verticesY[this.field1835] = var8.verticesY[var9];
-               this.verticesZ[this.field1835] = var8.verticesZ[var9];
-               ++this.field1835;
+            for(var9 = 0; var9 < var8.verticesCount; ++var9) {
+               this.verticesX[this.verticesCount] = var8.verticesX[var9];
+               this.verticesY[this.verticesCount] = var8.verticesY[var9];
+               this.verticesZ[this.verticesCount] = var8.verticesZ[var9];
+               ++this.verticesCount;
             }
          }
       }
@@ -338,7 +349,7 @@ public class Model extends Renderable {
       signature = "([[IIIIZI)Leh;"
    )
    public Model method2618(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
-      this.method2623();
+      this.calculateBoundsCylinder();
       int var7 = var2 - this.XYZMag;
       int var8 = var2 + this.XYZMag;
       int var9 = var4 - this.XYZMag;
@@ -354,8 +365,8 @@ public class Model extends Renderable {
             Model var11;
             if(var5) {
                var11 = new Model();
-               var11.field1835 = this.field1835;
-               var11.field1837 = this.field1837;
+               var11.verticesCount = this.verticesCount;
+               var11.indicesCount = this.indicesCount;
                var11.field1839 = this.field1839;
                var11.verticesX = this.verticesX;
                var11.verticesZ = this.verticesZ;
@@ -376,7 +387,7 @@ public class Model extends Renderable {
                var11.field1853 = this.field1853;
                var11.field1854 = this.field1854;
                var11.field1855 = this.field1855;
-               var11.verticesY = new int[var11.field1835];
+               var11.verticesY = new int[var11.verticesCount];
             } else {
                var11 = this;
             }
@@ -392,7 +403,7 @@ public class Model extends Renderable {
             int var20;
             int var21;
             if(var6 == 0) {
-               for(var12 = 0; var12 < var11.field1835; ++var12) {
+               for(var12 = 0; var12 < var11.verticesCount; ++var12) {
                   var13 = var2 + this.verticesX[var12];
                   var14 = var4 + this.verticesZ[var12];
                   var15 = var13 & 127;
@@ -405,7 +416,7 @@ public class Model extends Renderable {
                   var11.verticesY[var12] = var21 + this.verticesY[var12] - var3;
                }
             } else {
-               for(var12 = 0; var12 < var11.field1835; ++var12) {
+               for(var12 = 0; var12 < var11.verticesCount; ++var12) {
                   var13 = (-this.verticesY[var12] << 16) / super.modelHeight;
                   if(var13 < var6) {
                      var14 = var2 + this.verticesX[var12];
@@ -422,7 +433,7 @@ public class Model extends Renderable {
                }
             }
 
-            var11.method2668();
+            var11.resetBounds();
             return var11;
          }
       } else {
@@ -435,8 +446,8 @@ public class Model extends Renderable {
       signature = "(Z)Leh;"
    )
    public Model method2619(boolean var1) {
-      if(!var1 && field1871.length < this.field1837) {
-         field1871 = new byte[this.field1837 + 100];
+      if(!var1 && field1871.length < this.indicesCount) {
+         field1871 = new byte[this.indicesCount + 100];
       }
 
       return this.method2621(var1, field1841, field1871);
@@ -447,8 +458,8 @@ public class Model extends Renderable {
       signature = "(Z)Leh;"
    )
    public Model method2620(boolean var1) {
-      if(!var1 && field1832.length < this.field1837) {
-         field1832 = new byte[this.field1837 + 100];
+      if(!var1 && field1832.length < this.indicesCount) {
+         field1832 = new byte[this.indicesCount + 100];
       }
 
       return this.method2621(var1, field1876, field1832);
@@ -459,17 +470,17 @@ public class Model extends Renderable {
       signature = "(ZLeh;[B)Leh;"
    )
    Model method2621(boolean var1, Model var2, byte[] var3) {
-      var2.field1835 = this.field1835;
-      var2.field1837 = this.field1837;
+      var2.verticesCount = this.verticesCount;
+      var2.indicesCount = this.indicesCount;
       var2.field1839 = this.field1839;
-      if(var2.verticesX == null || var2.verticesX.length < this.field1835) {
-         var2.verticesX = new int[this.field1835 + 100];
-         var2.verticesY = new int[this.field1835 + 100];
-         var2.verticesZ = new int[this.field1835 + 100];
+      if(var2.verticesX == null || var2.verticesX.length < this.verticesCount) {
+         var2.verticesX = new int[this.verticesCount + 100];
+         var2.verticesY = new int[this.verticesCount + 100];
+         var2.verticesZ = new int[this.verticesCount + 100];
       }
 
       int var4;
-      for(var4 = 0; var4 < this.field1835; ++var4) {
+      for(var4 = 0; var4 < this.verticesCount; ++var4) {
          var2.verticesX[var4] = this.verticesX[var4];
          var2.verticesY[var4] = this.verticesY[var4];
          var2.verticesZ[var4] = this.verticesZ[var4];
@@ -480,11 +491,11 @@ public class Model extends Renderable {
       } else {
          var2.field1845 = var3;
          if(this.field1845 == null) {
-            for(var4 = 0; var4 < this.field1837; ++var4) {
+            for(var4 = 0; var4 < this.indicesCount; ++var4) {
                var2.field1845[var4] = 0;
             }
          } else {
-            for(var4 = 0; var4 < this.field1837; ++var4) {
+            for(var4 = 0; var4 < this.indicesCount; ++var4) {
                var2.field1845[var4] = this.field1845[var4];
             }
          }
@@ -506,7 +517,7 @@ public class Model extends Renderable {
       var2.field1853 = this.field1853;
       var2.field1854 = this.field1854;
       var2.field1855 = this.field1855;
-      var2.method2668();
+      var2.resetBounds();
       return var2;
    }
 
@@ -519,10 +530,10 @@ public class Model extends Renderable {
          int var5 = 0;
          int var6 = 0;
          int var7 = 0;
-         int var8 = field1894[var1];
-         int var9 = field1873[var1];
+         int var8 = Model_cosine[var1];
+         int var9 = Model_sine[var1];
 
-         for(int var10 = 0; var10 < this.field1835; ++var10) {
+         for(int var10 = 0; var10 < this.verticesCount; ++var10) {
             int var11 = Graphics3D.method2732(this.verticesX[var10], this.verticesZ[var10], var8, var9);
             int var12 = this.verticesY[var10];
             int var13 = Graphics3D.method2738(this.verticesX[var10], this.verticesZ[var10], var8, var9);
@@ -574,14 +585,15 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("b")
-   public void method2623() {
-      if(this.field1888 != 1) {
-         this.field1888 = 1;
+   @Export("calculateBoundsCylinder")
+   public void calculateBoundsCylinder() {
+      if(this.boundsType != 1) {
+         this.boundsType = 1;
          super.modelHeight = 0;
-         this.field1857 = 0;
+         this.bottomY = 0;
          this.XYZMag = 0;
 
-         for(int var1 = 0; var1 < this.field1835; ++var1) {
+         for(int var1 = 0; var1 < this.verticesCount; ++var1) {
             int var2 = this.verticesX[var1];
             int var3 = this.verticesY[var1];
             int var4 = this.verticesZ[var1];
@@ -589,8 +601,8 @@ public class Model extends Renderable {
                super.modelHeight = -var3;
             }
 
-            if(var3 > this.field1857) {
-               this.field1857 = var3;
+            if(var3 > this.bottomY) {
+               this.bottomY = var3;
             }
 
             int var5 = var2 * var2 + var4 * var4;
@@ -600,18 +612,18 @@ public class Model extends Renderable {
          }
 
          this.XYZMag = (int)(Math.sqrt((double)this.XYZMag) + 0.99D);
-         this.field1860 = (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + super.modelHeight * super.modelHeight)) + 0.99D);
-         this.field1859 = this.field1860 + (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + this.field1857 * this.field1857)) + 0.99D);
+         this.radius = (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + super.modelHeight * super.modelHeight)) + 0.99D);
+         this.diameter = this.radius + (int)(Math.sqrt((double)(this.XYZMag * this.XYZMag + this.bottomY * this.bottomY)) + 0.99D);
       }
    }
 
    @ObfuscatedName("t")
    void method2624() {
-      if(this.field1888 != 2) {
-         this.field1888 = 2;
+      if(this.boundsType != 2) {
+         this.boundsType = 2;
          this.XYZMag = 0;
 
-         for(int var1 = 0; var1 < this.field1835; ++var1) {
+         for(int var1 = 0; var1 < this.verticesCount; ++var1) {
             int var2 = this.verticesX[var1];
             int var3 = this.verticesY[var1];
             int var4 = this.verticesZ[var1];
@@ -622,20 +634,21 @@ public class Model extends Renderable {
          }
 
          this.XYZMag = (int)(Math.sqrt((double)this.XYZMag) + 0.99D);
-         this.field1860 = this.XYZMag;
-         this.field1859 = this.XYZMag + this.XYZMag;
+         this.radius = this.XYZMag;
+         this.diameter = this.XYZMag + this.XYZMag;
       }
    }
 
    @ObfuscatedName("p")
    public int method2686() {
-      this.method2623();
+      this.calculateBoundsCylinder();
       return this.XYZMag;
    }
 
    @ObfuscatedName("r")
-   void method2668() {
-      this.field1888 = 0;
+   @Export("resetBounds")
+   void resetBounds() {
+      this.boundsType = 0;
       this.field1864 = -1;
    }
 
@@ -657,7 +670,7 @@ public class Model extends Renderable {
                this.method2678(var4.types[var6], var4.list[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
             }
 
-            this.method2668();
+            this.resetBounds();
          }
       }
    }
@@ -708,7 +721,7 @@ public class Model extends Renderable {
                }
             }
 
-            this.method2668();
+            this.resetBounds();
          } else {
             this.method2627(var1, var2);
          }
@@ -789,24 +802,24 @@ public class Model extends Renderable {
                      int var16;
                      int var17;
                      if(var14 != 0) {
-                        var15 = field1873[var14];
-                        var16 = field1894[var14];
+                        var15 = Model_sine[var14];
+                        var16 = Model_cosine[var14];
                         var17 = var15 * this.verticesY[var11] + var16 * this.verticesX[var11] >> 16;
                         this.verticesY[var11] = var16 * this.verticesY[var11] - var15 * this.verticesX[var11] >> 16;
                         this.verticesX[var11] = var17;
                      }
 
                      if(var12 != 0) {
-                        var15 = field1873[var12];
-                        var16 = field1894[var12];
+                        var15 = Model_sine[var12];
+                        var16 = Model_cosine[var12];
                         var17 = var16 * this.verticesY[var11] - var15 * this.verticesZ[var11] >> 16;
                         this.verticesZ[var11] = var15 * this.verticesY[var11] + var16 * this.verticesZ[var11] >> 16;
                         this.verticesY[var11] = var17;
                      }
 
                      if(var13 != 0) {
-                        var15 = field1873[var13];
-                        var16 = field1894[var13];
+                        var15 = Model_sine[var13];
+                        var16 = Model_cosine[var13];
                         var17 = var15 * this.verticesZ[var11] + var16 * this.verticesX[var11] >> 16;
                         this.verticesZ[var11] = var16 * this.verticesZ[var11] - var15 * this.verticesX[var11] >> 16;
                         this.verticesX[var11] = var17;
@@ -867,93 +880,97 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("s")
-   public void method2630() {
-      for(int var1 = 0; var1 < this.field1835; ++var1) {
+   @Export("rotateY90Ccw")
+   public void rotateY90Ccw() {
+      for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          int var2 = this.verticesX[var1];
          this.verticesX[var1] = this.verticesZ[var1];
          this.verticesZ[var1] = -var2;
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("e")
    public void method2679() {
-      for(int var1 = 0; var1 < this.field1835; ++var1) {
+      for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          this.verticesX[var1] = -this.verticesX[var1];
          this.verticesZ[var1] = -this.verticesZ[var1];
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("q")
    public void method2647() {
-      for(int var1 = 0; var1 < this.field1835; ++var1) {
+      for(int var1 = 0; var1 < this.verticesCount; ++var1) {
          int var2 = this.verticesZ[var1];
          this.verticesZ[var1] = this.verticesX[var1];
          this.verticesX[var1] = -var2;
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("h")
-   public void method2633(int var1) {
-      int var2 = field1873[var1];
-      int var3 = field1894[var1];
+   @Export("rotateZ")
+   public void rotateZ(int var1) {
+      int var2 = Model_sine[var1];
+      int var3 = Model_cosine[var1];
 
-      for(int var4 = 0; var4 < this.field1835; ++var4) {
+      for(int var4 = 0; var4 < this.verticesCount; ++var4) {
          int var5 = var3 * this.verticesY[var4] - var2 * this.verticesZ[var4] >> 16;
          this.verticesZ[var4] = var2 * this.verticesY[var4] + var3 * this.verticesZ[var4] >> 16;
          this.verticesY[var4] = var5;
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("i")
-   public void method2635(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.field1835; ++var4) {
+   @Export("offsetBy")
+   public void offsetBy(int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < this.verticesCount; ++var4) {
          this.verticesX[var4] += var1;
          this.verticesY[var4] += var2;
          this.verticesZ[var4] += var3;
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("o")
-   public void method2626(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.field1835; ++var4) {
+   @Export("scale")
+   public void scale(int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < this.verticesCount; ++var4) {
          this.verticesX[var4] = this.verticesX[var4] * var1 / 128;
          this.verticesY[var4] = var2 * this.verticesY[var4] / 128;
          this.verticesZ[var4] = var3 * this.verticesZ[var4] / 128;
       }
 
-      this.method2668();
+      this.resetBounds();
    }
 
    @ObfuscatedName("w")
    public final void method2652(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       field1861[0] = -1;
-      if(this.field1888 != 2 && this.field1888 != 1) {
+      if(this.boundsType != 2 && this.boundsType != 1) {
          this.method2624();
       }
 
       int var8 = Graphics3D.centerX;
       int var9 = Graphics3D.centerY;
-      int var10 = field1873[var1];
-      int var11 = field1894[var1];
-      int var12 = field1873[var2];
-      int var13 = field1894[var2];
-      int var14 = field1873[var3];
-      int var15 = field1894[var3];
-      int var16 = field1873[var4];
-      int var17 = field1894[var4];
+      int var10 = Model_sine[var1];
+      int var11 = Model_cosine[var1];
+      int var12 = Model_sine[var2];
+      int var13 = Model_cosine[var2];
+      int var14 = Model_sine[var3];
+      int var15 = Model_cosine[var3];
+      int var16 = Model_sine[var4];
+      int var17 = Model_cosine[var4];
       int var18 = var16 * var6 + var17 * var7 >> 16;
 
-      for(int var19 = 0; var19 < this.field1835; ++var19) {
+      for(int var19 = 0; var19 < this.verticesCount; ++var19) {
          int var20 = this.verticesX[var19];
          int var21 = this.verticesY[var19];
          int var22 = this.verticesZ[var19];
@@ -982,8 +999,8 @@ public class Model extends Renderable {
          var23 = var21 * var17 - var22 * var16 >> 16;
          var22 = var21 * var16 + var22 * var17 >> 16;
          field1872[var19] = var22 - var18;
-         field1870[var19] = var20 * Graphics3D.field1928 / var22 + var8;
-         field1858[var19] = var23 * Graphics3D.field1928 / var22 + var9;
+         modelViewportYs[var19] = var20 * Graphics3D.Rasterizer3D_zoom / var22 + var8;
+         modelViewportXs[var19] = var23 * Graphics3D.Rasterizer3D_zoom / var22 + var9;
          if(this.field1839 > 0) {
             yViewportBuffer[var19] = var20;
             field1874[var19] = var23;
@@ -992,7 +1009,7 @@ public class Model extends Renderable {
       }
 
       try {
-         this.method2666(false, false, false, 0);
+         this.method0(false, false, false, 0);
       } catch (Exception var25) {
          ;
       }
@@ -1002,23 +1019,23 @@ public class Model extends Renderable {
    @ObfuscatedName("ah")
    public final void method2629(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       field1861[0] = -1;
-      if(this.field1888 != 2 && this.field1888 != 1) {
+      if(this.boundsType != 2 && this.boundsType != 1) {
          this.method2624();
       }
 
       int var9 = Graphics3D.centerX;
       int var10 = Graphics3D.centerY;
-      int var11 = field1873[var1];
-      int var12 = field1894[var1];
-      int var13 = field1873[var2];
-      int var14 = field1894[var2];
-      int var15 = field1873[var3];
-      int var16 = field1894[var3];
-      int var17 = field1873[var4];
-      int var18 = field1894[var4];
+      int var11 = Model_sine[var1];
+      int var12 = Model_cosine[var1];
+      int var13 = Model_sine[var2];
+      int var14 = Model_cosine[var2];
+      int var15 = Model_sine[var3];
+      int var16 = Model_cosine[var3];
+      int var17 = Model_sine[var4];
+      int var18 = Model_cosine[var4];
       int var19 = var17 * var6 + var18 * var7 >> 16;
 
-      for(int var20 = 0; var20 < this.field1835; ++var20) {
+      for(int var20 = 0; var20 < this.verticesCount; ++var20) {
          int var21 = this.verticesX[var20];
          int var22 = this.verticesY[var20];
          int var23 = this.verticesZ[var20];
@@ -1047,8 +1064,8 @@ public class Model extends Renderable {
          var24 = var22 * var18 - var23 * var17 >> 16;
          var23 = var22 * var17 + var23 * var18 >> 16;
          field1872[var20] = var23 - var19;
-         field1870[var20] = var9 + var21 * Graphics3D.field1928 / var8;
-         field1858[var20] = var10 + var24 * Graphics3D.field1928 / var8;
+         modelViewportYs[var20] = var9 + var21 * Graphics3D.Rasterizer3D_zoom / var8;
+         modelViewportXs[var20] = var10 + var24 * Graphics3D.Rasterizer3D_zoom / var8;
          if(this.field1839 > 0) {
             yViewportBuffer[var20] = var21;
             field1874[var20] = var24;
@@ -1057,7 +1074,7 @@ public class Model extends Renderable {
       }
 
       try {
-         this.method2666(false, false, false, 0);
+         this.method0(false, false, false, 0);
       } catch (Exception var26) {
          ;
       }
@@ -1065,10 +1082,11 @@ public class Model extends Renderable {
    }
 
    @ObfuscatedName("ak")
-   final void method2666(boolean var1, boolean var2, boolean var3, int var4) {
-      if(this.field1859 < 1600) {
+   @Export("method0")
+   final void method0(boolean var1, boolean var2, boolean var3, int var4) {
+      if(this.diameter < 1600) {
          int var5;
-         for(var5 = 0; var5 < this.field1859; ++var5) {
+         for(var5 = 0; var5 < this.diameter; ++var5) {
             field1861[var5] = 0;
          }
 
@@ -1087,45 +1105,45 @@ public class Model extends Renderable {
          int var18;
          int var19;
          int var20;
-         if(class7.field224 && var2) {
+         if(class7.drawObjectGeometry2D && var2) {
             Model var6 = this;
 
-            for(var7 = 0; var7 < var6.field1837; ++var7) {
+            for(var7 = 0; var7 < var6.indicesCount; ++var7) {
                if(var6.field1843[var7] != -2) {
                   var8 = var6.indices1[var7];
                   var9 = var6.indices2[var7];
                   var10 = var6.indices3[var7];
-                  var11 = field1870[var8];
-                  var12 = field1870[var9];
-                  var13 = field1870[var10];
-                  var14 = field1858[var8];
-                  var15 = field1858[var9];
-                  var16 = field1858[var10];
+                  var11 = modelViewportYs[var8];
+                  var12 = modelViewportYs[var9];
+                  var13 = modelViewportYs[var10];
+                  var14 = modelViewportXs[var8];
+                  var15 = modelViewportXs[var9];
+                  var16 = modelViewportXs[var10];
                   var17 = Math.min(var11, Math.min(var12, var13)) - var5;
                   var18 = Math.max(var11, Math.max(var12, var13)) + var5;
                   var19 = Math.min(var14, Math.min(var15, var16)) - var5;
                   var20 = Math.max(var14, Math.max(var15, var16)) + var5;
-                  class7.field226.method3725(new class8(var17, var19, var18, var20, -49088));
+                  class7.boundingBoxes.addFirst(new BoundingBox2D(var17, var19, var18, var20, -49088));
                }
             }
          }
 
          int var26;
-         for(var26 = 0; var26 < this.field1837; ++var26) {
+         for(var26 = 0; var26 < this.indicesCount; ++var26) {
             if(this.field1843[var26] != -2) {
                var7 = this.indices1[var26];
                var8 = this.indices2[var26];
                var9 = this.indices3[var26];
-               var10 = field1870[var7];
-               var11 = field1870[var8];
-               var12 = field1870[var9];
+               var10 = modelViewportYs[var7];
+               var11 = modelViewportYs[var8];
+               var12 = modelViewportYs[var9];
                if(!var1 || var10 != -5000 && var11 != -5000 && var12 != -5000) {
-                  if(var2 && class3.method10(field1858[var7], field1858[var8], field1858[var9], var10, var11, var12, var5)) {
-                     class133.field1903[++class133.field1909 - 1] = var4;
+                  if(var2 && class3.method10(modelViewportXs[var7], modelViewportXs[var8], modelViewportXs[var9], var10, var11, var12, var5)) {
+                     class133.Viewport_entityIdsAtMouse[++class133.Viewport_entityCountAtMouse - 1] = var4;
                      var2 = false;
                   }
 
-                  if((var10 - var11) * (field1858[var9] - field1858[var8]) - (var12 - var11) * (field1858[var7] - field1858[var8]) > 0) {
+                  if((var10 - var11) * (modelViewportXs[var9] - modelViewportXs[var8]) - (var12 - var11) * (modelViewportXs[var7] - modelViewportXs[var8]) > 0) {
                      field1869[var26] = false;
                      if(var10 >= 0 && var11 >= 0 && var12 >= 0 && var10 <= Graphics3D.rasterClipX && var11 <= Graphics3D.rasterClipX && var12 <= Graphics3D.rasterClipX) {
                         field1868[var26] = false;
@@ -1133,7 +1151,7 @@ public class Model extends Renderable {
                         field1868[var26] = true;
                      }
 
-                     var13 = (field1872[var7] + field1872[var8] + field1872[var9]) / 3 + this.field1860;
+                     var13 = (field1872[var7] + field1872[var8] + field1872[var9]) / 3 + this.radius;
                      field1849[var13][field1861[var13]++] = var26;
                   }
                } else {
@@ -1157,7 +1175,7 @@ public class Model extends Renderable {
                   int var24 = var13 * var18 - var16 * var15;
                   if(var14 * var22 + var17 * var23 + var20 * var24 > 0) {
                      field1869[var26] = true;
-                     int var25 = (field1872[var7] + field1872[var8] + field1872[var9]) / 3 + this.field1860;
+                     int var25 = (field1872[var7] + field1872[var8] + field1872[var9]) / 3 + this.radius;
                      field1849[var25][field1861[var25]++] = var26;
                   }
                }
@@ -1166,7 +1184,7 @@ public class Model extends Renderable {
 
          int[] var27;
          if(this.field1844 == null) {
-            for(var26 = this.field1859 - 1; var26 >= 0; --var26) {
+            for(var26 = this.diameter - 1; var26 >= 0; --var26) {
                var7 = field1861[var26];
                if(var7 > 0) {
                   var27 = field1849[var26];
@@ -1183,7 +1201,7 @@ public class Model extends Renderable {
                field1883[var26] = 0;
             }
 
-            for(var26 = this.field1859 - 1; var26 >= 0; --var26) {
+            for(var26 = this.diameter - 1; var26 >= 0; --var26) {
                var7 = field1861[var26];
                if(var7 > 0) {
                   var27 = field1849[var26];
@@ -1344,14 +1362,14 @@ public class Model extends Renderable {
             }
 
             if(this.field1843[var1] == -1) {
-               Graphics3D.rasterTextureAffine(field1858[var2], field1858[var3], field1858[var4], field1870[var2], field1870[var3], field1870[var4], this.field1862[var1], this.field1862[var1], this.field1862[var1], yViewportBuffer[var5], yViewportBuffer[var6], yViewportBuffer[var7], field1874[var5], field1874[var6], field1874[var7], field1875[var5], field1875[var6], field1875[var7], this.field1847[var1]);
+               Graphics3D.rasterTextureAffine(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.field1862[var1], this.field1862[var1], this.field1862[var1], yViewportBuffer[var5], yViewportBuffer[var6], yViewportBuffer[var7], field1874[var5], field1874[var6], field1874[var7], field1875[var5], field1875[var6], field1875[var7], this.field1847[var1]);
             } else {
-               Graphics3D.rasterTextureAffine(field1858[var2], field1858[var3], field1858[var4], field1870[var2], field1870[var3], field1870[var4], this.field1862[var1], this.field1842[var1], this.field1843[var1], yViewportBuffer[var5], yViewportBuffer[var6], yViewportBuffer[var7], field1874[var5], field1874[var6], field1874[var7], field1875[var5], field1875[var6], field1875[var7], this.field1847[var1]);
+               Graphics3D.rasterTextureAffine(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.field1862[var1], this.field1842[var1], this.field1843[var1], yViewportBuffer[var5], yViewportBuffer[var6], yViewportBuffer[var7], field1874[var5], field1874[var6], field1874[var7], field1875[var5], field1875[var6], field1875[var7], this.field1847[var1]);
             }
          } else if(this.field1843[var1] == -1) {
-            Graphics3D.rasterFlat(field1858[var2], field1858[var3], field1858[var4], field1870[var2], field1870[var3], field1870[var4], field1895[this.field1862[var1]]);
+            Graphics3D.rasterFlat(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], field1895[this.field1862[var1]]);
          } else {
-            Graphics3D.rasterGouraud(field1858[var2], field1858[var3], field1858[var4], field1870[var2], field1870[var3], field1870[var4], this.field1862[var1], this.field1842[var1], this.field1843[var1]);
+            Graphics3D.rasterGouraud(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.field1862[var1], this.field1842[var1], this.field1843[var1]);
          }
 
       }
@@ -1379,8 +1397,8 @@ public class Model extends Renderable {
       int var13;
       int var14;
       if(var8 >= 50) {
-         field1884[var4] = field1870[var5];
-         field1885[var4] = field1858[var5];
+         field1884[var4] = modelViewportYs[var5];
+         field1885[var4] = modelViewportXs[var5];
          xViewportBuffer[var4++] = this.field1862[var1];
       } else {
          var11 = yViewportBuffer[var5];
@@ -1388,22 +1406,22 @@ public class Model extends Renderable {
          var13 = this.field1862[var1];
          if(var10 >= 50) {
             var14 = field1896[var10 - var8] * (50 - var8);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var7] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var7] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1843[var1] - var13) * var14 >> 16);
          }
 
          if(var9 >= 50) {
             var14 = field1896[var9 - var8] * (50 - var8);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var6] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var6] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1842[var1] - var13) * var14 >> 16);
          }
       }
 
       if(var9 >= 50) {
-         field1884[var4] = field1870[var6];
-         field1885[var4] = field1858[var6];
+         field1884[var4] = modelViewportYs[var6];
+         field1885[var4] = modelViewportXs[var6];
          xViewportBuffer[var4++] = this.field1842[var1];
       } else {
          var11 = yViewportBuffer[var6];
@@ -1411,22 +1429,22 @@ public class Model extends Renderable {
          var13 = this.field1842[var1];
          if(var8 >= 50) {
             var14 = field1896[var8 - var9] * (50 - var9);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var5] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var5] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1862[var1] - var13) * var14 >> 16);
          }
 
          if(var10 >= 50) {
             var14 = field1896[var10 - var9] * (50 - var9);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var7] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var7] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var7] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1843[var1] - var13) * var14 >> 16);
          }
       }
 
       if(var10 >= 50) {
-         field1884[var4] = field1870[var7];
-         field1885[var4] = field1858[var7];
+         field1884[var4] = modelViewportYs[var7];
+         field1885[var4] = modelViewportXs[var7];
          xViewportBuffer[var4++] = this.field1843[var1];
       } else {
          var11 = yViewportBuffer[var7];
@@ -1434,15 +1452,15 @@ public class Model extends Renderable {
          var13 = this.field1843[var1];
          if(var9 >= 50) {
             var14 = field1896[var9 - var10] * (50 - var10);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var6] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var6] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var6] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1842[var1] - var13) * var14 >> 16);
          }
 
          if(var8 >= 50) {
             var14 = field1896[var8 - var10] * (50 - var10);
-            field1884[var4] = var2 + Graphics3D.field1928 * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
-            field1885[var4] = var3 + Graphics3D.field1928 * (var12 + ((field1874[var5] - var12) * var14 >> 16)) / 50;
+            field1884[var4] = var2 + Graphics3D.Rasterizer3D_zoom * (var11 + ((yViewportBuffer[var5] - var11) * var14 >> 16)) / 50;
+            field1885[var4] = var3 + Graphics3D.Rasterizer3D_zoom * (var12 + ((field1874[var5] - var12) * var14 >> 16)) / 50;
             xViewportBuffer[var4++] = var13 + ((this.field1862[var1] - var13) * var14 >> 16);
          }
       }
@@ -1528,8 +1546,8 @@ public class Model extends Renderable {
    @Export("draw")
    void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       field1861[0] = -1;
-      if(this.field1888 != 1) {
-         this.method2623();
+      if(this.boundsType != 1) {
+         this.calculateBoundsCylinder();
       }
 
       this.method2622(var1);
@@ -1539,17 +1557,17 @@ public class Model extends Renderable {
       int var13 = var11 + var12;
       if(var13 > 50 && var11 < 3500) {
          int var14 = var8 * var4 + var5 * var6 >> 16;
-         int var15 = (var14 - this.XYZMag) * Graphics3D.field1928;
-         if(var15 / var13 < Graphics3D.field1934) {
-            int var16 = (var14 + this.XYZMag) * Graphics3D.field1928;
-            if(var16 / var13 > Graphics3D.field1933) {
+         int var15 = (var14 - this.XYZMag) * Graphics3D.Rasterizer3D_zoom;
+         if(var15 / var13 < Graphics3D.Rasterizer3D_clipMidX2) {
+            int var16 = (var14 + this.XYZMag) * Graphics3D.Rasterizer3D_zoom;
+            if(var16 / var13 > Graphics3D.Rasterizer3D_clipNegativeMidX) {
                int var17 = var3 * var7 - var10 * var2 >> 16;
                int var18 = var2 * this.XYZMag >> 16;
-               int var19 = (var17 + var18) * Graphics3D.field1928;
-               if(var19 / var13 > Graphics3D.field1935) {
+               int var19 = (var17 + var18) * Graphics3D.Rasterizer3D_zoom;
+               if(var19 / var13 > Graphics3D.Rasterizer3D_clipNegativeMidY) {
                   int var20 = (var3 * super.modelHeight >> 16) + var18;
-                  int var21 = (var17 - var20) * Graphics3D.field1928;
-                  if(var21 / var13 < Graphics3D.field1936) {
+                  int var21 = (var17 - var20) * Graphics3D.Rasterizer3D_zoom;
+                  if(var21 / var13 < Graphics3D.Rasterizer3D_clipMidY2) {
                      int var22 = var12 + (var2 * super.modelHeight >> 16);
                      boolean var23 = false;
                      boolean var24 = false;
@@ -1559,9 +1577,9 @@ public class Model extends Renderable {
 
                      boolean var25 = var24 || this.field1839 > 0;
                      int var26 = BaseVarType.method11();
-                     int var27 = class133.field1901;
+                     int var27 = class133.Viewport_mouseY;
                      boolean var29 = class87.method1763();
-                     if(class7.field227 && var9 > 0) {
+                     if(class7.drawBoundingBoxes3D && var9 > 0) {
                         VertexNormal.method2712(this, var6, var7, var8);
                      }
 
@@ -1574,7 +1592,7 @@ public class Model extends Renderable {
                      int var37;
                      int var38;
                      int var39;
-                     if(class7.field222 && var9 > 0) {
+                     if(class7.drawBoundingBoxes2D && var9 > 0) {
                         int var30 = var11 - var12;
                         if(var30 <= 50) {
                            var30 = 50;
@@ -1607,14 +1625,14 @@ public class Model extends Renderable {
                         var39 = var33 + Graphics3D.centerY;
                         int var40 = var32 + Graphics3D.centerX;
                         int var41 = var34 + Graphics3D.centerY;
-                        class7.field226.method3725(new class8(var38, var39, var40, var41, var35));
+                        class7.boundingBoxes.addFirst(new BoundingBox2D(var38, var39, var40, var41, var35));
                      }
 
                      boolean var44 = false;
                      if(var9 > 0 && var29) {
                         boolean var45 = false;
-                        if(field1890) {
-                           var45 = class214.method4052(this, var6, var7, var8);
+                        if(useBoundingBoxes3D) {
+                           var45 = class214.boundingBox3DContainsMouse(this, var6, var7, var8);
                         } else {
                            var32 = var11 - var12;
                            if(var32 <= 50) {
@@ -1646,7 +1664,7 @@ public class Model extends Renderable {
 
                         if(var45) {
                            if(this.field1855) {
-                              class133.field1903[++class133.field1909 - 1] = var9;
+                              class133.Viewport_entityIdsAtMouse[++class133.Viewport_entityCountAtMouse - 1] = var9;
                            } else {
                               var44 = true;
                            }
@@ -1658,11 +1676,11 @@ public class Model extends Renderable {
                      var33 = 0;
                      var34 = 0;
                      if(var1 != 0) {
-                        var33 = field1873[var1];
-                        var34 = field1894[var1];
+                        var33 = Model_sine[var1];
+                        var34 = Model_cosine[var1];
                      }
 
-                     for(var35 = 0; var35 < this.field1835; ++var35) {
+                     for(var35 = 0; var35 < this.verticesCount; ++var35) {
                         var36 = this.verticesX[var35];
                         var37 = this.verticesY[var35];
                         var38 = this.verticesZ[var35];
@@ -1682,10 +1700,10 @@ public class Model extends Renderable {
                         var38 = var37 * var2 + var3 * var38 >> 16;
                         field1872[var35] = var38 - var11;
                         if(var38 >= 50) {
-                           field1870[var35] = var36 * Graphics3D.field1928 / var38 + var31;
-                           field1858[var35] = var39 * Graphics3D.field1928 / var38 + var32;
+                           modelViewportYs[var35] = var36 * Graphics3D.Rasterizer3D_zoom / var38 + var31;
+                           modelViewportXs[var35] = var39 * Graphics3D.Rasterizer3D_zoom / var38 + var32;
                         } else {
-                           field1870[var35] = -5000;
+                           modelViewportYs[var35] = -5000;
                            var23 = true;
                         }
 
@@ -1697,7 +1715,7 @@ public class Model extends Renderable {
                      }
 
                      try {
-                        this.method2666(var23, var44, this.field1855, var9);
+                        this.method0(var23, var44, this.field1855, var9);
                      } catch (Exception var43) {
                         ;
                      }

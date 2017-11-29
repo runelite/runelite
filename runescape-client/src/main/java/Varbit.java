@@ -55,7 +55,7 @@ public class Varbit extends CacheableNode {
             return;
          }
 
-         this.method4579(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -64,7 +64,8 @@ public class Varbit extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "1685092790"
    )
-   void method4579(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();

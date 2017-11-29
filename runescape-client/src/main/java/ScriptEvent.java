@@ -19,9 +19,11 @@ public class ScriptEvent extends Node {
    @Export("headIconsPrayer")
    static SpritePixels[] headIconsPrayer;
    @ObfuscatedName("d")
-   Object[] field797;
+   @Export("objs")
+   Object[] objs;
    @ObfuscatedName("x")
-   boolean field798;
+   @Export("boolean1")
+   boolean boolean1;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lhx;"
@@ -59,7 +61,8 @@ public class ScriptEvent extends Node {
    )
    int field810;
    @ObfuscatedName("r")
-   String field805;
+   @Export("string")
+   String string;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 89196773
@@ -81,7 +84,7 @@ public class ScriptEvent extends Node {
       garbageValue = "56"
    )
    public void method1122(Object[] var1) {
-      this.field797 = var1;
+      this.objs = var1;
    }
 
    @ObfuscatedName("x")
@@ -139,7 +142,7 @@ public class ScriptEvent extends Node {
          int var4 = Client.menuIdentifiers[var0];
          String var5 = Client.menuOptions[var0];
          String var6 = Client.menuTargets[var0];
-         ItemLayer.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.field709, MouseInput.field710);
+         ItemLayer.menuAction(var1, var2, var3, var4, var5, var6, MouseInput.mouseLastPressedX, MouseInput.mouseLastPressedY);
       }
    }
 }

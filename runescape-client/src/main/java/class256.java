@@ -8,7 +8,8 @@ public class class256 {
    @ObfuscatedSignature(
       signature = "Lka;"
    )
-   static MachineInfo field3447;
+   @Export("platformInfo")
+   static MachineInfo platformInfo;
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(

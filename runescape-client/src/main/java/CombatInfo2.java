@@ -97,14 +97,15 @@ public class CombatInfo2 extends CacheableNode {
       signature = "(Lfr;I)V",
       garbageValue = "1686064451"
    )
-   public void method4547(Buffer var1) {
+   @Export("read")
+   public void read(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4554(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -113,7 +114,8 @@ public class CombatInfo2 extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "831015198"
    )
-   void method4554(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          var1.readUnsignedShort();
       } else if(var2 == 2) {
@@ -153,7 +155,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class74.field864, this.field3441, 0);
+            var1 = ClassInfo.method5123(OwnWorldComparator.field864, this.field3441, 0);
             if(var1 != null) {
                spriteCache.put(var1, (long)this.field3441);
             }
@@ -176,7 +178,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = ClassInfo.method5123(class74.field864, this.field3434, 0);
+            var1 = ClassInfo.method5123(OwnWorldComparator.field864, this.field3434, 0);
             if(var1 != null) {
                spriteCache.put(var1, (long)this.field3434);
             }

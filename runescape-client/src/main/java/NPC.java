@@ -57,7 +57,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class13.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && GrandExchangeEvents.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -68,12 +68,12 @@ public final class NPC extends Actor {
       for(int var5 = super.queueSize; var5 > 0; --var5) {
          super.pathX[var5] = super.pathX[var5 - 1];
          super.pathY[var5] = super.pathY[var5 - 1];
-         super.field1203[var5] = super.field1203[var5 - 1];
+         super.pathTraversed[var5] = super.pathTraversed[var5 - 1];
       }
 
       super.pathX[0] = var3;
       super.pathY[0] = var4;
-      super.field1203[0] = var2;
+      super.pathTraversed[0] = var2;
    }
 
    @ObfuscatedName("x")
@@ -82,7 +82,7 @@ public final class NPC extends Actor {
       garbageValue = "1971703670"
    )
    final void method1738(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class13.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && GrandExchangeEvents.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -97,12 +97,12 @@ public final class NPC extends Actor {
             for(int var6 = super.queueSize; var6 > 0; --var6) {
                super.pathX[var6] = super.pathX[var6 - 1];
                super.pathY[var6] = super.pathY[var6 - 1];
-               super.field1203[var6] = super.field1203[var6 - 1];
+               super.pathTraversed[var6] = super.pathTraversed[var6 - 1];
             }
 
             super.pathX[0] = var1;
             super.pathY[0] = var2;
-            super.field1203[0] = 1;
+            super.pathTraversed[0] = 1;
             return;
          }
       }
@@ -125,18 +125,18 @@ public final class NPC extends Actor {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class13.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?class13.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4827(var1, super.actionFrame, var2, super.poseFrame);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GrandExchangeEvents.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GrandExchangeEvents.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.getModel(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
          } else {
-            var3.method2623();
+            var3.calculateBoundsCylinder();
             super.field1179 = var3.modelHeight;
             if(super.graphic != -1 && super.field1184 != -1) {
-               Model var4 = class227.getSpotAnimType(super.graphic).method4494(super.field1184);
+               Model var4 = class227.getSpotAnimType(super.graphic).getModel(super.field1184);
                if(var4 != null) {
-                  var4.method2635(0, -super.field1187, 0);
+                  var4.offsetBy(0, -super.field1187, 0);
                   Model[] var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }

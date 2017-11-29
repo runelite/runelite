@@ -172,7 +172,7 @@ public class class111 {
    )
    @Export("encodeClassVerifier")
    public static void encodeClassVerifier(PacketBuffer var0) {
-      ClassInfo var1 = (ClassInfo)class289.field3806.method3723();
+      ClassInfo var1 = (ClassInfo)class289.classInfos.last();
       if(var1 != null) {
          int var2 = var0.offset;
          var0.putInt(var1.field3795);
@@ -284,8 +284,8 @@ public class class111 {
          Renderable.method2993();
       } else {
          Client.field919.method5095();
-         class12.setGameState(40);
-         FileOnDisk.field1685 = Client.field916.method1933();
+         WorldComparator.setGameState(40);
+         FileOnDisk.field1685 = Client.field916.getSocket();
          Client.field916.method1939();
       }
    }

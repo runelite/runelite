@@ -335,20 +335,20 @@ public class class34 {
       int var5 = var3.field384[0][var1][var2] - 1;
       int var6 = var3.field386[0][var1][var2] - 1;
       if(var5 == -1 && var6 == -1) {
-         Rasterizer2D.method5173(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, this.field453);
+         Rasterizer2D.Rasterizer2D_fillRectangle(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, this.field453);
       }
 
       int var7 = 16711935;
       if(var6 != -1) {
-         var7 = class24.method182(var6, this.field453);
+         var7 = Size.method182(var6, this.field453);
       }
 
       if(var6 > -1 && var3.field378[0][var1][var2] == 0) {
-         Rasterizer2D.method5173(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var7);
+         Rasterizer2D.Rasterizer2D_fillRectangle(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var7);
       } else {
          int var8 = this.method381(var1, var2, var3);
          if(var6 == -1) {
-            Rasterizer2D.method5173(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var8);
+            Rasterizer2D.Rasterizer2D_fillRectangle(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var8);
          } else {
             var4.method667(this.field460 * var1, this.field460 * (63 - var2), var8, var7, this.field460, this.field460, var3.field378[0][var1][var2], var3.field387[0][var1][var2]);
          }
@@ -364,9 +364,9 @@ public class class34 {
       for(int var5 = 1; var5 < var3.field383; ++var5) {
          int var6 = var3.field386[var5][var1][var2] - 1;
          if(var6 > -1) {
-            int var7 = class24.method182(var6, this.field453);
+            int var7 = Size.method182(var6, this.field453);
             if(var3.field378[var5][var1][var2] == 0) {
-               Rasterizer2D.method5173(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var7);
+               Rasterizer2D.Rasterizer2D_fillRectangle(this.field460 * var1, this.field460 * (63 - var2), this.field460, this.field460, var7);
             } else {
                var4.method667(this.field460 * var1, this.field460 * (63 - var2), 0, var7, this.field460, this.field460, var3.field378[var5][var1][var2], var3.field387[var5][var1][var2]);
             }
@@ -494,7 +494,7 @@ public class class34 {
          for(int var8 = var2; var8 < var2 + var4; ++var8) {
             int var9 = var5.field384[0][var7][var8] - 1;
             if(var9 != -1) {
-               FloorUnderlayDefinition var10 = ScriptState.method1093(var9);
+               FloorUnderlayDefinition var10 = ScriptState.getUnderlayDefinition(var9);
                var6.method622(var7, var8, 5, var10);
             }
          }
@@ -512,7 +512,7 @@ public class class34 {
          for(int var10 = 0; var10 < var6; ++var10) {
             int var11 = var7.method400(var9 + var1, var10 + var2);
             if(var11 != -1) {
-               FloorUnderlayDefinition var12 = ScriptState.method1093(var11);
+               FloorUnderlayDefinition var12 = ScriptState.getUnderlayDefinition(var11);
                var8.method622(var3 + var9, var10 + var4, 5, var12);
             }
          }
@@ -579,7 +579,7 @@ public class class34 {
                class31 var8 = var6[var7];
                if(class111.method2196(var8.field426)) {
                   ObjectComposition var9 = class3.getObjectDefinition(var8.field420);
-                  int var10 = var9.field3518 != 0?-3407872:-3355444;
+                  int var10 = var9.int1 != 0?-3407872:-3355444;
                   if(var8.field426 == class228.field2892.field2908) {
                      this.method430(var1, var2, var8.field418, var10);
                   }
@@ -786,7 +786,7 @@ public class class34 {
       garbageValue = "97"
    )
    void method501(int var1, int var2, class28 var3) {
-      field466.method4107(0, var1, var2);
+      field466.set(0, var1, var2);
 
       for(int var4 = 0; var4 < var3.field383; ++var4) {
          class31[] var5 = var3.field388[var4][var1][var2];
@@ -905,20 +905,20 @@ public class class34 {
       garbageValue = "248424233"
    )
    class33 method396(Area var1) {
-      if(var1.name != null && this.field465 != null && this.field465.get(class24.field343) != null) {
+      if(var1.name != null && this.field465 != null && this.field465.get(Size.field343) != null) {
          int var3 = var1.field3371;
-         class24[] var4 = new class24[]{class24.field343, class24.field342, class24.field341};
-         class24[] var5 = var4;
+         Size[] var4 = new Size[]{Size.field343, Size.field342, Size.field341};
+         Size[] var5 = var4;
          int var6 = 0;
 
-         class24 var2;
+         Size var2;
          while(true) {
             if(var6 >= var5.length) {
                var2 = null;
                break;
             }
 
-            class24 var7 = var5[var6];
+            Size var7 = var5[var6];
             if(var3 == var7.field345) {
                var2 = var7;
                break;
@@ -1066,10 +1066,10 @@ public class class34 {
       class61.field736 = new byte[4][104][104];
       class36.field481 = new byte[4][104][104];
       class61.field726 = new byte[4][104][104];
-      class10.field242 = new int[4][105][105];
+      BoundingBox3D.field242 = new int[4][105][105];
       ScriptState.field745 = new byte[4][105][105];
       class61.field727 = new int[105][105];
-      class15.field287 = new int[104];
+      TotalQuantityComparator.field287 = new int[104];
       class43.field545 = new int[104];
       GrandExchangeOffer.field300 = new int[104];
       Permission.field3260 = new int[104];
@@ -1111,13 +1111,13 @@ public class class34 {
                var6.decodeApperance(class94.field1407[var1]);
             }
 
-            var6.orientation = class94.field1417[var1];
-            var6.interacting = class94.field1418[var1];
-            var7 = class94.field1416[var1];
+            var6.orientation = class94.Players_orientations[var1];
+            var6.interacting = class94.Players_targetIndices[var1];
+            var7 = class94.Players_regions[var1];
             var8 = var7 >> 28;
             var9 = var7 >> 14 & 255;
             var10 = var7 & 255;
-            var6.field1203[0] = class94.field1410[var1];
+            var6.pathTraversed[0] = class94.field1410[var1];
             var6.field853 = (byte)var8;
             var6.method1156((var9 << 13) + var3 - IndexDataBase.baseX, (var10 << 13) + var4 - Occluder.baseY);
             var6.field836 = false;
@@ -1125,8 +1125,8 @@ public class class34 {
          }
       } else if(var2 == 1) {
          var3 = var0.getBits(2);
-         var4 = class94.field1416[var1];
-         class94.field1416[var1] = (var4 & 268435455) + (((var4 >> 28) + var3 & 3) << 28);
+         var4 = class94.Players_regions[var1];
+         class94.Players_regions[var1] = (var4 & 268435455) + (((var4 >> 28) + var3 & 3) << 28);
          return false;
       } else {
          int var5;
@@ -1135,7 +1135,7 @@ public class class34 {
             var3 = var0.getBits(5);
             var4 = var3 >> 3;
             var5 = var3 & 7;
-            var11 = class94.field1416[var1];
+            var11 = class94.Players_regions[var1];
             var7 = (var11 >> 28) + var4 & 3;
             var8 = var11 >> 14 & 255;
             var9 = var11 & 255;
@@ -1175,18 +1175,18 @@ public class class34 {
                ++var9;
             }
 
-            class94.field1416[var1] = (var8 << 14) + var9 + (var7 << 28);
+            class94.Players_regions[var1] = (var8 << 14) + var9 + (var7 << 28);
             return false;
          } else {
             var3 = var0.getBits(18);
             var4 = var3 >> 16;
             var5 = var3 >> 8 & 255;
             var11 = var3 & 255;
-            var7 = class94.field1416[var1];
+            var7 = class94.Players_regions[var1];
             var8 = (var7 >> 28) + var4 & 3;
             var9 = var5 + (var7 >> 14) & 255;
             var10 = var11 + var7 & 255;
-            class94.field1416[var1] = (var9 << 14) + var10 + (var8 << 28);
+            class94.Players_regions[var1] = (var9 << 14) + var10 + (var8 << 28);
             return false;
          }
       }

@@ -123,8 +123,9 @@ public class MilliTimer extends Timer {
       signature = "(III)Lhx;",
       garbageValue = "-436183058"
    )
-   public static Widget method3058(int var0, int var1) {
-      Widget var2 = class87.method1762(var0);
+   @Export("getWidgetChild")
+   public static Widget getWidgetChild(int var0, int var1) {
+      Widget var2 = class87.getWidget(var0);
       return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 
@@ -178,7 +179,7 @@ public class MilliTimer extends Timer {
       var0.field1201 = false;
       Sequence var1;
       if(var0.poseAnimation != -1) {
-         var1 = class13.getAnimation(var0.poseAnimation);
+         var1 = GrandExchangeEvents.getAnimation(var0.poseAnimation);
          if(var1 != null && var1.frameIDs != null) {
             ++var0.field1146;
             if(var0.poseFrame < var1.frameIDs.length && var0.field1146 > var1.frameLenghts[var0.poseFrame]) {
@@ -204,7 +205,7 @@ public class MilliTimer extends Timer {
 
          int var3 = class227.getSpotAnimType(var0.graphic).field3393;
          if(var3 != -1) {
-            Sequence var2 = class13.getAnimation(var3);
+            Sequence var2 = GrandExchangeEvents.getAnimation(var3);
             if(var2 != null && var2.frameIDs != null) {
                ++var0.field1185;
                if(var0.field1184 < var2.frameIDs.length && var0.field1185 > var2.frameLenghts[var0.field1184]) {
@@ -225,7 +226,7 @@ public class MilliTimer extends Timer {
       }
 
       if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var1 = class13.getAnimation(var0.animation);
+         var1 = GrandExchangeEvents.getAnimation(var0.animation);
          if(var1.precedenceAnimating == 1 && var0.field1159 > 0 && var0.field1176 <= Client.gameCycle && var0.field1193 < Client.gameCycle) {
             var0.actionAnimationDisable = 1;
             return;
@@ -233,7 +234,7 @@ public class MilliTimer extends Timer {
       }
 
       if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var1 = class13.getAnimation(var0.animation);
+         var1 = GrandExchangeEvents.getAnimation(var0.animation);
          if(var1 != null && var1.frameIDs != null) {
             ++var0.field1180;
             if(var0.actionFrame < var1.frameIDs.length && var0.field1180 > var1.frameLenghts[var0.actionFrame]) {
@@ -273,11 +274,11 @@ public class MilliTimer extends Timer {
    )
    static final void method3057(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(ISAACCipher.loadWidget(var0)) {
-         class149.field2108 = null;
+         UrlRequest.field2108 = null;
          class231.gameDraw(class11.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(class149.field2108 != null) {
-            class231.gameDraw(class149.field2108, -1412584499, var1, var2, var3, var4, MouseInput.field712, class31.field422, var7);
-            class149.field2108 = null;
+         if(UrlRequest.field2108 != null) {
+            class231.gameDraw(UrlRequest.field2108, -1412584499, var1, var2, var3, var4, MouseInput.field712, class31.field422, var7);
+            UrlRequest.field2108 = null;
          }
 
       } else {

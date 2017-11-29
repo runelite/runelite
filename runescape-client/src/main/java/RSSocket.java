@@ -209,6 +209,8 @@ public final class RSSocket implements Runnable {
       }
    }
 
+   @Export("finalize")
+   @ObfuscatedName("finalize")
    protected void finalize() {
       this.close();
    }

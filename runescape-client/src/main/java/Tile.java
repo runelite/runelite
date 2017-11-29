@@ -199,7 +199,7 @@ public final class Tile extends Node {
 
          FileOnDisk.method2478(var3, var2, true);
       } else {
-         boolean var15 = var1.method3457() == 1;
+         boolean var15 = var1.readUnsignedByteNegate() == 1;
          var3 = var1.readUnsignedShort();
          var4 = var1.readUnsignedShortOb1();
          var5 = var1.readUnsignedShort();

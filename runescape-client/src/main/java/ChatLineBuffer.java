@@ -65,7 +65,8 @@ public class ChatLineBuffer {
       signature = "(IB)Lbh;",
       garbageValue = "-76"
    )
-   MessageNode method1921(int var1) {
+   @Export("getMessage")
+   MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
@@ -74,7 +75,8 @@ public class ChatLineBuffer {
       signature = "(I)I",
       garbageValue = "899003134"
    )
-   int method1916() {
+   @Export("size")
+   int size() {
       return this.length;
    }
 
@@ -93,7 +95,7 @@ public class ChatLineBuffer {
             if(var4 == ' ') {
                var2.append('+');
             } else {
-               byte var5 = ItemContainer.method1102(var4);
+               byte var5 = ItemContainer.charToByteCp1252(var4);
                var2.append('%');
                int var6 = var5 >> 4 & 15;
                if(var6 >= 10) {

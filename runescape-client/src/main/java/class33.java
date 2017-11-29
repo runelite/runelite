@@ -38,12 +38,12 @@ public class class33 {
    @ObfuscatedSignature(
       signature = "Lg;"
    )
-   class24 field443;
+   Size field443;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IILg;)V"
    )
-   class33(String var1, int var2, int var3, class24 var4) {
+   class33(String var1, int var2, int var3, Size var4) {
       this.field442 = var1;
       this.field441 = var2;
       this.field445 = var3;

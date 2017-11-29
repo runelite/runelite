@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hg")
-public enum class228 implements class185 {
+public enum class228 implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lhg;"

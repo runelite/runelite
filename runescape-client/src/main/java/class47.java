@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,7 +9,8 @@ public class class47 {
    @ObfuscatedSignature(
       signature = "Liv;"
    )
-   static IndexData field576;
+   @Export("indexCache4")
+   static IndexData indexCache4;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -1325402321
@@ -41,7 +43,7 @@ public class class47 {
    )
    static int method712(int var0, Script var1, boolean var2) {
       if(var0 == 6500) {
-         class82.intStack[++class13.intStackSize - 1] = class46.loadWorlds()?1:0;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class46.loadWorlds()?1:0;
          return 1;
       } else {
          World var4;
@@ -54,18 +56,18 @@ public class class47 {
             }
 
             if(var4 != null) {
-               class82.intStack[++class13.intStackSize - 1] = var4.id;
-               class82.intStack[++class13.intStackSize - 1] = var4.mask;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.id;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.mask;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.activity;
-               class82.intStack[++class13.intStackSize - 1] = var4.location;
-               class82.intStack[++class13.intStackSize - 1] = var4.playerCount;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.location;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.playerCount;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.address;
             } else {
-               class82.intStack[++class13.intStackSize - 1] = -1;
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
-               class82.intStack[++class13.intStackSize - 1] = 0;
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
             }
 
@@ -79,18 +81,18 @@ public class class47 {
             }
 
             if(var3 != null) {
-               class82.intStack[++class13.intStackSize - 1] = var3.id;
-               class82.intStack[++class13.intStackSize - 1] = var3.mask;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.id;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.mask;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.activity;
-               class82.intStack[++class13.intStackSize - 1] = var3.location;
-               class82.intStack[++class13.intStackSize - 1] = var3.playerCount;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.location;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.playerCount;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.address;
             } else {
-               class82.intStack[++class13.intStackSize - 1] = -1;
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
-               class82.intStack[++class13.intStackSize - 1] = 0;
-               class82.intStack[++class13.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
+               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
             }
 
@@ -99,7 +101,7 @@ public class class47 {
             int var5;
             int var7;
             if(var0 == 6506) {
-               var7 = class82.intStack[--class13.intStackSize];
+               var7 = class82.intStack[--GrandExchangeEvents.intStackSize];
                var4 = null;
 
                for(var5 = 0; var5 < World.worldCount; ++var5) {
@@ -110,28 +112,28 @@ public class class47 {
                }
 
                if(var4 != null) {
-                  class82.intStack[++class13.intStackSize - 1] = var4.id;
-                  class82.intStack[++class13.intStackSize - 1] = var4.mask;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.id;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.mask;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.activity;
-                  class82.intStack[++class13.intStackSize - 1] = var4.location;
-                  class82.intStack[++class13.intStackSize - 1] = var4.playerCount;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.location;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.playerCount;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.address;
                } else {
-                  class82.intStack[++class13.intStackSize - 1] = -1;
-                  class82.intStack[++class13.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
-                  class82.intStack[++class13.intStackSize - 1] = 0;
-                  class82.intStack[++class13.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                }
 
                return 1;
             } else if(var0 == 6507) {
-               class13.intStackSize -= 4;
-               var7 = class82.intStack[class13.intStackSize];
-               boolean var10 = class82.intStack[class13.intStackSize + 1] == 1;
-               var5 = class82.intStack[class13.intStackSize + 2];
-               boolean var6 = class82.intStack[class13.intStackSize + 3] == 1;
+               GrandExchangeEvents.intStackSize -= 4;
+               var7 = class82.intStack[GrandExchangeEvents.intStackSize];
+               boolean var10 = class82.intStack[GrandExchangeEvents.intStackSize + 1] == 1;
+               var5 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
+               boolean var6 = class82.intStack[GrandExchangeEvents.intStackSize + 3] == 1;
                if(World.worldList != null) {
                   class40.method555(0, World.worldList.length - 1, var7, var10, var5, var6);
                }
@@ -139,82 +141,82 @@ public class class47 {
                return 1;
             } else if(var0 != 6511) {
                if(var0 == 6512) {
-                  Client.field1060 = class82.intStack[--class13.intStackSize] == 1;
+                  Client.field1060 = class82.intStack[--GrandExchangeEvents.intStackSize] == 1;
                   return 1;
                } else {
                   int var8;
                   class258 var9;
                   if(var0 == 6513) {
-                     class13.intStackSize -= 2;
-                     var7 = class82.intStack[class13.intStackSize];
-                     var8 = class82.intStack[class13.intStackSize + 1];
+                     GrandExchangeEvents.intStackSize -= 2;
+                     var7 = class82.intStack[GrandExchangeEvents.intStackSize];
+                     var8 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                      var9 = ClanMember.method1187(var8);
                      if(var9.method4607()) {
                         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = class1.getNpcDefinition(var7).method4855(var8, var9.field3458);
                      } else {
-                        class82.intStack[++class13.intStackSize - 1] = class1.getNpcDefinition(var7).method4834(var8, var9.field3457);
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class1.getNpcDefinition(var7).method4834(var8, var9.field3457);
                      }
 
                      return 1;
                   } else if(var0 == 6514) {
-                     class13.intStackSize -= 2;
-                     var7 = class82.intStack[class13.intStackSize];
-                     var8 = class82.intStack[class13.intStackSize + 1];
+                     GrandExchangeEvents.intStackSize -= 2;
+                     var7 = class82.intStack[GrandExchangeEvents.intStackSize];
+                     var8 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                      var9 = ClanMember.method1187(var8);
                      if(var9.method4607()) {
                         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = class3.getObjectDefinition(var7).method4702(var8, var9.field3458);
                      } else {
-                        class82.intStack[++class13.intStackSize - 1] = class3.getObjectDefinition(var7).method4701(var8, var9.field3457);
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class3.getObjectDefinition(var7).method4701(var8, var9.field3457);
                      }
 
                      return 1;
                   } else if(var0 == 6515) {
-                     class13.intStackSize -= 2;
-                     var7 = class82.intStack[class13.intStackSize];
-                     var8 = class82.intStack[class13.intStackSize + 1];
+                     GrandExchangeEvents.intStackSize -= 2;
+                     var7 = class82.intStack[GrandExchangeEvents.intStackSize];
+                     var8 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                      var9 = ClanMember.method1187(var8);
                      if(var9.method4607()) {
                         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = WorldMapType2.getItemDefinition(var7).method4762(var8, var9.field3458);
                      } else {
-                        class82.intStack[++class13.intStackSize - 1] = WorldMapType2.getItemDefinition(var7).method4792(var8, var9.field3457);
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = WorldMapType2.getItemDefinition(var7).method4792(var8, var9.field3457);
                      }
 
                      return 1;
                   } else if(var0 == 6516) {
-                     class13.intStackSize -= 2;
-                     var7 = class82.intStack[class13.intStackSize];
-                     var8 = class82.intStack[class13.intStackSize + 1];
+                     GrandExchangeEvents.intStackSize -= 2;
+                     var7 = class82.intStack[GrandExchangeEvents.intStackSize];
+                     var8 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                      var9 = ClanMember.method1187(var8);
                      if(var9.method4607()) {
                         class82.scriptStringStack[++class82.scriptStringStackSize - 1] = class156.method3089(var7).method4621(var8, var9.field3458);
                      } else {
-                        class82.intStack[++class13.intStackSize - 1] = class156.method3089(var7).method4616(var8, var9.field3457);
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class156.method3089(var7).method4616(var8, var9.field3457);
                      }
 
                      return 1;
                   } else if(var0 == 6518) {
-                     class82.intStack[++class13.intStackSize - 1] = 0;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                      return 1;
                   } else {
                      return var0 == 6520?1:(var0 == 6521?1:2);
                   }
                }
             } else {
-               var7 = class82.intStack[--class13.intStackSize];
+               var7 = class82.intStack[--GrandExchangeEvents.intStackSize];
                if(var7 >= 0 && var7 < World.worldCount) {
                   var4 = World.worldList[var7];
-                  class82.intStack[++class13.intStackSize - 1] = var4.id;
-                  class82.intStack[++class13.intStackSize - 1] = var4.mask;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.id;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.mask;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.activity;
-                  class82.intStack[++class13.intStackSize - 1] = var4.location;
-                  class82.intStack[++class13.intStackSize - 1] = var4.playerCount;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.location;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4.playerCount;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var4.address;
                } else {
-                  class82.intStack[++class13.intStackSize - 1] = -1;
-                  class82.intStack[++class13.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
-                  class82.intStack[++class13.intStackSize - 1] = 0;
-                  class82.intStack[++class13.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
+                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                   class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                }
 
@@ -249,7 +251,7 @@ public class class47 {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class14.region.method2808(class233.plane, var2.x, var2.y, class41.getTileHeight(var2.field1147 * 64 - 64 + var2.x, var2.field1147 * 64 - 64 + var2.y, class233.plane), var2.field1147 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1201);
+               GrandExchangeEvent.region.method2808(class233.plane, var2.x, var2.y, class41.getTileHeight(var2.field1147 * 64 - 64 + var2.x, var2.field1147 * 64 - 64 + var2.y, class233.plane), var2.field1147 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1201);
             }
          }
       }

@@ -25,7 +25,7 @@ public class class36 {
    @ObfuscatedSignature(
       signature = "Lim;"
    )
-   static class239 field483;
+   static JagexGame field483;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 963085109

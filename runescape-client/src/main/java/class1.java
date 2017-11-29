@@ -136,7 +136,7 @@ public class class1 {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = NPCComposition.field3616.getConfigData(9, var0);
+         byte[] var2 = NPCComposition.NpcDefinition_indexCache.getConfigData(9, var0);
          var1 = new NPCComposition();
          var1.id = var0;
          if(var2 != null) {
@@ -155,52 +155,52 @@ public class class1 {
       garbageValue = "-841639778"
    )
    static void method1(GameEngine var0) {
-      if(MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) {
+      if(MouseInput.mouseLastButton == 1 || !Client.field956 && MouseInput.mouseLastButton == 4) {
          int var1 = class91.field1354 + 280;
-         if(MouseInput.field709 >= var1 && MouseInput.field709 <= var1 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(0, 0);
+         if(MouseInput.mouseLastPressedX >= var1 && MouseInput.mouseLastPressedX <= var1 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(0, 0);
             return;
          }
 
-         if(MouseInput.field709 >= var1 + 15 && MouseInput.field709 <= var1 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(0, 1);
+         if(MouseInput.mouseLastPressedX >= var1 + 15 && MouseInput.mouseLastPressedX <= var1 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(0, 1);
             return;
          }
 
          int var2 = class91.field1354 + 390;
-         if(MouseInput.field709 >= var2 && MouseInput.field709 <= var2 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(1, 0);
+         if(MouseInput.mouseLastPressedX >= var2 && MouseInput.mouseLastPressedX <= var2 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(1, 0);
             return;
          }
 
-         if(MouseInput.field709 >= var2 + 15 && MouseInput.field709 <= var2 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(1, 1);
+         if(MouseInput.mouseLastPressedX >= var2 + 15 && MouseInput.mouseLastPressedX <= var2 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(1, 1);
             return;
          }
 
          int var3 = class91.field1354 + 500;
-         if(MouseInput.field709 >= var3 && MouseInput.field709 <= var3 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(2, 0);
+         if(MouseInput.mouseLastPressedX >= var3 && MouseInput.mouseLastPressedX <= var3 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(2, 0);
             return;
          }
 
-         if(MouseInput.field709 >= var3 + 15 && MouseInput.field709 <= var3 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(2, 1);
+         if(MouseInput.mouseLastPressedX >= var3 + 15 && MouseInput.mouseLastPressedX <= var3 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(2, 1);
             return;
          }
 
          int var4 = class91.field1354 + 610;
-         if(MouseInput.field709 >= var4 && MouseInput.field709 <= var4 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(3, 0);
+         if(MouseInput.mouseLastPressedX >= var4 && MouseInput.mouseLastPressedX <= var4 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(3, 0);
             return;
          }
 
-         if(MouseInput.field709 >= var4 + 15 && MouseInput.field709 <= var4 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(3, 1);
+         if(MouseInput.mouseLastPressedX >= var4 + 15 && MouseInput.mouseLastPressedX <= var4 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            OwnWorldComparator.method1186(3, 1);
             return;
          }
 
-         if(MouseInput.field709 >= class91.field1354 + 708 && MouseInput.field710 >= 4 && MouseInput.field709 <= class91.field1354 + 708 + 50 && MouseInput.field710 <= 20) {
+         if(MouseInput.mouseLastPressedX >= class91.field1354 + 708 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedX <= class91.field1354 + 708 + 50 && MouseInput.mouseLastPressedY <= 20) {
             class91.worldSelectShown = false;
             class182.field2511.method5266(class91.field1354, 0);
             class91.field1347.method5266(class91.field1354 + 382, 0);
@@ -244,7 +244,7 @@ public class class1 {
          } else {
             byte[] var5 = new byte[var6];
             if(var2 == 1) {
-               class174.method3238(var5, var6, var0, var3, 9);
+               class174.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
             } else {
                IndexDataBase.gzip.decompress(var1, var5);
             }

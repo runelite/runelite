@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -20,7 +21,8 @@ public class class221 {
    @ObfuscatedSignature(
       signature = "Leb;"
    )
-   static class148 field2711;
+   @Export("urlRequester")
+   static UrlRequester urlRequester;
 
    static {
       field2708 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};
@@ -65,9 +67,9 @@ public class class221 {
                      var17 = var18;
                   }
 
-                  class149.loadTerrain(var21, var1, var15, var3 + var17, 0, 0, var7);
+                  UrlRequest.loadTerrain(var21, var1, var15, var3 + var17, 0, 0, var7);
                } else {
-                  class149.loadTerrain(var21, 0, -1, -1, 0, 0, 0);
+                  UrlRequest.loadTerrain(var21, 0, -1, -1, 0, 0, 0);
                }
             }
          }

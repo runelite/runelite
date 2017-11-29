@@ -51,7 +51,7 @@ public class class296 {
    )
    int method5384() {
       if(this.field3859 < 25) {
-         if(!this.field3856.method4285(class40.field515.field517, this.field3858)) {
+         if(!this.field3856.tryLoadRecordByNames(class40.field515.field517, this.field3858)) {
             return this.field3859;
          }
 
@@ -59,15 +59,15 @@ public class class296 {
       }
 
       if(this.field3859 == 25) {
-         if(!this.field3856.method4285(this.field3858, class40.field519.field517)) {
-            return 25 + this.field3856.method4296(this.field3858) * 25 / 100;
+         if(!this.field3856.tryLoadRecordByNames(this.field3858, class40.field519.field517)) {
+            return 25 + this.field3856.archiveLoadPercentByName(this.field3858) * 25 / 100;
          }
 
          this.field3859 = 50;
       }
 
       if(this.field3859 == 50) {
-         if(this.field3856.method4283(class40.field516.field517, this.field3858) && !this.field3856.method4285(class40.field516.field517, this.field3858)) {
+         if(this.field3856.method4283(class40.field516.field517, this.field3858) && !this.field3856.tryLoadRecordByNames(class40.field516.field517, this.field3858)) {
             return 50;
          }
 
@@ -75,7 +75,7 @@ public class class296 {
       }
 
       if(this.field3859 == 75) {
-         if(!this.field3856.method4285(this.field3858, class40.field518.field517)) {
+         if(!this.field3856.tryLoadRecordByNames(this.field3858, class40.field518.field517)) {
             return 75;
          }
 

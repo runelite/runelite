@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iu")
 @Implements("Permission")
-public enum Permission implements class185 {
+public enum Permission implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Liu;"

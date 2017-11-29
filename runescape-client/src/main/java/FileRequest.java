@@ -33,7 +33,7 @@ public class FileRequest extends CacheableNode {
       Client.menuOptions[0] = "Cancel";
       Client.menuTargets[0] = "";
       Client.menuTypes[0] = 1006;
-      Client.field889[0] = false;
+      Client.menuBooleanArray[0] = false;
       Client.menuOptionCount = 1;
    }
 }

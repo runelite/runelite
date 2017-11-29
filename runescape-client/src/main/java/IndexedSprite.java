@@ -31,7 +31,8 @@ public final class IndexedSprite extends Rasterizer2D {
    public int originalHeight;
 
    @ObfuscatedName("d")
-   public void method5239() {
+   @Export("normalize")
+   public void normalize() {
       if(this.originalWidth != this.width || this.height != this.originalHeight) {
          byte[] var1 = new byte[this.width * this.originalHeight];
          int var2 = 0;

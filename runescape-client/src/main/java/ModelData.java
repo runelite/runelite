@@ -1700,11 +1700,11 @@ public class ModelData extends Renderable {
       }
 
       this.computeAnimationTables();
-      var8.field1835 = this.vertexCount;
+      var8.verticesCount = this.vertexCount;
       var8.verticesX = this.vertexX;
       var8.verticesY = this.vertexY;
       var8.verticesZ = this.vertexZ;
-      var8.field1837 = this.triangleFaceCount;
+      var8.indicesCount = this.triangleFaceCount;
       var8.indices1 = this.trianglePointsX;
       var8.indices2 = this.trianglePointsY;
       var8.indices3 = this.trianglePointsZ;

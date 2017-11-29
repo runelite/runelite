@@ -57,7 +57,7 @@ public class class217 extends CacheableNode {
       garbageValue = "-1786279784"
    )
    public static boolean method4094(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.method4271(var1);
+      byte[] var2 = var0.takeRecordFlat(var1);
       if(var2 == null) {
          return false;
       } else {

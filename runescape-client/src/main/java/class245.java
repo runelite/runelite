@@ -1,4 +1,5 @@
 import java.util.zip.CRC32;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -9,7 +10,8 @@ public class class245 {
    @ObfuscatedSignature(
       signature = "Lfa;"
    )
-   public static RSSocket field3327;
+   @Export("NetCache_socket")
+   public static RSSocket NetCache_socket;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1687862061
@@ -24,74 +26,88 @@ public class class245 {
    @ObfuscatedSignature(
       signature = "Lgn;"
    )
-   public static HashTable field3323;
+   @Export("NetCache_pendingPriorityWrites")
+   public static HashTable NetCache_pendingPriorityWrites;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1743666739
    )
-   public static int field3341;
+   @Export("NetCache_pendingPriorityWritesCount")
+   public static int NetCache_pendingPriorityWritesCount;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lgn;"
    )
-   public static HashTable field3338;
+   @Export("NetCache_pendingPriorityResponses")
+   public static HashTable NetCache_pendingPriorityResponses;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1541821165
    )
-   public static int field3328;
+   @Export("NetCache_pendingPriorityResponsesCount")
+   public static int NetCache_pendingPriorityResponsesCount;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Lgy;"
    )
-   public static Node2LinkedList field3329;
+   @Export("NetCache_pendingWritesQueue")
+   public static Node2LinkedList NetCache_pendingWritesQueue;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgn;"
    )
-   public static HashTable field3330;
+   @Export("NetCache_pendingWrites")
+   public static HashTable NetCache_pendingWrites;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 471445881
    )
-   public static int field3331;
+   @Export("NetCache_pendingWritesCount")
+   public static int NetCache_pendingWritesCount;
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "Lgn;"
    )
-   public static HashTable field3332;
+   @Export("NetCache_pendingResponses")
+   public static HashTable NetCache_pendingResponses;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -969525747
    )
-   public static int field3333;
+   @Export("NetCache_pendingResponsesCount")
+   public static int NetCache_pendingResponsesCount;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
-   public static Buffer field3322;
+   @Export("NetCache_responseHeaderBuffer")
+   public static Buffer NetCache_responseHeaderBuffer;
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
-   public static Buffer field3335;
+   @Export("NetCache_responseArchiveBuffer")
+   public static Buffer NetCache_responseArchiveBuffer;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -268889211
    )
    public static int field3326;
    @ObfuscatedName("e")
-   public static CRC32 field3337;
+   @Export("NetCache_crc")
+   public static CRC32 NetCache_crc;
    @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
-   public static Buffer field3339;
+   @Export("NetCache_reference")
+   public static Buffer NetCache_reference;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "[Liv;"
    )
-   public static IndexData[] field3324;
+   @Export("NetCache_indexCaches")
+   public static IndexData[] NetCache_indexCaches;
    @ObfuscatedName("i")
    public static byte field3340;
    @ObfuscatedName("o")
@@ -107,19 +123,19 @@ public class class245 {
 
    static {
       field3336 = 0;
-      field3323 = new HashTable(4096);
-      field3341 = 0;
-      field3338 = new HashTable(32);
-      field3328 = 0;
-      field3329 = new Node2LinkedList();
-      field3330 = new HashTable(4096);
-      field3331 = 0;
-      field3332 = new HashTable(4096);
-      field3333 = 0;
-      field3322 = new Buffer(8);
+      NetCache_pendingPriorityWrites = new HashTable(4096);
+      NetCache_pendingPriorityWritesCount = 0;
+      NetCache_pendingPriorityResponses = new HashTable(32);
+      NetCache_pendingPriorityResponsesCount = 0;
+      NetCache_pendingWritesQueue = new Node2LinkedList();
+      NetCache_pendingWrites = new HashTable(4096);
+      NetCache_pendingWritesCount = 0;
+      NetCache_pendingResponses = new HashTable(4096);
+      NetCache_pendingResponsesCount = 0;
+      NetCache_responseHeaderBuffer = new Buffer(8);
       field3326 = 0;
-      field3337 = new CRC32();
-      field3324 = new IndexData[256];
+      NetCache_crc = new CRC32();
+      NetCache_indexCaches = new IndexData[256];
       field3340 = 0;
       field3325 = 0;
       field3342 = 0;

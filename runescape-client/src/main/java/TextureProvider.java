@@ -178,7 +178,7 @@ public class TextureProvider implements ITextureLoader {
       garbageValue = "1190498161"
    )
    public static final void method2506() {
-      class133.field1908 = false;
-      class133.field1909 = 0;
+      class133.Viewport_containsMouse = false;
+      class133.Viewport_entityCountAtMouse = 0;
    }
 }

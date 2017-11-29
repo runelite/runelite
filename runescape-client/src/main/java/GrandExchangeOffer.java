@@ -11,7 +11,8 @@ public class GrandExchangeOffer {
    @ObfuscatedSignature(
       signature = "Lff;"
    )
-   static IndexFile field299;
+   @Export("indexStore255")
+   static IndexFile indexStore255;
    @ObfuscatedName("u")
    static int[] field300;
    @ObfuscatedName("fi")
@@ -72,7 +73,8 @@ public class GrandExchangeOffer {
       signature = "(I)I",
       garbageValue = "-820037752"
    )
-   public int method109() {
+   @Export("status")
+   public int status() {
       return this.progress & 7;
    }
 
@@ -81,7 +83,8 @@ public class GrandExchangeOffer {
       signature = "(S)I",
       garbageValue = "26162"
    )
-   public int method110() {
+   @Export("type")
+   public int type() {
       return (this.progress & 8) == 8?1:0;
    }
 
@@ -117,7 +120,7 @@ public class GrandExchangeOffer {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class87.method1762(class82.intStack[--class13.intStackSize]);
+         var3 = class87.getWidget(class82.intStack[--GrandExchangeEvents.intStackSize]);
       } else {
          var3 = var2?class54.field636:class82.field1265;
       }
@@ -126,7 +129,7 @@ public class GrandExchangeOffer {
       if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
          if(var0 == 1201) {
             var3.modelType = 2;
-            var3.modelId = class82.intStack[--class13.intStackSize];
+            var3.modelId = class82.intStack[--GrandExchangeEvents.intStackSize];
             return 1;
          } else if(var0 == 1202) {
             var3.modelType = 3;
@@ -136,9 +139,9 @@ public class GrandExchangeOffer {
             return 2;
          }
       } else {
-         class13.intStackSize -= 2;
-         int var4 = class82.intStack[class13.intStackSize];
-         int var5 = class82.intStack[class13.intStackSize + 1];
+         GrandExchangeEvents.intStackSize -= 2;
+         int var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+         int var5 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
          var3.itemId = var4;
          var3.itemQuantity = var5;
          ItemComposition var6 = WorldMapType2.getItemDefinition(var4);
@@ -182,14 +185,14 @@ public class GrandExchangeOffer {
    )
    static final void method132(Widget var0, int var1, int var2) {
       if(Client.field1088 == 0 || Client.field1088 == 3) {
-         if(MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) {
+         if(MouseInput.mouseLastButton == 1 || !Client.field956 && MouseInput.mouseLastButton == 4) {
             class217 var3 = var0.method4181(true);
             if(var3 == null) {
                return;
             }
 
-            int var4 = MouseInput.field709 - var1;
-            int var5 = MouseInput.field710 - var2;
+            int var4 = MouseInput.mouseLastPressedX - var1;
+            int var5 = MouseInput.mouseLastPressedY - var2;
             if(var3.method4095(var4, var5)) {
                var4 -= var3.field2683 / 2;
                var5 -= var3.field2682 / 2;
@@ -231,11 +234,11 @@ public class GrandExchangeOffer {
    )
    static final void method117(int var0, int var1, int var2, int var3) {
       if(Client.cursorState == 1) {
-         AbstractByteBuffer.field2514[Client.field963 / 100].drawAt(Client.field1064 - 8, Client.field962 - 8);
+         AbstractByteBuffer.crossSprites[Client.field963 / 100].drawAt(Client.field1064 - 8, Client.field962 - 8);
       }
 
       if(Client.cursorState == 2) {
-         AbstractByteBuffer.field2514[Client.field963 / 100 + 4].drawAt(Client.field1064 - 8, Client.field962 - 8);
+         AbstractByteBuffer.crossSprites[Client.field963 / 100 + 4].drawAt(Client.field1064 - 8, Client.field962 - 8);
       }
 
       Varcs.method1881();
@@ -247,7 +250,7 @@ public class GrandExchangeOffer {
       garbageValue = "-1174639354"
    )
    static final void method118() {
-      PacketBuffer var0 = Client.field916.field1465;
+      PacketBuffer var0 = Client.field916.packetBuffer;
       var0.bitAccess();
       int var1 = var0.getBits(8);
       int var2;
@@ -268,19 +271,19 @@ public class GrandExchangeOffer {
             int var5 = var0.getBits(1);
             if(var5 == 0) {
                Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-               var4.field1195 = Client.gameCycle;
+               var4.npcCycle = Client.gameCycle;
             } else {
                int var6 = var0.getBits(2);
                if(var6 == 0) {
                   Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                  var4.field1195 = Client.gameCycle;
+                  var4.npcCycle = Client.gameCycle;
                   Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
                } else {
                   int var7;
                   int var8;
                   if(var6 == 1) {
                      Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                     var4.field1195 = Client.gameCycle;
+                     var4.npcCycle = Client.gameCycle;
                      var7 = var0.getBits(3);
                      var4.method1742(var7, (byte)1);
                      var8 = var0.getBits(1);
@@ -289,7 +292,7 @@ public class GrandExchangeOffer {
                      }
                   } else if(var6 == 2) {
                      Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                     var4.field1195 = Client.gameCycle;
+                     var4.npcCycle = Client.gameCycle;
                      var7 = var0.getBits(3);
                      var4.method1742(var7, (byte)2);
                      var8 = var0.getBits(3);
@@ -358,16 +361,16 @@ public class GrandExchangeOffer {
                   }
 
                   if(Client.itemSelectionState == 1) {
-                     RSCanvas.addMenuEntry("Use", Client.field974 + " " + "->" + " " + ISAACCipher.getColTags(16776960) + var4, 7, var1, var2, var3);
+                     RSCanvas.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + ISAACCipher.getColTags(16776960) + var4, 7, var1, var2, var3);
                   } else if(Client.spellSelected) {
                      if((class156.field2161 & 2) == 2) {
-                        RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + ISAACCipher.getColTags(16776960) + var4, 8, var1, var2, var3);
+                        RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + ISAACCipher.getColTags(16776960) + var4, 8, var1, var2, var3);
                      }
                   } else {
                      int var10 = var0.field3648 && Client.field1060?2000:0;
                      String[] var11 = var0.actions;
-                     if(Client.field907) {
-                        var11 = GroundObject.method2602(var11);
+                     if(Client.numberMenuOptions) {
+                        var11 = GroundObject.prependIndices(var11);
                      }
 
                      if(var11 != null) {
@@ -403,8 +406,8 @@ public class GrandExchangeOffer {
                         for(var7 = 4; var7 >= 0; --var7) {
                            if(var11[var7] != null && var11[var7].equalsIgnoreCase("Attack")) {
                               short var12 = 0;
-                              if(Client.field898 != class90.field1336) {
-                                 if(Client.field898 == class90.field1338 || class90.field1337 == Client.field898 && var0.combatLevel > class181.localPlayer.combatLevel) {
+                              if(Client.npcAttackOption != AttackOption.AttackOption_hidden) {
+                                 if(Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.npcAttackOption && var0.combatLevel > class181.localPlayer.combatLevel) {
                                     var12 = 2000;
                                  }
 
@@ -462,7 +465,7 @@ public class GrandExchangeOffer {
 
                WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
                if(var4 != null) {
-                  class14.method88(var4.id, var1);
+                  GrandExchangeEvent.method88(var4.id, var1);
                }
             }
 
@@ -470,13 +473,13 @@ public class GrandExchangeOffer {
             if(var1 == 0 && var3.field2831 != null) {
                var5 = new ScriptEvent();
                var5.widget = var3;
-               var5.field797 = var3.field2831;
-               class14.method95(var5);
+               var5.objs = var3.field2831;
+               GrandExchangeEvent.method95(var5);
             }
 
             if(var1 == 1 && var3.field2861 != null) {
                if(var3.index >= 0) {
-                  Widget var6 = class87.method1762(var3.id);
+                  Widget var6 = class87.getWidget(var3.id);
                   if(var6 == null || var6.children == null || var3.index >= var6.children.length || var3 != var6.children[var3.index]) {
                      continue;
                   }
@@ -484,8 +487,8 @@ public class GrandExchangeOffer {
 
                var5 = new ScriptEvent();
                var5.widget = var3;
-               var5.field797 = var3.field2861;
-               class14.method95(var5);
+               var5.objs = var3.field2861;
+               GrandExchangeEvent.method95(var5);
             }
          }
       }
@@ -500,21 +503,21 @@ public class GrandExchangeOffer {
    static final void method131(String var0, boolean var1) {
       if(var0 != null) {
          if((Client.ignoreCount < 100 || Client.field976 == 1) && Client.ignoreCount < 400) {
-            String var2 = GraphicsObject.method1726(var0, class236.field3239);
+            String var2 = GraphicsObject.cleanUsername(var0, class236.jagexLoginType);
             if(var2 != null) {
                int var3;
                String var5;
                String var6;
                for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
                   Ignore var4 = Client.ignores[var3];
-                  var5 = GraphicsObject.method1726(var4.name, class236.field3239);
+                  var5 = GraphicsObject.cleanUsername(var4.name, class236.jagexLoginType);
                   if(var5 != null && var5.equals(var2)) {
                      class54.sendGameMessage(31, "", var0 + " is already on your ignore list");
                      return;
                   }
 
                   if(var4.previousName != null) {
-                     var6 = GraphicsObject.method1726(var4.previousName, class236.field3239);
+                     var6 = GraphicsObject.cleanUsername(var4.previousName, class236.jagexLoginType);
                      if(var6 != null && var6.equals(var2)) {
                         class54.sendGameMessage(31, "", var0 + " is already on your ignore list");
                         return;
@@ -524,14 +527,14 @@ public class GrandExchangeOffer {
 
                for(var3 = 0; var3 < Client.friendCount; ++var3) {
                   Friend var8 = Client.friends[var3];
-                  var5 = GraphicsObject.method1726(var8.name, class236.field3239);
+                  var5 = GraphicsObject.cleanUsername(var8.name, class236.jagexLoginType);
                   if(var5 != null && var5.equals(var2)) {
                      class54.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                      return;
                   }
 
                   if(var8.previousName != null) {
-                     var6 = GraphicsObject.method1726(var8.previousName, class236.field3239);
+                     var6 = GraphicsObject.cleanUsername(var8.previousName, class236.jagexLoginType);
                      if(var6 != null && var6.equals(var2)) {
                         class54.sendGameMessage(31, "", "Please remove " + var0 + " from your friend list first");
                         return;
@@ -539,7 +542,7 @@ public class GrandExchangeOffer {
                   }
                }
 
-               if(GraphicsObject.method1726(class181.localPlayer.name, class236.field3239).equals(var2)) {
+               if(GraphicsObject.cleanUsername(class181.localPlayer.name, class236.jagexLoginType).equals(var2)) {
                   class54.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                } else {
                   PacketNode var7 = class218.method4105(ClientPacket.field2305, Client.field916.field1470);

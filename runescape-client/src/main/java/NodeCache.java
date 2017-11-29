@@ -12,9 +12,11 @@ public final class NodeCache {
    )
    CacheableNode field2554;
    @ObfuscatedName("x")
-   int field2552;
+   @Export("capacity")
+   int capacity;
    @ObfuscatedName("k")
-   int field2553;
+   @Export("remainingCapacity")
+   int remainingCapacity;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgn;"
@@ -31,8 +33,8 @@ public final class NodeCache {
    public NodeCache(int var1) {
       this.field2554 = new CacheableNode();
       this.list = new Node2LinkedList();
-      this.field2552 = var1;
-      this.field2553 = var1;
+      this.capacity = var1;
+      this.remainingCapacity = var1;
 
       int var2;
       for(var2 = 1; var2 + var2 < var1; var2 += var2) {
@@ -63,7 +65,7 @@ public final class NodeCache {
       if(var3 != null) {
          var3.unlink();
          var3.unlinkDual();
-         ++this.field2553;
+         ++this.remainingCapacity;
       }
 
    }
@@ -74,7 +76,7 @@ public final class NodeCache {
    )
    @Export("put")
    public void put(CacheableNode var1, long var2) {
-      if(this.field2553 == 0) {
+      if(this.remainingCapacity == 0) {
          CacheableNode var4 = this.list.pop();
          var4.unlink();
          var4.unlinkDual();
@@ -84,7 +86,7 @@ public final class NodeCache {
             var4.unlinkDual();
          }
       } else {
-         --this.field2553;
+         --this.remainingCapacity;
       }
 
       this.table.put(var1, var2);
@@ -95,8 +97,8 @@ public final class NodeCache {
    @Export("reset")
    public void reset() {
       this.list.clear();
-      this.table.method3711();
+      this.table.clear();
       this.field2554 = new CacheableNode();
-      this.field2553 = this.field2552;
+      this.remainingCapacity = this.capacity;
    }
 }

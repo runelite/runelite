@@ -45,7 +45,8 @@ public final class PacketBuffer extends Buffer {
       signature = "(Lgh;I)V",
       garbageValue = "-1000490003"
    )
-   public void method3576(ISAACCipher var1) {
+   @Export("setIsaacCipher")
+   public void setIsaacCipher(ISAACCipher var1) {
       this.cipher = var1;
    }
 

@@ -136,12 +136,12 @@ public class class39 {
    )
    public static final void method554() {
       while(true) {
-         class9 var0 = (class9)class7.field226.method3739();
+         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
          if(var0 == null) {
             return;
          }
 
-         var0.vmethod57();
+         var0.draw();
       }
    }
 
@@ -232,14 +232,14 @@ public class class39 {
       }
 
       class236.method4243(var2);
-      Widget var4 = class87.method1762(var3);
+      Widget var4 = class87.getWidget(var3);
       if(var4 != null) {
          class40.method556(var4);
       }
 
       ContextMenuRow.method1764();
       if(Client.widgetRoot != -1) {
-         class14.method88(Client.widgetRoot, 1);
+         GrandExchangeEvent.method88(Client.widgetRoot, 1);
       }
 
    }

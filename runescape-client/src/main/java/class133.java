@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -5,19 +6,23 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eq")
 public class class133 {
    @ObfuscatedName("d")
-   static boolean field1908;
+   @Export("Viewport_containsMouse")
+   static boolean Viewport_containsMouse;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 505046769
    )
-   static int field1900;
+   @Export("Viewport_mouseX")
+   static int Viewport_mouseX;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -2104861051
    )
-   static int field1901;
+   @Export("Viewport_mouseY")
+   static int Viewport_mouseY;
    @ObfuscatedName("z")
-   static boolean field1902;
+   @Export("Viewport_false0")
+   static boolean Viewport_false0;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 289363889
@@ -47,17 +52,19 @@ public class class133 {
    @ObfuscatedGetter(
       intValue = -1305557085
    )
-   public static int field1909;
+   @Export("Viewport_entityCountAtMouse")
+   public static int Viewport_entityCountAtMouse;
    @ObfuscatedName("y")
-   public static int[] field1903;
+   @Export("Viewport_entityIdsAtMouse")
+   public static int[] Viewport_entityIdsAtMouse;
 
    static {
-      field1908 = false;
-      field1900 = 0;
-      field1901 = 0;
-      field1902 = false;
-      field1909 = 0;
-      field1903 = new int[1000];
+      Viewport_containsMouse = false;
+      Viewport_mouseX = 0;
+      Viewport_mouseY = 0;
+      Viewport_false0 = false;
+      Viewport_entityCountAtMouse = 0;
+      Viewport_entityIdsAtMouse = new int[1000];
    }
 
    @ObfuscatedName("u")

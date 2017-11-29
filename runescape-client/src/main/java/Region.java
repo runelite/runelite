@@ -13,7 +13,8 @@ public class Region {
    @Export("tileUpdateCount")
    static int tileUpdateCount;
    @ObfuscatedName("j")
-   static int field2003;
+   @Export("Scene_plane")
+   static int Scene_plane;
    @ObfuscatedName("f")
    @Export("cycle")
    static int cycle;
@@ -187,7 +188,7 @@ public class Region {
    static {
       lowMemory = true;
       tileUpdateCount = 0;
-      field2003 = 0;
+      Scene_plane = 0;
       entityBuffer = new GameObject[100];
       checkClick = false;
       field1990 = 0;
@@ -391,7 +392,7 @@ public class Region {
          for(int var12 = 0; var12 < var11.entityCount; ++var12) {
             if((var11.objects[var12].flags & 256) == 256 && var11.objects[var12].renderable instanceof Model) {
                Model var13 = (Model)var11.objects[var12].renderable;
-               var13.method2623();
+               var13.calculateBoundsCylinder();
                if(var13.modelHeight > var10) {
                   var10 = var13.modelHeight;
                }
@@ -660,7 +661,8 @@ public class Region {
    }
 
    @ObfuscatedName("q")
-   public void method2814(int var1, int var2, int var3) {
+   @Export("removeBoundaryObject")
+   public void removeBoundaryObject(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 != null) {
          var4.wallObject = null;
@@ -668,7 +670,8 @@ public class Region {
    }
 
    @ObfuscatedName("h")
-   public void method2815(int var1, int var2, int var3) {
+   @Export("removeWallDecoration")
+   public void removeWallDecoration(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 != null) {
          var4.decorativeObject = null;
@@ -691,7 +694,8 @@ public class Region {
    }
 
    @ObfuscatedName("o")
-   public void method2866(int var1, int var2, int var3) {
+   @Export("removeFloorDecoration")
+   public void removeFloorDecoration(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 != null) {
          var4.groundObject = null;
@@ -699,7 +703,8 @@ public class Region {
    }
 
    @ObfuscatedName("w")
-   public void method2796(int var1, int var2, int var3) {
+   @Export("removeGroundItemPile")
+   public void removeGroundItemPile(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       if(var4 != null) {
          var4.itemLayer = null;
@@ -710,7 +715,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(III)Lev;"
    )
-   public WallObject method2819(int var1, int var2, int var3) {
+   @Export("getBoundaryObject")
+   public WallObject getBoundaryObject(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 == null?null:var4.wallObject;
    }
@@ -719,7 +725,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(III)Leg;"
    )
-   public DecorativeObject method2820(int var1, int var2, int var3) {
+   @Export("getWallDecoration")
+   public DecorativeObject getWallDecoration(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 == null?null:var4.decorativeObject;
    }
@@ -748,7 +755,8 @@ public class Region {
    @ObfuscatedSignature(
       signature = "(III)Ldd;"
    )
-   public GroundObject method2824(int var1, int var2, int var3) {
+   @Export("getFloorDecoration")
+   public GroundObject getFloorDecoration(int var1, int var2, int var3) {
       Tile var4 = this.tiles[var1][var2][var3];
       return var4 != null && var4.groundObject != null?var4.groundObject:null;
    }
@@ -789,7 +797,8 @@ public class Region {
    }
 
    @ObfuscatedName("aj")
-   public int method2827(int var1, int var2, int var3, int var4) {
+   @Export("getObjectFlags")
+   public int getObjectFlags(int var1, int var2, int var3, int var4) {
       Tile var5 = this.tiles[var1][var2][var3];
       if(var5 == null) {
          return -1;
@@ -1060,7 +1069,7 @@ public class Region {
       cameraZ2 = var3;
       screenCenterX = var1 / 128;
       screenCenterZ = var3 / 128;
-      field2003 = var6;
+      Scene_plane = var6;
       minTileX = screenCenterX - 25;
       if(minTileX < 0) {
          minTileX = 0;
@@ -1800,14 +1809,14 @@ public class Region {
                var21 = var20 * var4 - var3 * var15 >> 16;
                var15 = var3 * var20 + var15 * var4 >> 16;
                if(var15 >= 50) {
-                  int var22 = var10 * Graphics3D.field1928 / var12 + Graphics3D.centerX;
-                  int var23 = var17 * Graphics3D.field1928 / var12 + Graphics3D.centerY;
-                  int var24 = var14 * Graphics3D.field1928 / var11 + Graphics3D.centerX;
-                  int var25 = var18 * Graphics3D.field1928 / var11 + Graphics3D.centerY;
-                  int var26 = var13 * Graphics3D.field1928 / var16 + Graphics3D.centerX;
-                  int var27 = var19 * Graphics3D.field1928 / var16 + Graphics3D.centerY;
-                  int var28 = var9 * Graphics3D.field1928 / var15 + Graphics3D.centerX;
-                  int var29 = var21 * Graphics3D.field1928 / var15 + Graphics3D.centerY;
+                  int var22 = var10 * Graphics3D.Rasterizer3D_zoom / var12 + Graphics3D.centerX;
+                  int var23 = var17 * Graphics3D.Rasterizer3D_zoom / var12 + Graphics3D.centerY;
+                  int var24 = var14 * Graphics3D.Rasterizer3D_zoom / var11 + Graphics3D.centerX;
+                  int var25 = var18 * Graphics3D.Rasterizer3D_zoom / var11 + Graphics3D.centerY;
+                  int var26 = var13 * Graphics3D.Rasterizer3D_zoom / var16 + Graphics3D.centerX;
+                  int var27 = var19 * Graphics3D.Rasterizer3D_zoom / var16 + Graphics3D.centerY;
+                  int var28 = var9 * Graphics3D.Rasterizer3D_zoom / var15 + Graphics3D.centerX;
+                  int var29 = var21 * Graphics3D.Rasterizer3D_zoom / var15 + Graphics3D.centerY;
                   Graphics3D.rasterAlpha = 0;
                   int var30;
                   if((var26 - var28) * (var25 - var29) - (var27 - var29) * (var24 - var28) > 0) {
@@ -1898,8 +1907,8 @@ public class Region {
             SceneTileModel.vertexSceneZ[var9] = var12;
          }
 
-         SceneTileModel.tmpScreenX[var9] = var10 * Graphics3D.field1928 / var12 + Graphics3D.centerX;
-         SceneTileModel.tmpScreenY[var9] = var13 * Graphics3D.field1928 / var12 + Graphics3D.centerY;
+         SceneTileModel.tmpScreenX[var9] = var10 * Graphics3D.Rasterizer3D_zoom / var12 + Graphics3D.centerX;
+         SceneTileModel.tmpScreenY[var9] = var13 * Graphics3D.Rasterizer3D_zoom / var12 + Graphics3D.centerY;
       }
 
       Graphics3D.rasterAlpha = 0;
@@ -1967,8 +1976,8 @@ public class Region {
    @ObfuscatedName("at")
    @Export("updateOccluders")
    void updateOccluders() {
-      int var1 = levelOccluderCount[field2003];
-      Occluder[] var2 = levelOccluders[field2003];
+      int var1 = levelOccluderCount[Scene_plane];
+      Occluder[] var2 = levelOccluders[Scene_plane];
       field2006 = 0;
 
       for(int var3 = 0; var3 < var1; ++var3) {
@@ -2555,8 +2564,8 @@ public class Region {
       var3 = pitchCos * var1 - var2 * pitchSin >> 16;
       var2 = pitchSin * var1 + var2 * pitchCos >> 16;
       var2 |= 1;
-      int var4 = var0 * Graphics3D.field1928 / var2 + Graphics3D.centerX + Rasterizer2D.draw_region_x;
-      int var5 = Graphics3D.field1928 * var3 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
+      int var4 = var0 * Graphics3D.Rasterizer3D_zoom / var2 + Graphics3D.centerX + Rasterizer2D.draw_region_x;
+      int var5 = Graphics3D.Rasterizer3D_zoom * var3 / var2 + Graphics3D.centerY + Rasterizer2D.drawingAreaTop;
       return new int[]{var4, var5};
    }
 }

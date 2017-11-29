@@ -163,15 +163,15 @@ public class MessageNode extends CacheableNode {
                   Class[] var21 = new Class[var7];
 
                   for(var12 = 0; var12 < var7; ++var12) {
-                     var21[var12] = GraphicsObject.method1727(var8[var12]);
+                     var21[var12] = GraphicsObject.loadClassFromDescriptor(var8[var12]);
                   }
 
-                  Class var22 = GraphicsObject.method1727(var20);
-                  if(GraphicsObject.method1727(var5).getClassLoader() == null) {
+                  Class var22 = GraphicsObject.loadClassFromDescriptor(var20);
+                  if(GraphicsObject.loadClassFromDescriptor(var5).getClassLoader() == null) {
                      throw new SecurityException();
                   }
 
-                  Method[] var13 = GraphicsObject.method1727(var5).getDeclaredMethods();
+                  Method[] var13 = GraphicsObject.loadClassFromDescriptor(var5).getDeclaredMethods();
                   Method[] var14 = var13;
 
                   for(int var15 = 0; var15 < var14.length; ++var15) {
@@ -207,11 +207,11 @@ public class MessageNode extends CacheableNode {
 
                var2.type[var3] = var4;
                var2.field3798[var3] = var7;
-               if(GraphicsObject.method1727(var5).getClassLoader() == null) {
+               if(GraphicsObject.loadClassFromDescriptor(var5).getClassLoader() == null) {
                   throw new SecurityException();
                }
 
-               var2.fields[var3] = Reflection.findField(GraphicsObject.method1727(var5), var6);
+               var2.fields[var3] = Reflection.findField(GraphicsObject.loadClassFromDescriptor(var5), var6);
             }
          } catch (ClassNotFoundException var24) {
             var2.errorIdentifiers[var3] = -1;
@@ -226,7 +226,7 @@ public class MessageNode extends CacheableNode {
          }
       }
 
-      class289.field3806.method3725(var2);
+      class289.classInfos.addFirst(var2);
    }
 
    @ObfuscatedName("in")
@@ -272,21 +272,21 @@ public class MessageNode extends CacheableNode {
 
             int var10;
             if(Client.itemSelectionState == 1) {
-               RSCanvas.addMenuEntry("Use", Client.field974 + " " + "->" + " " + ISAACCipher.getColTags(16777215) + var4, 14, var1, var2, var3);
+               RSCanvas.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + ISAACCipher.getColTags(16777215) + var4, 14, var1, var2, var3);
             } else if(Client.spellSelected) {
                if((class156.field2161 & 8) == 8) {
-                  RSCanvas.addMenuEntry(Client.field1042, Client.field1013 + " " + "->" + " " + ISAACCipher.getColTags(16777215) + var4, 15, var1, var2, var3);
+                  RSCanvas.addMenuEntry(Client.lastSelectedSpellActionName, Client.lastSelectedSpellName + " " + "->" + " " + ISAACCipher.getColTags(16777215) + var4, 15, var1, var2, var3);
                }
             } else {
                for(var10 = 7; var10 >= 0; --var10) {
                   if(Client.playerOptions[var10] != null) {
                      short var11 = 0;
                      if(Client.playerOptions[var10].equalsIgnoreCase("Attack")) {
-                        if(class90.field1336 == Client.field897) {
+                        if(AttackOption.AttackOption_hidden == Client.playerAttackOption) {
                            continue;
                         }
 
-                        if(Client.field897 == class90.field1338 || Client.field897 == class90.field1337 && var0.combatLevel > class181.localPlayer.combatLevel) {
+                        if(Client.playerAttackOption == AttackOption.AttackOption_alwaysRightClick || Client.playerAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > class181.localPlayer.combatLevel) {
                            var11 = 2000;
                         }
 

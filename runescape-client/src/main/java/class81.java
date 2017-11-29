@@ -93,9 +93,9 @@ public final class class81 extends Node {
       ObjectComposition var2 = this.field1254.getImpostor();
       if(var2 != null) {
          this.field1247 = var2.ambientSoundId;
-         this.field1246 = var2.field3541 * 128;
-         this.field1249 = var2.field3500;
-         this.field1243 = var2.field3546;
+         this.field1246 = var2.int4 * 128;
+         this.field1249 = var2.int5;
+         this.field1243 = var2.int6;
          this.field1240 = var2.field3547;
       } else {
          this.field1247 = -1;
@@ -106,7 +106,7 @@ public final class class81 extends Node {
       }
 
       if(var1 != this.field1247 && this.field1253 != null) {
-         class70.field821.method1954(this.field1253);
+         MouseRecorder.field821.method1954(this.field1253);
          this.field1253 = null;
       }
 
@@ -147,9 +147,9 @@ public final class class81 extends Node {
             int var9 = var8 >> 16;
             int var10 = var8 >> 8 & 597;
             int var11 = var8 & 597;
-            class94.field1416[var7] = (var10 << 14) + var11 + (var9 << 28);
-            class94.field1417[var7] = 0;
-            class94.field1418[var7] = -1;
+            class94.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
+            class94.Players_orientations[var7] = 0;
+            class94.Players_targetIndices[var7] = -1;
             class94.field1415[++class94.field1414 - 1] = var7;
             class94.field1412[var7] = 0;
          }
@@ -173,8 +173,8 @@ public final class class81 extends Node {
       }
 
       MessageNode var5 = var4.addMessage(var0, var1, var2, var3);
-      class96.field1434.put(var5, (long)var5.id);
-      class96.field1435.method3822(var5);
+      class96.messages.put(var5, (long)var5.id);
+      class96.field1435.add(var5);
       Client.chatCycle = Client.cycleCntr;
    }
 }

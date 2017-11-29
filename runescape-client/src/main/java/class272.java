@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -7,10 +8,12 @@ public class class272 {
    @ObfuscatedSignature(
       signature = "Lfy;"
    )
-   static Huffman field3721;
+   @Export("huffman")
+   static Huffman huffman;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "[Lkl;"
    )
-   static IndexedSprite[] field3720;
+   @Export("runeSprites")
+   static IndexedSprite[] runeSprites;
 }

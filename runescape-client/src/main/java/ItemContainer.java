@@ -28,7 +28,8 @@ public class ItemContainer extends Node {
    @ObfuscatedSignature(
       signature = "[Ldl;"
    )
-   public static CacheFile[] field751;
+   @Export("idxFiles")
+   public static CacheFile[] idxFiles;
    @ObfuscatedName("ap")
    protected static String field749;
    @ObfuscatedName("x")
@@ -61,7 +62,8 @@ public class ItemContainer extends Node {
       signature = "(CI)B",
       garbageValue = "776794604"
    )
-   public static byte method1102(char var0) {
+   @Export("charToByteCp1252")
+   public static byte charToByteCp1252(char var0) {
       byte var1;
       if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
          var1 = (byte)var0;
@@ -169,7 +171,7 @@ public class ItemContainer extends Node {
                   if(var17 != null) {
                      var11 = var8 * 4 + 2 - class181.localPlayer.x / 32;
                      var12 = var9 * 4 + 2 - class181.localPlayer.y / 32;
-                     ScriptState.drawDot(var1, var2, var11, var12, class17.mapDots[0], var4);
+                     ScriptState.drawDot(var1, var2, var11, var12, UnitPriceComparator.mapDots[0], var4);
                   }
                }
             }
@@ -185,7 +187,7 @@ public class ItemContainer extends Node {
                   if(var21 != null && var21.isMinimapVisible && var21.field3627) {
                      var11 = var18.x / 32 - class181.localPlayer.x / 32;
                      var12 = var18.y / 32 - class181.localPlayer.y / 32;
-                     ScriptState.drawDot(var1, var2, var11, var12, class17.mapDots[1], var4);
+                     ScriptState.drawDot(var1, var2, var11, var12, UnitPriceComparator.mapDots[1], var4);
                   }
                }
             }
@@ -199,7 +201,7 @@ public class ItemContainer extends Node {
                   var12 = var19.x / 32 - class181.localPlayer.x / 32;
                   int var13 = var19.y / 32 - class181.localPlayer.y / 32;
                   boolean var14 = false;
-                  if(class2.isFriended(var19.name, true)) {
+                  if(IntegerToken.isFriended(var19.name, true)) {
                      var14 = true;
                   }
 
@@ -218,13 +220,13 @@ public class ItemContainer extends Node {
                   }
 
                   if(var14) {
-                     ScriptState.drawDot(var1, var2, var12, var13, class17.mapDots[3], var4);
+                     ScriptState.drawDot(var1, var2, var12, var13, UnitPriceComparator.mapDots[3], var4);
                   } else if(var20) {
-                     ScriptState.drawDot(var1, var2, var12, var13, class17.mapDots[4], var4);
+                     ScriptState.drawDot(var1, var2, var12, var13, UnitPriceComparator.mapDots[4], var4);
                   } else if(var15) {
-                     ScriptState.drawDot(var1, var2, var12, var13, class17.mapDots[5], var4);
+                     ScriptState.drawDot(var1, var2, var12, var13, UnitPriceComparator.mapDots[5], var4);
                   } else {
-                     ScriptState.drawDot(var1, var2, var12, var13, class17.mapDots[2], var4);
+                     ScriptState.drawDot(var1, var2, var12, var13, UnitPriceComparator.mapDots[2], var4);
                   }
                }
             }
@@ -235,14 +237,14 @@ public class ItemContainer extends Node {
                   if(var23 != null) {
                      var11 = var23.x / 32 - class181.localPlayer.x / 32;
                      var12 = var23.y / 32 - class181.localPlayer.y / 32;
-                     Projectile.method1825(var1, var2, var11, var12, GameEngine.mapMarkers[1], var4);
+                     Projectile.worldToMinimap(var1, var2, var11, var12, GameEngine.mapMarkers[1], var4);
                   }
                }
 
                if(Client.hintArrowTargetType == 2) {
                   var10 = Client.hintArrowX * 4 - IndexDataBase.baseX * 4 + 2 - class181.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - Occluder.baseY * 4 + 2 - class181.localPlayer.y / 32;
-                  Projectile.method1825(var1, var2, var10, var11, GameEngine.mapMarkers[1], var4);
+                  Projectile.worldToMinimap(var1, var2, var10, var11, GameEngine.mapMarkers[1], var4);
                }
 
                if(Client.hintArrowTargetType == 10 && Client.hintArrowPlayerTargetIdx >= 0 && Client.hintArrowPlayerTargetIdx < Client.cachedPlayers.length) {
@@ -250,7 +252,7 @@ public class ItemContainer extends Node {
                   if(var24 != null) {
                      var11 = var24.x / 32 - class181.localPlayer.x / 32;
                      var12 = var24.y / 32 - class181.localPlayer.y / 32;
-                     Projectile.method1825(var1, var2, var11, var12, GameEngine.mapMarkers[1], var4);
+                     Projectile.worldToMinimap(var1, var2, var11, var12, GameEngine.mapMarkers[1], var4);
                   }
                }
             }
@@ -262,7 +264,7 @@ public class ItemContainer extends Node {
             }
 
             if(!class181.localPlayer.hidden) {
-               Rasterizer2D.method5173(var4.field2683 / 2 + var1 - 1, var4.field2682 / 2 + var2 - 1, 3, 3, 16777215);
+               Rasterizer2D.Rasterizer2D_fillRectangle(var4.field2683 / 2 + var1 - 1, var4.field2682 / 2 + var2 - 1, 3, 3, 16777215);
             }
          } else {
             Rasterizer2D.method5159(var1, var2, 0, var4.field2684, var4.field2681);

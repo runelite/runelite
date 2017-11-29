@@ -2,7 +2,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("da")
-public class class106 extends class121 {
+public class class106 extends AbstractIntegerNode0 {
    @ObfuscatedName("d")
    public int field1531;
    @ObfuscatedName("x")

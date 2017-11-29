@@ -16,7 +16,7 @@ public class class23 {
       garbageValue = "48"
    )
    public static void method180(Huffman var0) {
-      class272.field3721 = var0;
+      class272.huffman = var0;
    }
 
    @ObfuscatedName("fv")
@@ -27,22 +27,22 @@ public class class23 {
    static final void method181() {
       int var0 = class181.localPlayer.x;
       int var1 = class181.localPlayer.y;
-      if(class224.field2863 - var0 < -500 || class224.field2863 - var0 > 500 || class15.field283 - var1 < -500 || class15.field283 - var1 > 500) {
+      if(class224.field2863 - var0 < -500 || class224.field2863 - var0 > 500 || TotalQuantityComparator.field283 - var1 < -500 || TotalQuantityComparator.field283 - var1 > 500) {
          class224.field2863 = var0;
-         class15.field283 = var1;
+         TotalQuantityComparator.field283 = var1;
       }
 
       if(var0 != class224.field2863) {
          class224.field2863 += (var0 - class224.field2863) / 16;
       }
 
-      if(var1 != class15.field283) {
-         class15.field283 += (var1 - class15.field283) / 16;
+      if(var1 != TotalQuantityComparator.field283) {
+         TotalQuantityComparator.field283 += (var1 - TotalQuantityComparator.field283) / 16;
       }
 
       int var2;
       int var3;
-      if(MouseInput.field705 == 4 && Client.field956) {
+      if(MouseInput.mouseCurrentButton == 4 && Client.field956) {
          var2 = MouseInput.field715 * 10625923 - Client.field942;
          Client.field1031 = var2 * 2;
          Client.field942 = var2 != -1 && var2 != 1?(MouseInput.field715 * 10625923 + Client.field942) / 2:MouseInput.field715 * 10625923;
@@ -81,8 +81,8 @@ public class class23 {
       }
 
       var2 = class224.field2863 >> 7;
-      var3 = class15.field283 >> 7;
-      int var4 = class41.getTileHeight(class224.field2863, class15.field283, class233.plane);
+      var3 = TotalQuantityComparator.field283 >> 7;
+      int var4 = class41.getTileHeight(class224.field2863, TotalQuantityComparator.field283, class233.plane);
       int var5 = 0;
       int var6;
       if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {

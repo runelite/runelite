@@ -18,12 +18,12 @@ public class class188 {
    )
    static final void method3609(String var0) {
       if(var0 != null) {
-         String var1 = GraphicsObject.method1726(var0, class236.field3239);
+         String var1 = GraphicsObject.cleanUsername(var0, class236.jagexLoginType);
          if(var1 != null) {
             for(int var2 = 0; var2 < Client.friendCount; ++var2) {
                Friend var3 = Client.friends[var2];
                String var4 = var3.name;
-               String var5 = GraphicsObject.method1726(var4, class236.field3239);
+               String var5 = GraphicsObject.cleanUsername(var4, class236.jagexLoginType);
                boolean var6;
                if(var0 != null && var4 != null) {
                   if(!var0.startsWith("#") && !var4.startsWith("#")) {

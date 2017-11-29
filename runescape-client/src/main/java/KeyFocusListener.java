@@ -64,7 +64,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    @Export("keyboardIdleTicks")
    public static volatile int keyboardIdleTicks;
    @ObfuscatedName("ct")
-   static int[] field595;
+   @Export("KeyHandler_keyCodes")
+   static int[] KeyHandler_keyCodes;
    @ObfuscatedName("ev")
    @ObfuscatedSignature(
       signature = "Ljp;"
@@ -86,14 +87,14 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       field618 = 0;
       field616 = 0;
       keyboardIdleTicks = 0;
-      field595 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+      KeyHandler_keyCodes = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
    }
 
    public final synchronized void keyReleased(KeyEvent var1) {
       if(keyboard != null) {
          int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field595.length) {
-            var2 = field595[var2] & -129;
+         if(var2 >= 0 && var2 < KeyHandler_keyCodes.length) {
+            var2 = KeyHandler_keyCodes[var2] & -129;
          } else {
             var2 = -1;
          }
@@ -113,7 +114,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    public final void keyTyped(KeyEvent var1) {
       if(keyboard != null) {
          char var2 = var1.getKeyChar();
-         if(var2 != 0 && var2 != '\uffff' && class153.method3060(var2)) {
+         if(var2 != 0 && var2 != '\uffff' && RunException.method3060(var2)) {
             int var3 = field618 + 1 & 127;
             if(var3 != field600) {
                field611[field618] = -1;
@@ -136,11 +137,13 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    public final void focusGained(FocusEvent var1) {
    }
 
+   @Export("keyPressed")
+   @ObfuscatedName("keyPressed")
    public final synchronized void keyPressed(KeyEvent var1) {
       if(keyboard != null) {
          int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field595.length) {
-            var2 = field595[var2];
+         if(var2 >= 0 && var2 < KeyHandler_keyCodes.length) {
+            var2 = KeyHandler_keyCodes[var2];
             if((var2 & 128) != 0) {
                var2 = -1;
             }
@@ -181,13 +184,13 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    )
    static void method762(int var0, byte[] var1, IndexFile var2) {
       FileSystem var3 = new FileSystem();
-      var3.field3282 = 0;
+      var3.type = 0;
       var3.hash = (long)var0;
       var3.field3280 = var1;
       var3.index = var2;
-      Deque var4 = class243.field3307;
-      synchronized(class243.field3307) {
-         class243.field3307.addFront(var3);
+      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
       }
 
       class209.method3827();
@@ -203,10 +206,10 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
       class61.field736 = null;
       class36.field481 = null;
       class61.field726 = null;
-      class10.field242 = null;
+      BoundingBox3D.field242 = null;
       ScriptState.field745 = null;
       class61.field727 = null;
-      class15.field287 = null;
+      TotalQuantityComparator.field287 = null;
       class43.field545 = null;
       GrandExchangeOffer.field300 = null;
       Permission.field3260 = null;
@@ -235,14 +238,14 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
       if(Client.rights >= 2) {
          if(var0.equalsIgnoreCase("aabb")) {
-            if(!class7.field227) {
-               class7.field227 = true;
-               class7.field225 = class11.field254;
-            } else if(class7.field225 == class11.field254) {
-               class7.field227 = true;
-               class7.field225 = class11.field258;
+            if(!class7.drawBoundingBoxes3D) {
+               class7.drawBoundingBoxes3D = true;
+               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_all;
+            } else if(class7.boundingBox3DDrawMode == class11.BoundingBox3DDrawMode_all) {
+               class7.drawBoundingBoxes3D = true;
+               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_mouseOver;
             } else {
-               class7.field227 = false;
+               class7.drawBoundingBoxes3D = false;
             }
          }
 
@@ -297,10 +300,10 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          int var14;
          int var21;
          int var22;
-         if(!var0.combatInfoList.method3726()) {
+         if(!var0.combatInfoList.isEmpty()) {
             class28.characterToScreen(var0, var0.field1179 + 15);
 
-            for(CombatInfoListHolder var9 = (CombatInfoListHolder)var0.combatInfoList.method3723(); var9 != null; var9 = (CombatInfoListHolder)var0.combatInfoList.method3720()) {
+            for(CombatInfoListHolder var9 = (CombatInfoListHolder)var0.combatInfoList.last(); var9 != null; var9 = (CombatInfoListHolder)var0.combatInfoList.previous()) {
                CombatInfo1 var10 = var9.method1732(Client.gameCycle);
                if(var10 == null) {
                   if(var9.method1731()) {
@@ -323,17 +326,17 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
                   int var16 = 255;
                   boolean var17 = true;
-                  int var18 = Client.gameCycle - var10.field1206;
+                  int var18 = Client.gameCycle - var10.cycle;
                   int var19 = var14 * var10.health / var11.healthScale;
                   int var20;
                   int var88;
-                  if(var10.field1208 > var18) {
+                  if(var10.int2 > var18) {
                      var20 = var11.field3436 == 0?0:var11.field3436 * (var18 / var11.field3436);
                      var21 = var14 * var10.healthRatio / var11.healthScale;
-                     var88 = var20 * (var19 - var21) / var10.field1208 + var21;
+                     var88 = var20 * (var19 - var21) / var10.int2 + var21;
                   } else {
                      var88 = var19;
-                     var20 = var10.field1208 + var11.field3440 - var18;
+                     var20 = var10.int2 + var11.field3440 - var18;
                      if(var11.field3438 >= 0) {
                         var16 = (var20 << 8) / (var11.field3440 - var11.field3438);
                      }
@@ -369,8 +372,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                      var8 += 2;
                   } else {
                      if(Client.screenY > -1) {
-                        Rasterizer2D.method5173(var20, var21, var88, 5, 65280);
-                        Rasterizer2D.method5173(var20 + var88, var21, var14 - var88, 5, 16711680);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var20, var21, var88, 5, 65280);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var20 + var88, var21, var14 - var88, 5, 16711680);
                      }
 
                      var8 += 7;
@@ -431,16 +434,16 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
             }
          }
 
-         if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.field1070 == 4 || !var0.field1160 && (Client.field1070 == 0 || Client.field1070 == 3 || Client.field1070 == 1 && class2.isFriended(((Player)var0).name, false))))) {
+         if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1160 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && IntegerToken.isFriended(((Player)var0).name, false))))) {
             class28.characterToScreen(var0, var0.field1179);
             if(Client.screenY > -1 && Client.field947 < Client.field948) {
-               Client.field952[Client.field947] = World.field1226.method4925(var0.overhead) / 2;
-               Client.field951[Client.field947] = World.field1226.verticalSpace;
+               Client.field952[Client.field947] = World.fontBold12.method4925(var0.overhead) / 2;
+               Client.field951[Client.field947] = World.fontBold12.verticalSpace;
                Client.field949[Client.field947] = Client.screenY;
                Client.field950[Client.field947] = Client.screenX;
                Client.field910[Client.field947] = var0.field1163;
                Client.field954[Client.field947] = var0.field1164;
-               Client.field913[Client.field947] = var0.field1177;
+               Client.field913[Client.field947] = var0.overheadTextCyclesRemaining;
                Client.field876[Client.field947] = var0.overhead;
                ++Client.field947;
             }
@@ -616,17 +619,17 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
                      Font var84 = var87.method4656();
                      if(var84 == null) {
-                        var84 = class13.field262;
+                        var84 = GrandExchangeEvents.fontPlain11;
                      }
 
                      Font var43;
                      if(var79 != null) {
                         var43 = var79.method4656();
                         if(var43 == null) {
-                           var43 = class13.field262;
+                           var43 = GrandExchangeEvents.fontPlain11;
                         }
                      } else {
-                        var43 = class13.field262;
+                        var43 = GrandExchangeEvents.fontPlain11;
                      }
 
                      String var44 = null;

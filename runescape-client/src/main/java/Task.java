@@ -23,9 +23,11 @@ public class Task {
    @Export("type")
    int type;
    @ObfuscatedName("b")
-   public int field2138;
+   @Export("intArgument")
+   public int intArgument;
    @ObfuscatedName("t")
-   Object field2139;
+   @Export("objectArgument")
+   Object objectArgument;
    @ObfuscatedName("p")
    @Export("value")
    public volatile Object value;

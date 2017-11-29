@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -44,7 +45,8 @@ public class class210 {
       signature = "(Lid;Ljava/lang/String;Ljava/lang/String;I)[Lkl;",
       garbageValue = "-1212231005"
    )
-   public static IndexedSprite[] method3855(IndexDataBase var0, String var1, String var2) {
+   @Export("getIndexedSprites")
+   public static IndexedSprite[] getIndexedSprites(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return class163.method3187(var0, var3, var4);

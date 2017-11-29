@@ -54,7 +54,7 @@ public class GZipDecompressor {
       garbageValue = "-45833708"
    )
    static void method3234(ScriptEvent var0, int var1) {
-      Object[] var2 = var0.field797;
+      Object[] var2 = var0.objs;
       Script var3;
       Script var5;
       int var7;
@@ -83,14 +83,14 @@ public class GZipDecompressor {
                var11 = null;
             } else {
                label576: {
-                  byte[] var15 = class1.indexScripts.method4271(var23);
+                  byte[] var15 = class1.indexScripts.takeRecordFlat(var23);
                   if(var15 != null) {
                      if(var15.length <= 1) {
                         var11 = null;
                         break label576;
                      }
 
-                     var12 = class12.method81(var15);
+                     var12 = WorldComparator.newScript(var15);
                      if(var12 != null) {
                         Script.field1441.put(var12, (long)(var9 << 16));
                         var11 = var12;
@@ -117,14 +117,14 @@ public class GZipDecompressor {
                   var35 = null;
                } else {
                   label521: {
-                     byte[] var17 = class1.indexScripts.method4271(var16);
+                     byte[] var17 = class1.indexScripts.takeRecordFlat(var16);
                      if(var17 != null) {
                         if(var17.length <= 1) {
                            var35 = null;
                            break label521;
                         }
 
-                        var14 = class12.method81(var17);
+                        var14 = WorldComparator.newScript(var17);
                         if(var14 != null) {
                            Script.field1441.put(var14, (long)(var10 << 16));
                            var35 = var14;
@@ -155,7 +155,7 @@ public class GZipDecompressor {
             if(var25 == null) {
                var5 = null;
             } else {
-               var29 = class12.method81(var25);
+               var29 = WorldComparator.newScript(var25);
                Script.field1441.put(var29, (long)var18);
                var5 = var29;
             }
@@ -165,7 +165,7 @@ public class GZipDecompressor {
       }
 
       if(var3 != null) {
-         class13.intStackSize = 0;
+         GrandExchangeEvents.intStackSize = 0;
          class82.scriptStringStackSize = 0;
          var18 = -1;
          int[] var32 = var3.instructions;
@@ -176,7 +176,7 @@ public class GZipDecompressor {
          try {
             class82.scriptLocalInts = new int[var3.localIntCount];
             var8 = 0;
-            class51.scriptLocalStrings = new String[var3.localStringCount];
+            SoundTaskDataProvider.scriptLocalStrings = new String[var3.localStringCount];
             var9 = 0;
 
             int var19;
@@ -224,10 +224,10 @@ public class GZipDecompressor {
                } else if(var2[var10] instanceof String) {
                   var34 = (String)var2[var10];
                   if(var34.equals("event_opbase")) {
-                     var34 = var0.field805;
+                     var34 = var0.string;
                   }
 
-                  class51.scriptLocalStrings[var9++] = var34;
+                  SoundTaskDataProvider.scriptLocalStrings[var9++] = var34;
                }
             }
 
@@ -297,7 +297,7 @@ public class GZipDecompressor {
                                                                                                                                                                      if(var7 == 44) {
                                                                                                                                                                         var19 = var30[var18] >> 16;
                                                                                                                                                                         var20 = var30[var18] & 65535;
-                                                                                                                                                                        int var22 = class82.intStack[--class13.intStackSize];
+                                                                                                                                                                        int var22 = class82.intStack[--GrandExchangeEvents.intStackSize];
                                                                                                                                                                         if(var22 >= 0 && var22 <= 5000) {
                                                                                                                                                                            class82.field1262[var19] = var22;
                                                                                                                                                                            byte var43 = -1;
@@ -320,21 +320,21 @@ public class GZipDecompressor {
                                                                                                                                                                         throw new RuntimeException();
                                                                                                                                                                      } else if(var7 == 45) {
                                                                                                                                                                         var19 = var30[var18];
-                                                                                                                                                                        var20 = class82.intStack[--class13.intStackSize];
+                                                                                                                                                                        var20 = class82.intStack[--GrandExchangeEvents.intStackSize];
                                                                                                                                                                         if(var20 < 0 || var20 >= class82.field1262[var19]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class82.intStack[++class13.intStackSize - 1] = class82.SHAPE_VERTICES[var19][var20];
+                                                                                                                                                                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class82.SHAPE_VERTICES[var19][var20];
                                                                                                                                                                      } else if(var7 == 46) {
                                                                                                                                                                         var19 = var30[var18];
-                                                                                                                                                                        class13.intStackSize -= 2;
-                                                                                                                                                                        var20 = class82.intStack[class13.intStackSize];
+                                                                                                                                                                        GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                                                                        var20 = class82.intStack[GrandExchangeEvents.intStackSize];
                                                                                                                                                                         if(var20 < 0 || var20 >= class82.field1262[var19]) {
                                                                                                                                                                            throw new RuntimeException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class82.SHAPE_VERTICES[var19][var20] = class82.intStack[class13.intStackSize + 1];
+                                                                                                                                                                        class82.SHAPE_VERTICES[var19][var20] = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                                                                                                                                                                      } else if(var7 == 47) {
                                                                                                                                                                         var34 = class28.chatMessages.getVarcString(var30[var18]);
                                                                                                                                                                         if(var34 == null) {
@@ -350,16 +350,16 @@ public class GZipDecompressor {
                                                                                                                                                                         }
 
                                                                                                                                                                         IterableHashTable var41 = var3.switches[var30[var18]];
-                                                                                                                                                                        IntegerNode var37 = (IntegerNode)var41.get((long)class82.intStack[--class13.intStackSize]);
+                                                                                                                                                                        IntegerNode var37 = (IntegerNode)var41.get((long)class82.intStack[--GrandExchangeEvents.intStackSize]);
                                                                                                                                                                         if(var37 != null) {
                                                                                                                                                                            var18 += var37.value;
                                                                                                                                                                         }
                                                                                                                                                                      }
                                                                                                                                                                   } else {
-                                                                                                                                                                     class28.chatMessages.putVarc(var30[var18], class82.intStack[--class13.intStackSize]);
+                                                                                                                                                                     class28.chatMessages.putVarc(var30[var18], class82.intStack[--GrandExchangeEvents.intStackSize]);
                                                                                                                                                                   }
                                                                                                                                                                } else {
-                                                                                                                                                                  class82.intStack[++class13.intStackSize - 1] = class28.chatMessages.getVarc(var30[var18]);
+                                                                                                                                                                  class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class28.chatMessages.getVarc(var30[var18]);
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var19 = var30[var18];
@@ -371,7 +371,7 @@ public class GZipDecompressor {
                                                                                                                                                                   if(var38 == null) {
                                                                                                                                                                      var12 = null;
                                                                                                                                                                   } else {
-                                                                                                                                                                     var35 = class12.method81(var38);
+                                                                                                                                                                     var35 = WorldComparator.newScript(var38);
                                                                                                                                                                      Script.field1441.put(var35, (long)var19);
                                                                                                                                                                      var12 = var35;
                                                                                                                                                                   }
@@ -382,33 +382,33 @@ public class GZipDecompressor {
                                                                                                                                                                String[] var42 = new String[var12.localStringCount];
 
                                                                                                                                                                for(var16 = 0; var16 < var35.intStackCount; ++var16) {
-                                                                                                                                                                  var39[var16] = class82.intStack[var16 + (class13.intStackSize - var35.intStackCount)];
+                                                                                                                                                                  var39[var16] = class82.intStack[var16 + (GrandExchangeEvents.intStackSize - var35.intStackCount)];
                                                                                                                                                                }
 
                                                                                                                                                                for(var16 = 0; var16 < var35.stringStackCount; ++var16) {
                                                                                                                                                                   var42[var16] = class82.scriptStringStack[var16 + (class82.scriptStringStackSize - var35.stringStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               class13.intStackSize -= var35.intStackCount;
+                                                                                                                                                               GrandExchangeEvents.intStackSize -= var35.intStackCount;
                                                                                                                                                                class82.scriptStringStackSize -= var35.stringStackCount;
                                                                                                                                                                ScriptState var21 = new ScriptState();
                                                                                                                                                                var21.invokedFromScript = var3;
                                                                                                                                                                var21.invokedFromPc = var18;
                                                                                                                                                                var21.savedLocalInts = class82.scriptLocalInts;
-                                                                                                                                                               var21.savedLocalStrings = class51.scriptLocalStrings;
+                                                                                                                                                               var21.savedLocalStrings = SoundTaskDataProvider.scriptLocalStrings;
                                                                                                                                                                class82.scriptStack[++class82.scriptStackCount - 1] = var21;
                                                                                                                                                                var3 = var35;
                                                                                                                                                                var32 = var35.instructions;
                                                                                                                                                                var30 = var35.intOperands;
                                                                                                                                                                var18 = -1;
                                                                                                                                                                class82.scriptLocalInts = var39;
-                                                                                                                                                               class51.scriptLocalStrings = var42;
+                                                                                                                                                               SoundTaskDataProvider.scriptLocalStrings = var42;
                                                                                                                                                             }
                                                                                                                                                          } else {
                                                                                                                                                             --class82.scriptStringStackSize;
                                                                                                                                                          }
                                                                                                                                                       } else {
-                                                                                                                                                         --class13.intStackSize;
+                                                                                                                                                         --GrandExchangeEvents.intStackSize;
                                                                                                                                                       }
                                                                                                                                                    } else {
                                                                                                                                                       var19 = var30[var18];
@@ -417,36 +417,36 @@ public class GZipDecompressor {
                                                                                                                                                       class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var33;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class51.scriptLocalStrings[var30[var18]] = class82.scriptStringStack[--class82.scriptStringStackSize];
+                                                                                                                                                   SoundTaskDataProvider.scriptLocalStrings[var30[var18]] = class82.scriptStringStack[--class82.scriptStringStackSize];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = class51.scriptLocalStrings[var30[var18]];
+                                                                                                                                                class82.scriptStringStack[++class82.scriptStringStackSize - 1] = SoundTaskDataProvider.scriptLocalStrings[var30[var18]];
                                                                                                                                              }
                                                                                                                                           } else {
-                                                                                                                                             class82.scriptLocalInts[var30[var18]] = class82.intStack[--class13.intStackSize];
+                                                                                                                                             class82.scriptLocalInts[var30[var18]] = class82.intStack[--GrandExchangeEvents.intStackSize];
                                                                                                                                           }
                                                                                                                                        } else {
-                                                                                                                                          class82.intStack[++class13.intStackSize - 1] = class82.scriptLocalInts[var30[var18]];
+                                                                                                                                          class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class82.scriptLocalInts[var30[var18]];
                                                                                                                                        }
                                                                                                                                     } else {
-                                                                                                                                       class13.intStackSize -= 2;
-                                                                                                                                       if(class82.intStack[class13.intStackSize] >= class82.intStack[class13.intStackSize + 1]) {
+                                                                                                                                       GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                                       if(class82.intStack[GrandExchangeEvents.intStackSize] >= class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                                           var18 += var30[var18];
                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                  } else {
-                                                                                                                                    class13.intStackSize -= 2;
-                                                                                                                                    if(class82.intStack[class13.intStackSize] <= class82.intStack[class13.intStackSize + 1]) {
+                                                                                                                                    GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                                    if(class82.intStack[GrandExchangeEvents.intStackSize] <= class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                                        var18 += var30[var18];
                                                                                                                                     }
                                                                                                                                  }
                                                                                                                               } else {
                                                                                                                                  var19 = var30[var18];
-                                                                                                                                 Varcs.method1883(var19, class82.intStack[--class13.intStackSize]);
+                                                                                                                                 Varcs.method1883(var19, class82.intStack[--GrandExchangeEvents.intStackSize]);
                                                                                                                               }
                                                                                                                            } else {
                                                                                                                               var19 = var30[var18];
-                                                                                                                              class82.intStack[++class13.intStackSize - 1] = Friend.method1109(var19);
+                                                                                                                              class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Friend.getVarbit(var19);
                                                                                                                            }
                                                                                                                         } else {
                                                                                                                            if(class82.scriptStackCount == 0) {
@@ -459,29 +459,29 @@ public class GZipDecompressor {
                                                                                                                            var30 = var3.intOperands;
                                                                                                                            var18 = var36.invokedFromPc;
                                                                                                                            class82.scriptLocalInts = var36.savedLocalInts;
-                                                                                                                           class51.scriptLocalStrings = var36.savedLocalStrings;
+                                                                                                                           SoundTaskDataProvider.scriptLocalStrings = var36.savedLocalStrings;
                                                                                                                         }
                                                                                                                      } else {
-                                                                                                                        class13.intStackSize -= 2;
-                                                                                                                        if(class82.intStack[class13.intStackSize] > class82.intStack[class13.intStackSize + 1]) {
+                                                                                                                        GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                        if(class82.intStack[GrandExchangeEvents.intStackSize] > class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                            var18 += var30[var18];
                                                                                                                         }
                                                                                                                      }
                                                                                                                   } else {
-                                                                                                                     class13.intStackSize -= 2;
-                                                                                                                     if(class82.intStack[class13.intStackSize] < class82.intStack[class13.intStackSize + 1]) {
+                                                                                                                     GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                     if(class82.intStack[GrandExchangeEvents.intStackSize] < class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                         var18 += var30[var18];
                                                                                                                      }
                                                                                                                   }
                                                                                                                } else {
-                                                                                                                  class13.intStackSize -= 2;
-                                                                                                                  if(class82.intStack[class13.intStackSize] == class82.intStack[class13.intStackSize + 1]) {
+                                                                                                                  GrandExchangeEvents.intStackSize -= 2;
+                                                                                                                  if(class82.intStack[GrandExchangeEvents.intStackSize] == class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                      var18 += var30[var18];
                                                                                                                   }
                                                                                                                }
                                                                                                             } else {
-                                                                                                               class13.intStackSize -= 2;
-                                                                                                               if(class82.intStack[class13.intStackSize] != class82.intStack[class13.intStackSize + 1]) {
+                                                                                                               GrandExchangeEvents.intStackSize -= 2;
+                                                                                                               if(class82.intStack[GrandExchangeEvents.intStackSize] != class82.intStack[GrandExchangeEvents.intStackSize + 1]) {
                                                                                                                   var18 += var30[var18];
                                                                                                                }
                                                                                                             }
@@ -493,15 +493,15 @@ public class GZipDecompressor {
                                                                                                       }
                                                                                                    } else {
                                                                                                       var19 = var30[var18];
-                                                                                                      class218.widgetSettings[var19] = class82.intStack[--class13.intStackSize];
+                                                                                                      class218.widgetSettings[var19] = class82.intStack[--GrandExchangeEvents.intStackSize];
                                                                                                       GraphicsObject.method1724(var19);
                                                                                                    }
                                                                                                 } else {
                                                                                                    var19 = var30[var18];
-                                                                                                   class82.intStack[++class13.intStackSize - 1] = class218.widgetSettings[var19];
+                                                                                                   class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class218.widgetSettings[var19];
                                                                                                 }
                                                                                              } else {
-                                                                                                class82.intStack[++class13.intStackSize - 1] = var30[var18];
+                                                                                                class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var30[var18];
                                                                                              }
                                                                                           } else {
                                                                                              boolean var44;

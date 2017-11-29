@@ -64,8 +64,8 @@ public class class22 extends class28 {
       garbageValue = "-27679416"
    )
    public static void method179(IndexDataBase var0, IndexDataBase var1) {
-      NPCComposition.field3616 = var0;
-      NPCComposition.field3614 = var1;
+      NPCComposition.NpcDefinition_indexCache = var0;
+      NPCComposition.NpcDefinition_modelIndexCache = var1;
    }
 
    @ObfuscatedName("m")
@@ -77,11 +77,11 @@ public class class22 extends class28 {
       if(class91.worldSelectShown) {
          class1.method1(var0);
       } else {
-         if((MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) && MouseInput.field709 >= class91.field1354 + 765 - 50 && MouseInput.field710 >= 453) {
+         if((MouseInput.mouseLastButton == 1 || !Client.field956 && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= class91.field1354 + 765 - 50 && MouseInput.mouseLastPressedY >= 453) {
             RSCanvas.preferences.muted = !RSCanvas.preferences.muted;
             class64.method1103();
             if(!RSCanvas.preferences.muted) {
-               class51.method777(RSCanvas.indexTrack1, "scape main", "", 255, false);
+               SoundTaskDataProvider.method777(RSCanvas.indexTrack1, "scape main", "", 255, false);
             } else {
                Ignore.method1126();
             }
@@ -92,12 +92,12 @@ public class class22 extends class28 {
             if(Client.gameState == 10 || Client.gameState == 11) {
                int var1;
                if(Client.languageId == 0) {
-                  if(MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) {
+                  if(MouseInput.mouseLastButton == 1 || !Client.field956 && MouseInput.mouseLastButton == 4) {
                      var1 = class91.field1354 + 5;
                      short var2 = 463;
                      byte var3 = 100;
                      byte var4 = 35;
-                     if(MouseInput.field709 >= var1 && MouseInput.field709 <= var3 + var1 && MouseInput.field710 >= var2 && MouseInput.field710 <= var2 + var4) {
+                     if(MouseInput.mouseLastPressedX >= var1 && MouseInput.mouseLastPressedX <= var3 + var1 && MouseInput.mouseLastPressedY >= var2 && MouseInput.mouseLastPressedY <= var2 + var4) {
                         if(class46.loadWorlds()) {
                            class91.worldSelectShown = true;
                         }
@@ -111,9 +111,9 @@ public class class22 extends class28 {
                   }
                }
 
-               var1 = MouseInput.field708;
-               int var9 = MouseInput.field709;
-               int var10 = MouseInput.field710;
+               var1 = MouseInput.mouseLastButton;
+               int var9 = MouseInput.mouseLastPressedX;
+               int var10 = MouseInput.mouseLastPressedY;
                if(var1 == 0) {
                   var9 = MouseInput.field703;
                   var10 = MouseInput.field715 * 10625923;
@@ -143,7 +143,7 @@ public class class22 extends class28 {
                   var5 = class91.field1348 + 80;
                   if(var1 == 1 && var9 >= var5 - 75 && var9 <= var5 + 75 && var10 >= var6 - 20 && var10 <= var6 + 20 || var11) {
                      if((Client.flags & 33554432) != 0) {
-                        class91.field1357 = "";
+                        class91.Login_response0 = "";
                         class91.loginMessage1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
                         class91.loginMessage2 = "Your normal account will not be affected.";
                         class91.loginMessage3 = "";
@@ -160,14 +160,14 @@ public class class22 extends class28 {
                            class91.loginMessage3 = "almost everywhere.";
                         }
 
-                        class91.field1357 = "Warning!";
+                        class91.Login_response0 = "Warning!";
                         class91.loginIndex = 1;
                         class72.method1144();
                      } else if((Client.flags & 1024) != 0) {
                         class91.loginMessage1 = "This is a <col=ffff00>High Risk<col=ffffff> world.";
                         class91.loginMessage2 = "The Protect Item prayer will";
                         class91.loginMessage3 = "not work on this world.";
-                        class91.field1357 = "Warning!";
+                        class91.Login_response0 = "Warning!";
                         class91.loginIndex = 1;
                         class72.method1144();
                      } else {
@@ -215,7 +215,7 @@ public class class22 extends class28 {
 
                            NPC.method1749("", "Connecting to server...", "");
                            ScriptVarType.method28(false);
-                           class12.setGameState(20);
+                           WorldComparator.setGameState(20);
                            return;
                         }
 
@@ -233,9 +233,9 @@ public class class22 extends class28 {
                         var6 = 277;
                         class91.field1364 = var9 >= var5 && var9 < var5 + class61.field737 && var10 >= var6 && var10 < var6 + class28.field392;
                         if(var1 == 1 && class91.field1364) {
-                           class91.field1366 = !class91.field1366;
-                           if(!class91.field1366 && RSCanvas.preferences.field1234 != null) {
-                              RSCanvas.preferences.field1234 = null;
+                           class91.Login_isUsernameRemembered = !class91.Login_isUsernameRemembered;
+                           if(!class91.Login_isUsernameRemembered && RSCanvas.preferences.rememberedUsername != null) {
+                              RSCanvas.preferences.rememberedUsername = null;
                               class64.method1103();
                            }
                         }
@@ -244,10 +244,10 @@ public class class22 extends class28 {
                         var6 = 277;
                         class91.field1360 = var9 >= var5 && var9 < var5 + class61.field737 && var10 >= var6 && var10 < var6 + class28.field392;
                         if(var1 == 1 && class91.field1360) {
-                           RSCanvas.preferences.field1237 = !RSCanvas.preferences.field1237;
-                           if(!RSCanvas.preferences.field1237) {
+                           RSCanvas.preferences.hideUsername = !RSCanvas.preferences.hideUsername;
+                           if(!RSCanvas.preferences.hideUsername) {
                               class91.username = "";
-                              RSCanvas.preferences.field1234 = null;
+                              RSCanvas.preferences.rememberedUsername = null;
                               class72.method1144();
                            }
 
@@ -307,7 +307,7 @@ public class class22 extends class28 {
 
                                     NPC.method1749("", "Connecting to server...", "");
                                     ScriptVarType.method28(false);
-                                    class12.setGameState(20);
+                                    WorldComparator.setGameState(20);
                                     return;
                                  }
 
@@ -350,7 +350,7 @@ public class class22 extends class28 {
                               class28.field393 = "";
                               ScriptVarType.method28(true);
                               NPC.method1749("", "Connecting to server...", "");
-                              class12.setGameState(20);
+                              WorldComparator.setGameState(20);
                               return;
                            }
 
@@ -403,7 +403,7 @@ public class class22 extends class28 {
                                     class28.field393 = "";
                                     ScriptVarType.method28(true);
                                     NPC.method1749("", "Connecting to server...", "");
-                                    class12.setGameState(20);
+                                    WorldComparator.setGameState(20);
                                     return;
                                  }
 

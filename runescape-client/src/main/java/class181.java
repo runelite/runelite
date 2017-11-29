@@ -52,11 +52,11 @@ public class class181 {
       garbageValue = "1205048616"
    )
    public static final void method3521(int var0, int var1) {
-      class133.field1900 = var0;
-      class133.field1901 = var1;
-      class133.field1908 = true;
-      class133.field1909 = 0;
-      class133.field1902 = false;
+      class133.Viewport_mouseX = var0;
+      class133.Viewport_mouseY = var1;
+      class133.Viewport_containsMouse = true;
+      class133.Viewport_entityCountAtMouse = 0;
+      class133.Viewport_false0 = false;
    }
 
    @ObfuscatedName("x")

@@ -11,14 +11,14 @@ public class class139 {
    )
    public static void method2983() {
       try {
-         class156.field2157.method2427();
+         class156.dat2File.close();
 
-         for(int var0 = 0; var0 < class156.field2153; ++var0) {
-            ItemContainer.field751[var0].method2427();
+         for(int var0 = 0; var0 < class156.idxCount; ++var0) {
+            ItemContainer.idxFiles[var0].close();
          }
 
-         class156.field2154.method2427();
-         class156.field2155.method2427();
+         class156.idx255File.close();
+         class156.randomDat.close();
       } catch (Exception var2) {
          ;
       }
@@ -34,7 +34,7 @@ public class class139 {
    static final void groundItemSpawned(int var0, int var1) {
       Deque var2 = Client.groundItemDeque[class233.plane][var0][var1];
       if(var2 == null) {
-         class14.region.method2796(class233.plane, var0, var1);
+         GrandExchangeEvent.region.removeGroundItemPile(class233.plane, var0, var1);
       } else {
          long var3 = -99999999L;
          Item var5 = null;
@@ -54,7 +54,7 @@ public class class139 {
          }
 
          if(var5 == null) {
-            class14.region.method2796(class233.plane, var0, var1);
+            GrandExchangeEvent.region.removeGroundItemPile(class233.plane, var0, var1);
          } else {
             var2.addTail(var5);
             Item var11 = null;
@@ -73,7 +73,7 @@ public class class139 {
             }
 
             int var9 = var0 + (var1 << 7) + 1610612736;
-            class14.region.addItemPile(class233.plane, var0, var1, class41.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class233.plane), var5, var9, var11, var10);
+            GrandExchangeEvent.region.addItemPile(class233.plane, var0, var1, class41.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class233.plane), var5, var9, var11, var10);
          }
       }
    }

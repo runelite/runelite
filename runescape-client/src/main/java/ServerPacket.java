@@ -522,11 +522,11 @@ public class ServerPacket {
    @Export("currentTimeMs")
    public static synchronized long currentTimeMs() {
       long var0 = System.currentTimeMillis();
-      if(var0 < class182.field2510) {
-         class284.field3783 += class182.field2510 - var0;
+      if(var0 < class182.currentTimeMsLast) {
+         class284.currentTimeMsOffset += class182.currentTimeMsLast - var0;
       }
 
-      class182.field2510 = var0;
-      return var0 + class284.field3783;
+      class182.currentTimeMsLast = var0;
+      return var0 + class284.currentTimeMsOffset;
    }
 }

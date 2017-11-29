@@ -14,7 +14,7 @@ public class ScriptState {
       signature = "Lew;"
    )
    @Export("listFetcher")
-   static class149 listFetcher;
+   static UrlRequest listFetcher;
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lce;"
@@ -43,7 +43,8 @@ public class ScriptState {
       signature = "(II)Liw;",
       garbageValue = "-1306658854"
    )
-   public static FloorUnderlayDefinition method1093(int var0) {
+   @Export("getUnderlayDefinition")
+   public static FloorUnderlayDefinition getUnderlayDefinition(int var0) {
       FloorUnderlayDefinition var1 = (FloorUnderlayDefinition)FloorUnderlayDefinition.underlays.get((long)var0);
       if(var1 != null) {
          return var1;

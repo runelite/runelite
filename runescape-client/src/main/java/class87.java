@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -14,7 +15,8 @@ public class class87 {
       signature = "(II)Lhx;",
       garbageValue = "-1103237674"
    )
-   public static Widget method1762(int var0) {
+   @Export("getWidget")
+   public static Widget getWidget(int var0) {
       int var1 = var0 >> 16;
       int var2 = var0 & 65535;
       if(class11.widgets[var1] == null || class11.widgets[var1][var2] == null) {
@@ -33,7 +35,7 @@ public class class87 {
       garbageValue = "-35"
    )
    static final boolean method1763() {
-      return class133.field1908;
+      return class133.Viewport_containsMouse;
    }
 
    @ObfuscatedName("v")

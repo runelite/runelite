@@ -15,7 +15,7 @@ public class class227 {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Spotanim.field3404.getConfigData(13, var0);
+         byte[] var2 = Spotanim.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
          var1 = new Spotanim();
          var1.id = var0;
          if(var2 != null) {

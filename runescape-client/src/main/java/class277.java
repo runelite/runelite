@@ -17,7 +17,7 @@ public final class class277 {
       garbageValue = "-7"
    )
    public static boolean method5091() {
-      ClassInfo var0 = (ClassInfo)class289.field3806.method3723();
+      ClassInfo var0 = (ClassInfo)class289.classInfos.last();
       return var0 != null;
    }
 

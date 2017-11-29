@@ -76,7 +76,7 @@ public final class GraphicsObject extends Renderable {
       int var8 = class227.getSpotAnimType(this.id).field3393;
       if(var8 != -1) {
          this.finished = false;
-         this.field1284 = class13.getAnimation(var8);
+         this.field1284 = GrandExchangeEvents.getAnimation(var8);
       } else {
          this.finished = true;
       }
@@ -113,9 +113,9 @@ public final class GraphicsObject extends Renderable {
       Spotanim var1 = class227.getSpotAnimType(this.id);
       Model var2;
       if(!this.finished) {
-         var2 = var1.method4494(this.field1285);
+         var2 = var1.getModel(this.field1285);
       } else {
-         var2 = var1.method4494(-1);
+         var2 = var1.getModel(-1);
       }
 
       return var2 == null?null:var2;
@@ -126,7 +126,8 @@ public final class GraphicsObject extends Renderable {
       signature = "(Ljava/lang/CharSequence;Lku;S)Ljava/lang/String;",
       garbageValue = "-651"
    )
-   public static String method1726(CharSequence var0, class298 var1) {
+   @Export("cleanUsername")
+   public static String cleanUsername(CharSequence var0, JagexLoginType var1) {
       if(var0 == null) {
          return null;
       } else {
@@ -235,7 +236,8 @@ public final class GraphicsObject extends Renderable {
       signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
       garbageValue = "-564400229"
    )
-   static Class method1727(String var0) throws ClassNotFoundException {
+   @Export("loadClassFromDescriptor")
+   static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
       return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
    }
 
@@ -400,9 +402,9 @@ public final class GraphicsObject extends Renderable {
          }
 
          if(var5 == 18) {
-            Client.field897 = (class90)class94.forOrdinal(class45.method664(), var6);
-            if(Client.field897 == null) {
-               Client.field897 = class90.field1337;
+            Client.playerAttackOption = (AttackOption)class94.forOrdinal(class45.method664(), var6);
+            if(Client.playerAttackOption == null) {
+               Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
             }
          }
 
@@ -415,9 +417,9 @@ public final class GraphicsObject extends Renderable {
          }
 
          if(var5 == 22) {
-            Client.field898 = (class90)class94.forOrdinal(class45.method664(), var6);
-            if(Client.field898 == null) {
-               Client.field898 = class90.field1337;
+            Client.npcAttackOption = (AttackOption)class94.forOrdinal(class45.method664(), var6);
+            if(Client.npcAttackOption == null) {
+               Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
             }
          }
 

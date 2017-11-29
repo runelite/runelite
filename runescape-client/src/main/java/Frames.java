@@ -77,10 +77,10 @@ public class Frames extends CacheableNode {
 
       for(int var4 = 0; var4 < ItemComposition.field3559; ++var4) {
          ItemComposition var5 = WorldMapType2.getItemDefinition(var4);
-         if((!var1 || var5.field3594) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
             if(var3 >= 250) {
                class229.field2911 = -1;
-               class51.field626 = null;
+               SoundTaskDataProvider.field626 = null;
                return;
             }
 
@@ -98,7 +98,7 @@ public class Frames extends CacheableNode {
          }
       }
 
-      class51.field626 = var2;
+      SoundTaskDataProvider.field626 = var2;
       class20.field321 = 0;
       class229.field2911 = var3;
       String[] var8 = new String[class229.field2911];
@@ -107,7 +107,7 @@ public class Frames extends CacheableNode {
          var8[var9] = WorldMapType2.getItemDefinition(var2[var9]).name;
       }
 
-      short[] var10 = class51.field626;
+      short[] var10 = SoundTaskDataProvider.field626;
       Script.method1908(var8, var10, 0, var8.length - 1);
    }
 }

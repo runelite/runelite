@@ -106,7 +106,8 @@ public class class91 {
    @Export("loginIndex")
    static int loginIndex;
    @ObfuscatedName("aw")
-   static String field1357;
+   @Export("Login_response0")
+   static String Login_response0;
    @ObfuscatedName("ap")
    @Export("loginMessage1")
    static String loginMessage1;
@@ -123,7 +124,8 @@ public class class91 {
    @Export("password")
    static String password;
    @ObfuscatedName("ar")
-   static boolean field1366;
+   @Export("Login_isUsernameRemembered")
+   static boolean Login_isUsernameRemembered;
    @ObfuscatedName("at")
    static boolean field1364;
    @ObfuscatedName("bj")
@@ -163,13 +165,13 @@ public class class91 {
       loadingBarPercentage = 10;
       loadingText = "";
       loginIndex = 0;
-      field1357 = "";
+      Login_response0 = "";
       loginMessage1 = "";
       loginMessage2 = "";
       loginMessage3 = "";
       username = "";
       password = "";
-      field1366 = false;
+      Login_isUsernameRemembered = false;
       field1364 = false;
       field1360 = false;
       field1369 = true;
@@ -197,7 +199,7 @@ public class class91 {
       String var0 = "";
 
       MessageNode var2;
-      for(Iterator var1 = class96.field1434.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
+      for(Iterator var1 = class96.messages.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
          var2 = (MessageNode)var1.next();
       }
 
@@ -210,7 +212,7 @@ public class class91 {
       garbageValue = "461775036"
    )
    static final void method1814(int var0, int var1, int var2, int var3, int var4) {
-      int var5 = class14.region.method2823(var0, var1, var2);
+      int var5 = GrandExchangeEvent.region.method2823(var0, var1, var2);
       int var6;
       int var7;
       int var8;
@@ -218,7 +220,7 @@ public class class91 {
       int var11;
       int var12;
       if(var5 != 0) {
-         var6 = class14.region.method2827(var0, var1, var2, var5);
+         var6 = GrandExchangeEvent.region.getObjectFlags(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var3;
@@ -300,9 +302,9 @@ public class class91 {
          }
       }
 
-      var5 = class14.region.method2825(var0, var1, var2);
+      var5 = GrandExchangeEvent.region.method2825(var0, var1, var2);
       if(var5 != 0) {
-         var6 = class14.region.method2827(var0, var1, var2, var5);
+         var6 = GrandExchangeEvent.region.getObjectFlags(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var5 >> 14 & 32767;
@@ -337,7 +339,7 @@ public class class91 {
          }
       }
 
-      var5 = class14.region.method2826(var0, var1, var2);
+      var5 = GrandExchangeEvent.region.method2826(var0, var1, var2);
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
          ObjectComposition var19 = class3.getObjectDefinition(var6);

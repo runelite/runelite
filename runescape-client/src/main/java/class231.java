@@ -15,7 +15,7 @@ public class class231 {
       int var2 = 0;
 
       for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + ItemContainer.method1102(var0.charAt(var3));
+         var2 = (var2 << 5) - var2 + ItemContainer.charToByteCp1252(var0.charAt(var3));
       }
 
       return var2;
@@ -29,18 +29,18 @@ public class class231 {
    @Export("gameDraw")
    static final void gameDraw(Widget[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
-      Graphics3D.method2739();
+      Graphics3D.Rasterizer3D_method1();
 
       for(int var9 = 0; var9 < var0.length; ++var9) {
          Widget var10 = var0[var9];
          if(var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.field1027)) {
             int var11;
             if(var8 == -1) {
-               Client.widgetPositionX[Client.field1035] = var10.relativeX + var6;
-               Client.widgetPositionY[Client.field1035] = var7 + var10.relativeY;
-               Client.widgetBoundsWidth[Client.field1035] = var10.width;
-               Client.widgetBoundsHeight[Client.field1035] = var10.height;
-               var11 = ++Client.field1035 - 1;
+               Client.widgetPositionX[Client.widgetCount] = var10.relativeX + var6;
+               Client.widgetPositionY[Client.widgetCount] = var7 + var10.relativeY;
+               Client.widgetBoundsWidth[Client.widgetCount] = var10.width;
+               Client.widgetBoundsHeight[Client.widgetCount] = var10.height;
+               var11 = ++Client.widgetCount - 1;
             } else {
                var11 = var8;
             }
@@ -59,7 +59,7 @@ public class class231 {
                int var16;
                if(var10 == Client.field1027) {
                   if(var1 != -1412584499 && !var10.field2802) {
-                     class149.field2108 = var0;
+                     UrlRequest.field2108 = var0;
                      MouseInput.field712 = var6;
                      class31.field422 = var7;
                      continue;
@@ -200,14 +200,14 @@ public class class231 {
                         class230.method4226();
                         class47.method710(false);
                         class184.method3543();
-                        class12.method77();
+                        WorldComparator.method77();
                         class82.method1692(var12, var13, var21, var22, true);
-                        var19 = Client.field1114;
-                        var20 = Client.field1115;
+                        var19 = Client.Viewport_xOffset;
+                        var20 = Client.Viewport_yOffset;
                         var21 = Client.viewportHeight;
                         var22 = Client.viewportWidth;
                         Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
-                        Graphics3D.method2739();
+                        Graphics3D.Rasterizer3D_method1();
                         if(!Client.field1100) {
                            var23 = Client.field997;
                            if(Client.field946 / 256 > var23) {
@@ -219,7 +219,7 @@ public class class231 {
                            }
 
                            var24 = Client.mapAngle & 2047;
-                           class56.method835(class224.field2863, class41.getTileHeight(class181.localPlayer.x, class181.localPlayer.y, class233.plane) - Client.field943, class15.field283, var23, var24, var23 * 3 + 600);
+                           class56.method835(class224.field2863, class41.getTileHeight(class181.localPlayer.x, class181.localPlayer.y, class233.plane) - Client.field943, TotalQuantityComparator.field283, var23, var24, var23 * 3 + 600);
                         }
 
                         if(!Client.field1100) {
@@ -347,7 +347,7 @@ public class class231 {
                         var25 = GameEngine.cameraZ;
                         var26 = class289.cameraY;
                         var27 = class18.cameraPitch;
-                        var28 = class51.cameraYaw;
+                        var28 = SoundTaskDataProvider.cameraYaw;
 
                         for(var29 = 0; var29 < 5; ++var29) {
                            if(Client.field1101[var29]) {
@@ -365,7 +365,7 @@ public class class231 {
                               }
 
                               if(var29 == 3) {
-                                 class51.cameraYaw = var30 + class51.cameraYaw & 2047;
+                                 SoundTaskDataProvider.cameraYaw = var30 + SoundTaskDataProvider.cameraYaw & 2047;
                               }
 
                               if(var29 == 4) {
@@ -383,9 +383,9 @@ public class class231 {
 
                         var29 = MouseInput.field703;
                         var30 = MouseInput.field715 * 10625923;
-                        if(MouseInput.field708 != 0) {
-                           var29 = MouseInput.field709;
-                           var30 = MouseInput.field710;
+                        if(MouseInput.mouseLastButton != 0) {
+                           var29 = MouseInput.mouseLastPressedX;
+                           var30 = MouseInput.mouseLastPressedY;
                         }
 
                         if(var29 >= var19 && var29 < var21 + var19 && var30 >= var20 && var30 < var22 + var20) {
@@ -395,15 +395,15 @@ public class class231 {
                         }
 
                         class25.method190();
-                        Rasterizer2D.method5173(var19, var20, var21, var22, 0);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var19, var20, var21, var22, 0);
                         class25.method190();
-                        var31 = Graphics3D.field1928;
-                        Graphics3D.field1928 = Client.scale;
-                        class14.region.draw(class214.cameraX, GameEngine.cameraZ, class289.cameraY, class18.cameraPitch, class51.cameraYaw, var23);
+                        var31 = Graphics3D.Rasterizer3D_zoom;
+                        Graphics3D.Rasterizer3D_zoom = Client.scale;
+                        GrandExchangeEvent.region.draw(class214.cameraX, GameEngine.cameraZ, class289.cameraY, class18.cameraPitch, SoundTaskDataProvider.cameraYaw, var23);
                         class39.method554();
-                        Graphics3D.field1928 = var31;
+                        Graphics3D.Rasterizer3D_zoom = var31;
                         class25.method190();
-                        class14.region.clearEntities();
+                        GrandExchangeEvent.region.clearEntities();
                         Client.field947 = 0;
                         boolean var59 = false;
                         var33 = -1;
@@ -503,25 +503,25 @@ public class class231 {
                               }
 
                               if(Client.field954[var36] == 0) {
-                                 World.field1226.method4962(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
+                                 World.fontBold12.method4962(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
                               }
 
                               if(Client.field954[var36] == 1) {
-                                 World.field1226.method4936(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958);
+                                 World.fontBold12.method4936(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958);
                               }
 
                               if(Client.field954[var36] == 2) {
-                                 World.field1226.method4937(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958);
+                                 World.fontBold12.method4937(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958);
                               }
 
                               if(Client.field954[var36] == 3) {
-                                 World.field1226.method4938(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958, 150 - Client.field913[var36]);
+                                 World.fontBold12.method4938(var48, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field958, 150 - Client.field913[var36]);
                               }
 
                               if(Client.field954[var36] == 4) {
-                                 var44 = (150 - Client.field913[var36]) * (World.field1226.method4925(var48) + 100) / 150;
+                                 var44 = (150 - Client.field913[var36]) * (World.fontBold12.method4925(var48) + 100) / 150;
                                  Rasterizer2D.setInnerDrawRegion(var19 + Client.screenY - 50, var20, var19 + Client.screenY + 50, var22 + var20);
-                                 World.field1226.method4931(var48, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
+                                 World.fontBold12.method4931(var48, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
                                  Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                               }
 
@@ -534,30 +534,30 @@ public class class231 {
                                     var45 = var44 - 125;
                                  }
 
-                                 Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - World.field1226.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
-                                 World.field1226.method4962(var48, var19 + Client.screenY, var20 + var45 + Client.screenX, var43, 0);
+                                 Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - World.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
+                                 World.fontBold12.method4962(var48, var19 + Client.screenY, var20 + var45 + Client.screenX, var43, 0);
                                  Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                               }
                            } else {
-                              World.field1226.method4962(var48, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
+                              World.fontBold12.method4962(var48, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
                            }
                         }
 
-                        class10.method56(var19, var20);
+                        BoundingBox3D.method56(var19, var20);
                         ((TextureProvider)Graphics3D.textureLoader).method2486(Client.field992);
                         GrandExchangeOffer.method117(var19, var20, var21, var22);
                         class214.cameraX = var24;
                         GameEngine.cameraZ = var25;
                         class289.cameraY = var26;
                         class18.cameraPitch = var27;
-                        class51.cameraYaw = var28;
+                        SoundTaskDataProvider.cameraYaw = var28;
                         if(Client.field879 && AbstractSoundSystem.method2156(true, false) == 0) {
                            Client.field879 = false;
                         }
 
                         if(Client.field879) {
-                           Rasterizer2D.method5173(var19, var20, var21, var22, 0);
-                           class148.drawStatusBox("Loading - please wait.", false);
+                           Rasterizer2D.Rasterizer2D_fillRectangle(var19, var20, var21, var22, 0);
+                           UrlRequester.drawStatusBox("Loading - please wait.", false);
                         }
 
                         Client.field1059[var10.boundsIndex] = true;
@@ -612,7 +612,7 @@ public class class231 {
                      }
 
                      Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
-                     Graphics3D.method2739();
+                     Graphics3D.Rasterizer3D_method1();
                   }
 
                   if(Client.isResized || Client.field1132[var11] || Client.gameDrawingMode > 1) {
@@ -621,16 +621,16 @@ public class class231 {
                         var20 = var10.scrollY;
                         var21 = var10.height;
                         var22 = var10.scrollHeight;
-                        class90.field1333[0].method5245(var19, var13);
-                        class90.field1333[1].method5245(var19, var13 + var21 - 16);
-                        Rasterizer2D.method5173(var19, var13 + 16, 16, var21 - 32, Client.field1038);
+                        AttackOption.scrollbarSprites[0].method5245(var19, var13);
+                        AttackOption.scrollbarSprites[1].method5245(var19, var13 + var21 - 16);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var19, var13 + 16, 16, var21 - 32, Client.field1038);
                         var23 = var21 * (var21 - 32) / var22;
                         if(var23 < 8) {
                            var23 = 8;
                         }
 
                         var24 = var20 * (var21 - 32 - var23) / (var22 - var21);
-                        Rasterizer2D.method5173(var19, var13 + var24 + 16, 16, var23, Client.field982);
+                        Rasterizer2D.Rasterizer2D_fillRectangle(var19, var13 + var24 + 16, 16, var23, Client.field982);
                         Rasterizer2D.method5146(var19, var24 + var13 + 16, var23, Client.field934);
                         Rasterizer2D.method5146(var19 + 1, var13 + var24 + 16, var23, Client.field934);
                         Rasterizer2D.method5148(var19, var24 + var13 + 16, 16, Client.field934);
@@ -670,9 +670,9 @@ public class class231 {
                                     if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == WorldMapType2.field492 && var19 == Client.field1076) {
                                        SpritePixels var50;
                                        if(Client.itemSelectionState == 1 && var19 == class34.selectedItemIndex && var10.id == class214.field2675) {
-                                          var50 = class15.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
+                                          var50 = TotalQuantityComparator.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
                                        } else {
-                                          var50 = class15.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
+                                          var50 = TotalQuantityComparator.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
                                        }
 
                                        if(var50 != null) {
@@ -725,7 +725,7 @@ public class class231 {
                                                    class40.method556(var51);
                                                 }
                                              }
-                                          } else if(var10 == class51.field622 && var19 == Client.field966) {
+                                          } else if(var10 == SoundTaskDataProvider.field622 && var19 == Client.field966) {
                                              var50.method5274(var22, var23, 128);
                                           } else {
                                              var50.drawAt(var22, var23);
@@ -768,7 +768,7 @@ public class class231 {
                                  break;
                               default:
                                  if(var14 == 0) {
-                                    Rasterizer2D.method5173(var12, var13, var10.width, var10.height, var19);
+                                    Rasterizer2D.Rasterizer2D_fillRectangle(var12, var13, var10.width, var10.height, var19);
                                  } else {
                                     Rasterizer2D.fillRectangle(var12, var13, var10.width, var10.height, var19, 256 - (var14 & 255));
                                  }
@@ -776,12 +776,12 @@ public class class231 {
                            } else if(var14 == 0) {
                               Rasterizer2D.drawRectangle(var12, var13, var10.width, var10.height, var19);
                            } else {
-                              Rasterizer2D.method5152(var12, var13, var10.width, var10.height, var19, 256 - (var14 & 255));
+                              Rasterizer2D.Rasterizer2D_drawRectangleAlpha(var12, var13, var10.width, var10.height, var19, 256 - (var14 & 255));
                            }
                         } else {
                            Font var61;
                            if(var10.type == 4) {
-                              var61 = var10.method4166();
+                              var61 = var10.getFont();
                               if(var61 == null) {
                                  if(Widget.field2721) {
                                     class40.method556(var10);
@@ -794,8 +794,8 @@ public class class231 {
                                        var20 = var10.field2752;
                                     }
 
-                                    if(var10.field2785.length() > 0) {
-                                       var67 = var10.field2785;
+                                    if(var10.string1.length() > 0) {
+                                       var67 = var10.string1;
                                     }
                                  } else {
                                     var20 = var10.textColor;
@@ -839,7 +839,7 @@ public class class231 {
                                  }
                               } else {
                                  if(var10.itemId != -1) {
-                                    var62 = class15.createSprite(var10.itemId, var10.itemQuantity, var10.borderThickness, var10.sprite2, var10.field2782, false);
+                                    var62 = TotalQuantityComparator.createSprite(var10.itemId, var10.itemQuantity, var10.borderThickness, var10.sprite2, var10.field2782, false);
                                  } else {
                                     var62 = var10.method4173(false);
                                  }
@@ -901,7 +901,7 @@ public class class231 {
                                        var54 = var54.method4756(var10.itemQuantity);
                                        var65 = var54.getModel(1);
                                        if(var65 != null) {
-                                          var65.method2623();
+                                          var65.calculateBoundsCylinder();
                                           var22 = var65.modelHeight / 2;
                                        } else {
                                           class40.method556(var10);
@@ -909,18 +909,18 @@ public class class231 {
                                     }
                                  } else if(var10.modelType == 5) {
                                     if(var10.modelId == 0) {
-                                       var65 = Client.field1125.method4131((Sequence)null, -1, (Sequence)null, -1);
+                                       var65 = Client.field1125.getModel((Sequence)null, -1, (Sequence)null, -1);
                                     } else {
                                        var65 = class181.localPlayer.getModel();
                                     }
                                  } else if(var20 == -1) {
-                                    var65 = var10.method4168((Sequence)null, -1, var56, class181.localPlayer.composition);
+                                    var65 = var10.getModel((Sequence)null, -1, var56, class181.localPlayer.composition);
                                     if(var65 == null && Widget.field2721) {
                                        class40.method556(var10);
                                     }
                                  } else {
-                                    Sequence var69 = class13.getAnimation(var20);
-                                    var65 = var10.method4168(var69, var10.field2846, var56, class181.localPlayer.composition);
+                                    Sequence var69 = GrandExchangeEvents.getAnimation(var20);
+                                    var65 = var10.getModel(var69, var10.field2846, var56, class181.localPlayer.composition);
                                     if(var65 == null && Widget.field2721) {
                                        class40.method556(var10);
                                     }
@@ -933,7 +933,7 @@ public class class231 {
                                     if(!var10.hasScript) {
                                        var65.method2652(0, var10.rotationZ, 0, var10.rotationX, 0, var23, var24);
                                     } else {
-                                       var65.method2623();
+                                       var65.calculateBoundsCylinder();
                                        if(var10.field2843) {
                                           var65.method2629(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2773, var23 + var22 + var10.field2774, var24 + var10.field2774, var10.modelZoom);
                                        } else {
@@ -942,10 +942,10 @@ public class class231 {
                                     }
                                  }
 
-                                 Graphics3D.method2716();
+                                 Graphics3D.Rasterizer3D_method3();
                               } else {
                                  if(var10.type == 7) {
-                                    var61 = var10.method4166();
+                                    var61 = var10.getFont();
                                     if(var61 == null) {
                                        if(Widget.field2721) {
                                           class40.method556(var10);
@@ -982,7 +982,7 @@ public class class231 {
                                     }
                                  }
 
-                                 if(var10.type == 8 && var10 == class14.field279 && Client.field1006 == Client.field882) {
+                                 if(var10.type == 8 && var10 == GrandExchangeEvent.field279 && Client.field1006 == Client.field882) {
                                     var19 = 0;
                                     var20 = 0;
                                     Font var52 = KeyFocusListener.font_p12full;
@@ -1021,7 +1021,7 @@ public class class231 {
                                        var25 = var5 - var20;
                                     }
 
-                                    Rasterizer2D.method5173(var24, var25, var19, var20, 16777120);
+                                    Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var19, var20, 16777120);
                                     Rasterizer2D.drawRectangle(var24, var25, var19, var20, 0);
                                     var53 = var10.text;
                                     var26 = var25 + var52.verticalSpace + 2;

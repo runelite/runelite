@@ -81,11 +81,12 @@ public class Signlink implements Runnable {
       signature = "(IIILjava/lang/Object;S)Lex;",
       garbageValue = "160"
    )
-   final Task method3066(int var1, int var2, int var3, Object var4) {
+   @Export("newTask")
+   final Task newTask(int var1, int var2, int var3, Object var4) {
       Task var5 = new Task();
       var5.type = var1;
-      var5.field2138 = var2;
-      var5.field2139 = var4;
+      var5.intArgument = var2;
+      var5.objectArgument = var4;
       synchronized(this) {
          if(this.cachedTask != null) {
             this.cachedTask.task = var5;
@@ -106,7 +107,7 @@ public class Signlink implements Runnable {
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
-      return this.method3066(1, var2, 0, var1);
+      return this.newTask(1, var2, 0, var1);
    }
 
    @ObfuscatedName("z")
@@ -116,7 +117,7 @@ public class Signlink implements Runnable {
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
-      return this.method3066(2, var2, 0, var1);
+      return this.newTask(2, var2, 0, var1);
    }
 
    public final void run() {
@@ -148,15 +149,15 @@ public class Signlink implements Runnable {
          try {
             int var5 = var1.type;
             if(var5 == 1) {
-               var1.value = new Socket(InetAddress.getByName((String)var1.field2139), var1.field2138);
+               var1.value = new Socket(InetAddress.getByName((String)var1.objectArgument), var1.intArgument);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2139);
+               Thread var3 = new Thread((Runnable)var1.objectArgument);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2138);
+               var3.setPriority(var1.intArgument);
                var1.value = var3;
             } else if(var5 == 4) {
-               var1.value = new DataInputStream(((URL)var1.field2139).openStream());
+               var1.value = new DataInputStream(((URL)var1.objectArgument).openStream());
             }
 
             var1.status = 1;

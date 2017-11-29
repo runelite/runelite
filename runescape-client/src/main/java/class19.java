@@ -14,12 +14,12 @@ final class class19 implements Comparator {
       signature = "(Ly;Ly;I)I",
       garbageValue = "-605006531"
    )
-   int method158(class14 var1, class14 var2) {
+   int method158(GrandExchangeEvent var1, GrandExchangeEvent var2) {
       return var1.field273 < var2.field273?-1:(var2.field273 == var1.field273?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method158((class14)var1, (class14)var2);
+      return this.method158((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
@@ -36,40 +36,40 @@ final class class19 implements Comparator {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class82.intStack[--class13.intStackSize];
-         var4 = class87.method1762(var3);
+         var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
+         var4 = class87.getWidget(var3);
       } else {
          var4 = var2?class54.field636:class82.field1265;
       }
 
       if(var0 == 1000) {
-         class13.intStackSize -= 4;
-         var4.originalX = class82.intStack[class13.intStackSize];
-         var4.originalY = class82.intStack[class13.intStackSize + 1];
-         var4.field2788 = class82.intStack[class13.intStackSize + 2];
-         var4.field2730 = class82.intStack[class13.intStackSize + 3];
+         GrandExchangeEvents.intStackSize -= 4;
+         var4.originalX = class82.intStack[GrandExchangeEvents.intStackSize];
+         var4.originalY = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         var4.field2788 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
+         var4.field2730 = class82.intStack[GrandExchangeEvents.intStackSize + 3];
          class40.method556(var4);
-         class287.clientInstance.method1213(var4);
+         Bounds.clientInstance.widgetMethod0(var4);
          if(var3 != -1 && var4.type == 0) {
             NPCComposition.method4864(class11.widgets[var3 >> 16], var4, false);
          }
 
          return 1;
       } else if(var0 == 1001) {
-         class13.intStackSize -= 4;
-         var4.originalWidth = class82.intStack[class13.intStackSize];
-         var4.field2736 = class82.intStack[class13.intStackSize + 1];
-         var4.field2731 = class82.intStack[class13.intStackSize + 2];
-         var4.buttonType = class82.intStack[class13.intStackSize + 3];
+         GrandExchangeEvents.intStackSize -= 4;
+         var4.originalWidth = class82.intStack[GrandExchangeEvents.intStackSize];
+         var4.field2736 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
+         var4.field2731 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
+         var4.buttonType = class82.intStack[GrandExchangeEvents.intStackSize + 3];
          class40.method556(var4);
-         class287.clientInstance.method1213(var4);
+         Bounds.clientInstance.widgetMethod0(var4);
          if(var3 != -1 && var4.type == 0) {
             NPCComposition.method4864(class11.widgets[var3 >> 16], var4, false);
          }
 
          return 1;
       } else if(var0 == 1003) {
-         boolean var5 = class82.intStack[--class13.intStackSize] == 1;
+         boolean var5 = class82.intStack[--GrandExchangeEvents.intStackSize] == 1;
          if(var5 != var4.isHidden) {
             var4.isHidden = var5;
             class40.method556(var4);
@@ -77,10 +77,10 @@ final class class19 implements Comparator {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.noClickThrough = class82.intStack[--class13.intStackSize] == 1;
+         var4.noClickThrough = class82.intStack[--GrandExchangeEvents.intStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.field2826 = class82.intStack[--class13.intStackSize] == 1;
+         var4.field2826 = class82.intStack[--GrandExchangeEvents.intStackSize] == 1;
          return 1;
       } else {
          return 2;

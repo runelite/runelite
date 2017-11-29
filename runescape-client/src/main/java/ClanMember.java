@@ -13,7 +13,8 @@ public class ClanMember extends Node {
    @Export("username")
    String username;
    @ObfuscatedName("x")
-   String field867;
+   @Export("name2")
+   String name2;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 1813023509
@@ -114,8 +115,8 @@ public class ClanMember extends Node {
       byte[] var0 = new byte[24];
 
       try {
-         class156.field2155.seek(0L);
-         class156.field2155.read(var0);
+         class156.randomDat.seek(0L);
+         class156.randomDat.read(var0);
 
          int var1;
          for(var1 = 0; var1 < 24 && var0[var1] == 0; ++var1) {

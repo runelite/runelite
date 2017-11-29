@@ -12,7 +12,8 @@ public class class218 {
    )
    static int field2685;
    @ObfuscatedName("d")
-   static int[] field2686;
+   @Export("varpsMasks")
+   static int[] varpsMasks;
    @ObfuscatedName("x")
    @Export("settings")
    @Hook("varbitChanged")
@@ -22,11 +23,11 @@ public class class218 {
    public static int[] widgetSettings;
 
    static {
-      field2686 = new int[32];
+      varpsMasks = new int[32];
       int var0 = 2;
 
       for(int var1 = 0; var1 < 32; ++var1) {
-         field2686[var1] = var0 - 1;
+         varpsMasks[var1] = var0 - 1;
          var0 += var0;
       }
 
@@ -55,7 +56,7 @@ public class class218 {
          var2.packetBuffer = new PacketBuffer(260);
       }
 
-      var2.packetBuffer.method3576(var1);
+      var2.packetBuffer.setIsaacCipher(var1);
       var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
       var2.field2423 = 0;
       return var2;

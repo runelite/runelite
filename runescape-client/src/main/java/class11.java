@@ -8,12 +8,14 @@ public class class11 {
    @ObfuscatedSignature(
       signature = "Lu;"
    )
-   public static final class11 field258;
+   @Export("BoundingBox3DDrawMode_mouseOver")
+   public static final class11 BoundingBox3DDrawMode_mouseOver;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lu;"
    )
-   public static final class11 field254;
+   @Export("BoundingBox3DDrawMode_all")
+   public static final class11 BoundingBox3DDrawMode_all;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "[[Lhx;"
@@ -22,8 +24,8 @@ public class class11 {
    public static Widget[][] widgets;
 
    static {
-      field258 = new class11();
-      field254 = new class11();
+      BoundingBox3DDrawMode_mouseOver = new class11();
+      BoundingBox3DDrawMode_all = new class11();
    }
 
    @ObfuscatedName("q")
@@ -33,16 +35,16 @@ public class class11 {
    )
    static int method67(int var0, Script var1, boolean var2) {
       if(var0 == 5000) {
-         class82.intStack[++class13.intStackSize - 1] = Client.field1070;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.publicChatMode;
          return 1;
       } else {
          int var4;
          PacketNode var5;
          int var6;
          if(var0 == 5001) {
-            class13.intStackSize -= 3;
-            Client.field1070 = class82.intStack[class13.intStackSize];
-            var4 = class82.intStack[class13.intStackSize + 1];
+            GrandExchangeEvents.intStackSize -= 3;
+            Client.publicChatMode = class82.intStack[GrandExchangeEvents.intStackSize];
+            var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
             class285[] var17 = class177.method3269();
             var6 = 0;
 
@@ -67,9 +69,9 @@ public class class11 {
                class221.field2705 = class285.field3787;
             }
 
-            Client.field986 = class82.intStack[class13.intStackSize + 2];
+            Client.field986 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
             var5 = class218.method4105(ClientPacket.field2327, Client.field916.field1470);
-            var5.packetBuffer.putByte(Client.field1070);
+            var5.packetBuffer.putByte(Client.publicChatMode);
             var5.packetBuffer.putByte(class221.field2705.field3784);
             var5.packetBuffer.putByte(Client.field986);
             Client.field916.method1925(var5);
@@ -79,9 +81,9 @@ public class class11 {
             int var10;
             if(var0 == 5002) {
                var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-               class13.intStackSize -= 2;
-               var4 = class82.intStack[class13.intStackSize];
-               var10 = class82.intStack[class13.intStackSize + 1];
+               GrandExchangeEvents.intStackSize -= 2;
+               var4 = class82.intStack[GrandExchangeEvents.intStackSize];
+               var10 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                PacketNode var11 = class218.method4105(ClientPacket.field2343, Client.field916.field1470);
                var11.packetBuffer.putByte(AbstractSoundSystem.getLength(var3) + 2);
                var11.packetBuffer.putString(var3);
@@ -92,19 +94,19 @@ public class class11 {
             } else {
                int var12;
                if(var0 == 5003) {
-                  class13.intStackSize -= 2;
-                  var12 = class82.intStack[class13.intStackSize];
-                  var4 = class82.intStack[class13.intStackSize + 1];
+                  GrandExchangeEvents.intStackSize -= 2;
+                  var12 = class82.intStack[GrandExchangeEvents.intStackSize];
+                  var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
                   MessageNode var16 = PendingSpawn.method1573(var12, var4);
                   if(var16 != null) {
-                     class82.intStack[++class13.intStackSize - 1] = var16.id;
-                     class82.intStack[++class13.intStackSize - 1] = var16.tick;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var16.id;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var16.tick;
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var16.name != null?var16.name:"";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var16.sender != null?var16.sender:"";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var16.value != null?var16.value:"";
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = -1;
-                     class82.intStack[++class13.intStackSize - 1] = 0;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
@@ -112,17 +114,17 @@ public class class11 {
 
                   return 1;
                } else if(var0 == 5004) {
-                  var12 = class82.intStack[--class13.intStackSize];
-                  MessageNode var22 = (MessageNode)class96.field1434.get((long)var12);
+                  var12 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                  MessageNode var22 = (MessageNode)class96.messages.get((long)var12);
                   if(var22 != null) {
-                     class82.intStack[++class13.intStackSize - 1] = var22.type;
-                     class82.intStack[++class13.intStackSize - 1] = var22.tick;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var22.type;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var22.tick;
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var22.name != null?var22.name:"";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var22.sender != null?var22.sender:"";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var22.value != null?var22.value:"";
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = -1;
-                     class82.intStack[++class13.intStackSize - 1] = 0;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
                      class82.scriptStringStack[++class82.scriptStringStackSize - 1] = "";
@@ -131,15 +133,15 @@ public class class11 {
                   return 1;
                } else if(var0 == 5005) {
                   if(class221.field2705 == null) {
-                     class82.intStack[++class13.intStackSize - 1] = -1;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
                   } else {
-                     class82.intStack[++class13.intStackSize - 1] = class221.field2705.field3784;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = class221.field2705.field3784;
                   }
 
                   return 1;
                } else if(var0 == 5008) {
                   var3 = class82.scriptStringStack[--class82.scriptStringStackSize];
-                  var4 = class82.intStack[--class13.intStackSize];
+                  var4 = class82.intStack[--GrandExchangeEvents.intStackSize];
                   String var15 = var3.toLowerCase();
                   byte var20 = 0;
                   if(var15.startsWith("yellow:")) {
@@ -278,35 +280,35 @@ public class class11 {
                   return 1;
                } else if(var0 != 5015) {
                   if(var0 == 5016) {
-                     class82.intStack[++class13.intStackSize - 1] = Client.field986;
+                     class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field986;
                      return 1;
                   } else {
                      int[] var13;
                      if(var0 == 5017) {
-                        var12 = class82.intStack[--class13.intStackSize];
+                        var12 = class82.intStack[--GrandExchangeEvents.intStackSize];
                         var13 = class82.intStack;
-                        var10 = ++class13.intStackSize - 1;
+                        var10 = ++GrandExchangeEvents.intStackSize - 1;
                         ChatLineBuffer var18 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var12));
                         if(var18 == null) {
                            var6 = 0;
                         } else {
-                           var6 = var18.method1916();
+                           var6 = var18.size();
                         }
 
                         var13[var10] = var6;
                         return 1;
                      } else if(var0 == 5018) {
-                        var12 = class82.intStack[--class13.intStackSize];
-                        class82.intStack[++class13.intStackSize - 1] = class8.method46(var12);
+                        var12 = class82.intStack[--GrandExchangeEvents.intStackSize];
+                        class82.intStack[++GrandExchangeEvents.intStackSize - 1] = BoundingBox2D.method46(var12);
                         return 1;
                      } else if(var0 == 5019) {
-                        var12 = class82.intStack[--class13.intStackSize];
+                        var12 = class82.intStack[--GrandExchangeEvents.intStackSize];
                         var13 = class82.intStack;
-                        var10 = ++class13.intStackSize - 1;
-                        MessageNode var7 = (MessageNode)class96.field1434.get((long)var12);
+                        var10 = ++GrandExchangeEvents.intStackSize - 1;
+                        MessageNode var7 = (MessageNode)class96.messages.get((long)var12);
                         if(var7 == null) {
                            var6 = -1;
-                        } else if(var7.next == class96.field1435.field2583) {
+                        } else if(var7.next == class96.field1435.sentinel) {
                            var6 = -1;
                         } else {
                            var6 = ((MessageNode)var7.next).id;
@@ -479,7 +481,7 @@ public class class11 {
       if(var3 && var0.field2833 != null && (var4 != var0.width || var5 != var0.height)) {
          ScriptEvent var6 = new ScriptEvent();
          var6.widget = var0;
-         var6.field797 = var0.field2833;
+         var6.objs = var0.field2833;
          Client.field1010.addFront(var6);
       }
 

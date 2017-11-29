@@ -11,7 +11,8 @@ public class CombatInfo1 extends Node {
    @ObfuscatedGetter(
       intValue = 255167129
    )
-   int field1206;
+   @Export("cycle")
+   int cycle;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -890855621
@@ -28,13 +29,14 @@ public class CombatInfo1 extends Node {
    @ObfuscatedGetter(
       intValue = -1743110791
    )
-   int field1208;
+   @Export("int2")
+   int int2;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field1206 = var1;
+      this.cycle = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1208 = var4;
+      this.int2 = var4;
    }
 
    @ObfuscatedName("d")
@@ -42,11 +44,12 @@ public class CombatInfo1 extends Node {
       signature = "(IIIII)V",
       garbageValue = "-313935265"
    )
-   void method1591(int var1, int var2, int var3, int var4) {
-      this.field1206 = var1;
+   @Export("set")
+   void set(int var1, int var2, int var3, int var4) {
+      this.cycle = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field1208 = var4;
+      this.int2 = var4;
    }
 
    @ObfuscatedName("d")
@@ -55,7 +58,7 @@ public class CombatInfo1 extends Node {
       garbageValue = "-23"
    )
    public static void method1590() {
-      class289.field3806 = new CombatInfoList();
+      class289.classInfos = new CombatInfoList();
    }
 
    @ObfuscatedName("j")

@@ -22,7 +22,8 @@ final class class3 implements class0 {
    @ObfuscatedSignature(
       signature = "Lcf;"
    )
-   static class102 field20;
+   @Export("soundTaskDataProvider")
+   static TaskDataProvider soundTaskDataProvider;
    @ObfuscatedName("dp")
    @ObfuscatedGetter(
       intValue = 1732262137
@@ -56,7 +57,7 @@ final class class3 implements class0 {
          var1.post();
          if(var1.isSolid) {
             var1.interactType = 0;
-            var1.field3517 = false;
+            var1.boolean1 = false;
          }
 
          ObjectComposition.objects.put(var1, (long)var0);
@@ -106,19 +107,19 @@ final class class3 implements class0 {
       garbageValue = "-353192749"
    )
    static final boolean method10(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = class133.field1901 + var6;
+      int var7 = class133.Viewport_mouseY + var6;
       if(var7 < var0 && var7 < var1 && var7 < var2) {
          return false;
       } else {
-         var7 = class133.field1901 - var6;
+         var7 = class133.Viewport_mouseY - var6;
          if(var7 > var0 && var7 > var1 && var7 > var2) {
             return false;
          } else {
-            var7 = class133.field1900 + var6;
+            var7 = class133.Viewport_mouseX + var6;
             if(var7 < var3 && var7 < var4 && var7 < var5) {
                return false;
             } else {
-               var7 = class133.field1900 - var6;
+               var7 = class133.Viewport_mouseX - var6;
                return var7 <= var3 || var7 <= var4 || var7 <= var5;
             }
          }
@@ -133,18 +134,18 @@ final class class3 implements class0 {
    static void method7(Player var0, boolean var1) {
       if(var0 != null && var0.hasConfig() && !var0.hidden) {
          int var2 = var0.field857 << 14;
-         var0.field841 = false;
+         var0.isLowDetail = false;
          if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
-            var0.field841 = true;
+            var0.isLowDetail = true;
          }
 
          int var3 = var0.x >> 7;
          int var4 = var0.y >> 7;
          if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.field848 && Client.gameCycle < var0.field844) {
-               var0.field841 = false;
+            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
+               var0.isLowDetail = false;
                var0.field842 = class41.getTileHeight(var0.x, var0.y, class233.plane);
-               class14.region.method2809(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field849, var0.field850, var0.field851, var0.field852);
+               GrandExchangeEvent.region.method2809(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field849, var0.field850, var0.field851, var0.field852);
             } else {
                if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
                   if(Client.field957[var3][var4] == Client.field958) {
@@ -155,7 +156,7 @@ final class class3 implements class0 {
                }
 
                var0.field842 = class41.getTileHeight(var0.x, var0.y, class233.plane);
-               class14.region.method2808(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field1201);
+               GrandExchangeEvent.region.method2808(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field1201);
             }
          }
       }

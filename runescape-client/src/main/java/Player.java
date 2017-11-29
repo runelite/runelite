@@ -17,7 +17,8 @@ public final class Player extends Actor {
    @ObfuscatedSignature(
       signature = "Liv;"
    )
-   static IndexData field861;
+   @Export("indexCache15")
+   static IndexData indexCache15;
    @ObfuscatedName("d")
    @Export("name")
    String name;
@@ -63,12 +64,14 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 103671873
    )
-   int field848;
+   @Export("animationCycleStart")
+   int animationCycleStart;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1504026365
    )
-   int field844;
+   @Export("animationCycleEnd")
+   int animationCycleEnd;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -1168129377
@@ -111,7 +114,8 @@ public final class Player extends Actor {
    )
    int field852;
    @ObfuscatedName("q")
-   boolean field841;
+   @Export("isLowDetail")
+   boolean isLowDetail;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -234391643
@@ -155,9 +159,9 @@ public final class Player extends Actor {
 
       this.combatLevel = 0;
       this.totalLevel = 0;
-      this.field848 = 0;
-      this.field844 = 0;
-      this.field841 = false;
+      this.animationCycleStart = 0;
+      this.animationCycleEnd = 0;
+      this.isLowDetail = false;
       this.team = 0;
       this.hidden = false;
       this.field836 = false;
@@ -193,7 +197,7 @@ public final class Player extends Actor {
             }
 
             if(var4[var5] >= 512) {
-               int var8 = WorldMapType2.getItemDefinition(var4[var5] - 512).field3601;
+               int var8 = WorldMapType2.getItemDefinition(var4[var5] - 512).int1;
                if(var8 != 0) {
                   this.team = var8;
                }
@@ -250,7 +254,7 @@ public final class Player extends Actor {
 
       this.name = var1.readString();
       if(this == class181.localPlayer) {
-         class153.field2127 = this.name;
+         RunException.localPlayerName = this.name;
       }
 
       this.combatLevel = var1.readUnsignedByte();
@@ -287,58 +291,58 @@ public final class Player extends Actor {
       if(this.composition == null) {
          return null;
       } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class13.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && !this.field841 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?class13.getAnimation(super.poseAnimation):null;
-         Model var3 = this.composition.method4131(var1, super.actionFrame, var2, super.poseFrame);
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?GrandExchangeEvents.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && !this.isLowDetail && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?GrandExchangeEvents.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.getModel(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;
          } else {
-            var3.method2623();
+            var3.calculateBoundsCylinder();
             super.field1179 = var3.modelHeight;
             Model var4;
             Model[] var5;
-            if(!this.field841 && super.graphic != -1 && super.field1184 != -1) {
-               var4 = class227.getSpotAnimType(super.graphic).method4494(super.field1184);
+            if(!this.isLowDetail && super.graphic != -1 && super.field1184 != -1) {
+               var4 = class227.getSpotAnimType(super.graphic).getModel(super.field1184);
                if(var4 != null) {
-                  var4.method2635(0, -super.field1187, 0);
+                  var4.offsetBy(0, -super.field1187, 0);
                   var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                }
             }
 
-            if(!this.field841 && this.model != null) {
-               if(Client.gameCycle >= this.field844) {
+            if(!this.isLowDetail && this.model != null) {
+               if(Client.gameCycle >= this.animationCycleEnd) {
                   this.model = null;
                }
 
-               if(Client.gameCycle >= this.field848 && Client.gameCycle < this.field844) {
+               if(Client.gameCycle >= this.animationCycleStart && Client.gameCycle < this.animationCycleEnd) {
                   var4 = this.model;
-                  var4.method2635(this.field845 - super.x, this.field846 - this.field842, this.field847 - super.y);
+                  var4.offsetBy(this.field845 - super.x, this.field846 - this.field842, this.field847 - super.y);
                   if(super.orientation == 512) {
-                     var4.method2630();
-                     var4.method2630();
-                     var4.method2630();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
                   } else if(super.orientation == 1024) {
-                     var4.method2630();
-                     var4.method2630();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
                   } else if(super.orientation == 1536) {
-                     var4.method2630();
+                     var4.rotateY90Ccw();
                   }
 
                   var5 = new Model[]{var3, var4};
                   var3 = new Model(var5, 2);
                   if(super.orientation == 512) {
-                     var4.method2630();
+                     var4.rotateY90Ccw();
                   } else if(super.orientation == 1024) {
-                     var4.method2630();
-                     var4.method2630();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
                   } else if(super.orientation == 1536) {
-                     var4.method2630();
-                     var4.method2630();
-                     var4.method2630();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
+                     var4.rotateY90Ccw();
                   }
 
-                  var4.method2635(super.x - this.field845, this.field842 - this.field846, super.y - this.field847);
+                  var4.offsetBy(super.x - this.field845, this.field842 - this.field846, super.y - this.field847);
                }
             }
 
@@ -354,7 +358,7 @@ public final class Player extends Actor {
       garbageValue = "-64774637"
    )
    final void method1165(int var1, int var2, byte var3) {
-      if(super.animation != -1 && class13.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && GrandExchangeEvents.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -404,12 +408,12 @@ public final class Player extends Actor {
       for(int var4 = super.queueSize; var4 > 0; --var4) {
          super.pathX[var4] = super.pathX[var4 - 1];
          super.pathY[var4] = super.pathY[var4 - 1];
-         super.field1203[var4] = super.field1203[var4 - 1];
+         super.pathTraversed[var4] = super.pathTraversed[var4 - 1];
       }
 
       super.pathX[0] = var1;
       super.pathY[0] = var2;
-      super.field1203[0] = var3;
+      super.pathTraversed[0] = var3;
    }
 
    @ObfuscatedName("b")

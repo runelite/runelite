@@ -28,10 +28,11 @@ public class WidgetNode extends Node {
    @Export("owner")
    int owner;
    @ObfuscatedName("k")
-   boolean field791;
+   @Export("boolean1")
+   boolean boolean1;
 
    WidgetNode() {
-      this.field791 = false;
+      this.boolean1 = false;
    }
 
    @ObfuscatedName("h")
@@ -41,51 +42,51 @@ public class WidgetNode extends Node {
    )
    static int method1114(int var0, Script var1, boolean var2) {
       if(var0 == 6200) {
-         class13.intStackSize -= 2;
-         Client.field1106 = (short)class82.intStack[class13.intStackSize];
+         GrandExchangeEvents.intStackSize -= 2;
+         Client.field1106 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
          if(Client.field1106 <= 0) {
             Client.field1106 = 256;
          }
 
-         Client.field1107 = (short)class82.intStack[class13.intStackSize + 1];
+         Client.field1107 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
          if(Client.field1107 <= 0) {
             Client.field1107 = 205;
          }
 
          return 1;
       } else if(var0 == 6201) {
-         class13.intStackSize -= 2;
-         Client.field1036 = (short)class82.intStack[class13.intStackSize];
+         GrandExchangeEvents.intStackSize -= 2;
+         Client.field1036 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
          if(Client.field1036 <= 0) {
             Client.field1036 = 256;
          }
 
-         Client.field1109 = (short)class82.intStack[class13.intStackSize + 1];
+         Client.field1109 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
          if(Client.field1109 <= 0) {
             Client.field1109 = 320;
          }
 
          return 1;
       } else if(var0 == 6202) {
-         class13.intStackSize -= 4;
-         Client.field926 = (short)class82.intStack[class13.intStackSize];
+         GrandExchangeEvents.intStackSize -= 4;
+         Client.field926 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
          if(Client.field926 <= 0) {
             Client.field926 = 1;
          }
 
-         Client.field1111 = (short)class82.intStack[class13.intStackSize + 1];
+         Client.field1111 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
          if(Client.field1111 <= 0) {
             Client.field1111 = 32767;
          } else if(Client.field1111 < Client.field926) {
             Client.field1111 = Client.field926;
          }
 
-         Client.field1112 = (short)class82.intStack[class13.intStackSize + 2];
+         Client.field1112 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 2];
          if(Client.field1112 <= 0) {
             Client.field1112 = 1;
          }
 
-         Client.field1061 = (short)class82.intStack[class13.intStackSize + 3];
+         Client.field1061 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 3];
          if(Client.field1061 <= 0) {
             Client.field1061 = 32767;
          } else if(Client.field1061 < Client.field1112) {
@@ -96,21 +97,21 @@ public class WidgetNode extends Node {
       } else if(var0 == 6203) {
          if(Client.field1026 != null) {
             class82.method1692(0, 0, Client.field1026.width, Client.field1026.height, false);
-            class82.intStack[++class13.intStackSize - 1] = Client.viewportHeight;
-            class82.intStack[++class13.intStackSize - 1] = Client.viewportWidth;
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.viewportHeight;
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.viewportWidth;
          } else {
-            class82.intStack[++class13.intStackSize - 1] = -1;
-            class82.intStack[++class13.intStackSize - 1] = -1;
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
+            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
          }
 
          return 1;
       } else if(var0 == 6204) {
-         class82.intStack[++class13.intStackSize - 1] = Client.field1036;
-         class82.intStack[++class13.intStackSize - 1] = Client.field1109;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1036;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1109;
          return 1;
       } else if(var0 == 6205) {
-         class82.intStack[++class13.intStackSize - 1] = Client.field1106;
-         class82.intStack[++class13.intStackSize - 1] = Client.field1107;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1106;
+         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1107;
          return 1;
       } else {
          return 2;

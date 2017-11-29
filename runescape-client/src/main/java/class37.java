@@ -14,7 +14,8 @@ public class class37 {
    @ObfuscatedSignature(
       signature = "[Lkl;"
    )
-   static IndexedSprite[] field487;
+   @Export("slStarSprites")
+   static IndexedSprite[] slStarSprites;
    @ObfuscatedName("js")
    @ObfuscatedGetter(
       intValue = 1317363531
@@ -47,10 +48,10 @@ public class class37 {
    @Export("openCacheIndex")
    static IndexData openCacheIndex(int var0, boolean var1, boolean var2, boolean var3) {
       IndexFile var4 = null;
-      if(class156.field2157 != null) {
-         var4 = new IndexFile(var0, class156.field2157, ItemContainer.field751[var0], 1000000);
+      if(class156.dat2File != null) {
+         var4 = new IndexFile(var0, class156.dat2File, ItemContainer.idxFiles[var0], 1000000);
       }
 
-      return new IndexData(var4, GrandExchangeOffer.field299, var0, var1, var2, var3);
+      return new IndexData(var4, GrandExchangeOffer.indexStore255, var0, var1, var2, var3);
    }
 }

@@ -45,20 +45,20 @@ public abstract class Renderable extends CacheableNode {
       garbageValue = "-9"
    )
    static final void method2993() {
-      Client.field916.method1930();
+      Client.field916.close();
       class235.method4236();
-      class14.region.reset();
+      GrandExchangeEvent.region.reset();
 
       for(int var0 = 0; var0 < 4; ++var0) {
          Client.collisionMaps[var0].reset();
       }
 
       System.gc();
-      class2.method6(2);
+      IntegerToken.method6(2);
       Client.field1090 = -1;
       Client.field1095 = false;
-      class66.method1113();
-      class12.setGameState(10);
+      FriendLoginUpdate.method1113();
+      WorldComparator.setGameState(10);
    }
 
    @ObfuscatedName("jr")

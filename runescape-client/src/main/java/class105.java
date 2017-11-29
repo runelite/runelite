@@ -633,7 +633,7 @@ public class class105 extends Node {
    )
    static class105 method2037(IndexDataBase var0, int var1, int var2) {
       if(!method2036(var0)) {
-         var0.method4322(var1, var2);
+         var0.tryLoadRecord(var1, var2);
          return null;
       } else {
          byte[] var3 = var0.getConfigData(var1, var2);

@@ -32,11 +32,14 @@ public class class94 {
    @ObfuscatedName("p")
    static int[] field1415;
    @ObfuscatedName("r")
-   static int[] field1416;
+   @Export("Players_regions")
+   static int[] Players_regions;
    @ObfuscatedName("l")
-   static int[] field1417;
+   @Export("Players_orientations")
+   static int[] Players_orientations;
    @ObfuscatedName("u")
-   static int[] field1418;
+   @Export("Players_targetIndices")
+   static int[] Players_targetIndices;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1203782239
@@ -65,9 +68,9 @@ public class class94 {
       playerIndices = new int[2048];
       field1414 = 0;
       field1415 = new int[2048];
-      field1416 = new int[2048];
-      field1417 = new int[2048];
-      field1418 = new int[2048];
+      Players_regions = new int[2048];
+      Players_orientations = new int[2048];
+      Players_targetIndices = new int[2048];
       field1419 = 0;
       field1420 = new int[2048];
       field1421 = new Buffer(new byte[5000]);
@@ -79,11 +82,11 @@ public class class94 {
       garbageValue = "388327774"
    )
    @Export("forOrdinal")
-   public static class185 forOrdinal(class185[] var0, int var1) {
-      class185[] var2 = var0;
+   public static Enumerated forOrdinal(Enumerated[] var0, int var1) {
+      Enumerated[] var2 = var0;
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
-         class185 var4 = var2[var3];
+         Enumerated var4 = var2[var3];
          if(var1 == var4.rsOrdinal()) {
             return var4;
          }
@@ -99,7 +102,7 @@ public class class94 {
    )
    static int method1830(int var0, int var1) {
       long var2 = (long)((var0 << 16) + var1);
-      return class259.currentRequest != null && var2 == class259.currentRequest.hash?class245.field3335.offset * 99 / (class245.field3335.payload.length - class259.currentRequest.padding) + 1:0;
+      return class259.currentRequest != null && var2 == class259.currentRequest.hash?class245.NetCache_responseArchiveBuffer.offset * 99 / (class245.NetCache_responseArchiveBuffer.payload.length - class259.currentRequest.padding) + 1:0;
    }
 
    @ObfuscatedName("j")

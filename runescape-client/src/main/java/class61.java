@@ -118,17 +118,17 @@ public final class class61 {
    )
    public static void method1088() {
       while(true) {
-         Deque var1 = class243.field3307;
+         Deque var1 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
          FileSystem var0;
-         synchronized(class243.field3307) {
-            var0 = (FileSystem)class243.field3306.popFront();
+         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
+            var0 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.popFront();
          }
 
          if(var0 == null) {
             return;
          }
 
-         var0.data.method4376(var0.index, (int)var0.hash, var0.field3280, false);
+         var0.data.load(var0.index, (int)var0.hash, var0.field3280, false);
       }
    }
 
@@ -157,57 +157,57 @@ public final class class61 {
          boolean var9 = false;
          boolean var10 = false;
          if(var1 == 0) {
-            var7 = class14.region.method2823(var0, var2, var3);
+            var7 = GrandExchangeEvent.region.method2823(var0, var2, var3);
          }
 
          if(var1 == 1) {
-            var7 = class14.region.method2903(var0, var2, var3);
+            var7 = GrandExchangeEvent.region.method2903(var0, var2, var3);
          }
 
          if(var1 == 2) {
-            var7 = class14.region.method2825(var0, var2, var3);
+            var7 = GrandExchangeEvent.region.method2825(var0, var2, var3);
          }
 
          if(var1 == 3) {
-            var7 = class14.region.method2826(var0, var2, var3);
+            var7 = GrandExchangeEvent.region.method2826(var0, var2, var3);
          }
 
          int var11;
          if(var7 != 0) {
-            var11 = class14.region.method2827(var0, var2, var3, var7);
+            var11 = GrandExchangeEvent.region.getObjectFlags(var0, var2, var3, var7);
             int var13 = var7 >> 14 & 32767;
             int var14 = var11 & 31;
             int var15 = var11 >> 6 & 3;
             ObjectComposition var12;
             if(var1 == 0) {
-               class14.region.method2814(var0, var2, var3);
+               GrandExchangeEvent.region.removeBoundaryObject(var0, var2, var3);
                var12 = class3.getObjectDefinition(var13);
                if(var12.interactType != 0) {
-                  Client.collisionMaps[var0].removeWall(var2, var3, var14, var15, var12.field3517);
+                  Client.collisionMaps[var0].removeWall(var2, var3, var14, var15, var12.boolean1);
                }
             }
 
             if(var1 == 1) {
-               class14.region.method2815(var0, var2, var3);
+               GrandExchangeEvent.region.removeWallDecoration(var0, var2, var3);
             }
 
             if(var1 == 2) {
-               class14.region.method2816(var0, var2, var3);
+               GrandExchangeEvent.region.method2816(var0, var2, var3);
                var12 = class3.getObjectDefinition(var13);
                if(var2 + var12.sizeX > 103 || var3 + var12.sizeX > 103 || var2 + var12.sizeY > 103 || var3 + var12.sizeY > 103) {
                   return;
                }
 
                if(var12.interactType != 0) {
-                  Client.collisionMaps[var0].removeObject(var2, var3, var12.sizeX, var12.sizeY, var15, var12.field3517);
+                  Client.collisionMaps[var0].removeObject(var2, var3, var12.sizeX, var12.sizeY, var15, var12.boolean1);
                }
             }
 
             if(var1 == 3) {
-               class14.region.method2866(var0, var2, var3);
+               GrandExchangeEvent.region.removeFloorDecoration(var0, var2, var3);
                var12 = class3.getObjectDefinition(var13);
                if(var12.interactType == 1) {
-                  Client.collisionMaps[var0].unblock(var2, var3);
+                  Client.collisionMaps[var0].method3156(var2, var3);
                }
             }
          }
@@ -218,7 +218,7 @@ public final class class61 {
                var11 = var0 + 1;
             }
 
-            class86.method1750(var0, var11, var2, var3, var4, var5, var6, class14.region, Client.collisionMaps[var0]);
+            class86.method1750(var0, var11, var2, var3, var4, var5, var6, GrandExchangeEvent.region, Client.collisionMaps[var0]);
          }
       }
 

@@ -179,7 +179,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          var2.originalWidth = class295.field3845[var1];
          var2.height = class285.field3788[var1];
          var2.palette = class115.field1599;
-         var2.pixels = class15.spritePixels[var1];
+         var2.pixels = TotalQuantityComparator.spritePixels[var1];
       }
 
       class295.field3848 = null;
@@ -187,7 +187,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       class295.field3845 = null;
       class285.field3788 = null;
       class115.field1599 = null;
-      class15.spritePixels = null;
+      TotalQuantityComparator.spritePixels = null;
       return var0;
    }
 
@@ -220,7 +220,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
       PacketNode var0 = class218.method4105(ClientPacket.field2313, Client.field916.field1470);
       Client.field916.method1925(var0);
 
-      for(WidgetNode var1 = (WidgetNode)Client.componentTable.method3707(); var1 != null; var1 = (WidgetNode)Client.componentTable.method3703()) {
+      for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
          if(var1.owner == 0 || var1.owner == 3) {
             class39.method552(var1, true);
          }

@@ -11,12 +11,14 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   public static IndexDataBase field3404;
+   @Export("SpotAnimationDefinition_indexCache")
+   public static IndexDataBase SpotAnimationDefinition_indexCache;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   public static IndexDataBase field3394;
+   @Export("SpotAnimationDefinition_modelIndexCache")
+   public static IndexDataBase SpotAnimationDefinition_modelIndexCache;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lgx;"
@@ -27,7 +29,8 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgx;"
    )
-   public static NodeCache field3396;
+   @Export("SpotAnimationDefinition_cachedModels")
+   public static NodeCache SpotAnimationDefinition_cachedModels;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -233073101
@@ -56,17 +59,20 @@ public class Spotanim extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 958592559
    )
-   int field3402;
+   @Export("widthScale")
+   int widthScale;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 24227449
    )
-   int field3405;
+   @Export("heightScale")
+   int heightScale;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 273348759
    )
-   int field3406;
+   @Export("orientation")
+   int orientation;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1580516675
@@ -80,14 +86,14 @@ public class Spotanim extends CacheableNode {
 
    static {
       spotanims = new NodeCache(64);
-      field3396 = new NodeCache(30);
+      SpotAnimationDefinition_cachedModels = new NodeCache(30);
    }
 
    Spotanim() {
       this.field3393 = -1;
-      this.field3402 = 128;
-      this.field3405 = 128;
-      this.field3406 = 0;
+      this.widthScale = 128;
+      this.heightScale = 128;
+      this.orientation = 0;
       this.field3407 = 0;
       this.field3408 = 0;
    }
@@ -105,7 +111,7 @@ public class Spotanim extends CacheableNode {
             return;
          }
 
-         this.method4493(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -114,17 +120,18 @@ public class Spotanim extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "712425166"
    )
-   void method4493(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.field3398 = var1.readUnsignedShort();
       } else if(var2 == 2) {
          this.field3393 = var1.readUnsignedShort();
       } else if(var2 == 4) {
-         this.field3402 = var1.readUnsignedShort();
+         this.widthScale = var1.readUnsignedShort();
       } else if(var2 == 5) {
-         this.field3405 = var1.readUnsignedShort();
+         this.heightScale = var1.readUnsignedShort();
       } else if(var2 == 6) {
-         this.field3406 = var1.readUnsignedShort();
+         this.orientation = var1.readUnsignedShort();
       } else if(var2 == 7) {
          this.field3407 = var1.readUnsignedByte();
       } else if(var2 == 8) {
@@ -160,10 +167,11 @@ public class Spotanim extends CacheableNode {
       signature = "(II)Leh;",
       garbageValue = "1872388478"
    )
-   public final Model method4494(int var1) {
-      Model var2 = (Model)field3396.get((long)this.id);
+   @Export("getModel")
+   public final Model getModel(int var1) {
+      Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
       if(var2 == null) {
-         ModelData var3 = ModelData.method2510(field3394, this.field3398, 0);
+         ModelData var3 = ModelData.method2510(SpotAnimationDefinition_modelIndexCache, this.field3398, 0);
          if(var3 == null) {
             return null;
          }
@@ -182,34 +190,34 @@ public class Spotanim extends CacheableNode {
          }
 
          var2 = var3.light(this.field3407 + 64, this.field3408 + 850, -30, -50, -30);
-         field3396.put(var2, (long)this.id);
+         SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
       }
 
       Model var5;
       if(this.field3393 != -1 && var1 != -1) {
-         var5 = class13.getAnimation(this.field3393).method4884(var2, var1);
+         var5 = GrandExchangeEvents.getAnimation(this.field3393).method4884(var2, var1);
       } else {
          var5 = var2.method2620(true);
       }
 
-      if(this.field3402 != 128 || this.field3405 != 128) {
-         var5.method2626(this.field3402, this.field3405, this.field3402);
+      if(this.widthScale != 128 || this.heightScale != 128) {
+         var5.scale(this.widthScale, this.heightScale, this.widthScale);
       }
 
-      if(this.field3406 != 0) {
-         if(this.field3406 == 90) {
-            var5.method2630();
+      if(this.orientation != 0) {
+         if(this.orientation == 90) {
+            var5.rotateY90Ccw();
          }
 
-         if(this.field3406 == 180) {
-            var5.method2630();
-            var5.method2630();
+         if(this.orientation == 180) {
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
          }
 
-         if(this.field3406 == 270) {
-            var5.method2630();
-            var5.method2630();
-            var5.method2630();
+         if(this.orientation == 270) {
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
          }
       }
 

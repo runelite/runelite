@@ -126,7 +126,7 @@ public class Sequence extends CacheableNode {
             return;
          }
 
-         this.method4903(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -135,7 +135,8 @@ public class Sequence extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "-1089620980"
    )
-   void method4903(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       int var3;
       int var4;
       if(var2 == 1) {
@@ -266,12 +267,12 @@ public class Sequence extends CacheableNode {
          } else if(var3 == 2) {
             var5.method2679();
          } else if(var3 == 3) {
-            var5.method2630();
+            var5.rotateY90Ccw();
          }
 
          var5.method2627(var4, var2);
          if(var3 == 1) {
-            var5.method2630();
+            var5.rotateY90Ccw();
          } else if(var3 == 2) {
             var5.method2679();
          } else if(var3 == 3) {

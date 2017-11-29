@@ -95,7 +95,7 @@ public final class FileOnDisk {
    )
    @Export("close")
    public final void close() throws IOException {
-      this.method2467(false);
+      this.closeSync(false);
    }
 
    @ObfuscatedName("z")
@@ -103,7 +103,8 @@ public final class FileOnDisk {
       signature = "(ZI)V",
       garbageValue = "-1268559202"
    )
-   public final void method2467(boolean var1) throws IOException {
+   @Export("closeSync")
+   public final void closeSync(boolean var1) throws IOException {
       if(this.file != null) {
          if(var1) {
             try {
@@ -200,8 +201,8 @@ public final class FileOnDisk {
       if(!var2 || var0 != class44.field554 || class156.field2159 != var1) {
          class44.field554 = var0;
          class156.field2159 = var1;
-         class12.setGameState(25);
-         class148.drawStatusBox("Loading - please wait.", true);
+         WorldComparator.setGameState(25);
+         UrlRequester.drawStatusBox("Loading - please wait.", true);
          int var3 = IndexDataBase.baseX;
          int var4 = Occluder.baseY;
          IndexDataBase.baseX = (var0 - 6) * 8;

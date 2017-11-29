@@ -250,14 +250,16 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1800148361
    )
-   public int field3601;
+   @Export("int1")
+   public int int1;
    @ObfuscatedName("bk")
    @ObfuscatedSignature(
       signature = "Lgi;"
    )
    IterableHashTable field3597;
    @ObfuscatedName("bv")
-   public boolean field3594;
+   @Export("isTradable")
+   public boolean isTradable;
    @ObfuscatedName("ba")
    @ObfuscatedGetter(
       intValue = 2072587079
@@ -274,12 +276,14 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1301599655
    )
-   public int field3557;
+   @Export("int2")
+   public int int2;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
       intValue = 2035904577
    )
-   public int field3605;
+   @Export("int3")
+   public int int3;
 
    static {
       items = new NodeCache(64);
@@ -320,12 +324,12 @@ public class ItemComposition extends CacheableNode {
       this.resizeZ = 128;
       this.ambient = 0;
       this.contrast = 0;
-      this.field3601 = 0;
-      this.field3594 = false;
+      this.int1 = 0;
+      this.isTradable = false;
       this.unnotedId = -1;
       this.notedId = -1;
-      this.field3557 = -1;
-      this.field3605 = -1;
+      this.int2 = -1;
+      this.int3 = -1;
    }
 
    @ObfuscatedName("x")
@@ -428,7 +432,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 42) {
             this.team = var1.readByte();
          } else if(var2 == 65) {
-            this.field3594 = true;
+            this.isTradable = true;
          } else if(var2 == 78) {
             this.maleModel2 = var1.readUnsignedShort();
          } else if(var2 == 79) {
@@ -466,17 +470,17 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 114) {
             this.contrast = var1.readByte() * 5;
          } else if(var2 == 115) {
-            this.field3601 = var1.readUnsignedByte();
+            this.int1 = var1.readUnsignedByte();
          } else if(var2 == 139) {
             this.unnotedId = var1.readUnsignedShort();
          } else if(var2 == 140) {
             this.notedId = var1.readUnsignedShort();
          } else if(var2 == 148) {
-            this.field3557 = var1.readUnsignedShort();
+            this.int2 = var1.readUnsignedShort();
          } else if(var2 == 149) {
-            this.field3605 = var1.readUnsignedShort();
+            this.int3 = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3597 = CacheFile.method2453(var1, this.field3597);
+            this.field3597 = CacheFile.readStringIntParameters(var1, this.field3597);
          }
       }
 
@@ -535,7 +539,7 @@ public class ItemComposition extends CacheableNode {
       this.maleHeadModel2 = var2.maleHeadModel2;
       this.femaleHeadModel = var2.femaleHeadModel;
       this.femaleHeadModel2 = var2.femaleHeadModel2;
-      this.field3601 = var2.field3601;
+      this.int1 = var2.int1;
       this.groundActions = var2.groundActions;
       this.inventoryActions = new String[5];
       if(var2.inventoryActions != null) {
@@ -569,7 +573,7 @@ public class ItemComposition extends CacheableNode {
       this.name = var2.name;
       this.price = 0;
       this.isMembers = false;
-      this.field3594 = false;
+      this.isTradable = false;
    }
 
    @ObfuscatedName("t")
@@ -593,7 +597,7 @@ public class ItemComposition extends CacheableNode {
          }
       }
 
-      ModelData var4 = ModelData.method2510(Widget.field2858, this.inventoryModel, 0);
+      ModelData var4 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, this.inventoryModel, 0);
       if(var4 == null) {
          return null;
       } else {
@@ -642,7 +646,7 @@ public class ItemComposition extends CacheableNode {
       if(var5 != null) {
          return var5;
       } else {
-         ModelData var6 = ModelData.method2510(Widget.field2858, this.inventoryModel, 0);
+         ModelData var6 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, this.inventoryModel, 0);
          if(var6 == null) {
             return null;
          } else {
@@ -714,15 +718,15 @@ public class ItemComposition extends CacheableNode {
          return true;
       } else {
          boolean var5 = true;
-         if(!Widget.field2858.method4322(var2, 0)) {
+         if(!Widget.ItemDefinition_modelIndexCache.tryLoadRecord(var2, 0)) {
             var5 = false;
          }
 
-         if(var3 != -1 && !Widget.field2858.method4322(var3, 0)) {
+         if(var3 != -1 && !Widget.ItemDefinition_modelIndexCache.tryLoadRecord(var3, 0)) {
             var5 = false;
          }
 
-         if(var4 != -1 && !Widget.field2858.method4322(var4, 0)) {
+         if(var4 != -1 && !Widget.ItemDefinition_modelIndexCache.tryLoadRecord(var4, 0)) {
             var5 = false;
          }
 
@@ -749,11 +753,11 @@ public class ItemComposition extends CacheableNode {
       if(var2 == -1) {
          return null;
       } else {
-         ModelData var5 = ModelData.method2510(Widget.field2858, var2, 0);
+         ModelData var5 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, var2, 0);
          if(var3 != -1) {
-            ModelData var6 = ModelData.method2510(Widget.field2858, var3, 0);
+            ModelData var6 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, var3, 0);
             if(var4 != -1) {
-               ModelData var7 = ModelData.method2510(Widget.field2858, var4, 0);
+               ModelData var7 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, var4, 0);
                ModelData[] var8 = new ModelData[]{var5, var6, var7};
                var5 = new ModelData(var8, 3);
             } else {
@@ -804,11 +808,11 @@ public class ItemComposition extends CacheableNode {
          return true;
       } else {
          boolean var4 = true;
-         if(!Widget.field2858.method4322(var2, 0)) {
+         if(!Widget.ItemDefinition_modelIndexCache.tryLoadRecord(var2, 0)) {
             var4 = false;
          }
 
-         if(var3 != -1 && !Widget.field2858.method4322(var3, 0)) {
+         if(var3 != -1 && !Widget.ItemDefinition_modelIndexCache.tryLoadRecord(var3, 0)) {
             var4 = false;
          }
 
@@ -832,9 +836,9 @@ public class ItemComposition extends CacheableNode {
       if(var2 == -1) {
          return null;
       } else {
-         ModelData var4 = ModelData.method2510(Widget.field2858, var2, 0);
+         ModelData var4 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, var2, 0);
          if(var3 != -1) {
-            ModelData var5 = ModelData.method2510(Widget.field2858, var3, 0);
+            ModelData var5 = ModelData.method2510(Widget.ItemDefinition_modelIndexCache, var3, 0);
             ModelData[] var6 = new ModelData[]{var4, var5};
             var4 = new ModelData(var6, 2);
          }

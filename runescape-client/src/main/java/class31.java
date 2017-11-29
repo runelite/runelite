@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -13,7 +14,8 @@ public class class31 {
    @ObfuscatedSignature(
       signature = "[Lkl;"
    )
-   static IndexedSprite[] field423;
+   @Export("slFlagSprites")
+   static IndexedSprite[] slFlagSprites;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 111742967

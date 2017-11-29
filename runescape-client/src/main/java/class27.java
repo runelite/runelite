@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ak")
-public enum class27 implements class185 {
+public enum class27 implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lak;"
@@ -68,7 +68,7 @@ public enum class27 implements class185 {
       } else {
          class91.loginIndex = var3;
          Rasterizer2D.reset();
-         byte[] var4 = var0.method4284("title.jpg", "");
+         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
          class182.field2511 = FileOnDisk.method2479(var4);
          class91.field1347 = class182.field2511.method5257();
          if((Client.flags & 536870912) != 0) {
@@ -79,14 +79,14 @@ public enum class27 implements class185 {
 
          class91.field1341 = ClanMember.getSprite(var1, "titlebox", "");
          class91.field1340 = ClanMember.getSprite(var1, "titlebutton", "");
-         class272.field3720 = class210.method3855(var1, "runes", "");
-         class91.titlemuteSprite = class210.method3855(var1, "title_mute", "");
-         class269.field3694 = ClanMember.getSprite(var1, "options_radio_buttons,0", "");
-         class13.field269 = ClanMember.getSprite(var1, "options_radio_buttons,4", "");
-         class148.field2098 = ClanMember.getSprite(var1, "options_radio_buttons,2", "");
+         class272.runeSprites = class210.getIndexedSprites(var1, "runes", "");
+         class91.titlemuteSprite = class210.getIndexedSprites(var1, "title_mute", "");
+         Fonts.field3694 = ClanMember.getSprite(var1, "options_radio_buttons,0", "");
+         GrandExchangeEvents.field269 = ClanMember.getSprite(var1, "options_radio_buttons,4", "");
+         UrlRequester.field2098 = ClanMember.getSprite(var1, "options_radio_buttons,2", "");
          class33.field446 = ClanMember.getSprite(var1, "options_radio_buttons,6", "");
-         class61.field737 = class269.field3694.originalWidth;
-         class28.field392 = class269.field3694.height;
+         class61.field737 = Fonts.field3694.originalWidth;
+         class28.field392 = Fonts.field3694.height;
          ScriptEvent.field811 = new int[256];
 
          int var5;
@@ -160,7 +160,7 @@ public enum class27 implements class185 {
          if(!RSCanvas.preferences.muted) {
             IndexFile.method3146(2, RSCanvas.indexTrack1, "scape main", "", 255, false);
          } else {
-            class2.method6(2);
+            IntegerToken.method6(2);
          }
 
          class156.sendConInfo(false);
@@ -183,7 +183,7 @@ public enum class27 implements class185 {
       Widget var3 = var2?class54.field636:class82.field1265;
       if(var0 == 1800) {
          int[] var4 = class82.intStack;
-         int var5 = ++class13.intStackSize - 1;
+         int var5 = ++GrandExchangeEvents.intStackSize - 1;
          int var7 = ClanMember.getWidgetConfig(var3);
          int var6 = var7 >> 11 & 63;
          var4[var5] = var6;
@@ -201,7 +201,7 @@ public enum class27 implements class185 {
             return 2;
          }
       } else {
-         int var8 = class82.intStack[--class13.intStackSize];
+         int var8 = class82.intStack[--GrandExchangeEvents.intStackSize];
          --var8;
          if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
             class82.scriptStringStack[++class82.scriptStringStackSize - 1] = var3.actions[var8];

@@ -6,13 +6,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("v")
 @Implements("BaseVarType")
-public enum BaseVarType implements class185 {
+public enum BaseVarType implements Enumerated {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lv;"
    )
    @Export("INTEGER")
-   INTEGER(0, 0, Integer.class, new class2()),
+   INTEGER(0, 0, Integer.class, new IntegerToken()),
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lv;"
@@ -30,7 +30,8 @@ public enum BaseVarType implements class185 {
    @ObfuscatedSignature(
       signature = "Lc;"
    )
-   static class13 field27;
+   @Export("grandExchangeEvents")
+   static GrandExchangeEvents grandExchangeEvents;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 555864259
@@ -40,19 +41,21 @@ public enum BaseVarType implements class185 {
    @ObfuscatedGetter(
       intValue = -699849717
    )
-   final int field28;
+   @Export("id2")
+   final int id2;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1080732597
    )
-   final int field29;
+   @Export("id")
+   final int id;
 
    @ObfuscatedSignature(
       signature = "(IILjava/lang/Class;Ld;)V"
    )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
-      this.field28 = var3;
-      this.field29 = var4;
+      this.id2 = var3;
+      this.id = var4;
    }
 
    @ObfuscatedName("d")
@@ -61,7 +64,7 @@ public enum BaseVarType implements class185 {
       garbageValue = "-1940611593"
    )
    public int rsOrdinal() {
-      return this.field29;
+      return this.id;
    }
 
    @ObfuscatedName("d")
@@ -98,7 +101,7 @@ public enum BaseVarType implements class185 {
       garbageValue = "-1988382681"
    )
    static final int method11() {
-      return class133.field1900;
+      return class133.Viewport_mouseX;
    }
 
    @ObfuscatedName("gb")
@@ -112,7 +115,7 @@ public enum BaseVarType implements class185 {
          var0.field1204 = 0;
       } else {
          if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var1 = class13.getAnimation(var0.animation);
+            Sequence var1 = GrandExchangeEvents.getAnimation(var0.animation);
             if(var0.field1159 > 0 && var1.precedenceAnimating == 0) {
                ++var0.field1204;
                return;
@@ -150,7 +153,7 @@ public enum BaseVarType implements class185 {
             var0.orientation = 0;
          }
 
-         byte var5 = var0.field1203[var0.queueSize - 1];
+         byte var5 = var0.pathTraversed[var0.queueSize - 1];
          if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
             int var6 = var0.orientation - var0.angle & 2047;
             if(var6 > 1024) {
@@ -273,23 +276,23 @@ public enum BaseVarType implements class185 {
       int var3 = 0;
       int var4 = 0;
       if(var0.type == 0) {
-         var1 = class14.region.method2823(var0.level, var0.x, var0.y);
+         var1 = GrandExchangeEvent.region.method2823(var0.level, var0.x, var0.y);
       }
 
       if(var0.type == 1) {
-         var1 = class14.region.method2903(var0.level, var0.x, var0.y);
+         var1 = GrandExchangeEvent.region.method2903(var0.level, var0.x, var0.y);
       }
 
       if(var0.type == 2) {
-         var1 = class14.region.method2825(var0.level, var0.x, var0.y);
+         var1 = GrandExchangeEvent.region.method2825(var0.level, var0.x, var0.y);
       }
 
       if(var0.type == 3) {
-         var1 = class14.region.method2826(var0.level, var0.x, var0.y);
+         var1 = GrandExchangeEvent.region.method2826(var0.level, var0.x, var0.y);
       }
 
       if(var1 != 0) {
-         int var5 = class14.region.method2827(var0.level, var0.x, var0.y, var1);
+         int var5 = GrandExchangeEvent.region.getObjectFlags(var0.level, var0.x, var0.y, var1);
          var2 = var1 >> 14 & 32767;
          var3 = var5 & 31;
          var4 = var5 >> 6 & 3;

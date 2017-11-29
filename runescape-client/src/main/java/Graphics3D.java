@@ -21,7 +21,8 @@ public class Graphics3D extends Rasterizer2D {
    @Export("rasterAlpha")
    static int rasterAlpha;
    @ObfuscatedName("u")
-   public static int field1928;
+   @Export("Rasterizer3D_zoom")
+   public static int Rasterizer3D_zoom;
    @ObfuscatedName("n")
    @Export("centerX")
    static int centerX;
@@ -32,15 +33,20 @@ public class Graphics3D extends Rasterizer2D {
    @Export("rasterClipX")
    static int rasterClipX;
    @ObfuscatedName("j")
-   static int field1931;
+   @Export("Rasterizer3D_clipHeight")
+   static int Rasterizer3D_clipHeight;
    @ObfuscatedName("f")
-   static int field1933;
+   @Export("Rasterizer3D_clipNegativeMidX")
+   static int Rasterizer3D_clipNegativeMidX;
    @ObfuscatedName("s")
-   static int field1934;
+   @Export("Rasterizer3D_clipMidX2")
+   static int Rasterizer3D_clipMidX2;
    @ObfuscatedName("e")
-   static int field1935;
+   @Export("Rasterizer3D_clipNegativeMidY")
+   static int Rasterizer3D_clipNegativeMidY;
    @ObfuscatedName("q")
-   static int field1936;
+   @Export("Rasterizer3D_clipMidY2")
+   static int Rasterizer3D_clipMidY2;
    @ObfuscatedName("h")
    @Export("rasterClipY")
    static int[] rasterClipY;
@@ -70,7 +76,7 @@ public class Graphics3D extends Rasterizer2D {
       lowMem = false;
       rasterGouraudLowRes = true;
       rasterAlpha = 0;
-      field1928 = 512;
+      Rasterizer3D_zoom = 512;
       rasterClipY = new int[1024];
       colorPalette = new int[65536];
       field1929 = new int[512];
@@ -95,7 +101,8 @@ public class Graphics3D extends Rasterizer2D {
    }
 
    @ObfuscatedName("d")
-   public static final void method2739() {
+   @Export("Rasterizer3D_method1")
+   public static final void Rasterizer3D_method1() {
       setRasterClipping(Rasterizer2D.draw_region_x, Rasterizer2D.drawingAreaTop, Rasterizer2D.drawingAreaBottom, Rasterizer2D.drawingAreaRight);
    }
 
@@ -103,15 +110,15 @@ public class Graphics3D extends Rasterizer2D {
    @Export("setRasterClipping")
    static final void setRasterClipping(int var0, int var1, int var2, int var3) {
       rasterClipX = var2 - var0;
-      field1931 = var3 - var1;
-      method2716();
-      if(rasterClipY.length < field1931) {
-         rasterClipY = new int[class100.method1943(field1931)];
+      Rasterizer3D_clipHeight = var3 - var1;
+      Rasterizer3D_method3();
+      if(rasterClipY.length < Rasterizer3D_clipHeight) {
+         rasterClipY = new int[NetWriter.nextPowerOfTwo(Rasterizer3D_clipHeight)];
       }
 
       int var4 = var0 + Rasterizer2D.graphicsPixelsWidth * var1;
 
-      for(int var5 = 0; var5 < field1931; ++var5) {
+      for(int var5 = 0; var5 < Rasterizer3D_clipHeight; ++var5) {
          rasterClipY[var5] = var4;
          var4 += Rasterizer2D.graphicsPixelsWidth;
       }
@@ -119,13 +126,14 @@ public class Graphics3D extends Rasterizer2D {
    }
 
    @ObfuscatedName("k")
-   public static final void method2716() {
+   @Export("Rasterizer3D_method3")
+   public static final void Rasterizer3D_method3() {
       centerX = rasterClipX / 2;
-      centerY = field1931 / 2;
-      field1933 = -centerX;
-      field1934 = rasterClipX - centerX;
-      field1935 = -centerY;
-      field1936 = field1931 - centerY;
+      centerY = Rasterizer3D_clipHeight / 2;
+      Rasterizer3D_clipNegativeMidX = -centerX;
+      Rasterizer3D_clipMidX2 = rasterClipX - centerX;
+      Rasterizer3D_clipNegativeMidY = -centerY;
+      Rasterizer3D_clipMidY2 = Rasterizer3D_clipHeight - centerY;
    }
 
    @ObfuscatedName("z")
@@ -135,10 +143,10 @@ public class Graphics3D extends Rasterizer2D {
       int var4 = var2 - var3 * Rasterizer2D.graphicsPixelsWidth;
       centerX = var0 - var4;
       centerY = var1 - var3;
-      field1933 = -centerX;
-      field1934 = rasterClipX - centerX;
-      field1935 = -centerY;
-      field1936 = field1931 - centerY;
+      Rasterizer3D_clipNegativeMidX = -centerX;
+      Rasterizer3D_clipMidX2 = rasterClipX - centerX;
+      Rasterizer3D_clipNegativeMidY = -centerY;
+      Rasterizer3D_clipMidY2 = Rasterizer3D_clipHeight - centerY;
    }
 
    @ObfuscatedName("v")
@@ -290,13 +298,13 @@ public class Graphics3D extends Rasterizer2D {
          int var19 = (var13 * var12 - var14 * var10 << 8) / var18;
          int var20 = (var14 * var9 - var13 * var11 << 8) / var18;
          if(var0 <= var1 && var0 <= var2) {
-            if(var0 < field1931) {
-               if(var1 > field1931) {
-                  var1 = field1931;
+            if(var0 < Rasterizer3D_clipHeight) {
+               if(var1 > Rasterizer3D_clipHeight) {
+                  var1 = Rasterizer3D_clipHeight;
                }
 
-               if(var2 > field1931) {
-                  var2 = field1931;
+               if(var2 > Rasterizer3D_clipHeight) {
+                  var2 = Rasterizer3D_clipHeight;
                }
 
                var6 = var19 + ((var6 << 8) - var3 * var19);
@@ -447,13 +455,13 @@ public class Graphics3D extends Rasterizer2D {
                }
             }
          } else if(var1 <= var2) {
-            if(var1 < field1931) {
-               if(var2 > field1931) {
-                  var2 = field1931;
+            if(var1 < Rasterizer3D_clipHeight) {
+               if(var2 > Rasterizer3D_clipHeight) {
+                  var2 = Rasterizer3D_clipHeight;
                }
 
-               if(var0 > field1931) {
-                  var0 = field1931;
+               if(var0 > Rasterizer3D_clipHeight) {
+                  var0 = Rasterizer3D_clipHeight;
                }
 
                var7 = var19 + ((var7 << 8) - var19 * var4);
@@ -603,13 +611,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             }
-         } else if(var2 < field1931) {
-            if(var0 > field1931) {
-               var0 = field1931;
+         } else if(var2 < Rasterizer3D_clipHeight) {
+            if(var0 > Rasterizer3D_clipHeight) {
+               var0 = Rasterizer3D_clipHeight;
             }
 
-            if(var1 > field1931) {
-               var1 = field1931;
+            if(var1 > Rasterizer3D_clipHeight) {
+               var1 = Rasterizer3D_clipHeight;
             }
 
             var8 = var19 + ((var8 << 8) - var5 * var19);
@@ -883,13 +891,13 @@ public class Graphics3D extends Rasterizer2D {
       }
 
       if(var0 <= var1 && var0 <= var2) {
-         if(var0 < field1931) {
-            if(var1 > field1931) {
-               var1 = field1931;
+         if(var0 < Rasterizer3D_clipHeight) {
+            if(var1 > Rasterizer3D_clipHeight) {
+               var1 = Rasterizer3D_clipHeight;
             }
 
-            if(var2 > field1931) {
-               var2 = field1931;
+            if(var2 > Rasterizer3D_clipHeight) {
+               var2 = Rasterizer3D_clipHeight;
             }
 
             if(var1 < var2) {
@@ -1029,13 +1037,13 @@ public class Graphics3D extends Rasterizer2D {
             }
          }
       } else if(var1 <= var2) {
-         if(var1 < field1931) {
-            if(var2 > field1931) {
-               var2 = field1931;
+         if(var1 < Rasterizer3D_clipHeight) {
+            if(var2 > Rasterizer3D_clipHeight) {
+               var2 = Rasterizer3D_clipHeight;
             }
 
-            if(var0 > field1931) {
-               var0 = field1931;
+            if(var0 > Rasterizer3D_clipHeight) {
+               var0 = Rasterizer3D_clipHeight;
             }
 
             if(var2 < var0) {
@@ -1174,13 +1182,13 @@ public class Graphics3D extends Rasterizer2D {
                }
             }
          }
-      } else if(var2 < field1931) {
-         if(var0 > field1931) {
-            var0 = field1931;
+      } else if(var2 < Rasterizer3D_clipHeight) {
+         if(var0 > Rasterizer3D_clipHeight) {
+            var0 = Rasterizer3D_clipHeight;
          }
 
-         if(var1 > field1931) {
-            var1 = field1931;
+         if(var1 > Rasterizer3D_clipHeight) {
+            var1 = Rasterizer3D_clipHeight;
          }
 
          if(var0 < var1) {
@@ -1458,23 +1466,23 @@ public class Graphics3D extends Rasterizer2D {
             var14 -= var12;
             var17 -= var15;
             int var32 = var11 * var12 - var9 * var14 << 14;
-            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 3 << 14) / (long)field1928);
-            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1928);
+            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 3 << 14) / (long)Rasterizer3D_zoom);
+            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)Rasterizer3D_zoom);
             int var35 = var10 * var12 - var13 * var9 << 14;
-            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 3 << 14) / (long)field1928);
-            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1928);
+            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 3 << 14) / (long)Rasterizer3D_zoom);
+            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)Rasterizer3D_zoom);
             int var38 = var13 * var11 - var10 * var14 << 14;
-            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 3 << 14) / (long)field1928);
-            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1928);
+            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 3 << 14) / (long)Rasterizer3D_zoom);
+            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)Rasterizer3D_zoom);
             int var41;
             if(var0 <= var1 && var0 <= var2) {
-               if(var0 < field1931) {
-                  if(var1 > field1931) {
-                     var1 = field1931;
+               if(var0 < Rasterizer3D_clipHeight) {
+                  if(var1 > Rasterizer3D_clipHeight) {
+                     var1 = Rasterizer3D_clipHeight;
                   }
 
-                  if(var2 > field1931) {
-                     var2 = field1931;
+                  if(var2 > Rasterizer3D_clipHeight) {
+                     var2 = Rasterizer3D_clipHeight;
                   }
 
                   var6 = var30 + ((var6 << 9) - var3 * var30);
@@ -1657,13 +1665,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             } else if(var1 <= var2) {
-               if(var1 < field1931) {
-                  if(var2 > field1931) {
-                     var2 = field1931;
+               if(var1 < Rasterizer3D_clipHeight) {
+                  if(var2 > Rasterizer3D_clipHeight) {
+                     var2 = Rasterizer3D_clipHeight;
                   }
 
-                  if(var0 > field1931) {
-                     var0 = field1931;
+                  if(var0 > Rasterizer3D_clipHeight) {
+                     var0 = Rasterizer3D_clipHeight;
                   }
 
                   var7 = var30 + ((var7 << 9) - var30 * var4);
@@ -1845,13 +1853,13 @@ public class Graphics3D extends Rasterizer2D {
                      }
                   }
                }
-            } else if(var2 < field1931) {
-               if(var0 > field1931) {
-                  var0 = field1931;
+            } else if(var2 < Rasterizer3D_clipHeight) {
+               if(var0 > Rasterizer3D_clipHeight) {
+                  var0 = Rasterizer3D_clipHeight;
                }
 
-               if(var1 > field1931) {
-                  var1 = field1931;
+               if(var1 > Rasterizer3D_clipHeight) {
+                  var1 = Rasterizer3D_clipHeight;
                }
 
                var8 = (var8 << 9) - var5 * var30 + var30;
@@ -2500,23 +2508,23 @@ public class Graphics3D extends Rasterizer2D {
             var14 -= var12;
             var17 -= var15;
             int var32 = var11 * var12 - var9 * var14 << 14;
-            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 14) / (long)field1928);
-            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)field1928);
+            int var33 = (int)(((long)(var15 * var14 - var17 * var12) << 14) / (long)Rasterizer3D_zoom);
+            int var34 = (int)(((long)(var17 * var9 - var11 * var15) << 14) / (long)Rasterizer3D_zoom);
             int var35 = var10 * var12 - var13 * var9 << 14;
-            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 14) / (long)field1928);
-            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)field1928);
+            int var36 = (int)(((long)(var13 * var15 - var16 * var12) << 14) / (long)Rasterizer3D_zoom);
+            int var37 = (int)(((long)(var16 * var9 - var10 * var15) << 14) / (long)Rasterizer3D_zoom);
             int var38 = var13 * var11 - var10 * var14 << 14;
-            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 14) / (long)field1928);
-            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)field1928);
+            int var39 = (int)(((long)(var16 * var14 - var13 * var17) << 14) / (long)Rasterizer3D_zoom);
+            int var40 = (int)(((long)(var17 * var10 - var11 * var16) << 14) / (long)Rasterizer3D_zoom);
             int var41;
             if(var0 <= var1 && var0 <= var2) {
-               if(var0 < field1931) {
-                  if(var1 > field1931) {
-                     var1 = field1931;
+               if(var0 < Rasterizer3D_clipHeight) {
+                  if(var1 > Rasterizer3D_clipHeight) {
+                     var1 = Rasterizer3D_clipHeight;
                   }
 
-                  if(var2 > field1931) {
-                     var2 = field1931;
+                  if(var2 > Rasterizer3D_clipHeight) {
+                     var2 = Rasterizer3D_clipHeight;
                   }
 
                   var6 = var30 + ((var6 << 9) - var3 * var30);
@@ -2699,13 +2707,13 @@ public class Graphics3D extends Rasterizer2D {
                   }
                }
             } else if(var1 <= var2) {
-               if(var1 < field1931) {
-                  if(var2 > field1931) {
-                     var2 = field1931;
+               if(var1 < Rasterizer3D_clipHeight) {
+                  if(var2 > Rasterizer3D_clipHeight) {
+                     var2 = Rasterizer3D_clipHeight;
                   }
 
-                  if(var0 > field1931) {
-                     var0 = field1931;
+                  if(var0 > Rasterizer3D_clipHeight) {
+                     var0 = Rasterizer3D_clipHeight;
                   }
 
                   var7 = var30 + ((var7 << 9) - var30 * var4);
@@ -2887,13 +2895,13 @@ public class Graphics3D extends Rasterizer2D {
                      }
                   }
                }
-            } else if(var2 < field1931) {
-               if(var0 > field1931) {
-                  var0 = field1931;
+            } else if(var2 < Rasterizer3D_clipHeight) {
+               if(var0 > Rasterizer3D_clipHeight) {
+                  var0 = Rasterizer3D_clipHeight;
                }
 
-               if(var1 > field1931) {
-                  var1 = field1931;
+               if(var1 > Rasterizer3D_clipHeight) {
+                  var1 = Rasterizer3D_clipHeight;
                }
 
                var8 = (var8 << 9) - var5 * var30 + var30;

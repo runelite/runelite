@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("b")
 @Implements("ScriptVarType")
-public class ScriptVarType implements class185, class301 {
+public class ScriptVarType implements Enumerated, class301 {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Lb;"
@@ -1151,7 +1151,7 @@ public class ScriptVarType implements class185, class301 {
          field221 = new ScriptVarType[256];
       }
 
-      field221[ItemContainer.method1102(this.typeChar) & 255] = this;
+      field221[ItemContainer.charToByteCp1252(this.typeChar) & 255] = this;
    }
 
    @ObfuscatedSignature(

@@ -157,7 +157,8 @@ public class Buffer extends Node {
       signature = "(ZB)V",
       garbageValue = "-32"
    )
-   public void method3286(boolean var1) {
+   @Export("writeBooleanAsByte")
+   public void writeBooleanAsByte(boolean var1) {
       this.putByte(var1?1:0);
    }
 
@@ -172,7 +173,7 @@ public class Buffer extends Node {
       if(var2 >= 0) {
          throw new IllegalArgumentException("");
       } else {
-         this.offset += Friend.method1110(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += Friend.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }
@@ -189,7 +190,7 @@ public class Buffer extends Node {
          throw new IllegalArgumentException("");
       } else {
          this.payload[++this.offset - 1] = 0;
-         this.offset += Friend.method1110(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += Friend.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }
@@ -789,7 +790,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-1264821927"
    )
-   public int method3457() {
+   @Export("readUnsignedByteNegate")
+   public int readUnsignedByteNegate() {
       return 0 - this.payload[++this.offset - 1] & 255;
    }
 
@@ -834,7 +836,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "1955717168"
    )
-   public void method3330(int var1) {
+   @Export("writeShortLE")
+   public void writeShortLE(int var1) {
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
@@ -936,7 +939,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1534562865"
    )
-   public void method3400(int var1) {
+   @Export("writeIntLE")
+   public void writeIntLE(int var1) {
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
@@ -948,7 +952,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-466636077"
    )
-   public void method3365(int var1) {
+   @Export("writeIntME")
+   public void writeIntME(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)var1;
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
@@ -960,7 +965,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "969875056"
    )
-   public void method3341(int var1) {
+   @Export("writeIntLE16")
+   public void writeIntLE16(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
       this.payload[++this.offset - 1] = (byte)var1;
@@ -1017,7 +1023,7 @@ public class Buffer extends Node {
    public static void method3318(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
       class210.field2598 = 1;
       class3.field22 = var0;
-      class8.field237 = var1;
+      BoundingBox2D.field237 = var1;
       class210.field2599 = var2;
       class111.field1588 = var3;
       class20.field322 = var4;

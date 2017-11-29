@@ -61,7 +61,7 @@ public class class259 extends CacheableNode {
    )
    void method4630(Buffer var1, int var2) {
       if(var2 == 249) {
-         this.field3460 = CacheFile.method2453(var1, this.field3460);
+         this.field3460 = CacheFile.readStringIntParameters(var1, this.field3460);
       }
 
    }

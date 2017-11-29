@@ -69,7 +69,7 @@ public class class163 {
          int var6 = var0[var5 + var1] & 255;
          if(var6 != 0) {
             if(var6 >= 128 && var6 < 160) {
-               char var7 = class273.field3722[var6 - 128];
+               char var7 = class273.cp1252AsciiExtension[var6 - 128];
                if(var7 == 0) {
                   var7 = '?';
                }

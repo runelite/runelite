@@ -107,8 +107,8 @@ public class SoundTask implements Runnable {
       garbageValue = "39"
    )
    static void method2175(int var0, int var1) {
-      ContextMenuRow var2 = class268.topContextMenuRow;
+      ContextMenuRow var2 = FontName.topContextMenuRow;
       ItemLayer.menuAction(var2.param0, var2.param1, var2.type, var2.identifier, var2.option, var2.option, var0, var1);
-      class268.topContextMenuRow = null;
+      FontName.topContextMenuRow = null;
    }
 }

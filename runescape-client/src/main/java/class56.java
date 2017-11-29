@@ -62,6 +62,6 @@ public class class56 {
       GameEngine.cameraZ = var1 - var9;
       class289.cameraY = var2 - var10;
       class18.cameraPitch = var3;
-      class51.cameraYaw = var4;
+      SoundTaskDataProvider.cameraYaw = var4;
    }
 }

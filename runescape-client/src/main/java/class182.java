@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,7 +9,8 @@ public class class182 {
    @ObfuscatedGetter(
       longValue = 5701028984755165113L
    )
-   static long field2510;
+   @Export("currentTimeMsLast")
+   static long currentTimeMsLast;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Lky;"
@@ -71,7 +73,7 @@ public class class182 {
    )
    static void method3528(int var0, int var1) {
       PacketNode var2 = class218.method4105(ClientPacket.field2335, Client.field916.field1470);
-      var2.packetBuffer.method3400(var0);
+      var2.packetBuffer.writeIntLE(var0);
       var2.packetBuffer.method3332(var1);
       Client.field916.method1925(var2);
    }

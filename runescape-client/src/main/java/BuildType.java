@@ -67,7 +67,7 @@ public class BuildType {
             SoundEffect var9 = Client.audioEffects[var0];
             if(var9 == null) {
                Object var10000 = null;
-               var9 = SoundEffect.getTrack(class47.field576, Client.field970[var0], 0);
+               var9 = SoundEffect.getTrack(class47.indexCache4, Client.field970[var0], 0);
                if(var9 == null) {
                   continue;
                }
@@ -111,7 +111,7 @@ public class BuildType {
                   class106 var10 = var9.method2013().method2066(SoundTask.field1583);
                   class116 var11 = class116.method2227(var10, 100, var2);
                   var11.method2230(Client.field1096[var0] - 1);
-                  class70.field821.method1953(var11);
+                  MouseRecorder.field821.method1953(var11);
                }
 
                Client.field930[var0] = -100;

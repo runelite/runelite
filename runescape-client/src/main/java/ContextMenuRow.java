@@ -60,7 +60,7 @@ public class ContextMenuRow {
                   Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
                   Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
                   Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
-                  Client.field889[var1] = Client.field889[var1 + 1];
+                  Client.menuBooleanArray[var1] = Client.menuBooleanArray[var1 + 1];
                }
             }
 

@@ -56,9 +56,9 @@ public class VertexNormal {
       garbageValue = "3"
    )
    public static final void method2712(Model var0, int var1, int var2, int var3) {
-      if(class214.method4052(var0, var1, var2, var3)) {
+      if(class214.boundingBox3DContainsMouse(var0, var1, var2, var3)) {
          class28.method238(var0, var1, var2, var3, -65281);
-      } else if(class11.field254 == class7.field225) {
+      } else if(class11.BoundingBox3DDrawMode_all == class7.boundingBox3DDrawMode) {
          class28.method238(var0, var1, var2, var3, -16776961);
       }
 

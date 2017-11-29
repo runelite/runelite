@@ -11,12 +11,14 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   static IndexDataBase field3616;
+   @Export("NpcDefinition_indexCache")
+   static IndexDataBase NpcDefinition_indexCache;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   static IndexDataBase field3614;
+   @Export("NpcDefinition_modelIndexCache")
+   static IndexDataBase NpcDefinition_modelIndexCache;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lgx;"
@@ -109,12 +111,14 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 2051306817
    )
-   int field3646;
+   @Export("widthScale")
+   int widthScale;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -289619445
    )
-   int field3637;
+   @Export("heightScale")
+   int heightScale;
    @ObfuscatedName("a")
    @Export("isVisible")
    public boolean isVisible;
@@ -125,7 +129,7 @@ public class NPCComposition extends CacheableNode {
    int field3639;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
-      intValue = -1211375277
+      intValue = 1475711863
    )
    int field3630;
    @ObfuscatedName("aa")
@@ -184,8 +188,8 @@ public class NPCComposition extends CacheableNode {
       this.actions = new String[5];
       this.isMinimapVisible = true;
       this.combatLevel = -1;
-      this.field3646 = 128;
-      this.field3637 = 128;
+      this.widthScale = 128;
+      this.heightScale = 128;
       this.isVisible = false;
       this.field3639 = 0;
       this.field3630 = 0;
@@ -220,7 +224,7 @@ public class NPCComposition extends CacheableNode {
             return;
          }
 
-         this.method4849(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -229,7 +233,8 @@ public class NPCComposition extends CacheableNode {
       signature = "(Lfr;IB)V",
       garbageValue = "77"
    )
-   void method4849(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       int var3;
       int var4;
       if(var2 == 1) {
@@ -291,15 +296,15 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 95) {
          this.combatLevel = var1.readUnsignedShort();
       } else if(var2 == 97) {
-         this.field3646 = var1.readUnsignedShort();
+         this.widthScale = var1.readUnsignedShort();
       } else if(var2 == 98) {
-         this.field3637 = var1.readUnsignedShort();
+         this.heightScale = var1.readUnsignedShort();
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
          this.field3639 = var1.readByte();
       } else if(var2 == 101) {
-         this.field3630 = var1.readByte() * 5;
+         this.field3630 = var1.readByte();
       } else if(var2 == 102) {
          this.field3621 = var1.readUnsignedShort();
       } else if(var2 == 103) {
@@ -312,7 +317,7 @@ public class NPCComposition extends CacheableNode {
          } else if(var2 == 111) {
             this.field3648 = true;
          } else if(var2 == 249) {
-            this.field3618 = CacheFile.method2453(var1, this.field3618);
+            this.field3618 = CacheFile.readStringIntParameters(var1, this.field3618);
          }
       } else {
          this.varpIndex = var1.readUnsignedShort();
@@ -353,17 +358,18 @@ public class NPCComposition extends CacheableNode {
       signature = "(Ljj;ILjj;II)Leh;",
       garbageValue = "1223480572"
    )
-   public final Model method4827(Sequence var1, int var2, Sequence var3, int var4) {
+   @Export("getModel")
+   public final Model getModel(Sequence var1, int var2, Sequence var3, int var4) {
       if(this.configs != null) {
          NPCComposition var12 = this.transform();
-         return var12 == null?null:var12.method4827(var1, var2, var3, var4);
+         return var12 == null?null:var12.getModel(var1, var2, var3, var4);
       } else {
          Model var5 = (Model)npcModelCache.get((long)this.id);
          if(var5 == null) {
             boolean var6 = false;
 
             for(int var7 = 0; var7 < this.models.length; ++var7) {
-               if(!field3614.method4322(this.models[var7], 0)) {
+               if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.models[var7], 0)) {
                   var6 = true;
                }
             }
@@ -376,7 +382,7 @@ public class NPCComposition extends CacheableNode {
 
             int var9;
             for(var9 = 0; var9 < this.models.length; ++var9) {
-               var8[var9] = ModelData.method2510(field3614, this.models[var9], 0);
+               var8[var9] = ModelData.method2510(NpcDefinition_modelIndexCache, this.models[var9], 0);
             }
 
             ModelData var11;
@@ -398,7 +404,7 @@ public class NPCComposition extends CacheableNode {
                }
             }
 
-            var5 = var11.light(this.field3639 + 64, this.field3630 + 850, -30, -50, -30);
+            var5 = var11.light(this.field3639 + 64, this.field3630 * 5 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
@@ -413,8 +419,8 @@ public class NPCComposition extends CacheableNode {
             var10 = var5.method2619(true);
          }
 
-         if(this.field3646 != 128 || this.field3637 != 128) {
-            var10.method2626(this.field3646, this.field3637, this.field3646);
+         if(this.widthScale != 128 || this.heightScale != 128) {
+            var10.scale(this.widthScale, this.heightScale, this.widthScale);
          }
 
          return var10;
@@ -436,7 +442,7 @@ public class NPCComposition extends CacheableNode {
          boolean var5 = false;
 
          for(int var2 = 0; var2 < this.field3626.length; ++var2) {
-            if(!field3614.method4322(this.field3626[var2], 0)) {
+            if(!NpcDefinition_modelIndexCache.tryLoadRecord(this.field3626[var2], 0)) {
                var5 = true;
             }
          }
@@ -447,7 +453,7 @@ public class NPCComposition extends CacheableNode {
             ModelData[] var6 = new ModelData[this.field3626.length];
 
             for(int var3 = 0; var3 < this.field3626.length; ++var3) {
-               var6[var3] = ModelData.method2510(field3614, this.field3626[var3], 0);
+               var6[var3] = ModelData.method2510(NpcDefinition_modelIndexCache, this.field3626[var3], 0);
             }
 
             ModelData var7;
@@ -484,7 +490,7 @@ public class NPCComposition extends CacheableNode {
    public final NPCComposition transform() {
       int var1 = -1;
       if(this.varpIndex != -1) {
-         var1 = Friend.method1109(this.varpIndex);
+         var1 = Friend.getVarbit(this.varpIndex);
       } else if(this.varp32Index != -1) {
          var1 = class218.widgetSettings[this.varp32Index];
       }
@@ -510,7 +516,7 @@ public class NPCComposition extends CacheableNode {
       } else {
          int var1 = -1;
          if(this.varpIndex != -1) {
-            var1 = Friend.method1109(this.varpIndex);
+            var1 = Friend.getVarbit(this.varpIndex);
          } else if(this.varp32Index != -1) {
             var1 = class218.widgetSettings[this.varp32Index];
          }

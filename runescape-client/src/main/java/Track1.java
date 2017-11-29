@@ -395,13 +395,13 @@ public class Track1 extends Node {
                      var12 = var8 >> 16 & 127;
                      if(var12 > 0) {
                         int var13 = var2[var10];
-                        class206 var14 = (class206)this.field2680.get((long)var13);
+                        ByteArrayNode var14 = (ByteArrayNode)this.field2680.get((long)var13);
                         if(var14 == null) {
-                           var14 = new class206(new byte[128]);
+                           var14 = new ByteArrayNode(new byte[128]);
                            this.field2680.put(var14, (long)var13);
                         }
 
-                        var14.field2579[var11] = 1;
+                        var14.byteArray[var11] = 1;
                      }
                   }
 

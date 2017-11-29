@@ -11,12 +11,14 @@ public class Enum extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lid;"
    )
-   public static IndexDataBase field3475;
+   @Export("EnumDefinition_indexCache")
+   public static IndexDataBase EnumDefinition_indexCache;
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "Lgx;"
    )
-   public static NodeCache field3466;
+   @Export("EnumDefinition_cached")
+   public static NodeCache EnumDefinition_cached;
    @ObfuscatedName("o")
    @Export("userHome")
    static String userHome;
@@ -52,7 +54,7 @@ public class Enum extends CacheableNode {
    public String[] stringVals;
 
    static {
-      field3466 = new NodeCache(64);
+      EnumDefinition_cached = new NodeCache(64);
    }
 
    public Enum() {
@@ -73,7 +75,7 @@ public class Enum extends CacheableNode {
             return;
          }
 
-         this.method4642(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -82,7 +84,8 @@ public class Enum extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "778882397"
    )
-   void method4642(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.keyType = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {

@@ -109,13 +109,13 @@ public class class226 implements class225 {
       signature = "(Ldn;I)V",
       garbageValue = "1526416258"
    )
-   static final void method4216(class118 var0) {
+   static final void method4216(TaskDataNode var0) {
       var0.field1635 = false;
       if(var0.field1634 != null) {
-         var0.field1634.field1666 = 0;
+         var0.field1634.int1 = 0;
       }
 
-      for(class118 var1 = var0.vmethod4054(); var1 != null; var1 = var0.vmethod4055()) {
+      for(TaskDataNode var1 = var0.vmethod4054(); var1 != null; var1 = var0.vmethod4055()) {
          method4216(var1);
       }
 

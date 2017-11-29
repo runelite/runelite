@@ -28,14 +28,16 @@ public abstract class BufferProvider {
       signature = "(III)V",
       garbageValue = "-1675289646"
    )
-   public abstract void vmethod5222(int var1, int var2);
+   @Export("drawFull")
+   public abstract void drawFull(int var1, int var2);
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
       garbageValue = "1986712912"
    )
-   public abstract void vmethod5225(int var1, int var2, int var3, int var4);
+   @Export("draw")
+   public abstract void draw(int var1, int var2, int var3, int var4);
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(

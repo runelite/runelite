@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hf")
-public class class211 extends class118 {
+public class class211 extends TaskDataNode {
    @ObfuscatedName("fm")
    @ObfuscatedGetter(
       intValue = -1934849199
@@ -154,11 +154,11 @@ public class class211 extends class118 {
          var6 = new int[]{var4};
       }
 
-      for(class206 var7 = (class206)var1.field2680.method3707(); var7 != null; var7 = (class206)var1.field2680.method3703()) {
+      for(ByteArrayNode var7 = (ByteArrayNode)var1.field2680.first(); var7 != null; var7 = (ByteArrayNode)var1.field2680.next()) {
          int var8 = (int)var7.hash;
          class214 var9 = (class214)this.field2602.get((long)var8);
          if(var9 == null) {
-            byte[] var11 = var2.method4271(var8);
+            byte[] var11 = var2.takeRecordFlat(var8);
             class214 var10;
             if(var11 == null) {
                var10 = null;
@@ -175,7 +175,7 @@ public class class211 extends class118 {
             this.field2602.put(var10, (long)var8);
          }
 
-         if(!var9.method4043(var3, var7.field2579, var6)) {
+         if(!var9.method4043(var3, var7.byteArray, var6)) {
             var5 = false;
          }
       }
@@ -193,7 +193,7 @@ public class class211 extends class118 {
       garbageValue = "92"
    )
    public synchronized void method3864() {
-      for(class214 var1 = (class214)this.field2602.method3707(); var1 != null; var1 = (class214)this.field2602.method3703()) {
+      for(class214 var1 = (class214)this.field2602.first(); var1 != null; var1 = (class214)this.field2602.next()) {
          var1.method4048();
       }
 
@@ -205,7 +205,7 @@ public class class211 extends class118 {
       garbageValue = "-881376199"
    )
    synchronized void method3907() {
-      for(class214 var1 = (class214)this.field2602.method3707(); var1 != null; var1 = (class214)this.field2602.method3703()) {
+      for(class214 var1 = (class214)this.field2602.first(); var1 != null; var1 = (class214)this.field2602.next()) {
          var1.unlink();
       }
 
@@ -215,7 +215,7 @@ public class class211 extends class118 {
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected synchronized class118 vmethod4054() {
+   protected synchronized TaskDataNode vmethod4054() {
       return this.field2626;
    }
 
@@ -223,7 +223,7 @@ public class class211 extends class118 {
    @ObfuscatedSignature(
       signature = "()Ldn;"
    )
-   protected synchronized class118 vmethod4055() {
+   protected synchronized TaskDataNode vmethod4055() {
       return null;
    }
 

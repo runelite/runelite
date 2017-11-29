@@ -32,7 +32,8 @@ public class World {
    @ObfuscatedSignature(
       signature = "Ljp;"
    )
-   static Font field1226;
+   @Export("fontBold12")
+   static Font fontBold12;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1384891259
@@ -151,9 +152,9 @@ public class World {
       var5.field1251 = (var6 + var1) * 128;
       var5.field1245 = (var7 + var2) * 128;
       var5.field1247 = var3.ambientSoundId;
-      var5.field1246 = var3.field3541 * 128;
-      var5.field1249 = var3.field3500;
-      var5.field1243 = var3.field3546;
+      var5.field1246 = var3.int4 * 128;
+      var5.field1249 = var3.int5;
+      var5.field1243 = var3.int6;
       var5.field1240 = var3.field3547;
       if(var3.impostorIds != null) {
          var5.field1254 = var3;

@@ -12,7 +12,8 @@ public class class45 extends class28 {
    @ObfuscatedSignature(
       signature = "Liv;"
    )
-   static IndexData field561;
+   @Export("indexCache3")
+   static IndexData indexCache3;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1665034583
@@ -145,8 +146,8 @@ public class class45 extends class28 {
       signature = "(I)[Lfp;",
       garbageValue = "1676443481"
    )
-   static class168[] method665() {
-      return new class168[]{class168.field2406, class168.field2401, class168.field2400, class168.field2402};
+   static LoginPacket[] method665() {
+      return new LoginPacket[]{LoginPacket.field2406, LoginPacket.field2401, LoginPacket.field2400, LoginPacket.field2402};
    }
 
    @ObfuscatedName("v")
@@ -154,7 +155,7 @@ public class class45 extends class28 {
       signature = "(I)[Lck;",
       garbageValue = "-16711936"
    )
-   static class90[] method664() {
-      return new class90[]{class90.field1338, class90.field1335, class90.field1337, class90.field1336};
+   static AttackOption[] method664() {
+      return new AttackOption[]{AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_dependsOnCombatLevels, AttackOption.AttackOption_hidden};
    }
 }

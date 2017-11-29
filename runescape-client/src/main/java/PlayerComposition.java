@@ -246,9 +246,10 @@ public class PlayerComposition {
       signature = "(Ljj;ILjj;IB)Leh;",
       garbageValue = "80"
    )
-   public Model method4131(Sequence var1, int var2, Sequence var3, int var4) {
+   @Export("getModel")
+   public Model getModel(Sequence var1, int var2, Sequence var3, int var4) {
       if(this.transformedNpcId != -1) {
-         return class1.getNpcDefinition(this.transformedNpcId).method4827(var1, var2, var3, var4);
+         return class1.getNpcDefinition(this.transformedNpcId).getModel(var1, var2, var3, var4);
       } else {
          long var5 = this.hash;
          int[] var7 = this.equipmentIds;

@@ -41,7 +41,7 @@ public class class64 {
       FileOnDisk var0 = null;
 
       try {
-         var0 = class46.getPreferencesFile("", class36.field483.field3276, true);
+         var0 = class46.getPreferencesFile("", class36.field483.name, true);
          Buffer var1 = RSCanvas.preferences.serialize();
          var0.write(var1.payload, 0, var1.offset);
       } catch (Exception var3) {
@@ -50,7 +50,7 @@ public class class64 {
 
       try {
          if(var0 != null) {
-            var0.method2467(true);
+            var0.closeSync(true);
          }
       } catch (Exception var2) {
          ;
@@ -89,7 +89,7 @@ public class class64 {
          int var2 = Client.field1113;
          class210.field2598 = 1;
          class3.field22 = var1;
-         class8.field237 = var0;
+         BoundingBox2D.field237 = var0;
          class210.field2599 = 0;
          class111.field1588 = var2;
          class20.field322 = false;

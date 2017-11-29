@@ -80,7 +80,7 @@ public class KitDefinition extends CacheableNode {
             return;
          }
 
-         this.method4524(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
@@ -89,7 +89,8 @@ public class KitDefinition extends CacheableNode {
       signature = "(Lfr;II)V",
       garbageValue = "660253400"
    )
-   void method4524(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.bodyPartId = var1.readUnsignedByte();
       } else {
@@ -142,7 +143,7 @@ public class KitDefinition extends CacheableNode {
          boolean var1 = true;
 
          for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
-            if(!field3418.method4322(this.modelIds[var2], 0)) {
+            if(!field3418.tryLoadRecord(this.modelIds[var2], 0)) {
                var1 = false;
             }
          }
@@ -200,7 +201,7 @@ public class KitDefinition extends CacheableNode {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.models[var2] != -1 && !field3418.method4322(this.models[var2], 0)) {
+         if(this.models[var2] != -1 && !field3418.tryLoadRecord(this.models[var2], 0)) {
             var1 = false;
          }
       }

@@ -31,9 +31,11 @@ public class Preferences {
    @Export("screenType")
    int screenType;
    @ObfuscatedName("m")
-   String field1234;
+   @Export("rememberedUsername")
+   String rememberedUsername;
    @ObfuscatedName("b")
-   boolean field1237;
+   @Export("hideUsername")
+   boolean hideUsername;
    @ObfuscatedName("t")
    @Export("preferences")
    LinkedHashMap preferences;
@@ -44,8 +46,8 @@ public class Preferences {
 
    Preferences() {
       this.screenType = 1;
-      this.field1234 = null;
-      this.field1237 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
       this.method1635(true);
    }
@@ -55,8 +57,8 @@ public class Preferences {
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
-      this.field1234 = null;
-      this.field1237 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
@@ -84,11 +86,11 @@ public class Preferences {
             }
 
             if(var2 > 4) {
-               this.field1234 = var1.getNullString();
+               this.rememberedUsername = var1.getNullString();
             }
 
             if(var2 > 5) {
-               this.field1237 = var1.method3303();
+               this.hideUsername = var1.method3303();
             }
          } else {
             this.method1635(true);
@@ -128,8 +130,8 @@ public class Preferences {
          var1.putInt(((Integer)var3.getValue()).intValue());
       }
 
-      var1.putString(this.field1234 != null?this.field1234:"");
-      var1.method3286(this.field1237);
+      var1.putString(this.rememberedUsername != null?this.rememberedUsername:"");
+      var1.writeBooleanAsByte(this.hideUsername);
       return var1;
    }
 

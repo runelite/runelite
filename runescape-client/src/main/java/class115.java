@@ -167,7 +167,7 @@ public class class115 {
       class295.offsetsY = new int[class295.field3849];
       class295.field3845 = new int[class295.field3849];
       class285.field3788 = new int[class295.field3849];
-      class15.spritePixels = new byte[class295.field3849][];
+      TotalQuantityComparator.spritePixels = new byte[class295.field3849][];
       var1.offset = var0.length - 7 - class295.field3849 * 8;
       class295.field3846 = var1.readUnsignedShort();
       class295.field3847 = var1.readUnsignedShort();
@@ -207,7 +207,7 @@ public class class115 {
          int var5 = class285.field3788[var3];
          int var6 = var4 * var5;
          byte[] var7 = new byte[var6];
-         class15.spritePixels[var3] = var7;
+         TotalQuantityComparator.spritePixels[var3] = var7;
          int var8 = var1.readUnsignedByte();
          int var9;
          if(var8 == 0) {

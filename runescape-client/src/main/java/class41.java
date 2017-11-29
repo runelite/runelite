@@ -84,9 +84,9 @@ public final class class41 {
          System.nanoTime();
          int var4 = var1.getFile(class40.field514.field517);
          int var5 = var1.getChild(var4, var2);
-         Buffer var6 = new Buffer(var1.method4284(class40.field514.field517, var2));
-         Buffer var7 = new Buffer(var1.method4284(class40.field515.field517, var2));
-         Buffer var8 = new Buffer(var1.method4284(var2, class40.field519.field517));
+         Buffer var6 = new Buffer(var1.takeRecordByNames(class40.field514.field517, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(class40.field515.field517, var2));
+         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, class40.field519.field517));
          System.nanoTime();
          System.nanoTime();
          this.field537 = new class44();
@@ -133,7 +133,7 @@ public final class class41 {
          System.nanoTime();
          System.nanoTime();
          if(var1.method4283(class40.field516.field517, var2)) {
-            byte[] var21 = var1.method4284(class40.field516.field517, var2);
+            byte[] var21 = var1.takeRecordByNames(class40.field516.field517, var2);
             this.field526 = FileOnDisk.method2479(var21);
          }
 
@@ -439,7 +439,8 @@ public final class class41 {
       signature = "(II)Ljc;",
       garbageValue = "-1484943201"
    )
-   public static Overlay method570(int var0) {
+   @Export("getOverlayDefinition")
+   public static Overlay getOverlayDefinition(int var0) {
       Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
       if(var1 != null) {
          return var1;

@@ -87,7 +87,8 @@ public final class Projectile extends Renderable {
    @Export("z")
    double z;
    @ObfuscatedName("j")
-   double field1392;
+   @Export("speedX")
+   double speedX;
    @ObfuscatedName("f")
    @Export("scalar")
    double scalar;
@@ -122,17 +123,19 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = -1103454887
    )
-   int field1400;
+   @Export("int7")
+   int int7;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -622916385
    )
-   int field1384;
+   @Export("int6")
+   int int6;
 
    Projectile(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
       this.isMoving = false;
-      this.field1400 = 0;
-      this.field1384 = 0;
+      this.int7 = 0;
+      this.int6 = 0;
       this.id = var1;
       this.floor = var2;
       this.x1 = var3;
@@ -147,7 +150,7 @@ public final class Projectile extends Renderable {
       this.isMoving = false;
       int var12 = class227.getSpotAnimType(this.id).field3393;
       if(var12 != -1) {
-         this.animationSequence = class13.getAnimation(var12);
+         this.animationSequence = GrandExchangeEvents.getAnimation(var12);
       } else {
          this.animationSequence = null;
       }
@@ -173,9 +176,9 @@ public final class Projectile extends Renderable {
       }
 
       var5 = (double)(this.cycle + 1 - var4);
-      this.field1392 = ((double)var1 - this.x) / var5;
+      this.speedX = ((double)var1 - this.x) / var5;
       this.scalar = ((double)var2 - this.velocityZ) / var5;
-      this.velocityY = Math.sqrt(this.scalar * this.scalar + this.field1392 * this.field1392);
+      this.velocityY = Math.sqrt(this.scalar * this.scalar + this.speedX * this.speedX);
       if(!this.isMoving) {
          this.velocityX = -this.velocityY * Math.tan(0.02454369D * (double)this.slope);
       }
@@ -188,32 +191,33 @@ public final class Projectile extends Renderable {
       signature = "(II)V",
       garbageValue = "457742455"
    )
-   final void method1817(int var1) {
+   @Export("update")
+   final void update(int var1) {
       this.isMoving = true;
-      this.x += (double)var1 * this.field1392;
+      this.x += (double)var1 * this.speedX;
       this.velocityZ += this.scalar * (double)var1;
       this.z += this.velocityX * (double)var1 + (double)var1 * 0.5D * this.heightOffset * (double)var1;
       this.velocityX += this.heightOffset * (double)var1;
-      this.rotationX = (int)(Math.atan2(this.field1392, this.scalar) * 325.949D) + 1024 & 2047;
+      this.rotationX = (int)(Math.atan2(this.speedX, this.scalar) * 325.949D) + 1024 & 2047;
       this.rotationY = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) & 2047;
       if(this.animationSequence != null) {
-         this.field1384 += var1;
+         this.int6 += var1;
 
          while(true) {
             do {
                do {
-                  if(this.field1384 <= this.animationSequence.frameLenghts[this.field1400]) {
+                  if(this.int6 <= this.animationSequence.frameLenghts[this.int7]) {
                      return;
                   }
 
-                  this.field1384 -= this.animationSequence.frameLenghts[this.field1400];
-                  ++this.field1400;
-               } while(this.field1400 < this.animationSequence.frameIDs.length);
+                  this.int6 -= this.animationSequence.frameLenghts[this.int7];
+                  ++this.int7;
+               } while(this.int7 < this.animationSequence.frameIDs.length);
 
-               this.field1400 -= this.animationSequence.frameStep;
-            } while(this.field1400 >= 0 && this.field1400 < this.animationSequence.frameIDs.length);
+               this.int7 -= this.animationSequence.frameStep;
+            } while(this.int7 >= 0 && this.int7 < this.animationSequence.frameIDs.length);
 
-            this.field1400 = 0;
+            this.int7 = 0;
          }
       }
    }
@@ -225,11 +229,11 @@ public final class Projectile extends Renderable {
    )
    protected final Model getModel() {
       Spotanim var1 = class227.getSpotAnimType(this.id);
-      Model var2 = var1.method4494(this.field1400);
+      Model var2 = var1.getModel(this.int7);
       if(var2 == null) {
          return null;
       } else {
-         var2.method2633(this.rotationY);
+         var2.rotateZ(this.rotationY);
          return var2;
       }
    }
@@ -239,7 +243,8 @@ public final class Projectile extends Renderable {
       signature = "(IIIILky;Lhl;I)V",
       garbageValue = "655580114"
    )
-   static final void method1825(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
+   @Export("worldToMinimap")
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
       int var6 = var3 * var3 + var2 * var2;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapAngle & 2047;

@@ -19,12 +19,14 @@ public final class HashTable {
    @ObfuscatedSignature(
       signature = "Lgf;"
    )
-   Node field2558;
+   @Export("currentGet")
+   Node currentGet;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "Lgf;"
    )
-   Node field2560;
+   @Export("current")
+   Node current;
    @ObfuscatedName("v")
    @Export("index")
    int index;
@@ -50,15 +52,15 @@ public final class HashTable {
    public Node get(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field2558 = var3.next; var3 != this.field2558; this.field2558 = this.field2558.next) {
-         if(this.field2558.hash == var1) {
-            Node var4 = this.field2558;
-            this.field2558 = this.field2558.next;
+      for(this.currentGet = var3.next; var3 != this.currentGet; this.currentGet = this.currentGet.next) {
+         if(this.currentGet.hash == var1) {
+            Node var4 = this.currentGet;
+            this.currentGet = this.currentGet.next;
             return var4;
          }
       }
 
-      this.field2558 = null;
+      this.currentGet = null;
       return null;
    }
 
@@ -81,7 +83,8 @@ public final class HashTable {
    }
 
    @ObfuscatedName("k")
-   void method3711() {
+   @Export("clear")
+   void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -95,28 +98,30 @@ public final class HashTable {
          }
       }
 
-      this.field2558 = null;
-      this.field2560 = null;
+      this.currentGet = null;
+      this.current = null;
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "()Lgf;"
    )
-   public Node method3707() {
+   @Export("first")
+   public Node first() {
       this.index = 0;
-      return this.method3703();
+      return this.next();
    }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "()Lgf;"
    )
-   public Node method3703() {
+   @Export("next")
+   public Node next() {
       Node var1;
-      if(this.index > 0 && this.buckets[this.index - 1] != this.field2560) {
-         var1 = this.field2560;
-         this.field2560 = var1.next;
+      if(this.index > 0 && this.buckets[this.index - 1] != this.current) {
+         var1 = this.current;
+         this.current = var1.next;
          return var1;
       } else {
          do {
@@ -127,7 +132,7 @@ public final class HashTable {
             var1 = this.buckets[this.index++].next;
          } while(var1 == this.buckets[this.index - 1]);
 
-         this.field2560 = var1.next;
+         this.current = var1.next;
          return var1;
       }
    }

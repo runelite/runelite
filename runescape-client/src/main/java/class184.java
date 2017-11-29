@@ -6,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("gb")
 public class class184 {
    @ObfuscatedName("v")
-   static Thread field2516;
+   @Export("IndexStoreActionHandler_thread")
+   static Thread IndexStoreActionHandler_thread;
    @ObfuscatedName("db")
    @ObfuscatedGetter(
       intValue = -712343249
@@ -21,7 +22,7 @@ public class class184 {
    )
    public static void method3551(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
       class261.field3498 = var0;
-      class2.field15 = var1;
+      IntegerToken.field15 = var1;
       class261.field3477 = var2;
    }
 
@@ -55,8 +56,8 @@ public class class184 {
                   }
                }
 
-               var0.method1817(Client.field992);
-               class14.region.method2808(class233.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+               var0.update(Client.field992);
+               GrandExchangeEvent.region.method2808(class233.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
             }
          } else {
             var0.unlink();

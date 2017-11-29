@@ -10,22 +10,26 @@ public class class156 {
    @ObfuscatedGetter(
       intValue = -91812097
    )
-   static int field2153;
+   @Export("idxCount")
+   static int idxCount;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Ldl;"
    )
-   public static CacheFile field2155;
+   @Export("randomDat")
+   public static CacheFile randomDat;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Ldl;"
    )
-   public static CacheFile field2157;
+   @Export("dat2File")
+   public static CacheFile dat2File;
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "Ldl;"
    )
-   public static CacheFile field2154;
+   @Export("idx255File")
+   public static CacheFile idx255File;
    @ObfuscatedName("ew")
    @ObfuscatedGetter(
       intValue = 1842846479
@@ -38,9 +42,9 @@ public class class156 {
    static int field2161;
 
    static {
-      field2155 = null;
-      field2157 = null;
-      field2154 = null;
+      randomDat = null;
+      dat2File = null;
+      idx255File = null;
    }
 
    @ObfuscatedName("d")
@@ -50,21 +54,21 @@ public class class156 {
    )
    @Export("sendConInfo")
    public static void sendConInfo(boolean var0) {
-      if(class245.field3327 != null) {
+      if(class245.NetCache_socket != null) {
          try {
             Buffer var1 = new Buffer(4);
             var1.putByte(var0?2:3);
             var1.put24bitInt(0);
-            class245.field3327.queueForWrite(var1.payload, 0, 4);
+            class245.NetCache_socket.queueForWrite(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
-               class245.field3327.close();
+               class245.NetCache_socket.close();
             } catch (Exception var3) {
                ;
             }
 
             ++class245.field3342;
-            class245.field3327 = null;
+            class245.NetCache_socket = null;
          }
 
       }
