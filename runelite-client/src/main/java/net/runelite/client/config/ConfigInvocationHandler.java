@@ -29,13 +29,11 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class ConfigInvocationHandler implements InvocationHandler
 {
-	private static final Logger logger = LoggerFactory.getLogger(ConfigInvocationHandler.class);
-
 	private final ConfigManager manager;
 
 	public ConfigInvocationHandler(ConfigManager manager)
@@ -53,13 +51,13 @@ class ConfigInvocationHandler implements InvocationHandler
 
 		if (group == null)
 		{
-			logger.warn("Configuration proxy class {} has no @ConfigGroup!", proxy.getClass());
+			log.warn("Configuration proxy class {} has no @ConfigGroup!", proxy.getClass());
 			return null;
 		}
 
 		if (item == null)
 		{
-			logger.warn("Configuration method {} has no @ConfigItem!", method);
+			log.warn("Configuration method {} has no @ConfigItem!", method);
 			return null;
 		}
 
@@ -85,7 +83,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			// objectValue automatically gets unboxed
 //			if (!objectValue.getClass().equals(returnType))
 //			{
-//				logger.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
+//				log.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
 //				return null;
 //			}
 

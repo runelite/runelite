@@ -53,6 +53,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
@@ -64,14 +65,11 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class RuneLite
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
-
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
@@ -116,7 +114,7 @@ public class RuneLite
 		}
 		catch (IOException ex)
 		{
-			logger.warn(null, ex);
+			log.warn(null, ex);
 		}
 	}
 
@@ -151,7 +149,7 @@ public class RuneLite
 			}
 			catch (UnsupportedLookAndFeelException ex)
 			{
-				logger.warn("unable to set look and feel", ex);
+				log.warn("unable to set look and feel", ex);
 			}
 
 			gui = new ClientUI(this);
@@ -212,7 +210,7 @@ public class RuneLite
 		}
 		catch (AWTException ex)
 		{
-			logger.debug("Unable to add system tray icon", ex);
+			log.debug("Unable to add system tray icon", ex);
 			return;
 		}
 
@@ -232,7 +230,7 @@ public class RuneLite
 	{
 		if (!SESSION_FILE.exists())
 		{
-			logger.info("No session file exists");
+			log.info("No session file exists");
 			return;
 		}
 
@@ -242,11 +240,11 @@ public class RuneLite
 		{
 			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
 
-			logger.debug("Loaded session for {}", session.getUsername());
+			log.debug("Loaded session for {}", session.getUsername());
 		}
 		catch (Exception ex)
 		{
-			logger.warn("Unable to load session file", ex);
+			log.warn("Unable to load session file", ex);
 			return;
 		}
 
@@ -254,7 +252,7 @@ public class RuneLite
 		AccountClient accountClient = new AccountClient(session.getUuid());
 		if (!accountClient.sesssionCheck())
 		{
-			logger.debug("Loaded session {} is invalid", session.getUuid());
+			log.debug("Loaded session {} is invalid", session.getUuid());
 			return;
 		}
 
@@ -272,11 +270,11 @@ public class RuneLite
 		{
 			new Gson().toJson(accountSession, fw);
 
-			logger.debug("Saved session to {}", SESSION_FILE);
+			log.debug("Saved session to {}", SESSION_FILE);
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to save session file", ex);
+			log.warn("Unable to save session file", ex);
 		}
 	}
 
@@ -330,7 +328,7 @@ public class RuneLite
 			return;
 		}
 
-		logger.debug("Logging out of account {}", accountSession.getUsername());
+		log.debug("Logging out of account {}", accountSession.getUsername());
 
 		accountSession = null; // No more account
 

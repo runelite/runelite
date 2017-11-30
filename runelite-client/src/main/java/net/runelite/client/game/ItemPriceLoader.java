@@ -30,17 +30,15 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.game.ItemManager.EMPTY;
 import static net.runelite.client.game.ItemManager.NONE;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 class ItemPriceLoader extends CacheLoader<Integer, ItemPrice>
 {
-	private static final Logger logger = LoggerFactory.getLogger(ItemPriceLoader.class);
-
 	private final ListeningExecutorService executorService;
 	private final ItemClient client;
 
@@ -60,7 +58,7 @@ class ItemPriceLoader extends CacheLoader<Integer, ItemPrice>
 	@Override
 	public ListenableFuture<ItemPrice> reload(Integer key, ItemPrice oldValue)
 	{
-		logger.debug("Submitting lookup for item {}", key);
+		log.debug("Submitting lookup for item {}", key);
 
 		return executorService.submit(() -> fetch(key));
 	}
@@ -78,7 +76,7 @@ class ItemPriceLoader extends CacheLoader<Integer, ItemPrice>
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to look up item!", ex);
+			log.warn("unable to look up item!", ex);
 			return NONE;
 		}
 	}

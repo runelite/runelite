@@ -30,31 +30,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
+@Slf4j
 public class InfoBoxManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(InfoBoxManager.class);
-
 	private final List<InfoBox> infoBoxes = new ArrayList<>();
 
 	public void addInfoBox(InfoBox infoBox)
 	{
-		logger.debug("Adding InfoBox {}", infoBox);
+		log.debug("Adding InfoBox {}", infoBox);
 		infoBoxes.add(infoBox);
 	}
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
-		logger.debug("Removing InfoBox {}", infoBox);
+		log.debug("Removing InfoBox {}", infoBox);
 		infoBoxes.remove(infoBox);
 	}
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
-		logger.debug("Removing InfoBoxs for filter {}", filter);
+		log.debug("Removing InfoBoxs for filter {}", filter);
 		infoBoxes.removeIf(filter);
 	}
 
@@ -71,7 +69,7 @@ public class InfoBoxManager
 
 			if (box.cull())
 			{
-				logger.debug("Culling InfoBox {}", box);
+				log.debug("Culling InfoBox {}", box);
 				it.remove();
 			}
 		}

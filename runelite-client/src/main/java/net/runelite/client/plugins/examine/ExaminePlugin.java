@@ -33,14 +33,13 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.examine.ExamineClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Submits exammine info to the api
@@ -50,10 +49,9 @@ import org.slf4j.LoggerFactory;
 @PluginDescriptor(
 	name = "Examine plugin"
 )
+@Slf4j
 public class ExaminePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ExaminePlugin.class);
-
 	private final ExamineClient client = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
@@ -117,7 +115,7 @@ public class ExaminePlugin extends Plugin
 
 		if (pending.isEmpty())
 		{
-			logger.debug("Got examine without a pending examine?");
+			log.debug("Got examine without a pending examine?");
 			return;
 		}
 
@@ -125,12 +123,12 @@ public class ExaminePlugin extends Plugin
 
 		if (pendingExamine.getType() != type)
 		{
-			logger.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
+			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
 			pending.clear(); // eh
 			return;
 		}
 
-		logger.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
+		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
 		Boolean cached = cache.getIfPresent(key);
@@ -165,7 +163,7 @@ public class ExaminePlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Error submitting examine", ex);
+			log.warn("Error submitting examine", ex);
 		}
 	}
 

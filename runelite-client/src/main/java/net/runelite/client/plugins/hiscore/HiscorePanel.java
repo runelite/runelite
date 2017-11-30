@@ -37,18 +37,16 @@ import javax.inject.Inject;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.*;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class HiscorePanel extends PluginPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(HiscorePanel.class);
-
 	private static final String SKILL_NAME = "SKILL_NAME";
 	private static final String SKILL = "SKILL";
 
@@ -326,7 +324,7 @@ public class HiscorePanel extends PluginPanel
 		label.putClientProperty(SKILL, skill);
 
 		String skillIcon = "skill_icons_small/" + skillName.toLowerCase() + ".png";
-		logger.debug("Loading skill icon from {}", skillIcon);
+		log.debug("Loading skill icon from {}", skillIcon);
 
 		try
 		{
@@ -334,7 +332,7 @@ public class HiscorePanel extends PluginPanel
 		}
 		catch (IOException ex)
 		{
-			logger.warn(null, ex);
+			log.warn(null, ex);
 		}
 
 		// Show skill details on click
@@ -377,13 +375,13 @@ public class HiscorePanel extends PluginPanel
 		try
 		{
 			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
-			logger.debug("Hiscore endpoint " + endpoint.name() + " selected");
+			log.debug("Hiscore endpoint " + endpoint.name() + " selected");
 
 			result = client.lookup(lookup, endpoint);
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Error fetching Hiscore data " + ex.getMessage());
+			log.warn("Error fetching Hiscore data " + ex.getMessage());
 			return;
 		}
 

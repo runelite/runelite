@@ -26,14 +26,12 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class SettingsTracker
 {
-	private static final Logger logger = LoggerFactory.getLogger(SettingsTracker.class);
-
 	private final Client client;
 
 	private int[] clientSettings;
@@ -51,7 +49,7 @@ public class SettingsTracker
 			clientSettings = copy(client.getSettings());
 			widgetSettings = copy(client.getWidgetSettings());
 
-			logger.info("Snapshotted client and widget settings");
+			log.info("Snapshotted client and widget settings");
 			return;
 		}
 
@@ -68,7 +66,7 @@ public class SettingsTracker
 				continue;
 			}
 
-			logger.info("Client setting index {} has changed from {} to {}: {} -> {}",
+			log.info("Client setting index {} has changed from {} to {}: {} -> {}",
 				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
 
@@ -82,7 +80,7 @@ public class SettingsTracker
 				continue;
 			}
 
-			logger.info("Widget setting index {} has changed from {} to {}: {} -> {}",
+			log.info("Widget setting index {} has changed from {} to {}: {} -> {}",
 				i, before, after, prettyPrintInt(before), prettyPrintInt(after));
 		}
 

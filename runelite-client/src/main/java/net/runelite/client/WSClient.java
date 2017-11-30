@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.ws.messages.Handshake;
@@ -42,13 +43,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class WSClient extends WebSocketListener implements AutoCloseable
 {
-	private static final Logger logger = LoggerFactory.getLogger(WSClient.class);
-
 	private static final Duration PING_TIME = Duration.ofSeconds(30);
 
 	private static final Gson gson = WebsocketGsonFactory.build();
@@ -96,7 +94,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	{
 		if (webSocket == null)
 		{
-			logger.debug("Reconnecting to server");
+			log.debug("Reconnecting to server");
 
 			connect();
 		}
@@ -104,7 +102,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		String json = gson.toJson(message, WebsocketMessage.class);
 		webSocket.send(json);
 
-		logger.debug("Sent: {}", json);
+		log.debug("Sent: {}", json);
 	}
 
 	@Override
@@ -124,14 +122,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onOpen(WebSocket webSocket, Response response)
 	{
-		logger.info("Websocket {} opened", webSocket);
+		log.info("Websocket {} opened", webSocket);
 	}
 
 	@Override
 	public void onMessage(WebSocket webSocket, String text)
 	{
 		WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
-		logger.debug("Got message: {}", message);
+		log.debug("Got message: {}", message);
 
 		eventBus.post(message);
 	}
@@ -139,14 +137,14 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onClosed(WebSocket webSocket, int code, String reason)
 	{
-		logger.info("Websocket {} closed: {}/{}", webSocket, code, reason);
+		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
 		this.webSocket = null;
 	}
 
 	@Override
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
-		logger.warn("Error in websocket", t);
+		log.warn("Error in websocket", t);
 		this.webSocket = null;
 	}
 }

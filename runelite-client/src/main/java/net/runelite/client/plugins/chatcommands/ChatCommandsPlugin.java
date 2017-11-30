@@ -37,6 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -59,16 +60,13 @@ import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Chat commands plugin"
 )
+@Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ChatCommandsPlugin.class);
-
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	private final String colKeyword = "<colRegular>";
@@ -183,14 +181,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (config.lvl() && message.toLowerCase().equals("!total"))
 		{
-			logger.debug("Running total level lookup");
+			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
 		}
 		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
-			logger.debug("Running price lookup for {}", search);
+			log.debug("Running price lookup for {}", search);
 
 			executor.submit(() -> lookup(setMessage.getType(), setMessage.getMessageNode(), search));
 		}
@@ -198,7 +196,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			String search = message.substring(5);
 
-			logger.debug("Running level lookup for {}", search);
+			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
 	}
@@ -220,7 +218,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to search for item {}", search, ex);
+			log.warn("Unable to search for item {}", search, ex);
 			return;
 		}
 
@@ -229,7 +227,7 @@ public class ChatCommandsPlugin extends Plugin
 			Item item = retrieveFromList(result.getItems(), search);
 			if (item == null)
 			{
-				logger.debug("Unable to find item {} in result {}", search, result);
+				log.debug("Unable to find item {} in result {}", search, result);
 				return;
 			}
 
@@ -242,7 +240,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException ex)
 			{
-				logger.warn("Unable to fetch item price for {}", itemId, ex);
+				log.warn("Unable to fetch item price for {}", itemId, ex);
 				return;
 			}
 
@@ -262,7 +260,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			String response = builder.toString();
 
-			logger.debug("Setting response {}", response);
+			log.debug("Setting response {}", response);
 
 			// XXX hopefully messageNode hasn't been reused yet?
 			messageNode.setRuneLiteFormatMessage(response);
@@ -321,7 +319,7 @@ public class ChatCommandsPlugin extends Plugin
 				.append(colKeywordHighLight).append(String.format("%,d", hiscoreSkill.getRank()))
 				.toString();
 
-			logger.debug("Setting response {}", response);
+			log.debug("Setting response {}", response);
 
 			// XXX hopefully messageNode hasn't been reused yet?
 			setMessage.getMessageNode().setRuneLiteFormatMessage(response);
@@ -330,7 +328,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to look up skill {} for {}", skill, search, ex);
+			log.warn("unable to look up skill {} for {}", skill, search, ex);
 		}
 	}
 

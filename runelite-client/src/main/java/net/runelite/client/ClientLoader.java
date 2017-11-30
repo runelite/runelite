@@ -28,13 +28,9 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ClientLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(ClientLoader.class);
-
 	public Applet loadRunelite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
 		ConfigLoader config = new ConfigLoader();

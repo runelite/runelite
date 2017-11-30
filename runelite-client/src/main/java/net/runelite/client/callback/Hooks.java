@@ -28,6 +28,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
@@ -43,13 +44,10 @@ import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class Hooks
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
-
 	private static final long CHECK = 600; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
@@ -79,7 +77,7 @@ public class Hooks
 		}
 		catch (Exception ex)
 		{
-			logger.warn("error during death check", ex);
+			log.warn("error during death check", ex);
 		}
 
 		// tick pending scheduled tasks
@@ -101,7 +99,7 @@ public class Hooks
 		}
 		catch (Exception ex)
 		{
-			logger.warn("Error during overlay rendering", ex);
+			log.warn("Error during overlay rendering", ex);
 		}
 	}
 
@@ -166,17 +164,17 @@ public class Hooks
 				break;
 			}
 			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
+				log.warn("Unknown event {} triggered on {}", name, object);
 				return;
 		}
 
 		if (object != null)
 		{
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
+			log.trace("Event {} (idx {}) triggered on {}", name, idx, object);
 		}
 		else
 		{
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+			log.trace("Event {} (idx {}) triggered", name, idx);
 		}
 	}
 
@@ -195,7 +193,7 @@ public class Hooks
 			menuAction -= 2000;
 		}
 
-		logger.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
+		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
 			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
@@ -210,9 +208,9 @@ public class Hooks
 
 	public static void addMenuEntry(String option, String target, int type, int identifier, int param0, int param1)
 	{
-		if (logger.isTraceEnabled())
+		if (log.isTraceEnabled())
 		{
-			logger.trace("Menu entry added {} {}", option, target);
+			log.trace("Menu entry added {} {}", option, target);
 		}
 
 		MenuEntryAdded menuEntry = new MenuEntryAdded(option, target, type, identifier, param0, param1);
@@ -222,9 +220,9 @@ public class Hooks
 
 	public static void addChatMessage(int type, String sender, String message, String clan)
 	{
-		if (logger.isDebugEnabled())
+		if (log.isDebugEnabled())
 		{
-			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
 		}
 
 		ChatMessageType chatMessageType = ChatMessageType.of(type);

@@ -41,19 +41,14 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
+import lombok.extern.slf4j.Slf4j;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-/**
- * Created by X on 8/20/2017.
- */
+@Slf4j
 public class TitleBarPane extends SubstanceTitlePane
 {
-	private static final Logger logger = LoggerFactory.getLogger(TitleBarPane.class);
-
 	private static final String DISCORD_INVITE = "https://discord.gg/R4BQ8tU";
 
 	private BufferedImage discordIcon;
@@ -70,7 +65,7 @@ public class TitleBarPane extends SubstanceTitlePane
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to load discord icons", ex);
+			log.warn("unable to load discord icons", ex);
 		}
 	}
 
@@ -111,7 +106,7 @@ public class TitleBarPane extends SubstanceTitlePane
 				}
 				catch (IOException | URISyntaxException ex)
 				{
-					logger.warn("error opening browser", ex);
+					log.warn("error opening browser", ex);
 				}
 			}
 		});

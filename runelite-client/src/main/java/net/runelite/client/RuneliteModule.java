@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneliteConfig;
@@ -40,13 +41,10 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class RuneliteModule extends AbstractModule
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteModule.class);
-
 	@Override
 	protected void configure()
 	{
@@ -87,6 +85,6 @@ public class RuneliteModule extends AbstractModule
 
 	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
 	{
-		logger.warn("uncaught exception in event subscriber", exception);
+		log.warn("uncaught exception in event subscriber", exception);
 	}
 }

@@ -40,19 +40,17 @@ import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.PluginPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class DevToolsPanel extends PluginPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(DevToolsPanel.class);
-
 	private final EmptyBorder PADDING_BORDER = new EmptyBorder(3, 3, 3, 3);
 
 	private JButton renderPlayersBtn = new JButton();
@@ -196,13 +194,13 @@ public class DevToolsPanel extends PluginPanel
 				plugin.currentWidget = widget;
 				plugin.itemIndex = widget.getItemId();
 				setWidgetInfo(widget);
-				logger.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
+				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
 			}
 			else if (selected instanceof WidgetItemNode)
 			{
 				WidgetItemNode node = (WidgetItemNode) selected;
 				plugin.itemIndex = node.getWidgetItem().getIndex();
-				logger.debug("Set item index to {}", plugin.itemIndex);
+				log.debug("Set item index to {}", plugin.itemIndex);
 			}
 		});
 

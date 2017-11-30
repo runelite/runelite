@@ -47,8 +47,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.Duration;
@@ -60,6 +58,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Prayer;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
@@ -67,9 +66,9 @@ import net.runelite.api.queries.NPCQuery;
 @PluginDescriptor(
 	name = "Volcanic mine helper"
 )
+@Slf4j
 public class VolcanicMinePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2400;
 	private static final int LAVA_ID = 30997;
@@ -220,7 +219,7 @@ public class VolcanicMinePlugin extends Plugin
 			}
 			catch (NumberFormatException ex)
 			{
-				logger.debug("Failed to retrieve stability percentage", ex);
+				log.debug("Failed to retrieve stability percentage", ex);
 			}
 		}
 		return false;
@@ -240,7 +239,7 @@ public class VolcanicMinePlugin extends Plugin
 			}
 			catch (NumberFormatException ex)
 			{
-				logger.debug("Failed to retrieve time left", ex);
+				log.debug("Failed to retrieve time left", ex);
 			}
 		}
 		return false;

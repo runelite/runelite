@@ -31,22 +31,20 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.events.MapRegionChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Xtea plugin"
 )
+@Slf4j
 public class XteaPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(XteaPlugin.class);
-
 	private final XteaClient xteaClient = new XteaClient();
 
 	private final Set<Integer> sentRegions = new HashSet<>();
@@ -75,7 +73,7 @@ public class XteaPlugin extends Plugin
 		int region = regions[idx];
 		int[] keys = xteaKeys[idx];
 
-		logger.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+		log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
 
 		// No need to ever send more than once
 		if (sentRegions.contains(region))
@@ -91,12 +89,12 @@ public class XteaPlugin extends Plugin
 			{
 				if (!response.isSuccessful())
 				{
-					logger.debug("unsuccessful xtea response");
+					log.debug("unsuccessful xtea response");
 				}
 			}
 			catch (IOException ex)
 			{
-				logger.debug("unable to submit xtea keys", ex);
+				log.debug("unable to submit xtea keys", ex);
 			}
 		});
 	}
