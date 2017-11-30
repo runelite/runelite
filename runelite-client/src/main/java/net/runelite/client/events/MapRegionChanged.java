@@ -24,19 +24,12 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+
+@Data
 public class MapRegionChanged
 {
 	/** index into the region map that is changing
 	 */
 	private int index;
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public void setIndex(int index)
-	{
-		this.index = index;
-	}
 }

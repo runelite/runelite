@@ -24,28 +24,11 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+
+@Data
 public class PlayerMenuOptionClicked
 {
 	private String menuOption;
 	private String menuTarget;
-
-	public String getMenuOption()
-	{
-		return menuOption;
-	}
-
-	public void setMenuOption(String menuOption)
-	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
 }

@@ -24,11 +24,14 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+
 /**
  * Event called once per tick.
  *
  * @author Adam
  */
+@Data
 public class GameTick
 {
 }

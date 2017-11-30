@@ -24,19 +24,11 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.GameState;
 
+@Data
 public class GameStateChanged
 {
 	private GameState gameState;
-
-	public void setGameState(GameState gameState)
-	{
-		this.gameState = gameState;
-	}
-
-	public GameState getGameState()
-	{
-		return gameState;
-	}
 }
