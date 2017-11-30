@@ -29,6 +29,7 @@ import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
@@ -137,8 +138,9 @@ public class Hooks
 			}
 			case "animationChanged":
 			{
+				Actor actor = (Actor) object;
 				AnimationChanged animationChange = new AnimationChanged();
-				animationChange.setObject(object);
+				animationChange.setActor(actor);
 				eventBus.post(animationChange);
 				break;
 			}
