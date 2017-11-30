@@ -1,167 +1,157 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cr")
 public class class91 {
-   @ObfuscatedName("d")
-   static boolean field1342;
-   @ObfuscatedName("x")
+   @ObfuscatedName("a")
+   static boolean field1347;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1439059239
+      intValue = 1917314035
    )
-   static int field1354;
+   static int field1351;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lkg;"
+   )
+   static IndexedSprite field1316;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lkl;"
+      signature = "Lkg;"
    )
-   static IndexedSprite field1341;
+   static IndexedSprite field1317;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lkl;"
+      signature = "Lks;"
    )
-   static IndexedSprite field1340;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lky;"
-   )
-   static SpritePixels field1347;
+   static SpritePixels field1315;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lkl;"
+      signature = "Lks;"
+   )
+   static SpritePixels field1319;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lkg;"
    )
    @Export("logoSprite")
    static IndexedSprite logoSprite;
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Lkl;"
+      signature = "Lkg;"
    )
-   @Export("titlemuteSprite")
-   static IndexedSprite[] titlemuteSprite;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Ljp;"
-   )
-   public static Font field1376;
-   @ObfuscatedName("s")
+   static IndexedSprite field1333;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 402536235
+      intValue = 1407958579
    )
    @Export("loginWindowX")
    static int loginWindowX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
+   static int[] field1324;
+   @ObfuscatedName("d")
+   static int[] field1325;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1958487055
+      intValue = -702979315
    )
-   static int field1348;
-   @ObfuscatedName("h")
-   static int[] field1349;
-   @ObfuscatedName("g")
-   static int[] field1350;
-   @ObfuscatedName("a")
+   static int field1323;
+   @ObfuscatedName("ab")
    @ObfuscatedGetter(
-      intValue = -1532878877
+      intValue = -1437060853
    )
-   static int field1351;
-   @ObfuscatedName("ah")
+   static int field1327;
+   @ObfuscatedName("aq")
    @ObfuscatedGetter(
-      intValue = -2101089275
+      intValue = 274164483
    )
-   static int field1352;
-   @ObfuscatedName("au")
+   static int field1321;
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = 244487979
+      intValue = 151721363
    )
-   static int field1353;
-   @ObfuscatedName("al")
+   static int field1350;
+   @ObfuscatedName("at")
    @ObfuscatedGetter(
-      intValue = 721223423
+      intValue = 1392249157
    )
-   static int field1343;
-   @ObfuscatedName("ae")
+   static int field1330;
+   @ObfuscatedName("ap")
    @ObfuscatedGetter(
-      intValue = 1029271361
+      intValue = -709614887
    )
-   static int field1368;
-   @ObfuscatedName("aj")
+   static int field1342;
+   @ObfuscatedName("an")
    @ObfuscatedGetter(
-      intValue = 1784025909
-   )
-   static int field1370;
-   @ObfuscatedName("as")
-   @ObfuscatedGetter(
-      intValue = -2129166079
+      intValue = -233909077
    )
    @Export("loadingBarPercentage")
    static int loadingBarPercentage;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ac")
    @Export("loadingText")
    static String loadingText;
-   @ObfuscatedName("ag")
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = 1924581473
+      intValue = 773237997
    )
    @Export("loginIndex")
    static int loginIndex;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("al")
    @Export("Login_response0")
    static String Login_response0;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("ay")
    @Export("loginMessage1")
    static String loginMessage1;
-   @ObfuscatedName("ad")
+   @ObfuscatedName("ai")
    @Export("loginMessage2")
    static String loginMessage2;
-   @ObfuscatedName("an")
+   @ObfuscatedName("af")
    @Export("loginMessage3")
    static String loginMessage3;
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ah")
    @Export("username")
    static String username;
-   @ObfuscatedName("ay")
+   @ObfuscatedName("az")
    @Export("password")
    static String password;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("av")
    @Export("Login_isUsernameRemembered")
    static boolean Login_isUsernameRemembered;
-   @ObfuscatedName("at")
-   static boolean field1364;
-   @ObfuscatedName("bj")
-   static boolean field1360;
-   @ObfuscatedName("bk")
-   static boolean field1369;
-   @ObfuscatedName("bv")
-   @ObfuscatedGetter(
-      intValue = -1484943201
-   )
-   static int field1339;
+   @ObfuscatedName("au")
+   static boolean field1331;
+   @ObfuscatedName("bb")
+   static boolean field1318;
    @ObfuscatedName("bn")
+   static boolean field1346;
+   @ObfuscatedName("bg")
+   @ObfuscatedGetter(
+      intValue = 1352053935
+   )
+   static int field1345;
+   @ObfuscatedName("bw")
    @Export("worldSelectShown")
    static boolean worldSelectShown;
-   @ObfuscatedName("bf")
+   @ObfuscatedName("bm")
    @ObfuscatedGetter(
-      intValue = -1478066013
+      intValue = -233833601
    )
-   static int field1374;
-   @ObfuscatedName("jh")
-   @ObfuscatedGetter(
-      intValue = 618653029
-   )
-   @Export("menuHeight")
-   static int menuHeight;
+   static int field1326;
+   @ObfuscatedName("fn")
+   @Export("landMapFileIds")
+   static int[] landMapFileIds;
 
    static {
-      field1354 = 0;
-      loginWindowX = field1354 + 202;
-      field1349 = new int[256];
       field1351 = 0;
-      field1352 = 0;
-      field1353 = 0;
-      field1343 = 0;
-      field1368 = 0;
-      field1370 = 0;
+      loginWindowX = field1351 + 202;
+      field1324 = new int[256];
+      field1323 = 0;
+      field1327 = 0;
+      field1321 = 0;
+      field1350 = 0;
+      field1330 = 0;
+      field1342 = 0;
       loadingBarPercentage = 10;
       loadingText = "";
       loginIndex = 0;
@@ -172,186 +162,49 @@ public class class91 {
       username = "";
       password = "";
       Login_isUsernameRemembered = false;
-      field1364 = false;
-      field1360 = false;
-      field1369 = true;
-      field1339 = 0;
+      field1331 = false;
+      field1318 = false;
+      field1346 = true;
+      field1345 = 0;
       worldSelectShown = false;
-      field1374 = -1;
+      field1326 = -1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "509207788"
+      signature = "([Lgs;IB)Lgs;",
+      garbageValue = "9"
    )
-   public static int method1813(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
+   @Export("forOrdinal")
+   public static Enumerated forOrdinal(Enumerated[] var0, int var1) {
+      Enumerated[] var2 = var0;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         Enumerated var4 = var2[var3];
+         if(var1 == var4.rsOrdinal()) {
+            return var4;
+         }
+      }
+
+      return null;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "-33"
+      signature = "(S)I",
+      garbageValue = "24186"
    )
-   static String method1812() {
-      String var0 = "";
-
-      MessageNode var2;
-      for(Iterator var1 = class96.messages.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
-      }
-
-      return var0;
+   static int method1694() {
+      return 11;
    }
 
-   @ObfuscatedName("ha")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "461775036"
+      signature = "(Lib;S)V",
+      garbageValue = "-3502"
    )
-   static final void method1814(int var0, int var1, int var2, int var3, int var4) {
-      int var5 = GrandExchangeEvent.region.method2823(var0, var1, var2);
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var11;
-      int var12;
-      if(var5 != 0) {
-         var6 = GrandExchangeEvent.region.getObjectFlags(var0, var1, var2, var5);
-         var7 = var6 >> 6 & 3;
-         var8 = var6 & 31;
-         var9 = var3;
-         if(var5 > 0) {
-            var9 = var4;
-         }
-
-         int[] var10 = class1.field12.pixels;
-         var11 = var1 * 4 + (103 - var2) * 2048 + 24624;
-         var12 = var5 >> 14 & 32767;
-         ObjectComposition var13 = class3.getObjectDefinition(var12);
-         if(var13.mapSceneId != -1) {
-            IndexedSprite var14 = class228.mapscene[var13.mapSceneId];
-            if(var14 != null) {
-               int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
-               int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method5245(var1 * 4 + var15 + 48, (104 - var2 - var13.sizeY) * 4 + var16 + 48);
-            }
-         } else {
-            if(var8 == 0 || var8 == 2) {
-               if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
-               } else if(var7 == 1) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[var11 + 3] = var9;
-               } else if(var7 == 2) {
-                  var10[var11 + 3] = var9;
-                  var10[var11 + 512 + 3] = var9;
-                  var10[var11 + 1024 + 3] = var9;
-                  var10[var11 + 1536 + 3] = var9;
-               } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[var11 + 1536 + 2] = var9;
-                  var10[var11 + 1536 + 3] = var9;
-               }
-            }
-
-            if(var8 == 3) {
-               if(var7 == 0) {
-                  var10[var11] = var9;
-               } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
-               } else if(var7 == 2) {
-                  var10[var11 + 1536 + 3] = var9;
-               } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-               }
-            }
-
-            if(var8 == 2) {
-               if(var7 == 3) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
-               } else if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[var11 + 3] = var9;
-               } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
-                  var10[var11 + 512 + 3] = var9;
-                  var10[var11 + 1024 + 3] = var9;
-                  var10[var11 + 1536 + 3] = var9;
-               } else if(var7 == 2) {
-                  var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[var11 + 1536 + 2] = var9;
-                  var10[var11 + 1536 + 3] = var9;
-               }
-            }
-         }
-      }
-
-      var5 = GrandExchangeEvent.region.method2825(var0, var1, var2);
-      if(var5 != 0) {
-         var6 = GrandExchangeEvent.region.getObjectFlags(var0, var1, var2, var5);
-         var7 = var6 >> 6 & 3;
-         var8 = var6 & 31;
-         var9 = var5 >> 14 & 32767;
-         ObjectComposition var23 = class3.getObjectDefinition(var9);
-         int var18;
-         if(var23.mapSceneId != -1) {
-            IndexedSprite var17 = class228.mapscene[var23.mapSceneId];
-            if(var17 != null) {
-               var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
-               var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method5245(var12 + var1 * 4 + 48, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
-            }
-         } else if(var8 == 9) {
-            var11 = 15658734;
-            if(var5 > 0) {
-               var11 = 15597568;
-            }
-
-            int[] var22 = class1.field12.pixels;
-            var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
-            if(var7 != 0 && var7 != 2) {
-               var22[var18] = var11;
-               var22[var18 + 1 + 512] = var11;
-               var22[var18 + 1024 + 2] = var11;
-               var22[var18 + 1536 + 3] = var11;
-            } else {
-               var22[var18 + 1536] = var11;
-               var22[var18 + 1 + 1024] = var11;
-               var22[var18 + 512 + 2] = var11;
-               var22[var18 + 3] = var11;
-            }
-         }
-      }
-
-      var5 = GrandExchangeEvent.region.method2826(var0, var1, var2);
-      if(var5 != 0) {
-         var6 = var5 >> 14 & 32767;
-         ObjectComposition var19 = class3.getObjectDefinition(var6);
-         if(var19.mapSceneId != -1) {
-            IndexedSprite var20 = class228.mapscene[var19.mapSceneId];
-            if(var20 != null) {
-               var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
-               int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method5245(var9 + var1 * 4 + 48, (104 - var2 - var19.sizeY) * 4 + var21 + 48);
-            }
-         }
-      }
-
+   public static void method1719(IndexDataBase var0) {
+      VarPlayerType.varplayer_ref = var0;
+      Frames.field2028 = VarPlayerType.varplayer_ref.fileCount(16);
    }
 }

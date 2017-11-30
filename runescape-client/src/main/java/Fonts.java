@@ -7,44 +7,39 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ju")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("r")
+   @ObfuscatedName("cm")
    @ObfuscatedSignature(
-      signature = "Lkl;"
+      signature = "Liu;"
    )
-   static IndexedSprite field3694;
-   @ObfuscatedName("be")
+   @Export("configsIndex")
+   static IndexData configsIndex;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lbt;"
+      signature = "Lib;"
    )
-   @Export("mouseRecorder")
-   static MouseRecorder mouseRecorder;
-   @ObfuscatedName("d")
+   IndexDataBase field3703;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lib;"
    )
-   IndexDataBase field3695;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lid;"
-   )
-   IndexDataBase field3693;
-   @ObfuscatedName("k")
+   IndexDataBase field3701;
+   @ObfuscatedName("e")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Lid;Lid;)V"
+      signature = "(Lib;Lib;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3695 = var1;
-      this.field3693 = var2;
+      this.field3703 = var1;
+      this.field3701 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([Ljk;I)Ljava/util/HashMap;",
-      garbageValue = "149882621"
+      signature = "([Ljl;I)Ljava/util/HashMap;",
+      garbageValue = "1016658752"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -56,7 +51,7 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            Font var6 = Actor.method1576(this.field3695, this.field3693, var5.field3689, "");
+            Font var6 = class280.method5002(this.field3703, this.field3701, var5.field3695, "");
             if(var6 != null) {
                this.map.put(var5, var6);
                var2.put(var5, var6);

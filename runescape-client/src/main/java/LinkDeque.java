@@ -2,67 +2,67 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gk")
+@ObfuscatedName("gv")
 @Implements("LinkDeque")
 public class LinkDeque {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgc;"
    )
-   Link field2570;
-   @ObfuscatedName("x")
+   Link field2596;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgc;"
    )
-   Link field2571;
+   Link field2595;
 
    public LinkDeque() {
-      this.field2570 = new Link();
-      this.field2570.field2572 = this.field2570;
-      this.field2570.field2573 = this.field2570;
+      this.field2596 = new Link();
+      this.field2596.field2598 = this.field2596;
+      this.field2596.field2597 = this.field2596;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lga;)V"
+      signature = "(Lgc;)V"
    )
-   public void method3787(Link var1) {
-      if(var1.field2573 != null) {
+   public void method3790(Link var1) {
+      if(var1.field2597 != null) {
          var1.remove();
       }
 
-      var1.field2573 = this.field2570.field2573;
-      var1.field2572 = this.field2570;
-      var1.field2573.field2572 = var1;
-      var1.field2572.field2573 = var1;
+      var1.field2597 = this.field2596.field2597;
+      var1.field2598 = this.field2596;
+      var1.field2597.field2598 = var1;
+      var1.field2598.field2597 = var1;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "()Lga;"
+      signature = "()Lgc;"
    )
-   public Link method3788() {
-      Link var1 = this.field2570.field2572;
-      if(var1 == this.field2570) {
-         this.field2571 = null;
+   public Link method3791() {
+      Link var1 = this.field2596.field2598;
+      if(var1 == this.field2596) {
+         this.field2595 = null;
          return null;
       } else {
-         this.field2571 = var1.field2572;
+         this.field2595 = var1.field2598;
          return var1;
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "()Lga;"
+      signature = "()Lgc;"
    )
-   public Link method3798() {
-      Link var1 = this.field2571;
-      if(var1 == this.field2570) {
-         this.field2571 = null;
+   public Link method3794() {
+      Link var1 = this.field2595;
+      if(var1 == this.field2596) {
+         this.field2595 = null;
          return null;
       } else {
-         this.field2571 = var1.field2572;
+         this.field2595 = var1.field2598;
          return var1;
       }
    }

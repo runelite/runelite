@@ -4,85 +4,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kz")
 @Implements("JagexLoginType")
 public class JagexLoginType {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   public static final JagexLoginType field3916;
-   @ObfuscatedName("x")
+   public static final JagexLoginType field3931;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   static final JagexLoginType field3907;
+   static final JagexLoginType field3937;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lkz;"
+   )
+   static final JagexLoginType field3930;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   static final JagexLoginType field3909;
+   static final JagexLoginType field3936;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lkz;"
+   )
+   static final JagexLoginType field3932;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   static final JagexLoginType field3910;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lku;"
-   )
-   static final JagexLoginType field3911;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lku;"
-   )
-   static final JagexLoginType field3912;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lku;"
-   )
-   static final JagexLoginType field3913;
+   static final JagexLoginType field3933;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   static final JagexLoginType field3908;
-   @ObfuscatedName("p")
+   static final JagexLoginType field3934;
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lku;"
+      signature = "Lkz;"
    )
-   public static final JagexLoginType field3915;
-   @ObfuscatedName("r")
+   static final JagexLoginType field3935;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lkz;"
+   )
+   public static final JagexLoginType field3929;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 443107057
+      intValue = -484759017
    )
-   public final int field3917;
-   @ObfuscatedName("l")
+   public final int field3928;
+   @ObfuscatedName("x")
    @Export("identifier")
    final String identifier;
 
    static {
-      field3916 = new JagexLoginType(7, 0, "", "");
-      field3907 = new JagexLoginType(8, 1, "", "");
-      field3909 = new JagexLoginType(0, 2, "", "");
-      field3910 = new JagexLoginType(5, 3, "", "");
-      field3911 = new JagexLoginType(1, 4, "", "");
-      field3912 = new JagexLoginType(3, 5, "", "");
-      field3913 = new JagexLoginType(6, 6, "", "");
-      field3908 = new JagexLoginType(4, 7, "", "");
-      field3915 = new JagexLoginType(2, -1, "", "", true, new JagexLoginType[]{field3916, field3907, field3909, field3911, field3910});
+      field3931 = new JagexLoginType(3, 0, "", "");
+      field3937 = new JagexLoginType(5, 1, "", "");
+      field3930 = new JagexLoginType(4, 2, "", "");
+      field3936 = new JagexLoginType(8, 3, "", "");
+      field3932 = new JagexLoginType(6, 4, "", "");
+      field3933 = new JagexLoginType(2, 5, "", "");
+      field3934 = new JagexLoginType(0, 6, "", "");
+      field3935 = new JagexLoginType(1, 7, "", "");
+      field3929 = new JagexLoginType(7, -1, "", "", true, new JagexLoginType[]{field3931, field3937, field3930, field3932, field3936});
    }
 
    JagexLoginType(int var1, int var2, String var3, String var4) {
-      this.field3917 = var1;
+      this.field3928 = var1;
       this.identifier = var4;
    }
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lku;)V"
+      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lkz;)V"
    )
    JagexLoginType(int var1, int var2, String var3, String var4, boolean var5, JagexLoginType[] var6) {
-      this.field3917 = var1;
+      this.field3928 = var1;
       this.identifier = var4;
    }
 

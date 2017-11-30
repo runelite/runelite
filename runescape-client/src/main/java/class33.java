@@ -1,122 +1,80 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("at")
 public class class33 {
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Ldc;"
-   )
-   @Export("task")
-   static SoundTask task;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   static IndexedSprite field446;
-   @ObfuscatedName("fz")
-   @ObfuscatedSignature(
-      signature = "[Lky;"
-   )
-   @Export("headIconsHint")
-   static SpritePixels[] headIconsHint;
-   @ObfuscatedName("d")
-   String field442;
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -783482665
+      intValue = 1971008797
    )
-   int field441;
+   static int field438;
+   @ObfuscatedName("a")
+   String field432;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 947183577
+   )
+   int field436;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 170760601
+   )
+   int field434;
    @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 369279265
-   )
-   int field445;
-   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lg;"
+      signature = "Lv;"
    )
-   Size field443;
+   Size field433;
 
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IILg;)V"
+      signature = "(Ljava/lang/String;IILv;)V"
    )
    class33(String var1, int var2, int var3, Size var4) {
-      this.field442 = var1;
-      this.field441 = var2;
-      this.field445 = var3;
-      this.field443 = var4;
+      this.field432 = var1;
+      this.field436 = var2;
+      this.field434 = var3;
+      this.field433 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lid;Lid;IZB)Lej;",
-      garbageValue = "-92"
+      signature = "(Lib;B)V",
+      garbageValue = "-52"
    )
-   public static Frames method359(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
-      boolean var4 = true;
-      int[] var5 = var0.getChilds(var2);
+   public static void method345(IndexDataBase var0) {
+      InvType.field3371 = var0;
+   }
 
-      for(int var6 = 0; var6 < var5.length; ++var6) {
-         byte[] var7 = var0.getChild(var2, var5[var6]);
-         if(var7 == null) {
-            var4 = false;
-         } else {
-            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-            byte[] var9;
-            if(var3) {
-               var9 = var1.getChild(0, var8);
-            } else {
-               var9 = var1.getChild(var8, 0);
-            }
+   @ObfuscatedName("im")
+   @ObfuscatedSignature(
+      signature = "(Lhz;I)V",
+      garbageValue = "1404042129"
+   )
+   static void method344(Widget var0) {
+      if(var0.loopCycle == Client.field1032) {
+         Client.field1033[var0.boundsIndex] = true;
+      }
 
-            if(var9 == null) {
-               var4 = false;
+   }
+
+   @ObfuscatedName("in")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-1541313867"
+   )
+   static final void method343(int var0) {
+      if(GraphicsObject.loadWidget(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
+
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(var3 != null) {
+               var3.field2881 = 0;
+               var3.field2892 = 0;
             }
          }
+
       }
-
-      if(!var4) {
-         return null;
-      } else {
-         try {
-            return new Frames(var0, var1, var2, var3);
-         } catch (Exception var11) {
-            return null;
-         }
-      }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-495685061"
-   )
-   public static int method360(int var0, int var1) {
-      int var2;
-      if(var1 > var0) {
-         var2 = var0;
-         var0 = var1;
-         var1 = var2;
-      }
-
-      while(var1 != 0) {
-         var2 = var0 % var1;
-         var0 = var1;
-         var1 = var2;
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Z",
-      garbageValue = "-320206495"
-   )
-   static boolean method358(String var0, int var1) {
-      return ClanMember.method1188(var0, var1, "openjs");
    }
 }

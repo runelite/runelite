@@ -1,4 +1,5 @@
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,21 +11,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("ee")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   static IndexedSprite field2098;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @Export("requests")
    Queue requests;
 
@@ -35,10 +31,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;B)Lew;",
-      garbageValue = "0"
+      signature = "(Ljava/net/URL;I)Lep;",
+      garbageValue = "-531735453"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -50,10 +46,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-374239776"
+      garbageValue = "-960428971"
    )
    @Export("close")
    public void close() {
@@ -118,63 +114,143 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            Item.method1829((String)null, var17);
+            PendingSpawn.method1461((String)null, var17);
          }
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILce;ZI)I",
-      garbageValue = "-1191471062"
+      signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
+      garbageValue = "-37177235"
    )
-   static int method3021(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class54.field636:class82.field1265;
-      if(var0 == 1500) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 1501) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 1502) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.width;
-         return 1;
-      } else if(var0 == 1503) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.height;
-         return 1;
-      } else if(var0 == 1504) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 1505) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3.parentId;
-         return 1;
+   public static void method2917(String var0, String var1, int var2, int var3) throws IOException {
+      class157.idxCount = var3;
+      AbstractByteBuffer.field2534 = var2;
+
+      try {
+         GrandExchangeOffer.osName = System.getProperty("os.name");
+      } catch (Exception var13) {
+         GrandExchangeOffer.osName = "Unknown";
+      }
+
+      class157.osNameLC = GrandExchangeOffer.osName.toLowerCase();
+
+      try {
+         class1.userHome = System.getProperty("user.home");
+         if(class1.userHome != null) {
+            class1.userHome = class1.userHome + "/";
+         }
+      } catch (Exception var12) {
+         ;
+      }
+
+      try {
+         if(class157.osNameLC.startsWith("win")) {
+            if(class1.userHome == null) {
+               class1.userHome = System.getenv("USERPROFILE");
+            }
+         } else if(class1.userHome == null) {
+            class1.userHome = System.getenv("HOME");
+         }
+
+         if(class1.userHome != null) {
+            class1.userHome = class1.userHome + "/";
+         }
+      } catch (Exception var11) {
+         ;
+      }
+
+      if(class1.userHome == null) {
+         class1.userHome = "~/";
+      }
+
+      class115.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", class1.userHome, "/tmp/", ""};
+      GrandExchangeOffer.field298 = new String[]{".jagex_cache_" + AbstractByteBuffer.field2534, ".file_store_" + AbstractByteBuffer.field2534};
+      int var4 = 0;
+
+      label95:
+      while(var4 < 4) {
+         class157.field2138 = RunException.method2970(var0, var1, var4);
+         if(!class157.field2138.exists()) {
+            class157.field2138.mkdirs();
+         }
+
+         File[] var5 = class157.field2138.listFiles();
+         if(var5 == null) {
+            break;
+         }
+
+         File[] var6 = var5;
+         int var7 = 0;
+
+         while(true) {
+            if(var7 >= var6.length) {
+               break label95;
+            }
+
+            File var8 = var6[var7];
+            if(!AbstractSoundSystem.method2055(var8, false)) {
+               ++var4;
+               break;
+            }
+
+            ++var7;
+         }
+      }
+
+      File var9 = class157.field2138;
+      class160.field2148 = var9;
+      if(!class160.field2148.exists()) {
+         throw new RuntimeException("");
       } else {
-         return 2;
+         class160.field2150 = true;
+         Tile.method2505();
+         class157.dat2File = new CacheFile(new FileOnDisk(MessageNode.method1071("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
+         class157.idx255File = new CacheFile(new FileOnDisk(MessageNode.method1071("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
+         class157.idxFiles = new CacheFile[class157.idxCount];
+
+         for(int var10 = 0; var10 < class157.idxCount; ++var10) {
+            class157.idxFiles[var10] = new CacheFile(new FileOnDisk(MessageNode.method1071("main_file_cache.idx" + var10), "rw", 1048576L), 6000, 0);
+         }
+
       }
    }
 
-   @ObfuscatedName("gy")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-455156470"
+      signature = "(IIIII)V",
+      garbageValue = "1415109720"
    )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = KeyFocusListener.font_p12full.method4928(var0, 250);
-      int var6 = KeyFocusListener.font_p12full.method4929(var0, 250) * 13;
-      Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 16777215);
-      KeyFocusListener.font_p12full.method4935(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class44.method636(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6);
-      if(var1) {
-         class86.rasterProvider.drawFull(0, 0);
-      } else {
-         DState.method3276(var3, var4, var5, var6);
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new ItemContainer();
+         ItemContainer.itemContainers.put(var4, (long)var0);
       }
 
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
    }
 }

@@ -7,31 +7,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("fs")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("javaVendor")
    public static String javaVendor;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @Export("javaVersion")
    public static String javaVersion;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Lev;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Lev;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @Export("closed")
    boolean closed;
 
@@ -56,10 +56,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
+      signature = "(I)V",
+      garbageValue = "1741333792"
    )
    @Export("join")
    public final void join() {
@@ -76,10 +76,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIILjava/lang/Object;S)Lex;",
-      garbageValue = "160"
+      signature = "(IIILjava/lang/Object;B)Lev;",
+      garbageValue = "0"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -100,20 +100,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lex;",
-      garbageValue = "-920775595"
+      signature = "(Ljava/lang/String;II)Lev;",
+      garbageValue = "890876211"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Lex;",
-      garbageValue = "698636424"
+      signature = "(Ljava/lang/Runnable;II)Lev;",
+      garbageValue = "-1055137233"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -169,44 +169,37 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IZI)Ljava/lang/String;",
-      garbageValue = "1674888667"
+      signature = "(Lib;Ljava/lang/String;Ljava/lang/String;I)[Lkg;",
+      garbageValue = "1496701495"
    )
-   public static String method3068(int var0, boolean var1) {
-      if(var1 && var0 >= 0) {
-         int var3 = var0;
-         String var2;
-         if(var1 && var0 >= 0) {
-            int var4 = 2;
+   @Export("getIndexedSprites")
+   public static IndexedSprite[] getIndexedSprites(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      IndexedSprite[] var5;
+      if(!Parameters.method5029(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         IndexedSprite[] var7 = new IndexedSprite[class299.field3866];
 
-            for(int var5 = var0 / 10; var5 != 0; ++var4) {
-               var5 /= 10;
-            }
-
-            char[] var6 = new char[var4];
-            var6[0] = '+';
-
-            for(int var7 = var4 - 1; var7 > 0; --var7) {
-               int var8 = var3;
-               var3 /= 10;
-               int var9 = var8 - var3 * 10;
-               if(var9 >= 10) {
-                  var6[var7] = (char)(var9 + 87);
-               } else {
-                  var6[var7] = (char)(var9 + 48);
-               }
-            }
-
-            var2 = new String(var6);
-         } else {
-            var2 = Integer.toString(var0, 10);
+         for(int var8 = 0; var8 < class299.field3866; ++var8) {
+            IndexedSprite var9 = var7[var8] = new IndexedSprite();
+            var9.width = class299.field3864;
+            var9.originalHeight = class299.field3868;
+            var9.offsetX = class299.field3867[var8];
+            var9.offsetY = class299.offsetsY[var8];
+            var9.originalWidth = Item.field1387[var8];
+            var9.height = class276.field3727[var8];
+            var9.palette = FaceNormal.field2025;
+            var9.pixels = Bounds.spritePixels[var8];
          }
 
-         return var2;
-      } else {
-         return Integer.toString(var0);
+         ContextMenuRow.method1663();
+         var5 = var7;
       }
+
+      return var5;
    }
 }

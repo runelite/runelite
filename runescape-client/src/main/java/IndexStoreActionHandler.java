@@ -4,41 +4,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("id")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgl;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
-   static Deque IndexStoreActionHandler_requestQueue;
-   @ObfuscatedName("x")
+   public static Deque IndexStoreActionHandler_requestQueue;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgl;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
-   static Deque IndexStoreActionHandler_responseQueue;
+   public static Deque IndexStoreActionHandler_responseQueue;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -745457897
+   )
+   public static int field3328;
    @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1650854241
-   )
-   static int field3308;
-   @ObfuscatedName("z")
    @Export("IndexStoreActionHandler_lock")
-   static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1005389043
-   )
-   static int field3310;
-   @ObfuscatedName("n")
-   public static boolean field3311;
+   public static Object IndexStoreActionHandler_lock;
+   @ObfuscatedName("u")
+   @Export("IndexStoreActionHandler_thread")
+   static Thread IndexStoreActionHandler_thread;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
       IndexStoreActionHandler_responseQueue = new Deque();
-      field3308 = 0;
+      field3328 = 0;
       IndexStoreActionHandler_lock = new Object();
    }
 
@@ -54,13 +50,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var14;
             if(var1 != null) {
                if(var1.type == 0) {
-                  var1.index.write((int)var1.hash, var1.field3280, var1.field3280.length);
+                  var1.index.write((int)var1.hash, var1.field3299, var1.field3299.length);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var1.unlink();
                   }
                } else if(var1.type == 1) {
-                  var1.field3280 = var1.index.read((int)var1.hash);
+                  var1.field3299 = var1.index.read((int)var1.hash);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFront(var1);
@@ -69,39 +65,49 @@ public class IndexStoreActionHandler implements Runnable {
 
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3308 <= 1) {
-                     field3308 = 0;
+                  if(field3328 <= 1) {
+                     field3328 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  field3308 = 600;
+                  field3328 = 600;
                }
             } else {
-               BaseVarType.method12(100L);
+               World.method1500(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3308 <= 1) {
-                     field3308 = 0;
+                  if(field3328 <= 1) {
+                     field3328 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  --field3308;
+                  --field3328;
                }
             }
          }
       } catch (Exception var13) {
-         Item.method1829((String)null, var13);
+         PendingSpawn.method1461((String)null, var13);
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "99"
+      signature = "(II)Lku;",
+      garbageValue = "1368333271"
    )
-   public static boolean method4358(int var0) {
-      return (var0 >> 20 & 1) != 0;
+   public static class289 method4353(int var0) {
+      class289[] var1 = new class289[]{class289.field3806, class289.field3807, class289.field3808};
+      class289[] var2 = var1;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class289 var4 = var2[var3];
+         if(var0 == var4.field3809) {
+            return var4;
+         }
+      }
+
+      return null;
    }
 }

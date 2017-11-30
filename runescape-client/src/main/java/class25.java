@@ -1,282 +1,177 @@
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Random;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
+@ObfuscatedName("p")
 public class class25 {
-   @ObfuscatedName("oa")
+   @ObfuscatedName("s")
+   static boolean field347;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 686377759
+      intValue = -1385110915
    )
-   static int field350;
-   @ObfuscatedName("p")
+   int field346;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lhc;"
    )
-   public static IndexDataBase field348;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1157793573
-   )
-   int field351;
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lhp;"
-   )
-   Coordinates field349;
+   Coordinates field345;
 
    @ObfuscatedSignature(
-      signature = "(ILhp;)V"
+      signature = "(ILhc;)V"
    )
    class25(int var1, Coordinates var2) {
-      this.field351 = var1;
-      this.field349 = var2;
+      this.field346 = var1;
+      this.field345 = var2;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)[Lfo;",
-      garbageValue = "1027124895"
+      signature = "([BILjava/lang/CharSequence;B)I",
+      garbageValue = "-62"
    )
-   public static class169[] method187() {
-      return new class169[]{class169.field2409, class169.field2415, class169.field2410, class169.field2411, class169.field2408, class169.field2413, class169.field2414, class169.field2412, class169.field2416, class169.field2417};
-   }
+   public static int method180(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1798765715"
-   )
-   static void method188() {
-      class91.username = class91.username.trim();
-      if(class91.username.length() == 0) {
-         NPC.method1749("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-      } else {
-         long var1;
-         try {
-            URL var3 = new URL(ScriptState.method1090("services", false) + "m=accountappeal/login.ws");
-            URLConnection var4 = var3.openConnection();
-            var4.setRequestProperty("connection", "close");
-            var4.setDoInput(true);
-            var4.setDoOutput(true);
-            var4.setConnectTimeout(5000);
-            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-            var5.write("data1=req");
-            var5.flush();
-            InputStream var6 = var4.getInputStream();
-            Buffer var7 = new Buffer(new byte[1000]);
-
-            while(true) {
-               int var8 = var6.read(var7.payload, var7.offset, 1000 - var7.offset);
-               if(var8 == -1) {
-                  var7.offset = 0;
-                  long var22 = var7.readLong();
-                  var1 = var22;
-                  break;
-               }
-
-               var7.offset += var8;
-               if(var7.offset >= 1000) {
-                  var1 = 0L;
-                  break;
-               }
-            }
-         } catch (Exception var31) {
-            var1 = 0L;
-         }
-
-         byte var0;
-         if(0L == var1) {
-            var0 = 5;
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & '?');
          } else {
-            String var32 = class91.username;
-            Random var33 = new Random();
-            Buffer var26 = new Buffer(128);
-            Buffer var9 = new Buffer(128);
-            int[] var10 = new int[]{var33.nextInt(), var33.nextInt(), (int)(var1 >> 32), (int)var1};
-            var26.putByte(10);
+            var0[var4++] = (byte)(224 | var6 >> '\f');
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & '?');
+         }
+      }
 
-            int var11;
-            for(var11 = 0; var11 < 4; ++var11) {
-               var26.putInt(var33.nextInt());
-            }
+      return var4 - var1;
+   }
 
-            var26.putInt(var10[0]);
-            var26.putInt(var10[1]);
-            var26.putLong(var1);
-            var26.putLong(0L);
-
-            for(var11 = 0; var11 < 4; ++var11) {
-               var26.putInt(var33.nextInt());
-            }
-
-            var26.encryptRsa(class86.field1298, class86.field1301);
-            var9.putByte(10);
-
-            for(var11 = 0; var11 < 3; ++var11) {
-               var9.putInt(var33.nextInt());
-            }
-
-            var9.putLong(var33.nextLong());
-            var9.method3284(var33.nextLong());
-            AttackOption.method1776(var9);
-            var9.putLong(var33.nextLong());
-            var9.encryptRsa(class86.field1298, class86.field1301);
-            var11 = AbstractSoundSystem.getLength(var32);
-            if(var11 % 8 != 0) {
-               var11 += 8 - var11 % 8;
-            }
-
-            Buffer var12 = new Buffer(var11);
-            var12.putString(var32);
-            var12.offset = var11;
-            var12.encryptXtea2(var10);
-            Buffer var13 = new Buffer(var12.offset + var26.offset + var9.offset + 5);
-            var13.putByte(2);
-            var13.putByte(var26.offset);
-            var13.putBytes(var26.payload, 0, var26.offset);
-            var13.putByte(var9.offset);
-            var13.putBytes(var9.payload, 0, var9.offset);
-            var13.putShort(var12.offset);
-            var13.putBytes(var12.payload, 0, var12.offset);
-            String var14 = class274.method5048(var13.payload);
-
-            byte var28;
-            try {
-               URL var15 = new URL(ScriptState.method1090("services", false) + "m=accountappeal/login.ws");
-               URLConnection var16 = var15.openConnection();
-               var16.setDoInput(true);
-               var16.setDoOutput(true);
-               var16.setConnectTimeout(5000);
-               OutputStreamWriter var17 = new OutputStreamWriter(var16.getOutputStream());
-               var17.write("data2=" + ChatLineBuffer.method1918(var14) + "&dest=" + ChatLineBuffer.method1918("passwordchoice.ws"));
-               var17.flush();
-               InputStream var18 = var16.getInputStream();
-               var13 = new Buffer(new byte[1000]);
-
-               while(true) {
-                  int var19 = var18.read(var13.payload, var13.offset, 1000 - var13.offset);
-                  if(var19 == -1) {
-                     var17.close();
-                     var18.close();
-                     String var27 = new String(var13.payload);
-                     if(var27.startsWith("OFFLINE")) {
-                        var28 = 4;
-                     } else if(var27.startsWith("WRONG")) {
-                        var28 = 7;
-                     } else if(var27.startsWith("RELOAD")) {
-                        var28 = 3;
-                     } else if(var27.startsWith("Not permitted for social network accounts.")) {
-                        var28 = 6;
-                     } else {
-                        var13.decryptXtea(var10);
-
-                        while(var13.offset > 0 && var13.payload[var13.offset - 1] == 0) {
-                           --var13.offset;
-                        }
-
-                        var27 = new String(var13.payload, 0, var13.offset);
-                        boolean var20;
-                        if(var27 == null) {
-                           var20 = false;
-                        } else {
-                           label105: {
-                              try {
-                                 new URL(var27);
-                              } catch (MalformedURLException var29) {
-                                 var20 = false;
-                                 break label105;
-                              }
-
-                              var20 = true;
-                           }
-                        }
-
-                        if(var20) {
-                           MessageNode.method1132(var27, true, false);
-                           var28 = 2;
-                        } else {
-                           var28 = 5;
-                        }
-                     }
-                     break;
-                  }
-
-                  var13.offset += var19;
-                  if(var13.offset >= 1000) {
-                     var28 = 5;
-                     break;
-                  }
-               }
-            } catch (Throwable var30) {
-               var30.printStackTrace();
-               var28 = 5;
-            }
-
-            var0 = var28;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IS)Liv;",
+      garbageValue = "732"
+   )
+   public static VarPlayerType method182(int var0) {
+      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = VarPlayerType.varplayer_ref.getConfigData(16, var0);
+         var1 = new VarPlayerType();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
 
-         switch(var0) {
-         case 2:
-            NPC.method1749("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class91.loginIndex = 6;
-            break;
-         case 3:
-            NPC.method1749("", "Error connecting to server.", "");
-            break;
-         case 4:
-            NPC.method1749("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-            break;
-         case 5:
-            NPC.method1749("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-            break;
-         case 6:
-            NPC.method1749("", "Error connecting to server.", "");
-            break;
-         case 7:
-            NPC.method1749("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
-         }
-
+         VarPlayerType.varplayers.put(var1, (long)var0);
+         return var1;
       }
    }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lcf;I)V",
-      garbageValue = "-1497933033"
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-2066023452"
    )
-   public static final void method191(TaskDataProvider var0) {
-      class3.soundTaskDataProvider = var0;
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      class28.addChatMessage(var0, var1, var2, (String)null);
    }
 
-   @ObfuscatedName("fz")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "48"
+      signature = "(Lbe;I)V",
+      garbageValue = "692716377"
    )
-   static final void method190() {
-      if(FileOnDisk.soundSystem1 != null) {
-         FileOnDisk.soundSystem1.method2095();
-      }
+   static void method179(GameEngine var0) {
+      if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) {
+         int var1 = class91.field1351 + 280;
+         if(MouseInput.mouseLastPressedX >= var1 && MouseInput.mouseLastPressedX <= var1 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(0, 0);
+            return;
+         }
 
-      if(class3.soundSystem0 != null) {
-         class3.soundSystem0.method2095();
+         if(MouseInput.mouseLastPressedX >= var1 + 15 && MouseInput.mouseLastPressedX <= var1 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(0, 1);
+            return;
+         }
+
+         int var2 = class91.field1351 + 390;
+         if(MouseInput.mouseLastPressedX >= var2 && MouseInput.mouseLastPressedX <= var2 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(1, 0);
+            return;
+         }
+
+         if(MouseInput.mouseLastPressedX >= var2 + 15 && MouseInput.mouseLastPressedX <= var2 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(1, 1);
+            return;
+         }
+
+         int var3 = class91.field1351 + 500;
+         if(MouseInput.mouseLastPressedX >= var3 && MouseInput.mouseLastPressedX <= var3 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(2, 0);
+            return;
+         }
+
+         if(MouseInput.mouseLastPressedX >= var3 + 15 && MouseInput.mouseLastPressedX <= var3 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(2, 1);
+            return;
+         }
+
+         int var4 = class91.field1351 + 610;
+         if(MouseInput.mouseLastPressedX >= var4 && MouseInput.mouseLastPressedX <= var4 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(3, 0);
+            return;
+         }
+
+         if(MouseInput.mouseLastPressedX >= var4 + 15 && MouseInput.mouseLastPressedX <= var4 + 80 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
+            WorldMapType2.method526(3, 1);
+            return;
+         }
+
+         if(MouseInput.mouseLastPressedX >= class91.field1351 + 708 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedX <= class91.field1351 + 708 + 50 && MouseInput.mouseLastPressedY <= 20) {
+            class91.worldSelectShown = false;
+            class91.field1315.method5203(class91.field1351, 0);
+            class91.field1319.method5203(class91.field1351 + 382, 0);
+            class91.logoSprite.method5176(class91.field1351 + 382 - class91.logoSprite.originalWidth / 2, 18);
+            return;
+         }
+
+         if(class91.field1326 != -1) {
+            World var5 = ItemContainer.worldList[class91.field1326];
+            Size.method176(var5);
+            class91.worldSelectShown = false;
+            class91.field1315.method5203(class91.field1351, 0);
+            class91.field1319.method5203(class91.field1351 + 382, 0);
+            class91.logoSprite.method5176(class91.field1351 + 382 - class91.logoSprite.originalWidth / 2, 18);
+            return;
+         }
       }
 
    }
 
-   @ObfuscatedName("ii")
+   @ObfuscatedName("hv")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-2083442145"
+      signature = "(I)V",
+      garbageValue = "-2021289068"
    )
-   static boolean method189(int var0) {
-      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   static void method181() {
+      if(Client.spellSelected) {
+         Widget var0 = TextureProvider.getWidgetChild(JagexGame.field3297, Client.field984);
+         if(var0 != null && var0.field2797 != null) {
+            ScriptEvent var1 = new ScriptEvent();
+            var1.widget = var0;
+            var1.objs = var0.field2797;
+            CacheFile.method2350(var1);
+         }
+
+         Client.spellSelected = false;
+         class33.method344(var0);
+      }
    }
 }

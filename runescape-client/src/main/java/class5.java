@@ -1,158 +1,343 @@
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import javax.imageio.ImageIO;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("z")
 final class class5 implements class0 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1601924960"
+      signature = "(Lib;Lib;ZII)V",
+      garbageValue = "1650327181"
    )
-   public static void method20() {
-      FloorUnderlayDefinition.underlays.reset();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(ILce;ZB)I",
-      garbageValue = "-122"
-   )
-   static int method19(int var0, Script var1, boolean var2) {
-      int var3;
-      int var4;
-      if(var0 == 4000) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var4 + var3;
-         return 1;
-      } else if(var0 == 4001) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 - var4;
-         return 1;
-      } else if(var0 == 4002) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 * var4;
-         return 1;
-      } else if(var0 == 4003) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 / var4;
-         return 1;
-      } else if(var0 == 4004) {
-         var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)(Math.random() * (double)var3);
-         return 1;
-      } else if(var0 == 4005) {
-         var3 = class82.intStack[--GrandExchangeEvents.intStackSize];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)(Math.random() * (double)(var3 + 1));
-         return 1;
-      } else if(var0 == 4006) {
-         GrandExchangeEvents.intStackSize -= 5;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         int var5 = class82.intStack[GrandExchangeEvents.intStackSize + 2];
-         int var6 = class82.intStack[GrandExchangeEvents.intStackSize + 3];
-         int var7 = class82.intStack[GrandExchangeEvents.intStackSize + 4];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 + (var4 - var3) * (var7 - var5) / (var6 - var5);
-         return 1;
-      } else if(var0 == 4007) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 + var4 * var3 / 100;
-         return 1;
-      } else if(var0 == 4008) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 | 1 << var4;
-         return 1;
-      } else if(var0 == 4009) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 & -1 - (1 << var4);
-         return 1;
-      } else if(var0 == 4010) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (var3 & 1 << var4) != 0?1:0;
-         return 1;
-      } else if(var0 == 4011) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 % var4;
-         return 1;
-      } else if(var0 == 4012) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         if(var3 == 0) {
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
-         } else {
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)Math.pow((double)var3, (double)var4);
+   static void method14(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
+      if(class91.field1347) {
+         if(var3 == 4) {
+            class91.loginIndex = 4;
          }
 
-         return 1;
-      } else if(var0 == 4013) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         if(var3 == 0) {
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = 0;
-            return 1;
-         } else {
-            switch(var4) {
-            case 0:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Integer.MAX_VALUE;
-               break;
-            case 1:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3;
-               break;
-            case 2:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)Math.sqrt((double)var3);
-               break;
-            case 3:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)Math.cbrt((double)var3);
-               break;
-            case 4:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)Math.sqrt(Math.sqrt((double)var3));
-               break;
-            default:
-               class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)Math.pow((double)var3, 1.0D / (double)var4);
+      } else {
+         class91.loginIndex = var3;
+         Rasterizer2D.reset();
+         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
+         BufferedImage var6 = null;
+
+         SpritePixels var5;
+         int var7;
+         int var8;
+         label158: {
+            try {
+               var6 = ImageIO.read(new ByteArrayInputStream(var4));
+               var7 = var6.getWidth();
+               var8 = var6.getHeight();
+               int[] var9 = new int[var7 * var8];
+               PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
+               var10.grabPixels();
+               var5 = new SpritePixels(var9, var7, var8);
+               break label158;
+            } catch (IOException var13) {
+               ;
+            } catch (InterruptedException var14) {
+               ;
             }
 
-            return 1;
+            var5 = new SpritePixels(0, 0);
          }
-      } else if(var0 == 4014) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 & var4;
-         return 1;
-      } else if(var0 == 4015) {
-         GrandExchangeEvents.intStackSize -= 2;
-         var3 = class82.intStack[GrandExchangeEvents.intStackSize];
-         var4 = class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = var3 | var4;
-         return 1;
-      } else if(var0 == 4018) {
-         GrandExchangeEvents.intStackSize -= 3;
-         long var9 = (long)class82.intStack[GrandExchangeEvents.intStackSize];
-         long var11 = (long)class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         long var13 = (long)class82.intStack[GrandExchangeEvents.intStackSize + 2];
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = (int)(var13 * var9 / var11);
-         return 1;
-      } else {
-         return 2;
+
+         class91.field1315 = var5;
+         class91.field1319 = class91.field1315.method5277();
+         if((Client.flags & 536870912) != 0) {
+            class91.logoSprite = class279.getSprite(var1, "logo_deadman_mode", "");
+         } else {
+            class91.logoSprite = class279.getSprite(var1, "logo", "");
+         }
+
+         class91.field1316 = class279.getSprite(var1, "titlebox", "");
+         class91.field1317 = class279.getSprite(var1, "titlebutton", "");
+         class234.runeSprites = Signlink.getIndexedSprites(var1, "runes", "");
+         class278.titlemuteSprite = Signlink.getIndexedSprites(var1, "title_mute", "");
+         CombatInfoListHolder.field1267 = class279.getSprite(var1, "options_radio_buttons,0", "");
+         class234.field2945 = class279.getSprite(var1, "options_radio_buttons,4", "");
+         class91.field1333 = class279.getSprite(var1, "options_radio_buttons,2", "");
+         WorldMapType2.field492 = class279.getSprite(var1, "options_radio_buttons,6", "");
+         MouseInput.field683 = CombatInfoListHolder.field1267.originalWidth;
+         BoundingBox.field239 = CombatInfoListHolder.field1267.height;
+         class218.field2696 = new int[256];
+
+         int var11;
+         for(var11 = 0; var11 < 64; ++var11) {
+            class218.field2696[var11] = var11 * 262144;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class218.field2696[var11 + 64] = var11 * 1024 + 16711680;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class218.field2696[var11 + 128] = var11 * 4 + 16776960;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class218.field2696[var11 + 192] = 16777215;
+         }
+
+         class91.field1325 = new int[256];
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class91.field1325[var11] = var11 * 1024;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class91.field1325[var11 + 64] = var11 * 4 + 65280;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class91.field1325[var11 + 128] = var11 * 262144 + 65535;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class91.field1325[var11 + 192] = 16777215;
+         }
+
+         class2.field11 = new int[256];
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class2.field11[var11] = var11 * 4;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class2.field11[var11 + 64] = var11 * 262144 + 255;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class2.field11[var11 + 128] = var11 * 1024 + 16711935;
+         }
+
+         for(var11 = 0; var11 < 64; ++var11) {
+            class2.field11[var11 + 192] = 16777215;
+         }
+
+         Item.field1386 = new int[256];
+         class36.field478 = new int['耀'];
+         class186.field2532 = new int['耀'];
+         CombatInfoListHolder.method1623((IndexedSprite)null);
+         class89.field1302 = new int['耀'];
+         BoundingBox.field238 = new int['耀'];
+         if(var2) {
+            class91.username = "";
+            class91.password = "";
+         }
+
+         BoundingBox.field240 = 0;
+         class237.field3245 = "";
+         class91.field1346 = true;
+         class91.worldSelectShown = false;
+         if(!class2.preferences.muted) {
+            IndexData var15 = class29.indexTrack1;
+            var7 = var15.getFile("scape main");
+            var8 = var15.getChild(var7, "");
+            CollisionData.method3152(2, var15, var7, var8, 255, false);
+         } else {
+            class214.field2620 = 1;
+            class214.field2623 = null;
+            class61.field692 = -1;
+            class282.field3754 = -1;
+            class214.field2625 = 0;
+            IndexFile.field2181 = false;
+            Timer.field2159 = 2;
+         }
+
+         class27.sendConInfo(false);
+         class91.field1347 = true;
+         class91.field1351 = (Huffman.canvasWidth - 765) / 2;
+         class91.loginWindowX = class91.field1351 + 202;
+         Preferences.field1217 = class91.loginWindowX + 180;
+         class91.field1315.method5203(class91.field1351, 0);
+         class91.field1319.method5203(class91.field1351 + 382, 0);
+         class91.logoSprite.method5176(class91.field1351 + 382 - class91.logoSprite.originalWidth / 2, 18);
       }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "1860937356"
+   )
+   static String method15() {
+      String var0 = "";
+
+      MessageNode var2;
+      for(Iterator var1 = class96.messages.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
+         var2 = (MessageNode)var1.next();
+      }
+
+      return var0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "330163320"
+   )
+   static void method13() {
+      class91.username = class91.username.trim();
+      if(class91.username.length() == 0) {
+         class64.method1033("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      } else {
+         long var1 = class44.method620();
+         int var0;
+         if(0L == var1) {
+            var0 = 5;
+         } else {
+            var0 = FontName.method4872(var1, class91.username);
+         }
+
+         switch(var0) {
+         case 2:
+            class64.method1033("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class91.loginIndex = 6;
+            break;
+         case 3:
+            class64.method1033("", "Error connecting to server.", "");
+            break;
+         case 4:
+            class64.method1033("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            class64.method1033("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            class64.method1033("", "Error connecting to server.", "");
+            break;
+         case 7:
+            class64.method1033("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
+      }
+   }
+
+   @ObfuscatedName("ew")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1957292188"
+   )
+   static final void method16() {
+      Overlay.overlays.reset();
+      AttackOption.method1669();
+      class250.method4401();
+      WorldMapType3.method209();
+      NPCComposition.npcs.reset();
+      NPCComposition.npcModelCache.reset();
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+      class139.method2870();
+      class21.method155();
+      Varbit.varbits.reset();
+      VarPlayerType.varplayers.reset();
+      class265.field3499.reset();
+      class265.field3489.reset();
+      class265.field3491.reset();
+      CombatInfo2.field3443.reset();
+      CombatInfo2.spriteCache.reset();
+      class263.field3472.reset();
+      class262.field3464.reset();
+      Area.areaSpriteCache.reset();
+      PacketBuffer.method3578();
+      PacketBuffer.method3546();
+      ((TextureProvider)Graphics3D.textureLoader).reset();
+      Script.field1431.reset();
+      BoundingBox.indexInterfaces.reset();
+      FrameMap.indexSoundEffects.reset();
+      MouseInput.indexCache3.reset();
+      class86.indexCache4.reset();
+      class22.indexMaps.reset();
+      class29.indexTrack1.reset();
+      class37.indexModels.reset();
+      class43.indexSprites.reset();
+      class3.indexTextures.reset();
+      class36.indexCache10.reset();
+      class20.indexTrack2.reset();
+      class161.indexScripts.reset();
+   }
+
+   @ObfuscatedName("gq")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-42201957"
+   )
+   static final void method17() {
+      PacketBuffer var0 = Client.field888.packetBuffer;
+      var0.bitAccess();
+      int var1 = var0.getBits(8);
+      int var2;
+      if(var1 < Client.npcIndexesCount) {
+         for(var2 = var1; var2 < Client.npcIndexesCount; ++var2) {
+            Client.field951[++Client.field967 - 1] = Client.npcIndices[var2];
+         }
+      }
+
+      if(var1 > Client.npcIndexesCount) {
+         throw new RuntimeException("");
+      } else {
+         Client.npcIndexesCount = 0;
+
+         for(var2 = 0; var2 < var1; ++var2) {
+            int var3 = Client.npcIndices[var2];
+            NPC var4 = Client.cachedNPCs[var3];
+            int var5 = var0.getBits(1);
+            if(var5 == 0) {
+               Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
+               var4.npcCycle = Client.gameCycle;
+            } else {
+               int var6 = var0.getBits(2);
+               if(var6 == 0) {
+                  Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
+                  var4.npcCycle = Client.gameCycle;
+                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
+               } else {
+                  int var7;
+                  int var8;
+                  if(var6 == 1) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
+                     var4.npcCycle = Client.gameCycle;
+                     var7 = var0.getBits(3);
+                     var4.method1640(var7, (byte)1);
+                     var8 = var0.getBits(1);
+                     if(var8 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
+                     }
+                  } else if(var6 == 2) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
+                     var4.npcCycle = Client.gameCycle;
+                     var7 = var0.getBits(3);
+                     var4.method1640(var7, (byte)2);
+                     var8 = var0.getBits(3);
+                     var4.method1640(var8, (byte)2);
+                     int var9 = var0.getBits(1);
+                     if(var9 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
+                     }
+                  } else if(var6 == 3) {
+                     Client.field951[++Client.field967 - 1] = var3;
+                  }
+               }
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("hm")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-1187732732"
+   )
+   static String method18(int var0) {
+      return var0 < 0?"":(Client.menuTargets[var0].length() > 0?Client.menuOptions[var0] + " " + Client.menuTargets[var0]:Client.menuOptions[var0]);
    }
 }

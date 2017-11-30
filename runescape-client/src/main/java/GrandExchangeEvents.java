@@ -8,48 +8,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("n")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
-   @ObfuscatedName("x")
-   public static Comparator field266;
-   @ObfuscatedName("k")
-   public static Comparator field271;
-   @ObfuscatedName("z")
-   public static Comparator field264;
-   @ObfuscatedName("v")
-   public static Comparator field263;
-   @ObfuscatedName("t")
+   @ObfuscatedName("po")
    @ObfuscatedGetter(
-      intValue = -495685061
+      intValue = 397313793
    )
-   @Export("intStackSize")
-   static int intStackSize;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "Lkl;"
-   )
-   static IndexedSprite field269;
-   @ObfuscatedName("es")
-   @ObfuscatedSignature(
-      signature = "Ljp;"
-   )
-   @Export("fontPlain11")
-   static Font fontPlain11;
-   @ObfuscatedName("d")
+   static int field273;
+   @ObfuscatedName("w")
+   public static Comparator field268;
+   @ObfuscatedName("e")
+   public static Comparator field271;
+   @ObfuscatedName("k")
+   public static Comparator field270;
+   @ObfuscatedName("u")
+   public static Comparator field267;
+   @ObfuscatedName("a")
    @Export("events")
    public final List events;
 
    static {
-      field266 = new class19();
+      field268 = new class19();
       new WorldComparator();
       field271 = new UnitPriceComparator();
-      field264 = new class18();
-      field263 = new TotalQuantityComparator();
+      field270 = new class18();
+      field267 = new TotalQuantityComparator();
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfr;Z)V",
+      signature = "(Lgh;Z)V",
       garbageValue = "1"
    )
    public GrandExchangeEvents(Buffer var1, boolean var2) {
@@ -71,10 +59,10 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "-479960987"
+      signature = "(Ljava/util/Comparator;ZB)V",
+      garbageValue = "120"
    )
    @Export("sort")
    public void sort(Comparator var1, boolean var2) {
@@ -86,26 +74,104 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Ljj;",
-      garbageValue = "1648375573"
+      signature = "(II)Ljg;",
+      garbageValue = "-1432370023"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
+   public static Enum method70(int var0) {
+      Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Sequence.seq_ref.getConfigData(12, var0);
-         var1 = new Sequence();
+         byte[] var2 = Enum.EnumDefinition_indexCache.getConfigData(8, var0);
+         var1 = new Enum();
          if(var2 != null) {
             var1.decode(new Buffer(var2));
          }
 
-         var1.post();
-         Sequence.sequences.put(var1, (long)var0);
+         Enum.EnumDefinition_cached.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(CII)C",
+      garbageValue = "1112909614"
+   )
+   static char method66(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
+         }
+
+         if(var0 == 199) {
+            return 'C';
+         }
+
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(var0 == 223) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
+         }
+      }
+
+      return var0 == 338?'O':(var0 == 339?'o':(var0 == 376?'Y':var0));
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-2006585394"
+   )
+   public static boolean method69(int var0) {
+      return var0 == class232.field2919.field2941;
    }
 }

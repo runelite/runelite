@@ -6,33 +6,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fv")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("x")
+   @ObfuscatedName("a")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
+   public static boolean field2181;
+   @ObfuscatedName("bp")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Lil;"
+   )
+   static BuildType field2175;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Ldv;"
+   )
+   @Export("dataFile")
+   CacheFile dataFile;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Ldv;"
    )
    @Export("indexFile")
    CacheFile indexFile;
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Ldl;"
-   )
-   @Export("dataFile")
-   CacheFile dataFile;
-   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -228559831
+      intValue = 1333258905
    )
    @Export("index")
    int index;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -69742423
+      intValue = -312679233
    )
    @Export("maxSize")
    int maxSize;
@@ -42,7 +49,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdl;Ldl;I)V"
+      signature = "(ILdv;Ldv;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -54,36 +61,33 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-1309257172"
+      garbageValue = "-1510838630"
    )
    @Export("read")
    public byte[] read(int var1) {
       CacheFile var2 = this.dataFile;
       synchronized(this.dataFile) {
+         Object var10000;
          try {
-            Object var10000;
             if(this.indexFile.length() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
-            } else {
-               this.indexFile.seek((long)(var1 * 6));
-               this.indexFile.read(IndexStore_buffer, 0, 6);
-               int var3 = ((IndexStore_buffer[0] & 255) << 16) + (IndexStore_buffer[2] & 255) + ((IndexStore_buffer[1] & 255) << 8);
-               int var4 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
-               if(var3 < 0 || var3 > this.maxSize) {
-                  var10000 = null;
-                  return (byte[])var10000;
-               } else if(var4 <= 0 || (long)var4 > this.dataFile.length() / 520L) {
-                  var10000 = null;
-                  return (byte[])var10000;
-               } else {
+            }
+
+            this.indexFile.seek((long)(var1 * 6));
+            this.indexFile.read(IndexStore_buffer, 0, 6);
+            int var3 = ((IndexStore_buffer[0] & 255) << 16) + (IndexStore_buffer[2] & 255) + ((IndexStore_buffer[1] & 255) << 8);
+            int var4 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
+            if(var3 >= 0 && var3 <= this.maxSize) {
+               if(var4 > 0 && (long)var4 <= this.dataFile.length() / 520L) {
                   byte[] var5 = new byte[var3];
                   int var6 = 0;
+                  int var7 = 0;
 
-                  for(int var7 = 0; var6 < var3; ++var7) {
+                  while(var6 < var3) {
                      if(var4 == 0) {
                         var10000 = null;
                         return (byte[])var10000;
@@ -100,37 +104,46 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 != var1 || var7 != var10 || var12 != this.index) {
+                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
+                        if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
+                           for(int var13 = 0; var13 < var8; ++var13) {
+                              var5[var6++] = IndexStore_buffer[var13 + 8];
+                           }
+
+                           var4 = var11;
+                           ++var7;
+                           continue;
+                        }
+
                         var10000 = null;
                         return (byte[])var10000;
                      }
 
-                     if(var11 < 0 || (long)var11 > this.dataFile.length() / 520L) {
-                        var10000 = null;
-                        return (byte[])var10000;
-                     }
-
-                     for(int var13 = 0; var13 < var8; ++var13) {
-                        var5[var6++] = IndexStore_buffer[var13 + 8];
-                     }
-
-                     var4 = var11;
+                     var10000 = null;
+                     return (byte[])var10000;
                   }
 
                   byte[] var18 = var5;
                   return var18;
                }
+
+               var10000 = null;
+               return (byte[])var10000;
             }
+
+            var10000 = null;
          } catch (IOException var16) {
             return null;
          }
+
+         return (byte[])var10000;
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(I[BII)Z",
-      garbageValue = "-1219863226"
+      garbageValue = "-1238112285"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -149,10 +162,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I[BIZI)Z",
-      garbageValue = "-1437699907"
+      signature = "(I[BIZB)Z",
+      garbageValue = "106"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -194,7 +207,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label142: {
+                  label145: {
                      int var9 = 0;
                      int var10;
                      if(var4) {
@@ -203,7 +216,7 @@ public final class IndexFile {
                         try {
                            this.dataFile.read(IndexStore_buffer, 0, 8);
                         } catch (EOFException var16) {
-                           break label142;
+                           break label145;
                         }
 
                         var10 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
@@ -267,22 +280,5 @@ public final class IndexFile {
             return false;
          }
       }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(ILid;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "1084065139"
-   )
-   public static void method3146(int var0, IndexDataBase var1, String var2, String var3, int var4, boolean var5) {
-      int var6 = var1.getFile(var2);
-      int var7 = var1.getChild(var6, var3);
-      class210.field2598 = 1;
-      class3.field22 = var1;
-      BoundingBox2D.field237 = var6;
-      class210.field2599 = var7;
-      class111.field1588 = var4;
-      class20.field322 = var5;
-      class164.field2216 = var0;
    }
 }

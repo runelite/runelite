@@ -1,108 +1,114 @@
-import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("g")
+@ObfuscatedName("v")
 @Implements("Size")
 public class Size {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lg;"
+      signature = "Lv;"
    )
-   public static final Size field343;
-   @ObfuscatedName("x")
+   public static final Size field335;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lg;"
+      signature = "Lv;"
    )
-   public static final Size field341;
+   public static final Size field333;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lv;"
+   )
+   public static final Size field334;
+   @ObfuscatedName("fb")
+   @ObfuscatedSignature(
+      signature = "[Lks;"
+   )
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
+   @ObfuscatedName("jk")
+   @ObfuscatedGetter(
+      intValue = -557930467
+   )
+   @Export("menuHeight")
+   static int menuHeight;
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lg;"
+   final String field343;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1891351419
    )
-   public static final Size field342;
-   @ObfuscatedName("t")
-   static ScheduledExecutorService field347;
+   final int field332;
    @ObfuscatedName("z")
-   final String field344;
-   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1574607425
+      intValue = -73299465
    )
-   final int field340;
-   @ObfuscatedName("m")
+   final int field337;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1199930009
+      intValue = 1807549591
    )
-   final int field345;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1168822369
-   )
-   final int field346;
+   final int field338;
 
    static {
-      field343 = new Size("SMALL", 2, 0, 4);
-      field341 = new Size("MEDIUM", 1, 1, 2);
-      field342 = new Size("LARGE", 0, 2, 0);
+      field335 = new Size("SMALL", 0, 0, 4);
+      field333 = new Size("MEDIUM", 1, 1, 2);
+      field334 = new Size("LARGE", 2, 2, 0);
    }
 
    Size(String var1, int var2, int var3, int var4) {
-      this.field344 = var1;
-      this.field340 = var2;
-      this.field345 = var3;
-      this.field346 = var4;
+      this.field343 = var1;
+      this.field332 = var2;
+      this.field337 = var3;
+      this.field338 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(FI)Z",
-      garbageValue = "608147523"
+      signature = "(FB)Z",
+      garbageValue = "-23"
    )
-   boolean method184(float var1) {
-      return var1 >= (float)this.field346;
+   boolean method177(float var1) {
+      return var1 >= (float)this.field338;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)[Lfa;",
+      garbageValue = "876332136"
+   )
+   public static class173[] method173() {
+      return new class173[]{class173.field2427, class173.field2428, class173.field2422, class173.field2423, class173.field2424, class173.field2425, class173.field2426, class173.field2421, class173.field2420, class173.field2430};
+   }
+
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1845849971"
+      garbageValue = "-1428230951"
    )
-   static int method182(int var0, int var1) {
-      Overlay var2 = class41.getOverlayDefinition(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else if(var2.texture >= 0) {
-         int var3 = PacketNode.method3213(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-         return Graphics3D.colorPalette[var3] | -16777216;
-      } else if(var2.color == 16711935) {
-         return var1;
-      } else {
-         int var4 = var2.hue;
-         int var5 = var2.saturation;
-         int var6 = var2.lightness;
-         if(var6 > 179) {
-            var5 /= 2;
-         }
+   static int method178(int var0, int var1) {
+      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
+   }
 
-         if(var6 > 192) {
-            var5 /= 2;
-         }
-
-         if(var6 > 217) {
-            var5 /= 2;
-         }
-
-         if(var6 > 243) {
-            var5 /= 2;
-         }
-
-         int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-         int var8 = PacketNode.method3213(var7, 96);
-         return Graphics3D.colorPalette[var8] | -16777216;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lcp;I)V",
+      garbageValue = "-1126597833"
+   )
+   static void method176(World var0) {
+      if(var0.method1518() != Client.isMembers) {
+         Client.isMembers = var0.method1518();
+         class94.method1760(var0.method1518());
       }
+
+      class11.host = var0.address;
+      Client.world = var0.id;
+      Client.flags = var0.mask;
+      GraphicsObject.port1 = Client.socketType == 0?43594:var0.id + 40000;
+      FileOnDisk.port2 = Client.socketType == 0?443:var0.id + 50000;
+      class268.myWorldPort = GraphicsObject.port1;
    }
 }

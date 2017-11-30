@@ -2,105 +2,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kb")
-public class class296 {
-   @ObfuscatedName("m")
-   String field3858;
-   @ObfuscatedName("b")
+@ObfuscatedName("kx")
+public enum class296 implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lkx;"
    )
-   IndexDataBase field3856;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -798318543
-   )
-   int field3859;
-   @ObfuscatedName("p")
-   boolean field3857;
-
+   field3837(0, 0),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lid;)V"
+      signature = "Lkx;"
    )
-   class296(IndexDataBase var1) {
-      this.field3859 = 0;
-      this.field3857 = false;
-      this.field3856 = var1;
-   }
-
-   @ObfuscatedName("d")
+   field3838(1, 1),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1914131105"
+      signature = "Lkx;"
    )
-   void method5391(String var1) {
-      if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.field3858) {
-            this.field3858 = var1;
-            this.field3859 = 0;
-            this.field3857 = false;
-            this.method5384();
-         }
-      }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1664688465"
-   )
-   int method5384() {
-      if(this.field3859 < 25) {
-         if(!this.field3856.tryLoadRecordByNames(class40.field515.field517, this.field3858)) {
-            return this.field3859;
-         }
-
-         this.field3859 = 25;
-      }
-
-      if(this.field3859 == 25) {
-         if(!this.field3856.tryLoadRecordByNames(this.field3858, class40.field519.field517)) {
-            return 25 + this.field3856.archiveLoadPercentByName(this.field3858) * 25 / 100;
-         }
-
-         this.field3859 = 50;
-      }
-
-      if(this.field3859 == 50) {
-         if(this.field3856.method4283(class40.field516.field517, this.field3858) && !this.field3856.tryLoadRecordByNames(class40.field516.field517, this.field3858)) {
-            return 50;
-         }
-
-         this.field3859 = 75;
-      }
-
-      if(this.field3859 == 75) {
-         if(!this.field3856.tryLoadRecordByNames(this.field3858, class40.field518.field517)) {
-            return 75;
-         }
-
-         this.field3859 = 100;
-         this.field3857 = true;
-      }
-
-      return this.field3859;
-   }
-
+   field3836(2, 2),
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-495685061"
+      signature = "Lkx;"
    )
-   boolean method5380() {
-      return this.field3857;
+   field3839(3, 3),
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lkx;"
+   )
+   field3840(4, 4);
+
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1483596249
+   )
+   static int field3843;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 824355041
+   )
+   public final int field3842;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 665565463
+   )
+   final int field3841;
+
+   class296(int var3, int var4) {
+      this.field3842 = var3;
+      this.field3841 = var4;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-505913184"
+      garbageValue = "-1035813094"
    )
-   int method5381() {
-      return this.field3859;
+   public int rsOrdinal() {
+      return this.field3841;
    }
 }

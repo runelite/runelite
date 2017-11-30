@@ -3,54 +3,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ej")
 public class class133 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("Viewport_containsMouse")
-   static boolean Viewport_containsMouse;
-   @ObfuscatedName("x")
+   public static boolean Viewport_containsMouse;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 505046769
+      intValue = -730306591
    )
    @Export("Viewport_mouseX")
-   static int Viewport_mouseX;
-   @ObfuscatedName("k")
+   public static int Viewport_mouseX;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2104861051
+      intValue = -671398125
    )
    @Export("Viewport_mouseY")
-   static int Viewport_mouseY;
-   @ObfuscatedName("z")
+   public static int Viewport_mouseY;
+   @ObfuscatedName("k")
    @Export("Viewport_false0")
-   static boolean Viewport_false0;
-   @ObfuscatedName("v")
+   public static boolean Viewport_false0;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 289363889
+      intValue = -1417203043
    )
-   static int field1899;
-   @ObfuscatedName("b")
+   static int field1884;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1233420019
+      intValue = 1771911547
    )
-   static int field1904;
-   @ObfuscatedName("t")
+   static int field1881;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -374522265
+      intValue = 536676545
    )
-   static int field1905;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1389387171
-   )
-   static int field1906;
+   static int field1886;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -645641585
-   )
-   static int field1907;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1305557085
+      intValue = 12111091
    )
    @Export("Viewport_entityCountAtMouse")
    public static int Viewport_entityCountAtMouse;
@@ -67,13 +57,29 @@ public class class133 {
       Viewport_entityIdsAtMouse = new int[1000];
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "264910980"
+      signature = "(IIIILks;Lhy;B)V",
+      garbageValue = "28"
    )
-   public static void method2710() {
-      NPCComposition.npcs.reset();
-      NPCComposition.npcModelCache.reset();
+   @Export("worldToMinimap")
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2715 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         class47.mapedge.method5193(var15 + (var0 + var5.field2715 / 2 - var17 / 2), var5.field2716 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+      } else {
+         class37.drawDot(var0, var1, var2, var3, var4, var5);
+      }
+
    }
 }

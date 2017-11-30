@@ -1,120 +1,138 @@
-import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bt")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("v")
-   static File field793;
-   @ObfuscatedName("l")
+   @ObfuscatedName("ql")
    @ObfuscatedGetter(
-      intValue = 581620979
+      intValue = -717687801
    )
-   static int field789;
-   @ObfuscatedName("d")
+   static int field766;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 942543977
+      intValue = 1515870281
    )
    @Export("id")
    int id;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1625024993
+      intValue = -292484973
    )
    @Export("owner")
    int owner;
-   @ObfuscatedName("k")
-   @Export("boolean1")
-   boolean boolean1;
+   @ObfuscatedName("e")
+   boolean field764;
 
    WidgetNode() {
-      this.boolean1 = false;
+      this.field764 = false;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ILce;ZI)I",
-      garbageValue = "1945161634"
+      signature = "(I)Lcf;",
+      garbageValue = "490107324"
    )
-   static int method1114(int var0, Script var1, boolean var2) {
-      if(var0 == 6200) {
-         GrandExchangeEvents.intStackSize -= 2;
-         Client.field1106 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
-         if(Client.field1106 <= 0) {
-            Client.field1106 = 256;
+   static Preferences method1045() {
+      FileOnDisk var0 = null;
+      Preferences var1 = new Preferences();
+
+      try {
+         var0 = DynamicObject.getPreferencesFile("", ItemContainer.field721.name, false);
+         byte[] var2 = new byte[(int)var0.length()];
+
+         int var4;
+         for(int var3 = 0; var3 < var2.length; var3 += var4) {
+            var4 = var0.read(var2, var3, var2.length - var3);
+            if(var4 == -1) {
+               throw new IOException();
+            }
          }
 
-         Client.field1107 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         if(Client.field1107 <= 0) {
-            Client.field1107 = 205;
-         }
-
-         return 1;
-      } else if(var0 == 6201) {
-         GrandExchangeEvents.intStackSize -= 2;
-         Client.field1036 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
-         if(Client.field1036 <= 0) {
-            Client.field1036 = 256;
-         }
-
-         Client.field1109 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         if(Client.field1109 <= 0) {
-            Client.field1109 = 320;
-         }
-
-         return 1;
-      } else if(var0 == 6202) {
-         GrandExchangeEvents.intStackSize -= 4;
-         Client.field926 = (short)class82.intStack[GrandExchangeEvents.intStackSize];
-         if(Client.field926 <= 0) {
-            Client.field926 = 1;
-         }
-
-         Client.field1111 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 1];
-         if(Client.field1111 <= 0) {
-            Client.field1111 = 32767;
-         } else if(Client.field1111 < Client.field926) {
-            Client.field1111 = Client.field926;
-         }
-
-         Client.field1112 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 2];
-         if(Client.field1112 <= 0) {
-            Client.field1112 = 1;
-         }
-
-         Client.field1061 = (short)class82.intStack[GrandExchangeEvents.intStackSize + 3];
-         if(Client.field1061 <= 0) {
-            Client.field1061 = 32767;
-         } else if(Client.field1061 < Client.field1112) {
-            Client.field1061 = Client.field1112;
-         }
-
-         return 1;
-      } else if(var0 == 6203) {
-         if(Client.field1026 != null) {
-            class82.method1692(0, 0, Client.field1026.width, Client.field1026.height, false);
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.viewportHeight;
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.viewportWidth;
-         } else {
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
-            class82.intStack[++GrandExchangeEvents.intStackSize - 1] = -1;
-         }
-
-         return 1;
-      } else if(var0 == 6204) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1036;
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1109;
-         return 1;
-      } else if(var0 == 6205) {
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1106;
-         class82.intStack[++GrandExchangeEvents.intStackSize - 1] = Client.field1107;
-         return 1;
-      } else {
-         return 2;
+         var1 = new Preferences(new Buffer(var2));
+      } catch (Exception var6) {
+         ;
       }
+
+      try {
+         if(var0 != null) {
+            var0.close();
+         }
+      } catch (Exception var5) {
+         ;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "([BI)Lck;",
+      garbageValue = "1762428125"
+   )
+   @Export("newScript")
+   static Script newScript(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method1833(var6);
+
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            IterableHashTable var9 = new IterableHashTable(class173.nextPowerOfTwo(var8));
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.put(new IntegerNode(var11), (long)var10);
+            }
+         }
+      }
+
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "1"
+   )
+   static int method1048(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class61.currentRequest != null && var2 == class61.currentRequest.hash?class287.NetCache_responseArchiveBuffer.offset * 99 / (class287.NetCache_responseArchiveBuffer.payload.length - class61.currentRequest.padding) + 1:0;
    }
 }

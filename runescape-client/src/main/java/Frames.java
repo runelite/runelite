@@ -1,25 +1,33 @@
-import java.awt.FontMetrics;
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ec")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("c")
-   static int[] field2044;
-   @ObfuscatedName("aq")
-   static FontMetrics field2045;
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 711911861
+   )
+   public static int field2028;
+   @ObfuscatedName("ex")
+   @ObfuscatedGetter(
+      intValue = -1202290627
+   )
+   static int field2030;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lep;"
+      signature = "[Leu;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lid;Lid;IZ)V"
+      signature = "(Lib;Lib;IZ)V"
    )
    Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
@@ -56,58 +64,36 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-2002573384"
+      garbageValue = "-67697236"
    )
-   public boolean method2997(int var1) {
+   public boolean method2884(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("kp")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-1481683381"
+      signature = "(Ljava/io/File;Ljava/io/File;B)V",
+      garbageValue = "88"
    )
-   static void method3000(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < ItemComposition.field3559; ++var4) {
-         ItemComposition var5 = WorldMapType2.getItemDefinition(var4);
-         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class229.field2911 = -1;
-               SoundTaskDataProvider.field626 = null;
-               return;
-            }
-
-            if(var3 >= var2.length) {
-               short[] var6 = new short[var2.length * 2];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
-               }
-
-               var2 = var6;
-            }
-
-            var2[var3++] = (short)var4;
+   static void method2887(File var0, File var1) {
+      try {
+         FileOnDisk var2 = new FileOnDisk(class157.jagexClDat, "rw", 10000L);
+         Buffer var3 = new Buffer(500);
+         var3.putByte(3);
+         var3.putByte(var1 != null?1:0);
+         var3.putCESU8(var0.getPath());
+         if(var1 != null) {
+            var3.putCESU8("");
          }
+
+         var2.write(var3.payload, 0, var3.offset);
+         var2.close();
+      } catch (IOException var4) {
+         var4.printStackTrace();
       }
 
-      SoundTaskDataProvider.field626 = var2;
-      class20.field321 = 0;
-      class229.field2911 = var3;
-      String[] var8 = new String[class229.field2911];
-
-      for(int var9 = 0; var9 < class229.field2911; ++var9) {
-         var8[var9] = WorldMapType2.getItemDefinition(var2[var9]).name;
-      }
-
-      short[] var10 = SoundTaskDataProvider.field626;
-      Script.method1908(var8, var10, 0, var8.length - 1);
    }
 }

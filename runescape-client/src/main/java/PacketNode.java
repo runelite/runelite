@@ -4,104 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fg")
 @Implements("PacketNode")
 public class PacketNode extends Node {
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Lfq;"
+      signature = "[Lfg;"
    )
    @Export("packetBufferNodes")
    static PacketNode[] packetBufferNodes;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 244986515
+      intValue = -1029418191
    )
-   static int field2425;
-   @ObfuscatedName("d")
+   static int field2436;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfn;"
+      signature = "Lfo;"
    )
    @Export("clientPacket")
-   ClientPacket clientPacket;
-   @ObfuscatedName("x")
+   public ClientPacket clientPacket;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1203047415
+      intValue = -657508309
    )
-   int field2421;
-   @ObfuscatedName("k")
+   public int field2432;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgv;"
+      signature = "Lgy;"
    )
    @Export("packetBuffer")
    public PacketBuffer packetBuffer;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1776737313
+      intValue = -2005634151
    )
-   public int field2423;
+   public int field2434;
 
    static {
       packetBufferNodes = new PacketNode[300];
-      field2425 = 0;
+      field2436 = 0;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "102"
+      signature = "(I)V",
+      garbageValue = "1645508271"
    )
-   public void method3212() {
-      if(field2425 < packetBufferNodes.length) {
-         packetBufferNodes[++field2425 - 1] = this;
-      }
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(ILff;Liv;I)V",
-      garbageValue = "-275530401"
-   )
-   static void method3214(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.type = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
-      }
-
-      class209.method3827();
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "43959931"
-   )
-   static int method3213(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 0) {
-            var1 = 0;
-         } else if(var1 > 127) {
-            var1 = 127;
-         }
-
-         var1 = 127 - var1;
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 65408) + var1;
+   public void method3173() {
+      if(field2436 < packetBufferNodes.length) {
+         packetBufferNodes[++field2436 - 1] = this;
       }
    }
 }

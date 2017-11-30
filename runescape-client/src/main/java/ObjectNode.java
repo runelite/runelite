@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gq")
 @Implements("ObjectNode")
 public class ObjectNode extends Node {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("value")
    public final Object value;
 

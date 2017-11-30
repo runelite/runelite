@@ -4,57 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fh")
 @Implements("LoginPacket")
-public class LoginPacket implements class165 {
-   @ObfuscatedName("d")
+public class LoginPacket implements class169 {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfp;"
+      signature = "Lfh;"
    )
-   public static final LoginPacket field2406;
-   @ObfuscatedName("x")
+   public static final LoginPacket field2411;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfp;"
+      signature = "Lfh;"
    )
-   static final LoginPacket field2401;
+   static final LoginPacket field2418;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lfh;"
+   )
+   public static final LoginPacket field2416;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lfp;"
+      signature = "Lfh;"
    )
-   public static final LoginPacket field2402;
+   public static final LoginPacket field2413;
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lfp;"
+      signature = "[Lfh;"
    )
-   public static final LoginPacket field2400;
-   @ObfuscatedName("m")
+   static final LoginPacket[] field2415;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "[Lfp;"
+      signature = "Lfi;"
    )
-   static final LoginPacket[] field2405;
-   @ObfuscatedName("fx")
-   @ObfuscatedSignature(
-      signature = "[Lkl;"
-   )
-   @Export("modIconSprites")
-   static IndexedSprite[] modIconSprites;
-   @ObfuscatedName("v")
+   @Export("timer")
+   protected static Timer timer;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1929065247
+      intValue = -105058661
    )
    @Export("id")
    public final int id;
 
    static {
-      field2406 = new LoginPacket(14, 0);
-      field2401 = new LoginPacket(15, 4);
-      field2402 = new LoginPacket(16, -2);
-      field2400 = new LoginPacket(18, -2);
-      field2405 = new LoginPacket[32];
-      LoginPacket[] var0 = class45.method665();
+      field2411 = new LoginPacket(14, 0);
+      field2418 = new LoginPacket(15, 4);
+      field2416 = new LoginPacket(16, -2);
+      field2413 = new LoginPacket(18, -2);
+      field2415 = new LoginPacket[32];
+      LoginPacket[] var0 = new LoginPacket[]{field2416, field2413, field2418, field2411};
+      LoginPacket[] var1 = var0;
 
-      for(int var1 = 0; var1 < var0.length; ++var1) {
-         field2405[var0[var1].id] = var0[var1];
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         field2415[var1[var2].id] = var1[var2];
       }
 
    }
@@ -65,15 +66,5 @@ public class LoginPacket implements class165 {
    )
    LoginPacket(int var1, int var2) {
       this.id = var1;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lid;Lid;I)V",
-      garbageValue = "1975032326"
-   )
-   public static void method3196(IndexDataBase var0, IndexDataBase var1) {
-      CombatInfo2.field3442 = var0;
-      OwnWorldComparator.field864 = var1;
    }
 }

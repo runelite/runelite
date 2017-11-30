@@ -3,28 +3,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gc")
 @Implements("Link")
 public class Link {
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgc;"
    )
-   Link field2572;
-   @ObfuscatedName("v")
+   Link field2598;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgc;"
    )
-   Link field2573;
+   Link field2597;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("remove")
    public void remove() {
-      if(this.field2573 != null) {
-         this.field2573.field2572 = this.field2572;
-         this.field2572.field2573 = this.field2573;
-         this.field2572 = null;
-         this.field2573 = null;
+      if(this.field2597 != null) {
+         this.field2597.field2598 = this.field2598;
+         this.field2598.field2597 = this.field2597;
+         this.field2598 = null;
+         this.field2597 = null;
       }
    }
 }

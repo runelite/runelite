@@ -4,30 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eg")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("eh")
+   @ObfuscatedName("t")
+   @Export("colorsToFind")
+   public static short[] colorsToFind;
+   @ObfuscatedName("cc")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Liu;"
    )
-   static Task field1951;
-   @ObfuscatedName("d")
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2029967707
+      intValue = 656904343
    )
    @Export("id")
    int id;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -716515449
+      intValue = -1096353093
    )
    @Export("count")
    int count;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @Export("types")
    int[] types;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @Export("list")
    int[][] list;
 
@@ -53,5 +57,59 @@ public class FrameMap extends Node {
          }
       }
 
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-2054020432"
+   )
+   static int method2686(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
+         }
+
+         var1 = 127 - var1;
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IIIIIII)I",
+      garbageValue = "86910519"
+   )
+   public static int method2687(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
+
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)[Lcz;",
+      garbageValue = "-394441470"
+   )
+   static AttackOption[] method2688() {
+      return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
    }
 }
