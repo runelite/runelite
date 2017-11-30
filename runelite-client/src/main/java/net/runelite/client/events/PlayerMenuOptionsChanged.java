@@ -24,21 +24,13 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+
+@Data
 public class PlayerMenuOptionsChanged
 {
 	/**
 	 * Index in playerOptions which changed
 	 */
 	private int index;
-
-	public int getIndex()
-	{
-		return index;
-	}
-
-	public void setIndex(int index)
-	{
-		this.index = index;
-	}
-
 }

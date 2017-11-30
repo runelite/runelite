@@ -24,6 +24,11 @@
  */
 package net.runelite.client.events;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class MenuEntryAdded
 {
 	private String option;
@@ -32,44 +37,4 @@ public class MenuEntryAdded
 	private int identifier;
 	private int actionParam0;
 	private int actionParam1;
-
-	public MenuEntryAdded(String option, String target, int type, int identifier, int actionParam0, int param1)
-	{
-		this.option = option;
-		this.target = target;
-		this.type = type;
-		this.identifier = identifier;
-		this.actionParam0 = actionParam0;
-		this.actionParam1 = param1;
-	}
-
-	public String getOption()
-	{
-		return option;
-	}
-
-	public String getTarget()
-	{
-		return target;
-	}
-
-	public int getType()
-	{
-		return type;
-	}
-
-	public int getIdentifier()
-	{
-		return identifier;
-	}
-
-	public int getActionParam0()
-	{
-		return actionParam0;
-	}
-
-	public int getActionParam1()
-	{
-		return actionParam1;
-	}
 }

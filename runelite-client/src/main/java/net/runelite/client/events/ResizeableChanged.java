@@ -26,17 +26,10 @@
 
 package net.runelite.client.events;
 
+import lombok.Data;
+
+@Data
 public class ResizeableChanged
 {
 	private boolean isResized;
-
-	public void setResized(boolean isResized)
-	{
-		this.isResized = isResized;
-	}
-
-	public boolean isResized()
-	{
-		return this.isResized;
-	}
 }
