@@ -30,12 +30,7 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import java.awt.AWTException;
-import java.awt.Frame;
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -46,11 +41,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -85,7 +76,9 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
-	private final RuneliteProperties properties = new RuneliteProperties();
+	@Inject
+	RuneliteProperties properties;
+
 	private Client client;
 	private ClientUI gui;
 
