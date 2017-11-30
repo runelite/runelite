@@ -25,9 +25,10 @@
 package net.runelite.client.events;
 
 import lombok.Data;
+import net.runelite.api.Actor;
 
 @Data
 public class AnimationChanged
 {
-	private Object object;
+	private Actor actor;
 }
