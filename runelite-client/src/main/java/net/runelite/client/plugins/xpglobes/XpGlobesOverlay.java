@@ -38,6 +38,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
@@ -45,13 +46,10 @@ import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class XpGlobesOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(XpGlobesOverlay.class);
-
 	private final Client client;
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
@@ -198,13 +196,13 @@ public class XpGlobesOverlay extends Overlay
 		try
 		{
 			String skillIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";
-			logger.debug("Loading skill icon from {}", skillIconPath);
+			log.debug("Loading skill icon from {}", skillIconPath);
 			skillImage = ImageIO.read(XpGlobesOverlay.class.getResourceAsStream(skillIconPath));
 			imgCache[skillIdx] = skillImage;
 		}
 		catch (IOException e)
 		{
-			logger.debug("Error Loading skill icons {}", e);
+			log.debug("Error Loading skill icons {}", e);
 		}
 
 		return skillImage;

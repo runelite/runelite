@@ -29,13 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import javax.swing.JToolBar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PluginToolbar extends JToolBar
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginToolbar.class);
-
 	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
 
 	private final ClientUI ui;

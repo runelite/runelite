@@ -27,21 +27,19 @@ package net.runelite.client.plugins.bosstimer;
 
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.client.events.ActorDeath;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Boss timers plugin"
 )
+@Slf4j
 public class BossTimersPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(BossTimersPlugin.class);
-
 	@Inject
 	InfoBoxManager infoBoxManager;
 
@@ -59,7 +57,7 @@ public class BossTimersPlugin extends Plugin
 		// remove existing timer
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
-		logger.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
+		log.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss);
 		infoBoxManager.addInfoBox(timer);

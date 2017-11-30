@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -51,16 +52,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Slayer plugin"
 )
+@Slf4j
 public class SlayerPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(SlayerPlugin.class);
-
 	//Chat messages
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("You're assigned to kill (.*); only (\\d*) more to go\\.");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
@@ -218,7 +216,7 @@ public class SlayerPlugin extends Plugin
 					points = Integer.parseInt(matches.get(2).replaceAll(",", ""));
 					break;
 				default:
-					logger.warn("Unreachable default case for message ending in '; return to Slayer master'");
+					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
 			setTask("", 0);
 			return;
@@ -287,7 +285,7 @@ public class SlayerPlugin extends Plugin
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task == null)
 		{
-			logger.warn("No slayer task for {} in the Task database", taskName);
+			log.warn("No slayer task for {} in the Task database", taskName);
 		}
 		else
 		{

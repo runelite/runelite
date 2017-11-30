@@ -39,6 +39,7 @@ import java.io.InputStream;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
@@ -50,13 +51,10 @@ import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class ZulrahOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahOverlay.class);
-
 	private static final int CURRENT_PHASE_WIDTH = 86;
 	private static final int NEXT_PHASE_WIDTH = 54;
 	private static final int SPACER = 6;
@@ -457,7 +455,7 @@ public class ZulrahOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			logger.debug("Error loading image {}", e);
+			log.debug("Error loading image {}", e);
 		}
 		return image;
 	}

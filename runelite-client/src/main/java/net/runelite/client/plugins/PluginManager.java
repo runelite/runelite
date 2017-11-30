@@ -42,18 +42,16 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class PluginManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginManager.class);
-
 	/**
 	 * Base package where the core plugins are
 	 */
@@ -86,7 +84,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				logger.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+				log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 				plugins.remove(plugin);
 			}
 		}
@@ -115,7 +113,7 @@ public class PluginManager
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					logger.warn("Class {} is a plugin, but has no plugin descriptor",
+					log.warn("Class {} is a plugin, but has no plugin descriptor",
 						clazz);
 				}
 				continue;
@@ -123,7 +121,7 @@ public class PluginManager
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				logger.warn("Class {} has plugin descriptor, but is not a plugin",
+				log.warn("Class {} has plugin descriptor, but is not a plugin",
 					clazz);
 				continue;
 			}
@@ -140,7 +138,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				logger.warn("error instantiating plugin!", ex);
+				log.warn("error instantiating plugin!", ex);
 				continue;
 			}
 
@@ -167,7 +165,7 @@ public class PluginManager
 				}
 			});
 
-			logger.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
+			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			eventBus.register(plugin);
 			schedule(plugin);
 		}
@@ -232,7 +230,7 @@ public class PluginManager
 			throw new PluginInstantiationException(ex);
 		}
 
-		logger.debug("Loaded plugin {}", pluginDescriptor.name());
+		log.debug("Loaded plugin {}", pluginDescriptor.name());
 		return plugin;
 	}
 
@@ -263,7 +261,7 @@ public class PluginManager
 			}
 
 			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
-			logger.debug("Scheduled task {}", scheduledMethod);
+			log.debug("Scheduled task {}", scheduledMethod);
 
 			scheduler.addScheduledMethod(scheduledMethod);
 		}
@@ -280,7 +278,7 @@ public class PluginManager
 				continue;
 			}
 
-			logger.debug("Removing scheduled task {}", method);
+			log.debug("Removing scheduled task {}", method);
 			scheduler.removeScheduledMethod(method);
 		}
 	}

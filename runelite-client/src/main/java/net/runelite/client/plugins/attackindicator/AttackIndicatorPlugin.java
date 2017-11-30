@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
@@ -46,16 +47,13 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackindicator.AttackStyle.*;
 import net.runelite.client.task.Schedule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Attack indicator plugin"
 )
+@Slf4j
 public class AttackIndicatorPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(AttackIndicatorPlugin.class);
-
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
@@ -199,7 +197,7 @@ public class AttackIndicatorPlugin extends Plugin
 					hideWarnedStyles(enabled);
 					break;
 				default:
-					logger.warn("Unreachable default case for config keys");
+					log.warn("Unreachable default case for config keys");
 			}
 		}
 	}
@@ -312,7 +310,7 @@ public class AttackIndicatorPlugin extends Plugin
 					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_SPELLS, enabled && warnedSkill);
 					break;
 				default:
-					logger.warn("Unreachable default case for equipped weapon type attack styles");
+					log.warn("Unreachable default case for equipped weapon type attack styles");
 			}
 		}
 	}

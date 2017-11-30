@@ -42,13 +42,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class FishingSpotOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(FishingSpotOverlay.class);
-
 	private final List<Integer> ids = new ArrayList<>();
 
 	private final RuneLite runelite;

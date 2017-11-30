@@ -27,17 +27,15 @@ package net.runelite.client.plugins.pestcontrol;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
 import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
 import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class Game
 {
-	private static final Logger logger = LoggerFactory.getLogger(Game.class);
-
 	// Game starts with all possible rotations
 	private Rotation[] possibleRotations = Rotation.values();
 	// Number of shields dropped
@@ -55,7 +53,7 @@ public class Game
 			return;
 		}
 
-		logger.debug("Shield dropped for {}", portal.getPortal());
+		log.debug("Shield dropped for {}", portal.getPortal());
 
 		portal.setIsShielded(false);
 		int shieldDrop = shieldsDropped++;
@@ -81,7 +79,7 @@ public class Game
 			return;
 		}
 
-		logger.debug("Portal {} died", portal.getPortal());
+		log.debug("Portal {} died", portal.getPortal());
 
 		portal.setIsDead(true);
 	}

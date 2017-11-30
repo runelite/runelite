@@ -39,6 +39,7 @@ import java.time.Instant;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -51,13 +52,10 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class VolcanicMineOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
-
 	private static final int THRESH_LOW = 45;
 	private static final int THRESH_MED = 5;
 
@@ -246,7 +244,7 @@ public class VolcanicMineOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			logger.warn("Error loading image", e);
+			log.warn("Error loading image", e);
 		}
 		return image;
 	}

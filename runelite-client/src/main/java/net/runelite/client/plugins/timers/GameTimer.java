@@ -31,9 +31,9 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import javax.imageio.ImageIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public enum GameTimer
 {
 	STAMINA("stamina", 2, ChronoUnit.MINUTES),
@@ -45,8 +45,6 @@ public enum GameTimer
 	FULLTB("teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", 150, ChronoUnit.SECONDS),
 	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES);
-
-	private static final Logger logger = LoggerFactory.getLogger(GameTimer.class);
 
 	private final String imageResource;
 	private final Duration duration;
@@ -83,7 +81,7 @@ public enum GameTimer
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to load image", ex);
+			log.warn("unable to load image", ex);
 		}
 
 		return image;

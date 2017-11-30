@@ -28,13 +28,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FontManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(FontManager.class);
-
 	private static final Font runescapeFont;
 	private static final Font runescapeSmallFont;
 

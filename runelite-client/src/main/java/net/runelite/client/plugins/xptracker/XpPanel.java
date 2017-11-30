@@ -27,8 +27,6 @@ package net.runelite.client.plugins.xptracker;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.PluginPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -45,10 +43,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class XpPanel extends PluginPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(XpPanel.class);
 	private Map<Skill, JPanel> labelMap = new HashMap<>();
 	private final XpTrackerPlugin xpTracker;
 	private JPanel statsPanel;
@@ -87,7 +86,7 @@ public class XpPanel extends PluginPanel
 		}
 		catch (IOException e)
 		{
-			logger.warn(null, e);
+			log.warn(null, e);
 		}
 
 		JButton resetButton = new JButton("Reset All");
@@ -118,7 +117,7 @@ public class XpPanel extends PluginPanel
 		iconLevel.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
 
 		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
-		logger.debug("Loading skill icon from {}", skillIcon);
+		log.debug("Loading skill icon from {}", skillIcon);
 		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XpPanel.class.getResourceAsStream(skillIcon))));
 		iconLevel.add(icon, BorderLayout.LINE_START);
 

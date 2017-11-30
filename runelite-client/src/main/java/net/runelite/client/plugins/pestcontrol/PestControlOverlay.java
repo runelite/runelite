@@ -33,6 +33,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -48,13 +49,10 @@ import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class PestControlOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(PestControlOverlay.class);
-
 	private final RuneLite runelite;
 	private final Client client;
 
@@ -85,7 +83,7 @@ public class PestControlOverlay extends Overlay
 		{
 			if (game != null)
 			{
-				logger.debug("Pest control game has ended");
+				log.debug("Pest control game has ended");
 				game = null;
 			}
 
@@ -94,7 +92,7 @@ public class PestControlOverlay extends Overlay
 
 		if (game == null)
 		{
-			logger.debug("Pest control game has started");
+			log.debug("Pest control game has started");
 			game = new Game();
 		}
 
