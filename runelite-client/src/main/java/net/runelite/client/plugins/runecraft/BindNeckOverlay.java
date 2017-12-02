@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.BINDING_NECKLACE;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
@@ -63,14 +62,13 @@ public class BindNeckOverlay extends Overlay
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.showBindNeck()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.showBindNeck())
 		{
 			return null;
 		}

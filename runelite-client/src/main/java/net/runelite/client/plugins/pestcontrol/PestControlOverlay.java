@@ -35,7 +35,6 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
@@ -73,11 +72,6 @@ public class PestControlOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		// See if we are in a game or not
 		if (client.getWidget(WidgetInfo.PESTCONTROL_BLUE_SHIELD) == null)
 		{

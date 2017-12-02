@@ -42,7 +42,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -82,7 +81,7 @@ public class VolcanicMineOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN || !plugin.getInside() || !config.enabled())
+		if (client == null || !plugin.getInside() || !config.enabled())
 		{
 			return null;
 		}
