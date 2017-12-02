@@ -24,13 +24,16 @@
  */
 package net.runelite.asm.execution;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exception;
+import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
@@ -45,10 +48,11 @@ public class Frame
 {
 	private static final Logger logger = LoggerFactory.getLogger(Frame.class);
 
-	private Execution execution;
-	private Method method;
+	private final Execution execution;
+	private final Method method;
 	private boolean executing = true;
 	private Instruction cur; // current instruction
+	private final Multimap<Instruction, Exception> exceptions;
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
@@ -70,6 +74,14 @@ public class Frame
 		variables = new Variables(code.getMaxLocals());
 		ctx = new MethodContext(execution, method);
 		nonStatic = method;
+
+		exceptions = HashMultimap.create();
+		Exceptions codeExceptions = code.getExceptions();
+		for (Exception ex : codeExceptions.getExceptions())
+		{
+			Instruction i = ex.getStart().next();
+			exceptions.put(i, ex);
+		}
 	}
 
 	@Override
@@ -155,6 +167,7 @@ public class Frame
 		this.method = other.method;
 		this.executing = other.executing;
 		this.cur = other.cur;
+		this.exceptions = other.exceptions;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
@@ -345,28 +358,24 @@ public class Frame
 		{
 			return;
 		}
-		Code code = method.getCode();
 
-		for (Exception e : code.getExceptions().getExceptions())
+		for (Exception e : exceptions.get(ictx.getInstruction()))
 		{
-			if (e.getStart().next() == ictx.getInstruction())
+			Frame f = dup();
+			Stack stack = f.getStack();
+
+			while (stack.getSize() > 0)
 			{
-				Frame f = dup();
-				Stack stack = f.getStack();
-
-				while (stack.getSize() > 0)
-				{
-					stack.pop();
-				}
-
-				InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
-				StackContext ctx = new StackContext(ins, Type.EXCEPTION, Value.UNKNOWN);
-				stack.push(ctx);
-
-				ins.push(ctx);
-
-				f.jump(ictx, e.getHandler());
+				stack.pop();
 			}
+
+			InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
+			StackContext ctx = new StackContext(ins, Type.EXCEPTION, Value.UNKNOWN);
+			stack.push(ctx);
+
+			ins.push(ctx);
+
+			f.jump(ictx, e.getHandler());
 		}
 	}
 
