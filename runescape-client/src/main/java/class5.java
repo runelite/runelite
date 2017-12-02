@@ -29,7 +29,7 @@ final class class5 implements class0 {
          SpritePixels var5;
          int var7;
          int var8;
-         label158: {
+         label159: {
             try {
                var6 = ImageIO.read(new ByteArrayInputStream(var4));
                var7 = var6.getWidth();
@@ -38,7 +38,7 @@ final class class5 implements class0 {
                PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
                var10.grabPixels();
                var5 = new SpritePixels(var9, var7, var8);
-               break label158;
+               break label159;
             } catch (IOException var13) {
                ;
             } catch (InterruptedException var14) {
@@ -68,57 +68,57 @@ final class class5 implements class0 {
          BoundingBox.field239 = CombatInfoListHolder.field1267.height;
          class218.field2696 = new int[256];
 
-         int var11;
-         for(var11 = 0; var11 < 64; ++var11) {
-            class218.field2696[var11] = var11 * 262144;
+         int var12;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class218.field2696[var12] = var12 * 262144;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class218.field2696[var11 + 64] = var11 * 1024 + 16711680;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class218.field2696[var12 + 64] = var12 * 1024 + 16711680;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class218.field2696[var11 + 128] = var11 * 4 + 16776960;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class218.field2696[var12 + 128] = var12 * 4 + 16776960;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class218.field2696[var11 + 192] = 16777215;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class218.field2696[var12 + 192] = 16777215;
          }
 
          class91.field1325 = new int[256];
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1325[var11] = var11 * 1024;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class91.field1325[var12] = var12 * 1024;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1325[var11 + 64] = var11 * 4 + 65280;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class91.field1325[var12 + 64] = var12 * 4 + 65280;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1325[var11 + 128] = var11 * 262144 + 65535;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class91.field1325[var12 + 128] = var12 * 262144 + 65535;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1325[var11 + 192] = 16777215;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class91.field1325[var12 + 192] = 16777215;
          }
 
          class2.field11 = new int[256];
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class2.field11[var11] = var11 * 4;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class2.field11[var12] = var12 * 4;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class2.field11[var11 + 64] = var11 * 262144 + 255;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class2.field11[var12 + 64] = var12 * 262144 + 255;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class2.field11[var11 + 128] = var11 * 1024 + 16711935;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class2.field11[var12 + 128] = var12 * 1024 + 16711935;
          }
 
-         for(var11 = 0; var11 < 64; ++var11) {
-            class2.field11[var11 + 192] = 16777215;
+         for(var12 = 0; var12 < 64; ++var12) {
+            class2.field11[var12 + 192] = 16777215;
          }
 
          Item.field1386 = new int[256];

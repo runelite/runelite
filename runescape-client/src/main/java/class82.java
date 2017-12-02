@@ -182,7 +182,7 @@ public class class82 {
       Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
       Graphics3D.Rasterizer3D_method1();
 
-      label1625:
+      label1611:
       for(int var9 = 0; var9 < var0.length; ++var9) {
          Widget var10 = var0[var9];
          if(var10 != null && (var10.parentId == var1 || var1 == -1412584499 && var10 == Client.field1064)) {
@@ -310,15 +310,15 @@ public class class82 {
                   int var43;
                   int var44;
                   int var45;
-                  int var52;
+                  int var51;
                   if(var10.contentType != 0) {
                      if(var10.contentType == 1336) {
                         if(Client.displayFps) {
                            var13 += 15;
                            BaseVarType.font_p12full.method4893("Fps:" + GameEngine.FPS, var12 + var10.width, var13, 16776960, -1);
                            var13 += 15;
-                           Runtime var66 = Runtime.getRuntime();
-                           var20 = (int)((var66.totalMemory() - var66.freeMemory()) / 1024L);
+                           Runtime var67 = Runtime.getRuntime();
+                           var20 = (int)((var67.totalMemory() - var67.freeMemory()) / 1024L);
                            var21 = 16776960;
                            if(var20 > 32768 && Client.lowMemory) {
                               var21 = 16711680;
@@ -408,7 +408,7 @@ public class class82 {
                            if(class2.preferences.hideRoofs) {
                               var24 = BoundingBox2D.plane;
                            } else {
-                              label1749: {
+                              label1709: {
                                  var25 = 3;
                                  if(class160.cameraPitch < 310) {
                                     var26 = MouseInput.cameraX >> 7;
@@ -417,7 +417,7 @@ public class class82 {
                                     var29 = UrlRequest.localPlayer.y >> 7;
                                     if(var26 < 0 || var27 < 0 || var26 >= 104 || var27 >= 104) {
                                        var24 = BoundingBox2D.plane;
-                                       break label1749;
+                                       break label1709;
                                     }
 
                                     if((class61.tileSettings[BoundingBox2D.plane][var26][var27] & 4) != 0) {
@@ -591,8 +591,8 @@ public class class82 {
                         class48.region.draw(MouseInput.cameraX, GrandExchangeEvent.cameraZ, GZipDecompressor.cameraY, class160.cameraPitch, class240.cameraYaw, var23);
 
                         while(true) {
-                           BoundingBox var50 = (BoundingBox)class7.boundingBoxes.removeLast();
-                           if(var50 == null) {
+                           BoundingBox var49 = (BoundingBox)class7.boundingBoxes.removeLast();
+                           if(var49 == null) {
                               Graphics3D.Rasterizer3D_zoom = var31;
                               NPC.method1648();
                               class48.region.clearEntities();
@@ -600,13 +600,13 @@ public class class82 {
                               boolean var60 = false;
                               var33 = -1;
                               var34 = class94.playerIndexesCount;
-                              int[] var51 = class94.playerIndices;
+                              int[] var50 = class94.playerIndices;
 
                               for(var36 = 0; var36 < var34 + Client.npcIndexesCount; ++var36) {
                                  Object var37;
                                  if(var36 < var34) {
-                                    var37 = Client.cachedPlayers[var51[var36]];
-                                    if(var51[var36] == Client.field957) {
+                                    var37 = Client.cachedPlayers[var50[var36]];
+                                    if(var50[var36] == Client.field957) {
                                        var60 = true;
                                        var33 = var36;
                                        continue;
@@ -623,7 +623,7 @@ public class class82 {
                               }
 
                               for(var36 = 0; var36 < Client.field921; ++var36) {
-                                 var52 = Client.field923[var36];
+                                 var51 = Client.field923[var36];
                                  var38 = Client.field924[var36];
                                  var39 = Client.field926[var36];
                                  var40 = Client.field925[var36];
@@ -633,7 +633,7 @@ public class class82 {
                                     var62 = false;
 
                                     for(var42 = 0; var42 < var36; ++var42) {
-                                       if(var38 + 2 > Client.field924[var42] - Client.field925[var42] && var38 - var40 < Client.field924[var42] + 2 && var52 - var39 < Client.field926[var42] + Client.field923[var42] && var52 + var39 > Client.field923[var42] - Client.field926[var42] && Client.field924[var42] - Client.field925[var42] < var38) {
+                                       if(var38 + 2 > Client.field924[var42] - Client.field925[var42] && var38 - var40 < Client.field924[var42] + 2 && var51 - var39 < Client.field926[var42] + Client.field923[var42] && var51 + var39 > Client.field923[var42] - Client.field926[var42] && Client.field924[var42] - Client.field925[var42] < var38) {
                                           var38 = Client.field924[var42] - Client.field925[var42];
                                           var62 = true;
                                        }
@@ -642,7 +642,7 @@ public class class82 {
 
                                  Client.screenY = Client.field923[var36];
                                  Client.screenX = Client.field924[var36] = var38;
-                                 String var53 = Client.field997[var36];
+                                 String var52 = Client.field997[var36];
                                  if(Client.field990 == 0) {
                                     var43 = 16776960;
                                     if(Client.field927[var36] < 6) {
@@ -695,25 +695,25 @@ public class class82 {
                                     }
 
                                     if(Client.field900[var36] == 0) {
-                                       Friend.fontBold12.method4884(var53, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
                                     }
 
                                     if(Client.field900[var36] == 1) {
-                                       Friend.fontBold12.method4937(var53, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4937(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 2) {
-                                       Friend.fontBold12.method4890(var53, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4890(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 3) {
-                                       Friend.fontBold12.method4898(var53, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932, 150 - Client.field929[var36]);
+                                       Friend.fontBold12.method4898(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932, 150 - Client.field929[var36]);
                                     }
 
                                     if(Client.field900[var36] == 4) {
-                                       var44 = (150 - Client.field929[var36]) * (Friend.fontBold12.method4886(var53) + 100) / 150;
+                                       var44 = (150 - Client.field929[var36]) * (Friend.fontBold12.method4886(var52) + 100) / 150;
                                        Rasterizer2D.setInnerDrawRegion(var19 + Client.screenY - 50, var20, var19 + Client.screenY + 50, var20 + var22);
-                                       Friend.fontBold12.method4891(var53, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.method4891(var52, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                                     }
 
@@ -727,11 +727,11 @@ public class class82 {
                                        }
 
                                        Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
-                                       Friend.fontBold12.method4884(var53, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var21 + var19, var22 + var20);
                                     }
                                  } else {
-                                    Friend.fontBold12.method4884(var53, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
+                                    Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
                                  }
                               }
 
@@ -766,10 +766,10 @@ public class class82 {
 
                               Client.field1033[var10.boundsIndex] = true;
                               Rasterizer2D.setDrawRegion(var2, var3, var4, var5);
-                              continue label1625;
+                              continue label1611;
                            }
 
-                           var50.draw();
+                           var49.draw();
                         }
                      }
 
@@ -780,12 +780,12 @@ public class class82 {
                      }
 
                      if(var10.contentType == 1339) {
-                        class221 var65 = var10.method4148(false);
-                        if(var65 != null) {
+                        class221 var66 = var10.method4148(false);
+                        if(var66 != null) {
                            if(Client.field1062 < 3) {
-                              GrandExchangeEvent.compass.method5216(var12, var13, var65.field2715, var65.field2716, 25, 25, Client.mapAngle, 256, var65.field2717, var65.field2714);
+                              GrandExchangeEvent.compass.method5216(var12, var13, var66.field2715, var66.field2716, 25, 25, Client.mapAngle, 256, var66.field2717, var66.field2714);
                            } else {
-                              Rasterizer2D.method5104(var12, var13, 0, var65.field2717, var65.field2714);
+                              Rasterizer2D.method5104(var12, var13, 0, var66.field2717, var66.field2714);
                            }
                         }
 
@@ -872,9 +872,9 @@ public class class82 {
 
                                  if(var10.itemIds[var19] <= 0) {
                                     if(var10.field2829 != null && var19 < 20) {
-                                       SpritePixels var67 = var10.method4173(var19);
-                                       if(var67 != null) {
-                                          var67.drawAt(var22, var23);
+                                       SpritePixels var71 = var10.method4173(var19);
+                                       if(var71 != null) {
+                                          var71.drawAt(var22, var23);
                                        } else if(Widget.field2780) {
                                           class33.method344(var10);
                                        }
@@ -884,14 +884,14 @@ public class class82 {
                                     boolean var59 = false;
                                     var26 = var10.itemIds[var19] - 1;
                                     if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == class39.field506 && var19 == Client.field1073) {
-                                       SpritePixels var48;
+                                       SpritePixels var55;
                                        if(Client.itemSelectionState == 1 && var19 == class36.selectedItemIndex && var10.id == class18.field304) {
-                                          var48 = class1.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
+                                          var55 = class1.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
                                        } else {
-                                          var48 = class1.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
+                                          var55 = class1.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
                                        }
 
-                                       if(var48 != null) {
+                                       if(var55 != null) {
                                           if(var10 == class39.field506 && var19 == Client.field1073) {
                                              var24 = MouseInput.field679 - Client.field857;
                                              var25 = MouseInput.field682 * -469125321 - Client.field1039;
@@ -908,43 +908,43 @@ public class class82 {
                                                 var25 = 0;
                                              }
 
-                                             var48.method5211(var22 + var24, var23 + var25, 128);
+                                             var55.method5211(var22 + var24, var23 + var25, 128);
                                              if(var1 != -1) {
-                                                Widget var49 = var0[var1 & 65535];
-                                                if(var23 + var25 < Rasterizer2D.drawingAreaTop && var49.scrollY > 0) {
+                                                Widget var56 = var0[var1 & 65535];
+                                                if(var23 + var25 < Rasterizer2D.drawingAreaTop && var56.scrollY > 0) {
                                                    var29 = (Rasterizer2D.drawingAreaTop - var23 - var25) * Client.field847 / 3;
                                                    if(var29 > Client.field847 * 10) {
                                                       var29 = Client.field847 * 10;
                                                    }
 
-                                                   if(var29 > var49.scrollY) {
-                                                      var29 = var49.scrollY;
+                                                   if(var29 > var56.scrollY) {
+                                                      var29 = var56.scrollY;
                                                    }
 
-                                                   var49.scrollY -= var29;
+                                                   var56.scrollY -= var29;
                                                    Client.field1039 += var29;
-                                                   class33.method344(var49);
+                                                   class33.method344(var56);
                                                 }
 
-                                                if(var23 + var25 + 32 > Rasterizer2D.drawingAreaRight && var49.scrollY < var49.scrollHeight - var49.height) {
+                                                if(var23 + var25 + 32 > Rasterizer2D.drawingAreaRight && var56.scrollY < var56.scrollHeight - var56.height) {
                                                    var29 = (var25 + var23 + 32 - Rasterizer2D.drawingAreaRight) * Client.field847 / 3;
                                                    if(var29 > Client.field847 * 10) {
                                                       var29 = Client.field847 * 10;
                                                    }
 
-                                                   if(var29 > var49.scrollHeight - var49.height - var49.scrollY) {
-                                                      var29 = var49.scrollHeight - var49.height - var49.scrollY;
+                                                   if(var29 > var56.scrollHeight - var56.height - var56.scrollY) {
+                                                      var29 = var56.scrollHeight - var56.height - var56.scrollY;
                                                    }
 
-                                                   var49.scrollY += var29;
+                                                   var56.scrollY += var29;
                                                    Client.field1039 -= var29;
-                                                   class33.method344(var49);
+                                                   class33.method344(var56);
                                                 }
                                              }
                                           } else if(var10 == Friend.field742 && var19 == Client.field940) {
-                                             var48.method5211(var22, var23, 128);
+                                             var55.method5211(var22, var23, 128);
                                           } else {
-                                             var48.drawAt(var22, var23);
+                                             var55.drawAt(var22, var23);
                                           }
                                        } else {
                                           class33.method344(var10);
@@ -1003,7 +1003,7 @@ public class class82 {
                                     class33.method344(var10);
                                  }
                               } else {
-                                 String var70 = var10.text;
+                                 String var68 = var10.text;
                                  if(ClanMember.method1117(var10)) {
                                     var20 = var10.field2785;
                                     if(var10 == class29.field391 && var10.field2787 != 0) {
@@ -1011,7 +1011,7 @@ public class class82 {
                                     }
 
                                     if(var10.string1.length() > 0) {
-                                       var70 = var10.string1;
+                                       var68 = var10.string1;
                                     }
                                  } else {
                                     var20 = var10.textColor;
@@ -1021,28 +1021,28 @@ public class class82 {
                                  }
 
                                  if(var10.hasScript && var10.itemId != -1) {
-                                    ItemComposition var71 = KitDefinition.getItemDefinition(var10.itemId);
-                                    var70 = var71.name;
-                                    if(var70 == null) {
-                                       var70 = "null";
+                                    ItemComposition var69 = KitDefinition.getItemDefinition(var10.itemId);
+                                    var68 = var69.name;
+                                    if(var68 == null) {
+                                       var68 = "null";
                                     }
 
-                                    if((var71.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
-                                       var70 = Buffer.getColTags(16748608) + var70 + "</col>" + " " + 'x' + class61.method1015(var10.itemQuantity);
+                                    if((var69.isStackable == 1 || var10.itemQuantity != 1) && var10.itemQuantity != -1) {
+                                       var68 = Buffer.getColTags(16748608) + var68 + "</col>" + " " + 'x' + class61.method1015(var10.itemQuantity);
                                     }
                                  }
 
                                  if(var10 == Client.field958) {
                                     Object var10000 = null;
-                                    var70 = "Please wait...";
+                                    var68 = "Please wait...";
                                     var20 = var10.textColor;
                                  }
 
                                  if(!var10.hasScript) {
-                                    var70 = UnitPriceComparator.method115(var70, var10);
+                                    var68 = UnitPriceComparator.method115(var68, var10);
                                  }
 
-                                 var63.method4895(var70, var12, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.field2814, var10.field2823, var10.field2821);
+                                 var63.method4895(var68, var12, var13, var10.width, var10.height, var20, var10.textShadowed?0:-1, var10.field2814, var10.field2823, var10.field2821);
                               }
                            } else if(var10.type == 5) {
                               SpritePixels var64;
@@ -1100,7 +1100,7 @@ public class class82 {
                                  }
                               }
                            } else {
-                              ItemComposition var56;
+                              ItemComposition var53;
                               if(var10.type == 6) {
                                  boolean var57 = ClanMember.method1117(var10);
                                  if(var57) {
@@ -1109,35 +1109,35 @@ public class class82 {
                                     var20 = var10.field2806;
                                  }
 
-                                 Model var68 = null;
+                                 Model var65 = null;
                                  var22 = 0;
                                  if(var10.itemId != -1) {
-                                    var56 = KitDefinition.getItemDefinition(var10.itemId);
-                                    if(var56 != null) {
-                                       var56 = var56.method4716(var10.itemQuantity);
-                                       var68 = var56.getModel(1);
-                                       if(var68 != null) {
-                                          var68.calculateBoundsCylinder();
-                                          var22 = var68.modelHeight / 2;
+                                    var53 = KitDefinition.getItemDefinition(var10.itemId);
+                                    if(var53 != null) {
+                                       var53 = var53.method4716(var10.itemQuantity);
+                                       var65 = var53.getModel(1);
+                                       if(var65 != null) {
+                                          var65.calculateBoundsCylinder();
+                                          var22 = var65.modelHeight / 2;
                                        } else {
                                           class33.method344(var10);
                                        }
                                     }
                                  } else if(var10.modelType == 5) {
                                     if(var10.modelId == 0) {
-                                       var68 = Client.field1090.getModel((Sequence)null, -1, (Sequence)null, -1);
+                                       var65 = Client.field1090.getModel((Sequence)null, -1, (Sequence)null, -1);
                                     } else {
-                                       var68 = UrlRequest.localPlayer.getModel();
+                                       var65 = UrlRequest.localPlayer.getModel();
                                     }
                                  } else if(var20 == -1) {
-                                    var68 = var10.getModel((Sequence)null, -1, var57, UrlRequest.localPlayer.composition);
-                                    if(var68 == null && Widget.field2780) {
+                                    var65 = var10.getModel((Sequence)null, -1, var57, UrlRequest.localPlayer.composition);
+                                    if(var65 == null && Widget.field2780) {
                                        class33.method344(var10);
                                     }
                                  } else {
                                     Sequence var72 = Permission.getAnimation(var20);
-                                    var68 = var10.getModel(var72, var10.field2881, var57, UrlRequest.localPlayer.composition);
-                                    if(var68 == null && Widget.field2780) {
+                                    var65 = var10.getModel(var72, var10.field2881, var57, UrlRequest.localPlayer.composition);
+                                    if(var65 == null && Widget.field2780) {
                                        class33.method344(var10);
                                     }
                                  }
@@ -1145,15 +1145,15 @@ public class class82 {
                                  Graphics3D.method2607(var10.width / 2 + var12, var10.height / 2 + var13);
                                  var23 = Graphics3D.SINE[var10.rotationX] * var10.modelZoom >> 16;
                                  var24 = Graphics3D.COSINE[var10.rotationX] * var10.modelZoom >> 16;
-                                 if(var68 != null) {
+                                 if(var65 != null) {
                                     if(!var10.hasScript) {
-                                       var68.method2526(0, var10.rotationZ, 0, var10.rotationX, 0, var23, var24);
+                                       var65.method2526(0, var10.rotationZ, 0, var10.rotationX, 0, var23, var24);
                                     } else {
-                                       var68.calculateBoundsCylinder();
+                                       var65.calculateBoundsCylinder();
                                        if(var10.field2795) {
-                                          var68.method2527(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2808, var22 + var23 + var10.field2809, var24 + var10.field2809, var10.modelZoom);
+                                          var65.method2527(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2808, var22 + var23 + var10.field2809, var24 + var10.field2809, var10.modelZoom);
                                        } else {
-                                          var68.method2526(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2808, var23 + var22 + var10.field2809, var24 + var10.field2809);
+                                          var65.method2526(0, var10.rotationZ, var10.rotationY, var10.rotationX, var10.field2808, var23 + var22 + var10.field2809, var24 + var10.field2809);
                                        }
                                     }
                                  }
@@ -1174,22 +1174,22 @@ public class class82 {
                                     for(var21 = 0; var21 < var10.field2817; ++var21) {
                                        for(var22 = 0; var22 < var10.originalWidth; ++var22) {
                                           if(var10.itemIds[var20] > 0) {
-                                             var56 = KitDefinition.getItemDefinition(var10.itemIds[var20] - 1);
-                                             String var47;
-                                             if(var56.isStackable != 1 && var10.itemQuantities[var20] == 1) {
-                                                var47 = Buffer.getColTags(16748608) + var56.name + "</col>";
+                                             var53 = KitDefinition.getItemDefinition(var10.itemIds[var20] - 1);
+                                             String var54;
+                                             if(var53.isStackable != 1 && var10.itemQuantities[var20] == 1) {
+                                                var54 = Buffer.getColTags(16748608) + var53.name + "</col>";
                                              } else {
-                                                var47 = Buffer.getColTags(16748608) + var56.name + "</col>" + " " + 'x' + class61.method1015(var10.itemQuantities[var20]);
+                                                var54 = Buffer.getColTags(16748608) + var53.name + "</col>" + " " + 'x' + class61.method1015(var10.itemQuantities[var20]);
                                              }
 
                                              var25 = var22 * (var10.paddingX + 115) + var12;
                                              var26 = var13 + (var10.paddingY + 12) * var21;
                                              if(var10.field2814 == 0) {
-                                                var63.method4891(var47, var25, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.method4891(var54, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2814 == 1) {
-                                                var63.method4884(var47, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.method4884(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else {
-                                                var63.method4893(var47, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.method4893(var54, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
                                              }
                                           }
 
@@ -1201,21 +1201,21 @@ public class class82 {
                                  if(var10.type == 8 && var10 == ContextMenuRow.field1299 && Client.field980 == Client.field979) {
                                     var19 = 0;
                                     var20 = 0;
-                                    Font var54 = BaseVarType.font_p12full;
-                                    String var55 = var10.text;
+                                    Font var47 = BaseVarType.font_p12full;
+                                    String var48 = var10.text;
 
-                                    String var69;
-                                    for(var55 = UnitPriceComparator.method115(var55, var10); var55.length() > 0; var20 = var20 + var54.verticalSpace + 1) {
-                                       var24 = var55.indexOf("<br>");
+                                    String var70;
+                                    for(var48 = UnitPriceComparator.method115(var48, var10); var48.length() > 0; var20 = var20 + var47.verticalSpace + 1) {
+                                       var24 = var48.indexOf("<br>");
                                        if(var24 != -1) {
-                                          var69 = var55.substring(0, var24);
-                                          var55 = var55.substring(var24 + 4);
+                                          var70 = var48.substring(0, var24);
+                                          var48 = var48.substring(var24 + 4);
                                        } else {
-                                          var69 = var55;
-                                          var55 = "";
+                                          var70 = var48;
+                                          var48 = "";
                                        }
 
-                                       var25 = var54.method4886(var69);
+                                       var25 = var47.method4886(var70);
                                        if(var25 > var19) {
                                           var19 = var25;
                                        }
@@ -1239,20 +1239,20 @@ public class class82 {
 
                                     Rasterizer2D.Rasterizer2D_fillRectangle(var24, var25, var19, var20, 16777120);
                                     Rasterizer2D.drawRectangle(var24, var25, var19, var20, 0);
-                                    var55 = var10.text;
-                                    var26 = var25 + var54.verticalSpace + 2;
+                                    var48 = var10.text;
+                                    var26 = var25 + var47.verticalSpace + 2;
 
-                                    for(var55 = UnitPriceComparator.method115(var55, var10); var55.length() > 0; var26 = var26 + var54.verticalSpace + 1) {
-                                       var27 = var55.indexOf("<br>");
+                                    for(var48 = UnitPriceComparator.method115(var48, var10); var48.length() > 0; var26 = var26 + var47.verticalSpace + 1) {
+                                       var27 = var48.indexOf("<br>");
                                        if(var27 != -1) {
-                                          var69 = var55.substring(0, var27);
-                                          var55 = var55.substring(var27 + 4);
+                                          var70 = var48.substring(0, var27);
+                                          var48 = var48.substring(var27 + 4);
                                        } else {
-                                          var69 = var55;
-                                          var55 = "";
+                                          var70 = var48;
+                                          var48 = "";
                                        }
 
-                                       var54.method4891(var69, var24 + 3, var26, 0, -1);
+                                       var47.method4891(var70, var24 + 3, var26, 0, -1);
                                     }
                                  }
 
@@ -1295,7 +1295,7 @@ public class class82 {
                                           var34 = var33 * var26 >> 17;
                                           var35 = var33 * var26 + 1 >> 17;
                                           var36 = var26 * var32 >> 17;
-                                          var52 = var26 * var32 + 1 >> 17;
+                                          var51 = var26 * var32 + 1 >> 17;
                                           var23 = var19 - Rasterizer2D.draw_region_x;
                                           var24 = var20 - Rasterizer2D.drawingAreaTop;
                                           var38 = var23 + var34;
@@ -1303,8 +1303,8 @@ public class class82 {
                                           var40 = var23 + var27 - var35;
                                           int var41 = var34 + var23 + var27;
                                           var42 = var24 + var36;
-                                          var43 = var24 - var52;
-                                          var44 = var28 + var24 - var52;
+                                          var43 = var24 - var51;
+                                          var44 = var28 + var24 - var51;
                                           var45 = var36 + var24 + var28;
                                           Graphics3D.setRasterClippingEnabled(var38, var39, var40);
                                           Graphics3D.rasterFlat(var42, var43, var44, var38, var39, var40, var25);

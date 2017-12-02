@@ -928,11 +928,11 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                      }
                   }
 
-                  String var15 = var2.substring(6, var3);
+                  String var14 = var2.substring(6, var3);
                   boolean var7 = false;
                   boolean var8 = false;
                   int var9 = 0;
-                  int var10 = var15.length();
+                  int var10 = var14.length();
                   int var11 = 0;
 
                   boolean var6;
@@ -942,16 +942,16 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                         break;
                      }
 
-                     label183: {
-                        char var12 = var15.charAt(var11);
+                     label184: {
+                        char var12 = var14.charAt(var11);
                         if(var11 == 0) {
                            if(var12 == '-') {
                               var7 = true;
-                              break label183;
+                              break label184;
                            }
 
                            if(var12 == '+') {
-                              break label183;
+                              break label184;
                            }
                         }
 
@@ -991,7 +991,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                      ++var11;
                   }
 
-                  if(var6 && class228.method4195(var15) < 10) {
+                  if(var6 && class228.method4195(var14) < 10) {
                      this.error("wrongjava");
                      return;
                   }
@@ -1017,7 +1017,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          while(field654 == 0L || Preferences.currentTimeMs() < field654) {
             class225.field2739 = LoginPacket.timer.vmethod3075(field640, field636);
 
-            for(int var14 = 0; var14 < class225.field2739; ++var14) {
+            for(int var15 = 0; var15 < class225.field2739; ++var15) {
                this.method822();
             }
 

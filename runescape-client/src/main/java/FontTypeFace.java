@@ -357,9 +357,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
             }
          }
 
-         String var18 = var6.toString();
-         if(var18.length() > var5) {
-            var3[var12++] = var18.substring(var5, var18.length());
+         String var19 = var6.toString();
+         if(var19.length() > var5) {
+            var3[var12++] = var19.substring(var5, var19.length());
          }
 
          return var12;
@@ -653,9 +653,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
                         if(var8.startsWith("img=")) {
                            try {
                               var9 = class228.method4195(var8.substring(4));
-                              IndexedSprite var12 = modIcons[var9];
-                              var12.method5176(var2, var3 + this.verticalSpace - var12.originalHeight);
-                              var2 += var12.width;
+                              IndexedSprite var10 = modIcons[var9];
+                              var10.method5176(var2, var3 + this.verticalSpace - var10.originalHeight);
+                              var2 += var10.width;
                               var5 = -1;
                            } catch (Exception var14) {
                               ;
@@ -679,21 +679,21 @@ public abstract class FontTypeFace extends Rasterizer2D {
                      var2 += this.field3705[var7 + (var5 << 8)];
                   }
 
-                  int var11 = this.gylphHeights[var7];
+                  int var12 = this.gylphHeights[var7];
                   var9 = this.glyphWidths[var7];
                   if(var7 != ' ') {
                      if(field3714 == 256) {
                         if(shadow != -1) {
-                           renderShadeRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var11, var9, shadow);
+                           renderShadeRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var12, var9, shadow);
                         }
 
-                        this.renderRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var11, var9, color);
+                        this.renderRGB(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var12, var9, color);
                      } else {
                         if(shadow != -1) {
-                           renderShadeRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var11, var9, shadow, field3714);
+                           renderShadeRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7] + 1, var3 + this.verticalOffsets[var7] + 1, var12, var9, shadow, field3714);
                         }
 
-                        this.renderRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var11, var9, color, field3714);
+                        this.renderRGBA(this.gylphs[var7], var2 + this.horizontalOffsets[var7], var3 + this.verticalOffsets[var7], var12, var9, color, field3714);
                      }
                   } else if(field3722 > 0) {
                      field3723 += field3722;
@@ -701,16 +701,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
                      field3723 &= 255;
                   }
 
-                  int var10 = this.field3719[var7];
+                  int var13 = this.field3719[var7];
                   if(strikeRGB != -1) {
-                     Rasterizer2D.method5098(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var10, strikeRGB);
+                     Rasterizer2D.method5098(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var13, strikeRGB);
                   }
 
                   if(underlineRGB != -1) {
-                     Rasterizer2D.method5098(var2, var3 + this.verticalSpace + 1, var10, underlineRGB);
+                     Rasterizer2D.method5098(var2, var3 + this.verticalSpace + 1, var13, underlineRGB);
                   }
 
-                  var2 += var10;
+                  var2 += var13;
                   var5 = var7;
                }
             }
@@ -759,9 +759,9 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
                               ++var8;
                               var14 = class228.method4195(var11.substring(4));
-                              IndexedSprite var17 = modIcons[var14];
-                              var17.method5176(var12 + var2, var13 + (var3 + this.verticalSpace - var17.originalHeight));
-                              var2 += var17.width;
+                              IndexedSprite var15 = modIcons[var14];
+                              var15.method5176(var12 + var2, var13 + (var3 + this.verticalSpace - var15.originalHeight));
+                              var2 += var15.width;
                               var7 = -1;
                            } catch (Exception var19) {
                               ;
@@ -785,7 +785,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
                      var2 += this.field3705[var10 + (var7 << 8)];
                   }
 
-                  int var16 = this.gylphHeights[var10];
+                  int var17 = this.gylphHeights[var10];
                   var12 = this.glyphWidths[var10];
                   if(var4 != null) {
                      var13 = var4[var8];
@@ -803,16 +803,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
                   if(var10 != ' ') {
                      if(field3714 == 256) {
                         if(shadow != -1) {
-                           renderShadeRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var16, var12, shadow);
+                           renderShadeRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var17, var12, shadow);
                         }
 
-                        this.renderRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var16, var12, color);
+                        this.renderRGB(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var17, var12, color);
                      } else {
                         if(shadow != -1) {
-                           renderShadeRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var16, var12, shadow, field3714);
+                           renderShadeRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10] + 1, var3 + var14 + this.verticalOffsets[var10] + 1, var17, var12, shadow, field3714);
                         }
 
-                        this.renderRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var16, var12, color, field3714);
+                        this.renderRGBA(this.gylphs[var10], var13 + var2 + this.horizontalOffsets[var10], var3 + var14 + this.verticalOffsets[var10], var17, var12, color, field3714);
                      }
                   } else if(field3722 > 0) {
                      field3723 += field3722;
@@ -820,16 +820,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
                      field3723 &= 255;
                   }
 
-                  int var15 = this.field3719[var10];
+                  int var18 = this.field3719[var10];
                   if(strikeRGB != -1) {
-                     Rasterizer2D.method5098(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var15, strikeRGB);
+                     Rasterizer2D.method5098(var2, var3 + (int)((double)this.verticalSpace * 0.7D), var18, strikeRGB);
                   }
 
                   if(underlineRGB != -1) {
-                     Rasterizer2D.method5098(var2, var3 + this.verticalSpace, var15, underlineRGB);
+                     Rasterizer2D.method5098(var2, var3 + this.verticalSpace, var18, underlineRGB);
                   }
 
-                  var2 += var15;
+                  var2 += var18;
                   var7 = var10;
                }
             }

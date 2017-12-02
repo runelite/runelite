@@ -108,23 +108,23 @@ public class class192 {
                   var5 = Preferences.field1217 - 80;
                   var6 = 291;
                   if(var9 == 1 && var2 >= var5 - 75 && var2 <= var5 + 75 && var3 >= var6 - 20 && var3 <= var6 + 20) {
-                     label876: {
-                        String var10 = class22.method167("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
+                     label817: {
+                        String var7 = class22.method167("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
                         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
                            try {
-                              Desktop.getDesktop().browse(new URI(var10));
-                              break label876;
+                              Desktop.getDesktop().browse(new URI(var7));
+                              break label817;
                            } catch (Exception var14) {
                               ;
                            }
                         }
 
                         if(class56.field621.startsWith("win")) {
-                           class54.method766(var10, 0);
+                           class54.method766(var7, 0);
                         } else if(class56.field621.startsWith("mac")) {
-                           class35.method492(var10, 1, "openjs");
+                           class35.method492(var7, 1, "openjs");
                         } else {
-                           class54.method766(var10, 2);
+                           class54.method766(var7, 2);
                         }
                      }
                   }
@@ -245,11 +245,11 @@ public class class192 {
 
                         while(true) {
                            while(class230.method4200()) {
-                              boolean var7 = false;
+                              boolean var10 = false;
 
-                              for(int var8 = 0; var8 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var8) {
-                                 if(RSSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var8)) {
-                                    var7 = true;
+                              for(int var11 = 0; var11 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var11) {
+                                 if(RSSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var11)) {
+                                    var10 = true;
                                     break;
                                  }
                               }
@@ -270,7 +270,7 @@ public class class192 {
                                     class91.field1345 = 1;
                                  }
 
-                                 if(var7 && class91.username.length() < 320) {
+                                 if(var10 && class91.username.length() < 320) {
                                     class91.username = class91.username + RSSocket.field2186;
                                  }
                               } else if(class91.field1345 == 1) {
@@ -300,7 +300,7 @@ public class class192 {
                                     return;
                                  }
 
-                                 if(var7 && class91.password.length() < 20) {
+                                 if(var10 && class91.password.length() < 20) {
                                     class91.password = class91.password + RSSocket.field2186;
                                  }
                               }
@@ -348,23 +348,23 @@ public class class192 {
                            }
 
                            if(var9 == 1 && var2 >= class91.loginWindowX + 180 - 34 && var2 <= class91.loginWindowX + 34 + 180 && var3 >= 351 && var3 <= 363) {
-                              label889: {
-                                 String var11 = class22.method167("secure", true) + "m=totp-authenticator/disableTOTPRequest";
+                              label830: {
+                                 String var12 = class22.method167("secure", true) + "m=totp-authenticator/disableTOTPRequest";
                                  if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
                                     try {
-                                       Desktop.getDesktop().browse(new URI(var11));
-                                       break label889;
+                                       Desktop.getDesktop().browse(new URI(var12));
+                                       break label830;
                                     } catch (Exception var13) {
                                        ;
                                     }
                                  }
 
                                  if(class56.field621.startsWith("win")) {
-                                    class54.method766(var11, 0);
+                                    class54.method766(var12, 0);
                                  } else if(class56.field621.startsWith("mac")) {
-                                    class35.method492(var11, 1, "openjs");
+                                    class35.method492(var12, 1, "openjs");
                                  } else {
-                                    class54.method766(var11, 2);
+                                    class54.method766(var12, 2);
                                  }
                               }
                            }

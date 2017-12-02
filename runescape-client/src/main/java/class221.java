@@ -121,7 +121,7 @@ public class class221 extends CacheableNode {
                      char[] var13 = class278.field3732;
                      int var10 = 0;
 
-                     label121:
+                     label120:
                      while(true) {
                         char var11;
                         if(var10 >= var13.length) {
@@ -131,7 +131,7 @@ public class class221 extends CacheableNode {
                               var11 = var13[var10];
                               if(var11 == var7) {
                                  var8 = true;
-                                 break label121;
+                                 break label120;
                               }
                            }
 

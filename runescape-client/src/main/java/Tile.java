@@ -158,25 +158,25 @@ public final class Tile extends Node {
          if(var0.exists()) {
             class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          } else {
-            label36:
-            for(int var4 = 0; var4 < GrandExchangeOffer.field298.length; ++var4) {
+            label37:
+            for(int var1 = 0; var1 < GrandExchangeOffer.field298.length; ++var1) {
                for(var2 = 0; var2 < class115.cacheLocations.length; ++var2) {
-                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var4] + File.separatorChar + "random.dat");
+                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var1] + File.separatorChar + "random.dat");
                   if(var3.exists()) {
                      class157.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label36;
+                     break label37;
                   }
                }
             }
          }
 
          if(class157.randomDat == null) {
-            RandomAccessFile var1 = new RandomAccessFile(var0, "rw");
-            var2 = var1.read();
-            var1.seek(0L);
-            var1.write(var2);
-            var1.seek(0L);
-            var1.close();
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
             class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          }
       } catch (IOException var5) {

@@ -162,11 +162,11 @@ public class IndexData extends IndexDataBase {
          }
 
          if(this.referenceStore != null) {
-            int var13 = this.index;
+            int var5 = this.index;
             IndexFile var6 = this.referenceStore;
             FileSystem var7 = new FileSystem();
             var7.type = 0;
-            var7.hash = (long)var13;
+            var7.hash = (long)var5;
             var7.field3299 = var2;
             var7.index = var6;
             Deque var8 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
@@ -193,12 +193,12 @@ public class IndexData extends IndexDataBase {
          var2[var2.length - 2] = (byte)(super.archiveRevisions[var1] >> 8);
          var2[var2.length - 1] = (byte)super.archiveRevisions[var1];
          if(this.indexStore != null) {
-            IndexFile var5 = this.indexStore;
+            IndexFile var13 = this.indexStore;
             FileSystem var18 = new FileSystem();
             var18.type = 0;
             var18.hash = (long)var1;
             var18.field3299 = var2;
-            var18.index = var5;
+            var18.index = var13;
             Deque var19 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
             synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
                IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var18);

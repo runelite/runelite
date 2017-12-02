@@ -1249,9 +1249,9 @@ public class Region {
          Tile[][] var8;
          Tile var9;
          int var11;
+         int var14;
+         int var15;
          int var16;
-         int var22;
-         int var23;
          int var24;
          int var25;
          do {
@@ -1267,7 +1267,7 @@ public class Region {
                               int var18;
                               boolean var20;
                               int var21;
-                              Tile var35;
+                              Tile var36;
                               while(true) {
                                  do {
                                     var3 = (Tile)tileDeque.popFront();
@@ -1418,14 +1418,14 @@ public class Region {
                                     if((var13.renderFlag & var11) != 0) {
                                        var13.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var13.x - cameraX2 + var13.offsetX, var13.floor - cameraY2, var13.y - cameraZ2 + var13.offsetY, var13.hash);
                                     } else if(var13.renderFlag == 256) {
-                                       var22 = var13.x - cameraX2;
-                                       var25 = var13.floor - cameraY2;
+                                       var14 = var13.x - cameraX2;
+                                       var15 = var13.floor - cameraY2;
                                        var16 = var13.y - cameraZ2;
                                        var17 = var13.rotation;
                                        if(var17 != 1 && var17 != 2) {
-                                          var18 = var22;
+                                          var18 = var14;
                                        } else {
-                                          var18 = -var22;
+                                          var18 = -var14;
                                        }
 
                                        int var19;
@@ -1436,62 +1436,62 @@ public class Region {
                                        }
 
                                        if(var19 < var18) {
-                                          var13.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var22 + var13.offsetX, var25, var16 + var13.offsetY, var13.hash);
+                                          var13.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var14 + var13.offsetX, var15, var16 + var13.offsetY, var13.hash);
                                        } else if(var13.renderable2 != null) {
-                                          var13.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var22, var25, var16, var13.hash);
+                                          var13.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var14, var15, var16, var13.hash);
                                        }
                                     }
                                  }
 
                                  if(var20) {
-                                    GroundObject var14 = var3.groundObject;
-                                    if(var14 != null) {
-                                       var14.renderable.draw(0, pitchSin, pitchCos, yawSin, yawCos, var14.x - cameraX2, var14.floor - cameraY2, var14.y - cameraZ2, var14.hash);
+                                    GroundObject var22 = var3.groundObject;
+                                    if(var22 != null) {
+                                       var22.renderable.draw(0, pitchSin, pitchCos, yawSin, yawCos, var22.x - cameraX2, var22.floor - cameraY2, var22.y - cameraZ2, var22.hash);
                                     }
 
-                                    ItemLayer var15 = var3.itemLayer;
-                                    if(var15 != null && var15.height == 0) {
-                                       if(var15.middle != null) {
-                                          var15.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
+                                    ItemLayer var23 = var3.itemLayer;
+                                    if(var23 != null && var23.height == 0) {
+                                       if(var23.middle != null) {
+                                          var23.middle.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.flags);
                                        }
 
-                                       if(var15.top != null) {
-                                          var15.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
+                                       if(var23.top != null) {
+                                          var23.top.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.flags);
                                        }
 
-                                       if(var15.bottom != null) {
-                                          var15.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var15.x - cameraX2, var15.hash - cameraY2, var15.y - cameraZ2, var15.flags);
+                                       if(var23.bottom != null) {
+                                          var23.bottom.draw(0, pitchSin, pitchCos, yawSin, yawCos, var23.x - cameraX2, var23.hash - cameraY2, var23.y - cameraZ2, var23.flags);
                                        }
                                     }
                                  }
 
-                                 var22 = var3.flags;
-                                 if(var22 != 0) {
-                                    if(var4 < screenCenterX && (var22 & 4) != 0) {
-                                       var35 = var8[var4 + 1][var5];
-                                       if(var35 != null && var35.visible) {
-                                          tileDeque.addFront(var35);
+                                 var14 = var3.flags;
+                                 if(var14 != 0) {
+                                    if(var4 < screenCenterX && (var14 & 4) != 0) {
+                                       var36 = var8[var4 + 1][var5];
+                                       if(var36 != null && var36.visible) {
+                                          tileDeque.addFront(var36);
                                        }
                                     }
 
-                                    if(var5 < screenCenterZ && (var22 & 2) != 0) {
-                                       var35 = var8[var4][var5 + 1];
-                                       if(var35 != null && var35.visible) {
-                                          tileDeque.addFront(var35);
+                                    if(var5 < screenCenterZ && (var14 & 2) != 0) {
+                                       var36 = var8[var4][var5 + 1];
+                                       if(var36 != null && var36.visible) {
+                                          tileDeque.addFront(var36);
                                        }
                                     }
 
-                                    if(var4 > screenCenterX && (var22 & 1) != 0) {
-                                       var35 = var8[var4 - 1][var5];
-                                       if(var35 != null && var35.visible) {
-                                          tileDeque.addFront(var35);
+                                    if(var4 > screenCenterX && (var14 & 1) != 0) {
+                                       var36 = var8[var4 - 1][var5];
+                                       if(var36 != null && var36.visible) {
+                                          tileDeque.addFront(var36);
                                        }
                                     }
 
-                                    if(var5 > screenCenterZ && (var22 & 8) != 0) {
-                                       var35 = var8[var4][var5 - 1];
-                                       if(var35 != null && var35.visible) {
-                                          tileDeque.addFront(var35);
+                                    if(var5 > screenCenterZ && (var14 & 8) != 0) {
+                                       var36 = var8[var4][var5 - 1];
+                                       if(var36 != null && var36.visible) {
+                                          tileDeque.addFront(var36);
                                        }
                                     }
                                  }
@@ -1523,103 +1523,103 @@ public class Region {
                               }
 
                               try {
-                                 int var36 = var3.entityCount;
+                                 int var34 = var3.entityCount;
                                  var3.drawEntities = false;
                                  var21 = 0;
 
-                                 label599:
-                                 for(var11 = 0; var11 < var36; ++var11) {
+                                 label563:
+                                 for(var11 = 0; var11 < var34; ++var11) {
                                     var12 = var3.objects[var11];
                                     if(var12.cycle != cycle) {
-                                       for(var23 = var12.relativeX; var23 <= var12.offsetX; ++var23) {
-                                          for(var22 = var12.relativeY; var22 <= var12.offsetY; ++var22) {
-                                             var35 = var8[var23][var22];
-                                             if(var35.draw) {
+                                       for(var24 = var12.relativeX; var24 <= var12.offsetX; ++var24) {
+                                          for(var14 = var12.relativeY; var14 <= var12.offsetY; ++var14) {
+                                             var36 = var8[var24][var14];
+                                             if(var36.draw) {
                                                 var3.drawEntities = true;
-                                                continue label599;
+                                                continue label563;
                                              }
 
-                                             if(var35.wallCullDirection != 0) {
+                                             if(var36.wallCullDirection != 0) {
                                                 var16 = 0;
-                                                if(var23 > var12.relativeX) {
+                                                if(var24 > var12.relativeX) {
                                                    ++var16;
                                                 }
 
-                                                if(var23 < var12.offsetX) {
+                                                if(var24 < var12.offsetX) {
                                                    var16 += 4;
                                                 }
 
-                                                if(var22 > var12.relativeY) {
+                                                if(var14 > var12.relativeY) {
                                                    var16 += 8;
                                                 }
 
-                                                if(var22 < var12.offsetY) {
+                                                if(var14 < var12.offsetY) {
                                                    var16 += 2;
                                                 }
 
-                                                if((var16 & var35.wallCullDirection) == var3.wallCullOppositeDirection) {
+                                                if((var16 & var36.wallCullDirection) == var3.wallCullOppositeDirection) {
                                                    var3.drawEntities = true;
-                                                   continue label599;
+                                                   continue label563;
                                                 }
                                              }
                                           }
                                        }
 
                                        entityBuffer[var21++] = var12;
-                                       var23 = screenCenterX - var12.relativeX;
-                                       var22 = var12.offsetX - screenCenterX;
-                                       if(var22 > var23) {
-                                          var23 = var22;
+                                       var24 = screenCenterX - var12.relativeX;
+                                       var14 = var12.offsetX - screenCenterX;
+                                       if(var14 > var24) {
+                                          var24 = var14;
                                        }
 
-                                       var25 = screenCenterZ - var12.relativeY;
+                                       var15 = screenCenterZ - var12.relativeY;
                                        var16 = var12.offsetY - screenCenterZ;
-                                       if(var16 > var25) {
-                                          var12.drawPriority = var23 + var16;
+                                       if(var16 > var15) {
+                                          var12.drawPriority = var24 + var16;
                                        } else {
-                                          var12.drawPriority = var23 + var25;
+                                          var12.drawPriority = var24 + var15;
                                        }
                                     }
                                  }
 
                                  while(var21 > 0) {
                                     var11 = -50;
-                                    var24 = -1;
+                                    var25 = -1;
 
-                                    for(var23 = 0; var23 < var21; ++var23) {
-                                       GameObject var34 = entityBuffer[var23];
-                                       if(var34.cycle != cycle) {
-                                          if(var34.drawPriority > var11) {
-                                             var11 = var34.drawPriority;
-                                             var24 = var23;
-                                          } else if(var11 == var34.drawPriority) {
-                                             var25 = var34.x - cameraX2;
-                                             var16 = var34.y - cameraZ2;
-                                             var17 = entityBuffer[var24].x - cameraX2;
-                                             var18 = entityBuffer[var24].y - cameraZ2;
-                                             if(var25 * var25 + var16 * var16 > var17 * var17 + var18 * var18) {
-                                                var24 = var23;
+                                    for(var24 = 0; var24 < var21; ++var24) {
+                                       GameObject var35 = entityBuffer[var24];
+                                       if(var35.cycle != cycle) {
+                                          if(var35.drawPriority > var11) {
+                                             var11 = var35.drawPriority;
+                                             var25 = var24;
+                                          } else if(var11 == var35.drawPriority) {
+                                             var15 = var35.x - cameraX2;
+                                             var16 = var35.y - cameraZ2;
+                                             var17 = entityBuffer[var25].x - cameraX2;
+                                             var18 = entityBuffer[var25].y - cameraZ2;
+                                             if(var15 * var15 + var16 * var16 > var17 * var17 + var18 * var18) {
+                                                var25 = var24;
                                              }
                                           }
                                        }
                                     }
 
-                                    if(var24 == -1) {
+                                    if(var25 == -1) {
                                        break;
                                     }
 
-                                    GameObject var33 = entityBuffer[var24];
+                                    GameObject var33 = entityBuffer[var25];
                                     var33.cycle = cycle;
                                     if(!this.isAreaOccluded(var7, var33.relativeX, var33.offsetX, var33.relativeY, var33.offsetY, var33.renderable.modelHeight)) {
                                        var33.renderable.draw(var33.orientation, pitchSin, pitchCos, yawSin, yawCos, var33.x - cameraX2, var33.height - cameraY2, var33.y - cameraZ2, var33.hash);
                                     }
 
-                                    for(var22 = var33.relativeX; var22 <= var33.offsetX; ++var22) {
-                                       for(var25 = var33.relativeY; var25 <= var33.offsetY; ++var25) {
-                                          Tile var26 = var8[var22][var25];
+                                    for(var14 = var33.relativeX; var14 <= var33.offsetX; ++var14) {
+                                       for(var15 = var33.relativeY; var15 <= var33.offsetY; ++var15) {
+                                          Tile var26 = var8[var14][var15];
                                           if(var26.wallCullDirection != 0) {
                                              tileDeque.addFront(var26);
-                                          } else if((var22 != var4 || var25 != var5) && var26.visible) {
+                                          } else if((var14 != var4 || var15 != var5) && var26.visible) {
                                              tileDeque.addFront(var26);
                                           }
                                        }
@@ -1689,25 +1689,25 @@ public class Region {
                   var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var29.x - cameraX2 + var29.offsetX, var29.floor - cameraY2, var29.y - cameraZ2 + var29.offsetY, var29.hash);
                } else if(var29.renderFlag == 256) {
                   var11 = var29.x - cameraX2;
-                  var24 = var29.floor - cameraY2;
-                  var23 = var29.y - cameraZ2;
-                  var22 = var29.rotation;
-                  if(var22 != 1 && var22 != 2) {
-                     var25 = var11;
+                  var25 = var29.floor - cameraY2;
+                  var24 = var29.y - cameraZ2;
+                  var14 = var29.rotation;
+                  if(var14 != 1 && var14 != 2) {
+                     var15 = var11;
                   } else {
-                     var25 = -var11;
+                     var15 = -var11;
                   }
 
-                  if(var22 != 2 && var22 != 3) {
-                     var16 = var23;
+                  if(var14 != 2 && var14 != 3) {
+                     var16 = var24;
                   } else {
-                     var16 = -var23;
+                     var16 = -var24;
                   }
 
-                  if(var16 >= var25) {
-                     var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var24, var23 + var29.offsetY, var29.hash);
+                  if(var16 >= var15) {
+                     var29.renderable1.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11 + var29.offsetX, var25, var24 + var29.offsetY, var29.hash);
                   } else if(var29.renderable2 != null) {
-                     var29.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11, var24, var23, var29.hash);
+                     var29.renderable2.draw(0, pitchSin, pitchCos, yawSin, yawCos, var11, var25, var24, var29.hash);
                   }
                }
             }

@@ -317,13 +317,13 @@ public class class37 {
 
                      return 1;
                   } else if(var0 == 3623) {
-                     label396: {
+                     label403: {
                         var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                         String var5 = "<img=0>";
                         if(!var11.startsWith(var5)) {
                            var7 = "<img=1>";
                            if(!var11.startsWith(var7)) {
-                              break label396;
+                              break label403;
                            }
                         }
 

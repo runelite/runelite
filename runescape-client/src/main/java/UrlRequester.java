@@ -168,11 +168,11 @@ public class UrlRequester implements Runnable {
 
       class115.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", class1.userHome, "/tmp/", ""};
       GrandExchangeOffer.field298 = new String[]{".jagex_cache_" + AbstractByteBuffer.field2534, ".file_store_" + AbstractByteBuffer.field2534};
-      int var4 = 0;
+      int var9 = 0;
 
-      label95:
-      while(var4 < 4) {
-         class157.field2138 = RunException.method2970(var0, var1, var4);
+      label94:
+      while(var9 < 4) {
+         class157.field2138 = RunException.method2970(var0, var1, var9);
          if(!class157.field2138.exists()) {
             class157.field2138.mkdirs();
          }
@@ -187,12 +187,12 @@ public class UrlRequester implements Runnable {
 
          while(true) {
             if(var7 >= var6.length) {
-               break label95;
+               break label94;
             }
 
             File var8 = var6[var7];
             if(!AbstractSoundSystem.method2055(var8, false)) {
-               ++var4;
+               ++var9;
                break;
             }
 
@@ -200,8 +200,8 @@ public class UrlRequester implements Runnable {
          }
       }
 
-      File var9 = class157.field2138;
-      class160.field2148 = var9;
+      File var4 = class157.field2138;
+      class160.field2148 = var4;
       if(!class160.field2148.exists()) {
          throw new RuntimeException("");
       } else {

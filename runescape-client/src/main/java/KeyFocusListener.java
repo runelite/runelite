@@ -155,8 +155,10 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
          char var2 = var1.getKeyChar();
          if(var2 != 0 && var2 != '\uffff') {
             boolean var3;
-            if((var2 <= 0 || var2 >= 128) && (var2 < 160 || var2 > 255)) {
-               label60: {
+            if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
+               var3 = true;
+            } else {
+               label59: {
                   if(var2 != 0) {
                      char[] var7 = class277.cp1252AsciiExtension;
 
@@ -164,15 +166,13 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
                         char var6 = var7[var5];
                         if(var6 == var2) {
                            var3 = true;
-                           break label60;
+                           break label59;
                         }
                      }
                   }
 
                   var3 = false;
                }
-            } else {
-               var3 = true;
             }
 
             if(var3) {

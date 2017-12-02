@@ -107,16 +107,16 @@ public class class39 {
 
       switch(var3.field3388.field3365) {
       case 0:
-         if(var2 < this.field497 || var2 >= this.field497 + this.field501) {
-            return false;
-         }
-         break;
-      case 1:
-         if(var2 > this.field497 - this.field501 && var2 <= this.field497) {
+         if(var2 >= this.field497 && var2 < this.field497 + this.field501) {
             break;
          }
 
          return false;
+      case 1:
+         if(var2 <= this.field497 - this.field501 || var2 > this.field497) {
+            return false;
+         }
+         break;
       case 2:
          if(var2 < this.field497 - this.field501 / 2 || var2 > this.field501 / 2 + this.field497) {
             return false;

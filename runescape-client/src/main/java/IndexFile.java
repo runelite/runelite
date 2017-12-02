@@ -70,19 +70,23 @@ public final class IndexFile {
    public byte[] read(int var1) {
       CacheFile var2 = this.dataFile;
       synchronized(this.dataFile) {
-         Object var10000;
          try {
+            Object var10000;
             if(this.indexFile.length() < (long)(var1 * 6 + 6)) {
                var10000 = null;
                return (byte[])var10000;
-            }
-
-            this.indexFile.seek((long)(var1 * 6));
-            this.indexFile.read(IndexStore_buffer, 0, 6);
-            int var3 = ((IndexStore_buffer[0] & 255) << 16) + (IndexStore_buffer[2] & 255) + ((IndexStore_buffer[1] & 255) << 8);
-            int var4 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
-            if(var3 >= 0 && var3 <= this.maxSize) {
-               if(var4 > 0 && (long)var4 <= this.dataFile.length() / 520L) {
+            } else {
+               this.indexFile.seek((long)(var1 * 6));
+               this.indexFile.read(IndexStore_buffer, 0, 6);
+               int var3 = ((IndexStore_buffer[0] & 255) << 16) + (IndexStore_buffer[2] & 255) + ((IndexStore_buffer[1] & 255) << 8);
+               int var4 = (IndexStore_buffer[5] & 255) + ((IndexStore_buffer[3] & 255) << 16) + ((IndexStore_buffer[4] & 255) << 8);
+               if(var3 < 0 || var3 > this.maxSize) {
+                  var10000 = null;
+                  return (byte[])var10000;
+               } else if(var4 <= 0 || (long)var4 > this.dataFile.length() / 520L) {
+                  var10000 = null;
+                  return (byte[])var10000;
+               } else {
                   byte[] var5 = new byte[var3];
                   int var6 = 0;
                   int var7 = 0;
@@ -126,17 +130,10 @@ public final class IndexFile {
                   byte[] var18 = var5;
                   return var18;
                }
-
-               var10000 = null;
-               return (byte[])var10000;
             }
-
-            var10000 = null;
          } catch (IOException var16) {
             return null;
          }
-
-         return (byte[])var10000;
       }
    }
 
@@ -209,7 +206,7 @@ public final class IndexFile {
                if(var7 < var3) {
                   label145: {
                      int var9 = 0;
-                     int var10;
+                     int var14;
                      if(var4) {
                         this.dataFile.seek((long)(var6 * 520));
 
@@ -219,11 +216,11 @@ public final class IndexFile {
                            break label145;
                         }
 
-                        var10 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
+                        var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
                         int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                         var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                         int var12 = IndexStore_buffer[7] & 255;
-                        if(var10 != var1 || var8 != var11 || var12 != this.index) {
+                        if(var14 != var1 || var8 != var11 || var12 != this.index) {
                            var10000 = false;
                            return var10000;
                         }
@@ -260,13 +257,13 @@ public final class IndexFile {
                      IndexStore_buffer[7] = (byte)this.index;
                      this.dataFile.seek((long)(var6 * 520));
                      this.dataFile.write(IndexStore_buffer, 0, 8);
-                     var10 = var3 - var7;
-                     if(var10 > 512) {
-                        var10 = 512;
+                     var14 = var3 - var7;
+                     if(var14 > 512) {
+                        var14 = 512;
                      }
 
-                     this.dataFile.write(var2, var7, var10);
-                     var7 += var10;
+                     this.dataFile.write(var2, var7, var14);
+                     var7 += var14;
                      var6 = var9;
                      ++var8;
                      continue;

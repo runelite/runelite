@@ -132,15 +132,10 @@ public class RSSocket implements Runnable {
    }
 
    public void run() {
-      while(true) {
-         synchronized(this){}
-
-         while(true) {
-            boolean var14 = false;
-
-            int var1;
-            try {
-               var14 = true;
+      do {
+         int var1;
+         synchronized(this) {
+            while(true) {
                if(this.field2182 != null) {
                   return;
                }
@@ -151,59 +146,49 @@ public class RSSocket implements Runnable {
                   var1 = this.field2192 - this.field2187 + this.field2184;
                }
 
-               if(var1 <= 0) {
-                  try {
-                     this.field2183.flush();
-                  } catch (IOException var18) {
-                     this.field2182 = var18;
-                     return;
-                  }
-
-                  if(this.method3118()) {
-                     return;
-                  }
-
-                  try {
-                     this.wait();
-                  } catch (InterruptedException var19) {
-                     ;
-                  }
-                  continue;
+               if(var1 > 0) {
+                  break;
                }
 
-               var14 = false;
-            } finally {
-               if(var14) {
+               try {
+                  this.field2183.flush();
+               } catch (IOException var11) {
+                  this.field2182 = var11;
+                  return;
+               }
+
+               if(this.method3118()) {
+                  return;
+               }
+
+               try {
+                  this.wait();
+               } catch (InterruptedException var12) {
                   ;
                }
             }
-
-            try {
-               if(var1 + this.field2187 <= this.field2192) {
-                  this.field2183.write(this.field2185, this.field2187, var1);
-               } else {
-                  int var7 = this.field2192 - this.field2187;
-                  this.field2183.write(this.field2185, this.field2187, var7);
-                  this.field2183.write(this.field2185, 0, var1 - var7);
-               }
-            } catch (IOException var17) {
-               IOException var2 = var17;
-               synchronized(this) {
-                  this.field2182 = var2;
-                  return;
-               }
-            }
-
-            synchronized(this) {
-               this.field2187 = (var1 + this.field2187) % this.field2192;
-            }
-
-            if(!this.method3118()) {
-               break;
-            }
-
-            return;
          }
-      }
+
+         try {
+            if(var1 + this.field2187 <= this.field2192) {
+               this.field2183.write(this.field2185, this.field2187, var1);
+            } else {
+               int var7 = this.field2192 - this.field2187;
+               this.field2183.write(this.field2185, this.field2187, var7);
+               this.field2183.write(this.field2185, 0, var1 - var7);
+            }
+         } catch (IOException var10) {
+            IOException var2 = var10;
+            synchronized(this) {
+               this.field2182 = var2;
+               return;
+            }
+         }
+
+         synchronized(this) {
+            this.field2187 = (var1 + this.field2187) % this.field2192;
+         }
+      } while(!this.method3118());
+
    }
 }

@@ -237,8 +237,8 @@ public class PlayerComposition {
          if(var1 != null && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
             var7 = new int[12];
 
-            for(int var8 = 0; var8 < 12; ++var8) {
-               var7[var8] = this.equipmentIds[var8];
+            for(int var15 = 0; var15 < 12; ++var15) {
+               var7[var15] = this.equipmentIds[var15];
             }
 
             if(var1.leftHandItem >= 0) {
@@ -252,8 +252,8 @@ public class PlayerComposition {
             }
          }
 
-         Model var15 = (Model)field2737.get(var5);
-         if(var15 == null) {
+         Model var8 = (Model)field2737.get(var5);
+         if(var8 == null) {
             boolean var9 = false;
 
             int var11;
@@ -270,15 +270,15 @@ public class PlayerComposition {
 
             if(var9) {
                if(this.field2733 != -1L) {
-                  var15 = (Model)field2737.get(this.field2733);
+                  var8 = (Model)field2737.get(this.field2733);
                }
 
-               if(var15 == null) {
+               if(var8 == null) {
                   return null;
                }
             }
 
-            if(var15 == null) {
+            if(var8 == null) {
                ModelData[] var16 = new ModelData[12];
                var11 = 0;
 
@@ -301,37 +301,37 @@ public class PlayerComposition {
                   }
                }
 
-               ModelData var17 = new ModelData(var16, var11);
+               ModelData var18 = new ModelData(var16, var11);
 
                for(var13 = 0; var13 < 5; ++var13) {
                   if(this.bodyPartColours[var13] < colorsToReplace[var13].length) {
-                     var17.recolor(FrameMap.colorsToFind[var13], colorsToReplace[var13][this.bodyPartColours[var13]]);
+                     var18.recolor(FrameMap.colorsToFind[var13], colorsToReplace[var13][this.bodyPartColours[var13]]);
                   }
 
                   if(this.bodyPartColours[var13] < field2735[var13].length) {
-                     var17.recolor(BoundingBox3D.field245[var13], field2735[var13][this.bodyPartColours[var13]]);
+                     var18.recolor(BoundingBox3D.field245[var13], field2735[var13][this.bodyPartColours[var13]]);
                   }
                }
 
-               var15 = var17.light(64, 850, -30, -50, -30);
-               field2737.put(var15, var5);
+               var8 = var18.light(64, 850, -30, -50, -30);
+               field2737.put(var8, var5);
                this.field2733 = var5;
             }
          }
 
          if(var1 == null && var3 == null) {
-            return var15;
+            return var8;
          } else {
-            Model var18;
+            Model var17;
             if(var1 != null && var3 != null) {
-               var18 = var1.method4847(var15, var2, var3, var4);
+               var17 = var1.method4847(var8, var2, var3, var4);
             } else if(var1 != null) {
-               var18 = var1.method4837(var15, var2);
+               var17 = var1.method4837(var8, var2);
             } else {
-               var18 = var3.method4837(var15, var4);
+               var17 = var3.method4837(var8, var4);
             }
 
-            return var18;
+            return var17;
          }
       }
    }

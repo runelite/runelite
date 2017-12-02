@@ -232,17 +232,17 @@ public final class WallObject {
             if(var0.queueSize == 0) {
                var0.field1180 = 0;
             } else {
-               label469: {
+               label453: {
                   if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
                      var11 = Permission.getAnimation(var0.animation);
                      if(var0.field1155 > 0 && var11.precedenceAnimating == 0) {
                         ++var0.field1180;
-                        break label469;
+                        break label453;
                      }
 
                      if(var0.field1155 <= 0 && var11.priority == 0) {
                         ++var0.field1180;
-                        break label469;
+                        break label453;
                      }
                   }
 

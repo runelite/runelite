@@ -1349,7 +1349,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.light(var9.ambient + 64, var9.contrast + 768, -50, -10, -50);
+               var7 = var8.light(var9.ambient + 64, var9.contrast * 5 + 768, -50, -10, -50);
             }
 
             Widget_cachedModels.put(var7, (long)(var6 + (var5 << 16)));

@@ -147,7 +147,7 @@ public class class21 {
                                                                               while(true) {
                                                                                  while(true) {
                                                                                     while(true) {
-                                                                                       label374:
+                                                                                       label355:
                                                                                        while(true) {
                                                                                           ++var23;
                                                                                           if(var23 > var1) {
@@ -169,10 +169,10 @@ public class class21 {
                                                                                                                      if(var9 != 10) {
                                                                                                                         if(var9 != 21) {
                                                                                                                            if(var9 != 25) {
-                                                                                                                              int var17;
                                                                                                                               int var18;
                                                                                                                               int var19;
                                                                                                                               int var20;
+                                                                                                                              int var25;
                                                                                                                               if(var9 != 27) {
                                                                                                                                  if(var9 != 31) {
                                                                                                                                     if(var9 != 32) {
@@ -197,15 +197,15 @@ public class class21 {
                                                                                                                                                                               var44 = 0;
                                                                                                                                                                            }
 
-                                                                                                                                                                           var17 = 0;
+                                                                                                                                                                           var25 = 0;
 
                                                                                                                                                                            while(true) {
-                                                                                                                                                                              if(var17 >= var30) {
-                                                                                                                                                                                 continue label374;
+                                                                                                                                                                              if(var25 >= var30) {
+                                                                                                                                                                                 continue label355;
                                                                                                                                                                               }
 
-                                                                                                                                                                              class82.SHAPE_VERTICES[var13][var17] = var44;
-                                                                                                                                                                              ++var17;
+                                                                                                                                                                              class82.SHAPE_VERTICES[var13][var25] = var44;
+                                                                                                                                                                              ++var25;
                                                                                                                                                                            }
                                                                                                                                                                         }
 
@@ -259,22 +259,22 @@ public class class21 {
                                                                                                                                                                int[] var38 = new int[var46.localIntCount];
                                                                                                                                                                String[] var39 = new String[var46.localStringCount];
 
-                                                                                                                                                               for(var17 = 0; var17 < var46.intStackCount; ++var17) {
-                                                                                                                                                                  var38[var17] = class82.intStack[var17 + (class82.intStackSize - var46.intStackCount)];
+                                                                                                                                                               for(var25 = 0; var25 < var46.intStackCount; ++var25) {
+                                                                                                                                                                  var38[var25] = class82.intStack[var25 + (class82.intStackSize - var46.intStackCount)];
                                                                                                                                                                }
 
-                                                                                                                                                               for(var17 = 0; var17 < var46.stringStackCount; ++var17) {
-                                                                                                                                                                  var39[var17] = class82.scriptStringStack[var17 + (class35.scriptStringStackSize - var46.stringStackCount)];
+                                                                                                                                                               for(var25 = 0; var25 < var46.stringStackCount; ++var25) {
+                                                                                                                                                                  var39[var25] = class82.scriptStringStack[var25 + (class35.scriptStringStackSize - var46.stringStackCount)];
                                                                                                                                                                }
 
                                                                                                                                                                class82.intStackSize -= var46.intStackCount;
                                                                                                                                                                class35.scriptStringStackSize -= var46.stringStackCount;
-                                                                                                                                                               ScriptState var43 = new ScriptState();
-                                                                                                                                                               var43.invokedFromScript = var3;
-                                                                                                                                                               var43.invokedFromPc = var22;
-                                                                                                                                                               var43.savedLocalInts = class281.scriptLocalInts;
-                                                                                                                                                               var43.savedLocalStrings = class82.scriptLocalStrings;
-                                                                                                                                                               class82.scriptStack[++class82.scriptStackCount - 1] = var43;
+                                                                                                                                                               ScriptState var41 = new ScriptState();
+                                                                                                                                                               var41.invokedFromScript = var3;
+                                                                                                                                                               var41.invokedFromPc = var22;
+                                                                                                                                                               var41.savedLocalInts = class281.scriptLocalInts;
+                                                                                                                                                               var41.savedLocalStrings = class82.scriptLocalStrings;
+                                                                                                                                                               class82.scriptStack[++class82.scriptStackCount - 1] = var41;
                                                                                                                                                                var3 = var46;
                                                                                                                                                                var34 = var46.instructions;
                                                                                                                                                                var35 = var46.intOperands;
@@ -297,17 +297,17 @@ public class class21 {
                                                                                                                                                       if(var13 == 0) {
                                                                                                                                                          var27 = "";
                                                                                                                                                       } else if(var13 == 1) {
-                                                                                                                                                         String var42 = var37[var26];
-                                                                                                                                                         if(var42 == null) {
+                                                                                                                                                         String var40 = var37[var26];
+                                                                                                                                                         if(var40 == null) {
                                                                                                                                                             var27 = "null";
                                                                                                                                                          } else {
-                                                                                                                                                            var27 = var42.toString();
+                                                                                                                                                            var27 = var40.toString();
                                                                                                                                                          }
                                                                                                                                                       } else {
-                                                                                                                                                         var17 = var26 + var13;
+                                                                                                                                                         var25 = var26 + var13;
                                                                                                                                                          var18 = 0;
 
-                                                                                                                                                         for(var19 = var26; var19 < var17; ++var19) {
+                                                                                                                                                         for(var19 = var26; var19 < var25; ++var19) {
                                                                                                                                                             String var28 = var37[var19];
                                                                                                                                                             if(var28 == null) {
                                                                                                                                                                var18 += 4;
@@ -318,7 +318,7 @@ public class class21 {
 
                                                                                                                                                          StringBuilder var29 = new StringBuilder(var18);
 
-                                                                                                                                                         for(var20 = var26; var20 < var17; ++var20) {
+                                                                                                                                                         for(var20 = var26; var20 < var25; ++var20) {
                                                                                                                                                             String var21 = var37[var20];
                                                                                                                                                             if(var21 == null) {
                                                                                                                                                                var29.append("null");
@@ -364,17 +364,17 @@ public class class21 {
                                                                                                                                  if(var16 != null) {
                                                                                                                                     var15 = var16;
                                                                                                                                  } else {
-                                                                                                                                    byte[] var25 = Varbit.varbit_ref.getConfigData(14, var13);
+                                                                                                                                    byte[] var17 = Varbit.varbit_ref.getConfigData(14, var13);
                                                                                                                                     var16 = new Varbit();
-                                                                                                                                    if(var25 != null) {
-                                                                                                                                       var16.decode(new Buffer(var25));
+                                                                                                                                    if(var17 != null) {
+                                                                                                                                       var16.decode(new Buffer(var17));
                                                                                                                                     }
 
                                                                                                                                     Varbit.varbits.put(var16, (long)var13);
                                                                                                                                     var15 = var16;
                                                                                                                                  }
 
-                                                                                                                                 var17 = var15.configId;
+                                                                                                                                 var25 = var15.configId;
                                                                                                                                  var18 = var15.leastSignificantBit;
                                                                                                                                  var19 = var15.mostSignificantBit;
                                                                                                                                  var20 = class222.varpsMasks[var19 - var18];
@@ -383,7 +383,7 @@ public class class21 {
                                                                                                                                  }
 
                                                                                                                                  var20 <<= var18;
-                                                                                                                                 class222.widgetSettings[var17] = class222.widgetSettings[var17] & ~var20 | var14 << var18 & var20;
+                                                                                                                                 class222.widgetSettings[var25] = class222.widgetSettings[var25] & ~var20 | var14 << var18 & var20;
                                                                                                                               }
                                                                                                                            } else {
                                                                                                                               var13 = var35[var22];
@@ -394,13 +394,13 @@ public class class21 {
                                                                                                                               return;
                                                                                                                            }
 
-                                                                                                                           ScriptState var41 = class82.scriptStack[--class82.scriptStackCount];
-                                                                                                                           var3 = var41.invokedFromScript;
+                                                                                                                           ScriptState var43 = class82.scriptStack[--class82.scriptStackCount];
+                                                                                                                           var3 = var43.invokedFromScript;
                                                                                                                            var34 = var3.instructions;
                                                                                                                            var35 = var3.intOperands;
-                                                                                                                           var22 = var41.invokedFromPc;
-                                                                                                                           class281.scriptLocalInts = var41.savedLocalInts;
-                                                                                                                           class82.scriptLocalStrings = var41.savedLocalStrings;
+                                                                                                                           var22 = var43.invokedFromPc;
+                                                                                                                           class281.scriptLocalInts = var43.savedLocalInts;
+                                                                                                                           class82.scriptLocalStrings = var43.savedLocalStrings;
                                                                                                                         }
                                                                                                                      } else {
                                                                                                                         class82.intStackSize -= 2;
@@ -445,14 +445,14 @@ public class class21 {
                                                                                                 class82.intStack[++class82.intStackSize - 1] = var35[var22];
                                                                                              }
                                                                                           } else {
-                                                                                             boolean var40;
+                                                                                             boolean var42;
                                                                                              if(var3.intOperands[var22] == 1) {
-                                                                                                var40 = true;
+                                                                                                var42 = true;
                                                                                              } else {
-                                                                                                var40 = false;
+                                                                                                var42 = false;
                                                                                              }
 
-                                                                                             var14 = Coordinates.method4091(var9, var3, var40);
+                                                                                             var14 = Coordinates.method4091(var9, var3, var42);
                                                                                              switch(var14) {
                                                                                              case 0:
                                                                                                 return;
@@ -636,10 +636,10 @@ public class class21 {
                      WidgetNode var25 = (WidgetNode)Client.componentTable.get((long)var9.id);
                      if(var25 != null) {
                         if(var25.owner == 0 && MouseInput.field679 >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.field679 < var14 && MouseInput.field682 * -469125321 < var15 && !Client.isMenuOpen && !Client.field978) {
-                           for(ScriptEvent var26 = (ScriptEvent)Client.field1027.getFront(); var26 != null; var26 = (ScriptEvent)Client.field1027.getNext()) {
-                              if(var26.boolean1) {
-                                 var26.unlink();
-                                 var26.widget.field2862 = false;
+                           for(ScriptEvent var28 = (ScriptEvent)Client.field1027.getFront(); var28 != null; var28 = (ScriptEvent)Client.field1027.getNext()) {
+                              if(var28.boolean1) {
+                                 var28.unlink();
+                                 var28.widget.field2862 = false;
                               }
                            }
 
@@ -725,14 +725,14 @@ public class class21 {
                      }
 
                      if(var9.field2887) {
-                        ScriptEvent var27;
+                        ScriptEvent var26;
                         if(var29 && Client.mouseWheelRotation != 0 && var9.scrollListener != null) {
-                           var27 = new ScriptEvent();
-                           var27.boolean1 = true;
-                           var27.widget = var9;
-                           var27.field772 = Client.mouseWheelRotation;
-                           var27.objs = var9.scrollListener;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.boolean1 = true;
+                           var26.widget = var9;
+                           var26.field772 = Client.mouseWheelRotation;
+                           var26.objs = var9.scrollListener;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1064 != null || class39.field506 != null || Client.isMenuOpen) {
@@ -744,90 +744,90 @@ public class class21 {
                         if(!var9.field2762 && var20) {
                            var9.field2762 = true;
                            if(var9.field2847 != null) {
-                              var27 = new ScriptEvent();
-                              var27.boolean1 = true;
-                              var27.widget = var9;
-                              var27.field771 = MouseInput.mouseLastPressedX - var10;
-                              var27.field772 = MouseInput.mouseLastPressedY - var11;
-                              var27.objs = var9.field2847;
-                              Client.field1027.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.boolean1 = true;
+                              var26.widget = var9;
+                              var26.field771 = MouseInput.mouseLastPressedX - var10;
+                              var26.field772 = MouseInput.mouseLastPressedY - var11;
+                              var26.objs = var9.field2847;
+                              Client.field1027.addFront(var26);
                            }
                         }
 
                         if(var9.field2762 && var30 && var9.field2842 != null) {
-                           var27 = new ScriptEvent();
-                           var27.boolean1 = true;
-                           var27.widget = var9;
-                           var27.field771 = MouseInput.field679 - var10;
-                           var27.field772 = MouseInput.field682 * -469125321 - var11;
-                           var27.objs = var9.field2842;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.boolean1 = true;
+                           var26.widget = var9;
+                           var26.field771 = MouseInput.field679 - var10;
+                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.objs = var9.field2842;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(var9.field2762 && !var30) {
                            var9.field2762 = false;
                            if(var9.field2843 != null) {
-                              var27 = new ScriptEvent();
-                              var27.boolean1 = true;
-                              var27.widget = var9;
-                              var27.field771 = MouseInput.field679 - var10;
-                              var27.field772 = MouseInput.field682 * -469125321 - var11;
-                              var27.objs = var9.field2843;
-                              Client.field1029.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.boolean1 = true;
+                              var26.widget = var9;
+                              var26.field771 = MouseInput.field679 - var10;
+                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.objs = var9.field2843;
+                              Client.field1029.addFront(var26);
                            }
                         }
 
                         if(var30 && var9.field2873 != null) {
-                           var27 = new ScriptEvent();
-                           var27.boolean1 = true;
-                           var27.widget = var9;
-                           var27.field771 = MouseInput.field679 - var10;
-                           var27.field772 = MouseInput.field682 * -469125321 - var11;
-                           var27.objs = var9.field2873;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.boolean1 = true;
+                           var26.widget = var9;
+                           var26.field771 = MouseInput.field679 - var10;
+                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.objs = var9.field2873;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(!var9.field2862 && var29) {
                            var9.field2862 = true;
                            if(var9.mouseEnterListener != null) {
-                              var27 = new ScriptEvent();
-                              var27.boolean1 = true;
-                              var27.widget = var9;
-                              var27.field771 = MouseInput.field679 - var10;
-                              var27.field772 = MouseInput.field682 * -469125321 - var11;
-                              var27.objs = var9.mouseEnterListener;
-                              Client.field1027.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.boolean1 = true;
+                              var26.widget = var9;
+                              var26.field771 = MouseInput.field679 - var10;
+                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.objs = var9.mouseEnterListener;
+                              Client.field1027.addFront(var26);
                            }
                         }
 
                         if(var9.field2862 && var29 && var9.mouseHoverListener != null) {
-                           var27 = new ScriptEvent();
-                           var27.boolean1 = true;
-                           var27.widget = var9;
-                           var27.field771 = MouseInput.field679 - var10;
-                           var27.field772 = MouseInput.field682 * -469125321 - var11;
-                           var27.objs = var9.mouseHoverListener;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.boolean1 = true;
+                           var26.widget = var9;
+                           var26.field771 = MouseInput.field679 - var10;
+                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.objs = var9.mouseHoverListener;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(var9.field2862 && !var29) {
                            var9.field2862 = false;
                            if(var9.mouseExitListener != null) {
-                              var27 = new ScriptEvent();
-                              var27.boolean1 = true;
-                              var27.widget = var9;
-                              var27.field771 = MouseInput.field679 - var10;
-                              var27.field772 = MouseInput.field682 * -469125321 - var11;
-                              var27.objs = var9.mouseExitListener;
-                              Client.field1029.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.boolean1 = true;
+                              var26.widget = var9;
+                              var26.field771 = MouseInput.field679 - var10;
+                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.objs = var9.mouseExitListener;
+                              Client.field1029.addFront(var26);
                            }
                         }
 
                         if(var9.renderListener != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.renderListener;
-                           Client.field1028.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.renderListener;
+                           Client.field1028.addFront(var26);
                         }
 
                         int var23;
@@ -835,7 +835,7 @@ public class class21 {
                         int var31;
                         if(var9.configListenerArgs != null && Client.field1015 > var9.field2863) {
                            if(var9.configTriggers != null && Client.field1015 - var9.field2863 <= 32) {
-                              label729:
+                              label745:
                               for(var31 = var9.field2863; var31 < Client.field1015; ++var31) {
                                  var22 = Client.field988[var31 & 31];
 
@@ -845,15 +845,15 @@ public class class21 {
                                        var24.widget = var9;
                                        var24.objs = var9.configListenerArgs;
                                        Client.field1027.addFront(var24);
-                                       break label729;
+                                       break label745;
                                     }
                                  }
                               }
                            } else {
-                              var27 = new ScriptEvent();
-                              var27.widget = var9;
-                              var27.objs = var9.configListenerArgs;
-                              Client.field1027.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.widget = var9;
+                              var26.objs = var9.configListenerArgs;
+                              Client.field1027.addFront(var26);
                            }
 
                            var9.field2863 = Client.field1015;
@@ -861,7 +861,7 @@ public class class21 {
 
                         if(var9.tableListenerArgs != null && Client.field1017 > var9.field2893) {
                            if(var9.tableModTriggers != null && Client.field1017 - var9.field2893 <= 32) {
-                              label705:
+                              label721:
                               for(var31 = var9.field2893; var31 < Client.field1017; ++var31) {
                                  var22 = Client.interfaceItemTriggers[var31 & 31];
 
@@ -871,15 +871,15 @@ public class class21 {
                                        var24.widget = var9;
                                        var24.objs = var9.tableListenerArgs;
                                        Client.field1027.addFront(var24);
-                                       break label705;
+                                       break label721;
                                     }
                                  }
                               }
                            } else {
-                              var27 = new ScriptEvent();
-                              var27.widget = var9;
-                              var27.objs = var9.tableListenerArgs;
-                              Client.field1027.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.widget = var9;
+                              var26.objs = var9.tableListenerArgs;
+                              Client.field1027.addFront(var26);
                            }
 
                            var9.field2893 = Client.field1017;
@@ -887,7 +887,7 @@ public class class21 {
 
                         if(var9.skillListenerArgs != null && Client.field922 > var9.field2885) {
                            if(var9.skillTriggers != null && Client.field922 - var9.field2885 <= 32) {
-                              label681:
+                              label697:
                               for(var31 = var9.field2885; var31 < Client.field922; ++var31) {
                                  var22 = Client.field1018[var31 & 31];
 
@@ -897,71 +897,71 @@ public class class21 {
                                        var24.widget = var9;
                                        var24.objs = var9.skillListenerArgs;
                                        Client.field1027.addFront(var24);
-                                       break label681;
+                                       break label697;
                                     }
                                  }
                               }
                            } else {
-                              var27 = new ScriptEvent();
-                              var27.widget = var9;
-                              var27.objs = var9.skillListenerArgs;
-                              Client.field1027.addFront(var27);
+                              var26 = new ScriptEvent();
+                              var26.widget = var9;
+                              var26.objs = var9.skillListenerArgs;
+                              Client.field1027.addFront(var26);
                            }
 
                            var9.field2885 = Client.field922;
                         }
 
                         if(Client.chatCycle > var9.field2886 && var9.field2861 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2861;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2861;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1041 > var9.field2886 && var9.field2891 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2891;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2891;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1022 > var9.field2886 && var9.field2864 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2864;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2864;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1050 > var9.field2886 && var9.field2869 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2869;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2869;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1024 > var9.field2886 && var9.field2801 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2801;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2801;
+                           Client.field1027.addFront(var26);
                         }
 
                         if(Client.field1025 > var9.field2886 && var9.field2865 != null) {
-                           var27 = new ScriptEvent();
-                           var27.widget = var9;
-                           var27.objs = var9.field2865;
-                           Client.field1027.addFront(var27);
+                           var26 = new ScriptEvent();
+                           var26.widget = var9;
+                           var26.objs = var9.field2865;
+                           Client.field1027.addFront(var26);
                         }
 
                         var9.field2886 = Client.cycleCntr;
                         if(var9.field2751 != null) {
                            for(var31 = 0; var31 < Client.field1049; ++var31) {
-                              ScriptEvent var28 = new ScriptEvent();
-                              var28.widget = var9;
-                              var28.field768 = Client.field1051[var31];
-                              var28.field775 = Client.field1085[var31];
-                              var28.objs = var9.field2751;
-                              Client.field1027.addFront(var28);
+                              ScriptEvent var27 = new ScriptEvent();
+                              var27.widget = var9;
+                              var27.field768 = Client.field1051[var31];
+                              var27.field775 = Client.field1085[var31];
+                              var27.objs = var9.field2751;
+                              Client.field1027.addFront(var27);
                            }
                         }
                      }

@@ -91,7 +91,7 @@ public class FaceNormal {
                   Client.field935 = var20;
                   class47.field566 = var0;
                   if(var0.itemIds[var20] > 0) {
-                     label387: {
+                     label388: {
                         ItemComposition var8 = KitDefinition.getItemDefinition(var0.itemIds[var20] - 1);
                         boolean var9;
                         int var10;
@@ -102,7 +102,7 @@ public class FaceNormal {
                               if(var0.id != class18.field304 || var20 != class36.selectedItemIndex) {
                                  class37.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + Buffer.getColTags(16748608) + var8.name, 31, var8.id, var20, var0.id);
                               }
-                              break label387;
+                              break label388;
                            }
                         }
 
@@ -113,7 +113,7 @@ public class FaceNormal {
                               if((class86.field1278 & 16) == 16) {
                                  class37.addMenuEntry(Client.field986, Client.field910 + " " + "->" + " " + Buffer.getColTags(16748608) + var8.name, 32, var8.id, var20, var0.id);
                               }
-                              break label387;
+                              break label388;
                            }
                         }
 

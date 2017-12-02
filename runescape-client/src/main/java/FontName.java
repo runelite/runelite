@@ -142,8 +142,8 @@ public class FontName {
                throw new IOException();
             }
          } catch (Exception var27) {
-            for(int var23 = 0; var23 < 24; ++var23) {
-               var8[var23] = -1;
+            for(int var10 = 0; var10 < 24; ++var10) {
+               var8[var10] = -1;
             }
          }
 
@@ -170,8 +170,8 @@ public class FontName {
       var20.putShort(var28.offset);
       var20.putBytes(var28.payload, 0, var28.offset);
       byte[] var11 = var20.payload;
-      String var10 = BoundingBox3D.method51(var11, 0, var11.length);
-      String var12 = var10;
+      String var22 = BoundingBox3D.method51(var11, 0, var11.length);
+      String var12 = var22;
 
       try {
          URL var13 = new URL(class22.method167("services", false) + "m=accountappeal/login.ws");
@@ -190,14 +190,14 @@ public class FontName {
             if(var17 == -1) {
                var15.close();
                var16.close();
-               String var21 = new String(var20.payload);
-               if(var21.startsWith("OFFLINE")) {
+               String var23 = new String(var20.payload);
+               if(var23.startsWith("OFFLINE")) {
                   return 4;
-               } else if(var21.startsWith("WRONG")) {
+               } else if(var23.startsWith("WRONG")) {
                   return 7;
-               } else if(var21.startsWith("RELOAD")) {
+               } else if(var23.startsWith("RELOAD")) {
                   return 3;
-               } else if(var21.startsWith("Not permitted for social network accounts.")) {
+               } else if(var23.startsWith("Not permitted for social network accounts.")) {
                   return 6;
                } else {
                   var20.decryptXtea(var6);
@@ -206,17 +206,17 @@ public class FontName {
                      --var20.offset;
                   }
 
-                  var21 = new String(var20.payload, 0, var20.offset);
+                  var23 = new String(var20.payload, 0, var20.offset);
                   boolean var18;
-                  if(var21 == null) {
+                  if(var23 == null) {
                      var18 = false;
                   } else {
-                     label121: {
+                     label130: {
                         try {
-                           new URL(var21);
+                           new URL(var23);
                         } catch (MalformedURLException var25) {
                            var18 = false;
-                           break label121;
+                           break label130;
                         }
 
                         var18 = true;
@@ -228,7 +228,7 @@ public class FontName {
                   } else {
                      if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
                         try {
-                           Desktop.getDesktop().browse(new URI(var21));
+                           Desktop.getDesktop().browse(new URI(var23));
                            return 2;
                         } catch (Exception var24) {
                            ;
@@ -236,11 +236,11 @@ public class FontName {
                      }
 
                      if(class56.field621.startsWith("win")) {
-                        class54.method766(var21, 0);
+                        class54.method766(var23, 0);
                      } else if(class56.field621.startsWith("mac")) {
-                        class35.method492(var21, 1, "openjs");
+                        class35.method492(var23, 1, "openjs");
                      } else {
-                        class54.method766(var21, 2);
+                        class54.method766(var23, 2);
                      }
 
                      return 2;

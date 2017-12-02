@@ -1054,18 +1054,18 @@ public enum class27 implements Enumerated {
                         int var27 = var25 >> 11 & 63;
                         BoundingBox2D.method39(var1, var0, var27, var26.itemId);
                         Client.itemSelectionState = 0;
-                        int var19 = class36.getWidgetConfig(var26);
-                        var14 = var19 >> 11 & 63;
-                        String var20;
+                        int var15 = class36.getWidgetConfig(var26);
+                        var14 = var15 >> 11 & 63;
+                        String var19;
                         if(var14 == 0) {
-                           var20 = null;
+                           var19 = null;
                         } else if(var26.selectedAction != null && var26.selectedAction.trim().length() != 0) {
-                           var20 = var26.selectedAction;
+                           var19 = var26.selectedAction;
                         } else {
-                           var20 = null;
+                           var19 = null;
                         }
 
-                        Client.field986 = var20;
+                        Client.field986 = var19;
                         if(Client.field986 == null) {
                            Client.field986 = "Null";
                         }
@@ -1359,7 +1359,7 @@ public enum class27 implements Enumerated {
                               Client.field888.method1862(var17);
                            }
                         } else {
-                           label876: {
+                           label1046: {
                               if(var2 != 57) {
                                  if(var2 == 58) {
                                     var26 = TextureProvider.getWidgetChild(var1, var0);
@@ -1373,7 +1373,7 @@ public enum class27 implements Enumerated {
                                        var17.packetBuffer.writeIntLE16(var0);
                                        Client.field888.method1862(var17);
                                     }
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 == 1001) {
@@ -1389,7 +1389,7 @@ public enum class27 implements Enumerated {
                                     var8.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                                     var8.packetBuffer.putShort(Client.baseY + var1);
                                     Client.field888.method1862(var8);
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 == 1002) {
@@ -1400,7 +1400,7 @@ public enum class27 implements Enumerated {
                                     var8 = FileSystem.method4252(ClientPacket.field2390, Client.field888.field1449);
                                     var8.packetBuffer.putShort(var3 >> 14 & 32767);
                                     Client.field888.method1862(var8);
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 == 1003) {
@@ -1421,7 +1421,7 @@ public enum class27 implements Enumerated {
                                           Client.field888.method1862(var10);
                                        }
                                     }
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 == 1004) {
@@ -1432,7 +1432,7 @@ public enum class27 implements Enumerated {
                                     var8 = FileSystem.method4252(ClientPacket.field2402, Client.field888.field1449);
                                     var8.packetBuffer.writeIntLE16(var3);
                                     Client.field888.method1862(var8);
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 == 1005) {
@@ -1448,14 +1448,14 @@ public enum class27 implements Enumerated {
                                     Client.mouseCrosshair = 0;
                                     Friend.field742 = VertexNormal.getWidget(var1);
                                     Client.field940 = var0;
-                                    break label876;
+                                    break label1046;
                                  }
 
                                  if(var2 != 1007) {
-                                    if(var2 == 1011 || var2 == 1008 || var2 == 1009 || var2 == 1010 || var2 == 1012) {
+                                    if(var2 == 1008 || var2 == 1009 || var2 == 1011 || var2 == 1010 || var2 == 1012) {
                                        class61.renderOverview.method5392(var2, var3, new Coordinates(var0), new Coordinates(var1));
                                     }
-                                    break label876;
+                                    break label1046;
                                  }
                               }
 
@@ -1483,85 +1483,85 @@ public enum class27 implements Enumerated {
                                        var14 = var3 - 1;
                                        boolean var12 = (var13 >> var14 + 1 & 1) != 0;
                                        if(var12) {
-                                          PacketNode var15;
+                                          PacketNode var20;
                                           if(var3 == 1) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2367, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2367, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 2) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2325, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2325, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 3) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2404, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2404, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 4) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2406, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2406, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 5) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2331, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2331, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 6) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2400, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2400, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 7) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2371, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2371, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 8) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2379, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2379, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 9) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2327, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2327, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
 
                                           if(var3 == 10) {
-                                             var15 = FileSystem.method4252(ClientPacket.field2319, Client.field888.field1449);
-                                             var15.packetBuffer.putInt(var1);
-                                             var15.packetBuffer.putShort(var0);
-                                             var15.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var15);
+                                             var20 = FileSystem.method4252(ClientPacket.field2319, Client.field888.field1449);
+                                             var20.packetBuffer.putInt(var1);
+                                             var20.packetBuffer.putShort(var0);
+                                             var20.packetBuffer.putShort(var22);
+                                             Client.field888.method1862(var20);
                                           }
                                        }
                                     }

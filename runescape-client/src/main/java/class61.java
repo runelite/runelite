@@ -259,18 +259,16 @@ public final class class61 {
 
                var10 = var8 + var4.pathX[0];
                var11 = var9 + var4.pathY[0];
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field814 = true;
-                     var4.field833 = var10;
-                     var4.field834 = var11;
-                  } else {
-                     var4.field814 = false;
-                     var4.method1085(var10, var11, class94.field1388[var1]);
-                  }
-               } else {
+               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1082(var10, var11);
                   var4.field814 = false;
+               } else if(var2) {
+                  var4.field814 = true;
+                  var4.field833 = var10;
+                  var4.field834 = var11;
+               } else {
+                  var4.field814 = false;
+                  var4.method1085(var10, var11, class94.field1388[var1]);
                }
 
                var4.field821 = (byte)(var7 + var4.field821 & 3);

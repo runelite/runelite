@@ -74,16 +74,16 @@ public abstract class class168 {
                   break;
                }
 
-               label272: {
+               label271: {
                   char var12 = var3.charAt(var11);
                   if(var11 == 0) {
                      if(var12 == '-') {
                         var7 = true;
-                        break label272;
+                        break label271;
                      }
 
                      if(var12 == '+') {
-                        break label272;
+                        break label271;
                      }
                   }
 

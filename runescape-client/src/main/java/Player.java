@@ -371,7 +371,7 @@ public final class Player extends Actor {
                   int[] var14 = Client.field1106;
                   int var15 = 0;
 
-                  label574:
+                  label548:
                   while(true) {
                      int var16;
                      if(var15 >= 128) {
@@ -410,20 +410,20 @@ public final class Player extends Actor {
                            int[][] var34 = var12.flags;
 
                            boolean var36;
-                           label560:
+                           label534:
                            while(true) {
-                              label558:
+                              label532:
                               while(true) {
                                  do {
                                     do {
                                        do {
-                                          label535:
+                                          label509:
                                           do {
                                              if(var40 == var24) {
                                                 class167.field2217 = var17;
                                                 class167.field2215 = var18;
                                                 var36 = false;
-                                                break label560;
+                                                break label534;
                                              }
 
                                              var17 = class167.field2220[var24];
@@ -437,7 +437,7 @@ public final class Player extends Actor {
                                                 class167.field2217 = var17;
                                                 class167.field2215 = var18;
                                                 var36 = true;
-                                                break label560;
+                                                break label534;
                                              }
 
                                              var28 = class167.field2216[var37][var38] + 1;
@@ -570,7 +570,7 @@ public final class Player extends Actor {
                                              if(var37 > 0 && var38 < 128 - var9 && class167.field2218[var37 - 1][var38 + 1] == 0 && (var34[var26 - 1][var9 + var27] & 19136824) == 0) {
                                                 for(var29 = 1; var29 < var9; ++var29) {
                                                    if((var34[var26 - 1][var29 + var27] & 19136830) != 0 || (var34[var29 + (var26 - 1)][var9 + var27] & 19137016) != 0) {
-                                                      continue label535;
+                                                      continue label509;
                                                    }
                                                 }
 
@@ -587,7 +587,7 @@ public final class Player extends Actor {
 
                                  for(var29 = 1; var29 < var9; ++var29) {
                                     if((var34[var26 + var29][var27 + var9] & 19137016) != 0 || (var34[var9 + var26][var27 + var29] & 19136995) != 0) {
-                                       continue label558;
+                                       continue label532;
                                     }
                                  }
 
@@ -603,7 +603,7 @@ public final class Player extends Actor {
                         }
 
                         int var8;
-                        label613: {
+                        label587: {
                            var16 = var5 - 64;
                            var17 = var6 - 64;
                            var18 = class167.field2217;
@@ -649,7 +649,7 @@ public final class Player extends Actor {
 
                               if(var38 == Integer.MAX_VALUE) {
                                  var8 = -1;
-                                 break label613;
+                                 break label587;
                               }
                            }
 
@@ -704,7 +704,7 @@ public final class Player extends Actor {
 
                         while(true) {
                            if(var16 >= var15 - 1) {
-                              break label574;
+                              break label548;
                            }
 
                            var4.method1083(Client.field1105[var16], Client.field1106[var16], (byte)2);

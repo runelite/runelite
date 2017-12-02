@@ -237,7 +237,7 @@ public class ItemComposition extends CacheableNode {
    public int ambient;
    @ObfuscatedName("bc")
    @ObfuscatedGetter(
-      intValue = -1700628889
+      intValue = -1199119237
    )
    @Export("contrast")
    public int contrast;
@@ -463,7 +463,7 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 113) {
             this.ambient = var1.readByte();
          } else if(var2 == 114) {
-            this.contrast = var1.readByte() * 5;
+            this.contrast = var1.readByte();
          } else if(var2 == 115) {
             this.int1 = var1.readUnsignedByte();
          } else if(var2 == 139) {
@@ -662,7 +662,7 @@ public class ItemComposition extends CacheableNode {
                }
             }
 
-            var5 = var6.light(this.ambient + 64, this.contrast + 768, -50, -10, -50);
+            var5 = var6.light(this.ambient + 64, this.contrast * 5 + 768, -50, -10, -50);
             var5.field1851 = true;
             itemModelCache.put(var5, (long)this.id);
             return var5;

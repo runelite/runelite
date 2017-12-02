@@ -113,11 +113,11 @@ public final class class41 {
          this.field527 = this.field519.method286() * 64;
          this.field528 = (this.field519.method285() - this.field519.method340() + 1) * 64;
          this.field529 = (this.field519.method287() - this.field519.method286() + 1) * 64;
-         int var9 = this.field519.method285() - this.field519.method340() + 1;
+         int var18 = this.field519.method285() - this.field519.method340() + 1;
          int var10 = this.field519.method287() - this.field519.method286() + 1;
          System.nanoTime();
          System.nanoTime();
-         this.field522 = new class34[var9][var10];
+         this.field522 = new class34[var18][var10];
          Iterator var11 = this.field519.field541.iterator();
 
          int var14;
@@ -132,11 +132,11 @@ public final class class41 {
             this.field522[var15][var16].method348(var12, this.field519.field544);
          }
 
-         for(int var18 = 0; var18 < var9; ++var18) {
-            for(int var19 = 0; var19 < var10; ++var19) {
-               if(this.field522[var18][var19] == null) {
-                  this.field522[var18][var19] = new class34(this.field519.method340() + var18, this.field519.method286() + var19, this.field519.method270(), this.field525);
-                  this.field522[var18][var19].method363(this.field519.field542, this.field519.field544);
+         for(int var19 = 0; var19 < var18; ++var19) {
+            for(int var20 = 0; var20 < var10; ++var20) {
+               if(this.field522[var19][var20] == null) {
+                  this.field522[var19][var20] = new class34(this.field519.method340() + var19, this.field519.method286() + var20, this.field519.method270(), this.field525);
+                  this.field522[var19][var20].method363(this.field519.field542, this.field519.field544);
                }
             }
          }
@@ -145,19 +145,19 @@ public final class class41 {
          System.nanoTime();
          if(var1.method4273(class40.field513.field514, var2)) {
             byte[] var27 = var1.takeRecordByNames(class40.field513.field514, var2);
-            BufferedImage var20 = null;
+            BufferedImage var21 = null;
 
             SpritePixels var28;
-            label44: {
+            label46: {
                try {
-                  var20 = ImageIO.read(new ByteArrayInputStream(var27));
-                  var14 = var20.getWidth();
-                  var15 = var20.getHeight();
-                  int[] var21 = new int[var14 * var15];
-                  PixelGrabber var17 = new PixelGrabber(var20, 0, 0, var14, var15, var21, 0, var14);
+                  var21 = ImageIO.read(new ByteArrayInputStream(var27));
+                  var14 = var21.getWidth();
+                  var15 = var21.getHeight();
+                  int[] var22 = new int[var14 * var15];
+                  PixelGrabber var17 = new PixelGrabber(var21, 0, 0, var14, var15, var22, 0, var14);
                   var17.grabPixels();
-                  var28 = new SpritePixels(var21, var14, var15);
-                  break label44;
+                  var28 = new SpritePixels(var22, var14, var15);
+                  break label46;
                } catch (IOException var25) {
                   ;
                } catch (InterruptedException var26) {

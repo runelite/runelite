@@ -212,55 +212,55 @@ public class MachineInfo extends Node {
          this.javaVendorType = 4;
       }
 
-      int var6 = 2;
+      int var9 = 2;
       int var7 = 0;
 
       char var8;
       try {
-         while(var6 < var5.length()) {
-            var8 = var5.charAt(var6);
+         while(var9 < var5.length()) {
+            var8 = var5.charAt(var9);
             if(var8 < '0' || var8 > '9') {
                break;
             }
 
             var7 = var8 - '0' + var7 * 10;
-            ++var6;
+            ++var9;
          }
       } catch (Exception var16) {
          ;
       }
 
       this.javaVersionMajor = var7;
-      var6 = var5.indexOf(46, 2) + 1;
+      var9 = var5.indexOf(46, 2) + 1;
       var7 = 0;
 
       try {
-         while(var6 < var5.length()) {
-            var8 = var5.charAt(var6);
+         while(var9 < var5.length()) {
+            var8 = var5.charAt(var9);
             if(var8 < '0' || var8 > '9') {
                break;
             }
 
             var7 = var7 * 10 + (var8 - '0');
-            ++var6;
+            ++var9;
          }
       } catch (Exception var15) {
          ;
       }
 
       this.javaVersionMinor = var7;
-      var6 = var5.indexOf(95, 4) + 1;
+      var9 = var5.indexOf(95, 4) + 1;
       var7 = 0;
 
       try {
-         while(var6 < var5.length()) {
-            var8 = var5.charAt(var6);
+         while(var9 < var5.length()) {
+            var8 = var5.charAt(var9);
             if(var8 < '0' || var8 > '9') {
                break;
             }
 
             var7 = var8 - '0' + var7 * 10;
-            ++var6;
+            ++var9;
          }
       } catch (Exception var14) {
          ;

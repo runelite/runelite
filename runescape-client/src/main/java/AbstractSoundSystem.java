@@ -537,9 +537,9 @@ public class AbstractSoundSystem {
                   method2057(var3.children, var3.id);
                }
 
-               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
-               if(var4 != null) {
-                  var5 = var4.id;
+               WidgetNode var7 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var7 != null) {
+                  var5 = var7.id;
                   if(GraphicsObject.loadWidget(var5)) {
                      method2057(Widget.widgets[var5], -1);
                   }
@@ -548,8 +548,8 @@ public class AbstractSoundSystem {
 
             if(var3.type == 6) {
                if(var3.field2806 != -1 || var3.field2807 != -1) {
-                  boolean var7 = ClanMember.method1117(var3);
-                  if(var7) {
+                  boolean var4 = ClanMember.method1117(var3);
+                  if(var4) {
                      var5 = var3.field2807;
                   } else {
                      var5 = var3.field2806;

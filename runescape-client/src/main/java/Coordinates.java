@@ -136,50 +136,50 @@ public class Coordinates {
          return VertexNormal.method2601(var0, var1, var2);
       } else {
          byte var3;
-         Widget var69;
+         Widget var70;
          if(var0 < 1700) {
-            var69 = var2?class139.field2008:AttackOption.field1306;
+            var70 = var2?class139.field2008:AttackOption.field1306;
             if(var0 == 1600) {
-               class82.intStack[++class82.intStackSize - 1] = var69.scrollX;
+               class82.intStack[++class82.intStackSize - 1] = var70.scrollX;
                var3 = 1;
             } else if(var0 == 1601) {
-               class82.intStack[++class82.intStackSize - 1] = var69.scrollY;
+               class82.intStack[++class82.intStackSize - 1] = var70.scrollY;
                var3 = 1;
             } else if(var0 == 1602) {
-               class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var69.text;
+               class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var70.text;
                var3 = 1;
             } else if(var0 == 1603) {
-               class82.intStack[++class82.intStackSize - 1] = var69.scrollWidth;
+               class82.intStack[++class82.intStackSize - 1] = var70.scrollWidth;
                var3 = 1;
             } else if(var0 == 1604) {
-               class82.intStack[++class82.intStackSize - 1] = var69.scrollHeight;
+               class82.intStack[++class82.intStackSize - 1] = var70.scrollHeight;
                var3 = 1;
             } else if(var0 == 1605) {
-               class82.intStack[++class82.intStackSize - 1] = var69.modelZoom;
+               class82.intStack[++class82.intStackSize - 1] = var70.modelZoom;
                var3 = 1;
             } else if(var0 == 1606) {
-               class82.intStack[++class82.intStackSize - 1] = var69.rotationX;
+               class82.intStack[++class82.intStackSize - 1] = var70.rotationX;
                var3 = 1;
             } else if(var0 == 1607) {
-               class82.intStack[++class82.intStackSize - 1] = var69.rotationY;
+               class82.intStack[++class82.intStackSize - 1] = var70.rotationY;
                var3 = 1;
             } else if(var0 == 1608) {
-               class82.intStack[++class82.intStackSize - 1] = var69.rotationZ;
+               class82.intStack[++class82.intStackSize - 1] = var70.rotationZ;
                var3 = 1;
             } else if(var0 == 1609) {
-               class82.intStack[++class82.intStackSize - 1] = var69.opacity;
+               class82.intStack[++class82.intStackSize - 1] = var70.opacity;
                var3 = 1;
             } else if(var0 == 1610) {
-               class82.intStack[++class82.intStackSize - 1] = var69.field2874;
+               class82.intStack[++class82.intStackSize - 1] = var70.field2874;
                var3 = 1;
             } else if(var0 == 1611) {
-               class82.intStack[++class82.intStackSize - 1] = var69.textColor;
+               class82.intStack[++class82.intStackSize - 1] = var70.textColor;
                var3 = 1;
             } else if(var0 == 1612) {
-               class82.intStack[++class82.intStackSize - 1] = var69.field2785;
+               class82.intStack[++class82.intStackSize - 1] = var70.field2785;
                var3 = 1;
             } else if(var0 == 1613) {
-               class82.intStack[++class82.intStackSize - 1] = var69.field2789.rsOrdinal();
+               class82.intStack[++class82.intStackSize - 1] = var70.field2789.rsOrdinal();
                var3 = 1;
             } else {
                var3 = 2;
@@ -195,29 +195,29 @@ public class Coordinates {
             int var45;
             int var49;
             if(var0 < 1900) {
-               var69 = var2?class139.field2008:AttackOption.field1306;
+               var70 = var2?class139.field2008:AttackOption.field1306;
                if(var0 == 1800) {
                   var40 = class82.intStack;
                   var6 = ++class82.intStackSize - 1;
-                  var45 = class36.getWidgetConfig(var69);
+                  var45 = class36.getWidgetConfig(var70);
                   var49 = var45 >> 11 & 63;
                   var40[var6] = var49;
                   var3 = 1;
                } else if(var0 == 1801) {
                   var18 = class82.intStack[--class82.intStackSize];
                   --var18;
-                  if(var69.actions != null && var18 < var69.actions.length && var69.actions[var18] != null) {
-                     class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var69.actions[var18];
+                  if(var70.actions != null && var18 < var70.actions.length && var70.actions[var18] != null) {
+                     class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var70.actions[var18];
                   } else {
                      class82.scriptStringStack[++class35.scriptStringStackSize - 1] = "";
                   }
 
                   var3 = 1;
                } else if(var0 == 1802) {
-                  if(var69.name == null) {
+                  if(var70.name == null) {
                      class82.scriptStringStack[++class35.scriptStringStackSize - 1] = "";
                   } else {
-                     class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var69.name;
+                     class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var70.name;
                   }
 
                   var3 = 1;
@@ -239,24 +239,24 @@ public class Coordinates {
             } else if(var0 < 2500) {
                return class60.method984(var0, var1, var2);
             } else if(var0 < 2600) {
-               var69 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
+               var70 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
                if(var0 == 2500) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.relativeX;
+                  class82.intStack[++class82.intStackSize - 1] = var70.relativeX;
                   var3 = 1;
                } else if(var0 == 2501) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.relativeY;
+                  class82.intStack[++class82.intStackSize - 1] = var70.relativeY;
                   var3 = 1;
                } else if(var0 == 2502) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.width;
+                  class82.intStack[++class82.intStackSize - 1] = var70.width;
                   var3 = 1;
                } else if(var0 == 2503) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.height;
+                  class82.intStack[++class82.intStackSize - 1] = var70.height;
                   var3 = 1;
                } else if(var0 == 2504) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.isHidden?1:0;
+                  class82.intStack[++class82.intStackSize - 1] = var70.isHidden?1:0;
                   var3 = 1;
                } else if(var0 == 2505) {
-                  class82.intStack[++class82.intStackSize - 1] = var69.parentId;
+                  class82.intStack[++class82.intStackSize - 1] = var70.parentId;
                   var3 = 1;
                } else {
                   var3 = 2;
@@ -269,13 +269,13 @@ public class Coordinates {
                int var19;
                if(var0 < 2800) {
                   if(var0 == 2700) {
-                     var69 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
-                     class82.intStack[++class82.intStackSize - 1] = var69.itemId;
+                     var70 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
+                     class82.intStack[++class82.intStackSize - 1] = var70.itemId;
                      var3 = 1;
                   } else if(var0 == 2701) {
-                     var69 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
-                     if(var69.itemId != -1) {
-                        class82.intStack[++class82.intStackSize - 1] = var69.itemQuantity;
+                     var70 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
+                     if(var70.itemId != -1) {
+                        class82.intStack[++class82.intStackSize - 1] = var70.itemQuantity;
                      } else {
                         class82.intStack[++class82.intStackSize - 1] = 0;
                      }
@@ -539,10 +539,10 @@ public class Coordinates {
                         var3 = 1;
                      } else if(var0 == 4018) {
                         class82.intStackSize -= 3;
-                        long var32 = (long)class82.intStack[class82.intStackSize];
-                        long var34 = (long)class82.intStack[class82.intStackSize + 1];
-                        long var36 = (long)class82.intStack[class82.intStackSize + 2];
-                        class82.intStack[++class82.intStackSize - 1] = (int)(var32 * var36 / var34);
+                        long var29 = (long)class82.intStack[class82.intStackSize];
+                        long var31 = (long)class82.intStack[class82.intStackSize + 1];
+                        long var33 = (long)class82.intStack[class82.intStackSize + 2];
+                        class82.intStack[++class82.intStackSize - 1] = (int)(var29 * var33 / var31);
                         var3 = 1;
                      } else {
                         var3 = 2;
@@ -616,8 +616,8 @@ public class Coordinates {
                            var3 = 1;
                         } else if(var0 == 4104) {
                            var19 = class82.intStack[--class82.intStackSize];
-                           long var24 = ((long)var19 + 11745L) * 86400000L;
-                           class82.field1247.setTime(new Date(var24));
+                           long var36 = ((long)var19 + 11745L) * 86400000L;
+                           class82.field1247.setTime(new Date(var36));
                            var49 = class82.field1247.get(5);
                            var45 = class82.field1247.get(2);
                            var9 = class82.field1247.get(1);
@@ -1398,81 +1398,83 @@ public class Coordinates {
 
                            PacketNode var22 = FileSystem.method4252(ClientPacket.field2387, Client.field888.field1449);
                            var22.packetBuffer.putByte(0);
-                           int var26 = var22.packetBuffer.offset;
+                           int var24 = var22.packetBuffer.offset;
                            var22.packetBuffer.putByte(var18);
                            var22.packetBuffer.putByte(var7);
                            var22.packetBuffer.putByte(var8);
-                           PacketBuffer var27 = var22.packetBuffer;
-                           var12 = var27.offset;
-                           int var28 = var38.length();
-                           byte[] var29 = new byte[var28];
+                           PacketBuffer var25 = var22.packetBuffer;
+                           var12 = var25.offset;
+                           int var26 = var38.length();
+                           byte[] var27 = new byte[var26];
 
-                           for(var16 = 0; var16 < var28; ++var16) {
+                           for(var16 = 0; var16 < var26; ++var16) {
                               char var17 = var38.charAt(var16);
-                              if(var17 > 0 && var17 < 128 || var17 >= 160 && var17 <= 255) {
-                                 var29[var16] = (byte)var17;
-                              } else if(var17 == 8364) {
-                                 var29[var16] = -128;
-                              } else if(var17 == 8218) {
-                                 var29[var16] = -126;
-                              } else if(var17 == 402) {
-                                 var29[var16] = -125;
-                              } else if(var17 == 8222) {
-                                 var29[var16] = -124;
-                              } else if(var17 == 8230) {
-                                 var29[var16] = -123;
-                              } else if(var17 == 8224) {
-                                 var29[var16] = -122;
-                              } else if(var17 == 8225) {
-                                 var29[var16] = -121;
-                              } else if(var17 == 710) {
-                                 var29[var16] = -120;
-                              } else if(var17 == 8240) {
-                                 var29[var16] = -119;
-                              } else if(var17 == 352) {
-                                 var29[var16] = -118;
-                              } else if(var17 == 8249) {
-                                 var29[var16] = -117;
-                              } else if(var17 == 338) {
-                                 var29[var16] = -116;
-                              } else if(var17 == 381) {
-                                 var29[var16] = -114;
-                              } else if(var17 == 8216) {
-                                 var29[var16] = -111;
-                              } else if(var17 == 8217) {
-                                 var29[var16] = -110;
-                              } else if(var17 == 8220) {
-                                 var29[var16] = -109;
-                              } else if(var17 == 8221) {
-                                 var29[var16] = -108;
-                              } else if(var17 == 8226) {
-                                 var29[var16] = -107;
-                              } else if(var17 == 8211) {
-                                 var29[var16] = -106;
-                              } else if(var17 == 8212) {
-                                 var29[var16] = -105;
-                              } else if(var17 == 732) {
-                                 var29[var16] = -104;
-                              } else if(var17 == 8482) {
-                                 var29[var16] = -103;
-                              } else if(var17 == 353) {
-                                 var29[var16] = -102;
-                              } else if(var17 == 8250) {
-                                 var29[var16] = -101;
-                              } else if(var17 == 339) {
-                                 var29[var16] = -100;
-                              } else if(var17 == 382) {
-                                 var29[var16] = -98;
-                              } else if(var17 == 376) {
-                                 var29[var16] = -97;
+                              if((var17 <= 0 || var17 >= 128) && (var17 < 160 || var17 > 255)) {
+                                 if(var17 == 8364) {
+                                    var27[var16] = -128;
+                                 } else if(var17 == 8218) {
+                                    var27[var16] = -126;
+                                 } else if(var17 == 402) {
+                                    var27[var16] = -125;
+                                 } else if(var17 == 8222) {
+                                    var27[var16] = -124;
+                                 } else if(var17 == 8230) {
+                                    var27[var16] = -123;
+                                 } else if(var17 == 8224) {
+                                    var27[var16] = -122;
+                                 } else if(var17 == 8225) {
+                                    var27[var16] = -121;
+                                 } else if(var17 == 710) {
+                                    var27[var16] = -120;
+                                 } else if(var17 == 8240) {
+                                    var27[var16] = -119;
+                                 } else if(var17 == 352) {
+                                    var27[var16] = -118;
+                                 } else if(var17 == 8249) {
+                                    var27[var16] = -117;
+                                 } else if(var17 == 338) {
+                                    var27[var16] = -116;
+                                 } else if(var17 == 381) {
+                                    var27[var16] = -114;
+                                 } else if(var17 == 8216) {
+                                    var27[var16] = -111;
+                                 } else if(var17 == 8217) {
+                                    var27[var16] = -110;
+                                 } else if(var17 == 8220) {
+                                    var27[var16] = -109;
+                                 } else if(var17 == 8221) {
+                                    var27[var16] = -108;
+                                 } else if(var17 == 8226) {
+                                    var27[var16] = -107;
+                                 } else if(var17 == 8211) {
+                                    var27[var16] = -106;
+                                 } else if(var17 == 8212) {
+                                    var27[var16] = -105;
+                                 } else if(var17 == 732) {
+                                    var27[var16] = -104;
+                                 } else if(var17 == 8482) {
+                                    var27[var16] = -103;
+                                 } else if(var17 == 353) {
+                                    var27[var16] = -102;
+                                 } else if(var17 == 8250) {
+                                    var27[var16] = -101;
+                                 } else if(var17 == 339) {
+                                    var27[var16] = -100;
+                                 } else if(var17 == 382) {
+                                    var27[var16] = -98;
+                                 } else if(var17 == 376) {
+                                    var27[var16] = -97;
+                                 } else {
+                                    var27[var16] = 63;
+                                 }
                               } else {
-                                 var29[var16] = 63;
+                                 var27[var16] = (byte)var17;
                               }
                            }
 
-                           var27.putShortSmart(var29.length);
-                           var27.offset += class276.huffman.compress(var29, 0, var29.length, var27.payload, var27.offset);
-                           var22.packetBuffer.method3258(var22.packetBuffer.offset - var26);
+                           var25.putShortSmart(var27.length);
+                           var25.offset += class276.huffman.compress(var27, 0, var27.length, var25.payload, var25.offset);
+                           var22.packetBuffer.method3258(var22.packetBuffer.offset - var24);
                            Client.field888.method1862(var22);
                            var3 = 1;
                         } else if(var0 == 5009) {
@@ -1486,75 +1488,75 @@ public class Coordinates {
                            PacketBuffer var21 = var55.packetBuffer;
                            var9 = var21.offset;
                            var11 = var39.length();
-                           byte[] var30 = new byte[var11];
+                           byte[] var28 = new byte[var11];
 
                            for(var13 = 0; var13 < var11; ++var13) {
-                              char var70 = var39.charAt(var13);
-                              if((var70 <= 0 || var70 >= 128) && (var70 < 160 || var70 > 255)) {
-                                 if(var70 == 8364) {
-                                    var30[var13] = -128;
-                                 } else if(var70 == 8218) {
-                                    var30[var13] = -126;
-                                 } else if(var70 == 402) {
-                                    var30[var13] = -125;
-                                 } else if(var70 == 8222) {
-                                    var30[var13] = -124;
-                                 } else if(var70 == 8230) {
-                                    var30[var13] = -123;
-                                 } else if(var70 == 8224) {
-                                    var30[var13] = -122;
-                                 } else if(var70 == 8225) {
-                                    var30[var13] = -121;
-                                 } else if(var70 == 710) {
-                                    var30[var13] = -120;
-                                 } else if(var70 == 8240) {
-                                    var30[var13] = -119;
-                                 } else if(var70 == 352) {
-                                    var30[var13] = -118;
-                                 } else if(var70 == 8249) {
-                                    var30[var13] = -117;
-                                 } else if(var70 == 338) {
-                                    var30[var13] = -116;
-                                 } else if(var70 == 381) {
-                                    var30[var13] = -114;
-                                 } else if(var70 == 8216) {
-                                    var30[var13] = -111;
-                                 } else if(var70 == 8217) {
-                                    var30[var13] = -110;
-                                 } else if(var70 == 8220) {
-                                    var30[var13] = -109;
-                                 } else if(var70 == 8221) {
-                                    var30[var13] = -108;
-                                 } else if(var70 == 8226) {
-                                    var30[var13] = -107;
-                                 } else if(var70 == 8211) {
-                                    var30[var13] = -106;
-                                 } else if(var70 == 8212) {
-                                    var30[var13] = -105;
-                                 } else if(var70 == 732) {
-                                    var30[var13] = -104;
-                                 } else if(var70 == 8482) {
-                                    var30[var13] = -103;
-                                 } else if(var70 == 353) {
-                                    var30[var13] = -102;
-                                 } else if(var70 == 8250) {
-                                    var30[var13] = -101;
-                                 } else if(var70 == 339) {
-                                    var30[var13] = -100;
-                                 } else if(var70 == 382) {
-                                    var30[var13] = -98;
-                                 } else if(var70 == 376) {
-                                    var30[var13] = -97;
+                              char var69 = var39.charAt(var13);
+                              if((var69 <= 0 || var69 >= 128) && (var69 < 160 || var69 > 255)) {
+                                 if(var69 == 8364) {
+                                    var28[var13] = -128;
+                                 } else if(var69 == 8218) {
+                                    var28[var13] = -126;
+                                 } else if(var69 == 402) {
+                                    var28[var13] = -125;
+                                 } else if(var69 == 8222) {
+                                    var28[var13] = -124;
+                                 } else if(var69 == 8230) {
+                                    var28[var13] = -123;
+                                 } else if(var69 == 8224) {
+                                    var28[var13] = -122;
+                                 } else if(var69 == 8225) {
+                                    var28[var13] = -121;
+                                 } else if(var69 == 710) {
+                                    var28[var13] = -120;
+                                 } else if(var69 == 8240) {
+                                    var28[var13] = -119;
+                                 } else if(var69 == 352) {
+                                    var28[var13] = -118;
+                                 } else if(var69 == 8249) {
+                                    var28[var13] = -117;
+                                 } else if(var69 == 338) {
+                                    var28[var13] = -116;
+                                 } else if(var69 == 381) {
+                                    var28[var13] = -114;
+                                 } else if(var69 == 8216) {
+                                    var28[var13] = -111;
+                                 } else if(var69 == 8217) {
+                                    var28[var13] = -110;
+                                 } else if(var69 == 8220) {
+                                    var28[var13] = -109;
+                                 } else if(var69 == 8221) {
+                                    var28[var13] = -108;
+                                 } else if(var69 == 8226) {
+                                    var28[var13] = -107;
+                                 } else if(var69 == 8211) {
+                                    var28[var13] = -106;
+                                 } else if(var69 == 8212) {
+                                    var28[var13] = -105;
+                                 } else if(var69 == 732) {
+                                    var28[var13] = -104;
+                                 } else if(var69 == 8482) {
+                                    var28[var13] = -103;
+                                 } else if(var69 == 353) {
+                                    var28[var13] = -102;
+                                 } else if(var69 == 8250) {
+                                    var28[var13] = -101;
+                                 } else if(var69 == 339) {
+                                    var28[var13] = -100;
+                                 } else if(var69 == 382) {
+                                    var28[var13] = -98;
+                                 } else if(var69 == 376) {
+                                    var28[var13] = -97;
                                  } else {
-                                    var30[var13] = 63;
+                                    var28[var13] = 63;
                                  }
                               } else {
-                                 var30[var13] = (byte)var70;
+                                 var28[var13] = (byte)var69;
                               }
                            }
 
-                           var21.putShortSmart(var30.length);
-                           var21.offset += class276.huffman.compress(var30, 0, var30.length, var21.payload, var21.offset);
+                           var21.putShortSmart(var28.length);
+                           var21.offset += class276.huffman.compress(var28, 0, var28.length, var21.payload, var21.offset);
                            var55.packetBuffer.method3257(var55.packetBuffer.offset - var49);
                            Client.field888.method1862(var55);
                            var3 = 1;
