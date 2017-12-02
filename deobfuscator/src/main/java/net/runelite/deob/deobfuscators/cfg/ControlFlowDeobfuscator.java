@@ -26,7 +26,6 @@ package net.runelite.deob.deobfuscators.cfg;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import net.runelite.asm.ClassFile;
@@ -54,14 +53,13 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
-		int catchesBefore = countCatches(group);
-
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods())
 			{
 				Code code = m.getCode();
-				if (code == null)
+
+				if (code == null || !code.getExceptions().getExceptions().isEmpty())
 				{
 					continue;
 				}
@@ -72,37 +70,8 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 			}
 		}
 
-		int catchesAfter = countCatches(group);
-
-		logger.info("Inserted {} jumps, reordered {} blocks, and removed {} jumps. jump delta {}, .catch delta: {}",
-			insertedJump, placedBlocks, removedJumps, insertedJump - removedJumps, catchesAfter - catchesBefore);
-	}
-
-	/**
-	 * count the number of .catches in a classgroup
-	 *
-	 * @param group
-	 * @return
-	 */
-	private int countCatches(ClassGroup group)
-	{
-		int count = 0;
-
-		for (ClassFile cf : group.getClasses())
-		{
-			for (Method m : cf.getMethods())
-			{
-				Code code = m.getCode();
-				if (code == null)
-				{
-					continue;
-				}
-
-				count += code.getExceptions().getExceptions().size();
-			}
-		}
-
-		return count;
+		logger.info("Inserted {} jumps, reordered {} blocks, and removed {} jumps. jump delta {}",
+			insertedJump, placedBlocks, removedJumps, insertedJump - removedJumps);
 	}
 
 	/**
@@ -174,24 +143,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 
 	private int compareBlock(Block o1, Block o2)
 	{
-		// prioritize blocks with the most exceptions
-		int i = Integer.compare(o2.getExceptions().size(), o1.getExceptions().size());
-		if (i != 0)
-		{
-			return i;
-		}
-
-		if (o1.isHandler() && !o2.isHandler())
-		{
-			// higher numbers have the lowest priority
-			// o1 is greater
-			return 1;
-		}
-		if (o2.isHandler() && !o1.isHandler())
-		{
-			return -1;
-		}
-
+		// higher numbers have the lowest priority
 		if (o1.isJumptarget() && !o2.isJumptarget())
 		{
 			return -1;
@@ -232,13 +184,6 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 		List<Block> done = new ArrayList<>();
 		Queue<Block> queue = new PriorityQueue<>(this::compareBlock);
 
-		// mark handlers for prioity queue
-		for (Exception ex : originalExceptions)
-		{
-			Block handler = graph.getBlock(ex.getHandler());
-			handler.setHandler(true);
-		}
-
 		// add initial code block
 		queue.add(graph.getHead());
 
@@ -254,7 +199,7 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 			done.add(block);
 			++placedBlocks;
 
-			logger.debug("Placed block {} with {} exceptions", block.getId(), block.getExceptions().size());
+			logger.debug("Placed block {}", block.getId());
 
 			List<Block> next = block.getNext();
 
@@ -277,118 +222,12 @@ public class ControlFlowDeobfuscator implements Deobfuscator
 				queue.add(bl);
 			}
 
-			// add handlers
-			for (ExceptionHandler handler : block.getExceptions())
-			{
-				Block bl = graph.getBlock(handler.getHandler());
-				assert bl != null;
-				queue.add(bl);
-			}
-
 			for (Instruction i : block.getInstructions())
 			{
 				assert i.getInstructions() == null;
 				i.setInstructions(ins); // I shouldn't have to do this here
 				ins.addInstruction(i);
 			}
-		}
-
-		List<Exception> currentExceptions = new ArrayList<>(),
-			finishedExceptions = new ArrayList<>();
-
-		// Now all blocks have been placed, build new exception ranges
-		for (Block cur : done)
-		{
-			assert cur.getExceptions() != null;
-
-			// find exceptions to create
-			outer:
-			for (ExceptionHandler ex : cur.getExceptions())
-			{
-				Exception ex2 = new Exception(exceptions);
-
-				// if block is covered by an exception handler,
-				// it must begin with a label.
-				assert cur.getInstructions().get(0) instanceof Label;
-
-				ex2.setStart((Label) cur.getInstructions().get(0));
-				ex2.setHandler(ex.getHandler());
-				ex2.setCatchType(ex.getCatchType());
-
-				// Is there already an exception for this?
-				for (Exception ex3 : currentExceptions)
-				{
-					if (ex3.getHandler() == ex2.getHandler()
-						&& Objects.equals(ex3.getCatchType(), ex2.getCatchType()))
-					{
-						continue outer;
-					}
-				}
-
-				logger.debug("Beginning exception at block {} type {} handler {}: {}", cur.getId(), ex.getCatchType(), ex.getHandler(), ex2);
-
-				currentExceptions.add(ex2);
-			}
-
-			// find exceptions to end
-			outer:
-			for (Exception ex : new ArrayList<>(currentExceptions))
-			{
-				// still in the exception?
-				for (ExceptionHandler ex2 : cur.getExceptions())
-				{
-					if (ex.getHandler() == ex2.getHandler()
-						&& Objects.equals(ex.getCatchType(), ex2.getCatchType()))
-					{
-						continue outer;
-					}
-				}
-
-				logger.debug("Ending exception at block {}: {}", cur.getId(), ex);
-
-				// ex has ended
-				assert ex.getEnd() == null;
-				ex.setEnd((Label) cur.getInstructions().get(0));
-				currentExceptions.remove(ex);
-
-				finishedExceptions.add(ex);
-			}
-		}
-
-		Block last = done.get(done.size() - 1);
-		for (Exception ex : new ArrayList<>(currentExceptions))
-		{
-			logger.debug("Ending exception at end of method: {}", ex);
-
-			Instruction il = last.getInstructions().get(last.getInstructions().size() - 1);
-			Label lbl;
-			if (il instanceof Label)
-			{
-				lbl = (Label) il;
-			}
-			else
-			{
-				assert il.isTerminal();
-				lbl = ins.createLabelFor(il);
-			}
-
-			// ex has ended
-			assert ex.getEnd() == null;
-			ex.setEnd(lbl);
-			currentExceptions.remove(ex);
-
-			finishedExceptions.add(ex);
-		}
-
-		assert currentExceptions.isEmpty();
-
-		// add exceptions
-		for (Exception ex : finishedExceptions)
-		{
-			assert ex.getEnd() != null;
-			assert ex.getStart() != ex.getEnd();
-
-			exceptions.add(ex);
 		}
 	}
 
