@@ -76,17 +76,6 @@
 			<version>2.4</version>
 		</dependency>
 		<dependency>
-			<groupId>fr.jcgay.send-notification</groupId>
-			<artifactId>send-notification</artifactId>
-			<version>0.14.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.squareup.okhttp</groupId>
-					<artifactId>okhttp</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>org.pushingpixels</groupId>
 			<artifactId>substance</artifactId>
 			<version>7.1.00-rc</version>

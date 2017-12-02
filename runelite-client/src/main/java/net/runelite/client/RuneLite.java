@@ -52,12 +52,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import fr.jcgay.notification.Application;
-import fr.jcgay.notification.Icon;
-import fr.jcgay.notification.Notification;
-import fr.jcgay.notification.Notifier;
-import fr.jcgay.notification.SendNotification;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +78,6 @@ public class RuneLite
 	public static final String APP_NAME = "RuneLite";
 
 	public static Image ICON;
-	public static Icon NOTIFY_ICON;
 
 	private static Injector injector;
 
@@ -117,14 +110,12 @@ public class RuneLite
 
 	private Notifier notifier;
 
-
 	static
 	{
 		try
 		{
 			final URL icon = ClientUI.class.getResource("/runelite.png");
 			ICON = ImageIO.read(icon.openStream());
-			NOTIFY_ICON = Icon.create(icon, APP_NAME);
 		}
 		catch (IOException ex)
 		{
@@ -177,14 +168,7 @@ public class RuneLite
 		eventBus.register(menuManager);
 
 		// Setup the notifier
-		notifier = new SendNotification()
-				.setApplication(Application
-						.builder()
-						.icon(NOTIFY_ICON)
-						.name(APP_NAME)
-						.id(APP_NAME)
-						.build())
-				.initNotifier();
+		notifier = new Notifier(trayIcon);
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -414,18 +398,7 @@ public class RuneLite
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		final Notification.Level notificationLevel = Notification.Level
-				.valueOf((TrayIcon.MessageType.NONE.equals(type)
-						? TrayIcon.MessageType.INFO
-						: type).toString());
-
-		notifier.send(Notification.builder()
-				.title(APP_NAME)
-				.message(message)
-				.icon(NOTIFY_ICON)
-				.level(notificationLevel)
-				.build());
-
+		notifier.sendNotification(APP_NAME, message, type, null);
 		Toolkit.getDefaultToolkit().beep();
 	}
 
