@@ -32,7 +32,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ObjectComposition;
@@ -172,7 +171,7 @@ class InstanceMapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || !showMap)
+		if (!config.enabled() || !showMap)
 		{
 			return null;
 		}

@@ -41,7 +41,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -85,7 +84,7 @@ public class ZulrahOverlay extends Overlay
 	{
 		ZulrahInstance instance = plugin.getInstance();
 
-		if (instance == null || client.getGameState() != GameState.LOGGED_IN)
+		if (instance == null)
 		{
 			return null;
 		}
