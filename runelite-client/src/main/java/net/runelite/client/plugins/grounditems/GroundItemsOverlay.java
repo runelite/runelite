@@ -191,13 +191,24 @@ public class GroundItemsOverlay extends Overlay
 					Integer currentQuantity = items.get(itemId);
 					if (!hiddenItems.contains(itemDefinition.getName().toLowerCase()))
 					{
-						if (currentQuantity == null)
+						if (itemDefinition.getNote() != -1)
 						{
-							items.put(itemId, itemQuantity);
+							itemId = itemDefinition.getLinkedNoteId();
 						}
-						else
+
+						int quantity = currentQuantity == null
+							? itemQuantity
+							: currentQuantity + itemQuantity;
+
+						ItemPrice itemPrice = itemManager.get(itemId);
+
+						int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+						int alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+						if (gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+								(alchPrice >= config.getHideUnderHAValue())))
 						{
-							items.put(itemId, currentQuantity + itemQuantity);
+							items.put(itemId, quantity);
 						}
 					}
 
