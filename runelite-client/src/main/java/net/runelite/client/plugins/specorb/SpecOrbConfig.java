@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.specorb;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSProjectile extends Projectile
+@ConfigGroup(
+	keyName = "specorb",
+	name = "Special Attack Orb",
+	description = "Configuration for the Special Attack Orbplugin"
+)
+public interface SpecOrbConfig extends Config
 {
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("interacting")
-	int getRsInteracting();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not Special Attack Orb plugin is displayed"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 }

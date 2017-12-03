@@ -34,6 +34,7 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
@@ -63,7 +64,7 @@ public class InjectHook
 
 	private final Inject inject;
 	private final Map<Field, Field> hooked = new HashMap<>();
-	
+
 	private int injectedHooks;
 
 	public InjectHook(Inject inject)
@@ -102,7 +103,7 @@ public class InjectHook
 			Instructions ins = i.getInstructions();
 			Code code = ins.getCode();
 			Method method = code.getMethod();
-			
+
 			if (method.getName().equals(CLINIT))
 			{
 				return;
@@ -176,7 +177,7 @@ public class InjectHook
 			Instructions ins = i.getInstructions();
 			Code code = ins.getCode();
 			Method method = code.getMethod();
-			
+
 			if (method.getName().equals(CLINIT))
 			{
 				return;
@@ -212,6 +213,28 @@ public class InjectHook
 			StackContext index = ic.getPops().get(1);
 			InstructionContext indexIc = index.getPushed(); // what pushed the index
 
+			StackContext arrayReference = ic.getPops().get(2);
+			InstructionContext arrayReferencePushed = arrayReference.getPushed();
+
+			Instruction pushedObjectReferenceInstruction = new AConstNull(ins);
+
+			if (arrayReferencePushed.getInstruction().getType() == InstructionType.GETFIELD)
+			{
+				StackContext objectReference = arrayReferencePushed.getPops().get(0);
+				InstructionContext objectReferencePushed = objectReference.getPushed();
+				if (objectReferencePushed.getPops().isEmpty())
+				{
+					pushedObjectReferenceInstruction = objectReferencePushed.getInstruction().clone();
+				}
+				else
+				{
+					logger.warn("Could not get object reference for array store for hook {}, object pusher is {}",
+						hookName, objectReferencePushed.getInstruction());
+				}
+			}
+
+
+
 			// inject hook after 'i'
 			logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
 			++injectedHooks;
@@ -219,8 +242,7 @@ public class InjectHook
 			int idx = ins.getInstructions().indexOf(i);
 			assert idx != -1;
 
-			// it's annoying to get the object of the field of this array, so passing null for now
-			injectCallback(method, ins, idx + 1, hookName, indexIc, new AConstNull(ins));
+			injectCallback(method, ins, idx + 1, hookName, indexIc, pushedObjectReferenceInstruction);
 		});
 
 		e.run();

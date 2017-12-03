@@ -26,14 +26,20 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Paint;
 import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-
 import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
+import net.runelite.client.ui.FontManager;
 
 
 /**
@@ -41,6 +47,7 @@ import net.runelite.api.TileObject;
  */
 public class OverlayUtil
 {
+
 	public static void renderPolygon(Graphics2D graphics, Polygon poly, Color color)
 	{
 		graphics.setColor(color);
@@ -48,6 +55,143 @@ public class OverlayUtil
 		graphics.drawPolygon(poly);
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillPolygon(poly);
+	}
+
+	/**
+	 * Draws a minimap orb like the prayer/HP/run orbs. The background color can be set by graphics.setColor() before calling this
+	 *
+	 * @param graphics              graphics to draw to
+	 * @param pos                   top left position of the orb
+	 * @param percentFilled         how far filled the orb should be
+	 * @param rechargeColor         color of the recharge meter of this orb. This can be used to track things like hp regen or special regen.
+	 * @param rechargePercentFilled how far through the recharge this stat is
+	 * @param minimapOrbBackground  background image of the minimap orb
+	 * @param overlayImage
+	 * @param amount                number to display on the orb
+	 * @param enabled
+	 */
+	public static void drawMinimapOrb(Graphics2D graphics, Point pos, double percentFilled, Color rechargeColor, double rechargePercentFilled, Image minimapOrbBackground, Image overlayImage, int amount, boolean enabled)
+	{
+		Color startColor = graphics.getColor();
+
+		Point orbPos = new Point(pos.getX() + 26, pos.getY() + 2);
+
+		graphics.setColor(new Color(20, 20, 20));
+		// draw black background for the orb when it's partially missing
+		drawOrbPercent(graphics, orbPos, 1, 28, false, false);
+		graphics.setColor(startColor);
+
+		// draw orb with shading
+		drawOrbPercent(graphics, orbPos, percentFilled, 28, true, enabled);
+
+		graphics.setColor(rechargeColor);
+		// draw recharge
+		drawOrbPercent(graphics, orbPos, rechargePercentFilled, 28, false, false);
+		graphics.setColor(startColor);
+
+		// draw background
+		graphics.drawImage(minimapOrbBackground, pos.getX(), pos.getY(), null);
+		// draw overlay
+		graphics.drawImage(overlayImage, pos.getX() + 32, pos.getY() + 9, null);
+
+		drawOrbAmount(graphics, pos, amount);//draw number on orb
+
+	}
+
+	/**
+	 * Draws the amount text on minimap orbs. For example HP number on the HP minimap orb
+	 *
+	 * @param graphics graphics to draw on
+	 * @param pos      start position
+	 * @param amount   number amount
+	 */
+	private static void drawOrbAmount(Graphics2D graphics, Point pos, int amount)
+	{
+		Color startColor = graphics.getColor();
+
+		Font font = FontManager.getRunescapeSmallFont();
+		graphics.setFont(font);
+
+		FontMetrics fm = graphics.getFontMetrics();
+
+		String numberString = Integer.toString(amount);
+		Point numberPos = new Point(pos.getX() + 22 - fm.stringWidth(numberString), pos.getY() + 26);
+		graphics.setColor(Color.black);
+		graphics.drawString(numberString, numberPos.getX() + 1, numberPos.getY() + 1);//black shadow on text
+		graphics.setColor(Color.green);
+		graphics.drawString(numberString, numberPos.getX(), numberPos.getY());
+
+		graphics.setColor(startColor);
+	}
+
+	/**
+	 * Renders a orb similar to the health/prayer orbs already in the client.
+	 * This has a slight shadow effect similar to the clients orbs if shadow = true
+	 *
+	 * @param graphics graphics to draw to
+	 * @param pos      Top left position of the orb
+	 * @param percent  0.0-1.0 percent of how filled the orb is
+	 * @param diameter diameter of the orb
+	 * @param shadow   draw shadow
+	 */
+	private static void drawOrbPercent(Graphics2D graphics, Point pos, double percent, int diameter, boolean shadow, boolean enabled)
+	{
+		BufferedImage bufferedImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D bufferedImageGraphics = bufferedImage.createGraphics();
+		float[] dist = {0.2f, 1f};
+
+		Color setColor = graphics.getColor();
+
+		int r = setColor.getRed();
+		int g = setColor.getGreen();
+		int b = setColor.getBlue();
+		int a = setColor.getAlpha();
+
+		Paint startPaint = bufferedImageGraphics.getPaint();
+
+		if (shadow)
+		{
+			float darkenMultiplier = 0.4f;
+			Point2D center = new Point2D.Float(diameter / 2.7f, diameter / 2.7f);
+
+			if (enabled)
+			{
+				// Darken and move center to make it look like the orb is pressed down
+				darkenMultiplier = 0.20f;
+				center = new Point2D.Float((diameter / 1.8f), (diameter / 1.8f));
+				dist = new float[]{0.7f, 1f};
+			}
+
+			// Darken the base color to create a shadow effect on the edges of the orb
+			r *= darkenMultiplier;
+			g *= darkenMultiplier;
+			b *= darkenMultiplier;
+
+			Color[] colors = {setColor, new Color(r, g, b, a)};
+
+			// Divided by 2.7f for a gradient in the top left of the orb
+			RadialGradientPaint p = new RadialGradientPaint(center,
+				diameter / 2.0f, dist, colors);
+
+			bufferedImageGraphics.setPaint(p);
+
+		}
+		else
+		{
+			bufferedImageGraphics.setColor(setColor);
+		}
+
+		bufferedImageGraphics.fillArc(0, 0, diameter, diameter, 0, 360);
+		if (percent < 1)
+		{
+			// Clear the top part of the orb. if we input 90% we need to clear the top 10%
+			bufferedImageGraphics.setBackground(new Color(255, 255, 255, 0));
+			bufferedImageGraphics.clearRect(0, 0, diameter, (int) ((diameter) * (1 - percent)));
+		}
+
+		graphics.drawImage(bufferedImage, pos.getX(), pos.getY(), null);
+
+		bufferedImageGraphics.setPaint(startPaint);
 	}
 
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)

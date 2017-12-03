@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -158,7 +159,9 @@ public final class Projectile extends Renderable {
       signature = "(IIIII)V",
       garbageValue = "2020665162"
    )
-   final void method1816(int var1, int var2, int var3, int var4) {
+   @Export("moveProjectile")
+   @Hook("projectileMoved")
+   final void moveProjectile(int var1, int var2, int var3, int var4) {
       double var5;
       if(!this.isMoving) {
          var5 = (double)(var1 - this.x1);

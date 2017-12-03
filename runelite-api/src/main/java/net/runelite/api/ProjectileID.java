@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.Projectile;
-import net.runelite.mapping.Import;
-
-public interface RSProjectile extends Projectile
+public class ProjectileID
 {
-	@Import("id")
-	@Override
-	int getId();
-
-	@Import("interacting")
-	int getRsInteracting();
+	public static final int LIZARDMAN_SHAMAN_AOE = 1293;
+	public static final int ICE_DEMON_RANGED_AOE = 1324;
+	public static final int ICE_DEMON_ICE_BARRAGE_AOE = 366;
+	public static final int VASA_AWAKEN_AOE = 1327;
+	public static final int VASA_RANGED_AOE = 1329;
+	public static final int TEKTON_METEOR_AOE = 660;
 }
