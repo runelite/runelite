@@ -1,82 +1,94 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bi")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1690220799
+   @ObfuscatedName("fu")
+   @ObfuscatedSignature(
+      signature = "[Lkg;"
    )
-   static int field788;
-   @ObfuscatedName("dk")
-   @ObfuscatedGetter(
-      intValue = -2015977795
-   )
-   static int field790;
-   @ObfuscatedName("b")
+   @Export("modIconSprites")
+   static IndexedSprite[] modIconSprites;
+   @ObfuscatedName("a")
    @Export("name")
    String name;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @Export("previousName")
    String previousName;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "2100386000"
+      signature = "(III)I",
+      garbageValue = "-1032831256"
    )
-   @Export("toByteArray")
-   public static byte[] toByteArray(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
-         }
-      } else if(var0 instanceof AbstractByteBuffer) {
-         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
-         return var2.get();
-      } else {
-         throw new IllegalArgumentException();
-      }
+   @Export("getSmoothNoise2D")
+   static final int getSmoothNoise2D(int var0, int var1) {
+      int var2 = class3.method7(var0 - 1, var1 - 1) + class3.method7(1 + var0, var1 - 1) + class3.method7(var0 - 1, 1 + var1) + class3.method7(1 + var0, var1 + 1);
+      int var3 = class3.method7(var0 - 1, var1) + class3.method7(var0 + 1, var1) + class3.method7(var0, var1 - 1) + class3.method7(var0, var1 + 1);
+      int var4 = class3.method7(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 
-   @ObfuscatedName("fz")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lbd;III)V",
-      garbageValue = "1693724909"
+      signature = "(I)Lks;",
+      garbageValue = "-1374631757"
    )
-   static void method1045(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = class90.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field1144 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field1188 = 0;
-         }
+   static SpritePixels method1060() {
+      SpritePixels var0 = new SpritePixels();
+      var0.maxWidth = class299.field3864;
+      var0.maxHeight = class299.field3868;
+      var0.offsetX = class299.field3867[0];
+      var0.offsetY = class299.offsetsY[0];
+      var0.width = Item.field1387[0];
+      var0.height = class276.field3727[0];
+      int var1 = var0.width * var0.height;
+      byte[] var2 = Bounds.spritePixels[0];
+      var0.pixels = new int[var1];
 
-         if(var3 == 2) {
-            var0.field1188 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || class90.getAnimation(var1).forcedPriority >= class90.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field1144 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field1188 = 0;
-         var0.field1203 = var0.queueSize;
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var0.pixels[var3] = FaceNormal.field2025[var2[var3] & 255];
       }
 
+      ContextMenuRow.method1663();
+      return var0;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "2053695113"
+   )
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
+   }
+
+   @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2013173523"
+   )
+   static void method1058() {
+      PacketNode var0 = FileSystem.method4252(ClientPacket.field2394, Client.field888.field1449);
+      PacketBuffer var1 = var0.packetBuffer;
+      int var2 = Client.isResized?2:1;
+      var1.putByte(var2);
+      var0.packetBuffer.putShort(Huffman.canvasWidth);
+      var0.packetBuffer.putShort(VertexNormal.canvasHeight);
+      Client.field888.method1862(var0);
+   }
+
+   @ObfuscatedName("gk")
+   @ObfuscatedSignature(
+      signature = "(Lbr;II)V",
+      garbageValue = "89717800"
+   )
+   @Export("characterToScreen")
+   static final void characterToScreen(Actor var0, int var1) {
+      class285.worldToScreen(var0.x, var0.y, var1);
    }
 }

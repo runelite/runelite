@@ -7,57 +7,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cf")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -801246797
+      intValue = 1024797975
    )
-   static int field1229;
-   @ObfuscatedName("r")
+   static int field1212;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -233733647
+   )
+   static int field1217;
+   @ObfuscatedName("dj")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexCache13")
+   static IndexData indexCache13;
+   @ObfuscatedName("e")
    @Export("hideRoofs")
    boolean hideRoofs;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("muted")
    boolean muted;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -190442965
+      intValue = -881826075
    )
    @Export("screenType")
    int screenType;
-   @ObfuscatedName("f")
-   String field1232;
-   @ObfuscatedName("u")
-   boolean field1235;
+   @ObfuscatedName("z")
+   @Export("rememberedUsername")
+   String rememberedUsername;
    @ObfuscatedName("t")
+   @Export("hideUsername")
+   boolean hideUsername;
+   @ObfuscatedName("f")
    @Export("preferences")
    LinkedHashMap preferences;
 
    static {
-      field1229 = 6;
+      field1212 = 6;
    }
 
    Preferences() {
       this.screenType = 1;
-      this.field1232 = null;
-      this.field1235 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
-      this.method1566(true);
+      this.method1527(true);
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfs;)V"
+      signature = "(Lgh;)V"
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
-      this.field1232 = null;
-      this.field1235 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field1229) {
+         if(var2 >= 0 && var2 <= field1212) {
             if(var1.readUnsignedByte() == 1) {
                this.hideRoofs = true;
             }
@@ -81,38 +94,38 @@ public class Preferences {
             }
 
             if(var2 > 4) {
-               this.field1232 = var1.getNullString();
+               this.rememberedUsername = var1.getNullString();
             }
 
             if(var2 > 5) {
-               this.field1235 = var1.method3193();
+               this.hideUsername = var1.method3268();
             }
          } else {
-            this.method1566(true);
+            this.method1527(true);
          }
       } else {
-         this.method1566(true);
+         this.method1527(true);
       }
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1291410218"
+      signature = "(ZB)V",
+      garbageValue = "-78"
    )
-   void method1566(boolean var1) {
+   void method1527(boolean var1) {
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)Lfs;",
-      garbageValue = "1224367894"
+      signature = "(B)Lgh;",
+      garbageValue = "49"
    )
    @Export("serialize")
    Buffer serialize() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field1229);
+      var1.putByte(field1212);
       var1.putByte(this.hideRoofs?1:0);
       var1.putByte(this.muted?1:0);
       var1.putByte(this.screenType);
@@ -125,66 +138,24 @@ public class Preferences {
          var1.putInt(((Integer)var3.getValue()).intValue());
       }
 
-      var1.putString(this.field1232 != null?this.field1232:"");
-      var1.method3176(this.field1235);
+      var1.putString(this.rememberedUsername != null?this.rememberedUsername:"");
+      var1.writeBooleanAsByte(this.hideUsername);
       return var1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BIIB)Ljava/lang/String;",
-      garbageValue = "-36"
+      signature = "(I)J",
+      garbageValue = "-1168308091"
    )
-   public static String method1574(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-      int var5 = var1;
-
-      int var8;
-      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = 65533;
-            } else {
-               var8 = var7;
-            }
-         } else if(var7 < 192) {
-            var8 = 65533;
-         } else if(var7 < 224) {
-            if(var5 < var6 && (var0[var5] & 192) == 128) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = 65533;
-               }
-            } else {
-               var8 = 65533;
-            }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = 65533;
-               }
-            } else {
-               var8 = 65533;
-            }
-         } else if(var7 < 248) {
-            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = 65533;
-               } else {
-                  var8 = 65533;
-               }
-            } else {
-               var8 = 65533;
-            }
-         } else {
-            var8 = 65533;
-         }
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class186.currentTimeMsLast) {
+         class186.currentTimeMsOffset += class186.currentTimeMsLast - var0;
       }
 
-      return new String(var3, 0, var4);
+      class186.currentTimeMsLast = var0;
+      return var0 + class186.currentTimeMsOffset;
    }
 }

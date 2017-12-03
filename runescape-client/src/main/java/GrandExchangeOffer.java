@@ -1,52 +1,47 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("r")
 @Implements("GrandExchangeOffer")
 public class GrandExchangeOffer {
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = -873262441
-   )
-   static int field288;
+   @ObfuscatedName("i")
+   static String[] field298;
    @ObfuscatedName("b")
+   @Export("osName")
+   static String osName;
+   @ObfuscatedName("a")
    @Export("progress")
    byte progress;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1693679247
+      intValue = 420374037
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1703938485
+      intValue = -940633443
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1557997979
+      intValue = -1993245439
    )
    @Export("totalQuantity")
    public int totalQuantity;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1314806785
+      intValue = -616978795
    )
    @Export("quantitySold")
    public int quantitySold;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 186417057
+      intValue = 300076227
    )
    @Export("spent")
    public int spent;
@@ -55,7 +50,7 @@ public class GrandExchangeOffer {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfs;Z)V",
+      signature = "(Lgh;Z)V",
       garbageValue = "0"
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
@@ -67,40 +62,42 @@ public class GrandExchangeOffer {
       this.spent = var1.readInt();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-694956443"
+      garbageValue = "1570598414"
    )
-   public int method100() {
+   @Export("status")
+   public int status() {
       return this.progress & 7;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1875113448"
+      signature = "(B)I",
+      garbageValue = "1"
    )
-   public int method101() {
+   @Export("type")
+   public int type() {
       return (this.progress & 8) == 8?1:0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1441522214"
+      signature = "(IB)V",
+      garbageValue = "84"
    )
-   void method98(int var1) {
+   void method99(int var1) {
       this.progress &= -8;
       this.progress = (byte)(this.progress | var1 & 7);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1234986220"
+      garbageValue = "1571324617"
    )
-   void method99(int var1) {
+   void method95(int var1) {
       this.progress &= -9;
       if(var1 == 1) {
          this.progress = (byte)(this.progress | 8);
@@ -108,203 +105,120 @@ public class GrandExchangeOffer {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lij;Lij;ZIB)V",
-      garbageValue = "67"
+      signature = "(I)V",
+      garbageValue = "-155028062"
    )
-   static void method114(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
-      if(class12.field256) {
-         if(var3 == 4) {
-            class91.loginIndex = 4;
-         }
+   static void method112() {
+      class96.chatLineMap.clear();
+      class96.messages.clear();
+      class96.field1414.clear();
+      class96.field1416 = 0;
+   }
 
-      } else {
-         class91.loginIndex = var3;
-         Rasterizer2D.reset();
-         byte[] var4 = var0.method4141("title.jpg", "");
-         BufferedImage var6 = null;
-
-         SpritePixels var5;
-         int var7;
-         int var8;
-         label153: {
-            try {
-               var6 = ImageIO.read(new ByteArrayInputStream(var4));
-               var7 = var6.getWidth();
-               var8 = var6.getHeight();
-               int[] var9 = new int[var8 * var7];
-               PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
-               var10.grabPixels();
-               var5 = new SpritePixels(var9, var7, var8);
-               break label153;
-            } catch (IOException var13) {
-               ;
-            } catch (InterruptedException var14) {
-               ;
+   @ObfuscatedName("fp")
+   @ObfuscatedSignature(
+      signature = "(Lbr;I)V",
+      garbageValue = "-1682729722"
+   )
+   static final void method111(Actor var0) {
+      if(var0.field1175 != 0) {
+         if(var0.interacting != -1) {
+            Object var1 = null;
+            if(var0.interacting < 32768) {
+               var1 = Client.cachedNPCs[var0.interacting];
+            } else if(var0.interacting >= 32768) {
+               var1 = Client.cachedPlayers[var0.interacting - 32768];
             }
 
-            var5 = new SpritePixels(0, 0);
+            if(var1 != null) {
+               int var2 = var0.x - ((Actor)var1).x;
+               int var3 = var0.y - ((Actor)var1).y;
+               if(var2 != 0 || var3 != 0) {
+                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+               }
+            } else if(var0.field1149) {
+               var0.interacting = -1;
+               var0.field1149 = false;
+            }
          }
 
-         class243.field3292 = var5;
-         class230.field2910 = class243.field3292.method5103();
-         if((Client.flags & 536870912) != 0) {
-            class66.logoSprite = class72.getSprite(var1, "logo_deadman_mode", "");
+         if(var0.field1150 != -1 && (var0.queueSize == 0 || var0.field1180 > 0)) {
+            var0.orientation = var0.field1150;
+            var0.field1150 = -1;
+         }
+
+         int var4 = var0.orientation - var0.angle & 2047;
+         if(var4 == 0 && var0.field1149) {
+            var0.interacting = -1;
+            var0.field1149 = false;
+         }
+
+         if(var4 != 0) {
+            ++var0.field1174;
+            boolean var6;
+            if(var4 > 1024) {
+               var0.angle -= var0.field1175;
+               var6 = true;
+               if(var4 < var0.field1175 || var4 > 2048 - var0.field1175) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1174 > 25 || var6)) {
+                  if(var0.field1128 != -1) {
+                     var0.poseAnimation = var0.field1128;
+                  } else {
+                     var0.poseAnimation = var0.field1139;
+                  }
+               }
+            } else {
+               var0.angle += var0.field1175;
+               var6 = true;
+               if(var4 < var0.field1175 || var4 > 2048 - var0.field1175) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1174 > 25 || var6)) {
+                  if(var0.field1176 != -1) {
+                     var0.poseAnimation = var0.field1176;
+                  } else {
+                     var0.poseAnimation = var0.field1139;
+                  }
+               }
+            }
+
+            var0.angle &= 2047;
          } else {
-            class66.logoSprite = class72.getSprite(var1, "logo", "");
+            var0.field1174 = 0;
          }
 
-         class91.field1331 = class72.getSprite(var1, "titlebox", "");
-         class273.field3711 = class72.getSprite(var1, "titlebutton", "");
-         class91.field1332 = class36.method477(var1, "runes", "");
-         class268.titlemuteSprite = class36.method477(var1, "title_mute", "");
-         class91.field1351 = class72.getSprite(var1, "options_radio_buttons,0", "");
-         Permission.field3241 = class72.getSprite(var1, "options_radio_buttons,4", "");
-         RSCanvas.field617 = class72.getSprite(var1, "options_radio_buttons,2", "");
-         ChatLineBuffer.field1453 = class72.getSprite(var1, "options_radio_buttons,6", "");
-         field288 = class91.field1351.originalWidth;
-         class163.field2207 = class91.field1351.height;
-         class82.field1265 = new int[256];
-
-         int var11;
-         for(var11 = 0; var11 < 64; ++var11) {
-            class82.field1265[var11] = var11 * 262144;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class82.field1265[var11 + 64] = var11 * 1024 + 16711680;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class82.field1265[var11 + 128] = var11 * 4 + 16776960;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class82.field1265[var11 + 192] = 16777215;
-         }
-
-         class91.field1330 = new int[256];
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1330[var11] = var11 * 1024;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1330[var11 + 64] = var11 * 4 + 65280;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1330[var11 + 128] = var11 * 262144 + 65535;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class91.field1330[var11 + 192] = 16777215;
-         }
-
-         class44.field540 = new int[256];
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class44.field540[var11] = var11 * 4;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class44.field540[var11 + 64] = var11 * 262144 + 255;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class44.field540[var11 + 128] = var11 * 1024 + 16711935;
-         }
-
-         for(var11 = 0; var11 < 64; ++var11) {
-            class44.field540[var11 + 192] = 16777215;
-         }
-
-         Friend.field758 = new int[256];
-         class164.field2208 = new int['耀'];
-         class91.field1364 = new int['耀'];
-         class259.method4460((IndexedSprite)null);
-         class21.field312 = new int['耀'];
-         class86.field1295 = new int['耀'];
-         if(var2) {
-            class91.username = "";
-            class91.password = "";
-         }
-
-         class51.field609 = 0;
-         class44.field538 = "";
-         class91.field1355 = true;
-         class91.worldSelectShown = false;
-         if(!class70.preferences.muted) {
-            IndexData var15 = class45.indexTrack1;
-            var7 = var15.getFile("scape main");
-            var8 = var15.getChild(var7, "");
-            RSCanvas.method744(2, var15, var7, var8, 255, false);
-         } else {
-            class210.field2585 = 1;
-            class70.field802 = null;
-            class210.field2586 = -1;
-            class31.field414 = -1;
-            class230.field2909 = 0;
-            class230.field2905 = false;
-            FrameMap.field1952 = 2;
-         }
-
-         class3.sendConInfo(false);
-         class12.field256 = true;
-         class91.field1361 = (class66.canvasWidth - 765) / 2;
-         class91.loginWindowX = class91.field1361 + 202;
-         class256.field3426 = class91.loginWindowX + 180;
-         class243.field3292.method5138(class91.field1361, 0);
-         class230.field2910.method5138(class91.field1361 + 382, 0);
-         class66.logoSprite.method5097(class91.field1361 + 382 - class66.logoSprite.originalWidth / 2, 18);
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("hb")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "179075774"
+      signature = "([Lhz;Lhz;ZB)V",
+      garbageValue = "-96"
    )
-   static final int method113(int var0, int var1, int var2) {
-      int var3 = 256 - var2;
-      return ((var1 & 65280) * var2 + (var0 & 65280) * var3 & 16711680) + (var3 * (var0 & 16711935) + (var1 & 16711935) * var2 & -16711936) >> 8;
-   }
-
-   @ObfuscatedName("gv")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIS)V",
-      garbageValue = "1326"
-   )
-   static final void method112(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = 2048 - var3 & 2047;
-      int var7 = 2048 - var4 & 2047;
-      int var8 = 0;
-      int var9 = 0;
-      int var10 = var5;
-      int var11;
-      int var12;
-      int var13;
-      if(var6 != 0) {
-         var11 = Graphics3D.SINE[var6];
-         var12 = Graphics3D.COSINE[var6];
-         var13 = var9 * var12 - var11 * var5 >> 16;
-         var10 = var5 * var12 + var9 * var11 >> 16;
-         var9 = var13;
+   static void method102(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class239.method4227(var0, var1.id, var3, var4, var2);
+      if(var1.children != null) {
+         class239.method4227(var1.children, var1.id, var3, var4, var2);
       }
 
-      if(var7 != 0) {
-         var11 = Graphics3D.SINE[var7];
-         var12 = Graphics3D.COSINE[var7];
-         var13 = var12 * var8 + var10 * var11 >> 16;
-         var10 = var12 * var10 - var8 * var11 >> 16;
-         var8 = var13;
+      WidgetNode var5 = (WidgetNode)Client.componentTable.get((long)var1.id);
+      if(var5 != null) {
+         ScriptEvent.method1055(var5.id, var3, var4, var2);
       }
 
-      class45.cameraX = var0 - var8;
-      class279.cameraZ = var1 - var9;
-      Client.cameraY = var2 - var10;
-      class45.cameraPitch = var3;
-      class230.cameraYaw = var4;
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 }

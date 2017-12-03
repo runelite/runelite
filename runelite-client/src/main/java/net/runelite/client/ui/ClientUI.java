@@ -33,17 +33,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class ClientUI extends JFrame
 {
-	private static final Logger logger = LoggerFactory.getLogger(ClientUI.class);
-
 	private static final int PANEL_WIDTH = 809;
 	private static final int PANEL_HEIGHT = 536;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
@@ -97,7 +95,7 @@ public class ClientUI extends JFrame
 			}
 			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
 			{
-				logger.error("Error loading RS!", ex);
+				log.error("Error loading RS!", ex);
 				System.exit(-1);
 			}
 		}

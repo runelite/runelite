@@ -4,83 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kn")
+@ObfuscatedName("kt")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("ot")
-   @ObfuscatedGetter(
-      intValue = 551566355
-   )
-   static int field3814;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1739870851
+      intValue = -1870118989
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -859237123
+      intValue = 205368253
    )
    @Export("height")
    public int height;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "10"
+      signature = "(III)V",
+      garbageValue = "-1763504301"
    )
-   public abstract void vmethod5065(int var1, int var2);
+   @Export("drawFull")
+   public abstract void drawFull(int var1, int var2);
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "-8"
+   )
+   @Export("draw")
+   public abstract void draw(int var1, int var2, int var3, int var4);
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-959174772"
-   )
-   public abstract void vmethod5068(int var1, int var2, int var3, int var4);
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "69"
+      signature = "(I)V",
+      garbageValue = "-1333475768"
    )
    @Export("setRaster")
    public final void setRaster() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
-   }
-
-   @ObfuscatedName("fn")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1843200781"
-   )
-   static final void method5078() {
-      int[] var0 = class94.playerIndices;
-
-      int var1;
-      for(var1 = 0; var1 < class94.playerIndexesCount; ++var1) {
-         Player var2 = Client.cachedPlayers[var0[var1]];
-         if(var2 != null && var2.field1201 > 0) {
-            --var2.field1201;
-            if(var2.field1201 == 0) {
-               var2.overhead = null;
-            }
-         }
-      }
-
-      for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         int var4 = Client.npcIndices[var1];
-         NPC var3 = Client.cachedNPCs[var4];
-         if(var3 != null && var3.field1201 > 0) {
-            --var3.field1201;
-            if(var3.field1201 == 0) {
-               var3.overhead = null;
-            }
-         }
-      }
-
    }
 }

@@ -2,117 +2,114 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
-public enum class239 implements class185 {
-   @ObfuscatedName("b")
+@ObfuscatedName("ii")
+public enum class239 implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3252("runescape", "RuneScape", 0),
-   @ObfuscatedName("s")
+   field3261(4, 0),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3250("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("r")
+   field3256(2, 1),
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3253("game3", "Game 3", 2),
-   @ObfuscatedName("g")
+   field3257(3, 2),
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3255("game4", "Game 4", 3),
-   @ObfuscatedName("x")
+   field3263(1, 3),
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3254("game5", "Game 5", 4),
+   field3259(5, 4),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3260(0, 5),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3262(6, 6),
    @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lii;"
    )
-   field3257("oldscape", "RuneScape 2007", 5);
+   field3258(7, 7);
 
-   @ObfuscatedName("u")
-   public final String field3256;
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1009020233
+      intValue = 741878133
    )
-   final int field3251;
+   public final int field3255;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1892953301
+   )
+   final int field3264;
 
-   class239(String var3, String var4, int var5) {
-      this.field3256 = var3;
-      this.field3251 = var5;
+   class239(int var3, int var4) {
+      this.field3255 = var3;
+      this.field3264 = var4;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-4"
+      signature = "(I)I",
+      garbageValue = "-1035813094"
    )
    public int rsOrdinal() {
-      return this.field3251;
+      return this.field3264;
    }
 
-   @ObfuscatedName("iq")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lhx;IIZB)V",
-      garbageValue = "-90"
+      signature = "(Lib;I)V",
+      garbageValue = "-1632245897"
    )
-   static void method4101(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2720 == 0) {
-         var0.width = var0.originalWidth;
-      } else if(var0.field2720 == 1) {
-         var0.width = var1 - var0.originalWidth;
-      } else if(var0.field2720 == 2) {
-         var0.width = var0.originalWidth * var1 >> 14;
-      }
+   public static void method4226(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
 
-      if(var0.buttonType == 0) {
-         var0.height = var0.field2725;
-      } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.field2725;
-      } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.field2725 >> 14;
-      }
-
-      if(var0.field2720 == 4) {
-         var0.width = var0.height * var0.field2816 / var0.field2794;
-      }
-
-      if(var0.buttonType == 4) {
-         var0.height = var0.width * var0.field2794 / var0.field2816;
-      }
-
-      if(Client.field1017 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
-         } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
+   @ObfuscatedName("hg")
+   @ObfuscatedSignature(
+      signature = "([Lhz;IIIZI)V",
+      garbageValue = "-1010498984"
+   )
+   static void method4227(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            class89.method1666(var6, var2, var3, var4);
+            class60.method985(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
             }
 
-            if(var0.width <= 0) {
-               var0.width = 5;
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               GrandExchangeOffer.method102(var0, var6, var4);
             }
          }
-      }
-
-      if(var0.contentType == 1337) {
-         Client.field1019 = var0;
-      }
-
-      if(var3 && var0.field2822 != null && (var4 != var0.width || var5 != var0.height)) {
-         ScriptEvent var6 = new ScriptEvent();
-         var6.widget = var0;
-         var6.field785 = var0.field2822;
-         Client.field862.addFront(var6);
       }
 
    }

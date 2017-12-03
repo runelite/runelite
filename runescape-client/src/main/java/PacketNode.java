@@ -4,75 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fg")
 @Implements("PacketNode")
 public class PacketNode extends Node {
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Lfc;"
+      signature = "[Lfg;"
    )
-   static PacketNode[] field2419;
-   @ObfuscatedName("f")
+   @Export("packetBufferNodes")
+   static PacketNode[] packetBufferNodes;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1621553429
+      intValue = -1029418191
    )
-   static int field2420;
-   @ObfuscatedName("fh")
-   @ObfuscatedGetter(
-      intValue = -1728680613
-   )
-   static int field2415;
-   @ObfuscatedName("b")
+   static int field2436;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfi;"
+      signature = "Lfo;"
    )
    @Export("clientPacket")
    public ClientPacket clientPacket;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1559865493
+      intValue = -657508309
    )
-   public int field2416;
-   @ObfuscatedName("r")
+   public int field2432;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgy;"
    )
    @Export("packetBuffer")
    public PacketBuffer packetBuffer;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1609470239
+      intValue = -2005634151
    )
-   public int field2423;
+   public int field2434;
 
    static {
-      field2419 = new PacketNode[300];
-      field2420 = 0;
+      packetBufferNodes = new PacketNode[300];
+      field2436 = 0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "316719324"
+      garbageValue = "1645508271"
    )
-   public void method3106() {
-      if(field2420 < field2419.length) {
-         field2419[++field2420 - 1] = this;
-      }
-   }
-
-   @ObfuscatedName("gl")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-234897108"
-   )
-   static final void method3098(int var0, int var1) {
-      if(Client.hintArrowTargetType == 2) {
-         class168.method3096((Client.hintArrowX - class13.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - ClanMember.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            class268.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
-         }
-
+   public void method3173() {
+      if(field2436 < packetBufferNodes.length) {
+         packetBufferNodes[++field2436 - 1] = this;
       }
    }
 }

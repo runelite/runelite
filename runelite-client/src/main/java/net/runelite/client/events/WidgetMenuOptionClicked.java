@@ -24,41 +24,13 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.widgets.WidgetInfo;
 
+@Data
 public class WidgetMenuOptionClicked
 {
 	private String menuOption;
 	private String menuTarget;
 	private WidgetInfo widget;
-
-	public String getMenuOption()
-	{
-		return menuOption;
-	}
-
-	public void setMenuOption(String menuOption)
-	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public WidgetInfo getWidget()
-	{
-		return widget;
-	}
-
-	public void setWidget(WidgetInfo widget)
-	{
-		this.widget = widget;
-	}
 }

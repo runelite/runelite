@@ -39,15 +39,14 @@ import java.nio.file.WatchService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.RuneliteConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class PluginWatcher extends Thread
 {
-	private static final Logger logger = LoggerFactory.getLogger(PluginWatcher.class);
 	private static final File BASE = RuneLite.PLUGIN_DIR;
 
 	private final RuneliteConfig runeliteConfig;
@@ -102,19 +101,19 @@ public class PluginWatcher extends Thread
 					Path path = (Path) event.context();
 					File file = new File(BASE, path.toFile().getName());
 
-					logger.debug("Event {} file {}", kind, file);
+					log.debug("Event {} file {}", kind, file);
 
 					if (kind == ENTRY_MODIFY)
 					{
 						Plugin existing = findPluginForFile(file);
 						if (existing != null)
 						{
-							logger.info("Reloading plugin {}", file);
+							log.info("Reloading plugin {}", file);
 							unload(existing);
 						}
 						else
 						{
-							logger.info("Loading plugin {}", file);
+							log.info("Loading plugin {}", file);
 						}
 
 						load(file);
@@ -124,7 +123,7 @@ public class PluginWatcher extends Thread
 						Plugin existing = findPluginForFile(file);
 						if (existing != null)
 						{
-							logger.info("Unloading plugin {}", file);
+							log.info("Unloading plugin {}", file);
 
 							unload(existing);
 						}
@@ -135,7 +134,7 @@ public class PluginWatcher extends Thread
 			}
 			catch (InterruptedException ex)
 			{
-				logger.warn("error polling for plugins", ex);
+				log.warn("error polling for plugins", ex);
 			}
 		}
 	}
@@ -149,7 +148,7 @@ public class PluginWatcher extends Thread
 				continue;
 			}
 
-			logger.info("Loading plugin from {}", file);
+			log.info("Loading plugin from {}", file);
 			load(file);
 		}
 	}
@@ -175,7 +174,7 @@ public class PluginWatcher extends Thread
 		}
 		catch (MalformedURLException ex)
 		{
-			logger.warn("Error loading plugin", ex);
+			log.warn("Error loading plugin", ex);
 			return;
 		}
 
@@ -187,21 +186,21 @@ public class PluginWatcher extends Thread
 		catch (IOException ex)
 		{
 			close(loader);
-			logger.warn("Error loading plugin", ex);
+			log.warn("Error loading plugin", ex);
 			return;
 		}
 
 		if (loadedPlugins.isEmpty())
 		{
 			close(loader);
-			logger.warn("No plugin found in plugin {}", pluginFile);
+			log.warn("No plugin found in plugin {}", pluginFile);
 			return;
 		}
 
 		if (loadedPlugins.size() != 1)
 		{
 			close(loader);
-			logger.warn("You can not have more than one plugin per jar");
+			log.warn("You can not have more than one plugin per jar");
 			return;
 		}
 
@@ -216,7 +215,7 @@ public class PluginWatcher extends Thread
 		catch (PluginInstantiationException ex)
 		{
 			close(loader);
-			logger.warn("unable to start plugin", ex);
+			log.warn("unable to start plugin", ex);
 			return;
 		}
 
@@ -232,7 +231,7 @@ public class PluginWatcher extends Thread
 		}
 		catch (PluginInstantiationException ex)
 		{
-			logger.warn("unable to stop plugin", ex);
+			log.warn("unable to stop plugin", ex);
 		}
 
 		pluginManager.remove(plugin); // remove it regardless
@@ -248,7 +247,7 @@ public class PluginWatcher extends Thread
 		}
 		catch (IOException ex1)
 		{
-			logger.warn(null, ex1);
+			log.warn(null, ex1);
 		}
 	}
 

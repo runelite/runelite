@@ -4,54 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cw")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
+   @Export("highMemory")
+   protected static boolean highMemory;
+   @ObfuscatedName("jy")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
+   static Widget field1299;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -2078937009
+      intValue = 571443005
    )
    @Export("param0")
    int param0;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1747902745
+      intValue = 715253505
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1994232587
-   )
-   @Export("identifier")
-   int identifier;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 160287915
+      intValue = 1066703259
    )
    @Export("type")
    int type;
-   @ObfuscatedName("x")
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1578872715
+   )
+   @Export("identifier")
+   int identifier;
+   @ObfuscatedName("u")
    @Export("option")
    String option;
 
-   @ObfuscatedName("hi")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1490134270"
+      garbageValue = "933459213"
    )
-   static void method1679() {
-      if(Client.spellSelected) {
-         Widget var0 = DecorativeObject.method2896(class47.field562, Client.field1003);
-         if(var0 != null && var0.field2805 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.field785 = var0.field2805;
-            BaseVarType.method11(var1);
-         }
-
-         Client.spellSelected = false;
-         ScriptEvent.method1038(var0);
-      }
+   public static void method1663() {
+      class299.field3867 = null;
+      class299.offsetsY = null;
+      Item.field1387 = null;
+      class276.field3727 = null;
+      FaceNormal.field2025 = null;
+      Bounds.spritePixels = null;
    }
 }

@@ -30,7 +30,7 @@ public class Class
 
 	public Class(String name)
 	{
-		assert !name.startsWith("L") && !name.endsWith(";");
+		assert !name.startsWith("L") || !name.endsWith(";");
 		this.name = name;
 	}
 

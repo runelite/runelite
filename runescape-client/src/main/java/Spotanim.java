@@ -4,98 +4,104 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ix")
+@ObfuscatedName("iz")
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
-   public static IndexDataBase field3378;
-   @ObfuscatedName("s")
+   @Export("SpotAnimationDefinition_indexCache")
+   static IndexDataBase SpotAnimationDefinition_indexCache;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
-   public static IndexDataBase field3385;
-   @ObfuscatedName("r")
+   @Export("SpotAnimationDefinition_modelIndexCache")
+   static IndexDataBase SpotAnimationDefinition_modelIndexCache;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
    @Export("spotanims")
-   public static NodeCache spotanims;
-   @ObfuscatedName("g")
+   static NodeCache spotanims;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
-   public static NodeCache field3376;
-   @ObfuscatedName("x")
+   @Export("SpotAnimationDefinition_cachedModels")
+   static NodeCache SpotAnimationDefinition_cachedModels;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -95772713
+      intValue = -1724173847
    )
    @Export("id")
    int id;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -2089901653
+      intValue = 1091356547
    )
-   int field3374;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 793910469
-   )
-   public int field3387;
+   int field3412;
    @ObfuscatedName("t")
-   short[] field3380;
-   @ObfuscatedName("k")
-   short[] field3386;
+   @ObfuscatedGetter(
+      intValue = 13266031
+   )
+   public int field3413;
+   @ObfuscatedName("f")
+   short[] field3422;
+   @ObfuscatedName("g")
+   short[] field3415;
+   @ObfuscatedName("j")
+   short[] field3411;
+   @ObfuscatedName("x")
+   short[] field3414;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -2078782681
+   )
+   @Export("widthScale")
+   int widthScale;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 924320411
+   )
+   @Export("heightScale")
+   int heightScale;
    @ObfuscatedName("n")
-   short[] field3382;
-   @ObfuscatedName("d")
-   short[] field3383;
+   @ObfuscatedGetter(
+      intValue = 1346987829
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1994156023
+   )
+   int field3421;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1972358529
+      intValue = 418860177
    )
-   int field3384;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1449035683
-   )
-   int field3375;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 663127895
-   )
-   int field3379;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1162509475
-   )
-   int field3381;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 836754815
-   )
-   int field3388;
+   int field3420;
 
    static {
       spotanims = new NodeCache(64);
-      field3376 = new NodeCache(30);
+      SpotAnimationDefinition_cachedModels = new NodeCache(30);
    }
 
    Spotanim() {
-      this.field3387 = -1;
-      this.field3384 = 128;
-      this.field3375 = 128;
-      this.field3379 = 0;
-      this.field3381 = 0;
-      this.field3388 = 0;
+      this.field3413 = -1;
+      this.widthScale = 128;
+      this.heightScale = 128;
+      this.orientation = 0;
+      this.field3421 = 0;
+      this.field3420 = 0;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfs;B)V",
-      garbageValue = "-79"
+      signature = "(Lgh;B)V",
+      garbageValue = "58"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -105,111 +111,113 @@ public class Spotanim extends CacheableNode {
             return;
          }
 
-         this.method4320(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;II)V",
-      garbageValue = "1328999209"
+      signature = "(Lgh;IB)V",
+      garbageValue = "22"
    )
-   void method4320(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field3374 = var1.readUnsignedShort();
+         this.field3412 = var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.field3387 = var1.readUnsignedShort();
+         this.field3413 = var1.readUnsignedShort();
       } else if(var2 == 4) {
-         this.field3384 = var1.readUnsignedShort();
+         this.widthScale = var1.readUnsignedShort();
       } else if(var2 == 5) {
-         this.field3375 = var1.readUnsignedShort();
+         this.heightScale = var1.readUnsignedShort();
       } else if(var2 == 6) {
-         this.field3379 = var1.readUnsignedShort();
+         this.orientation = var1.readUnsignedShort();
       } else if(var2 == 7) {
-         this.field3381 = var1.readUnsignedByte();
+         this.field3421 = var1.readUnsignedByte();
       } else if(var2 == 8) {
-         this.field3388 = var1.readUnsignedByte();
+         this.field3420 = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if(var2 == 40) {
             var3 = var1.readUnsignedByte();
-            this.field3380 = new short[var3];
-            this.field3386 = new short[var3];
+            this.field3422 = new short[var3];
+            this.field3415 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field3380[var4] = (short)var1.readUnsignedShort();
-               this.field3386[var4] = (short)var1.readUnsignedShort();
+               this.field3422[var4] = (short)var1.readUnsignedShort();
+               this.field3415[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
             var3 = var1.readUnsignedByte();
-            this.field3382 = new short[var3];
-            this.field3383 = new short[var3];
+            this.field3411 = new short[var3];
+            this.field3414 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field3382[var4] = (short)var1.readUnsignedShort();
-               this.field3383[var4] = (short)var1.readUnsignedShort();
+               this.field3411[var4] = (short)var1.readUnsignedShort();
+               this.field3414[var4] = (short)var1.readUnsignedShort();
             }
          }
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IB)Lev;",
-      garbageValue = "101"
+      signature = "(IB)Lef;",
+      garbageValue = "46"
    )
-   public final Model method4321(int var1) {
-      Model var2 = (Model)field3376.get((long)this.id);
+   @Export("getModel")
+   public final Model getModel(int var1) {
+      Model var2 = (Model)SpotAnimationDefinition_cachedModels.get((long)this.id);
       if(var2 == null) {
-         ModelData var3 = ModelData.method2419(field3385, this.field3374, 0);
+         ModelData var3 = ModelData.method2428(SpotAnimationDefinition_modelIndexCache, this.field3412, 0);
          if(var3 == null) {
             return null;
          }
 
          int var4;
-         if(this.field3380 != null) {
-            for(var4 = 0; var4 < this.field3380.length; ++var4) {
-               var3.recolor(this.field3380[var4], this.field3386[var4]);
+         if(this.field3422 != null) {
+            for(var4 = 0; var4 < this.field3422.length; ++var4) {
+               var3.recolor(this.field3422[var4], this.field3415[var4]);
             }
          }
 
-         if(this.field3382 != null) {
-            for(var4 = 0; var4 < this.field3382.length; ++var4) {
-               var3.method2432(this.field3382[var4], this.field3383[var4]);
+         if(this.field3411 != null) {
+            for(var4 = 0; var4 < this.field3411.length; ++var4) {
+               var3.method2437(this.field3411[var4], this.field3414[var4]);
             }
          }
 
-         var2 = var3.light(this.field3381 + 64, this.field3388 + 850, -30, -50, -30);
-         field3376.put(var2, (long)this.id);
+         var2 = var3.light(this.field3421 + 64, this.field3420 + 850, -30, -50, -30);
+         SpotAnimationDefinition_cachedModels.put(var2, (long)this.id);
       }
 
       Model var5;
-      if(this.field3387 != -1 && var1 != -1) {
-         var5 = class90.getAnimation(this.field3387).method4703(var2, var1);
+      if(this.field3413 != -1 && var1 != -1) {
+         var5 = Permission.getAnimation(this.field3413).method4839(var2, var1);
       } else {
-         var5 = var2.method2512(true);
+         var5 = var2.method2555(true);
       }
 
-      if(this.field3384 != 128 || this.field3375 != 128) {
-         var5.method2505(this.field3384, this.field3375, this.field3384);
+      if(this.widthScale != 128 || this.heightScale != 128) {
+         var5.scale(this.widthScale, this.heightScale, this.widthScale);
       }
 
-      if(this.field3379 != 0) {
-         if(this.field3379 == 90) {
-            var5.method2518();
+      if(this.orientation != 0) {
+         if(this.orientation == 90) {
+            var5.rotateY90Ccw();
          }
 
-         if(this.field3379 == 180) {
-            var5.method2518();
-            var5.method2518();
+         if(this.orientation == 180) {
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
          }
 
-         if(this.field3379 == 270) {
-            var5.method2518();
-            var5.method2518();
-            var5.method2518();
+         if(this.orientation == 270) {
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
+            var5.rotateY90Ccw();
          }
       }
 

@@ -1,34 +1,20 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("du")
 @Implements("SoundTask")
 public class SoundTask implements Runnable {
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1943177797
-   )
-   static int field1573;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Led;"
-   )
-   @Export("listFetcher")
-   static class149 listFetcher;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lfs;"
+      signature = "Lgh;"
    )
-   static Buffer field1574;
-   @ObfuscatedName("br")
-   @Export("sessionToken")
-   static String sessionToken;
-   @ObfuscatedName("b")
+   @Export("NetCache_reference")
+   static Buffer NetCache_reference;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Ldo;"
+      signature = "[Ldn;"
    )
    @Export("systems")
    volatile AbstractSoundSystem[] systems;
@@ -42,11 +28,11 @@ public class SoundTask implements Runnable {
          for(int var1 = 0; var1 < 2; ++var1) {
             AbstractSoundSystem var2 = this.systems[var1];
             if(var2 != null) {
-               var2.method2069();
+               var2.method2003();
             }
          }
       } catch (Exception var4) {
-         class48.method690((String)null, var4);
+         PendingSpawn.method1461((String)null, var4);
       }
 
    }

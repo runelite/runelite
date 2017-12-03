@@ -1,35 +1,43 @@
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bs")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("qw")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1895373177
    )
-   @Export("renderOverview")
-   static RenderOverview renderOverview;
-   @ObfuscatedName("b")
+   @Export("sampleRate")
+   public static int sampleRate;
+   @ObfuscatedName("f")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "Lcx;"
+      signature = "Lkt;"
+   )
+   @Export("rasterProvider")
+   public static BufferProvider rasterProvider;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lck;"
    )
    @Export("invokedFromScript")
    Script invokedFromScript;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -238592489
+      intValue = -1612919269
    )
    @Export("invokedFromPc")
    int invokedFromPc;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("savedLocalInts")
    int[] savedLocalInts;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("savedLocalStrings")
    String[] savedLocalStrings;
 
@@ -37,98 +45,69 @@ public class ScriptState {
       this.invokedFromPc = -1;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("fb")
    @ObfuscatedSignature(
-      signature = "(S)[Ljq;",
-      garbageValue = "-2716"
+      signature = "(ZB)V",
+      garbageValue = "-14"
    )
-   static class285[] method1001() {
-      return new class285[]{class285.field3784, class285.field3783, class285.field3782};
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-      garbageValue = "606070818"
-   )
-   public static boolean method1000(String var0, int var1, String var2) {
-      if(var1 == 0) {
-         try {
-            if(!class56.field629.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var10.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
+   static final void method1022(boolean var0) {
+      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4799()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1126 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field931[var4][var5] == Client.field932) {
+                     continue;
                   }
+
+                  Client.field931[var4][var5] = Client.field932;
                }
 
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
+               if(!var2.composition.field3643) {
+                  var3 -= Integer.MIN_VALUE;
+               }
+
+               class48.region.method2701(BoundingBox2D.plane, var2.x, var2.y, WorldMapType2.getTileHeight(var2.field1126 * 64 - 64 + var2.x, var2.field1126 * 64 - 64 + var2.y, BoundingBox2D.plane), var2.field1126 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1170);
             }
-         } catch (Throwable var5) {
-            return false;
          }
-      } else if(var1 == 1) {
-         try {
-            Object var3 = class52.method730(class56.field630, var2, new Object[]{(new URL(class56.field630.getCodeBase(), var0)).toString()});
-            return var3 != null;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class56.field630.getAppletContext().showDocument(new URL(class56.field630.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            class52.method726(class56.field630, "loggedout");
-         } catch (Throwable var9) {
-            ;
-         }
-
-         try {
-            class56.field630.getAppletContext().showDocument(new URL(class56.field630.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1518554558"
-   )
-   static void method998() {
-      if(MouseInput.loadWorlds()) {
-         class91.worldSelectShown = true;
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("hw")
    @ObfuscatedSignature(
-      signature = "(IZII)V",
-      garbageValue = "16711680"
+      signature = "(Lhz;Ljq;IIZI)V",
+      garbageValue = "-256260065"
    )
-   public static final void method999(int var0, boolean var1, int var2) {
-      if(var0 >= 8000 && var0 <= 48000) {
-         AbstractSoundSystem.sampleRate = var0;
-         AbstractSoundSystem.highMemory = var1;
-         AbstractSoundSystem.priority = var2;
-      } else {
-         throw new IllegalArgumentException();
+   static final void method1023(Widget var0, ItemComposition var1, int var2, int var3, boolean var4) {
+      String[] var5 = var1.inventoryActions;
+      byte var6 = -1;
+      String var7 = null;
+      if(var5 != null && var5[var3] != null) {
+         if(var3 == 0) {
+            var6 = 33;
+         } else if(var3 == 1) {
+            var6 = 34;
+         } else if(var3 == 2) {
+            var6 = 35;
+         } else if(var3 == 3) {
+            var6 = 36;
+         } else {
+            var6 = 37;
+         }
+
+         var7 = var5[var3];
+      } else if(var3 == 4) {
+         var6 = 37;
+         var7 = "Drop";
       }
+
+      if(var6 != -1 && var7 != null) {
+         Varcs.method1806(var7, Buffer.getColTags(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
+      }
+
    }
 }

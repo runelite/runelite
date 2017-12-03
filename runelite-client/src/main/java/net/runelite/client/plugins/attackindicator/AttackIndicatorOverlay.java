@@ -33,7 +33,6 @@ import java.awt.Rectangle;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.FontManager;
@@ -67,7 +66,7 @@ public class AttackIndicatorOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled())
 		{
 			return null;
 		}
@@ -105,7 +104,14 @@ public class AttackIndicatorOverlay extends Overlay
 		// Render text with shadow
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(attackStyleString, anchor.x - background.width + 3, anchor.y);
-		graphics.setColor(Color.WHITE);
+		if (plugin.isWarnedSkillSelected())
+		{
+			graphics.setColor(Color.RED);
+		}
+		else
+		{
+			graphics.setColor(Color.WHITE);
+		}
 		graphics.drawString(attackStyleString, anchor.x - background.width + 2, anchor.y - 1);
 
 		return null;

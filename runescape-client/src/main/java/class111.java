@@ -2,56 +2,51 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dg")
+@ObfuscatedName("de")
 public class class111 {
-   @ObfuscatedName("ni")
-   @Export("clanChatRank")
-   static byte clanChatRank;
-   @ObfuscatedName("fg")
-   static byte[][] field1578;
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
    @Export("sfx_index")
    IndexDataBase sfx_index;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
    @Export("vorbis_index")
    IndexDataBase vorbis_index;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgp;"
    )
-   HashTable field1576;
-   @ObfuscatedName("g")
+   HashTable field1559;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgp;"
    )
-   HashTable field1581;
+   HashTable field1558;
 
    @ObfuscatedSignature(
-      signature = "(Lij;Lij;)V"
+      signature = "(Lib;Lib;)V"
    )
    public class111(IndexDataBase var1, IndexDataBase var2) {
-      this.field1576 = new HashTable(256);
-      this.field1581 = new HashTable(256);
+      this.field1559 = new HashTable(256);
+      this.field1558 = new HashTable(256);
       this.sfx_index = var1;
       this.vorbis_index = var2;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II[II)Ldn;",
-      garbageValue = "-1815450701"
+      signature = "(II[IB)Ldx;",
+      garbageValue = "58"
    )
-   class106 method2099(int var1, int var2, int[] var3) {
+   class106 method2072(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class106 var7 = (class106)this.field1581.get(var5);
+      class106 var7 = (class106)this.field1558.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
@@ -61,10 +56,10 @@ public class class111 {
          if(var8 == null) {
             return null;
          } else {
-            var7 = var8.method1936();
-            this.field1581.put(var7, var5);
+            var7 = var8.method1942();
+            this.field1558.put(var7, var5);
             if(var3 != null) {
-               var3[0] -= var7.field1519.length;
+               var3[0] -= var7.field1509.length;
             }
 
             return var7;
@@ -72,98 +67,92 @@ public class class111 {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II[IS)Ldn;",
-      garbageValue = "30842"
+      signature = "(II[IB)Ldx;",
+      garbageValue = "119"
    )
-   class106 method2097(int var1, int var2, int[] var3) {
+   class106 method2073(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class106 var7 = (class106)this.field1581.get(var5);
+      class106 var7 = (class106)this.field1558.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         class105 var8 = (class105)this.field1576.get(var5);
+         class105 var8 = (class105)this.field1559.get(var5);
          if(var8 == null) {
-            var8 = class105.method1960(this.vorbis_index, var1, var2);
+            var8 = class105.method1951(this.vorbis_index, var1, var2);
             if(var8 == null) {
                return null;
             }
 
-            this.field1576.put(var8, var5);
+            this.field1559.put(var8, var5);
          }
 
-         var7 = var8.method1968(var3);
+         var7 = var8.method1952(var3);
          if(var7 == null) {
             return null;
          } else {
             var8.unlink();
-            this.field1581.put(var7, var5);
+            this.field1558.put(var7, var5);
             return var7;
          }
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I[IS)Ldn;",
-      garbageValue = "-19547"
+      signature = "(I[II)Ldx;",
+      garbageValue = "-1120993990"
    )
-   public class106 method2105(int var1, int[] var2) {
+   public class106 method2074(int var1, int[] var2) {
       if(this.sfx_index.size() == 1) {
-         return this.method2099(0, var1, var2);
+         return this.method2072(0, var1, var2);
       } else if(this.sfx_index.fileCount(var1) == 1) {
-         return this.method2099(var1, 0, var2);
+         return this.method2072(var1, 0, var2);
       } else {
          throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I[II)Ldn;",
-      garbageValue = "404574868"
+      signature = "(I[II)Ldx;",
+      garbageValue = "-144670660"
    )
-   public class106 method2100(int var1, int[] var2) {
+   public class106 method2077(int var1, int[] var2) {
       if(this.vorbis_index.size() == 1) {
-         return this.method2097(0, var1, var2);
+         return this.method2073(0, var1, var2);
       } else if(this.vorbis_index.fileCount(var1) == 1) {
-         return this.method2097(var1, 0, var2);
+         return this.method2073(var1, 0, var2);
       } else {
          throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "1792741270"
+      signature = "(IB)[B",
+      garbageValue = "29"
    )
-   static char method2096(char var0) {
-      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
+   static synchronized byte[] method2088(int var0) {
+      return class185.method3505(var0, false);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("go")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-2005990494"
+      signature = "(IIIII)V",
+      garbageValue = "-680699859"
    )
-   static final int method2106(int var0, int var1) {
-      if(var0 == -1) {
-         return 12345678;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+   static final void method2084(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1019[var4] = true;
          }
-
-         return (var0 & 65408) + var1;
       }
+
    }
 }

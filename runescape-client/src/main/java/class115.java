@@ -1,67 +1,86 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("du")
+@ObfuscatedName("dz")
 public class class115 {
-   @ObfuscatedName("g")
+   @ObfuscatedName("t")
+   @Export("validInterfaces")
+   static boolean[] validInterfaces;
+   @ObfuscatedName("r")
+   @Export("cacheLocations")
+   static String[] cacheLocations;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 725426845
+      intValue = -151636743
    )
-   int field1592;
-   @ObfuscatedName("x")
+   int field1571;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1385358171
+      intValue = -581648665
    )
-   int field1595;
-   @ObfuscatedName("f")
-   int[][] field1593;
+   int field1574;
+   @ObfuscatedName("z")
+   int[][] field1573;
 
    public class115(int var1, int var2) {
       if(var2 != var1) {
-         int var3 = MouseInput.method963(var1, var2);
-         var1 /= var3;
-         var2 /= var3;
-         this.field1592 = var1;
-         this.field1595 = var2;
-         this.field1593 = new int[var1][14];
+         int var4 = var1;
+         int var5 = var2;
+         if(var2 > var1) {
+            var4 = var2;
+            var5 = var1;
+         }
 
-         for(int var4 = 0; var4 < var1; ++var4) {
-            int[] var5 = this.field1593[var4];
-            double var6 = (double)var4 / (double)var1 + 6.0D;
-            int var8 = (int)Math.floor(var6 - 7.0D + 1.0D);
-            if(var8 < 0) {
-               var8 = 0;
+         while(var5 != 0) {
+            int var6 = var4 % var5;
+            var4 = var5;
+            var5 = var6;
+         }
+
+         var1 /= var4;
+         var2 /= var4;
+         this.field1571 = var1;
+         this.field1574 = var2;
+         this.field1573 = new int[var1][14];
+
+         for(int var7 = 0; var7 < var1; ++var7) {
+            int[] var8 = this.field1573[var7];
+            double var9 = 6.0D + (double)var7 / (double)var1;
+            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
+            if(var11 < 0) {
+               var11 = 0;
             }
 
-            int var9 = (int)Math.ceil(var6 + 7.0D);
-            if(var9 > 14) {
-               var9 = 14;
+            int var12 = (int)Math.ceil(7.0D + var9);
+            if(var12 > 14) {
+               var12 = 14;
             }
 
-            for(double var10 = (double)var2 / (double)var1; var8 < var9; ++var8) {
-               double var12 = 3.141592653589793D * ((double)var8 - var6);
-               double var14 = var10;
-               if(var12 < -1.0E-4D || var12 > 1.0E-4D) {
-                  var14 = var10 * (Math.sin(var12) / var12);
+            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
+               double var15 = ((double)var11 - var9) * 3.141592653589793D;
+               double var17 = var13;
+               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
+                  var17 = var13 * (Math.sin(var15) / var15);
                }
 
-               var14 *= 0.54D + 0.46D * Math.cos(((double)var8 - var6) * 0.2243994752564138D);
-               var5[var8] = (int)Math.floor(65536.0D * var14 + 0.5D);
+               var17 *= 0.54D + 0.46D * Math.cos(((double)var11 - var9) * 0.2243994752564138D);
+               var8[var11] = (int)Math.floor(0.5D + 65536.0D * var17);
             }
          }
 
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BB)[B",
-      garbageValue = "64"
+      signature = "([BI)[B",
+      garbageValue = "-1948330626"
    )
-   byte[] method2121(byte[] var1) {
-      if(this.field1593 != null) {
-         int var2 = (int)((long)this.field1595 * (long)var1.length / (long)this.field1592) + 14;
+   byte[] method2097(byte[] var1) {
+      if(this.field1573 != null) {
+         int var2 = (int)((long)var1.length * (long)this.field1574 / (long)this.field1571) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -69,17 +88,17 @@ public class class115 {
          int var6;
          for(var6 = 0; var6 < var1.length; ++var6) {
             byte var7 = var1[var6];
-            int[] var8 = this.field1593[var5];
+            int[] var8 = this.field1573[var5];
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var4 + var9] += var7 * var8[var9];
+               var3[var9 + var4] += var8[var9] * var7;
             }
 
-            var5 += this.field1595;
-            var9 = var5 / this.field1592;
+            var5 += this.field1574;
+            var9 = var5 / this.field1571;
             var4 += var9;
-            var5 -= var9 * this.field1592;
+            var5 -= var9 * this.field1571;
          }
 
          var1 = new byte[var2];
@@ -99,27 +118,27 @@ public class class115 {
       return var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "1287386688"
+      garbageValue = "2142728636"
    )
-   int method2119(int var1) {
-      if(this.field1593 != null) {
-         var1 = (int)((long)var1 * (long)this.field1595 / (long)this.field1592);
+   int method2104(int var1) {
+      if(this.field1573 != null) {
+         var1 = (int)((long)var1 * (long)this.field1574 / (long)this.field1571);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "1840619080"
+      garbageValue = "1610576549"
    )
-   int method2120(int var1) {
-      if(this.field1593 != null) {
-         var1 = (int)((long)this.field1595 * (long)var1 / (long)this.field1592) + 6;
+   int method2099(int var1) {
+      if(this.field1573 != null) {
+         var1 = (int)((long)this.field1574 * (long)var1 / (long)this.field1571) + 6;
       }
 
       return var1;
@@ -127,33 +146,11 @@ public class class115 {
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(ILcx;ZI)I",
-      garbageValue = "1151816711"
+      signature = "(II)I",
+      garbageValue = "1996961150"
    )
-   static int method2126(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class64.method1017(class82.intStack[--class82.intStackSize]);
-      } else {
-         var3 = var2?class234.field3210:class82.field1253;
-      }
-
-      if(var0 == 1927) {
-         if(class82.field1266 >= 10) {
-            throw new RuntimeException();
-         } else if(var3.field2822 == null) {
-            return 0;
-         } else {
-            ScriptEvent var4 = new ScriptEvent();
-            var4.widget = var3;
-            var4.field785 = var3.field2822;
-            var4.field779 = class82.field1266 + 1;
-            Client.field862.addFront(var4);
-            return 1;
-         }
-      } else {
-         return 2;
-      }
+   static int method2106(int var0) {
+      MessageNode var1 = (MessageNode)class96.messages.get((long)var0);
+      return var1 == null?-1:(var1.next == class96.field1414.sentinel?-1:((MessageNode)var1.next).id);
    }
 }

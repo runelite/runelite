@@ -1,47 +1,30 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hs")
 public class class222 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "5"
-   )
-   @Export("getColTags")
-   static String getColTags(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
-   }
+   @ObfuscatedName("a")
+   @Export("varpsMasks")
+   public static int[] varpsMasks;
+   @ObfuscatedName("w")
+   @Export("settings")
+   @Hook("varbitChanged")
+   public static int[] settings;
+   @ObfuscatedName("e")
+   @Export("widgetSettings")
+   public static int[] widgetSettings;
 
-   @ObfuscatedName("jk")
-   @ObfuscatedSignature(
-      signature = "(IIII)Lbf;",
-      garbageValue = "-2009344614"
-   )
-   static final WidgetNode method4016(int var0, int var1, int var2) {
-      WidgetNode var3 = new WidgetNode();
-      var3.id = var1;
-      var3.owner = var2;
-      Client.componentTable.put(var3, (long)var0);
-      class51.method724(var1);
-      Widget var4 = class64.method1017(var0);
-      ScriptEvent.method1038(var4);
-      if(Client.field878 != null) {
-         ScriptEvent.method1038(Client.field878);
-         Client.field878 = null;
+   static {
+      varpsMasks = new int[32];
+      int var0 = 2;
+
+      for(int var1 = 0; var1 < 32; ++var1) {
+         varpsMasks[var1] = var0 - 1;
+         var0 += var0;
       }
 
-      WidgetNode.method1028();
-      class90.method1686(Widget.widgets[var0 >> 16], var4, false);
-      class37.method479(var1);
-      if(Client.widgetRoot != -1) {
-         int var5 = Client.widgetRoot;
-         if(class64.loadWidget(var5)) {
-            class19.method145(Widget.widgets[var5], 1);
-         }
-      }
-
-      return var3;
+      settings = new int[2000];
+      widgetSettings = new int[2000];
    }
 }

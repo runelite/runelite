@@ -9,72 +9,79 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("bn")
 @Implements("SourceDataSoundSystem")
 public class SourceDataSoundSystem extends AbstractSoundSystem {
-   @ObfuscatedName("b")
-   AudioFormat field626;
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
+   @Export("audioFormat")
+   AudioFormat audioFormat;
+   @ObfuscatedName("w")
    @Export("source")
    SourceDataLine source;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 398249071
+      intValue = 187098319
    )
    @Export("size")
    int size;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("bytes")
    byte[] bytes;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1496162243"
+      garbageValue = "-2039373449"
    )
-   protected void vmethod2029() {
-      this.field626 = new AudioFormat((float)AbstractSoundSystem.sampleRate, 16, AbstractSoundSystem.highMemory?2:1, true, false);
-      this.bytes = new byte[256 << (AbstractSoundSystem.highMemory?2:1)];
+   protected void vmethod2025() {
+      this.audioFormat = new AudioFormat((float)ScriptState.sampleRate, 16, ContextMenuRow.highMemory?2:1, true, false);
+      this.bytes = new byte[256 << (ContextMenuRow.highMemory?2:1)];
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "26676"
+      signature = "(II)V",
+      garbageValue = "-629465154"
    )
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field626, var1 << (AbstractSoundSystem.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.audioFormat, var1 << (ContextMenuRow.highMemory?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
          this.size = var1;
-      } catch (LineUnavailableException var3) {
-         if(ItemLayer.method2416(var1) != 1) {
-            this.create(class23.method168(var1));
+      } catch (LineUnavailableException var5) {
+         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
+         var4 = (var4 >>> 4) + var4 & 252645135;
+         var4 += var4 >>> 8;
+         var4 += var4 >>> 16;
+         int var3 = var4 & 255;
+         if(var3 != 1) {
+            this.create(class173.nextPowerOfTwo(var1));
          } else {
             this.source = null;
-            throw var3;
+            throw var5;
          }
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1040714578"
+      garbageValue = "351885970"
    )
    @Export("size")
    protected int size() {
-      return this.size - (this.source.available() >> (AbstractSoundSystem.highMemory?2:1));
+      return this.size - (this.source.available() >> (ContextMenuRow.highMemory?2:1));
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("write")
    protected void write() {
       int var1 = 256;
-      if(AbstractSoundSystem.highMemory) {
+      if(ContextMenuRow.highMemory) {
          var1 <<= 1;
       }
 
@@ -91,10 +98,10 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       this.source.write(this.bytes, 0, var1 << 1);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-5"
+      signature = "(I)V",
+      garbageValue = "-2089279767"
    )
    @Export("close")
    protected void close() {
@@ -105,12 +112,13 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "901570304"
+      garbageValue = "-1216740366"
    )
-   protected void vmethod2034() {
+   @Export("flush")
+   protected void flush() {
       this.source.flush();
    }
 }

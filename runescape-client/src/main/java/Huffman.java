@@ -1,23 +1,25 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fb")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("fd")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1401406659
    )
-   static IndexedSprite[] field2429;
-   @ObfuscatedName("b")
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("a")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("keys")
    int[] keys;
 
@@ -46,7 +48,7 @@ public class Huffman {
 
                for(var10 = var6 - 1; var10 >= 1; --var10) {
                   var11 = var3[var10];
-                  if(var8 != var11) {
+                  if(var11 != var8) {
                      break;
                   }
 
@@ -104,10 +106,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BII[BII)I",
-      garbageValue = "-1427310242"
+      signature = "([BII[BIB)I",
+      garbageValue = "0"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -125,7 +127,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var10 + var12 - 1 >> 3) + var11;
+         int var13 = (var12 + var10 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -155,10 +157,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "([BI[BIIB)I",
-      garbageValue = "-51"
+      signature = "([BI[BIII)I",
+      garbageValue = "-183302365"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {

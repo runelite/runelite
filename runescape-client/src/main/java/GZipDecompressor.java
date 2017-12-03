@@ -1,22 +1,22 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("fd")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("r")
-   @Export("scriptLocalInts")
-   static int[] scriptLocalInts;
-   @ObfuscatedName("b")
+   @ObfuscatedName("gz")
+   @ObfuscatedGetter(
+      intValue = -219460773
+   )
+   @Export("cameraY")
+   static int cameraY;
+   @ObfuscatedName("a")
    @Export("inflator")
    Inflater inflator;
-
-   public GZipDecompressor() {
-      this(-1, 1000000, 1000000);
-   }
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -25,10 +25,14 @@ public class GZipDecompressor {
    GZipDecompressor(int var1, int var2, int var3) {
    }
 
-   @ObfuscatedName("b")
+   public GZipDecompressor() {
+      this(-1, 1000000, 1000000);
+   }
+
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfs;[BI)V",
-      garbageValue = "109995211"
+      signature = "(Lgh;[BB)V",
+      garbageValue = "4"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -51,44 +55,24 @@ public class GZipDecompressor {
       }
    }
 
-   @ObfuscatedName("b")
-   public static final void method3129(long var0) {
-      if(var0 > 0L) {
-         if(0L == var0 % 10L) {
-            class164.method3084(var0 - 1L);
-            class164.method3084(1L);
-         } else {
-            class164.method3084(var0);
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Lir;",
+      garbageValue = "-1948930203"
+   )
+   public static CombatInfo2 method3201(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field3443.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = CombatInfo2.field3452.getConfigData(33, var0);
+         var1 = new CombatInfo2();
+         if(var2 != null) {
+            var1.read(new Buffer(var2));
          }
 
+         CombatInfo2.field3443.put(var1, (long)var0);
+         return var1;
       }
-   }
-
-   @ObfuscatedName("jv")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-      garbageValue = "-78"
-   )
-   static String method3130(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(SoundTask.sessionToken != null) {
-         var3 = "/p=" + SoundTask.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class25.field339 + var3 + "/";
    }
 }

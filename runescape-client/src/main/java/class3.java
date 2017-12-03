@@ -1,79 +1,51 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("g")
+@ObfuscatedName("k")
 final class class3 implements class0 {
-   @ObfuscatedName("oe")
+   @ObfuscatedName("lw")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "[Lhz;"
    )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("v")
-   @Export("tt")
-   static int[] tt;
-
-   @ObfuscatedName("s")
+   static Widget[] field17;
+   @ObfuscatedName("cz")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1547055431"
+      signature = "Lfx;"
    )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class19.field299 != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class19.field299.queueForWrite(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class19.field299.close();
-            } catch (Exception var3) {
-               ;
-            }
+   @Export("rssocket")
+   static class159 rssocket;
+   @ObfuscatedName("cg")
+   @ObfuscatedGetter(
+      longValue = -4249044884305654605L
+   )
+   static long field19;
+   @ObfuscatedName("cd")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexTextures")
+   static IndexData indexTextures;
 
-            ++class245.field3324;
-            class19.field299 = null;
-         }
-
-      }
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "101"
+   )
+   static final int method7(int var0, int var1) {
+      int var2 = var0 + var1 * 57;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("gv")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1087750097"
+      signature = "(Lcw;III)V",
+      garbageValue = "-1209857073"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      Friend.addChatMessage(var0, var1, var2, (String)null);
-   }
-
-   @ObfuscatedName("jc")
-   @ObfuscatedSignature(
-      signature = "(IIIILkb;Lhy;I)V",
-      garbageValue = "-975270201"
-   )
-   @Export("drawDot")
-   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
-      if(var4 != null) {
-         int var6 = Client.mapAngle & 2047;
-         int var7 = var3 * var3 + var2 * var2;
-         if(var7 <= 6400) {
-            int var8 = Graphics3D.SINE[var6];
-            int var9 = Graphics3D.COSINE[var6];
-            int var10 = var3 * var8 + var9 * var2 >> 16;
-            int var11 = var3 * var9 - var8 * var2 >> 16;
-            if(var7 > 2500) {
-               var4.method5124(var10 + var5.field2673 / 2 - var4.maxWidth / 2, var5.field2672 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2673, var5.field2672, var5.field2675, var5.field2674);
-            } else {
-               var4.drawAt(var0 + var10 + var5.field2673 / 2 - var4.maxWidth / 2, var5.field2672 / 2 + var1 - var11 - var4.maxHeight / 2);
-            }
-
-         }
-      }
+   static final void method6(ContextMenuRow var0, int var1, int var2) {
+      class27.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
    }
 }

@@ -86,8 +86,14 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			return;
 		}
+		
+		Player localPlayer = client.getLocalPlayer();
+		if (localPlayer != event.getActor())
+		{
+			return;
+		}
 
-		int animation = client.getLocalPlayer().getAnimation();
+		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
 			/* Woodcutting */

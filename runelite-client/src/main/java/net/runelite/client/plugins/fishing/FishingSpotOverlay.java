@@ -34,7 +34,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
@@ -42,13 +41,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class FishingSpotOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(FishingSpotOverlay.class);
-
 	private final List<Integer> ids = new ArrayList<>();
 
 	private final RuneLite runelite;
@@ -70,7 +65,7 @@ class FishingSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}

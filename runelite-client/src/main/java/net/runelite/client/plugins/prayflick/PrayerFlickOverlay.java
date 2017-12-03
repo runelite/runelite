@@ -33,7 +33,6 @@ import java.time.Instant;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -64,7 +63,7 @@ public class PrayerFlickOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled() || !prayersActive)//If there are no prayers active we don't need to be flicking
+		if (!config.enabled() || !prayersActive)//If there are no prayers active we don't need to be flicking
 		{
 			return null;
 		}

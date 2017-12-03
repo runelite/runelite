@@ -28,12 +28,16 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
+import net.runelite.api.Point;
+import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.*;
@@ -41,13 +45,10 @@ import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class Hooks
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
-
 	private static final long CHECK = 600; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
@@ -77,7 +78,7 @@ public class Hooks
 		}
 		catch (Exception ex)
 		{
-			logger.warn("error during death check", ex);
+			log.warn("error during death check", ex);
 		}
 
 		// tick pending scheduled tasks
@@ -99,7 +100,7 @@ public class Hooks
 		}
 		catch (Exception ex)
 		{
-			logger.warn("Error during overlay rendering", ex);
+			log.warn("Error during overlay rendering", ex);
 		}
 	}
 
@@ -137,8 +138,9 @@ public class Hooks
 			}
 			case "animationChanged":
 			{
+				Actor actor = (Actor) object;
 				AnimationChanged animationChange = new AnimationChanged();
-				animationChange.setObject(object);
+				animationChange.setActor(actor);
 				eventBus.post(animationChange);
 				break;
 			}
@@ -164,17 +166,17 @@ public class Hooks
 				break;
 			}
 			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
+				log.warn("Unknown event {} triggered on {}", name, object);
 				return;
 		}
 
 		if (object != null)
 		{
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
+			log.trace("Event {} (idx {}) triggered on {}", name, idx, object);
 		}
 		else
 		{
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+			log.trace("Event {} (idx {}) triggered", name, idx);
 		}
 	}
 
@@ -186,14 +188,14 @@ public class Hooks
 	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-                 * I have no idea why, but it does. Their code contains the same conditional statement.
+		 * I have no idea why, but it does. Their code contains the same conditional statement.
 		 */
 		if (menuAction >= 2000)
 		{
 			menuAction -= 2000;
 		}
 
-		logger.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
+		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
 			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
@@ -208,9 +210,9 @@ public class Hooks
 
 	public static void addMenuEntry(String option, String target, int type, int identifier, int param0, int param1)
 	{
-		if (logger.isTraceEnabled())
+		if (log.isTraceEnabled())
 		{
-			logger.trace("Menu entry added {} {}", option, target);
+			log.trace("Menu entry added {} {}", option, target);
 		}
 
 		MenuEntryAdded menuEntry = new MenuEntryAdded(option, target, type, identifier, param0, param1);
@@ -220,15 +222,36 @@ public class Hooks
 
 	public static void addChatMessage(int type, String sender, String message, String clan)
 	{
-		if (logger.isDebugEnabled())
+		if (log.isDebugEnabled())
 		{
-			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
+			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
 		}
 
 		ChatMessageType chatMessageType = ChatMessageType.of(type);
 		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
 
 		eventBus.post(chatMessage);
+	}
+
+	/**
+	 * Called when a projectile is set to move towards a point. For
+	 * projectiles that target the ground, like AoE projectiles from
+	 * Lizardman Shamans, this is only called once
+	 *
+	 * @param projectile The projectile being moved
+	 * @param targetX X position of where the projectile is being moved to
+	 * @param targetY Y position of where the projectile is being moved to
+	 * @param targetZ Z position of where the projectile is being moved to
+	 * @param cycle
+	 */
+	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
+	{
+		Point position = new Point(targetX, targetY);
+		ProjectileMoved projectileMoved = new ProjectileMoved();
+		projectileMoved.setProjectile(projectile);
+		projectileMoved.setPosition(position);
+		projectileMoved.setPlane(targetZ);
+		eventBus.post(projectileMoved);
 	}
 
 	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)

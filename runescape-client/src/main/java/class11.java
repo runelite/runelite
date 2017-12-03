@@ -1,52 +1,57 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("c")
 public class class11 {
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lo;"
+   @ObfuscatedName("ox")
+   @ObfuscatedGetter(
+      intValue = 1740536565
    )
-   public static final class11 field251;
-   @ObfuscatedName("s")
+   static int field259;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lo;"
+      signature = "Lc;"
    )
-   public static final class11 field250;
-   @ObfuscatedName("ev")
+   @Export("BoundingBox3DDrawMode_mouseOver")
+   public static final class11 BoundingBox3DDrawMode_mouseOver;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Lc;"
    )
-   static Task field252;
+   @Export("BoundingBox3DDrawMode_all")
+   public static final class11 BoundingBox3DDrawMode_all;
+   @ObfuscatedName("dt")
+   @Export("host")
+   static String host;
 
    static {
-      field251 = new class11();
-      field250 = new class11();
+      BoundingBox3DDrawMode_mouseOver = new class11();
+      BoundingBox3DDrawMode_all = new class11();
    }
 
-   @ObfuscatedName("jz")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IB)V",
-      garbageValue = "-115"
+      signature = "(II)V",
+      garbageValue = "1499767798"
    )
-   static final void method62(String var0, int var1) {
-      PacketNode var2 = class18.method133(ClientPacket.field2327, Client.field905.field1460);
-      var2.packetBuffer.putByte(class23.getLength(var0) + 1);
-      var2.packetBuffer.putString(var0);
-      var2.packetBuffer.method3212(var1);
-      Client.field905.method1855(var2);
-   }
+   static void method52(int var0) {
+      if(var0 != -1) {
+         if(GraphicsObject.loadWidget(var0)) {
+            Widget[] var1 = Widget.widgets[var0];
 
-   @ObfuscatedName("jm")
-   @ObfuscatedSignature(
-      signature = "([BII)V",
-      garbageValue = "2055860307"
-   )
-   static void method63(byte[] var0, int var1) {
-      if(Client.field983 == null) {
-         Client.field983 = new byte[24];
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(var3.field2840 != null) {
+                  ScriptEvent var4 = new ScriptEvent();
+                  var4.widget = var3;
+                  var4.objs = var3.field2840;
+                  class21.method153(var4, 2000000);
+               }
+            }
+
+         }
       }
-
-      class190.method3506(var0, var1, Client.field983, 0, 24);
    }
 }

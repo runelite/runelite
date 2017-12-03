@@ -24,13 +24,11 @@
  */
 package net.runelite.client.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RunnableExceptionLogger implements Runnable
 {
-	private static final Logger logger = LoggerFactory.getLogger(RunnableExceptionLogger.class);
-
 	private final Runnable runnable;
 
 	private RunnableExceptionLogger(Runnable runnable)
@@ -47,7 +45,7 @@ public class RunnableExceptionLogger implements Runnable
 		}
 		catch (Throwable ex)
 		{
-			logger.warn("Uncaught exception in runnable {}", runnable, ex);
+			log.warn("Uncaught exception in runnable {}", runnable, ex);
 		}
 	}
 

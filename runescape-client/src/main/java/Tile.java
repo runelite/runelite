@@ -1,146 +1,138 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ez")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("br")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
-   )
-   static IndexedSprite[] field1829;
-   @ObfuscatedName("eb")
-   @ObfuscatedSignature(
-      signature = "Ljn;"
-   )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1301732437
+      intValue = 1725557519
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 492287653
+      intValue = -695857629
    )
    @Export("x")
    int x;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1072790217
+      intValue = 1267689537
    )
    @Export("y")
    int y;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -178216961
+      intValue = -721315981
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Led;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Ldf;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "Leb;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Les;"
+      signature = "Leq;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ldf;"
+      signature = "Ldq;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldl;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1087750097
+      intValue = 1495705029
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("o")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Ler;"
+      signature = "[Let;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -279791727
+      intValue = 414760873
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("j")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -1107176895
+      intValue = 1613392379
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("h")
+   @ObfuscatedName("r")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 657432429
+      intValue = -746627283
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1308193013
+      intValue = 1182737099
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("i")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -2134635245
+      intValue = 37190099
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("l")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1480653171
+      intValue = -1139868411
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("z")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lec;"
+      signature = "Lez;"
    )
    @Export("bridge")
    Tile bridge;
@@ -154,25 +146,42 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lij;I)V",
-      garbageValue = "-1576614363"
+      signature = "(I)V",
+      garbageValue = "1910530156"
    )
-   public static void method2503(IndexDataBase var0) {
-      FloorUnderlayDefinition.underlay_ref = var0;
-   }
+   static void method2505() {
+      try {
+         File var0 = new File(class1.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         } else {
+            label37:
+            for(int var1 = 0; var1 < GrandExchangeOffer.field298.length; ++var1) {
+               for(var2 = 0; var2 < class115.cacheLocations.length; ++var2) {
+                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var1] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class157.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label37;
+                  }
+               }
+            }
+         }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIB)V",
-      garbageValue = "48"
-   )
-   static final void method2504(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = Math.min(var3, Math.min(var4, var5)) - var6;
-      int var8 = Math.max(var3, Math.max(var4, var5)) + var6;
-      int var9 = Math.min(var0, Math.min(var1, var2)) - var6;
-      int var10 = Math.max(var0, Math.max(var1, var2)) + var6;
-      class13.method79(var7, var9, var8, var10, -49088);
+         if(class157.randomDat == null) {
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         }
+      } catch (IOException var5) {
+         ;
+      }
+
    }
 }

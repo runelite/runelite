@@ -28,10 +28,17 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.Client;
 
 public class DynamicRenderer implements Renderer
 {
+	private final Client client;
 	private final List<Overlay> overlays = new ArrayList<>();
+
+	public DynamicRenderer(Client client)
+	{
+		this.client = client;
+	}
 
 	public void add(Overlay overlay)
 	{
@@ -43,6 +50,9 @@ public class DynamicRenderer implements Renderer
 	{
 		for (Overlay overlay : overlays)
 		{
+			if (!overlay.shouldDraw(client))
+				continue;
+
 			Graphics2D graphics = clientBuffer.createGraphics();
 			Renderer.setAntiAliasing(graphics);
 			overlay.render(graphics);

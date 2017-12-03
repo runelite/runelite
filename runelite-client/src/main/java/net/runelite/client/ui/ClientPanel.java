@@ -30,16 +30,14 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import javax.swing.JPanel;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
 import net.runelite.http.api.updatecheck.UpdateCheckClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 final class ClientPanel extends JPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
-
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
 
 	private final ClientUI ui;
@@ -63,12 +61,12 @@ final class ClientPanel extends JPanel
 		boolean isOutdated = updateCheck.isOutdated();
 		if (isOutdated)
 		{
-			logger.info("Runelite is outdated - fetching vanilla client");
+			log.info("Runelite is outdated - fetching vanilla client");
 			rs = loader.loadVanilla();
 		}
 		else
 		{
-			logger.debug("Runelite is up to date");
+			log.debug("Runelite is up to date");
 
 			try
 			{
@@ -76,7 +74,7 @@ final class ClientPanel extends JPanel
 			}
 			catch (ClassNotFoundException ex)
 			{
-				logger.error("Unable to load client - class not found. This means you"
+				log.error("Unable to load client - class not found. This means you"
 					+ " are not running RuneLite with Maven as the injected client"
 					+ " is not in your classpath.");
 				throw new ClassNotFoundException("Unable to load injected client", ex);
@@ -98,7 +96,7 @@ final class ClientPanel extends JPanel
 
 		if (!(rs instanceof Client))
 		{
-			logger.error("Injected client does not implement Client!");
+			log.error("Injected client does not implement Client!");
 			return;
 		}
 

@@ -25,15 +25,13 @@
  */
 package net.runelite.client.plugins.zulrah.phase;
 
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Point;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public enum ZulrahLocation
 {
 	NORTH, SOUTH, EAST, WEST;
-
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahLocation.class);
 
 	public static ZulrahLocation valueOf(Point start, Point current)
 	{
@@ -57,7 +55,7 @@ public enum ZulrahLocation
 		}
 		else
 		{
-			logger.debug("Unknown Zulrah location dx: {}, dy: {}", dx, dy);
+			log.debug("Unknown Zulrah location dx: {}, dy: {}", dx, dy);
 			return null;
 		}
 	}

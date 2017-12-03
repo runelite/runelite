@@ -4,100 +4,132 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("ck")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
-   static NodeCache field1436;
-   @ObfuscatedName("s")
+   static NodeCache field1431;
+   @ObfuscatedName("fd")
+   @ObfuscatedSignature(
+      signature = "[Lks;"
+   )
+   @Export("mapDots")
+   static SpritePixels[] mapDots;
+   @ObfuscatedName("w")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1299410407
+      intValue = 475547171
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 894056205
+      intValue = -1400091303
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1601830631
+      intValue = -1243325363
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -911808973
+      intValue = -1013854573
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lgu;"
+      signature = "[Lgr;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1436 = new NodeCache(128);
+      field1431 = new NodeCache(128);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(II)[Lgu;",
-      garbageValue = "-667059081"
+      signature = "(II)[Lgr;",
+      garbageValue = "2031854513"
    )
-   IterableHashTable[] method1824(int var1) {
+   IterableHashTable[] method1833(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(IIS)V",
-      garbageValue = "30132"
-   )
-   public static final void method1825(int var0, int var1) {
-      class133.field1900 = var0;
-      class133.field1906 = var1;
-      class133.field1903 = true;
-      class133.field1907 = 0;
-      class133.field1908 = false;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(BI)C",
-      garbageValue = "-2140729662"
-   )
-   public static char method1835(byte var0) {
-      int var1 = var0 & 255;
-      if(var1 == 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         if(var1 >= 128 && var1 < 160) {
-            char var2 = class273.field3712[var1 - 128];
-            if(var2 == 0) {
-               var2 = '?';
-            }
-
-            var1 = var2;
+   @ObfuscatedName("a")
+   static final int method1842(double var0, double var2, double var4) {
+      double var6 = var4;
+      double var8 = var4;
+      double var10 = var4;
+      if(0.0D != var2) {
+         double var12;
+         if(var4 < 0.5D) {
+            var12 = (var2 + 1.0D) * var4;
+         } else {
+            var12 = var4 + var2 - var2 * var4;
          }
 
-         return (char)var1;
+         double var14 = var4 * 2.0D - var12;
+         double var16 = var0 + 0.3333333333333333D;
+         if(var16 > 1.0D) {
+            --var16;
+         }
+
+         double var20 = var0 - 0.3333333333333333D;
+         if(var20 < 0.0D) {
+            ++var20;
+         }
+
+         if(6.0D * var16 < 1.0D) {
+            var6 = var14 + var16 * (var12 - var14) * 6.0D;
+         } else if(var16 * 2.0D < 1.0D) {
+            var6 = var12;
+         } else if(var16 * 3.0D < 2.0D) {
+            var6 = (var12 - var14) * (0.6666666666666666D - var16) * 6.0D + var14;
+         } else {
+            var6 = var14;
+         }
+
+         if(6.0D * var0 < 1.0D) {
+            var8 = var14 + 6.0D * (var12 - var14) * var0;
+         } else if(2.0D * var0 < 1.0D) {
+            var8 = var12;
+         } else if(3.0D * var0 < 2.0D) {
+            var8 = 6.0D * (0.6666666666666666D - var0) * (var12 - var14) + var14;
+         } else {
+            var8 = var14;
+         }
+
+         if(6.0D * var20 < 1.0D) {
+            var10 = var14 + var20 * (var12 - var14) * 6.0D;
+         } else if(var20 * 2.0D < 1.0D) {
+            var10 = var12;
+         } else if(var20 * 3.0D < 2.0D) {
+            var10 = (var12 - var14) * (0.6666666666666666D - var20) * 6.0D + var14;
+         } else {
+            var10 = var14;
+         }
       }
+
+      int var22 = (int)(var6 * 256.0D);
+      int var13 = (int)(256.0D * var8);
+      int var23 = (int)(256.0D * var10);
+      int var15 = var23 + (var13 << 8) + (var22 << 16);
+      return var15;
    }
 }

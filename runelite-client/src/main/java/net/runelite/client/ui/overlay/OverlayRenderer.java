@@ -56,9 +56,9 @@ public class OverlayRenderer
 
 	public void render(BufferedImage clientBuffer)
 	{
-		TopDownRendererLeft tdl = new TopDownRendererLeft();
+		TopDownRendererLeft tdl = new TopDownRendererLeft(client);
 		TopDownRendererRight tdr = new TopDownRendererRight(client);
-		DynamicRenderer dr = new DynamicRenderer();
+		DynamicRenderer dr = new DynamicRenderer(client);
 		for (Plugin plugin : pluginManager.getPlugins())
 		{
 			for (Overlay overlay : plugin.getOverlays())

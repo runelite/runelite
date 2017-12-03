@@ -3,94 +3,126 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("cy")
 public class class94 {
-   @ObfuscatedName("r")
-   static byte[] field1397;
-   @ObfuscatedName("g")
-   static byte[] field1398;
-   @ObfuscatedName("x")
+   @ObfuscatedName("e")
+   static byte[] field1389;
+   @ObfuscatedName("k")
+   static byte[] field1388;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Lfs;"
+      signature = "[Lgh;"
    )
-   static Buffer[] field1408;
-   @ObfuscatedName("f")
+   static Buffer[] field1392;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -989275685
+      intValue = 1049985723
    )
    @Export("playerIndexesCount")
    static int playerIndexesCount;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @Export("playerIndices")
    static int[] playerIndices;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1590883479
+      intValue = -116092205
    )
-   static int field1402;
-   @ObfuscatedName("k")
-   static int[] field1403;
-   @ObfuscatedName("n")
-   static int[] field1404;
-   @ObfuscatedName("d")
+   static int field1394;
+   @ObfuscatedName("g")
    static int[] field1395;
-   @ObfuscatedName("o")
-   static int[] field1409;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -725261631
-   )
-   static int field1407;
-   @ObfuscatedName("q")
-   static int[] field1405;
    @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lfs;"
+   @Export("Players_regions")
+   static int[] Players_regions;
+   @ObfuscatedName("x")
+   @Export("Players_orientations")
+   static int[] Players_orientations;
+   @ObfuscatedName("c")
+   @Export("Players_targetIndices")
+   static int[] Players_targetIndices;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 461839065
    )
-   static Buffer field1399;
+   static int field1400;
+   @ObfuscatedName("n")
+   static int[] field1391;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "Lgh;"
+   )
+   static Buffer field1401;
 
    static {
-      field1397 = new byte[2048];
-      field1398 = new byte[2048];
-      field1408 = new Buffer[2048];
+      field1389 = new byte[2048];
+      field1388 = new byte[2048];
+      field1392 = new Buffer[2048];
       playerIndexesCount = 0;
       playerIndices = new int[2048];
-      field1402 = 0;
-      field1403 = new int[2048];
-      field1404 = new int[2048];
+      field1394 = 0;
       field1395 = new int[2048];
-      field1409 = new int[2048];
-      field1407 = 0;
-      field1405 = new int[2048];
-      field1399 = new Buffer(new byte[5000]);
+      Players_regions = new int[2048];
+      Players_orientations = new int[2048];
+      Players_targetIndices = new int[2048];
+      field1400 = 0;
+      field1391 = new int[2048];
+      field1401 = new Buffer(new byte[5000]);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-510547822"
+      signature = "(ZB)V",
+      garbageValue = "-108"
    )
-   static final void method1754(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class175.field2440[0][var5][var4] = 127;
-               if(var0 == var5 && var5 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 - 1][var4];
-               }
+   public static void method1760(boolean var0) {
+      if(var0 != ScriptState.isMembersWorld) {
+         ItemComposition.items.reset();
+         ItemComposition.itemModelCache.reset();
+         ItemComposition.itemSpriteCache.reset();
+         ScriptState.isMembersWorld = var0;
+      }
 
-               if(var0 + var2 == var5 && var5 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5 + 1][var4];
-               }
+   }
 
-               if(var4 == var1 && var4 > 0) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 - 1];
-               }
+   @ObfuscatedName("hk")
+   @ObfuscatedSignature(
+      signature = "(Lhz;IIIIIII)V",
+      garbageValue = "-567247749"
+   )
+   static final void method1767(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(Client.field909) {
+         Client.field856 = 32;
+      } else {
+         Client.field856 = 0;
+      }
 
-               if(var4 == var3 + var1 && var4 < 103) {
-                  class61.tileHeights[0][var5][var4] = class61.tileHeights[0][var5][var4 + 1];
-               }
+      Client.field909 = false;
+      int var7;
+      if(MouseInput.mouseCurrentButton == 1 || !class34.field455 && MouseInput.mouseCurrentButton == 4) {
+         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+            var0.scrollY -= 4;
+            class33.method344(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+            var0.scrollY += 4;
+            class33.method344(var0);
+         } else if(var5 >= var1 - Client.field856 && var5 < Client.field856 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
+            var7 = var3 * (var3 - 32) / var4;
+            if(var7 < 8) {
+               var7 = 8;
             }
+
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.scrollY = var8 * (var4 - var3) / var9;
+            class33.method344(var0);
+            Client.field909 = true;
+         }
+      }
+
+      if(Client.mouseWheelRotation != 0) {
+         var7 = var0.width;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+            var0.scrollY += Client.mouseWheelRotation * 45;
+            class33.method344(var0);
          }
       }
 

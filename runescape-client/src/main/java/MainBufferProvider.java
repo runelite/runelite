@@ -15,12 +15,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bq")
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
-   @ObfuscatedName("b")
-   Component field638;
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
+   @Export("component")
+   Component component;
+   @ObfuscatedName("w")
    @Export("image")
    Image image;
 
@@ -32,67 +33,68 @@ public final class MainBufferProvider extends BufferProvider {
       DirectColorModel var5 = new DirectColorModel(32, 16711680, 65280, 255);
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
       this.image = new BufferedImage(var5, var6, false, new Hashtable());
-      this.method777(var3);
+      this.replaceComponent(var3);
       this.setRaster();
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-1734940192"
+      garbageValue = "432123261"
    )
-   final void method777(Component var1) {
-      this.field638 = var1;
+   @Export("replaceComponent")
+   final void replaceComponent(Component var1) {
+      this.component = var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "10"
+      signature = "(III)V",
+      garbageValue = "-1763504301"
    )
-   public final void vmethod5065(int var1, int var2) {
-      this.draw(this.field638.getGraphics(), var1, var2);
+   public final void drawFull(int var1, int var2) {
+      this.draw(this.component.getGraphics(), var1, var2);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-959174772"
+      signature = "(IIIIB)V",
+      garbageValue = "-8"
    )
-   public final void vmethod5068(int var1, int var2, int var3, int var4) {
-      this.drawSub(this.field638.getGraphics(), var1, var2, var3, var4);
+   public final void draw(int var1, int var2, int var3, int var4) {
+      this.drawSub(this.component.getGraphics(), var1, var2, var3, var4);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "127"
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "-1491072355"
    )
    @Export("draw")
    @Hook("draw")
    final void draw(Graphics var1, int var2, int var3) {
       try {
-         var1.drawImage(this.image, var2, var3, this.field638);
+         var1.drawImage(this.image, var2, var3, this.component);
       } catch (Exception var5) {
-         this.field638.repaint();
+         this.component.repaint();
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIIB)V",
-      garbageValue = "-48"
+      signature = "(Ljava/awt/Graphics;IIIII)V",
+      garbageValue = "139710204"
    )
    @Export("drawSub")
    final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
       try {
          Shape var6 = var1.getClip();
          var1.clipRect(var2, var3, var4, var5);
-         var1.drawImage(this.image, 0, 0, this.field638);
+         var1.drawImage(this.image, 0, 0, this.component);
          var1.setClip(var6);
       } catch (Exception var7) {
-         this.field638.repaint();
+         this.component.repaint();
       }
 
    }

@@ -4,36 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
+@ObfuscatedName("jw")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
    @Export("varbit_ref")
-   static IndexDataBase varbit_ref;
-   @ObfuscatedName("s")
+   public static IndexDataBase varbit_ref;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
    @Export("varbits")
-   static NodeCache varbits;
-   @ObfuscatedName("r")
+   public static NodeCache varbits;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1193583161
+      intValue = 988632729
+   )
+   static int field3462;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1005831171
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -2092595029
+      intValue = 442861105
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1544369675
+      intValue = 1796470167
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,29 +47,30 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "1110030908"
+      signature = "(Lgh;B)V",
+      garbageValue = "8"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4423(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfs;IB)V",
-      garbageValue = "-99"
+      signature = "(Lgh;IB)V",
+      garbageValue = "101"
    )
-   void method4423(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
@@ -73,21 +79,35 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lij;IB)Lks;",
-      garbageValue = "-16"
+      signature = "(IB)V",
+      garbageValue = "-18"
    )
-   public static IndexedSprite method4421(IndexDataBase var0, int var1) {
-      byte[] var3 = var0.method4114(var1);
-      boolean var2;
-      if(var3 == null) {
-         var2 = false;
-      } else {
-         PendingSpawn.decodeSprite(var3);
-         var2 = true;
-      }
+   public static void method4570(int var0) {
+      if(var0 != -1) {
+         if(class115.validInterfaces[var0]) {
+            class37.widgetIndex.method4327(var0);
+            if(Widget.widgets[var0] != null) {
+               boolean var1 = true;
 
-      return !var2?null:class272.method4852();
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(Widget.widgets[var0][var2] != null) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
+
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
+
+               class115.validInterfaces[var0] = false;
+            }
+         }
+      }
    }
 }

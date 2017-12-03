@@ -1,25 +1,33 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ec")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("bs")
-   @ObfuscatedSignature(
-      signature = "[Lks;"
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 711911861
    )
-   static IndexedSprite[] field2040;
-   @ObfuscatedName("b")
+   public static int field2028;
+   @ObfuscatedName("ex")
+   @ObfuscatedGetter(
+      intValue = -1202290627
+   )
+   static int field2030;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Len;"
+      signature = "[Leu;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lij;Lij;IZ)V"
+      signature = "(Lib;Lib;IZ)V"
    )
    Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
@@ -56,101 +64,35 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1305978530"
+      garbageValue = "-67697236"
    )
-   public boolean method2874(int var1) {
+   public boolean method2884(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1552585542"
+      signature = "(Ljava/io/File;Ljava/io/File;B)V",
+      garbageValue = "88"
    )
-   static void method2881() {
-      if(Signlink.javaVendor.toLowerCase().indexOf("microsoft") != -1) {
-         KeyFocusListener.field593[186] = 57;
-         KeyFocusListener.field593[187] = 27;
-         KeyFocusListener.field593[188] = 71;
-         KeyFocusListener.field593[189] = 26;
-         KeyFocusListener.field593[190] = 72;
-         KeyFocusListener.field593[191] = 73;
-         KeyFocusListener.field593[192] = 58;
-         KeyFocusListener.field593[219] = 42;
-         KeyFocusListener.field593[220] = 74;
-         KeyFocusListener.field593[221] = 43;
-         KeyFocusListener.field593[222] = 59;
-         KeyFocusListener.field593[223] = 28;
-      } else {
-         KeyFocusListener.field593[44] = 71;
-         KeyFocusListener.field593[45] = 26;
-         KeyFocusListener.field593[46] = 72;
-         KeyFocusListener.field593[47] = 73;
-         KeyFocusListener.field593[59] = 57;
-         KeyFocusListener.field593[61] = 27;
-         KeyFocusListener.field593[91] = 42;
-         KeyFocusListener.field593[92] = 74;
-         KeyFocusListener.field593[93] = 43;
-         KeyFocusListener.field593[192] = 28;
-         KeyFocusListener.field593[222] = 58;
-         KeyFocusListener.field593[520] = 59;
-      }
-
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;S)Z",
-      garbageValue = "17099"
-   )
-   public static boolean method2880(CharSequence var0) {
-      return class163.method3077(var0, 10, true);
-   }
-
-   @ObfuscatedName("io")
-   @ObfuscatedSignature(
-      signature = "(Lhx;IIIIIIB)V",
-      garbageValue = "-1"
-   )
-   static final void method2879(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(Client.field927) {
-         Client.field928 = 32;
-      } else {
-         Client.field928 = 0;
-      }
-
-      Client.field927 = false;
-      int var7;
-      if(MouseInput.field689 == 1 || !Signlink.field2142 && MouseInput.field689 == 4) {
-         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
-            var0.scrollY -= 4;
-            ScriptEvent.method1038(var0);
-         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
-            var0.scrollY += 4;
-            ScriptEvent.method1038(var0);
-         } else if(var5 >= var1 - Client.field928 && var5 < Client.field928 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-            var7 = var3 * (var3 - 32) / var4;
-            if(var7 < 8) {
-               var7 = 8;
-            }
-
-            int var8 = var6 - var2 - 16 - var7 / 2;
-            int var9 = var3 - 32 - var7;
-            var0.scrollY = var8 * (var4 - var3) / var9;
-            ScriptEvent.method1038(var0);
-            Client.field927 = true;
+   static void method2887(File var0, File var1) {
+      try {
+         FileOnDisk var2 = new FileOnDisk(class157.jagexClDat, "rw", 10000L);
+         Buffer var3 = new Buffer(500);
+         var3.putByte(3);
+         var3.putByte(var1 != null?1:0);
+         var3.putCESU8(var0.getPath());
+         if(var1 != null) {
+            var3.putCESU8("");
          }
-      }
 
-      if(Client.field985 != 0) {
-         var7 = var0.width;
-         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
-            var0.scrollY += Client.field985 * 45;
-            ScriptEvent.method1038(var0);
-         }
+         var2.write(var3.payload, 0, var3.offset);
+         var2.close();
+      } catch (IOException var4) {
+         var4.printStackTrace();
       }
 
    }

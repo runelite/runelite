@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.runelite.api.Client;
 
 public class TopDownRendererRight implements Renderer
@@ -62,6 +63,9 @@ public class TopDownRendererRight implements Renderer
 
 		for (Overlay overlay : overlays)
 		{
+			if (!overlay.shouldDraw(client))
+				continue;
+
 			BufferedImage image = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = image.createGraphics();
 			Renderer.setAntiAliasing(graphics);

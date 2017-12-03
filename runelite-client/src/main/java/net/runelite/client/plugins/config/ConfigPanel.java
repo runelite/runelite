@@ -61,18 +61,16 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.PluginPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class ConfigPanel extends PluginPanel
 {
-	private static final Logger logger = LoggerFactory.getLogger(ConfigPanel.class);
-
 	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(6, 6, 6, 6);
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
@@ -298,7 +296,7 @@ public class ConfigPanel extends PluginPanel
 				}
 				catch (IllegalArgumentException ex)
 				{
-					logger.debug("invalid seleced item", ex);
+					log.debug("invalid seleced item", ex);
 				}
 				box.addItemListener(e ->
 				{

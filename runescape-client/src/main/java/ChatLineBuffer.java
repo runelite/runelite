@@ -4,31 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ct")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("qd")
-   static short[] field1454;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lks;"
-   )
-   static IndexedSprite field1453;
-   @ObfuscatedName("cf")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "[Lbn;"
+      signature = "[Lbv;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 714192897
+      intValue = -1771803705
    )
    @Export("length")
    int length;
@@ -37,10 +24,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbn;",
-      garbageValue = "-1129286777"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
+      garbageValue = "1230793549"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -68,51 +55,73 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Lbn;",
-      garbageValue = "-1597872251"
+      signature = "(II)Lbv;",
+      garbageValue = "-2012333335"
    )
-   MessageNode method1847(int var1) {
+   @Export("getMessage")
+   MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "2016403088"
+      garbageValue = "-1107799616"
    )
-   int method1846() {
+   @Export("size")
+   int size() {
       return this.length;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "-74"
+      signature = "(B)V",
+      garbageValue = "98"
    )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class182.field2505) {
-         class17.field289 += class182.field2505 - var0;
+   static void method1851() {
+      if(class91.field1347) {
+         class91.field1316 = null;
+         class91.field1317 = null;
+         class234.runeSprites = null;
+         class91.field1315 = null;
+         class91.field1319 = null;
+         class91.logoSprite = null;
+         class278.titlemuteSprite = null;
+         CombatInfoListHolder.field1267 = null;
+         class91.field1333 = null;
+         FriendLoginUpdate.field760 = null;
+         class221.slFlagSprites = null;
+         class7.slArrowSprites = null;
+         class37.slStarSprites = null;
+         class160.field2151 = null;
+         class218.field2696 = null;
+         class91.field1325 = null;
+         class2.field11 = null;
+         Item.field1386 = null;
+         class36.field478 = null;
+         class186.field2532 = null;
+         class89.field1302 = null;
+         BoundingBox.field238 = null;
+         class214.field2620 = 1;
+         class214.field2623 = null;
+         class61.field692 = -1;
+         class282.field3754 = -1;
+         class214.field2625 = 0;
+         IndexFile.field2181 = false;
+         Timer.field2159 = 2;
+         class27.sendConInfo(true);
+         class91.field1347 = false;
       }
-
-      class182.field2505 = var0;
-      return var0 + class17.field289;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lgu;ILjava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-2108222027"
+      signature = "(Lca;B)V",
+      garbageValue = "30"
    )
-   static String method1852(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
-      }
+   public static final void method1858(TaskDataProvider var0) {
+      AbstractSoundSystem.soundTaskDataProvider = var0;
    }
 }

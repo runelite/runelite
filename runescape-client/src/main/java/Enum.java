@@ -4,92 +4,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("jg")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("pe")
-   @ObfuscatedGetter(
-      intValue = 1116468463
-   )
-   static int field3448;
-   @ObfuscatedName("b")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
-   public static IndexDataBase field3453;
-   @ObfuscatedName("s")
+   @Export("EnumDefinition_indexCache")
+   static IndexDataBase EnumDefinition_indexCache;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
-   public static NodeCache field3456;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 2112759471
-   )
-   static int field3458;
-   @ObfuscatedName("r")
+   @Export("EnumDefinition_cached")
+   static NodeCache EnumDefinition_cached;
+   @ObfuscatedName("e")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1210123289
+      intValue = -970408909
    )
    @Export("defaultInt")
    public int defaultInt;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1953128829
+      intValue = 72752757
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @Export("stringVals")
    public String[] stringVals;
 
    static {
-      field3456 = new NodeCache(64);
+      EnumDefinition_cached = new NodeCache(64);
    }
 
-   public Enum() {
+   Enum() {
       this.defaultString = "null";
       this.size = 0;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfs;I)V",
-      garbageValue = "-1085866955"
+      signature = "(Lgh;B)V",
+      garbageValue = "-21"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4464(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;II)V",
-      garbageValue = "548639951"
+      signature = "(Lgh;II)V",
+      garbageValue = "2081692207"
    )
-   void method4464(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.keyType = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
@@ -121,37 +114,5 @@ public class Enum extends CacheableNode {
          }
       }
 
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-378529997"
-   )
-   public static void method4462(int var0) {
-      if(var0 != -1) {
-         if(class56.validInterfaces[var0]) {
-            TextureProvider.widgetIndex.method4113(var0);
-            if(Widget.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-                  if(Widget.widgets[var0][var2] != null) {
-                     if(Widget.widgets[var0][var2].type != 2) {
-                        Widget.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
-                  }
-               }
-
-               if(var1) {
-                  Widget.widgets[var0] = null;
-               }
-
-               class56.validInterfaces[var0] = false;
-            }
-         }
-      }
    }
 }

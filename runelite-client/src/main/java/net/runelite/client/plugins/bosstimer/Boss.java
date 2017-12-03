@@ -33,9 +33,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 enum Boss
 {
 	GENERAL_GRAARDOR("General Graardor", 90, ChronoUnit.SECONDS, "bando"),
@@ -54,8 +54,6 @@ enum Boss
 	DAGANNOTH_SUPREME("Dagannoth Supreme", 90, ChronoUnit.SECONDS, "supreme"),
 	CORPOREAL_BEAST("Corporeal Beast", 30, ChronoUnit.SECONDS, "corp"),
 	GIANT_MOLE("Giant Mole", 10, ChronoUnit.SECONDS, "mole");
-
-	private static final Logger logger = LoggerFactory.getLogger(Boss.class);
 
 	private static final Map<String, Boss> bosses = new HashMap<>();
 
@@ -104,7 +102,7 @@ enum Boss
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to load image", ex);
+			log.warn("unable to load image", ex);
 		}
 
 		return image;

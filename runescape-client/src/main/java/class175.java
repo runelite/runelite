@@ -1,18 +1,22 @@
-import java.util.HashMap;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fz")
 public class class175 {
-   @ObfuscatedName("t")
-   static byte[][][] field2440;
-   @ObfuscatedName("ha")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "Lhx;"
+      signature = "Lev;"
    )
-   static Widget field2442;
+   @Export("socket")
+   static Task socket;
 
-   static {
-      new HashMap();
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BII)I",
+      garbageValue = "-1071384032"
+   )
+   public static int method3182(byte[] var0, int var1) {
+      return ClientPacket.method3168(var0, 0, var1);
    }
 }

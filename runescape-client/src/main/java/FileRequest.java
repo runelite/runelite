@@ -4,34 +4,27 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("il")
+@ObfuscatedName("it")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("l")
-   @Export("osName")
-   static String osName;
-   @ObfuscatedName("b")
+   @ObfuscatedName("cw")
+   @ObfuscatedGetter(
+      intValue = 76133179
+   )
+   public static int field3304;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Liu;"
    )
    @Export("index")
    IndexData index;
-   @ObfuscatedName("s")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1965679587
+      intValue = -803899541
    )
    @Export("crc")
    int crc;
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @Export("padding")
    byte padding;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lij;B)V",
-      garbageValue = "103"
-   )
-   public static void method4104(IndexDataBase var0) {
-      Varbit.varbit_ref = var0;
-   }
 }

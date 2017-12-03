@@ -4,59 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ie")
+@ObfuscatedName("ih")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
-   @ObfuscatedName("me")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Ljq;"
-   )
-   static class285 field3397;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lib;"
    )
    @Export("underlay_ref")
-   static IndexDataBase underlay_ref;
-   @ObfuscatedName("s")
+   public static IndexDataBase underlay_ref;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgp;"
+      signature = "Lgu;"
    )
    @Export("underlays")
-   public static NodeCache underlays;
-   @ObfuscatedName("cl")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexTextures")
-   static IndexData indexTextures;
-   @ObfuscatedName("r")
+   static NodeCache underlays;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1170025503
+      intValue = -1882661743
    )
    @Export("rgbColor")
    int rgbColor;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -478384559
+      intValue = -1784433545
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1017155977
+      intValue = 167744801
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("f")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1920124869
+      intValue = -272353301
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("u")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1283350245
+      intValue = -982635371
    )
    @Export("hueMultiplier")
    public int hueMultiplier;
@@ -69,20 +58,20 @@ public class FloorUnderlayDefinition extends CacheableNode {
       this.rgbColor = 0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1039865813"
+      signature = "(S)V",
+      garbageValue = "3532"
    )
    @Export("post")
    void post() {
       this.setHSL(this.rgbColor);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfs;IB)V",
-      garbageValue = "31"
+      signature = "(Lgh;II)V",
+      garbageValue = "91986373"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -96,10 +85,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfs;III)V",
-      garbageValue = "-1031407450"
+      signature = "(Lgh;III)V",
+      garbageValue = "-2104836165"
    )
    @Export("decode")
    void decode(Buffer var1, int var2, int var3) {
@@ -109,10 +98,10 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1642231367"
+      signature = "(IB)V",
+      garbageValue = "-11"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -139,7 +128,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
       double var12 = 0.0D;
       double var14 = 0.0D;
-      double var16 = (var8 + var10) / 2.0D;
+      double var16 = (var10 + var8) / 2.0D;
       if(var10 != var8) {
          if(var16 < 0.5D) {
             var14 = (var10 - var8) / (var10 + var8);
@@ -151,15 +140,15 @@ public class FloorUnderlayDefinition extends CacheableNode {
 
          if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
-         } else if(var4 == var10) {
+         } else if(var10 == var4) {
             var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var10 == var6) {
+         } else if(var6 == var10) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
-      this.saturation = (int)(var14 * 256.0D);
+      this.saturation = (int)(256.0D * var14);
       this.lightness = (int)(256.0D * var16);
       if(this.saturation < 0) {
          this.saturation = 0;
@@ -174,24 +163,33 @@ public class FloorUnderlayDefinition extends CacheableNode {
       }
 
       if(var16 > 0.5D) {
-         this.hueMultiplier = (int)(var14 * (1.0D - var16) * 512.0D);
+         this.hueMultiplier = (int)(512.0D * (1.0D - var16) * var14);
       } else {
-         this.hueMultiplier = (int)(512.0D * var14 * var16);
+         this.hueMultiplier = (int)(512.0D * var16 * var14);
       }
 
       if(this.hueMultiplier < 1) {
          this.hueMultiplier = 1;
       }
 
-      this.hue = (int)(var12 * (double)this.hueMultiplier);
+      this.hue = (int)((double)this.hueMultiplier * var12);
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lij;B)V",
-      garbageValue = "5"
+      signature = "(ZI)V",
+      garbageValue = "455051354"
    )
-   public static void method4353(IndexDataBase var0) {
-      Enum.field3453 = var0;
+   static void method4509(boolean var0) {
+      class91.loginMessage1 = "";
+      class91.loginMessage2 = "Enter your username/email & password.";
+      class91.loginMessage3 = "";
+      class91.loginIndex = 2;
+      if(var0) {
+         class91.password = "";
+      }
+
+      class231.method4201();
+      MouseInput.method959();
    }
 }

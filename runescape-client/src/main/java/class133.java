@@ -1,97 +1,85 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("ej")
 public class class133 {
-   @ObfuscatedName("b")
-   public static boolean field1903;
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
+   @Export("Viewport_containsMouse")
+   public static boolean Viewport_containsMouse;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1942696395
+      intValue = -730306591
    )
-   static int field1900;
-   @ObfuscatedName("r")
+   @Export("Viewport_mouseX")
+   public static int Viewport_mouseX;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1393692891
+      intValue = -671398125
    )
-   static int field1906;
+   @Export("Viewport_mouseY")
+   public static int Viewport_mouseY;
+   @ObfuscatedName("k")
+   @Export("Viewport_false0")
+   public static boolean Viewport_false0;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1417203043
+   )
+   static int field1884;
    @ObfuscatedName("g")
-   static boolean field1908;
+   @ObfuscatedGetter(
+      intValue = 1771911547
+   )
+   static int field1881;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -720744231
+      intValue = 536676545
    )
-   static int field1904;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -571131171
-   )
-   static int field1905;
+   static int field1886;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1851971339
+      intValue = 12111091
    )
-   static int field1901;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 435464835
-   )
-   public static int field1907;
-   @ObfuscatedName("j")
-   public static int[] field1902;
+   @Export("Viewport_entityCountAtMouse")
+   public static int Viewport_entityCountAtMouse;
+   @ObfuscatedName("y")
+   @Export("Viewport_entityIdsAtMouse")
+   public static int[] Viewport_entityIdsAtMouse;
 
    static {
-      field1903 = false;
-      field1900 = 0;
-      field1906 = 0;
-      field1908 = false;
-      field1907 = 0;
-      field1902 = new int[1000];
+      Viewport_containsMouse = false;
+      Viewport_mouseX = 0;
+      Viewport_mouseY = 0;
+      Viewport_false0 = false;
+      Viewport_entityCountAtMouse = 0;
+      Viewport_entityIdsAtMouse = new int[1000];
    }
 
-   @ObfuscatedName("eq")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-94"
+      signature = "(IIIILks;Lhy;B)V",
+      garbageValue = "28"
    )
-   static void method2596() {
-      Client.field905.method1868();
-      Client.field905.field1461.offset = 0;
-      Client.field905.serverPacket = null;
-      Client.field905.field1467 = null;
-      Client.field905.field1468 = null;
-      Client.field905.field1459 = null;
-      Client.field905.packetLength = 0;
-      Client.field905.field1457 = 0;
-      Client.field910 = 0;
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
-      Client.field1108 = 0;
-      Client.destinationX = 0;
-
-      int var0;
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Client.cachedPlayers[var0] = null;
+   @Export("worldToMinimap")
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+      int var6 = var3 * var3 + var2 * var2;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapAngle & 2047;
+         int var8 = Graphics3D.SINE[var7];
+         int var9 = Graphics3D.COSINE[var7];
+         int var10 = var9 * var2 + var3 * var8 >> 16;
+         int var11 = var3 * var9 - var8 * var2 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = var5.field2715 / 2 - 25;
+         int var15 = (int)(Math.sin(var12) * (double)var14);
+         int var16 = (int)(Math.cos(var12) * (double)var14);
+         byte var17 = 20;
+         class47.mapedge.method5193(var15 + (var0 + var5.field2715 / 2 - var17 / 2), var5.field2716 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+      } else {
+         class37.drawDot(var0, var1, var2, var3, var4, var5);
       }
 
-      class275.localPlayer = null;
-
-      for(var0 = 0; var0 < Client.cachedNPCs.length; ++var0) {
-         NPC var1 = Client.cachedNPCs[var0];
-         if(var1 != null) {
-            var1.interacting = -1;
-            var1.field1187 = false;
-         }
-      }
-
-      class17.method121();
-      class2.setGameState(30);
-
-      for(var0 = 0; var0 < 100; ++var0) {
-         Client.field1052[var0] = true;
-      }
-
-      World.method1560();
    }
 }

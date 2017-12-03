@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -45,14 +46,11 @@ import net.runelite.client.events.MenuEntryAdded;
 import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionsChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class MenuManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(MenuManager.class);
-
 	/*
 	 * The index needs to be between 4 and 7,
 	 */
@@ -165,11 +163,11 @@ public class MenuManager
 		int newIdx = findEmptyPlayerMenuIndex();
 		if (newIdx == IDX_UPPER)
 		{
-			logger.debug("Client has updated player menu index {} where option {} was, and there are no more free slots available", idx, menuText);
+			log.debug("Client has updated player menu index {} where option {} was, and there are no more free slots available", idx, menuText);
 			return;
 		}
 
-		logger.debug("Client has updated player menu index {} where option {} was, moving to index {}", idx, menuText, newIdx);
+		log.debug("Client has updated player menu index {} where option {} was, moving to index {}", idx, menuText, newIdx);
 
 		playerMenuIndexMap.remove(idx);
 		addPlayerMenuItem(newIdx, menuText);
