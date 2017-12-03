@@ -22,17 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.widgets.WidgetInfo;
-
-import javax.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.widgets.WidgetInfo;
 
 public abstract class Overlay
 {
@@ -42,9 +39,6 @@ public abstract class Overlay
 	private boolean drawOverLoginScreen = false;
 	private boolean drawOverBankScreen = false;
 	private boolean drawOverClickToPlayScreen = false;
-
-	@Inject
-	Client client;
 
 	public Overlay(OverlayPosition position)
 	{
@@ -89,10 +83,12 @@ public abstract class Overlay
 		this.bounds = bounds;
 	}
 
-	public boolean isDrawn()
+	public boolean shouldDraw(Client client)
 	{
 		if (client == null)
+		{
 			return false;
+		}
 		if (!drawOverLoginScreen && client.getGameState() != GameState.LOGGED_IN)
 		{
 			return false;

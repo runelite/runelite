@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.Client;
 
 public class TopDownRendererLeft implements Renderer
 {
@@ -37,7 +38,13 @@ public class TopDownRendererLeft implements Renderer
 	private static final int BORDER_LEFT = 10;
 	private static final int PADDING = 10;
 
+	private final Client client;
 	private final List<Overlay> overlays = new ArrayList<>();
+
+	public TopDownRendererLeft(Client client)
+	{
+		this.client = client;
+	}
 
 	public void add(Overlay overlay)
 	{
@@ -52,7 +59,7 @@ public class TopDownRendererLeft implements Renderer
 
 		for (Overlay overlay : overlays)
 		{
-			if (!overlay.isDrawn())
+			if (!overlay.shouldDraw(client))
 				continue;
 
 			BufferedImage image = clientBuffer.getSubimage(BORDER_LEFT, y, clientBuffer.getWidth() - BORDER_LEFT, clientBuffer.getHeight() - y);
