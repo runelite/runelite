@@ -63,7 +63,7 @@ public class TopDownRendererRight implements Renderer
 
 		for (Overlay overlay : overlays)
 		{
-			if (!overlay.isDrawn())
+			if (!overlay.shouldDraw(client))
 				continue;
 
 			BufferedImage image = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
