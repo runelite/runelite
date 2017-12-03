@@ -1,38 +1,48 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ek")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("el")
-   @Export("mapRegions")
-   @Hook("mapRegionsChanged")
-   static int[] mapRegions;
-   @ObfuscatedName("d")
+   @ObfuscatedName("or")
+   @ObfuscatedSignature(
+      signature = "Ldn;"
+   )
+   @Export("soundSystem1")
+   static AbstractSoundSystem soundSystem1;
+   @ObfuscatedName("nn")
+   @Export("clanChatRank")
+   static byte clanChatRank;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -189026053
+      intValue = 197876021
+   )
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -364405127
    )
    @Export("x")
    int x;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -246836467
+      intValue = -312726173
    )
    @Export("y")
    int y;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1315088577
+      intValue = -820067941
    )
    @Export("z")
    int z;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -542108679
+      intValue = -1070537593
    )
    @Export("magnitude")
    int magnitude;
@@ -41,7 +51,7 @@ public class VertexNormal {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lec;)V"
+      signature = "(Lek;)V"
    )
    VertexNormal(VertexNormal var1) {
       this.x = var1.x;
@@ -50,45 +60,52 @@ public class VertexNormal {
       this.magnitude = var1.magnitude;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Leh;IIIB)V",
-      garbageValue = "3"
+      signature = "(II)Lhz;",
+      garbageValue = "1567554923"
    )
-   public static final void method2712(Model var0, int var1, int var2, int var3) {
-      if(class214.method4052(var0, var1, var2, var3)) {
-         class28.method238(var0, var1, var2, var3, -65281);
-      } else if(class11.field254 == class7.field225) {
-         class28.method238(var0, var1, var2, var3, -16776961);
+   @Export("getWidget")
+   public static Widget getWidget(int var0) {
+      int var1 = var0 >> 16;
+      int var2 = var0 & 65535;
+      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
+         boolean var3 = GraphicsObject.loadWidget(var1);
+         if(!var3) {
+            return null;
+         }
       }
 
+      return Widget.widgets[var1][var2];
    }
 
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-2086661375"
+      signature = "(ILck;ZI)I",
+      garbageValue = "1580470275"
    )
-   static String method2711(byte[] var0, int var1, int var2) {
-      StringBuilder var3 = new StringBuilder();
-
-      for(int var4 = var1; var4 < var2 + var1; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class276.field3734[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class276.field3734[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class276.field3734[(var6 & 15) << 2 | var7 >>> 6]).append(class276.field3734[var7 & 63]);
-            } else {
-               var3.append(class276.field3734[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class276.field3734[(var5 & 3) << 4]).append("==");
-         }
+   static int method2601(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class139.field2008:AttackOption.field1306;
+      if(var0 == 1500) {
+         class82.intStack[++class82.intStackSize - 1] = var3.relativeX;
+         return 1;
+      } else if(var0 == 1501) {
+         class82.intStack[++class82.intStackSize - 1] = var3.relativeY;
+         return 1;
+      } else if(var0 == 1502) {
+         class82.intStack[++class82.intStackSize - 1] = var3.width;
+         return 1;
+      } else if(var0 == 1503) {
+         class82.intStack[++class82.intStackSize - 1] = var3.height;
+         return 1;
+      } else if(var0 == 1504) {
+         class82.intStack[++class82.intStackSize - 1] = var3.isHidden?1:0;
+         return 1;
+      } else if(var0 == 1505) {
+         class82.intStack[++class82.intStackSize - 1] = var3.parentId;
+         return 1;
+      } else {
+         return 2;
       }
-
-      return var3.toString();
    }
 }

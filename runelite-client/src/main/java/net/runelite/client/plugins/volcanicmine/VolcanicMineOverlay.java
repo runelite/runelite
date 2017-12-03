@@ -39,9 +39,9 @@ import java.time.Instant;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -51,13 +51,10 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class VolcanicMineOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(VolcanicMinePlugin.class);
-
 	private static final int THRESH_LOW = 45;
 	private static final int THRESH_MED = 5;
 
@@ -84,7 +81,7 @@ public class VolcanicMineOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN || !plugin.getInside() || !config.enabled())
+		if (client == null || !plugin.getInside() || !config.enabled())
 		{
 			return null;
 		}
@@ -246,7 +243,7 @@ public class VolcanicMineOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			logger.warn("Error loading image", e);
+			log.warn("Error loading image", e);
 		}
 		return image;
 	}

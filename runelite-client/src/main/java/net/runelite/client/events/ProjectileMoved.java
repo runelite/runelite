@@ -24,42 +24,14 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 
+@Data
 public class ProjectileMoved
 {
 	private Projectile projectile;
 	private Point position;
 	private int plane;
-
-	public Projectile getProjectile()
-	{
-		return projectile;
-	}
-
-	public void setProjectile(Projectile projectile)
-	{
-		this.projectile = projectile;
-	}
-
-	public Point getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(Point position)
-	{
-		this.position = position;
-	}
-
-	public int getPlane()
-	{
-		return plane;
-	}
-
-	public void setPlane(int plane)
-	{
-		this.plane = plane;
-	}
 }

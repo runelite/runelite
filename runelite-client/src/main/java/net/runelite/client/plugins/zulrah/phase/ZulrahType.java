@@ -25,15 +25,13 @@
  */
 package net.runelite.client.plugins.zulrah.phase;
 
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NpcID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public enum ZulrahType
 {
 	RANGE, MAGIC, MELEE;
-
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahType.class);
 
 	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
 	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2043;
@@ -50,7 +48,7 @@ public enum ZulrahType
 			case ZULRAH_MAGIC:
 				return ZulrahType.MAGIC;
 		}
-		logger.debug("Unknown Zulrah Id: {}", zulrahId);
+		log.debug("Unknown Zulrah Id: {}", zulrahId);
 		return null;
 	}
 }

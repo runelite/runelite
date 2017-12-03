@@ -5,21 +5,26 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("gh")
 @Implements("Buffer")
 public class Buffer extends Node {
-   @ObfuscatedName("k")
+   @ObfuscatedName("pm")
+   @ObfuscatedGetter(
+      intValue = 1142325351
+   )
+   static int field2516;
+   @ObfuscatedName("e")
    @Export("crc32Table")
    static int[] crc32Table;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("crc64Table")
    static long[] crc64Table;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("payload")
    public byte[] payload;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1138069495
+      intValue = 328573213
    )
    @Export("offset")
    public int offset;
@@ -61,7 +66,7 @@ public class Buffer extends Node {
    }
 
    public Buffer(int var1) {
-      this.payload = MouseInput.method1044(var1);
+      this.payload = class111.method2088(var1);
       this.offset = 0;
    }
 
@@ -70,14 +75,14 @@ public class Buffer extends Node {
       this.offset = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "404740541"
+      garbageValue = "2134921783"
    )
-   public void method3469() {
+   public void method3339() {
       if(this.payload != null) {
-         ScriptState.method1095(this.payload);
+         WorldMapType2.method534(this.payload);
       }
 
       this.payload = null;
@@ -86,17 +91,17 @@ public class Buffer extends Node {
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-687990843"
+      garbageValue = "-644702838"
    )
    @Export("putByte")
    public void putByte(int var1) {
       this.payload[++this.offset - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "2142974638"
+      signature = "(IB)V",
+      garbageValue = "91"
    )
    @Export("putShort")
    public void putShort(int var1) {
@@ -104,10 +109,10 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1928688979"
+      garbageValue = "1612169412"
    )
    @Export("put24bitInt")
    public void put24bitInt(int var1) {
@@ -116,10 +121,10 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-2"
+      signature = "(II)V",
+      garbageValue = "-1565273247"
    )
    @Export("putInt")
    public void putInt(int var1) {
@@ -129,8 +134,8 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("b")
-   public void method3284(long var1) {
+   @ObfuscatedName("f")
+   public void method3249(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 40));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 32));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 24));
@@ -139,7 +144,7 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)((int)var1);
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("g")
    @Export("putLong")
    public void putLong(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 56));
@@ -152,19 +157,20 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)((int)var1);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "-32"
+      signature = "(ZI)V",
+      garbageValue = "2054945027"
    )
-   public void method3286(boolean var1) {
+   @Export("writeBooleanAsByte")
+   public void writeBooleanAsByte(boolean var1) {
       this.putByte(var1?1:0);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
-      garbageValue = "154650428"
+      garbageValue = "525242366"
    )
    @Export("putString")
    public void putString(String var1) {
@@ -172,15 +178,15 @@ public class Buffer extends Node {
       if(var2 >= 0) {
          throw new IllegalArgumentException("");
       } else {
-         this.offset += Friend.method1110(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += class22.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1609926877"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "-48"
    )
    @Export("putJagString")
    public void putJagString(String var1) {
@@ -189,23 +195,22 @@ public class Buffer extends Node {
          throw new IllegalArgumentException("");
       } else {
          this.payload[++this.offset - 1] = 0;
-         this.offset += Friend.method1110(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += class22.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;I)V",
-      garbageValue = "1859303723"
+      garbageValue = "-326719322"
    )
    @Export("putCESU8")
    public void putCESU8(CharSequence var1) {
       int var3 = var1.length();
       int var4 = 0;
 
-      int var5;
-      for(var5 = 0; var5 < var3; ++var5) {
+      for(int var5 = 0; var5 < var3; ++var5) {
          char var6 = var1.charAt(var5);
          if(var6 <= 127) {
             ++var4;
@@ -218,34 +223,13 @@ public class Buffer extends Node {
 
       this.payload[++this.offset - 1] = 0;
       this.putVarInt(var4);
-      var4 = this.offset;
-      byte[] var12 = this.payload;
-      int var7 = this.offset;
-      int var8 = var1.length();
-      int var9 = var7;
-
-      for(int var10 = 0; var10 < var8; ++var10) {
-         char var11 = var1.charAt(var10);
-         if(var11 <= 127) {
-            var12[var9++] = (byte)var11;
-         } else if(var11 <= 2047) {
-            var12[var9++] = (byte)(192 | var11 >> 6);
-            var12[var9++] = (byte)(128 | var11 & '?');
-         } else {
-            var12[var9++] = (byte)(224 | var11 >> '\f');
-            var12[var9++] = (byte)(128 | var11 >> 6 & 63);
-            var12[var9++] = (byte)(128 | var11 & '?');
-         }
-      }
-
-      var5 = var9 - var7;
-      this.offset = var4 + var5;
+      this.offset += class25.method180(this.payload, this.offset, var1);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "1028288667"
+      signature = "([BIIB)V",
+      garbageValue = "0"
    )
    @Export("putBytes")
    public void putBytes(byte[] var1, int var2, int var3) {
@@ -255,10 +239,10 @@ public class Buffer extends Node {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-531378560"
+      garbageValue = "-1685234738"
    )
    @Export("putLengthInt")
    public void putLengthInt(int var1) {
@@ -268,29 +252,29 @@ public class Buffer extends Node {
       this.payload[this.offset - var1 - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-2097248599"
+      garbageValue = "772605767"
    )
-   public void method3498(int var1) {
+   public void method3257(int var1) {
       this.payload[this.offset - var1 - 2] = (byte)(var1 >> 8);
-      this.payload[this.offset - var1 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1398861657"
-   )
-   public void method3293(int var1) {
       this.payload[this.offset - var1 - 1] = (byte)var1;
    }
 
    @ObfuscatedName("h")
    @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-18"
+   )
+   public void method3258(int var1) {
+      this.payload[this.offset - var1 - 1] = (byte)var1;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-6213559"
+      garbageValue = "-1636862767"
    )
    @Export("putShortSmart")
    public void putShortSmart(int var1) {
@@ -303,10 +287,10 @@ public class Buffer extends Node {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "48425923"
+      garbageValue = "-1774806658"
    )
    @Export("putVarInt")
    public void putVarInt(int var1) {
@@ -329,30 +313,30 @@ public class Buffer extends Node {
       this.putByte(var1 & 127);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "530209457"
+      signature = "(B)I",
+      garbageValue = "-123"
    )
    @Export("readUnsignedByte")
    public int readUnsignedByte() {
       return this.payload[++this.offset - 1] & 255;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "(I)B",
-      garbageValue = "-1910017567"
+      garbageValue = "-1036819722"
    )
    @Export("readByte")
    public byte readByte() {
       return this.payload[++this.offset - 1];
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1986780544"
+      signature = "(B)I",
+      garbageValue = "-60"
    )
    @Export("readUnsignedShort")
    public int readUnsignedShort() {
@@ -360,10 +344,10 @@ public class Buffer extends Node {
       return (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 2] & 255) << 8);
    }
 
-   @ObfuscatedName("ak")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1120604570"
+      signature = "(B)I",
+      garbageValue = "16"
    )
    @Export("readShort")
    public int readShort() {
@@ -376,10 +360,10 @@ public class Buffer extends Node {
       return var1;
    }
 
-   @ObfuscatedName("aa")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1313468471"
+      signature = "(B)I",
+      garbageValue = "1"
    )
    @Export("read24BitInt")
    public int read24BitInt() {
@@ -387,10 +371,10 @@ public class Buffer extends Node {
       return ((this.payload[this.offset - 3] & 255) << 16) + (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 2] & 255) << 8);
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1926859625"
+      garbageValue = "-1875503038"
    )
    @Export("readInt")
    public int readInt() {
@@ -401,7 +385,7 @@ public class Buffer extends Node {
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "(I)J",
-      garbageValue = "790406541"
+      garbageValue = "-1878317452"
    )
    @Export("readLong")
    public long readLong() {
@@ -410,19 +394,19 @@ public class Buffer extends Node {
       return (var1 << 32) + var3;
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1508036637"
+      garbageValue = "1258527100"
    )
-   public boolean method3303() {
+   public boolean method3268() {
       return (this.readUnsignedByte() & 1) == 1;
    }
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("at")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "2090157965"
+      garbageValue = "1541836314"
    )
    @Export("getNullString")
    public String getNullString() {
@@ -434,10 +418,10 @@ public class Buffer extends Node {
       }
    }
 
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "-2132436148"
+      garbageValue = "-827151274"
    )
    @Export("readString")
    public String readString() {
@@ -448,13 +432,13 @@ public class Buffer extends Node {
       }
 
       int var2 = this.offset - var1 - 1;
-      return var2 == 0?"":class163.getString(this.payload, var1, var2);
+      return var2 == 0?"":ScriptVarType.getString(this.payload, var1, var2);
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("an")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "151287849"
+      garbageValue = "-868419915"
    )
    @Export("getJagString")
    public String getJagString() {
@@ -469,14 +453,14 @@ public class Buffer extends Node {
          }
 
          int var3 = this.offset - var2 - 1;
-         return var3 == 0?"":class163.getString(this.payload, var2, var3);
+         return var3 == 0?"":ScriptVarType.getString(this.payload, var2, var3);
       }
    }
 
-   @ObfuscatedName("as")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
       signature = "(B)Ljava/lang/String;",
-      garbageValue = "46"
+      garbageValue = "98"
    )
    @Export("getCESU8")
    public String getCESU8() {
@@ -488,17 +472,68 @@ public class Buffer extends Node {
          if(var2 + this.offset > this.payload.length) {
             throw new IllegalStateException("");
          } else {
-            String var3 = PendingSpawn.method1571(this.payload, this.offset, var2);
+            byte[] var4 = this.payload;
+            int var5 = this.offset;
+            char[] var6 = new char[var2];
+            int var7 = 0;
+            int var8 = var5;
+
+            int var11;
+            for(int var9 = var5 + var2; var8 < var9; var6[var7++] = (char)var11) {
+               int var10 = var4[var8++] & 255;
+               if(var10 < 128) {
+                  if(var10 == 0) {
+                     var11 = 65533;
+                  } else {
+                     var11 = var10;
+                  }
+               } else if(var10 < 192) {
+                  var11 = 65533;
+               } else if(var10 < 224) {
+                  if(var8 < var9 && (var4[var8] & 192) == 128) {
+                     var11 = (var10 & 31) << 6 | var4[var8++] & 63;
+                     if(var11 < 128) {
+                        var11 = 65533;
+                     }
+                  } else {
+                     var11 = 65533;
+                  }
+               } else if(var10 < 240) {
+                  if(var8 + 1 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128) {
+                     var11 = (var10 & 15) << 12 | (var4[var8++] & 63) << 6 | var4[var8++] & 63;
+                     if(var11 < 2048) {
+                        var11 = 65533;
+                     }
+                  } else {
+                     var11 = 65533;
+                  }
+               } else if(var10 < 248) {
+                  if(var8 + 2 < var9 && (var4[var8] & 192) == 128 && (var4[var8 + 1] & 192) == 128 && (var4[var8 + 2] & 192) == 128) {
+                     var11 = (var10 & 7) << 18 | (var4[var8++] & 63) << 12 | (var4[var8++] & 63) << 6 | var4[var8++] & 63;
+                     if(var11 >= 65536 && var11 <= 1114111) {
+                        var11 = 65533;
+                     } else {
+                        var11 = 65533;
+                     }
+                  } else {
+                     var11 = 65533;
+                  }
+               } else {
+                  var11 = 65533;
+               }
+            }
+
+            String var3 = new String(var6, 0, var7);
             this.offset += var2;
             return var3;
          }
       }
    }
 
-   @ObfuscatedName("am")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "([BIIS)V",
-      garbageValue = "6200"
+      signature = "([BIIB)V",
+      garbageValue = "32"
    )
    @Export("readBytes")
    public void readBytes(byte[] var1, int var2, int var3) {
@@ -508,10 +543,10 @@ public class Buffer extends Node {
 
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-20582299"
+      garbageValue = "846419892"
    )
    @Export("readShortSmart")
    public int readShortSmart() {
@@ -519,10 +554,10 @@ public class Buffer extends Node {
       return var1 < 128?this.readUnsignedByte() - 64:this.readUnsignedShort() - 49152;
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "128"
+      signature = "(I)I",
+      garbageValue = "957334166"
    )
    @Export("getUSmart")
    public int getUSmart() {
@@ -530,22 +565,22 @@ public class Buffer extends Node {
       return var1 < 128?this.readUnsignedByte():this.readUnsignedShort() - 32768;
    }
 
-   @ObfuscatedName("ap")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1530597680"
+      garbageValue = "-1336993772"
    )
    @Export("getLargeSmart")
    public int getLargeSmart() {
       return this.payload[this.offset] < 0?this.readInt() & Integer.MAX_VALUE:this.readUnsignedShort();
    }
 
-   @ObfuscatedName("ad")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "43356"
+      garbageValue = "1723477966"
    )
-   public int method3444() {
+   public int method3372() {
       if(this.payload[this.offset] < 0) {
          return this.readInt() & Integer.MAX_VALUE;
       } else {
@@ -554,10 +589,10 @@ public class Buffer extends Node {
       }
    }
 
-   @ObfuscatedName("an")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-767440151"
+      garbageValue = "-440575049"
    )
    @Export("readVarInt")
    public int readVarInt() {
@@ -571,10 +606,10 @@ public class Buffer extends Node {
       return var2 | var1;
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
       signature = "([II)V",
-      garbageValue = "-2043036335"
+      garbageValue = "-1330332842"
    )
    @Export("encryptXtea2")
    public void encryptXtea2(int[] var1) {
@@ -599,10 +634,10 @@ public class Buffer extends Node {
 
    }
 
-   @ObfuscatedName("ay")
+   @ObfuscatedName("av")
    @ObfuscatedSignature(
       signature = "([II)V",
-      garbageValue = "-932855595"
+      garbageValue = "2004880729"
    )
    @Export("decryptXtea")
    public void decryptXtea(int[] var1) {
@@ -627,10 +662,10 @@ public class Buffer extends Node {
 
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "([IIII)V",
-      garbageValue = "16711680"
+      garbageValue = "-91348963"
    )
    @Export("encryptXtea")
    public void encryptXtea(int[] var1, int var2, int var3) {
@@ -657,10 +692,10 @@ public class Buffer extends Node {
       this.offset = var4;
    }
 
-   @ObfuscatedName("ac")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "([IIIB)V",
-      garbageValue = "96"
+      signature = "([IIII)V",
+      garbageValue = "1217389024"
    )
    @Export("decryptXtea")
    public void decryptXtea(int[] var1, int var2, int var3) {
@@ -687,10 +722,10 @@ public class Buffer extends Node {
       this.offset = var4;
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
-      signature = "(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
-      garbageValue = "758956679"
+      signature = "(Ljava/math/BigInteger;Ljava/math/BigInteger;S)V",
+      garbageValue = "-20390"
    )
    @Export("encryptRsa")
    public void encryptRsa(BigInteger var1, BigInteger var2) {
@@ -706,143 +741,128 @@ public class Buffer extends Node {
       this.putBytes(var7, 0, var7.length);
    }
 
-   @ObfuscatedName("ao")
+   @ObfuscatedName("aj")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "0"
+      signature = "(II)I",
+      garbageValue = "1305363965"
    )
    @Export("putCrc")
    public int putCrc(int var1) {
-      byte[] var3 = this.payload;
-      int var4 = this.offset;
-      int var5 = -1;
-
-      for(int var6 = var1; var6 < var4; ++var6) {
-         var5 = var5 >>> 8 ^ crc32Table[(var5 ^ var3[var6]) & 255];
-      }
-
-      var5 = ~var5;
-      this.putInt(var5);
-      return var5;
+      int var2 = ClientPacket.method3168(this.payload, var1, this.offset);
+      this.putInt(var2);
+      return var2;
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "22111"
+      signature = "(I)Z",
+      garbageValue = "-1968438559"
    )
    @Export("checkCrc")
    public boolean checkCrc() {
       this.offset -= 4;
-      byte[] var2 = this.payload;
-      int var3 = this.offset;
-      int var4 = -1;
-
-      int var5;
-      for(var5 = 0; var5 < var3; ++var5) {
-         var4 = var4 >>> 8 ^ crc32Table[(var4 ^ var2[var5]) & 255];
-      }
-
-      var4 = ~var4;
-      var5 = this.readInt();
-      return var4 == var5;
+      int var1 = ClientPacket.method3168(this.payload, 0, this.offset);
+      int var2 = this.readInt();
+      return var1 == var2;
    }
 
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1988263015"
+      signature = "(IB)V",
+      garbageValue = "-29"
    )
-   public void method3343(int var1) {
+   public void method3285(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("au")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "410248327"
+      signature = "(IS)V",
+      garbageValue = "-14537"
    )
-   public void method3322(int var1) {
+   public void method3286(int var1) {
       this.payload[++this.offset - 1] = (byte)(0 - var1);
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("bb")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1035314235"
+      signature = "(IS)V",
+      garbageValue = "-15916"
    )
-   public void method3307(int var1) {
+   public void method3287(int var1) {
       this.payload[++this.offset - 1] = (byte)(128 - var1);
    }
 
-   @ObfuscatedName("bj")
+   @ObfuscatedName("bc")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-495685061"
+      garbageValue = "1214676251"
    )
-   public int method3422() {
+   @Export("readUnsignedByteNegate")
+   public int readUnsignedByteNegate() {
       return this.payload[++this.offset - 1] - 128 & 255;
    }
 
-   @ObfuscatedName("bq")
+   @ObfuscatedName("bp")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1264821927"
+      garbageValue = "92502310"
    )
-   public int method3457() {
+   public int method3274() {
       return 0 - this.payload[++this.offset - 1] & 255;
    }
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "33"
+      garbageValue = "122"
    )
-   public int method3380() {
+   public int method3335() {
       return 128 - this.payload[++this.offset - 1] & 255;
-   }
-
-   @ObfuscatedName("bk")
-   @ObfuscatedSignature(
-      signature = "(I)B",
-      garbageValue = "-1384811681"
-   )
-   public byte method3327() {
-      return (byte)(this.payload[++this.offset - 1] - 128);
-   }
-
-   @ObfuscatedName("bv")
-   @ObfuscatedSignature(
-      signature = "(I)B",
-      garbageValue = "1433212875"
-   )
-   public byte method3328() {
-      return (byte)(0 - this.payload[++this.offset - 1]);
-   }
-
-   @ObfuscatedName("ba")
-   @ObfuscatedSignature(
-      signature = "(I)B",
-      garbageValue = "-2134089616"
-   )
-   public byte method3329() {
-      return (byte)(128 - this.payload[++this.offset - 1]);
-   }
-
-   @ObfuscatedName("bs")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1955717168"
-   )
-   public void method3330(int var1) {
-      this.payload[++this.offset - 1] = (byte)var1;
-      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
 
    @ObfuscatedName("bg")
    @ObfuscatedSignature(
+      signature = "(I)B",
+      garbageValue = "1223558964"
+   )
+   public byte method3437() {
+      return (byte)(this.payload[++this.offset - 1] - 128);
+   }
+
+   @ObfuscatedName("bq")
+   @ObfuscatedSignature(
+      signature = "(I)B",
+      garbageValue = "1289094360"
+   )
+   public byte method3347() {
+      return (byte)(0 - this.payload[++this.offset - 1]);
+   }
+
+   @ObfuscatedName("be")
+   @ObfuscatedSignature(
+      signature = "(B)B",
+      garbageValue = "-65"
+   )
+   public byte method3328() {
+      return (byte)(128 - this.payload[++this.offset - 1]);
+   }
+
+   @ObfuscatedName("bx")
+   @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "219493463"
+      garbageValue = "-1180309752"
+   )
+   @Export("writeIntLE16")
+   public void writeIntLE16(int var1) {
+      this.payload[++this.offset - 1] = (byte)var1;
+      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
+   }
+
+   @ObfuscatedName("bw")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "98"
    )
    @Export("putShortLE")
    public void putShortLE(int var1) {
@@ -850,68 +870,54 @@ public class Buffer extends Node {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
    }
 
-   @ObfuscatedName("bn")
+   @ObfuscatedName("bf")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-141762286"
+      garbageValue = "-1818127667"
    )
-   public void method3332(int var1) {
+   @Export("writeShortLE")
+   public void writeShortLE(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 + 128);
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
 
-   @ObfuscatedName("bz")
+   @ObfuscatedName("bs")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "7"
+      signature = "(I)I",
+      garbageValue = "-580246861"
    )
-   public int method3333() {
+   public int method3297() {
       this.offset += 2;
       return ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] & 255);
    }
 
-   @ObfuscatedName("bl")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "9"
-   )
-   public int method3334() {
-      this.offset += 2;
-      return (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
-   }
-
-   @ObfuscatedName("bm")
+   @ObfuscatedName("bz")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "311166098"
+      garbageValue = "-1348862461"
    )
    @Export("readUnsignedShortOb1")
    public int readUnsignedShortOb1() {
       this.offset += 2;
+      return (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
+   }
+
+   @ObfuscatedName("bk")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1907308390"
+   )
+   public int method3299() {
+      this.offset += 2;
       return ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] - 128 & 255);
    }
 
-   @ObfuscatedName("bb")
+   @ObfuscatedName("bh")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "881682299"
+      garbageValue = "1621984826"
    )
-   public int method3336() {
-      this.offset += 2;
-      int var1 = ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] & 255);
-      if(var1 > 32767) {
-         var1 -= 65536;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("bc")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1105146839"
-   )
-   public int method3337() {
+   public int method3300() {
       this.offset += 2;
       int var1 = (this.payload[this.offset - 1] - 128 & 255) + ((this.payload[this.offset - 2] & 255) << 8);
       if(var1 > 32767) {
@@ -921,125 +927,146 @@ public class Buffer extends Node {
       return var1;
    }
 
-   @ObfuscatedName("bf")
+   @ObfuscatedName("bm")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1369489473"
+      garbageValue = "1842148637"
    )
-   public int method3338() {
-      this.offset += 3;
-      return ((this.payload[this.offset - 1] & 255) << 8) + ((this.payload[this.offset - 3] & 255) << 16) + (this.payload[this.offset - 2] & 255);
-   }
+   public int method3269() {
+      this.offset += 2;
+      int var1 = ((this.payload[this.offset - 1] & 255) << 8) + (this.payload[this.offset - 2] - 128 & 255);
+      if(var1 > 32767) {
+         var1 -= 65536;
+      }
 
-   @ObfuscatedName("br")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1534562865"
-   )
-   public void method3400(int var1) {
-      this.payload[++this.offset - 1] = (byte)var1;
-      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
-      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
-      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
-   }
-
-   @ObfuscatedName("bx")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-466636077"
-   )
-   public void method3365(int var1) {
-      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
-      this.payload[++this.offset - 1] = (byte)var1;
-      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
-      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
-   }
-
-   @ObfuscatedName("be")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "969875056"
-   )
-   public void method3341(int var1) {
-      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
-      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
-      this.payload[++this.offset - 1] = (byte)var1;
-      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
+      return var1;
    }
 
    @ObfuscatedName("bt")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "276624833"
+      signature = "(II)V",
+      garbageValue = "-714661066"
    )
-   public int method3342() {
-      this.offset += 4;
-      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24);
+   public void method3302(int var1) {
+      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
+      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
+      this.payload[++this.offset - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("bh")
+   @ObfuscatedName("by")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "113096344"
+      garbageValue = "-531735453"
    )
-   public int method3279() {
-      this.offset += 4;
-      return ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 8) + (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 1] & 255) << 16);
+   public int method3303() {
+      this.offset += 3;
+      return ((this.payload[this.offset - 1] & 255) << 8) + ((this.payload[this.offset - 3] & 255) << 16) + (this.payload[this.offset - 2] & 255);
+   }
+
+   @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-114"
+   )
+   @Export("writeIntLE")
+   public void writeIntLE(int var1) {
+      this.payload[++this.offset - 1] = (byte)var1;
+      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
+      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
+      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
+   }
+
+   @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1402686594"
+   )
+   public void method3311(int var1) {
+      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
+      this.payload[++this.offset - 1] = (byte)var1;
+      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
+      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
+   }
+
+   @ObfuscatedName("bv")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1156204753"
+   )
+   public void method3306(int var1) {
+      this.payload[++this.offset - 1] = (byte)(var1 >> 16);
+      this.payload[++this.offset - 1] = (byte)(var1 >> 24);
+      this.payload[++this.offset - 1] = (byte)var1;
+      this.payload[++this.offset - 1] = (byte)(var1 >> 8);
    }
 
    @ObfuscatedName("bd")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-98214225"
+      garbageValue = "1690193789"
    )
-   public int method3278() {
+   public int method3307() {
+      this.offset += 4;
+      return (this.payload[this.offset - 4] & 255) + ((this.payload[this.offset - 3] & 255) << 8) + ((this.payload[this.offset - 2] & 255) << 16) + ((this.payload[this.offset - 1] & 255) << 24);
+   }
+
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1851741542"
+   )
+   public int method3308() {
+      this.offset += 4;
+      return ((this.payload[this.offset - 2] & 255) << 24) + ((this.payload[this.offset - 4] & 255) << 8) + (this.payload[this.offset - 3] & 255) + ((this.payload[this.offset - 1] & 255) << 16);
+   }
+
+   @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1971112104"
+   )
+   public int method3457() {
       this.offset += 4;
       return ((this.payload[this.offset - 1] & 255) << 8) + ((this.payload[this.offset - 4] & 255) << 16) + (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 3] & 255) << 24);
    }
 
-   @ObfuscatedName("bw")
+   @ObfuscatedName("bu")
    @ObfuscatedSignature(
       signature = "([BIIB)V",
-      garbageValue = "1"
+      garbageValue = "97"
    )
-   public void method3345(byte[] var1, int var2, int var3) {
+   public void method3310(byte[] var1, int var2, int var3) {
       for(int var4 = var3 + var2 - 1; var4 >= var2; --var4) {
          var1[var4] = this.payload[++this.offset - 1];
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lid;IIIZB)V",
-      garbageValue = "0"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-1119851917"
    )
-   public static void method3318(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
-      class210.field2598 = 1;
-      class3.field22 = var0;
-      class8.field237 = var1;
-      class210.field2599 = var2;
-      class111.field1588 = var3;
-      class20.field322 = var4;
-      class164.field2216 = 10000;
+   @Export("getColTags")
+   static String getColTags(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
    }
 
-   @ObfuscatedName("km")
+   @ObfuscatedName("fv")
    @ObfuscatedSignature(
-      signature = "(Lhx;I)Z",
-      garbageValue = "-37525247"
+      signature = "(I)V",
+      garbageValue = "-1667183008"
    )
-   static boolean method3509(Widget var0) {
-      if(Client.field967) {
-         if(ClanMember.getWidgetConfig(var0) != 0) {
-            return false;
-         }
+   static final void method3397() {
+      int var0 = class94.playerIndexesCount;
+      int[] var1 = class94.playerIndices;
 
-         if(var0.type == 0) {
-            return false;
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(var3 != null) {
+            WallObject.method2881(var3, 1);
          }
       }
 
-      return var0.isHidden;
    }
 }

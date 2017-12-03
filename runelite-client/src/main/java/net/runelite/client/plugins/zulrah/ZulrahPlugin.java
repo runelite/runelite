@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
@@ -48,16 +49,13 @@ import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternD;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Zulrah plugin"
 )
+@Slf4j
 public class ZulrahPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ZulrahPlugin.class);
-
 	@Inject
 	RuneLite runelite;
 
@@ -115,7 +113,7 @@ public class ZulrahPlugin extends Plugin
 		{
 			if (instance != null)
 			{
-				logger.debug("Zulrah encounter has ended.");
+				log.debug("Zulrah encounter has ended.");
 				instance = null;
 			}
 			return;
@@ -124,7 +122,7 @@ public class ZulrahPlugin extends Plugin
 		if (instance == null)
 		{
 			instance = new ZulrahInstance(zulrah);
-			logger.debug("Zulrah encounter has started.");
+			log.debug("Zulrah encounter has started.");
 		}
 
 		ZulrahPhase currentPhase = ZulrahPhase.valueOf(zulrah, instance.getStartLocation());
@@ -138,7 +136,7 @@ public class ZulrahPlugin extends Plugin
 			instance.setPhase(currentPhase);
 			instance.nextStage();
 
-			logger.debug("Zulrah phase has moved from {} -> {}, stage: {}", previousPhase, currentPhase, instance.getStage());
+			log.debug("Zulrah phase has moved from {} -> {}, stage: {}", previousPhase, currentPhase, instance.getStage());
 		}
 
 		ZulrahPattern pattern = instance.getPattern();
@@ -158,14 +156,14 @@ public class ZulrahPlugin extends Plugin
 
 			if (potential == 1)
 			{
-				logger.debug("Zulrah pattern identified: {}", potentialPattern);
+				log.debug("Zulrah pattern identified: {}", potentialPattern);
 
 				instance.setPattern(potentialPattern);
 			}
 		}
 		else if (pattern.canReset(instance.getStage()) && (instance.getPhase() == null || instance.getPhase().equals(pattern.get(0))))
 		{
-			logger.debug("Zulrah pattern has reset.");
+			log.debug("Zulrah pattern has reset.");
 
 			instance.reset();
 		}

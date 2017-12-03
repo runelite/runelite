@@ -24,10 +24,13 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+
 /**
  * Called when a session has been opened with the server
  * @author Adam
  */
+@Data
 public class SessionOpen
 {
 

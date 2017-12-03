@@ -1,137 +1,116 @@
-import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("im")
-public enum class239 implements class185 {
-   @ObfuscatedName("d")
+@ObfuscatedName("ii")
+public enum class239 implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lii;"
    )
-   field3270("runescape", "RuneScape", 0),
-   @ObfuscatedName("x")
+   field3261(4, 0),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lii;"
    )
-   field3271("stellardawn", "Stellar Dawn", 1),
+   field3256(2, 1),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3257(3, 2),
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lii;"
    )
-   field3272("game3", "Game 3", 2),
+   field3263(1, 3),
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3259(5, 4),
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lim;"
+      signature = "Lii;"
    )
-   field3273("game4", "Game 4", 3),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   field3274("game5", "Game 5", 4),
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lim;"
-   )
-   field3275("oldscape", "RuneScape 2007", 5);
-
-   @ObfuscatedName("af")
-   protected static GarbageCollectorMXBean field3279;
-   @ObfuscatedName("b")
-   public final String field3276;
+   field3260(0, 5),
    @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 879950033
+   @ObfuscatedSignature(
+      signature = "Lii;"
    )
-   final int field3277;
+   field3262(6, 6),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3258(7, 7);
 
-   class239(String var3, String var4, int var5) {
-      this.field3276 = var3;
-      this.field3277 = var5;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 741878133
+   )
+   public final int field3255;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1892953301
+   )
+   final int field3264;
+
+   class239(int var3, int var4) {
+      this.field3255 = var3;
+      this.field3264 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1940611593"
+      garbageValue = "-1035813094"
    )
    public int rsOrdinal() {
-      return this.field3277;
+      return this.field3264;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;S)[B",
-      garbageValue = "28789"
+      signature = "(Lib;I)V",
+      garbageValue = "-1632245897"
    )
-   public static byte[] method4260(CharSequence var0) {
-      int var1 = var0.length();
-      byte[] var2 = new byte[var1];
+   public static void method4226(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if(var4 > 0 && var4 < 128 || var4 >= 160 && var4 <= 255) {
-            var2[var3] = (byte)var4;
-         } else if(var4 == 8364) {
-            var2[var3] = -128;
-         } else if(var4 == 8218) {
-            var2[var3] = -126;
-         } else if(var4 == 402) {
-            var2[var3] = -125;
-         } else if(var4 == 8222) {
-            var2[var3] = -124;
-         } else if(var4 == 8230) {
-            var2[var3] = -123;
-         } else if(var4 == 8224) {
-            var2[var3] = -122;
-         } else if(var4 == 8225) {
-            var2[var3] = -121;
-         } else if(var4 == 710) {
-            var2[var3] = -120;
-         } else if(var4 == 8240) {
-            var2[var3] = -119;
-         } else if(var4 == 352) {
-            var2[var3] = -118;
-         } else if(var4 == 8249) {
-            var2[var3] = -117;
-         } else if(var4 == 338) {
-            var2[var3] = -116;
-         } else if(var4 == 381) {
-            var2[var3] = -114;
-         } else if(var4 == 8216) {
-            var2[var3] = -111;
-         } else if(var4 == 8217) {
-            var2[var3] = -110;
-         } else if(var4 == 8220) {
-            var2[var3] = -109;
-         } else if(var4 == 8221) {
-            var2[var3] = -108;
-         } else if(var4 == 8226) {
-            var2[var3] = -107;
-         } else if(var4 == 8211) {
-            var2[var3] = -106;
-         } else if(var4 == 8212) {
-            var2[var3] = -105;
-         } else if(var4 == 732) {
-            var2[var3] = -104;
-         } else if(var4 == 8482) {
-            var2[var3] = -103;
-         } else if(var4 == 353) {
-            var2[var3] = -102;
-         } else if(var4 == 8250) {
-            var2[var3] = -101;
-         } else if(var4 == 339) {
-            var2[var3] = -100;
-         } else if(var4 == 382) {
-            var2[var3] = -98;
-         } else if(var4 == 376) {
-            var2[var3] = -97;
-         } else {
-            var2[var3] = 63;
+   @ObfuscatedName("hg")
+   @ObfuscatedSignature(
+      signature = "([Lhz;IIIZI)V",
+      garbageValue = "-1010498984"
+   )
+   static void method4227(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            class89.method1666(var6, var2, var3, var4);
+            class60.method985(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
+
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               GrandExchangeOffer.method102(var0, var6, var4);
+            }
          }
       }
 
-      return var2;
    }
 }

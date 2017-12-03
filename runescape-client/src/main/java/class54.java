@@ -1,40 +1,63 @@
 import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bp")
 public class class54 {
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lid;"
-   )
-   @Export("underlay_ref")
-   public static IndexDataBase underlay_ref;
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "Lid;"
-   )
-   public static IndexDataBase field638;
-   @ObfuscatedName("p")
-   public static short[] field635;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhx;"
-   )
-   static Widget field636;
-
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "154378202"
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "-1372896364"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class81.addChatMessage(var0, var1, var2, (String)null);
+   public static boolean method766(String var0, int var1) {
+      return class35.method492(var0, var1, "openjs");
+   }
+
+   @ObfuscatedName("is")
+   @ObfuscatedSignature(
+      signature = "(Lhz;B)Z",
+      garbageValue = "20"
+   )
+   static final boolean method765(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 205) {
+         Client.field881 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            Client.field1090.method4093(var2, var3 == 1);
+         }
+
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            Client.field1090.method4094(var2, var3 == 1);
+         }
+
+         if(var1 == 324) {
+            Client.field1090.method4092(false);
+         }
+
+         if(var1 == 325) {
+            Client.field1090.method4092(true);
+         }
+
+         if(var1 == 326) {
+            PacketNode var4 = FileSystem.method4252(ClientPacket.field2397, Client.field888.field1449);
+            Client.field1090.method4096(var4.packetBuffer);
+            Client.field888.method1862(var4);
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

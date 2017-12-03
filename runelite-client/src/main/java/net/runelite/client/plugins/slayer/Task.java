@@ -27,8 +27,6 @@ package net.runelite.client.plugins.slayer;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 enum Task
 {
@@ -129,8 +127,6 @@ enum Task
 	WOLVES("wolves", ItemID.GREY_WOLF_FUR),
 	ZOMBIES("zombies", ItemID.ZOMBIE_HEAD);
 	//</editor-fold>
-
-	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
 	private static final Map<String, Task> tasks = new HashMap<>();
 

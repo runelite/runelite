@@ -1,255 +1,226 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("x")
+@ObfuscatedName("w")
 public class class1 {
-   @ObfuscatedName("nz")
-   @ObfuscatedSignature(
-      signature = "Lky;"
+   @ObfuscatedName("pe")
+   @ObfuscatedGetter(
+      intValue = -1839846535
    )
-   static SpritePixels field12;
-   @ObfuscatedName("d")
+   static int field9;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
    )
-   static final class1 field0;
-   @ObfuscatedName("x")
+   static final class1 field10;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
    )
    static final class1 field1;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
    )
    static final class1 field2;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
+   )
+   static final class1 field3;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lw;"
    )
    static final class1 field4;
-   @ObfuscatedName("v")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
    )
    static final class1 field5;
-   @ObfuscatedName("m")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lx;"
-   )
-   static final class1 field7;
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "Lx;"
+      signature = "Lw;"
    )
    static final class1 field6;
-   @ObfuscatedName("da")
-   @ObfuscatedSignature(
-      signature = "Liv;"
-   )
-   @Export("indexScripts")
-   static IndexData indexScripts;
-   @ObfuscatedName("iq")
+   @ObfuscatedName("h")
+   @Export("userHome")
+   static String userHome;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1696751693
+      intValue = 1558105435
    )
-   @Export("menuY")
-   static int menuY;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1145018231
-   )
-   final int field3;
+   final int field7;
 
    static {
-      field0 = new class1(5);
-      field1 = new class1(3);
-      field2 = new class1(0);
-      field4 = new class1(2);
-      field5 = new class1(6);
-      field7 = new class1(1);
-      field6 = new class1(4);
+      field10 = new class1(0);
+      field1 = new class1(5);
+      field2 = new class1(4);
+      field3 = new class1(2);
+      field4 = new class1(6);
+      field5 = new class1(3);
+      field6 = new class1(1);
    }
 
    class1(int var1) {
-      this.field3 = var1;
+      this.field7 = var1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/io/File;",
-      garbageValue = "378774994"
+      signature = "(I)[Lkx;",
+      garbageValue = "-1378527525"
    )
-   static File method2(String var0) {
-      if(!class158.field2162) {
-         throw new RuntimeException("");
-      } else {
-         File var1 = (File)class158.field2164.get(var0);
-         if(var1 != null) {
-            return var1;
-         } else {
-            File var2 = new File(class158.field2163, var0);
-            RandomAccessFile var3 = null;
+   public static class296[] method2() {
+      return new class296[]{class296.field3837, class296.field3840, class296.field3838, class296.field3836, class296.field3839};
+   }
 
-            try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class158.field2164.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var8) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var7) {
-                  ;
-               }
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(IIIIIZI)Lks;",
+      garbageValue = "2117442222"
+   )
+   @Export("createSprite")
+   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
+      if(var1 == -1) {
+         var4 = 0;
+      } else if(var4 == 2 && var1 != 1) {
+         var4 = 1;
+      }
 
-               throw new RuntimeException();
+      long var6 = ((long)var3 << 42) + ((long)var4 << 40) + ((long)var2 << 38) + (long)var0 + ((long)var1 << 16);
+      SpritePixels var8;
+      if(!var5) {
+         var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
+         if(var8 != null) {
+            return var8;
+         }
+      }
+
+      ItemComposition var9 = KitDefinition.getItemDefinition(var0);
+      if(var1 > 1 && var9.countObj != null) {
+         int var10 = -1;
+
+         for(int var11 = 0; var11 < 10; ++var11) {
+            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
+               var10 = var9.countObj[var11];
             }
          }
-      }
-   }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljd;",
-      garbageValue = "124"
-   )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
+         if(var10 != -1) {
+            var9 = KitDefinition.getItemDefinition(var10);
+         }
+      }
+
+      Model var19 = var9.getModel(1);
+      if(var19 == null) {
+         return null;
       } else {
-         byte[] var2 = NPCComposition.field3616.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lbs;I)V",
-      garbageValue = "-841639778"
-   )
-   static void method1(GameEngine var0) {
-      if(MouseInput.field708 == 1 || !Client.field956 && MouseInput.field708 == 4) {
-         int var1 = class91.field1354 + 280;
-         if(MouseInput.field709 >= var1 && MouseInput.field709 <= var1 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(0, 0);
-            return;
-         }
-
-         if(MouseInput.field709 >= var1 + 15 && MouseInput.field709 <= var1 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(0, 1);
-            return;
-         }
-
-         int var2 = class91.field1354 + 390;
-         if(MouseInput.field709 >= var2 && MouseInput.field709 <= var2 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(1, 0);
-            return;
-         }
-
-         if(MouseInput.field709 >= var2 + 15 && MouseInput.field709 <= var2 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(1, 1);
-            return;
-         }
-
-         int var3 = class91.field1354 + 500;
-         if(MouseInput.field709 >= var3 && MouseInput.field709 <= var3 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(2, 0);
-            return;
-         }
-
-         if(MouseInput.field709 >= var3 + 15 && MouseInput.field709 <= var3 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(2, 1);
-            return;
-         }
-
-         int var4 = class91.field1354 + 610;
-         if(MouseInput.field709 >= var4 && MouseInput.field709 <= var4 + 14 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(3, 0);
-            return;
-         }
-
-         if(MouseInput.field709 >= var4 + 15 && MouseInput.field709 <= var4 + 80 && MouseInput.field710 >= 4 && MouseInput.field710 <= 18) {
-            class74.method1186(3, 1);
-            return;
-         }
-
-         if(MouseInput.field709 >= class91.field1354 + 708 && MouseInput.field710 >= 4 && MouseInput.field709 <= class91.field1354 + 708 + 50 && MouseInput.field710 <= 20) {
-            class91.worldSelectShown = false;
-            class182.field2511.method5266(class91.field1354, 0);
-            class91.field1347.method5266(class91.field1354 + 382, 0);
-            class91.logoSprite.method5245(class91.field1354 + 382 - class91.logoSprite.originalWidth / 2, 18);
-            return;
-         }
-
-         if(class91.field1374 != -1) {
-            World var5 = World.worldList[class91.field1374];
-            class82.method1683(var5);
-            class91.worldSelectShown = false;
-            class182.field2511.method5266(class91.field1354, 0);
-            class91.field1347.method5266(class91.field1354 + 382, 0);
-            class91.logoSprite.method5245(class91.field1354 + 382 - class91.logoSprite.originalWidth / 2, 18);
-            return;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("aq")
-   @ObfuscatedSignature(
-      signature = "([BB)[B",
-      garbageValue = "-5"
-   )
-   @Export("decodeContainer")
-   static final byte[] decodeContainer(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.readInt();
-      if(var3 < 0 || IndexDataBase.field3304 != 0 && var3 > IndexDataBase.field3304) {
-         throw new RuntimeException();
-      } else if(var2 == 0) {
-         byte[] var4 = new byte[var3];
-         var1.readBytes(var4, 0, var3);
-         return var4;
-      } else {
-         int var6 = var1.readInt();
-         if(var6 < 0 || IndexDataBase.field3304 != 0 && var6 > IndexDataBase.field3304) {
-            throw new RuntimeException();
-         } else {
-            byte[] var5 = new byte[var6];
-            if(var2 == 1) {
-               class174.method3238(var5, var6, var0, var3, 9);
-            } else {
-               IndexDataBase.gzip.decompress(var1, var5);
+         SpritePixels var20 = null;
+         if(var9.notedTemplate != -1) {
+            var20 = createSprite(var9.note, 10, 1, 0, 0, true);
+            if(var20 == null) {
+               return null;
             }
+         } else if(var9.notedId != -1) {
+            var20 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
+            if(var20 == null) {
+               return null;
+            }
+         } else if(var9.int3 != -1) {
+            var20 = createSprite(var9.int2, var1, 0, 0, 0, false);
+            if(var20 == null) {
+               return null;
+            }
+         }
 
-            return var5;
+         int[] var12 = Rasterizer2D.graphicsPixels;
+         int var13 = Rasterizer2D.graphicsPixelsWidth;
+         int var14 = Rasterizer2D.graphicsPixelsHeight;
+         int[] var15 = new int[4];
+         Rasterizer2D.copyDrawRegion(var15);
+         var8 = new SpritePixels(36, 32);
+         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
+         Rasterizer2D.reset();
+         Graphics3D.Rasterizer3D_method1();
+         Graphics3D.method2607(16, 16);
+         Graphics3D.rasterGouraudLowRes = false;
+         if(var9.int3 != -1) {
+            var20.drawAt(0, 0);
+         }
+
+         int var16 = var9.zoom2d;
+         if(var5) {
+            var16 = (int)(1.5D * (double)var16);
+         } else if(var2 == 2) {
+            var16 = (int)(1.04D * (double)var16);
+         }
+
+         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
+         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
+         var19.calculateBoundsCylinder();
+         var19.method2526(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.modelHeight / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
+         if(var9.notedId != -1) {
+            var20.drawAt(0, 0);
+         }
+
+         if(var2 >= 1) {
+            var8.method5201(1);
+         }
+
+         if(var2 >= 2) {
+            var8.method5201(16777215);
+         }
+
+         if(var3 != 0) {
+            var8.method5250(var3);
+         }
+
+         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
+         if(var9.notedTemplate != -1) {
+            var20.drawAt(0, 0);
+         }
+
+         if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
+            class226.field2748.method4891(DecorativeObject.method2908(var1), 0, 9, 16776960, 1);
+         }
+
+         if(!var5) {
+            ItemComposition.itemSpriteCache.put(var8, var6);
+         }
+
+         Rasterizer2D.setRasterBuffer(var12, var13, var14);
+         Rasterizer2D.setDrawRegion(var15);
+         Graphics3D.Rasterizer3D_method1();
+         Graphics3D.rasterGouraudLowRes = true;
+         return var8;
+      }
+   }
+
+   @ObfuscatedName("fn")
+   @ObfuscatedSignature(
+      signature = "(Ljj;IIII)V",
+      garbageValue = "1132542682"
+   )
+   static void method1(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field1068 < 50 && Client.field1067 != 0) {
+         if(var0.field3676 != null && var1 < var0.field3676.length) {
+            int var4 = var0.field3676[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field1069[Client.field1068] = var5;
+               Client.field1070[Client.field1068] = var6;
+               Client.field1071[Client.field1068] = 0;
+               Client.audioEffects[Client.field1068] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field1072[Client.field1068] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.field1068;
+            }
          }
       }
    }

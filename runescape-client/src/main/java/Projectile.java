@@ -5,134 +5,142 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("co")
 @Implements("Projectile")
 public final class Projectile extends Renderable {
-   @ObfuscatedName("d")
+   @ObfuscatedName("oy")
    @ObfuscatedGetter(
-      intValue = 1588740391
+      intValue = -989801921
+   )
+   static int field1380;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 253222545
    )
    @Export("id")
    int id;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 344021431
+      intValue = 1093934655
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 901788757
+      intValue = 696136279
    )
    @Export("x1")
    int x1;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -26954535
+      intValue = 806338563
    )
    @Export("y1")
    int y1;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -651578199
+      intValue = -1885188655
    )
    @Export("height")
    int height;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 887832503
+      intValue = 1369906141
    )
    @Export("endHeight")
    int endHeight;
-   @ObfuscatedName("b")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -24018513
+      intValue = 1550375669
    )
    @Export("startTime")
    int startTime;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1927880301
+      intValue = 632478681
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 537550653
+      intValue = -45498235
    )
    @Export("slope")
    int slope;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1523019535
+      intValue = -1841552807
    )
    @Export("start")
    int start;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -601507387
+      intValue = -820127231
    )
    @Export("interacting")
    int interacting;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @Export("isMoving")
    boolean isMoving;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @Export("x")
    double x;
-   @ObfuscatedName("c")
+   @ObfuscatedName("n")
    @Export("velocityZ")
    double velocityZ;
    @ObfuscatedName("y")
    @Export("z")
    double z;
-   @ObfuscatedName("j")
-   double field1392;
-   @ObfuscatedName("f")
+   @ObfuscatedName("o")
+   @Export("speedX")
+   double speedX;
+   @ObfuscatedName("r")
    @Export("scalar")
    double scalar;
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @Export("velocityY")
    double velocityY;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @Export("velocityX")
    double velocityX;
-   @ObfuscatedName("q")
+   @ObfuscatedName("m")
    @Export("heightOffset")
    double heightOffset;
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -16598293
+      intValue = -83233913
    )
    @Export("rotationX")
    int rotationX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1297251865
+      intValue = -436430029
    )
    @Export("rotationY")
    int rotationY;
-   @ObfuscatedName("o")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Ljj;"
    )
    @Export("animationSequence")
    Sequence animationSequence;
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1103454887
+      intValue = -851439171
    )
-   int field1400;
-   @ObfuscatedName("g")
+   @Export("int7")
+   int int7;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -622916385
+      intValue = 242707913
    )
-   int field1384;
+   @Export("int6")
+   int int6;
 
    Projectile(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
       this.isMoving = false;
-      this.field1400 = 0;
-      this.field1384 = 0;
+      this.int7 = 0;
+      this.int6 = 0;
       this.id = var1;
       this.floor = var2;
       this.x1 = var3;
@@ -145,19 +153,19 @@ public final class Projectile extends Renderable {
       this.interacting = var10;
       this.endHeight = var11;
       this.isMoving = false;
-      int var12 = class227.getSpotAnimType(this.id).field3393;
+      int var12 = class250.getSpotAnimType(this.id).field3413;
       if(var12 != -1) {
-         this.animationSequence = class13.getAnimation(var12);
+         this.animationSequence = Permission.getAnimation(var12);
       } else {
          this.animationSequence = null;
       }
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "2020665162"
+      garbageValue = "-789078756"
    )
    @Export("moveProjectile")
    @Hook("projectileMoved")
@@ -167,95 +175,86 @@ public final class Projectile extends Renderable {
          var5 = (double)(var1 - this.x1);
          double var7 = (double)(var2 - this.y1);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
-         this.x = var5 * (double)this.start / var9 + (double)this.x1;
-         this.velocityZ = (double)this.y1 + (double)this.start * var7 / var9;
+         this.x = (double)this.x1 + var5 * (double)this.start / var9;
+         this.velocityZ = (double)this.y1 + var7 * (double)this.start / var9;
          this.z = (double)this.height;
       }
 
       var5 = (double)(this.cycle + 1 - var4);
-      this.field1392 = ((double)var1 - this.x) / var5;
+      this.speedX = ((double)var1 - this.x) / var5;
       this.scalar = ((double)var2 - this.velocityZ) / var5;
-      this.velocityY = Math.sqrt(this.scalar * this.scalar + this.field1392 * this.field1392);
+      this.velocityY = Math.sqrt(this.speedX * this.speedX + this.scalar * this.scalar);
       if(!this.isMoving) {
          this.velocityX = -this.velocityY * Math.tan(0.02454369D * (double)this.slope);
       }
 
-      this.heightOffset = ((double)var3 - this.z - this.velocityX * var5) * 2.0D / (var5 * var5);
+      this.heightOffset = 2.0D * ((double)var3 - this.z - this.velocityX * var5) / (var5 * var5);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "457742455"
+      garbageValue = "1502627701"
    )
-   final void method1817(int var1) {
+   @Export("update")
+   final void update(int var1) {
       this.isMoving = true;
-      this.x += (double)var1 * this.field1392;
-      this.velocityZ += this.scalar * (double)var1;
-      this.z += this.velocityX * (double)var1 + (double)var1 * 0.5D * this.heightOffset * (double)var1;
-      this.velocityX += this.heightOffset * (double)var1;
-      this.rotationX = (int)(Math.atan2(this.field1392, this.scalar) * 325.949D) + 1024 & 2047;
+      this.x += this.speedX * (double)var1;
+      this.velocityZ += (double)var1 * this.scalar;
+      this.z += (double)var1 * this.velocityX + this.heightOffset * 0.5D * (double)var1 * (double)var1;
+      this.velocityX += (double)var1 * this.heightOffset;
+      this.rotationX = (int)(Math.atan2(this.speedX, this.scalar) * 325.949D) + 1024 & 2047;
       this.rotationY = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) & 2047;
       if(this.animationSequence != null) {
-         this.field1384 += var1;
+         this.int6 += var1;
 
          while(true) {
             do {
                do {
-                  if(this.field1384 <= this.animationSequence.frameLenghts[this.field1400]) {
+                  if(this.int6 <= this.animationSequence.frameLenghts[this.int7]) {
                      return;
                   }
 
-                  this.field1384 -= this.animationSequence.frameLenghts[this.field1400];
-                  ++this.field1400;
-               } while(this.field1400 < this.animationSequence.frameIDs.length);
+                  this.int6 -= this.animationSequence.frameLenghts[this.int7];
+                  ++this.int7;
+               } while(this.int7 < this.animationSequence.frameIDs.length);
 
-               this.field1400 -= this.animationSequence.frameStep;
-            } while(this.field1400 >= 0 && this.field1400 < this.animationSequence.frameIDs.length);
+               this.int7 -= this.animationSequence.frameStep;
+            } while(this.int7 >= 0 && this.int7 < this.animationSequence.frameIDs.length);
 
-            this.field1400 = 0;
+            this.int7 = 0;
          }
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Leh;",
-      garbageValue = "-473112722"
+      signature = "(I)Lef;",
+      garbageValue = "620909653"
    )
    protected final Model getModel() {
-      Spotanim var1 = class227.getSpotAnimType(this.id);
-      Model var2 = var1.method4494(this.field1400);
+      Spotanim var1 = class250.getSpotAnimType(this.id);
+      Model var2 = var1.getModel(this.int7);
       if(var2 == null) {
          return null;
       } else {
-         var2.method2633(this.rotationY);
+         var2.rotateZ(this.rotationY);
          return var2;
       }
    }
 
-   @ObfuscatedName("jt")
+   @ObfuscatedName("jq")
    @ObfuscatedSignature(
-      signature = "(IIIILky;Lhl;I)V",
-      garbageValue = "655580114"
+      signature = "(Lgh;II)V",
+      garbageValue = "-1904400185"
    )
-   static final void method1825(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2683 / 2 - 25;
-         int var15 = (int)(Math.sin(var12) * (double)var14);
-         int var16 = (int)(Math.cos(var12) * (double)var14);
-         byte var17 = 20;
-         class3.mapedge.method5280(var15 + (var0 + var5.field2683 / 2 - var17 / 2), var5.field2682 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-      } else {
-         ScriptState.drawDot(var0, var1, var2, var3, var4, var5);
+   static void method1736(Buffer var0, int var1) {
+      byte[] var2 = var0.payload;
+      if(Client.field1034 == null) {
+         Client.field1034 = new byte[24];
       }
 
+      class194.method3603(var2, var1, Client.field1034, 0, 24);
+      class157.method3016(var0, var1);
    }
 }

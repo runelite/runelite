@@ -4,55 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ki")
+@ObfuscatedName("kt")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -741947281
+      intValue = -1870118989
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 2089244745
+      intValue = 205368253
    )
    @Export("height")
    public int height;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1675289646"
+      garbageValue = "-1763504301"
    )
-   public abstract void vmethod5222(int var1, int var2);
+   @Export("drawFull")
+   public abstract void drawFull(int var1, int var2);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1986712912"
+      signature = "(IIIIB)V",
+      garbageValue = "-8"
    )
-   public abstract void vmethod5225(int var1, int var2, int var3, int var4);
+   @Export("draw")
+   public abstract void draw(int var1, int var2, int var3, int var4);
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-86"
+      signature = "(I)V",
+      garbageValue = "-1333475768"
    )
    @Export("setRaster")
    public final void setRaster() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-213864549"
-   )
-   public static boolean method5233(char var0) {
-      return var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
    }
 }

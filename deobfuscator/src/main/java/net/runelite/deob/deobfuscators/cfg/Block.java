@@ -31,7 +31,6 @@ import net.runelite.asm.attributes.code.Instruction;
 public class Block
 {
 	private int id = -1;
-	private boolean handler; // block is an exception handler
 	private boolean jumptarget; // block is unconditionally jumped to
 
 	/**
@@ -59,11 +58,6 @@ public class Block
 	 */
 	private final List<Instruction> instructions = new ArrayList<>();
 
-	/**
-	 * exceptions protecting this block
-	 */
-	private List<ExceptionHandler> exceptions = new ArrayList<>();
-
 	public int getId()
 	{
 		return id;
@@ -72,16 +66,6 @@ public class Block
 	public void setId(int id)
 	{
 		this.id = id;
-	}
-
-	public boolean isHandler()
-	{
-		return handler;
-	}
-
-	public void setHandler(boolean handler)
-	{
-		this.handler = handler;
 	}
 
 	public boolean isJumptarget()
@@ -107,10 +91,6 @@ public class Block
 		{
 			sb.append("  ").append(i.toString()).append("\n");
 		}
-		for (ExceptionHandler e : exceptions)
-		{
-			sb.append(" catch ").append(e.getCatchType() != null ? e.getCatchType() : "any").append("\n");
-		}
 		if (flowsInto != null)
 		{
 			sb.append(" flows into ").append(flowsInto.id).append("\n");
@@ -134,16 +114,6 @@ public class Block
 	public List<Instruction> getInstructions()
 	{
 		return instructions;
-	}
-
-	public List<ExceptionHandler> getExceptions()
-	{
-		return exceptions;
-	}
-
-	public void setExceptions(List<ExceptionHandler> exceptions)
-	{
-		this.exceptions = exceptions;
 	}
 
 	public void addPrev(Block block)

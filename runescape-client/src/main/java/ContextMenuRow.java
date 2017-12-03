@@ -4,69 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
+@ObfuscatedName("cw")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("f")
-   @Export("cacheLocations")
-   static String[] cacheLocations;
-   @ObfuscatedName("cf")
+   @ObfuscatedName("z")
+   @Export("highMemory")
+   protected static boolean highMemory;
+   @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Lhz;"
    )
-   @Export("indexSprites")
-   static IndexData indexSprites;
-   @ObfuscatedName("d")
+   static Widget field1299;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -129097769
+      intValue = 571443005
    )
    @Export("param0")
    int param0;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1218839675
+      intValue = 715253505
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 894094735
+      intValue = 1066703259
    )
    @Export("type")
    int type;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1768120371
+      intValue = 1578872715
    )
    @Export("identifier")
    int identifier;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("option")
    String option;
 
-   @ObfuscatedName("im")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1815964140"
+      garbageValue = "933459213"
    )
-   static void method1764() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         if(class25.method189(Client.menuTypes[var0])) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
-                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
-                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
-                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
-                  Client.field889[var1] = Client.field889[var1 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
-         }
-      }
-
+   public static void method1663() {
+      class299.field3867 = null;
+      class299.offsetsY = null;
+      Item.field1387 = null;
+      class276.field3727 = null;
+      FaceNormal.field2025 = null;
+      Bounds.spritePixels = null;
    }
 }

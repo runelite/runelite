@@ -31,13 +31,11 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import javax.imageio.ImageIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RuneImageCache
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneImageCache.class);
-
 	// ids from the varbit
 	private static final String[] RUNE_NAMES =
 	{
@@ -92,7 +90,7 @@ public class RuneImageCache
 		}
 		catch (ExecutionException e)
 		{
-			logger.warn("unable to load rune image", e);
+			log.warn("unable to load rune image", e);
 			return null;
 		}
 	}

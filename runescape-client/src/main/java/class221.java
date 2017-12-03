@@ -1,77 +1,354 @@
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.OptionalDataException;
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("hs")
-public class class221 {
-   @ObfuscatedName("mg")
+@ObfuscatedName("hy")
+public class class221 extends CacheableNode {
+   @ObfuscatedName("bs")
    @ObfuscatedSignature(
-      signature = "Ljx;"
+      signature = "[Lkg;"
    )
-   static class285 field2705;
-   @ObfuscatedName("d")
-   public static final short[] field2708;
-   @ObfuscatedName("x")
-   public static final short[][] field2710;
+   @Export("slFlagSprites")
+   static IndexedSprite[] slFlagSprites;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1363095853
+   )
+   public final int field2715;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1699463023
+   )
+   public final int field2716;
+   @ObfuscatedName("e")
+   public final int[] field2714;
    @ObfuscatedName("k")
-   public static final short[] field2706;
-   @ObfuscatedName("z")
-   public static final short[][] field2707;
-   @ObfuscatedName("ed")
-   @ObfuscatedSignature(
-      signature = "Leb;"
-   )
-   static class148 field2711;
+   public final int[] field2717;
 
-   static {
-      field2708 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};
-      field2710 = new short[][]{{(short)6798, (short)107, (short)10283, (short)16, (short)4797, (short)7744, (short)5799, (short)4634, (short)-31839, (short)22433, (short)2983, (short)-11343, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)8741, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)25239, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)25238, (short)8742, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)4626, (short)11146, (short)6439, (short)12, (short)4758, (short)10270}, {(short)4550, (short)4537, (short)5681, (short)5673, (short)5790, (short)6806, (short)8076, (short)4574, (short)17050, (short)0, (short)127, (short)-31821}};
-      field2706 = new short[]{(short)-10304, (short)9104, (short)-1, (short)-1, (short)-1};
-      field2707 = new short[][]{{(short)6554, (short)115, (short)10304, (short)28, (short)5702, (short)7756, (short)5681, (short)4510, (short)-31835, (short)22437, (short)2859, (short)-11339, (short)16, (short)5157, (short)10446, (short)3658, (short)-27314, (short)-21965, (short)472, (short)580, (short)784, (short)21966, (short)28950, (short)-15697, (short)-14002}, {(short)9104, (short)10275, (short)7595, (short)3610, (short)7975, (short)8526, (short)918, (short)-26734, (short)24466, (short)10145, (short)-6882, (short)5027, (short)1457, (short)16565, (short)-30545, (short)25486, (short)24, (short)5392, (short)10429, (short)3673, (short)-27335, (short)-21957, (short)192, (short)687, (short)412, (short)21821, (short)28835, (short)-15460, (short)-14019}, new short[0], new short[0], new short[0]};
+   class221(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2715 = var1;
+      this.field2716 = var2;
+      this.field2714 = var3;
+      this.field2717 = var4;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BIIIIIII[Lfb;I)V",
-      garbageValue = "1490964265"
+      signature = "(III)Z",
+      garbageValue = "1260663886"
    )
-   static final void method4154(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, CollisionData[] var8) {
-      int var10;
-      for(int var9 = 0; var9 < 8; ++var9) {
-         for(var10 = 0; var10 < 8; ++var10) {
-            if(var9 + var2 > 0 && var9 + var2 < 103 && var3 + var10 > 0 && var3 + var10 < 103) {
-               var8[var1].flags[var9 + var2][var10 + var3] &= -16777217;
-            }
+   public boolean method4073(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2717.length) {
+         int var3 = this.field2717[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2714[var2]) {
+            return true;
          }
       }
 
-      Buffer var21 = new Buffer(var0);
+      return false;
+   }
 
-      for(var10 = 0; var10 < 4; ++var10) {
-         for(int var11 = 0; var11 < 64; ++var11) {
-            for(int var12 = 0; var12 < 64; ++var12) {
-               if(var10 == var4 && var11 >= var5 && var11 < var5 + 8 && var12 >= var6 && var12 < var6 + 8) {
-                  int var15 = var2 + class91.method1813(var11 & 7, var12 & 7, var7);
-                  int var18 = var11 & 7;
-                  int var19 = var12 & 7;
-                  int var20 = var7 & 3;
-                  int var17;
-                  if(var20 == 0) {
-                     var17 = var19;
-                  } else if(var20 == 1) {
-                     var17 = 7 - var18;
-                  } else if(var20 == 2) {
-                     var17 = 7 - var19;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Lkz;S)Ljava/lang/String;",
+      garbageValue = "671"
+   )
+   @Export("cleanUsername")
+   public static String cleanUsername(CharSequence var0, JagexLoginType var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         int var2 = 0;
+
+         int var3;
+         boolean var4;
+         char var5;
+         for(var3 = var0.length(); var2 < var3; ++var2) {
+            var5 = var0.charAt(var2);
+            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
+            if(!var4) {
+               break;
+            }
+         }
+
+         while(var3 > var2) {
+            var5 = var0.charAt(var3 - 1);
+            var4 = var5 == 160 || var5 == ' ' || var5 == '_' || var5 == '-';
+            if(!var4) {
+               break;
+            }
+
+            --var3;
+         }
+
+         int var14 = var3 - var2;
+         if(var14 >= 1) {
+            byte var6;
+            if(var1 == null) {
+               var6 = 12;
+            } else {
+               switch(var1.field3928) {
+               case 2:
+                  var6 = 20;
+                  break;
+               default:
+                  var6 = 12;
+               }
+            }
+
+            if(var14 <= var6) {
+               StringBuilder var12 = new StringBuilder(var14);
+
+               for(int var15 = var2; var15 < var3; ++var15) {
+                  char var7 = var0.charAt(var15);
+                  boolean var8;
+                  if(Character.isISOControl(var7)) {
+                     var8 = false;
+                  } else if(UrlRequest.method2926(var7)) {
+                     var8 = true;
                   } else {
-                     var17 = var18;
+                     char[] var13 = class278.field3732;
+                     int var10 = 0;
+
+                     label120:
+                     while(true) {
+                        char var11;
+                        if(var10 >= var13.length) {
+                           var13 = class278.field3733;
+
+                           for(var10 = 0; var10 < var13.length; ++var10) {
+                              var11 = var13[var10];
+                              if(var11 == var7) {
+                                 var8 = true;
+                                 break label120;
+                              }
+                           }
+
+                           var8 = false;
+                           break;
+                        }
+
+                        var11 = var13[var10];
+                        if(var7 == var11) {
+                           var8 = true;
+                           break;
+                        }
+
+                        ++var10;
+                     }
                   }
 
-                  class149.loadTerrain(var21, var1, var15, var3 + var17, 0, 0, var7);
-               } else {
-                  class149.loadTerrain(var21, 0, -1, -1, 0, 0, 0);
+                  if(var8) {
+                     char var9;
+                     switch(var7) {
+                     case ' ':
+                     case '-':
+                     case '_':
+                     case ' ':
+                        var9 = '_';
+                        break;
+                     case '#':
+                     case '[':
+                     case ']':
+                        var9 = var7;
+                        break;
+                     case 'À':
+                     case 'Á':
+                     case 'Â':
+                     case 'Ã':
+                     case 'Ä':
+                     case 'à':
+                     case 'á':
+                     case 'â':
+                     case 'ã':
+                     case 'ä':
+                        var9 = 'a';
+                        break;
+                     case 'Ç':
+                     case 'ç':
+                        var9 = 'c';
+                        break;
+                     case 'È':
+                     case 'É':
+                     case 'Ê':
+                     case 'Ë':
+                     case 'è':
+                     case 'é':
+                     case 'ê':
+                     case 'ë':
+                        var9 = 'e';
+                        break;
+                     case 'Í':
+                     case 'Î':
+                     case 'Ï':
+                     case 'í':
+                     case 'î':
+                     case 'ï':
+                        var9 = 'i';
+                        break;
+                     case 'Ñ':
+                     case 'ñ':
+                        var9 = 'n';
+                        break;
+                     case 'Ò':
+                     case 'Ó':
+                     case 'Ô':
+                     case 'Õ':
+                     case 'Ö':
+                     case 'ò':
+                     case 'ó':
+                     case 'ô':
+                     case 'õ':
+                     case 'ö':
+                        var9 = 'o';
+                        break;
+                     case 'Ù':
+                     case 'Ú':
+                     case 'Û':
+                     case 'Ü':
+                     case 'ù':
+                     case 'ú':
+                     case 'û':
+                     case 'ü':
+                        var9 = 'u';
+                        break;
+                     case 'ß':
+                        var9 = 'b';
+                        break;
+                     case 'ÿ':
+                     case 'Ÿ':
+                        var9 = 'y';
+                        break;
+                     default:
+                        var9 = Character.toLowerCase(var7);
+                     }
+
+                     if(var9 != 0) {
+                        var12.append(var9);
+                     }
+                  }
+               }
+
+               if(var12.length() == 0) {
+                  return null;
+               }
+
+               return var12.toString();
+            }
+         }
+
+         return null;
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lgy;B)V",
+      garbageValue = "-36"
+   )
+   @Export("encodeClassVerifier")
+   public static void encodeClassVerifier(PacketBuffer var0) {
+      ClassInfo var1 = (ClassInfo)class293.classInfos.last();
+      if(var1 != null) {
+         int var2 = var0.offset;
+         var0.putInt(var1.field3819);
+
+         for(int var3 = 0; var3 < var1.count; ++var3) {
+            if(var1.errorIdentifiers[var3] != 0) {
+               var0.putByte(var1.errorIdentifiers[var3]);
+            } else {
+               try {
+                  int var4 = var1.type[var3];
+                  Field var5;
+                  int var6;
+                  if(var4 == 0) {
+                     var5 = var1.fields[var3];
+                     var6 = Reflection.getInt(var5, (Object)null);
+                     var0.putByte(0);
+                     var0.putInt(var6);
+                  } else if(var4 == 1) {
+                     var5 = var1.fields[var3];
+                     Reflection.setInt(var5, (Object)null, var1.field3820[var3]);
+                     var0.putByte(0);
+                  } else if(var4 == 2) {
+                     var5 = var1.fields[var3];
+                     var6 = var5.getModifiers();
+                     var0.putByte(0);
+                     var0.putInt(var6);
+                  }
+
+                  Method var25;
+                  if(var4 != 3) {
+                     if(var4 == 4) {
+                        var25 = var1.methods[var3];
+                        var6 = var25.getModifiers();
+                        var0.putByte(0);
+                        var0.putInt(var6);
+                     }
+                  } else {
+                     var25 = var1.methods[var3];
+                     byte[][] var10 = var1.args[var3];
+                     Object[] var7 = new Object[var10.length];
+
+                     for(int var8 = 0; var8 < var10.length; ++var8) {
+                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
+                        var7[var8] = var9.readObject();
+                     }
+
+                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
+                     if(var11 == null) {
+                        var0.putByte(0);
+                     } else if(var11 instanceof Number) {
+                        var0.putByte(1);
+                        var0.putLong(((Number)var11).longValue());
+                     } else if(var11 instanceof String) {
+                        var0.putByte(2);
+                        var0.putString((String)var11);
+                     } else {
+                        var0.putByte(4);
+                     }
+                  }
+               } catch (ClassNotFoundException var13) {
+                  var0.putByte(-10);
+               } catch (InvalidClassException var14) {
+                  var0.putByte(-11);
+               } catch (StreamCorruptedException var15) {
+                  var0.putByte(-12);
+               } catch (OptionalDataException var16) {
+                  var0.putByte(-13);
+               } catch (IllegalAccessException var17) {
+                  var0.putByte(-14);
+               } catch (IllegalArgumentException var18) {
+                  var0.putByte(-15);
+               } catch (InvocationTargetException var19) {
+                  var0.putByte(-16);
+               } catch (SecurityException var20) {
+                  var0.putByte(-17);
+               } catch (IOException var21) {
+                  var0.putByte(-18);
+               } catch (NullPointerException var22) {
+                  var0.putByte(-19);
+               } catch (Exception var23) {
+                  var0.putByte(-20);
+               } catch (Throwable var24) {
+                  var0.putByte(-21);
                }
             }
          }
-      }
 
+         var0.putCrc(var2);
+         var1.unlink();
+      }
    }
 }

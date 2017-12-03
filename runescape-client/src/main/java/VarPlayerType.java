@@ -4,29 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ip")
+@ObfuscatedName("iv")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lib;"
    )
    @Export("varplayer_ref")
-   public static IndexDataBase varplayer_ref;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1578546595
-   )
-   public static int field3357;
-   @ObfuscatedName("k")
+   static IndexDataBase varplayer_ref;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgu;"
    )
    @Export("varplayers")
    public static NodeCache varplayers;
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1494274557
+      intValue = 1618823997
    )
    @Export("configType")
    public int configType;
@@ -35,17 +30,17 @@ public class VarPlayerType extends CacheableNode {
       varplayers = new NodeCache(64);
    }
 
-   public VarPlayerType() {
+   VarPlayerType() {
       this.configType = 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfr;I)V",
-      garbageValue = "970060912"
+      signature = "(Lgh;I)V",
+      garbageValue = "-735230306"
    )
    @Export("decode")
-   public void decode(Buffer var1) {
+   void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -58,8 +53,8 @@ public class VarPlayerType extends CacheableNode {
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfr;IB)V",
-      garbageValue = "-123"
+      signature = "(Lgh;IB)V",
+      garbageValue = "-103"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -69,12 +64,25 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-462361013"
+      signature = "(II)Ljk;",
+      garbageValue = "1386430881"
    )
-   public static int method4439() {
-      return ++MouseInput.mouseIdleTicks - 1;
+   public static class262 method4426(int var0) {
+      class262 var1 = (class262)class262.field3464.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class262.field3467.getConfigData(11, var0);
+         var1 = new class262();
+         if(var2 != null) {
+            var1.method4573(new Buffer(var2));
+         }
+
+         var1.method4572();
+         class262.field3464.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

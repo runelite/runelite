@@ -1,57 +1,32 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("gz")
 public class class188 {
-   @ObfuscatedName("nm")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "[Lbu;"
+      signature = "Lib;"
    )
-   @Export("clanMembers")
-   static ClanMember[] clanMembers;
+   static IndexDataBase field2537;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      longValue = 1601651043437361307L
+   )
+   public static long field2539;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 31531005
+   )
+   static int field2540;
 
-   @ObfuscatedName("jf")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "201905336"
+      signature = "(IIII)I",
+      garbageValue = "-90691275"
    )
-   static final void method3609(String var0) {
-      if(var0 != null) {
-         String var1 = GraphicsObject.method1726(var0, class236.field3239);
-         if(var1 != null) {
-            for(int var2 = 0; var2 < Client.friendCount; ++var2) {
-               Friend var3 = Client.friends[var2];
-               String var4 = var3.name;
-               String var5 = GraphicsObject.method1726(var4, class236.field3239);
-               boolean var6;
-               if(var0 != null && var4 != null) {
-                  if(!var0.startsWith("#") && !var4.startsWith("#")) {
-                     var6 = var1.equals(var5);
-                  } else {
-                     var6 = var0.equals(var4);
-                  }
-               } else {
-                  var6 = false;
-               }
-
-               if(var6) {
-                  --Client.friendCount;
-
-                  for(int var7 = var2; var7 < Client.friendCount; ++var7) {
-                     Client.friends[var7] = Client.friends[var7 + 1];
-                  }
-
-                  Client.field977 = Client.cycleCntr;
-                  PacketNode var8 = class218.method4105(ClientPacket.field2337, Client.field916.field1470);
-                  var8.packetBuffer.putByte(AbstractSoundSystem.getLength(var0));
-                  var8.packetBuffer.putString(var0);
-                  Client.field916.method1925(var8);
-                  break;
-               }
-            }
-
-         }
-      }
+   static final int method3534(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var1 & 16711935) * var2 + var3 * (var0 & 16711935) & -16711936) + ((var0 & 65280) * var3 + (var1 & 65280) * var2 & 16711680) >> 8;
    }
 }

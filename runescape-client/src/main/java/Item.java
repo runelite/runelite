@@ -4,40 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("cg")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("i")
-   @Export("osName")
-   static String osName;
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
+   public static int[] field1387;
+   @ObfuscatedName("b")
+   static int[] field1386;
+   @ObfuscatedName("jw")
    @ObfuscatedGetter(
-      intValue = -1306463285
+      intValue = -2124720277
+   )
+   @Export("menuWidth")
+   static int menuWidth;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 485193461
    )
    @Export("id")
    int id;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1252821907
+      intValue = -1501899501
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Leh;",
-      garbageValue = "-473112722"
+      signature = "(I)Lef;",
+      garbageValue = "620909653"
    )
    protected final Model getModel() {
-      return WorldMapType2.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
-      garbageValue = "1617846097"
-   )
-   public static void method1829(String var0, Throwable var1) {
-      var1.printStackTrace();
+      return KitDefinition.getItemDefinition(this.id).getModel(this.quantity);
    }
 }

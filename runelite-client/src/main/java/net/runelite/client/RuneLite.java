@@ -43,6 +43,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
@@ -53,6 +54,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
@@ -64,18 +66,16 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class RuneLite
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
-
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
+	public static final String APP_NAME = "RuneLite";
 
 	public static Image ICON;
 
@@ -108,15 +108,18 @@ public class RuneLite
 
 	private AccountSession accountSession;
 
+	private Notifier notifier;
+
 	static
 	{
 		try
 		{
-			ICON = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+			final URL icon = ClientUI.class.getResource("/runelite.png");
+			ICON = ImageIO.read(icon.openStream());
 		}
 		catch (IOException ex)
 		{
-			logger.warn(null, ex);
+			log.warn(null, ex);
 		}
 	}
 
@@ -151,7 +154,7 @@ public class RuneLite
 			}
 			catch (UnsupportedLookAndFeelException ex)
 			{
-				logger.warn("unable to set look and feel", ex);
+				log.warn("unable to set look and feel", ex);
 			}
 
 			gui = new ClientUI(this);
@@ -163,6 +166,9 @@ public class RuneLite
 		configManager.load();
 
 		eventBus.register(menuManager);
+
+		// Setup the notifier
+		notifier = new Notifier(trayIcon);
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -186,11 +192,11 @@ public class RuneLite
 	{
 		if (!Strings.isNullOrEmpty(extra))
 		{
-			gui.setTitle("RuneLite " + properties.getVersion() + " " + extra);
+			gui.setTitle(APP_NAME + " " + properties.getVersion() + " " + extra);
 		}
 		else
 		{
-			gui.setTitle("RuneLite " + properties.getVersion());
+			gui.setTitle(APP_NAME + " " + properties.getVersion());
 		}
 	}
 
@@ -203,7 +209,7 @@ public class RuneLite
 
 		SystemTray systemTray = SystemTray.getSystemTray();
 
-		trayIcon = new TrayIcon(ICON, "RuneLite");
+		trayIcon = new TrayIcon(ICON, APP_NAME);
 		trayIcon.setImageAutoSize(true);
 
 		try
@@ -212,7 +218,7 @@ public class RuneLite
 		}
 		catch (AWTException ex)
 		{
-			logger.debug("Unable to add system tray icon", ex);
+			log.debug("Unable to add system tray icon", ex);
 			return;
 		}
 
@@ -232,7 +238,7 @@ public class RuneLite
 	{
 		if (!SESSION_FILE.exists())
 		{
-			logger.info("No session file exists");
+			log.info("No session file exists");
 			return;
 		}
 
@@ -242,11 +248,11 @@ public class RuneLite
 		{
 			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
 
-			logger.debug("Loaded session for {}", session.getUsername());
+			log.debug("Loaded session for {}", session.getUsername());
 		}
 		catch (Exception ex)
 		{
-			logger.warn("Unable to load session file", ex);
+			log.warn("Unable to load session file", ex);
 			return;
 		}
 
@@ -254,7 +260,7 @@ public class RuneLite
 		AccountClient accountClient = new AccountClient(session.getUuid());
 		if (!accountClient.sesssionCheck())
 		{
-			logger.debug("Loaded session {} is invalid", session.getUuid());
+			log.debug("Loaded session {} is invalid", session.getUuid());
 			return;
 		}
 
@@ -272,11 +278,11 @@ public class RuneLite
 		{
 			new Gson().toJson(accountSession, fw);
 
-			logger.debug("Saved session to {}", SESSION_FILE);
+			log.debug("Saved session to {}", SESSION_FILE);
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to save session file", ex);
+			log.warn("Unable to save session file", ex);
 		}
 	}
 
@@ -330,7 +336,7 @@ public class RuneLite
 			return;
 		}
 
-		logger.debug("Logging out of account {}", accountSession.getUsername());
+		log.debug("Logging out of account {}", accountSession.getUsername());
 
 		accountSession = null; // No more account
 
@@ -392,7 +398,7 @@ public class RuneLite
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		getTrayIcon().displayMessage("RuneLite", message, type);
+		notifier.sendNotification(APP_NAME, message, type, null);
 		Toolkit.getDefaultToolkit().beep();
 	}
 

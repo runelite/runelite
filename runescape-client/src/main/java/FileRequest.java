@@ -7,33 +7,24 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("it")
 @Implements("FileRequest")
 public class FileRequest extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("cw")
+   @ObfuscatedGetter(
+      intValue = 76133179
+   )
+   public static int field3304;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Liv;"
+      signature = "Liu;"
    )
    @Export("index")
-   public IndexData index;
-   @ObfuscatedName("x")
+   IndexData index;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1223906473
+      intValue = -803899541
    )
    @Export("crc")
-   public int crc;
-   @ObfuscatedName("k")
+   int crc;
+   @ObfuscatedName("e")
    @Export("padding")
-   public byte padding;
-
-   @ObfuscatedName("ho")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1568868243"
-   )
-   static void method4261() {
-      ItemContainer.method1100();
-      Client.menuOptions[0] = "Cancel";
-      Client.menuTargets[0] = "";
-      Client.menuTypes[0] = 1006;
-      Client.field889[0] = false;
-      Client.menuOptionCount = 1;
-   }
+   byte padding;
 }

@@ -4,74 +4,86 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("bo")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-   @ObfuscatedName("d")
+   @ObfuscatedName("bq")
+   @ObfuscatedSignature(
+      signature = "Lkz;"
+   )
+   @Export("jagexLoginType")
+   static JagexLoginType jagexLoginType;
+   @ObfuscatedName("jv")
+   @ObfuscatedSignature(
+      signature = "Lcw;"
+   )
+   @Export("topContextMenuRow")
+   static ContextMenuRow topContextMenuRow;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -61945089
+      intValue = 1314434327
    )
    @Export("level")
    int level;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -786096809
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1150283509
+      intValue = 1135806613
    )
    @Export("type")
    int type;
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1673432669
-   )
-   int field1134;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -183754713
+      intValue = -1534725047
    )
    @Export("x")
    int x;
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -466897419
+      intValue = -2011832797
    )
-   int field1139;
-   @ObfuscatedName("b")
+   @Export("y")
+   int y;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1624842695
+      intValue = -1155203191
    )
-   int field1140;
+   int field1112;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1851868879
+   )
+   int field1113;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1550897371
+      intValue = -1968438559
+   )
+   int field1114;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -591865171
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1649279443
+      intValue = 1702666337
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -105190875
+      intValue = -2067797229
    )
-   int field1143;
-   @ObfuscatedName("l")
+   int field1117;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2029538827
+      intValue = 1885900041
    )
    @Export("delay")
    int delay;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1060361925
+      intValue = -1299482467
    )
    @Export("hitpoints")
    int hitpoints;
@@ -81,101 +93,168 @@ public final class PendingSpawn extends Node {
       this.hitpoints = -1;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BIIB)Ljava/lang/String;",
-      garbageValue = "47"
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
+      garbageValue = "58"
    )
-   public static String method1571(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-      int var5 = var1;
+   public static void method1461(String var0, Throwable var1) {
+      var1.printStackTrace();
+   }
 
-      int var8;
-      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = 65533;
-            } else {
-               var8 = var7;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(ILck;ZB)I",
+      garbageValue = "127"
+   )
+   static int method1459(int var0, Script var1, boolean var2) {
+      int var3;
+      int var4;
+      if(var0 == 100) {
+         class82.intStackSize -= 3;
+         var3 = class82.intStack[class82.intStackSize];
+         var4 = class82.intStack[class82.intStackSize + 1];
+         int var5 = class82.intStack[class82.intStackSize + 2];
+         if(var4 == 0) {
+            throw new RuntimeException();
+         } else {
+            Widget var6 = VertexNormal.getWidget(var3);
+            if(var6.children == null) {
+               var6.children = new Widget[var5 + 1];
             }
-         } else if(var7 < 192) {
-            var8 = 65533;
-         } else if(var7 < 224) {
-            if(var5 < var6 && (var0[var5] & 192) == 128) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = 65533;
+
+            if(var6.children.length <= var5) {
+               Widget[] var7 = new Widget[var5 + 1];
+
+               for(int var8 = 0; var8 < var6.children.length; ++var8) {
+                  var7[var8] = var6.children[var8];
                }
-            } else {
-               var8 = 65533;
+
+               var6.children = var7;
             }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = 65533;
-               }
+
+            if(var5 > 0 && var6.children[var5 - 1] == null) {
+               throw new RuntimeException("" + (var5 - 1));
             } else {
-               var8 = 65533;
-            }
-         } else if(var7 < 248) {
-            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = 65533;
+               Widget var12 = new Widget();
+               var12.type = var4;
+               var12.parentId = var12.id = var6.id;
+               var12.index = var5;
+               var12.hasScript = true;
+               var6.children[var5] = var12;
+               if(var2) {
+                  class139.field2008 = var12;
                } else {
-                  var8 = 65533;
+                  AttackOption.field1306 = var12;
                }
+
+               class33.method344(var6);
+               return 1;
+            }
+         }
+      } else {
+         Widget var9;
+         if(var0 == 101) {
+            var9 = var2?class139.field2008:AttackOption.field1306;
+            Widget var10 = VertexNormal.getWidget(var9.id);
+            var10.children[var9.index] = null;
+            class33.method344(var10);
+            return 1;
+         } else if(var0 == 102) {
+            var9 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
+            var9.children = null;
+            class33.method344(var9);
+            return 1;
+         } else if(var0 != 200) {
+            if(var0 == 201) {
+               var9 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
+               if(var9 != null) {
+                  class82.intStack[++class82.intStackSize - 1] = 1;
+                  if(var2) {
+                     class139.field2008 = var9;
+                  } else {
+                     AttackOption.field1306 = var9;
+                  }
+               } else {
+                  class82.intStack[++class82.intStackSize - 1] = 0;
+               }
+
+               return 1;
             } else {
-               var8 = 65533;
+               return 2;
             }
          } else {
-            var8 = 65533;
-         }
-      }
-
-      return new String(var3, 0, var4);
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "([BIIII[Lfb;I)V",
-      garbageValue = "-1668332820"
-   )
-   static final void method1572(byte[] var0, int var1, int var2, int var3, int var4, CollisionData[] var5) {
-      int var7;
-      int var8;
-      for(int var6 = 0; var6 < 4; ++var6) {
-         for(var7 = 0; var7 < 64; ++var7) {
-            for(var8 = 0; var8 < 64; ++var8) {
-               if(var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
-                  var5[var6].flags[var7 + var1][var2 + var8] &= -16777217;
+            class82.intStackSize -= 2;
+            var3 = class82.intStack[class82.intStackSize];
+            var4 = class82.intStack[class82.intStackSize + 1];
+            Widget var11 = TextureProvider.getWidgetChild(var3, var4);
+            if(var11 != null && var4 != -1) {
+               class82.intStack[++class82.intStackSize - 1] = 1;
+               if(var2) {
+                  class139.field2008 = var11;
+               } else {
+                  AttackOption.field1306 = var11;
                }
+            } else {
+               class82.intStack[++class82.intStackSize - 1] = 0;
             }
+
+            return 1;
          }
       }
-
-      Buffer var10 = new Buffer(var0);
-
-      for(var7 = 0; var7 < 4; ++var7) {
-         for(var8 = 0; var8 < 64; ++var8) {
-            for(int var9 = 0; var9 < 64; ++var9) {
-               class149.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIB)Lbh;",
-      garbageValue = "109"
+      signature = "(Lcp;Lcp;IZIZI)I",
+      garbageValue = "-262261266"
    )
-   static MessageNode method1573(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method1921(var1);
+   static int method1460(World var0, World var1, int var2, boolean var3, int var4, boolean var5) {
+      int var6 = class31.method268(var0, var1, var2, var3);
+      if(var6 != 0) {
+         return var3?-var6:var6;
+      } else if(var4 == -1) {
+         return 0;
+      } else {
+         int var7 = class31.method268(var0, var1, var4, var5);
+         return var5?-var7:var7;
+      }
+   }
+
+   @ObfuscatedName("fz")
+   @ObfuscatedSignature(
+      signature = "(Lbj;ZI)V",
+      garbageValue = "-1700483995"
+   )
+   static void method1462(Player var0, boolean var1) {
+      if(var0 != null && var0.hasConfig() && !var0.hidden) {
+         int var2 = var0.field810 << 14;
+         var0.isLowDetail = false;
+         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
+            var0.isLowDetail = true;
+         }
+
+         int var3 = var0.x >> 7;
+         int var4 = var0.y >> 7;
+         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
+               var0.isLowDetail = false;
+               var0.field816 = WorldMapType2.getTileHeight(var0.x, var0.y, BoundingBox2D.plane);
+               class48.region.method2862(BoundingBox2D.plane, var0.x, var0.y, var0.field816, 60, var0, var0.angle, var2, var0.field823, var0.field824, var0.field825, var0.field828);
+            } else {
+               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
+                  if(Client.field931[var3][var4] == Client.field932) {
+                     return;
+                  }
+
+                  Client.field931[var3][var4] = Client.field932;
+               }
+
+               var0.field816 = WorldMapType2.getTileHeight(var0.x, var0.y, BoundingBox2D.plane);
+               class48.region.method2701(BoundingBox2D.plane, var0.x, var0.y, var0.field816, 60, var0, var0.angle, var2, var0.field1170);
+            }
+         }
+      }
+
    }
 }

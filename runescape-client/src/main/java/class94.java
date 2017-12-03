@@ -1,116 +1,130 @@
-import java.awt.Image;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("cy")
 public class class94 {
+   @ObfuscatedName("e")
+   static byte[] field1389;
    @ObfuscatedName("k")
-   static byte[] field1412;
-   @ObfuscatedName("z")
-   static byte[] field1410;
-   @ObfuscatedName("v")
+   static byte[] field1388;
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Lfr;"
+      signature = "[Lgh;"
    )
-   static Buffer[] field1407;
-   @ObfuscatedName("m")
+   static Buffer[] field1392;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -851335563
+      intValue = 1049985723
    )
    @Export("playerIndexesCount")
    static int playerIndexesCount;
-   @ObfuscatedName("b")
+   @ObfuscatedName("t")
    @Export("playerIndices")
    static int[] playerIndices;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -793819977
+      intValue = -116092205
    )
-   static int field1414;
-   @ObfuscatedName("p")
-   static int[] field1415;
-   @ObfuscatedName("r")
-   static int[] field1416;
-   @ObfuscatedName("l")
-   static int[] field1417;
-   @ObfuscatedName("u")
-   static int[] field1418;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1203782239
-   )
-   static int field1419;
+   static int field1394;
+   @ObfuscatedName("g")
+   static int[] field1395;
+   @ObfuscatedName("j")
+   @Export("Players_regions")
+   static int[] Players_regions;
+   @ObfuscatedName("x")
+   @Export("Players_orientations")
+   static int[] Players_orientations;
    @ObfuscatedName("c")
-   static int[] field1420;
+   @Export("Players_targetIndices")
+   static int[] Players_targetIndices;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 461839065
+   )
+   static int field1400;
+   @ObfuscatedName("n")
+   static int[] field1391;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lfr;"
+      signature = "Lgh;"
    )
-   static Buffer field1421;
-   @ObfuscatedName("aj")
-   static Image field1408;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 1117531761
-   )
-   static int field1409;
+   static Buffer field1401;
 
    static {
-      field1412 = new byte[2048];
-      field1410 = new byte[2048];
-      field1407 = new Buffer[2048];
+      field1389 = new byte[2048];
+      field1388 = new byte[2048];
+      field1392 = new Buffer[2048];
       playerIndexesCount = 0;
       playerIndices = new int[2048];
-      field1414 = 0;
-      field1415 = new int[2048];
-      field1416 = new int[2048];
-      field1417 = new int[2048];
-      field1418 = new int[2048];
-      field1419 = 0;
-      field1420 = new int[2048];
-      field1421 = new Buffer(new byte[5000]);
+      field1394 = 0;
+      field1395 = new int[2048];
+      Players_regions = new int[2048];
+      Players_orientations = new int[2048];
+      Players_targetIndices = new int[2048];
+      field1400 = 0;
+      field1391 = new int[2048];
+      field1401 = new Buffer(new byte[5000]);
    }
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([Lgd;II)Lgd;",
-      garbageValue = "388327774"
+      signature = "(ZB)V",
+      garbageValue = "-108"
    )
-   @Export("forOrdinal")
-   public static class185 forOrdinal(class185[] var0, int var1) {
-      class185[] var2 = var0;
+   public static void method1760(boolean var0) {
+      if(var0 != ScriptState.isMembersWorld) {
+         ItemComposition.items.reset();
+         ItemComposition.itemModelCache.reset();
+         ItemComposition.itemSpriteCache.reset();
+         ScriptState.isMembersWorld = var0;
+      }
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class185 var4 = var2[var3];
-         if(var1 == var4.rsOrdinal()) {
-            return var4;
+   }
+
+   @ObfuscatedName("hk")
+   @ObfuscatedSignature(
+      signature = "(Lhz;IIIIIII)V",
+      garbageValue = "-567247749"
+   )
+   static final void method1767(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(Client.field909) {
+         Client.field856 = 32;
+      } else {
+         Client.field856 = 0;
+      }
+
+      Client.field909 = false;
+      int var7;
+      if(MouseInput.mouseCurrentButton == 1 || !class34.field455 && MouseInput.mouseCurrentButton == 4) {
+         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+            var0.scrollY -= 4;
+            class33.method344(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+            var0.scrollY += 4;
+            class33.method344(var0);
+         } else if(var5 >= var1 - Client.field856 && var5 < Client.field856 + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
+            var7 = var3 * (var3 - 32) / var4;
+            if(var7 < 8) {
+               var7 = 8;
+            }
+
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.scrollY = var8 * (var4 - var3) / var9;
+            class33.method344(var0);
+            Client.field909 = true;
          }
       }
 
-      return null;
-   }
+      if(Client.mouseWheelRotation != 0) {
+         var7 = var0.width;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+            var0.scrollY += Client.mouseWheelRotation * 45;
+            class33.method344(var0);
+         }
+      }
 
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-14"
-   )
-   static int method1830(int var0, int var1) {
-      long var2 = (long)((var0 << 16) + var1);
-      return class259.currentRequest != null && var2 == class259.currentRequest.hash?class245.field3335.offset * 99 / (class245.field3335.payload.length - class259.currentRequest.padding) + 1:0;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-389037053"
-   )
-   public static void method1849() {
-      ObjectComposition.objects.reset();
-      ObjectComposition.field3502.reset();
-      ObjectComposition.cachedModels.reset();
-      ObjectComposition.field3504.reset();
    }
 }

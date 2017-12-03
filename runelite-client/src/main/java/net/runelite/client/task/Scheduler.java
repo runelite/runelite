@@ -34,14 +34,12 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
+@Slf4j
 public class Scheduler
 {
-	private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
-
 	private final List<ScheduledMethod> scheduledMethods = new ArrayList<>();
 
 	@Inject
@@ -77,7 +75,7 @@ public class Scheduler
 
 			if (difference.compareTo(timeSinceRun) > 0)
 			{
-				logger.trace("Scheduled task triggered: {}", scheduledMethod);
+				log.trace("Scheduled task triggered: {}", scheduledMethod);
 
 				scheduledMethod.setLast(now);
 
@@ -103,11 +101,11 @@ public class Scheduler
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{
-			logger.warn("error invoking scheduled task", ex);
+			log.warn("error invoking scheduled task", ex);
 		}
 		catch (Exception ex)
 		{
-			logger.warn("error during scheduled task", ex);
+			log.warn("error during scheduled task", ex);
 		}
 	}
 }

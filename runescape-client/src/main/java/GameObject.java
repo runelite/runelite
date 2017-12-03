@@ -4,90 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("et")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1040235295
+      intValue = -1866751847
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1850709219
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 2113350775
+      intValue = 1840593029
    )
    @Export("height")
    int height;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Les;"
-   )
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("v")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1222975009
+      intValue = 1087761421
    )
    @Export("x")
    int x;
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -498878787
+      intValue = 1063628249
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lel;"
+   )
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1672836637
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("b")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 920225325
+      intValue = 1610249375
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 958723559
+      intValue = 1511254367
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1282150425
+      intValue = 19135965
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 520453821
+      intValue = 235575925
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2130704747
+      intValue = 792465583
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -800787599
+      intValue = -833063441
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1899654925
+      intValue = 1044473627
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("c")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1801845417
+      intValue = 195247177
    )
    @Export("flags")
    int flags;
@@ -97,39 +97,129 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "4"
+      signature = "(II)V",
+      garbageValue = "-360058868"
    )
-   static final String method3018(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
-   }
+   static final void method2909(int var0) {
+      short var1 = 256;
+      class91.field1321 += var0 * 128;
+      int var2;
+      if(class91.field1321 > class36.field478.length) {
+         class91.field1321 -= class36.field478.length;
+         var2 = (int)(Math.random() * 12.0D);
+         CombatInfoListHolder.method1623(class234.runeSprites[var2]);
+      }
 
-   @ObfuscatedName("gm")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1952560282"
-   )
-   static final void method3019() {
-      int var0 = class94.playerIndexesCount;
-      int[] var1 = class94.playerIndices;
+      var2 = 0;
+      int var3 = var0 * 128;
+      int var4 = (var1 - var0) * 128;
 
-      for(int var2 = 0; var2 < var0; ++var2) {
-         Player var3 = Client.cachedPlayers[var1[var2]];
-         if(var3 != null) {
-            class70.method1129(var3, 1);
+      int var5;
+      int var6;
+      for(var5 = 0; var5 < var4; ++var5) {
+         var6 = class89.field1302[var2 + var3] - class36.field478[var2 + class91.field1321 & class36.field478.length - 1] * var0 / 6;
+         if(var6 < 0) {
+            var6 = 0;
+         }
+
+         class89.field1302[var2++] = var6;
+      }
+
+      int var7;
+      int var8;
+      for(var5 = var1 - var0; var5 < var1; ++var5) {
+         var6 = var5 * 128;
+
+         for(var7 = 0; var7 < 128; ++var7) {
+            var8 = (int)(Math.random() * 100.0D);
+            if(var8 < 50 && var7 > 10 && var7 < 118) {
+               class89.field1302[var7 + var6] = 255;
+            } else {
+               class89.field1302[var6 + var7] = 0;
+            }
          }
       }
 
-   }
+      if(class91.field1323 > 0) {
+         class91.field1323 -= var0 * 4;
+      }
 
-   @ObfuscatedName("it")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "297135502"
-   )
-   static String method3020(int var0) {
-      return var0 < 0?"":(Client.menuTargets[var0].length() > 0?Client.menuOptions[var0] + " " + Client.menuTargets[var0]:Client.menuOptions[var0]);
+      if(class91.field1327 > 0) {
+         class91.field1327 -= var0 * 4;
+      }
+
+      if(class91.field1323 == 0 && class91.field1327 == 0) {
+         var5 = (int)(Math.random() * (double)(2000 / var0));
+         if(var5 == 0) {
+            class91.field1323 = 1024;
+         }
+
+         if(var5 == 1) {
+            class91.field1327 = 1024;
+         }
+      }
+
+      for(var5 = 0; var5 < var1 - var0; ++var5) {
+         class91.field1324[var5] = class91.field1324[var0 + var5];
+      }
+
+      for(var5 = var1 - var0; var5 < var1; ++var5) {
+         class91.field1324[var5] = (int)(Math.sin((double)class91.field1342 / 14.0D) * 16.0D + Math.sin((double)class91.field1342 / 15.0D) * 14.0D + Math.sin((double)class91.field1342 / 16.0D) * 12.0D);
+         ++class91.field1342;
+      }
+
+      class91.field1350 += var0;
+      var5 = (var0 + (Client.gameCycle & 1)) / 2;
+      if(var5 > 0) {
+         for(var6 = 0; var6 < class91.field1350 * 100; ++var6) {
+            var7 = (int)(Math.random() * 124.0D) + 2;
+            var8 = (int)(Math.random() * 128.0D) + 128;
+            class89.field1302[var7 + (var8 << 7)] = 192;
+         }
+
+         class91.field1350 = 0;
+
+         int var9;
+         for(var6 = 0; var6 < var1; ++var6) {
+            var7 = 0;
+            var8 = var6 * 128;
+
+            for(var9 = -var5; var9 < 128; ++var9) {
+               if(var5 + var9 < 128) {
+                  var7 += class89.field1302[var9 + var8 + var5];
+               }
+
+               if(var9 - (var5 + 1) >= 0) {
+                  var7 -= class89.field1302[var9 + var8 - (var5 + 1)];
+               }
+
+               if(var9 >= 0) {
+                  BoundingBox.field238[var9 + var8] = var7 / (var5 * 2 + 1);
+               }
+            }
+         }
+
+         for(var6 = 0; var6 < 128; ++var6) {
+            var7 = 0;
+
+            for(var8 = -var5; var8 < var1; ++var8) {
+               var9 = var8 * 128;
+               if(var5 + var8 < var1) {
+                  var7 += BoundingBox.field238[var9 + var6 + var5 * 128];
+               }
+
+               if(var8 - (var5 + 1) >= 0) {
+                  var7 -= BoundingBox.field238[var9 + var6 - (var5 + 1) * 128];
+               }
+
+               if(var8 >= 0) {
+                  class89.field1302[var9 + var6] = var7 / (var5 * 2 + 1);
+               }
+            }
+         }
+      }
+
    }
 }

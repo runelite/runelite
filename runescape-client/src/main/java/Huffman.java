@@ -1,18 +1,25 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fy")
+@ObfuscatedName("fb")
 @Implements("Huffman")
 public class Huffman {
    @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1401406659
+   )
+   @Export("canvasWidth")
+   public static int canvasWidth;
+   @ObfuscatedName("a")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @Export("keys")
    int[] keys;
 
@@ -41,7 +48,7 @@ public class Huffman {
 
                for(var10 = var6 - 1; var10 >= 1; --var10) {
                   var11 = var3[var10];
-                  if(var8 != var11) {
+                  if(var11 != var8) {
                      break;
                   }
 
@@ -99,10 +106,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BII[BIS)I",
-      garbageValue = "26319"
+      signature = "([BII[BIB)I",
+      garbageValue = "0"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -120,7 +127,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var10 + var12 - 1 >> 3) + var11;
+         int var13 = (var12 + var10 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -150,10 +157,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "-1310847649"
+      garbageValue = "-183302365"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {

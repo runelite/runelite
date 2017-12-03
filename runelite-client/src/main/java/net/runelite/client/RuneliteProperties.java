@@ -27,13 +27,11 @@ package net.runelite.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RuneliteProperties
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteProperties.class);
-
 	private static final String RUNELITE_VERSION = "runelite.version";
 
 	private final Properties properties = new Properties();
@@ -47,7 +45,7 @@ public class RuneliteProperties
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to load propertries", ex);
+			log.warn("unable to load propertries", ex);
 		}
 	}
 

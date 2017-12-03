@@ -35,6 +35,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.events.SessionClose;
@@ -48,16 +49,13 @@ import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Account plugin"
 )
+@Slf4j
 public class AccountPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(AccountPlugin.class);
-
 	@Inject
 	RuneLite runelite;
 
@@ -108,7 +106,7 @@ public class AccountPlugin extends Plugin
 			}
 			catch (IOException ex)
 			{
-				logger.warn("Unable to logout of session", ex);
+				log.warn("Unable to logout of session", ex);
 			}
 		}
 
@@ -131,7 +129,7 @@ public class AccountPlugin extends Plugin
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to get oauth url", ex);
+			log.warn("Unable to get oauth url", ex);
 			return;
 		}
 
@@ -144,14 +142,14 @@ public class AccountPlugin extends Plugin
 
 		if (!Desktop.isDesktopSupported())
 		{
-			logger.info("Desktop is not supported. Visit {}", login.getOauthUrl());
+			log.info("Desktop is not supported. Visit {}", login.getOauthUrl());
 			return;
 		}
 
 		Desktop desktop = Desktop.getDesktop();
 		if (!desktop.isSupported(Desktop.Action.BROWSE))
 		{
-			logger.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
+			log.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
 			return;
 		}
 
@@ -159,18 +157,18 @@ public class AccountPlugin extends Plugin
 		{
 			desktop.browse(new URI(login.getOauthUrl()));
 
-			logger.debug("Opened browser to {}", login.getOauthUrl());
+			log.debug("Opened browser to {}", login.getOauthUrl());
 		}
 		catch (IOException | URISyntaxException ex)
 		{
-			logger.warn("Unable to open login page", ex);
+			log.warn("Unable to open login page", ex);
 		}
 	}
 
 	@Subscribe
 	public void onLogin(LoginResponse loginResponse)
 	{
-		logger.debug("Now logged in as {}", loginResponse.getUsername());
+		log.debug("Now logged in as {}", loginResponse.getUsername());
 
 		AccountSession session = runelite.getAccountSession();
 		session.setUsername(loginResponse.getUsername());
@@ -193,7 +191,7 @@ public class AccountPlugin extends Plugin
 			return; // No username yet
 		}
 
-		logger.debug("Session opened as {}", session.getUsername());
+		log.debug("Session opened as {}", session.getUsername());
 
 		runelite.setTitle("(" + session.getUsername() + ")");
 

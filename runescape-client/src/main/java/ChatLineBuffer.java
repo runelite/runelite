@@ -4,23 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("ct")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1011803207
-   )
-   public static int field1464;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "[Lbh;"
+      signature = "[Lbv;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -445922717
+      intValue = -1771803705
    )
    @Export("length")
    int length;
@@ -29,10 +24,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbh;",
-      garbageValue = "-81"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbv;",
+      garbageValue = "1230793549"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -60,86 +55,73 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IB)Lbh;",
-      garbageValue = "-76"
+      signature = "(II)Lbv;",
+      garbageValue = "-2012333335"
    )
-   MessageNode method1921(int var1) {
+   @Export("getMessage")
+   MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "899003134"
+      garbageValue = "-1107799616"
    )
-   int method1916() {
+   @Export("size")
+   int size() {
       return this.length;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "98"
+   )
+   static void method1851() {
+      if(class91.field1347) {
+         class91.field1316 = null;
+         class91.field1317 = null;
+         class234.runeSprites = null;
+         class91.field1315 = null;
+         class91.field1319 = null;
+         class91.logoSprite = null;
+         class278.titlemuteSprite = null;
+         CombatInfoListHolder.field1267 = null;
+         class91.field1333 = null;
+         FriendLoginUpdate.field760 = null;
+         class221.slFlagSprites = null;
+         class7.slArrowSprites = null;
+         class37.slStarSprites = null;
+         class160.field2151 = null;
+         class218.field2696 = null;
+         class91.field1325 = null;
+         class2.field11 = null;
+         Item.field1386 = null;
+         class36.field478 = null;
+         class186.field2532 = null;
+         class89.field1302 = null;
+         BoundingBox.field238 = null;
+         class214.field2620 = 1;
+         class214.field2623 = null;
+         class61.field692 = -1;
+         class282.field3754 = -1;
+         class214.field2625 = 0;
+         IndexFile.field2181 = false;
+         Timer.field2159 = 2;
+         class27.sendConInfo(true);
+         class91.field1347 = false;
+      }
    }
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
-      garbageValue = "0"
+      signature = "(Lca;B)V",
+      garbageValue = "30"
    )
-   public static String method1918(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
-            } else {
-               byte var5 = ItemContainer.method1102(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
-      }
-
-      return var2.toString();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1811706787"
-   )
-   static final int method1923(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
+   public static final void method1858(TaskDataProvider var0) {
+      AbstractSoundSystem.soundTaskDataProvider = var0;
    }
 }

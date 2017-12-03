@@ -35,17 +35,15 @@ import java.io.InputStream;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class FightCaveOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(FightCaveOverlay.class);
-
 	private static final int WIDTH = 70;
 	private static final int SPACER = 6;
 	private static final int BOTTOM_BORDER = 4;
@@ -158,7 +156,7 @@ public class FightCaveOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			logger.warn("Error loading image", e);
+			log.warn("Error loading image", e);
 		}
 		return image;
 	}

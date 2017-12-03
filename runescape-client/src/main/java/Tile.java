@@ -1,135 +1,138 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ez")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1854629971
+      intValue = 1725557519
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("x")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -964365923
+      intValue = -695857629
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1267689537
    )
    @Export("y")
    int y;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1815659089
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1379576209
+      intValue = -721315981
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lea;"
+      signature = "Led;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Ldk;"
+      signature = "Ldf;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("b")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lev;"
+      signature = "Leb;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Leq;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Ldq;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldy;"
+      signature = "Ldl;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 2131381875
+      intValue = 1495705029
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("u")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Lek;"
+      signature = "[Let;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("c")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 297039203
+      intValue = 414760873
    )
    @Export("flags")
    int flags;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 467784211
+      intValue = 1613392379
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("j")
+   @ObfuscatedName("o")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("f")
+   @ObfuscatedName("r")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("e")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -418526723
+      intValue = -746627283
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("q")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 559829901
+      intValue = 1182737099
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("h")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 686674179
+      intValue = 37190099
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("i")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -852876445
+      intValue = -1139868411
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("o")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Len;"
+      signature = "Lez;"
    )
    @Export("bridge")
    Tile bridge;
@@ -143,129 +146,41 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("ge")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(ZLgv;I)V",
-      garbageValue = "57703707"
+      signature = "(I)V",
+      garbageValue = "1910530156"
    )
-   @Export("xteaChanged")
-   static final void xteaChanged(boolean var0, PacketBuffer var1) {
-      Client.isDynamicRegion = var0;
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      if(!Client.isDynamicRegion) {
-         int var2 = var1.readUnsignedShort();
-         var3 = var1.method3333();
-         var4 = var1.readUnsignedShort();
-         ScriptEvent.xteaKeys = new int[var4][4];
-
-         for(var5 = 0; var5 < var4; ++var5) {
-            for(var6 = 0; var6 < 4; ++var6) {
-               ScriptEvent.xteaKeys[var5][var6] = var1.readInt();
-            }
-         }
-
-         VertexNormal.mapRegions = new int[var4];
-         class230.landMapFileIds = new int[var4];
-         GrandExchangeOffer.landRegionFileIds = new int[var4];
-         class29.field400 = new byte[var4][];
-         class250.field3386 = new byte[var4][];
-         boolean var16 = false;
-         if((var3 / 8 == 48 || var3 / 8 == 49) && var2 / 8 == 48) {
-            var16 = true;
-         }
-
-         if(var3 / 8 == 48 && var2 / 8 == 148) {
-            var16 = true;
-         }
-
-         var4 = 0;
-
-         for(var6 = (var3 - 6) / 8; var6 <= (var3 + 6) / 8; ++var6) {
-            for(var7 = (var2 - 6) / 8; var7 <= (var2 + 6) / 8; ++var7) {
-               var8 = var7 + (var6 << 8);
-               if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
-                  VertexNormal.mapRegions[var4] = var8;
-                  class230.landMapFileIds[var4] = PlayerComposition.indexMaps.getFile("m" + var6 + "_" + var7);
-                  GrandExchangeOffer.landRegionFileIds[var4] = PlayerComposition.indexMaps.getFile("l" + var6 + "_" + var7);
-                  ++var4;
-               }
-            }
-         }
-
-         FileOnDisk.method2478(var3, var2, true);
-      } else {
-         boolean var15 = var1.method3457() == 1;
-         var3 = var1.readUnsignedShort();
-         var4 = var1.readUnsignedShortOb1();
-         var5 = var1.readUnsignedShort();
-         var1.bitAccess();
-
-         int var9;
-         for(var6 = 0; var6 < 4; ++var6) {
-            for(var7 = 0; var7 < 13; ++var7) {
-               for(var8 = 0; var8 < 13; ++var8) {
-                  var9 = var1.getBits(1);
-                  if(var9 == 1) {
-                     Client.field928[var6][var7][var8] = var1.getBits(26);
-                  } else {
-                     Client.field928[var6][var7][var8] = -1;
+   static void method2505() {
+      try {
+         File var0 = new File(class1.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         } else {
+            label37:
+            for(int var1 = 0; var1 < GrandExchangeOffer.field298.length; ++var1) {
+               for(var2 = 0; var2 < class115.cacheLocations.length; ++var2) {
+                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var1] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class157.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label37;
                   }
                }
             }
          }
 
-         var1.byteAccess();
-         ScriptEvent.xteaKeys = new int[var5][4];
-
-         for(var6 = 0; var6 < var5; ++var6) {
-            for(var7 = 0; var7 < 4; ++var7) {
-               ScriptEvent.xteaKeys[var6][var7] = var1.readInt();
-            }
+         if(class157.randomDat == null) {
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          }
-
-         VertexNormal.mapRegions = new int[var5];
-         class230.landMapFileIds = new int[var5];
-         GrandExchangeOffer.landRegionFileIds = new int[var5];
-         class29.field400 = new byte[var5][];
-         class250.field3386 = new byte[var5][];
-         var5 = 0;
-
-         for(var6 = 0; var6 < 4; ++var6) {
-            for(var7 = 0; var7 < 13; ++var7) {
-               for(var8 = 0; var8 < 13; ++var8) {
-                  var9 = Client.field928[var6][var7][var8];
-                  if(var9 != -1) {
-                     int var10 = var9 >> 14 & 1023;
-                     int var11 = var9 >> 3 & 2047;
-                     int var12 = (var10 / 8 << 8) + var11 / 8;
-
-                     int var13;
-                     for(var13 = 0; var13 < var5; ++var13) {
-                        if(VertexNormal.mapRegions[var13] == var12) {
-                           var12 = -1;
-                           break;
-                        }
-                     }
-
-                     if(var12 != -1) {
-                        VertexNormal.mapRegions[var5] = var12;
-                        var13 = var12 >> 8 & 255;
-                        int var14 = var12 & 255;
-                        class230.landMapFileIds[var5] = PlayerComposition.indexMaps.getFile("m" + var13 + "_" + var14);
-                        GrandExchangeOffer.landRegionFileIds[var5] = PlayerComposition.indexMaps.getFile("l" + var13 + "_" + var14);
-                        ++var5;
-                     }
-                  }
-               }
-            }
-         }
-
-         FileOnDisk.method2478(var4, var3, !var15);
+      } catch (IOException var5) {
+         ;
       }
 
    }

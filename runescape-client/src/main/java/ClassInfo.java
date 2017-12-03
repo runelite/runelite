@@ -4,71 +4,36 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("km")
+@ObfuscatedName("kb")
 @Implements("ClassInfo")
 public class ClassInfo extends Node {
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 150586693
+      intValue = 2116971695
    )
-   int field3795;
-   @ObfuscatedName("x")
+   public int field3819;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -600011571
+      intValue = 1480288181
    )
    @Export("count")
-   int count;
-   @ObfuscatedName("k")
+   public int count;
+   @ObfuscatedName("e")
    @Export("type")
-   int[] type;
-   @ObfuscatedName("z")
+   public int[] type;
+   @ObfuscatedName("k")
    @Export("errorIdentifiers")
-   int[] errorIdentifiers;
-   @ObfuscatedName("v")
+   public int[] errorIdentifiers;
+   @ObfuscatedName("u")
    @Export("fields")
-   Field[] fields;
-   @ObfuscatedName("m")
-   @Export("args")
-   byte[][][] args;
-   @ObfuscatedName("b")
-   int[] field3798;
+   public Field[] fields;
+   @ObfuscatedName("z")
+   public int[] field3820;
    @ObfuscatedName("t")
    @Export("methods")
-   Method[] methods;
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Lid;IIB)Lky;",
-      garbageValue = "120"
-   )
-   public static SpritePixels method5123(IndexDataBase var0, int var1, int var2) {
-      if(!GroundObject.method2603(var0, var1, var2)) {
-         return null;
-      } else {
-         SpritePixels var4 = new SpritePixels();
-         var4.maxWidth = class295.field3846;
-         var4.maxHeight = class295.field3847;
-         var4.offsetX = class295.field3848[0];
-         var4.offsetY = class295.offsetsY[0];
-         var4.width = class295.field3845[0];
-         var4.height = class285.field3788[0];
-         int var5 = var4.width * var4.height;
-         byte[] var6 = class15.spritePixels[0];
-         var4.pixels = new int[var5];
-
-         for(int var7 = 0; var7 < var5; ++var7) {
-            var4.pixels[var7] = class115.field1599[var6[var7] & 255];
-         }
-
-         class295.field3848 = null;
-         class295.offsetsY = null;
-         class295.field3845 = null;
-         class285.field3788 = null;
-         class115.field1599 = null;
-         class15.spritePixels = null;
-         return var4;
-      }
-   }
+   public Method[] methods;
+   @ObfuscatedName("f")
+   @Export("args")
+   public byte[][][] args;
 }

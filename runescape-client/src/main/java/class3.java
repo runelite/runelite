@@ -3,162 +3,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("k")
 final class class3 implements class0 {
-   @ObfuscatedName("or")
+   @ObfuscatedName("lw")
    @ObfuscatedSignature(
-      signature = "Ldo;"
+      signature = "[Lhz;"
    )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("m")
+   static Widget[] field17;
+   @ObfuscatedName("cz")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lfx;"
    )
-   public static IndexDataBase field22;
-   @ObfuscatedName("b")
-   static int[] field23;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lcf;"
-   )
-   static class102 field20;
-   @ObfuscatedName("dp")
+   @Export("rssocket")
+   static class159 rssocket;
+   @ObfuscatedName("cg")
    @ObfuscatedGetter(
-      intValue = 1732262137
+      longValue = -4249044884305654605L
    )
-   static int field19;
-   @ObfuscatedName("fo")
+   static long field19;
+   @ObfuscatedName("cd")
    @ObfuscatedSignature(
-      signature = "Lky;"
+      signature = "Liu;"
    )
-   @Export("mapedge")
-   static SpritePixels mapedge;
+   @Export("indexTextures")
+   static IndexData indexTextures;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)Ljv;",
-      garbageValue = "39"
+      signature = "(IIB)I",
+      garbageValue = "101"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = SoundTask.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.field3517 = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
+   static final int method7(int var0, int var1) {
+      int var2 = var0 + var1 * 57;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (var2 * var2 * 15731 + 789221) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("gv")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1549395225"
+      signature = "(Lcw;III)V",
+      garbageValue = "-1209857073"
    )
-   @Export("ilog")
-   public static int ilog(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)Z",
-      garbageValue = "-353192749"
-   )
-   static final boolean method10(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = class133.field1901 + var6;
-      if(var7 < var0 && var7 < var1 && var7 < var2) {
-         return false;
-      } else {
-         var7 = class133.field1901 - var6;
-         if(var7 > var0 && var7 > var1 && var7 > var2) {
-            return false;
-         } else {
-            var7 = class133.field1900 + var6;
-            if(var7 < var3 && var7 < var4 && var7 < var5) {
-               return false;
-            } else {
-               var7 = class133.field1900 - var6;
-               return var7 <= var3 || var7 <= var4 || var7 <= var5;
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("gr")
-   @ObfuscatedSignature(
-      signature = "(Lbw;ZS)V",
-      garbageValue = "18121"
-   )
-   static void method7(Player var0, boolean var1) {
-      if(var0 != null && var0.hasConfig() && !var0.hidden) {
-         int var2 = var0.field857 << 14;
-         var0.field841 = false;
-         if((Client.lowMemory && class94.playerIndexesCount > 50 || class94.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
-            var0.field841 = true;
-         }
-
-         int var3 = var0.x >> 7;
-         int var4 = var0.y >> 7;
-         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-            if(var0.model != null && Client.gameCycle >= var0.field848 && Client.gameCycle < var0.field844) {
-               var0.field841 = false;
-               var0.field842 = class41.getTileHeight(var0.x, var0.y, class233.plane);
-               class14.region.method2809(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field849, var0.field850, var0.field851, var0.field852);
-            } else {
-               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
-                  if(Client.field957[var3][var4] == Client.field958) {
-                     return;
-                  }
-
-                  Client.field957[var3][var4] = Client.field958;
-               }
-
-               var0.field842 = class41.getTileHeight(var0.x, var0.y, class233.plane);
-               class14.region.method2808(class233.plane, var0.x, var0.y, var0.field842, 60, var0, var0.angle, var2, var0.field1201);
-            }
-         }
-      }
-
+   static final void method6(ContextMenuRow var0, int var1, int var2) {
+      class27.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
    }
 }

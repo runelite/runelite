@@ -29,7 +29,6 @@ import java.awt.Graphics2D;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -53,12 +52,13 @@ class MouseHighlightOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}
