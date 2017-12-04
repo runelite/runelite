@@ -72,6 +72,7 @@ public final class AnimationID
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
 	public static final int FISHING_CAGE = 619;
 	public static final int FISHING_HARPOON = 618;
+	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
