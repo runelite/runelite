@@ -33,6 +33,7 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.LMul;
@@ -90,7 +91,7 @@ public class InjectSetter
 
 		Signature sig = new Signature.Builder()
 			.setReturnType(Type.VOID)
-			.addArgument(inject.classToType(method.getParameterTypes()[0]))
+			.addArgument(Inject.classToType(method.getParameterTypes()[0]))
 			.build();
 
 		Method setterMethod = new Method(targetClass, method.getName(), sig);
@@ -111,7 +112,17 @@ public class InjectSetter
 		}
 
 		// load argument
-		ins.add(inject.createLoadForTypeIndex(instructions, sig.getTypeOfArg(0), 1));
+		Type argumentType = sig.getTypeOfArg(0);
+		ins.add(inject.createLoadForTypeIndex(instructions, argumentType, 1));
+		
+		// cast argument to field type
+		Type fieldType = field.getType();
+		if (!argumentType.equals(fieldType))
+		{
+			CheckCast checkCast = new CheckCast(instructions);
+			checkCast.setType(fieldType);
+			ins.add(checkCast);
+		}
 
 		if (setter != null)
 		{

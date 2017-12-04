@@ -111,7 +111,7 @@ public class Inject
 	 * @param c
 	 * @return
 	 */
-	public Type classToType(java.lang.Class<?> c)
+	public static Type classToType(java.lang.Class<?> c)
 	{
 		int dimms = 0;
 		while (c.isArray())
