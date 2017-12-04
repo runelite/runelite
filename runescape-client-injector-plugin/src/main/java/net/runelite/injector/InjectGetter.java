@@ -68,7 +68,7 @@ public class InjectGetter
 		assert field.isStatic() || field.getClassFile() == clazz;
 
 		Signature sig = new Signature.Builder()
-			.setReturnType(inject.classToType(method.getReturnType()))
+			.setReturnType(Inject.classToType(method.getReturnType()))
 			.build();
 		Method getterMethod = new Method(clazz, method.getName(), sig);
 		getterMethod.setAccessFlags(ACC_PUBLIC);
