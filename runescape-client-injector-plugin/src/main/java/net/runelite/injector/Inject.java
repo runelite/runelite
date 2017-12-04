@@ -65,6 +65,7 @@ public class Inject
 	private final InjectGetter getters = new InjectGetter(this);
 	private final InjectSetter setters = new InjectSetter(this);
 	private final InjectInvoker invokes = new InjectInvoker(this);
+	private final InjectConstruct construct = new InjectConstruct(this);
 
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 
@@ -215,6 +216,7 @@ public class Inject
 
 		// requires interfaces to be injected
 		mixinInjector.inject();
+		construct.inject(implemented);
 
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
@@ -486,6 +488,21 @@ public class Inject
 		}
 
 		return Type.getType("L" + rlApiType.getName().replace('.', '/') + ";", type.getDimensions());
+	}
+	
+	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)
+	{
+		for (ClassFile cf : getVanilla().getClasses())
+		{
+			for (net.runelite.asm.pool.Class cl : cf.getInterfaces().getInterfaces())
+			{
+				if (cl.getName().equals(clazz.getName().replace('.', '/')))
+				{
+					return cf;
+				}
+			}
+		}
+		return null;
 	}
 
 	private boolean validateTypeIsConvertibleTo(Type from, Type to) throws InjectionException
