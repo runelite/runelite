@@ -69,6 +69,11 @@ public class InjectConstruct
 
 			for (java.lang.reflect.Method method : clazz.getDeclaredMethods())
 			{
+				if (method.isSynthetic())
+				{
+					continue;
+				}
+
 				Construct construct = method.getAnnotation(Construct.class);
 				if (construct == null)
 				{
