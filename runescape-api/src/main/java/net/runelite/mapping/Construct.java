@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * of the method.
  * 
  * {@code
- * @Construct
+ * {@literal @}Construct
  * RSIndexedImage createIndexedImage();
  * }
  * 
