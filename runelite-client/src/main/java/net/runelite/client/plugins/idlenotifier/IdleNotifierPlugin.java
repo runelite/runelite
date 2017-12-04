@@ -140,6 +140,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
+			case FISHING_KARAMBWAN:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
