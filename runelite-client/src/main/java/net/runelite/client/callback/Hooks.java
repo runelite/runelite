@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
+import net.runelite.api.NPC;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
@@ -180,11 +181,6 @@ public class Hooks
 		}
 	}
 
-	public static void onPlayerUpdatePacketHandler(PacketBuffer var0, int var1)
-	{
-		eventBus.post(tick);
-	}
-
 	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
@@ -266,5 +262,10 @@ public class Hooks
 		setMessage.setValue(value);
 
 		eventBus.post(setMessage);
+	}
+
+	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
+	{
+		eventBus.post(tick);
 	}
 }
