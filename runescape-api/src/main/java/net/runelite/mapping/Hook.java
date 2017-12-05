@@ -37,4 +37,6 @@ import java.lang.annotation.Target;
 public @interface Hook
 {
 	String value();
+
+	boolean end() default false;
 }
