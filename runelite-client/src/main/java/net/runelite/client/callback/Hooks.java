@@ -256,8 +256,6 @@ public class Hooks
 
 	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
 	{
-		// Hook is fired prior to actually setting these on the MessageNode, so send them
-		// in the event too.
 		SetMessage setMessage = new SetMessage();
 		setMessage.setMessageNode(messageNode);
 		setMessage.setType(ChatMessageType.of(type));
