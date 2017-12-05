@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -150,6 +151,7 @@ public class class45 extends class28 {
       garbageValue = "-50"
    )
    @Hook("onNpcUpdate")
+   @Export("updateNpcs")
    static final void updateNpcs(boolean var0, PacketBuffer var1) {
       while(true) {
          if(var1.bitsAvail(Client.field888.packetLength) >= 27) {
