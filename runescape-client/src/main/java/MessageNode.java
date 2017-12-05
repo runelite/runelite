@@ -38,7 +38,7 @@ public class MessageNode extends CacheableNode {
    @Export("value")
    String value;
 
-   @Hook("setMessage")
+   @Hook(value = "setMessage", end = true)
    MessageNode(int var1, String var2, String var3, String var4) {
       this.id = FriendLoginUpdate.method1044();
       this.tick = Client.gameCycle;
@@ -54,7 +54,7 @@ public class MessageNode extends CacheableNode {
       garbageValue = "1489597992"
    )
    @Export("setMessage")
-   @Hook("setMessage")
+   @Hook(value = "setMessage", end = true)
    void setMessage(int var1, String var2, String var3, String var4) {
       this.id = FriendLoginUpdate.method1044();
       this.tick = Client.gameCycle;
