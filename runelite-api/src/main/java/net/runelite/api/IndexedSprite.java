@@ -28,15 +28,33 @@ public interface IndexedSprite
 {
 	byte[] getPixels();
 
+	void setPixels(byte[] pixels);
+
 	int[] getPalette();
+
+	void setPalette(int[] palette);
 
 	int getOffsetX();
 
+	void setOffsetX(int offsetX);
+
 	int getOffsetY();
+
+	void setOffsetY(int offsetY);
 
 	int getWidth();
 
+	void setWidth(int width);
+
 	int getOriginalWidth();
 
+	void setOriginalWidth(int originalWidth);
+
 	int getHeight();
+
+	void setHeight(int height);
+
+	int getOriginalHeight();
+
+	void setOriginalHeight(int originalHeight);
 }

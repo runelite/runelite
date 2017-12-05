@@ -130,6 +130,8 @@ public interface Client
 
 	int getClanChatCount();
 
+	ClanMember[] getClanMembers();
+
 	HashTable getComponentTable();
 
 	boolean isPrayerActive(Prayer prayer);
@@ -153,4 +155,10 @@ public interface Client
 	IndexedSprite[] getMapScene();
 
 	SpritePixels[] getMapIcons();
+
+	IndexedSprite[] getModIcons();
+
+	void setModIcons(IndexedSprite[] modIcons);
+
+	IndexedSprite createIndexedSprite();
 }

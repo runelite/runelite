@@ -24,16 +24,17 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.ClanMember;
 import net.runelite.mapping.Import;
 
-public interface RSClanMember
+public interface RSClanMember extends ClanMember
 {
 	@Import("username")
-	String getUsernameName();
+	String getUsername();
 
 	@Import("world")
 	int getWorld();
 
 	@Import("rank")
-	byte getRank();
+	byte getRSRank();
 }

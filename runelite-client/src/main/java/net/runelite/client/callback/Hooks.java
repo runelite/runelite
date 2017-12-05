@@ -157,6 +157,12 @@ public class Hooks
 				eventBus.post(varbitChanged);
 				break;
 			}
+			case "clanMembersChanged":
+			{
+				ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
+				eventBus.post(clanMembersChanged);
+				break;
+			}
 			case "resizeChanged":
 			{
 				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
@@ -256,8 +262,6 @@ public class Hooks
 
 	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
 	{
-		// Hook is fired prior to actually setting these on the MessageNode, so send them
-		// in the event too.
 		SetMessage setMessage = new SetMessage();
 		setMessage.setMessageNode(messageNode);
 		setMessage.setType(ChatMessageType.of(type));
