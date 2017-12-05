@@ -24,14 +24,18 @@
  */
 package net.runelite.injector;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
@@ -54,14 +58,19 @@ public class InjectHookMethod
 	public void process(Method method) throws InjectionException
 	{
 		Annotations an = method.getAnnotations();
-		if (an == null || an.find(DeobAnnotations.HOOK) == null)
+		if (an == null)
+		{
+			return;
+		}
+
+		Annotation a = an.find(DeobAnnotations.HOOK);
+		if (a == null)
 		{
 			return;
 		}
 
 		// Method is hooked
-		String hookName = DeobAnnotations.getHookName(an); // hook name
-
+		//String hookName = DeobAnnotations.getHookName(an); // hook name
 		// Find equivalent method in vanilla, and insert callback at the beginning
 		ClassFile cf = method.getClassFile();
 		String obfuscatedMethodName = DeobAnnotations.getObfuscatedName(an),
@@ -83,11 +92,12 @@ public class InjectHookMethod
 		Method vanillaMethod = vanillaClass.findMethod(obfuscatedMethodName, obfuscatedSignature);
 
 		// Insert instructions at beginning of method
-		injectHookMethod(hookName, method, vanillaMethod);
+		injectHookMethod(a, method, vanillaMethod);
 	}
 
-	private void injectHookMethod(String hookName, Method deobMethod, Method vanillaMethod) throws InjectionException
+	private void injectHookMethod(Annotation hook, Method deobMethod, Method vanillaMethod) throws InjectionException
 	{
+		String hookName = hook.getElement().getString();
 		Instructions instructions = vanillaMethod.getCode().getInstructions();
 
 		Signature.Builder builder = new Signature.Builder()
@@ -98,7 +108,7 @@ public class InjectHookMethod
 			builder.addArgument(inject.deobfuscatedTypeToApiType(type));
 		}
 
-		int insertPos = findHookLocation(vanillaMethod);
+		int insertPos = findHookLocation(hook, vanillaMethod);
 
 		assert deobMethod.isStatic() == vanillaMethod.isStatic();
 
@@ -138,15 +148,34 @@ public class InjectHookMethod
 			signature.getArguments());
 	}
 
-	private int findHookLocation(Method vanillaMethod)
+	private int findHookLocation(Annotation hook, Method vanillaMethod) throws InjectionException
 	{
+		Instructions instructions = vanillaMethod.getCode().getInstructions();
+
+		boolean end = hook.getElements().size() == 2 && hook.getElements().get(1).getValue().equals(true);
+		if (end)
+		{
+			// find return
+			List<Instruction> returns = instructions.getInstructions().stream()
+				.filter(i -> i instanceof ReturnInstruction)
+				.collect(Collectors.toList());
+
+			if (returns.size() != 1)
+			{
+				throw new InjectionException("returns != 1");
+			}
+
+			int idx = instructions.getInstructions().indexOf(returns.get(0));
+			assert idx != -1;
+			return idx;
+		}
+
 		if (!vanillaMethod.getName().equals("<init>"))
 		{
 			return 0;
 		}
 
 		// Find index after invokespecial
-		Instructions instructions = vanillaMethod.getCode().getInstructions();
 		for (int i = 0; i < instructions.getInstructions().size(); ++i)
 		{
 			Instruction in = instructions.getInstructions().get(i);
