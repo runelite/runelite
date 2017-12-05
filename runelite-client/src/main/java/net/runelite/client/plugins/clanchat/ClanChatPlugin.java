@@ -92,7 +92,8 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN
+			&& modIconsLength == 0)
 		{
 			// this is after "Loading sprites" so we can modify modicons now
 			loadClanChatIcons();
@@ -201,7 +202,6 @@ public class ClanChatPlugin extends Plugin
 		catch (IOException e)
 		{
 			log.warn("Failed loading of clan chat icons", e);
-			modIconsLength = 0;
 		}
 	}
 
