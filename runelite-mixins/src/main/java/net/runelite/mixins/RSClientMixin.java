@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.GameState;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -35,11 +36,12 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
@@ -313,5 +315,12 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		setMenuOptionCount(count);
+	}
+
+	@Inject
+	@Override
+	public void setModIcons(IndexedSprite[] modIcons)
+	{
+		setRSModIcons((RSIndexedSprite[]) modIcons);
 	}
 }

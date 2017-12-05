@@ -22,74 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.IndexedSprite;
-import net.runelite.mapping.Import;
-
-public interface RSIndexedSprite extends IndexedSprite
+public interface ClanMember
 {
-	@Import("pixels")
-	@Override
-	byte[] getPixels();
+	String getUsername();
 
-	@Import("pixels")
-	@Override
-	void setPixels(byte[] pixels);
+	int getWorld();
 
-	@Import("palette")
-	@Override
-	int[] getPalette();
-
-	@Import("palette")
-	@Override
-	void setPalette(int[] palette);
-
-	@Import("originalWidth")
-	@Override
-	int getOriginalWidth();
-
-	@Import("originalWidth")
-	@Override
-	void setOriginalWidth(int originalWidth);
-
-	@Import("originalHeight")
-	@Override
-	int getOriginalHeight();
-
-	@Import("originalHeight")
-	@Override
-	void setOriginalHeight(int originalHeight);
-
-	@Import("height")
-	@Override
-	int getHeight();
-
-	@Import("height")
-	@Override
-	void setHeight(int height);
-
-	@Import("offsetX")
-	@Override
-	int getOffsetX();
-
-	@Import("offsetX")
-	@Override
-	void setOffsetX(int offsetX);
-
-	@Import("offsetY")
-	@Override
-	int getOffsetY();
-
-	@Import("offsetY")
-	@Override
-	void setOffsetY(int offsetY);
-
-	@Import("width")
-	@Override
-	int getWidth();
-
-	@Import("width")
-	@Override
-	void setWidth(int width);
+	ClanMemberRank getRank();
 }

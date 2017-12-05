@@ -28,7 +28,13 @@ public interface MessageNode
 {
 	ChatMessageType getType();
 
+	String getName();
+
+	void setName(String name);
+
 	String getSender();
+
+	void setSender(String sender);
 
 	String getValue();
 
