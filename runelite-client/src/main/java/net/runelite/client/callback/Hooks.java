@@ -157,6 +157,12 @@ public class Hooks
 				eventBus.post(varbitChanged);
 				break;
 			}
+			case "clanMembersChanged":
+			{
+				ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
+				eventBus.post(clanMembersChanged);
+				break;
+			}
 			case "resizeChanged":
 			{
 				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
