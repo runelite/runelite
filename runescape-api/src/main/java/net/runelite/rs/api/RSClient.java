@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
 
 public interface RSClient extends RSGameEngine, Client
@@ -320,4 +321,15 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("mapIcons")
 	@Override
 	RSSpritePixels[] getMapIcons();
+
+	@Import("modIcons")
+	@Override
+	RSIndexedSprite[] getModIcons();
+
+	@Import("modIcons")
+	void setRSModIcons(RSIndexedSprite[] modIcons);
+
+	@Construct
+	@Override
+	RSIndexedSprite createIndexedSprite();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,74 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.IndexedSprite;
-import net.runelite.mapping.Import;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface RSIndexedSprite extends IndexedSprite
+public enum ClanMemberRank
 {
-	@Import("pixels")
-	@Override
-	byte[] getPixels();
+	UNRANKED((byte) -1),
+	FRIEND((byte) 0),
+	RECRUIT((byte) 1),
+	CORPORAL((byte) 2),
+	SERGEANT((byte) 3),
+	LIEUTENANT((byte) 4),
+	CAPTAIN((byte) 5),
+	GENERAL((byte) 6),
+	OWNER((byte) 7);
 
-	@Import("pixels")
-	@Override
-	void setPixels(byte[] pixels);
+	private static final Map<Byte, ClanMemberRank> BYTE_TO_RANK = new HashMap<>();
 
-	@Import("palette")
-	@Override
-	int[] getPalette();
+	static
+	{
+		for (final ClanMemberRank clanMemberRank : ClanMemberRank.values())
+		{
+			BYTE_TO_RANK.put(clanMemberRank.value, clanMemberRank);
+		}
+	}
 
-	@Import("palette")
-	@Override
-	void setPalette(int[] palette);
+	public static ClanMemberRank valueOf(byte rank)
+	{
+		return BYTE_TO_RANK.get(rank);
+	}
 
-	@Import("originalWidth")
-	@Override
-	int getOriginalWidth();
+	private final byte value;
 
-	@Import("originalWidth")
-	@Override
-	void setOriginalWidth(int originalWidth);
+	ClanMemberRank(final byte value)
+	{
+		this.value = value;
+	}
 
-	@Import("originalHeight")
-	@Override
-	int getOriginalHeight();
-
-	@Import("originalHeight")
-	@Override
-	void setOriginalHeight(int originalHeight);
-
-	@Import("height")
-	@Override
-	int getHeight();
-
-	@Import("height")
-	@Override
-	void setHeight(int height);
-
-	@Import("offsetX")
-	@Override
-	int getOffsetX();
-
-	@Import("offsetX")
-	@Override
-	void setOffsetX(int offsetX);
-
-	@Import("offsetY")
-	@Override
-	int getOffsetY();
-
-	@Import("offsetY")
-	@Override
-	void setOffsetY(int offsetY);
-
-	@Import("width")
-	@Override
-	int getWidth();
-
-	@Import("width")
-	@Override
-	void setWidth(int width);
+	public byte getValue()
+	{
+		return value;
+	}
 }
