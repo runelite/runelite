@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -57,7 +58,6 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
@@ -71,7 +71,6 @@ public class ChatCommandsPlugin extends Plugin
 
 	private final String colKeyword = "<colRegular>";
 	private final String colKeywordHighLight = "<colHighlight>";
-	private final ItemClient itemClient = new ItemClient();
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private int transparancyVarbit = -1;
 
@@ -190,7 +189,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Running price lookup for {}", search);
 
-			executor.submit(() -> lookup(setMessage.getType(), setMessage.getMessageNode(), search));
+			executor.submit(() -> itemPriceLookup(setMessage.getType(), setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
@@ -208,15 +207,15 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void lookup(ChatMessageType type, MessageNode messageNode, String search)
+	private void itemPriceLookup(ChatMessageType type, MessageNode messageNode, String search)
 	{
 		SearchResult result;
 
 		try
 		{
-			result = itemClient.search(search);
+			result = itemManager.searchForItem(search);
 		}
-		catch (IOException ex)
+		catch (ExecutionException ex)
 		{
 			log.warn("Unable to search for item {}", search, ex);
 			return;
