@@ -60,28 +60,6 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "enableRecolor",
-		name = "Enable command recolor",
-		description = "Configures whether chat commands are recolored"
-	)
-	default boolean recolorEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "enablePrivateRecolor",
-		name = "enable private recolor",
-		description = "enable private recolor"
-	)
-	default boolean isPrivateRecolor()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 4,
 		keyName = "hexColorPublic",
 		name = "Public chat",
 		description = "Color of Public chat"
@@ -92,7 +70,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 3,
 		keyName = "hexColorPublicH",
 		name = "Public chat highlight",
 		description = "Color of Public chat highlight"
@@ -103,7 +81,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 4,
 		keyName = "hexColorPrivate",
 		name = "Private chat",
 		description = "Color of Private chat"
@@ -114,7 +92,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 5,
 		keyName = "hexColorPrivateH",
 		name = "Private chat highlight",
 		description = "Color of Private chat highlight"
@@ -125,7 +103,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 6,
 		keyName = "hexColorCc",
 		name = "Clan chat",
 		description = "Color of Clan chat"
@@ -136,7 +114,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 7,
 		keyName = "hexColorCcH",
 		name = "Clan chat Highlight",
 		description = "Color of Clan chat highlight"
@@ -147,18 +125,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "transparancyRecolor",
-		name = "Different colors for transparent chatbox",
-		description = "Configures whether colors are different for transparent chatbox"
-	)
-	default boolean transparancyRecolor()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 11,
+		position = 8,
 		keyName = "transparentHexColorPublic",
 		name = "Transparent public chat",
 		description = "Color of Public chat"
@@ -169,7 +136,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 9,
 		keyName = "transparentHexColorPublicH",
 		name = "Transparent public chat highlight",
 		description = "Color of Public chat highlight"
@@ -180,7 +147,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 10,
 		keyName = "transparentHexColorPrivate",
 		name = "Transparent private chat",
 		description = "Color of Private chat"
@@ -191,7 +158,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 11,
 		keyName = "transparentHexColorPrivateH",
 		name = "Transparent private chat highlight",
 		description = "Color of Private chat highlight"
@@ -202,7 +169,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 12,
 		keyName = "transparentHexColorCc",
 		name = "Transparent clan chat",
 		description = "Color of Clan chat"
@@ -213,7 +180,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 13,
 		keyName = "transparentHexColorCcH",
 		name = "Transparent clan chat Highlight",
 		description = "Color of Clan chat highlight"

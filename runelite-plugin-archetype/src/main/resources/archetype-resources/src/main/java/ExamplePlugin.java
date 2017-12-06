@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ChatMessageType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
@@ -49,7 +50,7 @@ public class ExamplePlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
-			client.sendGameMessage("Example plugin is running!");
+			client.sendGameMessage(ChatMessageType.GAME, "Example plugin is running!");
 		}
 	}
 

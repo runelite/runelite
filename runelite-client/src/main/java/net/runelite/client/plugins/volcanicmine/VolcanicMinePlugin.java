@@ -30,6 +30,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import static java.lang.Math.abs;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -281,7 +282,7 @@ public class VolcanicMinePlugin extends Plugin
 	{
 		if (warningMode == WarningMode.INGAME || warningMode == WarningMode.INGAME_AND_NOTIFICATION)
 		{
-			client.sendGameMessage(getColTag(config.platformColorHigh()) + "Volcanic Mine helper: " + warning);
+			client.sendGameMessage(ChatMessageType.GAME, getColTag(config.platformColorHigh()) + "Volcanic Mine helper: " + warning);
 		}
 		if (warningMode == WarningMode.NOTIFICATION || warningMode == WarningMode.INGAME_AND_NOTIFICATION)
 		{

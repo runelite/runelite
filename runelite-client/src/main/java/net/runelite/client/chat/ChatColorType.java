@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.chat;
 
-@ConfigGroup(
-	keyName = "runelite",
-	name = "Runelite",
-	description = "Configuration for Runelite client options"
-)
-public interface RuneliteConfig extends Config
+public enum ChatColorType
 {
-	@ConfigItem(
-		keyName = "tooltipLeft",
-		name = "Tooltip left of mouse?",
-		description = "Places the tooltip on the left side of the mouse"
-	)
-	default boolean tooltipLeft()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "chatCommandsRecolorEnabled",
-		name = "Enable chat commands recolor",
-		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
-	)
-	default boolean chatCommandsRecolorEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
-		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
-		+ "of your computer. Are you sure you want to do this?"
-	)
-	default boolean enablePlugins()
-	{
-		return false;
-	}
+	NORMAL,
+	HIGHLIGHT
 }
