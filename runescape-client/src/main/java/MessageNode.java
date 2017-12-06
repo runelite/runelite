@@ -143,7 +143,7 @@ public class MessageNode extends CacheableNode {
       Client.field967 = 0;
       Client.pendingNpcFlagsCount = 0;
       class5.method17();
-      class45.method657(var0, var1);
+      class45.updateNpcs(var0, var1);
       class27.method215(var1);
 
       int var2;

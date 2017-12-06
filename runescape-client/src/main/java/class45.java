@@ -1,3 +1,5 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -148,7 +150,9 @@ public class class45 extends class28 {
       signature = "(ZLgy;B)V",
       garbageValue = "-50"
    )
-   static final void method657(boolean var0, PacketBuffer var1) {
+   @Hook("onNpcUpdate")
+   @Export("updateNpcs")
+   static final void updateNpcs(boolean var0, PacketBuffer var1) {
       while(true) {
          if(var1.bitsAvail(Client.field888.packetLength) >= 27) {
             int var2 = var1.getBits(15);
