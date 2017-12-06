@@ -27,6 +27,7 @@ package net.runelite.client.plugins.examine;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
@@ -34,12 +35,24 @@ import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
+import net.runelite.client.chat.ChatColor;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.MenuOptionClicked;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.examine.ExamineClient;
+import net.runelite.http.api.item.ItemPrice;
 
 /**
  * Submits exammine info to the api
@@ -52,19 +65,67 @@ import net.runelite.http.api.examine.ExamineClient;
 @Slf4j
 public class ExaminePlugin extends Plugin
 {
-	private final ExamineClient client = new ExamineClient();
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
+	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
 
 	@Inject
+	Client client;
+
+	@Inject
+	ExamineConfig config;
+
+	@Inject
+	ItemManager itemManager;
+
+	@Inject
+	ChatMessageManager chatMessageManager;
+
+	@Inject
 	ScheduledExecutorService executor;
+
+	@Provides
+	ExamineConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ExamineConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("examine"))
+		{
+			cacheConfiguredColors();
+			chatMessageManager.refreshAll();
+		}
+	}
+
+	private void cacheConfiguredColors()
+	{
+		chatMessageManager
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getExamineRecolor(), false),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getExamineHRecolor(), false),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentExamineRecolor(), true),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentExamineHRecolor(), true),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT);
+	}
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
 		pending.clear();
+
+		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
+		{
+			cacheConfiguredColors();
+		}
 	}
 
 	@Subscribe
@@ -130,6 +191,11 @@ public class ExaminePlugin extends Plugin
 
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
+		if (config.itemPrice() && pendingExamine.getType() == ExamineType.ITEM)
+		{
+			executor.submit(() -> getItemPrice(pendingExamine));
+		}
+
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
 		Boolean cached = cache.getIfPresent(key);
 		if (cached != null)
@@ -138,11 +204,48 @@ public class ExaminePlugin extends Plugin
 		}
 
 		cache.put(key, Boolean.TRUE);
-
-		executor.submit(() -> submit(pendingExamine, event.getMessage()));
+		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
 	}
 
-	private void submit(PendingExamine examine, String text)
+	private void getItemPrice(PendingExamine examine)
+	{
+		try
+		{
+			final ItemComposition itemComposition = itemManager.getItemComposition(examine.getId());
+
+			if (itemComposition != null)
+			{
+				final int id = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+				final ItemPrice itemPrice = itemManager.getItemPrice(id);
+				final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
+				final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+				final String message = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Price of ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(itemComposition.getName())
+					.append(ChatColorType.NORMAL)
+					.append(": GE average ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.valueOf(gePrice))
+					.append(ChatColorType.NORMAL)
+					.append(" HA value ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.valueOf(alchPrice))
+					.build();
+
+				chatMessageManager.add(ChatMessageType.EXAMINE_ITEM, message);
+				client.refreshChat();
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up item price", e);
+		}
+	}
+
+	private void submitExamine(PendingExamine examine, String text)
 	{
 		int id = examine.getId();
 
@@ -151,13 +254,13 @@ public class ExaminePlugin extends Plugin
 			switch (examine.getType())
 			{
 				case ITEM:
-					client.submitItem(id, text);
+					examineClient.submitItem(id, text);
 					break;
 				case OBJECT:
-					client.submitObject(id, text);
+					examineClient.submitObject(id, text);
 					break;
 				case NPC:
-					client.submitNpc(id, text);
+					examineClient.submitNpc(id, text);
 					break;
 			}
 		}
