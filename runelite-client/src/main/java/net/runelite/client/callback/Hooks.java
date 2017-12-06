@@ -35,7 +35,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
-import net.runelite.api.NPC;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
