@@ -33,6 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.game.ItemManager;
@@ -50,6 +51,7 @@ public class RuneliteModule extends AbstractModule
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
 		bind(MenuManager.class);
+		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
 		bind(InfoBoxManager.class);
 		bind(Scheduler.class);
