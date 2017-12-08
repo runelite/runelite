@@ -58,6 +58,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -100,6 +101,9 @@ public class RuneLite
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private ScheduledExecutorService executor;
@@ -166,6 +170,7 @@ public class RuneLite
 		configManager.load();
 
 		eventBus.register(menuManager);
+		eventBus.register(chatMessageManager);
 
 		// Setup the notifier
 		notifier = new Notifier(trayIcon);

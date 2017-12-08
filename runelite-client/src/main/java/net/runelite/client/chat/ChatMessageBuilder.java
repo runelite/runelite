@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017. l2-
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,23 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatcommands;
+package net.runelite.client.chat;
 
-import java.awt.Color;
-import net.runelite.api.ChatMessageType;
-
-class ChatColor
+public class ChatMessageBuilder
 {
-	Color color;
-	ChatMessageType type;
-	boolean transparent;
-	boolean highlight;
+	private final StringBuilder builder = new StringBuilder();
 
-	ChatColor(Color color, ChatMessageType type, boolean transparent, boolean highlight)
+	public ChatMessageBuilder append(final ChatColorType type)
 	{
-		this.color = color;
-		this.type = type;
-		this.transparent = transparent;
-		this.highlight = highlight;
+		builder.append("<col").append(type.name()).append(">");
+		return this;
+	}
+
+	public ChatMessageBuilder append(final String message)
+	{
+		builder.append(message);
+		return this;
+	}
+
+	public String build()
+	{
+		return builder.toString();
 	}
 }

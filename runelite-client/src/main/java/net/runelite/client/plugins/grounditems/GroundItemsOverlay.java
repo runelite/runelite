@@ -24,21 +24,17 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -88,17 +84,6 @@ public class GroundItemsOverlay extends Overlay
 	private final Client client;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
-	private final LoadingCache<Integer, ItemComposition> itemCache = CacheBuilder.newBuilder()
-		.maximumSize(1024L)
-		.expireAfterAccess(1, TimeUnit.MINUTES)
-		.build(new CacheLoader<Integer, ItemComposition>()
-		{
-			@Override
-			public ItemComposition load(Integer key) throws Exception
-			{
-				return client.getItemDefinition(key);
-			}
-		});
 
 	@Inject
 	ItemManager itemManager;
@@ -186,7 +171,7 @@ public class GroundItemsOverlay extends Overlay
 					Item item = (Item) current;
 					int itemId = item.getId();
 					int itemQuantity = item.getQuantity();
-					ItemComposition itemDefinition = itemCache.getUnchecked(itemId);
+					ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
 
 					Integer currentQuantity = items.get(itemId);
 					if (!hiddenItems.contains(itemDefinition.getName().toLowerCase()))
@@ -200,7 +185,7 @@ public class GroundItemsOverlay extends Overlay
 							? itemQuantity
 							: currentQuantity + itemQuantity;
 
-						ItemPrice itemPrice = itemManager.get(itemId);
+						ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
 
 						int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
 						int alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT);
@@ -230,7 +215,7 @@ public class GroundItemsOverlay extends Overlay
 
 					int itemId = itemIds.get(i);
 					int quantity = items.get(itemId);
-					ItemComposition item = itemCache.getUnchecked(itemId);
+					ItemComposition item = itemManager.getItemComposition(itemId);
 
 					if (item == null)
 					{
@@ -257,7 +242,7 @@ public class GroundItemsOverlay extends Overlay
 					}
 
 					Color textColor = Color.WHITE; // Color to use when drawing the ground item
-					ItemPrice itemPrice = itemManager.get(itemId);
+					ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
 					if (itemPrice != null && config.showGEPrice())
 					{
 						int cost = itemPrice.getPrice() * quantity;

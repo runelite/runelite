@@ -40,7 +40,7 @@ public interface Client
 
 	int getRealSkillLevel(Skill skill);
 
-	void sendGameMessage(String message);
+	void sendGameMessage(ChatMessageType type, String message);
 
 	GameState getGameState();
 
