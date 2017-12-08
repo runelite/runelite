@@ -40,6 +40,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
@@ -56,6 +57,7 @@ public class Hooks
 	private static final EventBus eventBus = injector.getInstance(EventBus.class);
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
+	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
@@ -86,6 +88,8 @@ public class Hooks
 
 		// cull infoboxes
 		infoBoxManager.cull();
+
+		chatMessageManager.process();
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)

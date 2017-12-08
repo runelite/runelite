@@ -235,8 +235,7 @@ public class ExaminePlugin extends Plugin
 					.append(String.valueOf(alchPrice))
 					.build();
 
-				chatMessageManager.add(ChatMessageType.EXAMINE_ITEM, message);
-				client.refreshChat();
+				chatMessageManager.queue(ChatMessageType.EXAMINE_ITEM, message);
 			}
 		}
 		catch (IOException e)

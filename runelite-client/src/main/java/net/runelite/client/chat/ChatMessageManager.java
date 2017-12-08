@@ -28,9 +28,12 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -56,6 +59,7 @@ public class ChatMessageManager
 	private final ScheduledExecutorService executor;
 	private final RuneliteConfig config;
 	private int transparancyVarbit = -1;
+	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	public ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor, RuneliteConfig config)
@@ -96,10 +100,25 @@ public class ChatMessageManager
 		return this;
 	}
 
+	public void queue(ChatMessageType type, String message)
+	{
+		queuedMessages.add(new QueuedMessage(type, message));
+	}
+
+	public void process()
+	{
+		for (Iterator<QueuedMessage> it = queuedMessages.iterator(); it.hasNext();)
+		{
+			QueuedMessage message = it.next();
+			add(message.getType(), message.getMessage());
+			it.remove();
+		}
+	}
+
 	public void add(final ChatMessageType type, final String mesage)
 	{
 		final Client client = clientProvider.get();
-		client.sendGameMessage(type, mesage);
+		client.sendGameMessage(type, mesage); // this updates chat cycle
 		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(type.getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
 		final MessageNode line = lines[0];
