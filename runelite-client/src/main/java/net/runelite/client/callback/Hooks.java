@@ -190,7 +190,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -201,9 +201,10 @@ public class Hooks
 		}
 
 		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
-			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
+			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, actionParam, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setActionParam(actionParam);
 		menuOptionClicked.setMenuOption(menuOption);
 		menuOptionClicked.setMenuTarget(menuTarget);
 		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
