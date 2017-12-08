@@ -40,6 +40,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
@@ -56,6 +57,7 @@ public class Hooks
 	private static final EventBus eventBus = injector.getInstance(EventBus.class);
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
+	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
@@ -86,6 +88,8 @@ public class Hooks
 
 		// cull infoboxes
 		infoBoxManager.cull();
+
+		chatMessageManager.process();
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
@@ -186,7 +190,7 @@ public class Hooks
 		}
 	}
 
-	public static void menuActionHook(int var0, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
+	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
@@ -197,9 +201,10 @@ public class Hooks
 		}
 
 		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
-			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, var0, widgetId);
+			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, actionParam, widgetId);
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setActionParam(actionParam);
 		menuOptionClicked.setMenuOption(menuOption);
 		menuOptionClicked.setMenuTarget(menuTarget);
 		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
