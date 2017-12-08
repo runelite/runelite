@@ -28,9 +28,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Scheduler
 {
-	private final List<ScheduledMethod> scheduledMethods = new ArrayList<>();
+	private final List<ScheduledMethod> scheduledMethods = new CopyOnWriteArrayList<>();
 
 	@Inject
 	ScheduledExecutorService executor;
