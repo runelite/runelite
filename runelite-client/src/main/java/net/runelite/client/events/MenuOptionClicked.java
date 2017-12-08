@@ -30,6 +30,7 @@ import net.runelite.api.MenuAction;
 @Data
 public class MenuOptionClicked
 {
+	private int actionParam;
 	private String menuOption;
 	private String menuTarget;
 	private MenuAction menuAction;
