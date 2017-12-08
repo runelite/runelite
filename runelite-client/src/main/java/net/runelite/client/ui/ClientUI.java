@@ -24,19 +24,20 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
+import net.runelite.client.ui.slidinglayout.*;
+import net.runelite.client.ui.tweenengine.*;
+import net.runelite.client.ui.tweenengine.equations.Cubic;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
 @Slf4j
@@ -45,20 +46,25 @@ public class ClientUI extends JFrame
 	private static final int PANEL_WIDTH = 809;
 	private static final int PANEL_HEIGHT = 536;
 	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+	private static final float FILL_SPACE = 1f;
+
+	private int prevBtnIndex = -1;
 
 	private final RuneLite runelite;
-	private JPanel container;
-	private JPanel navContainer;
-	private ClientPanel panel;
+	private SLPanel container;
+	private SLConfig containerCfg;
+	private ClientPanel clientPanel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+
+	private TweenManager tweenManager;
 
 	public ClientUI(RuneLite runelite)
 	{
 		this.runelite = runelite;
 		init();
 		pack();
-		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
+		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI());
 		titleBarPane.editTitleBar(this);
 		setTitle("RuneLite");
 		setIconImage(RuneLite.ICON);
@@ -83,15 +89,15 @@ public class ClientUI extends JFrame
 			}
 		});
 
-		container = new JPanel();
-		container.setLayout(new BorderLayout(0, 0));
+		container = new SLPanel();
+		add(container);
 
-		panel = new ClientPanel(this);
+		clientPanel = new ClientPanel(this);
 		if (!RuneLite.getOptions().has("no-rs"))
 		{
 			try
 			{
-				panel.loadRs();
+				clientPanel.loadRs();
 			}
 			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
 			{
@@ -99,41 +105,106 @@ public class ClientUI extends JFrame
 				System.exit(-1);
 			}
 		}
-		container.add(panel, BorderLayout.CENTER);
-
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		container.add(navContainer, BorderLayout.EAST);
 
 		pluginToolbar = new PluginToolbar(this);
-		navContainer.add(pluginToolbar, BorderLayout.EAST);
 
-		add(container);
+		containerCfg = new SLConfig(container)
+			.row(FILL_SPACE).col(FILL_SPACE).col(PluginToolbar.TOOLBAR_WIDTH)
+			.place(0, 0, clientPanel)
+			.place(0, 1, pluginToolbar);
+
+		tweenManager = SLAnimator.createTweenManager();
+		container.setTweenManager(tweenManager);
+		container.initialize(containerCfg);
 	}
 
-	void expand(PluginPanel panel)
+	void expand(PluginPanel panel, int btnIndex)
 	{
+		SLConfig pluginCfg = new SLConfig(container)
+			.row(FILL_SPACE).col(FILL_SPACE).col(PluginPanel.PANEL_WIDTH).col(PluginToolbar.TOOLBAR_WIDTH)
+			.place(0, 0, clientPanel)
+			.place(0, 1, panel)
+			.place(0, 2, pluginToolbar);
+
+		pluginToolbar.setActionsEnabled(false);
+
 		if (pluginPanel != null)
 		{
-			navContainer.remove(1);
-			container.validate();
+			if (prevBtnIndex > btnIndex)
+			{
+				container.createTransition()
+					.push(new SLKeyframe(pluginCfg, 0.6f)
+						.setStartSide(SLSide.TOP, panel)
+						.setEndSide(SLSide.BOTTOM, pluginPanel)
+						.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+					.play();
+			}
+			else
+			{
+				container.createTransition()
+					.push(new SLKeyframe(pluginCfg, 0.6f)
+						.setStartSide(SLSide.BOTTOM, panel)
+						.setEndSide(SLSide.TOP, pluginPanel)
+						.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+					.play();
+			}
+		}
+		else if (getWidth() < EXPANDED_WIDTH)
+		{
+			Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+				.target(EXPANDED_WIDTH)
+				.ease(Cubic.INOUT)
+				.setCallback((type, source) ->
+				{
+					if (type == TweenCallback.COMPLETE)
+					{
+						container.createTransition()
+							.push(new SLKeyframe(pluginCfg, 0.6f)
+								.setStartSide(SLSide.RIGHT, panel)
+								.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+							.play();
+					}
+				}).start(tweenManager);
+		}
+		else
+		{
+			container.createTransition()
+				.push(new SLKeyframe(pluginCfg, 0.6f)
+					.setStartSide(SLSide.RIGHT, panel)
+					.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+				.play();
 		}
 
 		pluginPanel = panel;
-		navContainer.add(pluginPanel, BorderLayout.WEST);
-		container.validate();
-		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+		prevBtnIndex = btnIndex;
 	}
 
 	void contract()
 	{
-		navContainer.remove(1);
-		container.validate();
-		this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		if (this.getWidth() == EXPANDED_WIDTH)
-		{
-			this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
-		}
+		pluginToolbar.setActionsEnabled(false);
+
+		container.createTransition()
+			.push(new SLKeyframe(containerCfg, 0.6f)
+				.setEndSide(SLSide.RIGHT, pluginPanel)
+				.setCallback(() ->
+				{
+					if (getWidth() == EXPANDED_WIDTH)
+					{
+						Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+							.target(PANEL_WIDTH)
+							.ease(Cubic.INOUT)
+							.setCallback((type, source) ->
+							{
+								if (type == TweenCallback.COMPLETE) pluginToolbar.setActionsEnabled(true);
+							}).start(tweenManager);
+					}
+					else
+					{
+						pluginToolbar.setActionsEnabled(true);
+					}
+				}))
+			.play();
+
 		pluginPanel = null;
 	}
 

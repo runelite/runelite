@@ -65,6 +65,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.slidinglayout.SLAnimator;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
@@ -139,6 +140,8 @@ public class RuneLite
 		options = parser.parse(args);
 
 		PROFILES_DIR.mkdirs();
+
+		SLAnimator.start();
 
 		injector = Guice.createInjector(new RuneliteModule());
 		runelite = injector.getInstance(RuneLite.class);
