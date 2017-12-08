@@ -56,9 +56,9 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "archaeologistaoe",
-			name = "Crazy Archaeologist",
-			description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed"
+		keyName = "archaeologistaoe",
+		name = "Crazy Archaeologist",
+		description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed"
 	)
 	default boolean isArchaeologistEnabled()
 	{
