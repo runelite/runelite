@@ -125,16 +125,25 @@ public final class Tween extends BaseTween<Tween>
 	private static final Pool.Callback<Tween> poolCallback = new Pool.Callback<Tween>()
 	{
 		@Override
-		public void onPool(Tween obj) {obj.reset();}
+		public void onPool(Tween obj)
+		{
+			obj.reset();
+		}
 
 		@Override
-		public void onUnPool(Tween obj) {obj.reset();}
+		public void onUnPool(Tween obj)
+		{
+			obj.reset();
+		}
 	};
 
 	private static final Pool<Tween> pool = new Pool<Tween>(20, poolCallback)
 	{
 		@Override
-		protected Tween create() {return new Tween();}
+		protected Tween create()
+		{
+			return new Tween();
+		}
 	};
 
 	/**
