@@ -25,32 +25,14 @@
 package net.runelite.client.plugins.examine;
 
 import java.time.Instant;
+import lombok.Data;
 
-public class PendingExamine
+@Data
+class PendingExamine
 {
-	private final ExamineType type;
-	private final int id;
-	private final Instant created;
-
-	public PendingExamine(ExamineType type, int id, Instant created)
-	{
-		this.type = type;
-		this.id = id;
-		this.created = created;
-	}
-
-	public ExamineType getType()
-	{
-		return type;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public Instant getCreated()
-	{
-		return created;
-	}
+	private ExamineType type;
+	private int id;
+	private int widgetId;
+	private int actionParam;
+	private Instant created;
 }

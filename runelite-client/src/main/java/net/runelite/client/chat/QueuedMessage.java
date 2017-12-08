@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.chat;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.api.MenuAction;
+import net.runelite.api.ChatMessageType;
 
 @Data
-public class MenuOptionClicked
+@AllArgsConstructor
+class QueuedMessage
 {
-	private int actionParam;
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
-	private int widgetId;
+	private final ChatMessageType type;
+	private final String message;
 }

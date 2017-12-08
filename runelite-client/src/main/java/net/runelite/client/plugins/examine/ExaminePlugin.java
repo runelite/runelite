@@ -39,6 +39,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -151,7 +155,12 @@ public class ExaminePlugin extends Plugin
 				return;
 		}
 
-		PendingExamine pendingExamine = new PendingExamine(type, id, Instant.now());
+		PendingExamine pendingExamine = new PendingExamine();
+		pendingExamine.setWidgetId(event.getWidgetId());
+		pendingExamine.setActionParam(event.getActionParam());
+		pendingExamine.setType(type);
+		pendingExamine.setId(id);
+		pendingExamine.setCreated(Instant.now());
 		pending.push(pendingExamine);
 	}
 
@@ -193,7 +202,19 @@ public class ExaminePlugin extends Plugin
 
 		if (config.itemPrice() && pendingExamine.getType() == ExamineType.ITEM)
 		{
-			executor.submit(() -> getItemPrice(pendingExamine));
+			// get quantity from widget
+			int widgetId = pendingExamine.getWidgetId();
+			Widget widget = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
+
+			WidgetItem widgetItem = widget != null ? widget.getWidgetItem(pendingExamine.getActionParam()) : null;
+			int quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+
+			ItemComposition itemComposition = itemManager.getItemComposition(pendingExamine.getId());
+
+			if (itemComposition != null)
+			{
+				executor.submit(() -> getItemPrice(itemComposition, quantity));
+			}
 		}
 
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
@@ -207,41 +228,66 @@ public class ExaminePlugin extends Plugin
 		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
 	}
 
-	private void getItemPrice(PendingExamine examine)
+	private void getItemPrice(ItemComposition itemComposition, int quantity)
 	{
+		// convert to unnoted id
+		final boolean note = itemComposition.getNote() != -1;
+		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+
+		ItemPrice itemPrice;
 		try
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(examine.getId());
-
-			if (itemComposition != null)
-			{
-				final int id = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-				final ItemPrice itemPrice = itemManager.getItemPrice(id);
-				final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
-				final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-
-				final String message = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append("Price of ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(itemComposition.getName())
-					.append(ChatColorType.NORMAL)
-					.append(": GE average ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(String.valueOf(gePrice))
-					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(String.valueOf(alchPrice))
-					.build();
-
-				chatMessageManager.add(ChatMessageType.EXAMINE_ITEM, message);
-				client.refreshChat();
-			}
+			itemPrice = itemManager.getItemPrice(id);
 		}
 		catch (IOException e)
 		{
 			log.warn("Error looking up item price", e);
+			return;
+		}
+
+		int itemCompositionPrice = itemComposition.getPrice();
+		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+		final int alchPrice = itemCompositionPrice <= 0
+			? 0
+			: Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT) * quantity;
+
+		if (gePrice > 0 || alchPrice > 0)
+		{
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Price of ")
+				.append(ChatColorType.HIGHLIGHT);
+
+			if (quantity > 1)
+			{
+				message
+					.append(String.format("%,d", quantity))
+					.append(" x ");
+			}
+
+			message
+				.append(itemComposition.getName());
+
+			if (gePrice > 0)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(": GE average ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", gePrice));
+			}
+
+			if (alchPrice > 0)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(" HA value ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", alchPrice));
+			}
+
+			chatMessageManager.queue(ChatMessageType.EXAMINE_ITEM, message.build());
+			client.refreshChat();
 		}
 	}
 
