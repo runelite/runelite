@@ -42,6 +42,7 @@ public enum ChatMessageType
 	FRIENDS_LIST_ADD(30),
 	IGNORE_LIST_ADD(31),
 	AUTOCHAT(90),
+	GAME(99),
 	TRADE(101),
 	DUEL(103),
 	FILTERED(105),
@@ -65,5 +66,10 @@ public enum ChatMessageType
 			}
 		}
 		return UNKNOWN;
+	}
+
+	public int getType()
+	{
+		return type;
 	}
 }

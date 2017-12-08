@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
@@ -99,9 +100,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public void sendGameMessage(String message)
+	public void sendGameMessage(ChatMessageType type, String message)
 	{
-		sendGameMessage(99, "", message);
+		sendGameMessage(type.getType(), "", message);
 	}
 
 	@Inject

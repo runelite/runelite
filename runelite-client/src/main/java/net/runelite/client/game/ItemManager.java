@@ -36,9 +36,11 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.item.SearchResult;
 
 @Singleton
 public class ItemManager
@@ -55,8 +57,10 @@ public class ItemManager
 
 	private final Client client;
 	private final ItemClient itemClient = new ItemClient();
+	private final LoadingCache<String, SearchResult> itemSearches;
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
 	private final LoadingCache<Integer, BufferedImage> itemImages;
+	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
 	public ItemManager(@Nullable Client client, ScheduledExecutorService executor)
@@ -66,6 +70,18 @@ public class ItemManager
 			.maximumSize(512L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(new ItemPriceLoader(executor, itemClient));
+
+		itemSearches = CacheBuilder.newBuilder()
+			.maximumSize(512L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<String, SearchResult>()
+			{
+				@Override
+				public SearchResult load(String key) throws Exception
+				{
+					return itemClient.search(key);
+				}
+			});
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(200)
@@ -78,15 +94,27 @@ public class ItemManager
 					return loadImage(itemId);
 				}
 			});
+
+		itemCompositions = CacheBuilder.newBuilder()
+			.maximumSize(1024L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<Integer, ItemComposition>()
+			{
+				@Override
+				public ItemComposition load(Integer key) throws Exception
+				{
+					return client.getItemDefinition(key);
+				}
+			});
 	}
 
 	/**
 	 * Look up an item's price asynchronously.
 	 *
-	 * @param itemId
+	 * @param itemId item id
 	 * @return the price, or null if the price is not yet loaded
 	 */
-	public ItemPrice get(int itemId)
+	public ItemPrice getItemPriceAsync(int itemId)
 	{
 		ItemPrice itemPrice = itemPrices.getIfPresent(itemId);
 		if (itemPrice != null && itemPrice != EMPTY)
@@ -101,8 +129,8 @@ public class ItemManager
 	/**
 	 * Look up an item's price synchronously
 	 *
-	 * @param itemId
-	 * @return
+	 * @param itemId item id
+	 * @return item price
 	 * @throws IOException
 	 */
 	public ItemPrice getItemPrice(int itemId) throws IOException
@@ -116,6 +144,30 @@ public class ItemManager
 		itemPrice = itemClient.lookupItemPrice(itemId);
 		itemPrices.put(itemId, itemPrice);
 		return itemPrice;
+	}
+
+	/**
+	 * Look up an item's composition
+	 *
+	 * @param itemName item name
+	 * @return item search result
+	 * @throws java.util.concurrent.ExecutionException exception when item
+	 * is not found
+	 */
+	public SearchResult searchForItem(String itemName) throws ExecutionException
+	{
+		return itemSearches.get(itemName);
+	}
+
+	/**
+	 * Look up an item's composition
+	 *
+	 * @param itemId item id
+	 * @return item composition
+	 */
+	public ItemComposition getItemComposition(int itemId)
+	{
+		return itemCompositions.getUnchecked(itemId);
 	}
 
 	/**
