@@ -1,6 +1,6 @@
 package net.runelite.client.ui.slidinglayout;
 
-import net.runelite.client.ui.tweenengine.TweenManager;
+import aurelienribon.tweenengine.TweenManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +11,12 @@ import java.awt.event.ComponentEvent;
  * The SLPanel is the root of the library. It is a {@link JLayeredPane} under
  * the hood. Therefore, every child that is added to it is able to move
  * over or under the other children.
- * <p/>
- * <p>
+ *
  * However, this panel also features its own layout, through the use of
  * {@link SLConfig configurations}. A configuration is a layout of the
  * panel children. The panel can then create smooth transitions between two
  * configurations.
- * <p>
+ *
  * <pre>
  * // First create the panel and give it a way to animate
  * // its transitions

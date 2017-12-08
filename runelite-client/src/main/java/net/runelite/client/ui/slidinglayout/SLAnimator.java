@@ -1,8 +1,9 @@
 package net.runelite.client.ui.slidinglayout;
 
-import net.runelite.client.ui.tweenengine.Tween;
-import net.runelite.client.ui.tweenengine.TweenAccessor;
-import net.runelite.client.ui.tweenengine.TweenManager;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenAccessor;
+import aurelienribon.tweenengine.TweenManager;
 
 import javax.swing.*;
 import java.awt.*;

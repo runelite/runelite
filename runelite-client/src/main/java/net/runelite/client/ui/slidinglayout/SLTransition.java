@@ -1,10 +1,10 @@
 package net.runelite.client.ui.slidinglayout;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Cubic;
 import net.runelite.client.ui.slidinglayout.SLConfig.Tile;
-import net.runelite.client.ui.tweenengine.Timeline;
-import net.runelite.client.ui.tweenengine.Tween;
-import net.runelite.client.ui.tweenengine.TweenManager;
-import net.runelite.client.ui.tweenengine.equations.Cubic;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,16 +14,14 @@ import java.util.List;
  * A transition consists of one or more keyframes (ie. configurations). The
  * engine will move the children of the panel from the current configuration to
  * the first keyframe, and so on.
- * <p/>
- * <p>
+ *
  * If a component is present on a keyframe but absent from the current
  * configuration, it will be considered to be a <b>new component</b>. If you
  * don't specify anything, it will appear right at its target place, which may
  * not be very nice. Instead, you can set its starting side, the side from
  * where it should be brought into view to its target place. It will then slide
  * from this side to its target place.
- * <p/>
- * <p>
+ *
  * Similarly, if a component is present in the current configuration but absent
  * from the next keyframe, it will be considered to be an <b>old component</b>.
  * You can slide it out of the screen gracefully by specifying its ending side.

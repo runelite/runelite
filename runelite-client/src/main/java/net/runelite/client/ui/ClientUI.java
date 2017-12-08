@@ -31,13 +31,16 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Cubic;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.slidinglayout.*;
-import net.runelite.client.ui.tweenengine.*;
-import net.runelite.client.ui.tweenengine.equations.Cubic;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
 @Slf4j
