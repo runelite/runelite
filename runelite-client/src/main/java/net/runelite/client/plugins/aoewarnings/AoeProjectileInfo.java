@@ -30,6 +30,7 @@ import net.runelite.api.ProjectileID;
 public enum AoeProjectileInfo
 {
 	LIZARDMAN_SHAMAN_AOE(ProjectileID.LIZARDMAN_SHAMAN_AOE, 3000, 3),
+	CRAZY_ARCHAEOLOGIST_AOE(ProjectileID.CRAZY_ARCHAEOLOGIST_AOE, 3000, 3),
 	ICE_DEMON_RANGED_AOE(ProjectileID.ICE_DEMON_RANGED_AOE, 3000, 3),
 	/**
 	 * When you don't have pray range on ice demon does an ice barrage

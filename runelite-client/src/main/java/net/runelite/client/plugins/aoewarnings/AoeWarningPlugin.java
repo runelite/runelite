@@ -115,6 +115,8 @@ public class AoeWarningPlugin extends Plugin
 		{
 			case LIZARDMAN_SHAMAN_AOE:
 				return config.isShamansEnabled();
+			case CRAZY_ARCHAEOLOGIST_AOE:
+				return config.isArchaeologistEnabled();
 			case ICE_DEMON_RANGED_AOE:
 			case ICE_DEMON_ICE_BARRAGE_AOE:
 				return config.isIceDemonEnabled();
