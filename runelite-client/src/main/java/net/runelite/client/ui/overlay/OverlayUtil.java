@@ -191,6 +191,8 @@ public class OverlayUtil
 
 		graphics.drawImage(bufferedImage, pos.getX(), pos.getY(), null);
 
+		bufferedImageGraphics.dispose();
+
 		bufferedImageGraphics.setPaint(startPaint);
 	}
 
