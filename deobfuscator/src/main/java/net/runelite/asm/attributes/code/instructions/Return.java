@@ -47,7 +47,7 @@ public class Return extends Instruction implements ReturnInstruction, MappableIn
 
 	public Return(Instructions instructions)
 	{
-		super(instructions, InstructionType.RETURN);
+		super(instructions, InstructionType.ARETURN);
 	}
 
 	@Override

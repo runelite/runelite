@@ -42,15 +42,15 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-interface APIClass
-{
-	void setTest(int i);
-
-	void setTestObject(Object str);
-}
-
 public class InjectSetterTest
 {
+	interface APIClass
+	{
+		void setTest(int i);
+
+		void setTestObject(Object str);
+	}
+
 	@Test
 	public void testInjectSetterInt() throws NoSuchMethodException
 	{
