@@ -46,6 +46,7 @@ import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.StageManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @Slf4j
@@ -98,10 +99,13 @@ public class Hooks
 	{
 		final BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		final StageManager manager = injector.getInstance(StageManager.class);
 
 		try
 		{
 			renderer.render(graphics2d);
+			manager.setGraphics(graphics2d);
+			manager.draw();
 		}
 		catch (Exception ex)
 		{

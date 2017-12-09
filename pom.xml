@@ -60,7 +60,7 @@
 		<developerConnection>scm:git:git@github.com:runelite/runelite</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<developers>
 		<developer>
 			<id>Adam-</id>
@@ -116,7 +116,8 @@
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>runelite-proxy</module>
-	</modules>
+        <module>runelite-ui</module>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>

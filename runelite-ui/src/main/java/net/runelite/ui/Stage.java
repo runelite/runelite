@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui;
+package net.runelite.ui;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.io.IOException;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-public class FontManager
-{
-	private static final Font runescapeFont;
-	private static final Font runescapeSmallFont;
+public class Stage {
+	@Getter
+	@Setter
+	private Group root;
 
-	static
+	@Getter
+	@Setter
+	private Rectangle viewport;
+
+	@Getter
+	@Setter
+	private Graphics2D graphics;
+
+	public Stage()
 	{
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-		try
-		{
-			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape.ttf"))
-				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(runescapeFont);
-
-			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape_small.ttf"))
-				.deriveFont(Font.PLAIN, 16);
-			ge.registerFont(runescapeSmallFont);
-		}
-		catch (FontFormatException ex)
-		{
-			throw new RuntimeException("Font loaded, but format incorrect.", ex);
-		}
-		catch (IOException ex)
-		{
-			throw new RuntimeException("Font file not found.", ex);
-		}
+		root = new Group();
+		root.setStage(this);
 	}
 
-	public static Font getRunescapeFont()
+	public boolean addActor(Actor actor)
 	{
-		return runescapeFont;
+		return root.addActor(actor);
 	}
 
-	public static Font getRunescapeSmallFont()
+	public List<Actor> getActors()
 	{
-		return runescapeSmallFont;
+		return root.getChildren();
+	}
+
+	public void clear()
+	{
+		root.clear();
+	}
+
+	public void act(float delta)
+	{
+		root.act(delta);
+	}
+
+	public void draw()
+	{
+		if (!root.isVisible()) return;
+		root.draw(graphics);
 	}
 }

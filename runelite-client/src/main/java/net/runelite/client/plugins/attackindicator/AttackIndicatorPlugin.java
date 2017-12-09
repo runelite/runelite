@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -45,8 +48,12 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.VarbitChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.*;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.StageManager;
+import net.runelite.ui.Group;
+import net.runelite.ui.components.Background;
+import net.runelite.ui.components.Label;
+import net.runelite.ui.components.Stack;
 
 @PluginDescriptor(
 	name = "Attack indicator plugin"
@@ -71,6 +78,9 @@ public class AttackIndicatorPlugin extends Plugin
 
 	@Inject
 	AttackIndicatorOverlay overlay;
+
+	@Inject
+	StageManager stage;
 
 	@Override
 	public void configure(Binder binder)
@@ -108,6 +118,12 @@ public class AttackIndicatorPlugin extends Plugin
 		updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
 		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+
+		final Stack stack = new Stack();
+		stack.setFillParent(false);
+		stack.addActor(new Background());
+		stack.addActor(new Label("TESTTEST"));
+		((Group)stage.getRoot().findActor("BOTTOM_RIGHT_ROOT")).addActor(stack);
 	}
 
 	@Schedule(

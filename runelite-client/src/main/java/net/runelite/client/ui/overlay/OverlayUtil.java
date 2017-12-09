@@ -41,7 +41,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
-import net.runelite.client.ui.FontManager;
+import net.runelite.ui.util.FontManager;
 
 
 /**
@@ -111,7 +111,7 @@ public class OverlayUtil
 	{
 		Color startColor = graphics.getColor();
 
-		Font font = FontManager.getRunescapeSmallFont();
+		Font font = FontManager.getSmallFont();
 		graphics.setFont(font);
 
 		FontMetrics fm = graphics.getFontMetrics();
@@ -320,7 +320,7 @@ public class OverlayUtil
 
 	public static void setGraphicProperties(Graphics2D graphics)
 	{
-		graphics.setFont(FontManager.getRunescapeFont());
+		graphics.setFont(FontManager.getDefaultFont());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 

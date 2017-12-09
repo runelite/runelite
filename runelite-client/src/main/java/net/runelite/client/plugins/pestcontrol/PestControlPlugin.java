@@ -29,8 +29,8 @@ import java.awt.Font;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.ui.util.FontManager;
 
 @PluginDescriptor(
 	name = "Pest control plugin"
@@ -51,7 +51,7 @@ public class PestControlPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeFont()
+		font = FontManager.getSmallFont()
 			.deriveFont(Font.BOLD, 16);
 	}
 

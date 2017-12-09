@@ -22,24 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.ui;
+package net.runelite.ui.util;
 
-import net.runelite.client.ui.FontManager;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.io.IOException;
 
-public class FontManagerTest
+public class FontManager
 {
-	@Test
-	public void getRunescapeFont()
+	private static final Font runescapeFont;
+	private static final Font runescapeSmallFont;
+
+	static
 	{
-		assertNotNull(FontManager.getRunescapeFont());
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+		try
+		{
+			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape.ttf"))
+				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeFont);
+
+			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
+				FontManager.class.getResourceAsStream("runescape_small.ttf"))
+				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(runescapeSmallFont);
+		}
+		catch (FontFormatException ex)
+		{
+			throw new RuntimeException("Font loaded, but format incorrect.", ex);
+		}
+		catch (IOException ex)
+		{
+			throw new RuntimeException("Font file not found.", ex);
+		}
 	}
 
-	@Test
-	public void getRunescapeSmallFont()
+	public static Font getDefaultFont()
 	{
-		assertNotNull(FontManager.getRunescapeSmallFont());
+		return runescapeFont;
 	}
 
+	public static Font getSmallFont()
+	{
+		return runescapeSmallFont;
+	}
 }

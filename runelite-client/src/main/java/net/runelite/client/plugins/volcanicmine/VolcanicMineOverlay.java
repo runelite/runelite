@@ -47,10 +47,10 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.ui.util.FontManager;
 
 @Slf4j
 public class VolcanicMineOverlay extends Overlay
@@ -86,7 +86,7 @@ public class VolcanicMineOverlay extends Overlay
 			return null;
 		}
 
-		Font font = FontManager.getRunescapeFont();
+		Font font = FontManager.getDefaultFont();
 		if (font != null)
 		{
 			graphics.setFont(font);

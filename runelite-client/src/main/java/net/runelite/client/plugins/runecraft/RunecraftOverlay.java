@@ -39,9 +39,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.ui.util.FontManager;
 
 public class RunecraftOverlay extends Overlay
 {
@@ -51,7 +51,7 @@ public class RunecraftOverlay extends Overlay
 
 	private final RuneLite runelite;
 	private final Client client;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
+	private final Font font = FontManager.getSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final RunecraftConfig config;
 
