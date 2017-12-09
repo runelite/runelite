@@ -192,6 +192,7 @@ public class OverlayUtil
 		graphics.drawImage(bufferedImage, pos.getX(), pos.getY(), null);
 
 		bufferedImageGraphics.setPaint(startPaint);
+		bufferedImageGraphics.dispose();
 	}
 
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
