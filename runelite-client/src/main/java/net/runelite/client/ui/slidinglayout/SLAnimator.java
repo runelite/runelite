@@ -4,6 +4,7 @@ package net.runelite.client.ui.slidinglayout;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenAccessor;
 import aurelienribon.tweenengine.TweenManager;
+import net.runelite.client.ui.ClientUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -149,7 +150,7 @@ public class SLAnimator
 					break;
 				case W:
 					target.setSize(Math.round(newValues[0]), target.getHeight());
-					target.setMinimumSize(new Dimension(Math.round(newValues[0]), target.getHeight()));
+					target.setMinimumSize(new Dimension(Math.round(newValues[0]), ClientUI.PANEL_HEIGHT));
 					target.validate();
 					break;
 				case H:

@@ -46,12 +46,18 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 @Slf4j
 public class ClientUI extends JFrame
 {
-	private static final int PANEL_WIDTH = 809;
-	private static final int PANEL_HEIGHT = 536;
-	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+	public static final int PANEL_WIDTH = 809;
+	public static final int PANEL_HEIGHT = 536;
+	public static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+
 	private static final float FILL_SPACE = 1f;
 
 	private int prevBtnIndex = -1;
+
+	private int persistentX = 0;
+	private int persistentY = 0;
+	private int persistentWidth = 0;
+	private int persistentHeight = 0;
 
 	private final RuneLite runelite;
 	private SLPanel container;
@@ -74,6 +80,41 @@ public class ClientUI extends JFrame
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
+	}
+
+	@Override
+	public void setExtendedState(int state)
+	{
+		if (state == JFrame.MAXIMIZED_BOTH)
+		{
+			persistentX = getX();
+			persistentY = getY();
+			persistentWidth = getWidth();
+			persistentHeight = getHeight();
+		}
+
+		if (state == JFrame.NORMAL)
+		{
+			if (pluginPanel != null)
+			{
+				if (persistentWidth < EXPANDED_WIDTH)
+				{
+					setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+					setBounds(persistentX, persistentY, EXPANDED_WIDTH, persistentHeight);
+					validate();
+				}
+			}
+			else
+			{
+				if (persistentWidth <= EXPANDED_WIDTH)
+				{
+					setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+					setBounds(persistentX, persistentY, PANEL_WIDTH, persistentHeight);
+					validate();
+				}
+			}
+		}
+		super.setExtendedState(state);
 	}
 
 	private void init()
@@ -154,20 +195,26 @@ public class ClientUI extends JFrame
 		}
 		else if (getWidth() < EXPANDED_WIDTH)
 		{
-			Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
-				.target(EXPANDED_WIDTH)
-				.ease(Cubic.INOUT)
-				.setCallback((type, source) ->
-				{
-					if (type == TweenCallback.COMPLETE)
+			SLConfig pluginFillCfg = new SLConfig(container)
+				.row(ClientPanel.PANEL_HEIGHT).col(ClientPanel.PANEL_WIDTH).col(1f).col(PluginToolbar.TOOLBAR_WIDTH)
+				.place(0, 0, clientPanel)
+				.place(0, 1, panel)
+				.place(0, 2, pluginToolbar);
+
+			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
+				.setCallback(() -> Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+					.target(EXPANDED_WIDTH)
+					.ease(Cubic.INOUT)
+					.setCallback((type, source) ->
 					{
-						container.createTransition()
-							.push(new SLKeyframe(pluginCfg, 0.6f)
-								.setStartSide(SLSide.RIGHT, panel)
-								.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
-							.play();
-					}
-				}).start(tweenManager);
+						if (type == TweenCallback.COMPLETE)
+						{
+							container.createTransition().push(new SLKeyframe(pluginCfg, 0)
+								.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+							).play();
+						}
+					}).start(tweenManager)))
+				.play();
 		}
 		else
 		{
@@ -186,27 +233,39 @@ public class ClientUI extends JFrame
 	{
 		pluginToolbar.setActionsEnabled(false);
 
-		container.createTransition()
-			.push(new SLKeyframe(containerCfg, 0.6f)
-				.setEndSide(SLSide.RIGHT, pluginPanel)
-				.setCallback(() ->
-				{
-					if (getWidth() == EXPANDED_WIDTH)
+		if (getWidth() == EXPANDED_WIDTH)
+		{
+			SLConfig pluginFillCfg = new SLConfig(container)
+				.row(ClientPanel.PANEL_HEIGHT).col(ClientPanel.PANEL_WIDTH).col(1f).col(PluginToolbar.TOOLBAR_WIDTH)
+				.place(0, 0, clientPanel)
+				.place(0, 1, pluginPanel)
+				.place(0, 2, pluginToolbar);
+
+			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
+				.setCallback(() -> Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+					.target(PANEL_WIDTH)
+					.ease(Cubic.INOUT)
+					.setCallback((type, source) ->
 					{
-						Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
-							.target(PANEL_WIDTH)
-							.ease(Cubic.INOUT)
-							.setCallback((type, source) ->
-							{
-								if (type == TweenCallback.COMPLETE) pluginToolbar.setActionsEnabled(true);
-							}).start(tweenManager);
-					}
-					else
-					{
-						pluginToolbar.setActionsEnabled(true);
-					}
-				}))
-			.play();
+						if (type == TweenCallback.COMPLETE)
+						{
+							container.createTransition()
+								.push(new SLKeyframe(containerCfg, 0)
+									.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+								).play();
+						}
+					}).start(tweenManager))
+			).play();
+		}
+		else
+		{
+			setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+			container.createTransition()
+				.push(new SLKeyframe(containerCfg, 0.6f)
+					.setEndSide(SLSide.RIGHT, pluginPanel)
+					.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+				).play();
+		}
 
 		pluginPanel = null;
 	}
