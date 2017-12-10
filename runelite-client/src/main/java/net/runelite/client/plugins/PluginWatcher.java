@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.inject.Injector;
+import com.google.inject.Key;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -41,6 +43,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneliteConfig;
 
 @Singleton
@@ -53,6 +57,9 @@ public class PluginWatcher extends Thread
 	private final PluginManager pluginManager;
 	private final WatchService watchService;
 	private final WatchKey watchKey;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	public PluginWatcher(RuneliteConfig runeliteConfig, PluginManager pluginManager) throws IOException
@@ -207,6 +214,18 @@ public class PluginWatcher extends Thread
 		Plugin plugin = loadedPlugins.get(0);
 		plugin.file = pluginFile;
 		plugin.loader = loader;
+
+		// Initialize default configuration
+		Injector injector = plugin.getInjector();
+		for (Key<?> key : injector.getAllBindings().keySet())
+		{
+			Class<?> type = key.getTypeLiteral().getRawType();
+			if (Config.class.isAssignableFrom(type))
+			{
+				Config config = (Config) injector.getInstance(key);
+				configManager.setDefaultConfiguration(config);
+			}
+		}
 
 		try
 		{
