@@ -352,7 +352,7 @@ public class ConfigManager
 	 * Initialize the configuration from the default settings
 	 * @param proxy
 	 */
-	private void setDefaultConfiguration(Object proxy)
+	public void setDefaultConfiguration(Object proxy)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
