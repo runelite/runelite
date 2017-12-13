@@ -22,26 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltips;
+package net.runelite.client.ui.overlay.tooltip;
 
+import java.awt.Point;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Tooltip
 {
-	private final TooltipPriority priority; // if multiple overlays exist in the same position, who wins
-	private final String tooltipText;
-
-	public Tooltip(TooltipPriority priority, String tooltipText)
-	{
-		this.priority = priority;
-		this.tooltipText = tooltipText;
-	}
-
-	public TooltipPriority getPriority()
-	{
-		return priority;
-	}
-
-	public String getText()
-	{
-		return tooltipText;
-	}
+	private final String text;
+	private boolean followMouse = true;
+	private Point position = new Point();
 }

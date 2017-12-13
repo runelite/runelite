@@ -25,11 +25,16 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
+import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
+import static net.runelite.client.plugins.pestcontrol.Portal.RED;
+import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -41,10 +46,6 @@ import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
-import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
-import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
-import static net.runelite.client.plugins.pestcontrol.Portal.RED;
-import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -63,14 +64,14 @@ public class PestControlOverlay extends Overlay
 	@Inject
 	public PestControlOverlay(RuneLite runelite, PestControlPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 		// See if we are in a game or not
 		if (client.getWidget(WidgetInfo.PESTCONTROL_BLUE_SHIELD) == null)

@@ -86,7 +86,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			return;
 		}
-		
+
 		Player localPlayer = client.getLocalPlayer();
 		if (localPlayer != event.getActor())
 		{
@@ -181,13 +181,14 @@ public class IdleNotifierPlugin extends Plugin
 	)
 	public void checkIdle()
 	{
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		Player local = client.getLocalPlayer();
+
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}
 
 		Duration waitDuration = Duration.ofMillis(config.getTimeout());
-		Player local = client.getLocalPlayer();
 		if (notifyIdle && local.getAnimation() == IDLE
 			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{

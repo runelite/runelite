@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.ui.overlay.tooltip;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Client;
+import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-public class DynamicRenderer implements Renderer
+@Singleton
+@Slf4j
+public class TooltipManager
 {
-	private final Client client;
-	private final List<Overlay> overlays = new ArrayList<>();
+	@Getter
+	private final List<Tooltip> tooltips = new ArrayList<>();
 
-	public DynamicRenderer(Client client)
+	public void add(Tooltip tooltip)
 	{
-		this.client = client;
+		tooltips.add(tooltip);
 	}
 
-	public void add(Overlay overlay)
+	public void clear()
 	{
-		overlays.add(overlay);
+		tooltips.clear();
 	}
-
-	@Override
-	public void render(BufferedImage clientBuffer)
-	{
-		for (Overlay overlay : overlays)
-		{
-			if (!overlay.shouldDraw(client))
-				continue;
-
-			Graphics2D graphics = clientBuffer.createGraphics();
-			Renderer.setAntiAliasing(graphics);
-			overlay.render(graphics);
-			graphics.dispose();
-		}
-	}
-
 }

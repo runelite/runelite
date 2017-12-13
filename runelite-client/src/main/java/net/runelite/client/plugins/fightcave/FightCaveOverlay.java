@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,13 +60,13 @@ public class FightCaveOverlay extends Overlay
 	@Inject
 	FightCaveOverlay(@Nullable Client client, FightCavePlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		JadAttack attack = plugin.getAttack();
 		Rectangle viewport = getViewportBounds();

@@ -65,6 +65,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
@@ -107,6 +108,9 @@ public class RuneLite
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private OverlayRenderer overlayRenderer;
 
 	private WSClient wsclient;
 
@@ -169,6 +173,7 @@ public class RuneLite
 
 		configManager.load();
 
+		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 

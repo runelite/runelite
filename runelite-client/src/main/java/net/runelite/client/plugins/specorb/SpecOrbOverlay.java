@@ -58,14 +58,14 @@ public class SpecOrbOverlay extends Overlay
 	@Inject
 	public SpecOrbOverlay(@Nullable Client client, SpecOrbConfig config, SpecOrbPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
 		if (!config.enabled())
 		{

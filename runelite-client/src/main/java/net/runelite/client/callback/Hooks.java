@@ -27,6 +27,7 @@ package net.runelite.client.callback;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -58,6 +59,7 @@ public class Hooks
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
+	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
 
@@ -94,13 +96,12 @@ public class Hooks
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
-		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
-
-		OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
+		final BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
+		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
 		{
-			renderer.render(image);
+			renderer.render(graphics2d);
 		}
 		catch (Exception ex)
 		{
