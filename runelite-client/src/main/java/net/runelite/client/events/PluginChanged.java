@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.events;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import lombok.Data;
+import net.runelite.client.plugins.Plugin;
 
-public class AttackIndicatorOverlay extends Overlay
+@Data
+public class PluginChanged
 {
-	private final AttackIndicatorConfig config;
-	private final AttackIndicatorPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin, AttackIndicatorConfig config)
-	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		this.plugin = plugin;
-		this.config = config;
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
-	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
-		final String attackStyleString = plugin.getAttackStyle().getName();
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(80);
-		return panelComponent.render(graphics, parent);
-	}
+	private final Plugin plugin;
+	private final boolean loaded;
 }

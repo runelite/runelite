@@ -25,42 +25,42 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
-import java.awt.Color;
+import com.google.common.base.Strings;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Provider;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.tooltips.Tooltip;
-import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.InfoBoxComponent;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class InfoBoxOverlay extends Overlay
 {
 	private static final int BOXSIZE = 35;
 	private static final int SEPARATOR = 2;
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 
-	private final Client client;
-	private final TooltipRenderer tooltipRenderer;
 	private final InfoBoxManager infoboxManager;
+	private final TooltipManager tooltipManager;
+	private final Provider<Client> clientProvider;
 
-	public InfoBoxOverlay(Client client, TooltipRenderer tooltipRenderer, InfoBoxManager infoboxManager)
+	@Inject
+	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider)
 	{
-		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
-		this.client = client;
-		this.tooltipRenderer = tooltipRenderer;
+		setPosition(OverlayPosition.BOTTOM_LEFT);
+		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
+		this.clientProvider = clientProvider;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
@@ -69,16 +69,9 @@ public class InfoBoxOverlay extends Overlay
 			return null;
 		}
 
-		FontMetrics metrics = graphics.getFontMetrics();
-
 		int width = infoBoxes.size() * (BOXSIZE + SEPARATOR);
-
-		Point mouse = client.getMouseCanvasPosition();
-		int mouseX = mouse.getX();
-		int mouseY = mouse.getY();
 		int x = 0;
 
-		Rectangle overlayBounds = this.getBounds();
 		for (InfoBox box : infoBoxes)
 		{
 			if (!box.render())
@@ -86,47 +79,29 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
-			graphics.setColor(BACKGROUND);
-			graphics.fillRect(x, 0, BOXSIZE, BOXSIZE);
 
-			graphics.setColor(Color.darkGray);
-			graphics.drawRect(x, 0, BOXSIZE, BOXSIZE);
+			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+			infoBoxComponent.setColor(box.getTextColor());
+			infoBoxComponent.setImage(box.getImage());
+			infoBoxComponent.setText(box.getText());
+			infoBoxComponent.setPosition(new Point(x, 0));
+			final Dimension infoBoxBounds = infoBoxComponent.render(graphics, parent);
 
-			String str = box.getText();
-			Color color = box.getTextColor();
-
-			BufferedImage image = box.getImage();
-			if (image != null)
+			if (!Strings.isNullOrEmpty(box.getTooltip()))
 			{
-				graphics.drawImage(image, x + (BOXSIZE - image.getWidth()) / 2, SEPARATOR, null);
-			}
+				final Rectangle intersectionRectangle = new Rectangle(infoBoxBounds);
+				intersectionRectangle.setLocation(parent);
+				intersectionRectangle.translate(x, 0);
+				final Point transformed = OverlayUtil.transformPosition(getPosition(), intersectionRectangle.getSize());
+				intersectionRectangle.translate(transformed.x, transformed.y);
 
-			// text shaddow
-			graphics.setColor(Color.black);
-			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2) + 1, BOXSIZE - SEPARATOR + 1);
+				final Client client = clientProvider.get();
 
-			graphics.setColor(color);
-			graphics.drawString(str, x + ((BOXSIZE - metrics.stringWidth(str)) / 2), BOXSIZE - SEPARATOR);
-
-			if (overlayBounds == null)
-			{
-				x += BOXSIZE + SEPARATOR;
-				continue;
-			}
-
-			String tooltipText = box.getTooltip();
-			if (tooltipText == null || tooltipText.isEmpty())
-			{
-				x += BOXSIZE + SEPARATOR;
-				continue;
-			}
-
-			Rectangle infoboxBounds = new Rectangle((int) overlayBounds.getX() + x, (int) overlayBounds.getY(), BOXSIZE, BOXSIZE);
-			if (infoboxBounds.contains(mouseX, mouseY))
-			{
-				Tooltip tooltip = new Tooltip(TooltipPriority.HIGH,
-					tooltipText);
-				tooltipRenderer.add(tooltip);
+				if (client != null && intersectionRectangle.contains(new Point(client.getMouseCanvasPosition().getX(),
+					client.getMouseCanvasPosition().getY())))
+				{
+					tooltipManager.add(new Tooltip(box.getTooltip()));
+				}
 			}
 
 			x += BOXSIZE + SEPARATOR;
@@ -134,5 +109,4 @@ public class InfoBoxOverlay extends Overlay
 
 		return new Dimension(width, BOXSIZE);
 	}
-
 }

@@ -44,6 +44,7 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
+import net.runelite.client.events.PluginChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -167,6 +168,7 @@ public class PluginManager
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			eventBus.register(plugin);
+			eventBus.post(new PluginChanged(plugin, true));
 			schedule(plugin);
 		}
 		catch (InterruptedException | InvocationTargetException ex)
@@ -181,6 +183,7 @@ public class PluginManager
 		{
 			unschedule(plugin);
 			eventBus.unregister(plugin);
+			eventBus.post(new PluginChanged(plugin, false));
 
 			// plugins always stop in the event thread
 			SwingUtilities.invokeAndWait(() ->

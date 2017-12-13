@@ -72,14 +72,14 @@ public class VolcanicMineOverlay extends Overlay
 	@Inject
 	VolcanicMineOverlay(@Nullable Client client, VolcanicMinePlugin plugin, VolcanicMineConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
 		if (client == null || !plugin.getInside() || !config.enabled())
 		{

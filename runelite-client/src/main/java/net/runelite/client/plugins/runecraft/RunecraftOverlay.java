@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -57,7 +58,7 @@ public class RunecraftOverlay extends Overlay
 	@Inject
 	RunecraftOverlay(RuneLite runelite, RunecraftConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
@@ -65,7 +66,7 @@ public class RunecraftOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.showPouch())
 		{

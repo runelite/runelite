@@ -26,10 +26,9 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import javax.annotation.Nullable;
@@ -38,22 +37,15 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class ClueScrollOverlay extends Overlay
 {
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
-
-	private static final int WIDTH = 140;
-
-	private static final int TOP_BORDER = 2;
-	private static final int BOTTOM_BORDER = 2;
-	private static final int SEPERATOR = 2;
-
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
 
 	private final Client client;
 	private final ClueScrollConfig config;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	ClueScroll clue;
 	Instant clueTimeout;
@@ -61,13 +53,13 @@ public class ClueScrollOverlay extends Overlay
 	@Inject
 	public ClueScrollOverlay(@Nullable Client client, ClueScrollConfig config)
 	{
-		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled())
 		{
@@ -84,31 +76,12 @@ public class ClueScrollOverlay extends Overlay
 			return null;
 		}
 
-		FontMetrics fm = graphics.getFontMetrics();
-
-		int height = TOP_BORDER + fm.getHeight() + SEPERATOR + (clue.getIds().length * (fm.getHeight() + SEPERATOR)) + BOTTOM_BORDER;
-
-		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, height);
-
-		int y = TOP_BORDER + fm.getHeight();
-
-		String reqHeader = "Required Items";
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(reqHeader, ((WIDTH - fm.stringWidth(reqHeader)) / 2) + 1, y + 1);
-
-		graphics.setColor(Color.WHITE);
-		graphics.drawString(reqHeader, ((WIDTH - fm.stringWidth(reqHeader)) / 2), y);
-
-		y += fm.getHeight() + SEPERATOR;
+		panelComponent.getLines().clear();
+		panelComponent.setTitle("Required items");
 
 		if (clue.getIds().length == 0)
 		{
-			graphics.setColor(Color.BLACK);
-			graphics.drawString("None", ((WIDTH - fm.stringWidth("None")) / 2) + 1, y + 1);
-
-			graphics.setColor(Color.WHITE);
-			graphics.drawString("None", ((WIDTH - fm.stringWidth("None")) / 2), y);
+			panelComponent.getLines().add(new PanelComponent.Line("None", ""));
 		}
 		else
 		{
@@ -121,18 +94,10 @@ public class ClueScrollOverlay extends Overlay
 					continue;
 				}
 
-				String itemName = clueItem.getName();
-				graphics.setColor(Color.BLACK);
-				graphics.drawString(itemName, ((WIDTH - fm.stringWidth(itemName)) / 2) + 1, y + 1);
-
-				graphics.setColor(Color.WHITE);
-				graphics.drawString(itemName, ((WIDTH - fm.stringWidth(itemName)) / 2), y);
-
-				//might eventually add a inventory/equipment check or item images here?
-				y += fm.getHeight() + SEPERATOR;
+				panelComponent.getLines().add(new PanelComponent.Line(clueItem.getName(), ""));
 			}
 		}
 
-		return new Dimension(WIDTH, height);
+		return panelComponent.render(graphics, parent);
 	}
 }
