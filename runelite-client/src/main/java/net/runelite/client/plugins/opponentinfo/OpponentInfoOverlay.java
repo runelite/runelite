@@ -28,18 +28,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -49,12 +53,10 @@ class OpponentInfoOverlay extends Overlay
 	private static final int BOTTOM_BORDER = 2;
 
 	private static final int BAR_WIDTH = 124;
-	private static final int BAR_HEIGHT = 20;
+	private static final int BAR_HEIGHT = 16;
 
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
-
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
 	private final Client client;
@@ -69,7 +71,8 @@ class OpponentInfoOverlay extends Overlay
 	@Inject
 	OpponentInfoOverlay(@Nullable Client client, OpponentConfig config)
 	{
-		super(OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
+		setPosition(OverlayPosition.TOP_LEFT);
+		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.config = config;
 	}
@@ -86,9 +89,9 @@ class OpponentInfoOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (config.enabled() == false)
+		if (!config.enabled())
 		{
 			return null;
 		}
@@ -107,35 +110,38 @@ class OpponentInfoOverlay extends Overlay
 		{
 			return null; //don't draw anything.
 		}
+
 		FontMetrics fm = graphics.getFontMetrics();
 
 		int height = TOP_BORDER + fm.getHeight(); // opponent name
 		if (lastRatio >= 0)
 		{
-			height += 2 // between name and hp bar
+			height += 12 // between name and hp bar
 				+ BAR_HEIGHT; // bar
 		}
+
 		height += BOTTOM_BORDER;
 
-		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, height);
+		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setRectangle(new Rectangle(0, 0, WIDTH, height));
+		backgroundComponent.render(graphics, parent);
 
 		int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
-		graphics.setColor(Color.white);
-		graphics.drawString(opponentName, x, fm.getHeight() + TOP_BORDER);
+		final TextComponent textComponent = new TextComponent();
+		textComponent.setPosition(new Point(x, fm.getHeight() + TOP_BORDER));
+		textComponent.setText(opponentName);
+		textComponent.render(graphics, parent);
 
 		if (lastRatio >= 0)
 		{
 			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
-			int barY = TOP_BORDER + fm.getHeight() + 1;
+			int barY = TOP_BORDER + fm.getHeight() + 6;
 
 			graphics.setColor(HP_GREEN);
 			graphics.fillRect((WIDTH - BAR_WIDTH) / 2, barY, barWidth, BAR_HEIGHT);
 
 			graphics.setColor(HP_RED);
 			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, barY, BAR_WIDTH - barWidth, BAR_HEIGHT);
-
-			graphics.setColor(Color.white);
 
 			String str;
 
@@ -149,7 +155,10 @@ class OpponentInfoOverlay extends Overlay
 				str = df.format(lastRatio * 100) + "%";
 			}
 
-			graphics.drawString(str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getHeight());
+			final TextComponent textComponent1 = new TextComponent();
+			textComponent1.setText(str);
+			textComponent1.setPosition(new Point((WIDTH - fm.stringWidth(str)) / 2, barY + fm.getHeight()));
+			textComponent1.render(graphics, parent);
 		}
 
 		return new Dimension(WIDTH, height);

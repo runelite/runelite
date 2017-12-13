@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,14 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.Point;
 
-public interface Renderer
+public abstract class RenderableEntity
 {
-	void render(BufferedImage clientBuffer);
-
-	static void setAntiAliasing(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		return null;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.ui.overlay.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import java.awt.Rectangle;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class AttackIndicatorOverlay extends Overlay
+@NoArgsConstructor
+@AllArgsConstructor
+public class BackgroundComponent extends RenderableEntity
 {
-	private final AttackIndicatorConfig config;
-	private final AttackIndicatorPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private static final int BORDER_OFFSET = 2;
+	private static final Color BACKGROUND_COLOR = new Color(70, 61, 50, 156);
+	private static final Color OUTSIDE_STROKE_COLOR = new Color(56, 48, 35, 255);
+	private static final Color INSIDE_STROKE_COLOR = new Color(90, 82, 69, 255);
 
-	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin, AttackIndicatorConfig config)
-	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		this.plugin = plugin;
-		this.config = config;
-	}
+	@Setter
+	private Rectangle rectangle = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
+		// Render background
+		graphics.setColor(BACKGROUND_COLOR);
+		graphics.fill(rectangle);
 
-		final String attackStyleString = plugin.getAttackStyle().getName();
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(80);
-		return panelComponent.render(graphics, parent);
+		// Render outside stroke
+		final Rectangle outsideStroke = new Rectangle(rectangle);
+		outsideStroke.grow(-BORDER_OFFSET / 2,- BORDER_OFFSET / 2);
+		graphics.setColor(OUTSIDE_STROKE_COLOR);
+		graphics.draw(outsideStroke);
+
+		// Render inside stroke
+		final Rectangle insideStroke = new Rectangle(rectangle);
+		insideStroke.grow(-BORDER_OFFSET, -BORDER_OFFSET);
+		graphics.setColor(INSIDE_STROKE_COLOR);
+		graphics.draw(insideStroke);
+		return new Dimension(rectangle.getSize());
 	}
 }

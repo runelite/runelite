@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,7 @@ class JewelleryCountOverlay extends Overlay
 	@Inject
 	JewelleryCountOverlay(RuneLite runelite, JewelleryCountConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
@@ -63,7 +64,7 @@ class JewelleryCountOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled())
 		{

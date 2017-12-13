@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltips;
+package net.runelite.client.ui.overlay.components;
 
-public enum TooltipPriority
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
+
+public class TextComponent extends RenderableEntity
 {
-	LOW,
-	MED,
-	HIGH;
+	@Setter
+	private String text;
+
+	@Setter
+	private Point position = new Point();
+
+	@Setter
+	private Color color = Color.WHITE;
+
+	@Override
+	public Dimension render(Graphics2D graphics, Point parent)
+	{
+		// Draw shadow
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, position.x + 1, position.y + 1);
+
+		// Draw actual text
+		graphics.setColor(color);
+		graphics.drawString(text, position.x, position.y);
+
+		final FontMetrics fontMetrics = graphics.getFontMetrics();
+		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
+	}
 }

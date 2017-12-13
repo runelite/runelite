@@ -25,18 +25,19 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import static net.runelite.api.ItemID.BINDING_NECKLACE;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import static net.runelite.api.ItemID.BINDING_NECKLACE;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -58,7 +59,7 @@ public class BindNeckOverlay extends Overlay
 	@Inject
 	BindNeckOverlay(RuneLite runelite, RunecraftConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
@@ -66,7 +67,7 @@ public class BindNeckOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.showBindNeck())
 		{

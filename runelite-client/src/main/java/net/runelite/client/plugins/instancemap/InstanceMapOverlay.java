@@ -113,7 +113,7 @@ class InstanceMapOverlay extends Overlay
 	@Inject
 	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config, InstanceMapPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
@@ -169,7 +169,7 @@ class InstanceMapOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
 		if (!config.enabled() || !showMap)
 		{

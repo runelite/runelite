@@ -40,11 +40,9 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.tooltips.Tooltip;
-import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class RunepouchOverlay extends Overlay
 {
@@ -62,21 +60,21 @@ public class RunepouchOverlay extends Overlay
 	private final RuneLite runelite;
 	private final Client client;
 	private final RunepouchConfig config;
-	private final TooltipRenderer tooltipRenderer;
+	private final TooltipManager tooltipManager;
 
 	@Inject
-	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, OverlayRenderer overlayRenderer)
+	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, TooltipManager tooltipManager)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
+		this.tooltipManager = tooltipManager;
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
-		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
 		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
 		if (!config.enabled())
 		{
@@ -145,9 +143,7 @@ public class RunepouchOverlay extends Overlay
 
 		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			String tooltipText = tooltipBuilder.toString();
-			Tooltip tooltip = new Tooltip(TooltipPriority.HIGH, tooltipText);
-			tooltipRenderer.add(tooltip);
+			tooltipManager.add(new Tooltip(tooltipBuilder.toString()));
 		}
 		return null;
 	}

@@ -75,14 +75,14 @@ public class XpGlobesOverlay extends Overlay
 	@Inject
 	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
 
 		// won't draw if not logged in or not enabled

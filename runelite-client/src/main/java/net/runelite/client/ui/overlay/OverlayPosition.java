@@ -27,6 +27,10 @@ package net.runelite.client.ui.overlay;
 public enum OverlayPosition
 {
 	/**
+	 * Overlay places itself where it wants
+	 */
+	DYNAMIC,
+	/**
 	 * Place overlay in the top left most area possible
 	 */
 	TOP_LEFT,
@@ -35,7 +39,11 @@ public enum OverlayPosition
 	 */
 	TOP_RIGHT,
 	/**
-	 * Overlay places itself where it wants
+	 * Place overlay in the bottom left most area possible
 	 */
-	DYNAMIC;
+	BOTTOM_LEFT,
+	/**
+	 * Place overlay in the bottom right most area possible
+	 */
+	BOTTOM_RIGHT;
 }

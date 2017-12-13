@@ -26,8 +26,8 @@ package net.runelite.client.plugins.fishing;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import javax.annotation.Nullable;
@@ -35,36 +35,28 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class FishingOverlay extends Overlay
 {
-	private static final int WIDTH = 140;
-
-	private static final int TOP_BORDER = 2;
-	private static final int LEFT_BORDER = 2;
-	private static final int RIGHT_BORDER = 2;
-	private static final int BOTTOM_BORDER = 2;
-	private static final int SEPARATOR = 2;
-
-	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 	private static final String FISHING_SPOT = "Fishing spot";
 
 	private final Client client;
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	public FishingOverlay(@Nullable Client client, FishingPlugin plugin, FishingConfig config)
 	{
-		super(OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
+		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled())
 		{
@@ -86,50 +78,31 @@ class FishingOverlay extends Overlay
 			return null;
 		}
 
-		FontMetrics metrics = graphics.getFontMetrics();
-
-		int height = TOP_BORDER + (metrics.getHeight() * 3) + SEPARATOR * 3 + BOTTOM_BORDER;
-		int y = TOP_BORDER + metrics.getHeight();
-
-		graphics.setColor(BACKGROUND);
-		graphics.fillRect(0, 0, WIDTH, height);
-
+		panelComponent.getLines().clear();
 		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName().equals(FISHING_SPOT))
 		{
-			graphics.setColor(Color.green);
-			String str = "You are fishing";
-			graphics.drawString(str, (WIDTH - metrics.stringWidth(str)) / 2, y);
+			panelComponent.setTitle("You are fishing");
+			panelComponent.setTitleColor(Color.GREEN);
 		}
 		else
 		{
-			graphics.setColor(Color.red);
-			String str = "You are NOT fishing";
-			graphics.drawString(str, (WIDTH - metrics.stringWidth(str)) / 2, y);
+			panelComponent.setTitle("You are NOT fishing");
+			panelComponent.setTitleColor(Color.RED);
 		}
 
-		y += metrics.getHeight() + SEPARATOR;
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Caught fish:",
+			Integer.toString(session.getTotalFished())
+		));
 
-		graphics.setColor(Color.white);
-		graphics.drawString("Caught Fish:", LEFT_BORDER, y);
 
-		String totalFishedStr = Integer.toString(session.getTotalFished());
-		graphics.drawString(totalFishedStr, WIDTH - RIGHT_BORDER - metrics.stringWidth(totalFishedStr), y);
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Fish/hr:",
+			session.getRecentFished() > 2
+				? Integer.toString(session.getPerHour())
+				: ""
+		));
 
-		y += metrics.getHeight() + SEPARATOR;
-
-		graphics.drawString("Fish/hr:", LEFT_BORDER, y);
-
-		String perHourStr;
-		if (session.getRecentFished() > 2)
-		{
-			perHourStr = Integer.toString(session.getPerHour());
-		}
-		else
-		{
-			perHourStr = "~";
-		}
-		graphics.drawString(perHourStr, WIDTH - RIGHT_BORDER - metrics.stringWidth(perHourStr), y);
-
-		return new Dimension(WIDTH, height);
+		return panelComponent.render(graphics, parent);
 	}
 }

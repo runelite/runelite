@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +22,66 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackindicator;
+package net.runelite.client.ui.overlay.tooltip;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Provider;
+import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.TooltipComponent;
 
-public class AttackIndicatorOverlay extends Overlay
+public class TooltipOverlay extends Overlay
 {
-	private final AttackIndicatorConfig config;
-	private final AttackIndicatorPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final TooltipManager tooltipManager;
+	private final Provider<Client> clientProvider;
 
 	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin, AttackIndicatorConfig config)
+	public TooltipOverlay(TooltipManager tooltipManager, Provider<Client> clientProvider)
 	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		this.plugin = plugin;
-		this.config = config;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
+		this.tooltipManager = tooltipManager;
+		this.clientProvider = clientProvider;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
+		List<Tooltip> tooltips = tooltipManager.getTooltips();
+
+		if (tooltips.isEmpty())
 		{
 			return null;
 		}
 
-		final String attackStyleString = plugin.getAttackStyle().getName();
-		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(80);
-		return panelComponent.render(graphics, parent);
+		for (Tooltip tooltip : tooltips)
+		{
+			final TooltipComponent tooltipComponent = new TooltipComponent();
+			tooltipComponent.setText(tooltip.getText());
+
+			if (tooltip.isFollowMouse())
+			{
+				final Client client = clientProvider.get();
+				final net.runelite.api.Point mouseCanvasPosition = client != null
+					? client.getMouseCanvasPosition()
+					: new net.runelite.api.Point(0, 0);
+				tooltipComponent.setPosition(new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()));
+			}
+			else
+			{
+				tooltipComponent.setPosition(tooltip.getPosition());
+			}
+
+			tooltipComponent.render(graphics, parent);
+		}
+
+		tooltipManager.clear();
+		return null;
 	}
 }
