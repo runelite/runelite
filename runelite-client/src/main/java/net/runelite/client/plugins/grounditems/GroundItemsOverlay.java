@@ -91,13 +91,13 @@ public class GroundItemsOverlay extends Overlay
 	@Inject
 	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
 		Widget viewport = client.getViewportWidget();
 

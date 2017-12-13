@@ -74,13 +74,13 @@ public class ZulrahOverlay extends Overlay
 	@Inject
 	ZulrahOverlay(@Nullable Client client, ZulrahPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
 		ZulrahInstance instance = plugin.getInstance();
 

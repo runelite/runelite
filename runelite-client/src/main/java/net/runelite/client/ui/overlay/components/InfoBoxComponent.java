@@ -22,59 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.ui.overlay.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import net.runelite.api.Client;
+import java.util.Objects;
+import javax.annotation.Nullable;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class TopDownRendererLeft implements Renderer
+public class InfoBoxComponent extends RenderableEntity
 {
-	private static final int BORDER_TOP = 25;
-	private static final int BORDER_LEFT = 10;
-	private static final int PADDING = 10;
+	private static final int BOX_SIZE = 35;
+	private static final int SEPARATOR = 2;
 
-	private final Client client;
-	private final List<Overlay> overlays = new ArrayList<>();
+	@Setter
+	private String text;
 
-	public TopDownRendererLeft(Client client)
-	{
-		this.client = client;
-	}
+	@Setter
+	private Color color = Color.WHITE;
 
-	public void add(Overlay overlay)
-	{
-		overlays.add(overlay);
-	}
+	@Setter
+	private Point position = new Point();
+
+	@Setter
+	@Nullable
+	private BufferedImage image;
 
 	@Override
-	public void render(BufferedImage clientBuffer)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
-		int y = BORDER_TOP;
+		final FontMetrics metrics = graphics.getFontMetrics();
+		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
+		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setRectangle(bounds);
+		backgroundComponent.render(graphics, parent);
 
-		for (Overlay overlay : overlays)
+		if (Objects.nonNull(image))
 		{
-			if (!overlay.shouldDraw(client))
-				continue;
-
-			BufferedImage image = clientBuffer.getSubimage(BORDER_LEFT, y, clientBuffer.getWidth() - BORDER_LEFT, clientBuffer.getHeight() - y);
-			Graphics2D graphics = image.createGraphics();
-			Renderer.setAntiAliasing(graphics);
-			Dimension dimension = overlay.render(graphics);
-			graphics.dispose();
-
-			if (dimension == null)
-				continue;
-
-			Rectangle bounds = new Rectangle(BORDER_LEFT, y, (int) dimension.getWidth(), (int) dimension.getHeight());
-			overlay.storeBounds(bounds);
-
-			y += dimension.getHeight() + PADDING;
+			graphics.drawImage(image,
+				position.x + (BOX_SIZE - image.getWidth()) / 2,
+				SEPARATOR, null);
 		}
+
+		final TextComponent textComponent = new TextComponent();
+		textComponent.setColor(color);
+		textComponent.setText(text);
+		textComponent.setPosition(new Point(
+			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
+			BOX_SIZE - SEPARATOR));
+		textComponent.render(graphics, parent);
+		return new Dimension(BOX_SIZE, BOX_SIZE);
 	}
 }

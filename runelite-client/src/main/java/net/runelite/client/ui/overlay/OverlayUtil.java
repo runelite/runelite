@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -33,6 +34,7 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
@@ -316,4 +318,31 @@ public class OverlayUtil
 		}
 	}
 
+	public static void setGraphicProperties(Graphics2D graphics)
+	{
+		graphics.setFont(FontManager.getRunescapeFont());
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+
+	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)
+	{
+		final java.awt.Point result = new java.awt.Point();
+
+		switch (position)
+		{
+			case DYNAMIC:
+			case TOP_LEFT:
+				break;
+			case BOTTOM_LEFT:
+				result.y = result.y - dimension.height;
+				break;
+			case BOTTOM_RIGHT:
+				result.y = result.y - dimension.height;
+			case TOP_RIGHT:
+				result.x = result.x - dimension.width;
+				break;
+		}
+
+		return result;
+	}
 }

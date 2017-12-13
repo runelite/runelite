@@ -24,14 +24,15 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import com.google.common.collect.ImmutableList;
 import static com.google.common.collect.ObjectArrays.concat;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Set;
@@ -86,7 +87,7 @@ class SlayerOverlay extends Overlay
 	@Inject
 	SlayerOverlay(RuneLite runelite, SlayerPlugin plugin, SlayerConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.plugin = plugin;
@@ -94,7 +95,7 @@ class SlayerOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled())
 		{

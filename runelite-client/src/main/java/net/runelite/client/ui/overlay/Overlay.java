@@ -24,98 +24,14 @@
  */
 package net.runelite.client.ui.overlay;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.widgets.WidgetInfo;
+import lombok.Data;
 
-public abstract class Overlay
+@Data
+public abstract class Overlay extends RenderableEntity
 {
-	private OverlayPosition position; // where to draw it
-	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
-	private Rectangle bounds; //screen bounds of overlay after OverlayRenderer decides location
+	private OverlayPosition position = OverlayPosition.TOP_LEFT;
+	private OverlayPriority priority = OverlayPriority.NONE;
 	private boolean drawOverLoginScreen = false;
 	private boolean drawOverBankScreen = false;
 	private boolean drawOverClickToPlayScreen = false;
-
-	public Overlay(OverlayPosition position)
-	{
-		this(position, OverlayPriority.NONE);
-	}
-
-	public Overlay(OverlayPosition position, OverlayPriority priority)
-	{
-		this.position = position;
-		this.priority = priority;
-	}
-
-	public OverlayPosition getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(OverlayPosition position)
-	{
-		this.position = position;
-	}
-
-	public OverlayPriority getPriority()
-	{
-		return priority;
-	}
-
-	public void setPriority(OverlayPriority priority)
-	{
-		this.priority = priority;
-	}
-
-	public abstract Dimension render(Graphics2D graphics);
-
-	public Rectangle getBounds()
-	{
-		return bounds;
-	}
-
-	public void storeBounds(Rectangle bounds)
-	{
-		this.bounds = bounds;
-	}
-
-	public boolean shouldDraw(Client client)
-	{
-		if (client == null)
-		{
-			return false;
-		}
-		if (!drawOverLoginScreen && client.getGameState() != GameState.LOGGED_IN)
-		{
-			return false;
-		}
-		if (!drawOverClickToPlayScreen && client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
-		{
-			return false;
-		}
-		if (!drawOverBankScreen && client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) != null)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public void setDrawOverLoginScreen(boolean drawOverLoginScreen)
-	{
-		this.drawOverLoginScreen = drawOverLoginScreen;
-	}
-
-	public void setDrawOverBankScreen(boolean drawOverBankScreen)
-	{
-		this.drawOverBankScreen = drawOverBankScreen;
-	}
-
-	public void setDrawOverClickToPlayScreen(boolean drawOverClickToPlayScreen)
-	{
-		this.drawOverClickToPlayScreen = drawOverClickToPlayScreen;
-	}
 }

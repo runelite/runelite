@@ -26,37 +26,34 @@ package net.runelite.client.plugins.mousehighlight;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayRenderer;
-import net.runelite.client.ui.overlay.tooltips.Tooltip;
-import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 class MouseHighlightOverlay extends Overlay
 {
-	// Grabs the colour and name from a target string
-	// <col=ffffff>Player1
 	private final MouseHighlightConfig config;
+	private final TooltipManager tooltipManager;
 	private final Client client;
-	private final TooltipRenderer tooltipRenderer;
 
 	@Inject
-	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, OverlayRenderer overlayRenderer)
+	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, TooltipManager tooltipManager)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
-		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
+		this.tooltipManager = tooltipManager;
 		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 		if (!config.enabled())
 		{
@@ -94,10 +91,7 @@ class MouseHighlightOverlay extends Overlay
 				return null;
 		}
 
-		Tooltip tooltip = new Tooltip(TooltipPriority.LOW,
-			option + " " + target);
-		tooltipRenderer.add(tooltip);
-
+		tooltipManager.add(new Tooltip(option + " " + target));
 		return null;
 	}
 }
