@@ -49,6 +49,7 @@ import net.runelite.client.events.VarbitChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.OverlayGroup;
 import net.runelite.client.ui.overlay.StageManager;
 import net.runelite.ui.Group;
 import net.runelite.ui.components.Background;
@@ -120,10 +121,9 @@ public class AttackIndicatorPlugin extends Plugin
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 
 		final Stack stack = new Stack();
-		stack.setFillParent(false);
-		stack.addActor(new Background());
 		stack.addActor(new Label("TESTTEST"));
-		((Group)stage.getRoot().findActor("BOTTOM_RIGHT_ROOT")).addActor(stack);
+		stack.addActor(new Background());
+		stage.findGroup(OverlayGroup.BOTTOM_RIGHT).addActor(stack);
 	}
 
 	@Schedule(

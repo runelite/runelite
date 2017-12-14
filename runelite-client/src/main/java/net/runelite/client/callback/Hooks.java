@@ -63,14 +63,16 @@ public class Hooks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
+    private static final StageManager stage = injector.getInstance(StageManager.class);
 
 	private static long lastCheck;
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
 		long now = System.currentTimeMillis();
+		long delta = now - lastCheck;
 
-		if (now - lastCheck < CHECK)
+		if (delta < CHECK)
 		{
 			return;
 		}
@@ -93,19 +95,20 @@ public class Hooks
 		infoBoxManager.cull();
 
 		chatMessageManager.process();
+
+		stage.act(delta);
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
 		final BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
-		final StageManager manager = injector.getInstance(StageManager.class);
 
 		try
 		{
 			renderer.render(graphics2d);
-			manager.setGraphics(graphics2d);
-			manager.draw();
+			stage.setGraphics(graphics2d);
+			stage.draw();
 		}
 		catch (Exception ex)
 		{

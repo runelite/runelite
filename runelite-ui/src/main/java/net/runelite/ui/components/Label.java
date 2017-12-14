@@ -115,6 +115,10 @@ public class Label extends Component {
 	public void draw (Graphics2D graphics) {
 		super.draw(graphics);
 		final String text = this.text.toString();
+		final Color oldColor = graphics.getColor();
+		final Font oldFont = graphics.getFont();
+
+		graphics.setFont(font);
 
 		// Draw shadow
 		graphics.setColor(Color.BLACK);
@@ -123,6 +127,9 @@ public class Label extends Component {
 		// Draw actual text
 		graphics.setColor(color);
 		graphics.drawString(text, getX(), getY());
+
+		graphics.setColor(oldColor);
+		graphics.setFont(oldFont);
 	}
 
 	@Override

@@ -63,11 +63,10 @@ public class Stack extends ComponentGroup {
 		if (sizeInvalid) computeSize();
 		int width = getWidth(), height = getHeight();
 		List<Actor> children = getChildren();
-		for (int i = 0, n = children.size(); i < n; i++) {
-			Actor child = children.get(i);
-			child.setBounds(0, 0, width, height);
-			if (child instanceof Layout) ((Layout)child).validate();
-		}
+        for (Actor child : children) {
+            child.setBounds(0, 0, width, height);
+            if (child instanceof Layout) ((Layout) child).validate();
+        }
 	}
 
 	@Override

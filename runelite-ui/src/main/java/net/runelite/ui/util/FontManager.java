@@ -24,9 +24,12 @@
  */
 package net.runelite.ui.util;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 public class FontManager
@@ -68,5 +71,17 @@ public class FontManager
 	public static Font getSmallFont()
 	{
 		return runescapeSmallFont;
+	}
+
+	public static int getFontHeight(Font font)
+	{
+		return font.getSize();
+	}
+
+	public static Dimension getTextDimension(Font font, String text)
+	{
+		final FontRenderContext context = new FontRenderContext(font.getTransform(), true, true);
+		Rectangle2D stringBounds = font.getStringBounds(text, context);
+		return new Dimension((int) stringBounds.getWidth(), (int) stringBounds.getHeight());
 	}
 }

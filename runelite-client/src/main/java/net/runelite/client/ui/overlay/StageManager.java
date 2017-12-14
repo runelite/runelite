@@ -1,8 +1,31 @@
+/*
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.ui.overlay;
 
 import com.google.common.eventbus.Subscribe;
 import java.awt.Canvas;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -14,7 +37,10 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.ResizeableChanged;
+import net.runelite.ui.Actor;
+import net.runelite.ui.Group;
 import net.runelite.ui.Stage;
+import net.runelite.ui.components.ComponentGroup;
 import net.runelite.ui.components.HorizontalGroup;
 import net.runelite.ui.components.VerticalGroup;
 import net.runelite.ui.util.Align;
@@ -32,6 +58,7 @@ public class StageManager extends Stage {
 	private final VerticalGroup topRightGroup = new VerticalGroup();
 	private final HorizontalGroup bottomLeftGroup = new HorizontalGroup();
 	private final VerticalGroup bottomRightGroup = new VerticalGroup();
+	private final ComponentGroup dynamicGroup = new ComponentGroup();
 
 	@Inject
 	private Provider<Client> clientProvider;
@@ -41,7 +68,7 @@ public class StageManager extends Stage {
 		super();
 		getRoot().setVisible(false);
 
-		topLeftGroup.setName("TOP_LEFT_ROOT");
+		topLeftGroup.setName(OverlayGroup.TOP_LEFT.name());
 		topLeftGroup.setAlign(Align.topLeft);
 		topLeftGroup.setPadTop(BORDER_TOP);
 		topLeftGroup.setPadLeft(BORDER_LEFT);
@@ -49,7 +76,7 @@ public class StageManager extends Stage {
 		topLeftGroup.setFillParent(true);
 		addActor(topLeftGroup);
 
-		topRightGroup.setName("TOP_RIGHT_ROOT");
+		topRightGroup.setName(OverlayGroup.TOP_RIGHT.name());
 		topRightGroup.setAlign(Align.topRight);
 		topRightGroup.setPadTop(BORDER_TOP);
 		topRightGroup.setPadLeft(BORDER_RIGHT);
@@ -57,7 +84,7 @@ public class StageManager extends Stage {
 		topRightGroup.setFillParent(true);
 		addActor(topRightGroup);
 
-		bottomLeftGroup.setName("BOTTOM_LEFT_ROOT");
+		bottomLeftGroup.setName(OverlayGroup.BOTTOM_LEFT.name());
 		bottomLeftGroup.setAlign(Align.bottomLeft);
 		bottomLeftGroup.setPadLeft(BORDER_LEFT);
 		bottomLeftGroup.setPadBottom(BORDER_BOTTOM);
@@ -65,19 +92,29 @@ public class StageManager extends Stage {
 		bottomLeftGroup.setFillParent(true);
 		addActor(bottomLeftGroup);
 
-		bottomRightGroup.setName("BOTTOM_RIGHT_ROOT");
+		bottomRightGroup.setName(OverlayGroup.BOTTOM_RIGHT.name());
 		bottomRightGroup.setAlign(Align.bottomRight);
 		bottomRightGroup.setPadRight(BORDER_RIGHT);
 		bottomRightGroup.setPadBottom(BORDER_BOTTOM);
 		bottomRightGroup.setSpace(SPACING);
 		bottomRightGroup.setFillParent(true);
 		addActor(bottomRightGroup);
+
+		dynamicGroup.setName(OverlayGroup.DYNAMIC.name());
+		dynamicGroup.setFillParent(true);
+		addActor(dynamicGroup);
 	}
+
+	public Group findGroup(OverlayGroup group)
+    {
+        final Actor actor = getRoot().findActor(group.name());
+        return actor instanceof Group ? (Group) actor : null;
+    }
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState().equals(GameState.LOGGED_IN))
+		if (event.getGameState().equals(GameState.LOGGED_IN) || event.getGameState().equals(GameState.LOGIN_SCREEN))
 		{
 			updateStage();
 		}
@@ -101,7 +138,6 @@ public class StageManager extends Stage {
 
 		final Canvas canvas = client.getCanvas();
 		setViewport(new Rectangle(canvas.getX(), canvas.getY(), canvas.getWidth(), canvas.getHeight()));
-		setGraphics((Graphics2D) client.getCanvas().getGraphics());
 
 		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
 
