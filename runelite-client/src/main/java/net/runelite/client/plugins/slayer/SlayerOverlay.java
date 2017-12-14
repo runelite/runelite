@@ -45,9 +45,9 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.ui.util.FontManager;
 
 class SlayerOverlay extends Overlay
 {
@@ -55,7 +55,7 @@ class SlayerOverlay extends Overlay
 	private final Client client;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
+	private final Font font = FontManager.getSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final Set<Integer> slayerJewelry = Sets.newHashSet(
 		ItemID.SLAYER_RING_1,

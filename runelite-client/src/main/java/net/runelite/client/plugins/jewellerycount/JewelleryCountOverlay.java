@@ -42,16 +42,16 @@ import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.ui.util.FontManager;
 
 class JewelleryCountOverlay extends Overlay
 {
 	private final RuneLite runelite;
 	private final Client client;
 	private final JewelleryCountConfig config;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
+	private final Font font = FontManager.getSmallFont().deriveFont(Font.PLAIN, 16);
 
 	@Inject
 	JewelleryCountOverlay(RuneLite runelite, JewelleryCountConfig config)

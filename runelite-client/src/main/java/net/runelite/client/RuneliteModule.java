@@ -41,6 +41,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.overlay.StageManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @Slf4j
@@ -50,6 +51,7 @@ public class RuneliteModule extends AbstractModule
 	protected void configure()
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(StageManager.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);

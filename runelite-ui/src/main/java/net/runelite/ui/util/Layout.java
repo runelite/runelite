@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.ui;
+package net.runelite.ui.util;
 
-import net.runelite.client.ui.FontManager;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
-
-public class FontManagerTest
-{
-	@Test
-	public void getRunescapeFont()
-	{
-		assertNotNull(FontManager.getRunescapeFont());
-	}
-
-	@Test
-	public void getRunescapeSmallFont()
-	{
-		assertNotNull(FontManager.getRunescapeSmallFont());
-	}
-
+public interface Layout {
+	void layout ();
+	void invalidate ();
+	void invalidateHierarchy ();
+	void validate ();
+	void pack ();
+	void setFillParent (boolean fillParent);
+	void setLayoutEnabled (boolean enabled);
+	int getMinWidth ();
+	int getMinHeight ();
+	int getPrefWidth ();
+	int getPrefHeight ();
+	int getMaxWidth ();
+	int getMaxHeight ();
 }

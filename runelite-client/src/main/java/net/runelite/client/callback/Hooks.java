@@ -46,6 +46,7 @@ import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.StageManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @Slf4j
@@ -62,14 +63,16 @@ public class Hooks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final DeathChecker death = new DeathChecker(client, eventBus);
 	private static final GameTick tick = new GameTick();
+    private static final StageManager stage = injector.getInstance(StageManager.class);
 
 	private static long lastCheck;
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
 		long now = System.currentTimeMillis();
+		long delta = now - lastCheck;
 
-		if (now - lastCheck < CHECK)
+		if (delta < CHECK)
 		{
 			return;
 		}
@@ -92,6 +95,8 @@ public class Hooks
 		infoBoxManager.cull();
 
 		chatMessageManager.process();
+
+		stage.act(delta);
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
@@ -102,6 +107,8 @@ public class Hooks
 		try
 		{
 			renderer.render(graphics2d);
+			stage.setGraphics(graphics2d);
+			stage.draw();
 		}
 		catch (Exception ex)
 		{

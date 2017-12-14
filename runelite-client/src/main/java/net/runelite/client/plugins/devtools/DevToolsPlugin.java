@@ -33,9 +33,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.ui.util.FontManager;
 
 @PluginDescriptor(
 	name = "Developer tools plugin",
@@ -84,7 +84,7 @@ public class DevToolsPlugin extends Plugin
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
-		font = FontManager.getRunescapeFont()
+		font = FontManager.getDefaultFont()
 			.deriveFont(Font.BOLD, 16);
 	}
 
