@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import aurelienribon.slidinglayout.*;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
@@ -40,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
-import net.runelite.client.ui.slidinglayout.*;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
 @Slf4j
@@ -120,6 +120,8 @@ public class ClientUI extends JFrame
 	private void init()
 	{
 		assert SwingUtilities.isEventDispatchThread();
+
+		Tween.registerAccessor(JFrame.class, new FrameAccessor());
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -202,7 +204,7 @@ public class ClientUI extends JFrame
 				.place(0, 2, pluginToolbar);
 
 			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
-				.setCallback(() -> Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+				.setCallback(() -> Tween.to(this, FrameAccessor.WIDTH, 0.6f)
 					.target(EXPANDED_WIDTH)
 					.ease(Cubic.INOUT)
 					.setCallback((type, source) ->
@@ -242,7 +244,7 @@ public class ClientUI extends JFrame
 				.place(0, 2, pluginToolbar);
 
 			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
-				.setCallback(() -> Tween.to(this, SLAnimator.ComponentAccessor.W, 0.6f)
+				.setCallback(() -> Tween.to(this, FrameAccessor.WIDTH, 0.6f)
 					.target(PANEL_WIDTH)
 					.ease(Cubic.INOUT)
 					.setCallback((type, source) ->

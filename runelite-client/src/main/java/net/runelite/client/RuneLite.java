@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import aurelienribon.slidinglayout.SLAnimator;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
@@ -65,7 +66,6 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.slidinglayout.SLAnimator;
 import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 

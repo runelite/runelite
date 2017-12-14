@@ -92,6 +92,10 @@
 			<name>Runelite</name>
 			<url>http://repo.runelite.net</url>
 		</repository>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
