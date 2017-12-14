@@ -32,16 +32,6 @@ package net.runelite.client.config;
 public interface RuneliteConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tooltipLeft",
-		name = "Tooltip left of mouse?",
-		description = "Places the tooltip on the left side of the mouse"
-	)
-	default boolean tooltipLeft()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "chatCommandsRecolorEnabled",
 		name = "Enable chat commands recolor",
 		description = "Determines if recoloring of custom RuneLite chat commands is enabled"

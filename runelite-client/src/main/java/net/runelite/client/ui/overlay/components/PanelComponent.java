@@ -41,7 +41,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class PanelComponent extends RenderableEntity
+public class PanelComponent implements RenderableEntity
 {
 	private static final int TOP_BORDER = 3;
 	private static final int LEFT_BORDER = 6;

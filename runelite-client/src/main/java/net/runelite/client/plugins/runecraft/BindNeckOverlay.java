@@ -28,8 +28,6 @@ package net.runelite.client.plugins.runecraft;
 import static net.runelite.api.ItemID.BINDING_NECKLACE;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -37,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -47,13 +44,12 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class BindNeckOverlay extends Overlay
 {
 	private final RuneLite runelite;
-	private final Client client;
 	private final RunecraftConfig config;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 	int bindingCharges;
 
 	@Inject
@@ -61,7 +57,6 @@ public class BindNeckOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
-		this.client = runelite.getClient();
 		this.config = config;
 		this.setDrawOverBankScreen(true);
 	}
@@ -74,12 +69,19 @@ public class BindNeckOverlay extends Overlay
 			return null;
 		}
 
-		graphics.setFont(font);
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem necklace : getNecklaceWidgetItems())
 		{
-			Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
-			renderBindNeck(graphics, necklace.getCanvasBounds(), bindingCharges, color);
+			final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
+			final Rectangle bounds = necklace.getCanvasBounds();
+			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
+
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setText(text);
+			textComponent.setColor(color);
+			textComponent.render(graphics, parent);
 		}
 
 		return null;
@@ -100,21 +102,5 @@ public class BindNeckOverlay extends Overlay
 		necklaces.addAll(Arrays.asList(inventoryWidgetItems));
 		necklaces.addAll(Arrays.asList(equipmentWidgetItems));
 		return necklaces;
-	}
-
-	private void renderBindNeck(Graphics2D graphics, Rectangle bounds, int charges, Color color)
-	{
-		String text = charges <= 0 ? "?" : charges + "";
-		FontMetrics fm = graphics.getFontMetrics();
-
-		int textX = (int) bounds.getX();
-		int textY = (int) bounds.getY() + fm.getHeight();
-
-		//text shadow
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, textX + 1, textY + 1);
-
-		graphics.setColor(color);
-		graphics.drawString(text, textX, textY);
 	}
 }

@@ -24,10 +24,7 @@
  */
 package net.runelite.client.plugins.jewellerycount;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -35,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -45,20 +41,18 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 class JewelleryCountOverlay extends Overlay
 {
 	private final RuneLite runelite;
-	private final Client client;
 	private final JewelleryCountConfig config;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	@Inject
 	JewelleryCountOverlay(RuneLite runelite, JewelleryCountConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
-		this.client = runelite.getClient();
 		this.config = config;
 		this.setDrawOverBankScreen(true);
 	}
@@ -71,7 +65,7 @@ class JewelleryCountOverlay extends Overlay
 			return null;
 		}
 
-		graphics.setFont(font);
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getJewelleryWidgetItems())
 		{
@@ -82,8 +76,11 @@ class JewelleryCountOverlay extends Overlay
 				continue;
 			}
 
-			renderWidgetText(graphics, item.getCanvasBounds(), charges.getCharges(), Color.white);
-
+			final Rectangle bounds = item.getCanvasBounds();
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setText(String.valueOf(charges.getCharges()));
+			textComponent.render(graphics, parent);
 		}
 
 		return null;
@@ -106,20 +103,4 @@ class JewelleryCountOverlay extends Overlay
 		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
 		return jewellery;
 	}
-
-	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int charges, Color color)
-	{
-		FontMetrics fm = graphics.getFontMetrics();
-
-		int textX = (int) bounds.getX();
-		int textY = (int) bounds.getY() + fm.getHeight();
-
-		//text shadow
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(String.valueOf(charges), textX + 1, textY + 1);
-
-		graphics.setColor(color);
-		graphics.drawString(String.valueOf(charges), textX, textY);
-	}
-
 }
