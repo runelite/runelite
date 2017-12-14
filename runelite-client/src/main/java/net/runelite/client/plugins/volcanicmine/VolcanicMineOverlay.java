@@ -27,7 +27,6 @@ package net.runelite.client.plugins.volcanicmine;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -47,7 +46,6 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -86,11 +84,6 @@ public class VolcanicMineOverlay extends Overlay
 			return null;
 		}
 
-		Font font = FontManager.getRunescapeFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
-		}
 		renderTileObjects(graphics);
 		renderRangePrayer(graphics);
 		return null;

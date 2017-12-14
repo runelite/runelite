@@ -33,9 +33,10 @@ import java.awt.Rectangle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Setter;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class TooltipComponent extends RenderableEntity
+public class TooltipComponent implements RenderableEntity
 {
 	private static final Pattern COLOR_SPLIT = Pattern.compile("<\\/?col=?([^>]+)?>");
 	private static final Pattern BR = Pattern.compile("</br>");
@@ -50,6 +51,8 @@ public class TooltipComponent extends RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
 		// Tooltip size
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int textDescent = metrics.getDescent();

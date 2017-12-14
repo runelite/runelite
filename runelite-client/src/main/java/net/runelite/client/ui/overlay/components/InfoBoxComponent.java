@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class InfoBoxComponent extends RenderableEntity
+public class InfoBoxComponent implements RenderableEntity
 {
 	private static final int BOX_SIZE = 35;
 	private static final int SEPARATOR = 2;
