@@ -150,6 +150,7 @@ class WidgetID
 	{
 		static final int CHATBOX_MESSAGES = 29;
 		static final int CHATBOX_BUTTONS = 1;
+		static final int CHATBOX_REPORT = 28;
 	}
 
 	static class Prayer
