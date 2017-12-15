@@ -36,6 +36,21 @@ public class ExperienceTest
 	{
 		int xp = Experience.getXpForLevel(99);
 		Assert.assertEquals(XP_FOR_99, xp);
+
+		xp = Experience.getXpForLevel(1);
+		Assert.assertEquals(0, xp);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetXpForHighLevel()
+	{
+		int xp = Experience.getXpForLevel(Integer.MAX_VALUE);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetXpForLowLevel()
+	{
+		int xp = Experience.getXpForLevel(0);
 	}
 
 	@Test
