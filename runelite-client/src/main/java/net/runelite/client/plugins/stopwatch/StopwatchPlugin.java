@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
 import java.time.temporal.ChronoUnit;
 
 @PluginDescriptor(
-        name = "Stopwatch plugin"
+	name = "Stopwatch plugin"
 )
 public class StopwatchPlugin extends Plugin
 {
