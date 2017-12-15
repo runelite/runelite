@@ -5,9 +5,9 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-        keyName = "stopwatch",
-        name = "Stopwatch",
-        description = "Configuration for the stopwatch plugin"
+	keyName = "stopwatch",
+	name = "Stopwatch",
+	description = "Configuration for the stopwatch plugin"
 )
 public interface StopwatchPluginConfig extends Config
 {
