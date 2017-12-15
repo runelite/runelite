@@ -50,6 +50,7 @@ import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
@@ -135,6 +136,8 @@ public class RuneLite
 	{
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
 		System.setProperty("sun.awt.noerasebackground", "true");
 
 		OptionParser parser = new OptionParser();
