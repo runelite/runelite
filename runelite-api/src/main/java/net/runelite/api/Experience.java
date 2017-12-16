@@ -39,29 +39,29 @@ public class Experience
 
 		for (int level = 1; level <= MAX_VIRT_LEVEL; ++level)
 		{
+			XP_FOR_LEVEL[level - 1] = xp / 4;
+
 			int difference = (int) ((double) level + 300.0 * Math.pow(2.0, (double) level / 7.0));
 			xp += difference;
-
-			XP_FOR_LEVEL[level - 1] = xp / 4;
 		}
 	}
 
 	public static int getXpForLevel(int level)
 	{
-		if (level < 2 || level > MAX_VIRT_LEVEL)
+		if (level < 1 || level > MAX_VIRT_LEVEL)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(level + " is not a valid level");
 		}
 
-		// XP_FOR_LEVEL[0] is XP for level 2
-		return XP_FOR_LEVEL[level - 2];
+		// XP_FOR_LEVEL[0] is XP for level 1
+		return XP_FOR_LEVEL[level - 1];
 	}
 
 	public static int getLevelForXp(int xp)
 	{
 		if (xp < 0)
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("XP must not be negative");
 		}
 
 		int low = 0;
@@ -82,11 +82,11 @@ public class Experience
 			}
 			else
 			{
-				break;
+				return mid + 1;
 			}
 		}
 
-		return high + 2;
+		return high + 1;
 	}
 
 	public static double getCombatLevelPrecise(int attackLevel, int strengthLevel,
