@@ -266,13 +266,15 @@ public class ExaminePlugin extends Plugin
 			}
 
 			message
-				.append(itemComposition.getName());
+				.append(itemComposition.getName())
+				.append(ChatColorType.NORMAL)
+				.append(":");
 
 			if (gePrice > 0)
 			{
 				message
 					.append(ChatColorType.NORMAL)
-					.append(": GE average ")
+					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(String.format("%,d", gePrice));
 			}
