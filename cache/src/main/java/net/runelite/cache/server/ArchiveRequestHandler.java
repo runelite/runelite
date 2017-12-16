@@ -123,11 +123,19 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 			int compressedSize = Ints.fromBytes(packed[1], packed[2],
 				packed[3], packed[4]);
 
-			assert packed.length == 1 // compression
+			// size the client expects the data to be
+			int expectedSize = 1 // compression
 				+ 4 // compressed size
 				+ compressedSize
-				+ (compression != CompressionType.NONE ? 4 : 0)
-				: "maybe revision is at end of data?";
+				+ (compression != CompressionType.NONE ? 4 : 0);
+			if (packed.length != expectedSize)
+			{
+				// It may have the archive revision appended at the end.
+				// The data the client writes will have it, but the data fetched from
+				// the update server will never have it
+				assert packed.length - expectedSize == 2 : "packed length != expected size";
+				packed = Arrays.copyOf(packed, packed.length - 2);
+			}
 		}
 		else
 		{
