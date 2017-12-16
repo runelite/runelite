@@ -38,10 +38,22 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 @AllArgsConstructor
 public class BackgroundComponent implements RenderableEntity
 {
+	public static final Color DEFAULT_BACKGROUND_COLOR = new Color(70, 61, 50, 156);
+
 	private static final int BORDER_OFFSET = 2;
-	private static final Color BACKGROUND_COLOR = new Color(70, 61, 50, 156);
-	private static final Color OUTSIDE_STROKE_COLOR = new Color(56, 48, 35, 255);
-	private static final Color INSIDE_STROKE_COLOR = new Color(90, 82, 69, 255);
+
+	private static final int OUTSIDE_STROKE_RED_OFFSET = 14;
+	private static final int OUTSIDE_STROKE_GREEN_OFFSET = 13;
+	private static final int OUTSIDE_STROKE_BLUE_OFFSET = 15;
+	private static final int OUTSIDE_STROKE_ALPHA = 255;
+
+	private static final int INSIDE_STROKE_RED_OFFSET = 20;
+	private static final int INSIDE_STROKE_GREEN_OFFSET = 21;
+	private static final int INSIDE_STROKE_BLUE_OFFSET = 19;
+	private static final int INSIDE_STROKE_ALPHA = 255;
+
+	@Setter
+	private Color backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
 	@Setter
 	private Rectangle rectangle = new Rectangle();
@@ -49,20 +61,34 @@ public class BackgroundComponent implements RenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		Color outsideStrokeColor = new Color(
+			Math.max(0, backgroundColor.getRed() - OUTSIDE_STROKE_RED_OFFSET),
+			Math.max(0, backgroundColor.getGreen() - OUTSIDE_STROKE_GREEN_OFFSET),
+			Math.max(0, backgroundColor.getBlue() - OUTSIDE_STROKE_BLUE_OFFSET),
+			OUTSIDE_STROKE_ALPHA
+		);
+
+		Color insideStrokeColor = new Color(
+			Math.min(255, backgroundColor.getRed() + INSIDE_STROKE_RED_OFFSET),
+			Math.min(255, backgroundColor.getGreen() + INSIDE_STROKE_GREEN_OFFSET),
+			Math.min(255, backgroundColor.getBlue() + INSIDE_STROKE_BLUE_OFFSET),
+			INSIDE_STROKE_ALPHA
+		);
+
 		// Render background
-		graphics.setColor(BACKGROUND_COLOR);
+		graphics.setColor(backgroundColor);
 		graphics.fill(rectangle);
 
 		// Render outside stroke
 		final Rectangle outsideStroke = new Rectangle(rectangle);
 		outsideStroke.grow(-BORDER_OFFSET / 2,- BORDER_OFFSET / 2);
-		graphics.setColor(OUTSIDE_STROKE_COLOR);
+		graphics.setColor(outsideStrokeColor);
 		graphics.draw(outsideStroke);
 
 		// Render inside stroke
 		final Rectangle insideStroke = new Rectangle(rectangle);
 		insideStroke.grow(-BORDER_OFFSET, -BORDER_OFFSET);
-		graphics.setColor(INSIDE_STROKE_COLOR);
+		graphics.setColor(insideStrokeColor);
 		graphics.draw(insideStroke);
 		return new Dimension(rectangle.getSize());
 	}

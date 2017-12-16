@@ -48,6 +48,9 @@ public class InfoBoxComponent implements RenderableEntity
 	private Color color = Color.WHITE;
 
 	@Setter
+	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
+
+	@Setter
 	private Point position = new Point();
 
 	@Setter
@@ -60,6 +63,7 @@ public class InfoBoxComponent implements RenderableEntity
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(bounds);
 		backgroundComponent.render(graphics, parent);
 
