@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import net.runelite.cache.StoreLocation;
-import net.runelite.cache.fs.tree.TreeStorage;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -152,17 +151,6 @@ public class StoreTest
 				store2.load();
 
 				Assert.assertEquals(store, store2);
-			}
-
-			// Test tree save/load
-			File tree = folder.newFolder();
-			Storage treeStorage = new TreeStorage(tree);
-
-			treeStorage.save(store);
-
-			try (Store store2 = new Store(treeStorage))
-			{
-				store2.load();
 			}
 		}
 	}

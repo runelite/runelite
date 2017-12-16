@@ -28,7 +28,6 @@ import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import net.runelite.cache.CacheProperties;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.fs.tree.TreeStorage;
 import net.runelite.cache.protocol.packets.HandshakeResponseType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -70,33 +69,6 @@ public class CacheClientTest
 			c.close();
 
 			store.save();
-		}
-	}
-
-	@Test
-	@Ignore
-	public void testTree() throws Exception
-	{
-		try (Store store = new Store(new File("C:\\rs\\temp")))
-		{
-			TreeStorage storage = new TreeStorage(new File("C:\\rs\\runescape-data\\cache"));
-			storage.load(store);
-
-			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
-			c.connect();
-			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
-
-			HandshakeResponseType result = handshake.get();
-			logger.info("Handshake result: {}", result);
-
-			Assert.assertEquals(HandshakeResponseType.RESPONSE_OK, result);
-
-			c.download();
-
-			c.close();
-
-			storage = new TreeStorage(new File("C:\\rs\\temp\\t"));
-			storage.save(store);
 		}
 	}
 }
