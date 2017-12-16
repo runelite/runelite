@@ -22,81 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.util;
 
-import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.Arrays;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class Xtea
 {
-	static
-	{
-		Security.addProvider(new BouncyCastleProvider());
-	}
-	
-	private final Cipher cipher;
-	private final int[] keys;
+	private static final int GOLDEN_RATIO = 0x9E3779B9;
 
-	public Xtea(int[] keys) throws NoSuchAlgorithmException, NoSuchPaddingException
+	private static final int ROUNDS = 32;
+
+	private final int[] key;
+
+	public Xtea(int[] key)
 	{
-		this.cipher = Cipher.getInstance("XTEA/ECB/NoPadding");
-		this.keys = keys;
+		this.key = key;
 	}
 
-	private static byte[] packKey(int[] key)
+	public byte[] encrypt(byte[] data, int len)
 	{
-		ByteBuffer buffer = ByteBuffer.allocate(4 * key.length);
-		for (int i : key)
-			buffer.putInt(i);
-		return buffer.array();
-	}
-
-	public byte[] encrypt(byte[] data, int len) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
-	{
-		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(packKey(keys), cipher.getAlgorithm()));
-		byte[] out = cipher.update(data, 0, len - (len % cipher.getBlockSize()));
-		cipher.doFinal();
-
-		// add remaining data, which is not encrypted
-		if (out.length != len)
+		ByteBuf buf = Unpooled.wrappedBuffer(data, 0, len);
+		ByteBuf out = Unpooled.buffer(len);
+		int numBlocks = len / 8;
+		for (int block = 0; block < numBlocks; ++block)
 		{
-			assert len > out.length;
-			
-			byte[] padded = Arrays.copyOf(out, len);
-			System.arraycopy(data, out.length, padded, out.length, len - out.length);
-
-			out = padded;
+			int v0 = buf.readInt();
+			int v1 = buf.readInt();
+			int sum = 0;
+			for (int i = 0; i < ROUNDS; ++i)
+			{
+				v0 += (((v1 << 4) ^ (v1 >>> 5)) + v1) ^ (sum + key[sum & 3]);
+				sum += GOLDEN_RATIO;
+				v1 += (((v0 << 4) ^ (v0 >>> 5)) + v0) ^ (sum + key[(sum >>> 11) & 3]);
+			}
+			out.writeInt(v0);
+			out.writeInt(v1);
 		}
-
-		return out;
+		out.writeBytes(buf);
+		return out.array();
 	}
 
-	public byte[] decrypt(byte[] data, int len) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+	public byte[] decrypt(byte[] data, int len)
 	{
-		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(packKey(keys), cipher.getAlgorithm()));
-		byte[] out = cipher.update(data, 0, len - (len % cipher.getBlockSize()));
-		cipher.doFinal();
-
-		if (out.length != len)
+		ByteBuf buf = Unpooled.wrappedBuffer(data, 0, len);
+		ByteBuf out = Unpooled.buffer(len);
+		int numBlocks = len / 8;
+		for (int block = 0; block < numBlocks; ++block)
 		{
-			assert len > out.length;
-
-			byte[] padded = Arrays.copyOf(out, len);
-			System.arraycopy(data, out.length, padded, out.length, len - out.length);
-
-			out = padded;
+			int v0 = buf.readInt();
+			int v1 = buf.readInt();
+			int sum = GOLDEN_RATIO * ROUNDS;
+			for (int i = 0; i < ROUNDS; ++i)
+			{
+				v1 -= (((v0 << 4) ^ (v0 >>> 5)) + v0) ^ (sum + key[(sum >>> 11) & 3]);
+				sum -= GOLDEN_RATIO;
+				v0 -= (((v1 << 4) ^ (v1 >>> 5)) + v1) ^ (sum + key[sum & 3]);
+			}
+			out.writeInt(v0);
+			out.writeInt(v1);
 		}
-
-		return out;
+		out.writeBytes(buf);
+		return out.array();
 	}
 }

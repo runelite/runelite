@@ -30,11 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import net.runelite.cache.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
@@ -432,16 +427,8 @@ public class DataFile implements Closeable
 			return data;
 		}
 
-		try
-		{
-			Xtea xtea = new Xtea(keys);
-			return xtea.decrypt(data, length);
-		}
-		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
-		{
-			logger.warn("unable to xtea decrypt", ex);
-			return null;
-		}
+		Xtea xtea = new Xtea(keys);
+		return xtea.decrypt(data, length);
 	}
 
 	private static byte[] encrypt(byte[] data, int length, int[] keys)
@@ -451,15 +438,7 @@ public class DataFile implements Closeable
 			return data;
 		}
 
-		try
-		{
-			Xtea xtea = new Xtea(keys);
-			return xtea.encrypt(data, length);
-		}
-		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
-		{
-			logger.warn("unable to xtea encrypt", ex);
-			return null;
-		}
+		Xtea xtea = new Xtea(keys);
+		return xtea.encrypt(data, length);
 	}
 }
