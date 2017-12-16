@@ -52,6 +52,9 @@ public class ImagePanelComponent implements RenderableEntity
 	private Color titleColor = Color.WHITE;
 
 	@Setter
+	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
+
+	@Setter
 	private BufferedImage image;
 
 	@Setter
@@ -77,6 +80,7 @@ public class ImagePanelComponent implements RenderableEntity
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
 		backgroundComponent.render(graphics, parent);
 

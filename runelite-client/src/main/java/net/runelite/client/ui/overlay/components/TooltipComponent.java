@@ -46,6 +46,9 @@ public class TooltipComponent implements RenderableEntity
 	private String text;
 
 	@Setter
+	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
+
+	@Setter
 	private Point position = new Point();
 
 	@Override
@@ -92,6 +95,7 @@ public class TooltipComponent implements RenderableEntity
 		final Rectangle tooltipBackground = new Rectangle(x, y,
 			tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(tooltipBackground);
 		backgroundComponent.render(graphics, parent);
 		graphics.setColor(Color.WHITE);

@@ -68,6 +68,9 @@ public class PanelComponent implements RenderableEntity
 	private Color titleColor = Color.WHITE;
 
 	@Setter
+	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
+
+	@Setter
 	private Point position = new Point();
 
 	@Getter
@@ -98,6 +101,7 @@ public class PanelComponent implements RenderableEntity
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
 		backgroundComponent.render(graphics, parent);
 
