@@ -262,7 +262,6 @@ public class CacheClient implements AutoCloseable
 			// update index settings
 			index.setProtocol(indexData.getProtocol());
 			index.setNamed(indexData.isNamed());
-			index.setUsesWhirpool(indexData.isUsesWhirpool());
 			index.setCrc(crc);
 			index.setRevision(revision);
 
