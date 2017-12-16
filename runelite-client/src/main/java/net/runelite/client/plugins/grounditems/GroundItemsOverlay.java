@@ -48,6 +48,7 @@ import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.http.api.item.ItemPrice;
@@ -139,6 +140,8 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
+
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		int z = client.getPlane();
 

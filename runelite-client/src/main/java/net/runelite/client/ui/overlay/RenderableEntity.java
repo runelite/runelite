@@ -28,10 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-public abstract class RenderableEntity
+public interface RenderableEntity
 {
-	public Dimension render(Graphics2D graphics, Point parent)
-	{
-		return null;
-	}
+	Dimension render(Graphics2D graphics, Point parent);
 }

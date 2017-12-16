@@ -32,7 +32,7 @@ import java.awt.Point;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class TextComponent extends RenderableEntity
+public class TextComponent implements RenderableEntity
 {
 	@Setter
 	private String text;
