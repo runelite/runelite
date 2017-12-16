@@ -40,7 +40,6 @@ import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
-import net.runelite.cache.util.Whirlpool;
 import net.runelite.cache.util.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -279,8 +278,6 @@ public class DataFile implements Closeable
 		Crc32 crc32 = new Crc32();
 		crc32.update(compressedData, 0, length);
 		res.crc = crc32.getHash();
-
-		res.whirlpool = Whirlpool.getHash(compressedData, length);
 		return res;
 	}
 
@@ -385,7 +382,6 @@ public class DataFile implements Closeable
 		res.revision = revision;
 		res.crc = crc32.getHash();
 		int length = revision != -1 ? b.length - 2 : b.length;
-		res.whirlpool = Whirlpool.getHash(b, length);
 		res.compression = compression;
 		return res;
 	}
