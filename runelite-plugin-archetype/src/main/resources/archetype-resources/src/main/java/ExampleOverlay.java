@@ -5,6 +5,7 @@ package ${package};
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -22,13 +23,13 @@ public class ExampleOverlay extends Overlay
 	@Inject
 	public ExampleOverlay(@Nullable Client client, ExamplePluginConfiguration config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
