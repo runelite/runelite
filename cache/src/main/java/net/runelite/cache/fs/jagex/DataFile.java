@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.fs.jagex;
 
+import static com.google.common.primitives.Bytes.concat;
+import com.google.common.primitives.Ints;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -376,7 +378,6 @@ public class DataFile implements Closeable
 		res.data = data;
 		res.revision = revision;
 		res.crc = crc32.getHash();
-		int length = revision != -1 ? b.length - 2 : b.length;
 		res.compression = compression;
 		return res;
 	}
@@ -384,32 +385,30 @@ public class DataFile implements Closeable
 	public static byte[] compress(byte[] data, int compression, int revision, int[] keys) throws IOException
 	{
 		OutputStream stream = new OutputStream();
-		stream.writeByte(compression);
 		byte[] compressedData;
+		int length;
 		switch (compression)
 		{
 			case CompressionType.NONE:
 				compressedData = data;
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-				stream.writeInt(data.length);
+				length = compressedData.length;
 				break;
 			case CompressionType.BZ2:
-				compressedData = BZip2.compress(data);
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-
-				stream.writeInt(compressedData.length);
-				stream.writeInt(data.length);
+				compressedData = concat(Ints.toByteArray(data.length), BZip2.compress(data));
+				length = compressedData.length - 4;
 				break;
 			case CompressionType.GZ:
-				compressedData = GZip.compress(data);
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-
-				stream.writeInt(compressedData.length);
-				stream.writeInt(data.length);
+				compressedData = concat(Ints.toByteArray(data.length), GZip.compress(data));
+				length = compressedData.length - 4;
 				break;
 			default:
 				throw new RuntimeException("Unknown compression type");
 		}
+
+		compressedData = encrypt(compressedData, compressedData.length, keys);
+
+		stream.writeByte(compression);
+		stream.writeInt(length);
 
 		stream.writeBytes(compressedData);
 		if (revision != -1)
