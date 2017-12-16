@@ -24,11 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -71,6 +67,9 @@ public class XpGlobesOverlay extends Overlay
 	private static final int TOOLTIP_RECT_SIZE_X = 140;
 	private static final int TOOLTIP_TEXT_RECT_SIZE_X = TOOLTIP_RECT_SIZE_X - 10;
 	private static final int TOOLTIP_RECT_SIZE_Y = 80;
+
+	private final RenderingHints ANTI_ALIASING = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+			RenderingHints.VALUE_ANTIALIAS_ON);
 
 	@Inject
 	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
@@ -149,6 +148,7 @@ public class XpGlobesOverlay extends Overlay
 	{
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.setColor(color);
+		graphics.setRenderingHints(ANTI_ALIASING);
 		graphics.draw(new Arc2D.Double(
 			x, y,
 			w, h,
@@ -161,6 +161,7 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setColor(DEFAULT_XPGLOBE_BACKGROUND_COLOR);
 		Ellipse2D ellipse = new Ellipse2D.Double(x, y, DEFAULT_CIRCLE_WIDTH, DEFAULT_CIRCLE_HEIGHT);
 		graphics.fill(ellipse);
+		graphics.setRenderingHints(ANTI_ALIASING);
 		graphics.draw(ellipse);
 		return ellipse;
 	}
