@@ -28,9 +28,11 @@ import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class OverlayRenderer
 {
 	private static final int BORDER_TOP = 25;
 	private static final int BORDER_LEFT = 5;
-	private static final int BORDER_RIGHT = 5;
+	private static final int BORDER_RIGHT = 2;
 	private static final int BORDER_BOTTOM = 2;
 	private static final int PADDING = 2;
 
@@ -72,7 +74,6 @@ public class OverlayRenderer
 	TooltipOverlay tooltipOverlay;
 
 	private final List<Overlay> overlays = new ArrayList<>();
-	private final Rectangle chatboxBounds = new Rectangle();
 	private BufferedImage surface;
 	private Graphics2D surfaceGraphics;
 
@@ -168,21 +169,20 @@ public class OverlayRenderer
 			return;
 		}
 
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
+		final Widget viewport = client.getViewportWidget();
+		final Rectangle bounds = viewport != null
+			? new Rectangle(viewport.getBounds())
+			: new Rectangle(0, 0, surface.getWidth(), surface.getHeight());
 
-		if (chatbox != null)
-		{
-			chatboxBounds.setBounds(chatbox.getBounds());
-		}
-
+		OverlayUtil.setGraphicProperties(graphics);
 		final Point topLeftPoint = new Point();
 		topLeftPoint.move(BORDER_LEFT, BORDER_TOP);
 		final Point topRightPoint = new Point();
-		topRightPoint.move(surface.getWidth() - BORDER_RIGHT, BORDER_TOP);
+		topRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP);
 		final Point bottomLeftPoint = new Point();
-		bottomLeftPoint.move(BORDER_LEFT, chatboxBounds.y - BORDER_BOTTOM);
+		bottomLeftPoint.move(BORDER_LEFT, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point bottomRightPoint = new Point();
-		bottomRightPoint.move(chatboxBounds.x + chatboxBounds.width - BORDER_RIGHT, chatboxBounds.y - BORDER_BOTTOM);
+		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 
 		overlays.stream()
 			.filter(overlay -> shouldDrawOverlay(client, overlay))
@@ -208,13 +208,13 @@ public class OverlayRenderer
 
 				if (overlay.getPosition().equals(OverlayPosition.DYNAMIC))
 				{
-					overlay.render(graphics, new Point());
+					safeRender(overlay, graphics, new Point());
 				}
 				else
 				{
 					surfaceGraphics.clearRect(0, 0, surface.getWidth(), surface.getHeight());
 
-					final Dimension dimension = MoreObjects.firstNonNull(overlay.render(surfaceGraphics, subPosition), new Dimension());
+					final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
 					if (dimension.width == 0 && dimension.height == 0)
 					{
 						return;
@@ -242,6 +242,16 @@ public class OverlayRenderer
 					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
 				}
 			});
+	}
+
+	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
+	{
+		final Font font = graphics.getFont();
+		final AffineTransform transform = graphics.getTransform();
+		final Dimension dimension = entity.render(graphics, point);
+		graphics.setFont(font);
+		graphics.setTransform(transform);
+		return dimension;
 	}
 
 	private boolean shouldDrawOverlay(Client client, Overlay overlay)

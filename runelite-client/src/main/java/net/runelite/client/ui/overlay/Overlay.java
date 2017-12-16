@@ -27,7 +27,7 @@ package net.runelite.client.ui.overlay;
 import lombok.Data;
 
 @Data
-public abstract class Overlay extends RenderableEntity
+public abstract class Overlay implements RenderableEntity
 {
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
