@@ -95,6 +95,7 @@ public class OverlayRenderer
 
 		if (event.getGameState().equals(GameState.LOGIN_SCREEN) || event.getGameState().equals(GameState.LOGGED_IN))
 		{
+			refreshPlugins();
 			updateSurface();
 		}
 	}
@@ -102,10 +103,19 @@ public class OverlayRenderer
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
+		if (event.isLoaded())
+		{
+			overlays.addAll(event.getPlugin().getOverlays());
+		}
+		else
+		{
+			overlays.removeAll(event.getPlugin().getOverlays());
+		}
+
 		sortOverlays();
 	}
 
-	private void sortOverlays()
+	private void refreshPlugins()
 	{
 		overlays.clear();
 		overlays.addAll(Stream
@@ -114,25 +124,30 @@ public class OverlayRenderer
 					.stream()
 					.flatMap(plugin -> plugin.getOverlays().stream()),
 				Stream.of(infoBoxOverlay, tooltipOverlay))
-			.sorted((a, b) ->
-			{
-				if (a.getPosition() != b.getPosition())
-				{
-					// This is so non-dynamic overlays render after dynamic
-					// overlays, which are generally in the scene
-					return a.getPosition().compareTo(b.getPosition());
-				}
-
-				// For dynamic overlays, higher priority means to
-				// draw *later* so it is on top.
-				// For non-dynamic overlays, higher priority means
-				// draw *first* so that they are closer to their
-				// defined position.
-				return a.getPosition() == OverlayPosition.DYNAMIC
-					? a.getPriority().compareTo(b.getPriority())
-					: b.getPriority().compareTo(a.getPriority());
-			})
 			.collect(Collectors.toList()));
+		sortOverlays();
+	}
+
+	private void sortOverlays()
+	{
+		overlays.sort((a, b) ->
+		{
+			if (a.getPosition() != b.getPosition())
+			{
+				// This is so non-dynamic overlays render after dynamic
+				// overlays, which are generally in the scene
+				return a.getPosition().compareTo(b.getPosition());
+			}
+
+			// For dynamic overlays, higher priority means to
+			// draw *later* so it is on top.
+			// For non-dynamic overlays, higher priority means
+			// draw *first* so that they are closer to their
+			// defined position.
+			return a.getPosition() == OverlayPosition.DYNAMIC
+				? a.getPriority().compareTo(b.getPriority())
+				: b.getPriority().compareTo(a.getPriority());
+		});
 	}
 
 	private void updateSurface()
