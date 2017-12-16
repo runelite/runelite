@@ -39,9 +39,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
@@ -57,6 +57,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.examine.ExamineClient;
 import net.runelite.http.api.item.ItemPrice;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 
 /**
  * Submits exammine info to the api
@@ -143,6 +145,10 @@ public class ExaminePlugin extends Plugin
 				type = ExamineType.ITEM;
 				id = event.getId();
 				break;
+			case EXAMINE_ITEM_BANK_EQ:
+				type = ExamineType.ITEM_BANK_EQ;
+				id = event.getId();
+				break;
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
 				id = event.getId() >>> 14;
@@ -179,6 +185,9 @@ public class ExaminePlugin extends Plugin
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
 				break;
+			case SERVER:
+				type = ExamineType.ITEM_BANK_EQ;
+				break;
 			default:
 				return;
 		}
@@ -200,21 +209,9 @@ public class ExaminePlugin extends Plugin
 
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
-		if (config.itemPrice() && pendingExamine.getType() == ExamineType.ITEM)
+		if (config.itemPrice())
 		{
-			// get quantity from widget
-			int widgetId = pendingExamine.getWidgetId();
-			Widget widget = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
-
-			WidgetItem widgetItem = widget != null ? widget.getWidgetItem(pendingExamine.getActionParam()) : null;
-			int quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
-
-			ItemComposition itemComposition = itemManager.getItemComposition(pendingExamine.getId());
-
-			if (itemComposition != null)
-			{
-				executor.submit(() -> getItemPrice(itemComposition, quantity));
-			}
+			findExamineItem(pendingExamine);
 		}
 
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
@@ -226,6 +223,64 @@ public class ExaminePlugin extends Plugin
 
 		cache.put(key, Boolean.TRUE);
 		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
+	}
+
+	private void findExamineItem(PendingExamine pendingExamine)
+	{
+		int quantity = 1;
+		int itemId = -1;
+
+		// Get widget
+		int widgetId = pendingExamine.getWidgetId();
+		int widgetGroup = TO_GROUP(widgetId);
+		int widgetChild = TO_CHILD(widgetId);
+		Widget widget = client.getWidget(widgetGroup, widgetChild);
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		if (pendingExamine.getType() == ExamineType.ITEM)
+		{
+			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
+			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+			itemId = pendingExamine.getId();
+		}
+		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		{
+			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(1);
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getDynamicChildren()[pendingExamine.getActionParam()];
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+		}
+
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		final int itemQuantity = quantity;
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+
+		if (itemComposition != null)
+		{
+			executor.submit(() -> getItemPrice(itemComposition, itemQuantity));
+		}
 	}
 
 	private void getItemPrice(ItemComposition itemComposition, int quantity)
