@@ -28,6 +28,8 @@ import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.ItemLayer;
+import net.runelite.api.SceneTileModel;
+import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.mapping.Import;
@@ -53,6 +55,14 @@ public interface RSTile extends Tile
 	@Import("wallObject")
 	@Override
 	WallObject getWallObject();
+
+	@Import("paint")
+	@Override
+	SceneTilePaint getSceneTilePaint();
+
+	@Import("overlay")
+	@Override
+	SceneTileModel getSceneTileModel();
 
 	@Import("x")
 	int getX();

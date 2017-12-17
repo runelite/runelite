@@ -24,25 +24,22 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class RunecraftOverlay extends Overlay
 {
@@ -52,33 +49,31 @@ public class RunecraftOverlay extends Overlay
 
 	private final RuneLite runelite;
 	private final Client client;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final RunecraftConfig config;
 
 	@Inject
 	RunecraftOverlay(RuneLite runelite, RunecraftConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.showPouch()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.showPouch())
 		{
 			return null;
 		}
 
-		graphics.setFont(font);
-
 		Query query = new InventoryItemQuery();
 		WidgetItem[] widgetItems = runelite.runQuery(query);
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
 		for (WidgetItem item : widgetItems)
 		{
 			Varbits varbits;
@@ -104,25 +99,13 @@ public class RunecraftOverlay extends Overlay
 					continue;
 			}
 
-			renderPouch(graphics, item.getCanvasBounds(), varbits, Color.WHITE);
+			final Rectangle bounds = item.getCanvasBounds();
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
+			textComponent.setText(String.valueOf(client.getSetting(varbits)));
+			textComponent.render(graphics, parent);
 		}
+
 		return null;
-	}
-
-	private void renderPouch(Graphics2D graphics, Rectangle bounds, Varbits varbits, Color color)
-	{
-		FontMetrics fm = graphics.getFontMetrics();
-
-		int textX = (int) bounds.getX();
-		int textY = (int) bounds.getY() + fm.getHeight();
-
-		int contents = client.getSetting(varbits);
-
-		//text shadow
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(String.valueOf(contents), textX + 1, textY + 1);
-
-		graphics.setColor(color);
-		graphics.drawString(String.valueOf(contents), textX, textY);
 	}
 }

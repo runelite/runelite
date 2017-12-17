@@ -4,107 +4,83 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("v")
+@ObfuscatedName("u")
 @Implements("BaseVarType")
-public enum BaseVarType implements RSEnum {
-   @ObfuscatedName("m")
+public enum BaseVarType implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lv;"
+      signature = "Lu;"
    )
    @Export("INTEGER")
-   INTEGER(2, 0, Integer.class, new class2()),
-   @ObfuscatedName("p")
+   INTEGER(0, 0, Integer.class, new class2()),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lv;"
+      signature = "Lu;"
    )
    @Export("LONG")
    LONG(1, 1, Long.class, new class3()),
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lv;"
+      signature = "Lu;"
    )
    @Export("STRING")
-   STRING(0, 2, String.class, new class5());
+   STRING(2, 2, String.class, new class5());
 
-   @ObfuscatedName("ay")
-   protected static String field27;
-   @ObfuscatedName("eo")
+   @ObfuscatedName("op")
+   @ObfuscatedGetter(
+      intValue = -920203399
+   )
+   static int field21;
+   @ObfuscatedName("n")
+   static int[] field28;
+   @ObfuscatedName("bz")
+   @ObfuscatedGetter(
+      intValue = -845345371
+   )
+   static int field31;
+   @ObfuscatedName("ea")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Ljm;"
    )
-   static Task field28;
-   @ObfuscatedName("j")
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1147071591
+      intValue = 826185209
    )
-   final int field25;
-   @ObfuscatedName("v")
+   @Export("id2")
+   final int id2;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 2062975513
+      intValue = -436300871
    )
-   final int field26;
+   @Export("id")
+   final int id;
 
    @ObfuscatedSignature(
-      signature = "(IILjava/lang/Class;Lm;)V"
+      signature = "(IILjava/lang/Class;La;)V"
    )
    BaseVarType(int var3, int var4, Class var5, class0 var6) {
-      this.field25 = var3;
-      this.field26 = var4;
+      this.id2 = var3;
+      this.id = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "369425307"
+      garbageValue = "-1035813094"
    )
    public int rsOrdinal() {
-      return this.field26;
+      return this.id;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "70"
+      signature = "(II)I",
+      garbageValue = "1407958579"
    )
-   static final boolean method14(char var0) {
-      if(Character.isISOControl(var0)) {
-         return false;
-      } else {
-         boolean var1 = var0 >= '0' && var0 <= '9' || var0 >= 'A' && var0 <= 'Z' || var0 >= 'a' && var0 <= 'z';
-         if(var1) {
-            return true;
-         } else {
-            char[] var2 = class274.field3722;
-
-            int var3;
-            char var4;
-            for(var3 = 0; var3 < var2.length; ++var3) {
-               var4 = var2[var3];
-               if(var0 == var4) {
-                  return true;
-               }
-            }
-
-            var2 = class274.field3724;
-
-            for(var3 = 0; var3 < var2.length; ++var3) {
-               var4 = var2[var3];
-               if(var0 == var4) {
-                  return true;
-               }
-            }
-
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedName("ek")
-   @ObfuscatedSignature(
-      signature = "(I)Lkz;",
-      garbageValue = "-235340549"
-   )
-   static RenderOverview method13() {
-      return Client.renderOverview;
+   static int method12(int var0) {
+      ChatLineBuffer var1 = (ChatLineBuffer)class96.chatLineMap.get(Integer.valueOf(var0));
+      return var1 == null?0:var1.size();
    }
 }

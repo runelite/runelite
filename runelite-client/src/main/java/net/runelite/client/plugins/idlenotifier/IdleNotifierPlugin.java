@@ -87,7 +87,13 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		int animation = client.getLocalPlayer().getAnimation();
+		Player localPlayer = client.getLocalPlayer();
+		if (localPlayer != event.getActor())
+		{
+			return;
+		}
+
+		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
 			/* Woodcutting */
@@ -134,6 +140,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_HARPOON:
 			case FISHING_CAGE:
 			case FISHING_POLE_CAST:
+			case FISHING_KARAMBWAN:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -174,13 +181,14 @@ public class IdleNotifierPlugin extends Plugin
 	)
 	public void checkIdle()
 	{
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		Player local = client.getLocalPlayer();
+
+		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}
 
 		Duration waitDuration = Duration.ofMillis(config.getTimeout());
-		Player local = client.getLocalPlayer();
 		if (notifyIdle && local.getAnimation() == IDLE
 			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 		{

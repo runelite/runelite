@@ -28,7 +28,19 @@ public enum MenuAction
 {
 	EXAMINE_OBJECT(1002),
 	EXAMINE_NPC(1003),
+	/**
+	 * Menu action triggered by examining item on ground
+	 */
+	EXAMINE_ITEM_GROUND(1004),
+	/**
+	 * Menu action triggered by examining item in inventory
+	 */
 	EXAMINE_ITEM(1005),
+	/**
+	 * Menu action triggered by either examining item in bank, examining item
+	 * in inventory while having bank open, or examining equipped item
+	 */
+	EXAMINE_ITEM_BANK_EQ(1007),
 	/**
 	 * Menu action injected by runelite for its menu items
 	 */

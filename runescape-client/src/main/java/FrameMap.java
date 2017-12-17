@@ -1,30 +1,37 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("eg")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("m")
+   @ObfuscatedName("t")
+   @Export("colorsToFind")
+   public static short[] colorsToFind;
+   @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -228200901
+      intValue = 656904343
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -398157133
+      intValue = -1096353093
    )
    @Export("count")
    int count;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @Export("types")
    int[] types;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("list")
    int[][] list;
 
@@ -52,94 +59,57 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-193308165"
+      signature = "(III)I",
+      garbageValue = "-2054020432"
    )
-   public static boolean method2777(int var0) {
-      return (var0 >> 20 & 1) != 0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(ILcw;ZI)I",
-      garbageValue = "-1094614565"
-   )
-   static int method2778(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class285.field3789:Friend.field768;
-      if(var0 == 1800) {
-         class82.intStack[++class56.intStackSize - 1] = GraphicsObject.method1747(Preferences.getWidgetConfig(var3));
-         return 1;
-      } else if(var0 != 1801) {
-         if(var0 == 1802) {
-            if(var3.name == null) {
-               class82.scriptStringStack[++class24.scriptStringStackSize - 1] = "";
-            } else {
-               class82.scriptStringStack[++class24.scriptStringStackSize - 1] = var3.name;
-            }
-
-            return 1;
-         } else {
-            return 2;
+   static int method2686(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
          }
+
+         var1 = 127 - var1;
+         return var1;
       } else {
-         int var4 = class82.intStack[--class56.intStackSize];
-         --var4;
-         if(var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-            class82.scriptStringStack[++class24.scriptStringStackSize - 1] = var3.actions[var4];
-         } else {
-            class82.scriptStringStack[++class24.scriptStringStackSize - 1] = "";
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         return 1;
+         return (var0 & 65408) + var1;
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ler;IIB)Ldi;",
-      garbageValue = "-23"
+      signature = "(IIIIIII)I",
+      garbageValue = "86910519"
    )
-   public static final AbstractSoundSystem method2779(Signlink var0, int var1, int var2) {
-      if(AbstractSoundSystem.sampleRate == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
-
-         try {
-            AbstractSoundSystem var3 = AbstractSoundSystem.field1567.vmethod2015();
-            var3.samples = new int[(AbstractSoundSystem.highMemory?2:1) * 256];
-            var3.field1544 = var2;
-            var3.vmethod2113();
-            var3.offset = (var2 & -1024) + 1024;
-            if(var3.offset > 16384) {
-               var3.offset = 16384;
-            }
-
-            var3.create(var3.offset);
-            if(AbstractSoundSystem.priority > 0 && AbstractSoundSystem.task == null) {
-               AbstractSoundSystem.task = new SoundTask();
-               AbstractSoundSystem.field1546 = Executors.newScheduledThreadPool(1);
-               AbstractSoundSystem.field1546.scheduleAtFixedRate(AbstractSoundSystem.task, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(AbstractSoundSystem.task != null) {
-               if(AbstractSoundSystem.task.systems[var1] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               AbstractSoundSystem.task.systems[var1] = var3;
-            }
-
-            return var3;
-         } catch (Throwable var4) {
-            return new AbstractSoundSystem();
-         }
-      } else {
-         throw new IllegalArgumentException();
+   public static int method2687(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
       }
+
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)[Lcz;",
+      garbageValue = "-394441470"
+   )
+   static AttackOption[] method2688() {
+      return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
    }
 }

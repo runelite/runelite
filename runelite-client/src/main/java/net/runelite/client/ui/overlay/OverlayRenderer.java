@@ -24,72 +24,256 @@
  */
 package net.runelite.client.ui.overlay;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
-import net.runelite.client.config.RuneliteConfig;
-import net.runelite.client.plugins.Plugin;
+import net.runelite.api.GameState;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ResizeableChanged;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
+import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
 @Singleton
 public class OverlayRenderer
 {
-	private final Client client;
-	private final TooltipRenderer tooltipRenderer;
-	private final InfoBoxOverlay infoBoxOverlay;
+	private static final int BORDER_TOP = 25;
+	private static final int BORDER_LEFT = 5;
+	private static final int BORDER_RIGHT = 2;
+	private static final int BORDER_BOTTOM = 2;
+	private static final int PADDING = 2;
 
 	@Inject
 	PluginManager pluginManager;
 
 	@Inject
-	public OverlayRenderer(@Nullable Client client, InfoBoxManager infoboxManager, RuneliteConfig config)
+	Provider<Client> clientProvider;
+
+	@Inject
+	InfoBoxOverlay infoBoxOverlay;
+
+	@Inject
+	TooltipOverlay tooltipOverlay;
+
+	private final List<Overlay> overlays = new ArrayList<>();
+	private BufferedImage surface;
+	private Graphics2D surfaceGraphics;
+
+	@Subscribe
+	public void onResizableChanged(ResizeableChanged event)
 	{
-		this.client = client;
-		tooltipRenderer = new TooltipRenderer(client, config);
-		infoBoxOverlay = new InfoBoxOverlay(client, tooltipRenderer, infoboxManager);
+		updateSurface();
 	}
 
-	public void render(BufferedImage clientBuffer)
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
 	{
-		TopDownRendererLeft tdl = new TopDownRendererLeft();
-		TopDownRendererRight tdr = new TopDownRendererRight(client);
-		DynamicRenderer dr = new DynamicRenderer();
-		for (Plugin plugin : pluginManager.getPlugins())
+		final Client client = clientProvider.get();
+
+		if (client == null)
 		{
-			for (Overlay overlay : plugin.getOverlays())
-			{
-				switch (overlay.getPosition())
-				{
-					case TOP_RIGHT:
-						tdr.add(overlay);
-						break;
-					case TOP_LEFT:
-						tdl.add(overlay);
-						break;
-					case DYNAMIC:
-						dr.add(overlay);
-						break;
-				}
-			}
+			return;
 		}
 
-		tdl.add(infoBoxOverlay);
-
-		tdl.render(clientBuffer);
-		tdr.render(clientBuffer);
-		dr.render(clientBuffer);
-
-		// tooltips are always rendered on top of other overlays
-		tooltipRenderer.render(clientBuffer);
+		if (event.getGameState().equals(GameState.LOGIN_SCREEN) || event.getGameState().equals(GameState.LOGGED_IN))
+		{
+			refreshPlugins();
+			updateSurface();
+		}
 	}
 
-	public TooltipRenderer getTooltipRenderer()
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
 	{
-		return tooltipRenderer;
+		if (event.isLoaded())
+		{
+			overlays.addAll(event.getPlugin().getOverlays());
+		}
+		else
+		{
+			overlays.removeAll(event.getPlugin().getOverlays());
+		}
+
+		sortOverlays();
+	}
+
+	private void refreshPlugins()
+	{
+		overlays.clear();
+		overlays.addAll(Stream
+			.concat(
+				pluginManager.getPlugins()
+					.stream()
+					.flatMap(plugin -> plugin.getOverlays().stream()),
+				Stream.of(infoBoxOverlay, tooltipOverlay))
+			.collect(Collectors.toList()));
+		sortOverlays();
+	}
+
+	private void sortOverlays()
+	{
+		overlays.sort((a, b) ->
+		{
+			if (a.getPosition() != b.getPosition())
+			{
+				// This is so non-dynamic overlays render after dynamic
+				// overlays, which are generally in the scene
+				return a.getPosition().compareTo(b.getPosition());
+			}
+
+			// For dynamic overlays, higher priority means to
+			// draw *later* so it is on top.
+			// For non-dynamic overlays, higher priority means
+			// draw *first* so that they are closer to their
+			// defined position.
+			return a.getPosition() == OverlayPosition.DYNAMIC
+				? a.getPriority().compareTo(b.getPriority())
+				: b.getPriority().compareTo(a.getPriority());
+		});
+	}
+
+	private void updateSurface()
+	{
+		final Client client = clientProvider.get();
+
+		if (client == null)
+		{
+			return;
+		}
+
+		final Dimension size = client.getCanvas().getSize();
+		final BufferedImage temp = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D subGraphics = temp.createGraphics();
+		subGraphics.setBackground(new Color(0, 0, 0, 0));
+		OverlayUtil.setGraphicProperties(subGraphics);
+
+		surface = temp;
+
+		if (surfaceGraphics != null)
+		{
+			surfaceGraphics.dispose();
+		}
+
+		surfaceGraphics = subGraphics;
+	}
+
+	public void render(Graphics2D graphics)
+	{
+		final Client client = clientProvider.get();
+
+		if (client == null || surface == null || overlays.isEmpty())
+		{
+			return;
+		}
+
+		final Widget viewport = client.getViewportWidget();
+		final Rectangle bounds = viewport != null
+			? new Rectangle(viewport.getBounds())
+			: new Rectangle(0, 0, surface.getWidth(), surface.getHeight());
+
+		OverlayUtil.setGraphicProperties(graphics);
+		final Point topLeftPoint = new Point();
+		topLeftPoint.move(BORDER_LEFT, BORDER_TOP);
+		final Point topRightPoint = new Point();
+		topRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, BORDER_TOP);
+		final Point bottomLeftPoint = new Point();
+		bottomLeftPoint.move(BORDER_LEFT, bounds.y + bounds.height - BORDER_BOTTOM);
+		final Point bottomRightPoint = new Point();
+		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
+
+		overlays.stream()
+			.filter(overlay -> shouldDrawOverlay(client, overlay))
+			.forEach(overlay ->
+			{
+				final Point subPosition = new Point();
+
+				switch (overlay.getPosition())
+				{
+					case BOTTOM_LEFT:
+						subPosition.setLocation(bottomLeftPoint);
+						break;
+					case BOTTOM_RIGHT:
+						subPosition.setLocation(bottomRightPoint);
+						break;
+					case TOP_LEFT:
+						subPosition.setLocation(topLeftPoint);
+						break;
+					case TOP_RIGHT:
+						subPosition.setLocation(topRightPoint);
+						break;
+				}
+
+				if (overlay.getPosition().equals(OverlayPosition.DYNAMIC))
+				{
+					safeRender(overlay, graphics, new Point());
+				}
+				else
+				{
+					surfaceGraphics.clearRect(0, 0, surface.getWidth(), surface.getHeight());
+
+					final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
+					if (dimension.width == 0 && dimension.height == 0)
+					{
+						return;
+					}
+
+					final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
+
+					switch (overlay.getPosition())
+					{
+						case BOTTOM_LEFT:
+							bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
+							break;
+						case BOTTOM_RIGHT:
+							bottomRightPoint.x -= dimension.width - (dimension.width == 0 ? 0 : PADDING);
+							break;
+						case TOP_LEFT:
+							topLeftPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
+							break;
+						case TOP_RIGHT:
+							topRightPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
+							break;
+					}
+
+					final Point transformed = OverlayUtil.transformPosition(overlay.getPosition(), dimension);
+					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
+				}
+			});
+	}
+
+	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
+	{
+		final Font font = graphics.getFont();
+		final AffineTransform transform = graphics.getTransform();
+		final Dimension dimension = entity.render(graphics, point);
+		graphics.setFont(font);
+		graphics.setTransform(transform);
+		return dimension;
+	}
+
+	private boolean shouldDrawOverlay(Client client, Overlay overlay)
+	{
+		return client != null
+			&& (overlay.isDrawOverLoginScreen() || client.getGameState() == GameState.LOGGED_IN)
+			&& (overlay.isDrawOverClickToPlayScreen() || client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) == null)
+			&& (overlay.isDrawOverBankScreen() || client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) == null);
 	}
 }

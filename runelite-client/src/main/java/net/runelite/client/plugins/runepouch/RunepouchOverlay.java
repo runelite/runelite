@@ -30,23 +30,19 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.tooltips.Tooltip;
-import net.runelite.client.ui.overlay.tooltips.TooltipPriority;
-import net.runelite.client.ui.overlay.tooltips.TooltipRenderer;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class RunepouchOverlay extends Overlay
 {
@@ -64,24 +60,23 @@ public class RunepouchOverlay extends Overlay
 	private final RuneLite runelite;
 	private final Client client;
 	private final RunepouchConfig config;
-	private final TooltipRenderer tooltipRenderer;
+	private final TooltipManager tooltipManager;
 
 	@Inject
-	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, OverlayRenderer overlayRenderer)
+	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, TooltipManager tooltipManager)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
+		this.tooltipManager = tooltipManager;
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.config = config;
-		this.tooltipRenderer = overlayRenderer.getTooltipRenderer();
+		this.setDrawOverBankScreen(true);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
-		if (!config.enabled()
-			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.enabled())
 		{
 			return null;
 		}
@@ -148,9 +143,7 @@ public class RunepouchOverlay extends Overlay
 
 		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			String tooltipText = tooltipBuilder.toString();
-			Tooltip tooltip = new Tooltip(TooltipPriority.HIGH, tooltipText);
-			tooltipRenderer.add(tooltip);
+			tooltipManager.add(new Tooltip(tooltipBuilder.toString()));
 		}
 		return null;
 	}

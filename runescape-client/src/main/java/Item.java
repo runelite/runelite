@@ -4,58 +4,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cg")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("cp")
-   static boolean field1399;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
+   public static int[] field1387;
+   @ObfuscatedName("b")
+   static int[] field1386;
+   @ObfuscatedName("jw")
    @ObfuscatedGetter(
-      intValue = -196392353
+      intValue = -2124720277
+   )
+   @Export("menuWidth")
+   static int menuWidth;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 485193461
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -205096159
+      intValue = -1501899501
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)Len;",
-      garbageValue = "-1864051962"
+      signature = "(I)Lef;",
+      garbageValue = "620909653"
    )
    protected final Model getModel() {
-      return class250.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1935416466"
-   )
-   public static int method1849(int var0) {
-      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var1;
-      if(var2 != null) {
-         var1 = var2;
-      } else {
-         byte[] var7 = class12.varbit_ref.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var7 != null) {
-            var2.decode(new Buffer(var7));
-         }
-
-         Varbit.varbits.put(var2, (long)var0);
-         var1 = var2;
-      }
-
-      int var3 = var1.configId;
-      int var4 = var1.leastSignificantBit;
-      int var5 = var1.mostSignificantBit;
-      int var6 = class218.field2689[var5 - var4];
-      return class218.widgetSettings[var3] >> var4 & var6;
+      return KitDefinition.getItemDefinition(this.id).getModel(this.quantity);
    }
 }

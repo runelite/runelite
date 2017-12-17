@@ -1,67 +1,138 @@
-import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("bp")
+@ObfuscatedName("bt")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("j")
-   static File field781;
-   @ObfuscatedName("m")
+   @ObfuscatedName("ql")
    @ObfuscatedGetter(
-      intValue = -560926001
+      intValue = -717687801
+   )
+   static int field766;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1515870281
    )
    @Export("id")
    int id;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 856933703
+      intValue = -292484973
    )
    @Export("owner")
    int owner;
-   @ObfuscatedName("i")
-   boolean field782;
+   @ObfuscatedName("e")
+   boolean field764;
 
    WidgetNode() {
-      this.field782 = false;
+      this.field764 = false;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "722540266"
+      signature = "(I)Lcf;",
+      garbageValue = "490107324"
    )
-   public static int method1155(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
-   }
+   static Preferences method1045() {
+      FileOnDisk var0 = null;
+      Preferences var1 = new Preferences();
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
-      garbageValue = "-74"
-   )
-   public static Class method1157(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
-   }
+      try {
+         var0 = DynamicObject.getPreferencesFile("", ItemContainer.field721.name, false);
+         byte[] var2 = new byte[(int)var0.length()];
 
-   @ObfuscatedName("fm")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1725549875"
-   )
-   static final void method1156() {
-      if(Client.field912 > 0) {
-         class181.method3514();
-      } else {
-         Client.field970.method5100();
-         class287.setGameState(40);
-         MessageNode.field823 = Client.field952.method1954();
-         Client.field952.method1953();
+         int var4;
+         for(int var3 = 0; var3 < var2.length; var3 += var4) {
+            var4 = var0.read(var2, var3, var2.length - var3);
+            if(var4 == -1) {
+               throw new IOException();
+            }
+         }
+
+         var1 = new Preferences(new Buffer(var2));
+      } catch (Exception var6) {
+         ;
       }
+
+      try {
+         if(var0 != null) {
+            var0.close();
+         }
+      } catch (Exception var5) {
+         ;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "([BI)Lck;",
+      garbageValue = "1762428125"
+   )
+   @Export("newScript")
+   static Script newScript(byte[] var0) {
+      Script var1 = new Script();
+      Buffer var2 = new Buffer(var0);
+      var2.offset = var2.payload.length - 2;
+      int var3 = var2.readUnsignedShort();
+      int var4 = var2.payload.length - 2 - var3 - 12;
+      var2.offset = var4;
+      int var5 = var2.readInt();
+      var1.localIntCount = var2.readUnsignedShort();
+      var1.localStringCount = var2.readUnsignedShort();
+      var1.intStackCount = var2.readUnsignedShort();
+      var1.stringStackCount = var2.readUnsignedShort();
+      int var6 = var2.readUnsignedByte();
+      int var7;
+      int var8;
+      if(var6 > 0) {
+         var1.switches = var1.method1833(var6);
+
+         for(var7 = 0; var7 < var6; ++var7) {
+            var8 = var2.readUnsignedShort();
+            IterableHashTable var9 = new IterableHashTable(class173.nextPowerOfTwo(var8));
+            var1.switches[var7] = var9;
+
+            while(var8-- > 0) {
+               int var10 = var2.readInt();
+               int var11 = var2.readInt();
+               var9.put(new IntegerNode(var11), (long)var10);
+            }
+         }
+      }
+
+      var2.offset = 0;
+      var2.getNullString();
+      var1.instructions = new int[var5];
+      var1.intOperands = new int[var5];
+      var1.stringOperands = new String[var5];
+
+      for(var7 = 0; var2.offset < var4; var1.instructions[var7++] = var8) {
+         var8 = var2.readUnsignedShort();
+         if(var8 == 3) {
+            var1.stringOperands[var7] = var2.readString();
+         } else if(var8 < 100 && var8 != 21 && var8 != 38 && var8 != 39) {
+            var1.intOperands[var7] = var2.readInt();
+         } else {
+            var1.intOperands[var7] = var2.readUnsignedByte();
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "1"
+   )
+   static int method1048(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class61.currentRequest != null && var2 == class61.currentRequest.hash?class287.NetCache_responseArchiveBuffer.offset * 99 / (class287.NetCache_responseArchiveBuffer.payload.length - class61.currentRequest.padding) + 1:0;
    }
 }

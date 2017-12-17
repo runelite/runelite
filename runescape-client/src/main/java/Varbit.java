@@ -4,36 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ib")
+@ObfuscatedName("jw")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lib;"
+   )
+   @Export("varbit_ref")
+   public static IndexDataBase varbit_ref;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("fq")
-   @Export("landMapFileIds")
-   static int[] landMapFileIds;
-   @ObfuscatedName("fp")
-   @Export("landRegionFileIds")
-   static int[] landRegionFileIds;
-   @ObfuscatedName("i")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1161268307
+      intValue = 988632729
+   )
+   static int field3462;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1005831171
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1774287533
+      intValue = 442861105
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1111708313
+      intValue = 1796470167
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,10 +47,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "-1468485951"
+      signature = "(Lgh;B)V",
+      garbageValue = "8"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -55,21 +60,54 @@ public class Varbit extends CacheableNode {
             return;
          }
 
-         this.method4601(var1, var2);
+         this.readNext(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfv;IB)V",
-      garbageValue = "-120"
+      signature = "(Lgh;IB)V",
+      garbageValue = "101"
    )
-   void method4601(Buffer var1, int var2) {
+   @Export("readNext")
+   void readNext(Buffer var1, int var2) {
       if(var2 == 1) {
          this.configId = var1.readUnsignedShort();
          this.leastSignificantBit = var1.readUnsignedByte();
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-18"
+   )
+   public static void method4570(int var0) {
+      if(var0 != -1) {
+         if(class115.validInterfaces[var0]) {
+            class37.widgetIndex.method4327(var0);
+            if(Widget.widgets[var0] != null) {
+               boolean var1 = true;
+
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(Widget.widgets[var0][var2] != null) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
+
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
+
+               class115.validInterfaces[var0] = false;
+            }
+         }
+      }
    }
 }

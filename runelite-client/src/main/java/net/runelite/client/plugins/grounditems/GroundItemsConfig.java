@@ -85,4 +85,24 @@ public interface GroundItemsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+		keyName = "hideUnderGeValue",
+		name = "Hide < GE Value",
+		description = "Configures hidden ground items under GE value"
+	)
+	default int getHideUnderGeValue()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "hideUnderHaValue",
+		name = "Hide < HA Value",
+		description = "Configures hidden ground items under High Alch value"
+	)
+	default int getHideUnderHAValue()
+	{
+		return 0;
+	}
 }

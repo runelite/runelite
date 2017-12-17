@@ -4,31 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("in")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("cy")
+   @ObfuscatedName("el")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "Lju;"
    )
-   static Task field3271;
-   @ObfuscatedName("m")
+   @Export("fonts")
+   static Fonts fonts;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1218501315
+      intValue = -1959598111
    )
-   int field3267;
-   @ObfuscatedName("p")
-   public byte[] field3265;
-   @ObfuscatedName("i")
+   @Export("type")
+   int type;
+   @ObfuscatedName("w")
+   public byte[] field3299;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfv;"
    )
    @Export("index")
    public IndexFile index;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Liy;"
+      signature = "Liu;"
    )
    @Export("data")
    public IndexData data;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lfo;Lgj;I)Lfg;",
+      garbageValue = "-987657395"
+   )
+   public static PacketNode method4252(ClientPacket var0, ISAACCipher var1) {
+      PacketNode var2 = class161.method3067();
+      var2.clientPacket = var0;
+      var2.field2432 = var0.packetLength;
+      if(var2.field2432 == -1) {
+         var2.packetBuffer = new PacketBuffer(260);
+      } else if(var2.field2432 == -2) {
+         var2.packetBuffer = new PacketBuffer(10000);
+      } else if(var2.field2432 <= 18) {
+         var2.packetBuffer = new PacketBuffer(20);
+      } else if(var2.field2432 <= 98) {
+         var2.packetBuffer = new PacketBuffer(100);
+      } else {
+         var2.packetBuffer = new PacketBuffer(260);
+      }
+
+      var2.packetBuffer.setIsaacCipher(var1);
+      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
+      var2.field2434 = 0;
+      return var2;
+   }
 }

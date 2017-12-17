@@ -137,7 +137,7 @@ public class ParallelExecutorMapping
 			Field f1 = (Field) one;
 			Field f2 = (Field) two;
 
-			assert f1.isStatic() == f2.isStatic();
+			assert f1.isStatic() == f2.isStatic() : "field map with static mismatch!";
 		}
 	}
 

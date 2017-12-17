@@ -34,7 +34,7 @@ public class Perspective
 {
 	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
 
-	private static final int LOCAL_COORD_BITS = 7;
+	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
 
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
@@ -218,6 +218,22 @@ public class Perspective
 		return new Point(x, y);
 	}
 
+	public static Point regionToWorld(Client client, Point point)
+	{
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+		int x = point.getX() + baseX;
+		int y = point.getY() + baseY;
+		return new Point(x, y);
+	}
+
+	public static Point regionToLocal(Client client, Point point)
+	{
+		int x = point.getX() << LOCAL_COORD_BITS;
+		int y = point.getY() << LOCAL_COORD_BITS;
+		return new Point(x, y);
+	}
+
 	/**
 	 * Calculates a tile polygon from offset worldToScreen() points.
 	 *
@@ -228,13 +244,41 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTilePoly(Client client, Point localLocation)
 	{
-		int plane = client.getPlane();
-		int halfTile = Perspective.LOCAL_TILE_SIZE / 2;
+		return getCanvasTileAreaPoly(client, localLocation, 1);
+	}
 
-		Point p1 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() - halfTile, plane);
-		Point p2 = Perspective.worldToCanvas(client, localLocation.getX() - halfTile, localLocation.getY() + halfTile, plane);
-		Point p3 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() + halfTile, plane);
-		Point p4 = Perspective.worldToCanvas(client, localLocation.getX() + halfTile, localLocation.getY() - halfTile, plane);
+	/**
+	 * Returns a polygon representing an area.
+	 *
+	 * @param client
+	 * @param localLocation Center location of the AoE
+	 * @param size size of the area. Ex. Lizardman Shaman AoE is a 3x3, so
+	 * size = 3
+	 * @return a polygon representing the tiles in the area
+	 */
+	public static Polygon getCanvasTileAreaPoly(Client client, Point localLocation, int size)
+	{
+		int plane = client.getPlane();
+		int halfTile = LOCAL_TILE_SIZE / 2;
+
+		// If the size is 5, we need to shift it up and left 2 units, then expand by 5 units to make a 5x5
+		int aoeSize = size / 2;
+
+		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
+		Point topLeft = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
+			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
+		// expand by size
+		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE,
+			topLeft.getY() + size * LOCAL_TILE_SIZE);
+		// Take the x of top left and the y of bottom right to create bottom left
+		Point bottomLeft = new Point(topLeft.getX(), bottomRight.getY());
+		// Similarly for top right
+		Point topRight = new Point(bottomRight.getX(), topLeft.getY());
+
+		Point p1 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
+		Point p2 = worldToCanvas(client, topRight.getX(), topRight.getY(), plane);
+		Point p3 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
+		Point p4 = worldToCanvas(client, bottomLeft.getX(), bottomLeft.getY(), plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{

@@ -2,74 +2,115 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ig")
-public enum class239 implements RSEnum {
-   @ObfuscatedName("m")
+@ObfuscatedName("ii")
+public enum class239 implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "Lii;"
    )
-   field3255("runescape", "RuneScape", 0),
-   @ObfuscatedName("p")
+   field3261(4, 0),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lig;"
+      signature = "Lii;"
    )
-   field3256("stellardawn", "Stellar Dawn", 1),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   field3257("game3", "Game 3", 2),
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   field3258("game4", "Game 4", 3),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   field3263("game5", "Game 5", 4),
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "Lig;"
-   )
-   field3260("oldscape", "RuneScape 2007", 5);
-
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 61320803
-   )
-   static int field3259;
+   field3256(2, 1),
    @ObfuscatedName("e")
-   public final String field3261;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1687907787
+   @ObfuscatedSignature(
+      signature = "Lii;"
    )
-   final int field3262;
+   field3257(3, 2),
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3263(1, 3),
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3259(5, 4),
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3260(0, 5),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3262(6, 6),
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lii;"
+   )
+   field3258(7, 7);
 
-   class239(String var3, String var4, int var5) {
-      this.field3261 = var3;
-      this.field3262 = var5;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 741878133
+   )
+   public final int field3255;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1892953301
+   )
+   final int field3264;
+
+   class239(int var3, int var4) {
+      this.field3255 = var3;
+      this.field3264 = var4;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "369425307"
+      garbageValue = "-1035813094"
    )
    public int rsOrdinal() {
-      return this.field3262;
+      return this.field3264;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(ZZI)I",
-      garbageValue = "-487339094"
+      signature = "(Lib;I)V",
+      garbageValue = "-1632245897"
    )
-   public static int method4274(boolean var0, boolean var1) {
-      byte var2 = 0;
-      int var3 = var2 + class245.field3323 + class245.field3320;
-      return var3;
+   public static void method4226(IndexDataBase var0) {
+      Varbit.varbit_ref = var0;
+   }
+
+   @ObfuscatedName("hg")
+   @ObfuscatedSignature(
+      signature = "([Lhz;IIIZI)V",
+      garbageValue = "-1010498984"
+   )
+   static void method4227(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            class89.method1666(var6, var2, var3, var4);
+            class60.method985(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
+
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               GrandExchangeOffer.method102(var0, var6, var4);
+            }
+         }
+      }
+
    }
 }

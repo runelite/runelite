@@ -1,48 +1,27 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("s")
+@ObfuscatedName("d")
 public class class23 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1728185482"
+      signature = "([I[II)V",
+      garbageValue = "-1436395149"
    )
-   static void method190() {
-      if(class91.username == null || class91.username.length() <= 0) {
-         if(Buffer.preferences.field1231 != null) {
-            class91.username = Buffer.preferences.field1231;
-            class91.field1357 = true;
-         } else {
-            class91.field1357 = false;
+   public static void method172(int[] var0, int[] var1) {
+      if(var0 != null && var1 != null) {
+         CombatInfo1.field1189 = var0;
+         class185.field2518 = new int[var0.length];
+         class21.field324 = new byte[var0.length][][];
+
+         for(int var2 = 0; var2 < CombatInfo1.field1189.length; ++var2) {
+            class21.field324[var2] = new byte[var1[var2]][];
          }
 
-      }
-   }
-
-   @ObfuscatedName("fv")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1050991303"
-   )
-   static void method191(int var0) {
-      Client.field1030 = 0L;
-      if(var0 >= 2) {
-         Client.isResized = true;
       } else {
-         Client.isResized = false;
+         CombatInfo1.field1189 = null;
+         class185.field2518 = null;
+         class21.field324 = null;
       }
-
-      int var1 = Client.isResized?2:1;
-      if(var1 == 1) {
-         class9.clientInstance.method909(765, 503);
-      } else {
-         class9.clientInstance.method909(7680, 2160);
-      }
-
-      if(Client.gameState >= 25) {
-         ScriptVarType.method24();
-      }
-
    }
 }

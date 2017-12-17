@@ -22,59 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui.overlay;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import lombok.Data;
 
-public abstract class Overlay
+@Data
+public abstract class Overlay implements RenderableEntity
 {
-	private OverlayPosition position; // where to draw it
-	private OverlayPriority priority; // if multiple overlays exist in the same position, who wins
-	private Rectangle bounds; //screen bounds of overlay after OverlayRenderer decides location
-
-	public Overlay(OverlayPosition position)
-	{
-		this(position, OverlayPriority.NONE);
-	}
-
-	public Overlay(OverlayPosition position, OverlayPriority priority)
-	{
-		this.position = position;
-		this.priority = priority;
-	}
-
-	public OverlayPosition getPosition()
-	{
-		return position;
-	}
-
-	public void setPosition(OverlayPosition position)
-	{
-		this.position = position;
-	}
-
-	public OverlayPriority getPriority()
-	{
-		return priority;
-	}
-
-	public void setPriority(OverlayPriority priority)
-	{
-		this.priority = priority;
-	}
-
-	public abstract Dimension render(Graphics2D graphics);
-
-	public Rectangle getBounds()
-	{
-		return bounds;
-	}
-
-	public void storeBounds(Rectangle bounds)
-	{
-		this.bounds = bounds;
-	}
+	private OverlayPosition position = OverlayPosition.TOP_LEFT;
+	private OverlayPriority priority = OverlayPriority.NONE;
+	private boolean drawOverLoginScreen = false;
+	private boolean drawOverBankScreen = false;
+	private boolean drawOverClickToPlayScreen = false;
 }

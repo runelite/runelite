@@ -27,27 +27,26 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Varbits;
+import net.runelite.client.chat.ChatColor;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.SetMessage;
-import net.runelite.client.events.ResizeableChanged;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.VarbitChanged;
+import net.runelite.client.events.GameStateChanged;
+import net.runelite.client.events.SetMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,26 +55,18 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.Item;
-import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Chat commands plugin"
 )
+@Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ChatCommandsPlugin.class);
-
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private final String colKeyword = "<colRegular>";
-	private final String colKeywordHighLight = "<colHighlight>";
-	private final ItemClient itemClient = new ItemClient();
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
-	private int transparancyVarbit = -1;
 
 	@Inject
 	@Nullable
@@ -88,6 +79,9 @@ public class ChatCommandsPlugin extends Plugin
 	ItemManager itemManager;
 
 	@Inject
+	ChatMessageManager chatMessageManager;
+
+	@Inject
 	ScheduledExecutorService executor;
 
 	@Provides
@@ -96,58 +90,52 @@ public class ChatCommandsPlugin extends Plugin
 		return configManager.getConfig(ChatCommandsConfig.class);
 	}
 
-	/**
-	 * Checks if the chatbox is no longer transparent and if messages need
-	 * to be recolored
-	 *
-	 * @param event the event object
-	 */
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onGameStateChange(GameStateChanged event)
 	{
-		if (transparancyVarbit == -1)
+		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
 		{
-			transparancyVarbit = client.getSetting(Varbits.TRANSPARANT_CHATBOX);
-		}
-		else if (transparancyVarbit != client.getSetting(Varbits.TRANSPARANT_CHATBOX))
-		{
-			transparancyVarbit = client.getSetting(Varbits.TRANSPARANT_CHATBOX);
-			executor.submit(() -> recolorChat());
+			cacheConfiguredColors();
 		}
 	}
 
-	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
-	{
-		executor.submit(() -> recolorChat());
-	}
-
-	/**
-	 * get the MessageNodes that have a runeltie message
-	 *
-	 * @return
-	 */
-	private Collection<MessageNode> getRuneliteMessages()
-	{
-		return client.getChatLineMap().values().stream()
-			.filter(Objects::nonNull)
-			.flatMap(clb -> Arrays.stream(clb.getLines()))
-			.filter(Objects::nonNull)
-			.filter(mn -> mn.getRuneLiteFormatMessage() != null)
-			.collect(Collectors.toList());
-	}
-
-	/**
-	 * Updates the ingame recolored messages to the new config recolorChat
-	 * cannot color messages without color tags because it won't know what
-	 * to replace.
-	 *
-	 * @param event the event object
-	 */
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		executor.submit(() -> recolorChat());
+		if (event.getGroup().equals("chatcommands"))
+		{
+			cacheConfiguredColors();
+			chatMessageManager.refreshAll();
+		}
+	}
+
+	private void cacheConfiguredColors()
+	{
+		chatMessageManager
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getPublicRecolor(), false),
+				ChatMessageType.PUBLIC)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getPublicHRecolor(), false),
+				ChatMessageType.PUBLIC)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getPrivateRecolor(), false),
+				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getPrivateHRecolor(), false),
+				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getCcRecolor(), false),
+				ChatMessageType.CLANCHAT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getCcHRecolor(), false),
+				ChatMessageType.CLANCHAT)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentPublicRecolor(), true),
+				ChatMessageType.PUBLIC)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentPublicHRecolor(), true),
+				ChatMessageType.PUBLIC)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentPrivateRecolor(), true),
+				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentPrivateHRecolor(), true),
+				ChatMessageType.PRIVATE_MESSAGE_SENT, ChatMessageType.PRIVATE_MESSAGE_RECEIVED)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentCcRecolor(), true),
+				ChatMessageType.CLANCHAT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentCcHRecolor(), true),
+				ChatMessageType.CLANCHAT);
 	}
 
 	/**
@@ -183,22 +171,22 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (config.lvl() && message.toLowerCase().equals("!total"))
 		{
-			logger.debug("Running total level lookup");
+			log.debug("Running total level lookup");
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, "total"));
 		}
 		else if (config.price() && message.toLowerCase().startsWith("!price") && message.length() > 7)
 		{
 			String search = message.substring(7);
 
-			logger.debug("Running price lookup for {}", search);
+			log.debug("Running price lookup for {}", search);
 
-			executor.submit(() -> lookup(setMessage.getType(), setMessage.getMessageNode(), search));
+			executor.submit(() -> itemPriceLookup(setMessage.getType(), setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
 			String search = message.substring(5);
 
-			logger.debug("Running level lookup for {}", search);
+			log.debug("Running level lookup for {}", search);
 			executor.submit(() -> playerSkillLookup(setMessage.getType(), setMessage, search));
 		}
 	}
@@ -210,17 +198,17 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void lookup(ChatMessageType type, MessageNode messageNode, String search)
+	private void itemPriceLookup(ChatMessageType type, MessageNode messageNode, String search)
 	{
 		SearchResult result;
 
 		try
 		{
-			result = itemClient.search(search);
+			result = itemManager.searchForItem(search);
 		}
-		catch (IOException ex)
+		catch (ExecutionException ex)
 		{
-			logger.warn("Unable to search for item {}", search, ex);
+			log.warn("Unable to search for item {}", search, ex);
 			return;
 		}
 
@@ -229,7 +217,7 @@ public class ChatCommandsPlugin extends Plugin
 			Item item = retrieveFromList(result.getItems(), search);
 			if (item == null)
 			{
-				logger.debug("Unable to find item {} in result {}", search, result);
+				log.debug("Unable to find item {} in result {}", search, result);
 				return;
 			}
 
@@ -242,31 +230,35 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (IOException ex)
 			{
-				logger.warn("Unable to fetch item price for {}", itemId, ex);
+				log.warn("Unable to fetch item price for {}", itemId, ex);
 				return;
 			}
 
-			StringBuilder builder = new StringBuilder();
-			builder.append(colKeyword).append("Price of ")
-				.append(colKeywordHighLight).append(item.getName())
-				.append(colKeyword).append(": GE average ")
-				.append(colKeywordHighLight).append(String.format("%,d", itemPrice.getPrice()));
+			final ChatMessageBuilder builder = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Price of ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(item.getName())
+				.append(ChatColorType.NORMAL)
+				.append(": GE average ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", itemPrice.getPrice()));
 
-			ItemComposition itemComposition = client.getItemDefinition(itemId);
+			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
-				builder.append(colKeyword).append(" HA value ")
-					.append(colKeywordHighLight).append(String.format("%,d", alchPrice));
+				builder
+					.append(ChatColorType.NORMAL)
+					.append(" HA value ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", alchPrice));
 			}
 
-			String response = builder.toString();
+			String response = builder.build();
 
-			logger.debug("Setting response {}", response);
-
-			// XXX hopefully messageNode hasn't been reused yet?
-			messageNode.setRuneLiteFormatMessage(response);
-			messageNode.setValue(recolorMessage(messageNode.getType(), response));
+			log.debug("Setting response {}", response);
+			chatMessageManager.update(type, response, messageNode);
 			client.refreshChat();
 		}
 	}
@@ -312,25 +304,28 @@ public class ChatCommandsPlugin extends Plugin
 			SingleHiscoreSkillResult result = hiscoreClient.lookup(player, skill);
 			Skill hiscoreSkill = result.getSkill();
 
-			String response = new StringBuilder()
-				.append(colKeyword).append("Level ")
-				.append(colKeywordHighLight).append(skill.getName()).append(": ").append(hiscoreSkill.getLevel())
-				.append(colKeyword).append(" Experience: ")
-				.append(colKeywordHighLight).append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(colKeyword).append(" Rank: ")
-				.append(colKeywordHighLight).append(String.format("%,d", hiscoreSkill.getRank()))
-				.toString();
+			String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Level ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+				.append(ChatColorType.NORMAL)
+				.append(" Experience: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", hiscoreSkill.getExperience()))
+				.append(ChatColorType.NORMAL)
+				.append(" Rank: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", hiscoreSkill.getRank()))
+				.build();
 
-			logger.debug("Setting response {}", response);
-
-			// XXX hopefully messageNode hasn't been reused yet?
-			setMessage.getMessageNode().setRuneLiteFormatMessage(response);
-			setMessage.getMessageNode().setValue(recolorMessage(setMessage.getType(), response));
+			log.debug("Setting response {}", response);
+			chatMessageManager.update(type, response, setMessage.getMessageNode());
 			client.refreshChat();
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to look up skill {} for {}", skill, search, ex);
+			log.warn("unable to look up skill {} for {}", skill, search, ex);
 		}
 	}
 
@@ -353,108 +348,6 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 		return null;
-	}
-
-	private ChatColor getChatColor(ChatMessageType type)
-	{
-		if ((type == ChatMessageType.PRIVATE_MESSAGE_SENT || type == ChatMessageType.PRIVATE_MESSAGE_RECEIVED) && !config.isPrivateRecolor())
-		{
-			return null;
-		}
-		if (client.getSetting(Varbits.TRANSPARANT_CHATBOX) == 0 || !client.isResized() || !config.transparancyRecolor())
-		{
-			switch (type)
-			{
-				case PUBLIC:
-					return new ChatColor(config.getPublicRecolor(), type, false, false);
-				case PRIVATE_MESSAGE_RECEIVED:
-				case PRIVATE_MESSAGE_SENT:
-					return new ChatColor(config.getPrivateRecolor(), type, false, false);
-				case CLANCHAT:
-					return new ChatColor(config.getCcRecolor(), type, false, false);
-			}
-		}
-		else
-		{
-			switch (type)
-			{
-				case PUBLIC:
-					return new ChatColor(config.getTransparentPublicRecolor(), type, true, false);
-				case PRIVATE_MESSAGE_RECEIVED:
-				case PRIVATE_MESSAGE_SENT:
-					return new ChatColor(config.getTransparentPrivateRecolor(), type, true, false);
-				case CLANCHAT:
-					return new ChatColor(config.getTransparentCcRecolor(), type, true, false);
-			}
-		}
-		return null;
-	}
-
-	private ChatColor getChatColorH(ChatMessageType type)
-	{
-		if ((type == ChatMessageType.PRIVATE_MESSAGE_SENT || type == ChatMessageType.PRIVATE_MESSAGE_RECEIVED) && !config.isPrivateRecolor())
-		{
-			return null;
-		}
-		if (client.getSetting(Varbits.TRANSPARANT_CHATBOX) == 0 || !client.isResized() || !config.transparancyRecolor())
-		{
-			switch (type)
-			{
-				case PUBLIC:
-					return new ChatColor(config.getPublicHRecolor(), type, false, true);
-				case PRIVATE_MESSAGE_RECEIVED:
-				case PRIVATE_MESSAGE_SENT:
-					return new ChatColor(config.getPrivateHRecolor(), type, false, true);
-				case CLANCHAT:
-					return new ChatColor(config.getCcHRecolor(), type, false, true);
-			}
-		}
-		else
-		{
-			switch (type)
-			{
-				case PUBLIC:
-					return new ChatColor(config.getTransparentPublicHRecolor(), type, true, true);
-				case PRIVATE_MESSAGE_RECEIVED:
-				case PRIVATE_MESSAGE_SENT:
-					return new ChatColor(config.getTransparentPrivateHRecolor(), type, true, true);
-				case CLANCHAT:
-					return new ChatColor(config.getTransparentCcHRecolor(), type, true, true);
-			}
-		}
-		return null;
-	}
-
-	private String recolorMessage(ChatMessageType type, String value)
-	{
-		ChatColor chatcolor = getChatColor(type);
-		ChatColor chatColorH = getChatColorH(type);
-		if (config.recolorEnabled() && chatcolor != null && chatColorH != null)
-		{
-			value = value.replace(colKeyword, getColTag(chatcolor.color))
-				.replace(colKeywordHighLight, getColTag(chatColorH.color));
-		}
-		else
-		{
-			value = value.replace(colKeyword, "")
-				.replace(colKeywordHighLight, "");
-		}
-		return value;
-	}
-
-	private void recolorChat()
-	{
-		Collection<MessageNode> nodes = getRuneliteMessages();
-		for (MessageNode message : nodes)
-		{
-			message.setValue(recolorMessage(message.getType(), message.getRuneLiteFormatMessage()));
-		}
-		client.refreshChat();
-	}
-
-	public static String getColTag(Color color)
-	{
-		return color == null ? "" : "<col=" + Integer.toHexString(color.getRGB() & 0xFFFFFF) + ">";
 	}
 
 	/**

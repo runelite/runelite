@@ -123,13 +123,11 @@ public class DiskStorage implements Storage
 		index.setProtocol(id.getProtocol());
 		index.setRevision(id.getRevision());
 		index.setNamed(id.isNamed());
-		index.setUsesWhirpool(id.isUsesWhirpool());
 
 		for (ArchiveData ad : id.getArchives())
 		{
 			Archive archive = index.addArchive(ad.getId());
 			archive.setNameHash(ad.getNameHash());
-			archive.setWhirlpool(ad.getWhirlpool());
 			archive.setCrc(ad.getCrc());
 			archive.setRevision(ad.getRevision());
 
@@ -144,7 +142,6 @@ public class DiskStorage implements Storage
 		}
 
 		index.setCrc(res.crc);
-		index.setWhirlpool(res.whirlpool);
 		index.setCompression(res.compression);
 		assert res.revision == -1;
 
@@ -222,7 +219,6 @@ public class DiskStorage implements Storage
 		index255.write(new IndexEntry(index255, index.getId(), res.sector, res.compressedLength));
 
 		index.setCrc(res.crc);
-		index.setWhirlpool(res.whirlpool);
 	}
 
 	private void saveArchive(Archive a) throws IOException
@@ -252,6 +248,5 @@ public class DiskStorage implements Storage
 		logger.trace("Saved archive {}/{} at sector {}, compressed length {}", index.getId(), a.getArchiveId(), res.sector, res.compressedLength);
 
 		a.setCrc(res.crc);
-		a.setWhirlpool(res.whirlpool);
 	}
 }

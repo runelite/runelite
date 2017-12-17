@@ -28,7 +28,6 @@ public class ArchiveData
 {
 	int id;
 	int nameHash;
-	byte[] whirlpool;
 	int crc;
 	int revision;
 	FileData[] files;
@@ -51,16 +50,6 @@ public class ArchiveData
 	public void setNameHash(int nameHash)
 	{
 		this.nameHash = nameHash;
-	}
-
-	public byte[] getWhirlpool()
-	{
-		return whirlpool;
-	}
-
-	public void setWhirlpool(byte[] whirlpool)
-	{
-		this.whirlpool = whirlpool;
 	}
 
 	public int getCrc()

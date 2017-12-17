@@ -1,146 +1,138 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("ez")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("s")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1767189463
-   )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("cs")
-   @ObfuscatedSignature(
-      signature = "Liy;"
-   )
-   static IndexData field1838;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -351644251
+      intValue = 1725557519
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -971591563
+      intValue = -695857629
    )
    @Export("x")
    int x;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1764460159
+      intValue = 1267689537
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -167067815
+      intValue = -721315981
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Led;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Ldc;"
+      signature = "Ldf;"
    )
    @Export("overlay")
    SceneTileModel overlay;
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lea;"
+      signature = "Leb;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Leh;"
+      signature = "Leq;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Ldq;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldw;"
+      signature = "Ldl;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1929168943
+      intValue = 1495705029
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "[Lex;"
+      signature = "[Let;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 154143411
+      intValue = 414760873
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("k")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1440094721
+      intValue = 1613392379
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("t")
+   @ObfuscatedName("o")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("h")
+   @ObfuscatedName("r")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("u")
+   @ObfuscatedName("i")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("r")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1211132049
+      intValue = -746627283
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1613542171
+      intValue = 1182737099
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("z")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1420550379
+      intValue = 37190099
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("o")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 2010500783
+      intValue = -1139868411
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("d")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lep;"
+      signature = "Lez;"
    )
    @Export("bridge")
    Tile bridge;
@@ -154,157 +146,42 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lfv;Lgd;B)Lgd;",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "1910530156"
    )
-   static final IterableHashTable method2607(Buffer var0, IterableHashTable var1) {
-      int var2 = var0.readUnsignedByte();
-      int var3;
-      if(var1 == null) {
-         var3 = class163.method3173(var2);
-         var1 = new IterableHashTable(var3);
-      }
-
-      for(var3 = 0; var3 < var2; ++var3) {
-         boolean var4 = var0.readUnsignedByte() == 1;
-         int var5 = var0.read24BitInt();
-         Object var6;
-         if(var4) {
-            var6 = new ObjectNode(var0.readString());
+   static void method2505() {
+      try {
+         File var0 = new File(class1.userHome, "random.dat");
+         int var2;
+         if(var0.exists()) {
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          } else {
-            var6 = new IntegerNode(var0.readInt());
-         }
-
-         var1.put((Node)var6, (long)var5);
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)[Lis;",
-      garbageValue = "-1377051789"
-   )
-   public static class235[] method2610() {
-      return new class235[]{class235.field3221, class235.field3225, class235.field3219, class235.field3220, class235.field3217, class235.field3224, class235.field3222, class235.field3223};
-   }
-
-   @ObfuscatedName("if")
-   @ObfuscatedSignature(
-      signature = "(Lhk;IIB)V",
-      garbageValue = "42"
-   )
-   static final void method2608(Widget var0, int var1, int var2) {
-      if(Client.field1022 == null && !Client.isMenuOpen) {
-         if(var0 != null) {
-            Widget var5 = var0;
-            int var7 = Preferences.getWidgetConfig(var0);
-            int var6 = var7 >> 17 & 7;
-            int var8 = var6;
-            Widget var4;
-            int var9;
-            if(var6 == 0) {
-               var4 = null;
-            } else {
-               var9 = 0;
-
-               while(true) {
-                  if(var9 >= var8) {
-                     var4 = var5;
-                     break;
-                  }
-
-                  var5 = PendingSpawn.method1612(var5.parentId);
-                  if(var5 == null) {
-                     var4 = null;
-                     break;
-                  }
-
-                  ++var9;
-               }
-            }
-
-            Widget var10 = var4;
-            if(var4 == null) {
-               var10 = var0.dragParent;
-            }
-
-            if(var10 != null) {
-               Client.field1022 = var0;
-               var5 = var0;
-               var7 = Preferences.getWidgetConfig(var0);
-               var6 = var7 >> 17 & 7;
-               var8 = var6;
-               if(var6 == 0) {
-                  var4 = null;
-               } else {
-                  var9 = 0;
-
-                  while(true) {
-                     if(var9 >= var8) {
-                        var4 = var5;
-                        break;
-                     }
-
-                     var5 = PendingSpawn.method1612(var5.parentId);
-                     if(var5 == null) {
-                        var4 = null;
-                        break;
-                     }
-
-                     ++var9;
+            label37:
+            for(int var1 = 0; var1 < GrandExchangeOffer.field298.length; ++var1) {
+               for(var2 = 0; var2 < class115.cacheLocations.length; ++var2) {
+                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var1] + File.separatorChar + "random.dat");
+                  if(var3.exists()) {
+                     class157.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
+                     break label37;
                   }
                }
-
-               var10 = var4;
-               if(var4 == null) {
-                  var10 = var0.dragParent;
-               }
-
-               Client.field1023 = var10;
-               Client.field1024 = var1;
-               Client.field1087 = var2;
-               ScriptVarType.field225 = 0;
-               Client.field1063 = false;
-               int var11 = Client.menuOptionCount - 1;
-               if(var11 != -1) {
-                  class54.method862(var11);
-               }
-
-               return;
             }
          }
 
-      }
-   }
-
-   @ObfuscatedName("jy")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)Z",
-      garbageValue = "10"
-   )
-   @Export("isIgnored")
-   static boolean isIgnored(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         String var1 = PacketBuffer.method3598(var0, class60.field718);
-
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(PacketBuffer.method3598(var3.name, class60.field718))) {
-               return true;
-            }
-
-            if(var1.equalsIgnoreCase(PacketBuffer.method3598(var3.previousName, class60.field718))) {
-               return true;
-            }
+         if(class157.randomDat == null) {
+            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
+            var2 = var4.read();
+            var4.seek(0L);
+            var4.write(var2);
+            var4.seek(0L);
+            var4.close();
+            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
          }
-
-         return false;
+      } catch (IOException var5) {
+         ;
       }
+
    }
 }

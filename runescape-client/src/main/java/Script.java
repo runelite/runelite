@@ -1,106 +1,135 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("ck")
 @Implements("Script")
 public class Script extends CacheableNode {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lgu;"
    )
-   static NodeCache field1445;
-   @ObfuscatedName("fs")
-   @Export("mapRegions")
-   @Hook("mapRegionsChanged")
-   static int[] mapRegions;
-   @ObfuscatedName("p")
+   static NodeCache field1431;
+   @ObfuscatedName("fd")
+   @ObfuscatedSignature(
+      signature = "[Lks;"
+   )
+   @Export("mapDots")
+   static SpritePixels[] mapDots;
+   @ObfuscatedName("w")
    @Export("instructions")
    int[] instructions;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @Export("intOperands")
    int[] intOperands;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("stringOperands")
    String[] stringOperands;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 2037752291
+      intValue = 475547171
    )
    @Export("localIntCount")
    int localIntCount;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1605158983
+      intValue = -1400091303
    )
    @Export("localStringCount")
    int localStringCount;
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -596211317
+      intValue = -1243325363
    )
    @Export("intStackCount")
    int intStackCount;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1932965255
+      intValue = -1013854573
    )
    @Export("stringStackCount")
    int stringStackCount;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lgd;"
+      signature = "[Lgr;"
    )
    @Export("switches")
    IterableHashTable[] switches;
 
    static {
-      field1445 = new NodeCache(128);
+      field1431 = new NodeCache(128);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IB)[Lgd;",
-      garbageValue = "48"
+      signature = "(II)[Lgr;",
+      garbageValue = "2031854513"
    )
-   IterableHashTable[] method1919(int var1) {
+   IterableHashTable[] method1833(int var1) {
       return new IterableHashTable[var1];
    }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)[Lfi;",
-      garbageValue = "1"
-   )
-   public static class169[] method1918() {
-      return new class169[]{class169.field2412, class169.field2411, class169.field2410, class169.field2413, class169.field2414, class169.field2417, class169.field2416, class169.field2415, class169.field2418, class169.field2419};
-   }
+   @ObfuscatedName("a")
+   static final int method1842(double var0, double var2, double var4) {
+      double var6 = var4;
+      double var8 = var4;
+      double var10 = var4;
+      if(0.0D != var2) {
+         double var12;
+         if(var4 < 0.5D) {
+            var12 = (var2 + 1.0D) * var4;
+         } else {
+            var12 = var4 + var2 - var2 * var4;
+         }
 
-   @ObfuscatedName("jx")
-   @ObfuscatedSignature(
-      signature = "(IIIILkd;Lhm;I)V",
-      garbageValue = "190302259"
-   )
-   static final void method1928(int var0, int var1, int var2, int var3, SpritePixels var4, class217 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapAngle & 2047;
-         int var8 = Graphics3D.SINE[var7];
-         int var9 = Graphics3D.COSINE[var7];
-         int var10 = var9 * var2 + var3 * var8 >> 16;
-         int var11 = var3 * var9 - var8 * var2 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = var5.field2683 / 2 - 25;
-         int var15 = (int)(Math.sin(var12) * (double)var14);
-         int var16 = (int)(Math.cos(var12) * (double)var14);
-         byte var17 = 20;
-         class36.mapedge.method5365(var15 + (var0 + var5.field2683 / 2 - var17 / 2), var5.field2680 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
-      } else {
-         class56.drawDot(var0, var1, var2, var3, var4, var5);
+         double var14 = var4 * 2.0D - var12;
+         double var16 = var0 + 0.3333333333333333D;
+         if(var16 > 1.0D) {
+            --var16;
+         }
+
+         double var20 = var0 - 0.3333333333333333D;
+         if(var20 < 0.0D) {
+            ++var20;
+         }
+
+         if(6.0D * var16 < 1.0D) {
+            var6 = var14 + var16 * (var12 - var14) * 6.0D;
+         } else if(var16 * 2.0D < 1.0D) {
+            var6 = var12;
+         } else if(var16 * 3.0D < 2.0D) {
+            var6 = (var12 - var14) * (0.6666666666666666D - var16) * 6.0D + var14;
+         } else {
+            var6 = var14;
+         }
+
+         if(6.0D * var0 < 1.0D) {
+            var8 = var14 + 6.0D * (var12 - var14) * var0;
+         } else if(2.0D * var0 < 1.0D) {
+            var8 = var12;
+         } else if(3.0D * var0 < 2.0D) {
+            var8 = 6.0D * (0.6666666666666666D - var0) * (var12 - var14) + var14;
+         } else {
+            var8 = var14;
+         }
+
+         if(6.0D * var20 < 1.0D) {
+            var10 = var14 + var20 * (var12 - var14) * 6.0D;
+         } else if(var20 * 2.0D < 1.0D) {
+            var10 = var12;
+         } else if(var20 * 3.0D < 2.0D) {
+            var10 = (var12 - var14) * (0.6666666666666666D - var20) * 6.0D + var14;
+         } else {
+            var10 = var14;
+         }
       }
 
+      int var22 = (int)(var6 * 256.0D);
+      int var13 = (int)(256.0D * var8);
+      int var23 = (int)(256.0D * var10);
+      int var15 = var23 + (var13 << 8) + (var22 << 16);
+      return var15;
    }
 }

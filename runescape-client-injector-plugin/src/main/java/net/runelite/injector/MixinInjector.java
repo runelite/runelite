@@ -94,7 +94,7 @@ public class MixinInjector
 			{
 				Class<?> implementInto = mixin.value();
 
-				ClassFile targetCf = findVanillaForInterface(implementInto);
+				ClassFile targetCf = inject.findVanillaForInterface(implementInto);
 
 				if (targetCf == null)
 				{
@@ -258,21 +258,6 @@ public class MixinInjector
 
 			return cv.getClassFile();
 		}
-	}
-
-	private ClassFile findVanillaForInterface(Class<?> clazz)
-	{
-		for (ClassFile cf : inject.getVanilla().getClasses())
-		{
-			for (net.runelite.asm.pool.Class cl : cf.getInterfaces().getInterfaces())
-			{
-				if (cl.getName().equals(clazz.getName().replace('.', '/')))
-				{
-					return cf;
-				}
-			}
-		}
-		return null;
 	}
 
 	private Field findDeobField(String name)

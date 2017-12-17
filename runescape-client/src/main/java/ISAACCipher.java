@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gj")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1750365851
+      intValue = -1239715429
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -646691209
+      intValue = 877872107
    )
-   int field2529;
-   @ObfuscatedName("l")
+   int field2551;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1191568411
+      intValue = -1280145255
    )
-   int field2530;
-   @ObfuscatedName("b")
+   int field2552;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1346646345
+      intValue = -180751191
    )
-   int field2531;
+   int field2546;
 
    public ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -43,13 +43,13 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3603();
+      this.method3585();
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "1"
+      signature = "(I)I",
+      garbageValue = "-947702233"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -61,12 +61,12 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1961147580"
+      signature = "(B)I",
+      garbageValue = "81"
    )
-   final int method3601() {
+   final int method3583() {
       if(this.valuesRemaining == 0) {
          this.generateMoreResults();
          this.valuesRemaining = 256;
@@ -75,43 +75,43 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining - 1];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "319540247"
+      garbageValue = "-1551048491"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2530 += ++this.field2531;
+      this.field2552 += ++this.field2546;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2529 ^= this.field2529 << 13;
+               this.field2551 ^= this.field2551 << 13;
             } else {
-               this.field2529 ^= this.field2529 >>> 6;
+               this.field2551 ^= this.field2551 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2529 ^= this.field2529 << 2;
+            this.field2551 ^= this.field2551 << 2;
          } else {
-            this.field2529 ^= this.field2529 >>> 16;
+            this.field2551 ^= this.field2551 >>> 16;
          }
 
-         this.field2529 += this.mm[var1 + 128 & 255];
+         this.field2551 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2529 + this.field2530;
-         this.randResult[var1] = this.field2530 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2551 + this.field2552;
+         this.randResult[var1] = this.field2552 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "374057039"
+      garbageValue = "-1199498217"
    )
-   final void method3603() {
+   final void method3585() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;

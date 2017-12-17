@@ -26,6 +26,9 @@
 
 package net.runelite.client.events;
 
+import lombok.Data;
+
+@Data
 public class VarbitChanged
 {
 }

@@ -24,27 +24,36 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import net.runelite.api.Skill;
+
 public enum AttackStyle
 {
-	ACCURATE("Accurate"),
-	AGGRESSIVE("Aggressive"),
-	DEFENSIVE("Defensive"),
-	CONTROLLED("Controlled"),
-	RANGING("Ranging"),
-	LONGRANGE("Longrange"),
-	CASTING("Casting"),
-	DEFENSIVE_CASTING("Defensive Casting"),
+	ACCURATE("Accurate", Skill.ATTACK),
+	AGGRESSIVE("Aggressive", Skill.STRENGTH),
+	DEFENSIVE("Defensive", Skill.DEFENCE),
+	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
+	RANGING("Ranging", Skill.RANGED),
+	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
+	CASTING("Casting", Skill.MAGIC),
+	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
 	OTHER("Other");
 
 	private final String name;
+	private final Skill[] skills;
 
-	AttackStyle(String name)
+	AttackStyle(String name, Skill... skills)
 	{
 		this.name = name;
+		this.skills = skills;
 	}
 
 	public String getName()
 	{
 		return name;
+	}
+
+	public Skill[] getSkills()
+	{
+		return skills;
 	}
 }

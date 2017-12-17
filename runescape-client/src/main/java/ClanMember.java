@@ -4,95 +4,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bu")
 @Implements("ClanMember")
 public class ClanMember extends Node {
-   @ObfuscatedName("d")
-   static int[] field867;
-   @ObfuscatedName("hf")
-   @ObfuscatedSignature(
-      signature = "Lhk;"
-   )
-   static Widget field864;
-   @ObfuscatedName("m")
+   @ObfuscatedName("fm")
+   static byte[][] field842;
+   @ObfuscatedName("a")
    @Export("username")
    String username;
-   @ObfuscatedName("p")
-   String field862;
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
+   String field840;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2125727289
+      intValue = 65229773
    )
    @Export("world")
    int world;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("rank")
    byte rank;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IB)Lit;",
-      garbageValue = "4"
+      signature = "(III)Z",
+      garbageValue = "-1118490454"
    )
-   public static VarPlayerType method1228(int var0) {
-      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class51.varplayer_ref.getConfigData(16, var0);
-         var1 = new VarPlayerType();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         VarPlayerType.varplayers.put(var1, (long)var0);
-         return var1;
-      }
+   static boolean method1118(int var0, int var1) {
+      return var0 != 4 || var1 < 8;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("hi")
    @ObfuscatedSignature(
-      signature = "(Liy;IIIBZI)V",
-      garbageValue = "-2133602171"
+      signature = "(Lhz;B)Z",
+      garbageValue = "73"
    )
-   static void method1227(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      FileRequest var8 = (FileRequest)class245.field3322.get(var6);
-      if(var8 == null) {
-         var8 = (FileRequest)class245.field3318.get(var6);
-         if(var8 == null) {
-            var8 = (FileRequest)class245.field3321.get(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.unlinkDual();
-                  class245.field3322.put(var8, var6);
-                  --class245.field3327;
-                  ++class245.field3320;
+   static final boolean method1117(Widget var0) {
+      if(var0.tableActions == null) {
+         return false;
+      } else {
+         for(int var1 = 0; var1 < var0.tableActions.length; ++var1) {
+            int var2 = class278.method4994(var0, var1);
+            int var3 = var0.field2837[var1];
+            if(var0.tableActions[var1] == 2) {
+               if(var2 >= var3) {
+                  return false;
                }
-
-            } else {
-               if(!var5) {
-                  var8 = (FileRequest)class245.field3313.get(var6);
-                  if(var8 != null) {
-                     return;
-                  }
+            } else if(var0.tableActions[var1] == 3) {
+               if(var2 <= var3) {
+                  return false;
                }
-
-               var8 = new FileRequest();
-               var8.index = var0;
-               var8.crc = var3;
-               var8.padding = var4;
-               if(var5) {
-                  class245.field3322.put(var8, var6);
-                  ++class245.field3320;
-               } else {
-                  class245.field3326.push(var8);
-                  class245.field3321.put(var8, var6);
-                  ++class245.field3327;
+            } else if(var0.tableActions[var1] == 4) {
+               if(var3 == var2) {
+                  return false;
                }
-
+            } else if(var2 != var3) {
+               return false;
             }
          }
+
+         return true;
       }
    }
 }

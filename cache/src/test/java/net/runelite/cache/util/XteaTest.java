@@ -26,31 +26,35 @@ package net.runelite.cache.util;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.junit.Assert;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 public class XteaTest
 {
-	private final Random random = new Random(42L);
-	
 	@Test
 	public void test() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException
 	{
-		byte[] data = new byte[1027];
-		random.nextBytes(data);
-		
-		int[] key = new int[] { 4, 8, 15, 16 };
-		
+		byte[] data = "testtesttest1".getBytes();
+
+		int[] key = new int[]
+		{
+			4, 8, 15, 16
+		};
+		byte[] encrypted = new byte[]
+		{
+			121, -18, 48, 64, 120, -42, -113, 77, 116, 101, 115, 116, 49
+		};
+
 		Xtea xtea = new Xtea(key);
 		byte[] encData = xtea.encrypt(data, data.length);
+		assertArrayEquals(encrypted, encData);
 
 		xtea = new Xtea(key);
 		byte[] decData = xtea.decrypt(encData, encData.length);
 
-		Assert.assertArrayEquals(data, decData);
+		assertArrayEquals(data, decData);
 	}
 }

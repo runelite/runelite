@@ -3,36 +3,38 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gu")
 @Implements("NodeCache")
 public final class NodeCache {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lgi;"
    )
-   CacheableNode field2551;
-   @ObfuscatedName("p")
-   int field2550;
-   @ObfuscatedName("i")
-   int field2549;
-   @ObfuscatedName("j")
+   CacheableNode field2578;
+   @ObfuscatedName("w")
+   @Export("capacity")
+   int capacity;
+   @ObfuscatedName("e")
+   @Export("remainingCapacity")
+   int remainingCapacity;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgx;"
+      signature = "Lgp;"
    )
    @Export("table")
    HashTable table;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lgq;"
+      signature = "Lgx;"
    )
    @Export("list")
    Node2LinkedList list;
 
    public NodeCache(int var1) {
-      this.field2551 = new CacheableNode();
+      this.field2578 = new CacheableNode();
       this.list = new Node2LinkedList();
-      this.field2550 = var1;
-      this.field2549 = var1;
+      this.capacity = var1;
+      this.remainingCapacity = var1;
 
       int var2;
       for(var2 = 1; var2 + var2 < var1; var2 += var2) {
@@ -42,9 +44,9 @@ public final class NodeCache {
       this.table = new HashTable(var2);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(J)Lgu;"
+      signature = "(J)Lgi;"
    )
    @Export("get")
    public CacheableNode get(long var1) {
@@ -56,47 +58,47 @@ public final class NodeCache {
       return var3;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("remove")
    public void remove(long var1) {
       CacheableNode var3 = (CacheableNode)this.table.get(var1);
       if(var3 != null) {
          var3.unlink();
          var3.unlinkDual();
-         ++this.field2549;
+         ++this.remainingCapacity;
       }
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgu;J)V"
+      signature = "(Lgi;J)V"
    )
    @Export("put")
    public void put(CacheableNode var1, long var2) {
-      if(this.field2549 == 0) {
+      if(this.remainingCapacity == 0) {
          CacheableNode var4 = this.list.pop();
          var4.unlink();
          var4.unlinkDual();
-         if(var4 == this.field2551) {
+         if(var4 == this.field2578) {
             var4 = this.list.pop();
             var4.unlink();
             var4.unlinkDual();
          }
       } else {
-         --this.field2549;
+         --this.remainingCapacity;
       }
 
       this.table.put(var1, var2);
       this.list.push(var1);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("reset")
    public void reset() {
       this.list.clear();
-      this.table.method3720();
-      this.field2551 = new CacheableNode();
-      this.field2549 = this.field2550;
+      this.table.clear();
+      this.field2578 = new CacheableNode();
+      this.remainingCapacity = this.capacity;
    }
 }

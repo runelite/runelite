@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -39,7 +40,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
@@ -80,19 +80,14 @@ public class DevToolsOverlay extends Overlay
 	@Inject
 	public DevToolsOverlay(@Nullable Client client, DevToolsPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		Font font = plugin.getFont();
 		if (font != null)
 		{

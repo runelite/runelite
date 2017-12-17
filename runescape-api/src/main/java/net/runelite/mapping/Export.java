@@ -31,12 +31,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(
-	{
-		ElementType.FIELD, ElementType.METHOD
-	})
+{
+	ElementType.FIELD, ElementType.METHOD
+})
 public @interface Export
 {
 	String value();
-
-	boolean setter() default false;
 }

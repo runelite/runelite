@@ -24,41 +24,16 @@
  */
 package net.runelite.client.events;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import net.runelite.api.ChatMessageType;
 
+@Data
+@AllArgsConstructor
 public class ChatMessage
 {
 	private ChatMessageType type;
 	private String sender;
 	private String message;
 	private String clan;
-
-	public ChatMessage(ChatMessageType type, String sender, String message, String clan)
-	{
-		this.type = type;
-		this.sender = sender;
-		this.message = message;
-		this.clan = clan;
-	}
-
-	public ChatMessageType getType()
-	{
-		return this.type;
-	}
-
-	public String getSender()
-	{
-		return this.sender;
-	}
-
-	public String getMessage()
-	{
-		return this.message;
-	}
-
-	public String getClan()
-	{
-		return this.clan;
-	}
-
 }

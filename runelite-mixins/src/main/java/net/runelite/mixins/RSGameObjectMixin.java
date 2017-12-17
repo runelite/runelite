@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import java.awt.Polygon;
 import net.runelite.api.Model;
+import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -34,6 +35,20 @@ import net.runelite.rs.api.RSGameObject;
 @Mixin(RSGameObject.class)
 public abstract class RSGameObjectMixin implements RSGameObject
 {
+	@Inject
+	@Override
+	public Point getRegionMinLocation()
+	{
+		return new Point(getRelativeX(), getRelativeY());
+	}
+
+	@Inject
+	@Override
+	public Point getRegionMaxLocation()
+	{
+		return new Point(getOffsetX(), getOffsetY());
+	}
+
 	@Inject
 	@Override
 	public Polygon getConvexHull()

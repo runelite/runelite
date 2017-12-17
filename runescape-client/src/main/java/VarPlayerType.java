@@ -4,28 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("iv")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1170437943
-   )
-   public static int field3344;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lib;"
+   )
+   @Export("varplayer_ref")
+   static IndexDataBase varplayer_ref;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lgu;"
    )
    @Export("varplayers")
    public static NodeCache varplayers;
-   @ObfuscatedName("t")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 551148241
-   )
-   public static int field3342;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 2139471647
+      intValue = 1618823997
    )
    @Export("configType")
    public int configType;
@@ -38,10 +34,10 @@ public class VarPlayerType extends CacheableNode {
       this.configType = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "1081552324"
+      signature = "(Lgh;I)V",
+      garbageValue = "-735230306"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -55,10 +51,10 @@ public class VarPlayerType extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lfv;II)V",
-      garbageValue = "1369179074"
+      signature = "(Lgh;IB)V",
+      garbageValue = "-103"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -68,21 +64,25 @@ public class VarPlayerType extends CacheableNode {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Ljw;",
-      garbageValue = "956826945"
+      signature = "(II)Ljk;",
+      garbageValue = "1386430881"
    )
-   public static class285 method4465(int var0) {
-      class285[] var1 = class100.method1969();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class285 var3 = var1[var2];
-         if(var0 == var3.field3785) {
-            return var3;
+   public static class262 method4426(int var0) {
+      class262 var1 = (class262)class262.field3464.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class262.field3467.getConfigData(11, var0);
+         var1 = new class262();
+         if(var2 != null) {
+            var1.method4573(new Buffer(var2));
          }
-      }
 
-      return null;
+         var1.method4572();
+         class262.field3464.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

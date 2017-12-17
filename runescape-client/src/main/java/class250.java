@@ -1,130 +1,80 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ie")
-public class class250 extends CacheableNode {
-   @ObfuscatedName("p")
+@ObfuscatedName("ik")
+public enum class250 implements Enumerated {
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lik;"
    )
-   static NodeCache field3371;
-   @ObfuscatedName("i")
-   public boolean field3370;
+   field3366(1, 0),
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3363(2, 1),
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3364(0, 2);
 
-   static {
-      field3371 = new NodeCache(64);
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1593602001
+   )
+   public final int field3365;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1530608881
+   )
+   final int field3362;
+
+   class250(int var3, int var4) {
+      this.field3365 = var3;
+      this.field3362 = var4;
    }
 
-   class250() {
-      this.field3370 = false;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1035813094"
+   )
+   public int rsOrdinal() {
+      return this.field3362;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lfv;I)V",
-      garbageValue = "-892885908"
+      signature = "(II)Liz;",
+      garbageValue = "1089959020"
    )
-   void method4491(Buffer var1) {
-      while(true) {
-         int var2 = var1.readUnsignedByte();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method4496(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Lfv;II)V",
-      garbageValue = "1005303401"
-   )
-   void method4496(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field3370 = true;
-      }
-
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)Ljx;",
-      garbageValue = "-567064807"
-   )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.items.get((long)var0);
+   @Export("getSpotAnimType")
+   public static Spotanim getSpotAnimType(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ItemComposition.item_ref.getConfigData(10, var0);
-         var1 = new ItemComposition();
+         byte[] var2 = Spotanim.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
+         var1 = new Spotanim();
          var1.id = var0;
          if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
+            var1.decode(new Buffer(var2));
          }
 
-         var1.post();
-         if(var1.notedTemplate != -1) {
-            var1.method4753(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
-         }
-
-         if(var1.notedId != -1) {
-            var1.method4752(getItemDefinition(var1.notedId), getItemDefinition(var1.unnotedId));
-         }
-
-         if(var1.field3594 != -1) {
-            var1.method4784(getItemDefinition(var1.field3594), getItemDefinition(var1.field3593));
-         }
-
-         if(!class246.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field3590 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = -1;
-            var1.field3588 = 0;
-            if(var1.field3576 != null) {
-               boolean var3 = false;
-
-               for(Node var4 = var1.field3576.getHead(); var4 != null; var4 = var1.field3576.getTail()) {
-                  class258 var5 = PacketBuffer.method3597((int)var4.hash);
-                  if(var5.field3445) {
-                     var4.unlink();
-                  } else {
-                     var3 = true;
-                  }
-               }
-
-               if(!var3) {
-                  var1.field3576 = null;
-               }
-            }
-         }
-
-         ItemComposition.items.put(var1, (long)var0);
+         Spotanim.spotanims.put(var1, (long)var0);
          return var1;
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Lik;Ljava/lang/String;Ljava/lang/String;I)Lko;",
-      garbageValue = "-1820090326"
+      signature = "(S)V",
+      garbageValue = "26961"
    )
-   @Export("getSprite")
-   public static IndexedSprite getSprite(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      IndexedSprite var5;
-      if(!class72.method1184(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = class34.method511();
-      }
-
-      return var5;
+   public static void method4401() {
+      KitDefinition.identKits.reset();
    }
 }

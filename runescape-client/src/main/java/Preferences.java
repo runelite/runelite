@@ -7,64 +7,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("cf")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 921646939
-   )
-   static int field1236;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lko;"
-   )
-   static IndexedSprite field1235;
    @ObfuscatedName("a")
-   static int[] field1227;
-   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1024797975
+   )
+   static int field1212;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -233733647
+   )
+   static int field1217;
+   @ObfuscatedName("dj")
+   @ObfuscatedSignature(
+      signature = "Liu;"
+   )
+   @Export("indexCache13")
+   static IndexData indexCache13;
+   @ObfuscatedName("e")
    @Export("hideRoofs")
    boolean hideRoofs;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @Export("muted")
    boolean muted;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1237697821
+      intValue = -881826075
    )
    @Export("screenType")
    int screenType;
-   @ObfuscatedName("x")
-   String field1231;
-   @ObfuscatedName("e")
-   boolean field1232;
-   @ObfuscatedName("l")
+   @ObfuscatedName("z")
+   @Export("rememberedUsername")
+   String rememberedUsername;
+   @ObfuscatedName("t")
+   @Export("hideUsername")
+   boolean hideUsername;
+   @ObfuscatedName("f")
    @Export("preferences")
    LinkedHashMap preferences;
 
    static {
-      field1236 = 6;
+      field1212 = 6;
    }
 
    Preferences() {
       this.screenType = 1;
-      this.field1231 = null;
-      this.field1232 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
-      this.method1672(true);
+      this.method1527(true);
    }
 
    @ObfuscatedSignature(
-      signature = "(Lfv;)V"
+      signature = "(Lgh;)V"
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
-      this.field1231 = null;
-      this.field1232 = false;
+      this.rememberedUsername = null;
+      this.hideUsername = false;
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field1236) {
+         if(var2 >= 0 && var2 <= field1212) {
             if(var1.readUnsignedByte() == 1) {
                this.hideRoofs = true;
             }
@@ -88,38 +94,38 @@ public class Preferences {
             }
 
             if(var2 > 4) {
-               this.field1231 = var1.getNullString();
+               this.rememberedUsername = var1.getNullString();
             }
 
             if(var2 > 5) {
-               this.field1232 = var1.method3320();
+               this.hideUsername = var1.method3268();
             }
          } else {
-            this.method1672(true);
+            this.method1527(true);
          }
       } else {
-         this.method1672(true);
+         this.method1527(true);
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(ZB)V",
-      garbageValue = "0"
+      garbageValue = "-78"
    )
-   void method1672(boolean var1) {
+   void method1527(boolean var1) {
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)Lfv;",
-      garbageValue = "1640976032"
+      signature = "(B)Lgh;",
+      garbageValue = "49"
    )
    @Export("serialize")
    Buffer serialize() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field1236);
+      var1.putByte(field1212);
       var1.putByte(this.hideRoofs?1:0);
       var1.putByte(this.muted?1:0);
       var1.putByte(this.screenType);
@@ -132,111 +138,24 @@ public class Preferences {
          var1.putInt(((Integer)var3.getValue()).intValue());
       }
 
-      var1.putString(this.field1231 != null?this.field1231:"");
-      var1.method3275(this.field1232);
+      var1.putString(this.rememberedUsername != null?this.rememberedUsername:"");
+      var1.writeBooleanAsByte(this.hideUsername);
       return var1;
    }
 
-   @ObfuscatedName("m")
-   public static String method1686(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(var0 % 37L == 0L) {
-            return null;
-         } else {
-            int var2 = 0;
-
-            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
-               ++var2;
-            }
-
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class275.field3727[(int)(var6 - var0 * 37L)];
-               if(var8 == '_') {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
-               }
-            }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
-         }
-      } else {
-         return null;
-      }
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-52"
+      signature = "(I)J",
+      garbageValue = "-1168308091"
    )
-   static int method1685(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class186.currentTimeMsLast) {
+         class186.currentTimeMsOffset += class186.currentTimeMsLast - var0;
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
-
-   @ObfuscatedName("gg")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIIII)V",
-      garbageValue = "-1252649784"
-   )
-   static final void method1687(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      PendingSpawn var9 = null;
-
-      for(PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.getFront(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.getNext()) {
-         if(var0 == var10.level && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
-            var9 = var10;
-            break;
-         }
-      }
-
-      if(var9 == null) {
-         var9 = new PendingSpawn();
-         var9.level = var0;
-         var9.type = var3;
-         var9.x = var1;
-         var9.y = var2;
-         Coordinates.method4109(var9);
-         Client.pendingSpawns.addFront(var9);
-      }
-
-      var9.id = var4;
-      var9.field1140 = var5;
-      var9.orientation = var6;
-      var9.delay = var7;
-      var9.hitpoints = var8;
-   }
-
-   @ObfuscatedName("ji")
-   @ObfuscatedSignature(
-      signature = "(Lhk;B)I",
-      garbageValue = "119"
-   )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
+      class186.currentTimeMsLast = var0;
+      return var0 + class186.currentTimeMsOffset;
    }
 }

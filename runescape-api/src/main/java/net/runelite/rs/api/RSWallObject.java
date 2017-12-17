@@ -40,4 +40,16 @@ public interface RSWallObject extends WallObject
 	@Import("y")
 	@Override
 	int getY();
+
+	@Import("orientationA")
+	@Override
+	int getOrientationA();
+
+	@Import("orientationB")
+	@Override
+	int getOrientationB();
+
+	@Import("config")
+	@Override
+	int getConfig();
 }

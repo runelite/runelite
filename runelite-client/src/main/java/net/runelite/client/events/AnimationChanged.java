@@ -24,17 +24,11 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
+import net.runelite.api.Actor;
+
+@Data
 public class AnimationChanged
 {
-	private Object object;
-
-	public Object getObject()
-	{
-		return object;
-	}
-
-	public void setObject(Object object)
-	{
-		this.object = object;
-	}
+	private Actor actor;
 }

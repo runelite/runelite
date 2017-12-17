@@ -4,52 +4,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("il")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lil;"
    )
    @Export("RC")
    static final BuildType RC;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lil;"
    )
    @Export("WIP")
    static final BuildType WIP;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lil;"
    )
    @Export("LIVE")
    static final BuildType LIVE;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lid;"
+      signature = "Lil;"
    )
    @Export("BUILD_LIVE")
    static final BuildType BUILD_LIVE;
-   @ObfuscatedName("e")
-   static int[] field3245;
-   @ObfuscatedName("el")
-   @ObfuscatedSignature(
-      signature = "Les;"
-   )
-   static class148 field3253;
-   @ObfuscatedName("fy")
-   @ObfuscatedSignature(
-      signature = "[Lko;"
-   )
-   @Export("mapscene")
-   static IndexedSprite[] mapscene;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1270254443
+      intValue = 175058789
    )
    @Export("ordinal")
    final int ordinal;
@@ -64,5 +51,31 @@ public class BuildType {
    BuildType(String var1, int var2) {
       this.identifier = var1;
       this.ordinal = var2;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(ILck;ZB)I",
+      garbageValue = "3"
+   )
+   static int method4241(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class139.field2008:AttackOption.field1306;
+      if(var0 == 1700) {
+         class82.intStack[++class82.intStackSize - 1] = var3.itemId;
+         return 1;
+      } else if(var0 == 1701) {
+         if(var3.itemId != -1) {
+            class82.intStack[++class82.intStackSize - 1] = var3.itemQuantity;
+         } else {
+            class82.intStack[++class82.intStackSize - 1] = 0;
+         }
+
+         return 1;
+      } else if(var0 == 1702) {
+         class82.intStack[++class82.intStackSize - 1] = var3.index;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

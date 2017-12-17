@@ -25,36 +25,34 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
+import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
+import static net.runelite.client.plugins.pestcontrol.Portal.RED;
+import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
-import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
-import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
-import static net.runelite.client.plugins.pestcontrol.Portal.RED;
-import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class PestControlOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(PestControlOverlay.class);
-
 	private final RuneLite runelite;
 	private final Client client;
 
@@ -66,26 +64,21 @@ public class PestControlOverlay extends Overlay
 	@Inject
 	public PestControlOverlay(RuneLite runelite, PestControlPlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = runelite.getClient();
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return null;
-		}
-
 		// See if we are in a game or not
 		if (client.getWidget(WidgetInfo.PESTCONTROL_BLUE_SHIELD) == null)
 		{
 			if (game != null)
 			{
-				logger.debug("Pest control game has ended");
+				log.debug("Pest control game has ended");
 				game = null;
 			}
 
@@ -94,7 +87,7 @@ public class PestControlOverlay extends Overlay
 
 		if (game == null)
 		{
-			logger.debug("Pest control game has started");
+			log.debug("Pest control game has started");
 			game = new Game();
 		}
 

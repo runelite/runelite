@@ -32,11 +32,24 @@ package net.runelite.client.config;
 public interface RuneliteConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tooltipLeft",
-		name = "Tooltip left of mouse?",
-		description = "Places the tooltip on the left side of the mouse"
+		keyName = "chatCommandsRecolorEnabled",
+		name = "Enable chat commands recolor",
+		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
 	)
-	default boolean tooltipLeft()
+	default boolean chatCommandsRecolorEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
+		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
+		+ "of your computer. Are you sure you want to do this?"
+	)
+	default boolean enablePlugins()
 	{
 		return false;
 	}

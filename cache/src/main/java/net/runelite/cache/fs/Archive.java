@@ -27,7 +27,6 @@ package net.runelite.cache.fs;
 import net.runelite.cache.fs.jagex.DataFile;
 import net.runelite.cache.fs.jagex.DataFileReadResult;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
@@ -43,7 +42,6 @@ public class Archive
 
 	private final int archiveId;
 	private int nameHash;
-	private byte[] whirlpool;
 	private int crc;
 	private int revision;
 	private int compression;
@@ -143,12 +141,6 @@ public class Archive
 			this.setCrc(res.crc);
 		}
 
-		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))
-		{
-			logger.warn("whirlpool mismatch for archive {}", this.getArchiveId());
-			this.setWhirlpool(res.whirlpool);
-		}
-
 		if (res.revision != -1 && this.getRevision() != res.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
@@ -186,16 +178,6 @@ public class Archive
 	public void setNameHash(int nameHash)
 	{
 		this.nameHash = nameHash;
-	}
-
-	public byte[] getWhirlpool()
-	{
-		return whirlpool;
-	}
-
-	public void setWhirlpool(byte[] whirlpool)
-	{
-		this.whirlpool = whirlpool;
 	}
 
 	public int getCrc()

@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
 	name = "Jewellery count plugin"
@@ -52,5 +53,11 @@ public class JewelleryCountPlugin extends Plugin
 	JewelleryCountConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(JewelleryCountConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
 	}
 }

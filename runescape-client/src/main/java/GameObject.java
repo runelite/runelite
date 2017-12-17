@@ -4,95 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("et")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("fo")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1629260605
-   )
-   static int field2105;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 969944669
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1246560289
+      intValue = -1866751847
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1502155677
+      intValue = 1840593029
    )
    @Export("height")
    int height;
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1692951283
+      intValue = 1087761421
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 251984857
+      intValue = 1063628249
    )
    @Export("y")
    int y;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Lel;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1535671359
+      intValue = 1672836637
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1610249375
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 22585943
+      intValue = 1511254367
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1088565909
+      intValue = 19135965
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 147170553
+      intValue = 235575925
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -544097231
+      intValue = 792465583
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 395226911
+      intValue = -833063441
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("y")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -681483349
+      intValue = 1044473627
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -740352485
+      intValue = 195247177
    )
    @Export("flags")
    int flags;
@@ -102,42 +97,129 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "([I[IB)V",
-      garbageValue = "-86"
+      signature = "(II)V",
+      garbageValue = "-360058868"
    )
-   public static void method3003(int[] var0, int[] var1) {
-      if(var0 != null && var1 != null) {
-         BuildType.field3245 = var0;
-         FaceNormal.field2051 = new int[var0.length];
-         AbstractByteBuffer.field2513 = new byte[var0.length][][];
+   static final void method2909(int var0) {
+      short var1 = 256;
+      class91.field1321 += var0 * 128;
+      int var2;
+      if(class91.field1321 > class36.field478.length) {
+         class91.field1321 -= class36.field478.length;
+         var2 = (int)(Math.random() * 12.0D);
+         CombatInfoListHolder.method1623(class234.runeSprites[var2]);
+      }
 
-         for(int var2 = 0; var2 < BuildType.field3245.length; ++var2) {
-            AbstractByteBuffer.field2513[var2] = new byte[var1[var2]][];
+      var2 = 0;
+      int var3 = var0 * 128;
+      int var4 = (var1 - var0) * 128;
+
+      int var5;
+      int var6;
+      for(var5 = 0; var5 < var4; ++var5) {
+         var6 = class89.field1302[var2 + var3] - class36.field478[var2 + class91.field1321 & class36.field478.length - 1] * var0 / 6;
+         if(var6 < 0) {
+            var6 = 0;
          }
 
-      } else {
-         BuildType.field3245 = null;
-         FaceNormal.field2051 = null;
-         AbstractByteBuffer.field2513 = null;
+         class89.field1302[var2++] = var6;
       }
-   }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lhy;III)Lcw;",
-      garbageValue = "1770880737"
-   )
-   static Script method3004(class226 var0, int var1, int var2) {
-      int var3 = class89.method1797(var1, var0);
-      Script var4 = class41.method640(var3, var0);
-      if(var4 != null) {
-         return var4;
-      } else {
-         int var5 = var0.field2871 + (var2 + 40000 << 8);
-         var4 = class41.method640(var5, var0);
-         return var4 != null?var4:null;
+      int var7;
+      int var8;
+      for(var5 = var1 - var0; var5 < var1; ++var5) {
+         var6 = var5 * 128;
+
+         for(var7 = 0; var7 < 128; ++var7) {
+            var8 = (int)(Math.random() * 100.0D);
+            if(var8 < 50 && var7 > 10 && var7 < 118) {
+               class89.field1302[var7 + var6] = 255;
+            } else {
+               class89.field1302[var6 + var7] = 0;
+            }
+         }
       }
+
+      if(class91.field1323 > 0) {
+         class91.field1323 -= var0 * 4;
+      }
+
+      if(class91.field1327 > 0) {
+         class91.field1327 -= var0 * 4;
+      }
+
+      if(class91.field1323 == 0 && class91.field1327 == 0) {
+         var5 = (int)(Math.random() * (double)(2000 / var0));
+         if(var5 == 0) {
+            class91.field1323 = 1024;
+         }
+
+         if(var5 == 1) {
+            class91.field1327 = 1024;
+         }
+      }
+
+      for(var5 = 0; var5 < var1 - var0; ++var5) {
+         class91.field1324[var5] = class91.field1324[var0 + var5];
+      }
+
+      for(var5 = var1 - var0; var5 < var1; ++var5) {
+         class91.field1324[var5] = (int)(Math.sin((double)class91.field1342 / 14.0D) * 16.0D + Math.sin((double)class91.field1342 / 15.0D) * 14.0D + Math.sin((double)class91.field1342 / 16.0D) * 12.0D);
+         ++class91.field1342;
+      }
+
+      class91.field1350 += var0;
+      var5 = (var0 + (Client.gameCycle & 1)) / 2;
+      if(var5 > 0) {
+         for(var6 = 0; var6 < class91.field1350 * 100; ++var6) {
+            var7 = (int)(Math.random() * 124.0D) + 2;
+            var8 = (int)(Math.random() * 128.0D) + 128;
+            class89.field1302[var7 + (var8 << 7)] = 192;
+         }
+
+         class91.field1350 = 0;
+
+         int var9;
+         for(var6 = 0; var6 < var1; ++var6) {
+            var7 = 0;
+            var8 = var6 * 128;
+
+            for(var9 = -var5; var9 < 128; ++var9) {
+               if(var5 + var9 < 128) {
+                  var7 += class89.field1302[var9 + var8 + var5];
+               }
+
+               if(var9 - (var5 + 1) >= 0) {
+                  var7 -= class89.field1302[var9 + var8 - (var5 + 1)];
+               }
+
+               if(var9 >= 0) {
+                  BoundingBox.field238[var9 + var8] = var7 / (var5 * 2 + 1);
+               }
+            }
+         }
+
+         for(var6 = 0; var6 < 128; ++var6) {
+            var7 = 0;
+
+            for(var8 = -var5; var8 < var1; ++var8) {
+               var9 = var8 * 128;
+               if(var5 + var8 < var1) {
+                  var7 += BoundingBox.field238[var9 + var6 + var5 * 128];
+               }
+
+               if(var8 - (var5 + 1) >= 0) {
+                  var7 -= BoundingBox.field238[var9 + var6 - (var5 + 1) * 128];
+               }
+
+               if(var8 >= 0) {
+                  class89.field1302[var9 + var6] = var7 / (var5 * 2 + 1);
+               }
+            }
+         }
+      }
+
    }
 }

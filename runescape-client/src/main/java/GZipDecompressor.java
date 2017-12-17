@@ -1,13 +1,20 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fd")
 @Implements("GZipDecompressor")
 public class GZipDecompressor {
-   @ObfuscatedName("m")
+   @ObfuscatedName("gz")
+   @ObfuscatedGetter(
+      intValue = -219460773
+   )
+   @Export("cameraY")
+   static int cameraY;
+   @ObfuscatedName("a")
    @Export("inflator")
    Inflater inflator;
 
@@ -22,10 +29,10 @@ public class GZipDecompressor {
       this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lfv;[BI)V",
-      garbageValue = "1264007475"
+      signature = "(Lgh;[BB)V",
+      garbageValue = "4"
    )
    @Export("decompress")
    public void decompress(Buffer var1, byte[] var2) {
@@ -45,6 +52,27 @@ public class GZipDecompressor {
          this.inflator.reset();
       } else {
          throw new RuntimeException("");
+      }
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)Lir;",
+      garbageValue = "-1948930203"
+   )
+   public static CombatInfo2 method3201(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field3443.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = CombatInfo2.field3452.getConfigData(33, var0);
+         var1 = new CombatInfo2();
+         if(var2 != null) {
+            var1.read(new Buffer(var2));
+         }
+
+         CombatInfo2.field3443.put(var1, (long)var0);
+         return var1;
       }
    }
 }

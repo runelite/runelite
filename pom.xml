@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.2.7-SNAPSHOT</version>
+	<version>1.2.10-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Runelite</name>
@@ -42,7 +42,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>157</rs.version>
+		<rs.version>160</rs.version>
 	</properties>
 
 	<licenses>
@@ -112,6 +112,7 @@
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>
 		<module>runescape-client-injector-plugin</module>
+		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>runelite-proxy</module>

@@ -26,6 +26,7 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
 
 public interface RSClient extends RSGameEngine, Client
@@ -129,15 +130,18 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("collisionMaps")
 	RSCollisionData[] getCollisionMaps();
-	
+
 	@Import("playerIndexesCount")
 	int getPlayerIndexesCount();
-	
+
 	@Import("playerIndices")
 	int[] getPlayerIndices();
 
 	@Import("cachedPlayers")
 	RSPlayer[] getCachedPlayers();
+
+	@Import("localInteractingIndex")
+	int getLocalInteractingIndex();
 
 	@Import("groundItemDeque")
 	RSDeque[][][] getGroundItemDeque();
@@ -146,7 +150,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	String getUsername();
 
-	@Import(value = "username", setter = true)
+	@Import("username")
 	@Override
 	void setUsername(String username);
 
@@ -162,14 +166,6 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int[] getPlayerMenuTypes();
 
-	@Import("menuTargets")
-	@Override
-	String[] getMenuTargets();
-
-	@Import("menuOptions")
-	@Override
-	String[] getMenuOptions();
-
 	@Import("mouseX")
 	int getMouseX();
 
@@ -179,11 +175,26 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuOptionCount")
 	int getMenuOptionCount();
 
-	@Import("menuTypes")
-	int[] getMenuTypes();
+	@Import("menuOptionCount")
+	void setMenuOptionCount(int menuOptionCount);
+
+	@Import("menuOptions")
+	String[] getMenuOptions();
+
+	@Import("menuTargets")
+	String[] getMenuTargets();
 
 	@Import("menuIdentifiers")
 	int[] getMenuIdentifiers();
+
+	@Import("menuTypes")
+	int[] getMenuTypes();
+
+	@Import("menuActionParams0")
+	int[] getMenuActionParams0();
+
+	@Import("menuActionParams1")
+	int[] getMenuActionParams1();
 
 	@Import("friends")
 	RSFriend[] getFriends();
@@ -197,6 +208,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
 
+	@Override
 	@Import("getObjectDefinition")
 	RSObjectComposition getObjectDefinition(int objectId);
 
@@ -279,17 +291,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getGameDrawingMode();
 
-	@Import(
-		value = "gameDrawingMode",
-		setter = true
-	)
+	@Import("gameDrawingMode")
 	@Override
 	void setGameDrawingMode(int gameDrawingMode);
 
 	@Import("cycleCntr")
 	int getCycleCntr();
 
-	@Import(value = "chatCycle", setter = true)
+	@Import("chatCycle")
 	void setChatCycle(int value);
 
 	/**
@@ -300,4 +309,27 @@ public interface RSClient extends RSGameEngine, Client
 	 */
 	@Import("widgetRoot")
 	int getWidgetRoot();
+
+	@Import("mapAreaType")
+	@Override
+	RSArea[] getMapAreas();
+
+	@Import("mapscene")
+	@Override
+	RSIndexedSprite[] getMapScene();
+
+	@Import("mapIcons")
+	@Override
+	RSSpritePixels[] getMapIcons();
+
+	@Import("modIcons")
+	@Override
+	RSIndexedSprite[] getModIcons();
+
+	@Import("modIcons")
+	void setRSModIcons(RSIndexedSprite[] modIcons);
+
+	@Construct
+	@Override
+	RSIndexedSprite createIndexedSprite();
 }

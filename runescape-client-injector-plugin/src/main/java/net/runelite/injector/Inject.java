@@ -65,6 +65,7 @@ public class Inject
 	private final InjectGetter getters = new InjectGetter(this);
 	private final InjectSetter setters = new InjectSetter(this);
 	private final InjectInvoker invokes = new InjectInvoker(this);
+	private final InjectConstruct construct = new InjectConstruct(this);
 
 	private final MixinInjector mixinInjector = new MixinInjector(this);
 
@@ -111,7 +112,7 @@ public class Inject
 	 * @param c
 	 * @return
 	 */
-	public Type classToType(java.lang.Class<?> c)
+	public static Type classToType(java.lang.Class<?> c)
 	{
 		int dimms = 0;
 		while (c.isArray())
@@ -215,6 +216,7 @@ public class Inject
 
 		// requires interfaces to be injected
 		mixinInjector.inject();
+		construct.inject(implemented);
 
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
@@ -247,12 +249,6 @@ public class Inject
 				Annotation exportAnnotation = an.find(DeobAnnotations.EXPORT);
 				String exportedName = exportAnnotation.getElement().getString();
 
-				boolean isSetter = false;
-				if (exportAnnotation.getElements().size() == 2)
-				{
-					isSetter = (boolean) exportAnnotation.getElements().get(1).getValue();
-				}
-
 				obfuscatedName = DeobAnnotations.getObfuscatedName(an);
 
 				Annotation getterAnnotation = an.find(DeobAnnotations.OBFUSCATED_GETTER);
@@ -280,7 +276,8 @@ public class Inject
 					continue;
 				}
 
-				if (isSetter)
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName, true);
+				if (apiMethod != null)
 				{
 					Number setter = null;
 					if (getter != null)
@@ -291,7 +288,7 @@ public class Inject
 					setters.injectSetter(targetClass, targetApiClass, otherf, exportedName, setter);
 				}
 
-				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
+				apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
 					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
@@ -360,7 +357,7 @@ public class Inject
 		return apiClass;
 	}
 
-	public java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name, boolean setter)
+	public java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name, Boolean setter)
 	{
 		for (java.lang.reflect.Method method : clazz.getDeclaredMethods())
 		{
@@ -377,7 +374,7 @@ public class Inject
 
 			Import i = method.getAnnotation(Import.class);
 
-			if (i == null || !name.equals(i.value()) || i.setter() != setter)
+			if (i == null || !name.equals(i.value()) || (setter != null && (method.getParameterCount() > 0) != setter))
 			{
 				continue;
 			}
@@ -491,6 +488,21 @@ public class Inject
 		}
 
 		return Type.getType("L" + rlApiType.getName().replace('.', '/') + ";", type.getDimensions());
+	}
+	
+	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)
+	{
+		for (ClassFile cf : getVanilla().getClasses())
+		{
+			for (net.runelite.asm.pool.Class cl : cf.getInterfaces().getInterfaces())
+			{
+				if (cl.getName().equals(clazz.getName().replace('.', '/')))
+				{
+					return cf;
+				}
+			}
+		}
+		return null;
 	}
 
 	private boolean validateTypeIsConvertibleTo(Type from, Type to) throws InjectionException

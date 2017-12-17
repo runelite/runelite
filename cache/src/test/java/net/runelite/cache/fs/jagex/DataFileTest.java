@@ -131,7 +131,7 @@ public class DataFileTest
 	}
 
 	@Test
-	public void testKeys() throws IOException
+	public void testEnc() throws IOException
 	{
 		File file = folder.newFile();
 		int[] keys = new int[]
@@ -142,6 +142,30 @@ public class DataFileTest
 		DataFile df = new DataFile(file);
 
 		byte[] compressedData = DataFile.compress("testtesttesttest1".getBytes(), CompressionType.NONE, 42, keys);
+		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+
+		compressedData = df.read(42, 3, res.sector, res.compressedLength);
+		DataFileReadResult res2 = DataFile.decompress(compressedData, keys);
+
+		byte[] buf = res2.data;
+		String str = new String(buf);
+		Assert.assertEquals("testtesttesttest1", str);
+		Assert.assertEquals(res.crc, res2.crc);
+		Assert.assertEquals(42, res2.revision);
+	}
+
+	@Test
+	public void testEncGz() throws IOException
+	{
+		File file = folder.newFile();
+		int[] keys = new int[]
+		{
+			4, 8, 15, 16
+		};
+
+		DataFile df = new DataFile(file);
+
+		byte[] compressedData = DataFile.compress("testtesttesttest1".getBytes(), CompressionType.GZ, 42, keys);
 		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
 
 		compressedData = df.read(42, 3, res.sector, res.compressedLength);

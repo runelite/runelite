@@ -24,20 +24,16 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import com.google.common.collect.ImmutableList;
 import static com.google.common.collect.ObjectArrays.concat;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
@@ -48,14 +44,13 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 class SlayerOverlay extends Overlay
 {
 	private final RuneLite runelite;
-	private final Client client;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
-	private final Font font = FontManager.getRunescapeSmallFont().deriveFont(Font.PLAIN, 16);
 
 	private final Set<Integer> slayerJewelry = Sets.newHashSet(
 		ItemID.SLAYER_RING_1,
@@ -87,19 +82,16 @@ class SlayerOverlay extends Overlay
 	@Inject
 	SlayerOverlay(RuneLite runelite, SlayerPlugin plugin, SlayerConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
-		this.client = runelite.getClient();
 		this.plugin = plugin;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !config.enabled()
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
+		if (!config.enabled())
 		{
 			return null;
 		}
@@ -115,7 +107,7 @@ class SlayerOverlay extends Overlay
 			return null;
 		}
 
-		graphics.setFont(font);
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getSlayerWidgetItems())
 		{
@@ -126,7 +118,12 @@ class SlayerOverlay extends Overlay
 				continue;
 			}
 
-			renderWidgetText(graphics, itemId, item.getCanvasBounds(), amount, Color.white);
+			final Rectangle bounds = item.getCanvasBounds();
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setText(String.valueOf(amount));
+			textComponent.setPosition(new Point(bounds.x, (slayerJewelry.contains(itemId)
+				? bounds.x
+				: 16 )));
 		}
 
 		return null;
@@ -142,20 +139,5 @@ class SlayerOverlay extends Overlay
 
 		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
 		return ImmutableList.copyOf(items);
-	}
-
-	private void renderWidgetText(Graphics2D graphics, int itemId, Rectangle bounds, int amount, Color color)
-	{
-		FontMetrics fm = graphics.getFontMetrics();
-
-		int textX = (int) bounds.getX();
-		int textY = (int) bounds.getY() + (slayerJewelry.contains(itemId) ? (int) bounds.getHeight() : fm.getHeight());
-
-		//text shadow
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(String.valueOf(amount), textX + 1, textY + 1);
-
-		graphics.setColor(color);
-		graphics.drawString(String.valueOf(amount), textX, textY);
 	}
 }

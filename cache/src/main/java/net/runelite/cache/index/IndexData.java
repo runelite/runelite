@@ -32,7 +32,6 @@ public class IndexData
 	private int protocol;
 	private int revision;
 	private boolean named;
-	private boolean usesWhirpool;
 	private ArchiveData[] archives;
 
 	public void load(byte[] data)
@@ -51,7 +50,10 @@ public class IndexData
 
 		int hash = stream.readUnsignedByte();
 		named = (1 & hash) != 0;
-		usesWhirpool = (2 & hash) != 0;
+		if ((hash & ~1) != 0)
+		{
+			throw new IllegalArgumentException("Unknown flags");
+		}
 		assert (hash & ~3) == 0;
 		int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 		int lastArchiveId = 0;
@@ -74,18 +76,6 @@ public class IndexData
 				int nameHash = stream.readInt();
 				ArchiveData ad = archives[index];
 				ad.nameHash = nameHash;
-			}
-		}
-
-		if (usesWhirpool)
-		{
-			for (int index = 0; index < validArchivesCount; ++index)
-			{
-				byte[] w = new byte[64];
-				stream.readBytes(w);
-
-				ArchiveData ad = archives[index];
-				ad.whirlpool = w;
 			}
 		}
 
@@ -155,7 +145,7 @@ public class IndexData
 			stream.writeInt(this.revision);
 		}
 
-		stream.writeByte((named ? 1 : 0) | (usesWhirpool ? 2 : 0));
+		stream.writeByte(named ? 1 : 0);
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.length);
@@ -192,15 +182,6 @@ public class IndexData
 			{
 				ArchiveData a = this.archives[i];
 				stream.writeInt(a.getNameHash());
-			}
-		}
-
-		if (usesWhirpool)
-		{
-			for (int i = 0; i < this.archives.length; ++i)
-			{
-				ArchiveData a = this.archives[i];
-				stream.writeBytes(a.getWhirlpool());
 			}
 		}
 
@@ -303,16 +284,6 @@ public class IndexData
 	public void setNamed(boolean named)
 	{
 		this.named = named;
-	}
-
-	public boolean isUsesWhirpool()
-	{
-		return usesWhirpool;
-	}
-
-	public void setUsesWhirpool(boolean usesWhirpool)
-	{
-		this.usesWhirpool = usesWhirpool;
 	}
 
 	public ArchiveData[] getArchives()

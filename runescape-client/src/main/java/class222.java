@@ -1,29 +1,30 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hs")
 public class class222 {
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   static IndexDataBase field2712;
+   @ObfuscatedName("a")
+   @Export("varpsMasks")
+   public static int[] varpsMasks;
+   @ObfuscatedName("w")
+   @Export("settings")
+   @Hook("varbitChanged")
+   public static int[] settings;
+   @ObfuscatedName("e")
+   @Export("widgetSettings")
+   public static int[] widgetSettings;
 
-   @ObfuscatedName("fu")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1682708790"
-   )
-   static final void method4145() {
-      int var0 = class94.playerIndexesCount;
-      int[] var1 = class94.playerIndices;
+   static {
+      varpsMasks = new int[32];
+      int var0 = 2;
 
-      for(int var2 = 0; var2 < var0; ++var2) {
-         Player var3 = Client.cachedPlayers[var1[var2]];
-         if(var3 != null) {
-            ServerPacket.method3181(var3, 1);
-         }
+      for(int var1 = 0; var1 < 32; ++var1) {
+         varpsMasks[var1] = var0 - 1;
+         var0 += var0;
       }
 
+      settings = new int[2000];
+      widgetSettings = new int[2000];
    }
 }

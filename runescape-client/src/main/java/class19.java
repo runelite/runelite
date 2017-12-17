@@ -2,22 +2,22 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("g")
+@ObfuscatedName("m")
 final class class19 implements Comparator {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lk;Lk;I)I",
-      garbageValue = "-123795030"
+      signature = "(Ly;Ly;I)I",
+      garbageValue = "1885066010"
    )
-   int method165(class14 var1, class14 var2) {
-      return var1.field284 < var2.field284?-1:(var1.field284 == var2.field284?0:1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method165((class14)var1, (class14)var2);
+   int method144(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      return var1.field278 < var2.field278?-1:(var2.field278 == var1.field278?0:1);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method144((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 }

@@ -1,72 +1,63 @@
-import java.awt.Component;
 import javax.imageio.ImageIO;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bp")
 public class class54 {
-   @ObfuscatedName("qb")
-   static short[] field635;
-
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;B)V",
-      garbageValue = "79"
-   )
-   static void method858(Component var0) {
-      var0.removeMouseListener(MouseInput.mouse);
-      var0.removeMouseMotionListener(MouseInput.mouse);
-      var0.removeFocusListener(MouseInput.mouse);
-      MouseInput.field717 = 0;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2046829698"
-   )
-   static final boolean method863() {
-      return class133.field1917;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2104099203"
-   )
-   static void method861() {
-      ItemContainer.itemContainers = new HashTable(32);
-   }
-
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1520837375"
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "-1372896364"
    )
-   @Export("getSmoothNoise2D")
-   static final int getSmoothNoise2D(int var0, int var1) {
-      int var2 = class1.method0(var0 - 1, var1 - 1) + class1.method0(1 + var0, var1 - 1) + class1.method0(var0 - 1, var1 + 1) + class1.method0(1 + var0, 1 + var1);
-      int var3 = class1.method0(var0 - 1, var1) + class1.method0(1 + var0, var1) + class1.method0(var0, var1 - 1) + class1.method0(var0, 1 + var1);
-      int var4 = class1.method0(var0, var1);
-      return var2 / 16 + var3 / 8 + var4 / 4;
+   public static boolean method766(String var0, int var1) {
+      return class35.method492(var0, var1, "openjs");
    }
 
-   @ObfuscatedName("io")
+   @ObfuscatedName("is")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "58"
+      signature = "(Lhz;B)Z",
+      garbageValue = "20"
    )
-   static void method862(int var0) {
-      class44.topContextMenuRow = new ContextMenuRow();
-      class44.topContextMenuRow.param0 = Client.menuActionParams0[var0];
-      class44.topContextMenuRow.param1 = Client.menuActionParams1[var0];
-      class44.topContextMenuRow.type = Client.menuTypes[var0];
-      class44.topContextMenuRow.identifier = Client.menuIdentifiers[var0];
-      class44.topContextMenuRow.option = Client.menuOptions[var0];
+   static final boolean method765(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 205) {
+         Client.field881 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            Client.field1090.method4093(var2, var3 == 1);
+         }
+
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            Client.field1090.method4094(var2, var3 == 1);
+         }
+
+         if(var1 == 324) {
+            Client.field1090.method4092(false);
+         }
+
+         if(var1 == 325) {
+            Client.field1090.method4092(true);
+         }
+
+         if(var1 == 326) {
+            PacketNode var4 = FileSystem.method4252(ClientPacket.field2397, Client.field888.field1449);
+            Client.field1090.method4096(var4.packetBuffer);
+            Client.field888.method1862(var4);
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

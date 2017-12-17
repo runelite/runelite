@@ -44,6 +44,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.events.ConfigChanged;
@@ -51,14 +52,11 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
+@Slf4j
 public class ConfigManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(ConfigManager.class);
-
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 
 	@Inject
@@ -92,7 +90,7 @@ public class ConfigManager
 	{
 		List<Injector> injectors = new ArrayList<>();
 		injectors.add(RuneLite.getInjector());
-		pluginManager.getAllPlugins().forEach(pl -> injectors.add(pl.getInjector()));
+		pluginManager.getPlugins().forEach(pl -> injectors.add(pl.getInjector()));
 
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
@@ -167,14 +165,14 @@ public class ConfigManager
 		}
 		catch (IOException ex)
 		{
-			logger.debug("Unable to load configuration from client, using saved configuration from disk", ex);
+			log.debug("Unable to load configuration from client, using saved configuration from disk", ex);
 			loadFromFile();
 			return;
 		}
 
 		if (configuration.getConfig().isEmpty())
 		{
-			logger.debug("No configuration from client, using saved configuration on disk");
+			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
 			return;
 		}
@@ -183,7 +181,7 @@ public class ConfigManager
 
 		for (ConfigEntry entry : configuration.getConfig())
 		{
-			logger.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
+			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
 
 			properties.setProperty(entry.getKey(), entry.getValue());
 		}
@@ -192,11 +190,11 @@ public class ConfigManager
 		{
 			saveToFile();
 
-			logger.debug("Updated configuration on disk with the latest version");
+			log.debug("Updated configuration on disk with the latest version");
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to update configuration on disk", ex);
+			log.warn("Unable to update configuration on disk", ex);
 		}
 	}
 
@@ -210,11 +208,11 @@ public class ConfigManager
 		}
 		catch (FileNotFoundException ex)
 		{
-			logger.debug("Unable to load settings - no such file");
+			log.debug("Unable to load settings - no such file");
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Unable to load settings", ex);
+			log.warn("Unable to load settings", ex);
 		}
 	}
 
@@ -235,7 +233,7 @@ public class ConfigManager
 			throw new RuntimeException("Non-public configuration classes can't have default methods invoked");
 		}
 
-		T t = (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]
+		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
 		{
 			clazz
 		}, handler);
@@ -250,7 +248,7 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		logger.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
@@ -264,7 +262,7 @@ public class ConfigManager
 				}
 				catch (IOException ex)
 				{
-					logger.warn("unable to set configuration item", ex);
+					log.warn("unable to set configuration item", ex);
 				}
 			};
 			executor.execute(task);
@@ -277,7 +275,7 @@ public class ConfigManager
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to save configuration file", ex);
+			log.warn("unable to save configuration file", ex);
 		}
 
 		ConfigChanged configChanged = new ConfigChanged();
@@ -291,7 +289,7 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		logger.debug("Unsetting configuration value for {}.{}", groupName, key);
+		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
@@ -303,7 +301,7 @@ public class ConfigManager
 			}
 			catch (IOException ex)
 			{
-				logger.warn("unable to set configuration item", ex);
+				log.warn("unable to set configuration item", ex);
 			}
 		}
 
@@ -313,7 +311,7 @@ public class ConfigManager
 		}
 		catch (IOException ex)
 		{
-			logger.warn("unable to save configuration file", ex);
+			log.warn("unable to save configuration file", ex);
 		}
 
 		ConfigChanged configChanged = new ConfigChanged();
@@ -350,7 +348,11 @@ public class ConfigManager
 		return new ConfigDescriptor(group, items);
 	}
 
-	private void setDefaultConfiguration(Object proxy)
+	/**
+	 * Initialize the configuration from the default settings
+	 * @param proxy
+	 */
+	public void setDefaultConfiguration(Object proxy)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
@@ -382,11 +384,11 @@ public class ConfigManager
 			}
 			catch (Throwable ex)
 			{
-				logger.warn(null, ex);
+				log.warn(null, ex);
 				continue;
 			}
 
-			logger.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
+			log.debug("Setting default configuration value for {}.{} to {}", group.keyName(), item.keyName(), defaultValue);
 
 			String valueString = objectToString(defaultValue);
 			setConfiguration(group.keyName(), item.keyName(), valueString);
@@ -407,6 +409,10 @@ public class ConfigManager
 		{
 			return Color.decode(str);
 		}
+		if (type.isEnum())
+		{
+			return Enum.valueOf((Class<? extends Enum>) type, str);
+		}
 		return str;
 	}
 
@@ -416,7 +422,10 @@ public class ConfigManager
 		{
 			return String.valueOf(((Color) object).getRGB());
 		}
-
+		if (object instanceof Enum)
+		{
+			return ((Enum) object).name();
+		}
 		return object.toString();
 	}
 }

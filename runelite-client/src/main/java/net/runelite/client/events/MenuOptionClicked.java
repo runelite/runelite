@@ -24,57 +24,16 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.MenuAction;
 
-/**
- *
- * @author robin
- */
+@Data
 public class MenuOptionClicked
 {
+	private int actionParam;
 	private String menuOption;
 	private String menuTarget;
 	private MenuAction menuAction;
 	private int id;
-
-	public String getMenuOption()
-	{
-		return menuOption;
-	}
-
-	public void setMenuOption(String menuOption)
-	{
-		this.menuOption = menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public void setMenuTarget(String menuTarget)
-	{
-		this.menuTarget = menuTarget;
-	}
-
-	public MenuAction getMenuAction()
-	{
-		return menuAction;
-	}
-
-	public void setMenuAction(MenuAction menuAction)
-	{
-		this.menuAction = menuAction;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
+	private int widgetId;
 }

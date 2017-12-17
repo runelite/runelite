@@ -1,3 +1,5 @@
+import java.awt.Component;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -6,266 +8,276 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("as")
 @Implements("WorldMapType1")
 public class WorldMapType1 implements WorldMapSectionBase {
-   @ObfuscatedName("m")
+   @ObfuscatedName("bk")
    @ObfuscatedGetter(
-      intValue = -1908284879
+      intValue = 321879283
    )
-   int field417;
-   @ObfuscatedName("p")
+   static int field399;
+   @ObfuscatedName("ir")
    @ObfuscatedGetter(
-      intValue = 1595455973
+      intValue = -1945852199
    )
-   int field412;
-   @ObfuscatedName("i")
+   @Export("menuX")
+   static int menuX;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1665489701
+      intValue = 1394076849
    )
-   int field413;
-   @ObfuscatedName("j")
+   int field398;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 84455001
+      intValue = 371840151
    )
-   int field414;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 35617695
-   )
-   int field415;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 883667397
-   )
-   int field411;
+   int field406;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1579127191
+      intValue = 2093208749
    )
-   int field416;
-   @ObfuscatedName("l")
+   int field409;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 659642279
+      intValue = 1049202217
    )
-   int field418;
-   @ObfuscatedName("b")
+   int field400;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1623922793
+      intValue = -2111951457
    )
-   int field419;
-   @ObfuscatedName("n")
+   int field401;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1128778799
+      intValue = -1547200489
    )
-   int field420;
+   int field402;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -540406951
+   )
+   int field403;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 668822953
+   )
+   int field404;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -343186573
+   )
+   int field411;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -393116519
+   )
+   int field405;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(Lap;I)V",
-      garbageValue = "-695326084"
+      signature = "(Lax;I)V",
+      garbageValue = "-2145049745"
    )
-   public void vmethod772(WorldMapData var1) {
-      if(var1.field430 > this.field416) {
-         var1.field430 = this.field416;
+   public void vmethod695(WorldMapData var1) {
+      if(var1.field424 > this.field403) {
+         var1.field424 = this.field403;
       }
 
-      if(var1.field432 < this.field419) {
-         var1.field432 = this.field419;
+      if(var1.field417 < this.field411) {
+         var1.field417 = this.field411;
       }
 
-      if(var1.field438 > this.field418) {
-         var1.field438 = this.field418;
+      if(var1.field425 > this.field404) {
+         var1.field425 = this.field404;
       }
 
-      if(var1.field439 < this.field420) {
-         var1.field439 = this.field420;
+      if(var1.field431 < this.field405) {
+         var1.field431 = this.field405;
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIII)Z",
-      garbageValue = "2104062915"
+      garbageValue = "1120247978"
    )
-   public boolean vmethod778(int var1, int var2, int var3) {
-      return var1 >= this.field417 && var1 < this.field417 + this.field412?var2 >> 6 >= this.field413 && var2 >> 6 <= this.field415 && var3 >> 6 >= this.field414 && var3 >> 6 <= this.field411:false;
+   public boolean vmethod708(int var1, int var2, int var3) {
+      return var1 >= this.field398 && var1 < this.field398 + this.field406?var2 >> 6 >= this.field409 && var2 >> 6 <= this.field401 && var3 >> 6 >= this.field400 && var3 >> 6 <= this.field402:false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "0"
+      signature = "(III)Z",
+      garbageValue = "1865125342"
    )
-   public boolean vmethod774(int var1, int var2) {
-      return var1 >> 6 >= this.field416 && var1 >> 6 <= this.field419 && var2 >> 6 >= this.field418 && var2 >> 6 <= this.field420;
+   public boolean vmethod698(int var1, int var2) {
+      return var1 >> 6 >= this.field403 && var1 >> 6 <= this.field411 && var2 >> 6 >= this.field404 && var2 >> 6 <= this.field405;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(IIII)[I",
-      garbageValue = "-579666919"
+      garbageValue = "1197920526"
    )
-   public int[] vmethod775(int var1, int var2, int var3) {
-      if(!this.vmethod778(var1, var2, var3)) {
+   public int[] vmethod700(int var1, int var2, int var3) {
+      if(!this.vmethod708(var1, var2, var3)) {
          return null;
       } else {
-         int[] var4 = new int[]{this.field416 * 64 - this.field413 * 64 + var2, var3 + (this.field418 * 64 - this.field414 * 64)};
+         int[] var4 = new int[]{this.field403 * 64 - this.field409 * 64 + var2, var3 + (this.field404 * 64 - this.field400 * 64)};
          return var4;
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIB)Lhq;",
-      garbageValue = "1"
+      signature = "(III)Lhc;",
+      garbageValue = "-879620257"
    )
-   public Coordinates vmethod797(int var1, int var2) {
-      if(!this.vmethod774(var1, var2)) {
+   public Coordinates vmethod714(int var1, int var2) {
+      if(!this.vmethod698(var1, var2)) {
          return null;
       } else {
-         int var3 = this.field413 * 64 - this.field416 * 64 + var1;
-         int var4 = this.field414 * 64 - this.field418 * 64 + var2;
-         return new Coordinates(this.field417, var3, var4);
+         int var3 = this.field409 * 64 - this.field403 * 64 + var1;
+         int var4 = this.field400 * 64 - this.field404 * 64 + var2;
+         return new Coordinates(this.field398, var3, var4);
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(Lfv;S)V",
-      garbageValue = "256"
+      signature = "(Lgh;I)V",
+      garbageValue = "1638498953"
    )
-   public void vmethod777(Buffer var1) {
-      this.field417 = var1.readUnsignedByte();
-      this.field412 = var1.readUnsignedByte();
-      this.field413 = var1.readUnsignedShort();
-      this.field414 = var1.readUnsignedShort();
-      this.field415 = var1.readUnsignedShort();
+   public void vmethod701(Buffer var1) {
+      this.field398 = var1.readUnsignedByte();
+      this.field406 = var1.readUnsignedByte();
+      this.field409 = var1.readUnsignedShort();
+      this.field400 = var1.readUnsignedShort();
+      this.field401 = var1.readUnsignedShort();
+      this.field402 = var1.readUnsignedShort();
+      this.field403 = var1.readUnsignedShort();
+      this.field404 = var1.readUnsignedShort();
       this.field411 = var1.readUnsignedShort();
-      this.field416 = var1.readUnsignedShort();
-      this.field418 = var1.readUnsignedShort();
-      this.field419 = var1.readUnsignedShort();
-      this.field420 = var1.readUnsignedShort();
-      this.method286();
+      this.field405 = var1.readUnsignedShort();
+      this.method250();
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-129170663"
+      garbageValue = "-986429372"
    )
-   void method286() {
+   void method250() {
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "2141114245"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "1471526799"
    )
-   static final int method292() {
-      return class133.field1912;
+   static void method245(Component var0) {
+      var0.removeMouseListener(MouseInput.mouse);
+      var0.removeMouseMotionListener(MouseInput.mouse);
+      var0.removeFocusListener(MouseInput.mouse);
+      MouseInput.MouseHandler_currentButton = 0;
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1700394310"
+      signature = "(II)I",
+      garbageValue = "1626914826"
    )
-   static void method288(boolean var0) {
-      class91.loginMessage1 = "";
-      class91.loginMessage2 = "Enter your username/email & password.";
-      class91.loginMessage3 = "";
-      class91.loginIndex = 2;
-      if(var0) {
-         class91.password = "";
+   @Export("ilog")
+   public static int ilog(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
 
-      class23.method190();
-      class72.method1183();
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
+      }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
    }
 
-   @ObfuscatedName("fe")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1666424450"
+      signature = "(Lef;IIIB)Z",
+      garbageValue = "-96"
    )
-   static void method293(int var0) {
-      if(var0 == -3) {
-         class8.method43("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         class8.method43("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         class8.method43("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class91.loginIndex = 3;
-      } else if(var0 == 4) {
-         class8.method43("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         class8.method43("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-      } else if(var0 == 6) {
-         class8.method43("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         class8.method43("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         class8.method43("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         class8.method43("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         class8.method43("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         class8.method43("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         class8.method43("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         class8.method43("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         class8.method43("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         class8.method43("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         class8.method43("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         class8.method43("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         class8.method43("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         class8.method43("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         class8.method43("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         class8.method43("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         class8.method43("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         class8.method43("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         class8.method43("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         class8.method43("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         class8.method43("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         class8.method43("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         class8.method43("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         class8.method43("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         class8.method43("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+   @Export("boundingBox3DContainsMouse")
+   static final boolean boundingBox3DContainsMouse(Model var0, int var1, int var2, int var3) {
+      if(!FriendLoginUpdate.method1040()) {
+         return false;
       } else {
-         if(var0 == 56) {
-            class8.method43("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class287.setGameState(11);
-            return;
+         int var4;
+         int var5;
+         int var6;
+         int var7;
+         int var10;
+         int var11;
+         int var12;
+         int var15;
+         int var16;
+         if(!class133.Viewport_false0) {
+            var4 = Region.pitchSin;
+            var5 = Region.pitchCos;
+            var6 = Region.yawSin;
+            var7 = Region.yawCos;
+            byte var8 = 50;
+            short var9 = 3500;
+            var10 = (class133.Viewport_mouseX - Graphics3D.centerX) * var8 / Graphics3D.Rasterizer3D_zoom;
+            var11 = (class133.Viewport_mouseY - Graphics3D.centerY) * var8 / Graphics3D.Rasterizer3D_zoom;
+            var12 = (class133.Viewport_mouseX - Graphics3D.centerX) * var9 / Graphics3D.Rasterizer3D_zoom;
+            int var13 = (class133.Viewport_mouseY - Graphics3D.centerY) * var9 / Graphics3D.Rasterizer3D_zoom;
+            int var14 = Graphics3D.method2676(var11, var8, var5, var4);
+            var15 = Graphics3D.method2627(var11, var8, var5, var4);
+            var11 = var14;
+            var14 = Graphics3D.method2676(var13, var9, var5, var4);
+            var16 = Graphics3D.method2627(var13, var9, var5, var4);
+            var13 = var14;
+            var14 = Graphics3D.method2624(var10, var15, var7, var6);
+            var15 = Graphics3D.method2625(var10, var15, var7, var6);
+            var10 = var14;
+            var14 = Graphics3D.method2624(var12, var16, var7, var6);
+            var16 = Graphics3D.method2625(var12, var16, var7, var6);
+            class225.field2744 = (var14 + var10) / 2;
+            class133.field1884 = (var13 + var11) / 2;
+            Varbit.field3462 = (var15 + var16) / 2;
+            FriendLoginUpdate.field754 = (var14 - var10) / 2;
+            class133.field1881 = (var13 - var11) / 2;
+            class2.field15 = (var16 - var15) / 2;
+            class133.field1886 = Math.abs(FriendLoginUpdate.field754);
+            class260.field3456 = Math.abs(class133.field1881);
+            class296.field3843 = Math.abs(class2.field15);
          }
 
-         if(var0 == 57) {
-            class8.method43("The code you entered was incorrect.", "Please try again.", "");
-            class287.setGameState(11);
-            return;
-         }
-
-         class8.method43("Unexpected server response", "Please try using a different world.", "");
+         var4 = var0.field1842 + var1;
+         var5 = var2 + var0.field1843;
+         var6 = var3 + var0.field1844;
+         var7 = var0.field1845;
+         var15 = var0.field1824;
+         var16 = var0.field1847;
+         var10 = class225.field2744 - var4;
+         var11 = class133.field1884 - var5;
+         var12 = Varbit.field3462 - var6;
+         return Math.abs(var10) > var7 + class133.field1886?false:(Math.abs(var11) > var15 + class260.field3456?false:(Math.abs(var12) > var16 + class296.field3843?false:(Math.abs(var12 * class133.field1881 - var11 * class2.field15) > var15 * class296.field3843 + var16 * class260.field3456?false:(Math.abs(var10 * class2.field15 - var12 * FriendLoginUpdate.field754) > var16 * class133.field1886 + var7 * class296.field3843?false:Math.abs(var11 * FriendLoginUpdate.field754 - var10 * class133.field1881) <= var7 * class260.field3456 + var15 * class133.field1886))));
       }
-
-      class287.setGameState(10);
    }
 }

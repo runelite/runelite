@@ -4,81 +4,95 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("by")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("m")
-   Object[] field791;
-   @ObfuscatedName("p")
-   boolean field786;
-   @ObfuscatedName("i")
+   @ObfuscatedName("a")
+   @Export("objs")
+   Object[] objs;
+   @ObfuscatedName("w")
+   @Export("boolean1")
+   boolean boolean1;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lhz;"
    )
    @Export("widget")
    Widget widget;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 2041116237
+   )
+   int field771;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 334266043
+   )
+   int field772;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1797326927
+   )
+   int field773;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhz;"
+   )
+   Widget field776;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 137937717
+   )
+   int field768;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1936247983
+   )
+   int field775;
    @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 325545761
-   )
-   int field787;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1856000799
-   )
-   int field788;
+   @Export("string")
+   String string;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1107386175
+      intValue = -1408604377
    )
-   int field789;
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "Lhk;"
-   )
-   Widget field790;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1338939927
-   )
-   int field795;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1691400047
-   )
-   int field792;
-   @ObfuscatedName("n")
-   String field793;
+   int field778;
    @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -901606729
-   )
-   int field784;
-   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lhy;"
+      signature = "Lhi;"
    )
-   class226 field796;
+   class230 field779;
 
    public ScriptEvent() {
-      this.field796 = class226.field2873;
+      this.field779 = class230.field2898;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/Object;I)V",
-      garbageValue = "-1071472192"
+      signature = "([Ljava/lang/Object;B)V",
+      garbageValue = "13"
    )
-   public void method1159(Object[] var1) {
-      this.field791 = var1;
+   public void method1050(Object[] var1) {
+      this.objs = var1;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lhy;I)V",
-      garbageValue = "1583662852"
+      signature = "(Lhi;I)V",
+      garbageValue = "-1217881542"
    )
-   public void method1160(class226 var1) {
-      this.field796 = var1;
+   public void method1051(class230 var1) {
+      this.field779 = var1;
+   }
+
+   @ObfuscatedName("hd")
+   @ObfuscatedSignature(
+      signature = "(IIIZI)V",
+      garbageValue = "-3922817"
+   )
+   static final void method1055(int var0, int var1, int var2, boolean var3) {
+      if(GraphicsObject.loadWidget(var0)) {
+         class239.method4227(Widget.widgets[var0], -1, var1, var2, var3);
+      }
    }
 }

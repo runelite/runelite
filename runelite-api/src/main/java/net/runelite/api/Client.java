@@ -27,7 +27,6 @@ package net.runelite.api;
 import java.awt.Canvas;
 import java.util.List;
 import java.util.Map;
-
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -41,7 +40,7 @@ public interface Client
 
 	int getRealSkillLevel(Skill skill);
 
-	void sendGameMessage(String message);
+	void sendGameMessage(ChatMessageType type, String message);
 
 	GameState getGameState();
 
@@ -107,11 +106,9 @@ public interface Client
 
 	int[] getPlayerMenuTypes();
 
-	String[] getMenuOptions();
+	MenuEntry[] getMenuEntries();
 
-	String[] getMenuTargets();
-
-	int getMenuOptionCount();
+	void setMenuEntries(MenuEntry[] entries);
 
 	boolean isMenuOpen();
 
@@ -133,6 +130,8 @@ public interface Client
 
 	int getClanChatCount();
 
+	ClanMember[] getClanMembers();
+
 	HashTable getComponentTable();
 
 	boolean isPrayerActive(Prayer prayer);
@@ -148,4 +147,18 @@ public interface Client
 	Map<Integer, ChatLineBuffer> getChatLineMap();
 
 	Widget getViewportWidget();
+
+	ObjectComposition getObjectDefinition(int objectId);
+
+	Area[] getMapAreas();
+
+	IndexedSprite[] getMapScene();
+
+	SpritePixels[] getMapIcons();
+
+	IndexedSprite[] getModIcons();
+
+	void setModIcons(IndexedSprite[] modIcons);
+
+	IndexedSprite createIndexedSprite();
 }

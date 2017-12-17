@@ -4,127 +4,177 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("em")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1056255967
+      intValue = 1377100417
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -594595681
+      intValue = -1669354965
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 414439451
+      intValue = -1364764655
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -272588949
+      intValue = -1798184553
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -982928651
+      intValue = -153010939
    )
    @Export("type")
    int type;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1663289561
+      intValue = -25611653
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1060161977
+      intValue = -663628629
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 456325405
+      intValue = 162046975
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -62430139
+      intValue = 1738272033
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -39616601
+      intValue = -925867423
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -879608465
+      intValue = 1204169261
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 357701387
+      intValue = 619543051
    )
    @Export("testDirection")
    int testDirection;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 964713391
+   )
+   int field2047;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1489984035
+   )
+   int field2044;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1817392473
-   )
-   int field2061;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -775752639
-   )
-   int field2072;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -712735129
+      intValue = 1499501973
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("t")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -630875917
+      intValue = -743903315
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("h")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 129962779
+      intValue = 236692935
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1366677633
+      intValue = 1329319429
    )
    @Export("maxNormalY")
    int maxNormalY;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("jk")
    @ObfuscatedSignature(
-      signature = "(Lgd;III)I",
-      garbageValue = "1407630225"
+      signature = "(Lhz;I)Z",
+      garbageValue = "1457404273"
    )
-   static int method2998(IterableHashTable var0, int var1, int var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
-         return var3 == null?var2:var3.value;
+   static boolean method2905(Widget var0) {
+      if(Client.field978) {
+         if(class36.getWidgetConfig(var0) != 0) {
+            return false;
+         }
+
+         if(var0.type == 0) {
+            return false;
+         }
       }
+
+      return var0.isHidden;
+   }
+
+   @ObfuscatedName("jf")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-841022133"
+   )
+   static void method2906(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
+
+      for(int var4 = 0; var4 < class179.field2463; ++var4) {
+         ItemComposition var5 = KitDefinition.getItemDefinition(var4);
+         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               class41.field523 = -1;
+               Actor.field1182 = null;
+               return;
+            }
+
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
+         }
+      }
+
+      Actor.field1182 = var2;
+      WidgetNode.field766 = 0;
+      class41.field523 = var3;
+      String[] var8 = new String[class41.field523];
+
+      for(int var9 = 0; var9 < class41.field523; ++var9) {
+         var8[var9] = KitDefinition.getItemDefinition(var2[var9]).name;
+      }
+
+      class213.method3833(var8, Actor.field1182);
    }
 }

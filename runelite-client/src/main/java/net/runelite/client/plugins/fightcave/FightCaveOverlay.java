@@ -29,23 +29,22 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class FightCaveOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(FightCaveOverlay.class);
-
 	private static final int WIDTH = 70;
 	private static final int SPACER = 6;
 	private static final int BOTTOM_BORDER = 4;
@@ -61,13 +60,13 @@ public class FightCaveOverlay extends Overlay
 	@Inject
 	FightCaveOverlay(@Nullable Client client, FightCavePlugin plugin)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		JadAttack attack = plugin.getAttack();
 		Rectangle viewport = getViewportBounds();
@@ -158,7 +157,7 @@ public class FightCaveOverlay extends Overlay
 		}
 		catch (IOException e)
 		{
-			logger.warn("Error loading image", e);
+			log.warn("Error loading image", e);
 		}
 		return image;
 	}

@@ -28,13 +28,13 @@ import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
@@ -42,13 +42,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class FishingSpotOverlay extends Overlay
 {
-	private static final Logger logger = LoggerFactory.getLogger(FishingSpotOverlay.class);
-
 	private final List<Integer> ids = new ArrayList<>();
 
 	private final RuneLite runelite;
@@ -61,16 +57,16 @@ class FishingSpotOverlay extends Overlay
 	@Inject
 	public FishingSpotOverlay(RuneLite runelite, @Nullable Client client, FishingConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.runelite = runelite;
 		this.client = client;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (!config.enabled())
 		{
 			return null;
 		}

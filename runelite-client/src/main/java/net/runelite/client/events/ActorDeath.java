@@ -24,19 +24,11 @@
  */
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.Actor;
 
+@Data
 public class ActorDeath
 {
 	private Actor actor;
-
-	public Actor getActor()
-	{
-		return actor;
-	}
-
-	public void setActor(Actor actor)
-	{
-		this.actor = actor;
-	}
 }

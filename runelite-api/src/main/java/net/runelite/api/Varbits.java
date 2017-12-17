@@ -77,11 +77,14 @@ public enum Varbits
 	PRAYER_RETRIBUTION(4119, 83, 15, 15),
 	PRAYER_REDEMPTION(4120, 83, 16, 16),
 	PRAYER_SMITE(4121, 83, 17, 17),
+	PRAYER_CHIVALRY(4128, 83, 25, 25),
+	PRAYER_PIETY(4129, 83, 26, 26),
+	PRAYER_PRESERVE(5466, 83, 28, 28),
 
 	/**
 	 * Special Attack
 	 */
-	SPECIAL_ATTACK_PERCENT(300, 31, 0),
+	SPECIAL_ATTACK_PERCENT(300, 0, 16),
 	SPECIAL_ATTACK_ENABLED(301, 0, 0),
 
 	/**
@@ -130,6 +133,11 @@ public enum Varbits
 
 	private Varbits(int id, int index, int leastSignificantBit, int mostSignificantBit)
 	{
+		if (mostSignificantBit < leastSignificantBit)
+		{
+			throw new IllegalStateException("MSB < LSB");
+		}
+
 		this.id = id;
 		this.index = index;
 		this.leastSignificantBit = leastSignificantBit;

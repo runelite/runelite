@@ -47,6 +47,13 @@ class WidgetID
 	static final int SLAYER_REWARDS_GROUP_ID = 426;
 	static final int PRIVATE_CHAT = 163;
 	static final int CHATBOX_GROUP_ID = 162;
+	static final int WORLD_MAP_MENU_GROUP_ID = 160;
+	static final int VOLCANIC_MINE_GROUP_ID = 611;
+
+	static class WorldMap
+	{
+		static final int OPTION = 29;
+	}
 
 	static class SlayerRewards
 	{
@@ -129,6 +136,7 @@ class WidgetID
 	static class Minimap
 	{
 		static final int XP_ORB = 1;
+		static final int QUICK_PRAYER_ORB = 14;
 	}
 
 	static class Viewport
@@ -181,5 +189,33 @@ class WidgetID
 	{
 		static final int WEAPON_NAME = 1;
 		static final int LEVEL = 2;
+		static final int STYLE_ONE = 3;
+		static final int STYLE_TWO = 7;
+		static final int STYLE_THREE = 11;
+		static final int STYLE_FOUR = 15;
+		static final int SPELLS = 19;
+		static final int DEFENSIVE_SPELL_BOX = 20;
+		static final int DEFENSIVE_SPELL_ICON = 21;
+		static final int DEFENSIVE_SPELL_SHIELD = 22;
+		static final int DEFENSIVE_SPELL_TEXT = 23;
+		static final int SPELL_BOX = 24;
+		static final int SPELL_ICON = 25;
+		static final int SPELL_TEXT = 26;
+	}
+
+	static class VolcanicMine
+	{
+		static final int GENERAL_INFOBOX_GROUP_ID = 4;
+		static final int TIME_LEFT = 8;
+		static final int POINTS = 10;
+		static final int STABILITY = 12;
+		static final int PLAYER_COUNT = 14;
+		static final int VENTS_INFOBOX_GROUP_ID = 15;
+		static final int VENT_A_PERCENTAGE = 19;
+		static final int VENT_B_PERCENTAGE = 20;
+		static final int VENT_C_PERCENTAGE = 21;
+		static final int VENT_A_STATUS = 23;
+		static final int VENT_B_STATUS = 24;
+		static final int VENT_C_STATUS = 25;
 	}
 }

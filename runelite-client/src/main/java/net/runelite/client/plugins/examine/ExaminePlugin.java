@@ -27,20 +27,38 @@ package net.runelite.client.plugins.examine;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.NPC;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.chat.ChatColor;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.GameStateChanged;
 import net.runelite.client.events.MenuOptionClicked;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.examine.ExamineClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.http.api.item.ItemPrice;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 
 /**
  * Submits exammine info to the api
@@ -50,23 +68,70 @@ import org.slf4j.LoggerFactory;
 @PluginDescriptor(
 	name = "Examine plugin"
 )
+@Slf4j
 public class ExaminePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(ExaminePlugin.class);
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
-	private final ExamineClient client = new ExamineClient();
+	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
 
 	@Inject
+	Client client;
+
+	@Inject
+	ExamineConfig config;
+
+	@Inject
+	ItemManager itemManager;
+
+	@Inject
+	ChatMessageManager chatMessageManager;
+
+	@Inject
 	ScheduledExecutorService executor;
+
+	@Provides
+	ExamineConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ExamineConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("examine"))
+		{
+			cacheConfiguredColors();
+			chatMessageManager.refreshAll();
+		}
+	}
+
+	private void cacheConfiguredColors()
+	{
+		chatMessageManager
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getExamineRecolor(), false),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getExamineHRecolor(), false),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.NORMAL, config.getTransparentExamineRecolor(), true),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT)
+			.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, config.getTransparentExamineHRecolor(), true),
+				ChatMessageType.EXAMINE_ITEM, ChatMessageType.EXAMINE_NPC, ChatMessageType.EXAMINE_OBJECT);
+	}
 
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
 		pending.clear();
+
+		if (event.getGameState().equals(GameState.LOGIN_SCREEN))
+		{
+			cacheConfiguredColors();
+		}
 	}
 
 	@Subscribe
@@ -78,6 +143,10 @@ public class ExaminePlugin extends Plugin
 		{
 			case EXAMINE_ITEM:
 				type = ExamineType.ITEM;
+				id = event.getId();
+				break;
+			case EXAMINE_ITEM_BANK_EQ:
+				type = ExamineType.ITEM_BANK_EQ;
 				id = event.getId();
 				break;
 			case EXAMINE_OBJECT:
@@ -92,7 +161,12 @@ public class ExaminePlugin extends Plugin
 				return;
 		}
 
-		PendingExamine pendingExamine = new PendingExamine(type, id, Instant.now());
+		PendingExamine pendingExamine = new PendingExamine();
+		pendingExamine.setWidgetId(event.getWidgetId());
+		pendingExamine.setActionParam(event.getActionParam());
+		pendingExamine.setType(type);
+		pendingExamine.setId(id);
+		pendingExamine.setCreated(Instant.now());
 		pending.push(pendingExamine);
 	}
 
@@ -111,13 +185,16 @@ public class ExaminePlugin extends Plugin
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
 				break;
+			case SERVER:
+				type = ExamineType.ITEM_BANK_EQ;
+				break;
 			default:
 				return;
 		}
 
 		if (pending.isEmpty())
 		{
-			logger.debug("Got examine without a pending examine?");
+			log.debug("Got examine without a pending examine?");
 			return;
 		}
 
@@ -125,12 +202,17 @@ public class ExaminePlugin extends Plugin
 
 		if (pendingExamine.getType() != type)
 		{
-			logger.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
+			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
 			pending.clear(); // eh
 			return;
 		}
 
-		logger.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
+		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
+
+		if (config.itemPrice())
+		{
+			findExamineItem(pendingExamine);
+		}
 
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
 		Boolean cached = cache.getIfPresent(key);
@@ -140,11 +222,133 @@ public class ExaminePlugin extends Plugin
 		}
 
 		cache.put(key, Boolean.TRUE);
-
-		executor.submit(() -> submit(pendingExamine, event.getMessage()));
+		executor.submit(() -> submitExamine(pendingExamine, event.getMessage()));
 	}
 
-	private void submit(PendingExamine examine, String text)
+	private void findExamineItem(PendingExamine pendingExamine)
+	{
+		int quantity = 1;
+		int itemId = -1;
+
+		// Get widget
+		int widgetId = pendingExamine.getWidgetId();
+		int widgetGroup = TO_GROUP(widgetId);
+		int widgetChild = TO_CHILD(widgetId);
+		Widget widget = client.getWidget(widgetGroup, widgetChild);
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		if (pendingExamine.getType() == ExamineType.ITEM)
+		{
+			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
+			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+			itemId = pendingExamine.getId();
+		}
+		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		{
+			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(1);
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget widgetItem = widget.getDynamicChildren()[pendingExamine.getActionParam()];
+				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
+				itemId = widgetItem.getItemId();
+			}
+		}
+
+		if (itemId == -1)
+		{
+			return;
+		}
+
+		final int itemQuantity = quantity;
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+
+		if (itemComposition != null)
+		{
+			executor.submit(() -> getItemPrice(itemComposition, itemQuantity));
+		}
+	}
+
+	private void getItemPrice(ItemComposition itemComposition, int quantity)
+	{
+		// convert to unnoted id
+		final boolean note = itemComposition.getNote() != -1;
+		final int id = note ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+
+		ItemPrice itemPrice;
+		try
+		{
+			itemPrice = itemManager.getItemPrice(id);
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up item price", e);
+			return;
+		}
+
+		int itemCompositionPrice = itemComposition.getPrice();
+		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+		final int alchPrice = itemCompositionPrice <= 0
+			? 0
+			: Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT) * quantity;
+
+		if (gePrice > 0 || alchPrice > 0)
+		{
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Price of ")
+				.append(ChatColorType.HIGHLIGHT);
+
+			if (quantity > 1)
+			{
+				message
+					.append(String.format("%,d", quantity))
+					.append(" x ");
+			}
+
+			message
+				.append(itemComposition.getName())
+				.append(ChatColorType.NORMAL)
+				.append(":");
+
+			if (gePrice > 0)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(" GE average ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", gePrice));
+			}
+
+			if (alchPrice > 0)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(" HA value ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", alchPrice));
+			}
+
+			chatMessageManager.queue(ChatMessageType.EXAMINE_ITEM, message.build());
+			client.refreshChat();
+		}
+	}
+
+	private void submitExamine(PendingExamine examine, String text)
 	{
 		int id = examine.getId();
 
@@ -153,19 +357,19 @@ public class ExaminePlugin extends Plugin
 			switch (examine.getType())
 			{
 				case ITEM:
-					client.submitItem(id, text);
+					examineClient.submitItem(id, text);
 					break;
 				case OBJECT:
-					client.submitObject(id, text);
+					examineClient.submitObject(id, text);
 					break;
 				case NPC:
-					client.submitNpc(id, text);
+					examineClient.submitNpc(id, text);
 					break;
 			}
 		}
 		catch (IOException ex)
 		{
-			logger.warn("Error submitting examine", ex);
+			log.warn("Error submitting examine", ex);
 		}
 	}
 

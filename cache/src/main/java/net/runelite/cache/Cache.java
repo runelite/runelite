@@ -26,10 +26,7 @@ package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
-import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.fs.jagex.DiskStorage;
-import net.runelite.cache.fs.tree.TreeStorage;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -43,10 +40,6 @@ public class Cache
 		Options options = new Options();
 
 		options.addOption("c", "cache", true, "cache base");
-		options.addOption("t", "tree", true, "tree base");
-
-		options.addOption("u", "unpack", false, "unpack cache");
-		options.addOption("p", "pack", false, "pack cache");
 
 		options.addOption(null, "items", true, "directory to dump items to");
 		options.addOption(null, "npcs", true, "directory to dump npcs to");
@@ -67,59 +60,8 @@ public class Cache
 		}
 
 		String cache = cmd.getOptionValue("cache");
-		String tree = cmd.getOptionValue("tree");
 
-		if (cmd.hasOption("p"))
-		{
-			if (cache == null || tree == null)
-			{
-				System.err.println("Cache and tree base must be specified to pack");
-				System.exit(-1);
-			}
-
-			System.out.print("Packing tree from " + tree + " to " + cache + "...");
-
-			File cacheDir = new File(cache),
-				treeDir = new File(tree);
-
-			Storage from = new TreeStorage(treeDir);
-			Storage to = new DiskStorage(cacheDir);
-
-			Store store = new Store(from);
-			store.load();
-			to.save(store);
-
-			System.out.println(" done!");
-			return;
-		}
-		else if (cmd.hasOption("u"))
-		{
-			if (cache == null || tree == null)
-			{
-				System.err.println("Cache and tree base must be specified to unpack");
-				System.exit(-1);
-			}
-
-			System.out.print("Unpacking cache from " + cache + " to " + tree + "...");
-
-			Store treeBase = new Store(new File(cache));
-			treeBase.load();
-
-			TreeStorage storage = new TreeStorage(new File(tree));
-			storage.save(treeBase);
-
-			System.out.println(" done!");
-			return;
-		}
-
-		if (cache != null && tree != null)
-		{
-			System.err.println("Cannot specify both cache and tree");
-			System.exit(-1);
-			return;
-		}
-
-		Store store = loadStore(cache, tree);
+		Store store = loadStore(cache);
 
 		if (cmd.hasOption("items"))
 		{
@@ -179,22 +121,11 @@ public class Cache
 		}
 	}
 
-	private static Store loadStore(String cache, String tree) throws IOException
+	private static Store loadStore(String cache) throws IOException
 	{
-		if (cache == null)
-		{
-			Storage storage = new TreeStorage(new File(tree));
-			Store store = new Store(storage);
-			store.load();
-			return store;
-		}
-		else
-		{
-			Store store = new Store(new File(cache));
-			store.load();
-			return store;
-		}
-
+		Store store = new Store(new File(cache));
+		store.load();
+		return store;
 	}
 
 	private static void dumpItems(Store store, File itemdir) throws IOException

@@ -6,100 +6,91 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dy")
+@ObfuscatedName("dv")
 @Implements("CacheFile")
 public class CacheFile {
-   @ObfuscatedName("fc")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "[Lkd;"
+      signature = "Lda;"
    )
-   @Export("headIconsPk")
-   static SpritePixels[] headIconsPk;
-   @ObfuscatedName("im")
-   @ObfuscatedGetter(
-      intValue = -348503395
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Ldj;"
-   )
-   FileOnDisk field1671;
-   @ObfuscatedName("p")
+   @Export("accessFile")
+   FileOnDisk accessFile;
+   @ObfuscatedName("w")
    @Export("readPayload")
    byte[] readPayload;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      longValue = 2673654514456511897L
-   )
-   long field1682;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1886034383
-   )
-   int field1672;
-   @ObfuscatedName("v")
-   @Export("writePayload")
-   byte[] writePayload;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = -7789910294705908297L
-   )
-   long field1673;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1098434249
+      longValue = -2086350283936535427L
    )
-   int field1674;
-   @ObfuscatedName("l")
+   long field1657;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      longValue = 307273387231398613L
+      intValue = 1358459689
+   )
+   int field1649;
+   @ObfuscatedName("u")
+   @Export("writePayload")
+   byte[] writePayload;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      longValue = 8147357022237717303L
+   )
+   long field1651;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 574183265
+   )
+   int field1652;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      longValue = 1092840870758656945L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      longValue = -2230272936277235307L
+      longValue = 32181713884337277L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = 647538175209417333L
+      longValue = -1754338581505271593L
    )
-   long field1668;
-   @ObfuscatedName("c")
+   @Export("capacity")
+   long capacity;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      longValue = -6921223581891257695L
+      longValue = -4816907015001781409L
    )
-   long field1678;
+   long field1647;
 
    @ObfuscatedSignature(
-      signature = "(Ldj;II)V"
+      signature = "(Lda;II)V"
    )
    public CacheFile(FileOnDisk var1, int var2, int var3) throws IOException {
-      this.field1682 = -1L;
-      this.field1673 = -1L;
-      this.field1674 = 0;
-      this.field1671 = var1;
-      this.field1668 = this.length = var1.length();
+      this.field1657 = -1L;
+      this.field1651 = -1L;
+      this.field1652 = 0;
+      this.accessFile = var1;
+      this.capacity = this.length = var1.length();
       this.readPayload = new byte[var2];
       this.writePayload = new byte[var3];
       this.position = 0L;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "2781"
+      signature = "(I)V",
+      garbageValue = "1921781252"
    )
-   public void method2452() throws IOException {
-      this.method2447();
-      this.field1671.close();
+   @Export("close")
+   public void close() throws IOException {
+      this.flush();
+      this.accessFile.close();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @Export("seek")
    public void seek(long var1) throws IOException {
       if(var1 < 0L) {
@@ -109,38 +100,40 @@ public class CacheFile {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)J",
-      garbageValue = "-2023521078"
+      garbageValue = "777235063"
    )
-   public long method2443() {
-      return this.field1668;
+   @Export("length")
+   public long length() {
+      return this.capacity;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-1944932766"
+      garbageValue = "2039742006"
    )
    @Export("read")
    public void read(byte[] var1) throws IOException {
-      this.method2448(var1, 0, var1.length);
+      this.read(var1, 0, var1.length);
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "([BIIB)V",
-      garbageValue = "39"
+      garbageValue = "-94"
    )
-   public void method2448(byte[] var1, int var2, int var3) throws IOException {
+   @Export("read")
+   public void read(byte[] var1, int var2, int var3) throws IOException {
       try {
          if(var3 + var2 > var1.length) {
             throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
          }
 
-         if(-1L != this.field1673 && this.position >= this.field1673 && (long)var3 + this.position <= this.field1673 + (long)this.field1674) {
-            System.arraycopy(this.writePayload, (int)(this.position - this.field1673), var1, var2, var3);
+         if(-1L != this.field1651 && this.position >= this.field1651 && this.position + (long)var3 <= (long)this.field1652 + this.field1651) {
+            System.arraycopy(this.writePayload, (int)(this.position - this.field1651), var1, var2, var3);
             this.position += (long)var3;
             return;
          }
@@ -148,36 +141,36 @@ public class CacheFile {
          long var4 = this.position;
          int var7 = var3;
          int var8;
-         if(this.position >= this.field1682 && this.position < this.field1682 + (long)this.field1672) {
-            var8 = (int)((long)this.field1672 - (this.position - this.field1682));
+         if(this.position >= this.field1657 && this.position < this.field1657 + (long)this.field1649) {
+            var8 = (int)((long)this.field1649 - (this.position - this.field1657));
             if(var8 > var3) {
                var8 = var3;
             }
 
-            System.arraycopy(this.readPayload, (int)(this.position - this.field1682), var1, var2, var8);
+            System.arraycopy(this.readPayload, (int)(this.position - this.field1657), var1, var2, var8);
             this.position += (long)var8;
             var2 += var8;
             var3 -= var8;
          }
 
          if(var3 > this.readPayload.length) {
-            this.field1671.seek(this.position);
+            this.accessFile.seek(this.position);
 
-            for(this.field1678 = this.position; var3 > 0; var3 -= var8) {
-               var8 = this.field1671.read(var1, var2, var3);
+            for(this.field1647 = this.position; var3 > 0; var3 -= var8) {
+               var8 = this.accessFile.read(var1, var2, var3);
                if(var8 == -1) {
                   break;
                }
 
-               this.field1678 += (long)var8;
+               this.field1647 += (long)var8;
                this.position += (long)var8;
                var2 += var8;
             }
          } else if(var3 > 0) {
-            this.method2446();
+            this.load();
             var8 = var3;
-            if(var3 > this.field1672) {
-               var8 = this.field1672;
+            if(var3 > this.field1649) {
+               var8 = this.field1649;
             }
 
             System.arraycopy(this.readPayload, 0, var1, var2, var8);
@@ -186,9 +179,9 @@ public class CacheFile {
             this.position += (long)var8;
          }
 
-         if(this.field1673 != -1L) {
-            if(this.field1673 > this.position && var3 > 0) {
-               var8 = var2 + (int)(this.field1673 - this.position);
+         if(this.field1651 != -1L) {
+            if(this.field1651 > this.position && var3 > 0) {
+               var8 = var2 + (int)(this.field1651 - this.position);
                if(var8 > var3 + var2) {
                   var8 = var3 + var2;
                }
@@ -202,21 +195,21 @@ public class CacheFile {
 
             long var13 = -1L;
             long var10 = -1L;
-            if(this.field1673 >= var4 && this.field1673 < var4 + (long)var7) {
-               var13 = this.field1673;
-            } else if(var4 >= this.field1673 && var4 < (long)this.field1674 + this.field1673) {
+            if(this.field1651 >= var4 && this.field1651 < var4 + (long)var7) {
+               var13 = this.field1651;
+            } else if(var4 >= this.field1651 && var4 < (long)this.field1652 + this.field1651) {
                var13 = var4;
             }
 
-            if(this.field1673 + (long)this.field1674 > var4 && this.field1673 + (long)this.field1674 <= (long)var7 + var4) {
-               var10 = (long)this.field1674 + this.field1673;
-            } else if(var4 + (long)var7 > this.field1673 && var4 + (long)var7 <= this.field1673 + (long)this.field1674) {
+            if((long)this.field1652 + this.field1651 > var4 && (long)this.field1652 + this.field1651 <= (long)var7 + var4) {
+               var10 = this.field1651 + (long)this.field1652;
+            } else if(var4 + (long)var7 > this.field1651 && (long)var7 + var4 <= (long)this.field1652 + this.field1651) {
                var10 = var4 + (long)var7;
             }
 
             if(var13 > -1L && var10 > var13) {
                int var12 = (int)(var10 - var13);
-               System.arraycopy(this.writePayload, (int)(var13 - this.field1673), var1, (int)(var13 - var4) + var2, var12);
+               System.arraycopy(this.writePayload, (int)(var13 - this.field1651), var1, (int)(var13 - var4) + var2, var12);
                if(var10 > this.position) {
                   var3 = (int)((long)var3 - (var10 - this.position));
                   this.position = var10;
@@ -224,7 +217,7 @@ public class CacheFile {
             }
          }
       } catch (IOException var16) {
-         this.field1678 = -1L;
+         this.field1647 = -1L;
          throw var16;
       }
 
@@ -233,148 +226,336 @@ public class CacheFile {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2022048117"
+      signature = "(S)V",
+      garbageValue = "-28050"
    )
-   void method2446() throws IOException {
-      this.field1672 = 0;
-      if(this.field1678 != this.position) {
-         this.field1671.seek(this.position);
-         this.field1678 = this.position;
+   @Export("load")
+   void load() throws IOException {
+      this.field1649 = 0;
+      if(this.field1647 != this.position) {
+         this.accessFile.seek(this.position);
+         this.field1647 = this.position;
       }
 
       int var1;
-      for(this.field1682 = this.position; this.field1672 < this.readPayload.length; this.field1672 += var1) {
-         var1 = this.field1671.read(this.readPayload, this.field1672, this.readPayload.length - this.field1672);
+      for(this.field1657 = this.position; this.field1649 < this.readPayload.length; this.field1649 += var1) {
+         var1 = this.accessFile.read(this.readPayload, this.field1649, this.readPayload.length - this.field1649);
          if(var1 == -1) {
             break;
          }
 
-         this.field1678 += (long)var1;
+         this.field1647 += (long)var1;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-833591143"
+      signature = "([BIIB)V",
+      garbageValue = "3"
    )
    @Export("write")
    public void write(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if((long)var3 + this.position > this.field1668) {
-            this.field1668 = this.position + (long)var3;
+         if((long)var3 + this.position > this.capacity) {
+            this.capacity = this.position + (long)var3;
          }
 
-         if(this.field1673 != -1L && (this.position < this.field1673 || this.position > this.field1673 + (long)this.field1674)) {
-            this.method2447();
+         if(this.field1651 != -1L && (this.position < this.field1651 || this.position > this.field1651 + (long)this.field1652)) {
+            this.flush();
          }
 
-         if(this.field1673 != -1L && this.position + (long)var3 > (long)this.writePayload.length + this.field1673) {
-            int var4 = (int)((long)this.writePayload.length - (this.position - this.field1673));
-            System.arraycopy(var1, var2, this.writePayload, (int)(this.position - this.field1673), var4);
+         if(this.field1651 != -1L && (long)var3 + this.position > this.field1651 + (long)this.writePayload.length) {
+            int var4 = (int)((long)this.writePayload.length - (this.position - this.field1651));
+            System.arraycopy(var1, var2, this.writePayload, (int)(this.position - this.field1651), var4);
             this.position += (long)var4;
             var2 += var4;
             var3 -= var4;
-            this.field1674 = this.writePayload.length;
-            this.method2447();
+            this.field1652 = this.writePayload.length;
+            this.flush();
          }
 
          if(var3 <= this.writePayload.length) {
             if(var3 > 0) {
-               if(-1L == this.field1673) {
-                  this.field1673 = this.position;
+               if(this.field1651 == -1L) {
+                  this.field1651 = this.position;
                }
 
-               System.arraycopy(var1, var2, this.writePayload, (int)(this.position - this.field1673), var3);
+               System.arraycopy(var1, var2, this.writePayload, (int)(this.position - this.field1651), var3);
                this.position += (long)var3;
-               if(this.position - this.field1673 > (long)this.field1674) {
-                  this.field1674 = (int)(this.position - this.field1673);
+               if(this.position - this.field1651 > (long)this.field1652) {
+                  this.field1652 = (int)(this.position - this.field1651);
                }
 
             }
          } else {
-            if(this.position != this.field1678) {
-               this.field1671.seek(this.position);
-               this.field1678 = this.position;
+            if(this.position != this.field1647) {
+               this.accessFile.seek(this.position);
+               this.field1647 = this.position;
             }
 
-            this.field1671.write(var1, var2, var3);
-            this.field1678 += (long)var3;
-            if(this.field1678 > this.length) {
-               this.length = this.field1678;
+            this.accessFile.write(var1, var2, var3);
+            this.field1647 += (long)var3;
+            if(this.field1647 > this.length) {
+               this.length = this.field1647;
             }
 
             long var9 = -1L;
             long var6 = -1L;
-            if(this.position >= this.field1682 && this.position < this.field1682 + (long)this.field1672) {
+            if(this.position >= this.field1657 && this.position < (long)this.field1649 + this.field1657) {
                var9 = this.position;
-            } else if(this.field1682 >= this.position && this.field1682 < this.position + (long)var3) {
-               var9 = this.field1682;
+            } else if(this.field1657 >= this.position && this.field1657 < this.position + (long)var3) {
+               var9 = this.field1657;
             }
 
-            if(this.position + (long)var3 > this.field1682 && this.position + (long)var3 <= this.field1682 + (long)this.field1672) {
-               var6 = (long)var3 + this.position;
-            } else if((long)this.field1672 + this.field1682 > this.position && this.field1682 + (long)this.field1672 <= this.position + (long)var3) {
-               var6 = this.field1682 + (long)this.field1672;
+            if(this.position + (long)var3 > this.field1657 && (long)var3 + this.position <= this.field1657 + (long)this.field1649) {
+               var6 = this.position + (long)var3;
+            } else if(this.field1657 + (long)this.field1649 > this.position && this.field1657 + (long)this.field1649 <= this.position + (long)var3) {
+               var6 = this.field1657 + (long)this.field1649;
             }
 
             if(var9 > -1L && var6 > var9) {
                int var8 = (int)(var6 - var9);
-               System.arraycopy(var1, (int)(var9 + (long)var2 - this.position), this.readPayload, (int)(var9 - this.field1682), var8);
+               System.arraycopy(var1, (int)(var9 + (long)var2 - this.position), this.readPayload, (int)(var9 - this.field1657), var8);
             }
 
             this.position += (long)var3;
          }
       } catch (IOException var12) {
-         this.field1678 = -1L;
+         this.field1647 = -1L;
          throw var12;
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2035273083"
+      garbageValue = "-1440292873"
    )
-   void method2447() throws IOException {
-      if(this.field1673 != -1L) {
-         if(this.field1673 != this.field1678) {
-            this.field1671.seek(this.field1673);
-            this.field1678 = this.field1673;
+   @Export("flush")
+   void flush() throws IOException {
+      if(-1L != this.field1651) {
+         if(this.field1647 != this.field1651) {
+            this.accessFile.seek(this.field1651);
+            this.field1647 = this.field1651;
          }
 
-         this.field1671.write(this.writePayload, 0, this.field1674);
-         this.field1678 += (long)(this.field1674 * -600847225) * -1098434249L;
-         if(this.field1678 > this.length) {
-            this.length = this.field1678;
+         this.accessFile.write(this.writePayload, 0, this.field1652);
+         this.field1647 += 574183265L * (long)(this.field1652 * 1250397345);
+         if(this.field1647 > this.length) {
+            this.length = this.field1647;
          }
 
          long var1 = -1L;
          long var3 = -1L;
-         if(this.field1673 >= this.field1682 && this.field1673 < (long)this.field1672 + this.field1682) {
-            var1 = this.field1673;
-         } else if(this.field1682 >= this.field1673 && this.field1682 < (long)this.field1674 + this.field1673) {
-            var1 = this.field1682;
+         if(this.field1651 >= this.field1657 && this.field1651 < this.field1657 + (long)this.field1649) {
+            var1 = this.field1651;
+         } else if(this.field1657 >= this.field1651 && this.field1657 < (long)this.field1652 + this.field1651) {
+            var1 = this.field1657;
          }
 
-         if(this.field1673 + (long)this.field1674 > this.field1682 && (long)this.field1674 + this.field1673 <= this.field1682 + (long)this.field1672) {
-            var3 = this.field1673 + (long)this.field1674;
-         } else if((long)this.field1672 + this.field1682 > this.field1673 && (long)this.field1672 + this.field1682 <= (long)this.field1674 + this.field1673) {
-            var3 = this.field1682 + (long)this.field1672;
+         if(this.field1651 + (long)this.field1652 > this.field1657 && this.field1651 + (long)this.field1652 <= this.field1657 + (long)this.field1649) {
+            var3 = (long)this.field1652 + this.field1651;
+         } else if((long)this.field1649 + this.field1657 > this.field1651 && this.field1657 + (long)this.field1649 <= this.field1651 + (long)this.field1652) {
+            var3 = this.field1657 + (long)this.field1649;
          }
 
          if(var1 > -1L && var3 > var1) {
             int var5 = (int)(var3 - var1);
-            System.arraycopy(this.writePayload, (int)(var1 - this.field1673), this.readPayload, (int)(var1 - this.field1682), var5);
+            System.arraycopy(this.writePayload, (int)(var1 - this.field1651), this.readPayload, (int)(var1 - this.field1657), var5);
          }
 
-         this.field1673 = -1L;
-         this.field1674 = 0;
+         this.field1651 = -1L;
+         this.field1652 = 0;
       }
 
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lby;S)V",
+      garbageValue = "7680"
+   )
+   public static void method2350(ScriptEvent var0) {
+      class21.method153(var0, 200000);
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljf;",
+      garbageValue = "79"
+   )
+   @Export("getObjectDefinition")
+   public static ObjectComposition getObjectDefinition(int var0) {
+      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = ObjectComposition.objects_ref.getConfigData(6, var0);
+         var1 = new ObjectComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         var1.post();
+         if(var1.isSolid) {
+            var1.interactType = 0;
+            var1.boolean1 = false;
+         }
+
+         ObjectComposition.objects.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "72350917"
+   )
+   @Export("decodeSprite")
+   public static void decodeSprite(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      var1.offset = var0.length - 2;
+      class299.field3866 = var1.readUnsignedShort();
+      class299.field3867 = new int[class299.field3866];
+      class299.offsetsY = new int[class299.field3866];
+      Item.field1387 = new int[class299.field3866];
+      class276.field3727 = new int[class299.field3866];
+      Bounds.spritePixels = new byte[class299.field3866][];
+      var1.offset = var0.length - 7 - class299.field3866 * 8;
+      class299.field3864 = var1.readUnsignedShort();
+      class299.field3868 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
+
+      int var3;
+      for(var3 = 0; var3 < class299.field3866; ++var3) {
+         class299.field3867[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class299.field3866; ++var3) {
+         class299.offsetsY[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class299.field3866; ++var3) {
+         Item.field1387[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class299.field3866; ++var3) {
+         class276.field3727[var3] = var1.readUnsignedShort();
+      }
+
+      var1.offset = var0.length - 7 - class299.field3866 * 8 - (var2 - 1) * 3;
+      FaceNormal.field2025 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         FaceNormal.field2025[var3] = var1.read24BitInt();
+         if(FaceNormal.field2025[var3] == 0) {
+            FaceNormal.field2025[var3] = 1;
+         }
+      }
+
+      var1.offset = 0;
+
+      for(var3 = 0; var3 < class299.field3866; ++var3) {
+         int var4 = Item.field1387[var3];
+         int var5 = class276.field3727[var3];
+         int var6 = var5 * var4;
+         byte[] var7 = new byte[var6];
+         Bounds.spritePixels[var3] = var7;
+         int var8 = var1.readUnsignedByte();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.readByte();
+            }
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var9 + var10 * var4] = var1.readByte();
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(ILck;ZI)I",
+      garbageValue = "-886108218"
+   )
+   static int method2352(int var0, Script var1, boolean var2) {
+      if(var0 == 5306) {
+         int[] var3 = class82.intStack;
+         int var4 = ++class82.intStackSize - 1;
+         int var5 = Client.isResized?2:1;
+         var3[var4] = var5;
+         return 1;
+      } else {
+         int var6;
+         if(var0 == 5307) {
+            var6 = class82.intStack[--class82.intStackSize];
+            if(var6 == 1 || var6 == 2) {
+               class35.method494(var6);
+            }
+
+            return 1;
+         } else if(var0 == 5308) {
+            class82.intStack[++class82.intStackSize - 1] = class2.preferences.screenType;
+            return 1;
+         } else if(var0 != 5309) {
+            return 2;
+         } else {
+            var6 = class82.intStack[--class82.intStackSize];
+            if(var6 == 1 || var6 == 2) {
+               class2.preferences.screenType = var6;
+               WorldComparator.method63();
+            }
+
+            return 1;
+         }
+      }
+   }
+
+   @ObfuscatedName("il")
+   @ObfuscatedSignature(
+      signature = "(Lhz;I)Lhz;",
+      garbageValue = "145236519"
+   )
+   static Widget method2351(Widget var0) {
+      Widget var2 = var0;
+      int var3 = Widget.method4188(class36.getWidgetConfig(var0));
+      Widget var1;
+      if(var3 == 0) {
+         var1 = null;
+      } else {
+         int var4 = 0;
+
+         while(true) {
+            if(var4 >= var3) {
+               var1 = var2;
+               break;
+            }
+
+            var2 = VertexNormal.getWidget(var2.parentId);
+            if(var2 == null) {
+               var1 = null;
+               break;
+            }
+
+            ++var4;
+         }
+      }
+
+      Widget var5 = var1;
+      if(var1 == null) {
+         var5 = var0.dragParent;
+      }
+
+      return var5;
    }
 }

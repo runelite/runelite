@@ -40,4 +40,14 @@ public interface Tile
 	GroundObject getGroundObject();
 
 	WallObject getWallObject();
+
+	SceneTilePaint getSceneTilePaint();
+
+	SceneTileModel getSceneTileModel();
+
+	Point getWorldLocation();
+
+	Point getRegionLocation();
+
+	Point getLocalLocation();
 }

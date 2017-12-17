@@ -3,29 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gp")
 @Implements("HashTable")
 public final class HashTable {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @Export("size")
    int size;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "[Lgh;"
+      signature = "[Lgn;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgn;"
    )
-   Node field2554;
-   @ObfuscatedName("j")
+   @Export("currentGet")
+   Node currentGet;
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgn;"
    )
-   Node field2557;
-   @ObfuscatedName("v")
+   @Export("current")
+   Node current;
+   @ObfuscatedName("u")
    @Export("index")
    int index;
 
@@ -42,29 +44,29 @@ public final class HashTable {
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(J)Lgh;"
+      signature = "(J)Lgn;"
    )
    @Export("get")
    public Node get(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field2554 = var3.next; var3 != this.field2554; this.field2554 = this.field2554.next) {
-         if(this.field2554.hash == var1) {
-            Node var4 = this.field2554;
-            this.field2554 = this.field2554.next;
+      for(this.currentGet = var3.next; var3 != this.currentGet; this.currentGet = this.currentGet.next) {
+         if(this.currentGet.hash == var1) {
+            Node var4 = this.currentGet;
+            this.currentGet = this.currentGet.next;
             return var4;
          }
       }
 
-      this.field2554 = null;
+      this.currentGet = null;
       return null;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgh;J)V"
+      signature = "(Lgn;J)V"
    )
    @Export("put")
    public void put(Node var1, long var2) {
@@ -80,8 +82,9 @@ public final class HashTable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("i")
-   void method3720() {
+   @ObfuscatedName("e")
+   @Export("clear")
+   void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -95,28 +98,30 @@ public final class HashTable {
          }
       }
 
-      this.field2554 = null;
-      this.field2557 = null;
+      this.currentGet = null;
+      this.current = null;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "()Lgh;"
+      signature = "()Lgn;"
    )
-   public Node method3721() {
+   @Export("first")
+   public Node first() {
       this.index = 0;
-      return this.method3728();
+      return this.next();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "()Lgh;"
+      signature = "()Lgn;"
    )
-   public Node method3728() {
+   @Export("next")
+   public Node next() {
       Node var1;
-      if(this.index > 0 && this.buckets[this.index - 1] != this.field2557) {
-         var1 = this.field2557;
-         this.field2557 = var1.next;
+      if(this.index > 0 && this.buckets[this.index - 1] != this.current) {
+         var1 = this.current;
+         this.current = var1.next;
          return var1;
       } else {
          do {
@@ -127,7 +132,7 @@ public final class HashTable {
             var1 = this.buckets[this.index++].next;
          } while(var1 == this.buckets[this.index - 1]);
 
-         this.field2557 = var1.next;
+         this.current = var1.next;
          return var1;
       }
    }

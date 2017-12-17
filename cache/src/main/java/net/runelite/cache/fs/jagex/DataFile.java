@@ -24,23 +24,19 @@
  */
 package net.runelite.cache.fs.jagex;
 
+import static com.google.common.primitives.Bytes.concat;
+import com.google.common.primitives.Ints;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import net.runelite.cache.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
-import net.runelite.cache.util.Whirlpool;
 import net.runelite.cache.util.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -279,8 +275,6 @@ public class DataFile implements Closeable
 		Crc32 crc32 = new Crc32();
 		crc32.update(compressedData, 0, length);
 		res.crc = crc32.getHash();
-
-		res.whirlpool = Whirlpool.getHash(compressedData, length);
 		return res;
 	}
 
@@ -384,8 +378,6 @@ public class DataFile implements Closeable
 		res.data = data;
 		res.revision = revision;
 		res.crc = crc32.getHash();
-		int length = revision != -1 ? b.length - 2 : b.length;
-		res.whirlpool = Whirlpool.getHash(b, length);
 		res.compression = compression;
 		return res;
 	}
@@ -393,32 +385,30 @@ public class DataFile implements Closeable
 	public static byte[] compress(byte[] data, int compression, int revision, int[] keys) throws IOException
 	{
 		OutputStream stream = new OutputStream();
-		stream.writeByte(compression);
 		byte[] compressedData;
+		int length;
 		switch (compression)
 		{
 			case CompressionType.NONE:
 				compressedData = data;
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-				stream.writeInt(data.length);
+				length = compressedData.length;
 				break;
 			case CompressionType.BZ2:
-				compressedData = BZip2.compress(data);
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-
-				stream.writeInt(compressedData.length);
-				stream.writeInt(data.length);
+				compressedData = concat(Ints.toByteArray(data.length), BZip2.compress(data));
+				length = compressedData.length - 4;
 				break;
 			case CompressionType.GZ:
-				compressedData = GZip.compress(data);
-				compressedData = encrypt(compressedData, compressedData.length, keys);
-
-				stream.writeInt(compressedData.length);
-				stream.writeInt(data.length);
+				compressedData = concat(Ints.toByteArray(data.length), GZip.compress(data));
+				length = compressedData.length - 4;
 				break;
 			default:
 				throw new RuntimeException("Unknown compression type");
 		}
+
+		compressedData = encrypt(compressedData, compressedData.length, keys);
+
+		stream.writeByte(compression);
+		stream.writeInt(length);
 
 		stream.writeBytes(compressedData);
 		if (revision != -1)
@@ -436,16 +426,8 @@ public class DataFile implements Closeable
 			return data;
 		}
 
-		try
-		{
-			Xtea xtea = new Xtea(keys);
-			return xtea.decrypt(data, length);
-		}
-		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
-		{
-			logger.warn("unable to xtea decrypt", ex);
-			return null;
-		}
+		Xtea xtea = new Xtea(keys);
+		return xtea.decrypt(data, length);
 	}
 
 	private static byte[] encrypt(byte[] data, int length, int[] keys)
@@ -455,15 +437,7 @@ public class DataFile implements Closeable
 			return data;
 		}
 
-		try
-		{
-			Xtea xtea = new Xtea(keys);
-			return xtea.encrypt(data, length);
-		}
-		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
-		{
-			logger.warn("unable to xtea encrypt", ex);
-			return null;
-		}
+		Xtea xtea = new Xtea(keys);
+		return xtea.encrypt(data, length);
 	}
 }

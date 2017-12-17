@@ -37,7 +37,6 @@ import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.Djb2;
-import net.runelite.cache.util.Whirlpool;
 import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +51,9 @@ public class Index
 	private XteaKeyManager xteaManager;
 
 	private int protocol = 7;
-	private boolean named = true, usesWhirpool;
+	private boolean named = true;
 	private int revision;
 	private int crc;
-	private byte[] whirlpool;
 	private int compression; // compression method of this index's data in 255
 
 	private final List<Archive> archives = new ArrayList<>();
@@ -138,16 +136,6 @@ public class Index
 		this.named = named;
 	}
 
-	public boolean isUsesWhirpool()
-	{
-		return usesWhirpool;
-	}
-
-	public void setUsesWhirpool(boolean usesWhirpool)
-	{
-		this.usesWhirpool = usesWhirpool;
-	}
-
 	public int getRevision()
 	{
 		return revision;
@@ -166,16 +154,6 @@ public class Index
 	public void setCrc(int crc)
 	{
 		this.crc = crc;
-	}
-
-	public byte[] getWhirlpool()
-	{
-		return whirlpool;
-	}
-
-	public void setWhirlpool(byte[] whirlpool)
-	{
-		this.whirlpool = whirlpool;
 	}
 
 	public int getCompression()
@@ -249,10 +227,8 @@ public class Index
 			crc32.update(compressedData, 0, length);
 
 			int crc = crc32.getHash();
-			byte[] whirlpool = Whirlpool.getHash(compressedData, length);
 
 			a.setCrc(crc);
-			a.setWhirlpool(whirlpool);
 		}
 
 		Crc32 crc = new Crc32();
@@ -275,7 +251,6 @@ public class Index
 		data.setProtocol(protocol);
 		data.setRevision(revision);
 		data.setNamed(named);
-		data.setUsesWhirpool(usesWhirpool);
 
 		ArchiveData[] archiveDatas = new ArchiveData[archives.size()];
 		data.setArchives(archiveDatas);
@@ -287,7 +262,6 @@ public class Index
 			ad.setId(archive.getArchiveId());
 			ad.setNameHash(archive.getNameHash());
 			ad.setCrc(archive.getCrc());
-			ad.setWhirlpool(archive.getWhirlpool());
 			ad.setRevision(archive.getRevision());
 
 			FileData[] files = new FileData[archive.getFiles().size()];

@@ -67,7 +67,7 @@ public interface RSWidget extends Widget
 	@Import("name")
 	String getRSName();
 
-	@Import(value = "text", setter = true)
+	@Import("text")
 	@Override
 	void setText(String text);
 
@@ -96,6 +96,9 @@ public interface RSWidget extends Widget
 
 	@Import("isHidden")
 	boolean isRSHidden();
+
+	@Import("isHidden")
+	void setHidden(boolean hidden);
 
 	@Import("index")
 	int getIndex();

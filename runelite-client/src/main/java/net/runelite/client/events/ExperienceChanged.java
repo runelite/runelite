@@ -25,30 +25,14 @@
 
 package net.runelite.client.events;
 
+import lombok.Data;
 import net.runelite.api.Skill;
 
+@Data
 public class ExperienceChanged
 {
 	/**
 	 * The {@link Skill} that had its experience changed.
 	 */
 	private Skill skill;
-
-	/**
-	 * Returns the {@link Skill} that had its experience changed
-	 * @return the {@link Skill} that had its experience changed
-	 */
-	public Skill getSkill()
-	{
-		return skill;
-	}
-
-	/**
-	 * Sets the changed {@link Skill} to the specified {@link Skill}.
-	 * @param skill the {@link Skill} that had its experience changed
-	 */
-	public void setSkill(Skill skill)
-	{
-		this.skill = skill;
-	}
 }

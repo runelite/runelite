@@ -24,25 +24,20 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
@@ -52,8 +47,8 @@ import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.http.api.item.ItemPrice;
@@ -90,17 +85,6 @@ public class GroundItemsOverlay extends Overlay
 	private final Client client;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
-	private final LoadingCache<Integer, ItemComposition> itemCache = CacheBuilder.newBuilder()
-		.maximumSize(1024L)
-		.expireAfterAccess(1, TimeUnit.MINUTES)
-		.build(new CacheLoader<Integer, ItemComposition>()
-		{
-			@Override
-			public ItemComposition load(Integer key) throws Exception
-			{
-				return client.getItemDefinition(key);
-			}
-		});
 
 	@Inject
 	ItemManager itemManager;
@@ -108,26 +92,14 @@ public class GroundItemsOverlay extends Overlay
 	@Inject
 	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
 	{
-		super(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		// won't draw if not logged in
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
-		{
-			return null;
-		}
-
-		//if the player is logged in but viewing the click to play screen exit
-		if (client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
-		{
-			return null;
-		}
-
 		Widget viewport = client.getViewportWidget();
 
 		if (viewport != null)
@@ -169,6 +141,8 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
 		int z = client.getPlane();
 
 		for (int x = 0; x < REGION_SIZE; x++)
@@ -200,18 +174,29 @@ public class GroundItemsOverlay extends Overlay
 					Item item = (Item) current;
 					int itemId = item.getId();
 					int itemQuantity = item.getQuantity();
-					ItemComposition itemDefinition = itemCache.getUnchecked(itemId);
+					ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
 
 					Integer currentQuantity = items.get(itemId);
 					if (!hiddenItems.contains(itemDefinition.getName().toLowerCase()))
 					{
-						if (currentQuantity == null)
+						if (itemDefinition.getNote() != -1)
 						{
-							items.put(itemId, itemQuantity);
+							itemId = itemDefinition.getLinkedNoteId();
 						}
-						else
+
+						int quantity = currentQuantity == null
+							? itemQuantity
+							: currentQuantity + itemQuantity;
+
+						ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
+
+						int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+						int alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+						if (gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+								(alchPrice >= config.getHideUnderHAValue())))
 						{
-							items.put(itemId, currentQuantity + itemQuantity);
+							items.put(itemId, quantity);
 						}
 					}
 
@@ -233,7 +218,7 @@ public class GroundItemsOverlay extends Overlay
 
 					int itemId = itemIds.get(i);
 					int quantity = items.get(itemId);
-					ItemComposition item = itemCache.getUnchecked(itemId);
+					ItemComposition item = itemManager.getItemComposition(itemId);
 
 					if (item == null)
 					{
@@ -260,7 +245,7 @@ public class GroundItemsOverlay extends Overlay
 					}
 
 					Color textColor = Color.WHITE; // Color to use when drawing the ground item
-					ItemPrice itemPrice = itemManager.get(itemId);
+					ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
 					if (itemPrice != null && config.showGEPrice())
 					{
 						int cost = itemPrice.getPrice() * quantity;

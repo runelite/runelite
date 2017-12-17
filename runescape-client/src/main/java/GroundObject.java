@@ -4,52 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dq")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -778423073
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "Ldu;"
    )
-   @Export("hash")
-   public int hash;
-   @ObfuscatedName("p")
+   @Export("task")
+   static SoundTask task;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1638591795
+      intValue = 950595223
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1000585405
+      intValue = -1302060085
    )
    @Export("x")
    int x;
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 690011649
+      intValue = 326033797
    )
    @Export("y")
    int y;
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Lei;"
+      signature = "Lel;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1323309637
+      intValue = 1395110931
+   )
+   @Export("hash")
+   public int hash;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 908974953
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIIIB)V",
-      garbageValue = "-11"
+      signature = "(I)[Lij;",
+      garbageValue = "1162437718"
    )
-   public static final void method2599(int var0, int var1, int var2, int var3, int var4) {
-      class7.field228.method3749(new class8(var0, var1, var2, var3, var4));
+   public static Permission[] method2493() {
+      return new Permission[]{Permission.field3276, Permission.field3277, Permission.field3274, Permission.field3275, Permission.field3273, Permission.field3281};
    }
 }

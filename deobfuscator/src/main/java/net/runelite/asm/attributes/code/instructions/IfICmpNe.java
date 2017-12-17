@@ -59,16 +59,17 @@ public class IfICmpNe extends If
 			return false;
 		}
 
-		Integer i1 = this.getConstantInstruction(thisIc);
-		Integer i2 = this.getConstantInstruction(otherIc);
-
-		if (i1 != null && i2 != null && (int) i1 != (int) i2)
-		{
-			return false;
-		}
-
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 		{
+			// see comment in ificmpeq
+//			Integer i1 = this.getConstantInstruction(thisIc);
+//			Integer i2 = this.getConstantInstruction(otherIc);
+//
+//			if (i1 != null && i2 != null && (int) i1 != (int) i2)
+//			{
+//				return false;
+//			}
+
 			return true;
 		}
 

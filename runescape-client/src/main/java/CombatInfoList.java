@@ -7,17 +7,18 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("go")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("m")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgn;"
    )
    @Export("node")
    Node node;
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgh;"
+      signature = "Lgn;"
    )
-   Node field2560;
+   @Export("current")
+   Node current;
 
    public CombatInfoList() {
       this.node = new Node();
@@ -25,19 +26,20 @@ public class CombatInfoList implements Iterable {
       this.node.previous = this.node;
    }
 
-   @ObfuscatedName("m")
-   public void method3736() {
+   @ObfuscatedName("a")
+   public void method3703() {
       while(this.node.next != this.node) {
          this.node.next.unlink();
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgh;)V"
+      signature = "(Lgn;)V"
    )
-   public void method3749(Node var1) {
+   @Export("addFirst")
+   public void addFirst(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -48,11 +50,12 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lgh;)V"
+      signature = "(Lgn;)V"
    )
-   public void method3740(Node var1) {
+   @Export("addLast")
+   public void addLast(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -63,11 +66,12 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "()Lgh;"
+      signature = "()Lgn;"
    )
-   public Node method3756() {
+   @Export("removeLast")
+   public Node removeLast() {
       Node var1 = this.node.next;
       if(var1 == this.node) {
          return null;
@@ -77,19 +81,21 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "()Lgh;"
+      signature = "()Lgn;"
    )
-   public Node method3741() {
-      return this.method3742((Node)null);
+   @Export("last")
+   public Node last() {
+      return this.previousOrLast((Node)null);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgh;)Lgh;"
+      signature = "(Lgn;)Lgn;"
    )
-   Node method3742(Node var1) {
+   @Export("previousOrLast")
+   Node previousOrLast(Node var1) {
       Node var2;
       if(var1 == null) {
          var2 = this.node.next;
@@ -98,43 +104,45 @@ public class CombatInfoList implements Iterable {
       }
 
       if(var2 == this.node) {
-         this.field2560 = null;
+         this.current = null;
          return null;
       } else {
-         this.field2560 = var2.next;
+         this.current = var2.next;
          return var2;
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "()Lgh;"
+      signature = "()Lgn;"
    )
-   public Node method3743() {
-      Node var1 = this.field2560;
+   @Export("previous")
+   public Node previous() {
+      Node var1 = this.current;
       if(var1 == this.node) {
-         this.field2560 = null;
+         this.current = null;
          return null;
       } else {
-         this.field2560 = var1.next;
+         this.current = var1.next;
          return var1;
       }
    }
 
-   @ObfuscatedName("b")
-   public boolean method3744() {
+   @ObfuscatedName("g")
+   @Export("isEmpty")
+   public boolean isEmpty() {
       return this.node.next == this.node;
    }
 
    public Iterator iterator() {
-      return new class195(this);
+      return new class199(this);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lgh;Lgh;)V"
+      signature = "(Lgn;Lgn;)V"
    )
-   public static void method3738(Node var0, Node var1) {
+   public static void method3717(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

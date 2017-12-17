@@ -1,71 +1,35 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("cu")
 public class class87 {
-   @ObfuscatedName("z")
-   @Export("osNameLC")
-   public static String osNameLC;
-
-   @ObfuscatedName("v")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(ILcw;ZI)I",
-      garbageValue = "1644629182"
+      signature = "([BIIII[Lfp;I)V",
+      garbageValue = "155707841"
    )
-   static int method1793(int var0, Script var1, boolean var2) {
-      int var3 = -1;
-      Widget var4;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class82.intStack[--class56.intStackSize];
-         var4 = PendingSpawn.method1612(var3);
-      } else {
-         var4 = var2?class285.field3789:Friend.field768;
+   static final void method1662(byte[] var0, int var1, int var2, int var3, int var4, CollisionData[] var5) {
+      int var7;
+      int var8;
+      for(int var6 = 0; var6 < 4; ++var6) {
+         for(var7 = 0; var7 < 64; ++var7) {
+            for(var8 = 0; var8 < 64; ++var8) {
+               if(var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
+                  var5[var6].flags[var7 + var1][var8 + var2] &= -16777217;
+               }
+            }
+         }
       }
 
-      if(var0 == 1000) {
-         class56.intStackSize -= 4;
-         var4.originalX = class82.intStack[class56.intStackSize];
-         var4.originalY = class82.intStack[class56.intStackSize + 1];
-         var4.field2731 = class82.intStack[class56.intStackSize + 2];
-         var4.field2732 = class82.intStack[class56.intStackSize + 3];
-         WorldMapData.method394(var4);
-         class9.clientInstance.method1252(var4);
-         if(var3 != -1 && var4.type == 0) {
-            class22.method179(class243.widgets[var3 >> 16], var4, false);
-         }
+      Buffer var10 = new Buffer(var0);
 
-         return 1;
-      } else if(var0 == 1001) {
-         class56.intStackSize -= 4;
-         var4.originalWidth = class82.intStack[class56.intStackSize];
-         var4.field2738 = class82.intStack[class56.intStackSize + 1];
-         var4.field2834 = class82.intStack[class56.intStackSize + 2];
-         var4.buttonType = class82.intStack[class56.intStackSize + 3];
-         WorldMapData.method394(var4);
-         class9.clientInstance.method1252(var4);
-         if(var3 != -1 && var4.type == 0) {
-            class22.method179(class243.widgets[var3 >> 16], var4, false);
+      for(var7 = 0; var7 < 4; ++var7) {
+         for(var8 = 0; var8 < 64; ++var8) {
+            for(int var9 = 0; var9 < 64; ++var9) {
+               AttackOption.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
+            }
          }
-
-         return 1;
-      } else if(var0 == 1003) {
-         boolean var5 = class82.intStack[--class56.intStackSize] == 1;
-         if(var5 != var4.isHidden) {
-            var4.isHidden = var5;
-            WorldMapData.method394(var4);
-         }
-
-         return 1;
-      } else if(var0 == 1005) {
-         var4.field2859 = class82.intStack[--class56.intStackSize] == 1;
-         return 1;
-      } else if(var0 == 1006) {
-         var4.field2733 = class82.intStack[--class56.intStackSize] == 1;
-         return 1;
-      } else {
-         return 2;
       }
+
    }
 }

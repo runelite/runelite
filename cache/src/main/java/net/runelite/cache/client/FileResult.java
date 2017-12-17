@@ -37,7 +37,6 @@ public class FileResult
 	private byte[] contents;
 	private int revision;
 	private int crc;
-	private byte[] whirlpool;
 	private int compression; // compression method used by archive data
 
 	public FileResult(int index, int fileId, byte[] compressedData)
@@ -69,7 +68,6 @@ public class FileResult
 		contents = res.data;
 		revision = res.revision;
 		crc = res.crc;
-		whirlpool = res.whirlpool;
 		compression = res.compression;
 	}
 
@@ -86,11 +84,6 @@ public class FileResult
 	public int getCrc()
 	{
 		return crc;
-	}
-
-	public byte[] getWhirlpool()
-	{
-		return whirlpool;
 	}
 
 	public int getCompression()

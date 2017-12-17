@@ -28,21 +28,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
+@Slf4j
 public class Scheduler
 {
-	private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
-
-	private final List<ScheduledMethod> scheduledMethods = new ArrayList<>();
+	private final List<ScheduledMethod> scheduledMethods = new CopyOnWriteArrayList<>();
 
 	@Inject
 	ScheduledExecutorService executor;
@@ -77,7 +75,7 @@ public class Scheduler
 
 			if (difference.compareTo(timeSinceRun) > 0)
 			{
-				logger.trace("Scheduled task triggered: {}", scheduledMethod);
+				log.trace("Scheduled task triggered: {}", scheduledMethod);
 
 				scheduledMethod.setLast(now);
 
@@ -103,11 +101,11 @@ public class Scheduler
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{
-			logger.warn("error invoking scheduled task", ex);
+			log.warn("error invoking scheduled task", ex);
 		}
 		catch (Exception ex)
 		{
-			logger.warn("error during scheduled task", ex);
+			log.warn("error during scheduled task", ex);
 		}
 	}
 }

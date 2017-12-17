@@ -24,25 +24,15 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Projectile;
 import net.runelite.mapping.Import;
 
-public interface RSProjectile
+public interface RSProjectile extends Projectile
 {
-	@Import("isMoving")
-	boolean isMoving();
+	@Import("id")
+	@Override
+	int getId();
 
-	@Import("animationSequence")
-	RSSequence getAnimationSequence();
-
-	@Import("velocityY")
-	double getVelocityY();
-
-	@Import("velocityX")
-	double getVelocityX();
-
-	@Import("velocityZ")
-	double getVelocityZ();
-
-	@Import("scalar")
-	double getScalar();
+	@Import("interacting")
+	int getRsInteracting();
 }
