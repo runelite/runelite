@@ -82,9 +82,17 @@ public interface RSWidget extends Widget
 	@Override
 	int getRelativeX();
 
+	@Import("relativeX")
+	@Override
+	void setRelativeX(int x);
+
 	@Import("relativeY")
 	@Override
 	int getRelativeY();
+
+	@Import("relativeY")
+	@Override
+	void setRelativeY(int y);
 
 	@Import("width")
 	@Override

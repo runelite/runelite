@@ -94,7 +94,7 @@ public class OverlayUtil
 		// draw background
 		graphics.drawImage(minimapOrbBackground, pos.getX(), pos.getY(), null);
 		// draw overlay
-		graphics.drawImage(overlayImage, pos.getX() + 32, pos.getY() + 9, null);
+		graphics.drawImage(overlayImage, pos.getX() + 33, pos.getY() + 10, null);
 
 		drawOrbAmount(graphics, pos, amount);//draw number on orb
 
@@ -117,7 +117,7 @@ public class OverlayUtil
 		FontMetrics fm = graphics.getFontMetrics();
 
 		String numberString = Integer.toString(amount);
-		Point numberPos = new Point(pos.getX() + 22 - fm.stringWidth(numberString), pos.getY() + 26);
+		Point numberPos = new Point(pos.getX() + 24 - fm.stringWidth(numberString), pos.getY() + 27);
 		graphics.setColor(Color.black);
 		graphics.drawString(numberString, numberPos.getX() + 1, numberPos.getY() + 1);//black shadow on text
 		graphics.setColor(Color.green);
