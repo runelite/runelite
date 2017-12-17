@@ -50,9 +50,8 @@ import net.runelite.cache.definitions.loaders.ItemLoader;
 import net.runelite.cache.definitions.loaders.NpcLoader;
 import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.fs.ArchiveFiles;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.FSFile;
-import net.runelite.cache.fs.jagex.DataFile;
-import net.runelite.cache.fs.jagex.DataFileReadResult;
 import net.runelite.http.api.cache.Cache;
 import net.runelite.http.api.cache.CacheArchive;
 import net.runelite.http.api.cache.CacheIndex;
@@ -150,7 +149,7 @@ public class CacheService
 			return null;
 		}
 
-		DataFileReadResult result = DataFile.decompress(archiveData, null);
+		Container result = Container.decompress(archiveData, null);
 		if (result == null)
 		{
 			return null;

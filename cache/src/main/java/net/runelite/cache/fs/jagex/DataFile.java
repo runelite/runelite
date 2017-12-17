@@ -24,20 +24,12 @@
  */
 package net.runelite.cache.fs.jagex;
 
-import static com.google.common.primitives.Bytes.concat;
-import com.google.common.primitives.Ints;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import net.runelite.cache.util.BZip2;
-import net.runelite.cache.io.InputStream;
-import net.runelite.cache.io.OutputStream;
-import net.runelite.cache.util.Crc32;
-import net.runelite.cache.util.GZip;
-import net.runelite.cache.util.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,7 +169,7 @@ public class DataFile implements Closeable
 		return buffer.array();
 	}
 
-	public DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData, int revision) throws IOException
+	public DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData) throws IOException
 	{
 		int sector;
 		int startSector;
@@ -270,174 +262,6 @@ public class DataFile implements Closeable
 		DataFileWriteResult res = new DataFileWriteResult();
 		res.sector = startSector;
 		res.compressedLength = compressedData.length;
-
-		int length = revision != -1 ? compressedData.length - 2 : compressedData.length;
-		Crc32 crc32 = new Crc32();
-		crc32.update(compressedData, 0, length);
-		res.crc = crc32.getHash();
 		return res;
-	}
-
-	public static DataFileReadResult decompress(byte[] b, int[] keys) throws IOException
-	{
-		InputStream stream = new InputStream(b);
-
-		int compression = stream.readUnsignedByte();
-		int compressedLength = stream.readInt();
-		if (compressedLength < 0 || compressedLength > 1000000)
-		{
-			throw new RuntimeException("Invalid data");
-		}
-
-		Crc32 crc32 = new Crc32();
-		crc32.update(b, 0, 5); // compression + length
-
-		byte[] data;
-		int revision = -1;
-		switch (compression)
-		{
-			case CompressionType.NONE:
-			{
-				byte[] encryptedData = new byte[compressedLength];
-				stream.readBytes(encryptedData, 0, compressedLength);
-
-				crc32.update(encryptedData, 0, compressedLength);
-				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
-
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
-
-				data = decryptedData;
-
-				break;
-			}
-			case CompressionType.BZ2:
-			{
-				byte[] encryptedData = new byte[compressedLength + 4];
-				stream.readBytes(encryptedData);
-
-				crc32.update(encryptedData, 0, encryptedData.length);
-				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
-
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
-
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = BZip2.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
-				assert data.length == decompressedLength;
-
-				break;
-			}
-			case CompressionType.GZ:
-			{
-				byte[] encryptedData = new byte[compressedLength + 4];
-				stream.readBytes(encryptedData);
-
-				crc32.update(encryptedData, 0, encryptedData.length);
-				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
-
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
-
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = GZip.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
-				assert data.length == decompressedLength;
-
-				break;
-			}
-			default:
-				throw new RuntimeException("Unknown decompression type");
-		}
-
-		DataFileReadResult res = new DataFileReadResult();
-		res.data = data;
-		res.revision = revision;
-		res.crc = crc32.getHash();
-		res.compression = compression;
-		return res;
-	}
-
-	public static byte[] compress(byte[] data, int compression, int revision, int[] keys) throws IOException
-	{
-		OutputStream stream = new OutputStream();
-		byte[] compressedData;
-		int length;
-		switch (compression)
-		{
-			case CompressionType.NONE:
-				compressedData = data;
-				length = compressedData.length;
-				break;
-			case CompressionType.BZ2:
-				compressedData = concat(Ints.toByteArray(data.length), BZip2.compress(data));
-				length = compressedData.length - 4;
-				break;
-			case CompressionType.GZ:
-				compressedData = concat(Ints.toByteArray(data.length), GZip.compress(data));
-				length = compressedData.length - 4;
-				break;
-			default:
-				throw new RuntimeException("Unknown compression type");
-		}
-
-		compressedData = encrypt(compressedData, compressedData.length, keys);
-
-		stream.writeByte(compression);
-		stream.writeInt(length);
-
-		stream.writeBytes(compressedData);
-		if (revision != -1)
-		{
-			stream.writeShort(revision);
-		}
-
-		return stream.flip();
-	}
-
-	private static byte[] decrypt(byte[] data, int length, int[] keys)
-	{
-		if (keys == null)
-		{
-			return data;
-		}
-
-		Xtea xtea = new Xtea(keys);
-		return xtea.decrypt(data, length);
-	}
-
-	private static byte[] encrypt(byte[] data, int length, int[] keys)
-	{
-		if (keys == null)
-		{
-			return data;
-		}
-
-		Xtea xtea = new Xtea(keys);
-		return xtea.encrypt(data, length);
 	}
 }

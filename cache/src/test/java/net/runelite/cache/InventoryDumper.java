@@ -33,8 +33,10 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.InventoryDefinition;
 import net.runelite.cache.definitions.loaders.InventoryLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
@@ -63,10 +65,14 @@ public class InventoryDumper
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CONFIGS);
 			Archive archive = index.getArchive(ConfigType.INV.getId());
 
-			for (FSFile file : archive.getFiles())
+			byte[] archiveData = storage.loadArchive(archive);
+			ArchiveFiles files = archive.getFiles(archiveData);
+
+			for (FSFile file : files.getFiles())
 			{
 				InventoryLoader loader = new InventoryLoader();
 				InventoryDefinition inv = loader.load(file.getContents());

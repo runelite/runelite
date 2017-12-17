@@ -37,11 +37,10 @@ import net.runelite.cache.definitions.FramemapDefinition;
 import net.runelite.cache.definitions.loaders.FrameLoader;
 import net.runelite.cache.definitions.loaders.FramemapLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +66,7 @@ public class FrameDumper
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index frameIndex = store.getIndex(IndexType.FRAMES);
 			Index framemapIndex = store.getIndex(IndexType.FRAMEMAPS);
 
@@ -74,24 +74,22 @@ public class FrameDumper
 			{
 				List<FrameDefinition> frames = new ArrayList<>();
 
-				for (FSFile file : archive.getFiles())
-				{
-					byte[] contents = file.getContents();
+				byte[] archiveData = storage.loadArchive(archive);
+				byte[] contents = archive.decompress(archiveData);
 
-					int framemapArchiveId = (contents[0] & 0xff) << 8 | contents[1] & 0xff;
+				int framemapArchiveId = (contents[0] & 0xff) << 8 | contents[1] & 0xff;
 
-					Archive framemapArchive = framemapIndex.getArchives().get(framemapArchiveId);
-					assert framemapArchive.getFiles().size() == 1;
-					FSFile framemapFile = framemapArchive.getFiles().get(0);
+				Archive framemapArchive = framemapIndex.getArchives().get(framemapArchiveId);
+				archiveData = storage.loadArchive(framemapArchive);
+				byte[] framemapContents = framemapArchive.decompress(archiveData);
 
-					FramemapLoader fmloader = new FramemapLoader();
-					FramemapDefinition framemap = fmloader.load(framemapFile.getFileId(), framemapFile.getContents());
+				FramemapLoader fmloader = new FramemapLoader();
+				FramemapDefinition framemap = fmloader.load(0, framemapContents);
 
-					FrameLoader frameLoader = new FrameLoader();
-					FrameDefinition frame = frameLoader.load(framemap, contents);
+				FrameLoader frameLoader = new FrameLoader();
+				FrameDefinition frame = frameLoader.load(framemap, contents);
 
-					frames.add(frame);
-				}
+				frames.add(frame);
 
 				Files.write(gson.toJson(frames), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;

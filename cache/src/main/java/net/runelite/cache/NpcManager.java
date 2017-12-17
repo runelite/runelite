@@ -33,8 +33,10 @@ import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.exporters.NpcExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
 
@@ -53,10 +55,14 @@ public class NpcManager
 	{
 		NpcLoader loader = new NpcLoader();
 
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.NPC.getId());
 
-		for (FSFile f : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile f : files.getFiles())
 		{
 			NpcDefinition npc = loader.load(f.getFileId(), f.getContents());
 			npcs.add(npc);

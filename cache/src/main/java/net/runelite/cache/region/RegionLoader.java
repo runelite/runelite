@@ -30,6 +30,7 @@ import java.util.List;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
@@ -53,7 +54,8 @@ public class RegionLoader
 	{
 		this.store = store;
 		index = store.getIndex(IndexType.MAPS);
-		keyManager = index.getXteaManager();
+		keyManager = new XteaKeyManager();
+		keyManager.loadKeys();
 	}
 
 	public void loadRegions() throws IOException
@@ -71,6 +73,7 @@ public class RegionLoader
 		int x = i >> 8;
 		int y = i & 0xFF;
 
+		Storage storage = store.getStorage();
 		Archive map = index.findArchiveByName("m" + x + "_" + y);
 		Archive land = index.findArchiveByName("l" + x + "_" + y);
 
@@ -81,12 +84,7 @@ public class RegionLoader
 			return null;
 		}
 
-		assert map.getFiles().size() == 1;
-		assert land.getFiles().size() == 1;
-
-		map.decompressAndLoad(null);
-
-		byte[] data = map.getFiles().get(0).getContents();
+		byte[] data = map.decompress(storage.loadArchive(map));
 
 		Region region = new Region(i);
 		region.loadTerrain(data);
@@ -96,9 +94,7 @@ public class RegionLoader
 		{
 			try
 			{
-				land.decompressAndLoad(keys);
-
-				data = land.getFiles().get(0).getContents();
+				data = land.decompress(storage.loadArchive(land), keys);
 				region.loadLocations(data);
 			}
 			catch (IOException ex)

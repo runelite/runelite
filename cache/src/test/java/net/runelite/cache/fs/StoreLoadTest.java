@@ -44,8 +44,6 @@ public class StoreLoadTest
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
 			store.load();
-
-			System.out.println(store);
 		}
 	}
 

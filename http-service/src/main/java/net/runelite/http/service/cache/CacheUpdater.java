@@ -96,7 +96,7 @@ public class CacheUpdater
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 
 			CacheClient client = new CacheClient(store, rsVersion,
-				(Archive archive) -> executor.submit(new CacheUploader(minioClient, minioBucket, archive)));
+				(Archive archive, byte[] data) -> executor.submit(new CacheUploader(minioClient, minioBucket, archive, data)));
 
 			client.connect();
 			HandshakeResponseType result = client.handshake().join();
@@ -111,6 +111,7 @@ public class CacheUpdater
 
 			if (!checkOutOfDate(indexes, entries))
 			{
+				logger.info("All up to date.");
 				return;
 			}
 

@@ -39,14 +39,15 @@ import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
-import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.definitions.loaders.OverlayLoader;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.definitions.loaders.UnderlayLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
@@ -367,12 +368,16 @@ public class MapImageDumper
 		logger.info("East most region:  {}", regionLoader.getHighestX().getBaseX());
 	}
 
-	private void loadUnderlays(Store store)
+	private void loadUnderlays(Store store) throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.UNDERLAY.getId());
 
-		for (FSFile file : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile file : files.getFiles())
 		{
 			UnderlayLoader loader = new UnderlayLoader();
 			UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
@@ -393,12 +398,16 @@ public class MapImageDumper
 		return null;
 	}
 
-	private void loadOverlays(Store store)
+	private void loadOverlays(Store store) throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.OVERLAY.getId());
 
-		for (FSFile file : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile file : files.getFiles())
 		{
 			OverlayLoader loader = new OverlayLoader();
 			OverlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
@@ -419,12 +428,16 @@ public class MapImageDumper
 		return null;
 	}
 
-	private void loadTextures(Store store)
+	private void loadTextures(Store store) throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.TEXTURES);
 		Archive archive = index.getArchive(0);
 
-		for (FSFile file : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile file : files.getFiles())
 		{
 			TextureLoader loader = new TextureLoader();
 			TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
@@ -446,19 +459,15 @@ public class MapImageDumper
 		return null;
 	}
 
-	private void loadSprites()
+	private void loadSprites() throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.SPRITES);
 		final int mapsceneHash = Djb2.hash("mapscene");
 
 		for (Archive a : index.getArchives())
 		{
-			List<FSFile> files = a.getFiles();
-
-			assert files.size() == 1;
-
-			FSFile file = files.get(0);
-			byte[] contents = file.getContents();
+			byte[] contents = a.decompress(storage.loadArchive(a));
 
 			SpriteLoader loader = new SpriteLoader();
 			SpriteDefinition[] sprites = loader.load(a.getArchiveId(), contents);
@@ -515,16 +524,12 @@ public class MapImageDumper
 		return color.getRGB();
 	}
 
-	private void loadObjects(Store store)
+	private void loadObjects(Store store) throws IOException
 	{
-		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.OBJECT.getId());
-
-		ObjectLoader loader = new ObjectLoader();
-
-		for (FSFile f : archive.getFiles())
+		ObjectManager manager = new ObjectManager(store);
+		manager.load();
+		for (ObjectDefinition def : manager.getObjects())
 		{
-			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
 			objects.put(def.getId(), def);
 		}
 	}

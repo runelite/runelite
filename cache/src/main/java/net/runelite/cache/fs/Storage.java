@@ -36,4 +36,8 @@ public interface Storage extends AutoCloseable
 	void load(Store store) throws IOException;
 
 	void save(Store store) throws IOException;
+
+	byte[] loadArchive(Archive archive) throws IOException;
+
+	void saveArchive(Archive archive, byte[] data) throws IOException;
 }

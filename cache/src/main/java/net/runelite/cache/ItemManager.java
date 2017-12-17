@@ -33,8 +33,10 @@ import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.definitions.exporters.ItemExporter;
 import net.runelite.cache.definitions.loaders.ItemLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
 
@@ -49,14 +51,18 @@ public class ItemManager
 		this.store = store;
 	}
 
-	public void load()
+	public void load() throws IOException
 	{
 		ItemLoader loader = new ItemLoader();
 
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.ITEM.getId());
 
-		for (FSFile f : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile f : files.getFiles())
 		{
 			ItemDefinition def = loader.load(f.getFileId(), f.getContents());
 			items.add(def);
@@ -75,7 +81,7 @@ public class ItemManager
 		for (ItemDefinition def : items)
 		{
 			ItemExporter exporter = new ItemExporter(def);
-			
+
 			File targ = new File(out, def.id + ".json");
 			exporter.exportTo(targ);
 		}

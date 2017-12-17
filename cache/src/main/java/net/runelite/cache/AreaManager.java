@@ -24,6 +24,7 @@
  */
 package net.runelite.cache;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,8 +32,10 @@ import java.util.Map;
 import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.loaders.AreaLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
 public class AreaManager
@@ -45,12 +48,16 @@ public class AreaManager
 		this.store = store;
 	}
 
-	public void load()
+	public void load() throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.AREA.getId());
 
-		for (FSFile file : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile file : files.getFiles())
 		{
 			AreaLoader loader = new AreaLoader();
 			AreaDefinition area = loader.load(file.getContents(), file.getFileId());

@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.fs.jagex.DiskStorage;
-import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,14 +47,6 @@ public final class Store implements Closeable
 	{
 		storage = new DiskStorage(folder);
 		storage.init(this);
-
-		Index maps = this.findIndex(IndexType.MAPS.getNumber());
-		if (maps != null)
-		{
-			XteaKeyManager mapKeys = new XteaKeyManager();
-			mapKeys.loadKeys();
-			maps.setXteaManager(mapKeys);
-		}
 	}
 
 	public Store(Storage storage) throws IOException
@@ -63,6 +54,11 @@ public final class Store implements Closeable
 		this.storage = storage;
 
 		storage.init(this);
+	}
+
+	public Storage getStorage()
+	{
+		return storage;
 	}
 
 	@Override
@@ -108,7 +104,7 @@ public final class Store implements Closeable
 			}
 		}
 
-		Index index = new Index(this, id);
+		Index index = new Index(id);
 		this.indexes.add(index);
 
 		return index;
@@ -118,18 +114,6 @@ public final class Store implements Closeable
 	{
 		assert indexes.contains(index);
 		indexes.remove(index);
-	}
-
-	/*
-	 * we rebuild data differently, so the CRCs aren't right.
-	 * rebuild them.
-	 */
-	public void rebuildCrc() throws IOException
-	{
-		for (Index i : indexes)
-		{
-			i.rebuildCrc();
-		}
 	}
 
 	public void load() throws IOException

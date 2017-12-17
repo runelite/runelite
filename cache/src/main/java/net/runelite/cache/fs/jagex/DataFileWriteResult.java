@@ -28,5 +28,4 @@ package net.runelite.cache.fs.jagex;
 public class DataFileWriteResult
 {
 	public int sector, compressedLength;
-	public int crc; // crc of compressed data
 }

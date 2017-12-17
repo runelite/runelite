@@ -24,19 +24,20 @@
  */
 package net.runelite.cache.fs.jagex;
 
+import com.google.common.primitives.Ints;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.ArchiveData;
-import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
+import net.runelite.cache.util.Crc32;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,13 +109,19 @@ public class DiskStorage implements Storage
 		}
 	}
 
+	public byte[] readIndex(int indexId) throws IOException
+	{
+		IndexEntry entry = index255.read(indexId);
+		byte[] indexData = data.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+		return indexData;
+	}
+
 	private void loadIndex(Index index) throws IOException
 	{
 		logger.trace("Loading index {}", index.getId());
 
-		IndexEntry entry = index255.read(index.getId());
-		byte[] indexData = data.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
-		DataFileReadResult res = DataFile.decompress(indexData, null);
+		byte[] indexData = readIndex(index.getId());
+		Container res = Container.decompress(indexData, null);
 		byte[] data = res.data;
 
 		IndexData id = new IndexData();
@@ -130,28 +137,18 @@ public class DiskStorage implements Storage
 			archive.setNameHash(ad.getNameHash());
 			archive.setCrc(ad.getCrc());
 			archive.setRevision(ad.getRevision());
+			archive.setFileData(ad.getFiles());
 
 			assert ad.getFiles().length > 0;
-
-			for (FileData fd : ad.getFiles())
-			{
-				FSFile file = new FSFile(fd.getId());
-				file.setNameHash(fd.getNameHash());
-				archive.addFile(file);
-			}
 		}
 
 		index.setCrc(res.crc);
 		index.setCompression(res.compression);
 		assert res.revision == -1;
-
-		for (Archive archive : new ArrayList<>(index.getArchives()))
-		{
-			loadArchive(archive);
-		}
 	}
 
-	private void loadArchive(Archive archive) throws IOException
+	@Override
+	public byte[] loadArchive(Archive archive) throws IOException
 	{
 		Index index = archive.getIndex();
 		IndexFile indexFile = getIndex(index.getId());
@@ -162,8 +159,7 @@ public class DiskStorage implements Storage
 		if (entry == null)
 		{
 			logger.debug("can't read archive " + archive.getArchiveId() + " from index " + index.getId());
-			index.getArchives().remove(archive); // is this correct?
-			return;
+			return null;
 		}
 
 		assert entry.getId() == archive.getArchiveId();
@@ -172,28 +168,12 @@ public class DiskStorage implements Storage
 			archive.getArchiveId(), index.getId(), entry.getSector(), entry.getLength());
 
 		byte[] archiveData = data.read(index.getId(), entry.getId(), entry.getSector(), entry.getLength());
-		archive.setData(archiveData);
-
-		if (index.getXteaManager() != null)
-		{
-			return; // can't decrypt this yet
-		}
-
-		archive.decompressAndLoad(null);
+		return archiveData;
 	}
 
 	@Override
 	public void save(Store store) throws IOException
 	{
-		logger.debug("Clearing data and indexes in preparation for store save");
-
-		data.clear();
-
-		for (IndexFile indexFile : indexFiles)
-		{
-			indexFile.clear();
-		}
-
 		logger.debug("Saving store");
 
 		for (Index i : store.getIndexes())
@@ -204,49 +184,46 @@ public class DiskStorage implements Storage
 
 	private void saveIndex(Index index) throws IOException
 	{
-		// This updates archive CRCs for writeIndexData
-		for (Archive archive : index.getArchives())
-		{
-			saveArchive(archive);
-		}
-
 		IndexData indexData = index.toIndexData();
 		byte[] data = indexData.writeIndexData();
 
-		byte[] compressedData = DataFile.compress(data, index.getCompression(), -1, null); // index data revision is always -1
-		DataFileWriteResult res = this.data.write(index255.getIndexFileId(), index.getId(), compressedData, index.getRevision());
+		Container container = new Container(index.getCompression(), -1); // index data revision is always -1
+		container.compress(data, null);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = this.data.write(index255.getIndexFileId(), index.getId(), compressedData);
 
 		index255.write(new IndexEntry(index255, index.getId(), res.sector, res.compressedLength));
 
-		index.setCrc(res.crc);
+		Crc32 crc = new Crc32();
+		crc.update(compressedData, 0, compressedData.length);
+		index.setCrc(crc.getHash());
 	}
 
-	private void saveArchive(Archive a) throws IOException
+	@Override
+	public void saveArchive(Archive a, byte[] archiveData) throws IOException
 	{
 		Index index = a.getIndex();
 		IndexFile indexFile = getIndex(index.getId());
 		assert indexFile.getIndexFileId() == index.getId();
 
-		int rev; // used for determining what part of compressedData to crc
-		byte[] compressedData;
-
-		if (a.getData() != null)
-		{
-			compressedData = a.getData(); // data was never decompressed or loaded
-			rev = -1; // assume that this data has no revision?
-		}
-		else
-		{
-			byte[] fileData = a.saveContents();
-			rev = a.getRevision();
-			compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
-		}
-
-		DataFileWriteResult res = data.write(index.getId(), a.getArchiveId(), compressedData, rev);
+		DataFileWriteResult res = data.write(index.getId(), a.getArchiveId(), archiveData);
 		indexFile.write(new IndexEntry(indexFile, a.getArchiveId(), res.sector, res.compressedLength));
 
-		logger.trace("Saved archive {}/{} at sector {}, compressed length {}", index.getId(), a.getArchiveId(), res.sector, res.compressedLength);
+		byte compression = archiveData[0];
+		int compressedSize = Ints.fromBytes(archiveData[1], archiveData[2],
+			archiveData[3], archiveData[4]);
 
-		a.setCrc(res.crc);
+		// don't crc the appended revision, if it is there
+		int length = 1 // compression type
+			+ 4 // compressed size
+			+ compressedSize
+			+ (compression != CompressionType.NONE ? 4 : 0);
+
+		Crc32 crc = new Crc32();
+		crc.update(archiveData, 0, length);
+		a.setCrc(crc.getHash());
+
+		logger.trace("Saved archive {}/{} at sector {}, compressed length {}",
+			index.getId(), a.getArchiveId(), res.sector, res.compressedLength);
 	}
 }

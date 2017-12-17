@@ -27,6 +27,7 @@ package net.runelite.cache.fs.jagex;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
+import net.runelite.cache.fs.Container;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,17 +44,17 @@ public class DataFileTest
 		File file = folder.newFile();
 		DataFile df = new DataFile(file);
 
-		byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.NONE, 0, null);
-		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+		Container container = new Container(CompressionType.NONE, 0);
+		container.compress("test".getBytes(), null);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(42, 3, compressedData);
 
 		compressedData = df.read(42, 3, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+		Container res2 = Container.decompress(compressedData, null);
 
 		byte[] buf = res2.data;
 		String str = new String(buf);
 		Assert.assertEquals("test", str);
-
-		Assert.assertEquals(res.crc, res2.crc);
 	}
 
 	@Test
@@ -69,11 +70,13 @@ public class DataFileTest
 
 		DataFile df = new DataFile(file);
 
-		byte[] compressedData = DataFile.compress(b, CompressionType.BZ2, 42, null);
-		DataFileWriteResult res = df.write(42, 0x1FFFF, compressedData, 42);
+		Container container = new Container(CompressionType.BZ2, 42);
+		container.compress(b, null);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(42, 0x1FFFF, compressedData);
 
 		compressedData = df.read(42, 0x1FFFF, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+		Container res2 = Container.decompress(compressedData, null);
 
 		byte[] buf = res2.data;
 		Assert.assertArrayEquals(b, buf);
@@ -84,11 +87,13 @@ public class DataFileTest
 	{
 		DataFile df = new DataFile(folder.newFile());
 
-		byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.GZ, 0, null);
-		DataFileWriteResult res = df.write(41, 4, compressedData, 0);
+		Container container = new Container(CompressionType.GZ, 0);
+		container.compress("test".getBytes(), null);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(41, 4, compressedData);
 
 		compressedData = df.read(41, 4, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+		Container res2 = Container.decompress(compressedData, null);
 
 		byte[] buf = res2.data;
 		String str = new String(buf);
@@ -100,34 +105,17 @@ public class DataFileTest
 	{
 		DataFile df = new DataFile(folder.newFile());
 
-		byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.BZ2, 5, null);
-		DataFileWriteResult res = df.write(41, 4, compressedData, 0);
+		Container container = new Container(CompressionType.BZ2, 5);
+		container.compress("test".getBytes(), null);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(41, 4, compressedData);
 
 		compressedData = df.read(41, 4, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+		Container res2 = Container.decompress(compressedData, null);
 
 		byte[] buf = res2.data;
 		String str = new String(buf);
 		Assert.assertEquals("test", str);
-	}
-
-	@Test
-	public void testCrc() throws IOException
-	{
-		File file = folder.newFile();
-		DataFile df = new DataFile(file);
-
-		byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.NONE, 42, null);
-		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
-
-		compressedData = df.read(42, 3, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, null);
-
-		byte[] buf = res2.data;
-		String str = new String(buf);
-		Assert.assertEquals("test", str);
-		Assert.assertEquals(res.crc, res2.crc);
-		Assert.assertEquals(42, res2.revision);
 	}
 
 	@Test
@@ -141,16 +129,17 @@ public class DataFileTest
 
 		DataFile df = new DataFile(file);
 
-		byte[] compressedData = DataFile.compress("testtesttesttest1".getBytes(), CompressionType.NONE, 42, keys);
-		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+		Container container = new Container(CompressionType.NONE, 42);
+		container.compress("testtesttesttest1".getBytes(), keys);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(42, 3, compressedData);
 
 		compressedData = df.read(42, 3, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, keys);
+		Container res2 = Container.decompress(compressedData, keys);
 
 		byte[] buf = res2.data;
 		String str = new String(buf);
 		Assert.assertEquals("testtesttesttest1", str);
-		Assert.assertEquals(res.crc, res2.crc);
 		Assert.assertEquals(42, res2.revision);
 	}
 
@@ -165,16 +154,17 @@ public class DataFileTest
 
 		DataFile df = new DataFile(file);
 
-		byte[] compressedData = DataFile.compress("testtesttesttest1".getBytes(), CompressionType.GZ, 42, keys);
-		DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+		Container container = new Container(CompressionType.GZ, 42);
+		container.compress("testtesttesttest1".getBytes(), keys);
+		byte[] compressedData = container.data;
+		DataFileWriteResult res = df.write(42, 3, compressedData);
 
 		compressedData = df.read(42, 3, res.sector, res.compressedLength);
-		DataFileReadResult res2 = DataFile.decompress(compressedData, keys);
+		Container res2 = Container.decompress(compressedData, keys);
 
 		byte[] buf = res2.data;
 		String str = new String(buf);
 		Assert.assertEquals("testtesttesttest1", str);
-		Assert.assertEquals(res.crc, res2.crc);
 		Assert.assertEquals(42, res2.revision);
 	}
 }

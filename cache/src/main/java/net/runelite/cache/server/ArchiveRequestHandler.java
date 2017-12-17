@@ -32,10 +32,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.io.IOException;
 import java.util.Arrays;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.fs.jagex.CompressionType;
-import net.runelite.cache.fs.jagex.DataFile;
+import net.runelite.cache.fs.jagex.DiskStorage;
 import net.runelite.cache.protocol.packets.ArchiveRequestPacket;
 import net.runelite.cache.protocol.packets.ArchiveResponsePacket;
 import org.slf4j.Logger;
@@ -88,12 +90,10 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 		}
 		else
 		{
-			Index i = store.findIndex(archiveId);
-			assert i != null;
-
-			byte[] indexData = i.toIndexData().writeIndexData();
-
-			compressed = compress(CompressionType.NONE, indexData);
+			// Requires disk storage. Use packed index data from
+			// store as its crc matches
+			DiskStorage storage = (DiskStorage) store.getStorage();
+			compressed = storage.readIndex(archiveId);
 		}
 
 		ArchiveResponsePacket response = new ArchiveResponsePacket();
@@ -114,33 +114,31 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 		Archive archive = i.getArchive(archiveId);
 		assert archive != null;
 
-		byte[] packed;
-		if (archive.getData() != null)
+		Storage storage = store.getStorage();
+		byte[] packed = storage.loadArchive(archive); // is compressed, includes length and type
+
+		if (packed == null)
 		{
-			packed = archive.getData(); // is compressed, includes length and type
-
-			byte compression = packed[0];
-			int compressedSize = Ints.fromBytes(packed[1], packed[2],
-				packed[3], packed[4]);
-
-			// size the client expects the data to be
-			int expectedSize = 1 // compression
-				+ 4 // compressed size
-				+ compressedSize
-				+ (compression != CompressionType.NONE ? 4 : 0);
-			if (packed.length != expectedSize)
-			{
-				// It may have the archive revision appended at the end.
-				// The data the client writes will have it, but the data fetched from
-				// the update server will never have it
-				assert packed.length - expectedSize == 2 : "packed length != expected size";
-				packed = Arrays.copyOf(packed, packed.length - 2);
-			}
+			logger.warn("Missing archive {}/{}", index, archiveId);
+			return; // is it possible to notify the client of an error with this?
 		}
-		else
+
+		byte compression = packed[0];
+		int compressedSize = Ints.fromBytes(packed[1], packed[2],
+			packed[3], packed[4]);
+
+		// size the client expects the data to be
+		int expectedSize = 1 // compression type
+			+ 4 // compressed size
+			+ compressedSize
+			+ (compression != CompressionType.NONE ? 4 : 0);
+		if (packed.length != expectedSize)
 		{
-			byte[] data = archive.saveContents();
-			packed = compress(archive.getCompression(), data);
+			// It may have the archive revision appended at the end.
+			// The data the client writes will have it, but the data fetched from
+			// the update server will never have it
+			assert packed.length - expectedSize == 2 : "packed length != expected size";
+			packed = Arrays.copyOf(packed, packed.length - 2);
 		}
 
 		ArchiveResponsePacket response = new ArchiveResponsePacket();
@@ -153,6 +151,8 @@ public class ArchiveRequestHandler extends SimpleChannelInboundHandler<ArchiveRe
 
 	private byte[] compress(int compression, byte[] data) throws IOException
 	{
-		return DataFile.compress(data, compression, -1, null);
+		Container container = new Container(compression, -1);
+		container.compress(data, null);
+		return container.data;
 	}
 }

@@ -31,13 +31,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.exporters.SpriteExporter;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
 public class SpriteManager
@@ -50,18 +49,14 @@ public class SpriteManager
 		this.store = store;
 	}
 
-	public void load()
+	public void load() throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.SPRITES);
 
 		for (Archive a : index.getArchives())
 		{
-			List<FSFile> files = a.getFiles();
-
-			assert files.size() == 1;
-
-			FSFile file = files.get(0);
-			byte[] contents = file.getContents();
+			byte[] contents = a.decompress(storage.loadArchive(a));
 
 			SpriteLoader loader = new SpriteLoader();
 			SpriteDefinition[] defs = loader.load(a.getArchiveId(), contents);

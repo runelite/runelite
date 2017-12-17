@@ -29,6 +29,7 @@ import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.jagex.CompressionType;
 import net.runelite.cache.fs.jagex.DataFile;
 import net.runelite.cache.protocol.decoders.ArchiveResponseDecoder;
@@ -45,7 +46,9 @@ public class ArchiveResponseEncoderTest
 		Random random = new Random(42L);
 		random.nextBytes(data);
 
-		byte[] compressedData = DataFile.compress(data, CompressionType.NONE, -1, null);
+		Container container =new Container(CompressionType.NONE, -1);
+		container.compress(data, null);
+		byte[] compressedData = container.data;//DataFile.compress(data, CompressionType.NONE, -1, null);
 
 		ArchiveResponsePacket archiveResponse = new ArchiveResponsePacket();
 		archiveResponse.setIndex(0);
@@ -67,7 +70,7 @@ public class ArchiveResponseEncoderTest
 		Assert.assertEquals(archiveResponse.getArchive(), response.getArchive());
 		Assert.assertArrayEquals(archiveResponse.getData(), response.getData());
 
-		byte[] decompressedData = DataFile.decompress(response.getData(), null).data;
+		byte[] decompressedData = Container.decompress(response.getData(), null).data;
 		Assert.assertArrayEquals(data, decompressedData);
 	}
 
