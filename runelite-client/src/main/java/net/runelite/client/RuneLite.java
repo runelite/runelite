@@ -88,9 +88,11 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
-	private final RuneliteProperties properties = new RuneliteProperties();
 	private Client client;
 	private ClientUI gui;
+
+	@Inject
+	private RuneliteProperties properties;
 
 	@Inject
 	private PluginManager pluginManager;
