@@ -29,6 +29,10 @@ import java.io.InputStream;
 import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 @Slf4j
 public class RuneliteProperties
 {
@@ -36,6 +40,7 @@ public class RuneliteProperties
 
 	private final Properties properties = new Properties();
 
+	@Inject
 	public RuneliteProperties()
 	{
 		InputStream in = getClass().getResourceAsStream("runelite.properties");
