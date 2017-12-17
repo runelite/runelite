@@ -44,5 +44,6 @@ public interface RSPlayer extends RSActor, Player
 	int getTotalLevel();
 
 	@Import("team")
+	@Override
 	int getTeam();
 }

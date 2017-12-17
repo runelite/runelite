@@ -34,4 +34,6 @@ public interface Player extends Actor
 	PlayerComposition getPlayerComposition();
 
 	Polygon[] getPolygons();
+
+	int getTeam();
 }
