@@ -28,11 +28,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -261,11 +259,9 @@ public class OverlayRenderer
 
 	private Dimension safeRender(RenderableEntity entity, Graphics2D graphics, Point point)
 	{
-		final Font font = graphics.getFont();
-		final AffineTransform transform = graphics.getTransform();
-		final Dimension dimension = entity.render(graphics, point);
-		graphics.setFont(font);
-		graphics.setTransform(transform);
+		final Graphics2D subGraphics = (Graphics2D) graphics.create();
+		final Dimension dimension = entity.render(subGraphics, point);
+		subGraphics.dispose();
 		return dimension;
 	}
 
