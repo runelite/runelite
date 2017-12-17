@@ -24,14 +24,13 @@
  */
 package net.runelite.http.service.cache;
 
-import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.index.FileData;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.FileEntry;
@@ -88,13 +87,17 @@ public class CacheStorage implements Storage
 				archive.setNameHash(archiveEntry.getNameHash());
 				archive.setCrc(archiveEntry.getCrc());
 				archive.setRevision(archiveEntry.getRevision());
+				archive.setHash(archiveEntry.getHash());
 
 				List<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry);
+				FileData[] fileData = new FileData[files.size()];
+				archive.setFileData(fileData);
+				int idx = 0;
 				for (FileEntry fileEntry : files)
 				{
-					FSFile file = new FSFile(fileEntry.getFileId());
+					FileData file = fileData[idx++] = new FileData();
+					file.setId(fileEntry.getFileId());
 					file.setNameHash(fileEntry.getNameHash());
-					archive.addFile(file);
 				}
 			}
 		}
@@ -115,18 +118,30 @@ public class CacheStorage implements Storage
 					archive.getNameHash(), archive.getCrc(), archive.getRevision());
 				if (archiveEntry == null)
 				{
-					byte[] hash = Hashing.sha256().hashBytes(archive.getData()).asBytes();
+					byte[] hash = archive.getHash();
 					archiveEntry = cacheDao.createArchive(con, entry, archive.getArchiveId(),
 						archive.getNameHash(), archive.getCrc(), archive.getRevision(), hash);
 
-					for (FSFile file : archive.getFiles())
+					for (FileData file : archive.getFileData())
 					{
-						cacheDao.associateFileToArchive(con, archiveEntry, file.getFileId(), file.getNameHash());
+						cacheDao.associateFileToArchive(con, archiveEntry, file.getId(), file.getNameHash());
 					}
 				}
 				cacheDao.associateArchiveToIndex(con, archiveEntry, entry);
 			}
 		}
+	}
+
+	@Override
+	public byte[] loadArchive(Archive archive) throws IOException
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void saveArchive(Archive archive, byte[] data) throws IOException
+	{
+		throw new UnsupportedOperationException();
 	}
 
 }

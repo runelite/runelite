@@ -29,5 +29,5 @@ import net.runelite.cache.fs.Archive;
 @FunctionalInterface
 public interface DownloadWatcher
 {
-	void downloadComplete(Archive archive);
+	void downloadComplete(Archive archive, byte[] data);
 }

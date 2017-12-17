@@ -24,13 +24,16 @@
  */
 package net.runelite.cache;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
 public class TextureManager
@@ -43,14 +46,18 @@ public class TextureManager
 		this.store = store;
 	}
 
-	public void load()
+	public void load() throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.TEXTURES);
 		Archive archive = index.getArchive(0);
 
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
 		TextureLoader loader = new TextureLoader();
 
-		for (FSFile file : archive.getFiles())
+		for (FSFile file : files.getFiles())
 		{
 			TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
 			textures.add(texture);

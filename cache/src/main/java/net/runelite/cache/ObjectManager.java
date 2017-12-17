@@ -33,8 +33,10 @@ import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.exporters.ObjectExporter;
 import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
 
@@ -53,10 +55,14 @@ public class ObjectManager
 	{
 		ObjectLoader loader = new ObjectLoader();
 
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.OBJECT.getId());
 
-		for (FSFile f : archive.getFiles())
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile f : files.getFiles())
 		{
 			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
 			objects.add(def);

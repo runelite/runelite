@@ -32,8 +32,8 @@ import net.runelite.cache.StoreLocation;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.script.Instructions;
 import org.junit.Rule;
@@ -61,17 +61,20 @@ public class DisassemblerTest
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CLIENTSCRIPT);
 			ScriptLoader loader = new ScriptLoader();
 
 			for (Archive archive : index.getArchives())
 			{
-				assert archive.getFiles().size() == 1;
+				byte[] contents = archive.decompress(storage.loadArchive(archive));
 
-				FSFile file = archive.getFiles().get(0);
-				byte[] contents = file.getContents();
+				if (contents == null)
+				{
+					continue;
+				}
 
-				ScriptDefinition script = loader.load(file.getFileId(), contents);
+				ScriptDefinition script = loader.load(0, contents);
 
 				File outFile = new File(outDir, archive.getArchiveId() + ".rs2asm");
 

@@ -25,8 +25,7 @@
 package net.runelite.cache.client;
 
 import java.io.IOException;
-import net.runelite.cache.fs.jagex.DataFile;
-import net.runelite.cache.fs.jagex.DataFileReadResult;
+import net.runelite.cache.fs.Container;
 
 public class FileResult
 {
@@ -63,7 +62,7 @@ public class FileResult
 
 	public void decompress(int[] keys) throws IOException
 	{
-		DataFileReadResult res = DataFile.decompress(compressedData, keys);
+		Container res = Container.decompress(compressedData, keys);
 
 		contents = res.data;
 		revision = res.revision;

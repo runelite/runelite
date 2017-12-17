@@ -27,13 +27,12 @@ package net.runelite.cache;
 
 
 import com.google.common.io.Files;
-import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,8 +43,6 @@ import org.slf4j.LoggerFactory;
 public class ModelDumperTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(ModelDumperTest.class);
-
-	private Gson gson = new Gson();
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
@@ -60,20 +57,17 @@ public class ModelDumperTest
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.MODELS);
 
 			for (Archive archive : index.getArchives())
 			{
-				assert archive.getFiles().size() == 1;
-
-				FSFile file = archive.getFiles().get(0);
-				byte[] contents = file.getContents();
+				byte[] contents = archive.decompress(storage.loadArchive(archive));
 
 				ModelLoader loader = new ModelLoader();
 				loader.load(archive.getArchiveId(), contents);
 
 				Files.write(contents, new File(modelDir, archive.getArchiveId() + ".model"));
-				//Files.write(gson.toJson(loader), new File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

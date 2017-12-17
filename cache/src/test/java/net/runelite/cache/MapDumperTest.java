@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.util.XteaKeyManager;
@@ -59,13 +60,15 @@ public class MapDumperTest
 	{
 		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
+		XteaKeyManager keyManager = new XteaKeyManager();
+		keyManager.loadKeys();
 
 		try (Store store = new Store(base))
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.MAPS);
-			XteaKeyManager keyManager = index.getXteaManager();
 
 			for (int i = 0; i < MAX_REGIONS; i++)
 			{
@@ -84,14 +87,7 @@ public class MapDumperTest
 					continue;
 				}
 
-				assert map.getFiles().size() == 1;
-				assert land.getFiles().size() == 1;
-
-				// maps aren't encrypted, but we don't load archive data of any archive in
-				// the maps index, so load it
-				map.decompressAndLoad(null);
-
-				byte[] data = map.getFiles().get(0).getContents();
+				byte[] data = map.decompress(storage.loadArchive(map));
 
 				Files.write(data, new File(outDir, "m" + x + "_" + y + ".dat"));
 
@@ -99,7 +95,7 @@ public class MapDumperTest
 				{
 					try
 					{
-						land.decompressAndLoad(keys);
+						data = land.decompress(storage.loadArchive(land), keys);
 					}
 					catch (IOException ex)
 					{
@@ -109,8 +105,6 @@ public class MapDumperTest
 
 					logger.info("Decrypted region {} coords {},{}", i, x, y);
 
-					data = land.getFiles().get(0).getContents();
-
 					Files.write(data, new File(outDir, "l" + x + "_" + y + ".dat"));
 				}
 			}
@@ -119,8 +113,10 @@ public class MapDumperTest
 
 	private void loadRegions(Store store) throws IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.MAPS);
-		XteaKeyManager keyManager = index.getXteaManager();
+		XteaKeyManager keyManager = new XteaKeyManager();
+		keyManager.loadKeys();
 
 		for (int i = 0; i < MAX_REGIONS; ++i)
 		{
@@ -137,12 +133,7 @@ public class MapDumperTest
 				continue;
 			}
 
-			assert map.getFiles().size() == 1;
-			assert land.getFiles().size() == 1;
-
-			map.decompressAndLoad(null);
-
-			byte[] data = map.getFiles().get(0).getContents();
+			byte[] data = map.decompress(storage.loadArchive(map));
 
 			Region region = new Region(i);
 			region.loadTerrain(data);
@@ -152,14 +143,13 @@ public class MapDumperTest
 			{
 				try
 				{
-					land.decompressAndLoad(keys);
+					data = land.decompress(storage.loadArchive(land), keys);
 				}
 				catch (IOException ex)
 				{
 					continue;
 				}
 
-				data = land.getFiles().get(0).getContents();
 				region.loadLocations(data);
 			}
 

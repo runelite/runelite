@@ -33,8 +33,8 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.FramemapDefinition;
 import net.runelite.cache.definitions.loaders.FramemapLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
@@ -63,14 +63,16 @@ public class FramemapDumper
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.FRAMEMAPS);
+
 			for (Archive archive : index.getArchives())
 			{
-				assert archive.getFiles().size() == 1;
-				FSFile file = archive.getFiles().get(0);
+				byte[] archiveData = storage.loadArchive(archive);
+				byte[] contents = archive.decompress(archiveData);
 
 				FramemapLoader loader = new FramemapLoader();
-				FramemapDefinition framemap = loader.load(file.getFileId(), file.getContents());
+				FramemapDefinition framemap = loader.load(0, contents);
 
 				Files.write(gson.toJson(framemap), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;

@@ -24,20 +24,13 @@
  */
 package net.runelite.cache.fs;
 
-import net.runelite.cache.fs.jagex.DataFile;
-import net.runelite.cache.fs.jagex.CompressionType;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.index.ArchiveData;
 import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
-import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.Djb2;
-import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,10 +38,7 @@ public class Index
 {
 	private static final Logger logger = LoggerFactory.getLogger(Index.class);
 
-	private final Store store;
 	private final int id;
-
-	private XteaKeyManager xteaManager;
 
 	private int protocol = 7;
 	private boolean named = true;
@@ -58,9 +48,8 @@ public class Index
 
 	private final List<Archive> archives = new ArrayList<>();
 
-	public Index(Store store, int id)
+	public Index(int id)
 	{
-		this.store = store;
 		this.id = id;
 	}
 
@@ -99,16 +88,6 @@ public class Index
 			return false;
 		}
 		return true;
-	}
-
-	public XteaKeyManager getXteaManager()
-	{
-		return xteaManager;
-	}
-
-	public void setXteaManager(XteaKeyManager xteaManager)
-	{
-		this.xteaManager = xteaManager;
 	}
 
 	public int getId()
@@ -203,48 +182,6 @@ public class Index
 		return null;
 	}
 
-	public void rebuildCrc() throws IOException
-	{
-		for (Archive a : archives)
-		{
-			int rev; // used for determining what part of compressedData to crc
-			byte[] compressedData;
-
-			if (a.getData() != null)
-			{
-				compressedData = a.getData(); // data was never decompressed or loaded
-				rev = -1; // assume that this data has no revision?
-			}
-			else
-			{
-				byte[] fileData = a.saveContents();
-				rev = a.getRevision();
-				compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
-			}
-
-			int length = rev != -1 ? compressedData.length - 2 : compressedData.length;
-			Crc32 crc32 = new Crc32();
-			crc32.update(compressedData, 0, length);
-
-			int crc = crc32.getHash();
-
-			a.setCrc(crc);
-		}
-
-		Crc32 crc = new Crc32();
-		byte[] indexData = toIndexData().writeIndexData();
-
-		ByteBuf b = Unpooled.buffer(5, 5);
-		b.writeByte((byte) CompressionType.NONE);
-		b.writeInt(indexData.length);
-
-		crc.update(b.array(), 0, 5); // crc includes compression type and length
-		crc.update(indexData, 0, indexData.length);
-
-		int hash = crc.getHash();
-		this.setCrc(hash);
-	}
-
 	public IndexData toIndexData()
 	{
 		IndexData data = new IndexData();
@@ -264,16 +201,8 @@ public class Index
 			ad.setCrc(archive.getCrc());
 			ad.setRevision(archive.getRevision());
 
-			FileData[] files = new FileData[archive.getFiles().size()];
+			FileData[] files = archive.getFileData();
 			ad.setFiles(files);
-
-			int idx2 = 0;
-			for (FSFile file : archive.getFiles())
-			{
-				FileData fd = files[idx2++] = new FileData();
-				fd.setId(file.getFileId());
-				fd.setNameHash(file.getNameHash());
-			}
 		}
 		return data;
 	}

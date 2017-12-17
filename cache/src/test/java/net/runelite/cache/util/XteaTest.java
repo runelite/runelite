@@ -24,18 +24,13 @@
  */
 package net.runelite.cache.util;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 public class XteaTest
 {
 	@Test
-	public void test() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException
+	public void test()
 	{
 		byte[] data = "testtesttest1".getBytes();
 

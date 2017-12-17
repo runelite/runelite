@@ -24,11 +24,8 @@
  */
 package net.runelite.cache.fs;
 
-import net.runelite.cache.fs.jagex.DataFile;
-import net.runelite.cache.fs.jagex.DataFileReadResult;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import net.runelite.cache.index.FileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,15 +35,13 @@ public class Archive
 
 	private final Index index; // member of this index
 
-	private byte[] data; // raw data from the datafile, compressed/encrypted
-
 	private final int archiveId;
 	private int nameHash;
 	private int crc;
 	private int revision;
 	private int compression;
-
-	private final ArchiveFiles files = new ArchiveFiles();
+	private FileData[] fileData;
+	private byte[] hash; // used by webservice, sha256 hash of content
 
 	public Archive(Index index, int id)
 	{
@@ -61,7 +56,6 @@ public class Archive
 		hash = 47 * hash + this.archiveId;
 		hash = 47 * hash + this.nameHash;
 		hash = 47 * hash + this.revision;
-		hash = 47 * hash + Objects.hashCode(this.files);
 		return hash;
 	}
 
@@ -89,10 +83,6 @@ public class Archive
 		{
 			return false;
 		}
-		if (!Objects.equals(this.files, other.files))
-		{
-			return false;
-		}
 		return true;
 	}
 
@@ -101,68 +91,70 @@ public class Archive
 		return index;
 	}
 
-	public byte[] getData()
+	public byte[] decompress(byte[] data) throws IOException
 	{
-		return data;
+		return decompress(data, null);
 	}
 
-	public void setData(byte[] data)
+	public byte[] decompress(byte[] data, int[] keys) throws IOException
 	{
-		this.data = data;
-	}
+		if (data == null)
+		{
+			return null;
+		}
 
-	public FSFile addFile(FSFile file)
-	{
-		this.files.addFile(file);
-		return file;
-	}
+		byte[] encryptedData = data;
 
-	public FSFile findFile(int id)
-	{
-		return this.files.findFile(id);
-	}
-
-	public void decompressAndLoad(int[] keys) throws IOException
-	{
-		byte[] encryptedData = this.getData();
-
-		DataFileReadResult res = DataFile.decompress(encryptedData, keys);
-		if (res == null)
+		Container container = Container.decompress(encryptedData, keys);
+		if (container == null)
 		{
 			logger.warn("Unable to decrypt archive {}", this);
-			return;
+			return null;
 		}
 
-		byte[] decompressedData = res.data;
+		byte[] decompressedData = container.data;
 
-		if (this.crc != res.crc)
+		if (this.crc != container.crc)
 		{
 			logger.warn("crc mismatch for archive {}/{}", index.getId(), this.getArchiveId());
-			this.setCrc(res.crc);
+			throw new IOException("CRC mismatch for " + index.getId() + "/" + this.getArchiveId());
 		}
 
-		if (res.revision != -1 && this.getRevision() != res.revision)
+		if (container.revision != -1 && this.getRevision() != container.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
 			logger.warn("revision mismatch for archive {}/{}, expected {} was {}",
 				index.getId(), this.getArchiveId(),
-				this.getRevision(), res.revision);
+				this.getRevision(), container.revision);
 			// I've seen this happen with vanilla caches where the
 			// revision in the index data differs from the revision
 			// stored for the archive data on disk... I assume this
 			// is more correct
-			this.setRevision(res.revision);
+			this.setRevision(container.revision);
 		}
 
-		setCompression(res.compression);
-
-		files.loadContents(decompressedData);
-		this.setData(null); // now that we've loaded it, clean it so it doesn't get written back
+		setCompression(container.compression);
+		return decompressedData;
 	}
 
-	public byte[] saveContents()
+	public ArchiveFiles getFiles(byte[] data) throws IOException
 	{
-		return files.saveContents();
+		return getFiles(data, null);
+	}
+
+	public ArchiveFiles getFiles(byte[] data, int[] keys) throws IOException
+	{
+		byte[] decompressedData = decompress(data, keys);
+
+		ArchiveFiles files = new ArchiveFiles();
+		for (FileData fileEntry : fileData)
+		{
+			FSFile file = new FSFile(fileEntry.getId());
+			file.setNameHash(fileEntry.getNameHash());
+			files.addFile(file);
+		}
+		files.loadContents(decompressedData);
+		return files;
 	}
 
 	public int getArchiveId()
@@ -210,13 +202,23 @@ public class Archive
 		this.compression = compression;
 	}
 
-	public List<FSFile> getFiles()
+	public FileData[] getFileData()
 	{
-		return files.getFiles();
+		return fileData;
 	}
 
-	public void clearFiles()
+	public void setFileData(FileData[] fileData)
 	{
-		files.clear();
+		this.fileData = fileData;
+	}
+
+	public byte[] getHash()
+	{
+		return hash;
+	}
+
+	public void setHash(byte[] hash)
+	{
+		this.hash = hash;
 	}
 }

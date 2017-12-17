@@ -24,15 +24,18 @@
  */
 package net.runelite.cache.server;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import org.junit.Assert;
+import net.runelite.cache.index.FileData;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,7 +57,6 @@ public class CacheServerTest
 			CacheServer server = new CacheServer(store, REVISION))
 		{
 			store.load();
-			store.rebuildCrc();
 
 			server.start();
 
@@ -75,7 +77,7 @@ public class CacheServerTest
 		{
 			addInitialFilesToStore(store);
 
-			store.rebuildCrc();
+			store.save();
 
 			server.start();
 
@@ -88,22 +90,36 @@ public class CacheServerTest
 
 				Index index = store2.findIndex(0);
 				Archive archive = index.getArchive(0);
-				archive.decompressAndLoad(null); // cache client doesn't decompress archive
 
-				FSFile file = archive.getFiles().get(0);
-				Assert.assertArrayEquals("test".getBytes(), file.getContents());
+				FileData[] files = archive.getFileData();
+				FileData file = files[0];
+				assertEquals(7, file.getNameHash());
+
+				Storage storage = store2.getStorage();
+				byte[] data = storage.loadArchive(archive);
+				data = archive.decompress(data);
+				assertArrayEquals("test".getBytes(), data);
+				assertEquals(store.getIndexes().get(0).getArchive(0).getCrc(), archive.getCrc());
 			}
 		}
 	}
 
-	private void addInitialFilesToStore(Store store) throws FileNotFoundException
+	private void addInitialFilesToStore(Store store) throws FileNotFoundException, IOException
 	{
+		Storage storage = store.getStorage();
 		Index index = store.addIndex(0);
+
 		Archive archive = index.addArchive(0);
-		FSFile file = new FSFile(0);
+		FileData[] files = new FileData[1];
+		archive.setFileData(files);
+		FileData file = files[0] = new FileData();
 		file.setNameHash(7);
-		file.setContents("test".getBytes());
-		archive.addFile(file);
+		byte[] data = "test".getBytes();
+
+		Container container = new Container(archive.getCompression(), -1);
+		container.compress(data, null);
+		byte[] compressedData = container.data;
+		storage.saveArchive(archive, compressedData);
 	}
 
 }

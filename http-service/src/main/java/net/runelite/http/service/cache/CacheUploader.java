@@ -50,20 +50,23 @@ public class CacheUploader implements Runnable
 	private final MinioClient minioClient;
 	private final String minioBucket;
 	private final Archive archive;
+	private final byte[] data;
 
-	public CacheUploader(MinioClient minioClient, String minioBucket, Archive archive)
+	public CacheUploader(MinioClient minioClient, String minioBucket, Archive archive, byte[] data)
 	{
 		this.minioClient = minioClient;
 		this.minioBucket = minioBucket;
 		this.archive = archive;
+		this.data = data;
 	}
 
 	@Override
 	public void run()
 	{
-		byte[] data = archive.getData();
 		byte[] hash = Hashing.sha256().hashBytes(data).asBytes();
 		String hashStr = BaseEncoding.base16().encode(hash);
+
+		archive.setHash(hash);
 
 		String path = new StringBuilder()
 			.append(hashStr.substring(0, 2))

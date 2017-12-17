@@ -22,15 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,11 +54,12 @@ public class TitleDumper
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.BINARY);
-			Archive a = index.findArchiveByName("title.jpg");
-			FSFile file = a.getFiles().get(0);
+			Archive archive = index.findArchiveByName("title.jpg");
+			byte[] contents = archive.decompress(storage.loadArchive(archive));
 
-			Files.write(outFile.toPath(), file.getContents());
+			Files.write(outFile.toPath(), contents);
 		}
 
 		logger.info("Dumped to {}", outFile);

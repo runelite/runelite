@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.cache.IndexType;
-import net.runelite.cache.fs.jagex.DataFile;
+import net.runelite.cache.fs.Container;
 import net.runelite.cache.util.Djb2;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
@@ -226,7 +226,7 @@ public class XteaService
 
 		try
 		{
-			DataFile.decompress(data, keys);
+			Container.decompress(data, keys);
 			return true;
 		}
 		catch (IOException ex)

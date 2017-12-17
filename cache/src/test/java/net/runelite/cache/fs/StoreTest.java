@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import net.runelite.cache.StoreLocation;
+import net.runelite.cache.index.FileData;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,10 +48,10 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
-			FSFile file = new FSFile(0);
-			archive.addFile(file);
-			file.setNameHash(7);
-			file.setContents("test".getBytes());
+			archive.setFileData(new FileData[1]);
+			FileData fileData = archive.getFileData()[0] = new FileData();
+			fileData.setId(42);
+			fileData.setNameHash(7);
 
 			store.save();
 
@@ -74,15 +75,14 @@ public class StoreTest
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
 			archive.setNameHash(random.nextInt());
+			archive.setFileData(new FileData[NUMBER_OF_FILES]);
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = new FSFile(i);
+				FileData[] fileData = archive.getFileData();
+				FileData file = fileData[i] = new FileData();
+				file.setId(i);
 				file.setNameHash(random.nextInt());
-				archive.addFile(file);
-				byte[] data = new byte[random.nextInt(1024)];
-				random.nextBytes(data);
-				file.setContents(data);
 			}
 
 			store.save();
@@ -109,39 +109,33 @@ public class StoreTest
 
 			Archive archive = index.addArchive(0);
 			archive.setNameHash(random.nextInt(Integer.MAX_VALUE));
+			archive.setFileData(new FileData[NUMBER_OF_FILES]);
 
 			Archive archive2 = index.addArchive(1);
+			archive2.setFileData(new FileData[NUMBER_OF_FILES]);
 
 			Archive archive3 = index2.addArchive(0);
+			archive3.setFileData(new FileData[NUMBER_OF_FILES]);
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = new FSFile(i);
+				FileData[] fileData = archive.getFileData();
+				FileData file = fileData[i] = new FileData();
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
-				archive.addFile(file);
-				byte[] data = new byte[random.nextInt(1024)];
-				random.nextBytes(data);
-				file.setContents(data);
 			}
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = new FSFile(i);
+				FileData[] fileData = archive2.getFileData();
+				FileData file = fileData[i] = new FileData();
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
-				archive2.addFile(file);
-				byte[] data = new byte[random.nextInt(1024)];
-				random.nextBytes(data);
-				file.setContents(data);
 			}
 
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
-				FSFile file = new FSFile(i);
+				FileData[] fileData = archive3.getFileData();
+				FileData file = fileData[i] = new FileData();
 				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
-				archive3.addFile(file);
-				byte[] data = new byte[random.nextInt(1024)];
-				random.nextBytes(data);
-				file.setContents(data);
 			}
 
 			store.save();

@@ -44,11 +44,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.ArchiveData;
-import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
 import net.runelite.cache.protocol.decoders.HandshakeResponseDecoder;
 import net.runelite.cache.protocol.encoders.ArchiveRequestEncoder;
@@ -275,7 +274,7 @@ public class CacheClient implements AutoCloseable
 					&& existing.getCrc() == ad.getCrc()
 					&& existing.getNameHash() == ad.getNameHash())
 				{
-					logger.info("Archive {}/{} in index {} is up to date",
+					logger.debug("Archive {}/{} in index {} is up to date",
 						ad.getId(), indexData.getArchives().length, index.getId());
 					continue;
 				}
@@ -310,13 +309,7 @@ public class CacheClient implements AutoCloseable
 				archive.setNameHash(ad.getNameHash());
 
 				// Add files
-				archive.clearFiles();
-				for (FileData fd : ad.getFiles())
-				{
-					FSFile file = new FSFile(fd.getId());
-					file.setNameHash(fd.getNameHash());
-					archive.addFile(file);
-				}
+				archive.setFileData(ad.getFiles());
 
 				CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
 				future.handle((fr, ex) ->
@@ -332,13 +325,24 @@ public class CacheClient implements AutoCloseable
 						logger.warn("crc mismatch on downloaded archive {}/{}: {} != {}",
 							archive.getIndex().getId(), archive.getArchiveId(),
 							hash, archive.getCrc());
+						throw new RuntimeException("crc mismatch");
 					}
-
-					archive.setData(data);
 
 					if (watcher != null)
 					{
-						watcher.downloadComplete(archive);
+						watcher.downloadComplete(archive, data);
+					}
+					else
+					{
+						try
+						{
+							Storage storage = store.getStorage();
+							storage.saveArchive(archive, data);
+						}
+						catch (IOException ex1)
+						{
+							logger.warn("unable to save archive data", ex1);
+						}
 					}
 					return null;
 				});

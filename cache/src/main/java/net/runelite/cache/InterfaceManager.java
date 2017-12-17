@@ -33,8 +33,10 @@ import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.definitions.exporters.InterfaceExporter;
 import net.runelite.cache.definitions.loaders.InterfaceLoader;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Namer;
 
@@ -49,17 +51,20 @@ public class InterfaceManager
 		this.store = store;
 	}
 
-	public void load()
+	public void load() throws IOException
 	{
 		InterfaceLoader loader = new InterfaceLoader();
 
+		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.INTERFACES);
 
 		for (Archive archive : index.getArchives())
 		{
 			int archiveId = archive.getArchiveId();
+			byte[] archiveData = storage.loadArchive(archive);
+			ArchiveFiles files = archive.getFiles(archiveData);
 
-			for (FSFile file : archive.getFiles())
+			for (FSFile file : files.getFiles())
 			{
 				int fileId = file.getFileId();
 

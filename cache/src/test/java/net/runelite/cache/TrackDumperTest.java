@@ -33,8 +33,8 @@ import javax.sound.midi.Sequencer;
 import net.runelite.cache.definitions.TrackDefinition;
 import net.runelite.cache.definitions.loaders.TrackLoader;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Djb2Manager;
 import org.junit.Ignore;
@@ -66,18 +66,19 @@ public class TrackDumperTest
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.TRACK1);
 			Index index2 = store.getIndex(IndexType.TRACK2);
 
 			for (Archive archive : index.getArchives())
 			{
-				dumpTrackArchive(dumpDir1, archive);
+				dumpTrackArchive(dumpDir1, storage, archive);
 				++idx1;
 			}
 
 			for (Archive archive : index2.getArchives())
 			{
-				dumpTrackArchive(dumpDir2, archive);
+				dumpTrackArchive(dumpDir2, storage, archive);
 				++idx2;
 			}
 		}
@@ -85,14 +86,17 @@ public class TrackDumperTest
 		logger.info("Dumped {} sound tracks ({} idx1, {} idx2) to {} and {}", idx1 + idx2, idx1, idx2, dumpDir1, dumpDir2);
 	}
 
-	private void dumpTrackArchive(File dumpDir, Archive archive) throws IOException
+	private void dumpTrackArchive(File dumpDir, Storage storage, Archive archive) throws IOException
 	{
-		assert archive.getFiles().size() == 1;
+		byte[] contents = archive.decompress(storage.loadArchive(archive));
 
-		FSFile file = archive.getFiles().get(0);
+		if (contents == null)
+		{
+			return;
+		}
 
 		TrackLoader loader = new TrackLoader();
-		TrackDefinition def = loader.load(file.getContents());
+		TrackDefinition def = loader.load(contents);
 
 		String name;
 		if (archive.getNameHash() != 0)

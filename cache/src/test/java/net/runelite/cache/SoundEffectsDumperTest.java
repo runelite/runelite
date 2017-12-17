@@ -33,8 +33,8 @@ import java.nio.charset.Charset;
 import net.runelite.cache.definitions.loaders.sound.SoundEffectLoader;
 import net.runelite.cache.definitions.sound.SoundEffectDefinition;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,16 +61,15 @@ public class SoundEffectsDumperTest
 		{
 			store.load();
 
+			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.SOUNDEFFECTS);
 
 			for (Archive archive : index.getArchives())
 			{
-				assert archive.getFiles().size() == 1;
-
-				FSFile file = archive.getFiles().get(0);
+				byte[] contents = archive.decompress(storage.loadArchive(archive));
 
 				SoundEffectLoader soundEffectLoader = new SoundEffectLoader();
-				SoundEffectDefinition soundEffect = soundEffectLoader.load(file.getContents());
+				SoundEffectDefinition soundEffect = soundEffectLoader.load(contents);
 
 				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
 				++count;
