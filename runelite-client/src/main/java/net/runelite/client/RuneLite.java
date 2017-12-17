@@ -50,6 +50,7 @@ import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
@@ -133,6 +134,12 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		// Force heavy-weight popups/tooltips.
+		// Prevents them from being obscured by the game applet.
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		// Do not render shadows under popups/tooltips.
+		// Fixes black boxes under popups that are above the game applet.
+		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
