@@ -134,10 +134,14 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
+		// Force heavy-weight popups/tooltips.
+		// Prevents them from being obscured by the game applet.
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		// Do not render shadows under popups/tooltips.
+		// Fixes black boxes under popups that are above the game applet.
+		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
 		System.setProperty("sun.awt.noerasebackground", "true");
 
 		OptionParser parser = new OptionParser();
