@@ -44,8 +44,8 @@ public class SpecOrbOverlay extends Overlay
 {
 	private static final int RECHARGE_TIME_TICKS = 51;
 
-	private static final int ORB_X_OFFSET = 60;
-	private static final int ORB_Y_OFFSET = 123;
+	private static final int ORB_X_OFFSET = 33;
+	private static final int ORB_Y_OFFSET = 25;
 	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
 	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
 
@@ -72,19 +72,60 @@ public class SpecOrbOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_XP_ORB);
-		if (xpOrb == null)
+		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
+		if (prayerOrb == null)
 		{
 			return null;
+		}
+
+		Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB);
+		if (runOrb == null)
+		{
+			return null;
+		}
+
+		if (client.isResized())
+		{
+			if (prayerOrb.getRelativeY() != 73)
+			{
+				prayerOrb.setRelativeY(73);
+			}
+
+			if (runOrb.getRelativeX() != 12)
+			{
+				runOrb.setRelativeX(12);
+			}
+
+			if (runOrb.getRelativeY() != 108)
+			{
+				runOrb.setRelativeY(108);
+			}
+		}
+		else
+		{
+			if (prayerOrb.getRelativeY() != 71)
+			{
+				prayerOrb.setRelativeY(71);
+			}
+
+			if (runOrb.getRelativeX() != 12)
+			{
+				runOrb.setRelativeX(12);
+			}
+
+			if (runOrb.getRelativeY() != 103)
+			{
+				runOrb.setRelativeY(103);
+			}
 		}
 
 		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
 
 		boolean specialAttackEnabled = client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 1;
 
-		// draw relative to the xp orb
-		Point xpOrbPoint = xpOrb.getCanvasLocation();
-		Point specOrbPoint = new Point(xpOrbPoint.getX() + ORB_X_OFFSET, xpOrbPoint.getY() + ORB_Y_OFFSET);
+		// draw relative to run orb
+		Point runOrbPoint = runOrb.getCanvasLocation();
+		Point specOrbPoint = new Point(runOrbPoint.getX() + ORB_X_OFFSET, runOrbPoint.getY() + ORB_Y_OFFSET);
 
 		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
