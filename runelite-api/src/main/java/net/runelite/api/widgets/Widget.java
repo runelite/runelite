@@ -50,7 +50,11 @@ public interface Widget
 
 	int getRelativeX();
 
+	void setRelativeX(int x);
+
 	int getRelativeY();
+
+	void setRelativeY(int y);
 
 	String getText();
 
