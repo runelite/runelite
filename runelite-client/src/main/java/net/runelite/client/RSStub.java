@@ -25,7 +25,6 @@
 
 package net.runelite.client;
 
-import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.MalformedURLException;
@@ -34,12 +33,10 @@ import java.net.URL;
 public class RSStub implements AppletStub
 {
 	private final ConfigLoader config;
-	private final Applet app;
-	
-	public RSStub(ConfigLoader config, Applet app)
+
+	public RSStub(ConfigLoader config)
 	{
 		this.config = config;
-		this.app = app;
 	}
 
 	@Override

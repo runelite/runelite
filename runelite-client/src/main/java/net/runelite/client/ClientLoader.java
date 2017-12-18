@@ -43,7 +43,7 @@ public class ClientLoader
 		Class<?> clientClass = this.getClass().getClassLoader().loadClass(initialClass);
 		Applet rs = (Applet) clientClass.newInstance();
 
-		rs.setStub(new RSStub(config, rs));
+		rs.setStub(new RSStub(config));
 
 		return rs;
 	}
@@ -70,7 +70,7 @@ public class ClientLoader
 		Class<?> clientClass = classloader.loadClass(initialClass);
 		Applet rs = (Applet) clientClass.newInstance();
 
-		rs.setStub(new RSStub(config, rs));
+		rs.setStub(new RSStub(config));
 
 		return rs;
 	}
