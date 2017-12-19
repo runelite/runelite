@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zulrah;
+package net.runelite.client.plugins.zulrah.overlays;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -32,44 +32,27 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.plugins.zulrah.ZulrahInstance;
+import net.runelite.client.plugins.zulrah.ZulrahPlugin;
 import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
-import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 @Slf4j
 public class ZulrahOverlay extends Overlay
 {
-	private static final int CURRENT_PHASE_WIDTH = 86;
-	private static final int NEXT_PHASE_WIDTH = 54;
-	private static final int SPACER = 6;
-	private static final int BOTTOM_BORDER = 4;
 	private static final Color TILE_BORDER_COLOR = new Color(0, 0, 0, 100);
 	private static final Color NEXT_TEXT_COLOR = new Color(255, 255, 255, 100);
-	private static final Color RANGE_BACKGROUND_COLOR = new Color(150, 255, 0, 100);
-	private static final Color MAGIC_BACKGROUND_COLOR = new Color(20, 170, 200, 100);
-	private static final Color MELEE_BACKGROUND_COLOR = new Color(180, 50, 20, 100);
-	private static final Color JAD_BACKGROUND_COLOR = new Color(255, 115, 0, 100);
 
 	private final Client client;
 	private final ZulrahPlugin plugin;
-	private final Image[] zulrahImages = new Image[3];
-	private final Image[] smallZulrahImages = new Image[3];
-	private final Image[] prayerImages = new Image[2];
 
 	@Inject
 	ZulrahOverlay(@Nullable Client client, ZulrahPlugin plugin)
@@ -89,12 +72,6 @@ public class ZulrahOverlay extends Overlay
 			return null;
 		}
 
-		Rectangle viewport = getViewportBounds();
-		if (viewport == null)
-		{
-			return null;
-		}
-
 		ZulrahPhase currentPhase = instance.getPhase();
 		ZulrahPhase nextPhase = instance.getNextPhase();
 		if (currentPhase == null)
@@ -102,7 +79,6 @@ public class ZulrahOverlay extends Overlay
 			return null;
 		}
 
-		String pattern = instance.getPattern() != null ? instance.getPattern().toString() : "Unknown";
 		Point startTile = instance.getStartLocation();
 		if (nextPhase != null && currentPhase.getStandLocation() == nextPhase.getStandLocation())
 		{
@@ -115,9 +91,6 @@ public class ZulrahOverlay extends Overlay
 		}
 		drawZulrahTileMinimap(graphics, startTile, currentPhase, false);
 		drawZulrahTileMinimap(graphics, startTile, nextPhase, true);
-		drawCurrentPhaseBox(graphics, viewport, currentPhase, pattern);
-		drawNextPhaseBox(graphics, viewport, nextPhase);
-		drawPrayerOutline(graphics, currentPhase.getPrayer());
 
 		return null;
 	}
@@ -132,8 +105,8 @@ public class ZulrahOverlay extends Overlay
 		Point textLoc = Perspective.getCanvasTextLocation(client, graphics, localTile, "Next", 0);
 		if (northPoly != null && southPoly != null && poly != null && textLoc != null)
 		{
-			Color northColor = getBackgroundColor(currentPhase.getType());
-			Color southColor = getBackgroundColor(nextPhase.getType());
+			Color northColor = currentPhase.getColor();
+			Color southColor = nextPhase.getColor();
 			graphics.setColor(northColor);
 			graphics.fillPolygon(northPoly);
 			graphics.setColor(southColor);
@@ -146,7 +119,7 @@ public class ZulrahOverlay extends Overlay
 		}
 		if (nextPhase.isJad())
 		{
-			Image jadPrayerImg = getProtectionPrayerImage(nextPhase.getPrayer());
+			Image jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(nextPhase.getPrayer());
 			if (jadPrayerImg != null)
 			{
 				Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, localTile, (BufferedImage) jadPrayerImg, 0);
@@ -168,7 +141,7 @@ public class ZulrahOverlay extends Overlay
 		Point localTile = Perspective.worldToLocal(client, phase.getStandTile(startTile));
 		localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
 		Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
-		Color color = getBackgroundColor(phase.getType());
+		Color color = phase.getColor();
 		if (poly != null)
 		{
 			graphics.setColor(TILE_BORDER_COLOR);
@@ -187,7 +160,7 @@ public class ZulrahOverlay extends Overlay
 			}
 			if (phase.isJad())
 			{
-				Image jadPrayerImg = getProtectionPrayerImage(phase.getPrayer());
+				Image jadPrayerImg = ZulrahImageManager.getProtectionPrayerBufferedImage(phase.getPrayer());
 				if (jadPrayerImg != null)
 				{
 					Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, localTile, (BufferedImage) jadPrayerImg, 0);
@@ -208,7 +181,7 @@ public class ZulrahOverlay extends Overlay
 		}
 		Point zulrahLocalTile = Perspective.worldToLocal(client, phase.getZulrahTile(startTile));
 		Point zulrahMinimapPoint = Perspective.worldToMiniMap(client, zulrahLocalTile.getX(), zulrahLocalTile.getY());
-		Color color = getBackgroundColor(phase.getType());
+		Color color = phase.getColor();
 		graphics.setColor(color);
 		graphics.fillOval(zulrahMinimapPoint.getX(), zulrahMinimapPoint.getY(), 5, 5);
 		graphics.setColor(TILE_BORDER_COLOR);
@@ -219,98 +192,6 @@ public class ZulrahOverlay extends Overlay
 			graphics.setColor(NEXT_TEXT_COLOR);
 			FontMetrics fm = graphics.getFontMetrics();
 			graphics.drawString("Next", zulrahMinimapPoint.getX() - fm.stringWidth("Next") / 2, zulrahMinimapPoint.getY() - 2);
-		}
-	}
-
-	private void drawCurrentPhaseBox(Graphics2D graphics, Rectangle viewport, ZulrahPhase phase, String pattern)
-	{
-		Image zulrahImg = getZulrahImage(phase.getType());
-		if (zulrahImg == null)
-		{
-			return;
-		}
-
-		FontMetrics fm = graphics.getFontMetrics();
-		int height = fm.getHeight() * 2 + zulrahImg.getHeight(null) + SPACER + BOTTOM_BORDER;
-		int bgX = (int) (viewport.getX() + viewport.getWidth() - CURRENT_PHASE_WIDTH);
-		int bgY = (int) (viewport.getY() + viewport.getHeight() - height);
-		Color backgroundColor = phase.isJad() ? JAD_BACKGROUND_COLOR : getBackgroundColor(phase.getType());
-
-		graphics.setColor(backgroundColor);
-		graphics.fillRect(bgX, bgY, CURRENT_PHASE_WIDTH, height);
-		graphics.setColor(Color.WHITE);
-		graphics.drawString(pattern, bgX + (CURRENT_PHASE_WIDTH - fm.stringWidth(pattern)) / 2, bgY + fm.getHeight());
-		graphics.drawImage(zulrahImg, bgX + (CURRENT_PHASE_WIDTH - zulrahImg.getWidth(null)) / 2, bgY + fm.getHeight() + SPACER, null);
-		if (phase.isJad())
-		{
-			graphics.setColor(Color.RED.darker());
-			graphics.drawString("JAD PHASE", bgX + (CURRENT_PHASE_WIDTH - fm.stringWidth("JAD PHASE")) / 2, bgY + height - BOTTOM_BORDER);
-		}
-	}
-
-	private void drawNextPhaseBox(Graphics2D graphics, Rectangle viewport, ZulrahPhase phase)
-	{
-		if (phase == null)
-		{
-			return;
-		}
-		Image zulrahImg = getSmallZulrahImage(phase.getType());
-		if (zulrahImg == null)
-		{
-			return;
-		}
-
-		FontMetrics fm = graphics.getFontMetrics();
-		int height = fm.getHeight() + zulrahImg.getHeight(null) + SPACER + BOTTOM_BORDER;
-		int bgX = (int) (viewport.getX() + viewport.getWidth() - NEXT_PHASE_WIDTH - CURRENT_PHASE_WIDTH);
-		int bgY = (int) (viewport.getY() + viewport.getHeight() - height);
-		Color backgroundColor = phase.isJad() ? JAD_BACKGROUND_COLOR : getBackgroundColor(phase.getType());
-		graphics.setColor(backgroundColor);
-		graphics.fillRect(bgX, bgY, NEXT_PHASE_WIDTH, height);
-		graphics.drawImage(zulrahImg, bgX + (NEXT_PHASE_WIDTH - zulrahImg.getWidth(null)) / 2, bgY + fm.getHeight() + SPACER, null);
-		if (phase.isJad())
-		{
-			Image jadFirstPrayerImg = getProtectionPrayerImage(phase.getPrayer());
-			graphics.drawImage(jadFirstPrayerImg, bgX + (NEXT_PHASE_WIDTH - zulrahImg.getWidth(null)) / 2, bgY + fm.getHeight() + SPACER, null);
-			graphics.setColor(Color.RED.darker());
-			graphics.drawString("Jad Next", bgX + (NEXT_PHASE_WIDTH - fm.stringWidth("Jad Next")) / 2, bgY + fm.getHeight());
-		}
-		else
-		{
-			graphics.setColor(Color.WHITE);
-			graphics.drawString("Next", bgX + (NEXT_PHASE_WIDTH - fm.stringWidth("Next")) / 2, bgY + fm.getHeight());
-		}
-	}
-
-	private Rectangle getViewportBounds()
-	{
-		Widget viewport = client.getViewportWidget();
-		return viewport != null ? viewport.getBounds() : null;
-	}
-
-	private void drawPrayerOutline(Graphics2D graphics, Prayer prayer)
-	{
-		if (prayer == null || client.isPrayerActive(prayer))
-		{
-			return;
-		}
-		Widget prayerWidget;
-		if (prayer == Prayer.PROTECT_FROM_MISSILES)
-		{
-			prayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MISSILES);
-		}
-		else
-		{
-			prayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MAGIC);
-		}
-		if (prayerWidget != null)
-		{
-			Rectangle prayerBounds = prayerWidget.getBounds();
-			if (prayerBounds != null)
-			{
-				graphics.setColor(Color.RED.darker());
-				graphics.draw(prayerBounds);
-			}
 		}
 	}
 
@@ -356,106 +237,5 @@ public class ZulrahOverlay extends Overlay
 		poly.addPoint(p3.getX(), p3.getY());
 
 		return poly;
-	}
-
-	private Color getBackgroundColor(ZulrahType type)
-	{
-		switch (type)
-		{
-			case RANGE:
-				return RANGE_BACKGROUND_COLOR;
-			case MAGIC:
-				return MAGIC_BACKGROUND_COLOR;
-			case MELEE:
-				return MELEE_BACKGROUND_COLOR;
-		}
-		return Color.DARK_GRAY;
-	}
-
-	private Image getZulrahImage(ZulrahType type)
-	{
-		switch (type)
-		{
-			case RANGE:
-				if (zulrahImages[0] == null)
-				{
-					zulrahImages[0] = getImage("zulrah_range.png");
-				}
-				return zulrahImages[0];
-			case MAGIC:
-				if (zulrahImages[1] == null)
-				{
-					zulrahImages[1] = getImage("zulrah_magic.png");
-				}
-				return zulrahImages[1];
-			case MELEE:
-				if (zulrahImages[2] == null)
-				{
-					zulrahImages[2] = getImage("zulrah_melee.png");
-				}
-				return zulrahImages[2];
-		}
-		return null;
-	}
-
-	private Image getSmallZulrahImage(ZulrahType type)
-	{
-		switch (type)
-		{
-			case RANGE:
-				if (smallZulrahImages[0] == null)
-				{
-					smallZulrahImages[0] = getImage("zulrah_range_small.png");
-				}
-				return smallZulrahImages[0];
-			case MAGIC:
-				if (smallZulrahImages[1] == null)
-				{
-					smallZulrahImages[1] = getImage("zulrah_magic_small.png");
-				}
-				return smallZulrahImages[1];
-			case MELEE:
-				if (smallZulrahImages[2] == null)
-				{
-					smallZulrahImages[2] = getImage("zulrah_melee_small.png");
-				}
-				return smallZulrahImages[2];
-		}
-		return null;
-	}
-
-	private Image getProtectionPrayerImage(Prayer prayer)
-	{
-		switch (prayer)
-		{
-			case PROTECT_FROM_MAGIC:
-				if (prayerImages[0] == null)
-				{
-					prayerImages[0] = getImage("/prayers/protect_from_magic.png");
-				}
-				return prayerImages[0];
-			case PROTECT_FROM_MISSILES:
-				if (prayerImages[1] == null)
-				{
-					prayerImages[1] = getImage("/prayers/protect_from_missiles.png");
-				}
-				return prayerImages[1];
-		}
-		return null;
-	}
-
-	private Image getImage(String path)
-	{
-		Image image = null;
-		try
-		{
-			InputStream in = ZulrahOverlay.class.getResourceAsStream(path);
-			image = ImageIO.read(in);
-		}
-		catch (IOException e)
-		{
-			log.debug("Error loading image {}", e);
-		}
-		return image;
 	}
 }

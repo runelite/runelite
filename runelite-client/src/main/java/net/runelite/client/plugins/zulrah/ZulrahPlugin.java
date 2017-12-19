@@ -29,6 +29,8 @@ package net.runelite.client.plugins.zulrah;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,10 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.zulrah.overlays.ZulrahCurrentPhaseOverlay;
+import net.runelite.client.plugins.zulrah.overlays.ZulrahNextPhaseOverlay;
+import net.runelite.client.plugins.zulrah.overlays.ZulrahOverlay;
+import net.runelite.client.plugins.zulrah.overlays.ZulrahPrayerOverlay;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternA;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPatternB;
@@ -69,6 +75,15 @@ public class ZulrahPlugin extends Plugin
 	@Inject
 	ZulrahOverlay overlay;
 
+	@Inject
+	ZulrahCurrentPhaseOverlay currentPhaseOverlay;
+
+	@Inject
+	ZulrahNextPhaseOverlay nextPhaseOverlay;
+
+	@Inject
+	ZulrahPrayerOverlay zulrahPrayerOverlay;
+
 	private final ZulrahPattern[] patterns = new ZulrahPattern[]
 	{
 		new ZulrahPatternA(),
@@ -92,9 +107,9 @@ public class ZulrahPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, currentPhaseOverlay, nextPhaseOverlay, zulrahPrayerOverlay);
 	}
 
 	@Schedule(
