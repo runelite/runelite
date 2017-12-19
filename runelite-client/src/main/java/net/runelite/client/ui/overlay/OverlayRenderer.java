@@ -241,7 +241,7 @@ public class OverlayRenderer
 							bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
 							break;
 						case BOTTOM_RIGHT:
-							bottomRightPoint.x -= dimension.width - (dimension.width == 0 ? 0 : PADDING);
+							bottomRightPoint.x -= dimension.width + (dimension.width == 0 ? 0 : PADDING);
 							break;
 						case TOP_LEFT:
 							topLeftPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);

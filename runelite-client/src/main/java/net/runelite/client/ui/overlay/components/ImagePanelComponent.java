@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +24,11 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.base.Strings;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
+
+import javax.annotation.Nullable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -31,56 +36,68 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
-import javax.annotation.Nullable;
-import lombok.Setter;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class InfoBoxComponent implements RenderableEntity
+public class ImagePanelComponent implements RenderableEntity
 {
-	private static final int BOX_SIZE = 35;
-	private static final int SEPARATOR = 2;
+	private static final int TOP_BORDER = 3;
+	private static final int SIDE_BORDER = 6;
+	private static final int BOTTOM_BORDER = 6;
+	private static final int SEPARATOR = 4;
 
 	@Setter
-	private String text;
+	@Nullable
+	private String title;
 
 	@Setter
-	private Color color = Color.WHITE;
+	private Color titleColor = Color.WHITE;
 
 	@Setter
 	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
 
 	@Setter
-	private Point position = new Point();
+	private BufferedImage image;
 
 	@Setter
-	@Nullable
-	private BufferedImage image;
+	private Point position = new Point();
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		final Dimension dimension = new Dimension();
 		final FontMetrics metrics = graphics.getFontMetrics();
-		final Rectangle bounds = new Rectangle(position.x, position.y, BOX_SIZE, BOX_SIZE);
-		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setBackgroundColor(backgroundColor);
-		backgroundComponent.setRectangle(bounds);
-		backgroundComponent.render(graphics, parent);
+		int height = TOP_BORDER + (Strings.isNullOrEmpty(title) ? 0 : metrics.getHeight())
+			+ SEPARATOR + image.getHeight() + BOTTOM_BORDER;
+		int width = Math.max(Strings.isNullOrEmpty(title) ? 0 : metrics.stringWidth(title), image.getWidth()) + SIDE_BORDER * 2;
+		dimension.setSize(width, height);
 
-		if (Objects.nonNull(image))
+		if (dimension.height == 0)
 		{
-			graphics.drawImage(image,
-				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				SEPARATOR, null);
+			return null;
 		}
 
-		final TextComponent textComponent = new TextComponent();
-		textComponent.setColor(color);
-		textComponent.setText(text);
-		textComponent.setPosition(new Point(
-			position.x + ((BOX_SIZE - metrics.stringWidth(text)) / 2),
-			BOX_SIZE - SEPARATOR));
-		textComponent.render(graphics, parent);
-		return new Dimension(BOX_SIZE, BOX_SIZE);
+		// Calculate panel dimensions
+		int y = position.y + TOP_BORDER + metrics.getHeight();
+
+		// Render background
+		final BackgroundComponent backgroundComponent = new BackgroundComponent();
+		backgroundComponent.setBackgroundColor(backgroundColor);
+		backgroundComponent.setRectangle(new Rectangle(position.x, position.y, dimension.width, dimension.height));
+		backgroundComponent.render(graphics, parent);
+
+		// Render title
+		if (!Strings.isNullOrEmpty(title))
+		{
+			final TextComponent titleComponent = new TextComponent();
+			titleComponent.setText(title);
+			titleComponent.setColor(titleColor);
+			titleComponent.setPosition(new Point(position.x + (width - metrics.stringWidth(title)) / 2, y));
+			titleComponent.render(graphics, parent);
+			y += SEPARATOR;
+		}
+
+		// Render image
+		graphics.drawImage(image, position.x + (width - image.getWidth()) / 2, y, null);
+
+		return dimension;
 	}
 }
