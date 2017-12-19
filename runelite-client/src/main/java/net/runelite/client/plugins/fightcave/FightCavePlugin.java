@@ -28,12 +28,15 @@ import com.google.inject.Binder;
 import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -52,6 +55,9 @@ public class FightCavePlugin extends Plugin
 	RuneLite runelite;
 
 	@Inject
+	FightCaveConfig config;
+
+	@Inject
 	FightCaveOverlay overlay;
 
 	private JadAttack attack;
@@ -60,6 +66,12 @@ public class FightCavePlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(FightCaveOverlay.class);
+	}
+
+	@Provides
+	FightCaveConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FightCaveConfig.class);
 	}
 
 	@Override
@@ -74,7 +86,7 @@ public class FightCavePlugin extends Plugin
 	)
 	public void update()
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled() || client == null || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
