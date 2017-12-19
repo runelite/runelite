@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.teamcapes;
 
-import java.awt.Polygon;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface Player extends Actor
+@ConfigGroup(
+	keyName = "teamcapes",
+	name = "Team Capes",
+	description = "Configuration for the team capes plugin"
+)
+public interface TeamCapesConfig extends Config
 {
-	@Override
-	int getCombatLevel();
-
-	PlayerComposition getPlayerComposition();
-
-	Polygon[] getPolygons();
-
-	int getTeam();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not team cape info is displayed"
+	)
+	default boolean enabled()
+	{
+		return false;
+	}
 }
