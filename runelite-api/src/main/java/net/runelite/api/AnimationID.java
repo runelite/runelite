@@ -37,7 +37,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_ADAMANT = 869;
 	public static final int WOODCUTTING_RUNE = 867;
 	public static final int WOODCUTTING_DRAGON = 2846;
-	public static final int WOODCUTTING_INFERNAL = 0; // unknown - placeholder
+	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
@@ -81,7 +81,7 @@ public final class AnimationID
 	public static final int MINING_ADAMANT_PICKAXE = 628;
 	public static final int MINING_RUNE_PICKAXE = 624;
 	public static final int MINING_DRAGON_PICKAXE = 7139;
-	public static final int MINING_INFERNAL_PICKAXE = 0; //placeholder, unknown
+	public static final int MINING_INFERNAL_PICKAXE = 4482;
 	public static final int MINING_MOTHERLODE_BRONZE = 6753;
 	public static final int MINING_MOTHERLODE_IRON = 6754;
 	public static final int MINING_MOTHERLODE_STEEL = 6755;
@@ -90,7 +90,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_ADAMANT = 6756;
 	public static final int MINING_MOTHERLODE_RUNE = 6752;
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
-	public static final int MINING_MOTHERLODE_INFERNAL = 0; // placeholder, unknown
+	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 
