@@ -36,6 +36,7 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
@@ -163,7 +164,7 @@ public class InjectHook
 			assert idx != -1;
 
 			// idx + 1 to insert after the set
-			injectCallback(method, ins, idx + 1, hookName, null, objectInstruction);
+			injectCallback(ins, idx + 1, hookName, null, objectInstruction);
 		});
 
 		// these look like:
@@ -211,7 +212,6 @@ public class InjectHook
 
 			// assume this is always at index 1
 			StackContext index = ic.getPops().get(1);
-			InstructionContext indexIc = index.getPushed(); // what pushed the index
 
 			StackContext arrayReference = ic.getPops().get(2);
 			InstructionContext arrayReferencePushed = arrayReference.getPushed();
@@ -233,8 +233,6 @@ public class InjectHook
 				}
 			}
 
-
-
 			// inject hook after 'i'
 			logger.info("Found array injection location for hook {} at instruction {}", hookName, i);
 			++injectedHooks;
@@ -242,24 +240,32 @@ public class InjectHook
 			int idx = ins.getInstructions().indexOf(i);
 			assert idx != -1;
 
-			injectCallback(method, ins, idx + 1, hookName, indexIc, pushedObjectReferenceInstruction);
+			injectCallback(ins, idx + 1, hookName, index, pushedObjectReferenceInstruction);
 		});
 
 		e.run();
 	}
 
-	private int recursivelyPush(Instructions ins, int idx, InstructionContext ctx)
+	private int recursivelyPush(Instructions ins, int idx, StackContext sctx)
 	{
-		for (StackContext sctx : Lists.reverse(ctx.getPops()))
+		InstructionContext ctx = sctx.getPushed();
+		if (ctx.getInstruction() instanceof DupInstruction)
 		{
-			idx = recursivelyPush(ins, idx, sctx.getPushed());
+			DupInstruction dupInstruction = (DupInstruction) ctx.getInstruction();
+			sctx = dupInstruction.getOriginal(sctx);
+			ctx = sctx.getPushed();
+		}
+
+		for (StackContext s : Lists.reverse(ctx.getPops()))
+		{
+			idx = recursivelyPush(ins, idx, s);
 		}
 
 		ins.getInstructions().add(idx++, ctx.getInstruction().clone());
 		return idx;
 	}
 
-	private void injectCallback(Method method, Instructions ins, int idx, String hookName, InstructionContext indexPusher, Instruction objectPusher)
+	private void injectCallback(Instructions ins, int idx, String hookName, StackContext index, Instruction objectPusher)
 	{
 		// Insert:
 		// ldc hookName
@@ -279,9 +285,9 @@ public class InjectHook
 		);
 
 		ins.getInstructions().add(idx++, ldc);
-		if (indexPusher != null)
+		if (index != null)
 		{
-			idx = recursivelyPush(ins, idx, indexPusher);
+			idx = recursivelyPush(ins, idx, index);
 		}
 		else
 		{
