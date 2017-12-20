@@ -105,6 +105,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_ADAMANT:
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_DRAGON:
+			case WOODCUTTING_INFERNAL:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -150,6 +151,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_ADAMANT_PICKAXE:
 			case MINING_RUNE_PICKAXE:
 			case MINING_DRAGON_PICKAXE:
+			case MINING_INFERNAL_PICKAXE:
 			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
@@ -159,6 +161,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_ADAMANT:
 			case MINING_MOTHERLODE_RUNE:
 			case MINING_MOTHERLODE_DRAGON:
+			case MINING_MOTHERLODE_INFERNAL:
 			/* Herblore */
 			case HERBLORE_POTIONMAKING:
 			/* Magic */
