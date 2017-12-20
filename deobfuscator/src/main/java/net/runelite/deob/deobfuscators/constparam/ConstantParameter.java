@@ -24,6 +24,8 @@
  */
 package net.runelite.deob.deobfuscators.constparam;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +54,6 @@ import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
-import org.apache.commons.collections4.map.MultiValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +62,7 @@ public class ConstantParameter implements Deobfuscator
 	private static final Logger logger = LoggerFactory.getLogger(ConstantParameter.class);
 
 	private Map<ConstantMethodParameter, ConstantMethodParameter> parameters = new HashMap<>();
-	private MultiValueMap<Method, ConstantMethodParameter> mparams = new MultiValueMap<>();
+	private Multimap<Method, ConstantMethodParameter> mparams = HashMultimap.create();
 
 	private void checkMethodsAreConsistent(List<Method> methods)
 	{
@@ -172,7 +173,7 @@ public class ConstantParameter implements Deobfuscator
 
 	private List<ConstantMethodParameter> findParametersForMethod(Method m)
 	{
-		Collection<ConstantMethodParameter> c = mparams.getCollection(m);
+		Collection<ConstantMethodParameter> c = mparams.get(m);
 		if (c == null)
 		{
 			return Collections.EMPTY_LIST;

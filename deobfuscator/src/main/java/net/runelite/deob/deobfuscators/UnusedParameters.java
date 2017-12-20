@@ -25,13 +25,16 @@
 package net.runelite.deob.deobfuscators;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
@@ -47,7 +50,6 @@ import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.Deob;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.Deobfuscator;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +139,7 @@ public class UnusedParameters implements Deobfuscator
 		return count;
 	}
 
-	public List<Integer> findUnusedParameters(Method method)
+	private Set<Integer> findUnusedParameters(Method method)
 	{
 		int offset = method.isStatic() ? 0 : 1;
 		Signature signature = method.getDescriptor();
@@ -154,7 +156,7 @@ public class UnusedParameters implements Deobfuscator
 			}
 		}
 
-		return unusedParams;
+		return ImmutableSet.copyOf(unusedParams);
 	}
 
 	@SuppressWarnings("empty-statement")
@@ -170,11 +172,11 @@ public class UnusedParameters implements Deobfuscator
 
 	public Collection<Integer> findUnusedParameters(Collection<Method> methods)
 	{
-		Collection<Integer> list = null;
+		Set<Integer> list = null;
 
 		for (Method m : methods)
 		{
-			List<Integer> p = findUnusedParameters(m);
+			Set<Integer> p = findUnusedParameters(m);
 
 			if (list == null)
 			{
@@ -182,7 +184,7 @@ public class UnusedParameters implements Deobfuscator
 			}
 			else
 			{
-				list = CollectionUtils.intersection(list, p);
+				list = Sets.intersection(list, p);
 			}
 		}
 

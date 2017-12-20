@@ -22,20 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.execution;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.Collection;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
-import org.apache.commons.collections4.map.MultiValueMap;
 
 public class MethodContext
 {
 	private Execution execution;
 	private Method method;
-	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	private Multimap<InstructionContext, Instruction> visited = HashMultimap.create();
+	public Multimap<Instruction, InstructionContext> contexts = HashMultimap.create();
 
 	public MethodContext(Execution execution, Method method)
 	{
@@ -52,22 +52,24 @@ public class MethodContext
 	{
 		return method;
 	}
-	
+
 	protected boolean hasJumped(InstructionContext from, Instruction to)
 	{
-		Collection<Instruction> i = visited.getCollection(from);
+		Collection<Instruction> i = visited.get(from);
 		if (i != null && i.contains(to))
+		{
 			return true;
-		
+		}
+
 		visited.put(from, to);
 		return false;
 	}
-	
+
 	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
-		return contexts.getCollection(i);
+		return contexts.get(i);
 	}
-	
+
 	public Collection<InstructionContext> getInstructionContexts()
 	{
 		return (Collection) contexts.values();

@@ -22,18 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators.mapping;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Type;
 import net.runelite.asm.signature.Signature;
-import org.apache.commons.collections4.CollectionUtils;
 
 public class ClassMapper
 {
@@ -44,49 +41,45 @@ public class ClassMapper
 		this.one = one;
 		this.two = two;
 	}
-	
-	private List<Integer> fieldCardinalities(ClassFile cf)
+
+	private Multiset<Type> fieldCardinalities(ClassFile cf)
 	{
 		List<Type> t = cf.getFields().stream()
 			.filter(f -> !f.isStatic())
 			.map(f -> f.getType())
 			.collect(Collectors.toList());
-		
-		Map<Type, Integer> m = CollectionUtils.getCardinalityMap(t);
-		
-		List<Integer> occurances = new ArrayList<>(m.values());
-		Collections.sort(occurances);
-		return occurances;
+
+		return ImmutableMultiset.copyOf(t);
 	}
-	
-	private List<Integer> methodCardinalities(ClassFile cf)
+
+	private Multiset<Signature> methodCardinalities(ClassFile cf)
 	{
 		List<Signature> t = cf.getMethods().stream()
 			.filter(m -> !m.isStatic())
 			.filter(m -> !m.getName().startsWith("<"))
 			.map(m -> m.getDescriptor())
 			.collect(Collectors.toList());
-		
-		Map<Signature, Integer> m = CollectionUtils.getCardinalityMap(t);
-		
-		List<Integer> occurances = new ArrayList<>(m.values());
-		Collections.sort(occurances);
-		return occurances;
+
+		return ImmutableMultiset.copyOf(t);
 	}
-	
+
 	public boolean same()
 	{
-		List<Integer> c1 = fieldCardinalities(one), c2 = fieldCardinalities(two);
-		
+		Multiset<Type> c1 = fieldCardinalities(one), c2 = fieldCardinalities(two);
+
 		if (!c1.equals(c2))
+		{
 			return false;
-		
-		c1 = methodCardinalities(one);
-		c2 = methodCardinalities(two);
-		
-		if (!c1.equals(c2))
+		}
+
+		Multiset<Signature> s1 = methodCardinalities(one);
+		Multiset<Signature> s2 = methodCardinalities(two);
+
+		if (!s1.equals(s2))
+		{
 			return false;
-		
+		}
+
 		return true;
 	}
 }

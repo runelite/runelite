@@ -24,6 +24,8 @@
  */
 package net.runelite.asm.execution;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,7 +41,6 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import static net.runelite.asm.execution.StaticStep.popStack;
 import net.runelite.deob.Deob;
-import org.apache.commons.collections4.map.MultiValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,7 @@ public class Execution
 	private final ClassGroup group;
 	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
-	private MultiValueMap<WeakInstructionContext, Method> stepInvokes = new MultiValueMap<>();
+	private Multimap<WeakInstructionContext, Method> stepInvokes = HashMultimap.create();
 	private Set<Method> invokes = new HashSet<>();
 	public boolean paused;
 	public boolean step = false;
@@ -145,7 +146,7 @@ public class Execution
 		//
 		// So, check that the stack is unique too. invoke() doesn't get this
 		// far in the step executor, but does for staticStep
-		Collection<Method> methods = stepInvokes.getCollection(from.toWeak());
+		Collection<Method> methods = stepInvokes.get(from.toWeak());
 		if (methods != null && methods.contains(to))
 		{
 			return true;
