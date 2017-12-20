@@ -78,7 +78,6 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
-	public static final String APP_NAME = "RuneLite";
 
 	public static Image ICON;
 
@@ -211,11 +210,11 @@ public class RuneLite
 	{
 		if (!Strings.isNullOrEmpty(extra))
 		{
-			gui.setTitle(APP_NAME + " " + properties.getVersion() + " " + extra);
+			gui.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
 		}
 		else
 		{
-			gui.setTitle(APP_NAME + " " + properties.getVersion());
+			gui.setTitle(properties.getTitle() + " " + properties.getVersion());
 		}
 	}
 
@@ -228,7 +227,7 @@ public class RuneLite
 
 		SystemTray systemTray = SystemTray.getSystemTray();
 
-		trayIcon = new TrayIcon(ICON, APP_NAME);
+		trayIcon = new TrayIcon(ICON, properties.getTitle());
 		trayIcon.setImageAutoSize(true);
 
 		try
@@ -417,7 +416,7 @@ public class RuneLite
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		notifier.sendNotification(APP_NAME, message, type, null);
+		notifier.sendNotification(properties.getTitle(), message, type, null);
 		Toolkit.getDefaultToolkit().beep();
 	}
 

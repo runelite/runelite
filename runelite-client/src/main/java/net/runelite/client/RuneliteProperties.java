@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 @Slf4j
 public class RuneliteProperties
 {
+	private static final String RUNELITE_TITLE = "runelite.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
 
 	private final Properties properties = new Properties();
@@ -52,6 +53,11 @@ public class RuneliteProperties
 		{
 			log.warn("unable to load propertries", ex);
 		}
+	}
+
+	public String getTitle()
+	{
+		return properties.getProperty(RUNELITE_TITLE);
 	}
 
 	public String getVersion()
