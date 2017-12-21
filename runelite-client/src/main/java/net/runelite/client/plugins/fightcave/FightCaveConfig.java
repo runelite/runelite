@@ -24,30 +24,24 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import net.runelite.api.AnimationID;
-import net.runelite.api.Prayer;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public enum JadAttack
+@ConfigGroup(
+	keyName = "fightcave",
+	name = "Fight Cave",
+	description = "Configuration for the fight cave plugin"
+)
+public interface FightCaveConfig extends Config
 {
-	MAGIC(AnimationID.TZTOK_JAD_MAGIC_ATTACK, Prayer.PROTECT_FROM_MAGIC),
-	RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
-
-	private final int animation;
-	private final Prayer prayer;
-
-	JadAttack(int animation, Prayer prayer)
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not fight cave overlay is displayed"
+	)
+	default boolean enabled()
 	{
-		this.animation = animation;
-		this.prayer = prayer;
-	}
-
-	public int getAnimation()
-	{
-		return animation;
-	}
-
-	public Prayer getPrayer()
-	{
-		return prayer;
+		return true;
 	}
 }
