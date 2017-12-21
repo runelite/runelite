@@ -84,7 +84,6 @@ public final class AnimationID
 	public static final int MINING_DRAGON_PICKAXE = 7139;
 	public static final int MINING_DRAGON_PICKAXE_ORN = 642;
 	public static final int MINING_INFERNAL_PICKAXE = 4482;
-	public static final int MINING_THIRD_AGE_PICKAXE = 0; // unknown - placeholder
 	public static final int MINING_MOTHERLODE_BRONZE = 6753;
 	public static final int MINING_MOTHERLODE_IRON = 6754;
 	public static final int MINING_MOTHERLODE_STEEL = 6755;
@@ -95,7 +94,6 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
 	public static final int MINING_MOTHERLODE_DRAGON_ORN = 335;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
-	public static final int MINING_MOTHERLODE_THIRD_AGE = 0; // unknown - placeholder
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 
