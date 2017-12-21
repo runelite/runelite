@@ -38,7 +38,6 @@ public final class AnimationID
 	public static final int WOODCUTTING_RUNE = 867;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_INFERNAL = 2117;
-	public static final int WOODCUTTING_THIRD_AGE = 0; // unknown - placeholder
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int COOKING_FIRE = 897;
