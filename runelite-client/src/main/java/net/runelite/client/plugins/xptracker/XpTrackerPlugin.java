@@ -73,6 +73,10 @@ public class XpTrackerPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			xpPanel.resetAllSkillXpHr();
+			for (int i = 0; i < NUMBER_OF_SKILLS; i++)
+			{
+				xpInfos[i] = null;
+			}
 		}
 	}
 
