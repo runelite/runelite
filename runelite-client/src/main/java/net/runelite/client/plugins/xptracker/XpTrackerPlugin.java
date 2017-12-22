@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -62,7 +64,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		navButton = new NavigationButton("XP Tracker", () -> xpPanel);
 		xpPanel = injector.getInstance(XpPanel.class);
-		navButton.getButton().setText("XP");
+		navButton.getButton().setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("xp.png"))));
 		ui.getPluginToolbar().addNavigation(navButton);
 	}
 
