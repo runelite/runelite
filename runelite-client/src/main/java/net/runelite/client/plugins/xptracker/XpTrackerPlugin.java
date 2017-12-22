@@ -56,6 +56,7 @@ public class XpTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
+	private String username = "";
 
 	@Override
 	protected void startUp() throws Exception
@@ -69,13 +70,17 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		//reset upon login
+		//reset upon login if character changed
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			xpPanel.resetAllSkillXpHr();
-			for (int i = 0; i < NUMBER_OF_SKILLS; i++)
+			if (!username.equals(client.getUsername()))
 			{
-				xpInfos[i] = null;
+				xpPanel.resetAllSkillXpHr();
+        for (int i = 0; i < NUMBER_OF_SKILLS; i++)
+			  {
+					xpInfos[i] = null;
+        }
+				username = client.getUsername();
 			}
 		}
 	}
