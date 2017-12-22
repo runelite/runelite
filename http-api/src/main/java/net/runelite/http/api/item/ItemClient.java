@@ -32,7 +32,6 @@ import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,17 +53,15 @@ public class ItemClient
 			.url(url)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		if (!response.isSuccessful())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			logger.debug("Error looking up item {}: {}", itemId, response.message());
-			return null;
-		}
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error looking up item {}: {}", itemId, response.message());
+				return null;
+			}
 
-		try (ResponseBody body = response.body())
-		{
-			InputStream in = body.byteStream();
+			InputStream in = response.body().byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice.class);
 		}
 		catch (JsonParseException ex)
@@ -76,28 +73,26 @@ public class ItemClient
 	public SearchResult search(String itemName) throws IOException
 	{
 		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
-				.addPathSegment("item")
-				.addPathSegment("search")
-				.addQueryParameter("query", itemName)
-				.build();
+			.addPathSegment("item")
+			.addPathSegment("search")
+			.addQueryParameter("query", itemName)
+			.build();
 
 		logger.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		if (!response.isSuccessful())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			logger.debug("Error looking up item {}: {}", itemName, response.message());
-			return null;
-		}
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error looking up item {}: {}", itemName, response.message());
+				return null;
+			}
 
-		try (ResponseBody body = response.body())
-		{
-			InputStream in = body.byteStream();
+			InputStream in = response.body().byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class);
 		}
 		catch (JsonParseException ex)

@@ -26,14 +26,17 @@ package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.api.hiscore.*;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
+import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.service.util.HiscoreEndpointEditor;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import net.runelite.http.service.util.exception.NotFoundException;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -41,7 +44,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/hiscore")
@@ -66,24 +73,22 @@ public class HiscoreService
 				.url(url)
 				.build();
 
-		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
-
-		if (!okresponse.isSuccessful())
-		{
-			switch (HttpStatus.valueOf(okresponse.code()))
-			{
-				case NOT_FOUND:
-					throw new NotFoundException();
-				default:
-					throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
-			}
-		}
-
 		String responseStr;
 
-		try (ResponseBody body = okresponse.body())
+		try (Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute())
 		{
-			responseStr = body.string();
+			if (!okresponse.isSuccessful())
+			{
+				switch (HttpStatus.valueOf(okresponse.code()))
+				{
+					case NOT_FOUND:
+						throw new NotFoundException();
+					default:
+						throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+				}
+			}
+
+			responseStr = okresponse.body().string();
 		}
 
 		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);

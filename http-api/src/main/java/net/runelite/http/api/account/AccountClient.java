@@ -33,7 +33,6 @@ import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,11 +64,9 @@ public class AccountClient
 			.url(url)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		try (ResponseBody body = response.body())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			InputStream in = body.byteStream();
+			InputStream in = response.body().byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), OAuthResponse.class);
 		}
 		catch (JsonParseException ex)
@@ -92,9 +89,7 @@ public class AccountClient
 			.url(url)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		try (ResponseBody body = response.body())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
 			logger.debug("Sent logout request");
 		}
