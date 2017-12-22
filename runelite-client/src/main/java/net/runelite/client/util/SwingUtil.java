@@ -51,10 +51,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.LookAndFeel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
@@ -86,23 +84,6 @@ public class SwingUtil
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	/**
-	 * Safely sets Swing theme
-	 *
-	 * @param laf the swing look and feel
-	 */
-	public static void setTheme(@Nonnull final LookAndFeel laf)
-	{
-		try
-		{
-			UIManager.setLookAndFeel(laf);
-		}
-		catch (UnsupportedLookAndFeelException ex)
-		{
-			log.warn("Unable to set look and feel", ex);
-		}
 	}
 
 	/**
