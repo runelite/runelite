@@ -287,7 +287,7 @@ public class GroundItemsOverlay extends Overlay
 					if (config.showHAValue())
 					{
 						itemStringBuilder.append(" (HA: ")
-							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT))
+							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity)
 							.append(" gp)");
 					}
 
