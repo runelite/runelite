@@ -205,7 +205,8 @@ public class GroundItemsOverlay extends Overlay
 							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
 							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 						}
-						if (gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
+								gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
 								(alchPrice >= config.getHideUnderHAValue())))
 						{
 							items.put(itemId, quantity);
