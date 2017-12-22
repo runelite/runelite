@@ -29,10 +29,13 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -56,6 +59,7 @@ public class ClientUI extends JFrame
 	public ClientUI(RuneLite runelite)
 	{
 		this.runelite = runelite;
+		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 		init();
 		pack();
 		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
@@ -65,6 +69,22 @@ public class ClientUI extends JFrame
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
+	}
+
+	private static void setUIFont(FontUIResource f)
+	{
+		final Enumeration keys = UIManager.getDefaults().keys();
+
+		while (keys.hasMoreElements())
+		{
+			final Object key = keys.nextElement();
+			final Object value = UIManager.get(key);
+
+			if (value instanceof FontUIResource)
+			{
+				UIManager.put(key, f);
+			}
+		}
 	}
 
 	private void init()
