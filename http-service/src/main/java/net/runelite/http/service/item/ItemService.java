@@ -45,7 +45,6 @@ import net.runelite.http.api.item.SearchResult;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -487,16 +486,14 @@ public class ItemService
 
 	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
 	{
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		if (!response.isSuccessful())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			throw new IOException("Unsuccessful http response: " + response.message());
-		}
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unsuccessful http response: " + response.message());
+			}
 
-		try (ResponseBody body = response.body())
-		{
-			InputStream in = body.byteStream();
+			InputStream in = response.body().byteStream();
 			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), clazz);
 		}
 		catch (JsonParseException ex)
@@ -513,16 +510,14 @@ public class ItemService
 			.url(httpUrl)
 			.build();
 
-		Response response = RuneliteAPI.CLIENT.newCall(request).execute();
-
-		if (!response.isSuccessful())
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			throw new IOException("Unsuccessful http response: " + response.message());
-		}
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unsuccessful http response: " + response.message());
+			}
 
-		try (ResponseBody body = response.body())
-		{
-			return body.bytes();
+			return response.body().bytes();
 		}
 	}
 }
