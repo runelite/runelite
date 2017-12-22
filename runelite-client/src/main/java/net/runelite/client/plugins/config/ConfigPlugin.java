@@ -26,7 +26,6 @@ package net.runelite.client.plugins.config;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -49,19 +48,11 @@ public class ConfigPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		navButton = new NavigationButton("Configuration", this::buildPanel);
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("config_icon.png")));
-		navButton.getButton().setIcon(icon);
+		navButton = new NavigationButton(
+			"Configuration",
+			ImageIO.read(getClass().getResourceAsStream("config_icon.png")),
+			() -> new ConfigPanel(configManager));
 
 		ui.getPluginToolbar().addNavigation(navButton);
 	}
-
-	private ConfigPanel buildPanel()
-	{
-		ConfigPanel panel = new ConfigPanel(configManager);
-		panel.init();
-		return panel;
-	}
-
 }

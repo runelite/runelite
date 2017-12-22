@@ -34,7 +34,6 @@ import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
@@ -73,18 +72,10 @@ public class AccountPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		loginButton = new NavigationButton("Login");
-		logoutButton = new NavigationButton("Logout");
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
-		loginButton.getButton().setIcon(icon);
-
-		icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
-		logoutButton.getButton().setIcon(icon);
-
-		loginButton.getButton().addActionListener(this::loginClick);
-		logoutButton.getButton().addActionListener(this::logoutClick);
-
+		loginButton = new NavigationButton("Login", ImageIO.read(getClass().getResourceAsStream("login_icon.png")));
+		logoutButton = new NavigationButton("Logout", ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
+		loginButton.addActionListener(this::loginClick);
+		logoutButton.addActionListener(this::logoutClick);
 		ui.getPluginToolbar().addNavigation(loginButton);
 	}
 
