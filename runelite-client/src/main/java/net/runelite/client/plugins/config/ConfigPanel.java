@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.config;
 
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -37,10 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -50,17 +48,12 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
@@ -71,70 +64,37 @@ import net.runelite.client.ui.PluginPanel;
 @Slf4j
 public class ConfigPanel extends PluginPanel
 {
-	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(6, 6, 6, 6);
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private final ConfigManager configManager;
 
-	private JScrollPane scrollPane;
-
 	public ConfigPanel(ConfigManager configManager)
 	{
+		super();
 		this.configManager = configManager;
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setSize(PANEL_WIDTH, PANEL_HEIGHT);
-		setLayout(new BorderLayout());
-		setVisible(true);
+		populateConfig();
 	}
 
-	public void init()
+	private void populateConfig()
 	{
-		add(createConfigPanel(), BorderLayout.NORTH);
-	}
+		removeAll();
+		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
 
-	private List<ConfigDescriptor> getConfig()
-	{
-		List<ConfigDescriptor> list = new ArrayList<>();
-		for (Object config : configManager.getConfigProxies())
-		{
-			ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
+		configManager.getConfigProxies().stream()
+			.map(configManager::getConfigDescriptor)
+			.sorted(Comparator.comparing(left -> left.getGroup().name()))
+			.forEach(cd ->
+			{
+				JPanel groupPanel = new JPanel();
+				groupPanel.setLayout(new BorderLayout());
+				JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
+				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
+				groupPanel.add(viewGroupItemsButton);
+				add(groupPanel);
+			});
 
-			list.add(configDescriptor);
-		}
-		return list;
-	}
-
-	private JComponent createConfigPanel()
-	{
-		JPanel panel = new JPanel();
-		panel.setBorder(BORDER_PADDING);
-		panel.setLayout(new GridLayout(0, 1, 0, 3));
-		panel.add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
-
-		List<ConfigDescriptor> config = getConfig();
-
-		// Sort by name
-		Comparator<ConfigDescriptor> comparator = (ConfigDescriptor left, ConfigDescriptor right) -> left.getGroup().name().compareTo(right.getGroup().name());
-		config.sort(comparator);
-
-		for (ConfigDescriptor cd : config)
-		{
-			JPanel groupPanel = new JPanel();
-			groupPanel.setLayout(new BorderLayout());
-			JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
-			viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
-			groupPanel.add(viewGroupItemsButton);
-			panel.add(groupPanel);
-		}
-
-		//Make the panel scrollable
-		scrollPane = new JScrollPane(panel);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		scrollPane.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
-		return scrollPane;
+		revalidate();
 	}
 
 	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
@@ -186,13 +146,11 @@ public class ConfigPanel extends PluginPanel
 
 	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
 	{
-		JPanel itemPanel = new JPanel();
-		itemPanel.setBorder(BORDER_PADDING);
-		itemPanel.setLayout(new GridLayout(0, 1, 0, 6));
+		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
 		title.setToolTipText(cd.getGroup().description());
-		itemPanel.add(title, SwingConstants.CENTER);
+		add(title, SwingConstants.CENTER);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -309,24 +267,19 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			itemPanel.add(item);
+			add(item);
 		}
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(this::getBackButtonListener);
-		itemPanel.add(backButton);
-
-		removeAll();
-		updateUI();
-		add(itemPanel, BorderLayout.NORTH);
+		add(backButton);
+		revalidate();
 	}
 
 	public void getBackButtonListener(ActionEvent e)
 	{
-		removeAll();
-		updateUI();
 
-		add(scrollPane, BorderLayout.NORTH);
+		populateConfig();
 	}
 
 }
