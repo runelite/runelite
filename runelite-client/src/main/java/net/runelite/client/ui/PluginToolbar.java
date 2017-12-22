@@ -52,18 +52,18 @@ public class PluginToolbar extends JToolBar
 
 	public void addNavigation(NavigationButton button)
 	{
-		button.getButton().addActionListener((ae) -> onClick(button));
-		button.getButton().setToolTipText(button.getName());
+		button.addActionListener((ae) -> onClick(button));
+		button.setToolTipText(button.getName());
 
 		buttons.add(button);
-		add(button.getButton());
+		add(button);
 		revalidate();
 	}
 
 	public void removeNavigation(NavigationButton button)
 	{
 		buttons.remove(button);
-		remove(button.getButton());
+		remove(button);
 		revalidate();
 	}
 
@@ -77,7 +77,7 @@ public class PluginToolbar extends JToolBar
 
 		if (current != null)
 		{
-			current.getButton().setSelected(false);
+			current.setSelected(false);
 		}
 
 		if (current == button)
@@ -92,7 +92,7 @@ public class PluginToolbar extends JToolBar
 			ui.expand(pluginPanel);
 
 			current = button;
-			current.getButton().setSelected(true);
+			current.setSelected(true);
 		}
 	}
 }

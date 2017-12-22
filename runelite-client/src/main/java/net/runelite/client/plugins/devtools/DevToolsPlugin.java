@@ -28,7 +28,6 @@ import com.google.inject.Binder;
 import java.awt.Font;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,9 +47,6 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	DevToolsOverlay overlay;
-
-	private NavigationButton navButton;
-	private DevToolsPanel panel;
 
 	private boolean togglePlayers;
 	private boolean toggleNpcs;
@@ -76,11 +72,11 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = injector.getInstance(DevToolsPanel.class);
-		navButton = new NavigationButton("Developer Tools", () -> panel);
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")));
-		navButton.getButton().setIcon(icon);
+		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
+		final NavigationButton navButton = new NavigationButton(
+			"Developer Tools",
+			ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")),
+			() -> panel);
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
