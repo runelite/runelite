@@ -31,13 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.http.api.RuneliteAPI;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class ConfigLoader
 {
-	private static final OkHttpClient CLIENT = RuneliteAPI.CLIENT;
 	private static final HttpUrl CONFIG_URL = HttpUrl.parse("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
 
 	public static final String CODEBASE = "codebase";
@@ -53,7 +51,7 @@ public class ConfigLoader
 			.url(CONFIG_URL)
 			.build();
 
-		try (Response response = CLIENT.newCall(request).execute();
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute();
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
 		{
 			String str;

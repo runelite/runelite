@@ -34,7 +34,6 @@ import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,12 +52,11 @@ public class WorldsService
 			.url(url)
 			.build();
 
-		Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute();
 		byte[] b;
 
-		try (ResponseBody body = okresponse.body())
+		try (Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute())
 		{
-			b = body.bytes();
+			b = okresponse.body().bytes();
 		}
 
 		List<World> worlds = new ArrayList<>();
