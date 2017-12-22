@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import aurelienribon.slidinglayout.SLAnimator;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
@@ -151,6 +152,8 @@ public class RuneLite
 		options = parser.parse(args);
 
 		PROFILES_DIR.mkdirs();
+
+		SLAnimator.start();
 
 		injector = Guice.createInjector(new RuneliteModule());
 		runelite = injector.getInstance(RuneLite.class);

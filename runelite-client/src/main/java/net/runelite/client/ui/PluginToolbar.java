@@ -38,6 +38,7 @@ public class PluginToolbar extends JToolBar
 	private final List<NavigationButton> buttons = new ArrayList<>();
 
 	private NavigationButton current;
+	private boolean enableActions = true;
 
 	public PluginToolbar(ClientUI ui)
 	{
@@ -67,8 +68,18 @@ public class PluginToolbar extends JToolBar
 		revalidate();
 	}
 
+	public void setActionsEnabled(boolean b)
+	{
+		enableActions = b;
+	}
+
 	private void onClick(NavigationButton button)
 	{
+		if (!enableActions)
+		{
+			return;
+		}
+
 		Supplier<PluginPanel> panelSupplier = button.getPanelSupplier();
 		if (panelSupplier == null)
 		{
@@ -87,10 +98,7 @@ public class PluginToolbar extends JToolBar
 		}
 		else
 		{
-
-			PluginPanel pluginPanel = panelSupplier.get();
-			ui.expand(pluginPanel);
-
+			ui.expand(panelSupplier.get(), getComponentIndex(button.getButton()));
 			current = button;
 			current.getButton().setSelected(true);
 		}

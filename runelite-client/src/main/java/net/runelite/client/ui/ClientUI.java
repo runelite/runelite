@@ -24,15 +24,19 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import aurelienribon.slidinglayout.*;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Cubic;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -42,23 +46,34 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 @Slf4j
 public class ClientUI extends JFrame
 {
-	private static final int PANEL_WIDTH = 809;
-	private static final int PANEL_HEIGHT = 536;
-	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+	public static final int PANEL_WIDTH = 809;
+	public static final int PANEL_HEIGHT = 536;
+	public static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+
+	private static final float FILL_SPACE = 1f;
+
+	private int prevBtnIndex = -1;
+
+	private int persistentX = 0;
+	private int persistentY = 0;
+	private int persistentWidth = 0;
+	private int persistentHeight = 0;
 
 	private final RuneLite runelite;
-	private JPanel container;
-	private JPanel navContainer;
-	private ClientPanel panel;
+	private SLPanel container;
+	private SLConfig containerCfg;
+	private ClientPanel clientPanel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+
+	private TweenManager tweenManager;
 
 	public ClientUI(RuneLite runelite)
 	{
 		this.runelite = runelite;
 		init();
 		pack();
-		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
+		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI());
 		titleBarPane.editTitleBar(this);
 		setTitle("RuneLite");
 		setIconImage(RuneLite.ICON);
@@ -67,9 +82,46 @@ public class ClientUI extends JFrame
 		setVisible(true);
 	}
 
+	@Override
+	public void setExtendedState(int state)
+	{
+		if (state == JFrame.MAXIMIZED_BOTH)
+		{
+			persistentX = getX();
+			persistentY = getY();
+			persistentWidth = getWidth();
+			persistentHeight = getHeight();
+		}
+
+		if (state == JFrame.NORMAL)
+		{
+			if (pluginPanel != null)
+			{
+				if (persistentWidth < EXPANDED_WIDTH)
+				{
+					setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+					setBounds(persistentX, persistentY, EXPANDED_WIDTH, persistentHeight);
+					validate();
+				}
+			}
+			else
+			{
+				if (persistentWidth <= EXPANDED_WIDTH)
+				{
+					setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+					setBounds(persistentX, persistentY, PANEL_WIDTH, persistentHeight);
+					validate();
+				}
+			}
+		}
+		super.setExtendedState(state);
+	}
+
 	private void init()
 	{
 		assert SwingUtilities.isEventDispatchThread();
+
+		Tween.registerAccessor(JFrame.class, new FrameAccessor());
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -83,15 +135,15 @@ public class ClientUI extends JFrame
 			}
 		});
 
-		container = new JPanel();
-		container.setLayout(new BorderLayout(0, 0));
+		container = new SLPanel();
+		add(container);
 
-		panel = new ClientPanel(this);
+		clientPanel = new ClientPanel(this);
 		if (!RuneLite.getOptions().has("no-rs"))
 		{
 			try
 			{
-				panel.loadRs();
+				clientPanel.loadRs();
 			}
 			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
 			{
@@ -99,41 +151,124 @@ public class ClientUI extends JFrame
 				System.exit(-1);
 			}
 		}
-		container.add(panel, BorderLayout.CENTER);
-
-		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		container.add(navContainer, BorderLayout.EAST);
 
 		pluginToolbar = new PluginToolbar(this);
-		navContainer.add(pluginToolbar, BorderLayout.EAST);
 
-		add(container);
+		containerCfg = new SLConfig(container)
+			.row(FILL_SPACE).col(FILL_SPACE).col(PluginToolbar.TOOLBAR_WIDTH)
+			.place(0, 0, clientPanel)
+			.place(0, 1, pluginToolbar);
+
+		tweenManager = SLAnimator.createTweenManager();
+		container.setTweenManager(tweenManager);
+		container.initialize(containerCfg);
 	}
 
-	void expand(PluginPanel panel)
+	void expand(PluginPanel panel, int btnIndex)
 	{
+		SLConfig pluginCfg = new SLConfig(container)
+			.row(FILL_SPACE).col(FILL_SPACE).col(PluginPanel.PANEL_WIDTH).col(PluginToolbar.TOOLBAR_WIDTH)
+			.place(0, 0, clientPanel)
+			.place(0, 1, panel)
+			.place(0, 2, pluginToolbar);
+
+		pluginToolbar.setActionsEnabled(false);
+
 		if (pluginPanel != null)
 		{
-			navContainer.remove(1);
-			container.validate();
+			if (prevBtnIndex > btnIndex)
+			{
+				container.createTransition()
+					.push(new SLKeyframe(pluginCfg, 0.6f)
+						.setStartSide(SLSide.TOP, panel)
+						.setEndSide(SLSide.BOTTOM, pluginPanel)
+						.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+					.play();
+			}
+			else
+			{
+				container.createTransition()
+					.push(new SLKeyframe(pluginCfg, 0.6f)
+						.setStartSide(SLSide.BOTTOM, panel)
+						.setEndSide(SLSide.TOP, pluginPanel)
+						.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+					.play();
+			}
+		}
+		else if (getWidth() < EXPANDED_WIDTH)
+		{
+			SLConfig pluginFillCfg = new SLConfig(container)
+				.row(ClientPanel.PANEL_HEIGHT).col(ClientPanel.PANEL_WIDTH).col(1f).col(PluginToolbar.TOOLBAR_WIDTH)
+				.place(0, 0, clientPanel)
+				.place(0, 1, panel)
+				.place(0, 2, pluginToolbar);
+
+			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
+				.setCallback(() -> Tween.to(this, FrameAccessor.WIDTH, 0.6f)
+					.target(EXPANDED_WIDTH)
+					.ease(Cubic.INOUT)
+					.setCallback((type, source) ->
+					{
+						if (type == TweenCallback.COMPLETE)
+						{
+							container.createTransition().push(new SLKeyframe(pluginCfg, 0)
+								.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+							).play();
+						}
+					}).start(tweenManager)))
+				.play();
+		}
+		else
+		{
+			container.createTransition()
+				.push(new SLKeyframe(pluginCfg, 0.6f)
+					.setStartSide(SLSide.RIGHT, panel)
+					.setCallback(() -> pluginToolbar.setActionsEnabled(true)))
+				.play();
 		}
 
 		pluginPanel = panel;
-		navContainer.add(pluginPanel, BorderLayout.WEST);
-		container.validate();
-		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+		prevBtnIndex = btnIndex;
 	}
 
 	void contract()
 	{
-		navContainer.remove(1);
-		container.validate();
-		this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		if (this.getWidth() == EXPANDED_WIDTH)
+		pluginToolbar.setActionsEnabled(false);
+
+		if (getWidth() == EXPANDED_WIDTH)
 		{
-			this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+			SLConfig pluginFillCfg = new SLConfig(container)
+				.row(ClientPanel.PANEL_HEIGHT).col(ClientPanel.PANEL_WIDTH).col(1f).col(PluginToolbar.TOOLBAR_WIDTH)
+				.place(0, 0, clientPanel)
+				.place(0, 1, pluginPanel)
+				.place(0, 2, pluginToolbar);
+
+			container.createTransition().push(new SLKeyframe(pluginFillCfg, 0)
+				.setCallback(() -> Tween.to(this, FrameAccessor.WIDTH, 0.6f)
+					.target(PANEL_WIDTH)
+					.ease(Cubic.INOUT)
+					.setCallback((type, source) ->
+					{
+						if (type == TweenCallback.COMPLETE)
+						{
+							container.createTransition()
+								.push(new SLKeyframe(containerCfg, 0)
+									.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+								).play();
+						}
+					}).start(tweenManager))
+			).play();
 		}
+		else
+		{
+			setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+			container.createTransition()
+				.push(new SLKeyframe(containerCfg, 0.6f)
+					.setEndSide(SLSide.RIGHT, pluginPanel)
+					.setCallback(() -> pluginToolbar.setActionsEnabled(true))
+				).play();
+		}
+
 		pluginPanel = null;
 	}
 

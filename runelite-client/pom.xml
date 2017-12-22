@@ -140,6 +140,16 @@
 			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mini2Dx</groupId>
+			<artifactId>universal-tween-engine</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.KronosDesign</groupId>
+			<artifactId>sliding-layout</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
