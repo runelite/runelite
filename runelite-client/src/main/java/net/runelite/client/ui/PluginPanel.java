@@ -24,9 +24,27 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-public class PluginPanel extends JPanel
+public abstract class PluginPanel extends JPanel
 {
-	public static final int PANEL_WIDTH = 225, PANEL_HEIGHT = 503;
+	public static final int PANEL_WIDTH = 225;
+	private static final int OFFSET = 6;
+	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+
+	public PluginPanel()
+	{
+		super();
+		setBorder(BORDER_PADDING);
+		setLayout(new GridLayout(0, 1, 0, 3));
+	}
+
+	@Override
+	public Dimension getPreferredSize()
+	{
+		return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
+	}
 }

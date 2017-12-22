@@ -30,7 +30,6 @@ import net.runelite.client.ui.PluginPanel;
 import javax.imageio.ImageIO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -42,7 +41,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,7 +48,6 @@ public class XpPanel extends PluginPanel
 {
 	private Map<Skill, JPanel> labelMap = new HashMap<>();
 	private final XpTrackerPlugin xpTracker;
-	private JPanel statsPanel;
 
 	@Inject
 	@Nullable
@@ -62,14 +59,8 @@ public class XpPanel extends PluginPanel
 	@Inject
 	public XpPanel(XpTrackerPlugin xpTracker)
 	{
+		super();
 		this.xpTracker = xpTracker;
-
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setSize(PANEL_WIDTH, PANEL_HEIGHT);
-		setVisible(true);
-		statsPanel = new JPanel();
-		statsPanel.setLayout(new GridLayout(24, 1));
 
 		try
 		{
@@ -90,14 +81,9 @@ public class XpPanel extends PluginPanel
 		}
 
 		JButton resetButton = new JButton("Reset All");
-		resetButton.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
 		resetButton.addActionListener((e) -> executor.execute(this::resetAllSkillXpHr));
-
-		statsPanel.add(resetButton);
-		JScrollPane scroll = new JScrollPane(statsPanel);
-		scroll.add(statsPanel);
-
-		add(statsPanel);
+		resetButton.setPreferredSize(new Dimension(0, 32));
+		add(resetButton);
 	}
 
 	private JButton makeSkillResetButton(Skill skill) throws IOException
@@ -114,13 +100,12 @@ public class XpPanel extends PluginPanel
 		BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setHgap(12);
 		JPanel iconLevel = new JPanel(borderLayout);
-		iconLevel.setPreferredSize(new Dimension(PANEL_WIDTH, 32));
+		iconLevel.setPreferredSize(new Dimension(0, 32));
 
 		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XpPanel.class.getResourceAsStream(skillIcon))));
 		iconLevel.add(icon, BorderLayout.LINE_START);
-
 		iconLevel.add(levelLabel, BorderLayout.CENTER);
 		iconLevel.add(makeSkillResetButton(skill), BorderLayout.LINE_END);
 
@@ -131,9 +116,8 @@ public class XpPanel extends PluginPanel
 	{
 		int skillIdx = skill.ordinal();
 		xpTracker.getXpInfos()[skillIdx].reset(client.getSkillExperience(skill));
-		statsPanel.remove(labelMap.get(skill));
-		statsPanel.revalidate();
-		statsPanel.repaint();
+		remove(labelMap.get(skill));
+		revalidate();
 	}
 
 	public void resetAllSkillXpHr()
@@ -165,11 +149,10 @@ public class XpPanel extends PluginPanel
 		JLabel xpHr = (JLabel) skillPanel.getComponent(1);
 		xpHr.setText(NumberFormat.getInstance().format(skillXPInfo.getXpHr()) + " xp/hr");
 
-		if (skillPanel.getParent() != statsPanel)
+		if (skillPanel.getParent() != this)
 		{
-			statsPanel.add(skillPanel);
-			statsPanel.revalidate();
-			statsPanel.repaint();
+			add(skillPanel);
+			revalidate();
 		}
 	}
 }

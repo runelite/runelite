@@ -24,8 +24,16 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import com.google.common.base.Strings;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -34,14 +42,25 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.client.ui.PluginPanel;
-import net.runelite.http.api.hiscore.*;
-import static net.runelite.http.api.hiscore.HiscoreSkill.*;
+import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.Skill;
 
 @Slf4j
 public class HiscorePanel extends PluginPanel
@@ -77,18 +96,12 @@ public class HiscorePanel extends PluginPanel
 
 	public HiscorePanel()
 	{
+		super();
+
 		// Panel "constants"
 		// This was an EtchedBorder, but the style would change when the window was maximized.
 		Border subPanelBorder = BorderFactory.createLineBorder(this.getBackground().brighter(), 2);
-		Insets subPanelInsets = new Insets(2, 4, 2, 4);
 		Font labelFont = UIManager.getFont("Label.font");
-
-		// Setting base panel size
-		Dimension panelSize = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
-		setMinimumSize(panelSize);
-		setPreferredSize(panelSize);
-		setSize(panelSize);
-		setVisible(true);
 
 		// Create GBL to arrange sub items
 		GridBagLayout gridBag = new GridBagLayout();
@@ -124,7 +137,7 @@ public class HiscorePanel extends PluginPanel
 		c.gridy = 0;
 		c.weightx = 1;
 		c.weighty = 0;
-		c.insets = subPanelInsets;
+		c.insets = new Insets(0, 0, 3, 0);
 		gridBag.setConstraints(inputPanel, c);
 		add(inputPanel);
 
