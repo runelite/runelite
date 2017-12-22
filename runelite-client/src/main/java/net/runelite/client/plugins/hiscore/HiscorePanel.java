@@ -39,7 +39,6 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
-import net.runelite.client.ui.IconTextField;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.hiscore.*;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
