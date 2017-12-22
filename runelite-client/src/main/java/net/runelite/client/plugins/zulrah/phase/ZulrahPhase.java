@@ -29,8 +29,15 @@ import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 
+import java.awt.Color;
+
 public class ZulrahPhase
 {
+	private static final Color RANGE_COLOR = new Color(150, 255, 0, 100);
+	private static final Color MAGIC_COLOR = new Color(20, 170, 200, 100);
+	private static final Color MELEE_COLOR = new Color(180, 50, 20, 100);
+	private static final Color JAD_COLOR = new Color(255, 115, 0, 100);
+
 	private final ZulrahLocation zulrahLocation;
 	private final ZulrahType type;
 	private final boolean jad;
@@ -156,5 +163,26 @@ public class ZulrahPhase
 		}
 		ZulrahPhase other = (ZulrahPhase) obj;
 		return this.jad == other.jad && this.zulrahLocation == other.zulrahLocation && this.type == other.type;
+	}
+
+	public Color getColor()
+	{
+		if (jad)
+		{
+			return JAD_COLOR;
+		}
+		else
+		{
+			switch (type)
+			{
+				case RANGE:
+					return RANGE_COLOR;
+				case MAGIC:
+					return MAGIC_COLOR;
+				case MELEE:
+					return MELEE_COLOR;
+			}
+		}
+		return RANGE_COLOR;
 	}
 }
