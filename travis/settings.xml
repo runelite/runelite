@@ -265,6 +265,7 @@ under the License.
         <runelite.tomcat.url>http://api.runelite.net/manager/text</runelite.tomcat.url>
         <maven.javadoc.skip>false</maven.javadoc.skip>
         <checkstyle.skip>false</checkstyle.skip>
+        <archetype.test.skip>false</archetype.test.skip>
       </properties>
     </profile>
   </profiles>

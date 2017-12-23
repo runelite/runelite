@@ -41,6 +41,7 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
+		<archetype.test.skip>true</archetype.test.skip>
 
 		<rs.version>160</rs.version>
 	</properties>
