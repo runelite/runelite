@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -144,8 +145,8 @@ public class Perspective
 		int angle = client.getMapAngle() & 0x7FF;
 
 		Point localLocation = client.getLocalPlayer().getLocalLocation();
-		x = x / 32 - localLocation.getX() / 32;
-		y = y / 32 - localLocation.getY() / 32;
+		x = x / 32 - localLocation.x / 32;
+		y = y / 32 - localLocation.y / 32;
 
 		int dist = x * x + y * y;
 		if (dist < distance)
@@ -205,16 +206,16 @@ public class Perspective
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
-		int x = (point.getX() - baseX) << LOCAL_COORD_BITS;
-		int y = (point.getY() - baseY) << LOCAL_COORD_BITS;
+		int x = (point.x - baseX) << LOCAL_COORD_BITS;
+		int y = (point.y - baseY) << LOCAL_COORD_BITS;
 
 		return new Point(x, y);
 	}
 
 	public static Point localToWorld(Client client, Point point)
 	{
-		int x = (point.getX() >>> LOCAL_COORD_BITS) + client.getBaseX();
-		int y = (point.getY() >>> LOCAL_COORD_BITS) + client.getBaseY();
+		int x = (point.x >>> LOCAL_COORD_BITS) + client.getBaseX();
+		int y = (point.y >>> LOCAL_COORD_BITS) + client.getBaseY();
 		return new Point(x, y);
 	}
 
@@ -222,15 +223,15 @@ public class Perspective
 	{
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
-		int x = point.getX() + baseX;
-		int y = point.getY() + baseY;
+		int x = point.x + baseX;
+		int y = point.y + baseY;
 		return new Point(x, y);
 	}
 
 	public static Point regionToLocal(Client client, Point point)
 	{
-		int x = point.getX() << LOCAL_COORD_BITS;
-		int y = point.getY() << LOCAL_COORD_BITS;
+		int x = point.x << LOCAL_COORD_BITS;
+		int y = point.y << LOCAL_COORD_BITS;
 		return new Point(x, y);
 	}
 
@@ -265,20 +266,20 @@ public class Perspective
 		int aoeSize = size / 2;
 
 		// Shift over one half tile as localLocation is the center point of the tile, and then shift the area size
-		Point topLeft = new Point(localLocation.getX() - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
-			localLocation.getY() - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
+		Point topLeft = new Point(localLocation.x - (aoeSize * LOCAL_TILE_SIZE) - halfTile,
+			localLocation.y - (aoeSize * LOCAL_TILE_SIZE) - halfTile);
 		// expand by size
-		Point bottomRight = new Point(topLeft.getX() + size * LOCAL_TILE_SIZE,
-			topLeft.getY() + size * LOCAL_TILE_SIZE);
+		Point bottomRight = new Point(topLeft.x + size * LOCAL_TILE_SIZE,
+			topLeft.y + size * LOCAL_TILE_SIZE);
 		// Take the x of top left and the y of bottom right to create bottom left
-		Point bottomLeft = new Point(topLeft.getX(), bottomRight.getY());
+		Point bottomLeft = new Point(topLeft.x, bottomRight.y);
 		// Similarly for top right
-		Point topRight = new Point(bottomRight.getX(), topLeft.getY());
+		Point topRight = new Point(bottomRight.x, topLeft.y);
 
-		Point p1 = worldToCanvas(client, topLeft.getX(), topLeft.getY(), plane);
-		Point p2 = worldToCanvas(client, topRight.getX(), topRight.getY(), plane);
-		Point p3 = worldToCanvas(client, bottomRight.getX(), bottomRight.getY(), plane);
-		Point p4 = worldToCanvas(client, bottomLeft.getX(), bottomLeft.getY(), plane);
+		Point p1 = worldToCanvas(client, topLeft.x, topLeft.y, plane);
+		Point p2 = worldToCanvas(client, topRight.x, topRight.y, plane);
+		Point p3 = worldToCanvas(client, bottomRight.x, bottomRight.y, plane);
+		Point p4 = worldToCanvas(client, bottomLeft.x, bottomLeft.y, plane);
 
 		if (p1 == null || p2 == null || p3 == null || p4 == null)
 		{
@@ -286,10 +287,10 @@ public class Perspective
 		}
 
 		Polygon poly = new Polygon();
-		poly.addPoint(p1.getX(), p1.getY());
-		poly.addPoint(p2.getX(), p2.getY());
-		poly.addPoint(p3.getX(), p3.getY());
-		poly.addPoint(p4.getX(), p4.getY());
+		poly.addPoint(p1.x, p1.y);
+		poly.addPoint(p2.x, p2.y);
+		poly.addPoint(p3.x, p3.y);
+		poly.addPoint(p4.x, p4.y);
 
 		return poly;
 	}
@@ -309,7 +310,7 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = Perspective.worldToCanvas(client, localLocation.x, localLocation.y, plane, zOffset);
 
 		if (p == null)
 		{
@@ -318,9 +319,9 @@ public class Perspective
 
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D bounds = fm.getStringBounds(text, graphics);
-		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
+		int xOffset = p.x - (int) (bounds.getWidth() / 2);
 
-		return new Point(xOffset, p.getY());
+		return new Point(xOffset, p.y);
 	}
 
 	/**
@@ -338,15 +339,15 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = Perspective.worldToCanvas(client, localLocation.x, localLocation.y, plane, zOffset);
 
 		if (p == null)
 		{
 			return null;
 		}
 
-		int xOffset = p.getX() - image.getWidth() / 2;
-		int yOffset = p.getY() - image.getHeight() / 2;
+		int xOffset = p.x - image.getWidth() / 2;
+		int yOffset = p.y - image.getHeight() / 2;
 
 		return new Point(xOffset, yOffset);
 	}
@@ -366,15 +367,15 @@ public class Perspective
 	{
 		int plane = client.getPlane();
 
-		Point p = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), plane, zOffset);
+		Point p = Perspective.worldToCanvas(client, localLocation.x, localLocation.y, plane, zOffset);
 
 		if (p == null)
 		{
 			return null;
 		}
 
-		int xOffset = p.getX() - sprite.getWidth() / 2;
-		int yOffset = p.getY() - sprite.getHeight() / 2;
+		int xOffset = p.x - sprite.getWidth() / 2;
+		int yOffset = p.y - sprite.getHeight() / 2;
 
 		return new Point(xOffset, yOffset);
 	}

@@ -145,7 +145,7 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTimerOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border, Color fillTimeLow, Color borderTimeLow)
 	{
-		net.runelite.api.Point loc = trap.getGameObject().getCanvasLocation();
+		Point loc = trap.getGameObject().getCanvasLocation();
 
 		//Construct the arc
 		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
@@ -161,7 +161,7 @@ public class TrapOverlay extends Overlay
 		//Draw the outlines of the arc
 		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
 		graphics.setColor(timeLeft > TIMER_LOW ? border : borderTimeLow);
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		graphics.drawOval(loc.x - TIMER_SIZE / 2, loc.y - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 	}
 
 	/**
@@ -174,15 +174,15 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border)
 	{
-		net.runelite.api.Point loc = trap.getGameObject().getCanvasLocation();
+		Point loc = trap.getGameObject().getCanvasLocation();
 
 		//Draw the inside of the arc
 		graphics.setColor(fill);
-		graphics.fillOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		graphics.fillOval(loc.x - TIMER_SIZE / 2, loc.y - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 
 		//Draw the border of the cirlce
 		graphics.setColor(border);
 		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
+		graphics.drawOval(loc.x - TIMER_SIZE / 2, loc.y - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 	}
 }

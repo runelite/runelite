@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 
 public interface TileObject

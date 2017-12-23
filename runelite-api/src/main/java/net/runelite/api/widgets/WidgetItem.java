@@ -24,8 +24,8 @@
  */
 package net.runelite.api.widgets;
 
+import java.awt.Point;
 import java.awt.Rectangle;
-import net.runelite.api.Point;
 
 public class WidgetItem
 {
@@ -70,7 +70,7 @@ public class WidgetItem
 
 	public Point getCanvasLocation()
 	{
-		return new Point((int) canvasBounds.getX(), (int) canvasBounds.getY());
+		return new Point((int) canvasBounds.x, (int) canvasBounds.y);
 	}
 
 }

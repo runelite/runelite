@@ -26,10 +26,10 @@
 package net.runelite.client.plugins.zulrah.phase;
 
 import net.runelite.api.NPC;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 
 import java.awt.Color;
+import java.awt.Point;
 
 public class ZulrahPhase
 {
@@ -85,11 +85,11 @@ public class ZulrahPhase
 		switch (zulrahLocation)
 		{
 			case SOUTH:
-				return new Point(startTile.getX(), startTile.getY() - 11);
+				return new Point(startTile.x, startTile.y - 11);
 			case EAST:
-				return new Point(startTile.getX() + 10, startTile.getY() - 2);
+				return new Point(startTile.x + 10, startTile.y - 2);
 			case WEST:
-				return new Point(startTile.getX() - 10, startTile.getY() - 2);
+				return new Point(startTile.x - 10, startTile.y - 2);
 		}
 		return startTile;
 	}
@@ -100,27 +100,27 @@ public class ZulrahPhase
 		switch (standLocation)
 		{
 			case WEST:
-				return new Point(startTile.getX() - 5, startTile.getY());
+				return new Point(startTile.x - 5, startTile.y);
 			case EAST:
-				return new Point(startTile.getX() + 5, startTile.getY() - 2);
+				return new Point(startTile.x + 5, startTile.y - 2);
 			case SOUTH:
-				return new Point(startTile.getX(), startTile.getY() - 6);
+				return new Point(startTile.x, startTile.y - 6);
 			case SOUTH_WEST:
-				return new Point(startTile.getX() - 4, startTile.getY() - 4);
+				return new Point(startTile.x - 4, startTile.y - 4);
 			case SOUTH_EAST:
-				return new Point(startTile.getX() + 2, startTile.getY() - 6);
+				return new Point(startTile.x + 2, startTile.y - 6);
 			case TOP_EAST:
-				return new Point(startTile.getX() + 6, startTile.getY() + 2);
+				return new Point(startTile.x + 6, startTile.y + 2);
 			case TOP_WEST:
-				return new Point(startTile.getX() - 4, startTile.getY() + 3);
+				return new Point(startTile.x - 4, startTile.y + 3);
 			case PILLAR_WEST_INSIDE:
-				return new Point(startTile.getX() - 4, startTile.getY() - 3);
+				return new Point(startTile.x - 4, startTile.y - 3);
 			case PILLAR_WEST_OUTSIDE:
-				return new Point(startTile.getX() - 5, startTile.getY() - 3);
+				return new Point(startTile.x - 5, startTile.y - 3);
 			case PILLAR_EAST_INSIDE:
-				return new Point(startTile.getX() + 4, startTile.getY() - 3);
+				return new Point(startTile.x + 4, startTile.y - 3);
 			case PILLAR_EAST_OUTSIDE:
-				return new Point(startTile.getX() + 4, startTile.getY() - 4);
+				return new Point(startTile.x + 4, startTile.y - 4);
 		}
 		return startTile;
 	}

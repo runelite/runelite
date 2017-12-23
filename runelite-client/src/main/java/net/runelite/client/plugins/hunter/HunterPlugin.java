@@ -27,6 +27,7 @@ package net.runelite.client.plugins.hunter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Point;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -44,7 +45,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.api.queries.PlayerQuery;
 import net.runelite.client.config.ConfigManager;
@@ -123,7 +123,7 @@ public class HunterPlugin extends Plugin
 		switch (gameObject.getId())
 		{
 			case ObjectID.DEADFALL: //Deadfall trap placed
-				if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
+				if (localPlayer.getWorldLocation().distance(gameObject.getWorldLocation()) <= 2
 					&& localPlayer.getAnimation() == AnimationID.HUNTER_LAY_DEADFALLTRAP)
 				{
 					log.debug("Deadfall trap placed by \"{}\" on {}", localPlayer.getName(), gameObject.getWorldLocation());
@@ -199,7 +199,7 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
-			//Black chin shaking box	
+			//Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:

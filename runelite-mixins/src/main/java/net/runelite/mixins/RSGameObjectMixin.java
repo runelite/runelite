@@ -24,9 +24,9 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Point;
 import java.awt.Polygon;
 import net.runelite.api.Model;
-import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;

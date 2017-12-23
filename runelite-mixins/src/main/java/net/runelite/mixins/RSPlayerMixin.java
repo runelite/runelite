@@ -24,12 +24,12 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 import net.runelite.api.mixins.Inject;
@@ -106,11 +106,11 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 			int xx[] =
 			{
-				x.getX(), y.getX(), z.getX()
+				x.x, y.x, z.x
 			};
 			int yy[] =
 			{
-				x.getY(), y.getY(), z.getY()
+				x.y, y.y, z.y
 			};
 			polys.add(new Polygon(xx, yy, 3));
 		}

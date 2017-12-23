@@ -26,7 +26,7 @@
 package net.runelite.client.plugins.volcanicmine;
 
 import com.google.common.collect.ImmutableSet;
-import net.runelite.api.Point;
+import java.awt.Point;
 import java.util.Set;
 
 class OptimalPaths
@@ -104,14 +104,14 @@ class OptimalPaths
 	//only use global location
 	public static boolean isOptimalPathTile(Point point)
 	{
-		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
+		Point instanceLocation = new Point(point.x % INSTANCE_SIZE, point.y % INSTANCE_SIZE);
 		return OPTIMAL_PATH_POINTS.contains(instanceLocation);
 	}
 
 	//only use global location
 	public static boolean isBoulderRangeTile(Point point)
 	{
-		Point instanceLocation = new Point(point.getX() % INSTANCE_SIZE, point.getY() % INSTANCE_SIZE);
+		Point instanceLocation = new Point(point.x % INSTANCE_SIZE, point.y % INSTANCE_SIZE);
 		return BOULDER_RANGE_POINTS.contains(instanceLocation);
 	}
 }

@@ -24,9 +24,9 @@
  */
 package net.runelite.api.queries;
 
+import java.awt.Point;
 import static java.lang.Math.abs;
 import net.runelite.api.Actor;
-import net.runelite.api.Point;
 import net.runelite.api.Query;
 
 public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Query<EntityType, QueryType>
@@ -98,7 +98,7 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 	@SuppressWarnings("unchecked")
 	public QueryType isWithinDistance(Point to, int distance)
 	{
-		predicate = and(a -> a.getLocalLocation().distanceTo(to) <= distance);
+		predicate = and(a -> a.getLocalLocation().distance(to) <= distance);
 		return (QueryType) this;
 	}
 
@@ -108,8 +108,8 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 		predicate = and(a ->
 		{
 			Point localLocation = a.getLocalLocation();
-			return abs(localLocation.getX() - from.getX()) < area
-				&& abs(localLocation.getY() - from.getY()) < area;
+			return abs(localLocation.x - from.x) < area
+				&& abs(localLocation.y - from.y) < area;
 		});
 		return (QueryType) this;
 	}

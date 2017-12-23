@@ -30,6 +30,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -47,7 +48,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Query;
 import net.runelite.api.Region;
@@ -353,8 +353,8 @@ public class VolcanicMinePlugin extends Plugin
 			}
 			Point objectLocation = gameObject.getLocalLocation();
 
-			if (abs(playerLocation.getX() - objectLocation.getX()) < MAX_DISTANCE
-					&& abs(playerLocation.getY() - objectLocation.getY()) < MAX_DISTANCE)
+			if (abs(playerLocation.x - objectLocation.x) < MAX_DISTANCE
+					&& abs(playerLocation.y - objectLocation.y) < MAX_DISTANCE)
 			{
 				LavaPlatform lavaPlatform = LavaPlatform.fromId(gameObject.getId());
 				Instant now = Instant.now();

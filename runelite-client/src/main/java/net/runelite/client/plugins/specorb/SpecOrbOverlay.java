@@ -27,10 +27,10 @@ package net.runelite.client.plugins.specorb;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -65,7 +65,7 @@ public class SpecOrbOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 		if (!config.enabled())
 		{
@@ -125,7 +125,7 @@ public class SpecOrbOverlay extends Overlay
 
 		// draw relative to run orb
 		Point runOrbPoint = runOrb.getCanvasLocation();
-		Point specOrbPoint = new Point(runOrbPoint.getX() + ORB_X_OFFSET, runOrbPoint.getY() + ORB_Y_OFFSET);
+		Point specOrbPoint = new Point(runOrbPoint.x + ORB_X_OFFSET, runOrbPoint.y + ORB_Y_OFFSET);
 
 		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;

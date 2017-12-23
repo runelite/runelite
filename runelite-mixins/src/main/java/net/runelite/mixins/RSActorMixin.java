@@ -25,6 +25,7 @@
 package net.runelite.mixins;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
@@ -32,7 +33,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;

@@ -29,6 +29,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,6 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.Point;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -69,7 +69,7 @@ public class ImplingsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.keySet()));
 		NPC[] implings = queryRunner.runQuery(implingQuery);
@@ -165,17 +165,17 @@ public class ImplingsOverlay extends Overlay
 		if (minimapLocation != null)
 		{
 			graphics.setColor(color);
-			graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
+			graphics.fillOval(minimapLocation.x, minimapLocation.y, 5, 5);
 			graphics.setColor(Color.WHITE);
 			graphics.setStroke(new BasicStroke(1));
-			graphics.drawOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
+			graphics.drawOval(minimapLocation.x, minimapLocation.y, 5, 5);
 		}
 
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight());
 		if (textLocation != null)
 		{
-			int x = textLocation.getX();
-			int y = textLocation.getY();
+			int x = textLocation.x;
+			int y = textLocation.y;
 
 			graphics.setColor(Color.BLACK);
 			graphics.drawString(text, x + 1, y + 1);

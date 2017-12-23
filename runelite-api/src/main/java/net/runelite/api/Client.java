@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Canvas;
+import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 import net.runelite.api.widgets.Widget;

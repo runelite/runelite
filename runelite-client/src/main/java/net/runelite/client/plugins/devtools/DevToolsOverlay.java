@@ -215,7 +215,7 @@ public class DevToolsOverlay extends Overlay
 		ItemLayer itemLayer = tile.getItemLayer();
 		if (itemLayer != null)
 		{
-			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distance(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				Node current = itemLayer.getBottom();
 				while (current instanceof Item)
@@ -237,7 +237,7 @@ public class DevToolsOverlay extends Overlay
 			{
 				if (gameObject != null)
 				{
-					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					if (player.getLocalLocation().distance(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
 						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
 					}
@@ -259,7 +259,7 @@ public class DevToolsOverlay extends Overlay
 		GroundObject groundObject = tile.getGroundObject();
 		if (groundObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distance(groundObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				OverlayUtil.renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
 			}
@@ -271,7 +271,7 @@ public class DevToolsOverlay extends Overlay
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(wallObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distance(wallObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				OverlayUtil.renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
 			}
@@ -283,7 +283,7 @@ public class DevToolsOverlay extends Overlay
 		DecorativeObject decorObject = tile.getDecorativeObject();
 		if (decorObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(decorObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distance(decorObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
@@ -312,8 +312,8 @@ public class DevToolsOverlay extends Overlay
 			FontMetrics fm = graphics.getFontMetrics();
 			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
 
-			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+			int textX = (int) (slotBounds.x + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
+			int textY = (int) (slotBounds.y + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
 
 			graphics.setColor(new Color(255, 255, 255, 65));
 			graphics.fill(slotBounds);
@@ -382,8 +382,8 @@ public class DevToolsOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
 
-		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
+		int textX = (int) (bounds.x + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
+		int textY = (int) (bounds.y + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, textX + 1, textY + 1);
