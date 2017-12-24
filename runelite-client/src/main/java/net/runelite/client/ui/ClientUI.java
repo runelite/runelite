@@ -26,11 +26,20 @@ package net.runelite.client.ui;
 
 import java.applet.Applet;
 import com.google.common.base.Strings;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Enumeration;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,6 +48,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -53,6 +63,9 @@ public class ClientUI extends JFrame
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
 
+	@Getter
+	private TrayIcon trayIcon;
+
 	private final Applet client;
 	private final RuneliteProperties properties;
 	private JPanel container;
@@ -60,18 +73,20 @@ public class ClientUI extends JFrame
 	private ClientPanel panel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+	private BufferedImage icon;
 
 	public ClientUI(RuneliteProperties properties, Applet client)
 	{
 		this.properties = properties;
 		this.client = client;
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
+		setupTrayIcon();
 		init();
 		pack();
 		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
 		titleBarPane.editTitleBar(this);
 		setTitle(null);
-		setIconImage(RuneLite.ICON);
+		setIconImage(icon);
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
@@ -91,6 +106,49 @@ public class ClientUI extends JFrame
 				UIManager.put(key, f);
 			}
 		}
+	}
+
+	private void setupTrayIcon()
+	{
+		if (!SystemTray.isSupported())
+		{
+			return;
+		}
+
+		SystemTray systemTray = SystemTray.getSystemTray();
+
+		try
+		{
+			icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+		}
+		catch (IOException e)
+		{
+			log.warn("Client icon failed to load", e);
+		}
+
+		trayIcon = new TrayIcon(icon, properties.getTitle());
+		trayIcon.setImageAutoSize(true);
+
+		try
+		{
+			systemTray.add(trayIcon);
+		}
+		catch (AWTException ex)
+		{
+			log.debug("Unable to add system tray icon", ex);
+			return;
+		}
+
+		// bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				setVisible(true);
+				setState(Frame.NORMAL); // unminimize
+			}
+		});
 	}
 
 
