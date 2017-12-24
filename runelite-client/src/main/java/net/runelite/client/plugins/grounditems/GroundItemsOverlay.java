@@ -46,6 +46,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
+import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
@@ -81,6 +82,8 @@ public class GroundItemsOverlay extends Overlay
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// Regex for splitting the hidden items in the config.
 	private static final String DELIMITER_REGEX = "\\s*,\\s*";
+	// ItemID for coins
+	private static final int COINS = ItemID.COINS_995;
 
 	private final Client client;
 	private final GroundItemsConfig config;
@@ -190,10 +193,20 @@ public class GroundItemsOverlay extends Overlay
 
 						ItemPrice itemPrice = itemManager.getItemPriceAsync(itemId);
 
-						int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
-						int alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+						int gePrice, alchPrice;
 
-						if (gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+						if (itemId == COINS)
+						{
+							gePrice = quantity;
+							alchPrice = quantity;
+						}
+						else
+						{
+							gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
+							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+						}
+						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
+								gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
 								(alchPrice >= config.getHideUnderHAValue())))
 						{
 							items.put(itemId, quantity);
@@ -275,7 +288,7 @@ public class GroundItemsOverlay extends Overlay
 					if (config.showHAValue())
 					{
 						itemStringBuilder.append(" (HA: ")
-							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT))
+							.append(Math.round(item.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity)
 							.append(" gp)");
 					}
 
