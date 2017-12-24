@@ -24,40 +24,29 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.Image;
 import java.util.function.Supplier;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-public class NavigationButton
+@Slf4j
+public class NavigationButton extends JButton
 {
-	private final JButton button = new JButton();
+	@Getter
 	private final Supplier<PluginPanel> panelSupplier;
 
-	private String name;
-
-	public NavigationButton(String name)
+	public NavigationButton(String name, Image icon)
 	{
-		this.name = name;
-		this.panelSupplier = null;
+		this(name, icon, null);
 	}
 
-	public NavigationButton(String name, Supplier<PluginPanel> panelSupplier)
+	public NavigationButton(String name, Image icon, Supplier<PluginPanel> panelSupplier)
 	{
-		this.name = name;
+		super();
+		setToolTipText(name);
+		setIcon(new ImageIcon(icon));
 		this.panelSupplier = panelSupplier;
-	}
-
-	public JButton getButton()
-	{
-		return button;
-	}
-
-	public Supplier<PluginPanel> getPanelSupplier()
-	{
-		return panelSupplier;
-	}
-
-	public String getName()
-	{
-		return name;
 	}
 }

@@ -29,10 +29,15 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -42,9 +47,9 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 @Slf4j
 public class ClientUI extends JFrame
 {
-	private static final int PANEL_WIDTH = 809;
-	private static final int PANEL_HEIGHT = 536;
-	private static final int EXPANDED_WIDTH = PANEL_WIDTH + PluginPanel.PANEL_WIDTH;
+	private static final int CLIENT_WIDTH = 809;
+	private static final int SCROLLBAR_WIDTH = 17;
+	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
 
 	private final RuneLite runelite;
 	private JPanel container;
@@ -56,6 +61,7 @@ public class ClientUI extends JFrame
 	public ClientUI(RuneLite runelite)
 	{
 		this.runelite = runelite;
+		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 		init();
 		pack();
 		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
@@ -67,13 +73,28 @@ public class ClientUI extends JFrame
 		setVisible(true);
 	}
 
+	private static void setUIFont(FontUIResource f)
+	{
+		final Enumeration keys = UIManager.getDefaults().keys();
+
+		while (keys.hasMoreElements())
+		{
+			final Object key = keys.nextElement();
+			final Object value = UIManager.get(key);
+
+			if (value instanceof FontUIResource)
+			{
+				UIManager.put(key, f);
+			}
+		}
+	}
+
 	private void init()
 	{
 		assert SwingUtilities.isEventDispatchThread();
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-
+		setMinimumSize(new Dimension(CLIENT_WIDTH, 0));
 		addWindowListener(new WindowAdapter()
 		{
 			@Override
@@ -120,21 +141,44 @@ public class ClientUI extends JFrame
 		}
 
 		pluginPanel = panel;
-		navContainer.add(pluginPanel, BorderLayout.WEST);
+		navContainer.add(wrapPanel(pluginPanel), BorderLayout.WEST);
 		container.validate();
-		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, PANEL_HEIGHT));
+		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, 0));
 	}
 
 	void contract()
 	{
 		navContainer.remove(1);
 		container.validate();
-		this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		this.setMinimumSize(new Dimension(CLIENT_WIDTH, 0));
 		if (this.getWidth() == EXPANDED_WIDTH)
 		{
-			this.setSize(PANEL_WIDTH, PANEL_HEIGHT);
+			this.setSize(CLIENT_WIDTH, getHeight());
 		}
 		pluginPanel = null;
+	}
+
+	private JPanel wrapPanel(PluginPanel panel)
+	{
+		final JPanel northPanel = new JPanel();
+		northPanel.setLayout(new BorderLayout());
+		northPanel.add(panel, BorderLayout.NORTH);
+
+		final JScrollPane scrollPane = new JScrollPane(northPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		final JPanel panelWrap = new JPanel();
+
+		// Adjust the preferred size to expand to width of scrollbar to
+		// to preven scrollbar overlapping over contents
+		panelWrap.setPreferredSize(new Dimension(
+					PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH,
+					0));
+
+		panelWrap.setLayout(new BorderLayout());
+		panelWrap.add(scrollPane, BorderLayout.CENTER);
+		return panelWrap;
 	}
 
 	private void checkExit()
