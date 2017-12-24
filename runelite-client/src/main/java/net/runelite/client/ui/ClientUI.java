@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import java.applet.Applet;
+import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -42,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
+import net.runelite.client.RuneliteProperties;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
 @Slf4j
@@ -52,21 +54,23 @@ public class ClientUI extends JFrame
 	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
 
 	private final Applet client;
+	private final RuneliteProperties properties;
 	private JPanel container;
 	private JPanel navContainer;
 	private ClientPanel panel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
-	public ClientUI(Applet client)
+	public ClientUI(RuneliteProperties properties, Applet client)
 	{
+		this.properties = properties;
 		this.client = client;
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 		init();
 		pack();
 		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
 		titleBarPane.editTitleBar(this);
-		setTitle("RuneLite");
+		setTitle(null);
 		setIconImage(RuneLite.ICON);
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
@@ -86,6 +90,20 @@ public class ClientUI extends JFrame
 			{
 				UIManager.put(key, f);
 			}
+		}
+	}
+
+
+	@Override
+	public void setTitle(String extra)
+	{
+		if (!Strings.isNullOrEmpty(extra))
+		{
+			super.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
+		}
+		else
+		{
+			super.setTitle(properties.getTitle() + " " + properties.getVersion());
 		}
 	}
 

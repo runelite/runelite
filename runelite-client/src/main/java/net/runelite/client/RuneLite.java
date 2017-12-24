@@ -24,7 +24,6 @@
  */
 package net.runelite.client;
 
-import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -184,9 +183,7 @@ public class RuneLite
 				log.warn("unable to set look and feel", ex);
 			}
 
-			gui = new ClientUI(client);
-			setTitle(null);
-
+			gui = new ClientUI(properties, client);
 			setupTrayIcon();
 		});
 
@@ -218,18 +215,6 @@ public class RuneLite
 
 		// Begin watching for new plugins
 		pluginManager.watch();
-	}
-
-	public void setTitle(String extra)
-	{
-		if (!Strings.isNullOrEmpty(extra))
-		{
-			gui.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
-		}
-		else
-		{
-			gui.setTitle(properties.getTitle() + " " + properties.getVersion());
-		}
 	}
 
 	private void setupTrayIcon()

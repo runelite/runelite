@@ -35,7 +35,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.events.SessionClose;
@@ -56,9 +55,6 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 @Slf4j
 public class AccountPlugin extends Plugin
 {
-	@Inject
-	RuneLite runelite;
-
 	@Inject
 	SessionManager sessionManager;
 
@@ -188,7 +184,7 @@ public class AccountPlugin extends Plugin
 
 		log.debug("Session opened as {}", session.getUsername());
 
-		runelite.setTitle("(" + session.getUsername() + ")");
+		ui.setTitle("(" + session.getUsername() + ")");
 
 		replaceLoginWithLogout();
 	}
@@ -204,7 +200,7 @@ public class AccountPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
-		runelite.setTitle(null);
+		ui.setTitle(null);
 	}
 
 }
