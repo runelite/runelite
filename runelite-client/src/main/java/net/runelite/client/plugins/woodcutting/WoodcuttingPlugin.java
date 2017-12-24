@@ -32,7 +32,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.RuneLite;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.Overlay;
 public class WoodcuttingPlugin extends Plugin
 {
 	@Inject
-	RuneLite runelite;
+	Notifier notifier;
 
 	@Inject
 	WoodcuttingOverlay overlay;
@@ -91,7 +91,7 @@ public class WoodcuttingPlugin extends Plugin
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
-				runelite.notify("A bird nest has spawned!");
+				notifier.notify("A bird nest has spawned!");
 			}
 		}
 	}

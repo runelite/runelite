@@ -25,6 +25,69 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import static net.runelite.api.AnimationID.COOKING_FIRE;
+import static net.runelite.api.AnimationID.COOKING_RANGE;
+import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
+import static net.runelite.api.AnimationID.FISHING_CAGE;
+import static net.runelite.api.AnimationID.FISHING_HARPOON;
+import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
+import static net.runelite.api.AnimationID.FISHING_NET;
+import static net.runelite.api.AnimationID.FISHING_POLE_CAST;
+import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_MAGIC_SHORTBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_MAPLE_SHORTBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_NORMAL_SHORTBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_OAK_SHORTBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_WILLOW_SHORTBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_LONGBOW;
+import static net.runelite.api.AnimationID.FLETCHING_STRING_YEW_SHORTBOW;
+import static net.runelite.api.AnimationID.GEM_CUTTING_DIAMOND;
+import static net.runelite.api.AnimationID.GEM_CUTTING_EMERALD;
+import static net.runelite.api.AnimationID.GEM_CUTTING_JADE;
+import static net.runelite.api.AnimationID.GEM_CUTTING_OPAL;
+import static net.runelite.api.AnimationID.GEM_CUTTING_REDTOPAZ;
+import static net.runelite.api.AnimationID.GEM_CUTTING_RUBY;
+import static net.runelite.api.AnimationID.GEM_CUTTING_SAPPHIRE;
+import static net.runelite.api.AnimationID.HERBLORE_POTIONMAKING;
+import static net.runelite.api.AnimationID.IDLE;
+import static net.runelite.api.AnimationID.MAGIC_CHARGING_ORBS;
+import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BLACK_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_BRONZE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_ORN;
+import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
+import static net.runelite.api.AnimationID.SMITHING_ANVIL;
+import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
+import static net.runelite.api.AnimationID.SMITHING_SMELTING;
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -33,12 +96,11 @@ import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.client.RuneLite;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.AnimationChanged;
 import net.runelite.client.events.GameStateChanged;
@@ -53,7 +115,7 @@ import net.runelite.client.ui.ClientUI;
 public class IdleNotifierPlugin extends Plugin
 {
 	@Inject
-	RuneLite runelite;
+	Notifier notifier;
 
 	@Inject
 	ClientUI gui;
@@ -260,7 +322,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 		if (config.sendTrayNotification())
 		{
-			runelite.notify(message);
+			notifier.notify(message);
 		}
 	}
 }
