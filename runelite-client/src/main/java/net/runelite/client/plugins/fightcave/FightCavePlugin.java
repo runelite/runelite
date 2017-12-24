@@ -25,22 +25,21 @@
 package net.runelite.client.plugins.fightcave;
 
 import com.google.inject.Binder;
+import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-
-import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Fight cave plugin"
@@ -52,7 +51,7 @@ public class FightCavePlugin extends Plugin
 	Client client;
 
 	@Inject
-	RuneLite runelite;
+	QueryRunner queryRunner;
 
 	@Inject
 	FightCaveConfig config;
@@ -112,7 +111,7 @@ public class FightCavePlugin extends Plugin
 	private NPC findJad()
 	{
 		Query query = new NPCQuery().nameContains("TzTok-Jad");
-		NPC[] result = runelite.runQuery(query);
+		NPC[] result = queryRunner.runQuery(query);
 		return result.length >= 1 ? result[0] : null;
 	}
 

@@ -45,15 +45,15 @@ import net.runelite.api.Query;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 public class PestControlOverlay extends Overlay
 {
-	private final RuneLite runelite;
+	private final QueryRunner queryRunner;
 	private final Client client;
 
 	private final PestControlPlugin plugin;
@@ -62,11 +62,11 @@ public class PestControlOverlay extends Overlay
 	private Game game;
 
 	@Inject
-	public PestControlOverlay(RuneLite runelite, PestControlPlugin plugin)
+	public PestControlOverlay(QueryRunner queryRunner, Client client, PestControlPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
-		this.client = runelite.getClient();
+		this.queryRunner = queryRunner;
+		this.client = client;
 		this.plugin = plugin;
 	}
 
@@ -106,7 +106,7 @@ public class PestControlOverlay extends Overlay
 	private void renderSpinners(Graphics2D graphics)
 	{
 		Query query = new NPCQuery().nameEquals("Spinner");
-		NPC[] result = runelite.runQuery(query);
+		NPC[] result = queryRunner.runQuery(query);
 		Arrays.stream(result).forEach(npc -> OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN));
 	}
 

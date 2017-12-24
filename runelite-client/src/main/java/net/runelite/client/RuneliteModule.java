@@ -43,6 +43,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 public class RuneliteModule extends AbstractModule
@@ -51,6 +52,7 @@ public class RuneliteModule extends AbstractModule
 	protected void configure()
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(QueryRunner.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);

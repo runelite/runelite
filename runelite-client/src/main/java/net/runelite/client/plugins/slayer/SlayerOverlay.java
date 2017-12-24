@@ -40,15 +40,15 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.QueryRunner;
 
 class SlayerOverlay extends Overlay
 {
-	private final RuneLite runelite;
+	private final QueryRunner queryRunner;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
@@ -80,10 +80,10 @@ class SlayerOverlay extends Overlay
 	);
 
 	@Inject
-	SlayerOverlay(RuneLite runelite, SlayerPlugin plugin, SlayerConfig config)
+	SlayerOverlay(QueryRunner queryRunner, SlayerPlugin plugin, SlayerConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
+		this.queryRunner = queryRunner;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -132,10 +132,10 @@ class SlayerOverlay extends Overlay
 	private Collection<WidgetItem> getSlayerWidgetItems()
 	{
 		Query inventoryQuery = new InventoryItemQuery();
-		WidgetItem[] inventoryWidgetItems = runelite.runQuery(inventoryQuery);
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
 		Query equipmentQuery = new EquipmentItemQuery().slotEquals(WidgetInfo.EQUIPMENT_HELMET, WidgetInfo.EQUIPMENT_RING);
-		WidgetItem[] equipmentWidgetItems = runelite.runQuery(equipmentQuery);
+		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 
 		WidgetItem[] items = concat(inventoryWidgetItems, equipmentWidgetItems, WidgetItem.class);
 		return ImmutableList.copyOf(items);
