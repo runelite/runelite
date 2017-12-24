@@ -57,12 +57,12 @@ import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
@@ -87,7 +87,7 @@ public class VolcanicMinePlugin extends Plugin
 	Client client;
 
 	@Inject
-	RuneLite runeLite;
+	ClientUI clientUI;
 
 	@Inject
 	QueryRunner queryRunner;
@@ -300,13 +300,13 @@ public class VolcanicMinePlugin extends Plugin
 
 	private void sendNotification(String message)
 	{
-		if (!config.alertWhenFocused() && runeLite.getGui().isFocused())
+		if (!config.alertWhenFocused() && clientUI.isFocused())
 		{
 			return;
 		}
 		if (config.requestFocus())
 		{
-			runeLite.getGui().requestFocus();
+			clientUI.requestFocus();
 		}
 		if (config.sendTrayNotification())
 		{

@@ -61,11 +61,7 @@ public class RuneLite
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 
 	private static Injector injector;
-
 	private static OptionSet options;
-	private static RuneLite runelite;
-
-	private ClientUI gui;
 
 	@Inject
 	private RuneliteProperties properties;
@@ -95,6 +91,7 @@ public class RuneLite
 	private SessionManager sessionManager;
 
 	Client client;
+	ClientUI gui;
 	Notifier notifier;
 
 	public static void main(String[] args) throws Exception
@@ -112,13 +109,12 @@ public class RuneLite
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
 		parser.accepts("no-rs");
-		options = parser.parse(args);
+		setOptions(parser.parse(args));
 
 		PROFILES_DIR.mkdirs();
 
-		injector = Guice.createInjector(new RuneliteModule());
-		runelite = injector.getInstance(RuneLite.class);
-		runelite.start();
+		setInjector(Guice.createInjector(new RuneliteModule()));
+		injector.getInstance(RuneLite.class).start();
 	}
 
 	public void start() throws Exception
@@ -157,7 +153,7 @@ public class RuneLite
 				log.warn("unable to set look and feel", ex);
 			}
 
-			gui = new ClientUI(properties, client);
+			setGui(new ClientUI(properties, client));
 		});
 
 		configManager.load();
@@ -188,11 +184,6 @@ public class RuneLite
 
 		// Begin watching for new plugins
 		pluginManager.watch();
-	}
-
-	public ClientUI getGui()
-	{
-		return gui;
 	}
 
 	public void setGui(ClientUI gui)
