@@ -33,12 +33,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +45,6 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
-import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
 @Singleton
 @Slf4j
@@ -96,15 +90,6 @@ public class RuneLite
 
 	public static void main(String[] args) throws Exception
 	{
-		// Force heavy-weight popups/tooltips.
-		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		// Do not render shadows under popups/tooltips.
-		// Fixes black boxes under popups that are above the game applet.
-		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
-		// Do not fill in background on repaint. Reduces flickering when
-		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
 
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
@@ -139,25 +124,13 @@ public class RuneLite
 			this.client = (Client) client;
 		}
 
-		SwingUtilities.invokeAndWait(() ->
-		{
-			JFrame.setDefaultLookAndFeelDecorated(true);
-			JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		// Load swing UI
+		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(properties, client)));
 
-			try
-			{
-				UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
-			}
-			catch (UnsupportedLookAndFeelException ex)
-			{
-				log.warn("unable to set look and feel", ex);
-			}
-
-			setGui(new ClientUI(properties, client));
-		});
-
+		// Load default configuration
 		configManager.load();
 
+		// Register event listeners
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
