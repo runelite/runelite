@@ -72,7 +72,7 @@ public class RuneliteModule extends AbstractModule
 	@Provides
 	ClientUI provideClientUi(RuneLite runelite)
 	{
-		return runelite.getGui();
+		return runelite.gui;
 	}
 
 	@Provides
