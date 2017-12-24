@@ -29,6 +29,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.Frame;
 import java.awt.Image;
@@ -39,6 +40,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Singleton;
@@ -52,7 +54,6 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Query;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -78,7 +79,6 @@ public class RuneLite
 	private static RuneLite runelite;
 	private static TrayIcon trayIcon;
 
-	private Client client;
 	private ClientUI gui;
 
 	@Inject
@@ -108,6 +108,7 @@ public class RuneLite
 	@Inject
 	private SessionManager sessionManager;
 
+	Client client;
 	Notifier notifier;
 
 	static
@@ -149,6 +150,26 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
+		// Load Runelite or Vanilla client
+		final boolean hasRs = !getOptions().has("no-rs");
+		final Optional<Applet> optionalClient = hasRs
+			? new ClientLoader().loadRs()
+			: Optional.empty();
+
+		if (!optionalClient.isPresent() && hasRs)
+		{
+			System.exit(-1);
+			return;
+		}
+
+		final Applet client = optionalClient.orElseGet(null);
+		final boolean isOutdated = client == null || !(client instanceof Client);
+
+		if (!isOutdated)
+		{
+			this.client = (Client) client;
+		}
+
 		SwingUtilities.invokeAndWait(() ->
 		{
 			JFrame.setDefaultLookAndFeelDecorated(true);
@@ -163,7 +184,7 @@ public class RuneLite
 				log.warn("unable to set look and feel", ex);
 			}
 
-			gui = new ClientUI(this);
+			gui = new ClientUI(client);
 			setTitle(null);
 
 			setupTrayIcon();
@@ -177,6 +198,9 @@ public class RuneLite
 
 		// Setup the notifier
 		notifier = new Notifier(properties.getTitle(), trayIcon);
+
+		// Tell the plugin manager if client is outdated or not
+		pluginManager.setOutdated(isOutdated);
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -240,16 +264,6 @@ public class RuneLite
 				gui.setState(Frame.NORMAL); // unminimize
 			}
 		});
-	}
-
-	public Client getClient()
-	{
-		return client;
-	}
-
-	public void setClient(Client client)
-	{
-		this.client = client;
 	}
 
 	public ClientUI getGui()

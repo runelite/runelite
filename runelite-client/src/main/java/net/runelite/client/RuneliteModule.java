@@ -64,9 +64,9 @@ public class RuneliteModule extends AbstractModule
 	}
 
 	@Provides
-	Client provideClient(RuneLite runelite)
+	Client provideClient(RuneLite runeLite)
 	{
-		return runelite.getClient();
+		return runeLite.client;
 	}
 
 	@Provides
