@@ -87,4 +87,6 @@ public interface Widget
 	int getItemId();
 
 	int getItemQuantity();
+	
+	boolean contains(Point point);
 }
