@@ -287,8 +287,4 @@ public class RuneLite
 		return trayIcon;
 	}
 
-	public <T> T[] runQuery(Query query)
-	{
-		return (T[]) query.result(client);
-	}
 }

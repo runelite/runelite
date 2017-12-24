@@ -64,6 +64,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Volcanic mine helper"
@@ -87,6 +88,9 @@ public class VolcanicMinePlugin extends Plugin
 
 	@Inject
 	RuneLite runeLite;
+
+	@Inject
+	QueryRunner queryRunner;
 
 	@Inject
 	Notifier notifier;
@@ -278,7 +282,7 @@ public class VolcanicMinePlugin extends Plugin
 		Query query = new NPCQuery()
 			.nameEquals(LAVA_BEAST)
 			.isWithinArea(player.getLocalLocation(), LAVA_BEAST_ATTACK_RANGE);
-		NPC[] npcs = runeLite.runQuery(query);
+		NPC[] npcs = queryRunner.runQuery(query);
 		return npcs.length > 0;
 	}
 

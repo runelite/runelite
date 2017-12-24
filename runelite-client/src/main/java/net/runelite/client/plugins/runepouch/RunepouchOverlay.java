@@ -36,13 +36,13 @@ import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.QueryRunner;
 
 public class RunepouchOverlay extends Overlay
 {
@@ -57,18 +57,18 @@ public class RunepouchOverlay extends Overlay
 
 	private final RuneImageCache runeImageCache = new RuneImageCache();
 
-	private final RuneLite runelite;
+	private final QueryRunner queryRunner;
 	private final Client client;
 	private final RunepouchConfig config;
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	RunepouchOverlay(RuneLite runelite, RunepouchConfig config, TooltipManager tooltipManager)
+	RunepouchOverlay(QueryRunner queryRunner, Client client, RunepouchConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.tooltipManager = tooltipManager;
-		this.runelite = runelite;
-		this.client = runelite.getClient();
+		this.queryRunner = queryRunner;
+		this.client = client;
 		this.config = config;
 		this.setDrawOverBankScreen(true);
 	}
@@ -82,7 +82,7 @@ public class RunepouchOverlay extends Overlay
 		}
 
 		Query query = new InventoryItemQuery().idEquals(ItemID.RUNE_POUCH);
-		WidgetItem[] items = runelite.runQuery(query);
+		WidgetItem[] items = queryRunner.runQuery(query);
 		if (items.length == 0)
 		{
 			return null;

@@ -32,17 +32,15 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Point;
 import net.runelite.api.queries.NPCQuery;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.util.QueryRunner;
 
 /**
  *
@@ -55,17 +53,15 @@ public class ImplingsOverlay extends Overlay
 	private static final int STATIC_SPAWN = 1618;
 	private static final int DYNAMIC_SPAWN = 1633;
 
-	private final RuneLite runelite;
-	private final Client client;
+	private final QueryRunner queryRunner;
 	private final ImplingsConfig config;
 	private final List<Integer> ids = new LinkedList<>();
 
 	@Inject
-	public ImplingsOverlay(RuneLite runelite, @Nullable Client client, ImplingsConfig config)
+	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
-		this.client = client;
+		this.queryRunner = queryRunner;
 		this.config = config;
 	}
 
@@ -73,7 +69,7 @@ public class ImplingsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
 		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids));
-		NPC[] implings = runelite.runQuery(implingQuery);
+		NPC[] implings = queryRunner.runQuery(implingQuery);
 		for (NPC imp : implings)
 		{
 			//Spawns have the name "null", so they get changed to "Spawn"
