@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.events.PluginChanged;
@@ -66,6 +67,9 @@ public class PluginManager
 
 	@Inject
 	PluginWatcher pluginWatcher;
+
+	@Setter
+	boolean isOutdated;
 
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 
@@ -124,6 +128,11 @@ public class PluginManager
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
 					clazz);
+				continue;
+			}
+
+			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
+			{
 				continue;
 			}
 

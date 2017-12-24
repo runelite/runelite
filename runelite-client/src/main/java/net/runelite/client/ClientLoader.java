@@ -28,10 +28,44 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
+@Slf4j
 public class ClientLoader
 {
-	public Applet loadRunelite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
+	public Optional<Applet> loadRs()
+	{
+		final UpdateCheckClient updateCheck = new UpdateCheckClient();
+		boolean isOutdated = updateCheck.isOutdated();
+
+		try
+		{
+			if (isOutdated)
+			{
+				log.info("Runelite is outdated - fetching vanilla client");
+				return Optional.of(loadVanilla());
+			}
+
+			log.debug("Runelite is up to date");
+			return Optional.of(loadRunelite());
+		}
+		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+		{
+			if (e instanceof ClassNotFoundException)
+			{
+				log.error("Unable to load client - class not found. This means you"
+					+ " are not running RuneLite with Maven as the injected client"
+					+ " is not in your classpath.");
+			}
+
+			log.error("Error loading RS!", e);
+			return Optional.empty();
+		}
+	}
+
+	private Applet loadRunelite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
 		ConfigLoader config = new ConfigLoader();
 
@@ -48,7 +82,7 @@ public class ClientLoader
 		return rs;
 	}
 
-	public Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
+	private Applet loadVanilla() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
 		ConfigLoader config = new ConfigLoader();
 

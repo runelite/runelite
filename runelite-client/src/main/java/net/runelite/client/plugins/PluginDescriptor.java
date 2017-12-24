@@ -38,4 +38,6 @@ public @interface PluginDescriptor
 	String name();
 
 	boolean developerPlugin() default false;
+
+	boolean loadWhenOutdated() default false;
 }

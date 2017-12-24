@@ -24,11 +24,11 @@
  */
 package net.runelite.client.ui;
 
+import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,16 +51,16 @@ public class ClientUI extends JFrame
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
 
-	private final RuneLite runelite;
+	private final Applet client;
 	private JPanel container;
 	private JPanel navContainer;
 	private ClientPanel panel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
-	public ClientUI(RuneLite runelite)
+	public ClientUI(Applet client)
 	{
-		this.runelite = runelite;
+		this.client = client;
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 		init();
 		pack();
@@ -107,19 +107,7 @@ public class ClientUI extends JFrame
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
 
-		panel = new ClientPanel(this);
-		if (!RuneLite.getOptions().has("no-rs"))
-		{
-			try
-			{
-				panel.loadRs();
-			}
-			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
-			{
-				log.error("Error loading RS!", ex);
-				System.exit(-1);
-			}
-		}
+		panel = new ClientPanel(client);
 		container.add(panel, BorderLayout.CENTER);
 
 		navContainer = new JPanel();
@@ -183,11 +171,10 @@ public class ClientUI extends JFrame
 
 	private void checkExit()
 	{
-		Client client = runelite.getClient();
 		int result = JOptionPane.OK_OPTION;
 
 		// only ask if not logged out
-		if (client != null && client.getGameState() != GameState.LOGIN_SCREEN)
+		if (client != null && client instanceof Client && ((Client)client).getGameState() != GameState.LOGIN_SCREEN)
 		{
 			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 		}
@@ -206,10 +193,5 @@ public class ClientUI extends JFrame
 	public PluginPanel getPluginPanel()
 	{
 		return pluginPanel;
-	}
-
-	RuneLite getRunelite()
-	{
-		return runelite;
 	}
 }
