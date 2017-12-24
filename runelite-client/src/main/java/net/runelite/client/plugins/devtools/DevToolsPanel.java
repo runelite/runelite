@@ -25,9 +25,10 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Collection;
 import javax.annotation.Nullable;
@@ -43,16 +44,12 @@ import javax.swing.tree.DefaultTreeModel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
 public class DevToolsPanel extends PluginPanel
 {
-	private final EmptyBorder PADDING_BORDER = new EmptyBorder(3, 3, 3, 3);
-
 	private JButton renderPlayersBtn = new JButton();
 	private JButton renderNpcsBtn = new JButton();
 	private JButton renderGroundItemsBtn = new JButton();
@@ -61,8 +58,6 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderWallsBtn = new JButton();
 	private JButton renderDecorBtn = new JButton();
 	private JButton renderInventoryBtn = new JButton();
-	private JButton settingsSnapshotBtn = new JButton();
-	private JButton settingsClearBtn = new JButton();
 
 	private JLabel textLbl = new JLabel();
 	private JLabel textColorLbl = new JLabel();
@@ -80,26 +75,22 @@ public class DevToolsPanel extends PluginPanel
 	@Inject
 	public DevToolsPanel(@Nullable Client client, DevToolsPlugin plugin)
 	{
+		super();
 		this.client = client;
 		this.plugin = plugin;
 
 		settingsTracker = new SettingsTracker(client);
-
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setSize(PANEL_WIDTH, PANEL_HEIGHT);
-		setLayout(new BorderLayout());
-		setVisible(true);
-
-		add(createOptionsPanel(), BorderLayout.NORTH);
-		add(createWidgetTreePanel(), BorderLayout.CENTER);
+		final JPanel borderedWrap = new JPanel();
+		borderedWrap.setLayout(new BorderLayout(0, 3));
+		borderedWrap.add(createOptionsPanel(), BorderLayout.NORTH);
+		borderedWrap.add(createWidgetTreePanel(), BorderLayout.CENTER);
+		add(borderedWrap);
 	}
 
 	private JPanel createOptionsPanel()
 	{
 		JPanel container = new JPanel();
 		container.setLayout(new GridLayout(5, 2, 3, 3));
-		container.setBorder(PADDING_BORDER);
 
 		renderPlayersBtn = new JButton("Players");
 		renderPlayersBtn.addActionListener(e ->
@@ -165,11 +156,11 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderInventoryBtn);
 
-		settingsSnapshotBtn = new JButton("Get Settings");
+		JButton settingsSnapshotBtn = new JButton("Get Settings");
 		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
 		container.add(settingsSnapshotBtn);
 
-		settingsClearBtn = new JButton("Clear Settings");
+		JButton settingsClearBtn = new JButton("Clear Settings");
 		settingsClearBtn.addActionListener(settingsTracker::clear);
 		container.add(settingsClearBtn);
 
@@ -179,7 +170,7 @@ public class DevToolsPanel extends PluginPanel
 	private JPanel createWidgetTreePanel()
 	{
 		JPanel container = new JPanel();
-		container.setLayout(new BorderLayout());
+		container.setLayout(new BorderLayout(0, 3));
 
 		JTree tree = new JTree(new DefaultMutableTreeNode());
 		tree.setRootVisible(false);
@@ -205,7 +196,6 @@ public class DevToolsPanel extends PluginPanel
 		});
 
 		JScrollPane scrollPane = new JScrollPane(tree);
-		scrollPane.setBorder(PADDING_BORDER);
 		container.add(scrollPane, BorderLayout.CENTER);
 
 		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
@@ -217,7 +207,6 @@ public class DevToolsPanel extends PluginPanel
 
 		JPanel btnContainer = new JPanel();
 		btnContainer.setLayout(new BorderLayout());
-		btnContainer.setBorder(PADDING_BORDER);
 		btnContainer.add(refreshWidgetsBtn);
 		container.add(btnContainer, BorderLayout.NORTH);
 

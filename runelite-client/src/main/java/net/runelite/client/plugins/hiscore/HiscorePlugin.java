@@ -28,7 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.swing.ImageIcon;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -58,11 +57,11 @@ public class HiscorePlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		navButton = new NavigationButton("Hiscore", () -> hiscorePanel);
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
-
-		ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
-		navButton.getButton().setIcon(icon);
+		navButton = new NavigationButton(
+			"Hiscore",
+			ImageIO.read(getClass().getResourceAsStream("hiscore.gif")),
+			() -> hiscorePanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);
 
