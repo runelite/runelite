@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -224,7 +223,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					Point point = itemLayer.getCanvasLocation();
 					// if the item is offscreen, don't bother drawing it
-					if (point == null || !pointInWidget(point, viewport))
+					if (point == null || (viewport != null && !viewport.contains(point)))
 					{
 						continue;
 					}
@@ -313,15 +312,5 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private boolean pointInWidget(Point point, Widget widget)
-	{
-		if (widget != null)
-		{
-			Rectangle bounds = widget.getBounds();
-			return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
-		}
-		return false;
 	}
 }

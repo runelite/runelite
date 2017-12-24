@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
@@ -40,6 +41,7 @@ import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
+import net.runelite.api.Tile;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.events.*;
@@ -109,6 +111,14 @@ public class Hooks
 		}
 	}
 
+	/**
+	 *
+	 * @param name Hook-name that was used in the @Hook-annotation.
+	 * @param idx The index if hooked to an array. -1 if not hooked to an
+	 * array.
+	 * @param object The object where the hook was placed in, NOT the
+	 * variable that was hooked to.
+	 */
 	public static void callHook(String name, int idx, Object object)
 	{
 		switch (name)
@@ -176,6 +186,19 @@ public class Hooks
 				eventBus.post(resizeableChanged);
 				break;
 			}
+			case "gameObjectsChanged":
+				if (idx != -1) // this happens from the field assignment
+				{
+					// GameObject that was changed.
+					GameObject go = ((Tile) object).getGameObjects()[idx];
+					if (go != null)
+					{
+						GameObjectsChanged gameObjectsChanged = new GameObjectsChanged();
+						gameObjectsChanged.setGameObject(go);
+						eventBus.post(gameObjectsChanged);
+					}
+				}
+				break;
 			default:
 				log.warn("Unknown event {} triggered on {}", name, object);
 				return;
