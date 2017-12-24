@@ -26,6 +26,7 @@ package net.runelite.client;
 
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Notifier
 {
-	private static enum OSType
+	private enum OSType
 	{
 		Windows, MacOS, Linux, Other
 	};
@@ -74,14 +75,28 @@ public class Notifier
 		log.debug("Detect OS: {}", DETECTED_OS);
 	}
 
+	private final String appName;
 	private final TrayIcon trayIcon;
 
-	public Notifier(final TrayIcon trayIcon)
+	Notifier(final String appName, final TrayIcon trayIcon)
 	{
+		this.appName = appName;
 		this.trayIcon = trayIcon;
 	}
 
-	public void sendNotification(
+
+	public void notify(String message)
+	{
+		notify(message, TrayIcon.MessageType.NONE);
+	}
+
+	public void notify(String message, TrayIcon.MessageType type)
+	{
+		sendNotification(appName, message, type, null);
+		Toolkit.getDefaultToolkit().beep();
+	}
+
+	private void sendNotification(
 		final String title,
 		final String message,
 		final TrayIcon.MessageType type,

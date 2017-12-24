@@ -34,7 +34,6 @@ import java.awt.AWTException;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -118,7 +117,7 @@ public class RuneLite
 
 	private AccountSession accountSession;
 
-	private Notifier notifier;
+	Notifier notifier;
 
 	static
 	{
@@ -186,7 +185,7 @@ public class RuneLite
 		eventBus.register(chatMessageManager);
 
 		// Setup the notifier
-		notifier = new Notifier(trayIcon);
+		notifier = new Notifier(properties.getTitle(), trayIcon);
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -407,17 +406,6 @@ public class RuneLite
 	public static TrayIcon getTrayIcon()
 	{
 		return trayIcon;
-	}
-
-	public void notify(String message)
-	{
-		notify(message, TrayIcon.MessageType.NONE);
-	}
-
-	public void notify(String message, TrayIcon.MessageType type)
-	{
-		notifier.sendNotification(properties.getTitle(), message, type, null);
-		Toolkit.getDefaultToolkit().beep();
 	}
 
 	public AccountSession getAccountSession()
