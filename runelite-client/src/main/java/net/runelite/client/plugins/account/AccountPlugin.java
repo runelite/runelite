@@ -37,6 +37,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
@@ -57,6 +58,9 @@ public class AccountPlugin extends Plugin
 {
 	@Inject
 	RuneLite runelite;
+
+	@Inject
+	SessionManager sessionManager;
 
 	@Inject
 	ClientUI ui;
@@ -87,7 +91,7 @@ public class AccountPlugin extends Plugin
 	private void logoutClick(ActionEvent ae)
 	{
 		// Destroy session
-		AccountSession session = runelite.getAccountSession();
+		AccountSession session = sessionManager.getAccountSession();
 		if (session != null)
 		{
 			AccountClient client = new AccountClient(session.getUuid());
@@ -101,8 +105,8 @@ public class AccountPlugin extends Plugin
 			}
 		}
 
-		runelite.closeSession(); // remove session from client
-		runelite.deleteSession(); // delete saved session file
+		sessionManager.closeSession(); // remove session from client
+		sessionManager.deleteSession(); // delete saved session file
 
 		// Replace logout nav button with login
 		PluginToolbar navigationPanel = ui.getPluginToolbar();
@@ -129,7 +133,7 @@ public class AccountPlugin extends Plugin
 		session.setUuid(login.getUid());
 		session.setCreated(Instant.now());
 
-		runelite.openSession(session);
+		sessionManager.openSession(session);
 
 		if (!Desktop.isDesktopSupported())
 		{
@@ -161,21 +165,21 @@ public class AccountPlugin extends Plugin
 	{
 		log.debug("Now logged in as {}", loginResponse.getUsername());
 
-		AccountSession session = runelite.getAccountSession();
+		AccountSession session = sessionManager.getAccountSession();
 		session.setUsername(loginResponse.getUsername());
 
 		// Open session, again, now that we have a username
 		// This triggers onSessionOpen
-		runelite.openSession(session);
+		sessionManager.openSession(session);
 
 		// Save session to disk
-		runelite.saveSession();
+		sessionManager.saveSession();
 	}
 
 	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{
-		AccountSession session = runelite.getAccountSession();
+		AccountSession session = sessionManager.getAccountSession();
 
 		if (session.getUsername() == null)
 		{

@@ -26,7 +26,6 @@ package net.runelite.client;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
-import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -38,10 +37,7 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -57,16 +53,13 @@ import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
-import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
-import net.runelite.http.api.account.AccountClient;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 
 @Singleton
@@ -75,7 +68,6 @@ public class RuneLite
 {
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 
 	public static Image ICON;
@@ -113,9 +105,8 @@ public class RuneLite
 	@Inject
 	private OverlayRenderer overlayRenderer;
 
-	private WSClient wsclient;
-
-	private AccountSession accountSession;
+	@Inject
+	private SessionManager sessionManager;
 
 	Notifier notifier;
 
@@ -199,7 +190,7 @@ public class RuneLite
 		pluginManager.startCorePlugins();
 
 		// Load the session, including saved configuration
-		loadSession();
+		sessionManager.loadSession();
 
 		// Begin watching for new plugins
 		pluginManager.watch();
@@ -251,118 +242,6 @@ public class RuneLite
 		});
 	}
 
-	private void loadSession()
-	{
-		if (!SESSION_FILE.exists())
-		{
-			log.info("No session file exists");
-			return;
-		}
-
-		AccountSession session;
-
-		try (FileInputStream in = new FileInputStream(SESSION_FILE))
-		{
-			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
-
-			log.debug("Loaded session for {}", session.getUsername());
-		}
-		catch (Exception ex)
-		{
-			log.warn("Unable to load session file", ex);
-			return;
-		}
-
-		// Check if session is still valid
-		AccountClient accountClient = new AccountClient(session.getUuid());
-		if (!accountClient.sesssionCheck())
-		{
-			log.debug("Loaded session {} is invalid", session.getUuid());
-			return;
-		}
-
-		openSession(session);
-	}
-
-	public void saveSession()
-	{
-		if (accountSession == null)
-		{
-			return;
-		}
-
-		try (FileWriter fw = new FileWriter(SESSION_FILE))
-		{
-			new Gson().toJson(accountSession, fw);
-
-			log.debug("Saved session to {}", SESSION_FILE);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to save session file", ex);
-		}
-	}
-
-	public void deleteSession()
-	{
-		SESSION_FILE.delete();
-	}
-
-	/**
-	 * Set the given session as the active session and open a socket to the
-	 * server with the given session
-	 *
-	 * @param session
-	 */
-	public void openSession(AccountSession session)
-	{
-		// If the ws session already exists, don't need to do anything
-		if (wsclient == null || !wsclient.getSession().equals(session))
-		{
-			if (wsclient != null)
-			{
-				wsclient.close();
-			}
-
-			wsclient = new WSClient(eventBus, executor, session);
-			wsclient.connect();
-		}
-
-		accountSession = session;
-
-		if (session.getUsername() != null)
-		{
-			// Initialize config for new session
-			// If the session isn't logged in yet, don't switch to the new config
-			configManager.switchSession(session);
-		}
-
-		eventBus.post(new SessionOpen());
-	}
-
-	public void closeSession()
-	{
-		if (wsclient != null)
-		{
-			wsclient.close();
-			wsclient = null;
-		}
-
-		if (accountSession == null)
-		{
-			return;
-		}
-
-		log.debug("Logging out of account {}", accountSession.getUsername());
-
-		accountSession = null; // No more account
-
-		// Restore config
-		configManager.switchSession(null);
-
-		eventBus.post(new SessionClose());
-	}
-
 	public Client getClient()
 	{
 		return client;
@@ -406,11 +285,6 @@ public class RuneLite
 	public static TrayIcon getTrayIcon()
 	{
 		return trayIcon;
-	}
-
-	public AccountSession getAccountSession()
-	{
-		return accountSession;
 	}
 
 	public <T> T[] runQuery(Query query)
