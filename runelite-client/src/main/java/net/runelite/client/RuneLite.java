@@ -29,19 +29,9 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import java.applet.Applet;
-import java.awt.AWTException;
-import java.awt.Frame;
-import java.awt.Image;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
@@ -70,13 +60,10 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 
-	public static Image ICON;
-
 	private static Injector injector;
 
 	private static OptionSet options;
 	private static RuneLite runelite;
-	private static TrayIcon trayIcon;
 
 	private ClientUI gui;
 
@@ -109,19 +96,6 @@ public class RuneLite
 
 	Client client;
 	Notifier notifier;
-
-	static
-	{
-		try
-		{
-			final URL icon = ClientUI.class.getResource("/runelite.png");
-			ICON = ImageIO.read(icon.openStream());
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-		}
-	}
 
 	public static void main(String[] args) throws Exception
 	{
@@ -184,7 +158,6 @@ public class RuneLite
 			}
 
 			gui = new ClientUI(properties, client);
-			setupTrayIcon();
 		});
 
 		configManager.load();
@@ -194,7 +167,7 @@ public class RuneLite
 		eventBus.register(chatMessageManager);
 
 		// Setup the notifier
-		notifier = new Notifier(properties.getTitle(), trayIcon);
+		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon());
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
@@ -215,40 +188,6 @@ public class RuneLite
 
 		// Begin watching for new plugins
 		pluginManager.watch();
-	}
-
-	private void setupTrayIcon()
-	{
-		if (!SystemTray.isSupported())
-		{
-			return;
-		}
-
-		SystemTray systemTray = SystemTray.getSystemTray();
-
-		trayIcon = new TrayIcon(ICON, properties.getTitle());
-		trayIcon.setImageAutoSize(true);
-
-		try
-		{
-			systemTray.add(trayIcon);
-		}
-		catch (AWTException ex)
-		{
-			log.debug("Unable to add system tray icon", ex);
-			return;
-		}
-
-		// bring to front when tray icon is clicked
-		trayIcon.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				gui.setVisible(true);
-				gui.setState(Frame.NORMAL); // unminimize
-			}
-		});
 	}
 
 	public ClientUI getGui()
@@ -280,10 +219,4 @@ public class RuneLite
 	{
 		RuneLite.options = options;
 	}
-
-	public static TrayIcon getTrayIcon()
-	{
-		return trayIcon;
-	}
-
 }
