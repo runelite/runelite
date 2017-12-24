@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.widgets;
+package net.runelite.client.events;
 
-import java.awt.Rectangle;
-import java.util.Collection;
-import net.runelite.api.Point;
+import lombok.Data;
+import net.runelite.api.GameObject;
 
-public interface Widget
+@Data
+public class GameObjectsChanged
 {
-	int getId();
-
-	int getType();
-
-	int getContentType();
-
-	Widget getParent();
-
-	int getParentId();
-
-	Widget getChild(int index);
-
-	Widget[] getDynamicChildren();
-
-	Widget[] getStaticChildren();
-
-	Widget[] getNestedChildren();
-
-	int getRelativeX();
-
-	void setRelativeX(int x);
-
-	int getRelativeY();
-
-	void setRelativeY(int y);
-
-	String getText();
-
-	void setText(String text);
-
-	int getTextColor();
-
-	String getName();
-
-	int getModelId();
-
-	int getSpriteId();
-
-	boolean isHidden();
-
-	void setHidden(boolean hidden);
-
-	Point getCanvasLocation();
-
-	int getWidth();
-
-	int getHeight();
-
-	Rectangle getBounds();
-
-	Collection<WidgetItem> getWidgetItems();
-
-	WidgetItem getWidgetItem(int index);
-
-	int getItemId();
-
-	int getItemQuantity();
-	
-	boolean contains(Point point);
+	private GameObject gameObject;
 }

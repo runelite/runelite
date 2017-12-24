@@ -26,25 +26,123 @@ package net.runelite.api;
 
 public enum MenuAction
 {
-	EXAMINE_OBJECT(1002),
-	EXAMINE_NPC(1003),
 	/**
-	 * Menu action triggered by examining item on ground
+	 * Menu action triggered by examining an object.
+	 */
+	EXAMINE_OBJECT(1002),
+	
+	/**
+	 * Menu action triggered by examining an NPC.
+	 */
+	EXAMINE_NPC(1003),
+	
+	/**
+	 * Menu action triggered by examining item on ground.
 	 */
 	EXAMINE_ITEM_GROUND(1004),
+	
 	/**
-	 * Menu action triggered by examining item in inventory
+	 * Menu action triggered by examining item in inventory.
 	 */
 	EXAMINE_ITEM(1005),
+	
 	/**
-	 * Menu action triggered by either examining item in bank, examining item
-	 * in inventory while having bank open, or examining equipped item
+	 * Menu action triggered by either examining item in bank, examining
+	 * item in inventory while having bank open, or examining equipped item.
 	 */
 	EXAMINE_ITEM_BANK_EQ(1007),
+	
 	/**
-	 * Menu action injected by runelite for its menu items
+	 * Menu action triggered by using an item in inventory on an item thats
+	 * on the ground.
+	 */
+	USE_ON_ITEM_GROUND(1),
+	
+	/**
+	 * Menu action triggered when checking a trap while hunting.
+	 */
+	CHECK(3),
+	
+	/**
+	 * Menu action triggered when checking a trap while hunting.
+	 */
+	DISMANTLE(3),
+	
+	/**
+	 * Menu action triggered by using an item in inventory on an NPC.
+	 */
+	USE_ON_NPC(7),
+	
+	/**
+	 * Menu action triggered when clicking "Dismiss" on a random event NPC.
+	 */
+	DISSMISS(13),
+	
+	/**
+	 * Menu action triggered by using an item in inventory on another
+	 * player.
+	 */
+	USE_ON_PLAYER(14),
+	
+	/**
+	 * Menu action triggered when laying a trap that is already on the
+	 * ground.
+	 */
+	LAY_GROUND(21),
+	
+	/**
+	 * Menu action triggered when clicking "CLICK HERE TO PLAY" just after
+	 * login.
+	 */
+	PLAY_RUNESCAPE(24),
+	
+	/**
+	 * Menu action triggered by using an item in your inventory on another
+	 * item in your inventory.
+	 */
+	USE_ON_ITEM_INV(31),
+	
+	/**
+	 * Menu action triggered when laying a trap that is in your inventory.
+	 */
+	LAY_INV(33),
+	
+	/**
+	 * Menu action triggered when cleaning a herb.
+	 */
+	CLEAN(33),
+	
+	/**
+	 * Menu action triggered when clicking on a wieldable item in your
+	 * inventory.
+	 */
+	WIELD(34),
+	
+	/**
+	 * Menu action triggered when clicking on a wieldable item in your
+	 * inventory.
+	 */
+	WEAR(34),
+	
+	/**
+	 * Menu action triggered when dropping an item from your inventory.
+	 */
+	DROP(37),
+	
+	/**
+	 * Menu action triggered clicking on an item in your inventory to "Use"
+	 * it, and select it to use it on something else.
+	 */
+	USE(38),
+	
+	/**
+	 * Menu action injected by runelite for its menu items.
 	 */
 	RUNELITE(1500),
+	
+	/**
+	 * Menu action triggered when the id is not defined in this class.
+	 */
 	UNKNOWN(-1);
 
 	private final int id;
