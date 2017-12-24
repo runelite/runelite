@@ -307,4 +307,11 @@ public abstract class RSWidgetMixin implements RSWidget
 		return widgets.toArray(new Widget[widgets.size()]);
 	}
 
+	@Inject
+	@Override
+	public boolean contains(Point point)
+	{
+		Rectangle bounds = getBounds();
+		return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
+	}
 }
