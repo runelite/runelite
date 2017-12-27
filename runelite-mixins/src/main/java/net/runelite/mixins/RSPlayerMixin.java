@@ -48,7 +48,14 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public String getName()
 	{
-		return getRSName().replace('\u00A0', ' ');
+		String name = getRSName();
+
+		if (name == null)
+		{
+			return null;
+		}
+
+		return name.replace('\u00A0', ' ');
 	}
 
 	@Inject
