@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 class WidgetID
 {
+	static final int LOGOUT_PANEL_ID = 182;
 	static final int BANK_GROUP_ID = 12;
 	static final int BANK_INVENTORY_GROUP_ID = 15;
 	static final int DEPOSIT_BOX_GROUP_ID = 192;
@@ -66,6 +67,11 @@ class WidgetID
 		static final int NAME = 1;
 		static final int CONTINUE = 2;
 		static final int TEXT = 3;
+	}
+
+	static class LogoutPanel
+	{
+		static final int LOGOUT_BUTTON = 6;
 	}
 
 	static class PestControl
