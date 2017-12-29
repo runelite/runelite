@@ -50,7 +50,8 @@ import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
 
 @PluginDescriptor(
-	name = "Account plugin"
+	name = "Account plugin",
+	loadWhenOutdated = true
 )
 @Slf4j
 public class AccountPlugin extends Plugin

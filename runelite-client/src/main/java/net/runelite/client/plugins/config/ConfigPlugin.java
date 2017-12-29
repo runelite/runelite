@@ -33,7 +33,8 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
-	name = "Configuration plugin"
+	name = "Configuration plugin",
+	loadWhenOutdated = true
 )
 public class ConfigPlugin extends Plugin
 {
