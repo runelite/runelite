@@ -40,7 +40,7 @@ public class Index
 
 	private final int id;
 
-	private int protocol = 7;
+	private int protocol = 6;
 	private boolean named = true;
 	private int revision;
 	private int crc;
