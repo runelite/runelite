@@ -79,7 +79,7 @@ public class VolcanicMineOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
-		if (client == null || !plugin.getInside() || !config.enabled())
+		if (!plugin.getInside() || !config.enabled())
 		{
 			return null;
 		}

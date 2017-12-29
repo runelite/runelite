@@ -63,7 +63,7 @@ public class FightCaveOverlay extends Overlay
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		JadAttack attack = plugin.getAttack();
-		if (attack == null || client == null || client.isPrayerActive(attack.getPrayer()))
+		if (attack == null || client.isPrayerActive(attack.getPrayer()))
 		{
 			return null;
 		}

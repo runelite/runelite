@@ -39,7 +39,6 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -83,7 +82,6 @@ public class VolcanicMinePlugin extends Plugin
 	private static final Pattern coltagPattern = Pattern.compile("((<col=([0-f]){6}>)|(<\\/col>))");
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

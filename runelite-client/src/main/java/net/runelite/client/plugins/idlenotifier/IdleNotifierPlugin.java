@@ -93,7 +93,6 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -121,7 +120,6 @@ public class IdleNotifierPlugin extends Plugin
 	ClientUI gui;
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

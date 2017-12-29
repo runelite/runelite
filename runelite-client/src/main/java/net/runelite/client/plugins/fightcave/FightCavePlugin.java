@@ -27,7 +27,6 @@ package net.runelite.client.plugins.fightcave;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -47,7 +46,6 @@ import net.runelite.client.util.QueryRunner;
 public class FightCavePlugin extends Plugin
 {
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
@@ -85,7 +83,7 @@ public class FightCavePlugin extends Plugin
 	)
 	public void update()
 	{
-		if (!config.enabled() || client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

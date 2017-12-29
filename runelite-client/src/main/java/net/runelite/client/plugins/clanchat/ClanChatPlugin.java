@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +76,6 @@ public class ClanChatPlugin extends Plugin
 	private int modIconsLength;
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

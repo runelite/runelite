@@ -30,7 +30,6 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -47,7 +46,6 @@ import net.runelite.client.task.Schedule;
 public class ClueScrollPlugin extends Plugin
 {
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

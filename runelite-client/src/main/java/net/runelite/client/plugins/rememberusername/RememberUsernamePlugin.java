@@ -26,7 +26,6 @@ package net.runelite.client.plugins.rememberusername;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -41,7 +40,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class RememberUsernamePlugin extends Plugin
 {
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

@@ -35,7 +35,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -51,7 +50,6 @@ public class XpTrackerPlugin extends Plugin
 	ClientUI ui;
 
 	@Inject
-	@Nullable
 	Client client;
 
 	private NavigationButton navButton;
