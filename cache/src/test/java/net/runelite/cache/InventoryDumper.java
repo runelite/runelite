@@ -75,9 +75,9 @@ public class InventoryDumper
 			for (FSFile file : files.getFiles())
 			{
 				InventoryLoader loader = new InventoryLoader();
-				InventoryDefinition inv = loader.load(file.getContents());
+				InventoryDefinition inv = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(inv), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(inv), new File(outDir, inv.id + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}

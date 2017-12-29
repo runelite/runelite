@@ -24,8 +24,13 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class KitDefinition
 {
+	@Getter
 	private final int id;
 	public short[] recolorToReplace;
 	public short[] recolorToFind;
@@ -38,14 +43,4 @@ public class KitDefinition
 		-1, -1, -1, -1, -1
 	};
 	public boolean nonSelectable = false;
-
-	public KitDefinition(int id)
-	{
-		this.id = id;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
 }

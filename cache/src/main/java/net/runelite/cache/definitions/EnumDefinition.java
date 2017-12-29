@@ -25,6 +25,9 @@
 
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class EnumDefinition
 {
 	private int id;
@@ -36,94 +39,4 @@ public class EnumDefinition
 	private int size;
 	private int[] keys;
 	private String[] stringVals;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int[] getIntVals()
-	{
-		return intVals;
-	}
-
-	public void setIntVals(int[] intVals)
-	{
-		this.intVals = intVals;
-	}
-
-	public char getKeyType()
-	{
-		return keyType;
-	}
-
-	public void setKeyType(char keyType)
-	{
-		this.keyType = keyType;
-	}
-
-	public char getValType()
-	{
-		return valType;
-	}
-
-	public void setValType(char valType)
-	{
-		this.valType = valType;
-	}
-
-	public String getDefaultString()
-	{
-		return defaultString;
-	}
-
-	public void setDefaultString(String defaultString)
-	{
-		this.defaultString = defaultString;
-	}
-
-	public int getDefaultInt()
-	{
-		return defaultInt;
-	}
-
-	public void setDefaultInt(int defaultInt)
-	{
-		this.defaultInt = defaultInt;
-	}
-
-	public int getSize()
-	{
-		return size;
-	}
-
-	public void setSize(int size)
-	{
-		this.size = size;
-	}
-
-	public int[] getKeys()
-	{
-		return keys;
-	}
-
-	public void setKeys(int[] keys)
-	{
-		this.keys = keys;
-	}
-
-	public String[] getStringVals()
-	{
-		return stringVals;
-	}
-
-	public void setStringVals(String[] stringVals)
-	{
-		this.stringVals = stringVals;
-	}
 }

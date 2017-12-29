@@ -29,9 +29,10 @@ import net.runelite.cache.io.InputStream;
 
 public class InventoryLoader
 {
-	public InventoryDefinition load(byte[] b)
+	public InventoryDefinition load(int id, byte[] b)
 	{
 		InventoryDefinition def = new InventoryDefinition();
+		def.id = id;
 		InputStream is = new InputStream(b);
 
 		while (true)

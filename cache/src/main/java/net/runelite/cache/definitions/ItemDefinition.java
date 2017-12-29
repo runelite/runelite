@@ -25,10 +25,12 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class ItemDefinition
 {
-	public int id;
+	public final int id;
 
 	public String name = "null";
 
@@ -99,9 +101,4 @@ public class ItemDefinition
 	public int placeholderTemplateId = -1;
 
 	public Map<Integer, Object> params = null;
-
-	public ItemDefinition(int definitionID)
-	{
-		this.id = definitionID;
-	}
 }

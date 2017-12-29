@@ -25,6 +25,9 @@
 
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class OverlayDefinition
 {
 	private int id;
@@ -32,54 +35,4 @@ public class OverlayDefinition
 	private int texture = -1;
 	private int secondaryRgbColor = -1;
 	private boolean hideUnderlay = true;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getRgbColor()
-	{
-		return rgbColor;
-	}
-
-	public void setRgbColor(int rgbColor)
-	{
-		this.rgbColor = rgbColor;
-	}
-
-	public int getTexture()
-	{
-		return texture;
-	}
-
-	public void setTexture(int texture)
-	{
-		this.texture = texture;
-	}
-
-	public int getSecondaryRgbColor()
-	{
-		return secondaryRgbColor;
-	}
-
-	public void setSecondaryRgbColor(int secondaryRgbColor)
-	{
-		this.secondaryRgbColor = secondaryRgbColor;
-	}
-
-	public boolean isHideUnderlay()
-	{
-		return hideUnderlay;
-	}
-
-	public void setHideUnderlay(boolean hideUnderlay)
-	{
-		this.hideUnderlay = hideUnderlay;
-	}
 }

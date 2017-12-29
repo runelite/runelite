@@ -101,7 +101,7 @@ public class ItemLoader
 		{
 			def.cost = stream.readInt();
 		}
-		else if (16 == opcode)
+		else if (opcode == 16)
 		{
 			def.members = true;
 		}

@@ -128,7 +128,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 23)
 		{
-			def.setaBool2111(true);
+			def.setABool2111(true);
 		}
 		else if (opcode == 24)
 		{
@@ -195,11 +195,11 @@ public class ObjectLoader
 		}
 		else if (opcode == 62)
 		{
-			def.setIsRotated(true);
+			def.setRotated(true);
 		}
 		else if (opcode == 64)
 		{
-			def.setaBool2097(false);
+			def.setABool2097(false);
 		}
 		else if (opcode == 65)
 		{
@@ -233,13 +233,13 @@ public class ObjectLoader
 		{
 			def.setOffsetY(is.readUnsignedShort());
 		}
-		else if (73 == opcode)
+		else if (opcode == 73)
 		{
-			def.setaBool2104(true);
+			def.setABool2104(true);
 		}
-		else if (74 == opcode)
+		else if (opcode == 74)
 		{
-			def.setIsSolid(true);
+			def.setSolid(true);
 		}
 		else if (opcode == 75)
 		{

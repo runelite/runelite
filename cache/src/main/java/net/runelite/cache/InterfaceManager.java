@@ -27,8 +27,6 @@ package net.runelite.cache;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.cache.definitions.InterfaceDefinition;
 import net.runelite.cache.definitions.exporters.InterfaceExporter;
 import net.runelite.cache.definitions.loaders.InterfaceLoader;
@@ -43,7 +41,7 @@ import net.runelite.cache.util.Namer;
 public class InterfaceManager
 {
 	private final Store store;
-	private final List<InterfaceDefinition> interfaces = new ArrayList<>();
+	private InterfaceDefinition[][] interfaces;
 	private final Namer namer = new Namer();
 
 	public InterfaceManager(Store store)
@@ -58,11 +56,20 @@ public class InterfaceManager
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.INTERFACES);
 
+		int max = index.getArchives().stream().mapToInt(a -> a.getArchiveId()).max().getAsInt();
+		interfaces = new InterfaceDefinition[max + 1][];
+
 		for (Archive archive : index.getArchives())
 		{
 			int archiveId = archive.getArchiveId();
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);
+
+			InterfaceDefinition[] ifaces = interfaces[archiveId];
+			if (ifaces == null)
+			{
+				ifaces = interfaces[archiveId] = new InterfaceDefinition[archive.getFileData().length];
+			}
 
 			for (FSFile file : files.getFiles())
 			{
@@ -71,12 +78,32 @@ public class InterfaceManager
 				int widgetId = (archiveId << 16) + fileId;
 
 				InterfaceDefinition iface = loader.load(widgetId, file.getContents());
-				interfaces.add(iface);
+				ifaces[fileId] = iface;
 			}
 		}
 	}
 
-	public List<InterfaceDefinition> getItems()
+	public int getNumInterfaceGroups()
+	{
+		return interfaces.length;
+	}
+
+	public int getNumChildren(int groupId)
+	{
+		return interfaces[groupId].length;
+	}
+
+	public InterfaceDefinition[] getIntefaceGroup(int groupId)
+	{
+		return interfaces[groupId];
+	}
+
+	public InterfaceDefinition getInterface(int groupId, int childId)
+	{
+		return interfaces[groupId][childId];
+	}
+
+	public InterfaceDefinition[][] getInterfaces()
 	{
 		return interfaces;
 	}
@@ -85,12 +112,28 @@ public class InterfaceManager
 	{
 		out.mkdirs();
 
-		for (InterfaceDefinition def : interfaces)
+		for (InterfaceDefinition[] defs : interfaces)
 		{
-			InterfaceExporter exporter = new InterfaceExporter(def);
+			if (defs == null)
+			{
+				continue;
+			}
 
-			File targ = new File(out, def.id + ".json");
-			exporter.exportTo(targ);
+			for (InterfaceDefinition def : defs)
+			{
+				if (def == null)
+				{
+					continue;
+				}
+
+				InterfaceExporter exporter = new InterfaceExporter(def);
+
+				File folder = new File(out, "" + (def.id >>> 16));
+				folder.mkdirs();
+
+				File targ = new File(folder, (def.id & 0xffff) + ".json");
+				exporter.exportTo(targ);
+			}
 		}
 	}
 
@@ -105,20 +148,27 @@ public class InterfaceManager
 			fw.println("package net.runelite.api;");
 			fw.println("");
 			fw.println("public final class InterfaceID {");
-			for (InterfaceDefinition def : interfaces)
+			for (InterfaceDefinition[] defs : interfaces)
 			{
-				if (def.name == null || def.name.equalsIgnoreCase("NULL"))
+				if (defs == null)
 				{
 					continue;
 				}
-
-				String name = namer.name(def.name, def.id);
-				if (name == null)
+				for (InterfaceDefinition def : defs)
 				{
-					continue;
-				}
+					if (def == null || def.name == null || def.name.equalsIgnoreCase("NULL"))
+					{
+						continue;
+					}
 
-				fw.println("	public static final int " + name + " = " + def.id + ";");
+					String name = namer.name(def.name, def.id);
+					if (name == null)
+					{
+						continue;
+					}
+
+					fw.println("	public static final int " + name + " = " + def.id + ";");
+				}
 			}
 			fw.println("}");
 		}

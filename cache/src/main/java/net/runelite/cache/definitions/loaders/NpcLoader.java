@@ -58,7 +58,7 @@ public class NpcLoader
 	{
 		int length;
 		int index;
-		if (1 == opcode)
+		if (opcode == 1)
 		{
 			length = stream.readUnsignedByte();
 			def.models = new int[length];
@@ -69,11 +69,11 @@ public class NpcLoader
 			}
 
 		}
-		else if (2 == opcode)
+		else if (opcode == 2)
 		{
 			def.name = stream.readString();
 		}
-		else if (12 == opcode)
+		else if (opcode == 12)
 		{
 			def.tileSpacesOccupied = stream.readUnsignedByte();
 		}
@@ -85,7 +85,7 @@ public class NpcLoader
 		{
 			def.walkAnimation = stream.readUnsignedShort();
 		}
-		else if (15 == opcode)
+		else if (opcode == 15)
 		{
 			def.anInt2165 = stream.readUnsignedShort();
 		}
@@ -93,7 +93,7 @@ public class NpcLoader
 		{
 			def.anInt2189 = stream.readUnsignedShort();
 		}
-		else if (17 == opcode)
+		else if (opcode == 17)
 		{
 			def.walkAnimation = stream.readUnsignedShort();
 			def.rotate180Animation = stream.readUnsignedShort();
@@ -134,7 +134,7 @@ public class NpcLoader
 			}
 
 		}
-		else if (60 == opcode)
+		else if (opcode == 60)
 		{
 			length = stream.readUnsignedByte();
 			def.models_2 = new int[length];
@@ -149,15 +149,15 @@ public class NpcLoader
 		{
 			def.renderOnMinimap = false;
 		}
-		else if (95 == opcode)
+		else if (opcode == 95)
 		{
 			def.combatLevel = stream.readUnsignedShort();
 		}
-		else if (97 == opcode)
+		else if (opcode == 97)
 		{
 			def.resizeX = stream.readUnsignedShort();
 		}
-		else if (98 == opcode)
+		else if (opcode == 98)
 		{
 			def.resizeY = stream.readUnsignedShort();
 		}
@@ -165,11 +165,11 @@ public class NpcLoader
 		{
 			def.hasRenderPriority = true;
 		}
-		else if (100 == opcode)
+		else if (opcode == 100)
 		{
 			def.ambient = stream.readByte();
 		}
-		else if (101 == opcode)
+		else if (opcode == 101)
 		{
 			def.contrast = stream.readByte();
 		}
@@ -177,7 +177,7 @@ public class NpcLoader
 		{
 			def.headIcon = stream.readUnsignedShort();
 		}
-		else if (103 == opcode)
+		else if (opcode == 103)
 		{
 			def.anInt2156 = stream.readUnsignedShort();
 		}
@@ -210,7 +210,7 @@ public class NpcLoader
 			def.anIntArray2185[length + 1] = -1;
 
 		}
-		else if (107 == opcode)
+		else if (opcode == 107)
 		{
 			def.isClickable = false;
 		}
