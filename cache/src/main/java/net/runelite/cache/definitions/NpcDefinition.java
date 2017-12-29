@@ -26,11 +26,13 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class NpcDefinition
 {
 
-	public int id;
+	public final int id;
 	public short[] recolorToFind;
 	public int anInt2156 = 32;
 	public String name = "null";
@@ -63,9 +65,4 @@ public class NpcDefinition
 	public int anInt2189 = -1;
 	public boolean aBool2190 = false;
 	public Map<Integer, Object> params = null;
-
-	public NpcDefinition(int definitionID)
-	{
-		this.id = definitionID;
-	}
 }

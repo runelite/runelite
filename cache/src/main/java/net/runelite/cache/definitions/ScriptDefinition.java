@@ -25,7 +25,9 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
+import lombok.Data;
 
+@Data
 public class ScriptDefinition
 {
 	private int id;
@@ -37,94 +39,4 @@ public class ScriptDefinition
 	private int localIntCount;
 	private int localStringCount;
 	private Map<Integer, Integer>[] switches;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getIntStackCount()
-	{
-		return intStackCount;
-	}
-
-	public void setIntStackCount(int intStackCount)
-	{
-		this.intStackCount = intStackCount;
-	}
-
-	public int[] getInstructions()
-	{
-		return instructions;
-	}
-
-	public void setInstructions(int[] instructions)
-	{
-		this.instructions = instructions;
-	}
-
-	public int[] getIntOperands()
-	{
-		return intOperands;
-	}
-
-	public void setIntOperands(int[] intOperands)
-	{
-		this.intOperands = intOperands;
-	}
-
-	public String[] getStringOperands()
-	{
-		return stringOperands;
-	}
-
-	public void setStringOperands(String[] stringOperands)
-	{
-		this.stringOperands = stringOperands;
-	}
-
-	public int getLocalStringCount()
-	{
-		return localStringCount;
-	}
-
-	public void setLocalStringCount(int localStringCount)
-	{
-		this.localStringCount = localStringCount;
-	}
-
-	public int getStringStackCount()
-	{
-		return stringStackCount;
-	}
-
-	public void setStringStackCount(int stringStackCount)
-	{
-		this.stringStackCount = stringStackCount;
-	}
-
-	public int getLocalIntCount()
-	{
-		return localIntCount;
-	}
-
-	public void setLocalIntCount(int localIntCount)
-	{
-		this.localIntCount = localIntCount;
-	}
-
-	public Map<Integer, Integer>[] getSwitches()
-	{
-		return switches;
-	}
-
-	public void setSwitches(Map<Integer, Integer>[] switches)
-	{
-		this.switches = switches;
-	}
 }

@@ -26,5 +26,6 @@ package net.runelite.cache.definitions;
 
 public class InventoryDefinition
 {
+	public int id;
 	public int size;
 }

@@ -24,8 +24,13 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class SequenceDefinition
 {
+	@Getter
 	private final int id;
 	public int[] frameIDs;
 	public int[] field3048;
@@ -41,15 +46,4 @@ public class SequenceDefinition
 	public int replyMode = 2;
 	public int frameStep = -1;
 	public int priority = -1;
-
-	public SequenceDefinition(int id)
-	{
-		this.id = id;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
 }

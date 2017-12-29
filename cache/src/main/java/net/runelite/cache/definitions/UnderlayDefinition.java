@@ -24,28 +24,11 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class UnderlayDefinition
 {
 	private int id;
 	private int color;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getColor()
-	{
-		return color;
-	}
-
-	public void setColor(int color)
-	{
-		this.color = color;
-	}
 }

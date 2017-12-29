@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.exporters.ObjectExporter;
@@ -71,7 +72,7 @@ public class ObjectManager
 
 	public List<ObjectDefinition> getObjects()
 	{
-		return objects;
+		return Collections.unmodifiableList(objects);
 	}
 
 	public void dump(File out) throws IOException

@@ -25,28 +25,11 @@
 
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class TextureDefinition
 {
 	private int id;
 	private int[] fileIds;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int[] getFileIds()
-	{
-		return fileIds;
-	}
-
-	public void setFileIds(int[] fileIds)
-	{
-		this.fileIds = fileIds;
-	}
 }

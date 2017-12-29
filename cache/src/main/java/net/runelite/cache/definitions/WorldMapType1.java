@@ -24,6 +24,9 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class WorldMapType1 implements WorldMapTypeBase
 {
 	public int field424;

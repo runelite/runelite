@@ -27,8 +27,10 @@ package net.runelite.cache;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.definitions.exporters.ItemExporter;
 import net.runelite.cache.definitions.loaders.ItemLoader;
@@ -43,7 +45,7 @@ import net.runelite.cache.util.Namer;
 public class ItemManager
 {
 	private final Store store;
-	private final List<ItemDefinition> items = new ArrayList<>();
+	private final Map<Integer, ItemDefinition> items = new HashMap<>();
 	private final Namer namer = new Namer();
 
 	public ItemManager(Store store)
@@ -65,20 +67,25 @@ public class ItemManager
 		for (FSFile f : files.getFiles())
 		{
 			ItemDefinition def = loader.load(f.getFileId(), f.getContents());
-			items.add(def);
+			items.put(f.getFileId(), def);
 		}
 	}
 
-	public List<ItemDefinition> getItems()
+	public Collection<ItemDefinition> getItems()
 	{
-		return items;
+		return Collections.unmodifiableCollection(items.values());
+	}
+
+	public ItemDefinition getItem(int itemId)
+	{
+		return items.get(itemId);
 	}
 
 	public void export(File out) throws IOException
 	{
 		out.mkdirs();
 
-		for (ItemDefinition def : items)
+		for (ItemDefinition def : items.values())
 		{
 			ItemExporter exporter = new ItemExporter(def);
 
@@ -99,7 +106,7 @@ public class ItemManager
 			fw.println("");
 			fw.println("public final class ItemID");
 			fw.println("{");
-			for (ItemDefinition def : items)
+			for (ItemDefinition def : items.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{

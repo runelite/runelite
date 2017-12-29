@@ -28,6 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
+import static net.runelite.cache.script.Opcodes.LOAD_STRING;
+import static net.runelite.cache.script.Opcodes.POP_INT;
+import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.RETURN;
 
 public class ScriptLoader
 {
@@ -37,12 +41,12 @@ public class ScriptLoader
 		InputStream in = new InputStream(b);
 
 		in.setOffset(in.getLength() - 2);
-		int scriptEndOffset = in.readUnsignedShort();
+		int switchLength = in.readUnsignedShort();
 
-		// 2 for scriptEndOffset + the k/v data + 12 for the param/vars/stack data
-		int endIdx = in.getLength() - 2 - scriptEndOffset - 12;
+		// 2 for switchLength + the switch data + 12 for the param/vars/stack data
+		int endIdx = in.getLength() - 2 - switchLength - 12;
 		in.setOffset(endIdx);
-		int paramCount = in.readInt();
+		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
 		int localStringCount = in.readUnsignedShort();
 		int intStackCount = in.readUnsignedShort();
@@ -77,29 +81,29 @@ public class ScriptLoader
 		in.setOffset(0);
 		in.readStringOrNull();
 
-		int[] instructions = new int[paramCount];
-		int[] intOperands = new int[paramCount];
-		String[] stringOperands = new String[paramCount];
+		int[] instructions = new int[numOpcodes];
+		int[] intOperands = new int[numOpcodes];
+		String[] stringOperands = new String[numOpcodes];
 
 		def.setInstructions(instructions);
 		def.setIntOperands(intOperands);
 		def.setStringOperands(stringOperands);
 
-		int var3;
-		for (int var6 = 0; in.getOffset() < endIdx; instructions[var6++] = var3)
+		int opcode;
+		for (int i = 0; in.getOffset() < endIdx; instructions[i++] = opcode)
 		{
-			var3 = in.readUnsignedShort();
-			if (var3 == 3)
+			opcode = in.readUnsignedShort();
+			if (opcode == LOAD_STRING)
 			{
-				stringOperands[var6] = in.readString();
+				stringOperands[i] = in.readString();
 			}
-			else if (var3 < 100 && 21 != var3 && 38 != var3 && 39 != var3)
+			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
 			{
-				intOperands[var6] = in.readInt();
+				intOperands[i] = in.readInt();
 			}
 			else
 			{
-				intOperands[var6] = in.readUnsignedByte();
+				intOperands[i] = in.readUnsignedByte();
 			}
 		}
 
