@@ -138,8 +138,9 @@ public class InputStream extends java.io.InputStream
 	public int readBigSmart2()
 	{
 		if (peek() < 0)
+		{
 			return readInt() & Integer.MAX_VALUE; // and off sign bit
-
+		}
 		int value = readUnsignedShort();
 		return value == 32767 ? -1 : value;
 	}
@@ -162,7 +163,7 @@ public class InputStream extends java.io.InputStream
 
 		for (;;)
 		{
-			int ch = this.readByte();
+			int ch = this.readUnsignedByte();
 
 			if (ch == 0)
 			{
@@ -174,7 +175,7 @@ public class InputStream extends java.io.InputStream
 				char var7 = CHARACTERS[ch - 128];
 				if (0 == var7)
 				{
-					var7 = 63;
+					var7 = '?';
 				}
 
 				ch = var7;
