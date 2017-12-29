@@ -73,6 +73,11 @@
 			<artifactId>cache</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>cache-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.sql2o</groupId>
