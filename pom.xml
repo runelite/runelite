@@ -118,7 +118,6 @@
 		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>
-		<module>runelite-proxy</module>
 		<module>protocol-api</module>
 		<module>protocol</module>
 	</modules>
