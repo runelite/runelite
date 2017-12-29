@@ -28,6 +28,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.IndexType;
+import net.runelite.cache.definitions.LocationsDefinition;
+import net.runelite.cache.definitions.MapDefinition;
+import net.runelite.cache.definitions.loaders.LocationsLoader;
+import net.runelite.cache.definitions.loaders.MapLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
@@ -64,7 +68,9 @@ public class RegionLoader
 		{
 			Region region = this.loadRegionFromArchive(i);
 			if (region != null)
+			{
 				regions.add(region);
+			}
 		}
 	}
 
@@ -86,8 +92,10 @@ public class RegionLoader
 
 		byte[] data = map.decompress(storage.loadArchive(map));
 
+		MapDefinition mapDef = new MapLoader().load(x, y, data);
+
 		Region region = new Region(i);
-		region.loadTerrain(data);
+		region.loadTerrain(mapDef);
 
 		int[] keys = keyManager.getKeys(i);
 		if (keys != null)
@@ -95,7 +103,8 @@ public class RegionLoader
 			try
 			{
 				data = land.decompress(storage.loadArchive(land), keys);
-				region.loadLocations(data);
+				LocationsDefinition locDef = new LocationsLoader().load(x, y, data);
+				region.loadLocations(locDef);
 			}
 			catch (IOException ex)
 			{

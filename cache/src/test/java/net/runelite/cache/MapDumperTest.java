@@ -29,14 +29,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import net.runelite.cache.definitions.LocationsDefinition;
+import net.runelite.cache.definitions.MapDefinition;
+import net.runelite.cache.definitions.loaders.LocationsLoader;
+import net.runelite.cache.definitions.loaders.MapLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.region.Region;
 import net.runelite.cache.util.XteaKeyManager;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -53,9 +58,8 @@ public class MapDumperTest
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	private final List<Region> regions = new ArrayList<>();
-
-	//@Test
+	@Test
+	@Ignore
 	public void dumpRaw() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
@@ -111,8 +115,9 @@ public class MapDumperTest
 		}
 	}
 
-	private void loadRegions(Store store) throws IOException
+	private Map<MapDefinition, LocationsDefinition> loadRegions(Store store) throws IOException
 	{
+		Map<MapDefinition, LocationsDefinition> mapMap = new HashMap<>();
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.MAPS);
 		XteaKeyManager keyManager = new XteaKeyManager();
@@ -134,9 +139,8 @@ public class MapDumperTest
 			}
 
 			byte[] data = map.decompress(storage.loadArchive(map));
-
-			Region region = new Region(i);
-			region.loadTerrain(data);
+			MapDefinition mapDef = new MapLoader().load(x, y, data);
+			LocationsDefinition locDef = null;
 
 			int[] keys = keyManager.getKeys(i);
 			if (keys != null)
@@ -150,11 +154,13 @@ public class MapDumperTest
 					continue;
 				}
 
-				region.loadLocations(data);
+				locDef = new LocationsLoader().load(x, y, data);
 			}
 
-			regions.add(region);
+			mapMap.put(mapDef, locDef);
 		}
+
+		return mapMap;
 	}
 
 	@Test
@@ -167,16 +173,20 @@ public class MapDumperTest
 		{
 			store.load();
 
-			loadRegions(store);
+			Map<MapDefinition, LocationsDefinition> regions = loadRegions(store);
 
-			for (Region region : regions)
+			for (Entry<MapDefinition, LocationsDefinition> entry : regions.entrySet())
 			{
-				if (region.getLocations().isEmpty())
-				{
-					continue;
-				}
+				MapDefinition key = entry.getKey();
+				LocationsDefinition value = entry.getValue();
 
-				Files.write(gson.toJson(region).getBytes(), new File(outDir, region.getBaseX() + "_" + region.getBaseY() + ".json"));
+				int x = key.getRegionX();
+				int y = key.getRegionY();
+				Files.write(gson.toJson(key).getBytes(), new File(outDir, "m" + x + "_" + y + ".json"));
+				if (value != null)
+				{
+					Files.write(gson.toJson(value).getBytes(), new File(outDir, "l" + x + "_" + y + ".json"));
+				}
 			}
 		}
 

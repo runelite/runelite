@@ -1,35 +1,35 @@
-/**
- * Copyright (c) 2015 Kyle Friz
+/*
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.runelite.cache.region;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.cache.io.InputStream;
+import net.runelite.cache.definitions.LocationsDefinition;
+import net.runelite.cache.definitions.MapDefinition;
+import net.runelite.cache.definitions.MapDefinition.Tile;
 
-/**
- *
- * @author Kyle Friz
- * @since Jun 30, 2015
- */
 public class Region
 {
 
@@ -42,7 +42,7 @@ public class Region
 	private final int baseY;
 
 	private final int[][][] tileHeights = new int[Z][X][Y];
-	private final byte[][][] renderRules = new byte[Z][X][Y];
+	private final byte[][][] tileSettings = new byte[Z][X][Y];
 	private final byte[][][] overlayIds = new byte[Z][X][Y];
 	private final byte[][][] overlayPaths = new byte[Z][X][Y];
 	private final byte[][][] overlayRotations = new byte[Z][X][Y];
@@ -64,99 +64,66 @@ public class Region
 		this.baseY = y << 6;
 	}
 
-	public void loadTerrain(byte[] buf)
+	public void loadTerrain(MapDefinition map)
 	{
-		InputStream in = new InputStream(buf);
-
+		Tile[][][] tiles = map.getTiles();
 		for (int z = 0; z < Z; z++)
 		{
 			for (int x = 0; x < X; x++)
 			{
 				for (int y = 0; y < Y; y++)
 				{
-					while (true)
+					Tile tile = tiles[z][x][y];
+
+					if (tile.height == null)
 					{
-						int attribute = in.readUnsignedByte();
-						if (attribute == 0)
+						if (z == 0)
 						{
-							if (z == 0)
-							{
-								tileHeights[0][x][y] = -HeightCalc.calculate(baseX + x + 0xe3b7b, baseY + y + 0x87cce) * 8;
-							}
-							else
-							{
-								tileHeights[z][x][y] = tileHeights[z - 1][x][y] - 240;
-							}
-
-							break;
-						}
-						else if (attribute == 1)
-						{
-							int height = in.readUnsignedByte();
-							if (height == 1)
-							{
-								height = 0;
-							}
-
-							if (z == 0)
-							{
-								tileHeights[0][x][y] = -height * 8;
-							}
-							else
-							{
-								tileHeights[z][x][y] = tileHeights[z - 1][x][y] - height * 8;
-							}
-
-							break;
-						}
-						else if (attribute <= 49)
-						{
-							overlayIds[z][x][y] = in.readByte();
-							overlayPaths[z][x][y] = (byte) ((attribute - 2) / 4);
-							overlayRotations[z][x][y] = (byte) (attribute - 2 & 3);
-						}
-						else if (attribute <= 81)
-						{
-							renderRules[z][x][y] = (byte) (attribute - 49);
+							tileHeights[0][x][y] = -HeightCalc.calculate(baseX + x + 0xe3b7b, baseY + y + 0x87cce) * 8;
 						}
 						else
 						{
-							underlayIds[z][x][y] = (byte) (attribute - 81);
+							tileHeights[z][x][y] = tileHeights[z - 1][x][y] - 240;
 						}
 					}
+					else
+					{
+						int height = tile.getHeight();
+						if (height == 1)
+						{
+							height = 0;
+						}
+
+						if (z == 0)
+						{
+							tileHeights[0][x][y] = -height * 8;
+						}
+						else
+						{
+							tileHeights[z][x][y] = tileHeights[z - 1][x][y] - height * 8;
+						}
+					}
+
+					overlayIds[z][x][y] = tile.getOverlayId();
+					overlayPaths[z][x][y] = tile.getOverlayPath();
+					overlayRotations[z][x][y] = tile.getOverlayRotation();
+
+					tileSettings[z][x][y] = tile.getSettings();
+					underlayIds[z][x][y] = tile.getUnderlayId();
 				}
 			}
 		}
 	}
 
-	public void loadLocations(byte[] b)
+	public void loadLocations(LocationsDefinition locs)
 	{
-		InputStream buf = new InputStream(b);
-
-		int id = -1;
-		int idOffset;
-
-		while ((idOffset = buf.readUnsignedShortSmart()) != 0)
+		for (Location loc : locs.getLocations())
 		{
-			id += idOffset;
-
-			int position = 0;
-			int positionOffset;
-
-			while ((positionOffset = buf.readUnsignedShortSmart()) != 0)
-			{
-				position += positionOffset - 1;
-
-				int localY = position & 0x3F;
-				int localX = position >> 6 & 0x3F;
-				int height = position >> 12 & 0x3;
-
-				int attributes = buf.readUnsignedByte();
-				int type = attributes >> 2;
-				int orientation = attributes & 0x3;
-
-				locations.add(new Location(id, type, orientation, new Position(getBaseX() + localX, getBaseY() + localY, height)));
-			}
+			Location newLoc = new Location(loc.getId(), loc.getType(), loc.getOrientation(),
+				new Position(getBaseX() + loc.getPosition().getX(),
+					getBaseY() + loc.getPosition().getY(),
+					loc.getPosition().getZ()));
+			locations.add(newLoc);
 		}
 	}
 
@@ -180,9 +147,9 @@ public class Region
 		return tileHeights[z][x][y];
 	}
 
-	public byte getRenderRule(int z, int x, int y)
+	public byte getTileSetting(int z, int x, int y)
 	{
-		return renderRules[z][x][y];
+		return tileSettings[z][x][y];
 	}
 
 	public int getOverlayId(int z, int x, int y)

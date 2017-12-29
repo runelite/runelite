@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.savers;
 
-package net.runelite.cache.region;
+import net.runelite.cache.definitions.MapDefinition;
+import net.runelite.cache.definitions.MapDefinition.Tile;
+import net.runelite.cache.io.OutputStream;
+import static net.runelite.cache.region.Region.X;
+import static net.runelite.cache.region.Region.Y;
+import static net.runelite.cache.region.Region.Z;
 
-import lombok.Value;
-
-@Value
-public class Location
+public class MapSaver
 {
-	private final int id;
-	private final int type;
-	private final int orientation;
-	private final Position position;
+	public byte[] save(MapDefinition map)
+	{
+		Tile[][][] tiles = map.getTiles();
+		OutputStream out = new OutputStream();
+		for (int z = 0; z < Z; z++)
+		{
+			for (int x = 0; x < X; x++)
+			{
+				for (int y = 0; y < Y; y++)
+				{
+					Tile tile = tiles[z][x][y];
+					if (tile.attrOpcode != 0)
+					{
+						out.writeByte(tile.attrOpcode);
+						out.writeByte(tile.overlayId);
+					}
+					if (tile.settings != 0)
+					{
+						out.writeByte(tile.settings + 49);
+					}
+					if (tile.underlayId != 0)
+					{
+						out.writeByte(tile.underlayId + 81);
+					}
+					if (tile.height == null)
+					{
+						out.writeByte(0);
+					}
+					else
+					{
+						out.writeByte(1);
+						out.writeByte(tile.height);
+					}
+				}
+			}
+		}
+		return out.flip();
+	}
 }
