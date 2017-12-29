@@ -26,6 +26,8 @@ package net.runelite.api.widgets;
 
 public enum WidgetInfo
 {
+	LOGOUT_BUTTON(WidgetID.LOGOUT_PANEL_ID, WidgetID.LogoutPanel.LOGOUT_BUTTON),
+
 	INVENTORY(WidgetID.INVENTORY_GROUP_ID, 0),
 
 	WORLD_MAP(WidgetID.WORLD_MAP_MENU_GROUP_ID, WidgetID.WorldMap.OPTION),
@@ -152,6 +154,11 @@ public enum WidgetInfo
 		return childId;
 	}
 
+	public int getPackedId()
+	{
+		return groupId << 16 | childId;
+	}
+
 	public static int TO_GROUP(int id)
 	{
 		return id >>> 16;
@@ -160,6 +167,11 @@ public enum WidgetInfo
 	public static int TO_CHILD(int id)
 	{
 		return id & 0xFFFF;
+	}
+
+	public static int PACK(int groupId, int childId)
+	{
+		return groupId << 16 | childId;
 	}
 
 }

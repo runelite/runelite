@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,29 @@
  */
 package net.runelite.api;
 
-public enum ChatMessageType
+public enum EquipmentInventorySlot
 {
-	SERVER(0),
-	PUBLIC(2),
-	PRIVATE_MESSAGE_RECEIVED(3),
-	TRADE_RECEIVED(4),
-	PRIVATE_MESSAGE_INFO(5),
-	PRIVATE_MESSAGE_SENT(6),
-	PRIVATE_MESSAGE_RECEIVED_MOD(7),
-	CLANCHAT(9),
-	CLANCHAT_INFO(11),
-	TRADE_SENT(12),
-	ABUSE_REPORT(26),
-	EXAMINE_ITEM(27),
-	EXAMINE_NPC(28),
-	EXAMINE_OBJECT(29),
-	FRIENDS_LIST_ADD(30),
-	IGNORE_LIST_ADD(31),
-	AUTOCHAT(90),
-	GAME(99),
-	TRADE(101),
-	DUEL(103),
-	FILTERED(105),
-	ACTION(109),
-	UNKNOWN(-1);
+	HEAD(0),
+	CAPE(1),
+	AMULET(2),
+	WEAPON(3),
+	BODY(4),
+	SHIELD(5),
+	LEGS(7),
+	GLOVES(9),
+	BOOTS(10),
+	RING(12);
 
-	private final int type;
+	private final int slotIdx;
 
-	ChatMessageType(int type)
+	EquipmentInventorySlot(int slotIdx)
 	{
-		this.type = type;
+		this.slotIdx = slotIdx;
 	}
 
-	public static ChatMessageType of(int type)
+	public int getSlotIdx()
 	{
-		for (ChatMessageType ct : ChatMessageType.values())
-		{
-			if (ct.type == type)
-			{
-				return ct;
-			}
-		}
-		return UNKNOWN;
+		return slotIdx;
 	}
 
-	public int getType()
-	{
-		return type;
-	}
 }

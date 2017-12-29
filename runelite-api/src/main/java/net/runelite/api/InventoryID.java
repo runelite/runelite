@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +24,20 @@
  */
 package net.runelite.api;
 
-public enum ChatMessageType
+public enum InventoryID
 {
-	SERVER(0),
-	PUBLIC(2),
-	PRIVATE_MESSAGE_RECEIVED(3),
-	TRADE_RECEIVED(4),
-	PRIVATE_MESSAGE_INFO(5),
-	PRIVATE_MESSAGE_SENT(6),
-	PRIVATE_MESSAGE_RECEIVED_MOD(7),
-	CLANCHAT(9),
-	CLANCHAT_INFO(11),
-	TRADE_SENT(12),
-	ABUSE_REPORT(26),
-	EXAMINE_ITEM(27),
-	EXAMINE_NPC(28),
-	EXAMINE_OBJECT(29),
-	FRIENDS_LIST_ADD(30),
-	IGNORE_LIST_ADD(31),
-	AUTOCHAT(90),
-	GAME(99),
-	TRADE(101),
-	DUEL(103),
-	FILTERED(105),
-	ACTION(109),
-	UNKNOWN(-1);
+	INVENTORY(93),
+	EQUIPMENT(94);
 
-	private final int type;
+	private final int id;
 
-	ChatMessageType(int type)
+	InventoryID(int id)
 	{
-		this.type = type;
+		this.id = id;
 	}
 
-	public static ChatMessageType of(int type)
+	public int getId()
 	{
-		for (ChatMessageType ct : ChatMessageType.values())
-		{
-			if (ct.type == type)
-			{
-				return ct;
-			}
-		}
-		return UNKNOWN;
-	}
-
-	public int getType()
-	{
-		return type;
+		return id;
 	}
 }
