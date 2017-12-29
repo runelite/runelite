@@ -51,7 +51,7 @@ public class ObjectDefinition
 	private int ambient = 0;
 	private int contrast = 0;
 	private String[] actions = new String[5];
-	private int anInt2094 = 2;
+	private int interactType = 2;
 	private int mapSceneID = -1;
 	private short[] recolorToReplace;
 	private boolean aBool2097 = true;
@@ -71,7 +71,7 @@ public class ObjectDefinition
 	private boolean aBool2111 = false;
 	private int anInt2112 = 0;
 	private int anInt2113 = 0;
-	private boolean aBool2114 = true;
+	private boolean blocksProjectile = true;
 	private Map<Integer, Object> params = null;
 
 	public int getId()
