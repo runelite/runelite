@@ -118,6 +118,27 @@ public final class OutputStream extends java.io.OutputStream
 		buffer.putShort((short) i);
 	}
 
+	public void writeShortSmart(int value)
+	{
+		Preconditions.checkArgument(value >= 0);
+		if (value < 128)
+		{
+			writeByte(value);
+		}
+		else
+		{
+			writeShort(0x8000 | value);
+		}
+	}
+
+	public void write24BitInt(int i)
+	{
+		ensureRemaining(3);
+		buffer.put((byte) (i >>> 16));
+		buffer.put((byte) (i >>> 8));
+		buffer.put((byte) (i & 0xFF));
+	}
+
 	public void writeInt(int i)
 	{
 		ensureRemaining(4);
@@ -155,6 +176,13 @@ public final class OutputStream extends java.io.OutputStream
 		this.getArray()[this.getOffset() - var1 - 3] = (byte) (var1 >> 16);
 		this.getArray()[this.getOffset() - var1 - 2] = (byte) (var1 >> 8);
 		this.getArray()[this.getOffset() - var1 - 1] = (byte) var1;
+	}
+
+	public void writeString(String str)
+	{
+		byte[] b = str.getBytes();
+		writeBytes(b);
+		writeByte(0);
 	}
 
 	public byte[] flip()
