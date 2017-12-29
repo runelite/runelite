@@ -100,7 +100,7 @@ public final class OutputStream extends java.io.OutputStream
 	public void writeBigSmart(int value)
 	{
 		Preconditions.checkArgument(value >= 0);
-		if (value >= 65536)
+		if (value >= 32768)
 		{
 			ensureRemaining(4);
 			this.writeInt((1 << 31) | value);

@@ -35,10 +35,12 @@ public class OutputStreamTest
 		OutputStream os = new OutputStream();
 		os.writeBigSmart(42);
 		os.writeBigSmart(70000);
+		os.writeBigSmart(65535);
 
 		InputStream is = new InputStream(os.getArray());
 		Assert.assertEquals(42, is.readBigSmart());
 		Assert.assertEquals(70000, is.readBigSmart());
+		Assert.assertEquals(65535, is.readBigSmart());
 	}
 
 }
