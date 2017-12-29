@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -50,7 +49,6 @@ public class XteaPlugin extends Plugin
 	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

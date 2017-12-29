@@ -25,31 +25,11 @@
  */
 package net.runelite.client.plugins.volcanicmine;
 
+import static java.lang.Math.abs;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
-import static java.lang.Math.abs;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.RuneLite;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -59,10 +39,31 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Query;
+import net.runelite.api.Region;
+import net.runelite.api.Tile;
 import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Volcanic mine helper"
@@ -81,11 +82,16 @@ public class VolcanicMinePlugin extends Plugin
 	private static final Pattern coltagPattern = Pattern.compile("((<col=([0-f]){6}>)|(<\\/col>))");
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
-	RuneLite runeLite;
+	ClientUI clientUI;
+
+	@Inject
+	QueryRunner queryRunner;
+
+	@Inject
+	Notifier notifier;
 
 	@Inject
 	VolcanicMineConfig config;
@@ -274,7 +280,7 @@ public class VolcanicMinePlugin extends Plugin
 		Query query = new NPCQuery()
 			.nameEquals(LAVA_BEAST)
 			.isWithinArea(player.getLocalLocation(), LAVA_BEAST_ATTACK_RANGE);
-		NPC[] npcs = runeLite.runQuery(query);
+		NPC[] npcs = queryRunner.runQuery(query);
 		return npcs.length > 0;
 	}
 
@@ -292,17 +298,17 @@ public class VolcanicMinePlugin extends Plugin
 
 	private void sendNotification(String message)
 	{
-		if (!config.alertWhenFocused() && runeLite.getGui().isFocused())
+		if (!config.alertWhenFocused() && clientUI.isFocused())
 		{
 			return;
 		}
 		if (config.requestFocus())
 		{
-			runeLite.getGui().requestFocus();
+			clientUI.requestFocus();
 		}
 		if (config.sendTrayNotification())
 		{
-			runeLite.notify(message);
+			notifier.notify(message);
 		}
 	}
 

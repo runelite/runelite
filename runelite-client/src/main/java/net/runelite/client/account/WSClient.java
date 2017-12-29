@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.account;
 
 import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
@@ -32,12 +32,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.account.AccountSession;
 import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.api.ws.messages.Handshake;
-import net.runelite.http.api.ws.messages.Ping;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
+import net.runelite.http.api.ws.messages.Handshake;
+import net.runelite.http.api.ws.messages.Ping;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

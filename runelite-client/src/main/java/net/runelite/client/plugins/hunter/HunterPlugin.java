@@ -31,9 +31,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -47,7 +47,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.api.queries.PlayerQuery;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.GameObjectsChanged;
@@ -56,6 +55,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 @PluginDescriptor(
@@ -67,7 +67,7 @@ public class HunterPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private RuneLite runelite;
+	private QueryRunner queryRunner;
 
 	@Inject
 	private HunterConfig config;
@@ -139,7 +139,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_9002: //Net trap placed at black sallys
 				//Look for players that are on the same tile
 				PlayerQuery playerQuery = new PlayerQuery().atLocalLocation(gameObject.getLocalLocation());
-				List<Player> possiblePlayers = Arrays.asList(runelite.runQuery(playerQuery));
+				List<Player> possiblePlayers = Arrays.asList(queryRunner.runQuery(playerQuery));
 
 				/* If the player is on that tile, and it has the correct animation, assume he is the one that placed the trap
                                  * Special case: if you herb+tar, then move and place the trap, it does not detect laying the trap. It does work
@@ -294,7 +294,7 @@ public class HunterPlugin extends Plugin
 			GameObjectQuery goQuery = new GameObjectQuery()
 				.atWorldLocation(trap.getGameObject().getWorldLocation());
 			//This is for placeable traps like box traps. There are no gameobjects on that location if the trap collapsed
-			if (runelite.runQuery(goQuery).length == 0)
+			if (queryRunner.runQuery(goQuery).length == 0)
 			{
 				it.remove();
 				log.debug("Trap removed from personal trap collection, {} left", traps.size());
@@ -303,7 +303,7 @@ public class HunterPlugin extends Plugin
 			{
 				goQuery = goQuery
 					.idEquals(ObjectID.BOULDER_19215); //Deadfalls are the only ones (that i can test) that have this behaviour. I think maniacal monkeys have this too.
-				if (runelite.runQuery(goQuery).length != 0)
+				if (queryRunner.runQuery(goQuery).length != 0)
 				{
 					it.remove();
 					log.debug("Special trap removed from personal trap collection, {} left", traps.size());

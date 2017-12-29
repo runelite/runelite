@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -69,7 +68,6 @@ public class ChatCommandsPlugin extends Plugin
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

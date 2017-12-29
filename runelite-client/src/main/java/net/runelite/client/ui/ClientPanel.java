@@ -25,89 +25,46 @@
 package net.runelite.client.ui;
 
 import java.applet.Applet;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.io.IOException;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.client.ClientLoader;
-import net.runelite.http.api.updatecheck.UpdateCheckClient;
 
 @Slf4j
 final class ClientPanel extends JPanel
 {
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
 
-	private final ClientUI ui;
-	private Applet rs;
-
-	public ClientPanel(ClientUI ui)
+	public ClientPanel(@Nullable Applet client)
 	{
-		this.ui = ui;
 		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setLayout(new BorderLayout());
 		setBackground(Color.black);
-	}
 
-	public void loadRs() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		ClientLoader loader = new ClientLoader();
-
-		UpdateCheckClient updateCheck = new UpdateCheckClient();
-		boolean isOutdated = updateCheck.isOutdated();
-		if (isOutdated)
-		{
-			log.info("Runelite is outdated - fetching vanilla client");
-			rs = loader.loadVanilla();
-		}
-		else
-		{
-			log.debug("Runelite is up to date");
-
-			try
-			{
-				rs = loader.loadRunelite();
-			}
-			catch (ClassNotFoundException ex)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the injected client"
-					+ " is not in your classpath.");
-				throw new ClassNotFoundException("Unable to load injected client", ex);
-			}
-		}
-
-		rs.setLayout(null);
-		rs.setSize(PANEL_WIDTH, PANEL_HEIGHT);
-
-		rs.init();
-		rs.start();
-
-		add(rs, BorderLayout.CENTER);
-
-		if (isOutdated)
+		if (client == null)
 		{
 			return;
 		}
 
-		if (!(rs instanceof Client))
-		{
-			log.error("Injected client does not implement Client!");
-			return;
-		}
+		client.setLayout(null);
+		client.setSize(PANEL_WIDTH, PANEL_HEIGHT);
 
-		Client client = (Client) rs;
+		client.init();
+		client.start();
 
-		ui.getRunelite().setClient(client);
+		add(client, BorderLayout.CENTER);
 
 		// This causes the whole game frame to be redrawn each frame instead
 		// of only the viewport, so we can hook to MainBufferProvider#draw
 		// and draw anywhere without it leaving artifacts
-		client.setGameDrawingMode(2);
+		if (client instanceof Client)
+		{
+			((Client)client).setGameDrawingMode(2);
+		}
 	}
-
 }

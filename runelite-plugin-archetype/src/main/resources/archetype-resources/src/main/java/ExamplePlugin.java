@@ -27,7 +27,6 @@ public class ExamplePlugin extends Plugin
 	private static final Logger logger = LoggerFactory.getLogger(ExamplePlugin.class);
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

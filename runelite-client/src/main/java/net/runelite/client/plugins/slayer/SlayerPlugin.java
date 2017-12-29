@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import static net.runelite.api.Skill.SLAYER;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
@@ -33,13 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
-import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -73,7 +72,6 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
@@ -146,7 +144,7 @@ public class SlayerPlugin extends Plugin
 	)
 	public void scheduledChecks()
 	{
-		if (!config.enabled() || client == null)
+		if (!config.enabled())
 		{
 			return;
 		}
