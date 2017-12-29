@@ -132,7 +132,7 @@ public class InputStream extends java.io.InputStream
 
 	public int readBigSmart()
 	{
-		return peek() >= 0 ? this.readUnsignedShort() : Integer.MAX_VALUE & this.readInt();
+		return peek() >= 0 ? (this.readUnsignedShort() & 0xFFFF) : (this.readInt() & Integer.MAX_VALUE);
 	}
 
 	public int readBigSmart2()
