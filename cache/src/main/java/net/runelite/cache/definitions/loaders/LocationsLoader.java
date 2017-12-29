@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache.region;
+import net.runelite.cache.definitions.LocationsDefinition;
+import net.runelite.cache.io.InputStream;
+import net.runelite.cache.region.Location;
+import net.runelite.cache.region.Position;
 
-import lombok.Value;
-
-@Value
-public class Location
+public class LocationsLoader
 {
-	private final int id;
-	private final int type;
-	private final int orientation;
-	private final Position position;
+	public LocationsDefinition load(int regionX, int regionY, byte[] b)
+	{
+		LocationsDefinition loc = new LocationsDefinition();
+		loc.setRegionX(regionX);
+		loc.setRegionY(regionY);
+		loadLocations(loc, b);
+		return loc;
+	}
+
+	private void loadLocations(LocationsDefinition loc, byte[] b)
+	{
+		InputStream buf = new InputStream(b);
+
+		int id = -1;
+		int idOffset;
+
+		while ((idOffset = buf.readUnsignedShortSmart()) != 0)
+		{
+			id += idOffset;
+
+			int position = 0;
+			int positionOffset;
+
+			while ((positionOffset = buf.readUnsignedShortSmart()) != 0)
+			{
+				position += positionOffset - 1;
+
+				int localY = position & 0x3F;
+				int localX = position >> 6 & 0x3F;
+				int height = position >> 12 & 0x3;
+
+				int attributes = buf.readUnsignedByte();
+				int type = attributes >> 2;
+				int orientation = attributes & 0x3;
+
+				loc.getLocations().add(new Location(id, type, orientation, new Position(localX, localY, height)));
+			}
+		}
+	}
 }

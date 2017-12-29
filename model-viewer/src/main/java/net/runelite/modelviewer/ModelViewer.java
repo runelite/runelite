@@ -39,12 +39,16 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import net.runelite.cache.definitions.KitDefinition;
+import net.runelite.cache.definitions.LocationsDefinition;
+import net.runelite.cache.definitions.MapDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
+import net.runelite.cache.definitions.loaders.LocationsLoader;
+import net.runelite.cache.definitions.loaders.MapLoader;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
 import net.runelite.cache.region.Location;
@@ -163,17 +167,21 @@ public class ModelViewer
 			int x = Integer.parseInt(s[0]), y = Integer.parseInt(s[1]);
 
 			region = new Region(x, y);
+			MapLoader mapLoader = new MapLoader();
+			LocationsLoader locationsLoader = new LocationsLoader();
 
 			try (FileInputStream fin = new FileInputStream(mapdir + "/m" + x + "_" + y + ".dat"))
 			{
 				byte[] b = IOUtils.toByteArray(fin);
-				region.loadTerrain(b);
+				MapDefinition mapDef = mapLoader.load(x, y, b);
+				region.loadTerrain(mapDef);
 			}
 
 			try (FileInputStream fin = new FileInputStream(mapdir + "/l" + x + "_" + y + ".dat"))
 			{
 				byte[] b = IOUtils.toByteArray(fin);
-				region.loadLocations(b);
+				LocationsDefinition locDef = locationsLoader.load(x, y, b);
+				region.loadLocations(locDef);
 			}
 			catch (FileNotFoundException ex)
 			{

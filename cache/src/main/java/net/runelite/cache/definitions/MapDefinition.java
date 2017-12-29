@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache.region;
+import lombok.Data;
 
-import lombok.Value;
-
-@Value
-public class Location
+@Data
+public class MapDefinition
 {
-	private final int id;
-	private final int type;
-	private final int orientation;
-	private final Position position;
+	public static final int X = 64;
+	public static final int Y = 64;
+	public static final int Z = 4;
+
+	@Data
+	public static class Tile
+	{
+		public Integer height;
+		public int attrOpcode;
+		public byte settings;
+		public byte overlayId;
+		public byte overlayPath;
+		public byte overlayRotation;
+		public byte underlayId;
+	}
+
+	private int regionX;
+	private int regionY;
+	private Tile[][][] tiles = new Tile[Z][X][Y];
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache.region;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Data;
+import net.runelite.cache.region.Location;
 
-import lombok.Value;
-
-@Value
-public class Location
+@Data
+public class LocationsDefinition
 {
-	private final int id;
-	private final int type;
-	private final int orientation;
-	private final Position position;
+	private int regionX;
+	private int regionY;
+	private List<Location> locations = new ArrayList<>();
 }
