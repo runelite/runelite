@@ -104,6 +104,8 @@
 
 	<modules>
 		<module>cache</module>
+		<module>cache-client</module>
+		<module>cache-server</module>
 		<module>deobfuscator</module>
 		<module>model-viewer</module>
 		<module>runelite-api</module>
@@ -117,6 +119,8 @@
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>runelite-proxy</module>
+		<module>protocol-api</module>
+		<module>protocol</module>
 	</modules>
 
 	<dependencyManagement>
