@@ -76,12 +76,12 @@ public class InterfaceLoader
 		int var3;
 		if (var2 > 0)
 		{
-			iface.field2224 = new int[var2];
+			iface.tableActions = new int[var2];
 			iface.field2333 = new int[var2];
 
 			for (var3 = 0; var3 < var2; ++var3)
 			{
-				iface.field2224[var3] = var1.readUnsignedByte();
+				iface.tableActions[var3] = var1.readUnsignedByte();
 				iface.field2333[var3] = var1.readUnsignedShort();
 			}
 		}
@@ -129,30 +129,30 @@ public class InterfaceLoader
 			var4 = var1.readUnsignedByte();
 			if (var4 == 1)
 			{
-				iface.field2291 |= 268435456;
+				iface.config |= 268435456;
 			}
 
 			var5 = var1.readUnsignedByte();
 			if (var5 == 1)
 			{
-				iface.field2291 |= 1073741824;
+				iface.config |= 1073741824;
 			}
 
 			var6 = var1.readUnsignedByte();
 			if (var6 == 1)
 			{
-				iface.field2291 |= Integer.MIN_VALUE;
+				iface.config |= Integer.MIN_VALUE;
 			}
 
 			int var7 = var1.readUnsignedByte();
 			if (var7 == 1)
 			{
-				iface.field2291 |= 536870912;
+				iface.config |= 536870912;
 			}
 
 			iface.paddingX = var1.readUnsignedByte();
 			iface.paddingY = var1.readUnsignedByte();
-			iface.field2340 = new int[20];
+			iface.xSprites = new int[20];
 			iface.field2288 = new int[20];
 			iface.field2289 = new int[20];
 
@@ -162,7 +162,7 @@ public class InterfaceLoader
 				int var9 = var1.readUnsignedByte();
 				if (var9 == 1)
 				{
-					iface.field2340[var8] = var1.readShort();
+					iface.xSprites[var8] = var1.readShort();
 					iface.field2288[var8] = var1.readShort();
 					iface.field2289[var8] = var1.readInt();
 				}
@@ -172,15 +172,15 @@ public class InterfaceLoader
 				}
 			}
 
-			iface.field2336 = new String[5];
+			iface.configActions = new String[5];
 
 			for (var8 = 0; var8 < 5; ++var8)
 			{
 				String var11 = var1.readString();
 				if (var11.length() > 0)
 				{
-					iface.field2336[var8] = var11;
-					iface.field2291 |= 1 << var8 + 23;
+					iface.configActions[var8] = var11;
+					iface.config |= 1 << var8 + 23;
 				}
 			}
 		}
@@ -201,7 +201,7 @@ public class InterfaceLoader
 				iface.fontId = -1;
 			}
 
-			iface.field2298 = var1.readUnsignedByte() == 1;
+			iface.textShadowed = var1.readUnsignedByte() == 1;
 		}
 
 		if (iface.type == 4)
@@ -256,7 +256,7 @@ public class InterfaceLoader
 				iface.field2276 = -1;
 			}
 
-			iface.field2320 = var1.readUnsignedShort();
+			iface.modelZoom = var1.readUnsignedShort();
 			iface.rotationX = var1.readUnsignedShort();
 			iface.rotationZ = var1.readUnsignedShort();
 		}
@@ -272,25 +272,25 @@ public class InterfaceLoader
 				iface.fontId = -1;
 			}
 
-			iface.field2298 = var1.readUnsignedByte() == 1;
+			iface.textShadowed = var1.readUnsignedByte() == 1;
 			iface.textColor = var1.readInt();
 			iface.paddingX = var1.readShort();
 			iface.paddingY = var1.readShort();
 			var4 = var1.readUnsignedByte();
 			if (var4 == 1)
 			{
-				iface.field2291 |= 1073741824;
+				iface.config |= 1073741824;
 			}
 
-			iface.field2336 = new String[5];
+			iface.configActions = new String[5];
 
 			for (var5 = 0; var5 < 5; ++var5)
 			{
 				String var10 = var1.readString();
 				if (var10.length() > 0)
 				{
-					iface.field2336[var5] = var10;
-					iface.field2291 |= 1 << var5 + 23;
+					iface.configActions[var5] = var10;
+					iface.config |= 1 << var5 + 23;
 				}
 			}
 		}
@@ -302,10 +302,10 @@ public class InterfaceLoader
 
 		if (iface.field2222 == 2 || iface.type == 2)
 		{
-			iface.field2328 = var1.readString();
+			iface.selectedAction = var1.readString();
 			iface.field2335 = var1.readString();
 			var4 = var1.readUnsignedShort() & 63;
-			iface.field2291 |= var4 << 11;
+			iface.config |= var4 << 11;
 		}
 
 		if (iface.field2222 == 1 || iface.field2222 == 4 || iface.field2222 == 5 || iface.field2222 == 6)
@@ -337,12 +337,12 @@ public class InterfaceLoader
 
 		if (iface.field2222 == 1 || iface.field2222 == 4 || iface.field2222 == 5)
 		{
-			iface.field2291 |= 4194304;
+			iface.config |= 4194304;
 		}
 
 		if (iface.field2222 == 6)
 		{
-			iface.field2291 |= 1;
+			iface.config |= 1;
 		}
 
 	}
@@ -413,7 +413,7 @@ public class InterfaceLoader
 			iface.rotationX = var1.readUnsignedShort();
 			iface.rotationZ = var1.readUnsignedShort();
 			iface.rotationY = var1.readUnsignedShort();
-			iface.field2320 = var1.readUnsignedShort();
+			iface.modelZoom = var1.readUnsignedShort();
 			iface.field2266 = var1.readUnsignedShort();
 			if (iface.field2266 == '\uffff')
 			{
@@ -445,7 +445,7 @@ public class InterfaceLoader
 			iface.field2212 = var1.readUnsignedByte();
 			iface.field2219 = var1.readUnsignedByte();
 			iface.field2283 = var1.readUnsignedByte();
-			iface.field2298 = var1.readUnsignedByte() == 1;
+			iface.textShadowed = var1.readUnsignedByte() == 1;
 			iface.textColor = var1.readInt();
 		}
 
@@ -463,7 +463,7 @@ public class InterfaceLoader
 			iface.field2253 = var1.readUnsignedByte() == 1;
 		}
 
-		iface.field2291 = var1.read24BitInt();
+		iface.config = var1.read24BitInt();
 		iface.name = var1.readString();
 		int var2 = var1.readUnsignedByte();
 		if (var2 > 0)
@@ -479,7 +479,7 @@ public class InterfaceLoader
 		iface.field2295 = var1.readUnsignedByte();
 		iface.field2223 = var1.readUnsignedByte();
 		iface.field2297 = var1.readUnsignedByte() == 1;
-		iface.field2328 = var1.readString();
+		iface.selectedAction = var1.readString();
 		iface.field2225 = this.method3282(iface, var1);
 		iface.field2300 = this.method3282(iface, var1);
 		iface.field2248 = this.method3282(iface, var1);

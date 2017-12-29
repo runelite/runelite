@@ -107,12 +107,12 @@ public class ObjectLoader
 		}
 		else if (opcode == 17)
 		{
-			def.setAnInt2094(0);
-			def.setaBool2114(false);
+			def.setInteractType(0);
+			def.setBlocksProjectile(false);
 		}
 		else if (opcode == 18)
 		{
-			def.setaBool2114(false);
+			def.setBlocksProjectile(false);
 		}
 		else if (opcode == 19)
 		{
@@ -140,7 +140,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 27)
 		{
-			def.setAnInt2094(1);
+			def.setInteractType(1);
 		}
 		else if (opcode == 28)
 		{
