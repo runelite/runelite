@@ -33,7 +33,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -61,7 +60,6 @@ public class PanelComponent implements RenderableEntity
 	}
 
 	@Setter
-	@Nullable
 	private String title;
 
 	@Setter

@@ -31,7 +31,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -55,7 +54,6 @@ public class XpGlobesPlugin extends Plugin
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

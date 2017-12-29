@@ -31,7 +31,6 @@ import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -66,7 +65,6 @@ public class ZulrahPlugin extends Plugin
 	QueryRunner queryRunner;
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
@@ -118,7 +116,7 @@ public class ZulrahPlugin extends Plugin
 	)
 	public void update()
 	{
-		if (!config.enabled() || client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

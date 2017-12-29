@@ -27,7 +27,6 @@ package net.runelite.client.plugins.combatlevel;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.temporal.ChronoUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -48,7 +47,6 @@ public class CombatLevelPlugin extends Plugin
 	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
@@ -66,7 +64,7 @@ public class CombatLevelPlugin extends Plugin
 	)
 	public void updateCombatLevel()
 	{
-		if (client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

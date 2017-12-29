@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -32,7 +35,6 @@ import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -45,7 +47,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.VarbitChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.*;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
@@ -63,7 +64,6 @@ public class AttackIndicatorPlugin extends Plugin
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
