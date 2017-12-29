@@ -26,6 +26,14 @@ package net.runelite.client.plugins.teamcapes;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -35,23 +43,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @PluginDescriptor(
 	name = "Team capes plugin"
 )
 public class TeamCapesPlugin extends Plugin
 {
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject
@@ -86,7 +83,7 @@ public class TeamCapesPlugin extends Plugin
 	)
 	public void update()
 	{
-		if (!config.enabled() || client == null || client.getGameState() != GameState.LOGGED_IN)
+		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

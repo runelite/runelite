@@ -32,34 +32,30 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
-import net.runelite.client.RuneLite;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.QueryRunner;
 
 class FishingSpotOverlay extends Overlay
 {
 	private final List<Integer> ids = new ArrayList<>();
 
-	private final RuneLite runelite;
-	private final Client client;
+	private final QueryRunner queryRunner;
 	private final FishingConfig config;
 
 	@Inject
 	ItemManager itemManager;
 
 	@Inject
-	public FishingSpotOverlay(RuneLite runelite, @Nullable Client client, FishingConfig config)
+	public FishingSpotOverlay(QueryRunner queryRunner, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
-		this.client = client;
+		this.queryRunner = queryRunner;
 		this.config = config;
 	}
 
@@ -73,7 +69,7 @@ class FishingSpotOverlay extends Overlay
 
 		NPCQuery query = new NPCQuery()
 			.idEquals(Ints.toArray(ids));
-		NPC[] npcs = runelite.runQuery(query);
+		NPC[] npcs = queryRunner.runQuery(query);
 
 		for (NPC npc : npcs)
 		{

@@ -37,22 +37,22 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.QueryRunner;
 
 class JewelleryCountOverlay extends Overlay
 {
-	private final RuneLite runelite;
+	private final QueryRunner queryRunner;
 	private final JewelleryCountConfig config;
 
 	@Inject
-	JewelleryCountOverlay(RuneLite runelite, JewelleryCountConfig config)
+	JewelleryCountOverlay(QueryRunner queryRunner, JewelleryCountConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
+		this.queryRunner = queryRunner;
 		this.config = config;
 		this.setDrawOverBankScreen(true);
 	}
@@ -89,14 +89,14 @@ class JewelleryCountOverlay extends Overlay
 	private Collection<WidgetItem> getJewelleryWidgetItems()
 	{
 		Query inventoryQuery = new InventoryItemQuery();
-		WidgetItem[] inventoryWidgetItems = runelite.runQuery(inventoryQuery);
+		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
 		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
 			WidgetInfo.EQUIPMENT_AMULET,
 			WidgetInfo.EQUIPMENT_RING,
 			WidgetInfo.EQUIPMENT_GLOVES
 		);
-		WidgetItem[] equipmentWidgetItems = runelite.runQuery(equipmentQuery);
+		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
 
 		Collection<WidgetItem> jewellery = new ArrayList<>();
 		jewellery.addAll(Arrays.asList(inventoryWidgetItems));

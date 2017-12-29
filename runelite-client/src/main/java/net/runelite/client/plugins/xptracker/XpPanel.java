@@ -24,10 +24,6 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.api.Client;
-import net.runelite.api.Skill;
-import net.runelite.client.ui.PluginPanel;
-import javax.imageio.ImageIO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -35,13 +31,16 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
 public class XpPanel extends PluginPanel
@@ -50,7 +49,6 @@ public class XpPanel extends PluginPanel
 	private final XpTrackerPlugin xpTracker;
 
 	@Inject
-	@Nullable
 	Client client;
 
 	@Inject

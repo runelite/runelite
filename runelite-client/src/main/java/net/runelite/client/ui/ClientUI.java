@@ -24,24 +24,39 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.base.Strings;
+import java.applet.Applet;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Enumeration;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneLite;
+import net.runelite.client.RuneliteProperties;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
 @Slf4j
@@ -50,24 +65,79 @@ public class ClientUI extends JFrame
 	private static final int CLIENT_WIDTH = 809;
 	private static final int SCROLLBAR_WIDTH = 17;
 	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
+	private static final BufferedImage ICON;
 
-	private final RuneLite runelite;
+	@Getter
+	private TrayIcon trayIcon;
+
+	private final Applet client;
+	private final RuneliteProperties properties;
 	private JPanel container;
 	private JPanel navContainer;
-	private ClientPanel panel;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
 
-	public ClientUI(RuneLite runelite)
+	static
 	{
-		this.runelite = runelite;
+		BufferedImage icon = null;
+
+		try
+		{
+			icon = ImageIO.read(ClientUI.class.getResourceAsStream("/runelite.png"));
+		}
+		catch (IOException e)
+		{
+			log.warn("Client icon failed to load", e);
+		}
+
+		ICON = icon;
+	}
+
+	public static ClientUI create(RuneliteProperties properties, Applet client)
+	{
+		// Force heavy-weight popups/tooltips.
+		// Prevents them from being obscured by the game applet.
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		// Do not render shadows under popups/tooltips.
+		// Fixes black boxes under popups that are above the game applet.
+		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
+
+		// Do not fill in background on repaint. Reduces flickering when
+		// the applet is resized.
+		System.setProperty("sun.awt.noerasebackground", "true");
+
+		// Use custom window decorations
+		JFrame.setDefaultLookAndFeelDecorated(true);
+
+		// Use substance look and feel
+		try
+		{
+			UIManager.setLookAndFeel(new SubstanceGraphiteLookAndFeel());
+		}
+		catch (UnsupportedLookAndFeelException ex)
+		{
+			log.warn("unable to set look and feel", ex);
+		}
+
+		// Use custom UI font
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
+
+		return new ClientUI(properties, client);
+	}
+
+	private ClientUI(RuneliteProperties properties, Applet client)
+	{
+		this.properties = properties;
+		this.client = client;
+		this.trayIcon = setupTrayIcon();
+
 		init();
 		pack();
-		TitleBarPane titleBarPane = new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI());
-		titleBarPane.editTitleBar(this);
-		setTitle("RuneLite");
-		setIconImage(RuneLite.ICON);
+		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
+		setTitle(null);
+		setIconImage(ICON);
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
@@ -89,6 +159,55 @@ public class ClientUI extends JFrame
 		}
 	}
 
+	private TrayIcon setupTrayIcon()
+	{
+		if (!SystemTray.isSupported())
+		{
+			return null;
+		}
+
+		SystemTray systemTray = SystemTray.getSystemTray();
+		TrayIcon trayIcon = new TrayIcon(ICON, properties.getTitle());
+		trayIcon.setImageAutoSize(true);
+
+		try
+		{
+			systemTray.add(trayIcon);
+		}
+		catch (AWTException ex)
+		{
+			log.debug("Unable to add system tray icon", ex);
+			return trayIcon;
+		}
+
+		// bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				setVisible(true);
+				setState(Frame.NORMAL); // unminimize
+			}
+		});
+
+		return trayIcon;
+	}
+
+
+	@Override
+	public void setTitle(String extra)
+	{
+		if (!Strings.isNullOrEmpty(extra))
+		{
+			super.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
+		}
+		else
+		{
+			super.setTitle(properties.getTitle() + " " + properties.getVersion());
+		}
+	}
+
 	private void init()
 	{
 		assert SwingUtilities.isEventDispatchThread();
@@ -106,21 +225,7 @@ public class ClientUI extends JFrame
 
 		container = new JPanel();
 		container.setLayout(new BorderLayout(0, 0));
-
-		panel = new ClientPanel(this);
-		if (!RuneLite.getOptions().has("no-rs"))
-		{
-			try
-			{
-				panel.loadRs();
-			}
-			catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException ex)
-			{
-				log.error("Error loading RS!", ex);
-				System.exit(-1);
-			}
-		}
-		container.add(panel, BorderLayout.CENTER);
+		container.add(new ClientPanel(client), BorderLayout.CENTER);
 
 		navContainer = new JPanel();
 		navContainer.setLayout(new BorderLayout(0, 0));
@@ -183,11 +288,10 @@ public class ClientUI extends JFrame
 
 	private void checkExit()
 	{
-		Client client = runelite.getClient();
 		int result = JOptionPane.OK_OPTION;
 
 		// only ask if not logged out
-		if (client != null && client.getGameState() != GameState.LOGIN_SCREEN)
+		if (client != null && client instanceof Client && ((Client)client).getGameState() != GameState.LOGIN_SCREEN)
 		{
 			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 		}
@@ -201,15 +305,5 @@ public class ClientUI extends JFrame
 	public PluginToolbar getPluginToolbar()
 	{
 		return pluginToolbar;
-	}
-
-	public PluginPanel getPluginPanel()
-	{
-		return pluginPanel;
-	}
-
-	RuneLite getRunelite()
-	{
-		return runelite;
 	}
 }

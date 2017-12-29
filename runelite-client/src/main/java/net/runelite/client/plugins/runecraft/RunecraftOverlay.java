@@ -35,11 +35,11 @@ import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.RuneLite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.QueryRunner;
 
 public class RunecraftOverlay extends Overlay
 {
@@ -47,17 +47,17 @@ public class RunecraftOverlay extends Overlay
 	private static final int LARGE_POUCH_DAMAGED = ItemID.LARGE_POUCH_5513;
 	private static final int GIANT_POUCH_DAMAGED = ItemID.GIANT_POUCH_5515;
 
-	private final RuneLite runelite;
+	private final QueryRunner queryRunner;
 	private final Client client;
 
 	private final RunecraftConfig config;
 
 	@Inject
-	RunecraftOverlay(RuneLite runelite, RunecraftConfig config)
+	RunecraftOverlay(QueryRunner queryRunner, Client client, RunecraftConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		this.runelite = runelite;
-		this.client = runelite.getClient();
+		this.queryRunner = queryRunner;
+		this.client = client;
 		this.config = config;
 		this.setDrawOverBankScreen(true);
 	}
@@ -71,7 +71,7 @@ public class RunecraftOverlay extends Overlay
 		}
 
 		Query query = new InventoryItemQuery();
-		WidgetItem[] widgetItems = runelite.runQuery(query);
+		WidgetItem[] widgetItems = queryRunner.runQuery(query);
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : widgetItems)

@@ -60,7 +60,7 @@ public class ZulrahPrayerOverlay extends Overlay
 	{
 		ZulrahInstance instance = plugin.getInstance();
 
-		if (client == null || instance == null)
+		if (instance == null)
 		{
 			return null;
 		}

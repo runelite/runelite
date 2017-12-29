@@ -33,6 +33,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneliteConfig;
@@ -42,6 +43,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 public class RuneliteModule extends AbstractModule
@@ -50,6 +52,7 @@ public class RuneliteModule extends AbstractModule
 	protected void configure()
 	{
 		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
+		bind(QueryRunner.class);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
@@ -57,18 +60,25 @@ public class RuneliteModule extends AbstractModule
 		bind(Scheduler.class);
 		bind(PluginManager.class);
 		bind(RuneliteProperties.class);
+		bind(SessionManager.class);
 	}
 
 	@Provides
-	Client provideClient(RuneLite runelite)
+	Client provideClient(RuneLite runeLite)
 	{
-		return runelite.getClient();
+		return runeLite.client;
 	}
 
 	@Provides
 	ClientUI provideClientUi(RuneLite runelite)
 	{
-		return runelite.getGui();
+		return runelite.gui;
+	}
+
+	@Provides
+	Notifier provideNotifier(RuneLite runeLite)
+	{
+		return runeLite.notifier;
 	}
 
 	@Provides
