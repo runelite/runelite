@@ -46,9 +46,9 @@ class BoostsOverlay extends Overlay
 	};
 	private static final Skill[] SKILLING = new Skill[]
 	{
-		Skill.COOKING, Skill.WOODCUTTING, Skill.FLETCHING, Skill.FISHING, Skill.FIREMAKING, Skill.CRAFTING,
-		Skill.SMITHING, Skill.HERBLORE, Skill.AGILITY, Skill.THIEVING, Skill.SLAYER, Skill.FARMING, Skill.RUNECRAFT,
-		Skill.HUNTER, Skill.CONSTRUCTION
+		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
+		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
 	};
 
 	private final Client client;
