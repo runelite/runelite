@@ -70,6 +70,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_DIAMOND = 886;
 	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
 	public static final int CRAFTING_GLASSBLOWING = 884;
+	public static final int CRAFTING_SPINNING = 894;
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
