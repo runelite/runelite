@@ -28,6 +28,7 @@ package net.runelite.client.plugins.idlenotifier;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
 import static net.runelite.api.AnimationID.CRAFTING_GLASSBLOWING;
+import static net.runelite.api.AnimationID.CRAFTING_SPINNING;
 import static net.runelite.api.AnimationID.FISHING_CAGE;
 import static net.runelite.api.AnimationID.FISHING_HARPOON;
 import static net.runelite.api.AnimationID.FISHING_KARAMBWAN;
@@ -169,7 +170,7 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-			/* Crafting(Gem Cutting, Glassblowing */
+			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -178,6 +179,7 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_RUBY:
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
+			case CRAFTING_SPINNING:
 			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
