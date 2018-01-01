@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -74,7 +76,25 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			executor.execute(() -> hiscorePanel.lookup(event.getMenuTarget()));
+			executor.execute(() ->
+			{
+				try
+				{
+					SwingUtilities.invokeAndWait(() ->
+					{
+						if (!navButton.isSelected())
+						{
+							navButton.doClick();
+						}
+					});
+				}
+				catch (InterruptedException | InvocationTargetException e)
+				{
+					throw new RuntimeException(e);
+				}
+
+				hiscorePanel.lookup(event.getMenuTarget());
+			});
 		}
 	}
 
