@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("de")
-public class class111 {
+@Implements("SoundEffectWorker")
+public class SoundEffectWorker {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lib;"
@@ -30,7 +32,7 @@ public class class111 {
    @ObfuscatedSignature(
       signature = "(Lib;Lib;)V"
    )
-   public class111(IndexDataBase var1, IndexDataBase var2) {
+   public SoundEffectWorker(IndexDataBase var1, IndexDataBase var2) {
       this.field1559 = new HashTable(256);
       this.field1558 = new HashTable(256);
       this.sfx_index = var1;
@@ -42,11 +44,11 @@ public class class111 {
       signature = "(II[IB)Ldx;",
       garbageValue = "58"
    )
-   class106 method2072(int var1, int var2, int[] var3) {
+   MusicTrack2 method2072(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class106 var7 = (class106)this.field1558.get(var5);
+      MusicTrack2 var7 = (MusicTrack2)this.field1558.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
@@ -72,19 +74,19 @@ public class class111 {
       signature = "(II[IB)Ldx;",
       garbageValue = "119"
    )
-   class106 method2073(int var1, int var2, int[] var3) {
+   MusicTrack2 method2073(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class106 var7 = (class106)this.field1558.get(var5);
+      MusicTrack2 var7 = (MusicTrack2)this.field1558.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         class105 var8 = (class105)this.field1559.get(var5);
+         SoundStudio var8 = (SoundStudio)this.field1559.get(var5);
          if(var8 == null) {
-            var8 = class105.method1951(this.vorbis_index, var1, var2);
+            var8 = SoundStudio.method1951(this.vorbis_index, var1, var2);
             if(var8 == null) {
                return null;
             }
@@ -108,7 +110,7 @@ public class class111 {
       signature = "(I[II)Ldx;",
       garbageValue = "-1120993990"
    )
-   public class106 method2074(int var1, int[] var2) {
+   public MusicTrack2 method2074(int var1, int[] var2) {
       if(this.sfx_index.size() == 1) {
          return this.method2072(0, var1, var2);
       } else if(this.sfx_index.fileCount(var1) == 1) {
@@ -123,7 +125,7 @@ public class class111 {
       signature = "(I[II)Ldx;",
       garbageValue = "-144670660"
    )
-   public class106 method2077(int var1, int[] var2) {
+   public MusicTrack2 method2077(int var1, int[] var2) {
       if(this.vorbis_index.size() == 1) {
          return this.method2073(0, var1, var2);
       } else if(this.vorbis_index.fileCount(var1) == 1) {

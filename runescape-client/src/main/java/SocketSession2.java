@@ -1,11 +1,14 @@
-import java.io.IOException;
-import java.net.Socket;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.io.IOException;
+import java.net.Socket;
+
 @ObfuscatedName("fj")
-public class class161 extends class159 {
+@Implements("SocketSession2")
+public class SocketSession2 extends AbstractSocket {
    @ObfuscatedName("dx")
    @ObfuscatedSignature(
       signature = "Liu;"
@@ -18,20 +21,20 @@ public class class161 extends class159 {
    @ObfuscatedSignature(
       signature = "Ler;"
    )
-   class153 field2157;
+   RSInputSocket field2157;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
    RSSocket field2155;
 
-   class161(Socket var1, int var2, int var3) throws IOException {
+   SocketSession2(Socket var1, int var2, int var3) throws IOException {
       this.field2156 = var1;
       this.field2156.setSoTimeout(30000);
       this.field2156.setTcpNoDelay(true);
       this.field2156.setReceiveBufferSize(65536);
       this.field2156.setSendBufferSize(65536);
-      this.field2157 = new class153(this.field2156.getInputStream(), var2);
+      this.field2157 = new RSInputSocket(this.field2156.getInputStream(), var2);
       this.field2155 = new RSSocket(this.field2156.getOutputStream(), var3);
    }
 

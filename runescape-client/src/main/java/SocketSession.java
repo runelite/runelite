@@ -1,14 +1,14 @@
+import net.runelite.mapping.*;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fl")
-public final class class163 extends class159 implements Runnable {
+@Implements("SocketSession")
+public final class SocketSession extends AbstractSocket implements Runnable {
    @ObfuscatedName("a")
    InputStream field2165;
    @ObfuscatedName("w")
@@ -55,7 +55,7 @@ public final class class163 extends class159 implements Runnable {
    @ObfuscatedSignature(
       signature = "(Ljava/net/Socket;Lfs;I)V"
    )
-   public class163(Socket var1, Signlink var2, int var3) throws IOException {
+   public SocketSession(Socket var1, Signlink var2, int var3) throws IOException {
       this.field2163 = false;
       this.field2168 = 0;
       this.field2172 = 0;
@@ -287,8 +287,9 @@ public final class class163 extends class159 implements Runnable {
       signature = "(Lib;III)Lks;",
       garbageValue = "-474356099"
    )
-   public static SpritePixels method3097(IndexDataBase var0, int var1, int var2) {
-      return !Parameters.method5029(var0, var1, var2)?null:Ignore.method1060();
+   @Export("takeItemSnapshot")
+   public static SpritePixels takeItemSnapshot(IndexDataBase var0, int var1, int var2) {
+      return !Parameters.spriteDataValid(var0, var1, var2)?null:Ignore.renderItemSnapshot();
    }
 
    @ObfuscatedName("k")

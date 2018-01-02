@@ -438,7 +438,7 @@ public class class34 {
       garbageValue = "-1221401578"
    )
    void method481(class34[] var1, class43 var2) {
-      class239[] var3 = class153.method2967();
+      class239[] var3 = RSInputSocket.method2967();
       class239[] var4 = var3;
 
       for(int var5 = 0; var5 < var4.length; ++var5) {

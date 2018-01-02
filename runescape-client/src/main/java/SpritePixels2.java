@@ -1,20 +1,14 @@
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
+import net.runelite.mapping.*;
+import net.runelite.rs.Reflection;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
 @ObfuscatedName("hy")
-public class class221 extends CacheableNode {
+@Implements("SpritePixels2")
+public class SpritePixels2 extends CacheableNode {
    @ObfuscatedName("bs")
    @ObfuscatedSignature(
       signature = "[Lkg;"
@@ -36,7 +30,7 @@ public class class221 extends CacheableNode {
    @ObfuscatedName("k")
    public final int[] field2717;
 
-   class221(int var1, int var2, int[] var3, int[] var4, int var5) {
+   SpritePixels2(int var1, int var2, int[] var3, int[] var4, int var5) {
       this.field2715 = var1;
       this.field2716 = var2;
       this.field2714 = var3;

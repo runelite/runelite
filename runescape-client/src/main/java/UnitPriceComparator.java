@@ -109,7 +109,7 @@ final class UnitPriceComparator implements Comparator {
    )
    static final void method126(Widget var0, int var1, int var2, int var3) {
       NPC.method1648();
-      class221 var4 = var0.method4148(false);
+      SpritePixels2 var4 = var0.method4148(false);
       if(var4 != null) {
          Rasterizer2D.setDrawRegion(var1, var2, var4.field2715 + var1, var2 + var4.field2716);
          if(Client.field1062 != 2 && Client.field1062 != 5) {

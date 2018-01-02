@@ -72,15 +72,15 @@ public class class278 {
                }
 
                if(var6 == 5) {
-                  var7 = class222.widgetSettings[var2[var4++]];
+                  var7 = VarpSettingsStore.widgetSettings[var2[var4++]];
                }
 
                if(var6 == 6) {
-                  var7 = class233.field2942[Client.realSkillLevels[var2[var4++]] - 1];
+                  var7 = class233.skillExperienceTable[Client.realSkillLevels[var2[var4++]] - 1];
                }
 
                if(var6 == 7) {
-                  var7 = class222.widgetSettings[var2[var4++]] * 100 / 46875;
+                  var7 = VarpSettingsStore.widgetSettings[var2[var4++]] * 100 / 46875;
                }
 
                if(var6 == 8) {
@@ -89,7 +89,7 @@ public class class278 {
 
                if(var6 == 9) {
                   for(var9 = 0; var9 < 25; ++var9) {
-                     if(class233.field2943[var9]) {
+                     if(class233.activeSkillIds[var9]) {
                         var7 += Client.realSkillLevels[var9];
                      }
                   }
@@ -119,7 +119,7 @@ public class class278 {
                }
 
                if(var6 == 13) {
-                  var9 = class222.widgetSettings[var2[var4++]];
+                  var9 = VarpSettingsStore.widgetSettings[var2[var4++]];
                   int var13 = var2[var4++];
                   var7 = (var9 & 1 << var13) != 0?1:0;
                }

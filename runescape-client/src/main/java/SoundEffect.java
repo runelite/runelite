@@ -42,9 +42,9 @@ public class SoundEffect {
    @ObfuscatedSignature(
       signature = "()Ldx;"
    )
-   public class106 method1942() {
+   public MusicTrack2 method1942() {
       byte[] var1 = this.mix();
-      return new class106(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
+      return new MusicTrack2(22050, var1, this.start * 22050 / 1000, this.end * 22050 / 1000);
    }
 
    @ObfuscatedName("e")

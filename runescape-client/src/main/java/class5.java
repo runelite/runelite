@@ -1,11 +1,13 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import javax.imageio.ImageIO;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("z")
 final class class5 implements class0 {
@@ -262,7 +264,7 @@ final class class5 implements class0 {
       class3.indexTextures.reset();
       class36.indexCache10.reset();
       class20.indexTrack2.reset();
-      class161.indexScripts.reset();
+      SocketSession2.indexScripts.reset();
    }
 
    @ObfuscatedName("gq")
@@ -270,6 +272,7 @@ final class class5 implements class0 {
       signature = "(I)V",
       garbageValue = "-42201957"
    )
+   @Export("npcUpdateViewport")
    static final void method17() {
       PacketBuffer var0 = Client.field888.packetBuffer;
       var0.bitAccess();

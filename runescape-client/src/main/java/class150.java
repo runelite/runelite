@@ -1,7 +1,8 @@
-import java.util.LinkedHashMap;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.LinkedHashMap;
 
 @ObfuscatedName("ex")
 public enum class150 implements Enumerated {
@@ -84,7 +85,7 @@ public enum class150 implements Enumerated {
       class28.method236();
       int var1 = class25.method182(var0).configType;
       if(var1 != 0) {
-         int var2 = class222.widgetSettings[var0];
+         int var2 = VarpSettingsStore.widgetSettings[var0];
          if(var1 == 1) {
             if(var2 == 1) {
                Graphics3D.setBrightness(0.9D);

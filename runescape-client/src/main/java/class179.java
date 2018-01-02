@@ -1,7 +1,9 @@
-import java.util.HashMap;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.HashMap;
 
 @ObfuscatedName("fu")
 public class class179 {
@@ -20,7 +22,8 @@ public class class179 {
       signature = "(I)V",
       garbageValue = "367564648"
    )
-   public static void method3228() {
+   @Export("removeKeyboardFocusListener")
+   public static void removeKeyboardFocusListener() {
       if(KeyFocusListener.keyboard != null) {
          KeyFocusListener var0 = KeyFocusListener.keyboard;
          synchronized(KeyFocusListener.keyboard) {

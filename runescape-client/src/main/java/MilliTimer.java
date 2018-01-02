@@ -136,7 +136,7 @@ public class MilliTimer extends Timer {
       var0.height = class276.field3727[0];
       var0.palette = FaceNormal.field2025;
       var0.pixels = Bounds.spritePixels[0];
-      ContextMenuRow.method1663();
+      ContextMenuRow.resetCachedStaticSpriteData();
       return var0;
    }
 }

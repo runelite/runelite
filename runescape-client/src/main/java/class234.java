@@ -21,7 +21,8 @@ public class class234 {
       signature = "(Lbj;IIII)V",
       garbageValue = "-654823605"
    )
-   static final void method4211(Player var0, int var1, int var2, int var3) {
+   @Export("drawRightClickMenuOptions")
+   static final void drawRightClickMenuOptions(Player var0, int var1, int var2, int var3) {
       if(UrlRequest.localPlayer != var0) {
          if(Client.menuOptionCount < 400) {
             String var4;

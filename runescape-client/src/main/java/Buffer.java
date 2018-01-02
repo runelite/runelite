@@ -66,7 +66,7 @@ public class Buffer extends Node {
    }
 
    public Buffer(int var1) {
-      this.payload = class111.method2088(var1);
+      this.payload = SoundEffectWorker.method2088(var1);
       this.offset = 0;
    }
 

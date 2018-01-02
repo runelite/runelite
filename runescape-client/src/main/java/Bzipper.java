@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fw")
-public final class class178 {
+@Implements("Bzipper")
+public final class Bzipper {
    @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "Lgt;"

@@ -72,7 +72,7 @@ public class FriendLoginUpdate extends Link {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class161.indexScripts.getConfigData(var0, 0);
+         byte[] var2 = SocketSession2.indexScripts.getConfigData(var0, 0);
          if(var2 == null) {
             return null;
          } else {
@@ -143,7 +143,7 @@ public class FriendLoginUpdate extends Link {
          int var22;
          int var23;
          if(var8.method4670()) {
-            class81 var21 = new class81();
+            GameObjectTransformMetadata var21 = new GameObjectTransformMetadata();
             var21.field1225 = var0;
             var21.field1223 = var1 * 128;
             var21.field1224 = var2 * 128;
@@ -166,7 +166,7 @@ public class FriendLoginUpdate extends Link {
                var21.method1540();
             }
 
-            class81.field1235.addFront(var21);
+            GameObjectTransformMetadata.field1235.addFront(var21);
             if(var21.field1226 != null) {
                var21.field1233 = var21.field1230 + (int)(Math.random() * (double)(var21.field1231 - var21.field1230));
             }

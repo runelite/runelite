@@ -268,7 +268,7 @@ public class class44 extends WorldMapData {
                   for(var28 = 0; var28 < var13; ++var28) {
                      var16 = Client.cachedPlayers[var26[var28]];
                      if(var16 != null && var16.x == var23.x && var23.y == var16.y) {
-                        class234.method4211(var16, var26[var28], var8, var9);
+                        class234.drawRightClickMenuOptions(var16, var26[var28], var8, var9);
                      }
                   }
                }
@@ -296,13 +296,13 @@ public class class44 extends WorldMapData {
                   for(var28 = 0; var28 < var13; ++var28) {
                      var16 = Client.cachedPlayers[var26[var28]];
                      if(var16 != null && var16 != var24 && var16.x == var24.x && var24.y == var16.y) {
-                        class234.method4211(var16, var26[var28], var8, var9);
+                        class234.drawRightClickMenuOptions(var16, var26[var28], var8, var9);
                      }
                   }
                }
 
                if(var11 != Client.field957) {
-                  class234.method4211(var24, var11, var8, var9);
+                  class234.drawRightClickMenuOptions(var24, var11, var8, var9);
                } else {
                   var4 = var7;
                }
@@ -366,7 +366,7 @@ public class class44 extends WorldMapData {
          var6 = var4 & 127;
          var7 = var4 >> 7 & 127;
          Player var18 = Client.cachedPlayers[Client.field957];
-         class234.method4211(var18, Client.field957, var6, var7);
+         class234.drawRightClickMenuOptions(var18, Client.field957, var6, var7);
       }
 
    }

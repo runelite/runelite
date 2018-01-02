@@ -63,7 +63,7 @@ public class class133 {
       garbageValue = "28"
    )
    @Export("worldToMinimap")
-   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, SpritePixels2 var5) {
       int var6 = var3 * var3 + var2 * var2;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapAngle & 2047;

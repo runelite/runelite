@@ -1,3 +1,7 @@
+import net.runelite.mapping.*;
+import net.runelite.rs.Reflection;
+import netscape.javascript.JSObject;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -6,14 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
-import netscape.javascript.JSObject;
 
 @Implements("Client")
 @ObfuscatedName("client")
@@ -917,8 +913,10 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 931091535
    )
+   @Export("localNpcsCount")
    static int field967;
    @ObfuscatedName("ij")
+   @Export("npcIndiciesPendingRemoval")
    static int[] field951;
    @ObfuscatedName("ia")
    @Export("playerMenuTypes")
@@ -1704,7 +1702,7 @@ public final class Client extends GameEngine {
                         }
 
                         NPC.method1648();
-                        class161.method3072();
+                        SocketSession2.method3072();
                         var46 = ClanMember.field842.length;
                         class27.method218();
                         class139.flush(true);
@@ -2580,7 +2578,7 @@ public final class Client extends GameEngine {
 
       class44.mouseRecorder = null;
       field888.close();
-      class179.method3228();
+      class179.removeKeyboardFocusListener();
       if(MouseInput.mouse != null) {
          MouseInput var1 = MouseInput.mouse;
          synchronized(MouseInput.mouse) {
@@ -2772,7 +2770,7 @@ public final class Client extends GameEngine {
                   if(field891) {
                      class3.rssocket = WorldMapData.method342((Socket)class175.socket.value, 40000, 5000);
                   } else {
-                     class3.rssocket = new class163((Socket)class175.socket.value, GameEngine.taskManager, 5000);
+                     class3.rssocket = new SocketSession((Socket)class175.socket.value, GameEngine.taskManager, 5000);
                   }
 
                   Buffer var1 = new Buffer(5);
@@ -2799,7 +2797,7 @@ public final class Client extends GameEngine {
                }
 
                if(js5State == 4) {
-                  class159 var10 = class3.rssocket;
+                  AbstractSocket var10 = class3.rssocket;
                   boolean var2 = gameState > 20;
                   if(class249.NetCache_socket != null) {
                      try {
@@ -2922,7 +2920,7 @@ public final class Client extends GameEngine {
       try {
          if(loginState == 0) {
             if(var1 != null) {
-               ((class159)var1).vmethod3081();
+               ((AbstractSocket)var1).vmethod3081();
                var1 = null;
             }
 
@@ -2945,10 +2943,10 @@ public final class Client extends GameEngine {
                if(field891) {
                   var1 = WorldMapData.method342((Socket)class47.field560.value, 40000, 5000);
                } else {
-                  var1 = new class163((Socket)class47.field560.value, GameEngine.taskManager, 5000);
+                  var1 = new SocketSession((Socket)class47.field560.value, GameEngine.taskManager, 5000);
                }
 
-               field888.setSocket((class159)var1);
+               field888.setSocket((AbstractSocket)var1);
                class47.field560 = null;
                loginState = 2;
             }
@@ -2956,7 +2954,7 @@ public final class Client extends GameEngine {
 
          if(loginState == 2) {
             field888.method1866();
-            PacketNode var4 = class161.method3067();
+            PacketNode var4 = SocketSession2.method3067();
             var4.clientPacket = null;
             var4.field2432 = 0;
             var4.packetBuffer = new PacketBuffer(5000);
@@ -2979,12 +2977,12 @@ public final class Client extends GameEngine {
             }
 
             var14 = true;
-            if(field891 && !((class159)var1).vmethod3108(1)) {
+            if(field891 && !((AbstractSocket)var1).vmethod3108(1)) {
                var14 = false;
             }
 
             if(var14) {
-               var15 = ((class159)var1).vmethod3091();
+               var15 = ((AbstractSocket)var1).vmethod3091();
                if(class36.soundSystem0 != null) {
                   class36.soundSystem0.method2004();
                }
@@ -3006,13 +3004,13 @@ public final class Client extends GameEngine {
          int var35;
          if(loginState == 4) {
             if(var2.offset < 8) {
-               var35 = ((class159)var1).vmethod3083();
+               var35 = ((AbstractSocket)var1).vmethod3083();
                if(var35 > 8 - var2.offset) {
                   var35 = 8 - var2.offset;
                }
 
                if(var35 > 0) {
-                  ((class159)var1).vmethod3085(var2.payload, var2.offset, var35);
+                  ((AbstractSocket)var1).vmethod3085(var2.payload, var2.offset, var35);
                   var2.offset += var35;
                }
             }
@@ -3065,7 +3063,7 @@ public final class Client extends GameEngine {
 
             var3.putString(class91.password);
             var3.encryptRsa(class89.field1303, class89.field1301);
-            PacketNode var32 = class161.method3067();
+            PacketNode var32 = SocketSession2.method3067();
             var32.clientPacket = null;
             var32.field2432 = 0;
             var32.packetBuffer = new PacketBuffer(5000);
@@ -3131,7 +3129,7 @@ public final class Client extends GameEngine {
             var32.packetBuffer.putInt(class3.indexTextures.crc);
             var32.packetBuffer.putInt(class36.indexCache10.crc);
             var32.packetBuffer.putInt(class20.indexTrack2.crc);
-            var32.packetBuffer.putInt(class161.indexScripts.crc);
+            var32.packetBuffer.putInt(SocketSession2.indexScripts.crc);
             var32.packetBuffer.putInt(Preferences.indexCache13.crc);
             var32.packetBuffer.putInt(class231.vorbisIndex.crc);
             var32.packetBuffer.putInt(FontName.indexCache15.crc);
@@ -3150,8 +3148,8 @@ public final class Client extends GameEngine {
             loginState = 6;
          }
 
-         if(loginState == 6 && ((class159)var1).vmethod3083() > 0) {
-            var35 = ((class159)var1).vmethod3091();
+         if(loginState == 6 && ((AbstractSocket)var1).vmethod3083() > 0) {
+            var35 = ((AbstractSocket)var1).vmethod3091();
             if(var35 == 21 && gameState == 20) {
                loginState = 7;
             } else if(var35 == 2) {
@@ -3172,8 +3170,8 @@ public final class Client extends GameEngine {
             }
          }
 
-         if(loginState == 7 && ((class159)var1).vmethod3083() > 0) {
-            field879 = (((class159)var1).vmethod3091() + 3) * 60;
+         if(loginState == 7 && ((AbstractSocket)var1).vmethod3083() > 0) {
+            field879 = (((AbstractSocket)var1).vmethod3091() + 3) * 60;
             loginState = 8;
          }
 
@@ -3185,9 +3183,9 @@ public final class Client extends GameEngine {
             }
 
          } else {
-            if(loginState == 9 && ((class159)var1).vmethod3083() >= 13) {
-               var14 = ((class159)var1).vmethod3091() == 1;
-               ((class159)var1).vmethod3085(var2.payload, 0, 4);
+            if(loginState == 9 && ((AbstractSocket)var1).vmethod3083() >= 13) {
+               var14 = ((AbstractSocket)var1).vmethod3091() == 1;
+               ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 4);
                var2.offset = 0;
                boolean var36 = false;
                if(var14) {
@@ -3224,23 +3222,23 @@ public final class Client extends GameEngine {
                }
 
                WorldComparator.method63();
-               rights = ((class159)var1).vmethod3091();
-               field871 = ((class159)var1).vmethod3091() == 1;
-               localInteractingIndex = ((class159)var1).vmethod3091();
+               rights = ((AbstractSocket)var1).vmethod3091();
+               field871 = ((AbstractSocket)var1).vmethod3091() == 1;
+               localInteractingIndex = ((AbstractSocket)var1).vmethod3091();
                localInteractingIndex <<= 8;
-               localInteractingIndex += ((class159)var1).vmethod3091();
-               field918 = ((class159)var1).vmethod3091();
-               ((class159)var1).vmethod3085(var2.payload, 0, 1);
+               localInteractingIndex += ((AbstractSocket)var1).vmethod3091();
+               field918 = ((AbstractSocket)var1).vmethod3091();
+               ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 1);
                var2.offset = 0;
                ServerPacket[] var5 = new ServerPacket[]{ServerPacket.field2255, ServerPacket.field2229, ServerPacket.field2230, ServerPacket.field2231, ServerPacket.field2263, ServerPacket.field2233, ServerPacket.field2300, ServerPacket.field2235, ServerPacket.field2241, ServerPacket.field2237, ServerPacket.field2238, ServerPacket.field2239, ServerPacket.field2240, ServerPacket.field2302, ServerPacket.field2242, ServerPacket.field2257, ServerPacket.field2244, ServerPacket.field2245, ServerPacket.field2249, ServerPacket.field2247, ServerPacket.field2248, ServerPacket.field2296, ServerPacket.field2250, ServerPacket.field2251, ServerPacket.field2252, ServerPacket.field2253, ServerPacket.field2299, ServerPacket.field2258, ServerPacket.field2256, ServerPacket.field2228, ServerPacket.field2282, ServerPacket.field2259, ServerPacket.field2301, ServerPacket.field2261, ServerPacket.field2254, ServerPacket.field2236, ServerPacket.field2264, ServerPacket.field2265, ServerPacket.field2266, ServerPacket.field2306, ServerPacket.field2246, ServerPacket.field2269, ServerPacket.field2232, ServerPacket.field2271, ServerPacket.field2272, ServerPacket.field2273, ServerPacket.field2274, ServerPacket.field2275, ServerPacket.field2268, ServerPacket.field2277, ServerPacket.field2262, ServerPacket.field2279, ServerPacket.field2280, ServerPacket.field2281, ServerPacket.field2289, ServerPacket.field2283, ServerPacket.field2284, ServerPacket.field2285, ServerPacket.field2286, ServerPacket.field2287, ServerPacket.field2234, ServerPacket.field2295, ServerPacket.field2290, ServerPacket.field2291, ServerPacket.field2292, ServerPacket.field2243, ServerPacket.field2278, ServerPacket.field2288, ServerPacket.field2267, ServerPacket.field2297, ServerPacket.field2298, ServerPacket.field2276, ServerPacket.field2270, ServerPacket.field2304, ServerPacket.field2309, ServerPacket.field2303, ServerPacket.field2293, ServerPacket.field2305, ServerPacket.field2260, ServerPacket.field2294, ServerPacket.field2308};
-               var7 = var2.method3550();
+               var7 = var2.readShortOpcode();
                if(var7 < 0 || var7 >= var5.length) {
                   throw new IOException(var7 + " " + var2.offset);
                }
 
                field888.serverPacket = var5[var7];
                field888.packetLength = field888.serverPacket.packetLength;
-               ((class159)var1).vmethod3085(var2.payload, 0, 2);
+               ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                var2.offset = 0;
                field888.packetLength = var2.readUnsignedShort();
 
@@ -3254,9 +3252,9 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(((class159)var1).vmethod3083() >= field888.packetLength) {
+               if(((AbstractSocket)var1).vmethod3083() >= field888.packetLength) {
                   var2.offset = 0;
-                  ((class159)var1).vmethod3085(var2.payload, 0, field888.packetLength);
+                  ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
                   field892.method5032();
                   mouseLastLastPressedTimeMillis = -1L;
                   field858 = -1;
@@ -3320,8 +3318,8 @@ public final class Client extends GameEngine {
                   for(var35 = 0; var35 < Frames.field2028; ++var35) {
                      VarPlayerType var29 = class25.method182(var35);
                      if(var29 != null) {
-                        class222.settings[var35] = 0;
-                        class222.widgetSettings[var35] = 0;
+                        VarpSettingsStore.settings[var35] = 0;
+                        VarpSettingsStore.widgetSettings[var35] = 0;
                      }
                   }
 
@@ -3370,17 +3368,17 @@ public final class Client extends GameEngine {
                }
 
             } else {
-               if(loginState == 11 && ((class159)var1).vmethod3083() >= 2) {
+               if(loginState == 11 && ((AbstractSocket)var1).vmethod3083() >= 2) {
                   var2.offset = 0;
-                  ((class159)var1).vmethod3085(var2.payload, 0, 2);
+                  ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                   var2.offset = 0;
                   class167.field2222 = var2.readUnsignedShort();
                   loginState = 12;
                }
 
-               if(loginState == 12 && ((class159)var1).vmethod3083() >= class167.field2222) {
+               if(loginState == 12 && ((AbstractSocket)var1).vmethod3083() >= class167.field2222) {
                   var2.offset = 0;
-                  ((class159)var1).vmethod3085(var2.payload, 0, class167.field2222);
+                  ((AbstractSocket)var1).vmethod3085(var2.payload, 0, class167.field2222);
                   var2.offset = 0;
                   String var25 = var2.readString();
                   String var28 = var2.readString();
@@ -3407,17 +3405,17 @@ public final class Client extends GameEngine {
                   }
                } else {
                   if(field888.packetLength == -1) {
-                     if(((class159)var1).vmethod3083() < 2) {
+                     if(((AbstractSocket)var1).vmethod3083() < 2) {
                         return;
                      }
 
-                     ((class159)var1).vmethod3085(var2.payload, 0, 2);
+                     ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                      var2.offset = 0;
                      field888.packetLength = var2.readUnsignedShort();
                   }
 
-                  if(((class159)var1).vmethod3083() >= field888.packetLength) {
-                     ((class159)var1).vmethod3085(var2.payload, 0, field888.packetLength);
+                  if(((AbstractSocket)var1).vmethod3083() >= field888.packetLength) {
+                     ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
                      var2.offset = 0;
                      var35 = field888.packetLength;
                      field892.method5044();
@@ -3770,8 +3768,8 @@ public final class Client extends GameEngine {
                            }
 
                            if(var3 > 0) {
-                              class106 var21 = var29.method1942().method1979(class34.field457);
-                              class116 var22 = class116.method2160(var21, 100, var3);
+                              MusicTrack2 var21 = var29.method1942().method1979(class34.field457);
+                              SongMetadata var22 = SongMetadata.method2160(var21, 100, var3);
                               var22.method2114(field1070[var1] - 1);
                               class214.field2628.method1885(var22);
                            }
@@ -4129,7 +4127,7 @@ public final class Client extends GameEngine {
                var28 = FileSystem.method4252(ClientPacket.field2364, field888.field1449);
                var28.packetBuffer.putByte(0);
                var3 = var28.packetBuffer.offset;
-               class221.encodeClassVerifier(var28.packetBuffer);
+               SpritePixels2.encodeClassVerifier(var28.packetBuffer);
                var28.packetBuffer.method3258(var28.packetBuffer.offset - var3);
                field888.method1862(var28);
             }
@@ -4259,7 +4257,7 @@ public final class Client extends GameEngine {
             Friend.fontBold12.method4891(class5.method18(var8), var1 + 3, var9, var10, 0);
          }
 
-         class111.method2084(WorldMapType1.menuX, ClientPacket.menuY, Item.menuWidth, Size.menuHeight);
+         SoundEffectWorker.method2084(WorldMapType1.menuX, ClientPacket.menuY, Item.menuWidth, Size.menuHeight);
       }
 
       if(gameDrawingMode == 3) {
@@ -4277,7 +4275,7 @@ public final class Client extends GameEngine {
       var3 = UrlRequest.localPlayer.y;
       var4 = field847;
 
-      for(class81 var17 = (class81)class81.field1235.getFront(); var17 != null; var17 = (class81)class81.field1235.getNext()) {
+      for(GameObjectTransformMetadata var17 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getFront(); var17 != null; var17 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getNext()) {
          if(var17.field1228 != -1 || var17.field1226 != null) {
             var13 = 0;
             if(var2 > var17.field1232) {
@@ -4305,8 +4303,8 @@ public final class Client extends GameEngine {
                      var10000 = null;
                      SoundEffect var14 = SoundEffect.getTrack(class86.indexCache4, var17.field1228, 0);
                      if(var14 != null) {
-                        class106 var15 = var14.method1942().method1979(class34.field457);
-                        class116 var16 = class116.method2160(var15, 100, var7);
+                        MusicTrack2 var15 = var14.method1942().method1979(class34.field457);
+                        SongMetadata var16 = SongMetadata.method2160(var15, 100, var7);
                         var16.method2114(-1);
                         class214.field2628.method1885(var16);
                         var17.field1229 = var16;
@@ -4322,8 +4320,8 @@ public final class Client extends GameEngine {
                      var10000 = null;
                      SoundEffect var18 = SoundEffect.getTrack(class86.indexCache4, var17.field1226[var8], 0);
                      if(var18 != null) {
-                        class106 var19 = var18.method1942().method1979(class34.field457);
-                        class116 var11 = class116.method2160(var19, 100, var7);
+                        MusicTrack2 var19 = var18.method1942().method1979(class34.field457);
+                        SongMetadata var11 = SongMetadata.method2160(var19, 100, var7);
                         var11.method2114(0);
                         class214.field2628.method1885(var11);
                         var17.field1234 = var11;
@@ -4358,8 +4356,9 @@ public final class Client extends GameEngine {
       signature = "(Lcx;I)Z",
       garbageValue = "944549849"
    )
+   @Export("readPacket")
    final boolean method1229(NetWriter var1) {
-      class159 var2 = var1.getSocket();
+      AbstractSocket var2 = var1.getSocket();
       PacketBuffer var3 = var1.packetBuffer;
       if(var2 == null) {
          return false;
@@ -4390,7 +4389,7 @@ public final class Client extends GameEngine {
 
                var1.field1446 = true;
                ServerPacket[] var4 = new ServerPacket[]{ServerPacket.field2255, ServerPacket.field2229, ServerPacket.field2230, ServerPacket.field2231, ServerPacket.field2263, ServerPacket.field2233, ServerPacket.field2300, ServerPacket.field2235, ServerPacket.field2241, ServerPacket.field2237, ServerPacket.field2238, ServerPacket.field2239, ServerPacket.field2240, ServerPacket.field2302, ServerPacket.field2242, ServerPacket.field2257, ServerPacket.field2244, ServerPacket.field2245, ServerPacket.field2249, ServerPacket.field2247, ServerPacket.field2248, ServerPacket.field2296, ServerPacket.field2250, ServerPacket.field2251, ServerPacket.field2252, ServerPacket.field2253, ServerPacket.field2299, ServerPacket.field2258, ServerPacket.field2256, ServerPacket.field2228, ServerPacket.field2282, ServerPacket.field2259, ServerPacket.field2301, ServerPacket.field2261, ServerPacket.field2254, ServerPacket.field2236, ServerPacket.field2264, ServerPacket.field2265, ServerPacket.field2266, ServerPacket.field2306, ServerPacket.field2246, ServerPacket.field2269, ServerPacket.field2232, ServerPacket.field2271, ServerPacket.field2272, ServerPacket.field2273, ServerPacket.field2274, ServerPacket.field2275, ServerPacket.field2268, ServerPacket.field2277, ServerPacket.field2262, ServerPacket.field2279, ServerPacket.field2280, ServerPacket.field2281, ServerPacket.field2289, ServerPacket.field2283, ServerPacket.field2284, ServerPacket.field2285, ServerPacket.field2286, ServerPacket.field2287, ServerPacket.field2234, ServerPacket.field2295, ServerPacket.field2290, ServerPacket.field2291, ServerPacket.field2292, ServerPacket.field2243, ServerPacket.field2278, ServerPacket.field2288, ServerPacket.field2267, ServerPacket.field2297, ServerPacket.field2298, ServerPacket.field2276, ServerPacket.field2270, ServerPacket.field2304, ServerPacket.field2309, ServerPacket.field2303, ServerPacket.field2293, ServerPacket.field2305, ServerPacket.field2260, ServerPacket.field2294, ServerPacket.field2308};
-               var6 = var3.method3550();
+               var6 = var3.readShortOpcode();
                if(var6 < 0 || var6 >= var4.length) {
                   throw new IOException(var6 + " " + var3.offset);
                }
@@ -4425,7 +4424,7 @@ public final class Client extends GameEngine {
             var3.offset = 0;
             var2.vmethod3085(var3.payload, 0, var1.packetLength);
             var1.field1453 = 0;
-            field892.method5031();
+            field892.markTimeMs();
             var1.field1458 = var1.field1457;
             var1.field1457 = var1.field1456;
             var1.field1456 = var1.serverPacket;
@@ -4709,7 +4708,7 @@ public final class Client extends GameEngine {
                for(var34 = 0; var34 < class192.clanChatCount; ++var34) {
                   var93[var34] = new ClanMember();
                   var93[var34].username = var3.readString();
-                  var93[var34].field840 = class221.cleanUsername(var93[var34].username, PendingSpawn.jagexLoginType);
+                  var93[var34].field840 = SpritePixels2.cleanUsername(var93[var34].username, PendingSpawn.jagexLoginType);
                   var93[var34].world = var3.readUnsignedShort();
                   var93[var34].rank = var3.readByte();
                   var3.readString();
@@ -4751,7 +4750,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2260 == var1.serverPacket) {
-               class64.field727 = IndexStoreActionHandler.method4353(var3.readUnsignedByte());
+               class64.field727 = IndexStoreActionHandler.socialStatusForId(var3.readUnsignedByte());
                var1.serverPacket = null;
                return true;
             }
@@ -4760,8 +4759,8 @@ public final class Client extends GameEngine {
                for(var23 = 0; var23 < Frames.field2028; ++var23) {
                   VarPlayerType var67 = class25.method182(var23);
                   if(var67 != null) {
-                     class222.settings[var23] = 0;
-                     class222.widgetSettings[var23] = 0;
+                     VarpSettingsStore.settings[var23] = 0;
+                     VarpSettingsStore.widgetSettings[var23] = 0;
                   }
                }
 
@@ -4824,7 +4823,7 @@ public final class Client extends GameEngine {
                realSkillLevels[var24] = 1;
 
                for(var62 = 0; var62 < 98; ++var62) {
-                  if(var6 >= class233.field2942[var62]) {
+                  if(var6 >= class233.skillExperienceTable[var62]) {
                      realSkillLevels[var24] = var62 + 2;
                   }
                }
@@ -5805,9 +5804,9 @@ public final class Client extends GameEngine {
             if(ServerPacket.field2271 == var1.serverPacket) {
                byte var80 = var3.method3347();
                var24 = var3.readUnsignedShort();
-               class222.settings[var24] = var80;
-               if(class222.widgetSettings[var24] != var80) {
-                  class222.widgetSettings[var24] = var80;
+               VarpSettingsStore.settings[var24] = var80;
+               if(VarpSettingsStore.widgetSettings[var24] != var80) {
+                  VarpSettingsStore.widgetSettings[var24] = var80;
                }
 
                class150.method2933(var24);
@@ -6012,7 +6011,7 @@ public final class Client extends GameEngine {
                   var3.readString();
                   ClanMember var82 = new ClanMember();
                   var82.username = var55;
-                  var82.field840 = class221.cleanUsername(var82.username, PendingSpawn.jagexLoginType);
+                  var82.field840 = SpritePixels2.cleanUsername(var82.username, PendingSpawn.jagexLoginType);
                   var82.world = var24;
                   var82.rank = var63;
 
@@ -6069,9 +6068,9 @@ public final class Client extends GameEngine {
             if(ServerPacket.field2234 == var1.serverPacket) {
                var23 = var3.method3457();
                var24 = var3.method3297();
-               class222.settings[var24] = var23;
-               if(class222.widgetSettings[var24] != var23) {
-                  class222.widgetSettings[var24] = var23;
+               VarpSettingsStore.settings[var24] = var23;
+               if(VarpSettingsStore.widgetSettings[var24] != var23) {
+                  VarpSettingsStore.widgetSettings[var24] = var23;
                }
 
                class150.method2933(var24);
@@ -6193,9 +6192,9 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2308 == var1.serverPacket) {
-               for(var23 = 0; var23 < class222.widgetSettings.length; ++var23) {
-                  if(class222.widgetSettings[var23] != class222.settings[var23]) {
-                     class222.widgetSettings[var23] = class222.settings[var23];
+               for(var23 = 0; var23 < VarpSettingsStore.widgetSettings.length; ++var23) {
+                  if(VarpSettingsStore.widgetSettings[var23] != VarpSettingsStore.settings[var23]) {
+                     VarpSettingsStore.widgetSettings[var23] = VarpSettingsStore.settings[var23];
                      class150.method2933(var23);
                      field988[++field1015 - 1 & 31] = var23;
                   }
@@ -6651,6 +6650,7 @@ public final class Client extends GameEngine {
       signature = "(ILck;ZI)I",
       garbageValue = "1570138462"
    )
+   @Export("cs2_2600s")
    static int method1287(int var0, Script var1, boolean var2) {
       Widget var3 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
       if(var0 == 2600) {

@@ -1,9 +1,10 @@
-import java.io.File;
-import java.util.Hashtable;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.io.File;
+import java.util.Hashtable;
 
 @ObfuscatedName("fm")
 public class class160 {
@@ -43,8 +44,8 @@ public class class160 {
          FriendLoginUpdate.field760 = KeyFocusListener.getSprites(class43.indexSprites, "sl_back", "");
       }
 
-      if(class221.slFlagSprites == null) {
-         class221.slFlagSprites = Signlink.getIndexedSprites(class43.indexSprites, "sl_flags", "");
+      if(SpritePixels2.slFlagSprites == null) {
+         SpritePixels2.slFlagSprites = Signlink.getIndexedSprites(class43.indexSprites, "sl_flags", "");
       }
 
       if(class7.slArrowSprites == null) {
@@ -219,8 +220,8 @@ public class class160 {
                FriendLoginUpdate.field760[var18].method5203(var11, var10);
             }
 
-            if(class221.slFlagSprites != null) {
-               class221.slFlagSprites[(var15.method1518()?8:0) + var15.location].method5176(var11 + 29, var10);
+            if(SpritePixels2.slFlagSprites != null) {
+               SpritePixels2.slFlagSprites[(var15.method1518()?8:0) + var15.location].method5176(var11 + 29, var10);
             }
 
             var0.method4884(Integer.toString(var15.id), var11 + 15, var22 / 2 + var10 + 5, var19, -1);

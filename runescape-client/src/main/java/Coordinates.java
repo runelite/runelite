@@ -617,11 +617,11 @@ public class Coordinates {
                         } else if(var0 == 4104) {
                            var19 = class82.intStack[--class82.intStackSize];
                            long var36 = ((long)var19 + 11745L) * 86400000L;
-                           class82.field1247.setTime(new Date(var36));
-                           var49 = class82.field1247.get(5);
-                           var45 = class82.field1247.get(2);
-                           var9 = class82.field1247.get(1);
-                           class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var49 + "-" + class82.field1248[var45] + "-" + var9;
+                           class82.calendar.setTime(new Date(var36));
+                           var49 = class82.calendar.get(5);
+                           var45 = class82.calendar.get(2);
+                           var9 = class82.calendar.get(1);
+                           class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var49 + "-" + class82.months[var45] + "-" + var9;
                            var3 = 1;
                         } else if(var0 == 4105) {
                            class35.scriptStringStackSize -= 2;
@@ -846,7 +846,7 @@ public class Coordinates {
 
                            return var3;
                         } else if(var0 < 6600) {
-                           return class81.method1551(var0, var1, var2);
+                           return GameObjectTransformMetadata.method1551(var0, var1, var2);
                         } else if(var0 < 6700) {
                            if(var0 == 6600) {
                               var19 = BoundingBox2D.plane;
@@ -1208,9 +1208,9 @@ public class Coordinates {
                         } else if(var0 == 5001) {
                            class82.intStackSize -= 3;
                            Client.publicChatMode = class82.intStack[class82.intStackSize];
-                           class64.field727 = IndexStoreActionHandler.method4353(class82.intStack[class82.intStackSize + 1]);
+                           class64.field727 = IndexStoreActionHandler.socialStatusForId(class82.intStack[class82.intStackSize + 1]);
                            if(class64.field727 == null) {
-                              class64.field727 = class289.field3807;
+                              class64.field727 = SocialStatus.field3807;
                            }
 
                            Client.field1087 = class82.intStack[class82.intStackSize + 2];

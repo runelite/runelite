@@ -23,7 +23,7 @@ public final class class279 {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       IndexedSprite var5;
-      if(!Parameters.method5029(var0, var3, var4)) {
+      if(!Parameters.spriteDataValid(var0, var3, var4)) {
          var5 = null;
       } else {
          var5 = MilliTimer.method2946();

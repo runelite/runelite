@@ -118,7 +118,8 @@ public class Parameters {
       signature = "(Lib;III)Z",
       garbageValue = "-1051329266"
    )
-   public static boolean method5029(IndexDataBase var0, int var1, int var2) {
+   @Export("spriteDataValid")
+   public static boolean spriteDataValid(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       if(var3 == null) {
          return false;

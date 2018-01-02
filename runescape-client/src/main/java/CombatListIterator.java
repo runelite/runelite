@@ -1,9 +1,12 @@
-import java.util.Iterator;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.util.Iterator;
+
 @ObfuscatedName("ga")
-public class class199 implements Iterator {
+@Implements("CombatListIterator")
+public class CombatListIterator implements Iterator {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lgo;"
@@ -23,7 +26,7 @@ public class class199 implements Iterator {
    @ObfuscatedSignature(
       signature = "(Lgo;)V"
    )
-   class199(CombatInfoList var1) {
+   CombatListIterator(CombatInfoList var1) {
       this.field2573 = null;
       this.field2575 = var1;
       this.field2574 = this.field2575.node.next;

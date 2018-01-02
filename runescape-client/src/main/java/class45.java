@@ -138,6 +138,7 @@ public class class45 extends class28 {
       signature = "([BI)[B",
       garbageValue = "769176139"
    )
+   @Export("duplicateArray")
    static byte[] method658(byte[] var0) {
       int var1 = var0.length;
       byte[] var2 = new byte[var1];

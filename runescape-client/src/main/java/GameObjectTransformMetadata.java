@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cb")
-public final class class81 extends Node {
+@Implements("GameObjectTransformMetadata")
+public final class GameObjectTransformMetadata extends Node {
    @ObfuscatedName("lg")
    @ObfuscatedGetter(
       intValue = 1509846049
@@ -53,7 +55,7 @@ public final class class81 extends Node {
    @ObfuscatedSignature(
       signature = "Ldg;"
    )
-   class116 field1229;
+   SongMetadata field1229;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 1292317037
@@ -75,7 +77,7 @@ public final class class81 extends Node {
    @ObfuscatedSignature(
       signature = "Ldg;"
    )
-   class116 field1234;
+   SongMetadata field1234;
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Ljf;"

@@ -1,8 +1,9 @@
-import java.util.Calendar;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.Calendar;
 
 @ObfuscatedName("cv")
 public class class82 {
@@ -39,9 +40,11 @@ public class class82 {
    @Export("scriptStack")
    static ScriptState[] scriptStack;
    @ObfuscatedName("y")
-   static Calendar field1247;
+   @Export("calendar")
+   static Calendar calendar;
    @ObfuscatedName("o")
-   static final String[] field1248;
+   @Export("months")
+   static final String[] months;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Laa;"
@@ -60,8 +63,8 @@ public class class82 {
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1247 = Calendar.getInstance();
-      field1248 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      calendar = Calendar.getInstance();
+      months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field1250 = 0;
    }
 
@@ -212,7 +215,7 @@ public class class82 {
                if(var10 == Client.field1064) {
                   if(var1 != -1412584499 && !var10.field2889) {
                      class3.field17 = var0;
-                     class81.field1222 = var6;
+                     GameObjectTransformMetadata.field1222 = var6;
                      class186.field2526 = var7;
                      continue;
                   }
@@ -780,7 +783,7 @@ public class class82 {
                      }
 
                      if(var10.contentType == 1339) {
-                        class221 var66 = var10.method4148(false);
+                        SpritePixels2 var66 = var10.method4148(false);
                         if(var66 != null) {
                            if(Client.field1062 < 3) {
                               GrandExchangeEvent.compass.method5216(var12, var13, var66.field2715, var66.field2716, 25, 25, Client.mapAngle, 256, var66.field2717, var66.field2714);

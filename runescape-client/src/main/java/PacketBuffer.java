@@ -1,10 +1,7 @@
+import net.runelite.mapping.*;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gy")
 @Implements("PacketBuffer")
@@ -87,7 +84,8 @@ public final class PacketBuffer extends Buffer {
       signature = "(I)I",
       garbageValue = "-2108611718"
    )
-   public int method3550() {
+   @Export("readShortOpcode")
+   public int readShortOpcode() {
       int var1 = super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
       return var1 < 128?var1:(var1 - 128 << 8) + (super.payload[++super.offset - 1] - this.cipher.nextInt() & 255);
    }

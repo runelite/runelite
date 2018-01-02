@@ -1,12 +1,9 @@
+import net.runelite.mapping.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
 @Implements("GrandExchangeEvents")
@@ -79,6 +76,7 @@ public class GrandExchangeEvents {
       signature = "(II)Ljg;",
       garbageValue = "-1432370023"
    )
+   @Export("enumForId")
    public static Enum method70(int var0) {
       Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
       if(var1 != null) {

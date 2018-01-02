@@ -37,7 +37,8 @@ public class Ignore {
       signature = "(I)Lks;",
       garbageValue = "-1374631757"
    )
-   static SpritePixels method1060() {
+   @Export("renderItemSnapshot")
+   static SpritePixels renderItemSnapshot() {
       SpritePixels var0 = new SpritePixels();
       var0.maxWidth = class299.field3864;
       var0.maxHeight = class299.field3868;
@@ -53,7 +54,7 @@ public class Ignore {
          var0.pixels[var3] = FaceNormal.field2025[var2[var3] & 255];
       }
 
-      ContextMenuRow.method1663();
+      ContextMenuRow.resetCachedStaticSpriteData();
       return var0;
    }
 

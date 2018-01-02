@@ -1072,12 +1072,12 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    static final void method857(String var0) {
       if(var0 != null) {
-         String var1 = class221.cleanUsername(var0, PendingSpawn.jagexLoginType);
+         String var1 = SpritePixels2.cleanUsername(var0, PendingSpawn.jagexLoginType);
          if(var1 != null) {
             for(int var2 = 0; var2 < Client.friendCount; ++var2) {
                Friend var3 = Client.friends[var2];
                String var4 = var3.name;
-               String var5 = class221.cleanUsername(var4, PendingSpawn.jagexLoginType);
+               String var5 = SpritePixels2.cleanUsername(var4, PendingSpawn.jagexLoginType);
                boolean var6;
                if(var0 != null && var4 != null) {
                   if(!var0.startsWith("#") && !var4.startsWith("#")) {

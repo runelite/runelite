@@ -48,7 +48,8 @@ public class ContextMenuRow {
       signature = "(I)V",
       garbageValue = "933459213"
    )
-   public static void method1663() {
+   @Export("resetCachedStaticSpriteData")
+   public static void resetCachedStaticSpriteData() {
       class299.field3867 = null;
       class299.offsetsY = null;
       Item.field1387 = null;

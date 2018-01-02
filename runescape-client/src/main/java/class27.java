@@ -1,10 +1,7 @@
-import java.awt.Component;
+import net.runelite.mapping.*;
+
+import java.awt.*;
 import java.io.IOException;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ad")
 public enum class27 implements Enumerated {
@@ -68,7 +65,7 @@ public enum class27 implements Enumerated {
       garbageValue = "1804574040"
    )
    static void method218() {
-      for(class81 var0 = (class81)class81.field1235.getFront(); var0 != null; var0 = (class81)class81.field1235.getNext()) {
+      for(GameObjectTransformMetadata var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getFront(); var0 != null; var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getNext()) {
          if(var0.field1229 != null) {
             class214.field2628.method1882(var0.field1229);
             var0.field1229 = null;
@@ -80,7 +77,7 @@ public enum class27 implements Enumerated {
          }
       }
 
-      class81.field1235.clear();
+      GameObjectTransformMetadata.field1235.clear();
    }
 
    @ObfuscatedName("w")
@@ -185,7 +182,7 @@ public enum class27 implements Enumerated {
             class3.indexTextures = Player.openCacheIndex(9, false, true, true);
             class36.indexCache10 = Player.openCacheIndex(10, false, true, true);
             class20.indexTrack2 = Player.openCacheIndex(11, false, true, true);
-            class161.indexScripts = Player.openCacheIndex(12, false, true, true);
+            SocketSession2.indexScripts = Player.openCacheIndex(12, false, true, true);
             Preferences.indexCache13 = Player.openCacheIndex(13, true, false, true);
             class231.vorbisIndex = Player.openCacheIndex(14, false, true, false);
             FontName.indexCache15 = Player.openCacheIndex(15, false, true, true);
@@ -207,7 +204,7 @@ public enum class27 implements Enumerated {
             var0 += class3.indexTextures.percentage() * 2 / 100;
             var0 += class36.indexCache10.percentage() * 2 / 100;
             var0 += class20.indexTrack2.percentage() * 2 / 100;
-            var0 += class161.indexScripts.percentage() * 2 / 100;
+            var0 += SocketSession2.indexScripts.percentage() * 2 / 100;
             var0 += Preferences.indexCache13.percentage() * 2 / 100;
             var0 += class231.vorbisIndex.percentage() * 2 / 100;
             var0 += FontName.indexCache15.percentage() * 2 / 100;
@@ -229,7 +226,7 @@ public enum class27 implements Enumerated {
             IndexData var22;
             if(Client.loadingStage == 45) {
                AbstractByteBuffer.method3518(22050, !Client.lowMemory, 2);
-               class215 var27 = new class215();
+               RSAudioPlayer var27 = new RSAudioPlayer();
                var27.method3851(9, 128);
                class36.soundSystem0 = PacketBuffer.method3579(GameEngine.taskManager, 0, 22050);
                class36.soundSystem0.method2002(var27);
@@ -513,8 +510,8 @@ public enum class27 implements Enumerated {
                if(!MouseInput.indexCache3.method4259()) {
                   class91.loadingText = "Loading interfaces - " + MouseInput.indexCache3.loadPercent() * 4 / 5 + "%";
                   class91.loadingBarPercentage = 96;
-               } else if(!class161.indexScripts.method4259()) {
-                  class91.loadingText = "Loading interfaces - " + (80 + class161.indexScripts.loadPercent() / 6) + "%";
+               } else if(!SocketSession2.indexScripts.method4259()) {
+                  class91.loadingText = "Loading interfaces - " + (80 + SocketSession2.indexScripts.loadPercent() / 6) + "%";
                   class91.loadingBarPercentage = 96;
                } else if(!Preferences.indexCache13.method4259()) {
                   class91.loadingText = "Loading interfaces - " + (96 + Preferences.indexCache13.loadPercent() / 50) + "%";
@@ -554,6 +551,7 @@ public enum class27 implements Enumerated {
       signature = "(Lgy;I)V",
       garbageValue = "688722835"
    )
+   @Export("npcUpdateMasks")
    static final void method215(PacketBuffer var0) {
       for(int var1 = 0; var1 < Client.pendingNpcFlagsCount; ++var1) {
          int var2 = Client.pendingNpcFlagsIndices[var1];
@@ -1092,7 +1090,7 @@ public enum class27 implements Enumerated {
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
-                           class222.widgetSettings[var18] = 1 - class222.widgetSettings[var18];
+                           VarpSettingsStore.widgetSettings[var18] = 1 - VarpSettingsStore.widgetSettings[var18];
                            class150.method2933(var18);
                         }
                      } else if(var2 == 29) {
@@ -1102,8 +1100,8 @@ public enum class27 implements Enumerated {
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
-                           if(class222.widgetSettings[var18] != var28.field2837[0]) {
-                              class222.widgetSettings[var18] = var28.field2837[0];
+                           if(VarpSettingsStore.widgetSettings[var18] != var28.field2837[0]) {
+                              VarpSettingsStore.widgetSettings[var18] = var28.field2837[0];
                               class150.method2933(var18);
                            }
                         }
@@ -1601,15 +1599,15 @@ public enum class27 implements Enumerated {
       if(var0 == null) {
          return false;
       } else {
-         String var1 = class221.cleanUsername(var0, PendingSpawn.jagexLoginType);
+         String var1 = SpritePixels2.cleanUsername(var0, PendingSpawn.jagexLoginType);
 
          for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
             Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(class221.cleanUsername(var3.name, PendingSpawn.jagexLoginType))) {
+            if(var1.equalsIgnoreCase(SpritePixels2.cleanUsername(var3.name, PendingSpawn.jagexLoginType))) {
                return true;
             }
 
-            if(var1.equalsIgnoreCase(class221.cleanUsername(var3.previousName, PendingSpawn.jagexLoginType))) {
+            if(var1.equalsIgnoreCase(SpritePixels2.cleanUsername(var3.previousName, PendingSpawn.jagexLoginType))) {
                return true;
             }
          }

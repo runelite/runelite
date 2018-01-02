@@ -1227,6 +1227,7 @@ public class ScriptVarType implements Enumerated, class305 {
       signature = "(ILck;ZB)I",
       garbageValue = "-109"
    )
+   @Export("cs2_3300s")
    static int method25(int var0, Script var1, boolean var2) {
       if(var0 == 3300) {
          class82.intStack[++class82.intStackSize - 1] = Client.gameCycle;

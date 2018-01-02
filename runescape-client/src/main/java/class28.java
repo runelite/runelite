@@ -163,7 +163,7 @@ public abstract class class28 {
       garbageValue = "-70"
    )
    static void method236() {
-      for(class81 var0 = (class81)class81.field1235.getFront(); var0 != null; var0 = (class81)class81.field1235.getNext()) {
+      for(GameObjectTransformMetadata var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getFront(); var0 != null; var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getNext()) {
          if(var0.field1227 != null) {
             var0.method1540();
          }

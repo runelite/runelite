@@ -1,11 +1,7 @@
+import net.runelite.mapping.*;
+
 import java.io.File;
 import java.io.RandomAccessFile;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bv")
 @Implements("MessageNode")
@@ -139,6 +135,7 @@ public class MessageNode extends CacheableNode {
       signature = "(ZLgy;B)V",
       garbageValue = "-111"
    )
+   @Export("npcUpdatePacket")
    static final void method1065(boolean var0, PacketBuffer var1) {
       Client.field967 = 0;
       Client.pendingNpcFlagsCount = 0;
@@ -172,6 +169,7 @@ public class MessageNode extends CacheableNode {
       signature = "(ILjava/lang/String;B)V",
       garbageValue = "0"
    )
+   @Export("writeRespondPlayerRequest")
    static void method1067(int var0, String var1) {
       int var2 = class94.playerIndexesCount;
       int[] var3 = class94.playerIndices;

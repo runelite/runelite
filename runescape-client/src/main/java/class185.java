@@ -140,7 +140,7 @@ public class class185 {
       if(var1) {
          ScriptState.rasterProvider.drawFull(0, 0);
       } else {
-         class111.method2084(var3, var4, var5, var6);
+         SoundEffectWorker.method2084(var3, var4, var5, var6);
       }
 
    }

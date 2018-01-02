@@ -341,7 +341,7 @@ public class Track1 extends Node {
          int[] var2 = new int[16];
          var2[9] = 128;
          var1[9] = 128;
-         class217 var4 = new class217(this.field2712);
+         RSSongData var4 = new RSSongData(this.field2712);
          int var5 = var4.method4010();
 
          int var6;

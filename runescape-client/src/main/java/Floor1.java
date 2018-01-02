@@ -45,18 +45,18 @@ public class Floor1 {
    }
 
    Floor1() {
-      int var1 = class105.getInt(16);
+      int var1 = SoundStudio.getInt(16);
       if(var1 != 1) {
          throw new RuntimeException();
       } else {
-         int var2 = class105.getInt(5);
+         int var2 = SoundStudio.getInt(5);
          int var3 = 0;
          this.paritionClassList = new int[var2];
 
          int var4;
          int var5;
          for(var4 = 0; var4 < var2; ++var4) {
-            var5 = class105.getInt(4);
+            var5 = SoundStudio.getInt(4);
             this.paritionClassList[var4] = var5;
             if(var5 >= var3) {
                var3 = var5 + 1;
@@ -70,10 +70,10 @@ public class Floor1 {
 
          int var7;
          for(var4 = 0; var4 < var3; ++var4) {
-            this.classDimensions[var4] = class105.getInt(3) + 1;
-            var5 = this.classSubClasses[var4] = class105.getInt(2);
+            this.classDimensions[var4] = SoundStudio.getInt(3) + 1;
+            var5 = this.classSubClasses[var4] = SoundStudio.getInt(2);
             if(var5 != 0) {
-               this.classMasterbooks[var4] = class105.getInt(8);
+               this.classMasterbooks[var4] = SoundStudio.getInt(8);
             }
 
             var5 = 1 << var5;
@@ -81,12 +81,12 @@ public class Floor1 {
             this.subclassBooks[var4] = var6;
 
             for(var7 = 0; var7 < var5; ++var7) {
-               var6[var7] = class105.getInt(8) - 1;
+               var6[var7] = SoundStudio.getInt(8) - 1;
             }
          }
 
-         this.multiplier = class105.getInt(2) + 1;
-         var4 = class105.getInt(4);
+         this.multiplier = SoundStudio.getInt(2) + 1;
+         var4 = SoundStudio.getInt(4);
          var5 = 2;
 
          int var9;
@@ -103,7 +103,7 @@ public class Floor1 {
             var7 = this.paritionClassList[var9];
 
             for(int var8 = 0; var8 < this.classDimensions[var7]; ++var8) {
-               this.field1518[var5++] = class105.getInt(var4);
+               this.field1518[var5++] = SoundStudio.getInt(var4);
             }
          }
 
@@ -187,7 +187,7 @@ public class Floor1 {
    @ObfuscatedName("z")
    @Export("decodedFloor")
    boolean decodedFloor() {
-      boolean var1 = class105.getBit() != 0;
+      boolean var1 = SoundStudio.getBit() != 0;
       if(!var1) {
          return false;
       } else {
@@ -200,8 +200,8 @@ public class Floor1 {
 
          var3 = RANGES[this.multiplier - 1];
          int var4 = WorldMapType1.ilog(var3 - 1);
-         yList[0] = class105.getInt(var4);
-         yList[1] = class105.getInt(var4);
+         yList[0] = SoundStudio.getInt(var4);
+         yList[1] = SoundStudio.getInt(var4);
          int var5 = 2;
 
          for(int var6 = 0; var6 < this.paritionClassList.length; ++var6) {
@@ -211,13 +211,13 @@ public class Floor1 {
             int var10 = (1 << var9) - 1;
             int var11 = 0;
             if(var9 > 0) {
-               var11 = class105.codeBooks[this.classMasterbooks[var7]].getHuffmanRoot();
+               var11 = SoundStudio.codeBooks[this.classMasterbooks[var7]].getHuffmanRoot();
             }
 
             for(int var12 = 0; var12 < var8; ++var12) {
                int var13 = this.subclassBooks[var7][var11 & var10];
                var11 >>>= var9;
-               yList[var5++] = var13 >= 0?class105.codeBooks[var13].getHuffmanRoot():0;
+               yList[var5++] = var13 >= 0? SoundStudio.codeBooks[var13].getHuffmanRoot():0;
             }
          }
 

@@ -315,7 +315,7 @@ public final class class61 {
          class3.field17 = null;
          class82.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if(class3.field17 != null) {
-            class82.gameDraw(class3.field17, -1412584499, var1, var2, var3, var4, class81.field1222, class186.field2526, var7);
+            class82.gameDraw(class3.field17, -1412584499, var1, var2, var3, var4, GameObjectTransformMetadata.field1222, class186.field2526, var7);
             class3.field17 = null;
          }
 

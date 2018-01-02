@@ -19,7 +19,7 @@ public class NetWriter {
       signature = "Lfx;"
    )
    @Export("rssocket")
-   class159 rssocket;
+   AbstractSocket rssocket;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgo;"
@@ -155,7 +155,7 @@ public class NetWriter {
       garbageValue = "-1706923990"
    )
    @Export("setSocket")
-   void setSocket(class159 var1) {
+   void setSocket(AbstractSocket var1) {
       this.rssocket = var1;
    }
 
@@ -188,7 +188,7 @@ public class NetWriter {
       garbageValue = "1992473480"
    )
    @Export("getSocket")
-   class159 getSocket() {
+   AbstractSocket getSocket() {
       return this.rssocket;
    }
 

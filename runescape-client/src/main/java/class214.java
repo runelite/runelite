@@ -48,7 +48,7 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   public static class111 field2627;
+   public static SoundEffectWorker field2627;
 
    static {
       field2620 = 0;

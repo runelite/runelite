@@ -1,6 +1,8 @@
-import java.math.BigInteger;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.math.BigInteger;
 
 @ObfuscatedName("cs")
 public class class89 {
@@ -42,8 +44,9 @@ public class class89 {
       signature = "(Lib;Lib;IIB)Ljm;",
       garbageValue = "-107"
    )
-   public static Font method1667(IndexDataBase var0, IndexDataBase var1, int var2, int var3) {
-      if(!Parameters.method5029(var0, var2, var3)) {
+   @Export("loadFont")
+   public static Font loadFont(IndexDataBase var0, IndexDataBase var1, int var2, int var3) {
+      if(!Parameters.spriteDataValid(var0, var2, var3)) {
          return null;
       } else {
          byte[] var5 = var1.getConfigData(var2, var3);
@@ -52,7 +55,7 @@ public class class89 {
             var4 = null;
          } else {
             Font var6 = new Font(var5, class299.field3867, class299.offsetsY, Item.field1387, class276.field3727, FaceNormal.field2025, Bounds.spritePixels);
-            ContextMenuRow.method1663();
+            ContextMenuRow.resetCachedStaticSpriteData();
             var4 = var6;
          }
 

@@ -7,7 +7,7 @@ public class class219 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "Lht;"
    )
-   class215 field2707;
+   RSAudioPlayer field2707;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lgl;"
@@ -22,7 +22,7 @@ public class class219 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Lht;)V"
    )
-   class219(class215 var1) {
+   class219(RSAudioPlayer var1) {
       this.field2708 = new Deque();
       this.field2710 = new class101();
       this.field2707 = var1;
@@ -33,7 +33,7 @@ public class class219 extends TaskDataNode {
       signature = "(Lhq;[IIIII)V",
       garbageValue = "-635251317"
    )
-   void method4043(class216 var1, int[] var2, int var3, int var4, int var5) {
+   void method4043(SoundTrackMetadata var1, int[] var2, int var3, int var4, int var5) {
       if((this.field2707.field2642[var1.field2661] & 4) != 0 && var1.field2672 < 0) {
          int var6 = this.field2707.field2634[var1.field2661] / ScriptState.sampleRate;
 
@@ -54,11 +54,11 @@ public class class219 extends TaskDataNode {
                var8 = var9;
             }
 
-            class116 var10 = var1.field2670;
+            SongMetadata var10 = var1.field2670;
             if(this.field2707.field2631[var1.field2661] == 0) {
-               var1.field2670 = class116.method2112(var1.field2676, var10.method2127(), var10.method2118(), var10.method2119());
+               var1.field2670 = SongMetadata.method2112(var1.field2676, var10.method2127(), var10.method2118(), var10.method2119());
             } else {
-               var1.field2670 = class116.method2112(var1.field2676, var10.method2127(), 0, var10.method2119());
+               var1.field2670 = SongMetadata.method2112(var1.field2676, var10.method2127(), 0, var10.method2119());
                this.field2707.method3855(var1, var1.field2659.field2697[var1.field2663] < 0);
                var1.field2670.method2123(var8, var10.method2118());
             }
@@ -83,16 +83,16 @@ public class class219 extends TaskDataNode {
       signature = "(Lhq;II)V",
       garbageValue = "-1864688063"
    )
-   void method4047(class216 var1, int var2) {
+   void method4047(SoundTrackMetadata var1, int var2) {
       if((this.field2707.field2642[var1.field2661] & 4) != 0 && var1.field2672 < 0) {
          int var3 = this.field2707.field2634[var1.field2661] / ScriptState.sampleRate;
          int var4 = (var3 + 1048575 - var1.field2678) / var3;
          var1.field2678 = var3 * var2 + var1.field2678 & 1048575;
          if(var4 <= var2) {
             if(this.field2707.field2631[var1.field2661] == 0) {
-               var1.field2670 = class116.method2112(var1.field2676, var1.field2670.method2127(), var1.field2670.method2118(), var1.field2670.method2119());
+               var1.field2670 = SongMetadata.method2112(var1.field2676, var1.field2670.method2127(), var1.field2670.method2118(), var1.field2670.method2119());
             } else {
-               var1.field2670 = class116.method2112(var1.field2676, var1.field2670.method2127(), 0, var1.field2670.method2119());
+               var1.field2670 = SongMetadata.method2112(var1.field2676, var1.field2670.method2127(), 0, var1.field2670.method2119());
                this.field2707.method3855(var1, var1.field2659.field2697[var1.field2663] < 0);
             }
 
@@ -112,7 +112,7 @@ public class class219 extends TaskDataNode {
       signature = "()Ldy;"
    )
    protected TaskDataNode vmethod4041() {
-      class216 var1 = (class216)this.field2708.getFront();
+      SoundTrackMetadata var1 = (SoundTrackMetadata)this.field2708.getFront();
       return (TaskDataNode)(var1 == null?null:(var1.field2670 != null?var1.field2670:this.vmethod4040()));
    }
 
@@ -121,9 +121,9 @@ public class class219 extends TaskDataNode {
       signature = "()Ldy;"
    )
    protected TaskDataNode vmethod4040() {
-      class216 var1;
+      SoundTrackMetadata var1;
       do {
-         var1 = (class216)this.field2708.getNext();
+         var1 = (SoundTrackMetadata)this.field2708.getNext();
          if(var1 == null) {
             return null;
          }
@@ -141,7 +141,7 @@ public class class219 extends TaskDataNode {
    protected void vmethod4062(int[] var1, int var2, int var3) {
       this.field2710.vmethod4062(var1, var2, var3);
 
-      for(class216 var6 = (class216)this.field2708.getFront(); var6 != null; var6 = (class216)this.field2708.getNext()) {
+      for(SoundTrackMetadata var6 = (SoundTrackMetadata)this.field2708.getFront(); var6 != null; var6 = (SoundTrackMetadata)this.field2708.getNext()) {
          if(!this.field2707.method3953(var6)) {
             int var4 = var2;
             int var5 = var3;
@@ -166,7 +166,7 @@ public class class219 extends TaskDataNode {
    protected void vmethod4046(int var1) {
       this.field2710.vmethod4046(var1);
 
-      for(class216 var3 = (class216)this.field2708.getFront(); var3 != null; var3 = (class216)this.field2708.getNext()) {
+      for(SoundTrackMetadata var3 = (SoundTrackMetadata)this.field2708.getFront(); var3 != null; var3 = (SoundTrackMetadata)this.field2708.getNext()) {
          if(!this.field2707.method3953(var3)) {
             int var2 = var1;
 

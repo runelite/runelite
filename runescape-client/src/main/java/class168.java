@@ -1,9 +1,11 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.awt.*;
+import java.awt.Desktop.Action;
+import java.net.URI;
 
 @ObfuscatedName("fk")
 public abstract class class168 {
@@ -42,6 +44,7 @@ public abstract class class168 {
       signature = "(ILck;ZB)I",
       garbageValue = "4"
    )
+   @Export("handleCs2_3100")
    static int method3166(int var0, Script var1, boolean var2) {
       String var3;
       if(var0 == 3100) {
@@ -245,6 +248,7 @@ public abstract class class168 {
       signature = "(ILck;ZB)I",
       garbageValue = "-43"
    )
+   @Export("cs2_3900s")
    static int method3165(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 3903) {

@@ -15,7 +15,8 @@ public class class287 {
    @ObfuscatedGetter(
       longValue = -1464932891006096739L
    )
-   long field3793;
+   @Export("lastWriteTime")
+   long lastWriteTime;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       longValue = 3858172528322480033L
@@ -60,7 +61,7 @@ public class class287 {
    int field3800;
 
    public class287() {
-      this.field3793 = -1L;
+      this.lastWriteTime = -1L;
       this.field3792 = -1L;
       this.field3796 = false;
       this.field3794 = 0L;
@@ -77,8 +78,9 @@ public class class287 {
       signature = "(I)V",
       garbageValue = "-1173679905"
    )
-   public void method5031() {
-      this.field3793 = Preferences.currentTimeMs();
+   @Export("markTimeMs")
+   public void markTimeMs() {
+      this.lastWriteTime = Preferences.currentTimeMs();
    }
 
    @ObfuscatedName("w")
@@ -87,9 +89,9 @@ public class class287 {
       garbageValue = "-102"
    )
    public void method5047() {
-      if(-1L != this.field3793) {
-         this.field3795 = Preferences.currentTimeMs() - this.field3793;
-         this.field3793 = -1L;
+      if(-1L != this.lastWriteTime) {
+         this.field3795 = Preferences.currentTimeMs() - this.lastWriteTime;
+         this.lastWriteTime = -1L;
       }
 
    }

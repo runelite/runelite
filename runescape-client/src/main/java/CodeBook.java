@@ -23,43 +23,43 @@ public class CodeBook {
    int[] field1469;
 
    CodeBook() {
-      class105.getInt(24);
-      this.dimensions = class105.getInt(16);
-      this.entries = class105.getInt(24);
+      SoundStudio.getInt(24);
+      this.dimensions = SoundStudio.getInt(16);
+      this.entries = SoundStudio.getInt(24);
       this.entryLengths = new int[this.entries];
-      boolean var1 = class105.getBit() != 0;
+      boolean var1 = SoundStudio.getBit() != 0;
       int var2;
       int var3;
       int var5;
       if(var1) {
          var2 = 0;
 
-         for(var3 = class105.getInt(5) + 1; var2 < this.entries; ++var3) {
-            int var4 = class105.getInt(WorldMapType1.ilog(this.entries - var2));
+         for(var3 = SoundStudio.getInt(5) + 1; var2 < this.entries; ++var3) {
+            int var4 = SoundStudio.getInt(WorldMapType1.ilog(this.entries - var2));
 
             for(var5 = 0; var5 < var4; ++var5) {
                this.entryLengths[var2++] = var3;
             }
          }
       } else {
-         boolean var14 = class105.getBit() != 0;
+         boolean var14 = SoundStudio.getBit() != 0;
 
          for(var3 = 0; var3 < this.entries; ++var3) {
-            if(var14 && class105.getBit() == 0) {
+            if(var14 && SoundStudio.getBit() == 0) {
                this.entryLengths[var3] = 0;
             } else {
-               this.entryLengths[var3] = class105.getInt(5) + 1;
+               this.entryLengths[var3] = SoundStudio.getInt(5) + 1;
             }
          }
       }
 
       this.createHuffmanTree();
-      var2 = class105.getInt(4);
+      var2 = SoundStudio.getInt(4);
       if(var2 > 0) {
-         float var15 = class105.float32Unpack(class105.getInt(32));
-         float var16 = class105.float32Unpack(class105.getInt(32));
-         var5 = class105.getInt(4) + 1;
-         boolean var6 = class105.getBit() != 0;
+         float var15 = SoundStudio.float32Unpack(SoundStudio.getInt(32));
+         float var16 = SoundStudio.float32Unpack(SoundStudio.getInt(32));
+         var5 = SoundStudio.getInt(4) + 1;
+         boolean var6 = SoundStudio.getBit() != 0;
          int var7;
          if(var2 == 1) {
             var7 = method1927(this.entries, this.dimensions);
@@ -71,7 +71,7 @@ public class CodeBook {
 
          int var8;
          for(var8 = 0; var8 < var7; ++var8) {
-            this.field1467[var8] = class105.getInt(var5);
+            this.field1467[var8] = SoundStudio.getInt(var5);
          }
 
          this.valueVector = new float[this.entries][this.dimensions];
@@ -213,7 +213,7 @@ public class CodeBook {
    @Export("getHuffmanRoot")
    int getHuffmanRoot() {
       int var1;
-      for(var1 = 0; this.field1469[var1] >= 0; var1 = class105.getBit() != 0?this.field1469[var1]:var1 + 1) {
+      for(var1 = 0; this.field1469[var1] >= 0; var1 = SoundStudio.getBit() != 0?this.field1469[var1]:var1 + 1) {
          ;
       }
 

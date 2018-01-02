@@ -1,9 +1,12 @@
-import java.io.IOException;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.io.IOException;
+
 @ObfuscatedName("fx")
-public abstract class class159 {
+@Implements("AbstractSocket")
+public abstract class AbstractSocket {
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)Z",

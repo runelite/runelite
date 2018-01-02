@@ -1,12 +1,15 @@
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStream;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+
 @ObfuscatedName("er")
-public class class153 implements Runnable {
+@Implements("RSInputSocket")
+public class RSInputSocket implements Runnable {
    @ObfuscatedName("a")
    Thread field2109;
    @ObfuscatedName("w")
@@ -31,7 +34,7 @@ public class class153 implements Runnable {
    @ObfuscatedName("t")
    IOException field2110;
 
-   class153(InputStream var1, int var2) {
+   RSInputSocket(InputStream var1, int var2) {
       this.field2112 = 0;
       this.field2111 = 0;
       this.field2105 = var1;

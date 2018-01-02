@@ -1,13 +1,6 @@
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
+
+import java.awt.event.*;
 
 @ObfuscatedName("bx")
 @Implements("MouseInput")
@@ -121,7 +114,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedSignature(
       signature = "Lfx;"
    )
-   static class159 field685;
+   static AbstractSocket field685;
    @ObfuscatedName("gg")
    @ObfuscatedGetter(
       intValue = -245636329
@@ -271,6 +264,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       signature = "(ILck;ZI)I",
       garbageValue = "194913091"
    )
+   @Export("cs2_2800s")
    static int method951(int var0, Script var1, boolean var2) {
       Widget var3 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
       if(var0 == 2800) {

@@ -157,7 +157,7 @@ public enum AttackOption implements Enumerated {
    static final void method1678(Widget var0, int var1, int var2) {
       if(Client.field1062 == 0 || Client.field1062 == 3) {
          if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) {
-            class221 var3 = var0.method4148(true);
+            SpritePixels2 var3 = var0.method4148(true);
             if(var3 == null) {
                return;
             }
