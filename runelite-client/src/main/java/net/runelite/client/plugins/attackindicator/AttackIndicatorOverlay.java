@@ -34,6 +34,8 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class AttackIndicatorOverlay extends Overlay
 {
+	private static final int COMPONENT_WIDTH = 80;
+
 	private final AttackIndicatorConfig config;
 	private final AttackIndicatorPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -41,7 +43,7 @@ public class AttackIndicatorOverlay extends Overlay
 	@Inject
 	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin, AttackIndicatorConfig config)
 	{
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -56,7 +58,8 @@ public class AttackIndicatorOverlay extends Overlay
 
 		final String attackStyleString = plugin.getAttackStyle().getName();
 		panelComponent.setTitle(attackStyleString);
-		panelComponent.setWidth(80);
+		panelComponent.setWidth(COMPONENT_WIDTH);
+
 		return panelComponent.render(graphics, parent);
 	}
 }
