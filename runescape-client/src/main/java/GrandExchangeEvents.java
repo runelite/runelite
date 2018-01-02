@@ -77,7 +77,7 @@ public class GrandExchangeEvents {
       garbageValue = "-1432370023"
    )
    @Export("enumForId")
-   public static Enum method70(int var0) {
+   public static Enum enumForId(int var0) {
       Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
       if(var1 != null) {
          return var1;

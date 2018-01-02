@@ -673,7 +673,7 @@ public class FontName {
       garbageValue = "1262465520"
    )
    public static void method4873(int var0, int var1, int var2) {
-      PacketNode var3 = FileSystem.method4252(ClientPacket.field2369, Client.field888.field1449);
+      PacketNode var3 = FileSystem.bufferForSize(ClientPacket.field2369, Client.field888.field1449);
       var3.packetBuffer.putShort(var0);
       var3.packetBuffer.method3286(var2);
       var3.packetBuffer.writeIntLE16(var1);

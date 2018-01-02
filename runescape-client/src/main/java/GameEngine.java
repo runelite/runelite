@@ -1,28 +1,13 @@
+import net.runelite.mapping.*;
+
 import java.applet.Applet;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.net.URL;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("be")
 @Implements("GameEngine")
@@ -1097,7 +1082,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                   }
 
                   Client.field1041 = Client.cycleCntr;
-                  PacketNode var8 = FileSystem.method4252(ClientPacket.field2354, Client.field888.field1449);
+                  PacketNode var8 = FileSystem.bufferForSize(ClientPacket.field2354, Client.field888.field1449);
                   var8.packetBuffer.putByte(Ignore.getLength(var0));
                   var8.packetBuffer.putString(var0);
                   Client.field888.method1862(var8);

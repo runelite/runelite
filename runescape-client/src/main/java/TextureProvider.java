@@ -298,7 +298,7 @@ public class TextureProvider implements ITextureLoader {
          return null;
       } else if(var0 instanceof byte[]) {
          byte[] var3 = (byte[])((byte[])var0);
-         return var1? SceneMetadata.method658(var3):var3;
+         return var1? SceneMetadata.duplicateArray(var3):var3;
       } else if(var0 instanceof AbstractByteBuffer) {
          AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
          return var2.get();

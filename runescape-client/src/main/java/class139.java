@@ -33,7 +33,7 @@ public class class139 {
       if(Client.field888.field1455 >= 50 || var0) {
          Client.field888.field1455 = 0;
          if(!Client.socketError && Client.field888.getSocket() != null) {
-            PacketNode var1 = FileSystem.method4252(ClientPacket.field2328, Client.field888.field1449);
+            PacketNode var1 = FileSystem.bufferForSize(ClientPacket.field2328, Client.field888.field1449);
             Client.field888.method1862(var1);
 
             try {

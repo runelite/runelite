@@ -136,7 +136,7 @@ public class SceneMetadata extends AbstractScene {
       garbageValue = "769176139"
    )
    @Export("duplicateArray")
-   static byte[] method658(byte[] var0) {
+   static byte[] duplicateArray(byte[] var0) {
       int var1 = var0.length;
       byte[] var2 = new byte[var1];
       System.arraycopy(var0, 0, var2, 0, var1);

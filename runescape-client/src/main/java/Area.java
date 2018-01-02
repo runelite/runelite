@@ -135,7 +135,7 @@ public class Area extends CacheableNode {
             return;
          }
 
-         this.method4441(var1, var2);
+         this.decode(var1, var2);
       }
    }
 
@@ -144,8 +144,8 @@ public class Area extends CacheableNode {
       signature = "(Lgh;II)V",
       garbageValue = "-767299717"
    )
-   @Export("decodeOpcode")
-   void method4441(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       if(var2 == 1) {
          this.spriteId = var1.method3372();
       } else if(var2 == 2) {

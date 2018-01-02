@@ -40,10 +40,10 @@ public class class82 {
    @Export("scriptStack")
    static ScriptState[] scriptStack;
    @ObfuscatedName("y")
-   @Export("calendar")
+   @Export("calendarRS")
    static Calendar calendar;
    @ObfuscatedName("o")
-   @Export("months")
+   @Export("monthsShorthand")
    static final String[] months;
    @ObfuscatedName("r")
    @ObfuscatedSignature(

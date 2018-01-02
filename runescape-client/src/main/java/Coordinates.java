@@ -225,7 +225,7 @@ public class Coordinates {
 
                return var3;
             } else if(var0 < 2000) {
-               return AbstractSoundSystem.method2056(var0, var1, var2);
+               return AbstractSoundSystem.cs2_2000s(var0, var1, var2);
             } else if(var0 < 2100) {
                return Friend.method1034(var0, var1, var2);
             } else if(var0 < 2200) {
@@ -262,7 +262,7 @@ public class Coordinates {
 
                return var3;
             } else if(var0 < 2700) {
-               return Client.method1287(var0, var1, var2);
+               return Client.cs2_2600s(var0, var1, var2);
             } else {
                int var19;
                if(var0 < 2800) {
@@ -298,11 +298,11 @@ public class Coordinates {
 
                   return var3;
                } else if(var0 < 2900) {
-                  return MouseInput.method951(var0, var1, var2);
+                  return MouseInput.cs2_2800s(var0, var1, var2);
                } else if(var0 < 3000) {
-                  return AbstractSoundSystem.method2056(var0, var1, var2);
+                  return AbstractSoundSystem.cs2_2000s(var0, var1, var2);
                } else if(var0 < 3200) {
-                  return class168.method3166(var0, var1, var2);
+                  return class168.handleCs2_3100(var0, var1, var2);
                } else if(var0 < 3300) {
                   if(var0 == 3200) {
                      class82.intStackSize -= 3;
@@ -336,7 +336,7 @@ public class Coordinates {
 
                   return var3;
                } else if(var0 < 3400) {
-                  return ScriptVarType.method25(var0, var1, var2);
+                  return ScriptVarType.cs2_3300s(var0, var1, var2);
                } else {
                   int var9;
                   if(var0 < 3500) {
@@ -344,7 +344,7 @@ public class Coordinates {
                         class82.intStackSize -= 2;
                         var19 = class82.intStack[class82.intStackSize];
                         var18 = class82.intStack[class82.intStackSize + 1];
-                        Enum var65 = GrandExchangeEvents.method70(var19);
+                        Enum var65 = GrandExchangeEvents.enumForId(var19);
                         if(var65.valType != 's') {
                            ;
                         }
@@ -368,7 +368,7 @@ public class Coordinates {
                         var18 = class82.intStack[class82.intStackSize + 1];
                         var6 = class82.intStack[class82.intStackSize + 2];
                         var49 = class82.intStack[class82.intStackSize + 3];
-                        Enum var62 = GrandExchangeEvents.method70(var6);
+                        Enum var62 = GrandExchangeEvents.enumForId(var6);
                         if(var19 == var62.keyType && var18 == var62.valType) {
                            for(var9 = 0; var9 < var62.size; ++var9) {
                               if(var49 == var62.keys[var9]) {
@@ -407,9 +407,9 @@ public class Coordinates {
 
                      return var3;
                   } else if(var0 < 3700) {
-                     return class37.method507(var0, var1, var2);
+                     return class37.cs2_3600s(var0, var1, var2);
                   } else if(var0 < 4000) {
-                     return class168.method3165(var0, var1, var2);
+                     return class168.cs2_3900s(var0, var1, var2);
                   } else if(var0 < 4100) {
                      if(var0 == 4000) {
                         class82.intStackSize -= 2;
@@ -1212,7 +1212,7 @@ public class Coordinates {
                            }
 
                            Client.field1087 = class82.intStack[class82.intStackSize + 2];
-                           PacketNode var4 = FileSystem.method4252(ClientPacket.field2339, Client.field888.field1449);
+                           PacketNode var4 = FileSystem.bufferForSize(ClientPacket.field2339, Client.field888.field1449);
                            var4.packetBuffer.putByte(Client.publicChatMode);
                            var4.packetBuffer.putByte(class64.field727.field3809);
                            var4.packetBuffer.putByte(Client.field1087);
@@ -1223,7 +1223,7 @@ public class Coordinates {
                            class82.intStackSize -= 2;
                            var18 = class82.intStack[class82.intStackSize];
                            var6 = class82.intStack[class82.intStackSize + 1];
-                           PacketNode var23 = FileSystem.method4252(ClientPacket.field2372, Client.field888.field1449);
+                           PacketNode var23 = FileSystem.bufferForSize(ClientPacket.field2372, Client.field888.field1449);
                            var23.packetBuffer.putByte(Ignore.getLength(var38) + 2);
                            var23.packetBuffer.putString(var38);
                            var23.packetBuffer.putByte(var18 - 1);
@@ -1394,7 +1394,7 @@ public class Coordinates {
                               }
                            }
 
-                           PacketNode var22 = FileSystem.method4252(ClientPacket.field2387, Client.field888.field1449);
+                           PacketNode var22 = FileSystem.bufferForSize(ClientPacket.field2387, Client.field888.field1449);
                            var22.packetBuffer.putByte(0);
                            int var24 = var22.packetBuffer.offset;
                            var22.packetBuffer.putByte(var18);
@@ -1479,7 +1479,7 @@ public class Coordinates {
                            class35.scriptStringStackSize -= 2;
                            var38 = class82.scriptStringStack[class35.scriptStringStackSize];
                            var39 = class82.scriptStringStack[class35.scriptStringStackSize + 1];
-                           PacketNode var55 = FileSystem.method4252(ClientPacket.field2373, Client.field888.field1449);
+                           PacketNode var55 = FileSystem.bufferForSize(ClientPacket.field2373, Client.field888.field1449);
                            var55.packetBuffer.putShort(0);
                            var49 = var55.packetBuffer.offset;
                            var55.packetBuffer.putString(var38);

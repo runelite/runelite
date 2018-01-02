@@ -397,13 +397,13 @@ public enum class27 implements Enumerated {
             } else if(Client.loadingStage == 80) {
                var0 = 0;
                if(GrandExchangeEvent.compass == null) {
-                  GrandExchangeEvent.compass = class283.method5027(class43.indexSprites, "compass", "");
+                  GrandExchangeEvent.compass = class283.spriteForName(class43.indexSprites, "compass", "");
                } else {
                   ++var0;
                }
 
                if(MapAreaMetadata.mapedge == null) {
-                  MapAreaMetadata.mapedge = class283.method5027(class43.indexSprites, "mapedge", "");
+                  MapAreaMetadata.mapedge = class283.spriteForName(class43.indexSprites, "mapedge", "");
                } else {
                   ++var0;
                }
@@ -552,7 +552,7 @@ public enum class27 implements Enumerated {
       garbageValue = "688722835"
    )
    @Export("npcUpdateMasks")
-   static final void method215(PacketBuffer var0) {
+   static final void npcUpdateMasks(PacketBuffer var0) {
       for(int var1 = 0; var1 < Client.pendingNpcFlagsCount; ++var1) {
          int var2 = Client.pendingNpcFlagsIndices[var1];
          NPC var3 = Client.cachedNPCs[var2];
@@ -708,7 +708,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2382, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2382, Client.field888.field1449);
          var8.packetBuffer.method3306(GEItemNameComparator.field304);
          var8.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.writeShortLE(var3 >> 14 & 32767);
@@ -724,7 +724,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2374, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2374, Client.field888.field1449);
          var8.packetBuffer.writeIntLE(JagexGame.field3297);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
          var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
@@ -739,7 +739,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2338, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2338, Client.field888.field1449);
          var8.packetBuffer.writeShortLE(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.writeShortLE(Client.baseY + var1);
          var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
@@ -752,7 +752,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2368, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2368, Client.field888.field1449);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
@@ -765,7 +765,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2399, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2399, Client.field888.field1449);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
@@ -778,7 +778,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.method4252(ClientPacket.field2392, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2392, Client.field888.field1449);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
@@ -796,7 +796,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2348, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2348, Client.field888.field1449);
                var17.packetBuffer.putShortLE(SceneChunkMetadata.field557);
                var17.packetBuffer.writeIntLE16(var3);
                var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
@@ -813,7 +813,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2347, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2347, Client.field888.field1449);
                var17.packetBuffer.putShortLE(Client.field984);
                var17.packetBuffer.putShort(var3);
                var17.packetBuffer.method3311(JagexGame.field3297);
@@ -829,7 +829,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2386, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2386, Client.field888.field1449);
                var17.packetBuffer.putShortLE(var3);
                var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                Client.field888.method1862(var17);
@@ -843,7 +843,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2344, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2344, Client.field888.field1449);
                var17.packetBuffer.putShortLE(var3);
                var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                Client.field888.method1862(var17);
@@ -857,7 +857,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2360, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2360, Client.field888.field1449);
                var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var17.packetBuffer.writeIntLE16(var3);
                Client.field888.method1862(var17);
@@ -871,7 +871,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2395, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2395, Client.field888.field1449);
                var17.packetBuffer.writeIntLE16(var3);
                var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                Client.field888.method1862(var17);
@@ -885,7 +885,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.method4252(ClientPacket.field2381, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2381, Client.field888.field1449);
                var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                var17.packetBuffer.writeIntLE16(var3);
                Client.field888.method1862(var17);
@@ -901,7 +901,7 @@ public enum class27 implements Enumerated {
                   Client.field1092 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var17 = FileSystem.method4252(ClientPacket.field2323, Client.field888.field1449);
+                  var17 = FileSystem.bufferForSize(ClientPacket.field2323, Client.field888.field1449);
                   var17.packetBuffer.putInt(GEItemNameComparator.field304);
                   var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                   var17.packetBuffer.putShort(SceneChunkMetadata.field557);
@@ -918,7 +918,7 @@ public enum class27 implements Enumerated {
                   Client.field1092 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var17 = FileSystem.method4252(ClientPacket.field2311, Client.field888.field1449);
+                  var17 = FileSystem.bufferForSize(ClientPacket.field2311, Client.field888.field1449);
                   var17.packetBuffer.method3311(JagexGame.field3297);
                   var17.packetBuffer.writeShortLE(var3);
                   var17.packetBuffer.putShort(Client.field984);
@@ -932,7 +932,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2383, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2383, Client.field888.field1449);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.method3306(GEItemNameComparator.field304);
                var8.packetBuffer.putShort(SceneChunkMetadata.field557);
@@ -948,7 +948,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2377, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2377, Client.field888.field1449);
                var8.packetBuffer.writeIntLE(JagexGame.field3297);
                var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
@@ -963,7 +963,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2322, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2322, Client.field888.field1449);
                var8.packetBuffer.putShortLE(Client.baseY + var1);
                var8.packetBuffer.putShortLE(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.putShortLE(var3);
@@ -976,7 +976,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2370, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2370, Client.field888.field1449);
                var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.writeShortLE(Client.baseY + var1);
                var8.packetBuffer.putShort(var3);
@@ -989,7 +989,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2405, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2405, Client.field888.field1449);
                var8.packetBuffer.writeIntLE16(Client.baseY + var1);
                var8.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.writeShortLE(var0 + SceneChunkMetadata.baseX);
@@ -1002,7 +1002,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2353, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2353, Client.field888.field1449);
                var8.packetBuffer.writeShortLE(Client.baseY + var1);
                var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
@@ -1015,7 +1015,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.method4252(ClientPacket.field2403, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2403, Client.field888.field1449);
                var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.writeShortLE(var3);
@@ -1038,7 +1038,7 @@ public enum class27 implements Enumerated {
                   }
 
                   if(var9) {
-                     var10 = FileSystem.method4252(ClientPacket.field2336, Client.field888.field1449);
+                     var10 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
                      var10.packetBuffer.putInt(var1);
                      Client.field888.method1862(var10);
                   }
@@ -1084,7 +1084,7 @@ public enum class27 implements Enumerated {
                      int var18;
                      Widget var28;
                      if(var2 == 28) {
-                        var8 = FileSystem.method4252(ClientPacket.field2336, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
                         var8.packetBuffer.putInt(var1);
                         Client.field888.method1862(var8);
                         var28 = VertexNormal.getWidget(var1);
@@ -1094,7 +1094,7 @@ public enum class27 implements Enumerated {
                            class150.method2933(var18);
                         }
                      } else if(var2 == 29) {
-                        var8 = FileSystem.method4252(ClientPacket.field2336, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
                         var8.packetBuffer.putInt(var1);
                         Client.field888.method1862(var8);
                         var28 = VertexNormal.getWidget(var1);
@@ -1107,7 +1107,7 @@ public enum class27 implements Enumerated {
                         }
                      } else if(var2 == 30) {
                         if(Client.field958 == null) {
-                           var8 = FileSystem.method4252(ClientPacket.field2324, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2324, Client.field888.field1449);
                            var8.packetBuffer.writeIntLE(var1);
                            var8.packetBuffer.writeShortLE(var0);
                            Client.field888.method1862(var8);
@@ -1115,7 +1115,7 @@ public enum class27 implements Enumerated {
                            class33.method344(Client.field958);
                         }
                      } else if(var2 == 31) {
-                        var8 = FileSystem.method4252(ClientPacket.field2320, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2320, Client.field888.field1449);
                         var8.packetBuffer.putShortLE(var0);
                         var8.packetBuffer.writeShortLE(SceneChunkMetadata.field557);
                         var8.packetBuffer.putInt(var1);
@@ -1127,7 +1127,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 32) {
-                        var8 = FileSystem.method4252(ClientPacket.field2314, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2314, Client.field888.field1449);
                         var8.packetBuffer.putShort(Client.field984);
                         var8.packetBuffer.method3306(var1);
                         var8.packetBuffer.putShort(var3);
@@ -1138,7 +1138,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 33) {
-                        var8 = FileSystem.method4252(ClientPacket.field2313, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2313, Client.field888.field1449);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShortLE(var3);
                         var8.packetBuffer.writeIntLE16(var0);
@@ -1147,7 +1147,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 34) {
-                        var8 = FileSystem.method4252(ClientPacket.field2318, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2318, Client.field888.field1449);
                         var8.packetBuffer.writeShortLE(var3);
                         var8.packetBuffer.putShortLE(var0);
                         var8.packetBuffer.putInt(var1);
@@ -1156,7 +1156,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 35) {
-                        var8 = FileSystem.method4252(ClientPacket.field2330, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2330, Client.field888.field1449);
                         var8.packetBuffer.putShortLE(var3);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShort(var0);
@@ -1165,7 +1165,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 36) {
-                        var8 = FileSystem.method4252(ClientPacket.field2389, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2389, Client.field888.field1449);
                         var8.packetBuffer.writeShortLE(var3);
                         var8.packetBuffer.method3306(var1);
                         var8.packetBuffer.putShortLE(var0);
@@ -1174,7 +1174,7 @@ public enum class27 implements Enumerated {
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 37) {
-                        var8 = FileSystem.method4252(ClientPacket.field2340, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2340, Client.field888.field1449);
                         var8.packetBuffer.putShort(var0);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShort(var3);
@@ -1200,7 +1200,7 @@ public enum class27 implements Enumerated {
                         }
 
                         if(var2 == 39) {
-                           var8 = FileSystem.method4252(ClientPacket.field2350, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2350, Client.field888.field1449);
                            var8.packetBuffer.method3306(var1);
                            var8.packetBuffer.writeShortLE(var0);
                            var8.packetBuffer.putShortLE(var3);
@@ -1209,7 +1209,7 @@ public enum class27 implements Enumerated {
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 40) {
-                           var8 = FileSystem.method4252(ClientPacket.field2362, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2362, Client.field888.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
                            var8.packetBuffer.method3311(var1);
                            var8.packetBuffer.putShortLE(var3);
@@ -1218,7 +1218,7 @@ public enum class27 implements Enumerated {
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 41) {
-                           var8 = FileSystem.method4252(ClientPacket.field2326, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2326, Client.field888.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
                            var8.packetBuffer.putShort(var3);
                            var8.packetBuffer.method3311(var1);
@@ -1227,7 +1227,7 @@ public enum class27 implements Enumerated {
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 42) {
-                           var8 = FileSystem.method4252(ClientPacket.field2384, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2384, Client.field888.field1449);
                            var8.packetBuffer.putShort(var3);
                            var8.packetBuffer.putInt(var1);
                            var8.packetBuffer.putShortLE(var0);
@@ -1236,7 +1236,7 @@ public enum class27 implements Enumerated {
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 43) {
-                           var8 = FileSystem.method4252(ClientPacket.field2346, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2346, Client.field888.field1449);
                            var8.packetBuffer.putInt(var1);
                            var8.packetBuffer.writeShortLE(var3);
                            var8.packetBuffer.writeShortLE(var0);
@@ -1253,7 +1253,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2315, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2315, Client.field888.field1449);
                               var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
                               Client.field888.method1862(var17);
@@ -1267,7 +1267,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2329, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2329, Client.field888.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
                               Client.field888.method1862(var17);
@@ -1281,7 +1281,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2335, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2335, Client.field888.field1449);
                               var17.packetBuffer.putShortLE(var3);
                               var17.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
                               Client.field888.method1862(var17);
@@ -1295,7 +1295,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2359, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2359, Client.field888.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
                               Client.field888.method1862(var17);
@@ -1309,7 +1309,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2337, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2337, Client.field888.field1449);
                               var17.packetBuffer.putShortLE(var3);
                               var17.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
                               Client.field888.method1862(var17);
@@ -1323,7 +1323,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2361, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2361, Client.field888.field1449);
                               var17.packetBuffer.writeIntLE16(var3);
                               var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                               Client.field888.method1862(var17);
@@ -1337,7 +1337,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2391, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2391, Client.field888.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
                               Client.field888.method1862(var17);
@@ -1351,7 +1351,7 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.method4252(ClientPacket.field2393, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2393, Client.field888.field1449);
                               var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.writeShortLE(var3);
                               Client.field888.method1862(var17);
@@ -1362,7 +1362,7 @@ public enum class27 implements Enumerated {
                                  if(var2 == 58) {
                                     var26 = TextureProvider.getWidgetChild(var1, var0);
                                     if(var26 != null) {
-                                       var17 = FileSystem.method4252(ClientPacket.field2388, Client.field888.field1449);
+                                       var17 = FileSystem.bufferForSize(ClientPacket.field2388, Client.field888.field1449);
                                        var17.packetBuffer.putInt(var1);
                                        var17.packetBuffer.writeShortLE(Client.field985);
                                        var17.packetBuffer.putShortLE(var26.itemId);
@@ -1381,7 +1381,7 @@ public enum class27 implements Enumerated {
                                     Client.field1092 = 0;
                                     Client.destinationX = var0;
                                     Client.destinationY = var1;
-                                    var8 = FileSystem.method4252(ClientPacket.field2351, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2351, Client.field888.field1449);
                                     var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
                                     var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                                     var8.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
@@ -1395,7 +1395,7 @@ public enum class27 implements Enumerated {
                                     Client.field936 = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
-                                    var8 = FileSystem.method4252(ClientPacket.field2390, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2390, Client.field888.field1449);
                                     var8.packetBuffer.putShort(var3 >> 14 & 32767);
                                     Client.field888.method1862(var8);
                                     break label1046;
@@ -1414,7 +1414,7 @@ public enum class27 implements Enumerated {
                                        }
 
                                        if(var29 != null) {
-                                          var10 = FileSystem.method4252(ClientPacket.field2343, Client.field888.field1449);
+                                          var10 = FileSystem.bufferForSize(ClientPacket.field2343, Client.field888.field1449);
                                           var10.packetBuffer.putShort(var29.id);
                                           Client.field888.method1862(var10);
                                        }
@@ -1427,7 +1427,7 @@ public enum class27 implements Enumerated {
                                     Client.field936 = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
-                                    var8 = FileSystem.method4252(ClientPacket.field2402, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2402, Client.field888.field1449);
                                     var8.packetBuffer.writeIntLE16(var3);
                                     Client.field888.method1862(var8);
                                     break label1046;
@@ -1438,7 +1438,7 @@ public enum class27 implements Enumerated {
                                     if(var26 != null && var26.itemQuantities[var0] >= 100000) {
                                        class25.sendGameMessage(27, "", var26.itemQuantities[var0] + " x " + KitDefinition.getItemDefinition(var3).name);
                                     } else {
-                                       var17 = FileSystem.method4252(ClientPacket.field2402, Client.field888.field1449);
+                                       var17 = FileSystem.bufferForSize(ClientPacket.field2402, Client.field888.field1449);
                                        var17.packetBuffer.writeIntLE16(var3);
                                        Client.field888.method1862(var17);
                                     }
@@ -1483,7 +1483,7 @@ public enum class27 implements Enumerated {
                                        if(var12) {
                                           PacketNode var20;
                                           if(var3 == 1) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2367, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2367, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1491,7 +1491,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 2) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2325, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2325, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1499,7 +1499,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 3) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2404, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2404, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1507,7 +1507,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 4) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2406, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2406, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1515,7 +1515,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 5) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2331, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2331, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1523,7 +1523,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 6) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2400, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2400, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1531,7 +1531,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 7) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2371, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2371, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1539,7 +1539,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 8) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2379, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2379, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1547,7 +1547,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 9) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2327, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2327, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
@@ -1555,7 +1555,7 @@ public enum class27 implements Enumerated {
                                           }
 
                                           if(var3 == 10) {
-                                             var20 = FileSystem.method4252(ClientPacket.field2319, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2319, Client.field888.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);

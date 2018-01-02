@@ -489,7 +489,7 @@ public class AbstractSoundSystem {
       garbageValue = "4"
    )
    @Export("cs2_2000s")
-   static int method2056(int var0, Script var1, boolean var2) {
+   static int cs2_2000s(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

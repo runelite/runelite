@@ -40,8 +40,8 @@ public class FileSystem extends Node {
       garbageValue = "-987657395"
    )
    @Export("bufferForSize")
-   public static PacketNode method4252(ClientPacket var0, ISAACCipher var1) {
-      PacketNode var2 = SocketSession2.method3067();
+   public static PacketNode bufferForSize(ClientPacket var0, ISAACCipher var1) {
+      PacketNode var2 = SocketSession2.cachedOrNewPacketNode();
       var2.clientPacket = var0;
       var2.field2432 = var0.packetLength;
       if(var2.field2432 == -1) {

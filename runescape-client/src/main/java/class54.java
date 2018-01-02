@@ -51,7 +51,7 @@ public class class54 {
          }
 
          if(var1 == 326) {
-            PacketNode var4 = FileSystem.method4252(ClientPacket.field2397, Client.field888.field1449);
+            PacketNode var4 = FileSystem.bufferForSize(ClientPacket.field2397, Client.field888.field1449);
             Client.field1090.method4096(var4.packetBuffer);
             Client.field888.method1862(var4);
             return true;

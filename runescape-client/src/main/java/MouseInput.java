@@ -265,7 +265,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       garbageValue = "194913091"
    )
    @Export("cs2_2800s")
-   static int method951(int var0, Script var1, boolean var2) {
+   static int cs2_2800s(int var0, Script var1, boolean var2) {
       Widget var3 = VertexNormal.getWidget(class82.intStack[--class82.intStackSize]);
       if(var0 == 2800) {
          int[] var4 = class82.intStack;

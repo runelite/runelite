@@ -17,7 +17,8 @@ public class PacketNode extends Node {
    @ObfuscatedGetter(
       intValue = -1029418191
    )
-   static int field2436;
+   @Export("cachedBufferCount")
+   static int cachedBufferCount;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lfo;"
@@ -43,7 +44,7 @@ public class PacketNode extends Node {
 
    static {
       packetBufferNodes = new PacketNode[300];
-      field2436 = 0;
+      cachedBufferCount = 0;
    }
 
    @ObfuscatedName("e")
@@ -52,8 +53,8 @@ public class PacketNode extends Node {
       garbageValue = "1645508271"
    )
    public void method3173() {
-      if(field2436 < packetBufferNodes.length) {
-         packetBufferNodes[++field2436 - 1] = this;
+      if(cachedBufferCount < packetBufferNodes.length) {
+         packetBufferNodes[++cachedBufferCount - 1] = this;
       }
    }
 }

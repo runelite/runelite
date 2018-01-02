@@ -273,14 +273,14 @@ final class class5 implements class0 {
       garbageValue = "-42201957"
    )
    @Export("npcUpdateViewport")
-   static final void method17() {
+   static final void npcUpdateViewport() {
       PacketBuffer var0 = Client.field888.packetBuffer;
       var0.bitAccess();
       int var1 = var0.getBits(8);
       int var2;
       if(var1 < Client.npcIndexesCount) {
          for(var2 = var1; var2 < Client.npcIndexesCount; ++var2) {
-            Client.field951[++Client.field967 - 1] = Client.npcIndices[var2];
+            Client.npcIndiciesPendingRemoval[++Client.localNpcsCount - 1] = Client.npcIndices[var2];
          }
       }
 
@@ -326,7 +326,7 @@ final class class5 implements class0 {
                         Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
                      }
                   } else if(var6 == 3) {
-                     Client.field951[++Client.field967 - 1] = var3;
+                     Client.npcIndiciesPendingRemoval[++Client.localNpcsCount - 1] = var3;
                   }
                }
             }

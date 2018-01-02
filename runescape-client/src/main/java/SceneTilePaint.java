@@ -192,7 +192,7 @@ public final class SceneTilePaint {
          }
       }
 
-      PacketNode var1 = FileSystem.method4252(ClientPacket.field2341, Client.field888.field1449);
+      PacketNode var1 = FileSystem.bufferForSize(ClientPacket.field2341, Client.field888.field1449);
       var1.packetBuffer.putByte(var0.length() + 1);
       var1.packetBuffer.putString(var0);
       Client.field888.method1862(var1);
@@ -204,7 +204,7 @@ public final class SceneTilePaint {
       garbageValue = "1202102848"
    )
    static final void method2684() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2342, Client.field888.field1449);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2342, Client.field888.field1449);
       var0.packetBuffer.putByte(0);
       Client.field888.method1862(var0);
    }

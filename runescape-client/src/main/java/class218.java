@@ -552,7 +552,7 @@ public class class218 extends Node {
          if(var6 >= 0 && (IndexDataBase.field3315 == 0 || var6 <= IndexDataBase.field3315)) {
             byte[] var5 = new byte[var6];
             if(var2 == 1) {
-               Bzipper.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
+               class178.Bzip2Decompressor_decompress(var5, var6, var0, var3, 9);
             } else {
                IndexDataBase.gzip.decompress(var1, var5);
             }

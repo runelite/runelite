@@ -74,7 +74,7 @@ public class Ignore {
       garbageValue = "-2013173523"
    )
    static void method1058() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2394, Client.field888.field1449);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2394, Client.field888.field1449);
       PacketBuffer var1 = var0.packetBuffer;
       int var2 = Client.isResized?2:1;
       var1.putByte(var2);

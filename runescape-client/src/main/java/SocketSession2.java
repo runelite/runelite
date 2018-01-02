@@ -109,8 +109,9 @@ public class SocketSession2 extends AbstractSocket {
       signature = "(B)Lfg;",
       garbageValue = "126"
    )
-   public static PacketNode method3067() {
-      return PacketNode.field2436 == 0?new PacketNode():PacketNode.packetBufferNodes[--PacketNode.field2436];
+   @Export("cachedOrNewPacketNode")
+   public static PacketNode cachedOrNewPacketNode() {
+      return PacketNode.cachedBufferCount == 0?new PacketNode():PacketNode.packetBufferNodes[--PacketNode.cachedBufferCount];
    }
 
    @ObfuscatedName("a")

@@ -10,7 +10,7 @@ public class class283 {
       garbageValue = "1909623791"
    )
    @Export("spriteForName")
-   public static SpritePixels method5027(IndexDataBase var0, String var1, String var2) {
+   public static SpritePixels spriteForName(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       return SocketSession.takeItemSnapshot(var0, var3, var4);
