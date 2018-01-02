@@ -1,8 +1,10 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cl")
-public class class101 extends TaskDataNode {
+@Implements("AudioLinkedDeque")
+public class AudioLinkedDeque extends TaskDataNode {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lgl;"
@@ -18,7 +20,7 @@ public class class101 extends TaskDataNode {
    @ObfuscatedName("u")
    int field1460;
 
-   public class101() {
+   public AudioLinkedDeque() {
       this.field1463 = new Deque();
       this.field1461 = new Deque();
       this.field1462 = 0;

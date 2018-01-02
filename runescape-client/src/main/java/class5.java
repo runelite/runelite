@@ -190,7 +190,7 @@ final class class5 implements class0 {
       if(class91.username.length() == 0) {
          class64.method1033("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class44.method620();
+         long var1 = WorldMapMappings.method620();
          int var0;
          if(0L == var1) {
             var0 = 5;
@@ -257,7 +257,7 @@ final class class5 implements class0 {
       FrameMap.indexSoundEffects.reset();
       MouseInput.indexCache3.reset();
       class86.indexCache4.reset();
-      class22.indexMaps.reset();
+      SceneComposition.indexMaps.reset();
       class29.indexTrack1.reset();
       class37.indexModels.reset();
       class43.indexSprites.reset();

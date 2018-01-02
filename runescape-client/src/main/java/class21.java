@@ -25,8 +25,8 @@ public class class21 {
       int var11;
       int var22;
       if(var4) {
-         class82.field1238 = (class47)var2[0];
-         Area var6 = Area.mapAreaType[class82.field1238.field564];
+         class82.field1238 = (MapAreaMetadata)var2[0];
+         Area var6 = Area.mapAreaType[class82.field1238.mapAreaTypeArrayIndex];
          class230 var8 = var0.field779;
          var9 = var6.field3395;
          var10 = var6.field3398;
@@ -529,7 +529,7 @@ public class class21 {
    )
    static final void method154(int var0, int var1) {
       if(Client.hintArrowTargetType == 2) {
-         class285.worldToScreen((Client.hintArrowX - class46.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - Client.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
+         class285.worldToScreen((Client.hintArrowX - SceneChunkMetadata.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - Client.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
          if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
             RenderOverview.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
          }
@@ -606,7 +606,7 @@ public class class21 {
                boolean var29 = var16 >= var12 && var17 >= var13 && var16 < var14 && var17 < var15;
                if(var9.contentType == 1337) {
                   if(!Client.field853 && !Client.isMenuOpen && var29) {
-                     class44.method626(var16, var17, var12, var13);
+                     WorldMapMappings.method626(var16, var17, var12, var13);
                   }
                } else if(var9.contentType == 1338) {
                   AttackOption.method1678(var9, var10, var11);
@@ -735,7 +735,7 @@ public class class21 {
                            Client.field1027.addFront(var26);
                         }
 
-                        if(Client.field1064 != null || class39.field506 != null || Client.isMenuOpen) {
+                        if(Client.field1064 != null || AreaMapIconMetadata.field506 != null || Client.isMenuOpen) {
                            var20 = false;
                            var30 = false;
                            var29 = false;
@@ -967,7 +967,7 @@ public class class21 {
                      }
                   }
 
-                  if(!var9.hasScript && Client.field1064 == null && class39.field506 == null && !Client.isMenuOpen) {
+                  if(!var9.hasScript && Client.field1064 == null && AreaMapIconMetadata.field506 == null && !Client.isMenuOpen) {
                      if((var9.field2822 >= 0 || var9.field2786 != 0) && MouseInput.field679 >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.field679 < var14 && MouseInput.field682 * -469125321 < var15) {
                         if(var9.field2822 >= 0) {
                            class29.field391 = var0[var9.field2822];

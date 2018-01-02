@@ -1273,7 +1273,7 @@ public class ScriptVarType implements Enumerated, class305 {
             int var5;
             if(var0 == 3308) {
                var3 = BoundingBox2D.plane;
-               var4 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+               var4 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
                var5 = (UrlRequest.localPlayer.y >> 7) + Client.baseY;
                class82.intStack[++class82.intStackSize - 1] = (var4 << 14) + var5 + (var3 << 28);
                return 1;

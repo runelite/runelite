@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
-public class class39 {
+@Implements("AreaMapIconMetadata")
+public class AreaMapIconMetadata {
    @ObfuscatedName("hb")
    @ObfuscatedSignature(
       signature = "Lhz;"
@@ -53,7 +55,7 @@ public class class39 {
    @ObfuscatedSignature(
       signature = "(ILhc;Lhc;Lat;)V"
    )
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+   AreaMapIconMetadata(int var1, Coordinates var2, Coordinates var3, class33 var4) {
       this.field499 = var1;
       this.field504 = var2;
       this.field498 = var3;

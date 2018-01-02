@@ -465,7 +465,7 @@ public class AbstractSoundSystem {
       garbageValue = "17142342"
    )
    @Export("openRandomAccessFile")
-   static boolean method2055(File var0, boolean var1) {
+   static boolean openRandomAccessFile(File var0, boolean var1) {
       try {
          RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
          int var3 = var2.read();

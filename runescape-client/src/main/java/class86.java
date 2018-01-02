@@ -118,7 +118,7 @@ public class class86 {
             var10 = var7 & 255;
             var6.pathTraversed[0] = class94.field1388[var1];
             var6.field821 = (byte)var8;
-            var6.method1082((var9 << 13) + var3 - class46.baseX, (var10 << 13) + var4 - Client.baseY);
+            var6.method1082((var9 << 13) + var3 - SceneChunkMetadata.baseX, (var10 << 13) + var4 - Client.baseY);
             var6.field814 = false;
             return true;
          }

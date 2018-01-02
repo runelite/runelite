@@ -17,14 +17,14 @@ public class class219 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "Lcl;"
    )
-   class101 field2710;
+   AudioLinkedDeque field2710;
 
    @ObfuscatedSignature(
       signature = "(Lht;)V"
    )
    class219(RSAudioPlayer var1) {
       this.field2708 = new Deque();
-      this.field2710 = new class101();
+      this.field2710 = new AudioLinkedDeque();
       this.field2707 = var1;
    }
 

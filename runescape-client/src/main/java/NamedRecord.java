@@ -1,48 +1,51 @@
-import java.awt.FontMetrics;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.awt.*;
+
 @ObfuscatedName("ai")
-public class class40 {
+@Implements("NamedRecord")
+public class NamedRecord {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lai;"
    )
-   public static final class40 field510;
+   public static final NamedRecord field510;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lai;"
    )
-   public static final class40 field508;
+   public static final NamedRecord field508;
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "Lai;"
    )
-   public static final class40 field513;
+   public static final NamedRecord field513;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lai;"
    )
-   public static final class40 field511;
+   public static final NamedRecord field511;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lai;"
    )
-   public static final class40 field512;
+   public static final NamedRecord field512;
    @ObfuscatedName("as")
    static FontMetrics field515;
    @ObfuscatedName("z")
    public final String field514;
 
    static {
-      field510 = new class40("details");
-      field508 = new class40("compositemap");
-      field513 = new class40("compositetexture");
-      field511 = new class40("area");
-      field512 = new class40("labels");
+      field510 = new NamedRecord("details");
+      field508 = new NamedRecord("compositemap");
+      field513 = new NamedRecord("compositetexture");
+      field511 = new NamedRecord("area");
+      field512 = new NamedRecord("labels");
    }
 
-   class40(String var1) {
+   NamedRecord(String var1) {
       this.field514 = var1;
    }
 

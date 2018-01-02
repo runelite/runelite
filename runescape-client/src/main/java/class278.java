@@ -142,7 +142,7 @@ public class class278 {
                }
 
                if(var6 == 18) {
-                  var7 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+                  var7 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
                }
 
                if(var6 == 19) {

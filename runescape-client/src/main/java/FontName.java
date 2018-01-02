@@ -174,7 +174,7 @@ public class FontName {
       String var12 = var22;
 
       try {
-         URL var13 = new URL(class22.method167("services", false) + "m=accountappeal/login.ws");
+         URL var13 = new URL(SceneComposition.method167("services", false) + "m=accountappeal/login.ws");
          URLConnection var14 = var13.openConnection();
          var14.setDoInput(true);
          var14.setDoOutput(true);

@@ -86,7 +86,7 @@ public class RunException extends RuntimeException {
 
          if(var4 != null) {
             var22 = new File(var4, "test.dat");
-            if(!AbstractSoundSystem.method2055(var22, true)) {
+            if(!AbstractSoundSystem.openRandomAccessFile(var22, true)) {
                var4 = null;
             }
          }
@@ -97,7 +97,7 @@ public class RunException extends RuntimeException {
          for(int var15 = 0; var15 < GrandExchangeOffer.field298.length; ++var15) {
             for(int var16 = 0; var16 < class115.cacheLocations.length; ++var16) {
                File var17 = new File(class115.cacheLocations[var16] + GrandExchangeOffer.field298[var15] + File.separatorChar + var0 + File.separatorChar);
-               if(var17.exists() && AbstractSoundSystem.method2055(new File(var17, "test.dat"), true)) {
+               if(var17.exists() && AbstractSoundSystem.openRandomAccessFile(new File(var17, "test.dat"), true)) {
                   var4 = var17.toString();
                   var6 = true;
                   break label120;

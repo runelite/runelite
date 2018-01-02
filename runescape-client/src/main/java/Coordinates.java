@@ -1,9 +1,6 @@
+import net.runelite.mapping.*;
+
 import java.util.Date;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hc")
 @Implements("Coordinates")
@@ -79,7 +76,8 @@ public class Coordinates {
       signature = "(I)I",
       garbageValue = "1055672674"
    )
-   public int method4081() {
+   @Export("hash30")
+   public int hash30() {
       return this.plane << 28 | this.worldX << 14 | this.worldY;
    }
 
@@ -97,7 +95,7 @@ public class Coordinates {
    }
 
    public int hashCode() {
-      return this.method4081();
+      return this.hash30();
    }
 
    public String toString() {
@@ -125,7 +123,7 @@ public class Coordinates {
       } else if(var0 < 1100) {
          return Friend.method1034(var0, var1, var2);
       } else if(var0 < 1200) {
-         return class39.method547(var0, var1, var2);
+         return AreaMapIconMetadata.method547(var0, var1, var2);
       } else if(var0 < 1300) {
          return GraphicsObject.method1619(var0, var1, var2);
       } else if(var0 < 1400) {
@@ -231,7 +229,7 @@ public class Coordinates {
             } else if(var0 < 2100) {
                return Friend.method1034(var0, var1, var2);
             } else if(var0 < 2200) {
-               return class39.method547(var0, var1, var2);
+               return AreaMapIconMetadata.method547(var0, var1, var2);
             } else if(var0 < 2300) {
                return GraphicsObject.method1619(var0, var1, var2);
             } else if(var0 < 2400) {
@@ -766,7 +764,7 @@ public class Coordinates {
                         } else if(var0 < 5600) {
                            return class260.method4554(var0, var1, var2);
                         } else if(var0 < 5700) {
-                           return class40.method549(var0, var1, var2);
+                           return NamedRecord.method549(var0, var1, var2);
                         } else if(var0 < 6300) {
                            if(var0 == 6200) {
                               class82.intStackSize -= 2;
@@ -850,7 +848,7 @@ public class Coordinates {
                         } else if(var0 < 6700) {
                            if(var0 == 6600) {
                               var19 = BoundingBox2D.plane;
-                              var18 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+                              var18 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
                               var6 = (UrlRequest.localPlayer.y >> 7) + Client.baseY;
                               class86.method1655().method5349(var19, var18, var6, true);
                               var3 = 1;
@@ -910,7 +908,7 @@ public class Coordinates {
                                        if(var41 == null) {
                                           class82.intStack[++class82.intStackSize - 1] = 0;
                                        } else {
-                                          class82.intStack[++class82.intStackSize - 1] = var41.method291().method4081();
+                                          class82.intStack[++class82.intStackSize - 1] = var41.method291().hash30();
                                        }
 
                                        var3 = 1;
@@ -999,7 +997,7 @@ public class Coordinates {
                                              if(var61 == null) {
                                                 class82.intStack[++class82.intStackSize - 1] = -1;
                                              } else {
-                                                class82.intStack[++class82.intStackSize - 1] = var61.method4081();
+                                                class82.intStack[++class82.intStackSize - 1] = var61.hash30();
                                              }
 
                                              var3 = 1;
@@ -1110,12 +1108,12 @@ public class Coordinates {
                                                    if(var61 == null) {
                                                       class82.intStack[++class82.intStackSize - 1] = -1;
                                                    } else {
-                                                      class82.intStack[++class82.intStackSize - 1] = var61.method4081();
+                                                      class82.intStack[++class82.intStackSize - 1] = var61.hash30();
                                                    }
 
                                                    var3 = 1;
                                                 } else {
-                                                   class39 var58;
+                                                   AreaMapIconMetadata var58;
                                                    if(var0 == 6639) {
                                                       var58 = class86.method1655().method5393();
                                                       if(var58 == null) {
@@ -1123,7 +1121,7 @@ public class Coordinates {
                                                          class82.intStack[++class82.intStackSize - 1] = -1;
                                                       } else {
                                                          class82.intStack[++class82.intStackSize - 1] = var58.field499;
-                                                         class82.intStack[++class82.intStackSize - 1] = var58.field498.method4081();
+                                                         class82.intStack[++class82.intStackSize - 1] = var58.field498.hash30();
                                                       }
 
                                                       var3 = 1;
@@ -1134,7 +1132,7 @@ public class Coordinates {
                                                          class82.intStack[++class82.intStackSize - 1] = -1;
                                                       } else {
                                                          class82.intStack[++class82.intStackSize - 1] = var58.field499;
-                                                         class82.intStack[++class82.intStackSize - 1] = var58.field498.method4081();
+                                                         class82.intStack[++class82.intStackSize - 1] = var58.field498.hash30();
                                                       }
 
                                                       var3 = 1;
@@ -1176,13 +1174,13 @@ public class Coordinates {
 
                                                          var3 = 1;
                                                       } else if(var0 == 6697) {
-                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.field564;
+                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.mapAreaTypeArrayIndex;
                                                          var3 = 1;
                                                       } else if(var0 == 6698) {
-                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.field565.method4081();
+                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.field565.hash30();
                                                          var3 = 1;
                                                       } else if(var0 == 6699) {
-                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.field562.method4081();
+                                                         class82.intStack[++class82.intStackSize - 1] = class82.field1238.field562.hash30();
                                                          var3 = 1;
                                                       } else {
                                                          var3 = 2;
@@ -1625,7 +1623,7 @@ public class Coordinates {
    )
    static final void method4077() {
       Client.field947 = 0;
-      int var0 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+      int var0 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
       int var1 = (UrlRequest.localPlayer.y >> 7) + Client.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
          Client.field947 = 1;

@@ -1,16 +1,13 @@
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import javax.imageio.ImageIO;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import java.util.*;
 
 @ObfuscatedName("af")
 public final class class41 {
@@ -27,7 +24,7 @@ public final class class41 {
    @ObfuscatedSignature(
       signature = "Lav;"
    )
-   class44 field519;
+   WorldMapMappings field519;
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "Lks;"
@@ -91,14 +88,14 @@ public final class class41 {
          this.field526 = false;
          this.field518 = true;
          System.nanoTime();
-         int var4 = var1.getFile(class40.field510.field514);
+         int var4 = var1.getFile(NamedRecord.field510.field514);
          int var5 = var1.getChild(var4, var2);
-         Buffer var6 = new Buffer(var1.takeRecordByNames(class40.field510.field514, var2));
-         Buffer var7 = new Buffer(var1.takeRecordByNames(class40.field508.field514, var2));
-         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, class40.field511.field514));
+         Buffer var6 = new Buffer(var1.takeRecordByNames(NamedRecord.field510.field514, var2));
+         Buffer var7 = new Buffer(var1.takeRecordByNames(NamedRecord.field508.field514, var2));
+         Buffer var8 = new Buffer(var1.takeRecordByNames(var2, NamedRecord.field511.field514));
          System.nanoTime();
          System.nanoTime();
-         this.field519 = new class44();
+         this.field519 = new WorldMapMappings();
 
          try {
             this.field519.method618(var6, var8, var7, var5, var3);
@@ -123,7 +120,7 @@ public final class class41 {
          int var14;
          int var15;
          while(var11.hasNext()) {
-            class22 var12 = (class22)var11.next();
+            SceneComposition var12 = (SceneComposition)var11.next();
             int var13 = var12.field383;
             var14 = var12.field374;
             var15 = var13 - this.field519.method340();
@@ -143,8 +140,8 @@ public final class class41 {
 
          System.nanoTime();
          System.nanoTime();
-         if(var1.method4273(class40.field513.field514, var2)) {
-            byte[] var27 = var1.takeRecordByNames(class40.field513.field514, var2);
+         if(var1.method4273(NamedRecord.field513.field514, var2)) {
+            byte[] var27 = var1.takeRecordByNames(NamedRecord.field513.field514, var2);
             BufferedImage var21 = null;
 
             SpritePixels var28;
@@ -199,7 +196,7 @@ public final class class41 {
       float var14 = this.method565(var7 - var5, var3 - var1);
       int var15 = (int)Math.ceil((double)var14);
       if(!this.field530.containsKey(Integer.valueOf(var15))) {
-         class46 var16 = new class46(var15);
+         SceneChunkMetadata var16 = new SceneChunkMetadata(var15);
          var16.method663();
          this.field530.put(Integer.valueOf(var15), var16);
       }
@@ -211,7 +208,7 @@ public final class class41 {
       for(var17 = var13.field395; var17 < var13.field396 + var13.field395; ++var17) {
          for(var18 = var13.field388; var18 < var13.field388 + var13.field385; ++var18) {
             this.method555(var17, var18, var22);
-            this.field522[var17][var18].method352(var15, (class46)this.field530.get(Integer.valueOf(var15)), var22, this.field524);
+            this.field522[var17][var18].method352(var15, (SceneChunkMetadata)this.field530.get(Integer.valueOf(var15)), var22, this.field524);
          }
       }
 
@@ -317,7 +314,7 @@ public final class class41 {
                Iterator var11 = var10.iterator();
 
                while(var11.hasNext()) {
-                  class39 var12 = (class39)var11.next();
+                  AreaMapIconMetadata var12 = (AreaMapIconMetadata)var11.next();
                   int var13 = var3 * (var12.field498.worldX - this.field517) / this.field528;
                   int var14 = var4 - (var12.field498.worldY - this.field527) * var4 / this.field529;
                   Rasterizer2D.method5087(var13 + var1, var14 + var2, 2, 16776960, 256);
@@ -435,7 +432,7 @@ public final class class41 {
             Iterator var4 = var3.iterator();
 
             while(var4.hasNext()) {
-               class39 var5 = (class39)var4.next();
+               AreaMapIconMetadata var5 = (AreaMapIconMetadata)var4.next();
                if(!this.field521.containsKey(Integer.valueOf(var5.field499))) {
                   LinkedList var6 = new LinkedList();
                   var6.add(var5);

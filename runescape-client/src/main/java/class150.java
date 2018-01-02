@@ -82,7 +82,7 @@ public enum class150 implements Enumerated {
    )
    static final void method2933(int var0) {
       CombatInfoListHolder.method1630();
-      class28.method236();
+      AbstractScene.method236();
       int var1 = class25.method182(var0).configType;
       if(var1 != 0) {
          int var2 = VarpSettingsStore.widgetSettings[var0];

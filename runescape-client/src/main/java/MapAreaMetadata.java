@@ -1,10 +1,8 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("aa")
-public class class47 {
+@Implements("MapAreaMetadata")
+public class MapAreaMetadata {
    @ObfuscatedName("ef")
    @ObfuscatedSignature(
       signature = "Lev;"
@@ -25,7 +23,8 @@ public class class47 {
    @ObfuscatedGetter(
       intValue = 469268205
    )
-   public int field564;
+   @Export("mapAreaTypeArrayIndex")
+   public int mapAreaTypeArrayIndex;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lhc;"
@@ -40,8 +39,8 @@ public class class47 {
    @ObfuscatedSignature(
       signature = "(ILhc;Lhc;)V"
    )
-   public class47(int var1, Coordinates var2, Coordinates var3) {
-      this.field564 = var1;
+   public MapAreaMetadata(int var1, Coordinates var2, Coordinates var3) {
+      this.mapAreaTypeArrayIndex = var1;
       this.field565 = var2;
       this.field562 = var3;
    }

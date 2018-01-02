@@ -135,13 +135,13 @@ public final class class60 {
          Frames.field2030 = var1;
          Friend.setGameState(25);
          class185.drawStatusBox("Loading - please wait.", true);
-         int var3 = class46.baseX;
+         int var3 = SceneChunkMetadata.baseX;
          int var4 = Client.baseY;
-         class46.baseX = (var0 - 6) * 8;
+         SceneChunkMetadata.baseX = (var0 - 6) * 8;
          Client.baseY = (var1 - 6) * 8;
-         int var5 = class46.baseX - var3;
+         int var5 = SceneChunkMetadata.baseX - var3;
          int var6 = Client.baseY - var4;
-         var3 = class46.baseX;
+         var3 = SceneChunkMetadata.baseX;
          var4 = Client.baseY;
 
          int var7;

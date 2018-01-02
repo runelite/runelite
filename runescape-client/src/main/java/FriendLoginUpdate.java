@@ -482,7 +482,7 @@ public class FriendLoginUpdate extends Link {
       if(Client.widgetRoot != -1) {
          int var5 = Client.widgetRoot;
          if(GraphicsObject.loadWidget(var5)) {
-            class22.method165(Widget.widgets[var5], 1);
+            SceneComposition.method165(Widget.widgets[var5], 1);
          }
       }
 

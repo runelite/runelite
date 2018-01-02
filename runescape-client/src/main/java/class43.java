@@ -319,7 +319,7 @@ public class class43 {
             class91.field1330 = 0;
          }
 
-         class28.method239();
+         AbstractScene.method239();
          class278.titlemuteSprite[class2.preferences.muted?1:0].method5176(class91.field1351 + 765 - 40, 463);
          if(Client.gameState > 5 && Client.languageId == 0) {
             if(class160.field2151 != null) {

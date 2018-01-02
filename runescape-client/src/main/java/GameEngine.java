@@ -726,7 +726,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          Graphics var4 = this.canvas.getGraphics();
          if(class279.field3737 == null) {
             class279.field3737 = new java.awt.Font("Helvetica", 1, 13);
-            class40.field515 = this.canvas.getFontMetrics(class279.field3737);
+            NamedRecord.field515 = this.canvas.getFontMetrics(class279.field3737);
          }
 
          if(var3) {
@@ -750,7 +750,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var6.fillRect(var1 * 3 + 2, 2, 300 - var1 * 3, 30);
             var6.setFont(class279.field3737);
             var6.setColor(Color.white);
-            var6.drawString(var2, (304 - class40.field515.stringWidth(var2)) / 2, 22);
+            var6.drawString(var2, (304 - NamedRecord.field515.stringWidth(var2)) / 2, 22);
             var4.drawImage(class34.field461, Huffman.canvasWidth / 2 - 152, VertexNormal.canvasHeight / 2 - 18, (ImageObserver)null);
          } catch (Exception var9) {
             int var7 = Huffman.canvasWidth / 2 - 152;
@@ -763,7 +763,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var4.fillRect(var7 + var1 * 3 + 2, var8 + 2, 300 - var1 * 3, 30);
             var4.setFont(class279.field3737);
             var4.setColor(Color.white);
-            var4.drawString(var2, var7 + (304 - class40.field515.stringWidth(var2)) / 2, var8 + 22);
+            var4.drawString(var2, var7 + (304 - NamedRecord.field515.stringWidth(var2)) / 2, var8 + 22);
          }
       } catch (Exception var10) {
          this.canvas.repaint();
@@ -779,7 +779,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    protected final void method836() {
       class34.field461 = null;
       class279.field3737 = null;
-      class40.field515 = null;
+      NamedRecord.field515 = null;
    }
 
    @ObfuscatedName("ac")

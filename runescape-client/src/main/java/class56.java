@@ -1,7 +1,8 @@
-import java.applet.Applet;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.applet.Applet;
 
 @ObfuscatedName("bg")
 public class class56 {
@@ -80,8 +81,8 @@ public class class56 {
                var8 = var7 + (var6 << 8);
                if(!var16 || var7 != 49 && var7 != 149 && var7 != 147 && var6 != 50 && (var6 != 49 || var7 != 47)) {
                   class64.mapRegions[var4] = var8;
-                  class91.landMapFileIds[var4] = class22.indexMaps.getFile("m" + var6 + "_" + var7);
-                  GraphicsObject.landRegionFileIds[var4] = class22.indexMaps.getFile("l" + var6 + "_" + var7);
+                  class91.landMapFileIds[var4] = SceneComposition.indexMaps.getFile("m" + var6 + "_" + var7);
+                  GraphicsObject.landRegionFileIds[var4] = SceneComposition.indexMaps.getFile("l" + var6 + "_" + var7);
                   ++var4;
                }
             }
@@ -146,8 +147,8 @@ public class class56 {
                         class64.mapRegions[var5] = var12;
                         var13 = var12 >> 8 & 255;
                         int var14 = var12 & 255;
-                        class91.landMapFileIds[var5] = class22.indexMaps.getFile("m" + var13 + "_" + var14);
-                        GraphicsObject.landRegionFileIds[var5] = class22.indexMaps.getFile("l" + var13 + "_" + var14);
+                        class91.landMapFileIds[var5] = SceneComposition.indexMaps.getFile("m" + var13 + "_" + var14);
+                        GraphicsObject.landRegionFileIds[var5] = SceneComposition.indexMaps.getFile("l" + var13 + "_" + var14);
                         ++var5;
                      }
                   }

@@ -1,11 +1,10 @@
+import net.runelite.mapping.*;
+
 import java.util.Comparator;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("l")
-final class class18 implements Comparator {
+@Implements("GEItemNameComparator")
+final class GEItemNameComparator implements Comparator {
    @ObfuscatedName("fh")
    @ObfuscatedSignature(
       signature = "[Lks;"

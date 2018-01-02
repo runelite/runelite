@@ -1,11 +1,8 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("ae")
-public class class45 extends class28 {
+@Implements("SceneMetadata")
+public class SceneMetadata extends AbstractScene {
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -1570898051
@@ -52,7 +49,7 @@ public class class45 extends class28 {
          super.field375 = new short[super.field378][64][64];
          super.field381 = new byte[super.field378][64][64];
          super.field382 = new byte[super.field378][64][64];
-         super.field384 = new class31[super.field378][64][64][];
+         super.field384 = new SceneMapObj[super.field378][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class35.field468.field463) {
             throw new IllegalStateException("");
@@ -125,10 +122,10 @@ public class class45 extends class28 {
    }
 
    public boolean equals(Object var1) {
-      if(!(var1 instanceof class45)) {
+      if(!(var1 instanceof SceneMetadata)) {
          return false;
       } else {
-         class45 var2 = (class45)var1;
+         SceneMetadata var2 = (SceneMetadata)var1;
          return super.field380 == var2.field380 && var2.field376 == super.field376?this.field548 == var2.field548 && var2.field546 == this.field546:false;
       }
    }

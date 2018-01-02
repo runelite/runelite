@@ -80,7 +80,7 @@ public class class25 {
    )
    @Export("sendGameMessage")
    static void sendGameMessage(int var0, String var1, String var2) {
-      class28.addChatMessage(var0, var1, var2, (String)null);
+      AbstractScene.addChatMessage(var0, var1, var2, (String)null);
    }
 
    @ObfuscatedName("b")

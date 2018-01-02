@@ -1,17 +1,16 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("aq")
-public class class31 {
+@Implements("SceneMapObj")
+public class SceneMapObj {
    @ObfuscatedName("t")
    static byte[][][] field413;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 607993823
    )
-   final int field415;
+   @Export("objectId")
+   final int objectId;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 150136621
@@ -23,8 +22,8 @@ public class class31 {
    )
    final int field414;
 
-   class31(int var1, int var2, int var3) {
-      this.field415 = var1;
+   SceneMapObj(int var1, int var2, int var3) {
+      this.objectId = var1;
       this.field412 = var2;
       this.field414 = var3;
    }

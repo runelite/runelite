@@ -69,7 +69,7 @@ public class CombatInfo1 extends Node {
       byte var4 = (byte)(var3 >> 28);
       int var5 = var3 >> 14 & 16383;
       int var6 = var3 & 16383;
-      var2.pathX[0] = var5 - class46.baseX;
+      var2.pathX[0] = var5 - SceneChunkMetadata.baseX;
       var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
       var2.pathY[0] = var6 - Client.baseY;
       var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);

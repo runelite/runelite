@@ -8,7 +8,7 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lcl;"
    )
-   static class101 field2628;
+   static AudioLinkedDeque field2628;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lib;"

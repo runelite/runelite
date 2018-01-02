@@ -89,7 +89,7 @@ public class FaceNormal {
 
                if(var1 >= var6 && var2 >= var7 && var1 < var6 + 32 && var2 < var7 + 32) {
                   Client.field935 = var20;
-                  class47.field566 = var0;
+                  MapAreaMetadata.field566 = var0;
                   if(var0.itemIds[var20] > 0) {
                      label388: {
                         ItemComposition var8 = KitDefinition.getItemDefinition(var0.itemIds[var20] - 1);
@@ -99,7 +99,7 @@ public class FaceNormal {
                            var10 = class36.getWidgetConfig(var0);
                            var9 = (var10 >> 30 & 1) != 0;
                            if(var9) {
-                              if(var0.id != class18.field304 || var20 != class36.selectedItemIndex) {
+                              if(var0.id != GEItemNameComparator.field304 || var20 != class36.selectedItemIndex) {
                                  class37.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + Buffer.getColTags(16748608) + var8.name, 31, var8.id, var20, var0.id);
                               }
                               break label388;

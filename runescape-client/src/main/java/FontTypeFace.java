@@ -1,8 +1,9 @@
-import java.util.Random;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.Random;
 
 @ObfuscatedName("jd")
 @Implements("FontTypeFace")
@@ -404,7 +405,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("i")
-   public void method4893(String var1, int var2, int var3, int var4, int var5) {
+   @Export("drawString")
+   public void drawString(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
          this.method4903(var1, var2 - this.method4886(var1), var3);

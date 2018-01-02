@@ -26,10 +26,10 @@ public class GrandExchangeEvents {
    public final List events;
 
    static {
-      field268 = new class19();
+      field268 = new GEItemFieldComparator1();
       new WorldComparator();
       field271 = new UnitPriceComparator();
-      field270 = new class18();
+      field270 = new GEItemNameComparator();
       field267 = new TotalQuantityComparator();
    }
 

@@ -1,3 +1,8 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
+
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -5,12 +10,10 @@ import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("av")
-public class class44 extends WorldMapData {
+@Implements("WorldMapMappings")
+public class WorldMapMappings extends WorldMapData {
    @ObfuscatedName("bi")
    @ObfuscatedSignature(
       signature = "Lbl;"
@@ -36,10 +39,10 @@ public class class44 extends WorldMapData {
 
       int var7;
       for(var7 = 0; var7 < var6; ++var7) {
-         class22 var8 = new class22();
+         SceneComposition var8 = new SceneComposition();
 
          try {
-            var8.method161(var2, var3);
+            var8.decode(var2, var3);
          } catch (IllegalStateException var13) {
             continue;
          }
@@ -51,7 +54,7 @@ public class class44 extends WorldMapData {
       this.field542 = new HashSet(var7);
 
       for(int var11 = 0; var11 < var7; ++var11) {
-         class45 var9 = new class45();
+         SceneMetadata var9 = new SceneMetadata();
 
          try {
             var9.method630(var2, var3);
@@ -92,7 +95,7 @@ public class class44 extends WorldMapData {
    )
    static long method620() {
       try {
-         URL var0 = new URL(class22.method167("services", false) + "m=accountappeal/login.ws");
+         URL var0 = new URL(SceneComposition.method167("services", false) + "m=accountappeal/login.ws");
          URLConnection var1 = var0.openConnection();
          var1.setRequestProperty("connection", "close");
          var1.setDoInput(true);
@@ -154,7 +157,7 @@ public class class44 extends WorldMapData {
          var9.type = var3;
          var9.x = var1;
          var9.y = var2;
-         class39.method546(var9);
+         AreaMapIconMetadata.method546(var9);
          Client.pendingSpawns.addFront(var9);
       }
 

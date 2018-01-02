@@ -1,14 +1,12 @@
-import java.awt.Image;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 @ObfuscatedName("ap")
 public class class34 {
@@ -52,7 +50,7 @@ public class class34 {
    @ObfuscatedSignature(
       signature = "Lh;"
    )
-   class22 field446;
+   SceneComposition field446;
    @ObfuscatedName("t")
    LinkedList field447;
    @ObfuscatedName("f")
@@ -114,7 +112,7 @@ public class class34 {
       signature = "(Lh;Ljava/util/List;I)V",
       garbageValue = "840275908"
    )
-   void method348(class22 var1, List var2) {
+   void method348(SceneComposition var1, List var2) {
       this.field453.clear();
       this.field446 = var1;
       this.method419(0, 0, 64, 64, this.field446);
@@ -131,7 +129,7 @@ public class class34 {
       Iterator var3 = var1.iterator();
 
       while(var3.hasNext()) {
-         class45 var4 = (class45)var3.next();
+         SceneMetadata var4 = (SceneMetadata)var3.next();
          if(var4.method227() == this.field442 && var4.method228() == this.field445) {
             this.field447.add(var4);
             this.method419(var4.method634() * 8, var4.method635() * 8, 8, 8, var4);
@@ -146,31 +144,31 @@ public class class34 {
       signature = "(IIIILag;I)V",
       garbageValue = "-1585101609"
    )
-   void method419(int var1, int var2, int var3, int var4, class28 var5) {
+   void method419(int var1, int var2, int var3, int var4, AbstractScene var5) {
       for(int var6 = var1; var6 < var3 + var1; ++var6) {
          label56:
          for(int var7 = var2; var7 < var2 + var4; ++var7) {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field378; ++var9) {
-               class31[] var10 = var5.field384[var9][var6][var7];
+               SceneMapObj[] var10 = var5.field384[var9][var6][var7];
                if(var10 != null && var10.length != 0) {
-                  class31[] var11 = var10;
+                  SceneMapObj[] var11 = var10;
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
-                     class31 var13 = var11[var12];
-                     Area var14 = this.method379(var13.field415);
+                     SceneMapObj var13 = var11[var12];
+                     Area var14 = this.method379(var13.objectId);
                      if(var14 != null) {
                         Coordinates var15 = new Coordinates(var9, this.field442 * 64 + var6, this.field445 * 64 + var7);
                         Coordinates var16 = null;
                         if(this.field446 != null) {
                            var16 = new Coordinates(this.field446.field377 + var9, var6 + this.field446.field383 * 64, var7 + this.field446.field374 * 64);
                         } else {
-                           class45 var17 = (class45)var5;
+                           SceneMetadata var17 = (SceneMetadata)var5;
                            var16 = new Coordinates(var9 + var17.field377, var6 + var17.field383 * 64 + var17.method629() * 8, var7 + var17.field374 * 64 + var17.method653() * 8);
                         }
 
-                        class39 var18 = new class39(var14.field3395, var16, var15, this.method398(var14));
+                        AreaMapIconMetadata var18 = new AreaMapIconMetadata(var14.field3395, var16, var15, this.method398(var14));
                         this.field453.put(var8, var18);
                         continue label56;
                      }
@@ -193,7 +191,7 @@ public class class34 {
       while(var2.hasNext()) {
          class25 var3 = (class25)var2.next();
          if(var3.field345.worldX >> 6 == this.field442 && var3.field345.worldY >> 6 == this.field445) {
-            class39 var4 = new class39(var3.field346, var3.field345, var3.field345, this.method380(var3.field346));
+            AreaMapIconMetadata var4 = new AreaMapIconMetadata(var3.field346, var3.field345, var3.field345, this.method380(var3.field346));
             this.field452.add(var4);
          }
       }
@@ -205,7 +203,7 @@ public class class34 {
       signature = "(ILam;[Lap;[Lkg;I)Z",
       garbageValue = "-1517233173"
    )
-   boolean method352(int var1, class46 var2, class34[] var3, IndexedSprite[] var4) {
+   boolean method352(int var1, SceneChunkMetadata var2, class34[] var3, IndexedSprite[] var4) {
       if(!this.method355(var1)) {
          return false;
       } else if(this.field446 == null && this.field447.isEmpty()) {
@@ -246,7 +244,7 @@ public class class34 {
       Iterator var4 = this.field453.values().iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
+         AreaMapIconMetadata var5 = (AreaMapIconMetadata)var4.next();
          if(var1.contains(Integer.valueOf(var5.field499))) {
             Area var6 = Area.mapAreaType[var5.field499];
             this.method371(var6, var5.field503, var5.field497, var2, var3);
@@ -276,7 +274,7 @@ public class class34 {
       signature = "(Lam;[Lap;[Lkg;I)V",
       garbageValue = "-1794658498"
    )
-   void method356(class46 var1, class34[] var2, IndexedSprite[] var3) {
+   void method356(SceneChunkMetadata var1, class34[] var2, IndexedSprite[] var3) {
       int var4;
       int var5;
       for(var4 = 0; var4 < 64; ++var4) {
@@ -299,14 +297,14 @@ public class class34 {
       signature = "(Lam;[Lkg;B)V",
       garbageValue = "-32"
    )
-   void method471(class46 var1, IndexedSprite[] var2) {
+   void method471(SceneChunkMetadata var1, IndexedSprite[] var2) {
       Iterator var3 = this.field447.iterator();
 
-      class45 var4;
+      SceneMetadata var4;
       int var5;
       int var6;
       while(var3.hasNext()) {
-         var4 = (class45)var3.next();
+         var4 = (SceneMetadata)var3.next();
 
          for(var5 = var4.method634() * 8; var5 < var4.method634() * 8 + 8; ++var5) {
             for(var6 = var4.method635() * 8; var6 < var4.method635() * 8 + 8; ++var6) {
@@ -319,7 +317,7 @@ public class class34 {
       var3 = this.field447.iterator();
 
       while(var3.hasNext()) {
-         var4 = (class45)var3.next();
+         var4 = (SceneMetadata)var3.next();
 
          for(var5 = var4.method634() * 8; var5 < var4.method634() * 8 + 8; ++var5) {
             for(var6 = var4.method635() * 8; var6 < var4.method635() * 8 + 8; ++var6) {
@@ -335,7 +333,7 @@ public class class34 {
       signature = "(IILag;Lam;[Lkg;I)V",
       garbageValue = "-430039813"
    )
-   void method358(int var1, int var2, class28 var3, class46 var4, IndexedSprite[] var5) {
+   void method358(int var1, int var2, AbstractScene var3, SceneChunkMetadata var4, IndexedSprite[] var5) {
       this.method472(var1, var2, var3);
       this.method367(var1, var2, var3, var5);
    }
@@ -345,7 +343,7 @@ public class class34 {
       signature = "(IILag;Lam;I)V",
       garbageValue = "1884661279"
    )
-   void method359(int var1, int var2, class28 var3, class46 var4) {
+   void method359(int var1, int var2, AbstractScene var3, SceneChunkMetadata var4) {
       int var5 = var3.field379[0][var1][var2] - 1;
       int var6 = var3.field375[0][var1][var2] - 1;
       if(var5 == -1 && var6 == -1) {
@@ -374,7 +372,7 @@ public class class34 {
       signature = "(IILag;Lam;I)V",
       garbageValue = "-742305206"
    )
-   void method360(int var1, int var2, class28 var3, class46 var4) {
+   void method360(int var1, int var2, AbstractScene var3, SceneChunkMetadata var4) {
       for(int var5 = 1; var5 < var3.field378; ++var5) {
          int var6 = var3.field375[var5][var1][var2] - 1;
          if(var6 > -1) {
@@ -405,7 +403,7 @@ public class class34 {
             Iterator var3 = this.field447.iterator();
 
             while(var3.hasNext()) {
-               class45 var4 = (class45)var3.next();
+               SceneMetadata var4 = (SceneMetadata)var3.next();
                this.method364(var4.method634() * 8, var4.method635() * 8, 8, 8, var4, var2);
             }
          }
@@ -503,7 +501,7 @@ public class class34 {
       signature = "(IIIILag;Laz;B)V",
       garbageValue = "60"
    )
-   void method364(int var1, int var2, int var3, int var4, class28 var5, class43 var6) {
+   void method364(int var1, int var2, int var3, int var4, AbstractScene var5, class43 var6) {
       for(int var7 = var1; var7 < var3 + var1; ++var7) {
          for(int var8 = var2; var8 < var2 + var4; ++var8) {
             int var9 = var5.field379[0][var7][var8] - 1;
@@ -539,7 +537,7 @@ public class class34 {
       signature = "(IILag;I)I",
       garbageValue = "2052494500"
    )
-   int method366(int var1, int var2, class28 var3) {
+   int method366(int var1, int var2, AbstractScene var3) {
       return var3.field379[0][var1][var2] == 0?this.field448:this.field450[var1][var2];
    }
 
@@ -548,18 +546,18 @@ public class class34 {
       signature = "(IILag;[Lkg;B)V",
       garbageValue = "-5"
    )
-   void method367(int var1, int var2, class28 var3, IndexedSprite[] var4) {
+   void method367(int var1, int var2, AbstractScene var3, IndexedSprite[] var4) {
       for(int var5 = 0; var5 < var3.field378; ++var5) {
-         class31[] var6 = var3.field384[var5][var1][var2];
+         SceneMapObj[] var6 = var3.field384[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
-            class31[] var7 = var6;
+            SceneMapObj[] var7 = var6;
 
             for(int var8 = 0; var8 < var7.length; ++var8) {
-               class31 var9 = var7[var8];
+               SceneMapObj var9 = var7[var8];
                int var11 = var9.field412;
                boolean var10 = var11 >= class232.field2938.field2941 && var11 <= class232.field2939.field2941;
                if(var10 || GrandExchangeEvents.method69(var9.field412)) {
-                  ObjectComposition var12 = CacheFile.getObjectDefinition(var9.field415);
+                  ObjectComposition var12 = CacheFile.getObjectDefinition(var9.objectId);
                   if(var12.mapSceneId != -1) {
                      if(var12.mapSceneId != 46 && var12.mapSceneId != 52) {
                         var4[var12.mapSceneId].method5189(this.field449 * var1, this.field449 * (63 - var2), this.field449 * 2, this.field449 * 2);
@@ -579,18 +577,18 @@ public class class34 {
       signature = "(IILag;I)V",
       garbageValue = "793640165"
    )
-   void method472(int var1, int var2, class28 var3) {
+   void method472(int var1, int var2, AbstractScene var3) {
       for(int var4 = 0; var4 < var3.field378; ++var4) {
-         class31[] var5 = var3.field384[var4][var1][var2];
+         SceneMapObj[] var5 = var3.field384[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            class31[] var6 = var5;
+            SceneMapObj[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               class31 var8 = var6[var7];
+               SceneMapObj var8 = var6[var7];
                int var10 = var8.field412;
                boolean var9 = var10 >= class232.field2923.field2941 && var10 <= class232.field2918.field2941 || var10 == class232.field2929.field2941;
                if(var9) {
-                  ObjectComposition var11 = CacheFile.getObjectDefinition(var8.field415);
+                  ObjectComposition var11 = CacheFile.getObjectDefinition(var8.objectId);
                   int var12 = var11.int1 != 0?-3407872:-3355444;
                   if(var8.field412 == class232.field2923.field2941) {
                      this.method350(var1, var2, var8.field414, var12);
@@ -654,7 +652,7 @@ public class class34 {
          Coordinates var9 = (Coordinates)var8.getKey();
          int var10 = (int)(var5 * (float)var9.worldX + (float)var1 - var6);
          int var11 = (int)((float)(var2 + var4) - var5 * (float)var9.worldY - var6);
-         class39 var12 = (class39)var8.getValue();
+         AreaMapIconMetadata var12 = (AreaMapIconMetadata)var8.getValue();
          if(var12 != null) {
             var12.field503 = var10;
             var12.field497 = var11;
@@ -676,7 +674,7 @@ public class class34 {
       Iterator var4 = this.field452.iterator();
 
       while(var4.hasNext()) {
-         class39 var5 = (class39)var4.next();
+         AreaMapIconMetadata var5 = (AreaMapIconMetadata)var4.next();
          Area var6 = Area.mapAreaType[var5.field499];
          if(var6 != null && var1.contains(Integer.valueOf(var6.method4443()))) {
             this.method371(var6, var5.field503, var5.field497, var2, var3);
@@ -707,7 +705,7 @@ public class class34 {
       signature = "(Lay;IIFI)V",
       garbageValue = "-1831412463"
    )
-   void method372(class39 var1, int var2, int var3, float var4) {
+   void method372(AreaMapIconMetadata var1, int var2, int var3, float var4) {
       Area var5 = Area.mapAreaType[var1.field499];
       this.method373(var5, var2, var3);
       this.method374(var1, var5, var2, var3, var4);
@@ -733,7 +731,7 @@ public class class34 {
       signature = "(Lay;Lif;IIFB)V",
       garbageValue = "-48"
    )
-   void method374(class39 var1, Area var2, int var3, int var4, float var5) {
+   void method374(AreaMapIconMetadata var1, Area var2, int var3, int var4, float var5) {
       if(var1.field502 != null) {
          if(var1.field502.field433.method177(var5)) {
             Font var6 = (Font)this.field460.get(var1.field502.field433);
@@ -752,7 +750,7 @@ public class class34 {
       Iterator var6 = this.field452.iterator();
 
       while(var6.hasNext()) {
-         class39 var7 = (class39)var6.next();
+         AreaMapIconMetadata var7 = (AreaMapIconMetadata)var6.next();
          int var8 = var7.field498.worldX % 64;
          int var9 = var7.field498.worldY % 64;
          var7.field503 = (int)((float)var1 + var5 * (float)var8);
@@ -780,7 +778,7 @@ public class class34 {
          Iterator var5 = this.field447.iterator();
 
          while(var5.hasNext()) {
-            class45 var6 = (class45)var5.next();
+            SceneMetadata var6 = (SceneMetadata)var5.next();
 
             for(int var3 = var6.method634() * 8; var3 < var6.method634() * 8 + 8; ++var3) {
                for(int var4 = var6.method635() * 8; var4 < var6.method635() * 8 + 8; ++var4) {
@@ -797,22 +795,22 @@ public class class34 {
       signature = "(IILag;I)V",
       garbageValue = "-171167958"
    )
-   void method376(int var1, int var2, class28 var3) {
+   void method376(int var1, int var2, AbstractScene var3) {
       field444.set(0, var1, var2);
 
       for(int var4 = 0; var4 < var3.field378; ++var4) {
-         class31[] var5 = var3.field384[var4][var1][var2];
+         SceneMapObj[] var5 = var3.field384[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            class31[] var6 = var5;
+            SceneMapObj[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               class31 var8 = var6[var7];
-               Area var9 = this.method379(var8.field415);
+               SceneMapObj var8 = var6[var7];
+               Area var9 = this.method379(var8.objectId);
                if(var9 != null) {
-                  class39 var10 = (class39)this.field453.get(field444);
+                  AreaMapIconMetadata var10 = (AreaMapIconMetadata)this.field453.get(field444);
                   if(var10 != null) {
                      if(var9.field3395 != var10.field499) {
-                        class39 var16 = new class39(var9.field3395, var10.field504, var10.field498, this.method398(var9));
+                        AreaMapIconMetadata var16 = new AreaMapIconMetadata(var9.field3395, var10.field504, var10.field498, this.method398(var9));
                         this.field453.put(new Coordinates(field444), var16);
                         var10 = var16;
                      }
@@ -831,7 +829,7 @@ public class class34 {
                      Iterator var13 = this.field447.iterator();
 
                      while(var13.hasNext()) {
-                        class45 var14 = (class45)var13.next();
+                        SceneMetadata var14 = (SceneMetadata)var13.next();
                         if(var14.method631(var1, var2)) {
                            var12 = new Coordinates(var4 + var14.field377, var14.field383 * 64 + var1 + var14.method629() * 8, var14.field374 * 64 + var2 + var14.method653() * 8);
                            break;
@@ -840,7 +838,7 @@ public class class34 {
                   }
 
                   if(var12 != null) {
-                     var10 = new class39(var9.field3395, var12, var11, this.method398(var9));
+                     var10 = new AreaMapIconMetadata(var9.field3395, var12, var11, this.method398(var9));
                      this.field453.put(new Coordinates(field444), var10);
                      return;
                   }
@@ -980,9 +978,9 @@ public class class34 {
          if(var4 < var3 + var1 && var5 < var3 + var2) {
             Iterator var7 = this.field453.values().iterator();
 
-            class39 var8;
+            AreaMapIconMetadata var8;
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (AreaMapIconMetadata)var7.next();
                if(var8.method538(var4, var5)) {
                   var6.add(var8);
                }
@@ -991,7 +989,7 @@ public class class34 {
             var7 = this.field452.iterator();
 
             while(var7.hasNext()) {
-               var8 = (class39)var7.next();
+               var8 = (AreaMapIconMetadata)var7.next();
                if(var8.method538(var4, var5)) {
                   var6.add(var8);
                }
@@ -1056,7 +1054,7 @@ public class class34 {
             Iterator var3 = this.field447.iterator();
 
             while(var3.hasNext()) {
-               class45 var4 = (class45)var3.next();
+               SceneMetadata var4 = (SceneMetadata)var3.next();
                if(var4.method631(var1, var2)) {
                   return var4.method222(var1, var2);
                }

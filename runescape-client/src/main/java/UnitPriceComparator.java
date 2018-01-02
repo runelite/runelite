@@ -206,7 +206,7 @@ final class UnitPriceComparator implements Comparator {
                }
 
                if(Client.hintArrowTargetType == 2) {
-                  var10 = Client.hintArrowX * 4 - class46.baseX * 4 + 2 - UrlRequest.localPlayer.x / 32;
+                  var10 = Client.hintArrowX * 4 - SceneChunkMetadata.baseX * 4 + 2 - UrlRequest.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - Client.baseY * 4 + 2 - UrlRequest.localPlayer.y / 32;
                   class133.worldToMinimap(var1, var2, var10, var11, class34.mapMarkers[1], var4);
                }
