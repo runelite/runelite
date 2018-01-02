@@ -187,6 +187,10 @@ public class OverlayRenderer
 			? new Rectangle(viewport.getBounds())
 			: new Rectangle(0, 0, surface.getWidth(), surface.getHeight());
 
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
+		final Rectangle chatboxBounds = chatbox != null
+				? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
+
 		OverlayUtil.setGraphicProperties(graphics);
 		final Point topLeftPoint = new Point();
 		topLeftPoint.move(BORDER_LEFT, BORDER_TOP);
@@ -196,6 +200,8 @@ public class OverlayRenderer
 		bottomLeftPoint.move(BORDER_LEFT, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point bottomRightPoint = new Point();
 		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
+		final Point rightChatboxPoint = new Point();
+		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT,bounds.y + bounds.height - BORDER_BOTTOM);
 
 		overlays.stream()
 			.filter(overlay -> shouldDrawOverlay(client, overlay))
@@ -216,6 +222,9 @@ public class OverlayRenderer
 						break;
 					case TOP_RIGHT:
 						subPosition.setLocation(topRightPoint);
+						break;
+					case ABOVE_CHATBOX_RIGHT:
+						subPosition.setLocation(rightChatboxPoint);
 						break;
 				}
 
@@ -248,6 +257,9 @@ public class OverlayRenderer
 							break;
 						case TOP_RIGHT:
 							topRightPoint.y += dimension.height + (dimension.height == 0 ? 0 : PADDING);
+							break;
+						case ABOVE_CHATBOX_RIGHT:
+							rightChatboxPoint.y -= dimension.height + (dimension.height == 0 ? 0 : PADDING);
 							break;
 					}
 
