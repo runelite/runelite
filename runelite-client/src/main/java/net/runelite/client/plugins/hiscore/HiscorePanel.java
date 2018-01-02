@@ -384,6 +384,11 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
+		for (JLabel label : skillLabels)
+		{
+			label.setText("--");
+		}
+
 		try
 		{
 			HiscoreEndpoint endpoint = HiscoreEndpoint.valueOf(endpointButtonGroup.getSelection().getActionCommand());
@@ -417,14 +422,6 @@ public class HiscorePanel extends PluginPanel
 					);
 					label.setText(Integer.toString(combatLevel));
 				}
-				else
-				{
-					label.setText("--");
-				}
-			}
-			else if (result.getSkill(skill) == null)
-			{
-				label.setText("--");
 			}
 			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
 			{
