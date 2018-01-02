@@ -37,8 +37,8 @@ public class Ignore {
       signature = "(I)Lks;",
       garbageValue = "-1374631757"
    )
-   @Export("renderItemSnapshot")
-   static SpritePixels renderItemSnapshot() {
+   @Export("renderSprite")
+   static SpritePixels renderSprite() {
       SpritePixels var0 = new SpritePixels();
       var0.maxWidth = class299.field3864;
       var0.maxHeight = class299.field3868;

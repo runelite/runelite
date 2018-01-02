@@ -47,7 +47,7 @@ public abstract class AbstractScene {
    @ObfuscatedSignature(
       signature = "[[[[Laq;"
    )
-   SceneMapObj[][][][] field384;
+   SceneMapObject[][][][] field384;
 
    AbstractScene() {
       new LinkedList();
@@ -115,12 +115,12 @@ public abstract class AbstractScene {
          for(var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if(var9 != 0) {
-               SceneMapObj[] var14 = this.field384[var8][var1][var2] = new SceneMapObj[var9];
+               SceneMapObject[] var14 = this.field384[var8][var1][var2] = new SceneMapObject[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
                   int var12 = var3.method3372();
                   int var13 = var3.readUnsignedByte();
-                  var14[var11] = new SceneMapObj(var12, var13 >> 2, var13 & 3);
+                  var14[var11] = new SceneMapObject(var12, var13 >> 2, var13 & 3);
                }
             }
          }

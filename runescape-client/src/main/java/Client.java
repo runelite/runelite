@@ -917,8 +917,8 @@ public final class Client extends GameEngine {
    @Export("localNpcsCount")
    static int localNpcsCount;
    @ObfuscatedName("ij")
-   @Export("npcIndiciesPendingRemoval")
-   static int[] npcIndiciesPendingRemoval;
+   @Export("npcIndicesPendingRemoval")
+   static int[] npcIndicesPendingRemoval;
    @ObfuscatedName("ia")
    @Export("playerMenuTypes")
    static final int[] playerMenuTypes;
@@ -1244,7 +1244,7 @@ public final class Client extends GameEngine {
       localInteractingIndex = -1;
       field918 = 0;
       localNpcsCount = 0;
-      npcIndiciesPendingRemoval = new int[1000];
+      npcIndicesPendingRemoval = new int[1000];
       playerMenuTypes = new int[]{44, 45, 46, 47, 48, 49, 50, 51};
       playerOptions = new String[8];
       playerOptionsPriorities = new boolean[8];
@@ -2131,7 +2131,7 @@ public final class Client extends GameEngine {
                                              var64.addTile(var5, var14, var52, 0, 0, -1, var25, var26, var27, var28, CombatInfo1.method1490(var33, var29), CombatInfo1.method1490(var33, var30), CombatInfo1.method1490(var33, var31), CombatInfo1.method1490(var33, var32), 0, 0, 0, 0, var35, 0);
                                           } else {
                                              var36 = class168.field2226[var5][var14][var52] + 1;
-                                             byte var72 = SceneMapObj.field413[var5][var14][var52];
+                                             byte var72 = SceneMapObject.field413[var5][var14][var52];
                                              Overlay var38 = Varcs.getOverlayDefinition(var58 - 1);
                                              int var39 = var38.texture;
                                              int var40;
@@ -2201,7 +2201,7 @@ public final class Client extends GameEngine {
                            class61.field693[var5] = null;
                            UrlRequest.field2083[var5] = null;
                            class168.field2226[var5] = null;
-                           SceneMapObj.field413[var5] = null;
+                           SceneMapObject.field413[var5] = null;
                            class96.field1418[var5] = null;
                         }
 
@@ -2443,7 +2443,7 @@ public final class Client extends GameEngine {
                         class61.field693 = null;
                         UrlRequest.field2083 = null;
                         class168.field2226 = null;
-                        SceneMapObj.field413 = null;
+                        SceneMapObject.field413 = null;
                         TextureProvider.field1667 = null;
                         class96.field1418 = null;
                         class61.field696 = null;

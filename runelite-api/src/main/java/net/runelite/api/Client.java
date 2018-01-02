@@ -24,12 +24,11 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-
-import java.awt.*;
+import java.awt.Canvas;
 import java.util.List;
 import java.util.Map;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 public interface Client
 {

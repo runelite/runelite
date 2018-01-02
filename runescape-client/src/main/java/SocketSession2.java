@@ -124,7 +124,7 @@ public class SocketSession2 extends AbstractSocket {
       class61.field693 = new byte[4][104][104];
       UrlRequest.field2083 = new byte[4][104][104];
       class168.field2226 = new byte[4][104][104];
-      SceneMapObj.field413 = new byte[4][104][104];
+      SceneMapObject.field413 = new byte[4][104][104];
       TextureProvider.field1667 = new int[4][105][105];
       class96.field1418 = new byte[4][105][105];
       class61.field696 = new int[105][105];

@@ -113,7 +113,7 @@ public enum AttackOption implements Enumerated {
             if(var7 <= 49) {
                UrlRequest.field2083[var1][var2][var3] = var0.readByte();
                class168.field2226[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               SceneMapObj.field413[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+               SceneMapObject.field413[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
             } else if(var7 <= 81) {
                class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
             } else {

@@ -155,7 +155,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(class188.field2537, this.field3442, 0);
+            var1 = SocketSession.getSprite(class188.field2537, this.field3442, 0);
             if(var1 != null) {
                spriteCache.put(var1, (long)this.field3442);
             }
@@ -178,7 +178,7 @@ public class CombatInfo2 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(class188.field2537, this.field3453, 0);
+            var1 = SocketSession.getSprite(class188.field2537, this.field3453, 0);
             if(var1 != null) {
                spriteCache.put(var1, (long)this.field3453);
             }

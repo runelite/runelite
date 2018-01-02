@@ -273,7 +273,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(field3487, this.field3495, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3495, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3495);
             }
@@ -296,7 +296,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(field3487, this.field3490, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3490, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3490);
             }
@@ -319,7 +319,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(field3487, this.field3493, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3493, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3493);
             }
@@ -342,7 +342,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = SocketSession.takeItemSnapshot(field3487, this.field3498, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3498, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3498);
             }

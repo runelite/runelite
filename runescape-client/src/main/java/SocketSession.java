@@ -287,9 +287,9 @@ public final class SocketSession extends AbstractSocket implements Runnable {
       signature = "(Lib;III)Lks;",
       garbageValue = "-474356099"
    )
-   @Export("takeItemSnapshot")
-   public static SpritePixels takeItemSnapshot(IndexDataBase var0, int var1, int var2) {
-      return !Parameters.spriteDataValid(var0, var1, var2)?null:Ignore.renderItemSnapshot();
+   @Export("getSprite")
+   public static SpritePixels getSprite(IndexDataBase var0, int var1, int var2) {
+      return !Parameters.spriteDataValid(var0, var1, var2)?null:Ignore.renderSprite();
    }
 
    @ObfuscatedName("k")

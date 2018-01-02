@@ -276,7 +276,7 @@ public class Area extends CacheableNode {
          if(var2 != null) {
             return var2;
          } else {
-            var2 = SocketSession.takeItemSnapshot(field3392, var1, 0);
+            var2 = SocketSession.getSprite(field3392, var1, 0);
             if(var2 != null) {
                areaSpriteCache.put(var2, (long)var1);
             }

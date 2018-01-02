@@ -145,7 +145,7 @@ public class MessageNode extends CacheableNode {
 
       int var2;
       for(var2 = 0; var2 < Client.localNpcsCount; ++var2) {
-         int var3 = Client.npcIndiciesPendingRemoval[var2];
+         int var3 = Client.npcIndicesPendingRemoval[var2];
          if(Client.cachedNPCs[var3].npcCycle != Client.gameCycle) {
             Client.cachedNPCs[var3].composition = null;
             Client.cachedNPCs[var3] = null;

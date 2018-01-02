@@ -151,12 +151,12 @@ public class class34 {
             Coordinates var8 = new Coordinates(0, var6, var7);
 
             for(int var9 = 0; var9 < var5.field378; ++var9) {
-               SceneMapObj[] var10 = var5.field384[var9][var6][var7];
+               SceneMapObject[] var10 = var5.field384[var9][var6][var7];
                if(var10 != null && var10.length != 0) {
-                  SceneMapObj[] var11 = var10;
+                  SceneMapObject[] var11 = var10;
 
                   for(int var12 = 0; var12 < var11.length; ++var12) {
-                     SceneMapObj var13 = var11[var12];
+                     SceneMapObject var13 = var11[var12];
                      Area var14 = this.method379(var13.objectId);
                      if(var14 != null) {
                         Coordinates var15 = new Coordinates(var9, this.field442 * 64 + var6, this.field445 * 64 + var7);
@@ -548,12 +548,12 @@ public class class34 {
    )
    void method367(int var1, int var2, AbstractScene var3, IndexedSprite[] var4) {
       for(int var5 = 0; var5 < var3.field378; ++var5) {
-         SceneMapObj[] var6 = var3.field384[var5][var1][var2];
+         SceneMapObject[] var6 = var3.field384[var5][var1][var2];
          if(var6 != null && var6.length != 0) {
-            SceneMapObj[] var7 = var6;
+            SceneMapObject[] var7 = var6;
 
             for(int var8 = 0; var8 < var7.length; ++var8) {
-               SceneMapObj var9 = var7[var8];
+               SceneMapObject var9 = var7[var8];
                int var11 = var9.field412;
                boolean var10 = var11 >= class232.field2938.field2941 && var11 <= class232.field2939.field2941;
                if(var10 || GrandExchangeEvents.method69(var9.field412)) {
@@ -579,12 +579,12 @@ public class class34 {
    )
    void method472(int var1, int var2, AbstractScene var3) {
       for(int var4 = 0; var4 < var3.field378; ++var4) {
-         SceneMapObj[] var5 = var3.field384[var4][var1][var2];
+         SceneMapObject[] var5 = var3.field384[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            SceneMapObj[] var6 = var5;
+            SceneMapObject[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               SceneMapObj var8 = var6[var7];
+               SceneMapObject var8 = var6[var7];
                int var10 = var8.field412;
                boolean var9 = var10 >= class232.field2923.field2941 && var10 <= class232.field2918.field2941 || var10 == class232.field2929.field2941;
                if(var9) {
@@ -799,12 +799,12 @@ public class class34 {
       field444.set(0, var1, var2);
 
       for(int var4 = 0; var4 < var3.field378; ++var4) {
-         SceneMapObj[] var5 = var3.field384[var4][var1][var2];
+         SceneMapObject[] var5 = var3.field384[var4][var1][var2];
          if(var5 != null && var5.length != 0) {
-            SceneMapObj[] var6 = var5;
+            SceneMapObject[] var6 = var5;
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
-               SceneMapObj var8 = var6[var7];
+               SceneMapObject var8 = var6[var7];
                Area var9 = this.method379(var8.objectId);
                if(var9 != null) {
                   AreaMapIconMetadata var10 = (AreaMapIconMetadata)this.field453.get(field444);

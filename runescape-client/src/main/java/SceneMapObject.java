@@ -1,8 +1,8 @@
 import net.runelite.mapping.*;
 
 @ObfuscatedName("aq")
-@Implements("SceneMapObj")
-public class SceneMapObj {
+@Implements("SceneMapObject")
+public class SceneMapObject {
    @ObfuscatedName("t")
    static byte[][][] field413;
    @ObfuscatedName("a")
@@ -22,7 +22,7 @@ public class SceneMapObj {
    )
    final int field414;
 
-   SceneMapObj(int var1, int var2, int var3) {
+   SceneMapObject(int var1, int var2, int var3) {
       this.objectId = var1;
       this.field412 = var2;
       this.field414 = var3;

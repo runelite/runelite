@@ -35,7 +35,7 @@ public class SceneComposition extends AbstractScene {
          super.field375 = new short[super.field378][64][64];
          super.field381 = new byte[super.field378][64][64];
          super.field382 = new byte[super.field378][64][64];
-         super.field384 = new SceneMapObj[super.field378][64][64][];
+         super.field384 = new SceneMapObject[super.field378][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class35.field462.field463) {
             throw new IllegalStateException("");

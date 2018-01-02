@@ -1187,7 +1187,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            var5 = SocketSession.takeItemSnapshot(KeyFocusListener.field589, var2, 0);
+            var5 = SocketSession.getSprite(KeyFocusListener.field589, var2, 0);
             if(var5 == null) {
                field2780 = true;
                return null;
@@ -1266,7 +1266,7 @@ public class Widget extends Node {
             if(var3 != null) {
                return var3;
             } else {
-               var3 = SocketSession.takeItemSnapshot(KeyFocusListener.field589, var2, 0);
+               var3 = SocketSession.getSprite(KeyFocusListener.field589, var2, 0);
                if(var3 != null) {
                   field2753.put(var3, (long)var2);
                } else {
