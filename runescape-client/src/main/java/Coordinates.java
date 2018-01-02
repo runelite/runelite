@@ -615,11 +615,11 @@ public class Coordinates {
                         } else if(var0 == 4104) {
                            var19 = class82.intStack[--class82.intStackSize];
                            long var36 = ((long)var19 + 11745L) * 86400000L;
-                           class82.calendar.setTime(new Date(var36));
-                           var49 = class82.calendar.get(5);
-                           var45 = class82.calendar.get(2);
-                           var9 = class82.calendar.get(1);
-                           class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var49 + "-" + class82.months[var45] + "-" + var9;
+                           class82.calendarRS.setTime(new Date(var36));
+                           var49 = class82.calendarRS.get(5);
+                           var45 = class82.calendarRS.get(2);
+                           var9 = class82.calendarRS.get(1);
+                           class82.scriptStringStack[++class35.scriptStringStackSize - 1] = var49 + "-" + class82.monthsShorthand[var45] + "-" + var9;
                            var3 = 1;
                         } else if(var0 == 4105) {
                            class35.scriptStringStackSize -= 2;
@@ -1208,13 +1208,13 @@ public class Coordinates {
                            Client.publicChatMode = class82.intStack[class82.intStackSize];
                            class64.field727 = IndexStoreActionHandler.socialStatusForId(class82.intStack[class82.intStackSize + 1]);
                            if(class64.field727 == null) {
-                              class64.field727 = SocialStatus.field3807;
+                              class64.field727 = class289.field3807;
                            }
 
                            Client.field1087 = class82.intStack[class82.intStackSize + 2];
                            PacketNode var4 = FileSystem.bufferForSize(ClientPacket.field2339, Client.field888.field1449);
                            var4.packetBuffer.putByte(Client.publicChatMode);
-                           var4.packetBuffer.putByte(class64.field727.field3809);
+                           var4.packetBuffer.putByte(class64.field727.socialStateId);
                            var4.packetBuffer.putByte(Client.field1087);
                            Client.field888.method1862(var4);
                            var3 = 1;
@@ -1273,7 +1273,7 @@ public class Coordinates {
                            if(class64.field727 == null) {
                               class82.intStack[++class82.intStackSize - 1] = -1;
                            } else {
-                              class82.intStack[++class82.intStackSize - 1] = class64.field727.field3809;
+                              class82.intStack[++class82.intStackSize - 1] = class64.field727.socialStateId;
                            }
 
                            var3 = 1;

@@ -1,11 +1,9 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hs")
-@Implements("VarpSettingsStore")
-public class VarpSettingsStore {
+public class class222 {
    @ObfuscatedName("a")
    @Export("varpsMasks")
    public static int[] varpsMasks;

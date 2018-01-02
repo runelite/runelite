@@ -41,10 +41,10 @@ public class class82 {
    static ScriptState[] scriptStack;
    @ObfuscatedName("y")
    @Export("calendarRS")
-   static Calendar calendar;
+   static Calendar calendarRS;
    @ObfuscatedName("o")
    @Export("monthsShorthand")
-   static final String[] months;
+   static final String[] monthsShorthand;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Laa;"
@@ -63,8 +63,8 @@ public class class82 {
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      calendar = Calendar.getInstance();
-      months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      calendarRS = Calendar.getInstance();
+      monthsShorthand = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field1250 = 0;
    }
 

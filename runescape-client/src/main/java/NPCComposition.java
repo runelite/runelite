@@ -492,7 +492,7 @@ public class NPCComposition extends CacheableNode {
       if(this.varpIndex != -1) {
          var1 = class36.getVarbit(this.varpIndex);
       } else if(this.varp32Index != -1) {
-         var1 = VarpSettingsStore.widgetSettings[this.varp32Index];
+         var1 = class222.widgetSettings[this.varp32Index];
       }
 
       int var2;
@@ -518,7 +518,7 @@ public class NPCComposition extends CacheableNode {
          if(this.varpIndex != -1) {
             var1 = class36.getVarbit(this.varpIndex);
          } else if(this.varp32Index != -1) {
-            var1 = VarpSettingsStore.widgetSettings[this.varp32Index];
+            var1 = class222.widgetSettings[this.varp32Index];
          }
 
          return var1 >= 0 && var1 < this.configs.length?this.configs[var1] != -1:this.configs[this.configs.length - 1] != -1;

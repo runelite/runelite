@@ -72,7 +72,7 @@ public class class278 {
                }
 
                if(var6 == 5) {
-                  var7 = VarpSettingsStore.widgetSettings[var2[var4++]];
+                  var7 = class222.widgetSettings[var2[var4++]];
                }
 
                if(var6 == 6) {
@@ -80,7 +80,7 @@ public class class278 {
                }
 
                if(var6 == 7) {
-                  var7 = VarpSettingsStore.widgetSettings[var2[var4++]] * 100 / 46875;
+                  var7 = class222.widgetSettings[var2[var4++]] * 100 / 46875;
                }
 
                if(var6 == 8) {
@@ -119,7 +119,7 @@ public class class278 {
                }
 
                if(var6 == 13) {
-                  var9 = VarpSettingsStore.widgetSettings[var2[var4++]];
+                  var9 = class222.widgetSettings[var2[var4++]];
                   int var13 = var2[var4++];
                   var7 = (var9 & 1 << var13) != 0?1:0;
                }

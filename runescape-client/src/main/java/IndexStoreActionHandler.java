@@ -98,13 +98,13 @@ public class IndexStoreActionHandler implements Runnable {
       garbageValue = "1368333271"
    )
    @Export("socialStatusForId")
-   public static SocialStatus socialStatusForId(int var0) {
-      SocialStatus[] var1 = new SocialStatus[]{SocialStatus.field3806, SocialStatus.field3807, SocialStatus.field3808};
-      SocialStatus[] var2 = var1;
+   public static class289 socialStatusForId(int var0) {
+      class289[] var1 = new class289[]{class289.field3806, class289.field3807, class289.field3808};
+      class289[] var2 = var1;
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
-         SocialStatus var4 = var2[var3];
-         if(var0 == var4.field3809) {
+         class289 var4 = var2[var3];
+         if(var0 == var4.socialStateId) {
             return var4;
          }
       }

@@ -377,13 +377,13 @@ public class class21 {
                                                                                                                                  var25 = var15.configId;
                                                                                                                                  var18 = var15.leastSignificantBit;
                                                                                                                                  var19 = var15.mostSignificantBit;
-                                                                                                                                 var20 = VarpSettingsStore.varpsMasks[var19 - var18];
+                                                                                                                                 var20 = class222.varpsMasks[var19 - var18];
                                                                                                                                  if(var14 < 0 || var14 > var20) {
                                                                                                                                     var14 = 0;
                                                                                                                                  }
 
                                                                                                                                  var20 <<= var18;
-                                                                                                                                 VarpSettingsStore.widgetSettings[var25] = VarpSettingsStore.widgetSettings[var25] & ~var20 | var14 << var18 & var20;
+                                                                                                                                 class222.widgetSettings[var25] = class222.widgetSettings[var25] & ~var20 | var14 << var18 & var20;
                                                                                                                               }
                                                                                                                            } else {
                                                                                                                               var13 = var35[var22];
@@ -434,12 +434,12 @@ public class class21 {
                                                                                                       }
                                                                                                    } else {
                                                                                                       var13 = var35[var22];
-                                                                                                      VarpSettingsStore.widgetSettings[var13] = class82.intStack[--class82.intStackSize];
+                                                                                                      class222.widgetSettings[var13] = class82.intStack[--class82.intStackSize];
                                                                                                       class150.method2933(var13);
                                                                                                    }
                                                                                                 } else {
                                                                                                    var13 = var35[var22];
-                                                                                                   class82.intStack[++class82.intStackSize - 1] = VarpSettingsStore.widgetSettings[var13];
+                                                                                                   class82.intStack[++class82.intStackSize - 1] = class222.widgetSettings[var13];
                                                                                                 }
                                                                                              } else {
                                                                                                 class82.intStack[++class82.intStackSize - 1] = var35[var22];

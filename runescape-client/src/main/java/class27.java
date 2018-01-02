@@ -1090,7 +1090,7 @@ public enum class27 implements Enumerated {
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
-                           VarpSettingsStore.widgetSettings[var18] = 1 - VarpSettingsStore.widgetSettings[var18];
+                           class222.widgetSettings[var18] = 1 - class222.widgetSettings[var18];
                            class150.method2933(var18);
                         }
                      } else if(var2 == 29) {
@@ -1100,8 +1100,8 @@ public enum class27 implements Enumerated {
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
-                           if(VarpSettingsStore.widgetSettings[var18] != var28.field2837[0]) {
-                              VarpSettingsStore.widgetSettings[var18] = var28.field2837[0];
+                           if(class222.widgetSettings[var18] != var28.field2837[0]) {
+                              class222.widgetSettings[var18] = var28.field2837[0];
                               class150.method2933(var18);
                            }
                         }

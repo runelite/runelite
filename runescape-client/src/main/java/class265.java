@@ -227,7 +227,7 @@ public class class265 extends CacheableNode {
       if(this.field3506 != -1) {
          var1 = class36.getVarbit(this.field3506);
       } else if(this.field3507 != -1) {
-         var1 = VarpSettingsStore.widgetSettings[this.field3507];
+         var1 = class222.widgetSettings[this.field3507];
       }
 
       int var2;

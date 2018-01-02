@@ -9,7 +9,7 @@ public class class64 {
    @ObfuscatedSignature(
       signature = "Lku;"
    )
-   static SocialStatus field727;
+   static class289 field727;
    @ObfuscatedName("fs")
    @Export("mapRegions")
    @Hook("mapRegionsChanged")

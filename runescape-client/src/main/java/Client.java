@@ -3318,8 +3318,8 @@ public final class Client extends GameEngine {
                   for(var35 = 0; var35 < Frames.field2028; ++var35) {
                      VarPlayerType var29 = class25.method182(var35);
                      if(var29 != null) {
-                        VarpSettingsStore.settings[var35] = 0;
-                        VarpSettingsStore.widgetSettings[var35] = 0;
+                        class222.settings[var35] = 0;
+                        class222.widgetSettings[var35] = 0;
                      }
                   }
 
@@ -3501,7 +3501,7 @@ public final class Client extends GameEngine {
          }
 
          int var1;
-         for(var1 = 0; var1 < 100 && this.method1229(field888); ++var1) {
+         for(var1 = 0; var1 < 100 && this.readPacket(field888); ++var1) {
             ;
          }
 
@@ -4357,7 +4357,7 @@ public final class Client extends GameEngine {
       garbageValue = "944549849"
    )
    @Export("readPacket")
-   final boolean method1229(NetWriter var1) {
+   final boolean readPacket(NetWriter var1) {
       AbstractSocket var2 = var1.getSocket();
       PacketBuffer var3 = var1.packetBuffer;
       if(var2 == null) {
@@ -4759,8 +4759,8 @@ public final class Client extends GameEngine {
                for(var23 = 0; var23 < Frames.field2028; ++var23) {
                   VarPlayerType var67 = class25.method182(var23);
                   if(var67 != null) {
-                     VarpSettingsStore.settings[var23] = 0;
-                     VarpSettingsStore.widgetSettings[var23] = 0;
+                     class222.settings[var23] = 0;
+                     class222.widgetSettings[var23] = 0;
                   }
                }
 
@@ -5804,9 +5804,9 @@ public final class Client extends GameEngine {
             if(ServerPacket.field2271 == var1.serverPacket) {
                byte var80 = var3.method3347();
                var24 = var3.readUnsignedShort();
-               VarpSettingsStore.settings[var24] = var80;
-               if(VarpSettingsStore.widgetSettings[var24] != var80) {
-                  VarpSettingsStore.widgetSettings[var24] = var80;
+               class222.settings[var24] = var80;
+               if(class222.widgetSettings[var24] != var80) {
+                  class222.widgetSettings[var24] = var80;
                }
 
                class150.method2933(var24);
@@ -6068,9 +6068,9 @@ public final class Client extends GameEngine {
             if(ServerPacket.field2234 == var1.serverPacket) {
                var23 = var3.method3457();
                var24 = var3.method3297();
-               VarpSettingsStore.settings[var24] = var23;
-               if(VarpSettingsStore.widgetSettings[var24] != var23) {
-                  VarpSettingsStore.widgetSettings[var24] = var23;
+               class222.settings[var24] = var23;
+               if(class222.widgetSettings[var24] != var23) {
+                  class222.widgetSettings[var24] = var23;
                }
 
                class150.method2933(var24);
@@ -6192,9 +6192,9 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2308 == var1.serverPacket) {
-               for(var23 = 0; var23 < VarpSettingsStore.widgetSettings.length; ++var23) {
-                  if(VarpSettingsStore.widgetSettings[var23] != VarpSettingsStore.settings[var23]) {
-                     VarpSettingsStore.widgetSettings[var23] = VarpSettingsStore.settings[var23];
+               for(var23 = 0; var23 < class222.widgetSettings.length; ++var23) {
+                  if(class222.widgetSettings[var23] != class222.settings[var23]) {
+                     class222.widgetSettings[var23] = class222.settings[var23];
                      class150.method2933(var23);
                      field988[++field1015 - 1 & 31] = var23;
                   }

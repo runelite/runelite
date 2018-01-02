@@ -75,8 +75,8 @@ public class class36 {
       int var3 = var1.configId;
       int var4 = var1.leastSignificantBit;
       int var5 = var1.mostSignificantBit;
-      int var6 = VarpSettingsStore.varpsMasks[var5 - var4];
-      return VarpSettingsStore.widgetSettings[var3] >> var4 & var6;
+      int var6 = class222.varpsMasks[var5 - var4];
+      return class222.widgetSettings[var3] >> var4 & var6;
    }
 
    @ObfuscatedName("w")
