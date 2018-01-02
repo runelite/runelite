@@ -188,7 +188,7 @@ public class WorldMapType3 implements WorldMapSectionBase {
    )
    public static void method208() {
       if(class249.NetCache_socket != null) {
-         class249.NetCache_socket.vmethod3081();
+         class249.NetCache_socket.close();
       }
 
    }

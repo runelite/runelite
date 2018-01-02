@@ -43,7 +43,7 @@ public class SocketSession2 extends AbstractSocket {
       signature = "(II)Z",
       garbageValue = "1430377833"
    )
-   public boolean vmethod3108(int var1) throws IOException {
+   public boolean available(int var1) throws IOException {
       return this.field2157.method2955(var1);
    }
 
@@ -52,7 +52,7 @@ public class SocketSession2 extends AbstractSocket {
       signature = "(B)I",
       garbageValue = "0"
    )
-   public int vmethod3083() throws IOException {
+   public int readable() throws IOException {
       return this.field2157.method2965();
    }
 
@@ -61,7 +61,7 @@ public class SocketSession2 extends AbstractSocket {
       signature = "(I)I",
       garbageValue = "-1221609909"
    )
-   public int vmethod3091() throws IOException {
+   public int read() throws IOException {
       return this.field2157.method2949();
    }
 
@@ -88,7 +88,7 @@ public class SocketSession2 extends AbstractSocket {
       signature = "(B)V",
       garbageValue = "-124"
    )
-   public void vmethod3081() {
+   public void close() {
       this.field2155.method3125();
 
       try {
@@ -101,7 +101,7 @@ public class SocketSession2 extends AbstractSocket {
    }
 
    protected void finalize() {
-      this.vmethod3081();
+      this.close();
    }
 
    @ObfuscatedName("a")

@@ -167,7 +167,7 @@ public class NetWriter {
    @Export("close")
    void close() {
       if(this.rssocket != null) {
-         this.rssocket.vmethod3081();
+         this.rssocket.close();
          this.rssocket = null;
       }
 

@@ -149,7 +149,7 @@ public class Friend {
          }
 
          if(var0 != 20 && var0 != 40 && MouseInput.field685 != null) {
-            MouseInput.field685.vmethod3081();
+            MouseInput.field685.close();
             MouseInput.field685 = null;
          }
 

@@ -2782,8 +2782,8 @@ public final class Client extends GameEngine {
                }
 
                if(js5State == 3) {
-                  if(class3.rssocket.vmethod3083() > 0 || !field891 && gameState <= 5) {
-                     int var5 = class3.rssocket.vmethod3091();
+                  if(class3.rssocket.readable() > 0 || !field891 && gameState <= 5) {
+                     int var5 = class3.rssocket.read();
                      if(var5 != 0) {
                         this.error(var5);
                         return;
@@ -2801,7 +2801,7 @@ public final class Client extends GameEngine {
                   boolean var2 = gameState > 20;
                   if(class249.NetCache_socket != null) {
                      try {
-                        class249.NetCache_socket.vmethod3081();
+                        class249.NetCache_socket.close();
                      } catch (Exception var8) {
                         ;
                      }
@@ -2831,7 +2831,7 @@ public final class Client extends GameEngine {
                                     class249.NetCache_socket.vmethod3082(var11.payload, 0, 4);
                                  } catch (IOException var7) {
                                     try {
-                                       class249.NetCache_socket.vmethod3081();
+                                       class249.NetCache_socket.close();
                                     } catch (Exception var6) {
                                        ;
                                     }
@@ -2920,7 +2920,7 @@ public final class Client extends GameEngine {
       try {
          if(loginState == 0) {
             if(var1 != null) {
-               ((AbstractSocket)var1).vmethod3081();
+               ((AbstractSocket)var1).close();
                var1 = null;
             }
 
@@ -2977,12 +2977,12 @@ public final class Client extends GameEngine {
             }
 
             var14 = true;
-            if(field891 && !((AbstractSocket)var1).vmethod3108(1)) {
+            if(field891 && !((AbstractSocket)var1).available(1)) {
                var14 = false;
             }
 
             if(var14) {
-               var15 = ((AbstractSocket)var1).vmethod3091();
+               var15 = ((AbstractSocket)var1).read();
                if(class36.soundSystem0 != null) {
                   class36.soundSystem0.method2004();
                }
@@ -3004,7 +3004,7 @@ public final class Client extends GameEngine {
          int var35;
          if(loginState == 4) {
             if(var2.offset < 8) {
-               var35 = ((AbstractSocket)var1).vmethod3083();
+               var35 = ((AbstractSocket)var1).readable();
                if(var35 > 8 - var2.offset) {
                   var35 = 8 - var2.offset;
                }
@@ -3148,8 +3148,8 @@ public final class Client extends GameEngine {
             loginState = 6;
          }
 
-         if(loginState == 6 && ((AbstractSocket)var1).vmethod3083() > 0) {
-            var35 = ((AbstractSocket)var1).vmethod3091();
+         if(loginState == 6 && ((AbstractSocket)var1).readable() > 0) {
+            var35 = ((AbstractSocket)var1).read();
             if(var35 == 21 && gameState == 20) {
                loginState = 7;
             } else if(var35 == 2) {
@@ -3170,8 +3170,8 @@ public final class Client extends GameEngine {
             }
          }
 
-         if(loginState == 7 && ((AbstractSocket)var1).vmethod3083() > 0) {
-            field879 = (((AbstractSocket)var1).vmethod3091() + 3) * 60;
+         if(loginState == 7 && ((AbstractSocket)var1).readable() > 0) {
+            field879 = (((AbstractSocket)var1).read() + 3) * 60;
             loginState = 8;
          }
 
@@ -3183,8 +3183,8 @@ public final class Client extends GameEngine {
             }
 
          } else {
-            if(loginState == 9 && ((AbstractSocket)var1).vmethod3083() >= 13) {
-               var14 = ((AbstractSocket)var1).vmethod3091() == 1;
+            if(loginState == 9 && ((AbstractSocket)var1).readable() >= 13) {
+               var14 = ((AbstractSocket)var1).read() == 1;
                ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 4);
                var2.offset = 0;
                boolean var36 = false;
@@ -3222,12 +3222,12 @@ public final class Client extends GameEngine {
                }
 
                WorldComparator.method63();
-               rights = ((AbstractSocket)var1).vmethod3091();
-               field871 = ((AbstractSocket)var1).vmethod3091() == 1;
-               localInteractingIndex = ((AbstractSocket)var1).vmethod3091();
+               rights = ((AbstractSocket)var1).read();
+               field871 = ((AbstractSocket)var1).read() == 1;
+               localInteractingIndex = ((AbstractSocket)var1).read();
                localInteractingIndex <<= 8;
-               localInteractingIndex += ((AbstractSocket)var1).vmethod3091();
-               field918 = ((AbstractSocket)var1).vmethod3091();
+               localInteractingIndex += ((AbstractSocket)var1).read();
+               field918 = ((AbstractSocket)var1).read();
                ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 1);
                var2.offset = 0;
                ServerPacket[] var5 = new ServerPacket[]{ServerPacket.field2255, ServerPacket.field2229, ServerPacket.field2230, ServerPacket.field2231, ServerPacket.field2263, ServerPacket.field2233, ServerPacket.field2300, ServerPacket.field2235, ServerPacket.field2241, ServerPacket.field2237, ServerPacket.field2238, ServerPacket.field2239, ServerPacket.field2240, ServerPacket.field2302, ServerPacket.field2242, ServerPacket.field2257, ServerPacket.field2244, ServerPacket.field2245, ServerPacket.field2249, ServerPacket.field2247, ServerPacket.field2248, ServerPacket.field2296, ServerPacket.field2250, ServerPacket.field2251, ServerPacket.field2252, ServerPacket.field2253, ServerPacket.field2299, ServerPacket.field2258, ServerPacket.field2256, ServerPacket.field2228, ServerPacket.field2282, ServerPacket.field2259, ServerPacket.field2301, ServerPacket.field2261, ServerPacket.field2254, ServerPacket.field2236, ServerPacket.field2264, ServerPacket.field2265, ServerPacket.field2266, ServerPacket.field2306, ServerPacket.field2246, ServerPacket.field2269, ServerPacket.field2232, ServerPacket.field2271, ServerPacket.field2272, ServerPacket.field2273, ServerPacket.field2274, ServerPacket.field2275, ServerPacket.field2268, ServerPacket.field2277, ServerPacket.field2262, ServerPacket.field2279, ServerPacket.field2280, ServerPacket.field2281, ServerPacket.field2289, ServerPacket.field2283, ServerPacket.field2284, ServerPacket.field2285, ServerPacket.field2286, ServerPacket.field2287, ServerPacket.field2234, ServerPacket.field2295, ServerPacket.field2290, ServerPacket.field2291, ServerPacket.field2292, ServerPacket.field2243, ServerPacket.field2278, ServerPacket.field2288, ServerPacket.field2267, ServerPacket.field2297, ServerPacket.field2298, ServerPacket.field2276, ServerPacket.field2270, ServerPacket.field2304, ServerPacket.field2309, ServerPacket.field2303, ServerPacket.field2293, ServerPacket.field2305, ServerPacket.field2260, ServerPacket.field2294, ServerPacket.field2308};
@@ -3252,7 +3252,7 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(((AbstractSocket)var1).vmethod3083() >= field888.packetLength) {
+               if(((AbstractSocket)var1).readable() >= field888.packetLength) {
                   var2.offset = 0;
                   ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
                   field892.method5032();
@@ -3368,7 +3368,7 @@ public final class Client extends GameEngine {
                }
 
             } else {
-               if(loginState == 11 && ((AbstractSocket)var1).vmethod3083() >= 2) {
+               if(loginState == 11 && ((AbstractSocket)var1).readable() >= 2) {
                   var2.offset = 0;
                   ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                   var2.offset = 0;
@@ -3376,7 +3376,7 @@ public final class Client extends GameEngine {
                   loginState = 12;
                }
 
-               if(loginState == 12 && ((AbstractSocket)var1).vmethod3083() >= class167.field2222) {
+               if(loginState == 12 && ((AbstractSocket)var1).readable() >= class167.field2222) {
                   var2.offset = 0;
                   ((AbstractSocket)var1).vmethod3085(var2.payload, 0, class167.field2222);
                   var2.offset = 0;
@@ -3405,7 +3405,7 @@ public final class Client extends GameEngine {
                   }
                } else {
                   if(field888.packetLength == -1) {
-                     if(((AbstractSocket)var1).vmethod3083() < 2) {
+                     if(((AbstractSocket)var1).readable() < 2) {
                         return;
                      }
 
@@ -3414,7 +3414,7 @@ public final class Client extends GameEngine {
                      field888.packetLength = var2.readUnsignedShort();
                   }
 
-                  if(((AbstractSocket)var1).vmethod3083() >= field888.packetLength) {
+                  if(((AbstractSocket)var1).readable() >= field888.packetLength) {
                      ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
                      var2.offset = 0;
                      var35 = field888.packetLength;
@@ -4368,7 +4368,7 @@ public final class Client extends GameEngine {
          try {
             if(var1.serverPacket == null) {
                if(var1.field1446) {
-                  if(!var2.vmethod3108(1)) {
+                  if(!var2.available(1)) {
                      return false;
                   }
 
@@ -4379,7 +4379,7 @@ public final class Client extends GameEngine {
 
                var3.offset = 0;
                if(var3.method3567()) {
-                  if(!var2.vmethod3108(1)) {
+                  if(!var2.available(1)) {
                      return false;
                   }
 
@@ -4399,7 +4399,7 @@ public final class Client extends GameEngine {
             }
 
             if(var1.packetLength == -1) {
-               if(!var2.vmethod3108(1)) {
+               if(!var2.available(1)) {
                   return false;
                }
 
@@ -4408,7 +4408,7 @@ public final class Client extends GameEngine {
             }
 
             if(var1.packetLength == -2) {
-               if(!var2.vmethod3108(2)) {
+               if(!var2.available(2)) {
                   return false;
                }
 
@@ -4417,7 +4417,7 @@ public final class Client extends GameEngine {
                var1.packetLength = var3.readUnsignedShort();
             }
 
-            if(!var2.vmethod3108(var1.packetLength)) {
+            if(!var2.available(var1.packetLength)) {
                return false;
             }
 
@@ -5360,7 +5360,7 @@ public final class Client extends GameEngine {
                var24 = var3.readInt();
                var60.mask = var24;
                Friend.setGameState(45);
-               var2.vmethod3081();
+               var2.close();
                var2 = null;
                Size.method176(var60);
                var1.serverPacket = null;

@@ -1,9 +1,6 @@
+import net.runelite.mapping.*;
+
 import java.io.IOException;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ia")
 @Implements("JagexGame")
@@ -117,7 +114,7 @@ public enum JagexGame implements Enumerated {
                }
 
                for(int var15 = 0; var15 < 100; ++var15) {
-                  int var16 = class249.NetCache_socket.vmethod3083();
+                  int var16 = class249.NetCache_socket.readable();
                   if(var16 < 0) {
                      throw new IOException();
                   }
@@ -228,7 +225,7 @@ public enum JagexGame implements Enumerated {
                            var8 = (int)class249.NetCache_crc.getValue();
                            if(var8 != class61.currentRequest.crc) {
                               try {
-                                 class249.NetCache_socket.vmethod3081();
+                                 class249.NetCache_socket.close();
                               } catch (Exception var20) {
                                  ;
                               }
@@ -268,7 +265,7 @@ public enum JagexGame implements Enumerated {
             }
          } catch (IOException var21) {
             try {
-               class249.NetCache_socket.vmethod3081();
+               class249.NetCache_socket.close();
             } catch (Exception var19) {
                ;
             }

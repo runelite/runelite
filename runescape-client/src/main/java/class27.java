@@ -95,7 +95,7 @@ public enum class27 implements Enumerated {
             class249.NetCache_socket.vmethod3082(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
-               class249.NetCache_socket.vmethod3081();
+               class249.NetCache_socket.close();
             } catch (Exception var3) {
                ;
             }

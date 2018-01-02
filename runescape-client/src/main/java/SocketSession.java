@@ -77,7 +77,7 @@ public final class SocketSession extends AbstractSocket implements Runnable {
       signature = "(II)Z",
       garbageValue = "1430377833"
    )
-   public boolean vmethod3108(int var1) throws IOException {
+   public boolean available(int var1) throws IOException {
       if(this.field2163) {
          return false;
       } else {
@@ -94,7 +94,7 @@ public final class SocketSession extends AbstractSocket implements Runnable {
       signature = "(B)I",
       garbageValue = "0"
    )
-   public int vmethod3083() throws IOException {
+   public int readable() throws IOException {
       return this.field2163?0:this.field2165.available();
    }
 
@@ -103,7 +103,7 @@ public final class SocketSession extends AbstractSocket implements Runnable {
       signature = "(I)I",
       garbageValue = "-1221609909"
    )
-   public int vmethod3091() throws IOException {
+   public int read() throws IOException {
       return this.field2163?0:this.field2165.read();
    }
 
@@ -145,7 +145,7 @@ public final class SocketSession extends AbstractSocket implements Runnable {
       signature = "(B)V",
       garbageValue = "-124"
    )
-   public void vmethod3081() {
+   public void close() {
       if(!this.field2163) {
          synchronized(this) {
             this.field2163 = true;
@@ -205,7 +205,7 @@ public final class SocketSession extends AbstractSocket implements Runnable {
    }
 
    protected void finalize() {
-      this.vmethod3081();
+      this.close();
    }
 
    public void run() {
