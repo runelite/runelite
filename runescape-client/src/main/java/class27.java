@@ -708,7 +708,7 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2382, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2382, Client.signlink.field1449);
          var8.packetBuffer.method3306(GEItemNameComparator.field304);
          var8.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.writeShortLE(var3 >> 14 & 32767);
@@ -716,7 +716,7 @@ public enum class27 implements Enumerated {
          var8.packetBuffer.writeShortLE(class36.selectedItemIndex);
          var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.writeShortLE(SceneChunkMetadata.field557);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else if(var2 == 2) {
          Client.field1003 = var6;
          Client.field936 = var7;
@@ -724,14 +724,14 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2374, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2374, Client.signlink.field1449);
          var8.packetBuffer.writeIntLE(JagexGame.field3297);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
          var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
          var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.writeIntLE16(Client.field984);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else if(var2 == 3) {
          Client.field1003 = var6;
          Client.field936 = var7;
@@ -739,12 +739,12 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2338, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2338, Client.signlink.field1449);
          var8.packetBuffer.writeShortLE(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.writeShortLE(Client.baseY + var1);
          var8.packetBuffer.putShortLE(var3 >> 14 & 32767);
          var8.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else if(var2 == 4) {
          Client.field1003 = var6;
          Client.field936 = var7;
@@ -752,12 +752,12 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2368, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2368, Client.signlink.field1449);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else if(var2 == 5) {
          Client.field1003 = var6;
          Client.field936 = var7;
@@ -765,12 +765,12 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2399, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2399, Client.signlink.field1449);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else if(var2 == 6) {
          Client.field1003 = var6;
          Client.field936 = var7;
@@ -778,12 +778,12 @@ public enum class27 implements Enumerated {
          Client.field1092 = 0;
          Client.destinationX = var0;
          Client.destinationY = var1;
-         var8 = FileSystem.bufferForSize(ClientPacket.field2392, Client.field888.field1449);
+         var8 = FileSystem.bufferForSize(ClientPacket.field2392, Client.signlink.field1449);
          var8.packetBuffer.writeIntLE16(Client.baseY + var1);
          var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
          var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
          var8.packetBuffer.writeShortLE(var0 + SceneChunkMetadata.baseX);
-         Client.field888.method1862(var8);
+         Client.signlink.method1862(var8);
       } else {
          PacketNode var17;
          NPC var21;
@@ -796,13 +796,13 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2348, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2348, Client.signlink.field1449);
                var17.packetBuffer.putShortLE(SceneChunkMetadata.field557);
                var17.packetBuffer.writeIntLE16(var3);
                var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                var17.packetBuffer.putShortLE(class36.selectedItemIndex);
                var17.packetBuffer.putInt(GEItemNameComparator.field304);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 8) {
             var21 = Client.cachedNPCs[var3];
@@ -813,12 +813,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2347, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2347, Client.signlink.field1449);
                var17.packetBuffer.putShortLE(Client.field984);
                var17.packetBuffer.putShort(var3);
                var17.packetBuffer.method3311(JagexGame.field3297);
                var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 9) {
             var21 = Client.cachedNPCs[var3];
@@ -829,10 +829,10 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2386, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2386, Client.signlink.field1449);
                var17.packetBuffer.putShortLE(var3);
                var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 10) {
             var21 = Client.cachedNPCs[var3];
@@ -843,10 +843,10 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2344, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2344, Client.signlink.field1449);
                var17.packetBuffer.putShortLE(var3);
                var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 11) {
             var21 = Client.cachedNPCs[var3];
@@ -857,10 +857,10 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2360, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2360, Client.signlink.field1449);
                var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var17.packetBuffer.writeIntLE16(var3);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 12) {
             var21 = Client.cachedNPCs[var3];
@@ -871,10 +871,10 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2395, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2395, Client.signlink.field1449);
                var17.packetBuffer.writeIntLE16(var3);
                var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else if(var2 == 13) {
             var21 = Client.cachedNPCs[var3];
@@ -885,10 +885,10 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var17 = FileSystem.bufferForSize(ClientPacket.field2381, Client.field888.field1449);
+               var17 = FileSystem.bufferForSize(ClientPacket.field2381, Client.signlink.field1449);
                var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                var17.packetBuffer.writeIntLE16(var3);
-               Client.field888.method1862(var17);
+               Client.signlink.method1862(var17);
             }
          } else {
             Player var24;
@@ -901,13 +901,13 @@ public enum class27 implements Enumerated {
                   Client.field1092 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var17 = FileSystem.bufferForSize(ClientPacket.field2323, Client.field888.field1449);
+                  var17 = FileSystem.bufferForSize(ClientPacket.field2323, Client.signlink.field1449);
                   var17.packetBuffer.putInt(GEItemNameComparator.field304);
                   var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                   var17.packetBuffer.putShort(SceneChunkMetadata.field557);
                   var17.packetBuffer.putShort(var3);
                   var17.packetBuffer.putShort(class36.selectedItemIndex);
-                  Client.field888.method1862(var17);
+                  Client.signlink.method1862(var17);
                }
             } else if(var2 == 15) {
                var24 = Client.cachedPlayers[var3];
@@ -918,12 +918,12 @@ public enum class27 implements Enumerated {
                   Client.field1092 = 0;
                   Client.destinationX = var0;
                   Client.destinationY = var1;
-                  var17 = FileSystem.bufferForSize(ClientPacket.field2311, Client.field888.field1449);
+                  var17 = FileSystem.bufferForSize(ClientPacket.field2311, Client.signlink.field1449);
                   var17.packetBuffer.method3311(JagexGame.field3297);
                   var17.packetBuffer.writeShortLE(var3);
                   var17.packetBuffer.putShort(Client.field984);
                   var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
-                  Client.field888.method1862(var17);
+                  Client.signlink.method1862(var17);
                }
             } else if(var2 == 16) {
                Client.field1003 = var6;
@@ -932,7 +932,7 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2383, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2383, Client.signlink.field1449);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.method3306(GEItemNameComparator.field304);
                var8.packetBuffer.putShort(SceneChunkMetadata.field557);
@@ -940,7 +940,7 @@ public enum class27 implements Enumerated {
                var8.packetBuffer.putShort(var3);
                var8.packetBuffer.putShortLE(Client.baseY + var1);
                var8.packetBuffer.putShortLE(class36.selectedItemIndex);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 17) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -948,14 +948,14 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2377, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2377, Client.signlink.field1449);
                var8.packetBuffer.writeIntLE(JagexGame.field3297);
                var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.writeIntLE16(Client.field984);
                var8.packetBuffer.writeIntLE16(var3);
                var8.packetBuffer.writeIntLE16(Client.baseY + var1);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 18) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -963,12 +963,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2322, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2322, Client.signlink.field1449);
                var8.packetBuffer.putShortLE(Client.baseY + var1);
                var8.packetBuffer.putShortLE(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.putShortLE(var3);
                var8.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 19) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -976,12 +976,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2370, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2370, Client.signlink.field1449);
                var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.writeShortLE(Client.baseY + var1);
                var8.packetBuffer.putShort(var3);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 20) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -989,12 +989,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2405, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2405, Client.signlink.field1449);
                var8.packetBuffer.writeIntLE16(Client.baseY + var1);
                var8.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.writeShortLE(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.writeIntLE16(var3);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 21) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -1002,12 +1002,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2353, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2353, Client.signlink.field1449);
                var8.packetBuffer.writeShortLE(Client.baseY + var1);
                var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.putShortLE(var3);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 22) {
                Client.field1003 = var6;
                Client.field936 = var7;
@@ -1015,12 +1015,12 @@ public enum class27 implements Enumerated {
                Client.field1092 = 0;
                Client.destinationX = var0;
                Client.destinationY = var1;
-               var8 = FileSystem.bufferForSize(ClientPacket.field2403, Client.field888.field1449);
+               var8 = FileSystem.bufferForSize(ClientPacket.field2403, Client.signlink.field1449);
                var8.packetBuffer.putShort(var0 + SceneChunkMetadata.baseX);
                var8.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                var8.packetBuffer.writeShortLE(var3);
                var8.packetBuffer.putShort(Client.baseY + var1);
-               Client.field888.method1862(var8);
+               Client.signlink.method1862(var8);
             } else if(var2 == 23) {
                if(Client.isMenuOpen) {
                   class48.region.method2728();
@@ -1038,9 +1038,9 @@ public enum class27 implements Enumerated {
                   }
 
                   if(var9) {
-                     var10 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
+                     var10 = FileSystem.bufferForSize(ClientPacket.field2336, Client.signlink.field1449);
                      var10.packetBuffer.putInt(var1);
-                     Client.field888.method1862(var10);
+                     Client.signlink.method1862(var10);
                   }
                } else {
                   int var14;
@@ -1084,9 +1084,9 @@ public enum class27 implements Enumerated {
                      int var18;
                      Widget var28;
                      if(var2 == 28) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.signlink.field1449);
                         var8.packetBuffer.putInt(var1);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
@@ -1094,9 +1094,9 @@ public enum class27 implements Enumerated {
                            class150.method2933(var18);
                         }
                      } else if(var2 == 29) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2336, Client.signlink.field1449);
                         var8.packetBuffer.putInt(var1);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         var28 = VertexNormal.getWidget(var1);
                         if(var28.dynamicValues != null && var28.dynamicValues[0][0] == 5) {
                            var18 = var28.dynamicValues[0][1];
@@ -1107,78 +1107,78 @@ public enum class27 implements Enumerated {
                         }
                      } else if(var2 == 30) {
                         if(Client.field958 == null) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2324, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2324, Client.signlink.field1449);
                            var8.packetBuffer.writeIntLE(var1);
                            var8.packetBuffer.writeShortLE(var0);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.field958 = TextureProvider.getWidgetChild(var1, var0);
                            class33.method344(Client.field958);
                         }
                      } else if(var2 == 31) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2320, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2320, Client.signlink.field1449);
                         var8.packetBuffer.putShortLE(var0);
                         var8.packetBuffer.writeShortLE(SceneChunkMetadata.field557);
                         var8.packetBuffer.putInt(var1);
                         var8.packetBuffer.putInt(GEItemNameComparator.field304);
                         var8.packetBuffer.writeIntLE16(var3);
                         var8.packetBuffer.putShort(class36.selectedItemIndex);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 32) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2314, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2314, Client.signlink.field1449);
                         var8.packetBuffer.putShort(Client.field984);
                         var8.packetBuffer.method3306(var1);
                         var8.packetBuffer.putShort(var3);
                         var8.packetBuffer.putShortLE(var0);
                         var8.packetBuffer.method3306(JagexGame.field3297);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 33) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2313, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2313, Client.signlink.field1449);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShortLE(var3);
                         var8.packetBuffer.writeIntLE16(var0);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 34) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2318, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2318, Client.signlink.field1449);
                         var8.packetBuffer.writeShortLE(var3);
                         var8.packetBuffer.putShortLE(var0);
                         var8.packetBuffer.putInt(var1);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 35) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2330, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2330, Client.signlink.field1449);
                         var8.packetBuffer.putShortLE(var3);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShort(var0);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 36) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2389, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2389, Client.signlink.field1449);
                         var8.packetBuffer.writeShortLE(var3);
                         var8.packetBuffer.method3306(var1);
                         var8.packetBuffer.putShortLE(var0);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
                      } else if(var2 == 37) {
-                        var8 = FileSystem.bufferForSize(ClientPacket.field2340, Client.field888.field1449);
+                        var8 = FileSystem.bufferForSize(ClientPacket.field2340, Client.signlink.field1449);
                         var8.packetBuffer.putShort(var0);
                         var8.packetBuffer.method3311(var1);
                         var8.packetBuffer.putShort(var3);
-                        Client.field888.method1862(var8);
+                        Client.signlink.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
                         Client.field940 = var0;
@@ -1200,47 +1200,47 @@ public enum class27 implements Enumerated {
                         }
 
                         if(var2 == 39) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2350, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2350, Client.signlink.field1449);
                            var8.packetBuffer.method3306(var1);
                            var8.packetBuffer.writeShortLE(var0);
                            var8.packetBuffer.putShortLE(var3);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 40) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2362, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2362, Client.signlink.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
                            var8.packetBuffer.method3311(var1);
                            var8.packetBuffer.putShortLE(var3);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 41) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2326, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2326, Client.signlink.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
                            var8.packetBuffer.putShort(var3);
                            var8.packetBuffer.method3311(var1);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 42) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2384, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2384, Client.signlink.field1449);
                            var8.packetBuffer.putShort(var3);
                            var8.packetBuffer.putInt(var1);
                            var8.packetBuffer.putShortLE(var0);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
                         } else if(var2 == 43) {
-                           var8 = FileSystem.bufferForSize(ClientPacket.field2346, Client.field888.field1449);
+                           var8 = FileSystem.bufferForSize(ClientPacket.field2346, Client.signlink.field1449);
                            var8.packetBuffer.putInt(var1);
                            var8.packetBuffer.writeShortLE(var3);
                            var8.packetBuffer.writeShortLE(var0);
-                           Client.field888.method1862(var8);
+                           Client.signlink.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
                            Client.field940 = var0;
@@ -1253,10 +1253,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2315, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2315, Client.signlink.field1449);
                               var17.packetBuffer.putByte(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 45) {
                            var24 = Client.cachedPlayers[var3];
@@ -1267,10 +1267,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2329, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2329, Client.signlink.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 46) {
                            var24 = Client.cachedPlayers[var3];
@@ -1281,10 +1281,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2335, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2335, Client.signlink.field1449);
                               var17.packetBuffer.putShortLE(var3);
                               var17.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 47) {
                            var24 = Client.cachedPlayers[var3];
@@ -1295,10 +1295,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2359, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2359, Client.signlink.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 48) {
                            var24 = Client.cachedPlayers[var3];
@@ -1309,10 +1309,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2337, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2337, Client.signlink.field1449);
                               var17.packetBuffer.putShortLE(var3);
                               var17.packetBuffer.method3286(KeyFocusListener.field593[82]?1:0);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 49) {
                            var24 = Client.cachedPlayers[var3];
@@ -1323,10 +1323,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2361, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2361, Client.signlink.field1449);
                               var17.packetBuffer.writeIntLE16(var3);
                               var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 50) {
                            var24 = Client.cachedPlayers[var3];
@@ -1337,10 +1337,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2391, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2391, Client.signlink.field1449);
                               var17.packetBuffer.method3287(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.putShortLE(var3);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else if(var2 == 51) {
                            var24 = Client.cachedPlayers[var3];
@@ -1351,10 +1351,10 @@ public enum class27 implements Enumerated {
                               Client.field1092 = 0;
                               Client.destinationX = var0;
                               Client.destinationY = var1;
-                              var17 = FileSystem.bufferForSize(ClientPacket.field2393, Client.field888.field1449);
+                              var17 = FileSystem.bufferForSize(ClientPacket.field2393, Client.signlink.field1449);
                               var17.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                               var17.packetBuffer.writeShortLE(var3);
-                              Client.field888.method1862(var17);
+                              Client.signlink.method1862(var17);
                            }
                         } else {
                            label1046: {
@@ -1362,14 +1362,14 @@ public enum class27 implements Enumerated {
                                  if(var2 == 58) {
                                     var26 = TextureProvider.getWidgetChild(var1, var0);
                                     if(var26 != null) {
-                                       var17 = FileSystem.bufferForSize(ClientPacket.field2388, Client.field888.field1449);
+                                       var17 = FileSystem.bufferForSize(ClientPacket.field2388, Client.signlink.field1449);
                                        var17.packetBuffer.putInt(var1);
                                        var17.packetBuffer.writeShortLE(Client.field985);
                                        var17.packetBuffer.putShortLE(var26.itemId);
                                        var17.packetBuffer.writeShortLE(Client.field984);
                                        var17.packetBuffer.method3311(JagexGame.field3297);
                                        var17.packetBuffer.writeIntLE16(var0);
-                                       Client.field888.method1862(var17);
+                                       Client.signlink.method1862(var17);
                                     }
                                     break label1046;
                                  }
@@ -1381,12 +1381,12 @@ public enum class27 implements Enumerated {
                                     Client.field1092 = 0;
                                     Client.destinationX = var0;
                                     Client.destinationY = var1;
-                                    var8 = FileSystem.bufferForSize(ClientPacket.field2351, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2351, Client.signlink.field1449);
                                     var8.packetBuffer.writeIntLE16(var3 >> 14 & 32767);
                                     var8.packetBuffer.writeIntLE16(var0 + SceneChunkMetadata.baseX);
                                     var8.packetBuffer.method3285(KeyFocusListener.field593[82]?1:0);
                                     var8.packetBuffer.putShort(Client.baseY + var1);
-                                    Client.field888.method1862(var8);
+                                    Client.signlink.method1862(var8);
                                     break label1046;
                                  }
 
@@ -1395,9 +1395,9 @@ public enum class27 implements Enumerated {
                                     Client.field936 = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
-                                    var8 = FileSystem.bufferForSize(ClientPacket.field2390, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2390, Client.signlink.field1449);
                                     var8.packetBuffer.putShort(var3 >> 14 & 32767);
-                                    Client.field888.method1862(var8);
+                                    Client.signlink.method1862(var8);
                                     break label1046;
                                  }
 
@@ -1414,9 +1414,9 @@ public enum class27 implements Enumerated {
                                        }
 
                                        if(var29 != null) {
-                                          var10 = FileSystem.bufferForSize(ClientPacket.field2343, Client.field888.field1449);
+                                          var10 = FileSystem.bufferForSize(ClientPacket.field2343, Client.signlink.field1449);
                                           var10.packetBuffer.putShort(var29.id);
-                                          Client.field888.method1862(var10);
+                                          Client.signlink.method1862(var10);
                                        }
                                     }
                                     break label1046;
@@ -1427,9 +1427,9 @@ public enum class27 implements Enumerated {
                                     Client.field936 = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
-                                    var8 = FileSystem.bufferForSize(ClientPacket.field2402, Client.field888.field1449);
+                                    var8 = FileSystem.bufferForSize(ClientPacket.field2402, Client.signlink.field1449);
                                     var8.packetBuffer.writeIntLE16(var3);
-                                    Client.field888.method1862(var8);
+                                    Client.signlink.method1862(var8);
                                     break label1046;
                                  }
 
@@ -1438,9 +1438,9 @@ public enum class27 implements Enumerated {
                                     if(var26 != null && var26.itemQuantities[var0] >= 100000) {
                                        class25.sendGameMessage(27, "", var26.itemQuantities[var0] + " x " + KitDefinition.getItemDefinition(var3).name);
                                     } else {
-                                       var17 = FileSystem.bufferForSize(ClientPacket.field2402, Client.field888.field1449);
+                                       var17 = FileSystem.bufferForSize(ClientPacket.field2402, Client.signlink.field1449);
                                        var17.packetBuffer.writeIntLE16(var3);
-                                       Client.field888.method1862(var17);
+                                       Client.signlink.method1862(var17);
                                     }
 
                                     Client.mouseCrosshair = 0;
@@ -1483,83 +1483,83 @@ public enum class27 implements Enumerated {
                                        if(var12) {
                                           PacketNode var20;
                                           if(var3 == 1) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2367, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2367, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 2) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2325, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2325, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 3) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2404, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2404, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 4) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2406, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2406, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 5) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2331, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2331, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 6) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2400, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2400, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 7) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2371, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2371, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 8) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2379, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2379, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 9) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2327, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2327, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
 
                                           if(var3 == 10) {
-                                             var20 = FileSystem.bufferForSize(ClientPacket.field2319, Client.field888.field1449);
+                                             var20 = FileSystem.bufferForSize(ClientPacket.field2319, Client.signlink.field1449);
                                              var20.packetBuffer.putInt(var1);
                                              var20.packetBuffer.putShort(var0);
                                              var20.packetBuffer.putShort(var22);
-                                             Client.field888.method1862(var20);
+                                             Client.signlink.method1862(var20);
                                           }
                                        }
                                     }

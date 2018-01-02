@@ -182,8 +182,9 @@ public class Friend {
       signature = "(Lfa;I)V",
       garbageValue = "1500368903"
    )
-   static final void method1035(class173 var0) {
-      PacketBuffer var1 = Client.field888.packetBuffer;
+   @Export("otherPackets")
+   static final void otherPackets(class173 var0) {
+      PacketBuffer var1 = Client.signlink.packetBuffer;
       int var2;
       int var3;
       int var4;

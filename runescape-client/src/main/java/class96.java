@@ -164,7 +164,7 @@ public class class96 {
       garbageValue = "-78"
    )
    static final void method1831() {
-      Client.field888.close();
+      Client.signlink.close();
       class5.method16();
       class48.region.reset();
 

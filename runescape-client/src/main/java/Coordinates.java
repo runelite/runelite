@@ -1212,23 +1212,23 @@ public class Coordinates {
                            }
 
                            Client.field1087 = class82.intStack[class82.intStackSize + 2];
-                           PacketNode var4 = FileSystem.bufferForSize(ClientPacket.field2339, Client.field888.field1449);
+                           PacketNode var4 = FileSystem.bufferForSize(ClientPacket.field2339, Client.signlink.field1449);
                            var4.packetBuffer.putByte(Client.publicChatMode);
                            var4.packetBuffer.putByte(class64.field727.socialStateId);
                            var4.packetBuffer.putByte(Client.field1087);
-                           Client.field888.method1862(var4);
+                           Client.signlink.method1862(var4);
                            var3 = 1;
                         } else if(var0 == 5002) {
                            var38 = class82.scriptStringStack[--class35.scriptStringStackSize];
                            class82.intStackSize -= 2;
                            var18 = class82.intStack[class82.intStackSize];
                            var6 = class82.intStack[class82.intStackSize + 1];
-                           PacketNode var23 = FileSystem.bufferForSize(ClientPacket.field2372, Client.field888.field1449);
+                           PacketNode var23 = FileSystem.bufferForSize(ClientPacket.field2372, Client.signlink.field1449);
                            var23.packetBuffer.putByte(Ignore.getLength(var38) + 2);
                            var23.packetBuffer.putString(var38);
                            var23.packetBuffer.putByte(var18 - 1);
                            var23.packetBuffer.putByte(var6);
-                           Client.field888.method1862(var23);
+                           Client.signlink.method1862(var23);
                            var3 = 1;
                         } else if(var0 == 5003) {
                            class82.intStackSize -= 2;
@@ -1394,7 +1394,7 @@ public class Coordinates {
                               }
                            }
 
-                           PacketNode var22 = FileSystem.bufferForSize(ClientPacket.field2387, Client.field888.field1449);
+                           PacketNode var22 = FileSystem.bufferForSize(ClientPacket.field2387, Client.signlink.field1449);
                            var22.packetBuffer.putByte(0);
                            int var24 = var22.packetBuffer.offset;
                            var22.packetBuffer.putByte(var18);
@@ -1473,13 +1473,13 @@ public class Coordinates {
                            var25.putShortSmart(var27.length);
                            var25.offset += class276.huffman.compress(var27, 0, var27.length, var25.payload, var25.offset);
                            var22.packetBuffer.method3258(var22.packetBuffer.offset - var24);
-                           Client.field888.method1862(var22);
+                           Client.signlink.method1862(var22);
                            var3 = 1;
                         } else if(var0 == 5009) {
                            class35.scriptStringStackSize -= 2;
                            var38 = class82.scriptStringStack[class35.scriptStringStackSize];
                            var39 = class82.scriptStringStack[class35.scriptStringStackSize + 1];
-                           PacketNode var55 = FileSystem.bufferForSize(ClientPacket.field2373, Client.field888.field1449);
+                           PacketNode var55 = FileSystem.bufferForSize(ClientPacket.field2373, Client.signlink.field1449);
                            var55.packetBuffer.putShort(0);
                            var49 = var55.packetBuffer.offset;
                            var55.packetBuffer.putString(var38);
@@ -1556,7 +1556,7 @@ public class Coordinates {
                            var21.putShortSmart(var28.length);
                            var21.offset += class276.huffman.compress(var28, 0, var28.length, var21.payload, var21.offset);
                            var55.packetBuffer.method3257(var55.packetBuffer.offset - var49);
-                           Client.field888.method1862(var55);
+                           Client.signlink.method1862(var55);
                            var3 = 1;
                         } else if(var0 == 5015) {
                            if(UrlRequest.localPlayer != null && UrlRequest.localPlayer.name != null) {

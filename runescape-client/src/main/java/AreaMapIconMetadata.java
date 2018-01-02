@@ -286,10 +286,10 @@ public class AreaMapIconMetadata {
          } else if(var0 == 1121) {
             var10 = var3.id;
             int var6 = var3.index;
-            PacketNode var7 = FileSystem.bufferForSize(ClientPacket.field2324, Client.field888.field1449);
+            PacketNode var7 = FileSystem.bufferForSize(ClientPacket.field2324, Client.signlink.field1449);
             var7.packetBuffer.writeIntLE(var10);
             var7.packetBuffer.writeShortLE(var6);
-            Client.field888.method1862(var7);
+            Client.signlink.method1862(var7);
             Client.field958 = var3;
             class33.method344(var3);
             return 1;

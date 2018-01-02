@@ -174,7 +174,7 @@ public enum AttackOption implements Enumerated {
                int var10 = var8 * var5 - var7 * var4 >> 11;
                int var11 = var9 + UrlRequest.localPlayer.x >> 7;
                int var12 = UrlRequest.localPlayer.y - var10 >> 7;
-               PacketNode var13 = FileSystem.bufferForSize(ClientPacket.field2365, Client.field888.field1449);
+               PacketNode var13 = FileSystem.bufferForSize(ClientPacket.field2365, Client.signlink.field1449);
                var13.packetBuffer.putByte(18);
                var13.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
                var13.packetBuffer.writeIntLE16(var11 + SceneChunkMetadata.baseX);
@@ -189,7 +189,7 @@ public enum AttackOption implements Enumerated {
                var13.packetBuffer.putShort(UrlRequest.localPlayer.x);
                var13.packetBuffer.putShort(UrlRequest.localPlayer.y);
                var13.packetBuffer.putByte(63);
-               Client.field888.method1862(var13);
+               Client.signlink.method1862(var13);
                Client.destinationX = var11;
                Client.destinationY = var12;
             }

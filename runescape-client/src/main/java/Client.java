@@ -646,7 +646,8 @@ public final class Client extends GameEngine {
    @ObfuscatedSignature(
       signature = "Lcx;"
    )
-   static final NetWriter field888;
+   @Export("signlink")
+   static final NetWriter signlink;
    @ObfuscatedName("es")
    @ObfuscatedGetter(
       intValue = -192900493
@@ -1180,7 +1181,7 @@ public final class Client extends GameEngine {
       npcIndices = new int['耀'];
       pendingNpcFlagsCount = 0;
       pendingNpcFlagsIndices = new int[250];
-      field888 = new NetWriter();
+      signlink = new NetWriter();
       field881 = 0;
       socketError = false;
       field891 = true;
@@ -2416,9 +2417,9 @@ public final class Client extends GameEngine {
                         ObjectComposition.field3512.reset();
                         PacketNode var76;
                         if(TotalQuantityComparator.clientInstance.method840()) {
-                           var76 = FileSystem.bufferForSize(ClientPacket.field2332, field888.field1449);
+                           var76 = FileSystem.bufferForSize(ClientPacket.field2332, signlink.field1449);
                            var76.packetBuffer.putInt(1057001181);
-                           field888.method1862(var76);
+                           signlink.method1862(var76);
                         }
 
                         if(!isDynamicRegion) {
@@ -2451,8 +2452,8 @@ public final class Client extends GameEngine {
                         class20.field310 = null;
                         class61.field699 = null;
                         BaseVarType.field28 = null;
-                        var76 = FileSystem.bufferForSize(ClientPacket.field2378, field888.field1449);
-                        field888.method1862(var76);
+                        var76 = FileSystem.bufferForSize(ClientPacket.field2378, signlink.field1449);
+                        signlink.method1862(var76);
                         LoginPacket.timer.vmethod3074();
 
                         for(var7 = 0; var7 < 32; ++var7) {
@@ -2577,7 +2578,7 @@ public final class Client extends GameEngine {
       }
 
       WorldMapMappings.mouseRecorder = null;
-      field888.close();
+      signlink.close();
       class179.removeKeyboardFocusListener();
       if(MouseInput.mouse != null) {
          MouseInput var1 = MouseInput.mouse;
@@ -2914,8 +2915,8 @@ public final class Client extends GameEngine {
       garbageValue = "117"
    )
    final void method1337() {
-      Object var1 = field888.getSocket();
-      PacketBuffer var2 = field888.packetBuffer;
+      Object var1 = signlink.getSocket();
+      PacketBuffer var2 = signlink.packetBuffer;
 
       try {
          if(loginState == 0) {
@@ -2946,21 +2947,21 @@ public final class Client extends GameEngine {
                   var1 = new SocketSession((Socket) MapAreaMetadata.field560.value, GameEngine.taskManager, 5000);
                }
 
-               field888.setSocket((AbstractSocket)var1);
+               signlink.setSocket((AbstractSocket)var1);
                MapAreaMetadata.field560 = null;
                loginState = 2;
             }
          }
 
          if(loginState == 2) {
-            field888.method1866();
+            signlink.method1866();
             PacketNode var4 = SocketSession2.cachedOrNewPacketNode();
             var4.clientPacket = null;
             var4.field2432 = 0;
             var4.packetBuffer = new PacketBuffer(5000);
             var4.packetBuffer.putByte(LoginPacket.field2411.id);
-            field888.method1862(var4);
-            field888.method1861();
+            signlink.method1862(var4);
+            signlink.method1861();
             var2.offset = 0;
             loginState = 3;
          }
@@ -3026,8 +3027,8 @@ public final class Client extends GameEngine {
          int var9;
          int var16;
          if(loginState == 5) {
-            field888.packetBuffer.offset = 0;
-            field888.method1866();
+            signlink.packetBuffer.offset = 0;
+            signlink.method1866();
             PacketBuffer var3 = new PacketBuffer(500);
             int[] var27 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(class61.field709 >> 32), (int)(class61.field709 & -1L)};
             var3.offset = 0;
@@ -3136,9 +3137,9 @@ public final class Client extends GameEngine {
             var32.packetBuffer.putInt(FriendLoginUpdate.indexWorldMap.crc);
             var32.packetBuffer.encryptXtea(var27, var16, var32.packetBuffer.offset);
             var32.packetBuffer.method3257(var32.packetBuffer.offset - var7);
-            field888.method1862(var32);
-            field888.method1861();
-            field888.field1449 = new ISAACCipher(var27);
+            signlink.method1862(var32);
+            signlink.method1861();
+            signlink.field1449 = new ISAACCipher(var27);
 
             for(var11 = 0; var11 < 4; ++var11) {
                var27[var11] += 50;
@@ -3155,7 +3156,7 @@ public final class Client extends GameEngine {
             } else if(var35 == 2) {
                loginState = 9;
             } else if(var35 == 15 && gameState == 40) {
-               field888.packetLength = -1;
+               signlink.packetLength = -1;
                loginState = 13;
             } else if(var35 == 23 && field1004 < 1) {
                ++field1004;
@@ -3236,11 +3237,11 @@ public final class Client extends GameEngine {
                   throw new IOException(var7 + " " + var2.offset);
                }
 
-               field888.serverPacket = var5[var7];
-               field888.packetLength = field888.serverPacket.packetLength;
+               signlink.serverPacket = var5[var7];
+               signlink.packetLength = signlink.serverPacket.packetLength;
                ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                var2.offset = 0;
-               field888.packetLength = var2.readUnsignedShort();
+               signlink.packetLength = var2.readUnsignedShort();
 
                try {
                   class52.method755(TotalQuantityComparator.clientInstance, "zap");
@@ -3252,9 +3253,9 @@ public final class Client extends GameEngine {
             }
 
             if(loginState == 10) {
-               if(((AbstractSocket)var1).readable() >= field888.packetLength) {
+               if(((AbstractSocket)var1).readable() >= signlink.packetLength) {
                   var2.offset = 0;
-                  ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
+                  ((AbstractSocket)var1).vmethod3085(var2.payload, 0, signlink.packetLength);
                   field892.method5032();
                   mouseLastLastPressedTimeMillis = -1L;
                   field858 = -1;
@@ -3263,14 +3264,14 @@ public final class Client extends GameEngine {
                   field859 = true;
                   field1052 = -1L;
                   ObjectComposition.method4706();
-                  field888.method1866();
-                  field888.packetBuffer.offset = 0;
-                  field888.serverPacket = null;
-                  field888.field1456 = null;
-                  field888.field1457 = null;
-                  field888.field1458 = null;
-                  field888.packetLength = 0;
-                  field888.field1453 = 0;
+                  signlink.method1866();
+                  signlink.packetBuffer.offset = 0;
+                  signlink.serverPacket = null;
+                  signlink.previousSecondPacket = null;
+                  signlink.previousThirdPacket = null;
+                  signlink.previousForthPacket = null;
+                  signlink.packetLength = 0;
+                  signlink.field1453 = 0;
                   field861 = 0;
                   field881 = 0;
                   hintArrowTargetType = 0;
@@ -3364,7 +3365,7 @@ public final class Client extends GameEngine {
                   CombatInfo1.initializeGPI(var2);
                   class2.field13 = -1;
                   class56.xteaChanged(false, var2);
-                  field888.serverPacket = null;
+                  signlink.serverPacket = null;
                }
 
             } else {
@@ -3404,29 +3405,29 @@ public final class Client extends GameEngine {
                      }
                   }
                } else {
-                  if(field888.packetLength == -1) {
+                  if(signlink.packetLength == -1) {
                      if(((AbstractSocket)var1).readable() < 2) {
                         return;
                      }
 
                      ((AbstractSocket)var1).vmethod3085(var2.payload, 0, 2);
                      var2.offset = 0;
-                     field888.packetLength = var2.readUnsignedShort();
+                     signlink.packetLength = var2.readUnsignedShort();
                   }
 
-                  if(((AbstractSocket)var1).readable() >= field888.packetLength) {
-                     ((AbstractSocket)var1).vmethod3085(var2.payload, 0, field888.packetLength);
+                  if(((AbstractSocket)var1).readable() >= signlink.packetLength) {
+                     ((AbstractSocket)var1).vmethod3085(var2.payload, 0, signlink.packetLength);
                      var2.offset = 0;
-                     var35 = field888.packetLength;
+                     var35 = signlink.packetLength;
                      field892.method5044();
-                     field888.method1866();
-                     field888.packetBuffer.offset = 0;
-                     field888.serverPacket = null;
-                     field888.field1456 = null;
-                     field888.field1457 = null;
-                     field888.field1458 = null;
-                     field888.packetLength = 0;
-                     field888.field1453 = 0;
+                     signlink.method1866();
+                     signlink.packetBuffer.offset = 0;
+                     signlink.serverPacket = null;
+                     signlink.previousSecondPacket = null;
+                     signlink.previousThirdPacket = null;
+                     signlink.previousForthPacket = null;
+                     signlink.packetLength = 0;
+                     signlink.field1453 = 0;
                      field861 = 0;
                      class41.method574();
                      field1062 = 0;
@@ -3501,7 +3502,7 @@ public final class Client extends GameEngine {
          }
 
          int var1;
-         for(var1 = 0; var1 < 100 && this.readPacket(field888); ++var1) {
+         for(var1 = 0; var1 < 100 && this.readPacket(signlink); ++var1) {
             ;
          }
 
@@ -3521,12 +3522,12 @@ public final class Client extends GameEngine {
                   PacketNode var12;
                   int var13;
                   if(field892.field3796) {
-                     var12 = FileSystem.bufferForSize(ClientPacket.field2345, field888.field1449);
+                     var12 = FileSystem.bufferForSize(ClientPacket.field2345, signlink.field1449);
                      var12.packetBuffer.putByte(0);
                      var13 = var12.packetBuffer.offset;
                      field892.method5056(var12.packetBuffer);
                      var12.packetBuffer.method3258(var12.packetBuffer.offset - var13);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                      field892.method5035();
                   }
 
@@ -3541,7 +3542,7 @@ public final class Client extends GameEngine {
                      if(!field1099) {
                         WorldMapMappings.mouseRecorder.index = 0;
                      } else if(MouseInput.mouseLastButton != 0 || WorldMapMappings.mouseRecorder.index >= 40) {
-                        var28 = FileSystem.bufferForSize(ClientPacket.field2356, field888.field1449);
+                        var28 = FileSystem.bufferForSize(ClientPacket.field2356, signlink.field1449);
                         var28.packetBuffer.putByte(0);
                         var3 = var28.packetBuffer.offset;
                         var4 = 0;
@@ -3594,7 +3595,7 @@ public final class Client extends GameEngine {
                         }
 
                         var28.packetBuffer.method3258(var28.packetBuffer.offset - var3);
-                        field888.method1862(var28);
+                        signlink.method1862(var28);
                         if(var4 >= WorldMapMappings.mouseRecorder.index) {
                            WorldMapMappings.mouseRecorder.index = 0;
                         } else {
@@ -3631,15 +3632,15 @@ public final class Client extends GameEngine {
                      }
 
                      var5 = (int)var14;
-                     var16 = FileSystem.bufferForSize(ClientPacket.field2358, field888.field1449);
+                     var16 = FileSystem.bufferForSize(ClientPacket.field2358, signlink.field1449);
                      var16.packetBuffer.putShort((MouseInput.mouseLastButton == 2?1:0) + (var5 << 1));
                      var16.packetBuffer.putShort(var4);
                      var16.packetBuffer.putShort(var3);
-                     field888.method1862(var16);
+                     signlink.method1862(var16);
                   }
 
                   if(KeyFocusListener.field601 > 0) {
-                     var12 = FileSystem.bufferForSize(ClientPacket.field2333, field888.field1449);
+                     var12 = FileSystem.bufferForSize(ClientPacket.field2333, signlink.field1449);
                      var12.packetBuffer.putShort(0);
                      var13 = var12.packetBuffer.offset;
                      long var17 = Preferences.currentTimeMs();
@@ -3656,7 +3657,7 @@ public final class Client extends GameEngine {
                      }
 
                      var12.packetBuffer.method3257(var12.packetBuffer.offset - var13);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                   }
 
                   if(field1021 > 0) {
@@ -3670,24 +3671,24 @@ public final class Client extends GameEngine {
                   if(field919 && field1021 <= 0) {
                      field1021 = 20;
                      field919 = false;
-                     var12 = FileSystem.bufferForSize(ClientPacket.field2375, field888.field1449);
+                     var12 = FileSystem.bufferForSize(ClientPacket.field2375, signlink.field1449);
                      var12.packetBuffer.putShortLE(mapAngle);
                      var12.packetBuffer.writeShortLE(field998);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                   }
 
                   if(class238.field3251 && !field859) {
                      field859 = true;
-                     var12 = FileSystem.bufferForSize(ClientPacket.field2316, field888.field1449);
+                     var12 = FileSystem.bufferForSize(ClientPacket.field2316, signlink.field1449);
                      var12.packetBuffer.putByte(1);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                   }
 
                   if(!class238.field3251 && field859) {
                      field859 = false;
-                     var12 = FileSystem.bufferForSize(ClientPacket.field2316, field888.field1449);
+                     var12 = FileSystem.bufferForSize(ClientPacket.field2316, signlink.field1449);
                      var12.packetBuffer.putByte(0);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                   }
 
                   CollisionData.method3133();
@@ -3807,8 +3808,8 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  ++field888.field1453;
-                  if(field888.field1453 > 750) {
+                  ++signlink.field1453;
+                  if(signlink.field1453 > 750) {
                      TotalQuantityComparator.method85();
                      return;
                   }
@@ -3970,12 +3971,12 @@ public final class Client extends GameEngine {
                                                             var45.method4143(field935, field1073);
                                                          }
 
-                                                         PacketNode var24 = FileSystem.bufferForSize(ClientPacket.field2334, field888.field1449);
+                                                         PacketNode var24 = FileSystem.bufferForSize(ClientPacket.field2334, signlink.field1449);
                                                          var24.packetBuffer.method3285(var31);
                                                          var24.packetBuffer.writeIntLE16(field935);
                                                          var24.packetBuffer.method3311(AreaMapIconMetadata.field506.id);
                                                          var24.packetBuffer.writeIntLE16(field1073);
-                                                         field888.method1862(var24);
+                                                         signlink.method1862(var24);
                                                       }
                                                    } else if(this.method1136()) {
                                                       this.openMenu(field857, field1039);
@@ -3994,12 +3995,12 @@ public final class Client extends GameEngine {
                                              if(Region.method2729()) {
                                                 var3 = Region.selectedRegionTileX;
                                                 var4 = Region.selectedRegionTileY;
-                                                PacketNode var42 = FileSystem.bufferForSize(ClientPacket.field2352, field888.field1449);
+                                                PacketNode var42 = FileSystem.bufferForSize(ClientPacket.field2352, signlink.field1449);
                                                 var42.packetBuffer.putByte(5);
                                                 var42.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
                                                 var42.packetBuffer.writeIntLE16(var3 + SceneChunkMetadata.baseX);
                                                 var42.packetBuffer.putShortLE(var4 + baseY);
-                                                field888.method1862(var42);
+                                                signlink.method1862(var42);
                                                 Region.method2800();
                                                 field1003 = MouseInput.mouseLastPressedX;
                                                 field936 = MouseInput.mouseLastPressedY;
@@ -4055,8 +4056,8 @@ public final class Client extends GameEngine {
                                              if(var3 > 15000 && var4 > 15000) {
                                                 field881 = 250;
                                                 MouseInput.mouseIdleTicks = 14500;
-                                                var16 = FileSystem.bufferForSize(ClientPacket.field2357, field888.field1449);
-                                                field888.method1862(var16);
+                                                var16 = FileSystem.bufferForSize(ClientPacket.field2357, signlink.field1449);
+                                                signlink.method1862(var16);
                                              }
 
                                              for(FriendLoginUpdate var37 = (FriendLoginUpdate)field1096.method3791(); var37 != null; var37 = (FriendLoginUpdate)field1096.method3794()) {
@@ -4073,14 +4074,14 @@ public final class Client extends GameEngine {
                                                 }
                                              }
 
-                                             ++field888.field1455;
-                                             if(field888.field1455 > 50) {
-                                                var16 = FileSystem.bufferForSize(ClientPacket.field2328, field888.field1449);
-                                                field888.method1862(var16);
+                                             ++signlink.field1455;
+                                             if(signlink.field1455 > 50) {
+                                                var16 = FileSystem.bufferForSize(ClientPacket.field2328, signlink.field1449);
+                                                signlink.method1862(var16);
                                              }
 
                                              try {
-                                                field888.method1861();
+                                                signlink.method1861();
                                              } catch (IOException var25) {
                                                 TotalQuantityComparator.method85();
                                              }
@@ -4124,12 +4125,12 @@ public final class Client extends GameEngine {
                   }
                }
 
-               var28 = FileSystem.bufferForSize(ClientPacket.field2364, field888.field1449);
+               var28 = FileSystem.bufferForSize(ClientPacket.field2364, signlink.field1449);
                var28.packetBuffer.putByte(0);
                var3 = var28.packetBuffer.offset;
                SpritePixels2.encodeClassVerifier(var28.packetBuffer);
                var28.packetBuffer.method3258(var28.packetBuffer.offset - var3);
-               field888.method1862(var28);
+               signlink.method1862(var28);
             }
          }
       }
@@ -4425,11 +4426,11 @@ public final class Client extends GameEngine {
             var2.vmethod3085(var3.payload, 0, var1.packetLength);
             var1.field1453 = 0;
             field892.markTimeMs();
-            var1.field1458 = var1.field1457;
-            var1.field1457 = var1.field1456;
-            var1.field1456 = var1.serverPacket;
+            var1.previousForthPacket = var1.previousThirdPacket;
+            var1.previousThirdPacket = var1.previousSecondPacket;
+            var1.previousSecondPacket = var1.serverPacket;
             if(ServerPacket.field2259 == var1.serverPacket) {
-               Friend.method1035(class173.field2430);
+               Friend.otherPackets(class173.field2430);
                var1.serverPacket = null;
                return true;
             }
@@ -4463,13 +4464,13 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2252 == var1.serverPacket) {
-               Friend.method1035(class173.field2420);
+               Friend.otherPackets(class173.field2420);
                var1.serverPacket = null;
                return true;
             }
 
             if(ServerPacket.field2255 == var1.serverPacket) {
-               Friend.method1035(class173.field2427);
+               Friend.otherPackets(class173.field2427);
                var1.serverPacket = null;
                return true;
             }
@@ -4779,7 +4780,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2237 == var1.serverPacket) {
-               Friend.method1035(class173.field2421);
+               Friend.otherPackets(class173.field2421);
                var1.serverPacket = null;
                return true;
             }
@@ -4846,7 +4847,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2239 == var1.serverPacket) {
-               Friend.method1035(class173.field2428);
+               Friend.otherPackets(class173.field2428);
                var1.serverPacket = null;
                return true;
             }
@@ -4967,7 +4968,7 @@ public final class Client extends GameEngine {
                while(var3.offset < var1.packetLength) {
                   var23 = var3.readUnsignedByte();
                   class173 var66 = Size.method173()[var23];
-                  Friend.method1035(var66);
+                  Friend.otherPackets(var66);
                }
 
                var1.serverPacket = null;
@@ -5374,7 +5375,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2279 == var1.serverPacket) {
-               Friend.method1035(class173.field2422);
+               Friend.otherPackets(class173.field2422);
                var1.serverPacket = null;
                return true;
             }
@@ -5661,7 +5662,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2285 == var1.serverPacket) {
-               Friend.method1035(class173.field2426);
+               Friend.otherPackets(class173.field2426);
                var1.serverPacket = null;
                return true;
             }
@@ -5836,7 +5837,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2306 == var1.serverPacket) {
-               Friend.method1035(class173.field2425);
+               Friend.otherPackets(class173.field2425);
                var1.serverPacket = null;
                return true;
             }
@@ -5972,7 +5973,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2300 == var1.serverPacket) {
-               Friend.method1035(class173.field2424);
+               Friend.otherPackets(class173.field2424);
                var1.serverPacket = null;
                return true;
             }
@@ -6060,7 +6061,7 @@ public final class Client extends GameEngine {
             }
 
             if(ServerPacket.field2266 == var1.serverPacket) {
-               Friend.method1035(class173.field2423);
+               Friend.otherPackets(class173.field2423);
                var1.serverPacket = null;
                return true;
             }
@@ -6097,12 +6098,12 @@ public final class Client extends GameEngine {
                var23 = var3.readInt();
                var24 = var3.readInt();
                var6 = class232.method4205();
-               PacketNode var101 = FileSystem.bufferForSize(ClientPacket.field2376, field888.field1449);
+               PacketNode var101 = FileSystem.bufferForSize(ClientPacket.field2376, signlink.field1449);
                var101.packetBuffer.method3285(GameEngine.FPS);
                var101.packetBuffer.method3286(var6);
                var101.packetBuffer.method3311(var23);
                var101.packetBuffer.writeIntLE(var24);
-               field888.method1862(var101);
+               signlink.method1862(var101);
                var1.serverPacket = null;
                return true;
             }
@@ -6204,12 +6205,12 @@ public final class Client extends GameEngine {
                return true;
             }
 
-            PendingSpawn.method1461("" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.field1457 != null?var1.field1457.packetId:-1) + "," + (var1.field1458 != null?var1.field1458.packetId:-1) + "," + var1.packetLength, (Throwable)null);
+            PendingSpawn.method1461("" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.previousThirdPacket != null?var1.previousThirdPacket.packetId:-1) + "," + (var1.previousForthPacket != null?var1.previousForthPacket.packetId:-1) + "," + var1.packetLength, (Throwable)null);
             class96.method1831();
          } catch (IOException var53) {
             TotalQuantityComparator.method85();
          } catch (Exception var54) {
-            var5 = "" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.field1457 != null?var1.field1457.packetId:-1) + "," + (var1.field1458 != null?var1.field1458.packetId:-1) + "," + var1.packetLength + "," + (UrlRequest.localPlayer.pathX[0] + SceneChunkMetadata.baseX) + "," + (UrlRequest.localPlayer.pathY[0] + baseY) + ",";
+            var5 = "" + (var1.serverPacket != null?var1.serverPacket.packetId:-1) + "," + (var1.previousThirdPacket != null?var1.previousThirdPacket.packetId:-1) + "," + (var1.previousForthPacket != null?var1.previousForthPacket.packetId:-1) + "," + var1.packetLength + "," + (UrlRequest.localPlayer.pathX[0] + SceneChunkMetadata.baseX) + "," + (UrlRequest.localPlayer.pathY[0] + baseY) + ",";
 
             for(var6 = 0; var6 < var1.packetLength && var6 < 50; ++var6) {
                var5 = var5 + var3.payload[var6] + ",";
@@ -6581,14 +6582,14 @@ public final class Client extends GameEngine {
                   }
 
                   if(var13 != null) {
-                     PacketNode var12 = FileSystem.bufferForSize(ClientPacket.field2321, field888.field1449);
+                     PacketNode var12 = FileSystem.bufferForSize(ClientPacket.field2321, signlink.field1449);
                      var12.packetBuffer.method3306(field1064.id);
                      var12.packetBuffer.putShort(field1064.index);
                      var12.packetBuffer.putShortLE(field1005.itemId);
                      var12.packetBuffer.method3306(field1005.id);
                      var12.packetBuffer.writeShortLE(field1005.index);
                      var12.packetBuffer.putShort(field1064.itemId);
-                     field888.method1862(var12);
+                     signlink.method1862(var12);
                   }
                }
             } else if(this.method1136()) {

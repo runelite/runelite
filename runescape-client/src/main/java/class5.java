@@ -274,7 +274,7 @@ final class class5 implements class0 {
    )
    @Export("npcUpdateViewport")
    static final void npcUpdateViewport() {
-      PacketBuffer var0 = Client.field888.packetBuffer;
+      PacketBuffer var0 = Client.signlink.packetBuffer;
       var0.bitAccess();
       int var1 = var0.getBits(8);
       int var2;

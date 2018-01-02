@@ -1457,8 +1457,8 @@ public class Widget extends Node {
       garbageValue = "-90092303"
    )
    static final void method4187() {
-      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2380, Client.field888.field1449);
-      Client.field888.method1862(var0);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2380, Client.signlink.field1449);
+      Client.signlink.method1862(var0);
 
       for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
          if(var1.owner == 0 || var1.owner == 3) {

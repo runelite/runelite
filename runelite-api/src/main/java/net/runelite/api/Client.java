@@ -24,11 +24,12 @@
  */
 package net.runelite.api;
 
-import java.awt.Canvas;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+
+import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 public interface Client
 {
@@ -161,4 +162,6 @@ public interface Client
 	void setModIcons(IndexedSprite[] modIcons);
 
 	IndexedSprite createIndexedSprite();
+
+	NetWriter getSignlink();
 }

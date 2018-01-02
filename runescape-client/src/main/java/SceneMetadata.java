@@ -152,7 +152,7 @@ public class SceneMetadata extends AbstractScene {
    @Export("updateNpcs")
    static final void updateNpcs(boolean var0, PacketBuffer var1) {
       while(true) {
-         if(var1.bitsAvail(Client.field888.packetLength) >= 27) {
+         if(var1.bitsAvail(Client.signlink.packetLength) >= 27) {
             int var2 = var1.getBits(15);
             if(var2 != 32767) {
                boolean var3 = false;

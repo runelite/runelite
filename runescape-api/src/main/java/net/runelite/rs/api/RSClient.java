@@ -339,4 +339,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("npcIndiciesPendingRemoval")
 	int[] npcIndiciesPendingRemoval();
+
+	@Import("signlink")
+	@Override
+	RSNetWriter getSignlink();
 }

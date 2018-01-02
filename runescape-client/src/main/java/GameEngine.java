@@ -1082,10 +1082,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                   }
 
                   Client.field1041 = Client.cycleCntr;
-                  PacketNode var8 = FileSystem.bufferForSize(ClientPacket.field2354, Client.field888.field1449);
+                  PacketNode var8 = FileSystem.bufferForSize(ClientPacket.field2354, Client.signlink.field1449);
                   var8.packetBuffer.putByte(Ignore.getLength(var0));
                   var8.packetBuffer.putString(var0);
-                  Client.field888.method1862(var8);
+                  Client.signlink.method1862(var8);
                   break;
                }
             }

@@ -85,11 +85,11 @@ public class class37 {
             if(var0 == 3604) {
                var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                int var4 = class82.intStack[--class82.intStackSize];
-               var15 = FileSystem.bufferForSize(ClientPacket.field2396, Client.field888.field1449);
+               var15 = FileSystem.bufferForSize(ClientPacket.field2396, Client.signlink.field1449);
                var15.packetBuffer.putByte(Ignore.getLength(var11) + 1);
                var15.packetBuffer.method3286(var4);
                var15.packetBuffer.putString(var11);
-               Client.field888.method1862(var15);
+               Client.signlink.method1862(var15);
                return 1;
             } else if(var0 == 3605) {
                var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
@@ -135,10 +135,10 @@ public class class37 {
                                  if(SpritePixels2.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType).equals(var20)) {
                                     class25.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                  } else {
-                                    var15 = FileSystem.bufferForSize(ClientPacket.field2398, Client.field888.field1449);
+                                    var15 = FileSystem.bufferForSize(ClientPacket.field2398, Client.signlink.field1449);
                                     var15.packetBuffer.putByte(Ignore.getLength(var11));
                                     var15.packetBuffer.putString(var11);
-                                    Client.field888.method1862(var15);
+                                    Client.signlink.method1862(var15);
                                  }
                                  break;
                               }
@@ -195,10 +195,10 @@ public class class37 {
                               }
 
                               Client.field1041 = Client.cycleCntr;
-                              PacketNode var14 = FileSystem.bufferForSize(ClientPacket.field2401, Client.field888.field1449);
+                              PacketNode var14 = FileSystem.bufferForSize(ClientPacket.field2401, Client.signlink.field1449);
                               var14.packetBuffer.putByte(Ignore.getLength(var11));
                               var14.packetBuffer.putString(var11);
-                              Client.field888.method1862(var14);
+                              Client.signlink.method1862(var14);
                               break;
                            }
                         }
@@ -275,10 +275,10 @@ public class class37 {
                   if(var0 == 3617) {
                      var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                      if(GameEngine.clanMembers != null) {
-                        var12 = FileSystem.bufferForSize(ClientPacket.field2312, Client.field888.field1449);
+                        var12 = FileSystem.bufferForSize(ClientPacket.field2312, Client.signlink.field1449);
                         var12.packetBuffer.putByte(Ignore.getLength(var11));
                         var12.packetBuffer.putString(var11);
-                        Client.field888.method1862(var12);
+                        Client.signlink.method1862(var12);
                      }
 
                      return 1;
@@ -288,10 +288,10 @@ public class class37 {
                   } else if(var0 == 3619) {
                      var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                      if(!var11.equals("")) {
-                        var12 = FileSystem.bufferForSize(ClientPacket.field2342, Client.field888.field1449);
+                        var12 = FileSystem.bufferForSize(ClientPacket.field2342, Client.signlink.field1449);
                         var12.packetBuffer.putByte(Ignore.getLength(var11));
                         var12.packetBuffer.putString(var11);
-                        Client.field888.method1862(var12);
+                        Client.signlink.method1862(var12);
                      }
 
                      return 1;

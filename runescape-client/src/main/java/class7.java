@@ -90,10 +90,10 @@ public class class7 {
                if(SpritePixels2.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType).equals(var1)) {
                   class25.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                } else {
-                  PacketNode var6 = FileSystem.bufferForSize(ClientPacket.field2349, Client.field888.field1449);
+                  PacketNode var6 = FileSystem.bufferForSize(ClientPacket.field2349, Client.signlink.field1449);
                   var6.packetBuffer.putByte(Ignore.getLength(var0));
                   var6.packetBuffer.putString(var0);
-                  Client.field888.method1862(var6);
+                  Client.signlink.method1862(var6);
                }
             }
          } else {
