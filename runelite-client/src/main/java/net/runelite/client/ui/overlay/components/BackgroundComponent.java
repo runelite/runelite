@@ -80,16 +80,20 @@ public class BackgroundComponent implements RenderableEntity
 		graphics.fill(rectangle);
 
 		// Render outside stroke
-		final Rectangle outsideStroke = new Rectangle(rectangle);
-		outsideStroke.grow(-BORDER_OFFSET / 2,- BORDER_OFFSET / 2);
+		final Rectangle outsideStroke = new Rectangle();
+		outsideStroke.setLocation(rectangle.x, rectangle.y);
+		outsideStroke.setSize(rectangle.width - BORDER_OFFSET / 2, rectangle.height - BORDER_OFFSET / 2);
 		graphics.setColor(outsideStrokeColor);
 		graphics.draw(outsideStroke);
 
 		// Render inside stroke
-		final Rectangle insideStroke = new Rectangle(rectangle);
-		insideStroke.grow(-BORDER_OFFSET, -BORDER_OFFSET);
+		final Rectangle insideStroke = new Rectangle();
+		insideStroke.setLocation(rectangle.x + BORDER_OFFSET / 2, rectangle.y + BORDER_OFFSET / 2);
+		insideStroke.setSize(rectangle.width - BORDER_OFFSET - BORDER_OFFSET / 2,
+				rectangle.height - BORDER_OFFSET - BORDER_OFFSET / 2);
 		graphics.setColor(insideStrokeColor);
 		graphics.draw(insideStroke);
+
 		return new Dimension(rectangle.getSize());
 	}
 }
