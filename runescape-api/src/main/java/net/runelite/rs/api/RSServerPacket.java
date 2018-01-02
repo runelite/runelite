@@ -29,11 +29,11 @@ import net.runelite.mapping.Import;
 
 public interface RSServerPacket extends ServerPacket
 {
-    @Import("packetId")
-    @Override
-    int id();
+	@Import("packetId")
+	@Override
+	int id();
 
-    @Import("packetLength")
-    @Override
-    int size();
+	@Import("packetLength")
+	@Override
+	int size();
 }

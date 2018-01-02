@@ -27,11 +27,11 @@ package net.runelite.api;
 public interface NetWriter
 {
 
-    ServerPacket currentServerPacket();
+	ServerPacket currentServerPacket();
 
-    ServerPacket getOldPacket1();
+	ServerPacket getOldPacket1();
 
-    ServerPacket getOldPacket2();
+	ServerPacket getOldPacket2();
 
-    ServerPacket getOldPacket3();
+	ServerPacket getOldPacket3();
 }

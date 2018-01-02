@@ -30,19 +30,19 @@ import net.runelite.mapping.Import;
 public interface RSNetWriter extends NetWriter
 {
 
-    @Import("serverPacket")
-    @Override
-    RSServerPacket currentServerPacket();
+	@Import("serverPacket")
+	@Override
+	RSServerPacket currentServerPacket();
 
-    @Import("previousSecondPacket")
-    @Override
-    RSServerPacket getOldPacket1();
+	@Import("previousSecondPacket")
+	@Override
+	RSServerPacket getOldPacket1();
 
-    @Import("previousThirdPacket")
-    @Override
-    RSServerPacket getOldPacket2();
+	@Import("previousThirdPacket")
+	@Override
+	RSServerPacket getOldPacket2();
 
-    @Import("previousForthPacket")
-    @Override
-    RSServerPacket getOldPacket3();
+	@Import("previousForthPacket")
+	@Override
+	RSServerPacket getOldPacket3();
 }
