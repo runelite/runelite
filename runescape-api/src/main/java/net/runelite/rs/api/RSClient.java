@@ -337,8 +337,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("localNpcsCount")
 	int localNpcsCount();
 
-	@Import("npcIndiciesPendingRemoval")
-	int[] npcIndiciesPendingRemoval();
+	@Import("npcIndicesPendingRemoval")
+	int[] npcIndicesPendingRemoval();
 
 	@Import("signlink")
 	@Override
