@@ -29,6 +29,7 @@ import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -51,6 +52,8 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -122,7 +125,8 @@ public class ClientUI extends JFrame
 		}
 
 		// Use custom UI font
-		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
+		setUIFont(new FontUIResource(StyleContext.getDefaultStyleContext()
+				.getFont(FontManager.getRunescapeFont().getName(), Font.PLAIN, 16)));
 
 		return new ClientUI(properties, client);
 	}
