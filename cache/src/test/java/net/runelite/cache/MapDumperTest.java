@@ -164,6 +164,7 @@ public class MapDumperTest
 	}
 
 	@Test
+	@Ignore
 	public void dunpJson() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
