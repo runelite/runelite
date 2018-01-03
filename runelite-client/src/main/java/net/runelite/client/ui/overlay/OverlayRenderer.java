@@ -110,7 +110,7 @@ public class OverlayRenderer
 			overlays.removeAll(event.getPlugin().getOverlays());
 		}
 
-		sortOverlays();
+		sortOverlays(overlays);
 	}
 
 	private void refreshPlugins()
@@ -123,10 +123,10 @@ public class OverlayRenderer
 					.flatMap(plugin -> plugin.getOverlays().stream()),
 				Stream.of(infoBoxOverlay, tooltipOverlay))
 			.collect(Collectors.toList()));
-		sortOverlays();
+		sortOverlays(overlays);
 	}
 
-	private void sortOverlays()
+	static void sortOverlays(List<Overlay> overlays)
 	{
 		overlays.sort((a, b) ->
 		{
@@ -235,7 +235,7 @@ public class OverlayRenderer
 						break;
 				}
 
-				if (overlayPosition.equals(OverlayPosition.DYNAMIC))
+				if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 				{
 					safeRender(overlay, graphics, new Point());
 				}
