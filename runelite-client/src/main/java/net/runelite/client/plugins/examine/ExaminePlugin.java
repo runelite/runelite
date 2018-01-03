@@ -270,7 +270,7 @@ public class ExaminePlugin extends Plugin
 			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget[] children = widget.getDynamicChildren();
-				if (children.length > 0 && pendingExamine.getActionParam() < children.length)
+				if (pendingExamine.getActionParam() < children.length)
 				{
 					Widget widgetItem = children[pendingExamine.getActionParam()];
 					quantity = widgetItem.getItemQuantity();
