@@ -102,6 +102,11 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
+		if (!config.enabled())
+		{
+			return null;
+		}
+
 		Widget viewport = client.getViewportWidget();
 
 		if (viewport != null)
