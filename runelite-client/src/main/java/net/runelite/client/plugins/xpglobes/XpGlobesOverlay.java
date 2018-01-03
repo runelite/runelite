@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xpglobes;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
@@ -45,6 +44,8 @@ import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
 @Slf4j
 public class XpGlobesOverlay extends Overlay
@@ -69,8 +70,6 @@ public class XpGlobesOverlay extends Overlay
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
 
 	private static final int TOOLTIP_RECT_SIZE_X = 140;
-	private static final int TOOLTIP_TEXT_RECT_SIZE_X = TOOLTIP_RECT_SIZE_X - 10;
-	private static final int TOOLTIP_RECT_SIZE_Y = 80;
 
 	@Inject
 	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
@@ -107,7 +106,7 @@ public class XpGlobesOverlay extends Overlay
 
 			for (XpGlobe xpGlobe : xpChangedQueue)
 			{
-				renderProgressCircle(graphics, xpGlobe, startDrawX, DEFAULT_START_Y);
+				renderProgressCircle(graphics, point, xpGlobe, startDrawX, DEFAULT_START_Y);
 				startDrawX += MINIMUM_STEP_WIDTH;
 			}
 			plugin.removeExpiredXpGlobes();
@@ -116,7 +115,7 @@ public class XpGlobesOverlay extends Overlay
 		return null;
 	}
 
-	private void renderProgressCircle(Graphics2D graphics, XpGlobe skillToDraw, int x, int y)
+	private void renderProgressCircle(Graphics2D graphics, java.awt.Point parent, XpGlobe skillToDraw, int x, int y)
 	{
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
 		double radiusToGoalXp = 360; //draw a circle
@@ -141,7 +140,7 @@ public class XpGlobesOverlay extends Overlay
 
 		if (config.enableTooltips())
 		{
-			drawTooltipIfMouseover(graphics, skillToDraw, backgroundCircle);
+			drawTooltipIfMouseover(graphics, parent, skillToDraw, backgroundCircle);
 		}
 	}
 
@@ -207,7 +206,7 @@ public class XpGlobesOverlay extends Overlay
 		return skillImage;
 	}
 
-	private void drawTooltipIfMouseover(Graphics2D graphics, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
+	private void drawTooltipIfMouseover(Graphics2D graphics, java.awt.Point parent, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
 		Point mouse = client.getMouseCanvasPosition();
 		int mouseX = mouse.getX();
@@ -221,55 +220,29 @@ public class XpGlobesOverlay extends Overlay
 		//draw tooltip under the globe of the mouse location
 		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (DEFAULT_CIRCLE_WIDTH / 2);
 		int y = (int) drawnGlobe.getY() + DEFAULT_CIRCLE_HEIGHT + 10;
-		int padding = (TOOLTIP_RECT_SIZE_X - TOOLTIP_TEXT_RECT_SIZE_X) / 2;
-		int stringX = x + padding;
 
+		String skillName = mouseOverSkill.getSkillName();
 		String skillLevel = Integer.toString(mouseOverSkill.getCurrentLevel());
-		String skillCurrentXp = Integer.toString(mouseOverSkill.getCurrentXp());
-		String skillXpToLvl = Integer.toString((mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp()));
 
-		FontMetrics fm = graphics.getFontMetrics();
-		int skillLevelX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillLevel));
-		int skillCurrentXpX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillCurrentXp));
-		int skillXpToLvlX = x + padding + (TOOLTIP_TEXT_RECT_SIZE_X - fm.stringWidth(skillXpToLvl));
-		int stringHeight = fm.getHeight();
+		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
+		String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
 
-		//draw tooltip container
-		graphics.setPaint(DEFAULT_XPGLOBE_BACKGROUND_COLOR);
-		graphics.fillRect(x, y, TOOLTIP_RECT_SIZE_X, TOOLTIP_RECT_SIZE_Y);
-		graphics.setPaint(DEFAULT_PROGRESS_REMAINDER_ARC_COLOR);
-		graphics.setStroke(new BasicStroke(2));
-		graphics.drawRect(x, y, TOOLTIP_RECT_SIZE_X, TOOLTIP_RECT_SIZE_Y);
+		PanelComponent xpTooltip = new PanelComponent();
+		xpTooltip.setPosition(new java.awt.Point(x, y));
 
-		//draw the text
-		graphics.setPaint(Color.WHITE);
-		graphics.drawString(mouseOverSkill.getSkillName(), stringX, y + stringHeight);
-		graphics.drawString(skillLevel, skillLevelX, y + stringHeight);
-		graphics.drawString("Current exp:", stringX, y + (stringHeight * 2));
-		graphics.drawString(skillCurrentXp, skillCurrentXpX, y + (stringHeight * 2));
-		graphics.drawString("Exp to level:", stringX, y + (stringHeight * 3));
-		graphics.drawString(skillXpToLvl, skillXpToLvlX, y + (stringHeight * 3));
+		List<PanelComponent.Line> lines = xpTooltip.getLines();
+		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
+		lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
+		lines.add(new PanelComponent.Line("Xp to level: ", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
-		//draw the progress bar
-		double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()), mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
-		int barWidth = TOOLTIP_TEXT_RECT_SIZE_X;
-		int barHeight = 16;
-		int barX = x + padding;
-		int barY = y + (stringHeight * 3) + 10;
+		//Create progress bar for skill.
+		ProgressBarComponent progressBar = new ProgressBarComponent();
+		double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
+				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
+		progressBar.setProgress(progress);
 
-		DecimalFormat df = new DecimalFormat("#.00");
-		String progressText = df.format(progress) + "%";
-		int progressTextLength = fm.stringWidth(progressText);
-		int progressTextX = barX + (barWidth / 2) - (progressTextLength / 2);
-		int progressTextY = barY + 12;
-
-		int progressFill = (int) ((barWidth / 100F) * progress);
-
-		graphics.setColor(Color.WHITE);
-		graphics.fillRect(barX, barY, barWidth, barHeight);
-		graphics.setColor(Color.GREEN);
-		graphics.fillRect(barX, barY, progressFill, barHeight);
-		graphics.setPaint(Color.BLACK);
-		graphics.drawString(progressText, progressTextX, progressTextY);
+		xpTooltip.setProgressBar(progressBar);
+		xpTooltip.render(graphics, parent);
 	}
 }
