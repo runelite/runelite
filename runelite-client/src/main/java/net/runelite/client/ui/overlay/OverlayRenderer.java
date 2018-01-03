@@ -208,8 +208,11 @@ public class OverlayRenderer
 			.forEach(overlay ->
 			{
 				OverlayPosition overlayPosition = overlay.getPosition();
-				if (overlayPosition.equals(OverlayPosition.ABOVE_CHATBOX_RIGHT) && !client.isResized())
+				if (overlayPosition == OverlayPosition.ABOVE_CHATBOX_RIGHT && !client.isResized())
 				{
+					// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
+					// BOTTOM_RIGHT. Just use BOTTOM_RIGHT to prevent overlays from
+					// drawing over each other.
 					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
 				}
 				final Point subPosition = new Point();
