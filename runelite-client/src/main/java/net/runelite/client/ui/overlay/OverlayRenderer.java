@@ -207,9 +207,13 @@ public class OverlayRenderer
 			.filter(overlay -> shouldDrawOverlay(client, overlay))
 			.forEach(overlay ->
 			{
+				OverlayPosition overlayPosition = overlay.getPosition();
+				if (overlayPosition.equals(OverlayPosition.ABOVE_CHATBOX_RIGHT) && !client.isResized())
+				{
+					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
+				}
 				final Point subPosition = new Point();
-
-				switch (overlay.getPosition())
+				switch (overlayPosition)
 				{
 					case BOTTOM_LEFT:
 						subPosition.setLocation(bottomLeftPoint);
@@ -228,7 +232,7 @@ public class OverlayRenderer
 						break;
 				}
 
-				if (overlay.getPosition().equals(OverlayPosition.DYNAMIC))
+				if (overlayPosition.equals(OverlayPosition.DYNAMIC))
 				{
 					safeRender(overlay, graphics, new Point());
 				}
@@ -244,7 +248,7 @@ public class OverlayRenderer
 
 					final BufferedImage clippedImage = surface.getSubimage(0, 0, dimension.width, dimension.height);
 
-					switch (overlay.getPosition())
+					switch (overlayPosition)
 					{
 						case BOTTOM_LEFT:
 							bottomLeftPoint.x += dimension.width + (dimension.width == 0 ? 0 : PADDING);
@@ -263,7 +267,7 @@ public class OverlayRenderer
 							break;
 					}
 
-					final Point transformed = OverlayUtil.transformPosition(overlay.getPosition(), dimension);
+					final Point transformed = OverlayUtil.transformPosition(overlayPosition, dimension);
 					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
 				}
 			});
