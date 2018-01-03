@@ -53,7 +53,7 @@ public class InfoBoxOverlay extends Overlay
 	@Inject
 	public InfoBoxOverlay(InfoBoxManager infoboxManager, TooltipManager tooltipManager, Provider<Client> clientProvider)
 	{
-		setPosition(OverlayPosition.BOTTOM_LEFT);
+		setPosition(OverlayPosition.TOP_LEFT);
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.clientProvider = clientProvider;
