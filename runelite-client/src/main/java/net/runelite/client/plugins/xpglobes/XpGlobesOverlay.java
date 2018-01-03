@@ -28,6 +28,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -146,6 +147,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
 	{
+		Stroke stroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(strokeWidth));
 		graphics.setColor(color);
 		graphics.draw(new Arc2D.Double(
@@ -153,6 +155,7 @@ public class XpGlobesOverlay extends Overlay
 			w, h,
 			radiusStart, radiusEnd,
 			Arc2D.OPEN));
+		graphics.setStroke(stroke);
 	}
 
 	private Ellipse2D drawEllipse(Graphics2D graphics, int x, int y)
