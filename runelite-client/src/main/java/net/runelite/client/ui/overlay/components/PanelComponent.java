@@ -33,6 +33,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -75,16 +76,20 @@ public class PanelComponent implements RenderableEntity
 	private List<Line> lines = new ArrayList<>();
 
 	@Setter
+	private ProgressBarComponent progressBar;
+
+	@Setter
 	private int width = 140;
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		final Dimension dimension = new Dimension();
-		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size();
+		final int elementNumber = (Strings.isNullOrEmpty(title) ? 0 : 1) + lines.size() + (Objects.isNull(progressBar) ? 0 : 1);
 		int height = elementNumber == 0 ? 0 :
 			TOP_BORDER + (graphics.getFontMetrics().getHeight() * elementNumber)
-				+ SEPARATOR * elementNumber + BOTTOM_BORDER;
+				+ SEPARATOR * elementNumber + (Objects.isNull(progressBar) ? 0 : progressBar.getHeight() / 2)
+					+ BOTTOM_BORDER;
 		dimension.setSize(width, height);
 
 		if (dimension.height == 0)
@@ -129,6 +134,14 @@ public class PanelComponent implements RenderableEntity
 			rightLineComponent.setColor(line.getRightColor());
 			rightLineComponent.render(graphics, parent);
 			y += metrics.getHeight() + SEPARATOR;
+		}
+
+		//Render progress bar
+		if (!Objects.isNull(progressBar))
+		{
+			progressBar.setWidth(width - LEFT_BORDER - RIGHT_BORDER);
+			progressBar.setPosition(new Point(position.x + LEFT_BORDER, y - (metrics.getHeight() / 2)));
+			progressBar.render(graphics, parent);
 		}
 
 		return dimension;
