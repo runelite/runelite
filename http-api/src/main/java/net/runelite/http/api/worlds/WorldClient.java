@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,31 +25,48 @@
  */
 package net.runelite.http.api.worlds;
 
-import java.util.List;
+import com.google.gson.JsonParseException;
+import net.runelite.http.api.RuneliteAPI;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class WorldResult
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class WorldClient
 {
-	private List<World> worlds;
+	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
 
-	public List<World> getWorlds()
+	public WorldResult lookupWorlds() throws IOException
 	{
-		return worlds;
-	}
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("worlds")
+			.build();
 
-	public void setWorlds(List<World> worlds)
-	{
-		this.worlds = worlds;
-	}
+		logger.debug("Built URI: {}", url);
 
-	public World findWorld(int worldNum)
-	{
-		for (World world : worlds)
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
 		{
-			if (world.getId() == worldNum)
+			if (!response.isSuccessful())
 			{
-				return world;
+				logger.debug("Error looking up worlds: {}", response.message());
+				return null;
 			}
+
+			InputStream in = response.body().byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
 		}
-		return null;
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }
