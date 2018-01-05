@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -141,6 +142,8 @@ public class ClientUI extends JFrame
 		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
 		setTitle(null);
 		setIconImage(ICON);
+		// Prevent substance from using a resize cursor for pointing
+		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);
