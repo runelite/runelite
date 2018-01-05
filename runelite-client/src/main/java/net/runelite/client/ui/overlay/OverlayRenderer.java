@@ -241,8 +241,6 @@ public class OverlayRenderer
 				}
 				else
 				{
-					surfaceGraphics.clearRect(0, 0, surface.getWidth(), surface.getHeight());
-
 					final Dimension dimension = MoreObjects.firstNonNull(safeRender(overlay, surfaceGraphics, subPosition), new Dimension());
 					if (dimension.width == 0 && dimension.height == 0)
 					{
@@ -272,6 +270,7 @@ public class OverlayRenderer
 
 					final Point transformed = OverlayUtil.transformPosition(overlayPosition, dimension);
 					graphics.drawImage(clippedImage, subPosition.x + transformed.x, subPosition.y + transformed.y, null);
+					surfaceGraphics.clearRect(0, 0, (int) dimension.getWidth(), (int) dimension.getHeight());
 				}
 			});
 	}
