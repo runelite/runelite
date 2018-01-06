@@ -7,13 +7,13 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bc")
-@Implements("RSCanvas")
-public final class RSCanvas extends Canvas {
+@Implements("GameCanvas")
+public final class GameCanvas extends Canvas {
    @ObfuscatedName("a")
    @Export("component")
    Component component;
 
-   RSCanvas(Component var1) {
+   GameCanvas(Component var1) {
       this.component = var1;
    }
 
