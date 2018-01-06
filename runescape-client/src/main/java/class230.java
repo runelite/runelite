@@ -116,7 +116,7 @@ public class class230 implements class229 {
             return false;
          } else {
             FileRequest.field3304 = KeyFocusListener.field599[KeyFocusListener.field602];
-            RSSocket.field2186 = KeyFocusListener.field598[KeyFocusListener.field602];
+            GameSocket.field2186 = KeyFocusListener.field598[KeyFocusListener.field602];
             KeyFocusListener.field602 = KeyFocusListener.field602 + 1 & 127;
             return true;
          }
