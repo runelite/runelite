@@ -58,6 +58,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.RuneLite;
 import net.runelite.client.RuneliteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -111,8 +112,11 @@ public class ClientUI extends JFrame
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
 
+		// Determine if we should use native look
+		boolean nativeLook = RuneLite.getOptions().has("native-window");
+
 		// Use custom window decorations
-		JFrame.setDefaultLookAndFeelDecorated(true);
+		JFrame.setDefaultLookAndFeelDecorated(!nativeLook);
 
 		// Use substance look and feel
 		try
@@ -128,7 +132,15 @@ public class ClientUI extends JFrame
 		setUIFont(new FontUIResource(StyleContext.getDefaultStyleContext()
 				.getFont(FontManager.getRunescapeFont().getName(), Font.PLAIN, 16)));
 
-		return new ClientUI(properties, client);
+		final ClientUI ui = new ClientUI(properties, client);
+
+		// Edit title bar if we are not using native look
+		if (!nativeLook)
+		{
+			new TitleBarPane(ui.getRootPane(), (SubstanceRootPaneUI)ui.getRootPane().getUI()).editTitleBar(ui);
+		}
+
+		return ui;
 	}
 
 	private ClientUI(RuneliteProperties properties, Applet client)
@@ -139,7 +151,6 @@ public class ClientUI extends JFrame
 
 		init();
 		pack();
-		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
 		setTitle(null);
 		setIconImage(ICON);
 		// Prevent substance from using a resize cursor for pointing

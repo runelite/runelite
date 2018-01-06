@@ -94,6 +94,7 @@ public class RuneLite
 		OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode");
 		parser.accepts("no-rs");
+		parser.accepts("native-window");
 		setOptions(parser.parse(args));
 
 		PROFILES_DIR.mkdirs();
