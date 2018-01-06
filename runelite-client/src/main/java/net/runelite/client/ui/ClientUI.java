@@ -47,6 +47,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JRootPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
@@ -111,9 +112,6 @@ public class ClientUI extends JFrame
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
 
-		// Use custom window decorations
-		JFrame.setDefaultLookAndFeelDecorated(true);
-
 		// Use substance look and feel
 		try
 		{
@@ -138,14 +136,27 @@ public class ClientUI extends JFrame
 		this.trayIcon = setupTrayIcon();
 
 		init();
-		pack();
-		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
 		setTitle(null);
 		setIconImage(ICON);
 		// Prevent substance from using a resize cursor for pointing
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
+	}
+	
+	public void showWithChrome(boolean customChrome)
+	{
+		setUndecorated(customChrome);
+		if (customChrome)
+		{
+			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+		}
+		pack();
+		if (customChrome)
+		{
+			new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI()).editTitleBar(this);
+		}
+		
 		setVisible(true);
 	}
 

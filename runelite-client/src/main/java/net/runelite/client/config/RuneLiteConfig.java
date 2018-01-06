@@ -40,6 +40,17 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		keyName = "uiEnableCustomChrome",
+		name = "Enable custom window chrome",
+		description = "Use Runelite's custom window title and borders.",
+		confirmationWarining = "Please restart your client after changing this setting"
+	)
+	default boolean enableCustomChrome()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "enablePlugins",
