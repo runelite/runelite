@@ -152,6 +152,7 @@ public class ClientUI extends JFrame
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 		}
 		pack();
+		setLocationRelativeTo(getOwner());
 		if (customChrome)
 		{
 			new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI()).editTitleBar(this);
