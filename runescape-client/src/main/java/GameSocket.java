@@ -7,8 +7,8 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fr")
-@Implements("RSSocket")
-public class RSSocket implements Runnable {
+@Implements("GameSocket")
+public class GameSocket implements Runnable {
    @ObfuscatedName("cu")
    public static char field2186;
    @ObfuscatedName("a")
@@ -37,7 +37,7 @@ public class RSSocket implements Runnable {
    @ObfuscatedName("f")
    boolean field2189;
 
-   RSSocket(OutputStream var1, int var2) {
+   GameSocket(OutputStream var1, int var2) {
       this.field2187 = 0;
       this.field2184 = 0;
       this.field2183 = var1;

@@ -3879,7 +3879,7 @@ public final class Client extends GameEngine {
                         TotalQuantityComparator.clientInstance.method884(var43);
                      } else {
                         field1051[field1049] = FileRequest.field3304;
-                        field1085[field1049] = RSSocket.field2186;
+                        field1085[field1049] = GameSocket.field2186;
                         ++field1049;
                      }
                   }
