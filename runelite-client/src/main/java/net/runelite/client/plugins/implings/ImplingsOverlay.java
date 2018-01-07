@@ -30,9 +30,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -55,7 +56,9 @@ public class ImplingsOverlay extends Overlay
 
 	private final QueryRunner queryRunner;
 	private final ImplingsConfig config;
-	private final List<Integer> ids = new LinkedList<>();
+
+	@Getter
+	private final Map<Integer, Color> ids = new HashMap<>();
 
 	@Inject
 	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
@@ -68,13 +71,13 @@ public class ImplingsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids));
+		NPCQuery implingQuery = new NPCQuery().idEquals(Ints.toArray(ids.keySet()));
 		NPC[] implings = queryRunner.runQuery(implingQuery);
 		for (NPC imp : implings)
 		{
 			//Spawns have the name "null", so they get changed to "Spawn"
 			String text = imp.getName().equals("null") ? "Spawn" : imp.getName();
-			drawImp(graphics, imp, text, Color.WHITE);
+			drawImp(graphics, imp, text, ids.get(imp.getId()));
 		}
 
 		return null;
@@ -86,63 +89,63 @@ public class ImplingsOverlay extends Overlay
 		ids.clear();
 		if (config.showBaby())
 		{
-			ids.add(NpcID.BABY_IMPLING);
-			ids.add(NpcID.BABY_IMPLING_1645);
+			ids.put(NpcID.BABY_IMPLING, config.getBabyColor());
+			ids.put(NpcID.BABY_IMPLING_1645, config.getBabyColor());
 		}
 		if (config.showYoung())
 		{
-			ids.add(NpcID.YOUNG_IMPLING);
-			ids.add(NpcID.YOUNG_IMPLING_1646);
+			ids.put(NpcID.YOUNG_IMPLING, config.getYoungColor());
+			ids.put(NpcID.YOUNG_IMPLING_1646, config.getYoungColor());
 		}
 		if (config.showGourmet())
 		{
-			ids.add(NpcID.GOURMET_IMPLING);
-			ids.add(NpcID.GOURMET_IMPLING_1647);
+			ids.put(NpcID.GOURMET_IMPLING, config.getGourmetColor());
+			ids.put(NpcID.GOURMET_IMPLING_1647, config.getGourmetColor());
 		}
 		if (config.showEarth())
 		{
-			ids.add(NpcID.EARTH_IMPLING);
-			ids.add(NpcID.EARTH_IMPLING_1648);
+			ids.put(NpcID.EARTH_IMPLING, config.getEarthColor());
+			ids.put(NpcID.EARTH_IMPLING_1648, config.getEarthColor());
 		}
 		if (config.showEssence())
 		{
-			ids.add(NpcID.ESSENCE_IMPLING);
-			ids.add(NpcID.ESSENCE_IMPLING_1649);
+			ids.put(NpcID.ESSENCE_IMPLING, config.getEssenceColor());
+			ids.put(NpcID.ESSENCE_IMPLING_1649, config.getEssenceColor());
 		}
 		if (config.showEclectic())
 		{
-			ids.add(NpcID.ECLECTIC_IMPLING);
-			ids.add(NpcID.ECLECTIC_IMPLING_1650);
+			ids.put(NpcID.ECLECTIC_IMPLING, config.getEclecticColor());
+			ids.put(NpcID.ECLECTIC_IMPLING_1650, config.getEclecticColor());
 		}
 		if (config.showNature())
 		{
-			ids.add(NpcID.NATURE_IMPLING);
-			ids.add(NpcID.NATURE_IMPLING_1651);
+			ids.put(NpcID.NATURE_IMPLING, config.getNatureColor());
+			ids.put(NpcID.NATURE_IMPLING_1651, config.getNatureColor());
 		}
 		if (config.showMagpie())
 		{
-			ids.add(NpcID.MAGPIE_IMPLING);
-			ids.add(NpcID.MAGPIE_IMPLING_1652);
+			ids.put(NpcID.MAGPIE_IMPLING, config.getMapgieColor());
+			ids.put(NpcID.MAGPIE_IMPLING_1652, config.getMapgieColor());
 		}
 		if (config.showNinja())
 		{
-			ids.add(NpcID.NINJA_IMPLING);
-			ids.add(NpcID.NINJA_IMPLING_1653);
+			ids.put(NpcID.NINJA_IMPLING, config.getNinjaColor());
+			ids.put(NpcID.NINJA_IMPLING_1653, config.getNinjaColor());
 		}
 		if (config.showDragon())
 		{
-			ids.add(NpcID.DRAGON_IMPLING);
-			ids.add(NpcID.DRAGON_IMPLING_1654);
+			ids.put(NpcID.DRAGON_IMPLING, config.getDragonColor());
+			ids.put(NpcID.DRAGON_IMPLING_1654, config.getDragonColor());
 		}
 		if (config.showLucky())
 		{
-			ids.add(NpcID.LUCKY_IMPLING);
-			ids.add(NpcID.LUCKY_IMPLING_7302);
+			ids.put(NpcID.LUCKY_IMPLING, config.getLuckyColor());
+			ids.put(NpcID.LUCKY_IMPLING_7302, config.getLuckyColor());
 		}
 		if (config.showSpawn())
 		{
-			ids.add(STATIC_SPAWN);
-			ids.add(DYNAMIC_SPAWN);
+			ids.put(STATIC_SPAWN, config.getSpawnColor());
+			ids.put(DYNAMIC_SPAWN, config.getSpawnColor());
 		}
 	}
 
