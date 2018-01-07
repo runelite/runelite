@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,80 +25,48 @@
  */
 package net.runelite.http.api.worlds;
 
-import java.util.EnumSet;
+import com.google.gson.JsonParseException;
+import net.runelite.http.api.RuneliteAPI;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class World
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class WorldClient
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
+	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
 
-	@Override
-	public String toString()
+	public WorldResult lookupWorlds() throws IOException
 	{
-		return "World{" + "id=" + id + ", types=" + types + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
-	}
+		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+			.addPathSegment("worlds")
+			.build();
 
-	public int getId()
-	{
-		return id;
-	}
+		logger.debug("Built URI: {}", url);
 
-	public void setId(int id)
-	{
-		this.id = id;
-	}
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
 
-	public EnumSet<WorldType> getTypes()
-	{
-		return types;
-	}
+		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error looking up worlds: {}", response.message());
+				return null;
+			}
 
-	public void setTypes(EnumSet<WorldType> types)
-	{
-		this.types = types;
-	}
-
-	public String getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(String address)
-	{
-		this.address = address;
-	}
-
-	public String getActivity()
-	{
-		return activity;
-	}
-
-	public void setActivity(String activity)
-	{
-		this.activity = activity;
-	}
-
-	public int getLocation()
-	{
-		return location;
-	}
-
-	public void setLocation(int location)
-	{
-		this.location = location;
-	}
-
-	public int getPlayers()
-	{
-		return players;
-	}
-
-	public void setPlayers(int players)
-	{
-		this.players = players;
+			InputStream in = response.body().byteStream();
+			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

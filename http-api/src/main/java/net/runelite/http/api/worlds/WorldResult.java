@@ -39,4 +39,16 @@ public class WorldResult
 	{
 		this.worlds = worlds;
 	}
+
+	public World findWorld(int worldNum)
+	{
+		for (World world : worlds)
+		{
+			if (world.getId() == worldNum)
+			{
+				return world;
+			}
+		}
+		return null;
+	}
 }

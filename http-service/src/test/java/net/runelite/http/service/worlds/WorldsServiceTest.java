@@ -26,18 +26,23 @@ package net.runelite.http.service.worlds;
 
 import java.io.IOException;
 import java.io.InputStream;
+import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;
 import org.junit.After;
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.sql2o.tools.IOUtils;
 
 public class WorldsServiceTest
 {
+
 	private final MockWebServer server = new MockWebServer();
 
 	@Before
@@ -67,7 +72,11 @@ public class WorldsServiceTest
 		worlds.setUrl(server.url("/"));
 
 		WorldResult worldResult = worlds.listWorlds();
-		Assert.assertEquals(82, worldResult.getWorlds().size());
+		assertEquals(82, worldResult.getWorlds().size());
+
+		World world = worldResult.findWorld(385);
+		assertNotNull(world);
+		assertTrue(world.getTypes().contains(WorldType.SKILL_TOTAL));
 	}
 
 }
