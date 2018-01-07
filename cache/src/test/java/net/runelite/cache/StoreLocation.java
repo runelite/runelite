@@ -24,11 +24,11 @@
  */
 package net.runelite.cache;
 
+import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Properties;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,18 +38,17 @@ public class StoreLocation
 	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
 
 	private static final int NUM_INDEXES = 16;
-	private static final String TMP_DIR = "d:/temp";
 
 	public static File LOCATION;
 	private static File TMP;
 
 	static
 	{
-		File tmp = new File(TMP_DIR);
-		if (tmp.exists() || tmp.mkdir())
+		String cacheTmpDir = System.getProperty("cache.tmpdir");
+		if (!Strings.isNullOrEmpty(cacheTmpDir))
 		{
-			System.setProperty("java.io.tmpdir", TMP_DIR);
-			TMP = tmp;
+			System.setProperty("java.io.tmpdir", cacheTmpDir);
+			TMP = new File(cacheTmpDir);
 		}
 
 		try
@@ -99,7 +98,7 @@ public class StoreLocation
 			@Override
 			public void after()
 			{
-				// don't cleanup if using local tmpdir
+				// don't cleanup if using cache tmpdir
 				if (TMP == null)
 				{
 					super.after();

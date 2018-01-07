@@ -124,6 +124,9 @@
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx2048m</argLine>
+					<systemProperties>
+						<cache.tmpdir>${cache.tmpdir}</cache.tmpdir>
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>
