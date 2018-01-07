@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import joptsimple.OptionSet;
 import net.runelite.client.RuneLite;
-import net.runelite.client.RuneliteModule;
+import net.runelite.client.RuneLiteModule;
 import net.runelite.client.ui.ClientUI;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,7 +61,7 @@ public class PluginManagerTest
 	{
 		RuneLite.setOptions(mock(OptionSet.class));
 
-		Injector injector = Guice.createInjector(new RuneliteModule(),
+		Injector injector = Guice.createInjector(new RuneLiteModule(),
 			BoundFieldModule.of(this));
 		RuneLite.setInjector(injector);
 		// test with no client bound
@@ -82,7 +82,7 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneliteModule());
+		modules.add(new RuneLiteModule());
 
 		PluginManager pluginManager = new PluginManager();
 		pluginManager.loadCorePlugins();

@@ -34,7 +34,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>mixins</artifactId>
-	<name>Runelite Mixins</name>
+	<name>RuneLite Mixins</name>
 
 	<dependencies>
 		<dependency>

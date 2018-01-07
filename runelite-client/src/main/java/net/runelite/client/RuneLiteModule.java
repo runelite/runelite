@@ -36,7 +36,6 @@ import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
@@ -44,9 +43,10 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j
-public class RuneliteModule extends AbstractModule
+public class RuneLiteModule extends AbstractModule
 {
 	@Override
 	protected void configure()
@@ -59,7 +59,7 @@ public class RuneliteModule extends AbstractModule
 		bind(InfoBoxManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
-		bind(RuneliteProperties.class);
+		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
 	}
 
@@ -83,16 +83,16 @@ public class RuneliteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-	RuneliteConfig provideConfig(ConfigManager configManager)
+	RuneLiteConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RuneliteConfig.class);
+		return configManager.getConfig(RuneLiteConfig.class);
 	}
 
 	@Provides
 	@Singleton
 	EventBus provideEventBus()
 	{
-		return new EventBus(RuneliteModule::eventExceptionHandler);
+		return new EventBus(RuneLiteModule::eventExceptionHandler);
 	}
 
 	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)

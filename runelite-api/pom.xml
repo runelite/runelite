@@ -34,7 +34,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>api</artifactId>
-	<name>Runelite API</name>
+	<name>RuneLite API</name>
 
 	<dependencies>
 		<dependency>

@@ -35,7 +35,7 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.service.worlds.WorldsService;
 import org.slf4j.Logger;
@@ -96,7 +96,7 @@ public class UpdateCheckService
 		{
 			ByteBuffer buffer = ByteBuffer.allocate(5);
 			buffer.put(HANDSHAKE_TYPE);
-			buffer.putInt(RuneliteAPI.getRsVersion());
+			buffer.putInt(RuneLiteAPI.getRsVersion());
 
 			InputStream is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();

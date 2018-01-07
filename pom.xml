@@ -31,7 +31,7 @@
 	<version>1.2.11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Runelite</name>
+	<name>RuneLite</name>
 	<description>Open source RuneScape client and deobfuscator</description>
 	<url>http://runelite.net</url>
 
@@ -90,14 +90,14 @@
 	<repositories>
 		<repository>
 			<id>runelite</id>
-			<name>Runelite</name>
+			<name>RuneLite</name>
 			<url>http://repo.runelite.net</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>runelite-plugins</id>
-			<name>Runelite Plugins</name>
+			<name>RuneLite Plugins</name>
 			<url>http://repo.runelite.net</url>
 		</pluginRepository>
 	</pluginRepositories>

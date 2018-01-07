@@ -22,71 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api;
+package net.runelite.client;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-public class RuneliteAPI
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
+@Slf4j
+public class RuneLiteProperties
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
+	private static final String RUNELITE_TITLE = "runelite.title";
+	private static final String RUNELITE_VERSION = "runelite.version";
 
-	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
+	private final Properties properties = new Properties();
 
-	public static final OkHttpClient CLIENT = new OkHttpClient();
-	public static final Gson GSON = new Gson();
-
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
-	private static final Properties properties = new Properties();
-	private static String version;
-	private static int rsVersion;
-
-	static
+	@Inject
+	public RuneLiteProperties()
 	{
+		InputStream in = getClass().getResourceAsStream("runelite.properties");
 		try
 		{
-			InputStream in = RuneliteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
-
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 		}
 		catch (IOException ex)
 		{
-			logger.error(null, ex);
+			log.warn("unable to load propertries", ex);
 		}
 	}
 
-	public static HttpUrl getApiBase()
+	public String getTitle()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		return properties.getProperty(RUNELITE_TITLE);
 	}
 
-	public static String getWsEndpoint()
+	public String getVersion()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return properties.getProperty(RUNELITE_VERSION);
 	}
-
-	public static String getVersion()
-	{
-		return version;
-	}
-
-	public static void setVersion(String version)
-	{
-		RuneliteAPI.version = version;
-	}
-
-	public static int getRsVersion()
-	{
-		return rsVersion;
-	}
-
 }
