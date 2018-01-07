@@ -341,6 +341,11 @@ public class MixinInjector
 				throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
 			}
 
+			if (method.getDescriptor().size() > obMethod.getDescriptor().size())
+			{
+				throw new InjectionException("Mixin methods cannot have more parameters than their corresponding ob method");
+			}
+
 			Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
 			moveCode(copy, obMethod.getCode());
 			copy.setAccessFlags(obMethod.getAccessFlags());
@@ -412,6 +417,12 @@ public class MixinInjector
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 				assert obMethod != null : "obfuscated method " + obMethodName + obMethodSignature + " does not exist";
+
+				if (method.getDescriptor().size() > obMethod.getDescriptor().size())
+				{
+					throw new InjectionException("Mixin methods cannot have more parameters than their corresponding ob method");
+				}
+
 				moveCode(obMethod, method.getCode());
 
 				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
