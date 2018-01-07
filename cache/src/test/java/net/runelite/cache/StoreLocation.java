@@ -38,20 +38,11 @@ public class StoreLocation
 	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
 
 	private static final int NUM_INDEXES = 16;
-	private static final String TMP_DIR = "d:/temp";
 
 	public static File LOCATION;
-	private static File TMP;
 
 	static
 	{
-		File tmp = new File(TMP_DIR);
-		if (tmp.exists() || tmp.mkdir())
-		{
-			System.setProperty("java.io.tmpdir", TMP_DIR);
-			TMP = tmp;
-		}
-
 		try
 		{
 			LOCATION = setupCacheDir();
@@ -94,17 +85,6 @@ public class StoreLocation
 
 	public static TemporaryFolder getTemporaryFolder()
 	{
-		return new TemporaryFolder()
-		{
-			@Override
-			public void after()
-			{
-				// don't cleanup if using local tmpdir
-				if (TMP == null)
-				{
-					super.after();
-				}
-			}
-		};
+		return new TemporaryFolder();
 	}
 }
