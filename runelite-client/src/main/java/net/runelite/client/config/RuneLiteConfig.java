@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
-@Slf4j
-public class RuneliteProperties
+@ConfigGroup(
+	keyName = "runelite",
+	name = "RuneLite",
+	description = "Configuration for RuneLite client options"
+)
+public interface RuneLiteConfig extends Config
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
-	private static final String RUNELITE_VERSION = "runelite.version";
-
-	private final Properties properties = new Properties();
-
-	@Inject
-	public RuneliteProperties()
+	@ConfigItem(
+		keyName = "chatCommandsRecolorEnabled",
+		name = "Enable chat commands recolor",
+		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
+	)
+	default boolean chatCommandsRecolorEnabled()
 	{
-		InputStream in = getClass().getResourceAsStream("runelite.properties");
-		try
-		{
-			properties.load(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load propertries", ex);
-		}
+		return true;
 	}
 
-	public String getTitle()
+	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
+		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
+		+ "of your computer. Are you sure you want to do this?"
+	)
+	default boolean enablePlugins()
 	{
-		return properties.getProperty(RUNELITE_TITLE);
-	}
-
-	public String getVersion()
-	{
-		return properties.getProperty(RUNELITE_VERSION);
+		return false;
 	}
 }

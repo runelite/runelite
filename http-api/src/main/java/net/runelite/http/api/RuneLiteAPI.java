@@ -22,47 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.updatecheck;
+package net.runelite.http.api;
 
-import com.google.gson.JsonParseException;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
+import java.util.Properties;
 import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UpdateCheckClient
+public class RuneLiteAPI
 {
-	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckClient.class);
+	private static final Logger logger = LoggerFactory.getLogger(RuneLiteAPI.class);
 
-	public boolean isOutdated()
+	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
+
+	public static final OkHttpClient CLIENT = new OkHttpClient();
+	public static final Gson GSON = new Gson();
+
+	private static final String BASE = "https://api.runelite.net/runelite-";
+	private static final String WSBASE = "wss://api.runelite.net/runelite-";
+	private static final Properties properties = new Properties();
+	private static String version;
+	private static int rsVersion;
+
+	static
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("update-check")
-			.build();
-
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try
 		{
-			ResponseBody body = response.body();
+			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
+			properties.load(in);
 
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), boolean.class);
+			version = properties.getProperty("runelite.version");
+			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 		}
-		catch (JsonParseException | IOException ex)
+		catch (IOException ex)
 		{
-			logger.debug("Unable to update-check", ex);
-			return false;
+			logger.error(null, ex);
 		}
 	}
+
+	public static HttpUrl getApiBase()
+	{
+		return HttpUrl.parse(BASE + getVersion());
+	}
+
+	public static String getWsEndpoint()
+	{
+		return WSBASE + getVersion() + "/ws";
+	}
+
+	public static String getVersion()
+	{
+		return version;
+	}
+
+	public static void setVersion(String version)
+	{
+		RuneLiteAPI.version = version;
+	}
+
+	public static int getRsVersion()
+	{
+		return rsVersion;
+	}
+
 }

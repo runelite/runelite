@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -53,21 +53,21 @@ public class ConfigClient
 
 	public Configuration get() throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
 			.build();
 
 		logger.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), Configuration.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), Configuration.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -77,7 +77,7 @@ public class ConfigClient
 
 	public void set(String key, String value) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
 			.build();
@@ -86,11 +86,11 @@ public class ConfigClient
 
 		Request request = new Request.Builder()
 			.put(RequestBody.create(TEXT_PLAIN, value))
-			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			logger.debug("Set configuration value '{}' to '{}'", key, value);
 		}
@@ -98,7 +98,7 @@ public class ConfigClient
 
 	public void unset(String key) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
 			.build();
@@ -107,11 +107,11 @@ public class ConfigClient
 
 		Request request = new Request.Builder()
 			.delete()
-			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			logger.debug("Unset configuration value '{}'", key);
 		}

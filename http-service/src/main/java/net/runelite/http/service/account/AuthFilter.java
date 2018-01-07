@@ -31,7 +31,7 @@ import java.time.Instant;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class AuthFilter
 
 	public SessionEntry handle(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		String runeliteAuth = request.getHeader(RuneliteAPI.RUNELITE_AUTH);
+		String runeliteAuth = request.getHeader(RuneLiteAPI.RUNELITE_AUTH);
 		if (runeliteAuth == null)
 		{
 			response.sendError(401, "Access denied");

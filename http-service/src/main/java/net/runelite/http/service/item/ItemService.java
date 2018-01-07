@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemType;
@@ -93,7 +93,7 @@ public class ItemService
 	private static final String CREATE_PRICES_IDX = "ALTER TABLE `prices`\n"
 		+ "  ADD UNIQUE KEY `item` (`item`,`time`);";
 
-	private static final String RUNELITE_CACHE = "Runelite-Cache";
+	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 
 	private final Sql2o sql2o;
 	private final Cache<String, SearchResult> cachedSearches = CacheBuilder.newBuilder()
@@ -486,7 +486,7 @@ public class ItemService
 
 	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
 	{
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -494,7 +494,7 @@ public class ItemService
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), clazz);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), clazz);
 		}
 		catch (JsonParseException ex)
 		{
@@ -510,7 +510,7 @@ public class ItemService
 			.url(httpUrl)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{

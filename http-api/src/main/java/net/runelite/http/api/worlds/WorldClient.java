@@ -26,7 +26,7 @@
 package net.runelite.http.api.worlds;
 
 import com.google.gson.JsonParseException;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -43,7 +43,7 @@ public class WorldClient
 
 	public WorldResult lookupWorlds() throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("worlds")
 			.build();
 
@@ -53,7 +53,7 @@ public class WorldClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -62,7 +62,7 @@ public class WorldClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
 		}
 		catch (JsonParseException ex)
 		{

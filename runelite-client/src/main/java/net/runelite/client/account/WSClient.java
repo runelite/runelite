@@ -32,7 +32,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
@@ -72,7 +72,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	public void connect()
 	{
 		Request request = new Request.Builder()
-			.url(RuneliteAPI.getWsEndpoint())
+			.url(RuneLiteAPI.getWsEndpoint())
 			.build();
 
 		webSocket = client.newWebSocket(request, this);

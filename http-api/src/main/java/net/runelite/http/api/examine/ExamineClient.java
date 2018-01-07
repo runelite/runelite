@@ -25,7 +25,7 @@
 package net.runelite.http.api.examine;
 
 import java.io.IOException;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -57,7 +57,7 @@ public class ExamineClient
 
 	private void submit(String type, int id, String text) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("examine")
 			.addPathSegment(type)
 			.addPathSegment(Integer.toString(id))
@@ -70,7 +70,7 @@ public class ExamineClient
 			.post(RequestBody.create(TEXT, text))
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			logger.debug("Submitted examine info for {} {}: {}",
 				type, id, text);

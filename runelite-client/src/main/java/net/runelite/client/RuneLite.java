@@ -58,7 +58,7 @@ public class RuneLite
 	private static OptionSet options;
 
 	@Inject
-	private RuneliteProperties properties;
+	private RuneLiteProperties properties;
 
 	@Inject
 	private PluginManager pluginManager;
@@ -98,13 +98,13 @@ public class RuneLite
 
 		PROFILES_DIR.mkdirs();
 
-		setInjector(Guice.createInjector(new RuneliteModule()));
+		setInjector(Guice.createInjector(new RuneLiteModule()));
 		injector.getInstance(RuneLite.class).start();
 	}
 
 	public void start() throws Exception
 	{
-		// Load Runelite or Vanilla client
+		// Load RuneLite or Vanilla client
 		final boolean hasRs = !getOptions().has("no-rs");
 		final Optional<Applet> optionalClient = hasRs
 			? new ClientLoader().loadRs()
