@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,82 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.http.service.worlds;
 
-import java.util.EnumSet;
+import net.runelite.http.api.worlds.WorldType;
 
-public class World
+enum ServiceWorldType
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
+	MEMBERS(WorldType.MEMBERS, 1),
+	PVP(WorldType.PVP, 1 << 2),
+	BOUNTY(WorldType.BOUNTY, 1 << 5),
+	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
+	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
+	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
+	DEADMAN(WorldType.DEADMAN, 1 << 29),
+	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
 
-	@Override
-	public String toString()
+	private final WorldType apiType;
+	private final int mask;
+
+	private ServiceWorldType(WorldType apiType, int mask)
 	{
-		return "World{" + "id=" + id + ", types=" + types + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
+		this.apiType = apiType;
+		this.mask = mask;
 	}
 
-	public int getId()
+	public WorldType getApiType()
 	{
-		return id;
+		return apiType;
 	}
 
-	public void setId(int id)
+	public int getMask()
 	{
-		this.id = id;
-	}
-
-	public EnumSet<WorldType> getTypes()
-	{
-		return types;
-	}
-
-	public void setTypes(EnumSet<WorldType> types)
-	{
-		this.types = types;
-	}
-
-	public String getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(String address)
-	{
-		this.address = address;
-	}
-
-	public String getActivity()
-	{
-		return activity;
-	}
-
-	public void setActivity(String activity)
-	{
-		this.activity = activity;
-	}
-
-	public int getLocation()
-	{
-		return location;
-	}
-
-	public void setLocation(int location)
-	{
-		this.location = location;
-	}
-
-	public int getPlayers()
-	{
-		return players;
-	}
-
-	public void setPlayers(int players)
-	{
-		this.players = players;
+		return mask;
 	}
 }

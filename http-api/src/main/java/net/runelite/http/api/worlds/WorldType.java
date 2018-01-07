@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,80 +24,14 @@
  */
 package net.runelite.http.api.worlds;
 
-import java.util.EnumSet;
-
-public class World
+public enum WorldType
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
-
-	@Override
-	public String toString()
-	{
-		return "World{" + "id=" + id + ", types=" + types + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public EnumSet<WorldType> getTypes()
-	{
-		return types;
-	}
-
-	public void setTypes(EnumSet<WorldType> types)
-	{
-		this.types = types;
-	}
-
-	public String getAddress()
-	{
-		return address;
-	}
-
-	public void setAddress(String address)
-	{
-		this.address = address;
-	}
-
-	public String getActivity()
-	{
-		return activity;
-	}
-
-	public void setActivity(String activity)
-	{
-		this.activity = activity;
-	}
-
-	public int getLocation()
-	{
-		return location;
-	}
-
-	public void setLocation(int location)
-	{
-		this.location = location;
-	}
-
-	public int getPlayers()
-	{
-		return players;
-	}
-
-	public void setPlayers(int players)
-	{
-		this.players = players;
-	}
+	MEMBERS,
+	PVP,
+	BOUNTY,
+	SKILL_TOTAL,
+	PVP_HIGH_RISK,
+	LAST_MAN_STANDING,
+	DEADMAN,
+	SEASONAL_DEADMAN
 }

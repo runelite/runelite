@@ -27,10 +27,12 @@ package net.runelite.http.service.worlds;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import net.runelite.http.api.RuneliteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -71,7 +73,7 @@ public class WorldsService
 		{
 			World world = new World();
 			world.setId(buf.getShort() & 0xFFFF);
-			world.setMask(buf.getInt());
+			world.setTypes(getTypes(buf.getInt()));
 			world.setAddress(readString(buf));
 			world.setActivity(readString(buf));
 			world.setLocation(buf.get() & 0xFF);
@@ -83,6 +85,21 @@ public class WorldsService
 		WorldResult result = new WorldResult();
 		result.setWorlds(worlds);
 		return result;
+	}
+
+	private static EnumSet<WorldType> getTypes(int mask)
+	{
+		EnumSet<WorldType> types = EnumSet.noneOf(WorldType.class);
+
+		for (ServiceWorldType type : ServiceWorldType.values())
+		{
+			if ((mask & type.getMask()) != 0)
+			{
+				types.add(type.getApiType());
+			}
+		}
+
+		return types;
 	}
 
 	private static String readString(ByteBuffer buf)
