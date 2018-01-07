@@ -66,12 +66,6 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
-	{
-
-	}
-
-	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;
