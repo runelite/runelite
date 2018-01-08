@@ -44,7 +44,8 @@ public enum GameTimer
 	MAGICIMBUE("magicimbue", 15, ChronoUnit.SECONDS),
 	FULLTB("teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", 150, ChronoUnit.SECONDS),
-	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES);
+	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES),
+	SUPERANTIFIRE("superantifire", 2, ChronoUnit.MINUTES);
 
 	private final String imageResource;
 	private final Duration duration;

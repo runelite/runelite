@@ -24,6 +24,16 @@
  */
 package net.runelite.client.plugins.timers;
 
+import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
+import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
+import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIVENOM;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -33,7 +43,6 @@ import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -90,10 +99,16 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(SUPERANTIVENOM);
 		}
+
 		if (!config.showTeleblock())
 		{
 			removeGameTimer(FULLTB);
 			removeGameTimer(HALFTB);
+		}
+
+		if (!config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
 		}
 	}
 
@@ -170,6 +185,16 @@ public class TimersPlugin extends Plugin
 		if (event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>") && config.showTeleblock())
 		{
 			createGameTimer(HALFTB);
+		}
+
+		if (event.getMessage().contains("You drink some of your super antifire potion") && config.showSuperAntiFire())
+		{
+			createGameTimer(SUPERANTIFIRE);
+		}
+
+		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>") && config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
 		}
 	}
 
