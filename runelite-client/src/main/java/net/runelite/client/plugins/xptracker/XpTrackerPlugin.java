@@ -71,10 +71,12 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		//reset upon login
-		if (event.getGameState() == GameState.LOGGED_IN)
+		// reset on world hop or logging in
+		switch (event.getGameState())
 		{
-			xpPanel.resetAllSkillXpHr();
+			case HOPPING:
+			case LOGGING_IN:
+				xpPanel.resetAllSkillXpHr();
 		}
 	}
 
