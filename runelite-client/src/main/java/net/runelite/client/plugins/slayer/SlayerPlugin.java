@@ -264,23 +264,9 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		String key = event.getKey();
-		String newValue = event.getNewValue();
-
-		if (key.equals("enabled"))
+		if (event.getKey().equals("infobox") || event.getKey().equals("enabled"))
 		{
-			if (newValue.equals("true"))
-			{
-				setTask(config.taskName(), config.amount());
-			}
-			else
-			{
-				infoBoxManager.removeIf(t -> t instanceof TaskCounter);
-			}
-		}
-		else if (key.equals("infobox"))
-		{
-			if (newValue.equals("true"))
+			if (event.getNewValue().equals("true"))
 			{
 				infoBoxManager.addInfoBox(counter);
 			}
