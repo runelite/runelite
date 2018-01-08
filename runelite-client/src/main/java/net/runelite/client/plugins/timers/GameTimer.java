@@ -45,7 +45,8 @@ public enum GameTimer
 	FULLTB("teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", 150, ChronoUnit.SECONDS),
 	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES),
-	SUPERANTIFIRE("superantifire", 2, ChronoUnit.MINUTES);
+	SUPERANTIFIRE("superantifire", 2, ChronoUnit.MINUTES),
+	ANTIDOTEPLUSPLUS("antidoteplusplus", 12, ChronoUnit.MINUTES);
 
 	private final String imageResource;
 	private final Duration duration;
