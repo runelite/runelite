@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 import com.google.common.eventbus.Subscribe;
 import javax.imageio.ImageIO;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.events.ExperienceChanged;
 import net.runelite.client.events.GameStateChanged;
