@@ -124,7 +124,7 @@ class SlayerOverlay extends Overlay
 			// Draw the counter in the bottom left for equipment, and top left for jewelry
 			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
 				? bounds.height
-				: graphics.getFontMetrics().getHeight() )));
+				: graphics.getFontMetrics().getHeight())));
 			textComponent.render(graphics, parent);
 		}
 
