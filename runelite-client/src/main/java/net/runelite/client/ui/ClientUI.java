@@ -58,7 +58,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneliteProperties;
+import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
@@ -74,7 +74,7 @@ public class ClientUI extends JFrame
 	private TrayIcon trayIcon;
 
 	private final Applet client;
-	private final RuneliteProperties properties;
+	private final RuneLiteProperties properties;
 	private JPanel container;
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
@@ -96,7 +96,7 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneliteProperties properties, Applet client)
+	public static ClientUI create(RuneLiteProperties properties, Applet client)
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -131,7 +131,7 @@ public class ClientUI extends JFrame
 		return new ClientUI(properties, client);
 	}
 
-	private ClientUI(RuneliteProperties properties, Applet client)
+	private ClientUI(RuneLiteProperties properties, Applet client)
 	{
 		this.properties = properties;
 		this.client = client;

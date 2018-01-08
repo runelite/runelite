@@ -28,7 +28,7 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,7 +41,7 @@ public class HiscoreClient
 
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
 			.addPathSegment(endpoint.name().toLowerCase())
 			.addQueryParameter("username", username);
@@ -54,10 +54,10 @@ public class HiscoreClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -72,7 +72,7 @@ public class HiscoreClient
 
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl.Builder builder = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("hiscore")
 			.addPathSegment(endpoint.name())
 			.addPathSegment(skill.toString().toLowerCase())
@@ -86,10 +86,10 @@ public class HiscoreClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
 		}
 		catch (JsonParseException ex)
 		{

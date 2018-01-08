@@ -44,12 +44,12 @@ public class ClientLoader
 		{
 			if (isOutdated)
 			{
-				log.info("Runelite is outdated - fetching vanilla client");
+				log.info("RuneLite is outdated - fetching vanilla client");
 				return Optional.of(loadVanilla());
 			}
 
-			log.debug("Runelite is up to date");
-			return Optional.of(loadRunelite());
+			log.debug("RuneLite is up to date");
+			return Optional.of(loadRuneLite());
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 		{
@@ -65,7 +65,7 @@ public class ClientLoader
 		}
 	}
 
-	private Applet loadRunelite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
+	private Applet loadRuneLite() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException
 	{
 		ConfigLoader config = new ConfigLoader();
 

@@ -34,7 +34,7 @@
 
 	<artifactId>runelite-plugin-archetype</artifactId>
 	<packaging>maven-archetype</packaging>
-	<name>Runelite Plugin Archetype</name>
+	<name>RuneLite Plugin Archetype</name>
 
 	<build>
 		<!-- filter archetype resource's pom to put project version in it -->

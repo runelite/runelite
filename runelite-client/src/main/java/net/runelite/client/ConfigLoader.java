@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,7 +51,7 @@ public class ConfigLoader
 			.url(CONFIG_URL)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute();
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
 		{
 			String str;

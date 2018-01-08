@@ -222,7 +222,7 @@ public class ConfigManager
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(out, "Runelite configuration");
+			properties.store(out, "RuneLite configuration");
 		}
 	}
 

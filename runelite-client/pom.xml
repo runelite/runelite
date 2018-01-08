@@ -34,7 +34,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>client</artifactId>
-	<name>Runelite Client</name>
+	<name>RuneLite Client</name>
 
 	<properties>
 		<slf4j.version>1.7.12</slf4j.version>

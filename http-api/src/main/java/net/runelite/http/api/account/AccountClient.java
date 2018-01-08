@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -53,7 +53,7 @@ public class AccountClient
 
 	public OAuthResponse login() throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")
 			.addPathSegment("login")
 			.build();
@@ -64,10 +64,10 @@ public class AccountClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), OAuthResponse.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), OAuthResponse.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -77,7 +77,7 @@ public class AccountClient
 
 	public void logout() throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")
 			.addPathSegment("logout")
 			.build();
@@ -85,11 +85,11 @@ public class AccountClient
 		logger.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			logger.debug("Sent logout request");
 		}
@@ -97,7 +97,7 @@ public class AccountClient
 
 	public boolean sesssionCheck()
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("account")
 			.addPathSegment("session-check")
 			.build();
@@ -105,11 +105,11 @@ public class AccountClient
 		logger.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneliteAPI.RUNELITE_AUTH, uuid.toString())
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			return response.isSuccessful();
 		}

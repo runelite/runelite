@@ -39,7 +39,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.service.ws.SessionManager;
@@ -88,7 +88,7 @@ public class AccountService
 	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
 	private static final String RL_REDIR = "http://runelite.net/logged-in";
 
-	private final Gson gson = RuneliteAPI.GSON;
+	private final Gson gson = RuneLiteAPI.GSON;
 
 	private final Sql2o sql2o;
 	private final String oauthClientId;
@@ -135,7 +135,7 @@ public class AccountService
 
 		State state = new State();
 		state.setUuid(uuid);
-		state.setApiVersion(RuneliteAPI.getVersion());
+		state.setApiVersion(RuneLiteAPI.getVersion());
 
 		OAuth20Service service = new ServiceBuilder()
 			.apiKey(oauthClientId)

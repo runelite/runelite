@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
@@ -56,7 +56,7 @@ public class WorldsService
 
 		byte[] b;
 
-		try (Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute())
+		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
 		{
 			b = okresponse.body().bytes();
 		}

@@ -28,7 +28,7 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,7 +41,7 @@ public class ItemClient
 
 	public ItemPrice lookupItemPrice(int itemId) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
 			.addPathSegment("" + itemId)
 			.addPathSegment("price")
@@ -53,7 +53,7 @@ public class ItemClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -62,7 +62,7 @@ public class ItemClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -72,7 +72,7 @@ public class ItemClient
 
 	public SearchResult search(String itemName) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("item")
 			.addPathSegment("search")
 			.addQueryParameter("query", itemName)
@@ -84,7 +84,7 @@ public class ItemClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -93,7 +93,7 @@ public class ItemClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SearchResult.class);
 		}
 		catch (JsonParseException ex)
 		{

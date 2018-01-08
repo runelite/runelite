@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -56,9 +56,9 @@ public class XteaClient
 
 		xteaRequest.addKey(xteaKey);
 
-		String json = RuneliteAPI.GSON.toJson(xteaRequest);
+		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("xtea")
 			.build();
 
@@ -69,12 +69,12 @@ public class XteaClient
 			.url(url)
 			.build();
 
-		return RuneliteAPI.CLIENT.newCall(request).execute();
+		return RuneLiteAPI.CLIENT.newCall(request).execute();
 	}
 
 	public List<XteaKey> get() throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("xtea")
 			.build();
 
@@ -82,11 +82,11 @@ public class XteaClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<XteaKey>>() { }.getType());
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<XteaKey>>() { }.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
@@ -97,7 +97,7 @@ public class XteaClient
 
 	public XteaKey get(int region) throws IOException
 	{
-		HttpUrl url = RuneliteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("xtea")
 			.addPathSegment(Integer.toString(region))
 			.build();
@@ -106,10 +106,10 @@ public class XteaClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneliteAPI.CLIENT.newCall(request).execute())
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneliteAPI.GSON.fromJson(new InputStreamReader(in), XteaKey.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), XteaKey.class);
 		}
 		catch (JsonParseException ex)
 		{
