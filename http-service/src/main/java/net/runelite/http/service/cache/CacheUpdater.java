@@ -37,7 +37,7 @@ import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.client.IndexInfo;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Store;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import net.runelite.protocol.api.login.HandshakeResponseType;
@@ -76,7 +76,7 @@ public class CacheUpdater
 	@RequestMapping("/update")
 	public void check() throws IOException, InvalidEndpointException, InvalidPortException, InterruptedException
 	{
-		int rsVersion = RuneliteAPI.getRsVersion();
+		int rsVersion = RuneLiteAPI.getRsVersion();
 
 		try (Connection con = sql2o.beginTransaction())
 		{

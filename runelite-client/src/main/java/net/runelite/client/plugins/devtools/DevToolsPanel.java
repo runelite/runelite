@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -201,8 +203,27 @@ public class DevToolsPanel extends PluginPanel
 		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
 		refreshWidgetsBtn.addActionListener(e ->
 		{
-			DefaultMutableTreeNode root = refreshWidgets();
-			tree.setModel(new DefaultTreeModel(root));
+			new SwingWorker<DefaultMutableTreeNode, Void>()
+			{
+				@Override
+				protected DefaultMutableTreeNode doInBackground() throws Exception
+				{
+					return refreshWidgets();
+				}
+
+				@Override
+				protected void done()
+				{
+					try
+					{
+						tree.setModel(new DefaultTreeModel(get()));
+					}
+					catch (InterruptedException | ExecutionException ex)
+					{
+						throw new RuntimeException(ex);
+					}
+				}
+			}.execute();
 		});
 
 		JPanel btnContainer = new JPanel();

@@ -282,7 +282,7 @@ public class TextureProvider implements ITextureLoader {
             var4 += var0.readUnsignedByte() << 8;
          }
 
-         RSCanvas.method764(var0, var2, var3, var4);
+         GameCanvas.method764(var0, var2, var3, var4);
       }
 
    }

@@ -175,7 +175,7 @@ public class MappingDumper
 			}
 		}
 
-		System.out.println("Runelite http://github.com/runelite");
+		System.out.println("RuneLite http://github.com/runelite");
 		System.out.println("Run " + Instant.now());
 		System.out.println("Classes: " + classes + ", methods: " + methods + ", fields: " + fields);
 		System.out.println("Gamepack " + properties.getRsVersion());

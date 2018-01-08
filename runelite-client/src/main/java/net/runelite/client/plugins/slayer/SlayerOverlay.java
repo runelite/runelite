@@ -121,9 +121,11 @@ class SlayerOverlay extends Overlay
 			final Rectangle bounds = item.getCanvasBounds();
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setText(String.valueOf(amount));
-			textComponent.setPosition(new Point(bounds.x, (slayerJewelry.contains(itemId)
-				? bounds.x
-				: 16 )));
+			// Draw the counter in the bottom left for equipment, and top left for jewelry
+			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
+				? bounds.height
+				: graphics.getFontMetrics().getHeight())));
+			textComponent.render(graphics, parent);
 		}
 
 		return null;

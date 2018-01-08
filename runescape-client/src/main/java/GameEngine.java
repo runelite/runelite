@@ -487,7 +487,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          VertexNormal.canvasHeight -= var2.top + var2.bottom;
       }
 
-      this.canvas = new RSCanvas(this);
+      this.canvas = new GameCanvas(this);
       var1.add(this.canvas);
       this.canvas.setSize(Huffman.canvasWidth, VertexNormal.canvasHeight);
       this.canvas.setVisible(true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.updatecheck;
+package net.runelite.client.config;
 
-import com.google.gson.JsonParseException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class UpdateCheckClient
+@ConfigGroup(
+	keyName = "runelite",
+	name = "RuneLite",
+	description = "Configuration for RuneLite client options"
+)
+public interface RuneLiteConfig extends Config
 {
-	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckClient.class);
-
-	public boolean isOutdated()
+	@ConfigItem(
+		keyName = "chatCommandsRecolorEnabled",
+		name = "Enable chat commands recolor",
+		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
+	)
+	default boolean chatCommandsRecolorEnabled()
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("update-check")
-			.build();
+		return true;
+	}
 
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
-
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), boolean.class);
-		}
-		catch (JsonParseException | IOException ex)
-		{
-			logger.debug("Unable to update-check", ex);
-			return false;
-		}
+	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
+		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
+		+ "of your computer. Are you sure you want to do this?"
+	)
+	default boolean enablePlugins()
+	{
+		return false;
 	}
 }

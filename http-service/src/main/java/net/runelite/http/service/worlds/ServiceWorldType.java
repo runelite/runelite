@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.http.service.worlds;
 
-@ConfigGroup(
-	keyName = "runelite",
-	name = "Runelite",
-	description = "Configuration for Runelite client options"
-)
-public interface RuneliteConfig extends Config
+import net.runelite.http.api.worlds.WorldType;
+
+enum ServiceWorldType
 {
-	@ConfigItem(
-		keyName = "chatCommandsRecolorEnabled",
-		name = "Enable chat commands recolor",
-		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
-	)
-	default boolean chatCommandsRecolorEnabled()
+	MEMBERS(WorldType.MEMBERS, 1),
+	PVP(WorldType.PVP, 1 << 2),
+	BOUNTY(WorldType.BOUNTY, 1 << 5),
+	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
+	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
+	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
+	DEADMAN(WorldType.DEADMAN, 1 << 29),
+	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
+
+	private final WorldType apiType;
+	private final int mask;
+
+	private ServiceWorldType(WorldType apiType, int mask)
 	{
-		return true;
+		this.apiType = apiType;
+		this.mask = mask;
 	}
 
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
-		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
-		+ "of your computer. Are you sure you want to do this?"
-	)
-	default boolean enablePlugins()
+	public WorldType getApiType()
 	{
-		return false;
+		return apiType;
+	}
+
+	public int getMask()
+	{
+		return mask;
 	}
 }

@@ -26,7 +26,7 @@ public class SocketSession2 extends AbstractSocket {
    @ObfuscatedSignature(
       signature = "Lfr;"
    )
-   RSSocket field2155;
+   GameSocket field2155;
 
    SocketSession2(Socket var1, int var2, int var3) throws IOException {
       this.field2156 = var1;
@@ -35,7 +35,7 @@ public class SocketSession2 extends AbstractSocket {
       this.field2156.setReceiveBufferSize(65536);
       this.field2156.setSendBufferSize(65536);
       this.field2157 = new RSInputSocket(this.field2156.getInputStream(), var2);
-      this.field2155 = new RSSocket(this.field2156.getOutputStream(), var3);
+      this.field2155 = new GameSocket(this.field2156.getOutputStream(), var3);
    }
 
    @ObfuscatedName("w")

@@ -27,12 +27,12 @@ package net.runelite.client;
 import com.google.inject.Guice;
 import org.junit.Test;
 
-public class RuneliteModuleTest
+public class RuneLiteModuleTest
 {
 	@Test
 	public void testConfigure()
 	{
-		Guice.createInjector(new RuneliteModule());
+		Guice.createInjector(new RuneLiteModule());
 	}
 
 

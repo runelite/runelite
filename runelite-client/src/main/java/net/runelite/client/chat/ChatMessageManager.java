@@ -46,9 +46,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
-import net.runelite.client.config.RuneliteConfig;
 import net.runelite.client.events.ResizeableChanged;
 import net.runelite.client.events.VarbitChanged;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j
 @Singleton
@@ -57,12 +57,12 @@ public class ChatMessageManager
 	private final Map<ChatMessageType, Set<ChatColor>> colorCache = new HashMap<>();
 	private final Provider<Client> clientProvider;
 	private final ScheduledExecutorService executor;
-	private final RuneliteConfig config;
+	private final RuneLiteConfig config;
 	private int transparancyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	public ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor, RuneliteConfig config)
+	public ChatMessageManager(Provider<Client> clientProvider, ScheduledExecutorService executor, RuneLiteConfig config)
 	{
 		this.clientProvider = clientProvider;
 		this.executor = executor;

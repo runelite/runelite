@@ -45,5 +45,13 @@ public enum OverlayPosition
 	/**
 	 * Place overlay in the bottom right most area possible
 	 */
-	BOTTOM_RIGHT;
+	BOTTOM_RIGHT,
+	/**
+	 * Place overlay directly above right most area of chatbox possible
+	 */
+	ABOVE_CHATBOX_RIGHT,
+	/**
+	 * Tooltip overlay
+	 */
+	TOOLTIP;
 }

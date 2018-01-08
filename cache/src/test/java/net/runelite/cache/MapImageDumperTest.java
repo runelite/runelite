@@ -30,6 +30,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.region.Region;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -44,6 +45,7 @@ public class MapImageDumperTest
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
 	@Test
+	@Ignore
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,

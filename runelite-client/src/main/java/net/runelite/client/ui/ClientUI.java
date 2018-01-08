@@ -28,7 +28,9 @@ import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -51,11 +53,12 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.text.StyleContext;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.RuneliteProperties;
+import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 
@@ -71,7 +74,7 @@ public class ClientUI extends JFrame
 	private TrayIcon trayIcon;
 
 	private final Applet client;
-	private final RuneliteProperties properties;
+	private final RuneLiteProperties properties;
 	private JPanel container;
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
@@ -93,7 +96,7 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneliteProperties properties, Applet client)
+	public static ClientUI create(RuneLiteProperties properties, Applet client)
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -122,12 +125,13 @@ public class ClientUI extends JFrame
 		}
 
 		// Use custom UI font
-		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
+		setUIFont(new FontUIResource(StyleContext.getDefaultStyleContext()
+				.getFont(FontManager.getRunescapeFont().getName(), Font.PLAIN, 16)));
 
 		return new ClientUI(properties, client);
 	}
 
-	private ClientUI(RuneliteProperties properties, Applet client)
+	private ClientUI(RuneLiteProperties properties, Applet client)
 	{
 		this.properties = properties;
 		this.client = client;
@@ -138,6 +142,8 @@ public class ClientUI extends JFrame
 		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
 		setTitle(null);
 		setIconImage(ICON);
+		// Prevent substance from using a resize cursor for pointing
+		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 		setVisible(true);

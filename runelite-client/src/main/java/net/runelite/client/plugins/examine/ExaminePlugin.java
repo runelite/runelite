@@ -252,20 +252,30 @@ public class ExaminePlugin extends Plugin
 			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
 			{
 				Widget widgetItem = widget.getChild(1);
-				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
-				itemId = widgetItem.getItemId();
+				if (widgetItem != null)
+				{
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
 			}
 			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
-				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
-				itemId = widgetItem.getItemId();
+				if (widgetItem != null)
+				{
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
 			}
 			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
 			{
-				Widget widgetItem = widget.getDynamicChildren()[pendingExamine.getActionParam()];
-				quantity = widgetItem != null ? widgetItem.getItemQuantity() : 1;
-				itemId = widgetItem.getItemId();
+				Widget[] children = widget.getDynamicChildren();
+				if (pendingExamine.getActionParam() < children.length)
+				{
+					Widget widgetItem = children[pendingExamine.getActionParam()];
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
 			}
 		}
 

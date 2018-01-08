@@ -54,7 +54,7 @@ public class ConfigManagerTest
 
 	@Mock
 	@Bind
-	RuneliteConfig runeliteConfig;
+	RuneLiteConfig runeliteConfig;
 
 	@Inject
 	ConfigManager manager;

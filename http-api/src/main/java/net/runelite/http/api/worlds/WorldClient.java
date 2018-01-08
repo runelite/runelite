@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api;
+package net.runelite.http.api.worlds;
 
-import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.google.gson.JsonParseException;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RuneliteAPI
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class WorldClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
+	private static final Logger logger = LoggerFactory.getLogger(WorldClient.class);
 
-	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
-
-	public static final OkHttpClient CLIENT = new OkHttpClient();
-	public static final Gson GSON = new Gson();
-
-	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
-	private static final Properties properties = new Properties();
-	private static String version;
-	private static int rsVersion;
-
-	static
+	public WorldResult lookupWorlds() throws IOException
 	{
-		try
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("worlds")
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			InputStream in = RuneliteAPI.class.getResourceAsStream("/runelite.properties");
-			properties.load(in);
+			if (!response.isSuccessful())
+			{
+				logger.debug("Error looking up worlds: {}", response.message());
+				return null;
+			}
 
-			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
 		}
-		catch (IOException ex)
+		catch (JsonParseException ex)
 		{
-			logger.error(null, ex);
+			throw new IOException(ex);
 		}
 	}
-
-	public static HttpUrl getApiBase()
-	{
-		return HttpUrl.parse(BASE + getVersion());
-	}
-
-	public static String getWsEndpoint()
-	{
-		return WSBASE + getVersion() + "/ws";
-	}
-
-	public static String getVersion()
-	{
-		return version;
-	}
-
-	public static void setVersion(String version)
-	{
-		RuneliteAPI.version = version;
-	}
-
-	public static int getRsVersion()
-	{
-		return rsVersion;
-	}
-
 }

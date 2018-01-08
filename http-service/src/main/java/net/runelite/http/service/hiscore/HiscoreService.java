@@ -25,7 +25,7 @@
 package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
-import net.runelite.http.api.RuneliteAPI;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -75,7 +75,7 @@ public class HiscoreService
 
 		String responseStr;
 
-		try (Response okresponse = RuneliteAPI.CLIENT.newCall(okrequest).execute())
+		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
 		{
 			if (!okresponse.isSuccessful())
 			{

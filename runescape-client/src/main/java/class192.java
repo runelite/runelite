@@ -248,7 +248,7 @@ public class class192 {
                               boolean var10 = false;
 
                               for(int var11 = 0; var11 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var11) {
-                                 if(RSSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var11)) {
+                                 if(GameSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var11)) {
                                     var10 = true;
                                     break;
                                  }
@@ -271,7 +271,7 @@ public class class192 {
                                  }
 
                                  if(var10 && class91.username.length() < 320) {
-                                    class91.username = class91.username + RSSocket.field2186;
+                                    class91.username = class91.username + GameSocket.field2186;
                                  }
                               } else if(class91.field1345 == 1) {
                                  if(FileRequest.field3304 == 85 && class91.password.length() > 0) {
@@ -301,7 +301,7 @@ public class class192 {
                                  }
 
                                  if(var10 && class91.password.length() < 20) {
-                                    class91.password = class91.password + RSSocket.field2186;
+                                    class91.password = class91.password + GameSocket.field2186;
                                  }
                               }
                            }
@@ -382,7 +382,7 @@ public class class192 {
                               var21 = false;
 
                               for(var22 = 0; var22 < "1234567890".length(); ++var22) {
-                                 if(RSSocket.field2186 == "1234567890".charAt(var22)) {
+                                 if(GameSocket.field2186 == "1234567890".charAt(var22)) {
                                     var21 = true;
                                     break;
                                  }
@@ -415,7 +415,7 @@ public class class192 {
                                  }
 
                                  if(var21 && class237.field3245.length() < 6) {
-                                    class237.field3245 = class237.field3245 + RSSocket.field2186;
+                                    class237.field3245 = class237.field3245 + GameSocket.field2186;
                                  }
                               }
                            }
@@ -436,7 +436,7 @@ public class class192 {
                               var21 = false;
 
                               for(var22 = 0; var22 < "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".length(); ++var22) {
-                                 if(RSSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var22)) {
+                                 if(GameSocket.field2186 == "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"£$%^&*()-_=+[{]};:\'@#~,<.>/?\\| ".charAt(var22)) {
                                     var21 = true;
                                     break;
                                  }
@@ -455,7 +455,7 @@ public class class192 {
                                  }
 
                                  if(var21 && class91.username.length() < 320) {
-                                    class91.username = class91.username + RSSocket.field2186;
+                                    class91.username = class91.username + GameSocket.field2186;
                                  }
                               }
                            }

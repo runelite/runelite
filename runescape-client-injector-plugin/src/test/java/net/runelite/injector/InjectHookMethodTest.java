@@ -26,7 +26,8 @@ package net.runelite.injector;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.ClassUtil;
@@ -46,8 +47,16 @@ import org.junit.Test;
 
 abstract class Obfuscated
 {
-	public void foo(Obfuscated o, int i)
+	public int foo(Obfuscated o, int i)
 	{
+		if (i > 0)
+		{
+			return i;
+		}
+		else
+		{
+			return -i;
+		}
 	}
 }
 
@@ -56,12 +65,12 @@ class Actor
 {
 	@ObfuscatedName("foo")
 	@ObfuscatedSignature(
-		signature = "(LObfuscated;I)V"
+		signature = "(LObfuscated;I)I"
 	)
-	@Hook("test")
-	public void bar(Actor actor, int i)
+	@Hook(value = "test", end = true)
+	public int bar(Actor actor, int i)
 	{
-
+		throw new IllegalStateException();
 	}
 }
 
@@ -74,7 +83,7 @@ public class InjectHookMethodTest
 		InputStream in = getClass().getResourceAsStream("Actor.class");
 		ClassFile cf = ClassUtil.loadClass(in);
 		cf.setName("Actor");
-		cf.findMethod("bar").setDescriptor(new Signature("(LActor;I)V"));
+		cf.findMethod("bar").setDescriptor(new Signature("(LActor;I)I"));
 
 		ClassGroup deobfuscated = new ClassGroup();
 		deobfuscated.addClass(cf);
@@ -82,7 +91,7 @@ public class InjectHookMethodTest
 		in = getClass().getResourceAsStream("Obfuscated.class");
 		ClassFile obcf = ClassUtil.loadClass(in);
 		obcf.setName("Obfuscated");
-		obcf.findMethod("foo").setDescriptor(new Signature("(LObfuscated;I)V"));
+		obcf.findMethod("foo").setDescriptor(new Signature("(LObfuscated;I)I"));
 
 		ClassGroup obfuscated = new ClassGroup();
 		obfuscated.addClass(obcf);
@@ -97,14 +106,15 @@ public class InjectHookMethodTest
 		method = obcf.findMethod("foo");
 		assert method != null;
 		Code code = method.getCode();
-		Optional<InvokeStatic> invokeIns = code.getInstructions().getInstructions().stream()
+		List<InvokeStatic> invokeIns = code.getInstructions().getInstructions().stream()
 			.filter(i -> i instanceof InvokeStatic)
 			.map(i -> (InvokeStatic) i)
 			.filter(i -> i.getMethod().getClazz().getName().equals(HOOKS))
-			.findFirst();
-		assertTrue(invokeIns.isPresent());
+			.collect(Collectors.toList());
+		assertTrue(!invokeIns.isEmpty());
+		assertEquals(2, invokeIns.size());
 
-		InvokeStatic invokeStatic = invokeIns.get();
+		InvokeStatic invokeStatic = invokeIns.get(0);
 		Signature signature = invokeStatic.getMethod().getType();
 		assertEquals(3, signature.size()); // this + patamers
 

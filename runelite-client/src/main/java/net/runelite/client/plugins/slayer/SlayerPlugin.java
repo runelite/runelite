@@ -283,7 +283,7 @@ public class SlayerPlugin extends Plugin
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task == null)
 		{
-			log.warn("No slayer task for {} in the Task database", taskName);
+			log.debug("No slayer task for {} in the Task database", taskName);
 		}
 		else
 		{

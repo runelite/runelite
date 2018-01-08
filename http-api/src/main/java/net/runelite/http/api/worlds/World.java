@@ -24,10 +24,12 @@
  */
 package net.runelite.http.api.worlds;
 
+import java.util.EnumSet;
+
 public class World
 {
 	private int id;
-	private int mask;
+	private EnumSet<WorldType> types;
 	private String address;
 	private String activity;
 	private int location;
@@ -36,7 +38,7 @@ public class World
 	@Override
 	public String toString()
 	{
-		return "World{" + "id=" + id + ", mask=" + mask + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
+		return "World{" + "id=" + id + ", types=" + types + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
 	}
 
 	public int getId()
@@ -49,14 +51,14 @@ public class World
 		this.id = id;
 	}
 
-	public int getMask()
+	public EnumSet<WorldType> getTypes()
 	{
-		return mask;
+		return types;
 	}
 
-	public void setMask(int mask)
+	public void setTypes(EnumSet<WorldType> types)
 	{
-		this.mask = mask;
+		this.types = types;
 	}
 
 	public String getAddress()
