@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.reportbutton;
 
-public enum GameState
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "reportButton",
+	name = "Report Button Utils",
+	description = "Configuration for report button"
+)
+public interface ReportButtonConfig extends Config
 {
-	UNKNOWN(-1),
-	STARTING(0),
-	LOGIN_SCREEN(10),
-	LOGGING_IN(20),
-	LOADING(25),
-	LOGGED_IN(30),
-	CONNECTION_LOST(40),
-	HOPPING(45);
-
-	private final int state;
-
-	GameState(int state)
+	@ConfigItem(
+		keyName = "time",
+		name = "Display Options",
+		description = "Configures what text the report button shows."
+	)
+	default TimeStyle time()
 	{
-		this.state = state;
-	}
-
-	public static GameState of(int state)
-	{
-		for (GameState gs : GameState.values())
-		{
-			if (gs.state == state)
-			{
-				return gs;
-			}
-		}
-		return UNKNOWN;
+		return TimeStyle.LOGIN_TIME;
 	}
 }
