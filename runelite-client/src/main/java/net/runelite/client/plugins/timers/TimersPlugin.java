@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
@@ -38,9 +39,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -109,6 +112,26 @@ public class TimersPlugin extends Plugin
 		if (!config.showSuperAntiFire())
 		{
 			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (!config.showAntidotePlusPlus())
+		{
+			removeGameTimer(ANTIDOTEPLUSPLUS);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (config.showAntidotePlusPlus()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIDOTE1_5958
+			|| event.getId() == ItemID.ANTIDOTE2_5956
+			|| event.getId() == ItemID.ANTIDOTE3_5954
+			|| event.getId() == ItemID.ANTIDOTE4_5952))
+		{
+			// Needs menu option hook because drink message is intercepting with antipoison message
+			createGameTimer(ANTIDOTEPLUSPLUS);
 		}
 	}
 

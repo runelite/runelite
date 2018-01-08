@@ -134,4 +134,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAntidotePlusPlus",
+		name = "Antidote++ timer",
+		description = "Configures whether antidote++ timer is displayed"
+	)
+	default boolean showAntidotePlusPlus()
+	{
+		return true;
+	}
 }
