@@ -104,14 +104,16 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			if (checkbox.isSelected() && !configItem.confirmationWarining().isEmpty())
+			boolean originalState = !checkbox.isSelected();
+			boolean config = originalState ? configItem.warnOnDisable() : configItem.warnOnEnable();
+			if (!configItem.confirmationWarining().isEmpty() && config)
 			{
 				int value = JOptionPane.showOptionDialog(component, configItem.confirmationWarining(),
 					"Are you sure?", YES_NO_OPTION, WARNING_MESSAGE,
 					null, new String[] { "Yes", "No" }, "No");
 				if (value != YES_OPTION)
 				{
-					checkbox.setSelected(false);
+					checkbox.setSelected(originalState);
 					return;
 				}
 			}
