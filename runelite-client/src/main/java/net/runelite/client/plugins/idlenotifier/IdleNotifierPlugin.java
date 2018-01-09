@@ -264,7 +264,12 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		Actor opponent = local.getInteracting();
-		if (opponent != null && opponent.getCombatLevel() > 0)
+		boolean isPlayer = opponent instanceof Player;
+
+		if (opponent != null
+			&& !isPlayer
+			&& opponent.getCombatLevel() > 0
+			&& opponent.getHealth() != -1)
 		{
 			lastInteracting = Instant.now();
 		}
