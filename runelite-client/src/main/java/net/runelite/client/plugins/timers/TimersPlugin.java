@@ -24,16 +24,28 @@
  */
 package net.runelite.client.plugins.timers;
 
+import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
+import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
+import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIVENOM;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -90,10 +102,36 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(SUPERANTIVENOM);
 		}
+
 		if (!config.showTeleblock())
 		{
 			removeGameTimer(FULLTB);
 			removeGameTimer(HALFTB);
+		}
+
+		if (!config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (!config.showAntidotePlusPlus())
+		{
+			removeGameTimer(ANTIDOTEPLUSPLUS);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (config.showAntidotePlusPlus()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIDOTE1_5958
+			|| event.getId() == ItemID.ANTIDOTE2_5956
+			|| event.getId() == ItemID.ANTIDOTE3_5954
+			|| event.getId() == ItemID.ANTIDOTE4_5952))
+		{
+			// Needs menu option hook because drink message is intercepting with antipoison message
+			createGameTimer(ANTIDOTEPLUSPLUS);
 		}
 	}
 
@@ -170,6 +208,16 @@ public class TimersPlugin extends Plugin
 		if (event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>") && config.showTeleblock())
 		{
 			createGameTimer(HALFTB);
+		}
+
+		if (event.getMessage().contains("You drink some of your super antifire potion") && config.showSuperAntiFire())
+		{
+			createGameTimer(SUPERANTIFIRE);
+		}
+
+		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>") && config.showSuperAntiFire())
+		{
+			removeGameTimer(SUPERANTIFIRE);
 		}
 	}
 
