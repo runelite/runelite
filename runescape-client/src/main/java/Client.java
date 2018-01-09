@@ -48,7 +48,6 @@ public final class Client extends GameEngine {
    static boolean field992;
    @ObfuscatedName("mw")
    @Export("isResized")
-   @Hook("resizeChanged")
    static boolean isResized;
    @ObfuscatedName("kq")
    @ObfuscatedGetter(
@@ -471,7 +470,6 @@ public final class Client extends GameEngine {
       intValue = -41679833
    )
    @Export("gameState")
-   @Hook("gameStateChanged")
    static int gameState;
    @ObfuscatedName("bm")
    static boolean field853;
@@ -925,7 +923,6 @@ public final class Client extends GameEngine {
    static final int[] playerMenuTypes;
    @ObfuscatedName("in")
    @Export("playerOptions")
-   @Hook("playerMenuOptionsChanged")
    static String[] playerOptions;
    @ObfuscatedName("it")
    @Export("lastSelectedItemName")
@@ -972,7 +969,6 @@ public final class Client extends GameEngine {
    static int[] realSkillLevels;
    @ObfuscatedName("iw")
    @Export("skillExperiences")
-   @Hook("experienceChanged")
    static int[] skillExperiences;
    @ObfuscatedName("ih")
    @ObfuscatedGetter(

@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -82,7 +81,6 @@ public final class Tile extends Node {
       signature = "[Let;"
    )
    @Export("objects")
-   @Hook("gameObjectsChanged")
    GameObject[] objects;
    @ObfuscatedName("s")
    @Export("entityFlags")

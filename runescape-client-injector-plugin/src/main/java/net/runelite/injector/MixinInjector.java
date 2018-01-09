@@ -63,6 +63,7 @@ public class MixinInjector
 	private static final Type SHADOW = new Type("Lnet/runelite/api/mixins/Shadow;");
 	private static final Type COPY = new Type("Lnet/runelite/api/mixins/Copy;");
 	private static final Type REPLACE = new Type("Lnet/runelite/api/mixins/Replace;");
+	private static final Type FIELDHOOK = new Type("Lnet/runelite/api/mixins/FieldHook;");
 
 	private static final String MIXIN_BASE = "net.runelite.mixins";
 
@@ -144,6 +145,8 @@ public class MixinInjector
 				throw new InjectionException(ex);
 			}
 		}
+
+		injectFieldHooks(mixinClasses);
 	}
 
 	/**
@@ -548,6 +551,70 @@ public class MixinInjector
 			// super() invokespecial being inside of a try{}
 			throw new InjectionException("Injected bytecode must be Java 6 compatible");
 		}
+	}
+
+	private void injectFieldHooks(Map<Class<?>, List<ClassFile>> mixinClasses) throws InjectionException
+	{
+		InjectHook injectHook = new InjectHook(inject);
+
+		for (Class<?> mixinClass : mixinClasses.keySet())
+		{
+			ClassFile mixinCf;
+
+			try
+			{
+				mixinCf = loadClass(mixinClass);
+			}
+			catch (IOException ex)
+			{
+				throw new InjectionException(ex);
+			}
+
+			List<ClassFile> targetCfs = mixinClasses.get(mixinClass);
+
+			for (ClassFile cf : targetCfs)
+			{
+				for (Method method : mixinCf.getMethods())
+				{
+					Annotation fieldHook = method.getAnnotations().find(FIELDHOOK);
+					if (fieldHook != null)
+					{
+						String hookName = fieldHook.getElement().getString();
+						ClassFile deobCf = inject.toDeobClass(cf);
+						Field targetField = deobCf.findField(hookName);
+						if (targetField == null)
+						{
+							// first try non static fields, then static
+							targetField = findDeobField(hookName);
+						}
+
+						if (targetField == null)
+						{
+							throw new InjectionException("Field hook for nonexistent field " + hookName + " on " + method);
+						}
+
+						Field obField = inject.toObField(targetField);
+
+						if (method.isStatic() != targetField.isStatic())
+						{
+							throw new InjectionException("Field hook method static flag must match target field");
+						}
+
+						// cf is the target class to invoke
+						InjectHook.HookInfo hookInfo = new InjectHook.HookInfo();
+						hookInfo.clazz = cf.getName();
+						hookInfo.fieldName = hookName;
+						hookInfo.method = method.getName();
+						hookInfo.staticMethod = method.isStatic();
+						injectHook.hook(obField, hookInfo);
+					}
+				}
+			}
+		}
+
+		injectHook.run();
+
+		logger.info("Injected {} field hooks", injectHook.getInjectedHooks());
 	}
 
 	private static class CopiedMethod

@@ -59,7 +59,6 @@ public class Inject
 	public static final String API_PACKAGE_BASE = "net.runelite.rs.api.RS";
 	public static final String RL_API_PACKAGE_BASE = "net.runelite.api.";
 
-	private final InjectHook hooks = new InjectHook(this);
 	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
 	private final InjectGetter getters = new InjectGetter(this);
@@ -183,8 +182,6 @@ public class Inject
 
 	public void run() throws InjectionException
 	{
-		hooks.run();
-
 		Map<ClassFile, java.lang.Class> implemented = new HashMap<>();
 
 		// inject interfaces first, so the validateTypeIsConvertibleTo
@@ -314,8 +311,8 @@ public class Inject
 			}
 		}
 		
-		logger.info("Injected {} hooks, {} getters, {} settters, {} invokers",
-			hooks.getInjectedHooks(), getters.getInjectedGetters(),
+		logger.info("Injected {} getters, {} settters, {} invokers",
+			getters.getInjectedGetters(),
 			setters.getInjectedSetters(), invokes.getInjectedInvokers());
 	}
 

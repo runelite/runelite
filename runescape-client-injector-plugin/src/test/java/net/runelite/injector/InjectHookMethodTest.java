@@ -37,7 +37,7 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
 import static net.runelite.injector.Inject.RL_API_PACKAGE_BASE;
-import static net.runelite.injector.InjectHook.HOOKS;
+import static net.runelite.injector.InjectHookMethod.HOOKS;
 import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;

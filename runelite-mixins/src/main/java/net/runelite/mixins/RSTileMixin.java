@@ -24,11 +24,15 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.events.GameObjectsChanged;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSTile;
 
@@ -59,5 +63,22 @@ public abstract class RSTileMixin implements RSTile
 	{
 		Point regionLocation = getRegionLocation();
 		return Perspective.regionToLocal(client, regionLocation);
+	}
+
+	@FieldHook("objects")
+	@Inject
+	public void animationChanged(int idx)
+	{
+		if (idx != -1) // this happens from the field assignment
+		{
+			// GameObject that was changed.
+			GameObject go = getGameObjects()[idx];
+			if (go != null)
+			{
+				GameObjectsChanged gameObjectsChanged = new GameObjectsChanged();
+				gameObjectsChanged.setGameObject(go);
+				eventBus.post(gameObjectsChanged);
+			}
+		}
 	}
 }
