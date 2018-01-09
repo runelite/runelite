@@ -22,11 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
 
 @Data
-public class ClanMembersChanged
+public class ConfigChanged
 {
+	private String group;
+	private String key;
+	private String oldValue;
+	private String newValue;
 }

@@ -22,16 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+
+package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.Skill;
 
-/**
- * Event called once per tick.
- *
- * @author Adam
- */
 @Data
-public class GameTick
+public class ExperienceChanged
 {
+	/**
+	 * The {@link Skill} that had its experience changed.
+	 */
+	private Skill skill;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.GameObject;
 
+/**
+ * Event called once per tick.
+ *
+ * @author Adam
+ */
 @Data
-public class GameObjectsChanged
+public class GameTick
 {
-	private GameObject gameObject;
 }

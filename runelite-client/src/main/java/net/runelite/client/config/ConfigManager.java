@@ -47,7 +47,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
