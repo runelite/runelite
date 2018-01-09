@@ -40,7 +40,7 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",

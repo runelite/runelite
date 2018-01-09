@@ -143,7 +143,7 @@ public class ClientUI extends JFrame
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
 	}
-	
+
 	public void showWithChrome(boolean customChrome)
 	{
 		setUndecorated(customChrome);
@@ -158,7 +158,7 @@ public class ClientUI extends JFrame
 		{
 			new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI()).editTitleBar(this);
 		}
-		
+
 		setVisible(true);
 		toFront();
 	}
@@ -258,7 +258,7 @@ public class ClientUI extends JFrame
 		add(container);
 	}
 
-	void revalidateMinimumSize()
+	private void revalidateMinimumSize()
 	{
 		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
 		this.setMinimumSize(this.getLayout().minimumLayoutSize(this));
@@ -272,8 +272,8 @@ public class ClientUI extends JFrame
 		}
 
 		pluginPanel = panel;
-		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH,0));
-		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH,Integer.MAX_VALUE));
+		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
+		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 		navContainer.add(wrapPanel(pluginPanel));
 		navContainer.revalidate();
 		revalidateMinimumSize();
@@ -281,15 +281,15 @@ public class ClientUI extends JFrame
 
 	void contract()
 	{
-		boolean wasMinimumWidth = this.getWidth() == (int)this.getMinimumSize().getWidth();
+		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
 		navContainer.remove(0);
-		navContainer.setMinimumSize(new Dimension(0,0));
-		navContainer.setMaximumSize(new Dimension(0,Integer.MAX_VALUE));
+		navContainer.setMinimumSize(new Dimension(0, 0));
+		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
 		navContainer.revalidate();
 		revalidateMinimumSize();
 		if (wasMinimumWidth)
 		{
-			this.setSize((int)this.getMinimumSize().getWidth(), getHeight());
+			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
 		pluginPanel = null;
 	}

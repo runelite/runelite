@@ -84,7 +84,7 @@ public class RuneLite
 
 	@Inject
 	private SessionManager sessionManager;
-	
+
 	@Inject
 	private RuneLiteConfig runeliteConfig;
 
@@ -161,7 +161,7 @@ public class RuneLite
 
 		// Begin watching for new plugins
 		pluginManager.watch();
-		
+
 		SwingUtilities.invokeAndWait(() -> gui.showWithChrome(runeliteConfig.enableCustomChrome()));
 	}
 
