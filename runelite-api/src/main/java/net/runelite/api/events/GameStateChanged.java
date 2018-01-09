@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.GameState;
 
 @Data
-public class PlayerMenuOptionsChanged
+public class GameStateChanged
 {
-	/**
-	 * Index in playerOptions which changed
-	 */
-	private int index;
+	private GameState gameState;
 }

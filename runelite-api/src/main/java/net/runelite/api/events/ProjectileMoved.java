@@ -22,19 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.runelite.api.Point;
+import net.runelite.api.Projectile;
 
 @Data
-@AllArgsConstructor
-public class MenuEntryAdded
+public class ProjectileMoved
 {
-	private String option;
-	private String target;
-	private int type;
-	private int identifier;
-	private int actionParam0;
-	private int actionParam1;
+	private Projectile projectile;
+	private Point position;
+	private int plane;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.Skill;
 
 @Data
-public class ExperienceChanged
+public class PlayerMenuOptionsChanged
 {
 	/**
-	 * The {@link Skill} that had its experience changed.
+	 * Index in playerOptions which changed
 	 */
-	private Skill skill;
+	private int index;
 }

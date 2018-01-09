@@ -22,13 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.api.Actor;
 
 @Data
-public class ActorDeath
+@AllArgsConstructor
+public class MenuEntryAdded
 {
-	private Actor actor;
+	private String option;
+	private String target;
+	private int type;
+	private int identifier;
+	private int actionParam0;
+	private int actionParam1;
 }

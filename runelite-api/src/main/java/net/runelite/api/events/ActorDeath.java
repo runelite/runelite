@@ -22,16 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.Actor;
 
-/**
- * Called when a session has been opened with the server
- * @author Adam
- */
 @Data
-public class SessionOpen
+public class ActorDeath
 {
-
+	private Actor actor;
 }

@@ -22,14 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.widgets.WidgetInfo;
 
 @Data
-public class MapRegionChanged
+public class WidgetMenuOptionClicked
 {
-	/** index into the region map that is changing
-	 */
-	private int index;
+	private String menuOption;
+	private String menuTarget;
+	private WidgetInfo widget;
 }
