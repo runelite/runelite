@@ -43,6 +43,7 @@ import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;

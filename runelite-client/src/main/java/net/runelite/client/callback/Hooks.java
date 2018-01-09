@@ -24,27 +24,28 @@
  */
 package net.runelite.client.callback;
 
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.SetMessage;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
-import net.runelite.api.Skill;
-import net.runelite.api.Tile;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.events.*;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayRenderer;
@@ -57,7 +58,7 @@ public class Hooks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	private static final EventBus eventBus = injector.getInstance(EventBus.class);
+	public static final EventBus eventBus = injector.getInstance(EventBus.class);
 	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
 	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
 	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
@@ -108,109 +109,6 @@ public class Hooks
 		catch (Exception ex)
 		{
 			log.warn("Error during overlay rendering", ex);
-		}
-	}
-
-	/**
-	 *
-	 * @param name Hook-name that was used in the @Hook-annotation.
-	 * @param idx The index if hooked to an array. -1 if not hooked to an
-	 * array.
-	 * @param object The object where the hook was placed in, NOT the
-	 * variable that was hooked to.
-	 */
-	public static void callHook(String name, int idx, Object object)
-	{
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				Skill[] possibleSkills = Skill.values();
-
-				// We subtract one here because 'Overall' isn't considered a skill that's updated.
-				if (idx < possibleSkills.length - 1)
-				{
-					Skill updatedSkill = possibleSkills[idx];
-					experienceChanged.setSkill(updatedSkill);
-					eventBus.post(experienceChanged);
-				}
-				break;
-			}
-			case "mapRegionsChanged":
-			{
-				MapRegionChanged regionChanged = new MapRegionChanged();
-				regionChanged.setIndex(idx);
-				eventBus.post(regionChanged);
-				break;
-			}
-			case "playerMenuOptionsChanged":
-			{
-				PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
-				optionsChanged.setIndex(idx);
-				eventBus.post(optionsChanged);
-				break;
-			}
-			case "animationChanged":
-			{
-				Actor actor = (Actor) object;
-				AnimationChanged animationChange = new AnimationChanged();
-				animationChange.setActor(actor);
-				eventBus.post(animationChange);
-				break;
-			}
-			case "gameStateChanged":
-			{
-				GameStateChanged gameStateChange = new GameStateChanged();
-				gameStateChange.setGameState(client.getGameState());
-				eventBus.post(gameStateChange);
-				break;
-			}
-			case "varbitChanged":
-			{
-				VarbitChanged varbitChanged = new VarbitChanged();
-				eventBus.post(varbitChanged);
-				break;
-			}
-			case "clanMembersChanged":
-			{
-				ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
-				eventBus.post(clanMembersChanged);
-				break;
-			}
-			case "resizeChanged":
-			{
-				//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
-				ResizeableChanged resizeableChanged = new ResizeableChanged();
-				resizeableChanged.setResized(client.isResized());
-				eventBus.post(resizeableChanged);
-				break;
-			}
-			case "gameObjectsChanged":
-				if (idx != -1) // this happens from the field assignment
-				{
-					// GameObject that was changed.
-					GameObject go = ((Tile) object).getGameObjects()[idx];
-					if (go != null)
-					{
-						GameObjectsChanged gameObjectsChanged = new GameObjectsChanged();
-						gameObjectsChanged.setGameObject(go);
-						eventBus.post(gameObjectsChanged);
-					}
-				}
-				break;
-			default:
-				log.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
-
-		if (object != null)
-		{
-			log.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		}
-		else
-		{
-			log.trace("Event {} (idx {}) triggered", name, idx);
 		}
 	}
 

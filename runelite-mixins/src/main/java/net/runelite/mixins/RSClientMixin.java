@@ -37,10 +37,20 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.events.ClanMembersChanged;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MapRegionChanged;
+import net.runelite.api.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.VarbitChanged;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSWidget;
@@ -48,6 +58,9 @@ import net.runelite.rs.api.RSWidget;
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public List<Player> getPlayers()
@@ -323,5 +336,74 @@ public abstract class RSClientMixin implements RSClient
 	public void setModIcons(IndexedSprite[] modIcons)
 	{
 		setRSModIcons((RSIndexedSprite[]) modIcons);
+	}
+
+	@FieldHook("skillExperiences")
+	@Inject
+	public static void experiencedChanged(int idx)
+	{
+		ExperienceChanged experienceChanged = new ExperienceChanged();
+		Skill[] possibleSkills = Skill.values();
+
+		// We subtract one here because 'Overall' isn't considered a skill that's updated.
+		if (idx < possibleSkills.length - 1)
+		{
+			Skill updatedSkill = possibleSkills[idx];
+			experienceChanged.setSkill(updatedSkill);
+			eventBus.post(experienceChanged);
+		}
+	}
+
+	@FieldHook("mapRegions")
+	@Inject
+	public static void mapRegionsChanged(int idx)
+	{
+		MapRegionChanged regionChanged = new MapRegionChanged();
+		regionChanged.setIndex(idx);
+		eventBus.post(regionChanged);
+	}
+
+	@FieldHook("playerOptions")
+	@Inject
+	public static void playerOptionsChanged(int idx)
+	{
+		PlayerMenuOptionsChanged optionsChanged = new PlayerMenuOptionsChanged();
+		optionsChanged.setIndex(idx);
+		eventBus.post(optionsChanged);
+	}
+
+	@FieldHook("gameState")
+	@Inject
+	public static void gameStateChanged(int idx)
+	{
+		GameStateChanged gameStateChange = new GameStateChanged();
+		gameStateChange.setGameState(client.getGameState());
+		eventBus.post(gameStateChange);
+	}
+
+	@FieldHook("settings")
+	@Inject
+	public static void settingsChanged(int idx)
+	{
+		VarbitChanged varbitChanged = new VarbitChanged();
+		eventBus.post(varbitChanged);
+	}
+
+	@FieldHook("clanMembers")
+	@Inject
+	public static void clanMembersChanged(int idx)
+	{
+		ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
+		eventBus.post(clanMembersChanged);
+	}
+
+	@FieldHook("isResized")
+	@Inject
+	public static void resizeChanged(int idx)
+	{
+		//maybe couple with varbitChanged. resizeable may not be a varbit but it would fit with the other client settings.
+		ResizeableChanged resizeableChanged = new ResizeableChanged();
+		resizeableChanged.setResized(client.isResized());
+		eventBus.post(resizeableChanged);
 	}
 }
