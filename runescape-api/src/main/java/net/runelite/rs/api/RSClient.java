@@ -332,4 +332,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	@Override
 	RSIndexedSprite createIndexedSprite();
+
+	@Import("destinationX")
+	int getDestinationX();
+
+	@Import("destinationY")
+	int getDestinationY();
 }
