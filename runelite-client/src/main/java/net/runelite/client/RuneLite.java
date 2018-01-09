@@ -116,7 +116,7 @@ public class RuneLite
 			return;
 		}
 
-		final Applet client = optionalClient.orElseGet(null);
+		final Applet client = optionalClient.orElse(null);
 		final boolean isOutdated = client == null || !(client instanceof Client);
 
 		if (!isOutdated)
