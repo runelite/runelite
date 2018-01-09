@@ -338,6 +338,13 @@ public abstract class RSClientMixin implements RSClient
 		setRSModIcons((RSIndexedSprite[]) modIcons);
 	}
 
+	@Inject
+	@Override
+	public Point getSceneDestinationLocation()
+	{
+		return new Point(getDestinationX(), getDestinationY());
+	}
+
 	@FieldHook("skillExperiences")
 	@Inject
 	public static void experiencedChanged(int idx)
