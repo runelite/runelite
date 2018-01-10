@@ -48,6 +48,7 @@ public class PluginToolbar extends JToolBar
 		super.setSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
 		super.setMinimumSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
 		super.setPreferredSize(new Dimension(TOOLBAR_WIDTH, TOOLBAR_HEIGHT));
+		super.setMaximumSize(new Dimension(TOOLBAR_WIDTH, Integer.MAX_VALUE));
 	}
 
 	public void addNavigation(NavigationButton button)
