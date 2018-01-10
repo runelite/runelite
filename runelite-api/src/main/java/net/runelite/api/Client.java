@@ -161,4 +161,10 @@ public interface Client
 	void setModIcons(IndexedSprite[] modIcons);
 
 	IndexedSprite createIndexedSprite();
+
+	boolean isFriend(String name, boolean mustBeLoggedIn);
+
+	boolean isIgnored(String name);
+
+	boolean isClanMember(String name);
 }
