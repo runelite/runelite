@@ -66,6 +66,7 @@ import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -74,14 +75,16 @@ public class ConfigPanel extends PluginPanel
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
+	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
 	private final JTextField searchBar = new JTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
 	private int scrollBarPosition = 0;
 
-	public ConfigPanel(ConfigManager configManager)
+	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager)
 	{
 		super();
+		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
@@ -112,7 +115,7 @@ public class ConfigPanel extends PluginPanel
 	final void rebuildPluginList()
 	{
 		Map<String, JPanel> newChildren = new TreeMap<>();
-		configManager.getConfigProxies()
+		pluginManager.getPluginConfigProxies()
 			.stream()
 			// Convert config proxies to pair of config descriptors and config proxies
 			.map(c -> new AbstractMap.SimpleEntry<>(configManager.getConfigDescriptor(c), c))
