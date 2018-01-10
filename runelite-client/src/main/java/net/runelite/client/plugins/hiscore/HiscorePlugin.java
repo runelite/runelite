@@ -26,6 +26,7 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.eventbus.Subscribe;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
