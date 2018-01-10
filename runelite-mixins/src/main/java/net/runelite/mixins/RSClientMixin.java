@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
@@ -33,7 +34,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;

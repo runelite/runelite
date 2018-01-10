@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.awt.Point;
 import java.awt.Polygon;
 
 /**

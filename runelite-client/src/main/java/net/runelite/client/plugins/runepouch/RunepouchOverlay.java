@@ -27,11 +27,11 @@ package net.runelite.client.plugins.runepouch;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
-import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryItemQuery;
@@ -74,7 +74,7 @@ public class RunepouchOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 		if (!config.enabled())
 		{
@@ -114,12 +114,12 @@ public class RunepouchOverlay extends Overlay
 			int runeId = client.getSetting(runeVarbit);
 
 			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
-				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
+			graphics.drawString("" + formatNumber(amount), location.x + (config.showIcons() ? 13 : 1),
+				location.y + 14 + graphics.getFontMetrics().getHeight() * i);
 
 			graphics.setColor(config.fontColor());
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
-				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
+			graphics.drawString("" + formatNumber(amount), location.x + (config.showIcons() ? 12 : 0),
+				location.y + 13 + graphics.getFontMetrics().getHeight() * i);
 
 			tooltipBuilder
 				.append(amount)
@@ -136,12 +136,12 @@ public class RunepouchOverlay extends Overlay
 			if (runeImg != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
+					new Point(location.x, location.y + 2 + (graphics.getFontMetrics().getHeight()) * i),
 					runeImg);
 			}
 		}
 
-		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().x, client.getMouseCanvasPosition().y))
 		{
 			tooltipManager.add(new Tooltip(tooltipBuilder.toString()));
 		}

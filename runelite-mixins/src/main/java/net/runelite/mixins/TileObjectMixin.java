@@ -25,13 +25,13 @@
 package net.runelite.mixins;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
-import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -86,7 +86,7 @@ public abstract class TileObjectMixin implements TileObject
 	public Point getRegionLocation()
 	{
 		Point locaLocation = getLocalLocation();
-		return new Point(locaLocation.getX() >>> LOCAL_COORD_BITS, locaLocation.getY() >>> LOCAL_COORD_BITS);
+		return new Point(locaLocation.x >>> LOCAL_COORD_BITS, locaLocation.y >>> LOCAL_COORD_BITS);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public abstract class TileObjectMixin implements TileObject
 	public Point getCanvasLocation()
 	{
 		Point locaLocation = getLocalLocation();
-		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
+		return Perspective.worldToCanvas(client, locaLocation.x, locaLocation.y, 0);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public abstract class TileObjectMixin implements TileObject
 		Polygon p = new Polygon();
 		for (Point point : points)
 		{
-			p.addPoint(point.getX(), point.getY());
+			p.addPoint(point.x, point.y);
 		}
 
 		return p;

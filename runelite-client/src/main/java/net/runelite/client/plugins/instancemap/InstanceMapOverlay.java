@@ -27,6 +27,7 @@ package net.runelite.client.plugins.instancemap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -36,7 +37,6 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
@@ -169,7 +169,7 @@ class InstanceMapOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled() || !showMap)
 		{
@@ -205,12 +205,12 @@ class InstanceMapOverlay extends Overlay
 		Point playerLocation = player.getRegionLocation();
 
 		Tile[][] tiles = getTiles();
-		Point localPlayerPoint = new Point(playerLocation.getX(), (tiles[0].length - 1) - playerLocation.getY()); // flip the y value
+		Point localPlayerPoint = new Point(playerLocation.x, (tiles[0].length - 1) - playerLocation.y); // flip the y value
 
 		graphics.setColor(dotColor);
-		graphics.fillRect((int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
+		graphics.fillRect((int) (localPlayerPoint.x * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.y * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
-		graphics.drawRect((int) (localPlayerPoint.getX() * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.getY() * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
+		graphics.drawRect((int) (localPlayerPoint.x * TILE_SIZE * MAP_SCALING), (int) (localPlayerPoint.y * TILE_SIZE * MAP_SCALING), PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
 	}
 
 	/**
@@ -427,7 +427,7 @@ class InstanceMapOverlay extends Overlay
 					int tileX = x;
 					int tileY = ((tiles[x].length - 1) - y);//flip y value
 
-					if (gameObjectLocation.getX() == tileX && gameObjectLocation.getY() == tileY)
+					if (gameObjectLocation.x == tileX && gameObjectLocation.y == tileY)
 					{
 
 						IndexedSprite objectMapSprite = client.getMapScene()[objectComposition.getMapSceneId()];

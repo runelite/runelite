@@ -5,12 +5,12 @@ package ${package};
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -28,7 +28,7 @@ public class ExampleOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
 		{
@@ -39,7 +39,7 @@ public class ExampleOverlay extends Overlay
 		String text = player.getName() + " (Level: " + player.getCombatLevel() + ")";
 
 		Point textLocation = player.getCanvasTextLocation(graphics, text, player.getModelHeight());
-		graphics.drawString(text, textLocation.getX(), textLocation.getY());
+		graphics.drawString(text, textLocation.x, textLocation.y);
 
 		return null;
 	}

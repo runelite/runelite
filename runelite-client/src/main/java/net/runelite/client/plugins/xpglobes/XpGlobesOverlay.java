@@ -28,6 +28,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
@@ -41,7 +42,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -82,7 +82,7 @@ public class XpGlobesOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 
 		// won't draw if not logged in or not enabled
@@ -116,7 +116,7 @@ public class XpGlobesOverlay extends Overlay
 		return null;
 	}
 
-	private void renderProgressCircle(Graphics2D graphics, java.awt.Point parent, XpGlobe skillToDraw, int x, int y)
+	private void renderProgressCircle(Graphics2D graphics, Point parent, XpGlobe skillToDraw, int x, int y)
 	{
 		double radiusCurrentXp = skillToDraw.getSkillProgressRadius();
 		double radiusToGoalXp = 360; //draw a circle
@@ -209,13 +209,11 @@ public class XpGlobesOverlay extends Overlay
 		return skillImage;
 	}
 
-	private void drawTooltipIfMouseover(Graphics2D graphics, java.awt.Point parent, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
+	private void drawTooltipIfMouseover(Graphics2D graphics, Point parent, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
 	{
 		Point mouse = client.getMouseCanvasPosition();
-		int mouseX = mouse.getX();
-		int mouseY = mouse.getY();
 
-		if (!drawnGlobe.contains(mouseX, mouseY))
+		if (!drawnGlobe.contains(mouse.x, mouse.y))
 		{
 			return;
 		}
@@ -232,7 +230,7 @@ public class XpGlobesOverlay extends Overlay
 		String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
 
 		PanelComponent xpTooltip = new PanelComponent();
-		xpTooltip.setPosition(new java.awt.Point(x, y));
+		xpTooltip.setPosition(new Point(x, y));
 
 		List<PanelComponent.Line> lines = xpTooltip.getLines();
 		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));

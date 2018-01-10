@@ -24,12 +24,12 @@
  */
 package net.runelite.mixins;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.Node;
-import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
@@ -157,7 +157,7 @@ public abstract class RSWidgetMixin implements RSWidget
 	public Rectangle getBounds()
 	{
 		Point canvasLocation = getCanvasLocation();
-		return new Rectangle(canvasLocation.getX(), canvasLocation.getY(), getWidth(), getHeight());
+		return new Rectangle(canvasLocation.x, canvasLocation.y, getWidth(), getHeight());
 	}
 
 	@Inject
@@ -213,8 +213,8 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		int row = index / columns;
 		int col = index % columns;
-		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + paddingX) * col);
-		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + paddingY) * row);
+		int itemX = widgetCanvasLocation.x + ((ITEM_SLOT_SIZE + paddingX) * col);
+		int itemY = widgetCanvasLocation.y + ((ITEM_SLOT_SIZE + paddingY) * row);
 
 		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
 		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
@@ -312,6 +312,6 @@ public abstract class RSWidgetMixin implements RSWidget
 	public boolean contains(Point point)
 	{
 		Rectangle bounds = getBounds();
-		return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
+		return bounds != null && bounds.contains(point);
 	}
 }

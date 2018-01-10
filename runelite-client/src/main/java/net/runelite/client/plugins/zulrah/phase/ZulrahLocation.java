@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.zulrah.phase;
 
+import java.awt.Point;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Point;
 
 @Slf4j
 public enum ZulrahLocation
@@ -35,8 +35,8 @@ public enum ZulrahLocation
 
 	public static ZulrahLocation valueOf(Point start, Point current)
 	{
-		int dx = start.getX() - current.getX();
-		int dy = start.getY() - current.getY();
+		int dx = start.x - current.x;
+		int dy = start.y - current.y;
 		if (dx == -10 && dy == 2)
 		{
 			return ZulrahLocation.EAST;

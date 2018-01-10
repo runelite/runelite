@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -42,7 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
@@ -77,7 +77,7 @@ public class VolcanicMineOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point point)
+	public Dimension render(Graphics2D graphics, Point point)
 	{
 		if (!plugin.getInside() || !config.enabled())
 		{
@@ -104,8 +104,8 @@ public class VolcanicMineOverlay extends Overlay
 
 		Rectangle viewport = client.getViewportWidget().getBounds();
 		Rectangle stringBounds = graphics.getFontMetrics().getStringBounds(PROTECT_MESSAGE, graphics).getBounds();
-		int x = (int) (viewport.getX() + viewport.getWidth());
-		int y = (int) (viewport.getY() + viewport.getHeight());
+		int x = (int) (viewport.x + viewport.getWidth());
+		int y = (int) (viewport.y + viewport.getHeight());
 		int width = (int) stringBounds.getWidth() + 6;
 		int height = (int) (protectFromMissiles.getHeight(null) + stringBounds.getHeight()) + 5;
 		Rectangle rectangle = new Rectangle(x - width, y - height, width, height);
@@ -146,7 +146,7 @@ public class VolcanicMineOverlay extends Overlay
 		if (config.optimalPaths() && !plugin.getObjectTimerMap().containsKey(tile))
 		{
 			Point worldLoc = tile.getWorldLocation();
-			if (client.getLocalPlayer().getWorldLocation().distanceTo(worldLoc) > MAX_DISTANCE)
+			if (client.getLocalPlayer().getWorldLocation().distance(worldLoc) > MAX_DISTANCE)
 			{
 				return;
 			}
@@ -154,7 +154,7 @@ public class VolcanicMineOverlay extends Overlay
 			if (OptimalPaths.isOptimalPathTile(worldLoc))
 			{
 				Point localTile = tile.getLocalLocation();
-				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				localTile = new Point(localTile.x + Perspective.LOCAL_TILE_SIZE / 2, localTile.y + Perspective.LOCAL_TILE_SIZE / 2);
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 				if (poly != null)
 				{
@@ -164,7 +164,7 @@ public class VolcanicMineOverlay extends Overlay
 			else if (OptimalPaths.isBoulderRangeTile(worldLoc))
 			{
 				Point localTile = tile.getLocalLocation();
-				localTile = new Point(localTile.getX() + Perspective.LOCAL_TILE_SIZE / 2, localTile.getY() + Perspective.LOCAL_TILE_SIZE / 2);
+				localTile = new Point(localTile.x + Perspective.LOCAL_TILE_SIZE / 2, localTile.y + Perspective.LOCAL_TILE_SIZE / 2);
 				Polygon poly = Perspective.getCanvasTilePoly(client, localTile);
 				if (poly != null)
 				{

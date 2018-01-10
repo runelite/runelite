@@ -24,9 +24,9 @@
  */
 package net.runelite.api.model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Point;
 
 /**
  * Implementation of the Jarvis march algorithm
@@ -73,7 +73,7 @@ public class Jarvis
 				}
 
 				int cp = crossProduct(current, p, next);
-				if (cp > 0 || (cp == 0 && current.distanceTo(p) > current.distanceTo(next)))
+				if (cp > 0 || (cp == 0 && current.distance(p) > current.distance(next)))
 				{
 					next = p;
 				}
@@ -95,11 +95,11 @@ public class Jarvis
 
 		for (Point p : points)
 		{
-			if (left == null || p.getX() < left.getX())
+			if (left == null || p.x < left.x)
 			{
 				left = p;
 			}
-			else if (p.getX() == left.getX() && p.getY() < left.getY())
+			else if (p.x == left.x && p.y < left.y)
 			{
 				left = p;
 			}
@@ -110,8 +110,8 @@ public class Jarvis
 
 	private static int crossProduct(Point p, Point q, Point r)
 	{
-		int val = (q.getY() - p.getY()) * (r.getX() - q.getX())
-			- (q.getX() - p.getX()) * (r.getY() - q.getY());
+		int val = (q.y - p.y) * (r.x - q.x)
+			- (q.x - p.x) * (r.y - q.y);
 		return val;
 	}
 }

@@ -32,13 +32,13 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
-import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.FontManager;
@@ -76,7 +76,7 @@ public class OverlayUtil
 	{
 		Color startColor = graphics.getColor();
 
-		Point orbPos = new Point(pos.getX() + 26, pos.getY() + 2);
+		Point orbPos = new Point(pos.x + 26, pos.y + 2);
 
 		graphics.setColor(new Color(20, 20, 20));
 		// draw black background for the orb when it's partially missing
@@ -92,9 +92,9 @@ public class OverlayUtil
 		graphics.setColor(startColor);
 
 		// draw background
-		graphics.drawImage(minimapOrbBackground, pos.getX(), pos.getY(), null);
+		graphics.drawImage(minimapOrbBackground, pos.x, pos.y, null);
 		// draw overlay
-		graphics.drawImage(overlayImage, pos.getX() + 33, pos.getY() + 10, null);
+		graphics.drawImage(overlayImage, pos.x + 33, pos.y + 10, null);
 
 		drawOrbAmount(graphics, pos, amount);//draw number on orb
 
@@ -117,11 +117,11 @@ public class OverlayUtil
 		FontMetrics fm = graphics.getFontMetrics();
 
 		String numberString = Integer.toString(amount);
-		Point numberPos = new Point(pos.getX() + 24 - fm.stringWidth(numberString), pos.getY() + 27);
+		Point numberPos = new Point(pos.x + 24 - fm.stringWidth(numberString), pos.y + 27);
 		graphics.setColor(Color.black);
-		graphics.drawString(numberString, numberPos.getX() + 1, numberPos.getY() + 1);//black shadow on text
+		graphics.drawString(numberString, numberPos.x + 1, numberPos.y + 1);//black shadow on text
 		graphics.setColor(Color.green);
-		graphics.drawString(numberString, numberPos.getX(), numberPos.getY());
+		graphics.drawString(numberString, numberPos.x, numberPos.y);
 
 		graphics.setColor(startColor);
 	}
@@ -191,7 +191,7 @@ public class OverlayUtil
 			bufferedImageGraphics.clearRect(0, 0, diameter, (int) ((diameter) * (1 - percent)));
 		}
 
-		graphics.drawImage(bufferedImage, pos.getX(), pos.getY(), null);
+		graphics.drawImage(bufferedImage, pos.x, pos.y, null);
 
 		bufferedImageGraphics.setPaint(startPaint);
 		bufferedImageGraphics.dispose();
@@ -200,16 +200,16 @@ public class OverlayUtil
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(color);
-		graphics.fillOval(mini.getX(), mini.getY(), 5, 5);
+		graphics.fillOval(mini.x, mini.y, 5, 5);
 		graphics.setColor(Color.WHITE);
 		graphics.setStroke(new BasicStroke(1));
-		graphics.drawOval(mini.getX(), mini.getY(), 5, 5);
+		graphics.drawOval(mini.x, mini.y, 5, 5);
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
 	{
-		int x = txtLoc.getX();
-		int y = txtLoc.getY();
+		int x = txtLoc.x;
+		int y = txtLoc.y;
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + 1, y + 1);
@@ -220,16 +220,16 @@ public class OverlayUtil
 
 	public static void renderImageLocation(Graphics2D graphics, Point imgLoc, BufferedImage image)
 	{
-		int x = imgLoc.getX();
-		int y = imgLoc.getY();
+		int x = imgLoc.x;
+		int y = imgLoc.y;
 
 		graphics.drawImage(image, x, y, null);
 	}
 
 	public static void renderSpriteLocation(Graphics2D graphics, Point imgLoc, SpritePixels sprite)
 	{
-		int x = imgLoc.getX();
-		int y = imgLoc.getY();
+		int x = imgLoc.x;
+		int y = imgLoc.y;
 
 		sprite.drawAt(x, y);
 	}
@@ -324,9 +324,9 @@ public class OverlayUtil
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
-	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)
+	public static Point transformPosition(OverlayPosition position, Dimension dimension)
 	{
-		final java.awt.Point result = new java.awt.Point();
+		final Point result = new Point();
 
 		switch (position)
 		{

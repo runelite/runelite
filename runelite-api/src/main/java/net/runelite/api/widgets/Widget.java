@@ -24,9 +24,9 @@
  */
 package net.runelite.api.widgets;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
-import net.runelite.api.Point;
 
 public interface Widget
 {

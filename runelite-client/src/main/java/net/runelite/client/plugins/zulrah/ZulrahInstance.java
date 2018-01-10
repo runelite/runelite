@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.zulrah;
 
+import java.awt.Point;
 import net.runelite.api.NPC;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.client.plugins.zulrah.patterns.ZulrahPattern;
 import net.runelite.client.plugins.zulrah.phase.StandLocation;

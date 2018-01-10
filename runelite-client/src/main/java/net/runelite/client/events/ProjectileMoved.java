@@ -24,8 +24,8 @@
  */
 package net.runelite.client.events;
 
+import java.awt.Point;
 import lombok.Data;
-import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 
 @Data

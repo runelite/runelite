@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +43,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.api.ItemID;
@@ -100,7 +100,7 @@ public class GroundItemsOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, java.awt.Point parent)
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
 		if (!config.enabled())
 		{
@@ -168,7 +168,7 @@ public class GroundItemsOverlay extends Overlay
 					continue;
 				}
 
-				if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) >= MAX_RANGE)
+				if (player.getLocalLocation().distance(itemLayer.getLocalLocation()) >= MAX_RANGE)
 				{
 					continue;
 				}
@@ -304,14 +304,14 @@ public class GroundItemsOverlay extends Overlay
 					String itemString = itemStringBuilder.toString();
 					itemStringBuilder.setLength(0);
 
-					int screenX = point.getX() + 2 - (fm.stringWidth(itemString) / 2);
+					int screenX = point.x + 2 - (fm.stringWidth(itemString) / 2);
 
 					// Drawing the shadow for the text, 1px on both x and y
 					graphics.setColor(Color.BLACK);
-					graphics.drawString(itemString, screenX + 1, point.getY() - (STRING_GAP * i) + 1);
+					graphics.drawString(itemString, screenX + 1, point.y - (STRING_GAP * i) + 1);
 					// Drawing the text itself
 					graphics.setColor(textColor);
-					graphics.drawString(itemString, screenX, point.getY() - (STRING_GAP * i));
+					graphics.drawString(itemString, screenX, point.y - (STRING_GAP * i));
 				}
 			}
 		}

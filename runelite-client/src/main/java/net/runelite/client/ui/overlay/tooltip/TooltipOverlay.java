@@ -68,10 +68,10 @@ public class TooltipOverlay extends Overlay
 			if (tooltip.isFollowMouse())
 			{
 				final Client client = clientProvider.get();
-				final net.runelite.api.Point mouseCanvasPosition = client != null
+				final Point mouseCanvasPosition = client != null
 					? client.getMouseCanvasPosition()
-					: new net.runelite.api.Point(0, 0);
-				tooltipComponent.setPosition(new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()));
+					: new Point(0, 0);
+				tooltipComponent.setPosition(mouseCanvasPosition);
 			}
 			else
 			{

@@ -97,8 +97,8 @@ public class InfoBoxOverlay extends Overlay
 
 				final Client client = clientProvider.get();
 
-				if (client != null && intersectionRectangle.contains(new Point(client.getMouseCanvasPosition().getX(),
-					client.getMouseCanvasPosition().getY())))
+				if (client != null && intersectionRectangle.contains(new Point(client.getMouseCanvasPosition().x,
+					client.getMouseCanvasPosition().y)))
 				{
 					tooltipManager.add(new Tooltip(box.getTooltip()));
 				}

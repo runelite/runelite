@@ -24,8 +24,8 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
+import java.awt.Point;
 import java.time.Instant;
-import net.runelite.api.Point;
 
 public class AoeProjectile
 {
