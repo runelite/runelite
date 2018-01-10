@@ -32,10 +32,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
@@ -50,6 +50,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -188,8 +190,7 @@ public class ItemService
 	}
 
 	@RequestMapping("/{itemId}/price")
-	public ItemPrice getPrice(
-		HttpServletResponse response,
+	public ResponseEntity<ItemPrice> itemPrice(
 		@PathVariable int itemId,
 		@RequestParam(required = false) Instant time
 	)
@@ -210,7 +211,7 @@ public class ItemService
 
 			if (item == null)
 			{
-				return null;
+				return ResponseEntity.notFound().build();
 			}
 		}
 
@@ -221,7 +222,7 @@ public class ItemService
 			if (priceEntry == null)
 			{
 				// we maybe can't backfill this
-				return null;
+				return ResponseEntity.notFound().build();
 			}
 		}
 		else
@@ -234,7 +235,7 @@ public class ItemService
 
 				if (prices == null || prices.isEmpty())
 				{
-					return null;
+					return ResponseEntity.notFound().build();
 				}
 
 				// Get the most recent price
@@ -248,8 +249,10 @@ public class ItemService
 		itemPrice.setPrice(priceEntry.getPrice());
 		itemPrice.setTime(priceEntry.getTime());
 
-		response.setHeader(RUNELITE_CACHE, hit ? "HIT" : "MISS");
-		return itemPrice;
+		return ResponseEntity.ok()
+			.header(RUNELITE_CACHE, hit ? "HIT" : "MISS")
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.SECONDS))
+			.body(itemPrice);
 	}
 
 	@RequestMapping("/search")
