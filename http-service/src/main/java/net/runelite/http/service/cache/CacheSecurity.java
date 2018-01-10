@@ -43,6 +43,11 @@ public class CacheSecurity extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
+		// By default spring security adds headers to not cache anything
+		http.headers().cacheControl().disable();
+		
+		http.csrf().disable();
+		
 		http.httpBasic()
 			.and()
 			.authorizeRequests()
