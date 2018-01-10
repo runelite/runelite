@@ -30,6 +30,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.client.events.MenuEntryAdded;
+import net.runelite.client.events.MenuOptionClicked;
 import net.runelite.client.events.PlayerMenuOptionClicked;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -47,6 +52,9 @@ public class HiscorePlugin extends Plugin
 
 	@Inject
 	ClientUI ui;
+	
+	@Inject
+	Client client;
 
 	@Inject
 	MenuManager menuManager;
@@ -76,7 +84,39 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuOption().equals(LOOKUP))
 		{
-			executor.execute(() ->
+			lookup(event.getMenuTarget());
+		}
+	}
+	
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if ((event.getOption().equals("Add friend") || event.getOption().equals("Message")) && !event.getTarget().equals(""))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setOption(LOOKUP);
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setType(MenuAction.RUNELITE);
+			
+			client.setMenuEntries(menuEntries);
+		}
+	}
+	
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuOption().equals(LOOKUP))
+		{
+			lookup(event.getMenuTarget());
+		}
+	}
+	
+	private void lookup(String target)
+	{
+		executor.execute(() ->
 			{
 				try
 				{
@@ -93,9 +133,7 @@ public class HiscorePlugin extends Plugin
 					throw new RuntimeException(e);
 				}
 
-				hiscorePanel.lookup(event.getMenuTarget());
+				hiscorePanel.lookup(target);
 			});
-		}
 	}
-
 }
