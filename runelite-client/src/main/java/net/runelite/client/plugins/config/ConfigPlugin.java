@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
@@ -47,13 +48,16 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	PluginManager pluginManager;
+
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(configManager);
+		configPanel = new ConfigPanel(pluginManager, configManager);
 
 		navButton = new NavigationButton(
 			"Configuration",

@@ -37,6 +37,8 @@ public @interface PluginDescriptor
 {
 	String name();
 
+	boolean enabledByDefault() default true;
+
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
