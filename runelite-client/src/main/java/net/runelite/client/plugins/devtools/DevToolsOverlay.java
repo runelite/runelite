@@ -81,6 +81,9 @@ public class DevToolsOverlay extends Overlay
 	public DevToolsOverlay(@Nullable Client client, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setDrawOverBankScreen(true);
+		setDrawOverClickToPlayScreen(true);
+		setDrawOverLoginScreen(true);
 		this.client = client;
 		this.plugin = plugin;
 	}
