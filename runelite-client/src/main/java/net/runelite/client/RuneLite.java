@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -168,6 +169,18 @@ public class RuneLite
 	public void setGui(ClientUI gui)
 	{
 		this.gui = gui;
+	}
+
+	@VisibleForTesting
+	public void setClient(Client client)
+	{
+		this.client = client;
+	}
+
+	@VisibleForTesting
+	public void setNotifier(Notifier notifier)
+	{
+		this.notifier = notifier;
 	}
 
 	public static Injector getInjector()
