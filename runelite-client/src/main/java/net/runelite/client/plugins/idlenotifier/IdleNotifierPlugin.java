@@ -97,6 +97,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -271,7 +272,7 @@ public class IdleNotifierPlugin extends Plugin
 		if (opponent != null
 			&& !isPlayer
 			&& opponent.getCombatLevel() > 0
-			&& opponent.getHealth() != -1)
+			&& (opponent.getAnimation() != AnimationID.IDLE || opponent.getHealth() != -1))
 		{
 			lastInteracting = Instant.now();
 		}
