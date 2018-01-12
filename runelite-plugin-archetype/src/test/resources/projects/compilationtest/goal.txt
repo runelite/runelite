@@ -1,1 +1,1 @@
-clean verify
+verify
