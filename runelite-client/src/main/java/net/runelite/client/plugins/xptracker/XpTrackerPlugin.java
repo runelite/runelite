@@ -27,10 +27,9 @@ package net.runelite.client.plugins.xptracker;
 import com.google.common.eventbus.Subscribe;
 import javax.imageio.ImageIO;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.client.events.ExperienceChanged;
-import net.runelite.client.events.GameStateChanged;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
@@ -71,10 +70,12 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		//reset upon login
-		if (event.getGameState() == GameState.LOGGED_IN)
+		// reset on world hop or logging in
+		switch (event.getGameState())
 		{
-			xpPanel.resetAllSkillXpHr();
+			case HOPPING:
+			case LOGGING_IN:
+				xpPanel.resetAllSkillXpHr();
 		}
 	}
 

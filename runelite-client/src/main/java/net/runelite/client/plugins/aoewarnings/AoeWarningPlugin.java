@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;

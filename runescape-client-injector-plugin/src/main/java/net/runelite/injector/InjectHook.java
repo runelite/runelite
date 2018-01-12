@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.runelite.asm.ClassFile;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
@@ -37,18 +36,17 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
-import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.DeobAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,15 +54,20 @@ public class InjectHook
 {
 	private static final Logger logger = LoggerFactory.getLogger(InjectHook.class);
 
-	public static final String HOOKS = "net/runelite/client/callback/Hooks";
+	static class HookInfo
+	{
+		String fieldName;
+		String clazz;
+		String method;
+		boolean staticMethod = true;
+	}
 
-	private static final String HOOK_METHOD = "callHook";
-	private static final String HOOK_METHOD_SIGNATURE = "(Ljava/lang/String;ILjava/lang/Object;)V";
+	private static final String HOOK_METHOD_SIGNATURE = "(I)V";
 
 	private static final String CLINIT = "<clinit>";
 
 	private final Inject inject;
-	private final Map<Field, Field> hooked = new HashMap<>();
+	private final Map<Field, HookInfo> hooked = new HashMap<>();
 
 	private int injectedHooks;
 
@@ -73,25 +76,13 @@ public class InjectHook
 		this.inject = inject;
 	}
 
-	private void index()
+	void hook(Field field, HookInfo hookInfo)
 	{
-		for (ClassFile cf : inject.getDeobfuscated().getClasses())
-		{
-			for (Field f : cf.getFields())
-			{
-				if (DeobAnnotations.getHookName(f.getAnnotations()) != null)
-				{
-					Field ob = inject.toObField(f);
-					hooked.put(ob, f);
-				}
-			}
-		}
+		hooked.put(field, hookInfo);
 	}
 
 	public void run()
 	{
-		index();
-
 		Execution e = new Execution(inject.getVanilla());
 		e.populateInitialMethods();
 
@@ -128,43 +119,38 @@ public class InjectHook
 				return;
 			}
 
-			Field deobField = hooked.get(fieldBeingSet);
-			if (deobField == null)
+			HookInfo hookInfo = hooked.get(fieldBeingSet);
+			if (hookInfo == null)
 			{
 				return;
 			}
 
-			String hookName = DeobAnnotations.getHookName(deobField.getAnnotations()); // hook name
+			String hookName = hookInfo.fieldName;
 			assert hookName != null;
 
 			logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
 			++injectedHooks;
 
 			Instruction objectInstruction = new AConstNull(ins);
+			StackContext objectStackContext = null;
 			if (sfi instanceof PutField)
 			{
 				StackContext objectStack = ic.getPops().get(1); // Object being set on
-
-				// Intsruction to load object
-				Instruction obji = objectStack.getPushed().getInstruction();
-
-				if (obji instanceof LVTInstruction)
-				{
-					assert objectStack.getPushed().getPops().isEmpty();
-					objectInstruction = obji.clone();
-				}
-				else
-				{
-					// This happens now mostly with array loads: array[index].field = value;
-					logger.debug("Unable to pass object to injected hook for {}, pushing instruction: {}", hookName, obji);
-				}
+				objectStackContext = objectStack;
 			}
 
 			int idx = ins.getInstructions().indexOf(sfi);
 			assert idx != -1;
 
-			// idx + 1 to insert after the set
-			injectCallback(ins, idx + 1, hookName, null, objectInstruction);
+			try
+			{
+				// idx + 1 to insert after the set
+				injectCallback(ins, idx + 1, hookInfo, null, objectStackContext);
+			}
+			catch (InjectionException ex)
+			{
+				throw new RuntimeException(ex);
+			}
 		});
 
 		// these look like:
@@ -202,13 +188,13 @@ public class InjectHook
 				return;
 			}
 
-			Field deobField = hooked.get(fieldBeingSet);
-			if (deobField == null)
+			HookInfo hookInfo = hooked.get(fieldBeingSet);
+			if (hookInfo == null)
 			{
 				return;
 			}
 
-			String hookName = DeobAnnotations.getHookName(deobField.getAnnotations()); // hook name
+			String hookName = hookInfo.fieldName;
 
 			// assume this is always at index 1
 			StackContext index = ic.getPops().get(1);
@@ -216,21 +202,11 @@ public class InjectHook
 			StackContext arrayReference = ic.getPops().get(2);
 			InstructionContext arrayReferencePushed = arrayReference.getPushed();
 
-			Instruction pushedObjectReferenceInstruction = new AConstNull(ins);
-
+			StackContext objectStackContext = null;
 			if (arrayReferencePushed.getInstruction().getType() == InstructionType.GETFIELD)
 			{
 				StackContext objectReference = arrayReferencePushed.getPops().get(0);
-				InstructionContext objectReferencePushed = objectReference.getPushed();
-				if (objectReferencePushed.getPops().isEmpty())
-				{
-					pushedObjectReferenceInstruction = objectReferencePushed.getInstruction().clone();
-				}
-				else
-				{
-					logger.warn("Could not get object reference for array store for hook {}, object pusher is {}",
-						hookName, objectReferencePushed.getInstruction());
-				}
+				objectStackContext = objectReference;
 			}
 
 			// inject hook after 'i'
@@ -240,7 +216,14 @@ public class InjectHook
 			int idx = ins.getInstructions().indexOf(i);
 			assert idx != -1;
 
-			injectCallback(ins, idx + 1, hookName, index, pushedObjectReferenceInstruction);
+			try
+			{
+				injectCallback(ins, idx + 1, hookInfo, index, objectStackContext);
+			}
+			catch (InjectionException ex)
+			{
+				throw new RuntimeException(ex);
+			}
 		});
 
 		e.run();
@@ -265,36 +248,55 @@ public class InjectHook
 		return idx;
 	}
 
-	private void injectCallback(Instructions ins, int idx, String hookName, StackContext index, Instruction objectPusher)
+	private void injectCallback(Instructions ins, int idx, HookInfo hookInfo, StackContext index, StackContext objectPusher) throws InjectionException
 	{
-		// Insert:
-		// ldc hookName
-		// <indexPusher>
-		// aload 0 (or aconst_null)
-		// invokestatic net/runelite/inject/callbacks/Hooks/callHook(Ljava/lang/String;ILjava/lang/Object;)V
-
-		// hook name
-		LDC ldc = new LDC(ins, hookName);
-
-		InvokeStatic invoke = new InvokeStatic(ins,
-			new net.runelite.asm.pool.Method(
-				new net.runelite.asm.pool.Class(HOOKS),
-				HOOK_METHOD,
-				new Signature(HOOK_METHOD_SIGNATURE)
-			)
-		);
-
-		ins.getInstructions().add(idx++, ldc);
-		if (index != null)
+		if (hookInfo.staticMethod == false)
 		{
-			idx = recursivelyPush(ins, idx, index);
+			if (objectPusher == null)
+			{
+				throw new InjectionException("Null object pusher");
+			}
+
+			idx = recursivelyPush(ins, idx, objectPusher);
+			if (index != null)
+			{
+				idx = recursivelyPush(ins, idx, index);
+			}
+			else
+			{
+				ins.getInstructions().add(idx++, new LDC(ins, -1));
+			}
+
+			InvokeVirtual invoke = new InvokeVirtual(ins,
+				new net.runelite.asm.pool.Method(
+					new net.runelite.asm.pool.Class(hookInfo.clazz),
+					hookInfo.method,
+					new Signature(HOOK_METHOD_SIGNATURE)
+				)
+			);
+			ins.getInstructions().add(idx++, invoke);
+
 		}
 		else
 		{
-			ins.getInstructions().add(idx++, new LDC(ins, -1));
+			if (index != null)
+			{
+				idx = recursivelyPush(ins, idx, index);
+			}
+			else
+			{
+				ins.getInstructions().add(idx++, new LDC(ins, -1));
+			}
+
+			InvokeStatic invoke = new InvokeStatic(ins,
+				new net.runelite.asm.pool.Method(
+					new net.runelite.asm.pool.Class(hookInfo.clazz),
+					hookInfo.method,
+					new Signature(HOOK_METHOD_SIGNATURE)
+				)
+			);
+			ins.getInstructions().add(idx++, invoke);
 		}
-		ins.getInstructions().add(idx++, objectPusher);
-		ins.getInstructions().add(idx++, invoke);
 	}
 
 	public int getInjectedHooks()

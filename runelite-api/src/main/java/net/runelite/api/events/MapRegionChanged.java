@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.api.ChatMessageType;
 
 @Data
-@AllArgsConstructor
-public class ChatMessage
+public class MapRegionChanged
 {
-	private ChatMessageType type;
-	private String sender;
-	private String message;
-	private String clan;
+	/** index into the region map that is changing
+	 */
+	private int index;
 }

@@ -32,6 +32,7 @@ public enum GameState
 	LOGGING_IN(20),
 	LOADING(25),
 	LOGGED_IN(30),
+	CONNECTION_LOST(40),
 	HOPPING(45);
 
 	private final int state;

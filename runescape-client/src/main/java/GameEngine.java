@@ -8,6 +8,11 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.net.URL;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("be")
 @Implements("GameEngine")
@@ -17,7 +22,6 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       signature = "[Lbu;"
    )
    @Export("clanMembers")
-   @Hook("clanMembersChanged")
    static ClanMember[] clanMembers;
    @ObfuscatedName("a")
    @ObfuscatedSignature(

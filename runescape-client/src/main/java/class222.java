@@ -1,5 +1,4 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hs")
@@ -9,7 +8,6 @@ public class class222 {
    public static int[] varpsMasks;
    @ObfuscatedName("w")
    @Export("settings")
-   @Hook("varbitChanged")
    public static int[] settings;
    @ObfuscatedName("e")
    @Export("widgetSettings")

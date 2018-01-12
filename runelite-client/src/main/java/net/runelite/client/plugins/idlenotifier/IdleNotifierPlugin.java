@@ -54,6 +54,7 @@ import static net.runelite.api.AnimationID.GEM_CUTTING_OPAL;
 import static net.runelite.api.AnimationID.GEM_CUTTING_REDTOPAZ;
 import static net.runelite.api.AnimationID.GEM_CUTTING_RUBY;
 import static net.runelite.api.AnimationID.GEM_CUTTING_SAPPHIRE;
+import static net.runelite.api.AnimationID.HERBLORE_MAKE_TAR;
 import static net.runelite.api.AnimationID.HERBLORE_POTIONMAKING;
 import static net.runelite.api.AnimationID.IDLE;
 import static net.runelite.api.AnimationID.MAGIC_CHARGING_ORBS;
@@ -102,8 +103,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.AnimationChanged;
-import net.runelite.client.events.GameStateChanged;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -228,6 +229,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_INFERNAL:
 			/* Herblore */
 			case HERBLORE_POTIONMAKING:
+			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 				notifyIdle = true;
@@ -264,7 +266,12 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		Actor opponent = local.getInteracting();
-		if (opponent != null && opponent.getCombatLevel() > 0)
+		boolean isPlayer = opponent instanceof Player;
+
+		if (opponent != null
+			&& !isPlayer
+			&& opponent.getCombatLevel() > 0
+			&& opponent.getHealth() != -1)
 		{
 			lastInteracting = Instant.now();
 		}

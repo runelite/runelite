@@ -46,8 +46,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ResizeableChanged;
-import net.runelite.client.events.VarbitChanged;
+import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j

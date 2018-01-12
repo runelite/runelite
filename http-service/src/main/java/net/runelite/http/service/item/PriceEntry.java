@@ -31,6 +31,7 @@ public class PriceEntry
 	private int item;
 	private int price;
 	private Instant time;
+	private Instant fetched_time;
 
 	public int getItem()
 	{
@@ -60,5 +61,15 @@ public class PriceEntry
 	public void setTime(Instant time)
 	{
 		this.time = time;
+	}
+
+	public Instant getFetched_time()
+	{
+		return fetched_time;
+	}
+
+	public void setFetched_time(Instant fetched_time)
+	{
+		this.fetched_time = fetched_time;
 	}
 }

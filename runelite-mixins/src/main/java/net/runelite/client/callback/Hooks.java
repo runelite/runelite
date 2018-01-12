@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.callback;
 
-package net.runelite.client.events;
+import com.google.common.eventbus.EventBus;
 
-import lombok.Data;
-import net.runelite.api.Skill;
-
-@Data
-public class ExperienceChanged
+/**
+ * Dummy class to make the mixins to compile.
+ *
+ * @author Adam
+ */
+public class Hooks
 {
-	/**
-	 * The {@link Skill} that had its experience changed.
-	 */
-	private Skill skill;
+	public static EventBus eventBus;
 }

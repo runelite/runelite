@@ -30,11 +30,12 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
@@ -49,6 +50,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,6 +72,8 @@ public class ItemService
 	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
 	private static final HttpUrl RS_SEARCH_URL = HttpUrl.parse(BASE + "/api/catalogue/items.json?category=1");
 
+	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
+
 	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
 		+ "  `id` int(11) NOT NULL,\n"
 		+ "  `name` tinytext NOT NULL,\n"
@@ -83,15 +88,14 @@ public class ItemService
 	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
 		+ "  `item` int(11) NOT NULL,\n"
 		+ "  `price` int(11) NOT NULL,\n"
-		+ "  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n"
-		+ "  KEY `item` (`item`)\n"
+		+ "  `time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
+		+ "  `fetched_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',\n"
+		+ "  UNIQUE KEY `item_time` (`item`,`time`),\n"
+		+ "  KEY `item_fetched_time` (`item`,`fetched_time`)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
 		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
-
-	private static final String CREATE_PRICES_IDX = "ALTER TABLE `prices`\n"
-		+ "  ADD UNIQUE KEY `item` (`item`,`time`);";
 
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 
@@ -121,16 +125,6 @@ public class ItemService
 			catch (Sql2oException ex)
 			{
 				// Ignore, happens when index already exists
-			}
-
-			try
-			{
-				con.createQuery(CREATE_PRICES_IDX)
-					.executeUpdate();
-			}
-			catch (Sql2oException ex)
-			{
-				// Ignore
 			}
 		}
 	}
@@ -196,8 +190,7 @@ public class ItemService
 	}
 
 	@RequestMapping("/{itemId}/price")
-	public ItemPrice getPrice(
-		HttpServletResponse response,
+	public ResponseEntity<ItemPrice> itemPrice(
 		@PathVariable int itemId,
 		@RequestParam(required = false) Instant time
 	)
@@ -218,7 +211,7 @@ public class ItemService
 
 			if (item == null)
 			{
-				return null;
+				return ResponseEntity.notFound().build();
 			}
 		}
 
@@ -229,21 +222,23 @@ public class ItemService
 			if (priceEntry == null)
 			{
 				// we maybe can't backfill this
-				return null;
+				return ResponseEntity.notFound().build();
 			}
 		}
 		else
 		{
-			Instant yesterday = now.minus(1, ChronoUnit.DAYS);
-			if (priceEntry == null || priceEntry.getTime().isBefore(yesterday))
+			Instant cacheTime = now.minus(CACHE_DUATION);
+			if (priceEntry == null || priceEntry.getFetched_time().isBefore(cacheTime))
 			{
+				// Price is unknown, or was fetched too long ago
 				List<PriceEntry> prices = fetchPrice(itemId);
 
 				if (prices == null || prices.isEmpty())
 				{
-					return null;
+					return ResponseEntity.notFound().build();
 				}
 
+				// Get the most recent price
 				priceEntry = prices.get(prices.size() - 1);
 				hit = false;
 			}
@@ -254,8 +249,10 @@ public class ItemService
 		itemPrice.setPrice(priceEntry.getPrice());
 		itemPrice.setTime(priceEntry.getTime());
 
-		response.setHeader(RUNELITE_CACHE, hit ? "HIT" : "MISS");
-		return itemPrice;
+		return ResponseEntity.ok()
+			.header(RUNELITE_CACHE, hit ? "HIT" : "MISS")
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+			.body(itemPrice);
 	}
 
 	@RequestMapping("/search")
@@ -330,14 +327,14 @@ public class ItemService
 		{
 			if (time != null)
 			{
-				return con.createQuery("select price, time from prices where item = :item and time <= :time order by time desc limit 1")
+				return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
 					.addParameter("item", itemId)
 					.addParameter("time", time.toString())
 					.executeAndFetchFirst(PriceEntry.class);
 			}
 			else
 			{
-				return con.createQuery("select price, time from prices where item = :item order by time desc limit 1")
+				return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
 					.addParameter("item", itemId)
 					.executeAndFetchFirst(PriceEntry.class);
 			}
@@ -405,8 +402,10 @@ public class ItemService
 		{
 			RSPrices rsprice = fetchRSPrices(itemId);
 			List<PriceEntry> entries = new ArrayList<>();
+			Instant now = Instant.now();
 
-			Query query = con.createQuery("insert ignore into prices (item, price, time) values (:item, :price, :time)");
+			Query query = con.createQuery("insert into prices (item, price, time, fetched_time) values (:item, :price, :time, :fetched_time) "
+				+ "ON DUPLICATE KEY UPDATE price = VALUES(price), fetched_time = VALUES(fetched_time)");
 
 			for (Entry<Long, Integer> entry : rsprice.getDaily().entrySet())
 			{
@@ -419,12 +418,14 @@ public class ItemService
 				priceEntry.setItem(itemId);
 				priceEntry.setPrice(price);
 				priceEntry.setTime(time);
+				priceEntry.setFetched_time(now);
 				entries.add(priceEntry);
 
 				query
 					.addParameter("item", itemId)
 					.addParameter("price", price)
 					.addParameter("time", time)
+					.addParameter("fetched_time", now)
 					.addToBatch();
 			}
 

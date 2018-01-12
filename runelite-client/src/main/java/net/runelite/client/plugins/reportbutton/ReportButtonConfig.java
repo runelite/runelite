@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.plugins.reportbutton;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Configuration
-public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter
+@ConfigGroup(
+	keyName = "reportButton",
+	name = "Report Button Utils",
+	description = "Configuration for report button"
+)
+public interface ReportButtonConfig extends Config
 {
-	@Override
-	protected void configure(HttpSecurity http) throws Exception
+	@ConfigItem(
+		keyName = "time",
+		name = "Display Options",
+		description = "Configures what text the report button shows."
+	)
+	default TimeStyle time()
 	{
-		http.csrf().disable();
+		return TimeStyle.LOGIN_TIME;
 	}
 }

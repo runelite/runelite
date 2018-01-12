@@ -34,9 +34,12 @@ import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.api.events.AnimationChanged;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
@@ -172,5 +175,14 @@ public abstract class RSActorMixin implements RSActor
 	public Point getMinimapLocation()
 	{
 		return Perspective.worldToMiniMap(client, getX(), getY());
+	}
+
+	@FieldHook("animation")
+	@Inject
+	public void animationChanged(int idx)
+	{
+		AnimationChanged animationChange = new AnimationChanged();
+		animationChange.setActor(this);
+		eventBus.post(animationChange);
 	}
 }

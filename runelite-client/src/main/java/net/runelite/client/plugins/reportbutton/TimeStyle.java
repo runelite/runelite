@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Abel Briggs
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.plugins.reportbutton;
 
-import lombok.Data;
-import net.runelite.api.Actor;
-
-@Data
-public class AnimationChanged
+public enum TimeStyle
 {
-	private Actor actor;
+	OFF("Off"),
+	LOGIN_TIME("Login Timer"),
+	UTC("UTC Time"),
+	JAGEX("Jagex HQ Time"),
+	LOCAL_TIME("Local Time");
+
+	private final String name;
+
+	TimeStyle(String name)
+	{
+		this.name = name;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
+
 }

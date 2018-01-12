@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.api.events;
 
-@ConfigGroup(
-	keyName = "runelite",
-	name = "RuneLite",
-	description = "Configuration for RuneLite client options"
-)
-public interface RuneLiteConfig extends Config
+import lombok.Data;
+
+@Data
+public class PlayerMenuOptionClicked
 {
-	@ConfigItem(
-		keyName = "chatCommandsRecolorEnabled",
-		name = "Enable chat commands recolor",
-		description = "Determines if recoloring of custom RuneLite chat commands is enabled"
-	)
-	default boolean chatCommandsRecolorEnabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "uiEnableCustomChrome",
-		name = "Enable custom window chrome",
-		description = "Use Runelite's custom window title and borders.",
-		confirmationWarining = "Please restart your client after changing this setting"
-	)
-	default boolean enableCustomChrome()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
-		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
-		+ "of your computer. Are you sure you want to do this?",
-		warnOnEnable = true
-	)
-	default boolean enablePlugins()
-	{
-		return false;
-	}
+	private String menuOption;
+	private String menuTarget;
 }

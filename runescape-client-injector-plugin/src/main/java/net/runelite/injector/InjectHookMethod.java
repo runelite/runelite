@@ -42,7 +42,6 @@ import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
-import static net.runelite.injector.InjectHook.HOOKS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +49,8 @@ public class InjectHookMethod
 {
 
 	private static final Logger logger = LoggerFactory.getLogger(InjectHookMethod.class);
+
+	public static final String HOOKS = "net/runelite/client/callback/Hooks";
 
 	private final Inject inject;
 

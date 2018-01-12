@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Abel Briggs
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.Point;
-import net.runelite.api.Projectile;
+import net.runelite.api.Actor;
 
 @Data
-public class ProjectileMoved
+public class AnimationChanged
 {
-	private Projectile projectile;
-	private Point position;
-	private int plane;
+	private Actor actor;
 }
