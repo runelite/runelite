@@ -120,7 +120,7 @@ public class Friend {
    static void method1036(int var0, Coordinates var1, boolean var2) {
       WorldMapData var3 = class86.method1655().method5365(var0);
       int var4 = UrlRequest.localPlayer.field821;
-      int var5 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+      int var5 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
       int var6 = (UrlRequest.localPlayer.y >> 7) + Client.baseY;
       Coordinates var7 = new Coordinates(var4, var5, var6);
       class86.method1655().method5355(var3, var7, var1, var2);
@@ -149,7 +149,7 @@ public class Friend {
          }
 
          if(var0 != 20 && var0 != 40 && MouseInput.field685 != null) {
-            MouseInput.field685.vmethod3081();
+            MouseInput.field685.close();
             MouseInput.field685 = null;
          }
 
@@ -182,8 +182,9 @@ public class Friend {
       signature = "(Lfa;I)V",
       garbageValue = "1500368903"
    )
-   static final void method1035(class173 var0) {
-      PacketBuffer var1 = Client.field888.packetBuffer;
+   @Export("otherPackets")
+   static final void otherPackets(class173 var0) {
+      PacketBuffer var1 = Client.signlink.packetBuffer;
       int var2;
       int var3;
       int var4;
@@ -194,7 +195,7 @@ public class Friend {
          var2 = var1.method3297();
          var3 = var1.readUnsignedShortOb1();
          var4 = var1.readUnsignedByteNegate();
-         var5 = (var4 >> 4 & 7) + class46.field558;
+         var5 = (var4 >> 4 & 7) + SceneChunkMetadata.field558;
          var6 = (var4 & 7) + class35.field467;
          var7 = var1.readUnsignedShort();
          if(var5 >= 0 && var6 >= 0 && var5 < 104 && var6 < 104) {
@@ -218,7 +219,7 @@ public class Friend {
          if(class173.field2421 == var0) {
             var2 = var1.method3297();
             var3 = var1.readUnsignedByte();
-            var4 = (var3 >> 4 & 7) + class46.field558;
+            var4 = (var3 >> 4 & 7) + SceneChunkMetadata.field558;
             var5 = (var3 & 7) + class35.field467;
             var6 = var1.readUnsignedByte();
             var7 = var6 >> 2;
@@ -280,7 +281,7 @@ public class Friend {
             Item var34;
             if(class173.field2428 == var0) {
                var2 = var1.readUnsignedByteNegate();
-               var3 = (var2 >> 4 & 7) + class46.field558;
+               var3 = (var2 >> 4 & 7) + SceneChunkMetadata.field558;
                var4 = (var2 & 7) + class35.field467;
                var5 = var1.method3299();
                if(var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104) {
@@ -304,7 +305,7 @@ public class Friend {
             } else if(class173.field2427 == var0) {
                var2 = var1.method3299();
                var3 = var1.readUnsignedByte();
-               var4 = (var3 >> 4 & 7) + class46.field558;
+               var4 = (var3 >> 4 & 7) + SceneChunkMetadata.field558;
                var5 = (var3 & 7) + class35.field467;
                var6 = var1.readUnsignedShortOb1();
                if(var4 >= 0 && var5 >= 0 && var4 < 104 && var5 < 104) {
@@ -324,7 +325,7 @@ public class Friend {
                var3 = var1.readUnsignedShort();
                var4 = var1.readUnsignedByteNegate();
                var5 = var1.readUnsignedByte();
-               var6 = (var5 >> 4 & 7) + class46.field558;
+               var6 = (var5 >> 4 & 7) + SceneChunkMetadata.field558;
                var7 = (var5 & 7) + class35.field467;
                if(var6 >= 0 && var7 >= 0 && var6 < 104 && var7 < 104) {
                   var6 = var6 * 128 + 64;
@@ -339,11 +340,11 @@ public class Friend {
                var4 = var2 & 3;
                var5 = Client.field903[var3];
                var6 = var1.method3274();
-               var7 = (var6 >> 4 & 7) + class46.field558;
+               var7 = (var6 >> 4 & 7) + SceneChunkMetadata.field558;
                var31 = (var6 & 7) + class35.field467;
                var32 = var1.readUnsignedShort();
                if(var7 >= 0 && var31 >= 0 && var7 < 104 && var31 < 104) {
-                  class44.method625(BoundingBox2D.plane, var7, var31, var5, var32, var3, var4, 0, -1);
+                  WorldMapMappings.method625(BoundingBox2D.plane, var7, var31, var5, var32, var3, var4, 0, -1);
                }
 
             } else {
@@ -355,7 +356,7 @@ public class Friend {
                   var5 = var4 >> 4 & 15;
                   var6 = var4 & 7;
                   var7 = var1.readUnsignedByte();
-                  var31 = (var7 >> 4 & 7) + class46.field558;
+                  var31 = (var7 >> 4 & 7) + SceneChunkMetadata.field558;
                   var32 = (var7 & 7) + class35.field467;
                   if(var31 >= 0 && var32 >= 0 && var31 < 104 && var32 < 104) {
                      var35 = var5 + 1;
@@ -376,10 +377,10 @@ public class Friend {
                   var4 = var2 & 3;
                   var5 = Client.field903[var3];
                   var6 = var1.method3335();
-                  var7 = (var6 >> 4 & 7) + class46.field558;
+                  var7 = (var6 >> 4 & 7) + SceneChunkMetadata.field558;
                   var31 = (var6 & 7) + class35.field467;
                   if(var7 >= 0 && var31 >= 0 && var7 < 104 && var31 < 104) {
-                     class44.method625(BoundingBox2D.plane, var7, var31, var5, -1, var3, var4, 0, -1);
+                     WorldMapMappings.method625(BoundingBox2D.plane, var7, var31, var5, -1, var3, var4, 0, -1);
                   }
 
                } else {
@@ -388,7 +389,7 @@ public class Friend {
                   if(class173.field2426 == var0) {
                      var2 = var1.method3299();
                      var3 = var1.method3274();
-                     var4 = (var3 >> 4 & 7) + class46.field558;
+                     var4 = (var3 >> 4 & 7) + SceneChunkMetadata.field558;
                      var5 = (var3 & 7) + class35.field467;
                      var6 = var1.method3335() * 4;
                      var7 = var1.readUnsignedByteNegate();
@@ -426,7 +427,7 @@ public class Friend {
                         var12 = var1.method3299();
                         byte var13 = var1.method3437();
                         var14 = var1.readUnsignedByteNegate();
-                        int var36 = (var14 >> 4 & 7) + class46.field558;
+                        int var36 = (var14 >> 4 & 7) + SceneChunkMetadata.field558;
                         int var16 = (var14 & 7) + class35.field467;
                         Player var17;
                         if(var4 == Client.localInteractingIndex) {
@@ -457,7 +458,7 @@ public class Friend {
                            int var28 = (var16 << 7) + (var20 << 6);
                            Model var29 = var18.method4665(var6, var7, var25, var27, var26, var28);
                            if(var29 != null) {
-                              class44.method625(BoundingBox2D.plane, var36, var16, var31, -1, 0, 0, var3 + 1, var2 + 1);
+                              WorldMapMappings.method625(BoundingBox2D.plane, var36, var16, var31, -1, 0, 0, var3 + 1, var2 + 1);
                               var17.animationCycleStart = var3 + Client.gameCycle;
                               var17.animationCycleEnd = var2 + Client.gameCycle;
                               var17.model = var29;

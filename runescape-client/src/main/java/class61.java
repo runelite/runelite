@@ -118,7 +118,7 @@ public final class class61 {
          } else if(Client.localInteractingIndex == var1) {
             throw new RuntimeException();
          } else {
-            class94.Players_regions[var1] = (var4.field821 << 28) + (class46.baseX + var4.pathX[0] >> 13 << 14) + (Client.baseY + var4.pathY[0] >> 13);
+            class94.Players_regions[var1] = (var4.field821 << 28) + (SceneChunkMetadata.baseX + var4.pathX[0] >> 13 << 14) + (Client.baseY + var4.pathY[0] >> 13);
             if(var4.field1150 != -1) {
                class94.Players_orientations[var1] = var4.field1150;
             } else {
@@ -281,7 +281,7 @@ public final class class61 {
                var7 = var6 >> 28;
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
-               var10 = (var8 + class46.baseX + var4.pathX[0] & 16383) - class46.baseX;
+               var10 = (var8 + SceneChunkMetadata.baseX + var4.pathX[0] & 16383) - SceneChunkMetadata.baseX;
                var11 = (var9 + Client.baseY + var4.pathY[0] & 16383) - Client.baseY;
                if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
                   var4.method1082(var10, var11);
@@ -315,7 +315,7 @@ public final class class61 {
          class3.field17 = null;
          class82.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if(class3.field17 != null) {
-            class82.gameDraw(class3.field17, -1412584499, var1, var2, var3, var4, class81.field1222, class186.field2526, var7);
+            class82.gameDraw(class3.field17, -1412584499, var1, var2, var3, var4, GameObjectTransformMetadata.field1222, class186.field2526, var7);
             class3.field17 = null;
          }
 

@@ -37,7 +37,8 @@ public class Ignore {
       signature = "(I)Lks;",
       garbageValue = "-1374631757"
    )
-   static SpritePixels method1060() {
+   @Export("renderSprite")
+   static SpritePixels renderSprite() {
       SpritePixels var0 = new SpritePixels();
       var0.maxWidth = class299.field3864;
       var0.maxHeight = class299.field3868;
@@ -53,7 +54,7 @@ public class Ignore {
          var0.pixels[var3] = FaceNormal.field2025[var2[var3] & 255];
       }
 
-      ContextMenuRow.method1663();
+      ContextMenuRow.resetCachedStaticSpriteData();
       return var0;
    }
 
@@ -73,13 +74,13 @@ public class Ignore {
       garbageValue = "-2013173523"
    )
    static void method1058() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2394, Client.field888.field1449);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2394, Client.signlink.field1449);
       PacketBuffer var1 = var0.packetBuffer;
       int var2 = Client.isResized?2:1;
       var1.putByte(var2);
       var0.packetBuffer.putShort(Huffman.canvasWidth);
       var0.packetBuffer.putShort(VertexNormal.canvasHeight);
-      Client.field888.method1862(var0);
+      Client.signlink.method1862(var0);
    }
 
    @ObfuscatedName("gk")

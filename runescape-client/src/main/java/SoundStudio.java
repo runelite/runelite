@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dd")
-public class class105 extends Node {
+@Implements("SoundStudio")
+public class SoundStudio extends Node {
    @ObfuscatedName("t")
    @Export("payload")
    static byte[] payload;
@@ -100,12 +102,13 @@ public class class105 extends Node {
       field1491 = false;
    }
 
-   class105(byte[] var1) {
-      this.method1950(var1);
+   SoundStudio(byte[] var1) {
+      this.decode(var1);
    }
 
    @ObfuscatedName("u")
-   void method1950(byte[] var1) {
+   @Export("decode")
+   void decode(byte[] var1) {
       Buffer var2 = new Buffer(var1);
       this.field1475 = var2.readInt();
       this.field1476 = var2.readInt();
@@ -390,7 +393,7 @@ public class class105 extends Node {
    @ObfuscatedSignature(
       signature = "([I)Ldx;"
    )
-   class106 method1952(int[] var1) {
+   MusicTrack2 method1952(int[] var1) {
       if(var1 != null && var1[0] <= 0) {
          return null;
       } else {
@@ -435,7 +438,7 @@ public class class105 extends Node {
          this.field1492 = null;
          byte[] var7 = this.field1505;
          this.field1505 = null;
-         return new class106(this.field1475, var7, this.field1477, this.field1478, this.field1479);
+         return new MusicTrack2(this.field1475, var7, this.field1477, this.field1478, this.field1479);
       }
    }
 
@@ -631,13 +634,13 @@ public class class105 extends Node {
    @ObfuscatedSignature(
       signature = "(Lib;II)Ldd;"
    )
-   static class105 method1951(IndexDataBase var0, int var1, int var2) {
+   static SoundStudio method1951(IndexDataBase var0, int var1, int var2) {
       if(!method1946(var0)) {
          var0.tryLoadRecord(var1, var2);
          return null;
       } else {
          byte[] var3 = var0.getConfigData(var1, var2);
-         return var3 == null?null:new class105(var3);
+         return var3 == null?null:new SoundStudio(var3);
       }
    }
 }

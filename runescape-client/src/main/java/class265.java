@@ -273,7 +273,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class163.method3097(field3487, this.field3495, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3495, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3495);
             }
@@ -296,7 +296,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class163.method3097(field3487, this.field3490, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3490, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3490);
             }
@@ -319,7 +319,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class163.method3097(field3487, this.field3493, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3493, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3493);
             }
@@ -342,7 +342,7 @@ public class class265 extends CacheableNode {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class163.method3097(field3487, this.field3498, 0);
+            var1 = SocketSession.getSprite(field3487, this.field3498, 0);
             if(var1 != null) {
                field3489.put(var1, (long)this.field3498);
             }
@@ -369,7 +369,7 @@ public class class265 extends CacheableNode {
             IndexDataBase var4 = field3488;
             int var5 = this.field3504;
             Font var2;
-            if(!Parameters.method5029(var3, var5, 0)) {
+            if(!Parameters.spriteDataValid(var3, var5, 0)) {
                var2 = null;
             } else {
                byte[] var7 = var4.getConfigData(var5, 0);
@@ -378,7 +378,7 @@ public class class265 extends CacheableNode {
                   var6 = null;
                } else {
                   Font var8 = new Font(var7, class299.field3867, class299.offsetsY, Item.field1387, class276.field3727, FaceNormal.field2025, Bounds.spritePixels);
-                  ContextMenuRow.method1663();
+                  ContextMenuRow.resetCachedStaticSpriteData();
                   var6 = var8;
                }
 

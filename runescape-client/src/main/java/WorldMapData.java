@@ -365,8 +365,8 @@ public class WorldMapData {
       signature = "(Ljava/net/Socket;III)Lfx;",
       garbageValue = "1051888368"
    )
-   public static class159 method342(Socket var0, int var1, int var2) throws IOException {
-      return new class161(var0, var1, var2);
+   public static AbstractSocket method342(Socket var0, int var1, int var2) throws IOException {
+      return new SocketSession2(var0, var1, var2);
    }
 
    @ObfuscatedName("gp")

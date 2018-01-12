@@ -390,7 +390,7 @@ public final class Player extends Actor {
                         int var38;
                         int var40;
                         if(var9 == 1) {
-                           var35 = class81.method1542(var5, var6, var10, var12);
+                           var35 = GameObjectTransformMetadata.method1542(var5, var6, var10, var12);
                         } else if(var9 == 2) {
                            var35 = class82.method1564(var5, var6, var10, var12);
                         } else {

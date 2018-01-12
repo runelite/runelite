@@ -15,7 +15,7 @@ final class class3 implements class0 {
       signature = "Lfx;"
    )
    @Export("rssocket")
-   static class159 rssocket;
+   static AbstractSocket rssocket;
    @ObfuscatedName("cg")
    @ObfuscatedGetter(
       longValue = -4249044884305654605L

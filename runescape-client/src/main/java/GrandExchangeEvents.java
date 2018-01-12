@@ -1,12 +1,9 @@
+import net.runelite.mapping.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
 @Implements("GrandExchangeEvents")
@@ -29,10 +26,10 @@ public class GrandExchangeEvents {
    public final List events;
 
    static {
-      field268 = new class19();
+      field268 = new GEItemFieldComparator1();
       new WorldComparator();
       field271 = new UnitPriceComparator();
-      field270 = new class18();
+      field270 = new GEItemNameComparator();
       field267 = new TotalQuantityComparator();
    }
 
@@ -79,7 +76,8 @@ public class GrandExchangeEvents {
       signature = "(II)Ljg;",
       garbageValue = "-1432370023"
    )
-   public static Enum method70(int var0) {
+   @Export("enumForId")
+   public static Enum enumForId(int var0) {
       Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
       if(var1 != null) {
          return var1;

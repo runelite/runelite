@@ -1,8 +1,10 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dg")
-public class class116 extends TaskDataNode {
+@Implements("SongMetadata")
+public class SongMetadata extends TaskDataNode {
    @ObfuscatedName("a")
    int field1589;
    @ObfuscatedName("e")
@@ -37,7 +39,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldx;III)V"
    )
-   class116(class106 var1, int var2, int var3, int var4) {
+   SongMetadata(MusicTrack2 var1, int var2, int var3, int var4) {
       super.field1613 = var1;
       this.field1592 = var1.field1510;
       this.field1593 = var1.field1508;
@@ -52,7 +54,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldx;II)V"
    )
-   class116(class106 var1, int var2, int var3) {
+   SongMetadata(MusicTrack2 var1, int var2, int var3) {
       super.field1613 = var1;
       this.field1592 = var1.field1510;
       this.field1593 = var1.field1508;
@@ -97,7 +99,7 @@ public class class116 extends TaskDataNode {
       if(this.field1586 == 0 && this.field1598 == 0) {
          this.vmethod4046(var3);
       } else {
-         class106 var4 = (class106)super.field1613;
+         MusicTrack2 var4 = (MusicTrack2)super.field1613;
          int var5 = this.field1592 << 8;
          int var6 = this.field1593 << 8;
          int var7 = var4.field1509.length << 8;
@@ -301,7 +303,7 @@ public class class116 extends TaskDataNode {
          }
       }
 
-      class106 var2 = (class106)super.field1613;
+      MusicTrack2 var2 = (MusicTrack2)super.field1613;
       int var3 = this.field1592 << 8;
       int var4 = this.field1593 << 8;
       int var5 = var2.field1509.length << 8;
@@ -487,7 +489,7 @@ public class class116 extends TaskDataNode {
 
    @ObfuscatedName("q")
    public synchronized void method2218(int var1) {
-      int var2 = ((class106)super.field1613).field1509.length << 8;
+      int var2 = ((MusicTrack2)super.field1613).field1509.length << 8;
       if(var1 < -1) {
          var1 = -1;
       }
@@ -633,7 +635,7 @@ public class class116 extends TaskDataNode {
 
    @ObfuscatedName("ag")
    public boolean method2194() {
-      return this.field1589 < 0 || this.field1589 >= ((class106)super.field1613).field1509.length << 8;
+      return this.field1589 < 0 || this.field1589 >= ((MusicTrack2)super.field1613).field1509.length << 8;
    }
 
    @ObfuscatedName("ak")
@@ -653,14 +655,14 @@ public class class116 extends TaskDataNode {
             this.field1598 += var2;
             if(this.field1585 == 256 && (this.field1589 & 255) == 0) {
                if(ContextMenuRow.highMemory) {
-                  var2 = method2147(0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this);
+                  var2 = method2147(0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this);
                } else {
-                  var2 = method2146(((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this);
+                  var2 = method2146(((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this);
                }
             } else if(ContextMenuRow.highMemory) {
-               var2 = method2151(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this, this.field1585, var5);
+               var2 = method2151(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this, this.field1585, var5);
             } else {
-               var2 = method2133(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this, this.field1585, var5);
+               var2 = method2133(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this, this.field1585, var5);
             }
 
             this.field1598 -= var2;
@@ -677,17 +679,17 @@ public class class116 extends TaskDataNode {
 
          if(this.field1585 == 256 && (this.field1589 & 255) == 0) {
             if(ContextMenuRow.highMemory) {
-               return method2139(0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this);
+               return method2139(0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this);
             }
 
-            return method2138(((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this);
+            return method2138(((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this);
          }
 
          if(ContextMenuRow.highMemory) {
-            return method2143(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this, this.field1585, var5);
+            return method2143(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this, this.field1585, var5);
          }
 
-         return method2142(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this, this.field1585, var5);
+         return method2142(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this, this.field1585, var5);
       }
    }
 
@@ -703,14 +705,14 @@ public class class116 extends TaskDataNode {
             this.field1598 += var2;
             if(this.field1585 == -256 && (this.field1589 & 255) == 0) {
                if(ContextMenuRow.highMemory) {
-                  var2 = method2128(0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this);
+                  var2 = method2128(0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this);
                } else {
-                  var2 = method2148(((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this);
+                  var2 = method2148(((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this);
                }
             } else if(ContextMenuRow.highMemory) {
-               var2 = method2153(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this, this.field1585, var5);
+               var2 = method2153(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, this.field1595, this.field1587, 0, var6, var3, this, this.field1585, var5);
             } else {
-               var2 = method2230(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this, this.field1585, var5);
+               var2 = method2230(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, this.field1596, 0, var6, var3, this, this.field1585, var5);
             }
 
             this.field1598 -= var2;
@@ -727,17 +729,17 @@ public class class116 extends TaskDataNode {
 
          if(this.field1585 == -256 && (this.field1589 & 255) == 0) {
             if(ContextMenuRow.highMemory) {
-               return method2141(0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this);
+               return method2141(0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this);
             }
 
-            return method2204(((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this);
+            return method2204(((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this);
          }
 
          if(ContextMenuRow.highMemory) {
-            return method2267(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this, this.field1585, var5);
+            return method2267(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1588, this.field1584, 0, var4, var3, this, this.field1585, var5);
          }
 
-         return method2266(0, 0, ((class106)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this, this.field1585, var5);
+         return method2266(0, 0, ((MusicTrack2)super.field1613).field1509, var1, this.field1589, var2, this.field1590, 0, var4, var3, this, this.field1585, var5);
       }
    }
 
@@ -815,9 +817,9 @@ public class class116 extends TaskDataNode {
       int var1 = this.field1590 * 3 >> 6;
       var1 = (var1 ^ var1 >> 31) + (var1 >>> 31);
       if(this.field1591 == 0) {
-         var1 -= var1 * this.field1589 / (((class106)super.field1613).field1509.length << 8);
+         var1 -= var1 * this.field1589 / (((MusicTrack2)super.field1613).field1509.length << 8);
       } else if(this.field1591 >= 0) {
-         var1 -= var1 * this.field1592 / ((class106)super.field1613).field1509.length;
+         var1 -= var1 * this.field1592 / ((MusicTrack2)super.field1613).field1509.length;
       }
 
       return var1 > 255?255:var1;
@@ -837,23 +839,23 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldx;II)Ldg;"
    )
-   public static class116 method2160(class106 var0, int var1, int var2) {
-      return var0.field1509 != null && var0.field1509.length != 0?new class116(var0, (int)((long)var0.field1511 * 256L * (long)var1 / (long)(ScriptState.sampleRate * 100)), var2 << 6):null;
+   public static SongMetadata method2160(MusicTrack2 var0, int var1, int var2) {
+      return var0.field1509 != null && var0.field1509.length != 0?new SongMetadata(var0, (int)((long)var0.field1511 * 256L * (long)var1 / (long)(ScriptState.sampleRate * 100)), var2 << 6):null;
    }
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(Ldx;III)Ldg;"
    )
-   public static class116 method2112(class106 var0, int var1, int var2, int var3) {
-      return var0.field1509 != null && var0.field1509.length != 0?new class116(var0, var1, var2, var3):null;
+   public static SongMetadata method2112(MusicTrack2 var0, int var1, int var2, int var3) {
+      return var0.field1509 != null && var0.field1509.length != 0?new SongMetadata(var0, var1, var2, var3):null;
    }
 
    @ObfuscatedName("ah")
    @ObfuscatedSignature(
       signature = "([B[IIIIIIILdg;)I"
    )
-   static int method2138(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class116 var8) {
+   static int method2138(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, SongMetadata var8) {
       var2 >>= 8;
       var7 >>= 8;
       var4 <<= 2;
@@ -884,7 +886,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(I[B[IIIIIIIILdg;)I"
    )
-   static int method2139(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class116 var10) {
+   static int method2139(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, SongMetadata var10) {
       var3 >>= 8;
       var9 >>= 8;
       var5 <<= 2;
@@ -935,7 +937,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "([B[IIIIIIILdg;)I"
    )
-   static int method2204(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class116 var8) {
+   static int method2204(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, SongMetadata var8) {
       var2 >>= 8;
       var7 >>= 8;
       var4 <<= 2;
@@ -966,7 +968,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(I[B[IIIIIIIILdg;)I"
    )
-   static int method2141(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class116 var10) {
+   static int method2141(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, SongMetadata var10) {
       var3 >>= 8;
       var9 >>= 8;
       var5 <<= 2;
@@ -1017,7 +1019,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIILdg;II)I"
    )
-   static int method2142(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class116 var10, int var11, int var12) {
+   static int method2142(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, SongMetadata var10, int var11, int var12) {
       if(var11 == 0 || (var7 = var5 + (var11 + (var9 - var4) - 257) / var11) > var8) {
          var7 = var8;
       }
@@ -1050,7 +1052,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIILdg;II)I"
    )
-   static int method2143(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class116 var11, int var12, int var13) {
+   static int method2143(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, SongMetadata var11, int var12, int var13) {
       if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 257) / var12) > var9) {
          var8 = var9;
       }
@@ -1092,7 +1094,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIILdg;II)I"
    )
-   static int method2266(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class116 var10, int var11, int var12) {
+   static int method2266(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, SongMetadata var10, int var11, int var12) {
       if(var11 == 0 || (var7 = var5 + (var11 + (var9 + 256 - var4)) / var11) > var8) {
          var7 = var8;
       }
@@ -1125,7 +1127,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIILdg;II)I"
    )
-   static int method2267(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class116 var11, int var12, int var13) {
+   static int method2267(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, SongMetadata var11, int var12, int var13) {
       if(var12 == 0 || (var8 = var5 + (var10 + 256 - var4 + var12) / var12) > var9) {
          var8 = var9;
       }
@@ -1165,7 +1167,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "([B[IIIIIIIILdg;)I"
    )
-   static int method2146(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class116 var9) {
+   static int method2146(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, SongMetadata var9) {
       var2 >>= 8;
       var8 >>= 8;
       var4 <<= 2;
@@ -1206,7 +1208,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(I[B[IIIIIIIIIILdg;)I"
    )
-   static int method2147(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class116 var12) {
+   static int method2147(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, SongMetadata var12) {
       var3 >>= 8;
       var11 >>= 8;
       var5 <<= 2;
@@ -1272,7 +1274,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "([B[IIIIIIIILdg;)I"
    )
-   static int method2148(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class116 var9) {
+   static int method2148(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, SongMetadata var9) {
       var2 >>= 8;
       var8 >>= 8;
       var4 <<= 2;
@@ -1313,7 +1315,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(I[B[IIIIIIIIIILdg;)I"
    )
-   static int method2128(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class116 var12) {
+   static int method2128(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, SongMetadata var12) {
       var3 >>= 8;
       var11 >>= 8;
       var5 <<= 2;
@@ -1379,7 +1381,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIILdg;II)I"
    )
-   static int method2133(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class116 var11, int var12, int var13) {
+   static int method2133(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, SongMetadata var11, int var12, int var13) {
       var11.field1588 -= var11.field1595 * var5;
       var11.field1584 -= var11.field1587 * var5;
       if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 257) / var12) > var9) {
@@ -1419,7 +1421,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIIIILdg;II)I"
    )
-   static int method2151(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class116 var13, int var14, int var15) {
+   static int method2151(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, SongMetadata var13, int var14, int var15) {
       var13.field1590 -= var5 * var13.field1596;
       if(var14 == 0 || (var10 = var5 + (var12 - var4 + var14 - 257) / var14) > var11) {
          var10 = var11;
@@ -1470,7 +1472,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIILdg;II)I"
    )
-   static int method2230(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class116 var11, int var12, int var13) {
+   static int method2230(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, SongMetadata var11, int var12, int var13) {
       var11.field1588 -= var11.field1595 * var5;
       var11.field1584 -= var11.field1587 * var5;
       if(var12 == 0 || (var8 = var5 + (var10 + 256 - var4 + var12) / var12) > var9) {
@@ -1510,7 +1512,7 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(II[B[IIIIIIIIIILdg;II)I"
    )
-   static int method2153(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class116 var13, int var14, int var15) {
+   static int method2153(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, SongMetadata var13, int var14, int var15) {
       var13.field1590 -= var5 * var13.field1596;
       if(var14 == 0 || (var10 = var5 + (var12 + 256 - var4 + var14) / var14) > var11) {
          var10 = var11;

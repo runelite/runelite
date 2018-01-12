@@ -66,7 +66,7 @@ public class Buffer extends Node {
    }
 
    public Buffer(int var1) {
-      this.payload = class111.method2088(var1);
+      this.payload = SoundEffectWorker.method2088(var1);
       this.offset = 0;
    }
 
@@ -178,7 +178,7 @@ public class Buffer extends Node {
       if(var2 >= 0) {
          throw new IllegalArgumentException("");
       } else {
-         this.offset += class22.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += SceneComposition.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }
@@ -195,7 +195,7 @@ public class Buffer extends Node {
          throw new IllegalArgumentException("");
       } else {
          this.payload[++this.offset - 1] = 0;
-         this.offset += class22.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
+         this.offset += SceneComposition.encodeStringCp1252(var1, 0, var1.length(), this.payload, this.offset);
          this.payload[++this.offset - 1] = 0;
       }
    }

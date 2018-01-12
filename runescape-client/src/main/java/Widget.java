@@ -1187,7 +1187,7 @@ public class Widget extends Node {
          if(var5 != null) {
             return var5;
          } else {
-            var5 = class163.method3097(KeyFocusListener.field589, var2, 0);
+            var5 = SocketSession.getSprite(KeyFocusListener.field589, var2, 0);
             if(var5 == null) {
                field2780 = true;
                return null;
@@ -1238,7 +1238,7 @@ public class Widget extends Node {
          if(var1 != null) {
             return var1;
          } else {
-            var1 = class89.method1667(KeyFocusListener.field589, Coordinates.field2726, this.fontId, 0);
+            var1 = class89.loadFont(KeyFocusListener.field589, Coordinates.field2726, this.fontId, 0);
             if(var1 != null) {
                Widget_cachedFonts.put(var1, (long)this.fontId);
             } else {
@@ -1266,7 +1266,7 @@ public class Widget extends Node {
             if(var3 != null) {
                return var3;
             } else {
-               var3 = class163.method3097(KeyFocusListener.field589, var2, 0);
+               var3 = SocketSession.getSprite(KeyFocusListener.field589, var2, 0);
                if(var3 != null) {
                   field2753.put(var3, (long)var2);
                } else {
@@ -1368,7 +1368,7 @@ public class Widget extends Node {
       signature = "(ZI)Lhy;",
       garbageValue = "1170735179"
    )
-   public class221 method4148(boolean var1) {
+   public SpritePixels2 method4148(boolean var1) {
       if(this.field2752 == -1) {
          var1 = false;
       }
@@ -1378,7 +1378,7 @@ public class Widget extends Node {
          return null;
       } else {
          long var3 = ((long)this.sprite2 << 40) + ((this.flippedVertically?1L:0L) << 38) + ((long)this.borderThickness << 36) + (long)var2 + ((this.flippedHorizontally?1L:0L) << 39);
-         class221 var5 = (class221)field2756.get(var3);
+         SpritePixels2 var5 = (SpritePixels2)field2756.get(var3);
          if(var5 != null) {
             return var5;
          } else {
@@ -1413,7 +1413,7 @@ public class Widget extends Node {
                   var9[var10] = var12 - var11;
                }
 
-               var5 = new class221(var7.width, var7.height, var9, var8, var2);
+               var5 = new SpritePixels2(var7.width, var7.height, var9, var8, var2);
                field2756.put(var5, var3);
                return var5;
             }
@@ -1457,8 +1457,8 @@ public class Widget extends Node {
       garbageValue = "-90092303"
    )
    static final void method4187() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2380, Client.field888.field1449);
-      Client.field888.method1862(var0);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2380, Client.signlink.field1449);
+      Client.signlink.method1862(var0);
 
       for(WidgetNode var1 = (WidgetNode)Client.componentTable.first(); var1 != null; var1 = (WidgetNode)Client.componentTable.next()) {
          if(var1.owner == 0 || var1.owner == 3) {

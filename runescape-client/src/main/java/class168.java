@@ -1,9 +1,11 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.awt.*;
+import java.awt.Desktop.Action;
+import java.net.URI;
 
 @ObfuscatedName("fk")
 public abstract class class168 {
@@ -42,7 +44,8 @@ public abstract class class168 {
       signature = "(ILck;ZB)I",
       garbageValue = "4"
    )
-   static int method3166(int var0, Script var1, boolean var2) {
+   @Export("handleCs2_3100")
+   static int handleCs2_3100(int var0, Script var1, boolean var2) {
       String var3;
       if(var0 == 3100) {
          var3 = class82.scriptStringStack[--class35.scriptStringStackSize];
@@ -127,25 +130,25 @@ public abstract class class168 {
                var19 = class228.method4195(var3);
             }
 
-            var14 = FileSystem.method4252(ClientPacket.field2317, Client.field888.field1449);
+            var14 = FileSystem.bufferForSize(ClientPacket.field2317, Client.signlink.field1449);
             var14.packetBuffer.putInt(var19);
-            Client.field888.method1862(var14);
+            Client.signlink.method1862(var14);
             return 1;
          } else {
             PacketNode var22;
             if(var0 == 3105) {
                var3 = class82.scriptStringStack[--class35.scriptStringStackSize];
-               var22 = FileSystem.method4252(ClientPacket.field2366, Client.field888.field1449);
+               var22 = FileSystem.bufferForSize(ClientPacket.field2366, Client.signlink.field1449);
                var22.packetBuffer.putByte(var3.length() + 1);
                var22.packetBuffer.putString(var3);
-               Client.field888.method1862(var22);
+               Client.signlink.method1862(var22);
                return 1;
             } else if(var0 == 3106) {
                var3 = class82.scriptStringStack[--class35.scriptStringStackSize];
-               var22 = FileSystem.method4252(ClientPacket.field2363, Client.field888.field1449);
+               var22 = FileSystem.bufferForSize(ClientPacket.field2363, Client.signlink.field1449);
                var22.packetBuffer.putByte(var3.length() + 1);
                var22.packetBuffer.putString(var3);
-               Client.field888.method1862(var22);
+               Client.signlink.method1862(var22);
                return 1;
             } else {
                String var15;
@@ -153,7 +156,7 @@ public abstract class class168 {
                if(var0 == 3107) {
                   var16 = class82.intStack[--class82.intStackSize];
                   var15 = class82.scriptStringStack[--class35.scriptStringStackSize];
-                  MessageNode.method1067(var16, var15);
+                  MessageNode.writeRespondPlayerRequest(var16, var15);
                   return 1;
                } else if(var0 == 3108) {
                   class82.intStackSize -= 3;
@@ -207,9 +210,9 @@ public abstract class class168 {
                   return 1;
                } else if(var0 == 3115) {
                   var16 = class82.intStack[--class82.intStackSize];
-                  var22 = FileSystem.method4252(ClientPacket.field2385, Client.field888.field1449);
+                  var22 = FileSystem.bufferForSize(ClientPacket.field2385, Client.signlink.field1449);
                   var22.packetBuffer.putShort(var16);
-                  Client.field888.method1862(var22);
+                  Client.signlink.method1862(var22);
                   return 1;
                } else if(var0 == 3116) {
                   var16 = class82.intStack[--class82.intStackSize];
@@ -221,12 +224,12 @@ public abstract class class168 {
                   } else if(var17.length() > 500) {
                      return 1;
                   } else {
-                     var14 = FileSystem.method4252(ClientPacket.field2355, Client.field888.field1449);
+                     var14 = FileSystem.bufferForSize(ClientPacket.field2355, Client.signlink.field1449);
                      var14.packetBuffer.putShort(1 + Ignore.getLength(var15) + Ignore.getLength(var17));
                      var14.packetBuffer.method3286(var16);
                      var14.packetBuffer.putString(var15);
                      var14.packetBuffer.putString(var17);
-                     Client.field888.method1862(var14);
+                     Client.signlink.method1862(var14);
                      return 1;
                   }
                } else if(var0 == 3117) {
@@ -245,7 +248,8 @@ public abstract class class168 {
       signature = "(ILck;ZB)I",
       garbageValue = "-43"
    )
-   static int method3165(int var0, Script var1, boolean var2) {
+   @Export("cs2_3900s")
+   static int cs2_3900s(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 3903) {
          var3 = class82.intStack[--class82.intStackSize];

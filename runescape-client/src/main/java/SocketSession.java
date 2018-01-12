@@ -1,14 +1,14 @@
+import net.runelite.mapping.*;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fl")
-public final class class163 extends class159 implements Runnable {
+@Implements("SocketSession")
+public final class SocketSession extends AbstractSocket implements Runnable {
    @ObfuscatedName("a")
    InputStream field2165;
    @ObfuscatedName("w")
@@ -55,7 +55,7 @@ public final class class163 extends class159 implements Runnable {
    @ObfuscatedSignature(
       signature = "(Ljava/net/Socket;Lfs;I)V"
    )
-   public class163(Socket var1, Signlink var2, int var3) throws IOException {
+   public SocketSession(Socket var1, Signlink var2, int var3) throws IOException {
       this.field2163 = false;
       this.field2168 = 0;
       this.field2172 = 0;
@@ -77,7 +77,7 @@ public final class class163 extends class159 implements Runnable {
       signature = "(II)Z",
       garbageValue = "1430377833"
    )
-   public boolean vmethod3108(int var1) throws IOException {
+   public boolean available(int var1) throws IOException {
       if(this.field2163) {
          return false;
       } else {
@@ -94,7 +94,7 @@ public final class class163 extends class159 implements Runnable {
       signature = "(B)I",
       garbageValue = "0"
    )
-   public int vmethod3083() throws IOException {
+   public int readable() throws IOException {
       return this.field2163?0:this.field2165.available();
    }
 
@@ -103,7 +103,7 @@ public final class class163 extends class159 implements Runnable {
       signature = "(I)I",
       garbageValue = "-1221609909"
    )
-   public int vmethod3091() throws IOException {
+   public int read() throws IOException {
       return this.field2163?0:this.field2165.read();
    }
 
@@ -145,7 +145,7 @@ public final class class163 extends class159 implements Runnable {
       signature = "(B)V",
       garbageValue = "-124"
    )
-   public void vmethod3081() {
+   public void close() {
       if(!this.field2163) {
          synchronized(this) {
             this.field2163 = true;
@@ -205,7 +205,7 @@ public final class class163 extends class159 implements Runnable {
    }
 
    protected void finalize() {
-      this.vmethod3081();
+      this.close();
    }
 
    public void run() {
@@ -287,8 +287,9 @@ public final class class163 extends class159 implements Runnable {
       signature = "(Lib;III)Lks;",
       garbageValue = "-474356099"
    )
-   public static SpritePixels method3097(IndexDataBase var0, int var1, int var2) {
-      return !Parameters.method5029(var0, var1, var2)?null:Ignore.method1060();
+   @Export("getSprite")
+   public static SpritePixels getSprite(IndexDataBase var0, int var1, int var2) {
+      return !Parameters.spriteDataValid(var0, var1, var2)?null:Ignore.renderSprite();
    }
 
    @ObfuscatedName("k")

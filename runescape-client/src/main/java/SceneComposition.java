@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("h")
-public class class22 extends class28 {
+@Implements("SceneComposition")
+public class SceneComposition extends AbstractScene {
    @ObfuscatedName("ct")
    @ObfuscatedSignature(
       signature = "Liu;"
@@ -16,7 +18,8 @@ public class class22 extends class28 {
       signature = "(Lgh;Lgh;I)V",
       garbageValue = "-77669356"
    )
-   void method161(Buffer var1, Buffer var2) {
+   @Export("decode")
+   void decode(Buffer var1, Buffer var2) {
       int var3 = var2.readUnsignedByte();
       if(var3 != class36.field476.field472) {
          throw new IllegalStateException("");
@@ -32,7 +35,7 @@ public class class22 extends class28 {
          super.field375 = new short[super.field378][64][64];
          super.field381 = new byte[super.field378][64][64];
          super.field382 = new byte[super.field378][64][64];
-         super.field384 = new class31[super.field378][64][64][];
+         super.field384 = new SceneMapObject[super.field378][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class35.field462.field463) {
             throw new IllegalStateException("");
@@ -54,10 +57,10 @@ public class class22 extends class28 {
    }
 
    public boolean equals(Object var1) {
-      if(!(var1 instanceof class22)) {
+      if(!(var1 instanceof SceneComposition)) {
          return false;
       } else {
-         class22 var2 = (class22)var1;
+         SceneComposition var2 = (SceneComposition)var1;
          return super.field380 == var2.field380 && super.field376 == var2.field376;
       }
    }
@@ -282,7 +285,7 @@ public class class22 extends class28 {
                Ignore.characterToScreen(var0, var0.field1136 + 15);
                if(Client.screenY > -1) {
                   if(var85.skullIcon != -1) {
-                     class18.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     GEItemNameComparator.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
                      var8 += 25;
                   }
 

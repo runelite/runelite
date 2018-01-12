@@ -174,7 +174,7 @@ public class FontName {
       String var12 = var22;
 
       try {
-         URL var13 = new URL(class22.method167("services", false) + "m=accountappeal/login.ws");
+         URL var13 = new URL(SceneComposition.method167("services", false) + "m=accountappeal/login.ws");
          URLConnection var14 = var13.openConnection();
          var14.setDoInput(true);
          var14.setDoOutput(true);
@@ -673,10 +673,10 @@ public class FontName {
       garbageValue = "1262465520"
    )
    public static void method4873(int var0, int var1, int var2) {
-      PacketNode var3 = FileSystem.method4252(ClientPacket.field2369, Client.field888.field1449);
+      PacketNode var3 = FileSystem.bufferForSize(ClientPacket.field2369, Client.signlink.field1449);
       var3.packetBuffer.putShort(var0);
       var3.packetBuffer.method3286(var2);
       var3.packetBuffer.writeIntLE16(var1);
-      Client.field888.method1862(var3);
+      Client.signlink.method1862(var3);
    }
 }

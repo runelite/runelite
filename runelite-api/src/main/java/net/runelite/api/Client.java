@@ -161,4 +161,6 @@ public interface Client
 	void setModIcons(IndexedSprite[] modIcons);
 
 	IndexedSprite createIndexedSprite();
+
+	NetWriter getSignlink();
 }

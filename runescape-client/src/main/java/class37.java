@@ -36,7 +36,8 @@ public class class37 {
       signature = "(ILck;ZS)I",
       garbageValue = "2706"
    )
-   static int method507(int var0, Script var1, boolean var2) {
+   @Export("cs2_3600s")
+   static int cs2_3600s(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(Client.field1094 == 0) {
             class82.intStack[++class82.intStackSize - 1] = -2;
@@ -84,11 +85,11 @@ public class class37 {
             if(var0 == 3604) {
                var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                int var4 = class82.intStack[--class82.intStackSize];
-               var15 = FileSystem.method4252(ClientPacket.field2396, Client.field888.field1449);
+               var15 = FileSystem.bufferForSize(ClientPacket.field2396, Client.signlink.field1449);
                var15.packetBuffer.putByte(Ignore.getLength(var11) + 1);
                var15.packetBuffer.method3286(var4);
                var15.packetBuffer.putString(var11);
-               Client.field888.method1862(var15);
+               Client.signlink.method1862(var15);
                return 1;
             } else if(var0 == 3605) {
                var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
@@ -108,7 +109,7 @@ public class class37 {
                   var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                   if(var11 != null) {
                      if((Client.ignoreCount < 100 || Client.field918 == 1) && Client.ignoreCount < 400) {
-                        var20 = class221.cleanUsername(var11, PendingSpawn.jagexLoginType);
+                        var20 = SpritePixels2.cleanUsername(var11, PendingSpawn.jagexLoginType);
                         if(var20 != null) {
                            var13 = 0;
 
@@ -116,14 +117,14 @@ public class class37 {
                               if(var13 >= Client.ignoreCount) {
                                  for(var13 = 0; var13 < Client.friendCount; ++var13) {
                                     Friend var17 = Client.friends[var13];
-                                    var7 = class221.cleanUsername(var17.name, PendingSpawn.jagexLoginType);
+                                    var7 = SpritePixels2.cleanUsername(var17.name, PendingSpawn.jagexLoginType);
                                     if(var7 != null && var7.equals(var20)) {
                                        class25.sendGameMessage(31, "", "Please remove " + var11 + " from your friend list first");
                                        return 1;
                                     }
 
                                     if(var17.previousName != null) {
-                                       var8 = class221.cleanUsername(var17.previousName, PendingSpawn.jagexLoginType);
+                                       var8 = SpritePixels2.cleanUsername(var17.previousName, PendingSpawn.jagexLoginType);
                                        if(var8 != null && var8.equals(var20)) {
                                           class25.sendGameMessage(31, "", "Please remove " + var11 + " from your friend list first");
                                           return 1;
@@ -131,26 +132,26 @@ public class class37 {
                                     }
                                  }
 
-                                 if(class221.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType).equals(var20)) {
+                                 if(SpritePixels2.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType).equals(var20)) {
                                     class25.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                  } else {
-                                    var15 = FileSystem.method4252(ClientPacket.field2398, Client.field888.field1449);
+                                    var15 = FileSystem.bufferForSize(ClientPacket.field2398, Client.signlink.field1449);
                                     var15.packetBuffer.putByte(Ignore.getLength(var11));
                                     var15.packetBuffer.putString(var11);
-                                    Client.field888.method1862(var15);
+                                    Client.signlink.method1862(var15);
                                  }
                                  break;
                               }
 
                               var16 = Client.ignores[var13];
-                              var7 = class221.cleanUsername(var16.name, PendingSpawn.jagexLoginType);
+                              var7 = SpritePixels2.cleanUsername(var16.name, PendingSpawn.jagexLoginType);
                               if(var7 != null && var7.equals(var20)) {
                                  class25.sendGameMessage(31, "", var11 + " is already on your ignore list");
                                  break;
                               }
 
                               if(var16.previousName != null) {
-                                 var8 = class221.cleanUsername(var16.previousName, PendingSpawn.jagexLoginType);
+                                 var8 = SpritePixels2.cleanUsername(var16.previousName, PendingSpawn.jagexLoginType);
                                  if(var8 != null && var8.equals(var20)) {
                                     class25.sendGameMessage(31, "", var11 + " is already on your ignore list");
                                     break;
@@ -169,12 +170,12 @@ public class class37 {
                } else if(var0 == 3608) {
                   var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                   if(var11 != null) {
-                     var20 = class221.cleanUsername(var11, PendingSpawn.jagexLoginType);
+                     var20 = SpritePixels2.cleanUsername(var11, PendingSpawn.jagexLoginType);
                      if(var20 != null) {
                         for(var13 = 0; var13 < Client.ignoreCount; ++var13) {
                            var16 = Client.ignores[var13];
                            var7 = var16.name;
-                           var8 = class221.cleanUsername(var7, PendingSpawn.jagexLoginType);
+                           var8 = SpritePixels2.cleanUsername(var7, PendingSpawn.jagexLoginType);
                            boolean var18;
                            if(var11 != null && var7 != null) {
                               if(!var11.startsWith("#") && !var7.startsWith("#")) {
@@ -194,10 +195,10 @@ public class class37 {
                               }
 
                               Client.field1041 = Client.cycleCntr;
-                              PacketNode var14 = FileSystem.method4252(ClientPacket.field2401, Client.field888.field1449);
+                              PacketNode var14 = FileSystem.bufferForSize(ClientPacket.field2401, Client.signlink.field1449);
                               var14.packetBuffer.putByte(Ignore.getLength(var11));
                               var14.packetBuffer.putString(var11);
-                              Client.field888.method1862(var14);
+                              Client.signlink.method1862(var14);
                               break;
                            }
                         }
@@ -274,10 +275,10 @@ public class class37 {
                   if(var0 == 3617) {
                      var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                      if(GameEngine.clanMembers != null) {
-                        var12 = FileSystem.method4252(ClientPacket.field2312, Client.field888.field1449);
+                        var12 = FileSystem.bufferForSize(ClientPacket.field2312, Client.signlink.field1449);
                         var12.packetBuffer.putByte(Ignore.getLength(var11));
                         var12.packetBuffer.putString(var11);
-                        Client.field888.method1862(var12);
+                        Client.signlink.method1862(var12);
                      }
 
                      return 1;
@@ -287,10 +288,10 @@ public class class37 {
                   } else if(var0 == 3619) {
                      var11 = class82.scriptStringStack[--class35.scriptStringStackSize];
                      if(!var11.equals("")) {
-                        var12 = FileSystem.method4252(ClientPacket.field2342, Client.field888.field1449);
+                        var12 = FileSystem.bufferForSize(ClientPacket.field2342, Client.signlink.field1449);
                         var12.packetBuffer.putByte(Ignore.getLength(var11));
                         var12.packetBuffer.putString(var11);
-                        Client.field888.method1862(var12);
+                        Client.signlink.method1862(var12);
                      }
 
                      return 1;
@@ -406,7 +407,7 @@ public class class37 {
       garbageValue = "-55"
    )
    @Export("drawDot")
-   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, SpritePixels2 var5) {
       if(var4 != null) {
          int var6 = Client.mapAngle & 2047;
          int var7 = var3 * var3 + var2 * var2;

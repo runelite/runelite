@@ -135,7 +135,7 @@ public class CombatInfoList implements Iterable {
    }
 
    public Iterator iterator() {
-      return new class199(this);
+      return new CombatListIterator(this);
    }
 
    @ObfuscatedName("k")

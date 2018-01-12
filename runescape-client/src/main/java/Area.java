@@ -135,7 +135,7 @@ public class Area extends CacheableNode {
             return;
          }
 
-         this.method4441(var1, var2);
+         this.decode(var1, var2);
       }
    }
 
@@ -144,7 +144,8 @@ public class Area extends CacheableNode {
       signature = "(Lgh;II)V",
       garbageValue = "-767299717"
    )
-   void method4441(Buffer var1, int var2) {
+   @Export("decode")
+   void decode(Buffer var1, int var2) {
       if(var2 == 1) {
          this.spriteId = var1.method3372();
       } else if(var2 == 2) {
@@ -275,7 +276,7 @@ public class Area extends CacheableNode {
          if(var2 != null) {
             return var2;
          } else {
-            var2 = class163.method3097(field3392, var1, 0);
+            var2 = SocketSession.getSprite(field3392, var1, 0);
             if(var2 != null) {
                areaSpriteCache.put(var2, (long)var1);
             }

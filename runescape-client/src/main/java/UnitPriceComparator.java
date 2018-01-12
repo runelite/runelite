@@ -109,7 +109,7 @@ final class UnitPriceComparator implements Comparator {
    )
    static final void method126(Widget var0, int var1, int var2, int var3) {
       NPC.method1648();
-      class221 var4 = var0.method4148(false);
+      SpritePixels2 var4 = var0.method4148(false);
       if(var4 != null) {
          Rasterizer2D.setDrawRegion(var1, var2, var4.field2715 + var1, var2 + var4.field2716);
          if(Client.field1062 != 2 && Client.field1062 != 5) {
@@ -206,7 +206,7 @@ final class UnitPriceComparator implements Comparator {
                }
 
                if(Client.hintArrowTargetType == 2) {
-                  var10 = Client.hintArrowX * 4 - class46.baseX * 4 + 2 - UrlRequest.localPlayer.x / 32;
+                  var10 = Client.hintArrowX * 4 - SceneChunkMetadata.baseX * 4 + 2 - UrlRequest.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - Client.baseY * 4 + 2 - UrlRequest.localPlayer.y / 32;
                   class133.worldToMinimap(var1, var2, var10, var11, class34.mapMarkers[1], var4);
                }

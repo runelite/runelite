@@ -179,7 +179,7 @@ public class Signlink implements Runnable {
       int var3 = var0.getFile(var1);
       int var4 = var0.getChild(var3, var2);
       IndexedSprite[] var5;
-      if(!Parameters.method5029(var0, var3, var4)) {
+      if(!Parameters.spriteDataValid(var0, var3, var4)) {
          var5 = null;
       } else {
          IndexedSprite[] var7 = new IndexedSprite[class299.field3866];
@@ -196,7 +196,7 @@ public class Signlink implements Runnable {
             var9.pixels = Bounds.spritePixels[var8];
          }
 
-         ContextMenuRow.method1663();
+         ContextMenuRow.resetCachedStaticSpriteData();
          var5 = var7;
       }
 

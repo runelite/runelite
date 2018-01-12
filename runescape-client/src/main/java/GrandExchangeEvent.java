@@ -131,11 +131,11 @@ public class GrandExchangeEvent {
          return var2;
       } else {
          String var3 = String.valueOf(var0);
-         int var4 = class161.indexScripts.getFile(var3);
+         int var4 = SocketSession2.indexScripts.getFile(var3);
          if(var4 == -1) {
             return null;
          } else {
-            byte[] var5 = class161.indexScripts.takeRecordFlat(var4);
+            byte[] var5 = SocketSession2.indexScripts.takeRecordFlat(var4);
             if(var5 != null) {
                if(var5.length <= 1) {
                   return null;

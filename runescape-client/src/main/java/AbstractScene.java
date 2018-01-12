@@ -1,12 +1,10 @@
+import net.runelite.mapping.*;
+
 import java.util.LinkedList;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
-public abstract class class28 {
+@Implements("AbstractScene")
+public abstract class AbstractScene {
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 232149649
@@ -49,9 +47,9 @@ public abstract class class28 {
    @ObfuscatedSignature(
       signature = "[[[[Laq;"
    )
-   class31[][][][] field384;
+   SceneMapObject[][][][] field384;
 
-   class28() {
+   AbstractScene() {
       new LinkedList();
    }
 
@@ -117,12 +115,12 @@ public abstract class class28 {
          for(var8 = 0; var8 < var5; ++var8) {
             var9 = var3.readUnsignedByte();
             if(var9 != 0) {
-               class31[] var14 = this.field384[var8][var1][var2] = new class31[var9];
+               SceneMapObject[] var14 = this.field384[var8][var1][var2] = new SceneMapObject[var9];
 
                for(var11 = 0; var11 < var9; ++var11) {
                   int var12 = var3.method3372();
                   int var13 = var3.readUnsignedByte();
-                  var14[var11] = new class31(var12, var13 >> 2, var13 & 3);
+                  var14[var11] = new SceneMapObject(var12, var13 >> 2, var13 & 3);
                }
             }
          }
@@ -163,7 +161,7 @@ public abstract class class28 {
       garbageValue = "-70"
    )
    static void method236() {
-      for(class81 var0 = (class81)class81.field1235.getFront(); var0 != null; var0 = (class81)class81.field1235.getNext()) {
+      for(GameObjectTransformMetadata var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getFront(); var0 != null; var0 = (GameObjectTransformMetadata) GameObjectTransformMetadata.field1235.getNext()) {
          if(var0.field1227 != null) {
             var0.method1540();
          }

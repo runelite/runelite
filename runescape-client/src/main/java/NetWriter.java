@@ -1,9 +1,6 @@
+import net.runelite.mapping.*;
+
 import java.io.IOException;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cx")
 @Implements("NetWriter")
@@ -19,7 +16,7 @@ public class NetWriter {
       signature = "Lfx;"
    )
    @Export("rssocket")
-   class159 rssocket;
+   AbstractSocket rssocket;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgo;"
@@ -76,17 +73,20 @@ public class NetWriter {
    @ObfuscatedSignature(
       signature = "Lfq;"
    )
-   ServerPacket field1456;
+           @Export("previousSecondPacket")
+   ServerPacket previousSecondPacket;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lfq;"
    )
-   ServerPacket field1457;
+           @Export("previousThirdPacket")
+   ServerPacket previousThirdPacket;
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lfq;"
    )
-   ServerPacket field1458;
+           @Export("previousForthPacket")
+   ServerPacket previousForthPacket;
 
    NetWriter() {
       this.packetBufferNodes = new CombatInfoList();
@@ -155,7 +155,7 @@ public class NetWriter {
       garbageValue = "-1706923990"
    )
    @Export("setSocket")
-   void setSocket(class159 var1) {
+   void setSocket(AbstractSocket var1) {
       this.rssocket = var1;
    }
 
@@ -167,7 +167,7 @@ public class NetWriter {
    @Export("close")
    void close() {
       if(this.rssocket != null) {
-         this.rssocket.vmethod3081();
+         this.rssocket.close();
          this.rssocket = null;
       }
 
@@ -188,7 +188,7 @@ public class NetWriter {
       garbageValue = "1992473480"
    )
    @Export("getSocket")
-   class159 getSocket() {
+   AbstractSocket getSocket() {
       return this.rssocket;
    }
 

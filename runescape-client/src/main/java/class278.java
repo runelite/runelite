@@ -76,7 +76,7 @@ public class class278 {
                }
 
                if(var6 == 6) {
-                  var7 = class233.field2942[Client.realSkillLevels[var2[var4++]] - 1];
+                  var7 = class233.skillExperienceTable[Client.realSkillLevels[var2[var4++]] - 1];
                }
 
                if(var6 == 7) {
@@ -89,7 +89,7 @@ public class class278 {
 
                if(var6 == 9) {
                   for(var9 = 0; var9 < 25; ++var9) {
-                     if(class233.field2943[var9]) {
+                     if(class233.activeSkillIds[var9]) {
                         var7 += Client.realSkillLevels[var9];
                      }
                   }
@@ -142,7 +142,7 @@ public class class278 {
                }
 
                if(var6 == 18) {
-                  var7 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
+                  var7 = (UrlRequest.localPlayer.x >> 7) + SceneChunkMetadata.baseX;
                }
 
                if(var6 == 19) {

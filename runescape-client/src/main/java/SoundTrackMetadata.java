@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hq")
-public class class216 extends Node {
+@Implements("SoundTrackMetadata")
+public class SoundTrackMetadata extends Node {
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = -1374285459
@@ -23,7 +25,7 @@ public class class216 extends Node {
    @ObfuscatedSignature(
       signature = "Ldx;"
    )
-   class106 field2676;
+   MusicTrack2 field2676;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1803121223
@@ -98,7 +100,7 @@ public class class216 extends Node {
    @ObfuscatedSignature(
       signature = "Ldg;"
    )
-   class116 field2670;
+   SongMetadata field2670;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1424226993

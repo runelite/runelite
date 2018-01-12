@@ -1,10 +1,13 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.util.Iterator;
+
 @ObfuscatedName("hp")
-public class class211 implements Iterator {
+@Implements("DuelNodeIterator")
+public class DuelNodeIterator implements Iterator {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lhh;"
@@ -25,7 +28,7 @@ public class class211 implements Iterator {
    @ObfuscatedSignature(
       signature = "(Lhh;)V"
    )
-   class211(IterableDualNodeQueue var1) {
+   DuelNodeIterator(IterableDualNodeQueue var1) {
       this.field2607 = null;
       this.queue = var1;
       this.field2605 = this.queue.sentinel.previous;

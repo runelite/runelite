@@ -1,10 +1,8 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("am")
-public class class46 {
+@Implements("SceneChunkMetadata")
+public class SceneChunkMetadata {
    @ObfuscatedName("et")
    @ObfuscatedGetter(
       intValue = -1917457925
@@ -29,7 +27,7 @@ public class class46 {
    @ObfuscatedName("w")
    byte[][][] field553;
 
-   class46(int var1) {
+   SceneChunkMetadata(int var1) {
       this.field554 = var1;
    }
 

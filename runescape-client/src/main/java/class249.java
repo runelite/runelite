@@ -11,7 +11,7 @@ public class class249 {
       signature = "Lfx;"
    )
    @Export("NetCache_socket")
-   public static class159 NetCache_socket;
+   public static AbstractSocket NetCache_socket;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 393490045

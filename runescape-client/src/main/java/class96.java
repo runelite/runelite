@@ -1,9 +1,10 @@
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ObfuscatedName("cm")
 public class class96 {
@@ -163,7 +164,7 @@ public class class96 {
       garbageValue = "-78"
    )
    static final void method1831() {
-      Client.field888.close();
+      Client.signlink.close();
       class5.method16();
       class48.region.reset();
 
@@ -209,7 +210,7 @@ public class class96 {
       if(Client.widgetRoot != -1) {
          int var5 = Client.widgetRoot;
          if(GraphicsObject.loadWidget(var5)) {
-            class22.method165(Widget.widgets[var5], 1);
+            SceneComposition.method165(Widget.widgets[var5], 1);
          }
       }
 

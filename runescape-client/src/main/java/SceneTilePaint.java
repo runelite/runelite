@@ -69,7 +69,7 @@ public final class SceneTilePaint {
       garbageValue = "-114"
    )
    static SpritePixels[] method2685(IndexDataBase var0, int var1, int var2) {
-      if(!Parameters.method5029(var0, var1, var2)) {
+      if(!Parameters.spriteDataValid(var0, var1, var2)) {
          return null;
       } else {
          SpritePixels[] var4 = new SpritePixels[class299.field3866];
@@ -91,7 +91,7 @@ public final class SceneTilePaint {
             }
          }
 
-         ContextMenuRow.method1663();
+         ContextMenuRow.resetCachedStaticSpriteData();
          return var4;
       }
    }
@@ -192,10 +192,10 @@ public final class SceneTilePaint {
          }
       }
 
-      PacketNode var1 = FileSystem.method4252(ClientPacket.field2341, Client.field888.field1449);
+      PacketNode var1 = FileSystem.bufferForSize(ClientPacket.field2341, Client.signlink.field1449);
       var1.packetBuffer.putByte(var0.length() + 1);
       var1.packetBuffer.putString(var0);
-      Client.field888.method1862(var1);
+      Client.signlink.method1862(var1);
    }
 
    @ObfuscatedName("ir")
@@ -204,8 +204,8 @@ public final class SceneTilePaint {
       garbageValue = "1202102848"
    )
    static final void method2684() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2342, Client.field888.field1449);
+      PacketNode var0 = FileSystem.bufferForSize(ClientPacket.field2342, Client.signlink.field1449);
       var0.packetBuffer.putByte(0);
-      Client.field888.method1862(var0);
+      Client.signlink.method1862(var0);
    }
 }

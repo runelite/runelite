@@ -72,13 +72,13 @@ public class class192 {
                      byte var16 = 100;
                      byte var4 = 35;
                      if(MouseInput.mouseLastPressedX >= var9 && MouseInput.mouseLastPressedX <= var16 + var9 && MouseInput.mouseLastPressedY >= var15 && MouseInput.mouseLastPressedY <= var15 + var4) {
-                        class44.method627();
+                        WorldMapMappings.method627();
                         return;
                      }
                   }
 
                   if(listFetcher != null) {
-                     class44.method627();
+                     WorldMapMappings.method627();
                   }
                }
 
@@ -109,7 +109,7 @@ public class class192 {
                   var6 = 291;
                   if(var9 == 1 && var2 >= var5 - 75 && var2 <= var5 + 75 && var3 >= var6 - 20 && var3 <= var6 + 20) {
                      label817: {
-                        String var7 = class22.method167("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
+                        String var7 = SceneComposition.method167("secure", true) + "m=account-creation/g=oldscape/create_account_funnel.ws";
                         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
                            try {
                               Desktop.getDesktop().browse(new URI(var7));
@@ -349,7 +349,7 @@ public class class192 {
 
                            if(var9 == 1 && var2 >= class91.loginWindowX + 180 - 34 && var2 <= class91.loginWindowX + 34 + 180 && var3 >= 351 && var3 <= 363) {
                               label830: {
-                                 String var12 = class22.method167("secure", true) + "m=totp-authenticator/disableTOTPRequest";
+                                 String var12 = SceneComposition.method167("secure", true) + "m=totp-authenticator/disableTOTPRequest";
                                  if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
                                     try {
                                        Desktop.getDesktop().browse(new URI(var12));

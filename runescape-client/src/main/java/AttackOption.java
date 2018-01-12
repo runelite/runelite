@@ -113,7 +113,7 @@ public enum AttackOption implements Enumerated {
             if(var7 <= 49) {
                UrlRequest.field2083[var1][var2][var3] = var0.readByte();
                class168.field2226[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class31.field413[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+               SceneMapObject.field413[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
             } else if(var7 <= 81) {
                class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
             } else {
@@ -157,7 +157,7 @@ public enum AttackOption implements Enumerated {
    static final void method1678(Widget var0, int var1, int var2) {
       if(Client.field1062 == 0 || Client.field1062 == 3) {
          if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) {
-            class221 var3 = var0.method4148(true);
+            SpritePixels2 var3 = var0.method4148(true);
             if(var3 == null) {
                return;
             }
@@ -174,10 +174,10 @@ public enum AttackOption implements Enumerated {
                int var10 = var8 * var5 - var7 * var4 >> 11;
                int var11 = var9 + UrlRequest.localPlayer.x >> 7;
                int var12 = UrlRequest.localPlayer.y - var10 >> 7;
-               PacketNode var13 = FileSystem.method4252(ClientPacket.field2365, Client.field888.field1449);
+               PacketNode var13 = FileSystem.bufferForSize(ClientPacket.field2365, Client.signlink.field1449);
                var13.packetBuffer.putByte(18);
                var13.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
-               var13.packetBuffer.writeIntLE16(var11 + class46.baseX);
+               var13.packetBuffer.writeIntLE16(var11 + SceneChunkMetadata.baseX);
                var13.packetBuffer.putShortLE(var12 + Client.baseY);
                var13.packetBuffer.putByte(var4);
                var13.packetBuffer.putByte(var5);
@@ -189,7 +189,7 @@ public enum AttackOption implements Enumerated {
                var13.packetBuffer.putShort(UrlRequest.localPlayer.x);
                var13.packetBuffer.putShort(UrlRequest.localPlayer.y);
                var13.packetBuffer.putByte(63);
-               Client.field888.method1862(var13);
+               Client.signlink.method1862(var13);
                Client.destinationX = var11;
                Client.destinationY = var12;
             }

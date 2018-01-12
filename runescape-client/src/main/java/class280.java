@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -75,9 +76,10 @@ public class class280 {
       signature = "(Lib;Lib;Ljava/lang/String;Ljava/lang/String;B)Ljm;",
       garbageValue = "80"
    )
-   public static Font method5002(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
+   @Export("fontForName")
+   public static Font fontForName(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
       int var4 = var0.getFile(var2);
       int var5 = var0.getChild(var4, var3);
-      return class89.method1667(var0, var1, var4, var5);
+      return class89.loadFont(var0, var1, var4, var5);
    }
 }

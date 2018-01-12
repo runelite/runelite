@@ -1,11 +1,8 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("ae")
-public class class45 extends class28 {
+@Implements("SceneMetadata")
+public class SceneMetadata extends AbstractScene {
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = -1570898051
@@ -52,7 +49,7 @@ public class class45 extends class28 {
          super.field375 = new short[super.field378][64][64];
          super.field381 = new byte[super.field378][64][64];
          super.field382 = new byte[super.field378][64][64];
-         super.field384 = new class31[super.field378][64][64][];
+         super.field384 = new SceneMapObject[super.field378][64][64][];
          var3 = var1.readUnsignedByte();
          if(var3 != class35.field468.field463) {
             throw new IllegalStateException("");
@@ -125,10 +122,10 @@ public class class45 extends class28 {
    }
 
    public boolean equals(Object var1) {
-      if(!(var1 instanceof class45)) {
+      if(!(var1 instanceof SceneMetadata)) {
          return false;
       } else {
-         class45 var2 = (class45)var1;
+         SceneMetadata var2 = (SceneMetadata)var1;
          return super.field380 == var2.field380 && var2.field376 == super.field376?this.field548 == var2.field548 && var2.field546 == this.field546:false;
       }
    }
@@ -138,7 +135,8 @@ public class class45 extends class28 {
       signature = "([BI)[B",
       garbageValue = "769176139"
    )
-   static byte[] method658(byte[] var0) {
+   @Export("duplicateArray")
+   static byte[] duplicateArray(byte[] var0) {
       int var1 = var0.length;
       byte[] var2 = new byte[var1];
       System.arraycopy(var0, 0, var2, 0, var1);
@@ -154,7 +152,7 @@ public class class45 extends class28 {
    @Export("updateNpcs")
    static final void updateNpcs(boolean var0, PacketBuffer var1) {
       while(true) {
-         if(var1.bitsAvail(Client.field888.packetLength) >= 27) {
+         if(var1.bitsAvail(Client.signlink.packetLength) >= 27) {
             int var2 = var1.getBits(15);
             if(var2 != 32767) {
                boolean var3 = false;

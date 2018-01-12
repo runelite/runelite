@@ -233,7 +233,7 @@ public class RenderOverview {
       this.field3882.put(Size.field333, var3.get(fontNameVerdana13));
       this.field3882.put(Size.field334, var3.get(fontNameVerdana15));
       this.field3897 = new class300(var1);
-      int var5 = this.field3885.getFile(class40.field510.field514);
+      int var5 = this.field3885.getFile(NamedRecord.field510.field514);
       int[] var6 = this.field3885.getChilds(var5);
       this.field3898 = new HashMap(var6.length);
 
@@ -257,7 +257,7 @@ public class RenderOverview {
       garbageValue = "1934665663"
    )
    public int method5421() {
-      return this.field3885.tryLoadRecordByNames(this.field3893.method330(), class40.field511.field514)?100:this.field3885.archiveLoadPercentByName(this.field3893.method330());
+      return this.field3885.tryLoadRecordByNames(this.field3893.method330(), NamedRecord.field511.field514)?100:this.field3885.archiveLoadPercentByName(this.field3893.method330());
    }
 
    @ObfuscatedName("e")
@@ -276,14 +276,14 @@ public class RenderOverview {
             HashSet var11 = new HashSet();
 
             Iterator var12;
-            class39 var13;
+            AreaMapIconMetadata var13;
             ScriptEvent var14;
-            class47 var15;
+            MapAreaMetadata var15;
             for(var12 = var10.iterator(); var12.hasNext(); CacheFile.method2350(var14)) {
-               var13 = (class39)var12.next();
+               var13 = (AreaMapIconMetadata)var12.next();
                var11.add(var13);
                var14 = new ScriptEvent();
-               var15 = new class47(var13.field499, var13.field504, var13.field498);
+               var15 = new MapAreaMetadata(var13.field499, var13.field504, var13.field498);
                var14.method1050(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                if(this.field3892.contains(var13)) {
                   var14.method1051(class230.field2896);
@@ -295,10 +295,10 @@ public class RenderOverview {
             var12 = this.field3892.iterator();
 
             while(var12.hasNext()) {
-               var13 = (class39)var12.next();
+               var13 = (AreaMapIconMetadata)var12.next();
                if(!var11.contains(var13)) {
                   var14 = new ScriptEvent();
-                  var15 = new class47(var13.field499, var13.field504, var13.field498);
+                  var15 = new MapAreaMetadata(var13.field499, var13.field504, var13.field498);
                   var14.method1050(new Object[]{var15, Integer.valueOf(var1), Integer.valueOf(var2)});
                   var14.method1051(class230.field2902);
                   CacheFile.method2350(var14);
@@ -1011,13 +1011,13 @@ public class RenderOverview {
                   return;
                }
 
-               class39 var11 = (class39)var10.next();
+               AreaMapIconMetadata var11 = (AreaMapIconMetadata)var10.next();
                Area var12 = Area.mapAreaType[var11.field499];
                var13 = false;
 
                for(int var14 = this.field3896.length - 1; var14 >= 0; --var14) {
                   if(var12.field3387[var14] != null) {
-                     class37.addMenuEntry(var12.field3387[var14], var12.field3390, this.field3896[var14], var11.field499, var11.field504.method4081(), var11.field498.method4081());
+                     class37.addMenuEntry(var12.field3387[var14], var12.field3390, this.field3896[var14], var11.field499, var11.field504.hash30(), var11.field498.hash30());
                      var13 = true;
                   }
                }
@@ -1043,19 +1043,19 @@ public class RenderOverview {
          HashMap var3 = this.field3899.method560();
          List var4 = (List)var3.get(Integer.valueOf(var1));
          if(var4 != null && !var4.isEmpty()) {
-            class39 var5 = null;
+            AreaMapIconMetadata var5 = null;
             int var6 = -1;
             Iterator var7 = var4.iterator();
 
             while(true) {
-               class39 var8;
+               AreaMapIconMetadata var8;
                int var11;
                do {
                   if(!var7.hasNext()) {
                      return var5.field498;
                   }
 
-                  var8 = (class39)var7.next();
+                  var8 = (AreaMapIconMetadata)var7.next();
                   int var9 = var8.field498.worldX - var2.worldX;
                   int var10 = var8.field498.worldY - var2.worldY;
                   var11 = var9 * var9 + var10 * var10;
@@ -1080,7 +1080,7 @@ public class RenderOverview {
    )
    public void method5392(int var1, int var2, Coordinates var3, Coordinates var4) {
       ScriptEvent var5 = new ScriptEvent();
-      class47 var6 = new class47(var2, var3, var4);
+      MapAreaMetadata var6 = new MapAreaMetadata(var2, var3, var4);
       var5.method1050(new Object[]{var6});
       switch(var1) {
       case 1008:
@@ -1107,7 +1107,7 @@ public class RenderOverview {
       signature = "(I)Lay;",
       garbageValue = "1908580046"
    )
-   public class39 method5393() {
+   public AreaMapIconMetadata method5393() {
       if(!this.field3897.method5337()) {
          return null;
       } else if(!this.field3899.method571()) {
@@ -1132,7 +1132,7 @@ public class RenderOverview {
       signature = "(I)Lay;",
       garbageValue = "-1187253180"
    )
-   public class39 method5394() {
-      return this.field3879 == null?null:(!this.field3879.hasNext()?null:(class39)this.field3879.next());
+   public AreaMapIconMetadata method5394() {
+      return this.field3879 == null?null:(!this.field3879.hasNext()?null:(AreaMapIconMetadata)this.field3879.next());
    }
 }

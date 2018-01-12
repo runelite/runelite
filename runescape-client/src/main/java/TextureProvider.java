@@ -220,7 +220,7 @@ public class TextureProvider implements ITextureLoader {
             var9 = Character.toLowerCase(var9);
             var10 = Character.toLowerCase(var10);
             if(var9 != var10) {
-               return class163.method3092(var9, var2) - class163.method3092(var10, var2);
+               return SocketSession.method3092(var9, var2) - SocketSession.method3092(var10, var2);
             }
          }
       }
@@ -236,7 +236,7 @@ public class TextureProvider implements ITextureLoader {
             var11 = Character.toLowerCase(var11);
             var12 = Character.toLowerCase(var12);
             if(var12 != var11) {
-               return class163.method3092(var11, var2) - class163.method3092(var12, var2);
+               return SocketSession.method3092(var11, var2) - SocketSession.method3092(var12, var2);
             }
          }
       }
@@ -249,7 +249,7 @@ public class TextureProvider implements ITextureLoader {
             var12 = var0.charAt(var18);
             char var13 = var1.charAt(var18);
             if(var12 != var13) {
-               return class163.method3092(var12, var2) - class163.method3092(var13, var2);
+               return SocketSession.method3092(var12, var2) - SocketSession.method3092(var13, var2);
             }
          }
 
@@ -298,7 +298,7 @@ public class TextureProvider implements ITextureLoader {
          return null;
       } else if(var0 instanceof byte[]) {
          byte[] var3 = (byte[])((byte[])var0);
-         return var1?class45.method658(var3):var3;
+         return var1? SceneMetadata.duplicateArray(var3):var3;
       } else if(var0 instanceof AbstractByteBuffer) {
          AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
          return var2.get();

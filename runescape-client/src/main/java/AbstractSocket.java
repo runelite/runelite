@@ -1,29 +1,36 @@
-import java.io.IOException;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
+import java.io.IOException;
+
 @ObfuscatedName("fx")
-public abstract class class159 {
+@Implements("AbstractSocket")
+public abstract class AbstractSocket {
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(II)Z",
       garbageValue = "1430377833"
    )
-   public abstract boolean vmethod3108(int var1) throws IOException;
+   @Export("available")
+   public abstract boolean available(int var1) throws IOException;
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(B)I",
       garbageValue = "0"
    )
-   public abstract int vmethod3083() throws IOException;
+   @Export("readable")
+   public abstract int readable() throws IOException;
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)I",
       garbageValue = "-1221609909"
    )
-   public abstract int vmethod3091() throws IOException;
+   @Export("read")
+   public abstract int read() throws IOException;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
@@ -44,5 +51,6 @@ public abstract class class159 {
       signature = "(B)V",
       garbageValue = "-124"
    )
-   public abstract void vmethod3081();
+   @Export("close")
+   public abstract void close();
 }

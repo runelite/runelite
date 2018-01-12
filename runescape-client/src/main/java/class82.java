@@ -1,8 +1,9 @@
-import java.util.Calendar;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.Calendar;
 
 @ObfuscatedName("cv")
 public class class82 {
@@ -39,14 +40,16 @@ public class class82 {
    @Export("scriptStack")
    static ScriptState[] scriptStack;
    @ObfuscatedName("y")
-   static Calendar field1247;
+   @Export("calendarRS")
+   static Calendar calendarRS;
    @ObfuscatedName("o")
-   static final String[] field1248;
+   @Export("monthsShorthand")
+   static final String[] monthsShorthand;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Laa;"
    )
-   static class47 field1238;
+   static MapAreaMetadata field1238;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -2128998809
@@ -60,8 +63,8 @@ public class class82 {
       scriptStringStack = new String[1000];
       scriptStackCount = 0;
       scriptStack = new ScriptState[50];
-      field1247 = Calendar.getInstance();
-      field1248 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+      calendarRS = Calendar.getInstance();
+      monthsShorthand = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
       field1250 = 0;
    }
 
@@ -212,7 +215,7 @@ public class class82 {
                if(var10 == Client.field1064) {
                   if(var1 != -1412584499 && !var10.field2889) {
                      class3.field17 = var0;
-                     class81.field1222 = var6;
+                     GameObjectTransformMetadata.field1222 = var6;
                      class186.field2526 = var7;
                      continue;
                   }
@@ -315,7 +318,7 @@ public class class82 {
                      if(var10.contentType == 1336) {
                         if(Client.displayFps) {
                            var13 += 15;
-                           BaseVarType.font_p12full.method4893("Fps:" + GameEngine.FPS, var12 + var10.width, var13, 16776960, -1);
+                           BaseVarType.font_p12full.drawString("Fps:" + GameEngine.FPS, var12 + var10.width, var13, 16776960, -1);
                            var13 += 15;
                            Runtime var67 = Runtime.getRuntime();
                            var20 = (int)((var67.totalMemory() - var67.freeMemory()) / 1024L);
@@ -328,7 +331,7 @@ public class class82 {
                               var21 = 16711680;
                            }
 
-                           BaseVarType.font_p12full.method4893("Mem:" + var20 + "k", var12 + var10.width, var13, var21, -1);
+                           BaseVarType.font_p12full.drawString("Mem:" + var20 + "k", var12 + var10.width, var13, var21, -1);
                            var13 += 15;
                         }
                         continue;
@@ -615,11 +618,11 @@ public class class82 {
                                     var37 = Client.cachedNPCs[Client.npcIndices[var36 - var34]];
                                  }
 
-                                 class22.method168((Actor)var37, var36, var19, var20, var21, var22);
+                                 SceneComposition.method168((Actor)var37, var36, var19, var20, var21, var22);
                               }
 
                               if(var60) {
-                                 class22.method168(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
+                                 SceneComposition.method168(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
                               }
 
                               for(var36 = 0; var36 < Client.field921; ++var36) {
@@ -780,7 +783,7 @@ public class class82 {
                      }
 
                      if(var10.contentType == 1339) {
-                        class221 var66 = var10.method4148(false);
+                        SpritePixels2 var66 = var10.method4148(false);
                         if(var66 != null) {
                            if(Client.field1062 < 3) {
                               GrandExchangeEvent.compass.method5216(var12, var13, var66.field2715, var66.field2716, 25, 25, Client.mapAngle, 256, var66.field2717, var66.field2714);
@@ -883,16 +886,16 @@ public class class82 {
                                     boolean var58 = false;
                                     boolean var59 = false;
                                     var26 = var10.itemIds[var19] - 1;
-                                    if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == class39.field506 && var19 == Client.field1073) {
+                                    if(var22 + 32 > var2 && var22 < var4 && var23 + 32 > var3 && var23 < var5 || var10 == AreaMapIconMetadata.field506 && var19 == Client.field1073) {
                                        SpritePixels var55;
-                                       if(Client.itemSelectionState == 1 && var19 == class36.selectedItemIndex && var10.id == class18.field304) {
+                                       if(Client.itemSelectionState == 1 && var19 == class36.selectedItemIndex && var10.id == GEItemNameComparator.field304) {
                                           var55 = class1.createSprite(var26, var10.itemQuantities[var19], 2, 0, 2, false);
                                        } else {
                                           var55 = class1.createSprite(var26, var10.itemQuantities[var19], 1, 3153952, 2, false);
                                        }
 
                                        if(var55 != null) {
-                                          if(var10 == class39.field506 && var19 == Client.field1073) {
+                                          if(var10 == AreaMapIconMetadata.field506 && var19 == Client.field1073) {
                                              var24 = MouseInput.field679 - Client.field857;
                                              var25 = MouseInput.field682 * -469125321 - Client.field1039;
                                              if(var24 < 5 && var24 > -5) {
@@ -1189,7 +1192,7 @@ public class class82 {
                                              } else if(var10.field2814 == 1) {
                                                 var63.method4884(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else {
-                                                var63.method4893(var54, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.drawString(var54, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
                                              }
                                           }
 

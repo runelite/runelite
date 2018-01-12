@@ -190,15 +190,15 @@ public class class48 implements WorldMapSectionBase {
       if(var0 == null) {
          return false;
       } else {
-         String var2 = class221.cleanUsername(var0, PendingSpawn.jagexLoginType);
+         String var2 = SpritePixels2.cleanUsername(var0, PendingSpawn.jagexLoginType);
 
          for(int var3 = 0; var3 < Client.friendCount; ++var3) {
-            if(var2.equalsIgnoreCase(class221.cleanUsername(Client.friends[var3].name, PendingSpawn.jagexLoginType)) && (!var1 || Client.friends[var3].world != 0)) {
+            if(var2.equalsIgnoreCase(SpritePixels2.cleanUsername(Client.friends[var3].name, PendingSpawn.jagexLoginType)) && (!var1 || Client.friends[var3].world != 0)) {
                return true;
             }
          }
 
-         if(var2.equalsIgnoreCase(class221.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType))) {
+         if(var2.equalsIgnoreCase(SpritePixels2.cleanUsername(UrlRequest.localPlayer.name, PendingSpawn.jagexLoginType))) {
             return true;
          } else {
             return false;

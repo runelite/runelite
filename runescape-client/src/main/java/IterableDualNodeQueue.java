@@ -46,6 +46,6 @@ public class IterableDualNodeQueue implements Iterable {
    }
 
    public Iterator iterator() {
-      return new class211(this);
+      return new DuelNodeIterator(this);
    }
 }

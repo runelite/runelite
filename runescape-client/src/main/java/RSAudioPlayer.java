@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ht")
-public class class215 extends TaskDataNode {
+@Implements("RSAudioPlayer")
+public class RSAudioPlayer extends TaskDataNode {
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lgp;"
@@ -53,17 +55,17 @@ public class class215 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "[[Lhq;"
    )
-   class216[][] field2648;
+   SoundTrackMetadata[][] field2648;
    @ObfuscatedName("ab")
    @ObfuscatedSignature(
       signature = "[[Lhq;"
    )
-   class216[][] field2656;
+   SoundTrackMetadata[][] field2656;
    @ObfuscatedName("ad")
    @ObfuscatedSignature(
       signature = "Lhf;"
    )
-   class217 field2649;
+   RSSongData field2649;
    @ObfuscatedName("ag")
    boolean field2651;
    @ObfuscatedName("ak")
@@ -92,7 +94,7 @@ public class class215 extends TaskDataNode {
    )
    class219 field2647;
 
-   public class215() {
+   public RSAudioPlayer() {
       this.field2630 = 256;
       this.field2655 = 1000000;
       this.field2632 = new int[16];
@@ -110,9 +112,9 @@ public class class215 extends TaskDataNode {
       this.field2631 = new int[16];
       this.field2646 = new int[16];
       this.field2634 = new int[16];
-      this.field2648 = new class216[16][128];
-      this.field2656 = new class216[16][128];
-      this.field2649 = new class217();
+      this.field2648 = new SoundTrackMetadata[16][128];
+      this.field2656 = new SoundTrackMetadata[16][128];
+      this.field2649 = new RSSongData();
       this.field2647 = new class219(this);
       this.field2641 = new HashTable(128);
       this.method3862();
@@ -141,7 +143,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhl;Lib;Lde;II)Z",
       garbageValue = "-303186494"
    )
-   synchronized boolean method3845(Track1 var1, IndexDataBase var2, class111 var3, int var4) {
+   synchronized boolean method3845(Track1 var1, IndexDataBase var2, SoundEffectWorker var3, int var4) {
       var1.method4063();
       boolean var5 = true;
       int[] var6 = null;
@@ -352,7 +354,7 @@ public class class215 extends TaskDataNode {
    void method3854(int var1, int var2, int var3) {
       this.method3939(var1, var2, 64);
       if((this.field2642[var1] & 2) != 0) {
-         for(class216 var4 = (class216)this.field2647.field2708.getTail(); var4 != null; var4 = (class216)this.field2647.field2708.getPrevious()) {
+         for(SoundTrackMetadata var4 = (SoundTrackMetadata)this.field2647.field2708.getTail(); var4 != null; var4 = (SoundTrackMetadata)this.field2647.field2708.getPrevious()) {
             if(var4.field2661 == var1 && var4.field2672 < 0) {
                this.field2648[var1][var4.field2663] = null;
                this.field2648[var1][var2] = var4;
@@ -368,9 +370,9 @@ public class class215 extends TaskDataNode {
 
       class218 var9 = (class218)this.field2641.get((long)this.field2636[var1]);
       if(var9 != null) {
-         class106 var8 = var9.field2700[var2];
+         MusicTrack2 var8 = var9.field2700[var2];
          if(var8 != null) {
-            class216 var6 = new class216();
+            SoundTrackMetadata var6 = new SoundTrackMetadata();
             var6.field2661 = var1;
             var6.field2659 = var9;
             var6.field2676 = var8;
@@ -386,9 +388,9 @@ public class class215 extends TaskDataNode {
             var6.field2672 = -1;
             var6.field2666 = 0;
             if(this.field2631[var1] == 0) {
-               var6.field2670 = class116.method2112(var8, this.method3867(var6), this.method3868(var6), this.method3894(var6));
+               var6.field2670 = SongMetadata.method2112(var8, this.method3867(var6), this.method3868(var6), this.method3894(var6));
             } else {
-               var6.field2670 = class116.method2112(var8, this.method3867(var6), 0, this.method3894(var6));
+               var6.field2670 = SongMetadata.method2112(var8, this.method3867(var6), 0, this.method3894(var6));
                this.method3855(var6, var9.field2697[var2] < 0);
             }
 
@@ -397,7 +399,7 @@ public class class215 extends TaskDataNode {
             }
 
             if(var6.field2662 >= 0) {
-               class216 var7 = this.field2656[var1][var6.field2662];
+               SoundTrackMetadata var7 = this.field2656[var1][var6.field2662];
                if(var7 != null && var7.field2672 < 0) {
                   this.field2648[var1][var7.field2663] = null;
                   var7.field2672 = 0;
@@ -417,7 +419,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;ZI)V",
       garbageValue = "1138729793"
    )
-   void method3855(class216 var1, boolean var2) {
+   void method3855(SoundTrackMetadata var1, boolean var2) {
       int var3 = var1.field2676.field1509.length;
       int var4;
       if(var2 && var1.field2676.field1512) {
@@ -441,11 +443,11 @@ public class class215 extends TaskDataNode {
       garbageValue = "1048832544"
    )
    void method3939(int var1, int var2, int var3) {
-      class216 var4 = this.field2648[var1][var2];
+      SoundTrackMetadata var4 = this.field2648[var1][var2];
       if(var4 != null) {
          this.field2648[var1][var2] = null;
          if((this.field2642[var1] & 2) != 0) {
-            for(class216 var5 = (class216)this.field2647.field2708.getFront(); var5 != null; var5 = (class216)this.field2647.field2708.getNext()) {
+            for(SoundTrackMetadata var5 = (SoundTrackMetadata)this.field2647.field2708.getFront(); var5 != null; var5 = (SoundTrackMetadata)this.field2647.field2708.getNext()) {
                if(var5.field2661 == var4.field2661 && var5.field2672 < 0 && var4 != var5) {
                   var4.field2672 = 0;
                   break;
@@ -489,7 +491,7 @@ public class class215 extends TaskDataNode {
       garbageValue = "-1120467178"
    )
    void method3860(int var1) {
-      for(class216 var2 = (class216)this.field2647.field2708.getFront(); var2 != null; var2 = (class216)this.field2647.field2708.getNext()) {
+      for(SoundTrackMetadata var2 = (SoundTrackMetadata)this.field2647.field2708.getFront(); var2 != null; var2 = (SoundTrackMetadata)this.field2647.field2708.getNext()) {
          if(var1 < 0 || var2.field2661 == var1) {
             if(var2.field2670 != null) {
                var2.field2670.method2169(ScriptState.sampleRate / 100);
@@ -544,7 +546,7 @@ public class class215 extends TaskDataNode {
       garbageValue = "1691218259"
    )
    void method3965(int var1) {
-      for(class216 var2 = (class216)this.field2647.field2708.getFront(); var2 != null; var2 = (class216)this.field2647.field2708.getNext()) {
+      for(SoundTrackMetadata var2 = (SoundTrackMetadata)this.field2647.field2708.getFront(); var2 != null; var2 = (SoundTrackMetadata)this.field2647.field2708.getNext()) {
          if((var1 < 0 || var2.field2661 == var1) && var2.field2672 < 0) {
             this.field2648[var2.field2661][var2.field2663] = null;
             var2.field2672 = 0;
@@ -580,7 +582,7 @@ public class class215 extends TaskDataNode {
    )
    void method3961(int var1) {
       if((this.field2642[var1] & 2) != 0) {
-         for(class216 var2 = (class216)this.field2647.field2708.getFront(); var2 != null; var2 = (class216)this.field2647.field2708.getNext()) {
+         for(SoundTrackMetadata var2 = (SoundTrackMetadata)this.field2647.field2708.getFront(); var2 != null; var2 = (SoundTrackMetadata)this.field2647.field2708.getNext()) {
             if(var2.field2661 == var1 && this.field2648[var1][var2.field2663] == null && var2.field2672 < 0) {
                var2.field2672 = 0;
             }
@@ -596,7 +598,7 @@ public class class215 extends TaskDataNode {
    )
    void method3864(int var1) {
       if((this.field2642[var1] & 4) != 0) {
-         for(class216 var2 = (class216)this.field2647.field2708.getFront(); var2 != null; var2 = (class216)this.field2647.field2708.getNext()) {
+         for(SoundTrackMetadata var2 = (SoundTrackMetadata)this.field2647.field2708.getFront(); var2 != null; var2 = (SoundTrackMetadata)this.field2647.field2708.getNext()) {
             if(var2.field2661 == var1) {
                var2.field2678 = 0;
             }
@@ -807,7 +809,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;I)I",
       garbageValue = "194164029"
    )
-   int method3867(class216 var1) {
+   int method3867(SoundTrackMetadata var1) {
       int var2 = (var1.field2664 * var1.field2668 >> 12) + var1.field2660;
       var2 += (this.field2635[var1.field2661] - 8192) * this.field2644[var1.field2661] >> 12;
       class213 var3 = var1.field2675;
@@ -833,7 +835,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;S)I",
       garbageValue = "-4612"
    )
-   int method3868(class216 var1) {
+   int method3868(SoundTrackMetadata var1) {
       class213 var2 = var1.field2675;
       int var3 = this.field2629[var1.field2661] * this.field2632[var1.field2661] + 4096 >> 13;
       var3 = var3 * var3 + 16384 >> 15;
@@ -879,7 +881,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;I)I",
       garbageValue = "1928898877"
    )
-   int method3894(class216 var1) {
+   int method3894(SoundTrackMetadata var1) {
       int var2 = this.field2633[var1.field2661];
       return var2 < 8192?var2 * var1.field2665 + 32 >> 6:16384 - ((128 - var1.field2665) * (16384 - var2) + 32 >> 6);
    }
@@ -935,7 +937,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;I)Z",
       garbageValue = "-1941934368"
    )
-   boolean method3953(class216 var1) {
+   boolean method3953(SoundTrackMetadata var1) {
       if(var1.field2670 == null) {
          if(var1.field2672 >= 0) {
             var1.unlink();
@@ -955,7 +957,7 @@ public class class215 extends TaskDataNode {
       signature = "(Lhq;[IIII)Z",
       garbageValue = "-1866216510"
    )
-   boolean method3877(class216 var1, int[] var2, int var3, int var4) {
+   boolean method3877(SoundTrackMetadata var1, int[] var2, int var3, int var4) {
       var1.field2677 = ScriptState.sampleRate / 100;
       if(var1.field2672 < 0 || var1.field2670 != null && !var1.field2670.method2194()) {
          int var5 = var1.field2668;

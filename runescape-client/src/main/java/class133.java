@@ -63,7 +63,7 @@ public class class133 {
       garbageValue = "28"
    )
    @Export("worldToMinimap")
-   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+   static final void worldToMinimap(int var0, int var1, int var2, int var3, SpritePixels var4, SpritePixels2 var5) {
       int var6 = var3 * var3 + var2 * var2;
       if(var6 > 4225 && var6 < 90000) {
          int var7 = Client.mapAngle & 2047;
@@ -76,7 +76,7 @@ public class class133 {
          int var15 = (int)(Math.sin(var12) * (double)var14);
          int var16 = (int)(Math.cos(var12) * (double)var14);
          byte var17 = 20;
-         class47.mapedge.method5193(var15 + (var0 + var5.field2715 / 2 - var17 / 2), var5.field2716 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
+         MapAreaMetadata.mapedge.method5193(var15 + (var0 + var5.field2715 / 2 - var17 / 2), var5.field2716 / 2 + var1 - var17 / 2 - var16 - 10, var17, var17, 15, 15, var12, 256);
       } else {
          class37.drawDot(var0, var1, var2, var3, var4, var5);
       }

@@ -8,7 +8,7 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lcl;"
    )
-   static class101 field2628;
+   static AudioLinkedDeque field2628;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lib;"
@@ -48,7 +48,7 @@ public class class214 {
    @ObfuscatedSignature(
       signature = "Lde;"
    )
-   public static class111 field2627;
+   public static SoundEffectWorker field2627;
 
    static {
       field2620 = 0;

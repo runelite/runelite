@@ -22,7 +22,7 @@ public class class218 extends Node {
    @ObfuscatedSignature(
       signature = "[Ldx;"
    )
-   class106[] field2700;
+   MusicTrack2[] field2700;
    @ObfuscatedName("e")
    short[] field2697;
    @ObfuscatedName("k")
@@ -40,7 +40,7 @@ public class class218 extends Node {
    int[] field2703;
 
    class218(byte[] var1) {
-      this.field2700 = new class106[128];
+      this.field2700 = new MusicTrack2[128];
       this.field2697 = new short[128];
       this.field2698 = new byte[128];
       this.field2699 = new byte[128];
@@ -489,10 +489,10 @@ public class class218 extends Node {
       signature = "(Lde;[B[II)Z",
       garbageValue = "293976429"
    )
-   boolean method4030(class111 var1, byte[] var2, int[] var3) {
+   boolean method4030(SoundEffectWorker var1, byte[] var2, int[] var3) {
       boolean var4 = true;
       int var5 = 0;
-      class106 var6 = null;
+      MusicTrack2 var6 = null;
 
       for(int var7 = 0; var7 < 128; ++var7) {
          if(var2 == null || var2[var7] != 0) {

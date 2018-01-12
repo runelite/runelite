@@ -1,11 +1,8 @@
+import net.runelite.mapping.*;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.concurrent.ScheduledExecutorService;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dn")
 @Implements("AbstractSoundSystem")
@@ -467,7 +464,8 @@ public class AbstractSoundSystem {
       signature = "(Ljava/io/File;ZI)Z",
       garbageValue = "17142342"
    )
-   static boolean method2055(File var0, boolean var1) {
+   @Export("openRandomAccessFile")
+   static boolean openRandomAccessFile(File var0, boolean var1) {
       try {
          RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
          int var3 = var2.read();
@@ -490,7 +488,8 @@ public class AbstractSoundSystem {
       signature = "(ILck;ZB)I",
       garbageValue = "4"
    )
-   static int method2056(int var0, Script var1, boolean var2) {
+   @Export("cs2_2000s")
+   static int cs2_2000s(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

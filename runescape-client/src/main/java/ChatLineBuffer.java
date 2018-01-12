@@ -92,7 +92,7 @@ public class ChatLineBuffer {
          CombatInfoListHolder.field1267 = null;
          class91.field1333 = null;
          FriendLoginUpdate.field760 = null;
-         class221.slFlagSprites = null;
+         SpritePixels2.slFlagSprites = null;
          class7.slArrowSprites = null;
          class37.slStarSprites = null;
          class160.field2151 = null;

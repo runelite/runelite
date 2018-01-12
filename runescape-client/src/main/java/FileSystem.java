@@ -39,8 +39,9 @@ public class FileSystem extends Node {
       signature = "(Lfo;Lgj;I)Lfg;",
       garbageValue = "-987657395"
    )
-   public static PacketNode method4252(ClientPacket var0, ISAACCipher var1) {
-      PacketNode var2 = class161.method3067();
+   @Export("bufferForSize")
+   public static PacketNode bufferForSize(ClientPacket var0, ISAACCipher var1) {
+      PacketNode var2 = SocketSession2.cachedOrNewPacketNode();
       var2.clientPacket = var0;
       var2.field2432 = var0.packetLength;
       if(var2.field2432 == -1) {

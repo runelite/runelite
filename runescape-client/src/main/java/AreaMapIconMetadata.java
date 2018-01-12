@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
-public class class39 {
+@Implements("AreaMapIconMetadata")
+public class AreaMapIconMetadata {
    @ObfuscatedName("hb")
    @ObfuscatedSignature(
       signature = "Lhz;"
@@ -53,7 +55,7 @@ public class class39 {
    @ObfuscatedSignature(
       signature = "(ILhc;Lhc;Lat;)V"
    )
-   class39(int var1, Coordinates var2, Coordinates var3, class33 var4) {
+   AreaMapIconMetadata(int var1, Coordinates var2, Coordinates var3, class33 var4) {
       this.field499 = var1;
       this.field504 = var2;
       this.field498 = var3;
@@ -284,10 +286,10 @@ public class class39 {
          } else if(var0 == 1121) {
             var10 = var3.id;
             int var6 = var3.index;
-            PacketNode var7 = FileSystem.method4252(ClientPacket.field2324, Client.field888.field1449);
+            PacketNode var7 = FileSystem.bufferForSize(ClientPacket.field2324, Client.signlink.field1449);
             var7.packetBuffer.writeIntLE(var10);
             var7.packetBuffer.writeShortLE(var6);
-            Client.field888.method1862(var7);
+            Client.signlink.method1862(var7);
             Client.field958 = var3;
             class33.method344(var3);
             return 1;

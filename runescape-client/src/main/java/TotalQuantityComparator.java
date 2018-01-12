@@ -51,8 +51,8 @@ final class TotalQuantityComparator implements Comparator {
       } else {
          Client.field892.method5047();
          Friend.setGameState(40);
-         MouseInput.field685 = Client.field888.getSocket();
-         Client.field888.method1873();
+         MouseInput.field685 = Client.signlink.getSocket();
+         Client.signlink.method1873();
       }
    }
 

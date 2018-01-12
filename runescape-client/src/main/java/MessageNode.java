@@ -1,11 +1,7 @@
+import net.runelite.mapping.*;
+
 import java.io.File;
 import java.io.RandomAccessFile;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bv")
 @Implements("MessageNode")
@@ -139,24 +135,25 @@ public class MessageNode extends CacheableNode {
       signature = "(ZLgy;B)V",
       garbageValue = "-111"
    )
-   static final void method1065(boolean var0, PacketBuffer var1) {
-      Client.field967 = 0;
+   @Export("npcUpdatePacket")
+   static final void npcUpdatePacket(boolean var0, PacketBuffer var1) {
+      Client.localNpcsCount = 0;
       Client.pendingNpcFlagsCount = 0;
-      class5.method17();
-      class45.updateNpcs(var0, var1);
-      class27.method215(var1);
+      class5.npcUpdateViewport();
+      SceneMetadata.updateNpcs(var0, var1);
+      class27.npcUpdateMasks(var1);
 
       int var2;
-      for(var2 = 0; var2 < Client.field967; ++var2) {
-         int var3 = Client.field951[var2];
+      for(var2 = 0; var2 < Client.localNpcsCount; ++var2) {
+         int var3 = Client.npcIndicesPendingRemoval[var2];
          if(Client.cachedNPCs[var3].npcCycle != Client.gameCycle) {
             Client.cachedNPCs[var3].composition = null;
             Client.cachedNPCs[var3] = null;
          }
       }
 
-      if(var1.offset != Client.field888.packetLength) {
-         throw new RuntimeException(var1.offset + "," + Client.field888.packetLength);
+      if(var1.offset != Client.signlink.packetLength) {
+         throw new RuntimeException(var1.offset + "," + Client.signlink.packetLength);
       } else {
          for(var2 = 0; var2 < Client.npcIndexesCount; ++var2) {
             if(Client.cachedNPCs[Client.npcIndices[var2]] == null) {
@@ -172,7 +169,8 @@ public class MessageNode extends CacheableNode {
       signature = "(ILjava/lang/String;B)V",
       garbageValue = "0"
    )
-   static void method1067(int var0, String var1) {
+   @Export("writeRespondPlayerRequest")
+   static void writeRespondPlayerRequest(int var0, String var1) {
       int var2 = class94.playerIndexesCount;
       int[] var3 = class94.playerIndices;
       boolean var4 = false;
@@ -182,25 +180,25 @@ public class MessageNode extends CacheableNode {
          if(var6 != null && var6 != UrlRequest.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
             PacketNode var7;
             if(var0 == 1) {
-               var7 = FileSystem.method4252(ClientPacket.field2315, Client.field888.field1449);
+               var7 = FileSystem.bufferForSize(ClientPacket.field2315, Client.signlink.field1449);
                var7.packetBuffer.putByte(0);
                var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
+               Client.signlink.method1862(var7);
             } else if(var0 == 4) {
-               var7 = FileSystem.method4252(ClientPacket.field2359, Client.field888.field1449);
+               var7 = FileSystem.bufferForSize(ClientPacket.field2359, Client.signlink.field1449);
                var7.packetBuffer.method3287(0);
                var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
+               Client.signlink.method1862(var7);
             } else if(var0 == 6) {
-               var7 = FileSystem.method4252(ClientPacket.field2361, Client.field888.field1449);
+               var7 = FileSystem.bufferForSize(ClientPacket.field2361, Client.signlink.field1449);
                var7.packetBuffer.writeIntLE16(var3[var5]);
                var7.packetBuffer.method3285(0);
-               Client.field888.method1862(var7);
+               Client.signlink.method1862(var7);
             } else if(var0 == 7) {
-               var7 = FileSystem.method4252(ClientPacket.field2391, Client.field888.field1449);
+               var7 = FileSystem.bufferForSize(ClientPacket.field2391, Client.signlink.field1449);
                var7.packetBuffer.method3287(0);
                var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
+               Client.signlink.method1862(var7);
             }
 
             var4 = true;

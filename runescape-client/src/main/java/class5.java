@@ -1,11 +1,13 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import javax.imageio.ImageIO;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("z")
 final class class5 implements class0 {
@@ -188,7 +190,7 @@ final class class5 implements class0 {
       if(class91.username.length() == 0) {
          class64.method1033("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class44.method620();
+         long var1 = WorldMapMappings.method620();
          int var0;
          if(0L == var1) {
             var0 = 5;
@@ -255,14 +257,14 @@ final class class5 implements class0 {
       FrameMap.indexSoundEffects.reset();
       MouseInput.indexCache3.reset();
       class86.indexCache4.reset();
-      class22.indexMaps.reset();
+      SceneComposition.indexMaps.reset();
       class29.indexTrack1.reset();
       class37.indexModels.reset();
       class43.indexSprites.reset();
       class3.indexTextures.reset();
       class36.indexCache10.reset();
       class20.indexTrack2.reset();
-      class161.indexScripts.reset();
+      SocketSession2.indexScripts.reset();
    }
 
    @ObfuscatedName("gq")
@@ -270,14 +272,15 @@ final class class5 implements class0 {
       signature = "(I)V",
       garbageValue = "-42201957"
    )
-   static final void method17() {
-      PacketBuffer var0 = Client.field888.packetBuffer;
+   @Export("npcUpdateViewport")
+   static final void npcUpdateViewport() {
+      PacketBuffer var0 = Client.signlink.packetBuffer;
       var0.bitAccess();
       int var1 = var0.getBits(8);
       int var2;
       if(var1 < Client.npcIndexesCount) {
          for(var2 = var1; var2 < Client.npcIndexesCount; ++var2) {
-            Client.field951[++Client.field967 - 1] = Client.npcIndices[var2];
+            Client.npcIndicesPendingRemoval[++Client.localNpcsCount - 1] = Client.npcIndices[var2];
          }
       }
 
@@ -323,7 +326,7 @@ final class class5 implements class0 {
                         Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
                      }
                   } else if(var6 == 3) {
-                     Client.field951[++Client.field967 - 1] = var3;
+                     Client.npcIndicesPendingRemoval[++Client.localNpcsCount - 1] = var3;
                   }
                }
             }

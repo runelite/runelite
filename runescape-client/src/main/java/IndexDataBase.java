@@ -566,7 +566,7 @@ public abstract class IndexDataBase {
    @Export("getFile")
    public int getFile(String var1) {
       var1 = var1.toLowerCase();
-      return this.identifiers.getFile(class31.djb2Hash(var1));
+      return this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
    }
 
    @ObfuscatedName("d")
@@ -577,7 +577,7 @@ public abstract class IndexDataBase {
    @Export("getChild")
    public int getChild(int var1, String var2) {
       var2 = var2.toLowerCase();
-      return this.childIdentifiers[var1].getFile(class31.djb2Hash(var2));
+      return this.childIdentifiers[var1].getFile(SceneMapObject.djb2Hash(var2));
    }
 
    @ObfuscatedName("v")
@@ -588,11 +588,11 @@ public abstract class IndexDataBase {
    public boolean method4273(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(class31.djb2Hash(var1));
+      int var3 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
       if(var3 < 0) {
          return false;
       } else {
-         int var4 = this.childIdentifiers[var3].getFile(class31.djb2Hash(var2));
+         int var4 = this.childIdentifiers[var3].getFile(SceneMapObject.djb2Hash(var2));
          return var4 >= 0;
       }
    }
@@ -606,8 +606,8 @@ public abstract class IndexDataBase {
    public byte[] takeRecordByNames(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(class31.djb2Hash(var1));
-      int var4 = this.childIdentifiers[var3].getFile(class31.djb2Hash(var2));
+      int var3 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(SceneMapObject.djb2Hash(var2));
       return this.getConfigData(var3, var4);
    }
 
@@ -620,8 +620,8 @@ public abstract class IndexDataBase {
    public boolean tryLoadRecordByNames(String var1, String var2) {
       var1 = var1.toLowerCase();
       var2 = var2.toLowerCase();
-      int var3 = this.identifiers.getFile(class31.djb2Hash(var1));
-      int var4 = this.childIdentifiers[var3].getFile(class31.djb2Hash(var2));
+      int var3 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
+      int var4 = this.childIdentifiers[var3].getFile(SceneMapObject.djb2Hash(var2));
       return this.tryLoadRecord(var3, var4);
    }
 
@@ -633,7 +633,7 @@ public abstract class IndexDataBase {
    @Export("tryLoadArchiveByName")
    public boolean tryLoadArchiveByName(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(class31.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
       return this.containsFile(var2);
    }
 
@@ -644,7 +644,7 @@ public abstract class IndexDataBase {
    )
    public void method4277(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(class31.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
       if(var2 >= 0) {
          this.vmethod4373(var2);
       }
@@ -658,7 +658,7 @@ public abstract class IndexDataBase {
    @Export("archiveLoadPercentByName")
    public int archiveLoadPercentByName(String var1) {
       var1 = var1.toLowerCase();
-      int var2 = this.identifiers.getFile(class31.djb2Hash(var1));
+      int var2 = this.identifiers.getFile(SceneMapObject.djb2Hash(var1));
       return this.archiveLoadPercent(var2);
    }
 

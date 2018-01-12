@@ -8,7 +8,7 @@ public class class282 {
    @ObfuscatedSignature(
       signature = "Lht;"
    )
-   public static class215 field3753;
+   public static RSAudioPlayer field3753;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1560639067

@@ -1,7 +1,8 @@
-import java.util.LinkedHashMap;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+
+import java.util.LinkedHashMap;
 
 @ObfuscatedName("ex")
 public enum class150 implements Enumerated {
@@ -81,7 +82,7 @@ public enum class150 implements Enumerated {
    )
    static final void method2933(int var0) {
       CombatInfoListHolder.method1630();
-      class28.method236();
+      AbstractScene.method236();
       int var1 = class25.method182(var0).configType;
       if(var1 != 0) {
          int var2 = class222.widgetSettings[var0];

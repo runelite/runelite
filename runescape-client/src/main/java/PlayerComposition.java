@@ -426,7 +426,7 @@ public class PlayerComposition {
             }
 
             if(class214.field2627 == null) {
-               class214.field2627 = new class111(class214.field2624, class214.field2621);
+               class214.field2627 = new SoundEffectWorker(class214.field2624, class214.field2621);
             }
 
             if(class282.field3753.method3845(class214.field2622, class214.field2626, class214.field2627, 22050)) {

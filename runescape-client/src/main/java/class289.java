@@ -1,6 +1,4 @@
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
 @ObfuscatedName("ku")
 public class class289 {
@@ -23,7 +21,8 @@ public class class289 {
    @ObfuscatedGetter(
       intValue = 488305935
    )
-   public final int field3809;
+   @Export("socialStateId")
+   public final int socialStateId;
 
    static {
       field3806 = new class289(0);
@@ -32,6 +31,6 @@ public class class289 {
    }
 
    class289(int var1) {
-      this.field3809 = var1;
+      this.socialStateId = var1;
    }
 }

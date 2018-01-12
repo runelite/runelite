@@ -191,7 +191,7 @@ public class UrlRequester implements Runnable {
             }
 
             File var8 = var6[var7];
-            if(!AbstractSoundSystem.method2055(var8, false)) {
+            if(!AbstractSoundSystem.openRandomAccessFile(var8, false)) {
                ++var9;
                break;
             }

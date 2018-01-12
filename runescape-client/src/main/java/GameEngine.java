@@ -1,20 +1,11 @@
+import net.runelite.mapping.*;
+
 import java.applet.Applet;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.net.URL;
 import net.runelite.mapping.Export;
@@ -724,7 +715,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          Graphics var4 = this.canvas.getGraphics();
          if(class279.field3737 == null) {
             class279.field3737 = new java.awt.Font("Helvetica", 1, 13);
-            class40.field515 = this.canvas.getFontMetrics(class279.field3737);
+            NamedRecord.field515 = this.canvas.getFontMetrics(class279.field3737);
          }
 
          if(var3) {
@@ -748,7 +739,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var6.fillRect(var1 * 3 + 2, 2, 300 - var1 * 3, 30);
             var6.setFont(class279.field3737);
             var6.setColor(Color.white);
-            var6.drawString(var2, (304 - class40.field515.stringWidth(var2)) / 2, 22);
+            var6.drawString(var2, (304 - NamedRecord.field515.stringWidth(var2)) / 2, 22);
             var4.drawImage(class34.field461, Huffman.canvasWidth / 2 - 152, VertexNormal.canvasHeight / 2 - 18, (ImageObserver)null);
          } catch (Exception var9) {
             int var7 = Huffman.canvasWidth / 2 - 152;
@@ -761,7 +752,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var4.fillRect(var7 + var1 * 3 + 2, var8 + 2, 300 - var1 * 3, 30);
             var4.setFont(class279.field3737);
             var4.setColor(Color.white);
-            var4.drawString(var2, var7 + (304 - class40.field515.stringWidth(var2)) / 2, var8 + 22);
+            var4.drawString(var2, var7 + (304 - NamedRecord.field515.stringWidth(var2)) / 2, var8 + 22);
          }
       } catch (Exception var10) {
          this.canvas.repaint();
@@ -777,7 +768,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    protected final void method836() {
       class34.field461 = null;
       class279.field3737 = null;
-      class40.field515 = null;
+      NamedRecord.field515 = null;
    }
 
    @ObfuscatedName("ac")
@@ -1070,12 +1061,12 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    static final void method857(String var0) {
       if(var0 != null) {
-         String var1 = class221.cleanUsername(var0, PendingSpawn.jagexLoginType);
+         String var1 = SpritePixels2.cleanUsername(var0, PendingSpawn.jagexLoginType);
          if(var1 != null) {
             for(int var2 = 0; var2 < Client.friendCount; ++var2) {
                Friend var3 = Client.friends[var2];
                String var4 = var3.name;
-               String var5 = class221.cleanUsername(var4, PendingSpawn.jagexLoginType);
+               String var5 = SpritePixels2.cleanUsername(var4, PendingSpawn.jagexLoginType);
                boolean var6;
                if(var0 != null && var4 != null) {
                   if(!var0.startsWith("#") && !var4.startsWith("#")) {
@@ -1095,10 +1086,10 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                   }
 
                   Client.field1041 = Client.cycleCntr;
-                  PacketNode var8 = FileSystem.method4252(ClientPacket.field2354, Client.field888.field1449);
+                  PacketNode var8 = FileSystem.bufferForSize(ClientPacket.field2354, Client.signlink.field1449);
                   var8.packetBuffer.putByte(Ignore.getLength(var0));
                   var8.packetBuffer.putString(var0);
-                  Client.field888.method1862(var8);
+                  Client.signlink.method1862(var8);
                   break;
                }
             }
