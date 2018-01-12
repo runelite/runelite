@@ -54,6 +54,7 @@ import static net.runelite.api.AnimationID.GEM_CUTTING_OPAL;
 import static net.runelite.api.AnimationID.GEM_CUTTING_REDTOPAZ;
 import static net.runelite.api.AnimationID.GEM_CUTTING_RUBY;
 import static net.runelite.api.AnimationID.GEM_CUTTING_SAPPHIRE;
+import static net.runelite.api.AnimationID.HERBLORE_MAKE_TAR;
 import static net.runelite.api.AnimationID.HERBLORE_POTIONMAKING;
 import static net.runelite.api.AnimationID.IDLE;
 import static net.runelite.api.AnimationID.MAGIC_CHARGING_ORBS;
@@ -228,6 +229,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_INFERNAL:
 			/* Herblore */
 			case HERBLORE_POTIONMAKING:
+			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 				notifyIdle = true;
