@@ -78,7 +78,6 @@ public class ClientUI extends JFrame
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
-	private boolean gameClientHasFocus = true;
 
 	static
 	{
@@ -166,7 +165,6 @@ public class ClientUI extends JFrame
 
 	private void giveClientFocus()
 	{
-		gameClientHasFocus = true;
 		if (client instanceof Client)
 		{
 			Canvas c = ((Client) client).getCanvas();
@@ -293,6 +291,7 @@ public class ClientUI extends JFrame
 		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
 
+		// panel.onActivate has to go after giveClientFocus so it can get focus if it needs.
 		giveClientFocus();
 		panel.onActivate();
 

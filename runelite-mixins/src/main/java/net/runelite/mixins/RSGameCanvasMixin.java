@@ -31,7 +31,7 @@ import net.runelite.rs.api.RSGameCanvas;
 import net.runelite.rs.api.RSGameEngine;
 
 @Mixin(RSGameCanvas.class)
-public abstract class RSGameCanvasMixin implements RSGameCanvas
+public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 {
 	@Inject
 	public void requestFocus()
@@ -41,7 +41,7 @@ public abstract class RSGameCanvasMixin implements RSGameCanvas
 		RSGameEngine engine = (RSGameEngine)getComponent();
 		if (engine.getShouldGetFocus())
 		{
-			((Canvas) (Object) this).requestFocusInWindow();
+			this.requestFocusInWindow();
 		}
 	}
 }

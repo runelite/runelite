@@ -31,7 +31,6 @@ import static javax.swing.JOptionPane.YES_OPTION;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -114,7 +113,7 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
-		populateConfig();
+		openConfigList();
 	}
 
 	private void onSearchBarChanged()
@@ -147,7 +146,7 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
-	private void populateConfig()
+	private void openConfigList()
 	{
 		removeAll();
 		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
@@ -336,15 +335,9 @@ public class ConfigPanel extends PluginPanel
 		}
 
 		JButton backButton = new JButton("Back");
-		backButton.addActionListener(this::getBackButtonListener);
+		backButton.addActionListener(e -> openConfigList());
 		add(backButton);
 		revalidate();
 		scrollPane.getVerticalScrollBar().setValue(0);
 	}
-
-	public void getBackButtonListener(ActionEvent e)
-	{
-		populateConfig();
-	}
-
 }
