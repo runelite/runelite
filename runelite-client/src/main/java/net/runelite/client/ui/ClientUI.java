@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -47,9 +48,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JRootPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
@@ -67,19 +66,19 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 @Slf4j
 public class ClientUI extends JFrame
 {
-	private static final int SCROLLBAR_WIDTH = 17;
-	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
+	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
 	private static final BufferedImage ICON;
 
 	@Getter
 	private TrayIcon trayIcon;
 
-	private final Applet client;
-	private final RuneLiteProperties properties;
+	private Applet client;
+	private RuneLiteProperties properties;
 	private JPanel container;
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+	private boolean gameClientHasFocus = true;
 
 	static
 	{
@@ -161,6 +160,22 @@ public class ClientUI extends JFrame
 
 		setVisible(true);
 		toFront();
+		requestFocus();
+		giveClientFocus();
+	}
+
+	private void giveClientFocus()
+	{
+		gameClientHasFocus = true;
+		if (client instanceof Client)
+		{
+			Canvas c = ((Client) client).getCanvas();
+			c.requestFocusInWindow();
+		}
+		else
+		{
+			client.requestFocusInWindow();
+		}
 	}
 
 	private static void setUIFont(FontUIResource f)
@@ -214,7 +229,6 @@ public class ClientUI extends JFrame
 		return trayIcon;
 	}
 
-
 	@Override
 	public void setTitle(String extra)
 	{
@@ -247,9 +261,9 @@ public class ClientUI extends JFrame
 		container.add(new ClientPanel(client));
 
 		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0,0));
-		navContainer.setMinimumSize(new Dimension(0,0));
-		navContainer.setMaximumSize(new Dimension(0,Integer.MAX_VALUE));
+		navContainer.setLayout(new BorderLayout(0, 0));
+		navContainer.setMinimumSize(new Dimension(0, 0));
+		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
 		container.add(navContainer);
 
 		pluginToolbar = new PluginToolbar(this);
@@ -274,18 +288,27 @@ public class ClientUI extends JFrame
 		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
-		navContainer.add(wrapPanel(pluginPanel));
+
+		JPanel wrappedPanel = panel.getWrappedPanel();
+		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
+
+		giveClientFocus();
+		panel.onActivate();
+
+		wrappedPanel.repaint();
 		revalidateMinimumSize();
 	}
 
 	void contract()
 	{
 		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		pluginPanel.onDeactivate();
 		navContainer.remove(0);
 		navContainer.setMinimumSize(new Dimension(0, 0));
 		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
 		navContainer.revalidate();
+		giveClientFocus();
 		revalidateMinimumSize();
 		if (wasMinimumWidth)
 		{
@@ -294,35 +317,12 @@ public class ClientUI extends JFrame
 		pluginPanel = null;
 	}
 
-	private JPanel wrapPanel(PluginPanel panel)
-	{
-		final JPanel northPanel = new JPanel();
-		northPanel.setLayout(new BorderLayout());
-		northPanel.add(panel, BorderLayout.NORTH);
-
-		final JScrollPane scrollPane = new JScrollPane(northPanel);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-		final JPanel panelWrap = new JPanel();
-
-		// Adjust the preferred size to expand to width of scrollbar to
-		// to preven scrollbar overlapping over contents
-		panelWrap.setPreferredSize(new Dimension(
-					PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH,
-					0));
-
-		panelWrap.setLayout(new BorderLayout());
-		panelWrap.add(scrollPane, BorderLayout.CENTER);
-		return panelWrap;
-	}
-
 	private void checkExit()
 	{
 		int result = JOptionPane.OK_OPTION;
 
 		// only ask if not logged out
-		if (client != null && client instanceof Client && ((Client)client).getGameState() != GameState.LOGIN_SCREEN)
+		if (client != null && client instanceof Client && ((Client) client).getGameState() != GameState.LOGIN_SCREEN)
 		{
 			result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 		}

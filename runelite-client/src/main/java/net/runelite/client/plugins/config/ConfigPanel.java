@@ -27,6 +27,7 @@ package net.runelite.client.plugins.config;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,13 +35,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.JButton;
@@ -58,6 +56,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
@@ -72,21 +72,76 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private final ConfigManager configManager;
-	private JTextField searchBar;
+	private JTextField searchBar = new JTextField();
+	private Map<String, JPanel> children = new TreeMap<>();
+	private int scrollBarPosition = 0;
 
 	public ConfigPanel(ConfigManager configManager)
 	{
 		super();
 		this.configManager = configManager;
+
+		configManager.getConfigProxies().stream()
+			.map(configManager::getConfigDescriptor)
+			.forEach(cd ->
+			{
+				JPanel groupPanel = new JPanel();
+				groupPanel.setLayout(new BorderLayout());
+				JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
+				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
+				groupPanel.add(viewGroupItemsButton);
+				children.put(cd.getGroup().name(), groupPanel);
+			});
+
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				onSearchBarChanged();
+			}
+		});
+
 		populateConfig();
 	}
 
-	@Override
-	public void invalidate()
+	private void onSearchBarChanged()
 	{
-		super.invalidate();
+		children.forEach((key, value) ->
+		{
+			final String text = searchBar.getText().toLowerCase();
+			final String labelToSearch = key.toLowerCase();
 
-		if (searchBar != null)
+			if (text.isEmpty() || labelToSearch.contains(text))
+			{
+				add(value);
+			}
+			else
+			{
+				remove(value);
+			}
+		});
+
+		revalidate();
+	}
+
+	@Override
+	public void onActivate()
+	{
+		super.onActivate();
+		if (searchBar.getParent() != null)
 		{
 			searchBar.requestFocusInWindow();
 		}
@@ -96,49 +151,12 @@ public class ConfigPanel extends PluginPanel
 	{
 		removeAll();
 		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
-		searchBar = new JTextField();
 		add(searchBar);
-		final Map<String, JPanel> children = new TreeMap<>();
 
-		configManager.getConfigProxies().stream()
-			.map(configManager::getConfigDescriptor)
-			.sorted(Comparator.comparing(left -> left.getGroup().name()))
-			.forEach(cd ->
-			{
-				JPanel groupPanel = new JPanel();
-				groupPanel.setLayout(new BorderLayout());
-				JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
-				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
-				groupPanel.add(viewGroupItemsButton);
-				children.put(cd.getGroup().name(), groupPanel);
-				add(groupPanel);
-			});
-
-		searchBar.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				children.forEach((key, value) ->
-				{
-					final String text = searchBar.getText().toLowerCase();
-					final String labelToSearch = key.toLowerCase();
-
-					if (text.isEmpty() || labelToSearch.contains(text))
-					{
-						add(value);
-					}
-					else
-					{
-						remove(value);
-					}
-				});
-
-				revalidate();
-			}
-		});
-
-		revalidate();
+		onSearchBarChanged();
+		searchBar.requestFocusInWindow();
+		scrollPane.validate();
+		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
 	private void changeConfiguration(JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)
@@ -154,7 +172,7 @@ public class ConfigPanel extends PluginPanel
 			{
 				int value = JOptionPane.showOptionDialog(component, configItem.confirmationWarining(),
 					"Are you sure?", YES_NO_OPTION, WARNING_MESSAGE,
-					null, new String[] { "Yes", "No" }, "No");
+					null, new String[]{"Yes", "No"}, "No");
 				if (value != YES_OPTION)
 				{
 					checkbox.setSelected(originalState);
@@ -192,6 +210,7 @@ public class ConfigPanel extends PluginPanel
 
 	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
 	{
+		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 		removeAll();
 		String name = cd.getGroup().name() + " Configuration";
 		JLabel title = new JLabel(name);
@@ -320,11 +339,11 @@ public class ConfigPanel extends PluginPanel
 		backButton.addActionListener(this::getBackButtonListener);
 		add(backButton);
 		revalidate();
+		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
 	public void getBackButtonListener(ActionEvent e)
 	{
-
 		populateConfig();
 	}
 

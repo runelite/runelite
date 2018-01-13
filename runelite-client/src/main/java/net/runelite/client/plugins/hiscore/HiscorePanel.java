@@ -326,6 +326,13 @@ public class HiscorePanel extends PluginPanel
 		details.setText(text);
 	}
 
+	@Override
+	public void onActivate()
+	{
+		super.onActivate();
+		input.requestFocusInWindow();
+	}
+
 	private JPanel makeSkillPanel(String skillName, HiscoreSkill skill)
 	{
 		JLabel label = new JLabel();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.mixins;
 
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
+import java.awt.Canvas;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.rs.api.RSGameEngine;
 
-@PluginDescriptor(
-	name = "Configuration plugin",
-	loadWhenOutdated = true
-)
-public class ConfigPlugin extends Plugin
+@Mixin(RSGameEngine.class)
+public abstract class RSGameEngineMixin implements RSGameEngine
 {
 	@Inject
-	ClientUI ui;
+	public boolean shouldGetFocus;
 
 	@Inject
-	ConfigManager configManager;
-
-	private NavigationButton navButton;
-
 	@Override
-	protected void startUp() throws Exception
+	public boolean getShouldGetFocus()
 	{
-		ConfigPanel configPanel = new ConfigPanel(configManager);
+		return shouldGetFocus;
+	}
 
-		navButton = new NavigationButton(
-			"Configuration",
-			ImageIO.read(getClass().getResourceAsStream("config_icon.png")),
-			() -> configPanel);
+	// If this is put in rl$replaceCanavs it generates a bad stack map in be::<init> (GameEngines ctor)
+	@Inject
+	private void setShouldGetFocus()
+	{
+		Canvas c = getCanvas();
+		if (c == null)
+		{
+			shouldGetFocus = true;
+		}
+		else
+		{
+			shouldGetFocus = c.hasFocus();
+		}
+	}
 
-		ui.getPluginToolbar().addNavigation(navButton);
+	@Copy("replaceCanvas")
+	abstract void replaceCanvas();
+
+	@Replace("replaceCanvas")
+	public void rl$replaceCanvas()
+	{
+		setShouldGetFocus();
+		replaceCanvas();
+		shouldGetFocus = true;
 	}
 }

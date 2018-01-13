@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.mixins;
 
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
+import java.awt.Canvas;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSGameCanvas;
+import net.runelite.rs.api.RSGameEngine;
 
-@PluginDescriptor(
-	name = "Configuration plugin",
-	loadWhenOutdated = true
-)
-public class ConfigPlugin extends Plugin
+@Mixin(RSGameCanvas.class)
+public abstract class RSGameCanvasMixin implements RSGameCanvas
 {
 	@Inject
-	ClientUI ui;
-
-	@Inject
-	ConfigManager configManager;
-
-	private NavigationButton navButton;
-
-	@Override
-	protected void startUp() throws Exception
+	public void requestFocus()
 	{
-		ConfigPanel configPanel = new ConfigPanel(configManager);
-
-		navButton = new NavigationButton(
-			"Configuration",
-			ImageIO.read(getClass().getResourceAsStream("config_icon.png")),
-			() -> configPanel);
-
-		ui.getPluginToolbar().addNavigation(navButton);
+		// Runescape requests focus whenever the window is resized. This makes it so PluginPanels cannot have focus
+		// if they cause the sidebar to expand. This prevents Runescape from requesting focus whenever it wants
+		RSGameEngine engine = (RSGameEngine)getComponent();
+		if (engine.getShouldGetFocus())
+		{
+			((Canvas) (Object) this).requestFocusInWindow();
+		}
 	}
 }

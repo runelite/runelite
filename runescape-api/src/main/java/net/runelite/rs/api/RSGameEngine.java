@@ -25,10 +25,13 @@
 package net.runelite.rs.api;
 
 import java.awt.Canvas;
+import net.runelite.api.GameEngine;
 import net.runelite.mapping.Import;
 
-public interface RSGameEngine
+public interface RSGameEngine extends GameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	boolean getShouldGetFocus();
 }

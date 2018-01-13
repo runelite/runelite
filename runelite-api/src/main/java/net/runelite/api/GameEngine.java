@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.api;
 
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.NavigationButton;
+import java.awt.Canvas;
 
-@PluginDescriptor(
-	name = "Configuration plugin",
-	loadWhenOutdated = true
-)
-public class ConfigPlugin extends Plugin
+public interface GameEngine
 {
-	@Inject
-	ClientUI ui;
-
-	@Inject
-	ConfigManager configManager;
-
-	private NavigationButton navButton;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		ConfigPanel configPanel = new ConfigPanel(configManager);
-
-		navButton = new NavigationButton(
-			"Configuration",
-			ImageIO.read(getClass().getResourceAsStream("config_icon.png")),
-			() -> configPanel);
-
-		ui.getPluginToolbar().addNavigation(navButton);
-	}
+	Canvas getCanvas();
 }

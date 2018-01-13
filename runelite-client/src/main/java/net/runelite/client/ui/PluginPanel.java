@@ -24,27 +24,62 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 public abstract class PluginPanel extends JPanel
 {
-	public static final int PANEL_WIDTH = 225;
+	static final int PANEL_WIDTH = 225;
+	static final int SCROLLBAR_WIDTH = 17;
 	private static final int OFFSET = 6;
 	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(OFFSET, OFFSET, OFFSET, OFFSET);
+	protected final JScrollPane scrollPane;
+	protected final JPanel wrappedPanel;
 
 	public PluginPanel()
 	{
 		super();
 		setBorder(BORDER_PADDING);
 		setLayout(new GridLayout(0, 1, 0, 3));
+
+		final JPanel northPanel = new JPanel();
+		northPanel.setLayout(new BorderLayout());
+		northPanel.add(this, BorderLayout.NORTH);
+
+		scrollPane = new JScrollPane(northPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16); //Otherwise scrollspeed is really slow
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		wrappedPanel = new JPanel();
+
+		// Adjust the preferred size to expand to width of scrollbar to
+		// to preven scrollbar overlapping over contents
+		wrappedPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0));
+		wrappedPanel.setLayout(new BorderLayout());
+		wrappedPanel.add(scrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
 	public Dimension getPreferredSize()
 	{
 		return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
+	}
+
+	protected JPanel getWrappedPanel()
+	{
+		return wrappedPanel;
+	}
+
+	public void onActivate()
+	{
+	}
+
+	public void onDeactivate()
+	{
 	}
 }

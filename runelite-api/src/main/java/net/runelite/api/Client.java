@@ -30,7 +30,7 @@ import java.util.Map;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-public interface Client
+public interface Client extends GameEngine
 {
 	List<Player> getPlayers();
 
