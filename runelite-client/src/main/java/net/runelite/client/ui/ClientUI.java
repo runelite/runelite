@@ -161,6 +161,7 @@ public class ClientUI extends JFrame
 
 		setVisible(true);
 		toFront();
+		repaint();
 	}
 
 	private static void setUIFont(FontUIResource f)
