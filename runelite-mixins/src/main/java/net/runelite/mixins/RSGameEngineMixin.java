@@ -44,9 +44,11 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 		return shouldGetFocus;
 	}
 
-	// If this is put in rl$replaceCanavs it generates a bad stack map in be::<init> (GameEngines ctor)
-	@Inject
-	private void setShouldGetFocus()
+	@Copy("replaceCanvas")
+	abstract void replaceCanvas();
+
+	@Replace("replaceCanvas")
+	public void rl$replaceCanvas()
 	{
 		Canvas c = getCanvas();
 		if (c == null)
@@ -57,15 +59,6 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 		{
 			shouldGetFocus = c.hasFocus();
 		}
-	}
-
-	@Copy("replaceCanvas")
-	abstract void replaceCanvas();
-
-	@Replace("replaceCanvas")
-	public void rl$replaceCanvas()
-	{
-		setShouldGetFocus();
 		replaceCanvas();
 		shouldGetFocus = true;
 	}
