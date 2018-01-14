@@ -252,15 +252,15 @@ public final class class60 {
          var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
       }
 
-      if(var0.field2838 == 0) {
+      if(var0.dynamicY == 0) {
          var0.relativeY = var0.originalY;
-      } else if(var0.field2838 == 1) {
+      } else if(var0.dynamicY == 1) {
          var0.relativeY = (var2 - var0.height) / 2 + var0.originalY;
-      } else if(var0.field2838 == 2) {
+      } else if(var0.dynamicY == 2) {
          var0.relativeY = var2 - var0.height - var0.originalY;
-      } else if(var0.field2838 == 3) {
+      } else if(var0.dynamicY == 3) {
          var0.relativeY = var2 * var0.originalY >> 14;
-      } else if(var0.field2838 == 4) {
+      } else if(var0.dynamicY == 4) {
          var0.relativeY = (var2 - var0.height) / 2 + (var2 * var0.originalY >> 14);
       } else {
          var0.relativeY = var2 - var0.height - (var2 * var0.originalY >> 14);

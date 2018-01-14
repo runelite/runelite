@@ -72,7 +72,7 @@ public class Friend {
          var4.originalX = class82.intStack[class82.intStackSize];
          var4.originalY = class82.intStack[class82.intStackSize + 1];
          var4.dynamicX = class82.intStack[class82.intStackSize + 2];
-         var4.field2838 = class82.intStack[class82.intStackSize + 3];
+         var4.dynamicY = class82.intStack[class82.intStackSize + 3];
          class33.method344(var4);
          TotalQuantityComparator.clientInstance.widgetMethod0(var4);
          if(var3 != -1 && var4.type == 0) {
