@@ -52,6 +52,8 @@ public class ProjectileID
 	public static final int CORPOREAL_BEAST_AOE = 315;
 	public static final int CORPOREAL_BEAST_DARK_CORE_AOE = 319;
 
+	public static final int WINTERTODT_SNOW_FALL_AOE = 501;
+
 	/**
 	 * missing: marble gargoyle, superior dark beast
 	 */
