@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.aoewarnings;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.api.ProjectileID;
 
 public enum AoeProjectileInfo
@@ -100,6 +102,16 @@ public enum AoeProjectileInfo
 	 */
 	private final int aoeSize;
 
+	private static final Map<Integer, AoeProjectileInfo> map = new HashMap<>();
+
+	static
+	{
+		for (AoeProjectileInfo aoe : values())
+		{
+			map.put(aoe.id, aoe);
+		}
+	}
+
 	AoeProjectileInfo(int id, int lifeTimeMillis, int aoeSize)
 	{
 		this.id = id;
@@ -124,13 +136,6 @@ public enum AoeProjectileInfo
 
 	public static AoeProjectileInfo getById(int id)
 	{
-		for (AoeProjectileInfo aoeProjectileInfo : values())
-		{
-			if (id == aoeProjectileInfo.getId())
-			{
-				return aoeProjectileInfo;
-			}
-		}
-		return null;
+		return map.get(id);
 	}
 }
