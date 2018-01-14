@@ -229,7 +229,6 @@ public class XpGlobesOverlay extends Overlay
 
 		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
-		String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
 
 		PanelComponent xpTooltip = new PanelComponent();
 		xpTooltip.setPosition(new java.awt.Point(x, y));
@@ -237,15 +236,20 @@ public class XpGlobesOverlay extends Overlay
 		List<PanelComponent.Line> lines = xpTooltip.getLines();
 		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
 		lines.add(new PanelComponent.Line("Current xp:", Color.ORANGE, skillCurrentXp, Color.WHITE));
-		lines.add(new PanelComponent.Line("Xp to level: ", Color.ORANGE, skillXpToLvl, Color.WHITE));
+		if (mouseOverSkill.getGoalXp() != -1)
+		{
+			String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
+			lines.add(new PanelComponent.Line("Xp to level: ", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
-		//Create progress bar for skill.
-		ProgressBarComponent progressBar = new ProgressBarComponent();
-		double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
+			//Create progress bar for skill.
+			ProgressBarComponent progressBar = new ProgressBarComponent();
+			double progress = mouseOverSkill.getSkillProgress(Experience.getXpForLevel(mouseOverSkill.getCurrentLevel()),
 				mouseOverSkill.getCurrentXp(), mouseOverSkill.getGoalXp());
-		progressBar.setProgress(progress);
+			progressBar.setProgress(progress);
 
-		xpTooltip.setProgressBar(progressBar);
+			xpTooltip.setProgressBar(progressBar);
+		}
+
 		xpTooltip.render(graphics, parent);
 	}
 }
