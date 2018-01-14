@@ -167,4 +167,6 @@ public interface Client
 	boolean isIgnored(String name);
 
 	boolean isClanMember(String name);
+
+	Point getSceneDestinationLocation();
 }
