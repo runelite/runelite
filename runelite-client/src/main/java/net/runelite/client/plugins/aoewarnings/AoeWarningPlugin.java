@@ -143,6 +143,8 @@ public class AoeWarningPlugin extends Plugin
 			case CORPOREAL_BEAST:
 			case CORPOREAL_BEAST_DARK_CORE:
 				return config.isCorpEnabled();
+			case WINTERTODT_SNOW_FALL:
+				return config.isWintertodtEnabled();
 		}
 
 		return false;
