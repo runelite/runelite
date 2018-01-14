@@ -184,8 +184,8 @@ public class class35 {
    )
    static final void method495() {
       for(Projectile var0 = (Projectile)Client.projectiles.getFront(); var0 != null; var0 = (Projectile)Client.projectiles.getNext()) {
-         if(var0.floor == BoundingBox2D.plane && Client.gameCycle <= var0.cycle) {
-            if(Client.gameCycle >= var0.startTime) {
+         if(var0.floor == BoundingBox2D.plane && Client.gameCycle <= var0.endCycle) {
+            if(Client.gameCycle >= var0.startMovementCycle) {
                if(var0.interacting > 0) {
                   NPC var1 = Client.cachedNPCs[var0.interacting - 1];
                   if(var1 != null && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
@@ -208,7 +208,7 @@ public class class35 {
                }
 
                var0.update(Client.field847);
-               class48.region.method2701(BoundingBox2D.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.rotationX, -1, false);
+               class48.region.method2701(BoundingBox2D.plane, (int)var0.x, (int)var0.y, (int)var0.z, 60, var0, var0.rotationX, -1, false);
             }
          } else {
             var0.unlink();
