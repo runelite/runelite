@@ -893,7 +893,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 919353163
    )
-   static int field947;
+   @Export("myPlayerIndex")
+   static int myPlayerIndex;
    @ObfuscatedName("ie")
    @ObfuscatedSignature(
       signature = "[Lbj;"
@@ -1236,7 +1237,7 @@ public final class Client extends GameEngine {
       field935 = 0;
       field945 = false;
       field1082 = 0;
-      field947 = 0;
+      myPlayerIndex = 0;
       cachedPlayers = new Player[2048];
       localInteractingIndex = -1;
       field918 = 0;
@@ -5238,7 +5239,7 @@ public final class Client extends GameEngine {
                   var94 = true;
                }
 
-               if(!var94 && field947 == 0) {
+               if(!var94 && myPlayerIndex == 0) {
                   field1047[field1048] = var10;
                   field1048 = (field1048 + 1) % 100;
                   String var95 = FontTypeFace.appendTags(SceneTilePaint.method2682(TotalQuantityComparator.method94(var3)));
@@ -5858,7 +5859,7 @@ public final class Client extends GameEngine {
                   var14 = true;
                }
 
-               if(!var14 && field947 == 0) {
+               if(!var14 && myPlayerIndex == 0) {
                   field1047[field1048] = var46;
                   field1048 = (field1048 + 1) % 100;
                   String var15 = FontTypeFace.appendTags(SceneTilePaint.method2682(TotalQuantityComparator.method94(var3)));
