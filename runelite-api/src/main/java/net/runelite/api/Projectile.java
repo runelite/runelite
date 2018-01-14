@@ -24,9 +24,55 @@
  */
 package net.runelite.api;
 
-public interface Projectile
+import java.time.Duration;
+
+public interface Projectile extends Renderable
 {
 	int getId();
 
 	Actor getInteracting();
+
+	Point getTarget();
+
+	int getTargetZ();
+
+	int getX1();
+
+	int getY1();
+
+	int getFloor();
+
+	int getHeight();
+
+	int getEndHeight();
+
+	int getStartMovementCycle();
+
+	int getSpawnCycle();
+
+	int getCycleLength();
+
+	Duration getLength();
+
+	int getEndCycle();
+
+	int getRemainingCycles();
+
+	int getSlope();
+
+	int getStartHeight();
+
+	double getX();
+
+	double getY();
+
+	double getZ();
+
+	double getScalar();
+
+	double getVelocityX();
+
+	double getVelocityY();
+
+	double getVelocityZ();
 }

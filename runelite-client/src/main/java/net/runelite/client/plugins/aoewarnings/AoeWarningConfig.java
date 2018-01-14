@@ -96,6 +96,66 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "vorkath",
+		name = "Vorkath",
+		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed"
+	)
+	default boolean isVorkathEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "galvek",
+		name = "Galvek",
+		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed"
+	)
+	default boolean isGalvekEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "vetion",
+		name = "Vet'ion",
+		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed"
+	)
+	default boolean isVetionEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "chaosfanatic",
+		name = "Chaos Fanatic",
+		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed"
+	)
+	default boolean isChaosFanaticEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "olm",
+		name = "Great Olm",
+		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed"
+	)
+	default boolean isOlmEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "corp",
+		name = "Corporeal Beast",
+		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed"
+	)
+	default boolean isCorpEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "outline",
 		name = "Display Outline",
 		description = "Configures whether or not AoE Projectile Warnings have an outline"

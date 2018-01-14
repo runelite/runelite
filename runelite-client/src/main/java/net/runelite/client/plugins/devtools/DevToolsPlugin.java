@@ -56,6 +56,7 @@ public class DevToolsPlugin extends Plugin
 	private boolean toggleWalls;
 	private boolean toggleDecor;
 	private boolean toggleInventory;
+	private boolean toggleProjectiles;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -135,6 +136,11 @@ public class DevToolsPlugin extends Plugin
 		toggleInventory = !toggleInventory;
 	}
 
+	void toggleProjectiles()
+	{
+		toggleProjectiles = !toggleProjectiles;
+	}
+
 	boolean isTogglePlayers()
 	{
 		return togglePlayers;
@@ -175,4 +181,8 @@ public class DevToolsPlugin extends Plugin
 		return toggleInventory;
 	}
 
+	boolean isToggleProjectiles()
+	{
+		return toggleProjectiles;
+	}
 }
