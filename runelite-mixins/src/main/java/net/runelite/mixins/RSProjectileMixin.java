@@ -24,9 +24,13 @@
  */
 package net.runelite.mixins;
 
+import java.time.Duration;
 import net.runelite.api.Actor;
+import net.runelite.api.Point;
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSNPC;
@@ -38,6 +42,74 @@ public abstract class RSProjectileMixin implements RSProjectile
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private int targetX;
+
+	@Inject
+	private int targetY;
+
+	@Inject
+	private int targetZ;
+
+	@Inject
+	Integer spawnCycle;
+
+	@Inject
+	@Override
+	public Point getTarget()
+	{
+		if (targetX == -1 || targetY == -1)
+		{
+			return null;
+		}
+
+		return new Point(targetX, targetY);
+	}
+
+	@Inject
+	@Override
+	public int getTargetZ()
+	{
+		return targetZ;
+	}
+
+	@Inject
+	@Override
+	public int getSpawnCycle()
+	{
+		return spawnCycle == null ? -1 : spawnCycle;
+	}
+
+	/**
+	 * the cycles returned are for the amount of time moving this works
+	 * better with the projectile movement event as it only gets called
+	 * after the projectile starts moving
+	 *
+	 * @return total time projectile will move for in gamecycles
+	 */
+	@Inject
+	@Override
+	public int getCycleLength()
+	{
+		return getEndCycle() - getSpawnCycle();
+	}
+
+	@Inject
+	@Override
+	public Duration getLength()
+	{
+		return Duration.ofMillis(getCycleLength() * 20);
+	}
+
+	@Inject
+	@Override
+	public int getRemainingCycles()
+	{
+		int currentGameCycle = client.getGameCycle();
+
+		return getEndCycle() - currentGameCycle;
+	}
 
 	@Inject
 	@Override
@@ -67,5 +139,23 @@ public abstract class RSProjectileMixin implements RSProjectile
 			RSPlayer[] players = client.getCachedPlayers();
 			return players[idx];
 		}
+	}
+
+	@Copy("moveProjectile")
+	abstract void moveProjectile(int targetX, int targetY, int targetZ, int gameCycle);
+
+	@Replace("moveProjectile")
+	public void rl$moveProjectile(int targetX, int targetY, int targetZ, int gameCycle)
+	{
+		this.targetX = targetX;
+		this.targetY = targetY;
+		this.targetZ = targetZ;
+
+		if (spawnCycle == null)
+		{
+			spawnCycle = client.getGameCycle();
+		}
+
+		moveProjectile(targetX, targetY, targetZ, gameCycle);
 	}
 }

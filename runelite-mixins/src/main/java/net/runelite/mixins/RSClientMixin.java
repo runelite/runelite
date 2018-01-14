@@ -32,17 +32,13 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
+import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.events.ClanMembersChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -50,8 +46,15 @@ import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.mixins.FieldHook;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSWidget;
 
@@ -329,6 +332,33 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		setMenuOptionCount(count);
+	}
+
+	@Inject
+	@Override
+	public List<Projectile> getProjectiles()
+	{
+		List<Projectile> projectiles = new ArrayList<Projectile>();
+		RSDeque projectileDeque = this.getProjectilesDeque();
+		Node head = projectileDeque.getHead();
+		Node current = head;
+
+		while (current != null)
+		{
+			if (current instanceof Projectile)
+			{
+				projectiles.add((Projectile) current);
+			}
+
+			current = current.getNext();
+
+			if (current == head)
+			{
+				break;
+			}
+		}
+
+		return projectiles;
 	}
 
 	@Inject
