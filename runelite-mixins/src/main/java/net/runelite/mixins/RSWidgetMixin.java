@@ -31,13 +31,16 @@ import java.util.List;
 import net.runelite.api.Node;
 import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.mixins.FieldHook;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
+import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSWidget;
@@ -313,5 +316,25 @@ public abstract class RSWidgetMixin implements RSWidget
 	{
 		Rectangle bounds = getBounds();
 		return bounds != null && bounds.contains(new java.awt.Point(point.getX(), point.getY()));
+	}
+
+	@FieldHook("isHidden")
+	@Inject
+	public void onHiddenChanged(int idx)
+	{
+		int id = getId();
+
+		if (id == -1)
+		{
+			return;
+		}
+
+		boolean hidden = isHidden();
+
+		WidgetHiddenChanged event = new WidgetHiddenChanged();
+		event.setWidget(this);
+		event.setHidden(hidden);
+
+		eventBus.post(event);
 	}
 }
