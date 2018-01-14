@@ -27,7 +27,7 @@ package net.runelite.rs.api;
 import net.runelite.api.Projectile;
 import net.runelite.mapping.Import;
 
-public interface RSProjectile extends Projectile
+public interface RSProjectile extends RSRenderable, Projectile
 {
 	@Import("id")
 	@Override
@@ -35,4 +35,68 @@ public interface RSProjectile extends Projectile
 
 	@Import("interacting")
 	int getRsInteracting();
+
+	@Import("height")
+	@Override
+	int getHeight();
+
+	@Import("endHeight")
+	@Override
+	int getEndHeight();
+
+	@Import("x1")
+	@Override
+	int getX1();
+
+	@Import("y1")
+	@Override
+	int getY1();
+
+	@Import("floor")
+	@Override
+	int getFloor();
+
+	@Import("startMovementCycle")
+	@Override
+	int getStartMovementCycle();
+
+	@Import("endCycle")
+	@Override
+	int getEndCycle();
+
+	@Import("slope")
+	@Override
+	int getSlope();
+
+	@Import("startHeight")
+	@Override
+	int getStartHeight();
+
+	@Import("x")
+	@Override
+	double getX();
+
+	@Import("y")
+	@Override
+	double getY();
+
+	@Import("z")
+	@Override
+	double getZ();
+
+	@Import("scalar")
+	@Override
+	double getScalar();
+
+	@Import("velocityX")
+	@Override
+	double getVelocityX();
+
+	@Import("velocityY")
+	@Override
+	double getVelocityY();
+
+	@Import("velocityZ")
+	@Override
+	double getVelocityZ();
 }

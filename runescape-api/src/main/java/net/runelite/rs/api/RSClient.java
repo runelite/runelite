@@ -146,6 +146,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("groundItemDeque")
 	RSDeque[][][] getGroundItemDeque();
 
+	@Import("projectiles")
+	RSDeque getProjectilesDeque();
+
 	@Import("username")
 	@Override
 	String getUsername();
@@ -266,6 +269,7 @@ public interface RSClient extends RSGameEngine, Client
 	boolean isMenuOpen();
 
 	@Import("gameCycle")
+	@Override
 	int getGameCycle();
 
 	@Import("packetHandler")
