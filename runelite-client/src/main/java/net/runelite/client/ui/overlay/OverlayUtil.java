@@ -38,6 +38,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.TileObject;
@@ -312,6 +314,28 @@ public class OverlayUtil
 		}
 
 		Point textLocation = tileObject.getCanvasTextLocation(graphics, text, 0);
+		if (textLocation != null)
+		{
+			renderTextLocation(graphics, textLocation, text, color);
+		}
+	}
+
+	public static void renderTilePointOverlay(Graphics2D graphics, Client client, Point point, String text, Color color)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, point);
+
+		if (poly != null)
+		{
+			renderPolygon(graphics, poly, color);
+		}
+
+		Point minimapLocation = Perspective.worldToMiniMap(client, point.getX(), point.getY());
+		if (minimapLocation != null)
+		{
+			renderMinimapLocation(graphics, minimapLocation, color);
+		}
+
+		Point textLocation = Perspective.getCanvasTextLocation(client, graphics, point, text, 0);
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
