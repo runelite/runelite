@@ -76,7 +76,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 					renderPlayerOverlay(graphics, player, CYAN);
 				}
 			}
-			else if (config.drawFriendNames() && client.isFriend(name, false))
+			else if (config.drawFriendNames() && client.isFriended(name, false))
 			{
 				renderPlayerOverlay(graphics, player, GREEN);
 			}
