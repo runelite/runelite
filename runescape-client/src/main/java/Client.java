@@ -5597,10 +5597,10 @@ public final class Client extends GameEngine {
                var24 = var3.method3300();
                var6 = var3.method3269();
                var45 = VertexNormal.getWidget(var23);
-               if(var24 != var45.originalX || var6 != var45.originalY || var45.field2764 != 0 || var45.field2838 != 0) {
+               if(var24 != var45.originalX || var6 != var45.originalY || var45.dynamicX != 0 || var45.field2838 != 0) {
                   var45.originalX = var24;
                   var45.originalY = var6;
-                  var45.field2764 = 0;
+                  var45.dynamicX = 0;
                   var45.field2838 = 0;
                   class33.method344(var45);
                   this.widgetMethod0(var45);

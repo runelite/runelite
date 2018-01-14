@@ -238,15 +238,15 @@ public final class class60 {
       garbageValue = "-495848669"
    )
    static void method985(Widget var0, int var1, int var2) {
-      if(var0.field2764 == 0) {
+      if(var0.dynamicX == 0) {
          var0.relativeX = var0.originalX;
-      } else if(var0.field2764 == 1) {
+      } else if(var0.dynamicX == 1) {
          var0.relativeX = var0.originalX + (var1 - var0.width) / 2;
-      } else if(var0.field2764 == 2) {
+      } else if(var0.dynamicX == 2) {
          var0.relativeX = var1 - var0.width - var0.originalX;
-      } else if(var0.field2764 == 3) {
+      } else if(var0.dynamicX == 3) {
          var0.relativeX = var0.originalX * var1 >> 14;
-      } else if(var0.field2764 == 4) {
+      } else if(var0.dynamicX == 4) {
          var0.relativeX = (var0.originalX * var1 >> 14) + (var1 - var0.width) / 2;
       } else {
          var0.relativeX = var1 - var0.width - (var0.originalX * var1 >> 14);
