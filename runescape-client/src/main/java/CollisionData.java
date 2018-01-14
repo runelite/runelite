@@ -507,7 +507,7 @@ public class CollisionData {
       if(BoundingBox2D.plane != Client.field1055) {
          Client.field1055 = BoundingBox2D.plane;
          int var0 = BoundingBox2D.plane;
-         int[] var1 = BoundingBox3D.field250.pixels;
+         int[] var1 = BoundingBox3D.minimapSprite.pixels;
          int var2 = var1.length;
 
          int var3;
@@ -535,7 +535,7 @@ public class CollisionData {
 
          var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
          var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-         BoundingBox3D.field250.method5196();
+         BoundingBox3D.minimapSprite.method5196();
 
          int var6;
          for(var5 = 1; var5 < 103; ++var5) {

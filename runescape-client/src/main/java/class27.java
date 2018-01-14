@@ -149,7 +149,7 @@ public enum class27 implements Enumerated {
             Client.collisionMaps[var0] = new CollisionData(104, 104);
          }
 
-         BoundingBox3D.field250 = new SpritePixels(512, 512);
+         BoundingBox3D.minimapSprite = new SpritePixels(512, 512);
          class91.loadingText = "Starting game engine...";
          class91.loadingBarPercentage = 5;
          Client.loadingStage = 20;

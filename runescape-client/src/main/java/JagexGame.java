@@ -312,7 +312,7 @@ public enum JagexGame implements Enumerated {
             var9 = var4;
          }
 
-         int[] var10 = BoundingBox3D.field250.pixels;
+         int[] var10 = BoundingBox3D.minimapSprite.pixels;
          var11 = var1 * 4 + (103 - var2) * 2048 + 24624;
          var12 = var5 >> 14 & 32767;
          ObjectComposition var13 = CacheFile.getObjectDefinition(var12);
@@ -407,7 +407,7 @@ public enum JagexGame implements Enumerated {
                var11 = 15597568;
             }
 
-            int[] var22 = BoundingBox3D.field250.pixels;
+            int[] var22 = BoundingBox3D.minimapSprite.pixels;
             var18 = var1 * 4 + (103 - var2) * 2048 + 24624;
             if(var7 != 0 && var7 != 2) {
                var22[var18] = var11;
