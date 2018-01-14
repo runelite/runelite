@@ -80,18 +80,6 @@ public class ConfigPanel extends PluginPanel
 		super();
 		this.configManager = configManager;
 
-		configManager.getConfigProxies().stream()
-			.map(configManager::getConfigDescriptor)
-			.forEach(cd ->
-			{
-				JPanel groupPanel = new JPanel();
-				groupPanel.setLayout(new BorderLayout());
-				JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
-				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
-				groupPanel.add(viewGroupItemsButton);
-				children.put(cd.getGroup().name(), groupPanel);
-			});
-
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
@@ -113,6 +101,31 @@ public class ConfigPanel extends PluginPanel
 			}
 		});
 
+		rebuildPluginList();
+		openConfigList();
+	}
+
+	void rebuildPluginList()
+	{
+		Map<String, JPanel> oldChildren = children;
+		children = new TreeMap<String, JPanel>();
+		configManager.getConfigProxies().stream()
+			.map(configManager::getConfigDescriptor)
+			.forEach(cd ->
+			{
+				String groupName = cd.getGroup().name();
+				if (oldChildren.containsKey(groupName))
+				{
+					children.put(groupName, oldChildren.get(groupName));
+					return;
+				}
+				JPanel groupPanel = new JPanel();
+				groupPanel.setLayout(new BorderLayout());
+				JButton viewGroupItemsButton = new JButton(groupName);
+				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
+				groupPanel.add(viewGroupItemsButton);
+				children.put(groupName, groupPanel);
+			});
 		openConfigList();
 	}
 

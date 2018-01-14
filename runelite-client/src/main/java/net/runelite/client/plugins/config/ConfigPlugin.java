@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.eventbus.Subscribe;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -44,12 +47,13 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	ConfigManager configManager;
 
+	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		ConfigPanel configPanel = new ConfigPanel(configManager);
+		configPanel = new ConfigPanel(configManager);
 
 		navButton = new NavigationButton(
 			"Configuration",
@@ -57,5 +61,14 @@ public class ConfigPlugin extends Plugin
 			() -> configPanel);
 
 		ui.getPluginToolbar().addNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
+	{
+		if (configManager != null)
+		{
+			SwingUtilities.invokeLater(configPanel::rebuildPluginList);
+		}
 	}
 }
