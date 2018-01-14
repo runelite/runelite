@@ -1508,18 +1508,18 @@ public final class Client extends GameEngine {
                      var46 = KeyFocusListener.field607[KeyFocusListener.field596];
                      KeyFocusListener.field596 = KeyFocusListener.field596 + 1 & 127;
                      if(var46 < 0) {
-                        KeyFocusListener.field593[~var46] = false;
+                        KeyFocusListener.keyPressed[~var46] = false;
                      } else {
-                        if(!KeyFocusListener.field593[var46] && KeyFocusListener.field601 < KeyFocusListener.field600.length - 1) {
+                        if(!KeyFocusListener.keyPressed[var46] && KeyFocusListener.field601 < KeyFocusListener.field600.length - 1) {
                            KeyFocusListener.field600[++KeyFocusListener.field601 - 1] = var46;
                         }
 
-                        KeyFocusListener.field593[var46] = true;
+                        KeyFocusListener.keyPressed[var46] = true;
                      }
                   }
                } else {
                   for(var46 = 0; var46 < 112; ++var46) {
-                     KeyFocusListener.field593[var46] = false;
+                     KeyFocusListener.keyPressed[var46] = false;
                   }
 
                   KeyFocusListener.field597 = KeyFocusListener.field596;
@@ -3662,7 +3662,7 @@ public final class Client extends GameEngine {
                      --field1021;
                   }
 
-                  if(KeyFocusListener.field593[96] || KeyFocusListener.field593[97] || KeyFocusListener.field593[98] || KeyFocusListener.field593[99]) {
+                  if(KeyFocusListener.keyPressed[96] || KeyFocusListener.keyPressed[97] || KeyFocusListener.keyPressed[98] || KeyFocusListener.keyPressed[99]) {
                      field919 = true;
                   }
 
@@ -3871,7 +3871,7 @@ public final class Client extends GameEngine {
                   field1049 = 0;
 
                   while(class230.method4200() && field1049 < 128) {
-                     if(rights >= 2 && KeyFocusListener.field593[82] && FileRequest.field3304 == 66) {
+                     if(rights >= 2 && KeyFocusListener.keyPressed[82] && FileRequest.field3304 == 66) {
                         String var43 = class5.method15();
                         TotalQuantityComparator.clientInstance.method884(var43);
                      } else {
@@ -3881,7 +3881,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if(FriendLoginUpdate.method1041() && KeyFocusListener.field593[82] && KeyFocusListener.field593[81] && mouseWheelRotation != 0) {
+                  if(FriendLoginUpdate.method1041() && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81] && mouseWheelRotation != 0) {
                      var3 = UrlRequest.localPlayer.field821 - mouseWheelRotation;
                      if(var3 < 0) {
                         var3 = 0;
@@ -3995,7 +3995,7 @@ public final class Client extends GameEngine {
                                                 var4 = Region.selectedRegionTileY;
                                                 PacketNode var42 = FileSystem.method4252(ClientPacket.field2352, field888.field1449);
                                                 var42.packetBuffer.putByte(5);
-                                                var42.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
+                                                var42.packetBuffer.method3287(KeyFocusListener.keyPressed[82]?(KeyFocusListener.keyPressed[81]?2:1):0);
                                                 var42.packetBuffer.writeIntLE16(var3 + class46.baseX);
                                                 var42.packetBuffer.putShortLE(var4 + baseY);
                                                 field888.method1862(var42);

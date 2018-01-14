@@ -347,7 +347,7 @@ public class RenderOverview {
             int var4 = (int)((float)this.field3921 + ((float)(var1 - this.field3925) - (float)this.method5373() * this.field3912 / 2.0F) / this.field3912);
             int var5 = (int)((float)this.field3886 - ((float)(var2 - this.field3907) - (float)this.method5374() * this.field3912 / 2.0F) / this.field3912);
             this.field3906 = this.field3884.method289(var4 + this.field3884.method340() * 64, var5 + this.field3884.method286() * 64);
-            if(this.field3906 != null && var3 && KeyFocusListener.field593[82] && KeyFocusListener.field593[81] && var3) {
+            if(this.field3906 != null && var3 && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81] && var3) {
                FontName.method4873(this.field3906.worldX, this.field3906.worldY, this.field3906.plane);
             }
          } else {

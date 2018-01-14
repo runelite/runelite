@@ -176,7 +176,7 @@ public enum AttackOption implements Enumerated {
                int var12 = UrlRequest.localPlayer.y - var10 >> 7;
                PacketNode var13 = FileSystem.method4252(ClientPacket.field2365, Client.field888.field1449);
                var13.packetBuffer.putByte(18);
-               var13.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
+               var13.packetBuffer.method3287(KeyFocusListener.keyPressed[82]?(KeyFocusListener.keyPressed[81]?2:1):0);
                var13.packetBuffer.writeIntLE16(var11 + class46.baseX);
                var13.packetBuffer.putShortLE(var12 + Client.baseY);
                var13.packetBuffer.putByte(var4);

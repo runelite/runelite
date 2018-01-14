@@ -100,17 +100,17 @@ public class ItemContainer extends Node {
          Client.field987 = var3 * 2;
          Client.field915 = var3 != -1 && var3 != 1?(Client.field915 + MouseInput.field679) / 2:MouseInput.field679;
       } else {
-         if(KeyFocusListener.field593[96]) {
+         if(KeyFocusListener.keyPressed[96]) {
             Client.field987 += (-24 - Client.field987) / 2;
-         } else if(KeyFocusListener.field593[97]) {
+         } else if(KeyFocusListener.keyPressed[97]) {
             Client.field987 += (24 - Client.field987) / 2;
          } else {
             Client.field987 /= 2;
          }
 
-         if(KeyFocusListener.field593[98]) {
+         if(KeyFocusListener.keyPressed[98]) {
             Client.field901 += (12 - Client.field901) / 2;
-         } else if(KeyFocusListener.field593[99]) {
+         } else if(KeyFocusListener.keyPressed[99]) {
             Client.field901 += (-12 - Client.field901) / 2;
          } else {
             Client.field901 /= 2;
