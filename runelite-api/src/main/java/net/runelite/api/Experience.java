@@ -32,7 +32,7 @@ public class Experience
 	/**
 	 * Maximum level under 200m xp
 	 */
-	private static final int MAX_VIRT_LEVEL = 126;
+	public static final int MAX_VIRT_LEVEL = 126;
 
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
 

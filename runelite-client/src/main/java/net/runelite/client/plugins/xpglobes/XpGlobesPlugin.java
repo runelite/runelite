@@ -100,12 +100,8 @@ public class XpGlobesPlugin extends Plugin
 			return;
 		}
 
-		int startingXp = 0;
-		if (currentLevel > 1)
-		{
-			startingXp = Experience.getXpForLevel(currentLevel);
-		}
-		int goalXp = Experience.getXpForLevel(currentLevel + 1);
+		int startingXp = Experience.getXpForLevel(currentLevel);
+		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
 
 		if (cachedGlobe != null)
 		{
