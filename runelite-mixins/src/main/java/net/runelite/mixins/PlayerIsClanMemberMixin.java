@@ -74,7 +74,14 @@ public abstract class PlayerIsClanMemberMixin implements RSClient
 		{
 			isClanMember = false;
 
-			for (RSClanMember clanMember : getClanMembers())
+			final RSClanMember[] clanMembers = getClanMembers();
+
+			if (clanMembers == null)
+			{
+				return false;
+			}
+
+			for (RSClanMember clanMember : clanMembers)
 			{
 				if (clanMember == null)
 				{
