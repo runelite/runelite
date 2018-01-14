@@ -38,6 +38,8 @@ public interface SpritePixels
 
 	int[] getPixels();
 
+	void drawOutline(int rgb);
+
 	/**
 	 * Covert the SpritePixels to a BufferedImage
 	 *

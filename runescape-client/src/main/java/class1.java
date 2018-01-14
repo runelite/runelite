@@ -167,11 +167,11 @@ public class class1 {
          }
 
          if(var2 >= 1) {
-            var8.method5201(1);
+            var8.drawOutline(1);
          }
 
          if(var2 >= 2) {
-            var8.method5201(16777215);
+            var8.drawOutline(16777215);
          }
 
          if(var3 != 0) {
