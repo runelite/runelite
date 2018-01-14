@@ -154,6 +154,8 @@ public interface Client
 
 	IndexedSprite[] getMapScene();
 
+	int getGameCycle();
+
 	SpritePixels[] getMapIcons();
 
 	IndexedSprite[] getModIcons();
@@ -169,4 +171,7 @@ public interface Client
 	boolean isClanMember(String name);
 
 	Point getSceneDestinationLocation();
+
+	List<Projectile> getProjectiles();
+
 }
