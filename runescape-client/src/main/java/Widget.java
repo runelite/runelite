@@ -85,7 +85,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1793980677
    )
-   public int field2766;
+   @Export("dynamicWidth")
+   public int dynamicWidth;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1691006837
@@ -622,7 +623,7 @@ public class Widget extends Node {
       this.contentType = 0;
       this.dynamicX = 0;
       this.dynamicY = 0;
-      this.field2766 = 0;
+      this.dynamicWidth = 0;
       this.buttonType = 0;
       this.originalX = 0;
       this.originalY = 0;
@@ -985,7 +986,7 @@ public class Widget extends Node {
          this.field2817 = var1.readUnsignedShort();
       }
 
-      this.field2766 = var1.readByte();
+      this.dynamicWidth = var1.readByte();
       this.buttonType = var1.readByte();
       this.dynamicX = var1.readByte();
       this.dynamicY = var1.readByte();
@@ -1034,7 +1035,7 @@ public class Widget extends Node {
 
          this.field2795 = var1.readUnsignedByte() == 1;
          var1.readUnsignedShort();
-         if(this.field2766 != 0) {
+         if(this.dynamicWidth != 0) {
             this.field2836 = var1.readUnsignedShort();
          }
 

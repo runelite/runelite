@@ -79,11 +79,11 @@ public class class89 {
    static void method1666(Widget var0, int var1, int var2, boolean var3) {
       int var4 = var0.width;
       int var5 = var0.height;
-      if(var0.field2766 == 0) {
+      if(var0.dynamicWidth == 0) {
          var0.width = var0.originalWidth;
-      } else if(var0.field2766 == 1) {
+      } else if(var0.dynamicWidth == 1) {
          var0.width = var1 - var0.originalWidth;
-      } else if(var0.field2766 == 2) {
+      } else if(var0.dynamicWidth == 2) {
          var0.width = var0.originalWidth * var1 >> 14;
       }
 
@@ -95,7 +95,7 @@ public class class89 {
          var0.height = var2 * var0.field2817 >> 14;
       }
 
-      if(var0.field2766 == 4) {
+      if(var0.dynamicWidth == 4) {
          var0.width = var0.height * var0.field2776 / var0.field2777;
       }
 
