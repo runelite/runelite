@@ -84,11 +84,4 @@ public abstract class PlayerIsIgnoredMixin implements RSClient
 
 		return isIgnored;
 	}
-
-	@Inject
-	@Override
-	public boolean isIgnored(String name)
-	{
-		return rl$isIgnored(name);
-	}
 }

@@ -162,7 +162,7 @@ public interface Client
 
 	IndexedSprite createIndexedSprite();
 
-	boolean isFriend(String name, boolean mustBeLoggedIn);
+	boolean isFriended(String name, boolean mustBeLoggedIn);
 
 	boolean isIgnored(String name);
 

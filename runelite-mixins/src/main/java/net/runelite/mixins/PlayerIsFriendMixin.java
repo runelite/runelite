@@ -95,11 +95,4 @@ public abstract class PlayerIsFriendMixin implements RSClient
 
 		return isFriended;
 	}
-
-	@Inject
-	@Override
-	public boolean isFriend(String name, boolean mustBeLoggedIn)
-	{
-		return rl$isFriended(name, mustBeLoggedIn);
-	}
 }

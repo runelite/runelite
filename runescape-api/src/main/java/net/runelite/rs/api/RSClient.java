@@ -338,4 +338,12 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("destinationY")
 	int getDestinationY();
+
+	@Import("isFriended")
+	@Override
+	boolean isFriended(String name, boolean mustBeLoggedIn);
+
+	@Import("isIgnored")
+	@Override
+	boolean isIgnored(String name);
 }
