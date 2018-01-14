@@ -83,7 +83,7 @@ public class Friend {
       } else if(var0 == 1001) {
          class82.intStackSize -= 4;
          var4.originalWidth = class82.intStack[class82.intStackSize];
-         var4.field2817 = class82.intStack[class82.intStackSize + 1];
+         var4.originalHeight = class82.intStack[class82.intStackSize + 1];
          var4.dynamicWidth = class82.intStack[class82.intStackSize + 2];
          var4.buttonType = class82.intStack[class82.intStackSize + 3];
          class33.method344(var4);

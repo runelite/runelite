@@ -88,11 +88,11 @@ public class class89 {
       }
 
       if(var0.buttonType == 0) {
-         var0.height = var0.field2817;
+         var0.height = var0.originalHeight;
       } else if(var0.buttonType == 1) {
-         var0.height = var2 - var0.field2817;
+         var0.height = var2 - var0.originalHeight;
       } else if(var0.buttonType == 2) {
-         var0.height = var2 * var0.field2817 >> 14;
+         var0.height = var2 * var0.originalHeight >> 14;
       }
 
       if(var0.dynamicWidth == 4) {

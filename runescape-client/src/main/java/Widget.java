@@ -115,7 +115,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 2096910633
    )
-   public int field2817;
+   @Export("originalHeight")
+   public int originalHeight;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = -2118483697
@@ -628,7 +629,7 @@ public class Widget extends Node {
       this.originalX = 0;
       this.originalY = 0;
       this.originalWidth = 0;
-      this.field2817 = 0;
+      this.originalHeight = 0;
       this.relativeX = 0;
       this.relativeY = 0;
       this.width = 0;
@@ -723,7 +724,7 @@ public class Widget extends Node {
       this.originalX = var1.readShort();
       this.originalY = var1.readShort();
       this.originalWidth = var1.readUnsignedShort();
-      this.field2817 = var1.readUnsignedShort();
+      this.originalHeight = var1.readUnsignedShort();
       this.opacity = var1.readUnsignedByte();
       this.parentId = var1.readUnsignedShort();
       if(this.parentId == 65535) {
@@ -780,8 +781,8 @@ public class Widget extends Node {
       }
 
       if(this.type == 2) {
-         this.itemIds = new int[this.originalWidth * this.field2817];
-         this.itemQuantities = new int[this.originalWidth * this.field2817];
+         this.itemIds = new int[this.originalWidth * this.originalHeight];
+         this.itemQuantities = new int[this.originalWidth * this.originalHeight];
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.config |= 268435456;
@@ -896,8 +897,8 @@ public class Widget extends Node {
       }
 
       if(this.type == 7) {
-         this.itemIds = new int[this.originalWidth * this.field2817];
-         this.itemQuantities = new int[this.field2817 * this.originalWidth];
+         this.itemIds = new int[this.originalWidth * this.originalHeight];
+         this.itemQuantities = new int[this.originalHeight * this.originalWidth];
          this.field2814 = var1.readUnsignedByte();
          this.fontId = var1.readUnsignedShort();
          if(this.fontId == 65535) {
@@ -981,9 +982,9 @@ public class Widget extends Node {
       this.originalY = var1.readShort();
       this.originalWidth = var1.readUnsignedShort();
       if(this.type == 9) {
-         this.field2817 = var1.readShort();
+         this.originalHeight = var1.readShort();
       } else {
-         this.field2817 = var1.readUnsignedShort();
+         this.originalHeight = var1.readUnsignedShort();
       }
 
       this.dynamicWidth = var1.readByte();
