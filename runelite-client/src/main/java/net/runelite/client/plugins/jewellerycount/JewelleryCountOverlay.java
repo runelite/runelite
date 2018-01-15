@@ -54,7 +54,6 @@ class JewelleryCountOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		this.queryRunner = queryRunner;
 		this.config = config;
-		this.setDrawOverBankScreen(true);
 	}
 
 	@Override

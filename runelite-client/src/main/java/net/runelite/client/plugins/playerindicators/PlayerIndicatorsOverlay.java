@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -50,6 +51,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 		this.config = config;
 		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
 	@Override
