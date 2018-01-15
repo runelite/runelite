@@ -67,6 +67,12 @@ public class XpTrackerPlugin extends Plugin
 		ui.getPluginToolbar().addNavigation(navButton);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		ui.getPluginToolbar().removeNavigation(navButton);
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
