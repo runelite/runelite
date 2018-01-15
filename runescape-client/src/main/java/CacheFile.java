@@ -401,9 +401,9 @@ public class CacheFile {
          }
 
          var1.post();
-         if(var1.isSolid) {
-            var1.interactType = 0;
-            var1.boolean1 = false;
+         if(var1.isHollow) {
+            var1.clipType = 0;
+            var1.blocksProjectile = false;
          }
 
          ObjectComposition.objects.put(var1, (long)var0);

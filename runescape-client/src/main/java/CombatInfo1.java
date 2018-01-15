@@ -31,7 +31,7 @@ public class CombatInfo1 extends Node {
    @ObfuscatedGetter(
       intValue = 104636013
    )
-   @Export("int2")
+   @Export("decorDisplacement")
    int int2;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
