@@ -91,6 +91,25 @@ public class AttackIndicatorPlugin extends Plugin
 		return overlay;
 	}
 
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
+			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
+			updateWarnedSkills(config.warnForDefensive(), Skill.DEFENCE);
+			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
+			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+			updateAttackStyle(
+				client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE),
+				client.getSetting(Varbits.ATTACK_STYLE),
+				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
+			updateWarning(false);
+		}
+	}
+
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
