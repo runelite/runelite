@@ -24,6 +24,11 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -42,13 +47,10 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.*;
 
 @PluginDescriptor(
 	name = "Attack indicator plugin"
@@ -201,8 +203,6 @@ public class AttackIndicatorPlugin extends Plugin
 			boolean enabled = event.getNewValue().equals("true");
 			switch (event.getKey())
 			{
-				case "enabled":
-					break;
 				case "warnForDefensive":
 					updateWarnedSkills(enabled, Skill.DEFENCE);
 					break;
@@ -221,8 +221,6 @@ public class AttackIndicatorPlugin extends Plugin
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
 					break;
-				default:
-					log.warn("Unreachable default case for config keys");
 			}
 		}
 	}

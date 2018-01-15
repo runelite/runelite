@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface SlayerConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether slayer plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "infobox",
 		name = "Task InfoBox",
 		description = "Display task information in an InfoBox"

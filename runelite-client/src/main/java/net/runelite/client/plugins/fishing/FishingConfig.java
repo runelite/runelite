@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the fishing plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showIcons",
 		name = "Display Fish icons",
 		description = "Configures whether icons or text is displayed"

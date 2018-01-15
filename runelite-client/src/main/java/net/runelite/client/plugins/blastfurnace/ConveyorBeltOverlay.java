@@ -55,7 +55,7 @@ class ConveyorBeltOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled() || !config.showConveyorBelt() || plugin.getConveyorBelt() == null)
+		if (!config.showConveyorBelt() || plugin.getConveyorBelt() == null)
 		{
 			return null;
 		}

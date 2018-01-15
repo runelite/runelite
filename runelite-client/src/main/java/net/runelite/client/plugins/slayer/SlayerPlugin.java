@@ -127,11 +127,6 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		switch (event.getGameState())
 		{
 			case HOPPING:
@@ -163,11 +158,6 @@ public class SlayerPlugin extends Plugin
 	)
 	public void scheduledChecks()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		Widget NPCDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (NPCDialog != null)
 		{
@@ -204,7 +194,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.enabled() || event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.SERVER)
 		{
 			return;
 		}
@@ -259,7 +249,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (!config.enabled() || event.getSkill() != SLAYER)
+		if (event.getSkill() != SLAYER)
 		{
 			return;
 		}
@@ -290,7 +280,7 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		boolean enabled = config.enabled() && config.showInfobox();
+		boolean enabled = config.showInfobox();
 		if (enabled && counter == null)
 		{
 			addCounter();

@@ -37,16 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface ExperienceDropConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not plugin is enabled."
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "meleePrayerColor",
 		name = "Melee Prayer Color",
 		description = "Xp Drop color when a melee prayer is active"

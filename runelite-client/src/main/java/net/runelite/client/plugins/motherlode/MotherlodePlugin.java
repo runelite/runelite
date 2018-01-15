@@ -64,7 +64,8 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Motherlode plugin"
+	name = "Motherlode plugin",
+	enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
 {

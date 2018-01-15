@@ -39,16 +39,6 @@ import java.awt.Color;
 public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not item names/quantities are displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showGEPrice",
 		name = "Show Grand Exchange Prices",
 		description = "Configures whether or not to draw GE prices alongside ground items"

@@ -61,29 +61,22 @@ public class SpecOrbOverlay extends Overlay
 	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
 
 	private final Client client;
-	private final SpecOrbConfig config;
 	private final SpecOrbPlugin plugin;
 	private int lastSpecialPercent = 0;
 	private int tickCounter = 0;
 
 	@Inject
-	public SpecOrbOverlay(@Nullable Client client, SpecOrbConfig config, SpecOrbPlugin plugin)
+	public SpecOrbOverlay(@Nullable Client client, SpecOrbPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-		this.config = config;
 		this.plugin = plugin;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
 		if (prayerOrb == null)
 		{

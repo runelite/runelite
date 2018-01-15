@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface PohConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the POH plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showVarrock",
 		name = "Show Varrock portal",
 		description = "Configures whether or not the Varrock portal is displayed"

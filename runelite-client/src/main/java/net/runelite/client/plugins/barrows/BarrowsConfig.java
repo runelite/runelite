@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the Barrows plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showMinimap",
 		name = "Show Minimap in tunnels",
 		description = "Configures whether or not the minimap is displayed"

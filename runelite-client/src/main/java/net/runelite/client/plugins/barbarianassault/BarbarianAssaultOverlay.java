@@ -62,7 +62,7 @@ public class BarbarianAssaultOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN || currentRound == null)
+		if (client.getGameState() != GameState.LOGGED_IN || currentRound == null)
 		{
 			return null;
 		}

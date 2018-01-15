@@ -43,26 +43,19 @@ public class RoguesDenOverlay extends Overlay
 
 	private final Client client;
 	private final RoguesDenPlugin plugin;
-	private final RoguesDenConfig config;
 
 	@Inject
-	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin, RoguesDenConfig config)
+	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (!plugin.isHasGem())
 		{
 			return null;

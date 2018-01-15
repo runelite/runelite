@@ -67,7 +67,7 @@ public class ExperienceDropPlugin extends Plugin
 		}
 
 		PrayerType prayer = getActivePrayerType();
-		if (!config.enabled() || widget.isHidden())
+		if (widget.isHidden())
 		{
 			return;
 		}

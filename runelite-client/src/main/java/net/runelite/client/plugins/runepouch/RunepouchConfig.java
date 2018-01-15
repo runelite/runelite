@@ -37,16 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RunepouchConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not Runepouch information is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "fontcolor",
 		name = "Font Color",
 		description = "Color of the font for the number of runes in pouch"

@@ -62,11 +62,6 @@ class BarrowsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Player local = client.getLocalPlayer();
 
 		// tunnels are only on z=0
