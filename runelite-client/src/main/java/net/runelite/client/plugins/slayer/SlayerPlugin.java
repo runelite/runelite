@@ -38,6 +38,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -92,6 +93,23 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 	private int points;
 	private int cachedXp;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		if (client.getGameState() == GameState.LOGGED_IN
+			&& config.amount() != -1
+			&& !config.taskName().isEmpty())
+		{
+			setTask(config.taskName(), config.amount());
+		}
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
+	}
 
 	@Override
 	public void configure(Binder binder)
