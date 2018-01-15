@@ -116,7 +116,7 @@ final class UnitPriceComparator implements Comparator {
             int var5 = Client.mapAngle & 2047;
             int var6 = UrlRequest.localPlayer.x / 32 + 48;
             int var7 = 464 - UrlRequest.localPlayer.y / 32;
-            BoundingBox3D.field250.method5216(var1, var2, var4.field2715, var4.field2716, var6, var7, var5, 256, var4.field2717, var4.field2714);
+            BoundingBox3D.minimapSprite.method5216(var1, var2, var4.field2715, var4.field2716, var6, var7, var5, 256, var4.field2717, var4.field2714);
 
             int var8;
             int var9;

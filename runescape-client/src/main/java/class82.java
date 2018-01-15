@@ -861,7 +861,7 @@ public class class82 {
                         if(var10.type == 2) {
                            var19 = 0;
 
-                           for(var20 = 0; var20 < var10.field2817; ++var20) {
+                           for(var20 = 0; var20 < var10.originalHeight; ++var20) {
                               for(var21 = 0; var21 < var10.originalWidth; ++var21) {
                                  var22 = var12 + var21 * (var10.paddingX + 32);
                                  var23 = var20 * (var10.paddingY + 32) + var13;
@@ -1171,7 +1171,7 @@ public class class82 {
 
                                     var20 = 0;
 
-                                    for(var21 = 0; var21 < var10.field2817; ++var21) {
+                                    for(var21 = 0; var21 < var10.originalHeight; ++var21) {
                                        for(var22 = 0; var22 < var10.originalWidth; ++var22) {
                                           if(var10.itemIds[var20] > 0) {
                                              var53 = KitDefinition.getItemDefinition(var10.itemIds[var20] - 1);
