@@ -68,11 +68,6 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		updateGameStatus(event.getGameState(), false);
 	}
 
@@ -83,11 +78,6 @@ public class DiscordPlugin extends Plugin
 		final Integer previous = skillExp.put(event.getSkill(), exp);
 
 		if (previous == null || previous >= exp)
-		{
-			return;
-		}
-
-		if (!config.enabled())
 		{
 			return;
 		}
@@ -106,11 +96,6 @@ public class DiscordPlugin extends Plugin
 	)
 	public void checkForValidStatus()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		if (discordState.checkForTimeout(config.actionTimeout()))
 		{
 			updateGameStatus(client.getGameState(), true);
@@ -123,11 +108,6 @@ public class DiscordPlugin extends Plugin
 	)
 	public void flushDiscordStatus()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		discordState.flushEvent(discordService);
 	}
 

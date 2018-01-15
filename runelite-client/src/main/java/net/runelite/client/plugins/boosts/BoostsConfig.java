@@ -36,16 +36,6 @@ import net.runelite.client.config.Config;
 public interface BoostsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not boost info is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "enableSkill",
 		name = "Enable Skill Boosts",
 		description = "Configures whether or not to display skill boost information"

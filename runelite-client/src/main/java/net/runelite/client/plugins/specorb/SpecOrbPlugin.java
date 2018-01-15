@@ -26,17 +26,14 @@ package net.runelite.client.plugins.specorb;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import java.awt.Image;
 
 @PluginDescriptor(
 	name = "Special Attack Orb plugin"
@@ -53,12 +50,6 @@ public class SpecOrbPlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(SpecOrbOverlay.class);
-	}
-
-	@Provides
-	SpecOrbConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(SpecOrbConfig.class);
 	}
 
 	@Override

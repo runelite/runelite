@@ -83,11 +83,6 @@ public class XpGlobesPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		Skill skill = event.getSkill();
 		int currentXp = client.getSkillExperience(skill);
 		int currentLevel = Experience.getLevelForXp(currentXp);

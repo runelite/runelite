@@ -54,11 +54,6 @@ public class RememberUsernamePlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			if (config.username() == null || config.username().isEmpty())

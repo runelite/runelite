@@ -57,11 +57,6 @@ class FishingSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
 		{

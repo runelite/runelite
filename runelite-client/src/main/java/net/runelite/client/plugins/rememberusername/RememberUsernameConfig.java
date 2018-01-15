@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RememberUsernameConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether remember username plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "username",
 		name = "",
 		description = "",

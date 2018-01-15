@@ -44,17 +44,15 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 public class PrayerFlickOverlay extends Overlay
 {
 	private final Client client;
-	private final PrayerFlickConfig config;
 	private boolean prayersActive = false;
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	public PrayerFlickOverlay(@Nullable Client client, PrayerFlickConfig config)
+	public PrayerFlickOverlay(@Nullable Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
-		this.config = config;
 	}
 
 	public void onTick()
@@ -66,7 +64,7 @@ public class PrayerFlickOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point point)
 	{
-		if (!config.enabled() || !prayersActive)//If there are no prayers active we don't need to be flicking
+		if (!prayersActive) //If there are no prayers active we don't need to be flicking
 		{
 			return null;
 		}

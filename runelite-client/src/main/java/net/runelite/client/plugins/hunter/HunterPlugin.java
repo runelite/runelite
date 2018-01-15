@@ -70,9 +70,6 @@ public class HunterPlugin extends Plugin
 	private QueryRunner queryRunner;
 
 	@Inject
-	private HunterConfig config;
-
-	@Inject
 	private TrapOverlay trapOverlay;
 
 	@Inject
@@ -109,11 +106,6 @@ public class HunterPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		GameObject gameObject = event.getGameObject();
 
 		HunterTrap myTrap = getTrapFromCollection(gameObject);
@@ -199,7 +191,7 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
-			//Black chin shaking box	
+			//Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
@@ -279,11 +271,6 @@ public class HunterPlugin extends Plugin
 	)
 	public void updateTraps()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		//Check if all traps are still there, and remove the ones that are not.
 		//TODO: use despawn events
 		Iterator<HunterTrap> it = traps.iterator();

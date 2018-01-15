@@ -152,7 +152,7 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -276,7 +276,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getTimeout());
 
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}

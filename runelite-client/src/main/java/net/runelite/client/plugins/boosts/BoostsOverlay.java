@@ -72,11 +72,6 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		panelComponent = new PanelComponent();
 
 		for (Skill skill : plugin.getShownSkills())

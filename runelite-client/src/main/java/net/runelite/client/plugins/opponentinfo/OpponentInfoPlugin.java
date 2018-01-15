@@ -27,13 +27,11 @@ package net.runelite.client.plugins.opponentinfo;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -50,12 +48,6 @@ public class OpponentInfoPlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(OpponentInfoOverlay.class);
-	}
-
-	@Provides
-	OpponentConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(OpponentConfig.class);
 	}
 
 	@Override

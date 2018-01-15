@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether to enable the blast furnace plugin"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showConveyorBelt",
 		name = "Show Conveyor belt clickbox",
 		description = "Configures whether or not the clickbox for the conveyor belt is displayed"

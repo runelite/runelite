@@ -44,26 +44,19 @@ public class AgilityOverlay extends Overlay
 
 	private final Client client;
 	private final AgilityPlugin plugin;
-	private final AgilityPluginConfiguration config;
 
 	@Inject
-	public AgilityOverlay(@Nullable Client client, AgilityPlugin plugin, AgilityPluginConfiguration config)
+	public AgilityOverlay(@Nullable Client client, AgilityPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Point playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 		plugin.getObstacles().forEach((object, tile) ->

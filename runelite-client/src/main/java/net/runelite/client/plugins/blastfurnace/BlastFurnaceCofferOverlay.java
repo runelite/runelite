@@ -41,16 +41,14 @@ class BlastFurnaceCofferOverlay extends Overlay
 {
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final BlastFurnaceConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	BlastFurnaceCofferOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
+	BlastFurnaceCofferOverlay(Client client, BlastFurnacePlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override

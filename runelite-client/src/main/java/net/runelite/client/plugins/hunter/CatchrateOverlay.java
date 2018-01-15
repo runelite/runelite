@@ -60,16 +60,14 @@ public class CatchrateOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (config.enabled())
+		if (Duration.between(plugin.getLastActionTime(), Instant.now()).compareTo(catchRatePanelTimeOut) < 0)
 		{
-			if (Duration.between(plugin.getLastActionTime(), Instant.now()).compareTo(catchRatePanelTimeOut) < 0)
-			{
-				final String attackStyleString = String.format("%.2f", plugin.getCatchRate() * 100) + " %";
-				catchRatePanel.setTitle(attackStyleString);
-				catchRatePanel.setWidth(80);
-				return catchRatePanel.render(graphics, parent);
-			}
+			final String attackStyleString = String.format("%.2f", plugin.getCatchRate() * 100) + " %";
+			catchRatePanel.setTitle(attackStyleString);
+			catchRatePanel.setWidth(80);
+			return catchRatePanel.render(graphics, parent);
 		}
+
 		return null;
 	}
 

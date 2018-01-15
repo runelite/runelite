@@ -115,12 +115,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		if (!config.enabled())
-		{
-			infoBoxManager.removeIf(t -> t instanceof TimerTimer);
-			return;
-		}
-
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
@@ -226,11 +220,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		if (config.showAntidotePlusPlus()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
@@ -259,10 +248,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
 
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
@@ -383,11 +368,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		Actor actor = event.getActor();
 
 		if (actor != client.getLocalPlayer())

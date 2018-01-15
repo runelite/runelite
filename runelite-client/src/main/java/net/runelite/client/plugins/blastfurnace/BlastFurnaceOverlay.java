@@ -39,25 +39,23 @@ class BlastFurnaceOverlay extends Overlay
 {
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final BlastFurnaceConfig config;
 	private final ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Inject
-	BlastFurnaceOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
+	BlastFurnaceOverlay(Client client, BlastFurnacePlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.client = client;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled() || plugin.getConveyorBelt() == null)
+		if (plugin.getConveyorBelt() == null)
 		{
 			return null;
 		}

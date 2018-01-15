@@ -24,6 +24,15 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -33,7 +42,6 @@ import java.time.Instant;
 import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -65,11 +73,6 @@ class WoodcuttingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		WoodcuttingSession session = plugin.getSession();
 
 		if (session.getLastLogCut() == null)
