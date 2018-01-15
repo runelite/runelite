@@ -899,7 +899,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1767007759
    )
-   static int field1082;
+   @Export("itemPressedDuration")
+   static int itemPressedDuration;
    @ObfuscatedName("hw")
    @ObfuscatedGetter(
       intValue = 919353163
@@ -1247,7 +1248,7 @@ public final class Client extends GameEngine {
       field1039 = 0;
       field935 = 0;
       field945 = false;
-      field1082 = 0;
+      itemPressedDuration = 0;
       myPlayerIndex = 0;
       cachedPlayers = new Player[2048];
       localInteractingIndex = -1;
@@ -3940,7 +3941,7 @@ public final class Client extends GameEngine {
 
                                              if(class39.field506 != null) {
                                                 class33.method344(class39.field506);
-                                                ++field1082;
+                                                ++itemPressedDuration;
                                                 if(MouseInput.mouseCurrentButton == 0) {
                                                    if(field945) {
                                                       if(class39.field506 == class47.field566 && field935 != field1073) {
@@ -3996,7 +3997,7 @@ public final class Client extends GameEngine {
                                                    mouseCrosshair = 10;
                                                    MouseInput.mouseLastButton = 0;
                                                    class39.field506 = null;
-                                                } else if(field1082 >= 5 && (MouseInput.field679 > field857 + 5 || MouseInput.field679 < field857 - 5 || MouseInput.field682 * -469125321 > field1039 + 5 || MouseInput.field682 * -469125321 < field1039 - 5)) {
+                                                } else if(itemPressedDuration >= 5 && (MouseInput.field679 > field857 + 5 || MouseInput.field679 < field857 - 5 || MouseInput.field682 * -469125321 > field1039 + 5 || MouseInput.field682 * -469125321 < field1039 - 5)) {
                                                    field945 = true;
                                                 }
                                              }
@@ -6368,7 +6369,7 @@ public final class Client extends GameEngine {
             }
 
             field945 = false;
-            field1082 = 0;
+            itemPressedDuration = 0;
             if(class39.field506 != null) {
                class33.method344(class39.field506);
             }

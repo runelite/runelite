@@ -903,7 +903,7 @@ public class class82 {
                                                 var25 = 0;
                                              }
 
-                                             if(Client.field1082 < 5) {
+                                             if(Client.itemPressedDuration < 5) {
                                                 var24 = 0;
                                                 var25 = 0;
                                              }
