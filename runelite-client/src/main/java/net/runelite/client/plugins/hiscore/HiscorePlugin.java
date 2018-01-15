@@ -71,6 +71,12 @@ public class HiscorePlugin extends Plugin
 		menuManager.addPlayerMenuItem(LOOKUP);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		ui.getPluginToolbar().removeNavigation(navButton);
+	}
+
 	@Subscribe
 	public void onLookupMenuClicked(PlayerMenuOptionClicked event)
 	{
