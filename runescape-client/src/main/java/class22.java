@@ -325,7 +325,7 @@ public class class22 extends class28 {
             if(Client.screenX > -1 && Client.overheadTextCount < Client.maxOverheadTexts) {
                Client.overheadTextsOffsetX[Client.overheadTextCount] = Friend.fontBold12.getTextWidth(var0.overhead) / 2;
                Client.overheadTextsOffsetY[Client.overheadTextCount] = Friend.fontBold12.verticalSpace;
-               Client.field923[Client.overheadTextCount] = Client.screenX;
+               Client.overheadTextsX[Client.overheadTextCount] = Client.screenX;
                Client.field924[Client.overheadTextCount] = Client.screenY;
                Client.field927[Client.overheadTextCount] = var0.field1179;
                Client.field900[Client.overheadTextCount] = var0.field1140;
