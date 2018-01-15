@@ -43,6 +43,12 @@ public class BossTimersPlugin extends Plugin
 	@Inject
 	InfoBoxManager infoBoxManager;
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+	}
+
 	@Subscribe
 	public void onActorDeath(ActorDeath death)
 	{
