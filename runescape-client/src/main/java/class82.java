@@ -624,7 +624,7 @@ public class class82 {
 
                               for(var36 = 0; var36 < Client.overheadTextCount; ++var36) {
                                  var51 = Client.overheadTextsX[var36];
-                                 var38 = Client.field924[var36];
+                                 var38 = Client.overheadTextsY[var36];
                                  var39 = Client.overheadTextsOffsetX[var36];
                                  var40 = Client.overheadTextsOffsetY[var36];
                                  boolean var62 = true;
@@ -633,15 +633,15 @@ public class class82 {
                                     var62 = false;
 
                                     for(var42 = 0; var42 < var36; ++var42) {
-                                       if(var38 + 2 > Client.field924[var42] - Client.overheadTextsOffsetY[var42] && var38 - var40 < Client.field924[var42] + 2 && var51 - var39 < Client.overheadTextsOffsetX[var42] + Client.overheadTextsX[var42] && var51 + var39 > Client.overheadTextsX[var42] - Client.overheadTextsOffsetX[var42] && Client.field924[var42] - Client.overheadTextsOffsetY[var42] < var38) {
-                                          var38 = Client.field924[var42] - Client.overheadTextsOffsetY[var42];
+                                       if(var38 + 2 > Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42] && var38 - var40 < Client.overheadTextsY[var42] + 2 && var51 - var39 < Client.overheadTextsOffsetX[var42] + Client.overheadTextsX[var42] && var51 + var39 > Client.overheadTextsX[var42] - Client.overheadTextsOffsetX[var42] && Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42] < var38) {
+                                          var38 = Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42];
                                           var62 = true;
                                        }
                                     }
                                  }
 
                                  Client.screenX = Client.overheadTextsX[var36];
-                                 Client.screenY = Client.field924[var36] = var38;
+                                 Client.screenY = Client.overheadTextsY[var36] = var38;
                                  String var52 = Client.overheadTexts[var36];
                                  if(Client.field990 == 0) {
                                     var43 = 16776960;
