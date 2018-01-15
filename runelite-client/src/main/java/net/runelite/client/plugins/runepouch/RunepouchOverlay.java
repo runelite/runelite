@@ -70,7 +70,6 @@ public class RunepouchOverlay extends Overlay
 		this.queryRunner = queryRunner;
 		this.client = client;
 		this.config = config;
-		this.setDrawOverBankScreen(true);
 	}
 
 	@Override

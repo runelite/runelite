@@ -174,4 +174,6 @@ public interface Client
 
 	List<Projectile> getProjectiles();
 
+
+	BufferProvider getBufferProvider();
 }

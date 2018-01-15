@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +24,20 @@
  */
 package net.runelite.client.ui.overlay;
 
-import lombok.Data;
-
-@Data
-public abstract class Overlay implements RenderableEntity
+public enum OverlayLayer
 {
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.ABOVE_WIDGETS;
+	/**
+	 * Render overlay above all game elements
+	 */
+	ALWAYS_ON_TOP,
+
+	/**
+	 * Render under all interfaces
+	 */
+	UNDER_WIDGETS,
+
+	/**
+	 * Render under the right-click menu
+	 */
+	ABOVE_WIDGETS
 }
