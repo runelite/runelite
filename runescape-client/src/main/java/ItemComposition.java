@@ -271,13 +271,13 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -389138497
    )
-   @Export("decorDisplacement")
+   @Export("int2")
    public int int2;
    @ObfuscatedName("bw")
    @ObfuscatedGetter(
       intValue = 599115067
    )
-   @Export("supportItems")
+   @Export("int3")
    public int int3;
 
    static {

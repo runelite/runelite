@@ -30,13 +30,13 @@ public final class BoundingBox3D extends BoundingBox {
    @ObfuscatedGetter(
       intValue = 1793077055
    )
-   @Export("decorDisplacement")
+   @Export("int2")
    final int int2;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1975799011
    )
-   @Export("supportItems")
+   @Export("int3")
    final int int3;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
