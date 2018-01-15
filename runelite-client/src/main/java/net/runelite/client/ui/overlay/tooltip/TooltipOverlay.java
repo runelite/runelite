@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.tooltip;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -38,6 +39,7 @@ import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 public class TooltipOverlay extends Overlay
 {
+	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Provider<Client> clientProvider;
 
@@ -60,10 +62,14 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
+		final Rectangle lastLocation = new Rectangle();
+
 		for (Tooltip tooltip : tooltips)
 		{
 			final TooltipComponent tooltipComponent = new TooltipComponent();
 			tooltipComponent.setText(tooltip.getText());
+
+			final Point position = new Point();
 
 			if (tooltip.isFollowMouse())
 			{
@@ -71,14 +77,22 @@ public class TooltipOverlay extends Overlay
 				final net.runelite.api.Point mouseCanvasPosition = client != null
 					? client.getMouseCanvasPosition()
 					: new net.runelite.api.Point(0, 0);
-				tooltipComponent.setPosition(new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()));
+
+				position.setLocation(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 			}
 			else
 			{
-				tooltipComponent.setPosition(tooltip.getPosition());
+				position.setLocation(tooltip.getPosition());
 			}
 
-			tooltipComponent.render(graphics, parent);
+			if (lastLocation.contains(position))
+			{
+				position.translate(0, -lastLocation.height - PADDING);
+			}
+
+			tooltipComponent.setPosition(position);
+			lastLocation.setLocation(position);
+			lastLocation.setSize(tooltipComponent.render(graphics, parent));
 		}
 
 		tooltipManager.clear();

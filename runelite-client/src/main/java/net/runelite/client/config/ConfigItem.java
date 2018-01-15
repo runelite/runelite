@@ -44,4 +44,8 @@ public @interface ConfigItem
 	boolean hidden() default false;
 
 	String confirmationWarining() default "";
+	
+	boolean warnOnEnable() default false;
+	
+	boolean warnOnDisable() default false;
 }

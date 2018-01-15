@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.client.events.ActorDeath;
+import net.runelite.api.events.ActorDeath;
 
 @Slf4j
 public class DeathChecker

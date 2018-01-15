@@ -1,5 +1,4 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -12,7 +11,6 @@ public class class64 {
    static class289 field727;
    @ObfuscatedName("fs")
    @Export("mapRegions")
-   @Hook("mapRegionsChanged")
    static int[] mapRegions;
 
    @ObfuscatedName("n")

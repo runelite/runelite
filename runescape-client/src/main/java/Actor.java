@@ -1,5 +1,4 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -155,7 +154,6 @@ public abstract class Actor extends Renderable {
       intValue = 1823864565
    )
    @Export("animation")
-   @Hook("animationChanged")
    int animation;
    @ObfuscatedName("bf")
    @ObfuscatedGetter(

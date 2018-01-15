@@ -47,6 +47,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
@@ -71,6 +72,7 @@ public class VolcanicMineOverlay extends Overlay
 	VolcanicMineOverlay(@Nullable Client client, VolcanicMinePlugin plugin, VolcanicMineConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;

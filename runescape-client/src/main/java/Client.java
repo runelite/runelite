@@ -48,7 +48,6 @@ public final class Client extends GameEngine {
    static boolean field992;
    @ObfuscatedName("mw")
    @Export("isResized")
-   @Hook("resizeChanged")
    static boolean isResized;
    @ObfuscatedName("kq")
    @ObfuscatedGetter(
@@ -471,7 +470,6 @@ public final class Client extends GameEngine {
       intValue = -41679833
    )
    @Export("gameState")
-   @Hook("gameStateChanged")
    static int gameState;
    @ObfuscatedName("bm")
    static boolean field853;
@@ -895,7 +893,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 919353163
    )
-   static int field947;
+   @Export("myPlayerIndex")
+   static int myPlayerIndex;
    @ObfuscatedName("ie")
    @ObfuscatedSignature(
       signature = "[Lbj;"
@@ -925,7 +924,6 @@ public final class Client extends GameEngine {
    static final int[] playerMenuTypes;
    @ObfuscatedName("in")
    @Export("playerOptions")
-   @Hook("playerMenuOptionsChanged")
    static String[] playerOptions;
    @ObfuscatedName("it")
    @Export("lastSelectedItemName")
@@ -972,7 +970,6 @@ public final class Client extends GameEngine {
    static int[] realSkillLevels;
    @ObfuscatedName("iw")
    @Export("skillExperiences")
-   @Hook("experienceChanged")
    static int[] skillExperiences;
    @ObfuscatedName("ih")
    @ObfuscatedGetter(
@@ -1240,7 +1237,7 @@ public final class Client extends GameEngine {
       field935 = 0;
       field945 = false;
       field1082 = 0;
-      field947 = 0;
+      myPlayerIndex = 0;
       cachedPlayers = new Player[2048];
       localInteractingIndex = -1;
       field918 = 0;
@@ -1511,18 +1508,18 @@ public final class Client extends GameEngine {
                      var46 = KeyFocusListener.field607[KeyFocusListener.field596];
                      KeyFocusListener.field596 = KeyFocusListener.field596 + 1 & 127;
                      if(var46 < 0) {
-                        KeyFocusListener.field593[~var46] = false;
+                        KeyFocusListener.keyPressed[~var46] = false;
                      } else {
-                        if(!KeyFocusListener.field593[var46] && KeyFocusListener.field601 < KeyFocusListener.field600.length - 1) {
+                        if(!KeyFocusListener.keyPressed[var46] && KeyFocusListener.field601 < KeyFocusListener.field600.length - 1) {
                            KeyFocusListener.field600[++KeyFocusListener.field601 - 1] = var46;
                         }
 
-                        KeyFocusListener.field593[var46] = true;
+                        KeyFocusListener.keyPressed[var46] = true;
                      }
                   }
                } else {
                   for(var46 = 0; var46 < 112; ++var46) {
-                     KeyFocusListener.field593[var46] = false;
+                     KeyFocusListener.keyPressed[var46] = false;
                   }
 
                   KeyFocusListener.field597 = KeyFocusListener.field596;
@@ -3665,7 +3662,7 @@ public final class Client extends GameEngine {
                      --field1021;
                   }
 
-                  if(KeyFocusListener.field593[96] || KeyFocusListener.field593[97] || KeyFocusListener.field593[98] || KeyFocusListener.field593[99]) {
+                  if(KeyFocusListener.keyPressed[96] || KeyFocusListener.keyPressed[97] || KeyFocusListener.keyPressed[98] || KeyFocusListener.keyPressed[99]) {
                      field919 = true;
                   }
 
@@ -3874,7 +3871,7 @@ public final class Client extends GameEngine {
                   field1049 = 0;
 
                   while(class230.method4200() && field1049 < 128) {
-                     if(rights >= 2 && KeyFocusListener.field593[82] && FileRequest.field3304 == 66) {
+                     if(rights >= 2 && KeyFocusListener.keyPressed[82] && FileRequest.field3304 == 66) {
                         String var43 = class5.method15();
                         TotalQuantityComparator.clientInstance.method884(var43);
                      } else {
@@ -3884,7 +3881,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if(FriendLoginUpdate.method1041() && KeyFocusListener.field593[82] && KeyFocusListener.field593[81] && mouseWheelRotation != 0) {
+                  if(FriendLoginUpdate.method1041() && KeyFocusListener.keyPressed[82] && KeyFocusListener.keyPressed[81] && mouseWheelRotation != 0) {
                      var3 = UrlRequest.localPlayer.field821 - mouseWheelRotation;
                      if(var3 < 0) {
                         var3 = 0;
@@ -3998,7 +3995,7 @@ public final class Client extends GameEngine {
                                                 var4 = Region.selectedRegionTileY;
                                                 PacketNode var42 = FileSystem.method4252(ClientPacket.field2352, field888.field1449);
                                                 var42.packetBuffer.putByte(5);
-                                                var42.packetBuffer.method3287(KeyFocusListener.field593[82]?(KeyFocusListener.field593[81]?2:1):0);
+                                                var42.packetBuffer.method3287(KeyFocusListener.keyPressed[82]?(KeyFocusListener.keyPressed[81]?2:1):0);
                                                 var42.packetBuffer.writeIntLE16(var3 + class46.baseX);
                                                 var42.packetBuffer.putShortLE(var4 + baseY);
                                                 field888.method1862(var42);
@@ -5242,7 +5239,7 @@ public final class Client extends GameEngine {
                   var94 = true;
                }
 
-               if(!var94 && field947 == 0) {
+               if(!var94 && myPlayerIndex == 0) {
                   field1047[field1048] = var10;
                   field1048 = (field1048 + 1) % 100;
                   String var95 = FontTypeFace.appendTags(SceneTilePaint.method2682(TotalQuantityComparator.method94(var3)));
@@ -5601,11 +5598,11 @@ public final class Client extends GameEngine {
                var24 = var3.method3300();
                var6 = var3.method3269();
                var45 = VertexNormal.getWidget(var23);
-               if(var24 != var45.originalX || var6 != var45.originalY || var45.field2764 != 0 || var45.field2838 != 0) {
+               if(var24 != var45.originalX || var6 != var45.originalY || var45.dynamicX != 0 || var45.dynamicY != 0) {
                   var45.originalX = var24;
                   var45.originalY = var6;
-                  var45.field2764 = 0;
-                  var45.field2838 = 0;
+                  var45.dynamicX = 0;
+                  var45.dynamicY = 0;
                   class33.method344(var45);
                   this.widgetMethod0(var45);
                   if(var45.type == 0) {
@@ -5862,7 +5859,7 @@ public final class Client extends GameEngine {
                   var14 = true;
                }
 
-               if(!var14 && field947 == 0) {
+               if(!var14 && myPlayerIndex == 0) {
                   field1047[field1048] = var46;
                   field1048 = (field1048 + 1) % 100;
                   String var15 = FontTypeFace.appendTags(SceneTilePaint.method2682(TotalQuantityComparator.method94(var3)));

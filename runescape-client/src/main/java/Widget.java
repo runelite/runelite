@@ -73,17 +73,20 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1054641565
    )
-   public int field2764;
+   @Export("dynamicX")
+   public int dynamicX;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = -436356015
    )
-   public int field2838;
+   @Export("dynamicY")
+   public int dynamicY;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 1793980677
    )
-   public int field2766;
+   @Export("dynamicWidth")
+   public int dynamicWidth;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1691006837
@@ -112,7 +115,8 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 2096910633
    )
-   public int field2817;
+   @Export("originalHeight")
+   public int originalHeight;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = -2118483697
@@ -618,14 +622,14 @@ public class Widget extends Node {
       this.index = -1;
       this.field2754 = 0;
       this.contentType = 0;
-      this.field2764 = 0;
-      this.field2838 = 0;
-      this.field2766 = 0;
+      this.dynamicX = 0;
+      this.dynamicY = 0;
+      this.dynamicWidth = 0;
       this.buttonType = 0;
       this.originalX = 0;
       this.originalY = 0;
       this.originalWidth = 0;
-      this.field2817 = 0;
+      this.originalHeight = 0;
       this.relativeX = 0;
       this.relativeY = 0;
       this.width = 0;
@@ -720,7 +724,7 @@ public class Widget extends Node {
       this.originalX = var1.readShort();
       this.originalY = var1.readShort();
       this.originalWidth = var1.readUnsignedShort();
-      this.field2817 = var1.readUnsignedShort();
+      this.originalHeight = var1.readUnsignedShort();
       this.opacity = var1.readUnsignedByte();
       this.parentId = var1.readUnsignedShort();
       if(this.parentId == 65535) {
@@ -777,8 +781,8 @@ public class Widget extends Node {
       }
 
       if(this.type == 2) {
-         this.itemIds = new int[this.originalWidth * this.field2817];
-         this.itemQuantities = new int[this.originalWidth * this.field2817];
+         this.itemIds = new int[this.originalWidth * this.originalHeight];
+         this.itemQuantities = new int[this.originalWidth * this.originalHeight];
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.config |= 268435456;
@@ -893,8 +897,8 @@ public class Widget extends Node {
       }
 
       if(this.type == 7) {
-         this.itemIds = new int[this.originalWidth * this.field2817];
-         this.itemQuantities = new int[this.field2817 * this.originalWidth];
+         this.itemIds = new int[this.originalWidth * this.originalHeight];
+         this.itemQuantities = new int[this.originalHeight * this.originalWidth];
          this.field2814 = var1.readUnsignedByte();
          this.fontId = var1.readUnsignedShort();
          if(this.fontId == 65535) {
@@ -978,15 +982,15 @@ public class Widget extends Node {
       this.originalY = var1.readShort();
       this.originalWidth = var1.readUnsignedShort();
       if(this.type == 9) {
-         this.field2817 = var1.readShort();
+         this.originalHeight = var1.readShort();
       } else {
-         this.field2817 = var1.readUnsignedShort();
+         this.originalHeight = var1.readUnsignedShort();
       }
 
-      this.field2766 = var1.readByte();
+      this.dynamicWidth = var1.readByte();
       this.buttonType = var1.readByte();
-      this.field2764 = var1.readByte();
-      this.field2838 = var1.readByte();
+      this.dynamicX = var1.readByte();
+      this.dynamicY = var1.readByte();
       this.parentId = var1.readUnsignedShort();
       if(this.parentId == 65535) {
          this.parentId = -1;
@@ -1032,7 +1036,7 @@ public class Widget extends Node {
 
          this.field2795 = var1.readUnsignedByte() == 1;
          var1.readUnsignedShort();
-         if(this.field2766 != 0) {
+         if(this.dynamicWidth != 0) {
             this.field2836 = var1.readUnsignedShort();
          }
 

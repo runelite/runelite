@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ProjectileMoved;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -125,6 +125,26 @@ public class AoeWarningPlugin extends Plugin
 				return config.isVasaEnabled();
 			case TEKTON_METEOR_AOE:
 				return config.isTektonEnabled();
+			case VORKATH_BOMB:
+			case VORKATH_POISON_POOL:
+			case VORKATH_SPAWN:
+			case VORKATH_TICK_FIRE:
+				return config.isVorkathEnabled();
+			case VETION_LIGHTNING:
+				return config.isVetionEnabled();
+			case CHAOS_FANATIC:
+				return config.isChaosFanaticEnabled();
+			case GALVEK_BOMB:
+			case GALVEK_MINE:
+				return config.isGalvekEnabled();
+			case OLM_FALLING_CRYSTAL:
+			case OLM_BURNING:
+				return config.isOlmEnabled();
+			case CORPOREAL_BEAST:
+			case CORPOREAL_BEAST_DARK_CORE:
+				return config.isCorpEnabled();
+			case WINTERTODT_SNOW_FALL:
+				return config.isWintertodtEnabled();
 		}
 
 		return false;

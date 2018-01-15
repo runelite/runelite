@@ -43,8 +43,8 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
-import net.runelite.client.events.GameStateChanged;
-import net.runelite.client.events.MapRegionChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MapRegionChanged;
 import static net.runelite.client.plugins.instancemap.PixelMaps.ALL;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM;
 import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_CORNER;
@@ -66,6 +66,7 @@ import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class InstanceMapOverlay extends Overlay
@@ -114,6 +115,7 @@ class InstanceMapOverlay extends Overlay
 	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config, InstanceMapPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;

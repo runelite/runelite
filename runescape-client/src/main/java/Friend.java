@@ -71,8 +71,8 @@ public class Friend {
          class82.intStackSize -= 4;
          var4.originalX = class82.intStack[class82.intStackSize];
          var4.originalY = class82.intStack[class82.intStackSize + 1];
-         var4.field2764 = class82.intStack[class82.intStackSize + 2];
-         var4.field2838 = class82.intStack[class82.intStackSize + 3];
+         var4.dynamicX = class82.intStack[class82.intStackSize + 2];
+         var4.dynamicY = class82.intStack[class82.intStackSize + 3];
          class33.method344(var4);
          TotalQuantityComparator.clientInstance.widgetMethod0(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -83,8 +83,8 @@ public class Friend {
       } else if(var0 == 1001) {
          class82.intStackSize -= 4;
          var4.originalWidth = class82.intStack[class82.intStackSize];
-         var4.field2817 = class82.intStack[class82.intStackSize + 1];
-         var4.field2766 = class82.intStack[class82.intStackSize + 2];
+         var4.originalHeight = class82.intStack[class82.intStackSize + 1];
+         var4.dynamicWidth = class82.intStack[class82.intStackSize + 2];
          var4.buttonType = class82.intStack[class82.intStackSize + 3];
          class33.method344(var4);
          TotalQuantityComparator.clientInstance.widgetMethod0(var4);

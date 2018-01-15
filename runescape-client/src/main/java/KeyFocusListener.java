@@ -23,7 +23,8 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
    )
    static IndexDataBase field589;
    @ObfuscatedName("ce")
-   public static boolean[] field593;
+   @Export("keyPressed")
+   public static boolean[] keyPressed;
    @ObfuscatedName("cs")
    public static int[] field607;
    @ObfuscatedName("cz")
@@ -74,7 +75,7 @@ public final class KeyFocusListener implements KeyListener, FocusListener {
 
    static {
       keyboard = new KeyFocusListener();
-      field593 = new boolean[112];
+      keyPressed = new boolean[112];
       field607 = new int[128];
       field596 = 0;
       field597 = 0;

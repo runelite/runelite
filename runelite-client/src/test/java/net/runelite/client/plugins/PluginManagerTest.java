@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -31,13 +33,21 @@ import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import joptsimple.OptionSet;
+import net.runelite.api.Client;
+import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.ui.ClientUI;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,23 +60,48 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PluginManagerTest
 {
+	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
+
+	private RuneLite runelite;
+	private Set<Class> pluginClasses;
 
 	@Mock
 	ClientUI clientUi;
 
+	@Mock
+	Client client;
+
+	@Mock
+	Notifier notifier;
+
 	@Before
-	public void before()
+	public void before() throws IOException
 	{
 		RuneLite.setOptions(mock(OptionSet.class));
 
 		Injector injector = Guice.createInjector(new RuneLiteModule(),
 			BoundFieldModule.of(this));
 		RuneLite.setInjector(injector);
-		// test with no client bound
-		RuneLite runelite = injector.getInstance(RuneLite.class);
+
+		runelite = injector.getInstance(RuneLite.class);
 		runelite.setGui(clientUi);
+		runelite.setNotifier(notifier);
+
+		// Find plugins we expect to have
+		pluginClasses = new HashSet<>();
+		Set<ClassInfo> classes = ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(PLUGIN_PACKAGE);
+		for (ClassInfo classInfo : classes)
+		{
+			Class<?> clazz = classInfo.load();
+			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
+			if (pluginDescriptor != null)
+			{
+				pluginClasses.add(clazz);
+			}
+		}
 
 	}
 
@@ -74,7 +109,28 @@ public class PluginManagerTest
 	public void testLoadPlugins() throws Exception
 	{
 		PluginManager pluginManager = new PluginManager();
+		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
+		Collection<Plugin> plugins = pluginManager.getPlugins();
+		long expected = pluginClasses.stream()
+			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.filter(Objects::nonNull)
+			.filter(pd -> pd.loadWhenOutdated())
+			.count();
+		assertEquals(expected, plugins.size());
+
+		runelite.setClient(client);
+
+		pluginManager = new PluginManager();
+		pluginManager.loadCorePlugins();
+		plugins = pluginManager.getPlugins();
+
+		expected = pluginClasses.stream()
+			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.filter(Objects::nonNull)
+			.filter(pd -> !pd.developerPlugin())
+			.count();
+		assertEquals(expected, plugins.size());
 	}
 
 	@Test
@@ -83,6 +139,8 @@ public class PluginManagerTest
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
 		modules.add(new RuneLiteModule());
+
+		runelite.setClient(client);
 
 		PluginManager pluginManager = new PluginManager();
 		pluginManager.loadCorePlugins();

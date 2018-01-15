@@ -42,11 +42,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Enumeration;
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JRootPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
@@ -65,9 +67,8 @@ import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 @Slf4j
 public class ClientUI extends JFrame
 {
-	private static final int CLIENT_WIDTH = 809;
 	private static final int SCROLLBAR_WIDTH = 17;
-	private static final int EXPANDED_WIDTH = CLIENT_WIDTH + PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
+	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH;
 	private static final BufferedImage ICON;
 
 	@Getter
@@ -111,9 +112,6 @@ public class ClientUI extends JFrame
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
 
-		// Use custom window decorations
-		JFrame.setDefaultLookAndFeelDecorated(true);
-
 		// Use substance look and feel
 		try
 		{
@@ -138,15 +136,31 @@ public class ClientUI extends JFrame
 		this.trayIcon = setupTrayIcon();
 
 		init();
-		pack();
-		new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI)this.getRootPane().getUI()).editTitleBar(this);
 		setTitle(null);
 		setIconImage(ICON);
 		// Prevent substance from using a resize cursor for pointing
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
 		setLocationRelativeTo(getOwner());
 		setResizable(true);
+	}
+
+	public void showWithChrome(boolean customChrome)
+	{
+		setUndecorated(customChrome);
+		if (customChrome)
+		{
+			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+		}
+		pack();
+		revalidateMinimumSize();
+		setLocationRelativeTo(getOwner());
+		if (customChrome)
+		{
+			new TitleBarPane(this.getRootPane(), (SubstanceRootPaneUI) this.getRootPane().getUI()).editTitleBar(this);
+		}
+
 		setVisible(true);
+		toFront();
 	}
 
 	private static void setUIFont(FontUIResource f)
@@ -219,7 +233,6 @@ public class ClientUI extends JFrame
 		assert SwingUtilities.isEventDispatchThread();
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setMinimumSize(new Dimension(CLIENT_WIDTH, 0));
 		addWindowListener(new WindowAdapter()
 		{
 			@Override
@@ -230,41 +243,53 @@ public class ClientUI extends JFrame
 		});
 
 		container = new JPanel();
-		container.setLayout(new BorderLayout(0, 0));
-		container.add(new ClientPanel(client), BorderLayout.CENTER);
+		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+		container.add(new ClientPanel(client));
 
 		navContainer = new JPanel();
-		navContainer.setLayout(new BorderLayout(0, 0));
-		container.add(navContainer, BorderLayout.EAST);
+		navContainer.setLayout(new BorderLayout(0,0));
+		navContainer.setMinimumSize(new Dimension(0,0));
+		navContainer.setMaximumSize(new Dimension(0,Integer.MAX_VALUE));
+		container.add(navContainer);
 
 		pluginToolbar = new PluginToolbar(this);
-		navContainer.add(pluginToolbar, BorderLayout.EAST);
+		container.add(pluginToolbar);
 
 		add(container);
+	}
+
+	private void revalidateMinimumSize()
+	{
+		// The JFrame only respects minimumSize if it was set by setMinimumSize, for some reason. (atleast on windows/native)
+		this.setMinimumSize(this.getLayout().minimumLayoutSize(this));
 	}
 
 	void expand(PluginPanel panel)
 	{
 		if (pluginPanel != null)
 		{
-			navContainer.remove(1);
-			container.validate();
+			navContainer.remove(0);
 		}
 
 		pluginPanel = panel;
-		navContainer.add(wrapPanel(pluginPanel), BorderLayout.WEST);
-		container.validate();
-		this.setMinimumSize(new Dimension(EXPANDED_WIDTH, 0));
+		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
+		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
+		navContainer.add(wrapPanel(pluginPanel));
+		navContainer.revalidate();
+		revalidateMinimumSize();
 	}
 
 	void contract()
 	{
-		navContainer.remove(1);
-		container.validate();
-		this.setMinimumSize(new Dimension(CLIENT_WIDTH, 0));
-		if (this.getWidth() == EXPANDED_WIDTH)
+		boolean wasMinimumWidth = this.getWidth() == (int) this.getMinimumSize().getWidth();
+		navContainer.remove(0);
+		navContainer.setMinimumSize(new Dimension(0, 0));
+		navContainer.setMaximumSize(new Dimension(0, Integer.MAX_VALUE));
+		navContainer.revalidate();
+		revalidateMinimumSize();
+		if (wasMinimumWidth)
 		{
-			this.setSize(CLIENT_WIDTH, getHeight());
+			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
 		}
 		pluginPanel = null;
 	}

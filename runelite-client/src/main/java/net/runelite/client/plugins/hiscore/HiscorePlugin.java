@@ -30,7 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import net.runelite.client.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

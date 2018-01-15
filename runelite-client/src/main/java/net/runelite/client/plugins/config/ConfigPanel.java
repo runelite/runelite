@@ -34,11 +34,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -68,6 +72,7 @@ public class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 
 	private final ConfigManager configManager;
+	private JTextField searchBar;
 
 	public ConfigPanel(ConfigManager configManager)
 	{
@@ -76,10 +81,24 @@ public class ConfigPanel extends PluginPanel
 		populateConfig();
 	}
 
+	@Override
+	public void invalidate()
+	{
+		super.invalidate();
+
+		if (searchBar != null)
+		{
+			searchBar.requestFocusInWindow();
+		}
+	}
+
 	private void populateConfig()
 	{
 		removeAll();
 		add(new JLabel("Plugin Configuration", SwingConstants.CENTER));
+		searchBar = new JTextField();
+		add(searchBar);
+		final Map<String, JPanel> children = new TreeMap<>();
 
 		configManager.getConfigProxies().stream()
 			.map(configManager::getConfigDescriptor)
@@ -91,8 +110,33 @@ public class ConfigPanel extends PluginPanel
 				JButton viewGroupItemsButton = new JButton(cd.getGroup().name());
 				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
 				groupPanel.add(viewGroupItemsButton);
+				children.put(cd.getGroup().name(), groupPanel);
 				add(groupPanel);
 			});
+
+		searchBar.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				children.forEach((key, value) ->
+				{
+					final String text = searchBar.getText().toLowerCase();
+					final String labelToSearch = key.toLowerCase();
+
+					if (text.isEmpty() || labelToSearch.contains(text))
+					{
+						add(value);
+					}
+					else
+					{
+						remove(value);
+					}
+				});
+
+				revalidate();
+			}
+		});
 
 		revalidate();
 	}
@@ -104,14 +148,16 @@ public class ConfigPanel extends PluginPanel
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			if (checkbox.isSelected() && !configItem.confirmationWarining().isEmpty())
+			boolean originalState = !checkbox.isSelected();
+			boolean config = originalState ? configItem.warnOnDisable() : configItem.warnOnEnable();
+			if (!configItem.confirmationWarining().isEmpty() && config)
 			{
 				int value = JOptionPane.showOptionDialog(component, configItem.confirmationWarining(),
 					"Are you sure?", YES_NO_OPTION, WARNING_MESSAGE,
 					null, new String[] { "Yes", "No" }, "No");
 				if (value != YES_OPTION)
 				{
-					checkbox.setSelected(false);
+					checkbox.setSelected(originalState);
 					return;
 				}
 			}

@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -41,6 +42,7 @@ import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -84,6 +86,9 @@ public class RuneLite
 	@Inject
 	private SessionManager sessionManager;
 
+	@Inject
+	private RuneLiteConfig runeliteConfig;
+
 	Client client;
 	ClientUI gui;
 	Notifier notifier;
@@ -116,7 +121,7 @@ public class RuneLite
 			return;
 		}
 
-		final Applet client = optionalClient.orElseGet(null);
+		final Applet client = optionalClient.orElse(null);
 		final boolean isOutdated = client == null || !(client instanceof Client);
 
 		if (!isOutdated)
@@ -157,11 +162,25 @@ public class RuneLite
 
 		// Begin watching for new plugins
 		pluginManager.watch();
+
+		SwingUtilities.invokeAndWait(() -> gui.showWithChrome(runeliteConfig.enableCustomChrome()));
 	}
 
 	public void setGui(ClientUI gui)
 	{
 		this.gui = gui;
+	}
+
+	@VisibleForTesting
+	public void setClient(Client client)
+	{
+		this.client = client;
+	}
+
+	@VisibleForTesting
+	public void setNotifier(Notifier notifier)
+	{
+		this.notifier = notifier;
 	}
 
 	public static Injector getInjector()

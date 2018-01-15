@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.clanchat;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -34,11 +37,8 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -51,9 +51,8 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ClanMembersChanged;
-import net.runelite.client.events.GameStateChanged;
-import net.runelite.client.events.SetMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SetMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -72,7 +71,8 @@ public class ClanChatPlugin extends Plugin
 		"General_clan_rank.png", "Owner_clan_rank.png"
 	};
 
-	private final Map<String, ClanMemberRank> clanRanksCache = new HashMap<>();
+
+	private LoadingCache<String, ClanMemberRank> clanRanksCache;
 	private int modIconsLength;
 
 	@Inject
@@ -85,6 +85,34 @@ public class ClanChatPlugin extends Plugin
 	ClanChatConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ClanChatConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		clanRanksCache = CacheBuilder.newBuilder()
+			.maximumSize(100)
+			.expireAfterAccess(1, TimeUnit.MINUTES)
+			.build(new CacheLoader<String, ClanMemberRank>()
+			{
+				@Override
+				public ClanMemberRank load(String key) throws Exception
+				{
+					final ClanMember[] clanMembersArr = client.getClanMembers();
+
+					if (clanMembersArr == null || clanMembersArr.length == 0)
+					{
+						return ClanMemberRank.UNRANKED;
+					}
+
+					return Arrays.stream(clanMembersArr)
+						.filter(Objects::nonNull)
+						.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
+						.map(ClanMember::getRank)
+						.findAny()
+						.orElse(ClanMemberRank.UNRANKED);
+				}
+			});
 	}
 
 	@Subscribe
@@ -114,56 +142,6 @@ public class ClanChatPlugin extends Plugin
 		{
 			clanChatTitleWidget.setText("Clan Chat (" + client.getClanChatCount() + "/100)");
 		}
-	}
-
-	@Schedule(
-		period = 2,
-		unit = ChronoUnit.MINUTES
-	)
-	public void cacheClanMemberRanks()
-	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.clanRank())
-		{
-			return;
-		}
-
-		clanRanksCache.clear();
-
-		final ClanMember[] clanMembersArr = client.getClanMembers();
-
-		if (clanMembersArr == null || clanMembersArr.length == 0)
-		{
-			return;
-		}
-
-		final Set<ClanMember> clanMembers = Arrays.stream(clanMembersArr)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toSet());
-		final int clanMembersSize = clanMembers.size();
-
-		if (clanMembersSize == 0)
-		{
-			return;
-		}
-
-		log.debug("Caching clan members...");
-
-		for (ClanMember clanMember : clanMembers)
-		{
-			final String name = sanitize(clanMember.getUsername());
-			final ClanMemberRank rank = clanMember.getRank();
-
-			if (rank != null)
-			{
-				clanRanksCache.put(name, rank);
-			}
-		}
-	}
-
-	@Subscribe
-	public void onClanMembersChanged(ClanMembersChanged event)
-	{
-		cacheClanMemberRanks();
 	}
 
 	@Subscribe
@@ -257,7 +235,7 @@ public class ClanChatPlugin extends Plugin
 	private void insertClanRankIcon(final SetMessage message)
 	{
 		final String playerName = sanitize(message.getName());
-		final ClanMemberRank rank = clanRanksCache.get(playerName);
+		final ClanMemberRank rank = clanRanksCache.getUnchecked(playerName);
 
 		if (rank != null && rank != ClanMemberRank.UNRANKED)
 		{

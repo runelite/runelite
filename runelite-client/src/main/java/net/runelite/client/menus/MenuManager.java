@@ -41,11 +41,11 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.events.WidgetMenuOptionClicked;
-import net.runelite.client.events.MenuEntryAdded;
-import net.runelite.client.events.MenuOptionClicked;
-import net.runelite.client.events.PlayerMenuOptionClicked;
-import net.runelite.client.events.PlayerMenuOptionsChanged;
+import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.PlayerMenuOptionsChanged;
 
 @Singleton
 @Slf4j
