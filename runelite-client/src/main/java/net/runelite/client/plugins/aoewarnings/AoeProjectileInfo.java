@@ -81,7 +81,12 @@ public enum AoeProjectileInfo
 	 * missing ids and length, please help
 	 */
 	OLM_FALLING_CRYSTAL(ProjectileID.OLM_FALLING_CRYSTAL_AOE, 2400, 3),
-	OLM_BURNING(ProjectileID.OLM_BURNING_AOE, 2400, 3);
+	OLM_BURNING(ProjectileID.OLM_BURNING_AOE, 2400, 3),
+
+	/**
+	 * the AOE of the Wintertodt snow that falls
+	 */
+	WINTERTODT_SNOW_FALL(ProjectileID.WINTERTODT_SNOW_FALL_AOE, 4000, 3);
 
 
 	/**
