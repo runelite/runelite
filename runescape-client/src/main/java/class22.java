@@ -322,7 +322,7 @@ public class class22 extends class28 {
 
          if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1122 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && class48.isFriended(((Player)var0).name, false))))) {
             Ignore.characterToScreen(var0, var0.field1136);
-            if(Client.screenY > -1 && Client.overheadTextCount < Client.field1100) {
+            if(Client.screenY > -1 && Client.overheadTextCount < Client.maxOverheadTexts) {
                Client.overheadTextsOffsetX[Client.overheadTextCount] = Friend.fontBold12.getTextWidth(var0.overhead) / 2;
                Client.overheadTextsOffsetY[Client.overheadTextCount] = Friend.fontBold12.verticalSpace;
                Client.field923[Client.overheadTextCount] = Client.screenY;

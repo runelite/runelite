@@ -795,7 +795,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1470627121
    )
-   static int field1100;
+   @Export("maxOverheadTexts")
+   static int maxOverheadTexts;
    @ObfuscatedName("gi")
    static int[] field923;
    @ObfuscatedName("gv")
@@ -1217,15 +1218,15 @@ public final class Client extends GameEngine {
       field919 = false;
       field920 = 0;
       overheadTextCount = 0;
-      field1100 = 50;
-      field923 = new int[field1100];
-      field924 = new int[field1100];
-      overheadTextsOffsetY = new int[field1100];
-      overheadTextsOffsetX = new int[field1100];
-      field927 = new int[field1100];
-      field900 = new int[field1100];
-      overheadTextsCyclesRemaining = new int[field1100];
-      overheadTexts = new String[field1100];
+      maxOverheadTexts = 50;
+      field923 = new int[maxOverheadTexts];
+      field924 = new int[maxOverheadTexts];
+      overheadTextsOffsetY = new int[maxOverheadTexts];
+      overheadTextsOffsetX = new int[maxOverheadTexts];
+      field927 = new int[maxOverheadTexts];
+      field900 = new int[maxOverheadTexts];
+      overheadTextsCyclesRemaining = new int[maxOverheadTexts];
+      overheadTexts = new String[maxOverheadTexts];
       field931 = new int[104][104];
       field932 = 0;
       screenY = -1;
