@@ -1127,7 +1127,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 32) {
                         var8 = FileSystem.method4252(ClientPacket.field2314, Client.field888.field1449);
                         var8.packetBuffer.putShort(Client.field984);
@@ -1138,7 +1138,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 33) {
                         var8 = FileSystem.method4252(ClientPacket.field2313, Client.field888.field1449);
                         var8.packetBuffer.method3311(var1);
@@ -1147,7 +1147,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 34) {
                         var8 = FileSystem.method4252(ClientPacket.field2318, Client.field888.field1449);
                         var8.packetBuffer.writeShortLE(var3);
@@ -1156,7 +1156,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 35) {
                         var8 = FileSystem.method4252(ClientPacket.field2330, Client.field888.field1449);
                         var8.packetBuffer.putShortLE(var3);
@@ -1165,7 +1165,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 36) {
                         var8 = FileSystem.method4252(ClientPacket.field2389, Client.field888.field1449);
                         var8.packetBuffer.writeShortLE(var3);
@@ -1174,7 +1174,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else if(var2 == 37) {
                         var8 = FileSystem.method4252(ClientPacket.field2340, Client.field888.field1449);
                         var8.packetBuffer.putShort(var0);
@@ -1183,7 +1183,7 @@ public enum class27 implements Enumerated {
                         Client.field888.method1862(var8);
                         Client.mouseCrosshair = 0;
                         Friend.field742 = VertexNormal.getWidget(var1);
-                        Client.field940 = var0;
+                        Client.pressedItemIndex = var0;
                      } else {
                         if(var2 == 38) {
                            class25.method181();
@@ -1209,7 +1209,7 @@ public enum class27 implements Enumerated {
                            Client.field888.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
-                           Client.field940 = var0;
+                           Client.pressedItemIndex = var0;
                         } else if(var2 == 40) {
                            var8 = FileSystem.method4252(ClientPacket.field2362, Client.field888.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
@@ -1218,7 +1218,7 @@ public enum class27 implements Enumerated {
                            Client.field888.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
-                           Client.field940 = var0;
+                           Client.pressedItemIndex = var0;
                         } else if(var2 == 41) {
                            var8 = FileSystem.method4252(ClientPacket.field2326, Client.field888.field1449);
                            var8.packetBuffer.writeIntLE16(var0);
@@ -1227,7 +1227,7 @@ public enum class27 implements Enumerated {
                            Client.field888.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
-                           Client.field940 = var0;
+                           Client.pressedItemIndex = var0;
                         } else if(var2 == 42) {
                            var8 = FileSystem.method4252(ClientPacket.field2384, Client.field888.field1449);
                            var8.packetBuffer.putShort(var3);
@@ -1236,7 +1236,7 @@ public enum class27 implements Enumerated {
                            Client.field888.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
-                           Client.field940 = var0;
+                           Client.pressedItemIndex = var0;
                         } else if(var2 == 43) {
                            var8 = FileSystem.method4252(ClientPacket.field2346, Client.field888.field1449);
                            var8.packetBuffer.putInt(var1);
@@ -1245,7 +1245,7 @@ public enum class27 implements Enumerated {
                            Client.field888.method1862(var8);
                            Client.mouseCrosshair = 0;
                            Friend.field742 = VertexNormal.getWidget(var1);
-                           Client.field940 = var0;
+                           Client.pressedItemIndex = var0;
                         } else if(var2 == 44) {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
@@ -1447,7 +1447,7 @@ public enum class27 implements Enumerated {
 
                                     Client.mouseCrosshair = 0;
                                     Friend.field742 = VertexNormal.getWidget(var1);
-                                    Client.field940 = var0;
+                                    Client.pressedItemIndex = var0;
                                     break label1046;
                                  }
 

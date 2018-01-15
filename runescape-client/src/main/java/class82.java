@@ -941,7 +941,7 @@ public class class82 {
                                                    class33.method344(var56);
                                                 }
                                              }
-                                          } else if(var10 == Friend.field742 && var19 == Client.field940) {
+                                          } else if(var10 == Friend.field742 && var19 == Client.pressedItemIndex) {
                                              var55.method5211(var22, var23, 128);
                                           } else {
                                              var55.drawAt(var22, var23);

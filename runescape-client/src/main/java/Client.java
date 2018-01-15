@@ -871,7 +871,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1664407999
    )
-   static int field940;
+   @Export("pressedItemIndex")
+   static int pressedItemIndex;
    @ObfuscatedName("hg")
    @ObfuscatedGetter(
       intValue = 534977433
@@ -1240,7 +1241,7 @@ public final class Client extends GameEngine {
       field1092 = 0;
       cursorState = 0;
       mouseCrosshair = 0;
-      field940 = 0;
+      pressedItemIndex = 0;
       field1073 = 0;
       field857 = 0;
       field1039 = 0;
