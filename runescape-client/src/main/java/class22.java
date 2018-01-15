@@ -323,7 +323,7 @@ public class class22 extends class28 {
          if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1122 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && class48.isFriended(((Player)var0).name, false))))) {
             Ignore.characterToScreen(var0, var0.field1136);
             if(Client.screenY > -1 && Client.overheadTextCount < Client.field1100) {
-               Client.field926[Client.overheadTextCount] = Friend.fontBold12.method4886(var0.overhead) / 2;
+               Client.field926[Client.overheadTextCount] = Friend.fontBold12.getTextWidth(var0.overhead) / 2;
                Client.field925[Client.overheadTextCount] = Friend.fontBold12.verticalSpace;
                Client.field923[Client.overheadTextCount] = Client.screenY;
                Client.field924[Client.overheadTextCount] = Client.screenX;
@@ -523,10 +523,10 @@ public class class22 extends class28 {
                      boolean var46 = false;
                      int var47 = 0;
                      var44 = var87.method4626(var0.hitsplatTypes[var75]);
-                     int var89 = var84.method4886(var44);
+                     int var89 = var84.getTextWidth(var44);
                      if(var79 != null) {
                         var45 = var79.method4626(var0.field1146[var75]);
-                        var47 = var43.method4886(var45);
+                        var47 = var43.getTextWidth(var45);
                      }
 
                      int var48 = 0;

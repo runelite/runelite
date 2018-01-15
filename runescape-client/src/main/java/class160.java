@@ -235,7 +235,7 @@ public class class160 {
          }
 
          if(var13) {
-            var14 = var1.method4886(ItemContainer.worldList[class91.field1326].activity) + 6;
+            var14 = var1.getTextWidth(ItemContainer.worldList[class91.field1326].activity) + 6;
             int var20 = var1.verticalSpace + 8;
             Rasterizer2D.Rasterizer2D_fillRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 16777120);
             Rasterizer2D.drawRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 0);

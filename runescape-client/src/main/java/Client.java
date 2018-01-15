@@ -6426,12 +6426,12 @@ public final class Client extends GameEngine {
    )
    @Export("openMenu")
    final void openMenu(int var1, int var2) {
-      int var3 = Friend.fontBold12.method4886("Choose Option");
+      int var3 = Friend.fontBold12.getTextWidth("Choose Option");
 
       int var4;
       int var5;
       for(var4 = 0; var4 < menuOptionCount; ++var4) {
-         var5 = Friend.fontBold12.method4886(class5.method18(var4));
+         var5 = Friend.fontBold12.getTextWidth(class5.method18(var4));
          if(var5 > var3) {
             var3 = var5;
          }

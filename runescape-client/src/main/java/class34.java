@@ -955,7 +955,7 @@ public class class34 {
 
                for(int var11 = 0; var11 < var10.length; ++var11) {
                   String var12 = var10[var11];
-                  int var13 = var14.method4886(var12);
+                  int var13 = var14.getTextWidth(var12);
                   if(var13 > var9) {
                      var9 = var13;
                   }

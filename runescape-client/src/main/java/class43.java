@@ -139,7 +139,7 @@ public class class43 {
                var0.method4891("Login: ", class91.loginWindowX + 180 - 110, var15, 16777215, 0);
                var16 = 200;
 
-               for(var6 = class21.method151(); var0.method4886(var6) > var16; var6 = var6.substring(0, var6.length() - 1)) {
+               for(var6 = class21.method151(); var0.getTextWidth(var6) > var16; var6 = var6.substring(0, var6.length() - 1)) {
                   ;
                }
 
@@ -194,7 +194,7 @@ public class class43 {
                   var0.method4891("Login: ", Preferences.field1217 - 110, var15, 16777215, 0);
                   var16 = 200;
 
-                  for(var6 = class21.method151(); var0.method4886(var6) > var16; var6 = var6.substring(1)) {
+                  for(var6 = class21.method151(); var0.getTextWidth(var6) > var16; var6 = var6.substring(1)) {
                      ;
                   }
 
@@ -253,7 +253,7 @@ public class class43 {
                   var0.method4891("Trust this computer", class91.loginWindowX + 180 - 9, var15, 16776960, 0);
                   var15 += 15;
                   var0.method4891("for 30 days: ", class91.loginWindowX + 180 - 9, var15, 16776960, 0);
-                  var5 = 180 + class91.loginWindowX - 9 + var0.method4886("for 30 days: ") + 15;
+                  var5 = 180 + class91.loginWindowX - 9 + var0.getTextWidth("for 30 days: ") + 15;
                   int var19 = var15 - var0.verticalSpace;
                   IndexedSprite var12;
                   if(class91.field1346) {
@@ -285,7 +285,7 @@ public class class43 {
                   var0.method4891("Username/email: ", class91.loginWindowX + 180 - 145, var15, 16777215, 0);
                   var16 = 174;
 
-                  for(var6 = class21.method151(); var0.method4886(var6) > var16; var6 = var6.substring(1)) {
+                  for(var6 = class21.method151(); var0.getTextWidth(var6) > var16; var6 = var6.substring(1)) {
                      ;
                   }
 

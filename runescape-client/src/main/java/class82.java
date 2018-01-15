@@ -711,7 +711,7 @@ public class class82 {
                                     }
 
                                     if(Client.field900[var36] == 4) {
-                                       var44 = (150 - Client.overheadTextsCyclesRemaining[var36]) * (Friend.fontBold12.method4886(var52) + 100) / 150;
+                                       var44 = (150 - Client.overheadTextsCyclesRemaining[var36]) * (Friend.fontBold12.getTextWidth(var52) + 100) / 150;
                                        Rasterizer2D.setInnerDrawRegion(var19 + Client.screenY - 50, var20, var19 + Client.screenY + 50, var20 + var22);
                                        Friend.fontBold12.method4891(var52, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
@@ -1215,7 +1215,7 @@ public class class82 {
                                           var48 = "";
                                        }
 
-                                       var25 = var47.method4886(var70);
+                                       var25 = var47.getTextWidth(var70);
                                        if(var25 > var19) {
                                           var19 = var25;
                                        }
