@@ -210,7 +210,6 @@ public class OverlayRenderer
 			bottomLeftPoint.y += chatboxBounds.height;
 		}
 
-
 		overlays.stream()
 			.filter(overlay -> shouldDrawOverlay(client, overlay))
 			.forEach(overlay ->
