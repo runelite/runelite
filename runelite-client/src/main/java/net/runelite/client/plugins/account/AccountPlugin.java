@@ -77,7 +77,14 @@ public class AccountPlugin extends Plugin
 		logoutButton = new NavigationButton("Logout", ImageIO.read(getClass().getResourceAsStream("logout_icon.png")));
 		loginButton.addActionListener(this::loginClick);
 		logoutButton.addActionListener(this::logoutClick);
-		ui.getPluginToolbar().addNavigation(loginButton);
+		ui.getPluginToolbar().addNavigation(sessionManager.getAccountSession() != null ? logoutButton : loginButton);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		ui.getPluginToolbar().removeNavigation(loginButton);
+		ui.getPluginToolbar().removeNavigation(logoutButton);
 	}
 
 	private void loginClick(ActionEvent ae)
