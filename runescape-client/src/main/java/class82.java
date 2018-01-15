@@ -695,7 +695,7 @@ public class class82 {
                                     }
 
                                     if(Client.field900[var36] == 0) {
-                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
                                     }
 
                                     if(Client.field900[var36] == 1) {
@@ -727,11 +727,11 @@ public class class82 {
                                        }
 
                                        Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
-                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var21 + var19, var22 + var20);
                                     }
                                  } else {
-                                    Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
+                                    Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
                                  }
                               }
 
@@ -1187,7 +1187,7 @@ public class class82 {
                                              if(var10.field2814 == 0) {
                                                 var63.method4891(var54, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2814 == 1) {
-                                                var63.method4884(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.drawTextCentered(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else {
                                                 var63.method4893(var54, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
                                              }

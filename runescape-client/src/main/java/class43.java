@@ -112,13 +112,13 @@ public class class43 {
          int var5;
          if(Client.gameState == 0 || Client.gameState == 5) {
             byte var4 = 20;
-            var0.method4884("RuneScape is loading - please wait...", class91.loginWindowX + 180, 245 - var4, 16777215, -1);
+            var0.drawTextCentered("RuneScape is loading - please wait...", class91.loginWindowX + 180, 245 - var4, 16777215, -1);
             var5 = 253 - var4;
             Rasterizer2D.drawRectangle(class91.loginWindowX + 180 - 152, var5, 304, 34, 9179409);
             Rasterizer2D.drawRectangle(class91.loginWindowX + 180 - 151, var5 + 1, 302, 32, 0);
             Rasterizer2D.Rasterizer2D_fillRectangle(class91.loginWindowX + 180 - 150, var5 + 2, class91.loadingBarPercentage * 3, 30, 9179409);
             Rasterizer2D.Rasterizer2D_fillRectangle(class91.loginWindowX + 180 - 150 + class91.loadingBarPercentage * 3, var5 + 2, 300 - class91.loadingBarPercentage * 3, 30, 0);
-            var0.method4884(class91.loadingText, class91.loginWindowX + 180, 276 - var4, 16777215, -1);
+            var0.drawTextCentered(class91.loadingText, class91.loginWindowX + 180, 276 - var4, 16777215, -1);
          }
 
          String var6;
@@ -128,11 +128,11 @@ public class class43 {
          if(Client.gameState == 20) {
             class91.field1316.method5176(class91.loginWindowX + 180 - class91.field1316.originalWidth / 2, 271 - class91.field1316.height / 2);
             var14 = 201;
-            var0.method4884(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
+            var0.drawTextCentered(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
             var15 = var14 + 15;
-            var0.method4884(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
+            var0.drawTextCentered(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
             var15 += 15;
-            var0.method4884(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
+            var0.drawTextCentered(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
             var15 += 15;
             var15 += 7;
             if(class91.loginIndex != 4) {
@@ -155,7 +155,7 @@ public class class43 {
             short var11;
             if(class91.loginIndex == 0) {
                var14 = 251;
-               var0.method4884("Welcome to RuneScape", class91.loginWindowX + 180, var14, 16776960, 0);
+               var0.drawTextCentered("Welcome to RuneScape", class91.loginWindowX + 180, var14, 16776960, 0);
                var15 = var14 + 30;
                var5 = class91.loginWindowX + 180 - 80;
                var11 = 291;
@@ -165,30 +165,30 @@ public class class43 {
                class91.field1317.method5176(var5 - 73, var11 - 20);
                var0.method4895("Existing User", var5 - 73, var11 - 20, 144, 40, 16777215, 0, 1, 1, 0);
             } else if(class91.loginIndex == 1) {
-               var0.method4884(class91.Login_response0, class91.loginWindowX + 180, 201, 16776960, 0);
+               var0.drawTextCentered(class91.Login_response0, class91.loginWindowX + 180, 201, 16776960, 0);
                var14 = 236;
-               var0.method4884(class91.loginMessage1, class91.loginWindowX + 180, var14, 16777215, 0);
+               var0.drawTextCentered(class91.loginMessage1, class91.loginWindowX + 180, var14, 16777215, 0);
                var15 = var14 + 15;
-               var0.method4884(class91.loginMessage2, class91.loginWindowX + 180, var15, 16777215, 0);
+               var0.drawTextCentered(class91.loginMessage2, class91.loginWindowX + 180, var15, 16777215, 0);
                var15 += 15;
-               var0.method4884(class91.loginMessage3, class91.loginWindowX + 180, var15, 16777215, 0);
+               var0.drawTextCentered(class91.loginMessage3, class91.loginWindowX + 180, var15, 16777215, 0);
                var15 += 15;
                var5 = class91.loginWindowX + 180 - 80;
                var11 = 321;
                class91.field1317.method5176(var5 - 73, var11 - 20);
-               var0.method4884("Continue", var5, var11 + 5, 16777215, 0);
+               var0.drawTextCentered("Continue", var5, var11 + 5, 16777215, 0);
                var5 = class91.loginWindowX + 180 + 80;
                class91.field1317.method5176(var5 - 73, var11 - 20);
-               var0.method4884("Cancel", var5, var11 + 5, 16777215, 0);
+               var0.drawTextCentered("Cancel", var5, var11 + 5, 16777215, 0);
             } else {
                int var7;
                if(class91.loginIndex == 2) {
                   var14 = 201;
-                  var0.method4884(class91.loginMessage1, Preferences.field1217, var14, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage1, Preferences.field1217, var14, 16776960, 0);
                   var15 = var14 + 15;
-                  var0.method4884(class91.loginMessage2, Preferences.field1217, var15, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage2, Preferences.field1217, var15, 16776960, 0);
                   var15 += 15;
-                  var0.method4884(class91.loginMessage3, Preferences.field1217, var15, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage3, Preferences.field1217, var15, 16776960, 0);
                   var15 += 15;
                   var15 += 7;
                   var0.method4891("Login: ", Preferences.field1217 - 110, var15, 16777215, 0);
@@ -217,36 +217,36 @@ public class class43 {
                   int var9 = Preferences.field1217 - 80;
                   short var10 = 321;
                   class91.field1317.method5176(var9 - 73, var10 - 20);
-                  var0.method4884("Login", var9, var10 + 5, 16777215, 0);
+                  var0.drawTextCentered("Login", var9, var10 + 5, 16777215, 0);
                   var9 = Preferences.field1217 + 80;
                   class91.field1317.method5176(var9 - 73, var10 - 20);
-                  var0.method4884("Cancel", var9, var10 + 5, 16777215, 0);
+                  var0.drawTextCentered("Cancel", var9, var10 + 5, 16777215, 0);
                   var14 = 357;
-                  var1.method4884("Forgotten your password? <col=ffffff>Click here.", Preferences.field1217, var14, 16776960, 0);
+                  var1.drawTextCentered("Forgotten your password? <col=ffffff>Click here.", Preferences.field1217, var14, 16776960, 0);
                } else if(class91.loginIndex == 3) {
                   var14 = 201;
-                  var0.method4884("Invalid username or password.", class91.loginWindowX + 180, var14, 16776960, 0);
+                  var0.drawTextCentered("Invalid username or password.", class91.loginWindowX + 180, var14, 16776960, 0);
                   var15 = var14 + 20;
-                  var1.method4884("For accounts created after 24th November 2010, please use your", class91.loginWindowX + 180, var15, 16776960, 0);
+                  var1.drawTextCentered("For accounts created after 24th November 2010, please use your", class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
-                  var1.method4884("email address to login. Otherwise please login with your username.", class91.loginWindowX + 180, var15, 16776960, 0);
+                  var1.drawTextCentered("email address to login. Otherwise please login with your username.", class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
                   var5 = class91.loginWindowX + 180;
                   var11 = 276;
                   class91.field1317.method5176(var5 - 73, var11 - 20);
-                  var2.method4884("Try again", var5, var11 + 5, 16777215, 0);
+                  var2.drawTextCentered("Try again", var5, var11 + 5, 16777215, 0);
                   var5 = class91.loginWindowX + 180;
                   var11 = 326;
                   class91.field1317.method5176(var5 - 73, var11 - 20);
-                  var2.method4884("Forgotten password?", var5, var11 + 5, 16777215, 0);
+                  var2.drawTextCentered("Forgotten password?", var5, var11 + 5, 16777215, 0);
                } else if(class91.loginIndex == 4) {
-                  var0.method4884("Authenticator", class91.loginWindowX + 180, 201, 16776960, 0);
+                  var0.drawTextCentered("Authenticator", class91.loginWindowX + 180, 201, 16776960, 0);
                   var14 = 236;
-                  var0.method4884(class91.loginMessage1, class91.loginWindowX + 180, var14, 16777215, 0);
+                  var0.drawTextCentered(class91.loginMessage1, class91.loginWindowX + 180, var14, 16777215, 0);
                   var15 = var14 + 15;
-                  var0.method4884(class91.loginMessage2, class91.loginWindowX + 180, var15, 16777215, 0);
+                  var0.drawTextCentered(class91.loginMessage2, class91.loginWindowX + 180, var15, 16777215, 0);
                   var15 += 15;
-                  var0.method4884(class91.loginMessage3, class91.loginWindowX + 180, var15, 16777215, 0);
+                  var0.drawTextCentered(class91.loginMessage3, class91.loginWindowX + 180, var15, 16777215, 0);
                   var15 += 15;
                   var0.method4891("PIN: " + UnitPriceComparator.method127(class237.field3245) + (Client.gameCycle % 40 < 20?Buffer.getColTags(16776960) + "|":""), class91.loginWindowX + 180 - 108, var15, 16777215, 0);
                   var15 -= 8;
@@ -267,19 +267,19 @@ public class class43 {
                   int var13 = class91.loginWindowX + 180 - 80;
                   short var18 = 321;
                   class91.field1317.method5176(var13 - 73, var18 - 20);
-                  var0.method4884("Continue", var13, var18 + 5, 16777215, 0);
+                  var0.drawTextCentered("Continue", var13, var18 + 5, 16777215, 0);
                   var13 = class91.loginWindowX + 180 + 80;
                   class91.field1317.method5176(var13 - 73, var18 - 20);
-                  var0.method4884("Cancel", var13, var18 + 5, 16777215, 0);
-                  var1.method4884("<u=ff>Can\'t Log In?</u>", class91.loginWindowX + 180, var18 + 36, 255, 0);
+                  var0.drawTextCentered("Cancel", var13, var18 + 5, 16777215, 0);
+                  var1.drawTextCentered("<u=ff>Can\'t Log In?</u>", class91.loginWindowX + 180, var18 + 36, 255, 0);
                } else if(class91.loginIndex == 5) {
-                  var0.method4884("Forgotten your password?", class91.loginWindowX + 180, 201, 16776960, 0);
+                  var0.drawTextCentered("Forgotten your password?", class91.loginWindowX + 180, 201, 16776960, 0);
                   var14 = 221;
-                  var2.method4884(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
+                  var2.drawTextCentered(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
                   var15 = var14 + 15;
-                  var2.method4884(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
+                  var2.drawTextCentered(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
-                  var2.method4884(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
+                  var2.drawTextCentered(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
                   var15 += 14;
                   var0.method4891("Username/email: ", class91.loginWindowX + 180 - 145, var15, 16777215, 0);
@@ -294,22 +294,22 @@ public class class43 {
                   var7 = class91.loginWindowX + 180 - 80;
                   short var21 = 321;
                   class91.field1317.method5176(var7 - 73, var21 - 20);
-                  var0.method4884("Recover", var7, var21 + 5, 16777215, 0);
+                  var0.drawTextCentered("Recover", var7, var21 + 5, 16777215, 0);
                   var7 = class91.loginWindowX + 180 + 80;
                   class91.field1317.method5176(var7 - 73, var21 - 20);
-                  var0.method4884("Back", var7, var21 + 5, 16777215, 0);
+                  var0.drawTextCentered("Back", var7, var21 + 5, 16777215, 0);
                } else if(class91.loginIndex == 6) {
                   var14 = 201;
-                  var0.method4884(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage1, class91.loginWindowX + 180, var14, 16776960, 0);
                   var15 = var14 + 15;
-                  var0.method4884(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage2, class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
-                  var0.method4884(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
+                  var0.drawTextCentered(class91.loginMessage3, class91.loginWindowX + 180, var15, 16776960, 0);
                   var15 += 15;
                   var5 = class91.loginWindowX + 180;
                   var11 = 321;
                   class91.field1317.method5176(var5 - 73, var11 - 20);
-                  var0.method4884("Back", var5, var11 + 5, 16777215, 0);
+                  var0.drawTextCentered("Back", var5, var11 + 5, 16777215, 0);
                }
             }
          }
@@ -328,11 +328,11 @@ public class class43 {
                byte var20 = 100;
                byte var17 = 35;
                class160.field2151.method5176(var15, var16);
-               var0.method4884("World" + " " + Client.world, var20 / 2 + var15, var17 / 2 + var16 - 2, 16777215, 0);
+               var0.drawTextCentered("World" + " " + Client.world, var20 / 2 + var15, var17 / 2 + var16 - 2, 16777215, 0);
                if(class192.listFetcher != null) {
-                  var1.method4884("Loading...", var20 / 2 + var15, var17 / 2 + var16 + 12, 16777215, 0);
+                  var1.drawTextCentered("Loading...", var20 / 2 + var15, var17 / 2 + var16 + 12, 16777215, 0);
                } else {
-                  var1.method4884("Click to switch", var20 / 2 + var15, var17 / 2 + var16 + 12, 16777215, 0);
+                  var1.drawTextCentered("Click to switch", var20 / 2 + var15, var17 / 2 + var16 + 12, 16777215, 0);
                }
             } else {
                class160.field2151 = class279.getSprite(indexSprites, "sl_button", "");

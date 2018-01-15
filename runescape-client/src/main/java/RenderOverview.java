@@ -654,7 +654,7 @@ public class RenderOverview {
       Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, -16777216);
       Rasterizer2D.drawRectangle(var7 - 152, var8, 304, 34, -65536);
       Rasterizer2D.Rasterizer2D_fillRectangle(var7 - 150, var8 + 2, var5 * 3, 30, -65536);
-      this.field3926.method4884("Loading...", var7, var8 + var6, -1, -1);
+      this.field3926.drawTextCentered("Loading...", var7, var8 + var6, -1, -1);
    }
 
    @ObfuscatedName("p")

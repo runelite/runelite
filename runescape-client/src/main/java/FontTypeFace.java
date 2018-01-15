@@ -413,7 +413,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("q")
-   public void method4884(String var1, int var2, int var3, int var4, int var5) {
+   @Export("drawTextCentered")
+   public void drawTextCentered(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
          this.method4903(var1, var2 - this.getTextWidth(var1) / 2, var3);

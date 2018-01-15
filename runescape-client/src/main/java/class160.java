@@ -58,7 +58,7 @@ public class class160 {
       Rasterizer2D.Rasterizer2D_fillRectangle(class91.field1351, 23, 765, 480, 0);
       Rasterizer2D.method5094(class91.field1351, 0, 125, 23, 12425273, 9135624);
       Rasterizer2D.method5094(class91.field1351 + 125, 0, 640, 23, 5197647, 2697513);
-      var0.method4884("Select a world", class91.field1351 + 62, 15, 0, -1);
+      var0.drawTextCentered("Select a world", class91.field1351 + 62, 15, 0, -1);
       if(class37.slStarSprites != null) {
          class37.slStarSprites[1].method5176(class91.field1351 + 140, 1);
          var1.method4891("Members only world", class91.field1351 + 152, 10, 16777215, -1);
@@ -128,7 +128,7 @@ public class class160 {
       }
 
       Rasterizer2D.Rasterizer2D_fillRectangle(class91.field1351 + 708, 4, 50, 16, 0);
-      var1.method4884("Cancel", class91.field1351 + 708 + 25, 16, 16777215, -1);
+      var1.drawTextCentered("Cancel", class91.field1351 + 708 + 25, 16, 16777215, -1);
       class91.field1326 = -1;
       if(FriendLoginUpdate.field760 != null) {
          byte var21 = 88;
@@ -223,8 +223,8 @@ public class class160 {
                class221.slFlagSprites[(var15.method1518()?8:0) + var15.location].method5176(var11 + 29, var10);
             }
 
-            var0.method4884(Integer.toString(var15.id), var11 + 15, var22 / 2 + var10 + 5, var19, -1);
-            var1.method4884(var17, var11 + 60, var22 / 2 + var10 + 5, 268435455, -1);
+            var0.drawTextCentered(Integer.toString(var15.id), var11 + 15, var22 / 2 + var10 + 5, var19, -1);
+            var1.drawTextCentered(var17, var11 + 60, var22 / 2 + var10 + 5, 268435455, -1);
             var10 = var10 + var22 + var7;
             ++var12;
             if(var12 >= var5) {
@@ -239,7 +239,7 @@ public class class160 {
             int var20 = var1.verticalSpace + 8;
             Rasterizer2D.Rasterizer2D_fillRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 16777120);
             Rasterizer2D.drawRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 0);
-            var1.method4884(ItemContainer.worldList[class91.field1326].activity, MouseInput.field679, var1.verticalSpace + MouseInput.field682 * -469125321 + 20 + 5 + 4, 0, -1);
+            var1.drawTextCentered(ItemContainer.worldList[class91.field1326].activity, MouseInput.field679, var1.verticalSpace + MouseInput.field682 * -469125321 + 20 + 5 + 4, 0, -1);
          }
       }
 
