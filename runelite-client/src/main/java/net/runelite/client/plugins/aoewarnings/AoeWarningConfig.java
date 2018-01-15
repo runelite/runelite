@@ -156,6 +156,16 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "wintertodt",
+		name = "Wintertodt Snow Fall",
+		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed"
+	)
+	default boolean isWintertodtEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "outline",
 		name = "Display Outline",
 		description = "Configures whether or not AoE Projectile Warnings have an outline"
