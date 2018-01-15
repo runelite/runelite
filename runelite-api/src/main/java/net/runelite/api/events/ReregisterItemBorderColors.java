@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-import java.awt.image.BufferedImage;
-
-public interface SpritePixels
+public class ReregisterItemBorderColors
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
-
-	void drawAt(int x, int y);
-
-	int getWidth();
-
-	int getHeight();
-
-	int[] getPixels();
-
-	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
-	 */
-	BufferedImage toBufferedImage();
 }

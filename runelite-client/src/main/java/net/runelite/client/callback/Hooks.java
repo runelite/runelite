@@ -24,11 +24,13 @@
  */
 package net.runelite.client.callback;
 
+import net.runelite.api.GameState;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.ReregisterItemBorderColors;
 import net.runelite.api.events.SetMessage;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
@@ -72,6 +74,12 @@ public class Hooks
 
 	public static void clientMainLoop(Client client, boolean arg1)
 	{
+		client.clearItemBorderColors();
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			eventBus.post(new ReregisterItemBorderColors());
+		}
+
 		long now = System.currentTimeMillis();
 
 		if (now - lastCheck < CHECK)
@@ -201,9 +209,9 @@ public class Hooks
 	 * Lizardman Shamans, this is only called once
 	 *
 	 * @param projectile The projectile being moved
-	 * @param targetX X position of where the projectile is being moved to
-	 * @param targetY Y position of where the projectile is being moved to
-	 * @param targetZ Z position of where the projectile is being moved to
+	 * @param targetX    X position of where the projectile is being moved to
+	 * @param targetY    Y position of where the projectile is being moved to
+	 * @param targetZ    Z position of where the projectile is being moved to
 	 * @param cycle
 	 */
 	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)

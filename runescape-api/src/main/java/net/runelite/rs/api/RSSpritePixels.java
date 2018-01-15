@@ -46,6 +46,9 @@ public interface RSSpritePixels extends SpritePixels
 	int[] getPixels();
 
 	@Import("drawOutline")
-	@Override
 	void drawOutline(int rgb);
+
+	boolean getHasBeenModified();
+
+	void setHasBeenModified(boolean value);
 }

@@ -33,6 +33,23 @@ import net.runelite.rs.api.RSSpritePixels;
 public abstract class RSSpritePixelsMixin implements RSSpritePixels
 {
 	@Inject
+	public boolean hasBeenModified;
+
+	@Inject
+	@Override
+	public void setHasBeenModified(boolean value)
+	{
+		this.hasBeenModified = value;
+	}
+
+	@Inject
+	@Override
+	public boolean getHasBeenModified()
+	{
+		return this.hasBeenModified;
+	}
+
+	@Inject
 	@Override
 	public BufferedImage toBufferedImage()
 	{
