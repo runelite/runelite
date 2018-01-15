@@ -252,6 +252,7 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
+   @Export("params")
    IterableHashTable params;
 
    static {
