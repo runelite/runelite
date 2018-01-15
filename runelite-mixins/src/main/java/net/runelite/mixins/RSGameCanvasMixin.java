@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
 import java.awt.Canvas;
-import net.runelite.api.GameEngine;
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSGameCanvas;
+import net.runelite.rs.api.RSGameEngine;
 
-public interface RSGameEngine extends GameEngine
+@Mixin(RSGameCanvas.class)
+public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 {
-	@Import("canvas")
-	Canvas getCanvas();
-
-	boolean getShouldGetFocus();
+	@Inject
+	public void requestFocus()
+	{
+		// Runescape requests focus whenever the window is resized. This makes it so PluginPanels cannot have focus
+		// if they cause the sidebar to expand. This prevents Runescape from requesting focus whenever it wants
+		RSGameEngine engine = (RSGameEngine)getComponent();
+		if (engine.getShouldGetFocus())
+		{
+			this.requestFocusInWindow();
+		}
+	}
 }

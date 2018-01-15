@@ -24,6 +24,11 @@
  */
 package net.runelite.rs.api;
 
+import java.awt.Component;
+import net.runelite.mapping.Import;
+
 public interface RSGameCanvas
 {
+	@Import("component")
+	Component getComponent();
 }

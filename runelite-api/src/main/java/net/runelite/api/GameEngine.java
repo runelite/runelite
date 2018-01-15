@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
 import java.awt.Canvas;
-import net.runelite.api.GameEngine;
-import net.runelite.mapping.Import;
 
-public interface RSGameEngine extends GameEngine
+public interface GameEngine
 {
-	@Import("canvas")
 	Canvas getCanvas();
-
-	boolean getShouldGetFocus();
 }
