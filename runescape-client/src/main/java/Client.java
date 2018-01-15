@@ -842,7 +842,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 2061978077
    )
-   static int field1003;
+   @Export("lastLeftClickX")
+   static int lastLeftClickX;
    @ObfuscatedName("ho")
    @ObfuscatedGetter(
       intValue = -372785863
@@ -1233,7 +1234,7 @@ public final class Client extends GameEngine {
       field932 = 0;
       screenX = -1;
       screenY = -1;
-      field1003 = 0;
+      lastLeftClickX = 0;
       field936 = 0;
       field1092 = 0;
       cursorState = 0;
@@ -4008,7 +4009,7 @@ public final class Client extends GameEngine {
                                                 var42.packetBuffer.putShortLE(var4 + baseY);
                                                 field888.method1862(var42);
                                                 Region.method2800();
-                                                field1003 = MouseInput.mouseLastPressedX;
+                                                lastLeftClickX = MouseInput.mouseLastPressedX;
                                                 field936 = MouseInput.mouseLastPressedY;
                                                 cursorState = 1;
                                                 field1092 = 0;
