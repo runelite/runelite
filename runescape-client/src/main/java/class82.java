@@ -738,11 +738,11 @@ public class class82 {
                               class21.method154(var19, var20);
                               ((TextureProvider)Graphics3D.textureLoader).method2393(Client.field847);
                               if(Client.cursorState == 1) {
-                                 Size.crossSprites[Client.field1092 / 100].drawAt(Client.lastLeftClickX - 8, Client.field936 - 8);
+                                 Size.crossSprites[Client.field1092 / 100].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                               }
 
                               if(Client.cursorState == 2) {
-                                 Size.crossSprites[Client.field1092 / 100 + 4].drawAt(Client.lastLeftClickX - 8, Client.field936 - 8);
+                                 Size.crossSprites[Client.field1092 / 100 + 4].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                               }
 
                               Coordinates.method4077();

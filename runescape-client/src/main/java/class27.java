@@ -705,7 +705,7 @@ public enum class27 implements Enumerated {
       PacketNode var8;
       if(var2 == 1) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -721,7 +721,7 @@ public enum class27 implements Enumerated {
          Client.field888.method1862(var8);
       } else if(var2 == 2) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -736,7 +736,7 @@ public enum class27 implements Enumerated {
          Client.field888.method1862(var8);
       } else if(var2 == 3) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -749,7 +749,7 @@ public enum class27 implements Enumerated {
          Client.field888.method1862(var8);
       } else if(var2 == 4) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -762,7 +762,7 @@ public enum class27 implements Enumerated {
          Client.field888.method1862(var8);
       } else if(var2 == 5) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -775,7 +775,7 @@ public enum class27 implements Enumerated {
          Client.field888.method1862(var8);
       } else if(var2 == 6) {
          Client.lastLeftClickX = var6;
-         Client.field936 = var7;
+         Client.lastLeftClickY = var7;
          Client.cursorState = 2;
          Client.field1092 = 0;
          Client.destinationX = var0;
@@ -793,7 +793,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -810,7 +810,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -826,7 +826,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -840,7 +840,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -854,7 +854,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -868,7 +868,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -882,7 +882,7 @@ public enum class27 implements Enumerated {
             var21 = Client.cachedNPCs[var3];
             if(var21 != null) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -898,7 +898,7 @@ public enum class27 implements Enumerated {
                var24 = Client.cachedPlayers[var3];
                if(var24 != null) {
                   Client.lastLeftClickX = var6;
-                  Client.field936 = var7;
+                  Client.lastLeftClickY = var7;
                   Client.cursorState = 2;
                   Client.field1092 = 0;
                   Client.destinationX = var0;
@@ -915,7 +915,7 @@ public enum class27 implements Enumerated {
                var24 = Client.cachedPlayers[var3];
                if(var24 != null) {
                   Client.lastLeftClickX = var6;
-                  Client.field936 = var7;
+                  Client.lastLeftClickY = var7;
                   Client.cursorState = 2;
                   Client.field1092 = 0;
                   Client.destinationX = var0;
@@ -929,7 +929,7 @@ public enum class27 implements Enumerated {
                }
             } else if(var2 == 16) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -945,7 +945,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 17) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -960,7 +960,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 18) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -973,7 +973,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 19) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -986,7 +986,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 20) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -999,7 +999,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 21) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -1012,7 +1012,7 @@ public enum class27 implements Enumerated {
                Client.field888.method1862(var8);
             } else if(var2 == 22) {
                Client.lastLeftClickX = var6;
-               Client.field936 = var7;
+               Client.lastLeftClickY = var7;
                Client.cursorState = 2;
                Client.field1092 = 0;
                Client.destinationX = var0;
@@ -1250,7 +1250,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1264,7 +1264,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1278,7 +1278,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1292,7 +1292,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1306,7 +1306,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1320,7 +1320,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1334,7 +1334,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1348,7 +1348,7 @@ public enum class27 implements Enumerated {
                            var24 = Client.cachedPlayers[var3];
                            if(var24 != null) {
                               Client.lastLeftClickX = var6;
-                              Client.field936 = var7;
+                              Client.lastLeftClickY = var7;
                               Client.cursorState = 2;
                               Client.field1092 = 0;
                               Client.destinationX = var0;
@@ -1378,7 +1378,7 @@ public enum class27 implements Enumerated {
 
                                  if(var2 == 1001) {
                                     Client.lastLeftClickX = var6;
-                                    Client.field936 = var7;
+                                    Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
                                     Client.destinationX = var0;
@@ -1394,7 +1394,7 @@ public enum class27 implements Enumerated {
 
                                  if(var2 == 1002) {
                                     Client.lastLeftClickX = var6;
-                                    Client.field936 = var7;
+                                    Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
                                     var8 = FileSystem.method4252(ClientPacket.field2390, Client.field888.field1449);
@@ -1405,7 +1405,7 @@ public enum class27 implements Enumerated {
 
                                  if(var2 == 1003) {
                                     Client.lastLeftClickX = var6;
-                                    Client.field936 = var7;
+                                    Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
                                     var21 = Client.cachedNPCs[var3];
@@ -1426,7 +1426,7 @@ public enum class27 implements Enumerated {
 
                                  if(var2 == 1004) {
                                     Client.lastLeftClickX = var6;
-                                    Client.field936 = var7;
+                                    Client.lastLeftClickY = var7;
                                     Client.cursorState = 2;
                                     Client.field1092 = 0;
                                     var8 = FileSystem.method4252(ClientPacket.field2402, Client.field888.field1449);
