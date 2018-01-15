@@ -264,16 +264,10 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("infobox") || event.getKey().equals("enabled"))
+		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
+		if (config.enabled() && config.showInfobox())
 		{
-			if (event.getNewValue().equals("true"))
-			{
-				infoBoxManager.addInfoBox(counter);
-			}
-			else
-			{
-				infoBoxManager.removeIf(t -> t instanceof TaskCounter);
-			}
+			infoBoxManager.addInfoBox(counter);
 		}
 	}
 
