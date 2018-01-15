@@ -24,13 +24,8 @@
  */
 package net.runelite.rs.api;
 
-import java.awt.Image;
-import net.runelite.api.MainBufferProvider;
-import net.runelite.mapping.Import;
+import net.runelite.api.BufferProvider;
 
-public interface RSMainBufferProvider extends RSBufferProvider, MainBufferProvider
+public interface RSBufferProvider extends BufferProvider
 {
-	@Import("image")
-	@Override
-	Image getImage();
 }
