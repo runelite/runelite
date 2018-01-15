@@ -197,7 +197,7 @@ public class OverlayRenderer
 			? new Rectangle(viewport.getBounds())
 			: new Rectangle(0, 0, surface.getWidth(), surface.getHeight());
 
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
+		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX_MESSAGES);
 		final Rectangle chatboxBounds = chatbox != null
 				? chatbox.getBounds() : new Rectangle(0, bounds.height, 519, 165);
 
@@ -212,6 +212,13 @@ public class OverlayRenderer
 		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point rightChatboxPoint = new Point();
 		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT,bounds.y + bounds.height - BORDER_BOTTOM);
+
+		//check to see if Chatbox is minimized
+		if (chatbox != null && client.isResized() && chatbox.isHidden())
+		{
+			rightChatboxPoint.y += chatboxBounds.height;
+			bottomLeftPoint.y += chatboxBounds.height;
+		}
 
 		overlays.stream()
 			.filter(overlay -> overlay.getLayer() == layer)
