@@ -828,14 +828,14 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 277812439
    )
-   @Export("screenY")
-   static int screenY;
+   @Export("screenX")
+   static int screenX;
    @ObfuscatedName("hq")
    @ObfuscatedGetter(
       intValue = 1559491565
    )
-   @Export("screenX")
-   static int screenX;
+   @Export("screenY")
+   static int screenY;
    @ObfuscatedName("hf")
    @ObfuscatedGetter(
       intValue = 2061978077
@@ -1229,8 +1229,8 @@ public final class Client extends GameEngine {
       overheadTexts = new String[maxOverheadTexts];
       field931 = new int[104][104];
       field932 = 0;
-      screenY = -1;
       screenX = -1;
+      screenY = -1;
       field1003 = 0;
       field936 = 0;
       field1092 = 0;

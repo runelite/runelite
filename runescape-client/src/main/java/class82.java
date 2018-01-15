@@ -640,8 +640,8 @@ public class class82 {
                                     }
                                  }
 
-                                 Client.screenY = Client.field923[var36];
-                                 Client.screenX = Client.field924[var36] = var38;
+                                 Client.screenX = Client.field923[var36];
+                                 Client.screenY = Client.field924[var36] = var38;
                                  String var52 = Client.overheadTexts[var36];
                                  if(Client.field990 == 0) {
                                     var43 = 16776960;
@@ -695,25 +695,25 @@ public class class82 {
                                     }
 
                                     if(Client.field900[var36] == 0) {
-                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0);
                                     }
 
                                     if(Client.field900[var36] == 1) {
-                                       Friend.fontBold12.method4937(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4937(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 2) {
-                                       Friend.fontBold12.method4890(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4890(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 3) {
-                                       Friend.fontBold12.method4898(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932, 150 - Client.overheadTextsCyclesRemaining[var36]);
+                                       Friend.fontBold12.method4898(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932, 150 - Client.overheadTextsCyclesRemaining[var36]);
                                     }
 
                                     if(Client.field900[var36] == 4) {
                                        var44 = (150 - Client.overheadTextsCyclesRemaining[var36]) * (Friend.fontBold12.getTextWidth(var52) + 100) / 150;
-                                       Rasterizer2D.setInnerDrawRegion(var19 + Client.screenY - 50, var20, var19 + Client.screenY + 50, var20 + var22);
-                                       Friend.fontBold12.method4891(var52, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
+                                       Rasterizer2D.setInnerDrawRegion(var19 + Client.screenX - 50, var20, var19 + Client.screenX + 50, var20 + var22);
+                                       Friend.fontBold12.method4891(var52, var19 + Client.screenX + 50 - var44, var20 + Client.screenY, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                                     }
 
@@ -726,12 +726,12 @@ public class class82 {
                                           var45 = var44 - 125;
                                        }
 
-                                       Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
-                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
+                                       Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenY - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenY + 5);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var45 + var20 + Client.screenY, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var21 + var19, var22 + var20);
                                     }
                                  } else {
-                                    Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
+                                    Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var20 + Client.screenY, 16776960, 0);
                                  }
                               }
 

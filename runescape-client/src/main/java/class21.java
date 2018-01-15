@@ -530,8 +530,8 @@ public class class21 {
    static final void method154(int var0, int var1) {
       if(Client.hintArrowTargetType == 2) {
          class285.worldToScreen((Client.hintArrowX - class46.baseX << 7) + Client.hintArrowOffsetX, (Client.hintArrowY - Client.baseY << 7) + Client.hintArrowOffsetY, Client.hintArrowType * 2);
-         if(Client.screenY > -1 && Client.gameCycle % 20 < 10) {
-            RenderOverview.headIconsHint[0].drawAt(var0 + Client.screenY - 12, Client.screenX + var1 - 28);
+         if(Client.screenX > -1 && Client.gameCycle % 20 < 10) {
+            RenderOverview.headIconsHint[0].drawAt(var0 + Client.screenX - 12, Client.screenY + var1 - 28);
          }
 
       }

@@ -26,16 +26,16 @@ public class class285 {
          var8 = var3 * var5 - var4 * var1 >> 16;
          var1 = var3 * var4 + var5 * var1 >> 16;
          if(var1 >= 50) {
-            Client.screenY = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenX = var8 * Client.scale / var1 + Client.viewportWidth / 2;
+            Client.screenX = var0 * Client.scale / var1 + Client.viewportHeight / 2;
+            Client.screenY = var8 * Client.scale / var1 + Client.viewportWidth / 2;
          } else {
-            Client.screenY = -1;
             Client.screenX = -1;
+            Client.screenY = -1;
          }
 
       } else {
-         Client.screenY = -1;
          Client.screenX = -1;
+         Client.screenY = -1;
       }
    }
 }
