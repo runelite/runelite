@@ -908,7 +908,7 @@ public class class82 {
                                                 var25 = 0;
                                              }
 
-                                             var55.method5211(var22 + var24, var23 + var25, 128);
+                                             var55.drawAtOpacity(var22 + var24, var23 + var25, 128);
                                              if(var1 != -1) {
                                                 Widget var56 = var0[var1 & 65535];
                                                 if(var23 + var25 < Rasterizer2D.drawingAreaTop && var56.scrollY > 0) {
@@ -942,7 +942,7 @@ public class class82 {
                                                 }
                                              }
                                           } else if(var10 == Friend.field742 && var19 == Client.pressedItemIndex) {
-                                             var55.method5211(var22, var23, 128);
+                                             var55.drawAtOpacity(var22, var23, 128);
                                           } else {
                                              var55.drawAt(var22, var23);
                                           }
@@ -1088,7 +1088,7 @@ public class class82 {
                                              if(var10.textureId != 0) {
                                                 var64.method5218(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var21 * var25, var10.textureId, 4096);
                                              } else if(var14 != 0) {
-                                                var64.method5211(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
+                                                var64.drawAtOpacity(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
                                                 var64.drawAt(var12 + var20 * var24, var13 + var25 * var21);
                                              }

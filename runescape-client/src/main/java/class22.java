@@ -246,9 +246,9 @@ public class class22 extends class28 {
                      var22 = var12.height;
                      var8 += var22;
                      if(var16 >= 0 && var16 < 255) {
-                        var12.method5211(var20, var21, var16);
+                        var12.drawAtOpacity(var20, var21, var16);
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var88 + var20, var21 + var22);
-                        var13.method5211(var20, var21, var16);
+                        var13.drawAtOpacity(var20, var21, var16);
                      } else {
                         var12.drawAt(var20, var21);
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var20 + var88, var22 + var21);
@@ -652,41 +652,41 @@ public class class22 extends class28 {
 
                      if(var72 >= 0 && var72 < 255) {
                         if(var80 != null) {
-                           var80.method5211(var64 + var51 - var25, var65, var72);
+                           var80.drawAtOpacity(var64 + var51 - var25, var65, var72);
                         }
 
                         if(var82 != null) {
-                           var82.method5211(var52 + var64 - var27, var65, var72);
+                           var82.drawAtOpacity(var52 + var64 - var27, var65, var72);
                         }
 
                         if(var81 != null) {
                            for(var73 = 0; var73 < var48; ++var73) {
-                              var81.method5211(var73 * var22 + (var53 + var64 - var26), var65, var72);
+                              var81.drawAtOpacity(var73 * var22 + (var53 + var64 - var26), var65, var72);
                            }
                         }
 
                         if(var83 != null) {
-                           var83.method5211(var55 + var64 - var28, var65, var72);
+                           var83.drawAtOpacity(var55 + var64 - var28, var65, var72);
                         }
 
                         var84.method4892(var44, var64 + var54, var68, var87.field3492, 0, var72);
                         if(var79 != null) {
                            if(var29 != null) {
-                              var29.method5211(var56 + var64 - var37, var65, var72);
+                              var29.drawAtOpacity(var56 + var64 - var37, var65, var72);
                            }
 
                            if(var31 != null) {
-                              var31.method5211(var64 + var57 - var39, var65, var72);
+                              var31.drawAtOpacity(var64 + var57 - var39, var65, var72);
                            }
 
                            if(var30 != null) {
                               for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method5211(var34 * var73 + (var58 + var64 - var38), var65, var72);
+                                 var30.drawAtOpacity(var34 * var73 + (var58 + var64 - var38), var65, var72);
                               }
                            }
 
                            if(var32 != null) {
-                              var32.method5211(var64 + var59 - var40, var65, var72);
+                              var32.drawAtOpacity(var64 + var59 - var40, var65, var72);
                            }
 
                            var43.method4892(var45, var60 + var64, var71, var79.field3492, 0, var72);
