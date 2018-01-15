@@ -615,11 +615,11 @@ public class class82 {
                                     var37 = Client.cachedNPCs[Client.npcIndices[var36 - var34]];
                                  }
 
-                                 class22.method168((Actor)var37, var36, var19, var20, var21, var22);
+                                 class22.draw2DExtras((Actor)var37, var36, var19, var20, var21, var22);
                               }
 
                               if(var60) {
-                                 class22.method168(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
+                                 class22.draw2DExtras(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
                               }
 
                               for(var36 = 0; var36 < Client.overheadTextCount; ++var36) {

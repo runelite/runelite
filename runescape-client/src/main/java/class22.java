@@ -167,7 +167,8 @@ public class class22 extends class28 {
       signature = "(Lbr;IIIIII)V",
       garbageValue = "-1640365653"
    )
-   static final void method168(Actor var0, int var1, int var2, int var3, int var4, int var5) {
+   @Export("draw2DExtras")
+   static final void draw2DExtras(Actor var0, int var1, int var2, int var3, int var4, int var5) {
       if(var0 != null && var0.hasConfig()) {
          if(var0 instanceof NPC) {
             NPCComposition var6 = ((NPC)var0).composition;
