@@ -65,6 +65,12 @@ public class TimersPlugin extends Plugin
 		return configManager.getConfig(TimersConfig.class);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
+	}
+
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
