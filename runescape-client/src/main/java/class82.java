@@ -642,7 +642,7 @@ public class class82 {
 
                                  Client.screenY = Client.field923[var36];
                                  Client.screenX = Client.field924[var36] = var38;
-                                 String var52 = Client.field997[var36];
+                                 String var52 = Client.overheadTexts[var36];
                                  if(Client.field990 == 0) {
                                     var43 = 16776960;
                                     if(Client.field927[var36] < 6) {

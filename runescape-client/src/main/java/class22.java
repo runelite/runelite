@@ -330,7 +330,7 @@ public class class22 extends class28 {
                Client.field927[Client.overheadTextCount] = var0.field1179;
                Client.field900[Client.overheadTextCount] = var0.field1140;
                Client.field929[Client.overheadTextCount] = var0.overheadTextCyclesRemaining;
-               Client.field997[Client.overheadTextCount] = var0.overhead;
+               Client.overheadTexts[Client.overheadTextCount] = var0.overhead;
                ++Client.overheadTextCount;
             }
          }
