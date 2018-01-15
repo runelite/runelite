@@ -322,16 +322,16 @@ public class class22 extends class28 {
 
          if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1122 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && class48.isFriended(((Player)var0).name, false))))) {
             Ignore.characterToScreen(var0, var0.field1136);
-            if(Client.screenY > -1 && Client.field921 < Client.field1100) {
-               Client.field926[Client.field921] = Friend.fontBold12.method4886(var0.overhead) / 2;
-               Client.field925[Client.field921] = Friend.fontBold12.verticalSpace;
-               Client.field923[Client.field921] = Client.screenY;
-               Client.field924[Client.field921] = Client.screenX;
-               Client.field927[Client.field921] = var0.field1179;
-               Client.field900[Client.field921] = var0.field1140;
-               Client.field929[Client.field921] = var0.overheadTextCyclesRemaining;
-               Client.field997[Client.field921] = var0.overhead;
-               ++Client.field921;
+            if(Client.screenY > -1 && Client.overheadTextCount < Client.field1100) {
+               Client.field926[Client.overheadTextCount] = Friend.fontBold12.method4886(var0.overhead) / 2;
+               Client.field925[Client.overheadTextCount] = Friend.fontBold12.verticalSpace;
+               Client.field923[Client.overheadTextCount] = Client.screenY;
+               Client.field924[Client.overheadTextCount] = Client.screenX;
+               Client.field927[Client.overheadTextCount] = var0.field1179;
+               Client.field900[Client.overheadTextCount] = var0.field1140;
+               Client.field929[Client.overheadTextCount] = var0.overheadTextCyclesRemaining;
+               Client.field997[Client.overheadTextCount] = var0.overhead;
+               ++Client.overheadTextCount;
             }
          }
 

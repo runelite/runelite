@@ -789,7 +789,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1026399043
    )
-   static int field921;
+   @Export("overheadTextCount")
+   static int overheadTextCount;
    @ObfuscatedName("gl")
    @ObfuscatedGetter(
       intValue = -1470627121
@@ -1211,7 +1212,7 @@ public final class Client extends GameEngine {
       field1021 = 0;
       field919 = false;
       field920 = 0;
-      field921 = 0;
+      overheadTextCount = 0;
       field1100 = 50;
       field923 = new int[field1100];
       field924 = new int[field1100];

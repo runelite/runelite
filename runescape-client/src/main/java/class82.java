@@ -596,7 +596,7 @@ public class class82 {
                               Graphics3D.Rasterizer3D_zoom = var31;
                               NPC.method1648();
                               class48.region.clearEntities();
-                              Client.field921 = 0;
+                              Client.overheadTextCount = 0;
                               boolean var60 = false;
                               var33 = -1;
                               var34 = class94.playerIndexesCount;
@@ -622,7 +622,7 @@ public class class82 {
                                  class22.method168(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
                               }
 
-                              for(var36 = 0; var36 < Client.field921; ++var36) {
+                              for(var36 = 0; var36 < Client.overheadTextCount; ++var36) {
                                  var51 = Client.field923[var36];
                                  var38 = Client.field924[var36];
                                  var39 = Client.field926[var36];
