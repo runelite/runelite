@@ -37,6 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.QueryRunner;
@@ -55,6 +56,7 @@ class FishingSpotOverlay extends Overlay
 	public FishingSpotOverlay(QueryRunner queryRunner, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
 	}
