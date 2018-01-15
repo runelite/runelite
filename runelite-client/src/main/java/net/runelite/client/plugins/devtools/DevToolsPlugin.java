@@ -62,6 +62,7 @@ public class DevToolsPlugin extends Plugin
 	int itemIndex = -1;
 
 	private Font font;
+	private NavigationButton navButton;
 
 	@Override
 	public void configure(Binder binder)
@@ -74,7 +75,7 @@ public class DevToolsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
-		final NavigationButton navButton = new NavigationButton(
+		navButton = new NavigationButton(
 			"Developer Tools",
 			ImageIO.read(getClass().getResourceAsStream("devtools_icon.png")),
 			() -> panel);
@@ -83,6 +84,12 @@ public class DevToolsPlugin extends Plugin
 
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 16);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		ui.getPluginToolbar().removeNavigation(navButton);
 	}
 
 	@Override
