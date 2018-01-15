@@ -112,7 +112,12 @@ public enum Varbits
 	/**
 	 * Options
 	 */
-	SIDE_PANELS(4607, 1055, 8, 8);
+	SIDE_PANELS(4607, 1055, 8, 8),
+
+	/**
+	 * Barbarian Assault
+	 */
+	IN_GAME_BA(3923, 638, 12, 12);
 
 	/**
 	 * varbit id
