@@ -391,7 +391,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
    public void method4891(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         this.method4903(var1, var2, var3);
+         this.drawText(var1, var2, var3);
       }
    }
 
@@ -400,7 +400,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
       if(var1 != null) {
          this.setColor(var4, var5);
          field3714 = var6;
-         this.method4903(var1, var2, var3);
+         this.drawText(var1, var2, var3);
       }
    }
 
@@ -408,7 +408,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
    public void method4893(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         this.method4903(var1, var2 - this.getTextWidth(var1), var3);
+         this.drawText(var1, var2 - this.getTextWidth(var1), var3);
       }
    }
 
@@ -417,7 +417,7 @@ public abstract class FontTypeFace extends Rasterizer2D {
    public void drawTextCentered(String var1, int var2, int var3, int var4, int var5) {
       if(var1 != null) {
          this.setColor(var4, var5);
-         this.method4903(var1, var2 - this.getTextWidth(var1) / 2, var3);
+         this.drawText(var1, var2 - this.getTextWidth(var1) / 2, var3);
       }
    }
 
@@ -461,16 +461,16 @@ public abstract class FontTypeFace extends Rasterizer2D {
 
          for(var14 = 0; var14 < var12; ++var14) {
             if(var8 == 0) {
-               this.method4903(field3725[var14], var2, var13);
+               this.drawText(field3725[var14], var2, var13);
             } else if(var8 == 1) {
-               this.method4903(field3725[var14], var2 + (var4 - this.getTextWidth(field3725[var14])) / 2, var13);
+               this.drawText(field3725[var14], var2 + (var4 - this.getTextWidth(field3725[var14])) / 2, var13);
             } else if(var8 == 2) {
-               this.method4903(field3725[var14], var2 + var4 - this.getTextWidth(field3725[var14]), var13);
+               this.drawText(field3725[var14], var2 + var4 - this.getTextWidth(field3725[var14]), var13);
             } else if(var14 == var12 - 1) {
-               this.method4903(field3725[var14], var2, var13);
+               this.drawText(field3725[var14], var2, var13);
             } else {
                this.method4931(field3725[var14], var4);
-               this.method4903(field3725[var14], var2, var13);
+               this.drawText(field3725[var14], var2, var13);
                field3722 = 0;
             }
 
@@ -633,7 +633,8 @@ public abstract class FontTypeFace extends Rasterizer2D {
    }
 
    @ObfuscatedName("ak")
-   void method4903(String var1, int var2, int var3) {
+   @Export("drawText")
+   void drawText(String var1, int var2, int var3) {
       var3 -= this.verticalSpace;
       int var4 = -1;
       int var5 = -1;
