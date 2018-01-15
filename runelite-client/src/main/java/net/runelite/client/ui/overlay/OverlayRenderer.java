@@ -173,11 +173,21 @@ public class OverlayRenderer
 		surfaceGraphics = subGraphics;
 	}
 
-	public void render(Graphics2D graphics)
+	public void render(Graphics2D graphics, OverlayLayer layer)
 	{
 		final Client client = clientProvider.get();
 
 		if (client == null || surface == null || overlays.isEmpty())
+		{
+			return;
+		}
+
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		if (client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null)
 		{
 			return;
 		}
@@ -204,7 +214,7 @@ public class OverlayRenderer
 		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT,bounds.y + bounds.height - BORDER_BOTTOM);
 
 		overlays.stream()
-			.filter(overlay -> shouldDrawOverlay(client, overlay))
+			.filter(overlay -> overlay.getLayer() == layer)
 			.forEach(overlay ->
 			{
 				OverlayPosition overlayPosition = overlay.getPosition();
@@ -281,13 +291,5 @@ public class OverlayRenderer
 		final Dimension dimension = entity.render(subGraphics, point);
 		subGraphics.dispose();
 		return dimension;
-	}
-
-	private boolean shouldDrawOverlay(Client client, Overlay overlay)
-	{
-		return client != null
-			&& (overlay.isDrawOverLoginScreen() || client.getGameState() == GameState.LOGGED_IN)
-			&& (overlay.isDrawOverClickToPlayScreen() || client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) == null)
-			&& (overlay.isDrawOverBankScreen() || client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) == null);
 	}
 }

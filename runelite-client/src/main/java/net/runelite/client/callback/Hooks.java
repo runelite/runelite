@@ -44,10 +44,12 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
+import net.runelite.api.Region;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -104,7 +106,39 @@ public class Hooks
 
 		try
 		{
-			renderer.render(graphics2d);
+			renderer.render(graphics2d, OverlayLayer.ALWAYS_ON_TOP);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+	}
+
+	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	{
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.UNDER_WIDGETS);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+	}
+
+	public static void drawAfterWidgets()
+	{
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
 		}
 		catch (Exception ex)
 		{
