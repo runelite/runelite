@@ -625,7 +625,7 @@ public class class82 {
                               for(var36 = 0; var36 < Client.overheadTextCount; ++var36) {
                                  var51 = Client.field923[var36];
                                  var38 = Client.field924[var36];
-                                 var39 = Client.field926[var36];
+                                 var39 = Client.overheadTextsOffsetX[var36];
                                  var40 = Client.field925[var36];
                                  boolean var62 = true;
 
@@ -633,7 +633,7 @@ public class class82 {
                                     var62 = false;
 
                                     for(var42 = 0; var42 < var36; ++var42) {
-                                       if(var38 + 2 > Client.field924[var42] - Client.field925[var42] && var38 - var40 < Client.field924[var42] + 2 && var51 - var39 < Client.field926[var42] + Client.field923[var42] && var51 + var39 > Client.field923[var42] - Client.field926[var42] && Client.field924[var42] - Client.field925[var42] < var38) {
+                                       if(var38 + 2 > Client.field924[var42] - Client.field925[var42] && var38 - var40 < Client.field924[var42] + 2 && var51 - var39 < Client.overheadTextsOffsetX[var42] + Client.field923[var42] && var51 + var39 > Client.field923[var42] - Client.overheadTextsOffsetX[var42] && Client.field924[var42] - Client.field925[var42] < var38) {
                                           var38 = Client.field924[var42] - Client.field925[var42];
                                           var62 = true;
                                        }

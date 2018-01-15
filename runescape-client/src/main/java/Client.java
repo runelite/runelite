@@ -803,7 +803,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("gc")
    static int[] field925;
    @ObfuscatedName("he")
-   static int[] field926;
+   @Export("overheadTextsOffsetX")
+   static int[] overheadTextsOffsetX;
    @ObfuscatedName("hr")
    static int[] field927;
    @ObfuscatedName("hv")
@@ -1219,7 +1220,7 @@ public final class Client extends GameEngine {
       field923 = new int[field1100];
       field924 = new int[field1100];
       field925 = new int[field1100];
-      field926 = new int[field1100];
+      overheadTextsOffsetX = new int[field1100];
       field927 = new int[field1100];
       field900 = new int[field1100];
       overheadTextsCyclesRemaining = new int[field1100];
