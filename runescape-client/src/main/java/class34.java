@@ -31,7 +31,8 @@ public class class34 {
    @ObfuscatedName("ap")
    static Image field461;
    @ObfuscatedName("cq")
-   static boolean field455;
+   @Export("middleMouseMovesCamera")
+   static boolean middleMouseMovesCamera;
    @ObfuscatedName("fz")
    @ObfuscatedSignature(
       signature = "[Lks;"

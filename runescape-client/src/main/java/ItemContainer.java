@@ -92,7 +92,7 @@ public class ItemContainer extends Node {
 
       int var2;
       int var3;
-      if(MouseInput.mouseCurrentButton == 4 && class34.field455) {
+      if(MouseInput.mouseCurrentButton == 4 && class34.middleMouseMovesCamera) {
          var2 = MouseInput.mouseLastY * -469125321 - Client.field916;
          Client.field901 = var2 * 2;
          Client.field916 = var2 != -1 && var2 != 1?(Client.field916 + MouseInput.mouseLastY * -469125321) / 2:MouseInput.mouseLastY * -469125321;

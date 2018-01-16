@@ -97,7 +97,7 @@ public class class94 {
 
       Client.field909 = false;
       int var7;
-      if(MouseInput.mouseCurrentButton == 1 || !class34.field455 && MouseInput.mouseCurrentButton == 4) {
+      if(MouseInput.mouseCurrentButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseCurrentButton == 4) {
          if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
             var0.scrollY -= 4;
             class33.method344(var0);

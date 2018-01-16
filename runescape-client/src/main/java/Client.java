@@ -3620,7 +3620,7 @@ public final class Client extends GameEngine {
                   }
 
                   PacketNode var16;
-                  if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4 || MouseInput.mouseLastButton == 2) {
+                  if(MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4 || MouseInput.mouseLastButton == 2) {
                      long var14 = (MouseInput.mouseLastPressedTimeMillis - mouseLastLastPressedTimeMillis) / 50L;
                      if(var14 > 4095L) {
                         var14 = 4095L;
@@ -6284,7 +6284,7 @@ public final class Client extends GameEngine {
                int var15;
                if(isMenuOpen) {
                   int var14;
-                  if(var19 != 1 && (class34.field455 || var19 != 4)) {
+                  if(var19 != 1 && (class34.middleMouseMovesCamera || var19 != 4)) {
                      var2 = MouseInput.mouseLastX;
                      var14 = MouseInput.mouseLastY * -469125321;
                      if(var2 < WorldMapType1.menuX - 10 || var2 > Item.menuWidth + WorldMapType1.menuX + 10 || var14 < ClientPacket.menuY - 10 || var14 > Size.menuHeight + ClientPacket.menuY + 10) {
@@ -6293,7 +6293,7 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if(var19 == 1 || !class34.field455 && var19 == 4) {
+                  if(var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) {
                      var2 = WorldMapType1.menuX;
                      var14 = ClientPacket.menuY;
                      var15 = Item.menuWidth;
@@ -6324,7 +6324,7 @@ public final class Client extends GameEngine {
                   }
                } else {
                   var2 = menuOptionCount - 1;
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && var2 >= 0) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && var2 >= 0) {
                      var15 = menuTypes[var2];
                      if(var15 == 39 || var15 == 40 || var15 == 41 || var15 == 42 || var15 == 43 || var15 == 33 || var15 == 34 || var15 == 35 || var15 == 36 || var15 == 37 || var15 == 38 || var15 == 1005) {
                         var5 = menuActionParams0[var2];
@@ -6342,11 +6342,11 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && this.method1136()) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && this.method1136()) {
                      var19 = 2;
                   }
 
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && menuOptionCount > 0 && var2 >= 0) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && menuOptionCount > 0 && var2 >= 0) {
                      var15 = menuActionParams0[var2];
                      var5 = menuActionParams1[var2];
                      var20 = menuTypes[var2];

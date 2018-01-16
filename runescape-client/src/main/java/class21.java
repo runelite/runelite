@@ -692,12 +692,12 @@ public class class21 {
                      }
 
                      boolean var30 = false;
-                     if((MouseInput.mouseCurrentButton == 1 || !class34.field455 && MouseInput.mouseCurrentButton == 4) && var29) {
+                     if((MouseInput.mouseCurrentButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseCurrentButton == 4) && var29) {
                         var30 = true;
                      }
 
                      boolean var20 = false;
-                     if((MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= var12 && MouseInput.mouseLastPressedY >= var13 && MouseInput.mouseLastPressedX < var14 && MouseInput.mouseLastPressedY < var15) {
+                     if((MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= var12 && MouseInput.mouseLastPressedY >= var13 && MouseInput.mouseLastPressedX < var14 && MouseInput.mouseLastPressedY < var15) {
                         var20 = true;
                      }
 

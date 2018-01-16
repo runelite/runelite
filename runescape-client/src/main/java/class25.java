@@ -89,7 +89,7 @@ public class class25 {
       garbageValue = "692716377"
    )
    static void method179(GameEngine var0) {
-      if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) {
+      if(MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4) {
          int var1 = class91.field1351 + 280;
          if(MouseInput.mouseLastPressedX >= var1 && MouseInput.mouseLastPressedX <= var1 + 14 && MouseInput.mouseLastPressedY >= 4 && MouseInput.mouseLastPressedY <= 18) {
             WorldMapType2.method526(0, 0);
