@@ -1544,7 +1544,7 @@ public final class Client extends GameEngine {
                KeyFocusListener.field604 = KeyFocusListener.field590;
             }
 
-            Timer.method3079();
+            Timer.processMouseInput();
             if(WorldComparator.mouseWheel != null) {
                var45 = WorldComparator.mouseWheel.useRotation();
                mouseWheelRotation = var45;
