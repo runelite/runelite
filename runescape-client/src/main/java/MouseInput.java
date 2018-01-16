@@ -16,7 +16,8 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
    @ObfuscatedGetter(
       intValue = 384145967
    )
-   public static int field679;
+   @Export("mouseLastX")
+   public static int mouseLastX;
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "Lbx;"
@@ -136,7 +137,7 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       mouseX = -1;
       mouseY = -1;
       mouseCurrentButton = 0;
-      field679 = 0;
+      mouseLastX = 0;
       field682 = 0;
       MouseHandler_lastButton = 0;
       MouseHandler_lastPressedX = 0;

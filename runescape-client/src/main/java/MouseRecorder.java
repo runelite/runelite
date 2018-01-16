@@ -40,7 +40,7 @@ public class MouseRecorder implements Runnable {
          Object var1 = this.lock;
          synchronized(this.lock) {
             if(this.index < 500) {
-               this.xs[this.index] = MouseInput.field679;
+               this.xs[this.index] = MouseInput.mouseLastX;
                this.ys[this.index] = MouseInput.field682 * -469125321;
                ++this.index;
             }

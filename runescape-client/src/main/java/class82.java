@@ -218,7 +218,7 @@ public class class82 {
                   }
 
                   if(Client.field1012 && Client.field992) {
-                     var15 = MouseInput.field679;
+                     var15 = MouseInput.mouseLastX;
                      var16 = MouseInput.field682 * -469125321;
                      var15 -= Client.field889;
                      var16 -= Client.field943;
@@ -563,7 +563,7 @@ public class class82 {
                            }
                         }
 
-                        var29 = MouseInput.field679;
+                        var29 = MouseInput.mouseLastX;
                         var30 = MouseInput.field682 * -469125321;
                         if(MouseInput.mouseLastButton != 0) {
                            var29 = MouseInput.mouseLastPressedX;
@@ -893,7 +893,7 @@ public class class82 {
 
                                        if(var55 != null) {
                                           if(var10 == class39.field506 && var19 == Client.field1073) {
-                                             var24 = MouseInput.field679 - Client.field857;
+                                             var24 = MouseInput.mouseLastX - Client.field857;
                                              var25 = MouseInput.field682 * -469125321 - Client.field1039;
                                              if(var24 < 5 && var24 > -5) {
                                                 var24 = 0;

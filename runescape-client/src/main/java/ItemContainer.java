@@ -96,9 +96,9 @@ public class ItemContainer extends Node {
          var2 = MouseInput.field682 * -469125321 - Client.field916;
          Client.field901 = var2 * 2;
          Client.field916 = var2 != -1 && var2 != 1?(Client.field916 + MouseInput.field682 * -469125321) / 2:MouseInput.field682 * -469125321;
-         var3 = Client.field915 - MouseInput.field679;
+         var3 = Client.field915 - MouseInput.mouseLastX;
          Client.field987 = var3 * 2;
-         Client.field915 = var3 != -1 && var3 != 1?(Client.field915 + MouseInput.field679) / 2:MouseInput.field679;
+         Client.field915 = var3 != -1 && var3 != 1?(Client.field915 + MouseInput.mouseLastX) / 2:MouseInput.mouseLastX;
       } else {
          if(KeyFocusListener.keyPressed[96]) {
             Client.field987 += (-24 - Client.field987) / 2;
@@ -117,7 +117,7 @@ public class ItemContainer extends Node {
          }
 
          Client.field916 = MouseInput.field682 * -469125321;
-         Client.field915 = MouseInput.field679;
+         Client.field915 = MouseInput.mouseLastX;
       }
 
       Client.mapAngle = Client.field987 / 2 + Client.mapAngle & 2047;

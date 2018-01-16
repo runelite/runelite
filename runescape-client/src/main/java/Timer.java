@@ -37,7 +37,7 @@ public abstract class Timer {
       MouseInput var0 = MouseInput.mouse;
       synchronized(MouseInput.mouse) {
          MouseInput.mouseCurrentButton = MouseInput.MouseHandler_currentButton;
-         MouseInput.field679 = MouseInput.mouseX;
+         MouseInput.mouseLastX = MouseInput.mouseX;
          MouseInput.field682 = MouseInput.mouseY * -1460687225;
          MouseInput.mouseLastButton = MouseInput.MouseHandler_lastButton;
          MouseInput.mouseLastPressedX = MouseInput.MouseHandler_lastPressedX;

@@ -211,7 +211,7 @@ public class class160 {
                var18 = 0;
             }
 
-            if(MouseInput.field679 >= var11 && MouseInput.field682 * -469125321 >= var10 && MouseInput.field679 < var11 + var21 && MouseInput.field682 * -469125321 < var22 + var10 && var16) {
+            if(MouseInput.mouseLastX >= var11 && MouseInput.field682 * -469125321 >= var10 && MouseInput.mouseLastX < var11 + var21 && MouseInput.field682 * -469125321 < var22 + var10 && var16) {
                class91.field1326 = var14;
                FriendLoginUpdate.field760[var18].method5254(var11, var10, 128, 16777215);
                var13 = true;
@@ -237,9 +237,9 @@ public class class160 {
          if(var13) {
             var14 = var1.getTextWidth(ItemContainer.worldList[class91.field1326].activity) + 6;
             int var20 = var1.verticalSpace + 8;
-            Rasterizer2D.Rasterizer2D_fillRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 16777120);
-            Rasterizer2D.drawRectangle(MouseInput.field679 - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 0);
-            var1.drawTextCentered(ItemContainer.worldList[class91.field1326].activity, MouseInput.field679, var1.verticalSpace + MouseInput.field682 * -469125321 + 20 + 5 + 4, 0, -1);
+            Rasterizer2D.Rasterizer2D_fillRectangle(MouseInput.mouseLastX - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 16777120);
+            Rasterizer2D.drawRectangle(MouseInput.mouseLastX - var14 / 2, MouseInput.field682 * -469125321 + 20 + 5, var14, var20, 0);
+            var1.drawTextCentered(ItemContainer.worldList[class91.field1326].activity, MouseInput.mouseLastX, var1.verticalSpace + MouseInput.field682 * -469125321 + 20 + 5 + 4, 0, -1);
          }
       }
 

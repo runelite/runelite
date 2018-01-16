@@ -86,7 +86,7 @@ public class class192 {
                var2 = MouseInput.mouseLastPressedX;
                var3 = MouseInput.mouseLastPressedY;
                if(var9 == 0) {
-                  var2 = MouseInput.field679;
+                  var2 = MouseInput.mouseLastX;
                   var3 = MouseInput.field682 * -469125321;
                }
 
