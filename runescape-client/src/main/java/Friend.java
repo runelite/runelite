@@ -440,11 +440,11 @@ public class Friend {
                            int var19;
                            int var20;
                            if(var7 != 1 && var7 != 3) {
-                              var19 = var18.sizeX;
-                              var20 = var18.sizeY;
+                              var19 = var18.width;
+                              var20 = var18.length;
                            } else {
-                              var19 = var18.sizeY;
-                              var20 = var18.sizeX;
+                              var19 = var18.length;
+                              var20 = var18.width;
                            }
 
                            int var21 = var36 + (var19 >> 1);

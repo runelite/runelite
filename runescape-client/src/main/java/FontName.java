@@ -410,8 +410,8 @@ public class FontName {
             if(var1 == 0) {
                class48.region.removeBoundaryObject(var0, var2, var3);
                var12 = CacheFile.getObjectDefinition(var34);
-               if(var12.interactType != 0) {
-                  Client.collisionMaps[var0].removeWall(var2, var3, var35, var36, var12.boolean1);
+               if(var12.clipType != 0) {
+                  Client.collisionMaps[var0].removeWall(var2, var3, var35, var36, var12.blocksProjectile);
                }
             }
 
@@ -422,19 +422,19 @@ public class FontName {
             if(var1 == 2) {
                class48.region.method2709(var0, var2, var3);
                var12 = CacheFile.getObjectDefinition(var34);
-               if(var2 + var12.sizeX > 103 || var3 + var12.sizeX > 103 || var2 + var12.sizeY > 103 || var3 + var12.sizeY > 103) {
+               if(var2 + var12.width > 103 || var3 + var12.width > 103 || var2 + var12.length > 103 || var3 + var12.length > 103) {
                   return;
                }
 
-               if(var12.interactType != 0) {
-                  Client.collisionMaps[var0].removeObject(var2, var3, var12.sizeX, var12.sizeY, var36, var12.boolean1);
+               if(var12.clipType != 0) {
+                  Client.collisionMaps[var0].removeObject(var2, var3, var12.width, var12.length, var36, var12.blocksProjectile);
                }
             }
 
             if(var1 == 3) {
                class48.region.removeFloorDecoration(var0, var2, var3);
                var12 = CacheFile.getObjectDefinition(var34);
-               if(var12.interactType == 1) {
+               if(var12.clipType == 1) {
                   Client.collisionMaps[var0].method3138(var2, var3);
                }
             }
@@ -452,11 +452,11 @@ public class FontName {
             int var15;
             int var16;
             if(var5 != 1 && var5 != 3) {
-               var15 = var14.sizeX;
-               var16 = var14.sizeY;
+               var15 = var14.width;
+               var16 = var14.length;
             } else {
-               var15 = var14.sizeY;
-               var16 = var14.sizeX;
+               var15 = var14.length;
+               var16 = var14.width;
             }
 
             int var17;
@@ -489,7 +489,7 @@ public class FontName {
             }
 
             int var26 = (var5 << 6) + var6;
-            if(var14.int3 == 1) {
+            if(var14.supportItems == 1) {
                var26 += 256;
             }
 
@@ -502,7 +502,7 @@ public class FontName {
                }
 
                var37.groundObjectSpawned(var0, var2, var3, var22, (Renderable)var27, var25, var26);
-               if(var14.interactType == 1) {
+               if(var14.clipType == 1) {
                   var13.method3150(var2, var3);
                }
             } else if(var6 != 10 && var6 != 11) {
@@ -514,8 +514,8 @@ public class FontName {
                   }
 
                   var37.method2700(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
-                  if(var14.interactType != 0) {
-                     var13.addObject(var2, var3, var15, var16, var14.boolean1);
+                  if(var14.clipType != 0) {
+                     var13.addObject(var2, var3, var15, var16, var14.blocksProjectile);
                   }
                } else if(var6 == 0) {
                   if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -525,8 +525,8 @@ public class FontName {
                   }
 
                   var37.addBoundary(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field701[var5], 0, var25, var26);
-                  if(var14.interactType != 0) {
-                     var13.method3130(var2, var3, var6, var5, var14.boolean1);
+                  if(var14.clipType != 0) {
+                     var13.method3130(var2, var3, var6, var5, var14.blocksProjectile);
                   }
                } else if(var6 == 1) {
                   if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -536,8 +536,8 @@ public class FontName {
                   }
 
                   var37.addBoundary(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field703[var5], 0, var25, var26);
-                  if(var14.interactType != 0) {
-                     var13.method3130(var2, var3, var6, var5, var14.boolean1);
+                  if(var14.clipType != 0) {
+                     var13.method3130(var2, var3, var6, var5, var14.blocksProjectile);
                   }
                } else {
                   Object var29;
@@ -554,8 +554,8 @@ public class FontName {
                      }
 
                      var37.addBoundary(var0, var2, var3, var22, (Renderable)var28, (Renderable)var29, class61.field701[var5], class61.field701[var32], var25, var26);
-                     if(var14.interactType != 0) {
-                        var13.method3130(var2, var3, var6, var5, var14.boolean1);
+                     if(var14.clipType != 0) {
+                        var13.method3130(var2, var3, var6, var5, var14.blocksProjectile);
                      }
                   } else if(var6 == 3) {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -565,8 +565,8 @@ public class FontName {
                      }
 
                      var37.addBoundary(var0, var2, var3, var22, (Renderable)var27, (Renderable)null, class61.field703[var5], 0, var25, var26);
-                     if(var14.interactType != 0) {
-                        var13.method3130(var2, var3, var6, var5, var14.boolean1);
+                     if(var14.clipType != 0) {
+                        var13.method3130(var2, var3, var6, var5, var14.blocksProjectile);
                      }
                   } else if(var6 == 9) {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -576,8 +576,8 @@ public class FontName {
                      }
 
                      var37.method2700(var0, var2, var3, var22, 1, 1, (Renderable)var27, 0, var25, var26);
-                     if(var14.interactType != 0) {
-                        var13.addObject(var2, var3, var15, var16, var14.boolean1);
+                     if(var14.clipType != 0) {
+                        var13.addObject(var2, var3, var15, var16, var14.blocksProjectile);
                      }
                   } else if(var6 == 4) {
                      if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -593,7 +593,7 @@ public class FontName {
                         var32 = 16;
                         var33 = var37.method2716(var0, var2, var3);
                         if(var33 != 0) {
-                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).int2;
+                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement;
                         }
 
                         if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -607,7 +607,7 @@ public class FontName {
                         var32 = 8;
                         var33 = var37.method2716(var0, var2, var3);
                         if(var33 != 0) {
-                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).int2 / 2;
+                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement / 2;
                         }
 
                         if(var14.animationId == -1 && var14.impostorIds == null) {
@@ -630,7 +630,7 @@ public class FontName {
                         var32 = 8;
                         var33 = var37.method2716(var0, var2, var3);
                         if(var33 != 0) {
-                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).int2 / 2;
+                           var32 = CacheFile.getObjectDefinition(var33 >> 14 & 32767).decorDisplacement / 2;
                         }
 
                         int var31 = var5 + 2 & 3;
@@ -658,8 +658,8 @@ public class FontName {
                   var37.method2700(var0, var2, var3, var22, var15, var16, (Renderable)var27, var6 == 11?256:0, var25, var26);
                }
 
-               if(var14.interactType != 0) {
-                  var13.addObject(var2, var3, var15, var16, var14.boolean1);
+               if(var14.clipType != 0) {
+                  var13.addObject(var2, var3, var15, var16, var14.blocksProjectile);
                }
             }
          }

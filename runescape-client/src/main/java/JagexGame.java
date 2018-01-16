@@ -319,9 +319,9 @@ public enum JagexGame implements Enumerated {
          if(var13.mapSceneId != -1) {
             IndexedSprite var14 = AttackOption.mapscene[var13.mapSceneId];
             if(var14 != null) {
-               int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
-               int var16 = (var13.sizeY * 4 - var14.height) / 2;
-               var14.method5176(var15 + var1 * 4 + 48, var16 + (104 - var2 - var13.sizeY) * 4 + 48);
+               int var15 = (var13.width * 4 - var14.originalWidth) / 2;
+               int var16 = (var13.length * 4 - var14.height) / 2;
+               var14.method5176(var15 + var1 * 4 + 48, var16 + (104 - var2 - var13.length) * 4 + 48);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -397,9 +397,9 @@ public enum JagexGame implements Enumerated {
          if(var23.mapSceneId != -1) {
             IndexedSprite var17 = AttackOption.mapscene[var23.mapSceneId];
             if(var17 != null) {
-               var12 = (var23.sizeX * 4 - var17.originalWidth) / 2;
-               var18 = (var23.sizeY * 4 - var17.height) / 2;
-               var17.method5176(var1 * 4 + var12 + 48, var18 + (104 - var2 - var23.sizeY) * 4 + 48);
+               var12 = (var23.width * 4 - var17.originalWidth) / 2;
+               var18 = (var23.length * 4 - var17.height) / 2;
+               var17.method5176(var1 * 4 + var12 + 48, var18 + (104 - var2 - var23.length) * 4 + 48);
             }
          } else if(var8 == 9) {
             var11 = 15658734;
@@ -430,9 +430,9 @@ public enum JagexGame implements Enumerated {
          if(var19.mapSceneId != -1) {
             IndexedSprite var20 = AttackOption.mapscene[var19.mapSceneId];
             if(var20 != null) {
-               var9 = (var19.sizeX * 4 - var20.originalWidth) / 2;
-               int var21 = (var19.sizeY * 4 - var20.height) / 2;
-               var20.method5176(var9 + var1 * 4 + 48, var21 + (104 - var2 - var19.sizeY) * 4 + 48);
+               var9 = (var19.width * 4 - var20.originalWidth) / 2;
+               int var21 = (var19.length * 4 - var20.height) / 2;
+               var20.method5176(var9 + var1 * 4 + 48, var21 + (104 - var2 - var19.length) * 4 + 48);
             }
          }
       }

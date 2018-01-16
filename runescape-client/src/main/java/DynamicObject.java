@@ -135,11 +135,11 @@ public class DynamicObject extends Renderable {
          int var2;
          int var3;
          if(this.orientation != 1 && this.orientation != 3) {
-            var2 = var12.sizeX;
-            var3 = var12.sizeY;
+            var2 = var12.width;
+            var3 = var12.length;
          } else {
-            var2 = var12.sizeY;
-            var3 = var12.sizeX;
+            var2 = var12.length;
+            var3 = var12.width;
          }
 
          int var4 = (var2 >> 1) + this.sceneX;

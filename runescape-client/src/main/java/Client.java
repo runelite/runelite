@@ -1651,7 +1651,7 @@ public final class Client extends GameEngine {
                                     var19 = var5 + var15;
                                     if(var18 > 0 && var19 > 0 && var18 < 103 && var19 < 103) {
                                        ObjectComposition var20 = CacheFile.getObjectDefinition(var10);
-                                       if(var17 != 22 || !lowMemory || var20.int1 != 0 || var20.interactType == 1 || var20.boolean2) {
+                                       if(var17 != 22 || !lowMemory || var20.int1 != 0 || var20.clipType == 1 || var20.obstructsGround) {
                                           if(!var20.method4663()) {
                                              ++field897;
                                              var8 = false;
