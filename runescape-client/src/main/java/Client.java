@@ -894,7 +894,8 @@ public final class Client extends GameEngine {
    )
    static int field935;
    @ObfuscatedName("hi")
-   static boolean field945;
+   @Export("itemBeingDragged")
+   static boolean itemBeingDragged;
    @ObfuscatedName("hu")
    @ObfuscatedGetter(
       intValue = 1767007759
@@ -1247,7 +1248,7 @@ public final class Client extends GameEngine {
       field857 = 0;
       field1039 = 0;
       field935 = 0;
-      field945 = false;
+      itemBeingDragged = false;
       itemPressedDuration = 0;
       myPlayerIndex = 0;
       cachedPlayers = new Player[2048];
@@ -3943,7 +3944,7 @@ public final class Client extends GameEngine {
                                                 class33.method344(class39.field506);
                                                 ++itemPressedDuration;
                                                 if(MouseInput.mouseCurrentButton == 0) {
-                                                   if(field945) {
+                                                   if(itemBeingDragged) {
                                                       if(class39.field506 == class47.field566 && field935 != field1073) {
                                                          Widget var45 = class39.field506;
                                                          byte var31 = 0;
@@ -3998,7 +3999,7 @@ public final class Client extends GameEngine {
                                                    MouseInput.mouseLastButton = 0;
                                                    class39.field506 = null;
                                                 } else if(itemPressedDuration >= 5 && (MouseInput.mouseLastX > field857 + 5 || MouseInput.mouseLastX < field857 - 5 || MouseInput.mouseLastY * -469125321 > field1039 + 5 || MouseInput.mouseLastY * -469125321 < field1039 - 5)) {
-                                                   field945 = true;
+                                                   itemBeingDragged = true;
                                                 }
                                              }
 
@@ -6364,11 +6365,11 @@ public final class Client extends GameEngine {
                return;
             }
 
-            if(class39.field506 != null && !field945 && menuOptionCount > 0 && !this.method1136()) {
+            if(class39.field506 != null && !itemBeingDragged && menuOptionCount > 0 && !this.method1136()) {
                class44.method628(field857, field1039);
             }
 
-            field945 = false;
+            itemBeingDragged = false;
             itemPressedDuration = 0;
             if(class39.field506 != null) {
                class33.method344(class39.field506);
