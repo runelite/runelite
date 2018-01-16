@@ -789,28 +789,36 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1026399043
    )
-   static int field921;
+   @Export("overheadTextCount")
+   static int overheadTextCount;
    @ObfuscatedName("gl")
    @ObfuscatedGetter(
       intValue = -1470627121
    )
-   static int field1100;
+   @Export("maxOverheadTexts")
+   static int maxOverheadTexts;
    @ObfuscatedName("gi")
-   static int[] field923;
+   @Export("overheadTextsX")
+   static int[] overheadTextsX;
    @ObfuscatedName("gv")
-   static int[] field924;
+   @Export("overheadTextsY")
+   static int[] overheadTextsY;
    @ObfuscatedName("gc")
-   static int[] field925;
+   @Export("overheadTextsOffsetY")
+   static int[] overheadTextsOffsetY;
    @ObfuscatedName("he")
-   static int[] field926;
+   @Export("overheadTextsOffsetX")
+   static int[] overheadTextsOffsetX;
    @ObfuscatedName("hr")
    static int[] field927;
    @ObfuscatedName("hv")
    static int[] field900;
    @ObfuscatedName("hp")
-   static int[] field929;
+   @Export("overheadTextsCyclesRemaining")
+   static int[] overheadTextsCyclesRemaining;
    @ObfuscatedName("hh")
-   static String[] field997;
+   @Export("overheadTexts")
+   static String[] overheadTexts;
    @ObfuscatedName("ha")
    static int[][] field931;
    @ObfuscatedName("hm")
@@ -822,24 +830,26 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 277812439
    )
-   @Export("screenY")
-   static int screenY;
+   @Export("screenX")
+   static int screenX;
    @ObfuscatedName("hq")
    @ObfuscatedGetter(
       intValue = 1559491565
    )
-   @Export("screenX")
-   static int screenX;
+   @Export("screenY")
+   static int screenY;
    @ObfuscatedName("hf")
    @ObfuscatedGetter(
       intValue = 2061978077
    )
-   static int field1003;
+   @Export("lastLeftClickX")
+   static int lastLeftClickX;
    @ObfuscatedName("ho")
    @ObfuscatedGetter(
       intValue = -372785863
    )
-   static int field936;
+   @Export("lastLeftClickY")
+   static int lastLeftClickY;
    @ObfuscatedName("hn")
    @ObfuscatedGetter(
       intValue = 743789307
@@ -861,7 +871,8 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1664407999
    )
-   static int field940;
+   @Export("pressedItemIndex")
+   static int pressedItemIndex;
    @ObfuscatedName("hg")
    @ObfuscatedGetter(
       intValue = 534977433
@@ -883,12 +894,14 @@ public final class Client extends GameEngine {
    )
    static int field935;
    @ObfuscatedName("hi")
-   static boolean field945;
+   @Export("itemBeingDragged")
+   static boolean itemBeingDragged;
    @ObfuscatedName("hu")
    @ObfuscatedGetter(
       intValue = 1767007759
    )
-   static int field1082;
+   @Export("itemPressedDuration")
+   static int itemPressedDuration;
    @ObfuscatedName("hw")
    @ObfuscatedGetter(
       intValue = 919353163
@@ -1211,32 +1224,32 @@ public final class Client extends GameEngine {
       field1021 = 0;
       field919 = false;
       field920 = 0;
-      field921 = 0;
-      field1100 = 50;
-      field923 = new int[field1100];
-      field924 = new int[field1100];
-      field925 = new int[field1100];
-      field926 = new int[field1100];
-      field927 = new int[field1100];
-      field900 = new int[field1100];
-      field929 = new int[field1100];
-      field997 = new String[field1100];
+      overheadTextCount = 0;
+      maxOverheadTexts = 50;
+      overheadTextsX = new int[maxOverheadTexts];
+      overheadTextsY = new int[maxOverheadTexts];
+      overheadTextsOffsetY = new int[maxOverheadTexts];
+      overheadTextsOffsetX = new int[maxOverheadTexts];
+      field927 = new int[maxOverheadTexts];
+      field900 = new int[maxOverheadTexts];
+      overheadTextsCyclesRemaining = new int[maxOverheadTexts];
+      overheadTexts = new String[maxOverheadTexts];
       field931 = new int[104][104];
       field932 = 0;
-      screenY = -1;
       screenX = -1;
-      field1003 = 0;
-      field936 = 0;
+      screenY = -1;
+      lastLeftClickX = 0;
+      lastLeftClickY = 0;
       field1092 = 0;
       cursorState = 0;
       mouseCrosshair = 0;
-      field940 = 0;
+      pressedItemIndex = 0;
       field1073 = 0;
       field857 = 0;
       field1039 = 0;
       field935 = 0;
-      field945 = false;
-      field1082 = 0;
+      itemBeingDragged = false;
+      itemPressedDuration = 0;
       myPlayerIndex = 0;
       cachedPlayers = new Player[2048];
       localInteractingIndex = -1;
@@ -1532,7 +1545,7 @@ public final class Client extends GameEngine {
                KeyFocusListener.field604 = KeyFocusListener.field590;
             }
 
-            Timer.method3079();
+            Timer.processMouseInput();
             if(WorldComparator.mouseWheel != null) {
                var45 = WorldComparator.mouseWheel.useRotation();
                mouseWheelRotation = var45;
@@ -3608,7 +3621,7 @@ public final class Client extends GameEngine {
                   }
 
                   PacketNode var16;
-                  if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4 || MouseInput.mouseLastButton == 2) {
+                  if(MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4 || MouseInput.mouseLastButton == 2) {
                      long var14 = (MouseInput.mouseLastPressedTimeMillis - mouseLastLastPressedTimeMillis) / 50L;
                      if(var14 > 4095L) {
                         var14 = 4095L;
@@ -3929,9 +3942,9 @@ public final class Client extends GameEngine {
 
                                              if(class39.field506 != null) {
                                                 class33.method344(class39.field506);
-                                                ++field1082;
+                                                ++itemPressedDuration;
                                                 if(MouseInput.mouseCurrentButton == 0) {
-                                                   if(field945) {
+                                                   if(itemBeingDragged) {
                                                       if(class39.field506 == class47.field566 && field935 != field1073) {
                                                          Widget var45 = class39.field506;
                                                          byte var31 = 0;
@@ -3985,8 +3998,8 @@ public final class Client extends GameEngine {
                                                    mouseCrosshair = 10;
                                                    MouseInput.mouseLastButton = 0;
                                                    class39.field506 = null;
-                                                } else if(field1082 >= 5 && (MouseInput.field679 > field857 + 5 || MouseInput.field679 < field857 - 5 || MouseInput.field682 * -469125321 > field1039 + 5 || MouseInput.field682 * -469125321 < field1039 - 5)) {
-                                                   field945 = true;
+                                                } else if(itemPressedDuration >= 5 && (MouseInput.mouseLastX > field857 + 5 || MouseInput.mouseLastX < field857 - 5 || MouseInput.mouseLastY * -469125321 > field1039 + 5 || MouseInput.mouseLastY * -469125321 < field1039 - 5)) {
+                                                   itemBeingDragged = true;
                                                 }
                                              }
 
@@ -4000,8 +4013,8 @@ public final class Client extends GameEngine {
                                                 var42.packetBuffer.putShortLE(var4 + baseY);
                                                 field888.method1862(var42);
                                                 Region.method2800();
-                                                field1003 = MouseInput.mouseLastPressedX;
-                                                field936 = MouseInput.mouseLastPressedY;
+                                                lastLeftClickX = MouseInput.mouseLastPressedX;
+                                                lastLeftClickY = MouseInput.mouseLastPressedY;
                                                 cursorState = 1;
                                                 field1092 = 0;
                                                 destinationX = var3;
@@ -4243,8 +4256,8 @@ public final class Client extends GameEngine {
          Rasterizer2D.Rasterizer2D_fillRectangle(var1 + 1, var2 + 1, var3 - 2, 16, 0);
          Rasterizer2D.drawRectangle(var1 + 1, var2 + 18, var3 - 2, var4 - 19, 0);
          Friend.fontBold12.method4891("Choose Option", var1 + 3, var2 + 14, var12, -1);
-         var13 = MouseInput.field679;
-         var7 = MouseInput.field682 * -469125321;
+         var13 = MouseInput.mouseLastX;
+         var7 = MouseInput.mouseLastY * -469125321;
 
          for(var8 = 0; var8 < menuOptionCount; ++var8) {
             int var9 = (menuOptionCount - 1 - var8) * 15 + var2 + 31;
@@ -6272,16 +6285,16 @@ public final class Client extends GameEngine {
                int var15;
                if(isMenuOpen) {
                   int var14;
-                  if(var19 != 1 && (class34.field455 || var19 != 4)) {
-                     var2 = MouseInput.field679;
-                     var14 = MouseInput.field682 * -469125321;
+                  if(var19 != 1 && (class34.middleMouseMovesCamera || var19 != 4)) {
+                     var2 = MouseInput.mouseLastX;
+                     var14 = MouseInput.mouseLastY * -469125321;
                      if(var2 < WorldMapType1.menuX - 10 || var2 > Item.menuWidth + WorldMapType1.menuX + 10 || var14 < ClientPacket.menuY - 10 || var14 > Size.menuHeight + ClientPacket.menuY + 10) {
                         isMenuOpen = false;
                         WorldMapData.method305(WorldMapType1.menuX, ClientPacket.menuY, Item.menuWidth, Size.menuHeight);
                      }
                   }
 
-                  if(var19 == 1 || !class34.field455 && var19 == 4) {
+                  if(var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) {
                      var2 = WorldMapType1.menuX;
                      var14 = ClientPacket.menuY;
                      var15 = Item.menuWidth;
@@ -6312,7 +6325,7 @@ public final class Client extends GameEngine {
                   }
                } else {
                   var2 = menuOptionCount - 1;
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && var2 >= 0) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && var2 >= 0) {
                      var15 = menuTypes[var2];
                      if(var15 == 39 || var15 == 40 || var15 == 41 || var15 == 42 || var15 == 43 || var15 == 33 || var15 == 34 || var15 == 35 || var15 == 36 || var15 == 37 || var15 == 38 || var15 == 1005) {
                         var5 = menuActionParams0[var2];
@@ -6330,11 +6343,11 @@ public final class Client extends GameEngine {
                      }
                   }
 
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && this.method1136()) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && this.method1136()) {
                      var19 = 2;
                   }
 
-                  if((var19 == 1 || !class34.field455 && var19 == 4) && menuOptionCount > 0 && var2 >= 0) {
+                  if((var19 == 1 || !class34.middleMouseMovesCamera && var19 == 4) && menuOptionCount > 0 && var2 >= 0) {
                      var15 = menuActionParams0[var2];
                      var5 = menuActionParams1[var2];
                      var20 = menuTypes[var2];
@@ -6352,12 +6365,12 @@ public final class Client extends GameEngine {
                return;
             }
 
-            if(class39.field506 != null && !field945 && menuOptionCount > 0 && !this.method1136()) {
+            if(class39.field506 != null && !itemBeingDragged && menuOptionCount > 0 && !this.method1136()) {
                class44.method628(field857, field1039);
             }
 
-            field945 = false;
-            field1082 = 0;
+            itemBeingDragged = false;
+            itemPressedDuration = 0;
             if(class39.field506 != null) {
                class33.method344(class39.field506);
             }
@@ -6423,12 +6436,12 @@ public final class Client extends GameEngine {
    )
    @Export("openMenu")
    final void openMenu(int var1, int var2) {
-      int var3 = Friend.fontBold12.method4886("Choose Option");
+      int var3 = Friend.fontBold12.getTextWidth("Choose Option");
 
       int var4;
       int var5;
       for(var4 = 0; var4 < menuOptionCount; ++var4) {
-         var5 = Friend.fontBold12.method4886(class5.method18(var4));
+         var5 = Friend.fontBold12.getTextWidth(class5.method18(var4));
          if(var5 > var3) {
             var3 = var5;
          }
@@ -6502,8 +6515,8 @@ public final class Client extends GameEngine {
       class33.method344(field1064);
       ++FriendLoginUpdate.field751;
       if(field1009 && field992) {
-         int var1 = MouseInput.field679;
-         int var2 = MouseInput.field682 * -469125321;
+         int var1 = MouseInput.mouseLastX;
+         int var2 = MouseInput.mouseLastY * -469125321;
          var1 -= field889;
          var2 -= field943;
          if(var1 < field1007) {

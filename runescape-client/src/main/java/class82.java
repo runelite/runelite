@@ -218,8 +218,8 @@ public class class82 {
                   }
 
                   if(Client.field1012 && Client.field992) {
-                     var15 = MouseInput.field679;
-                     var16 = MouseInput.field682 * -469125321;
+                     var15 = MouseInput.mouseLastX;
+                     var16 = MouseInput.mouseLastY * -469125321;
                      var15 -= Client.field889;
                      var16 -= Client.field943;
                      if(var15 < Client.field1007) {
@@ -563,8 +563,8 @@ public class class82 {
                            }
                         }
 
-                        var29 = MouseInput.field679;
-                        var30 = MouseInput.field682 * -469125321;
+                        var29 = MouseInput.mouseLastX;
+                        var30 = MouseInput.mouseLastY * -469125321;
                         if(MouseInput.mouseLastButton != 0) {
                            var29 = MouseInput.mouseLastPressedX;
                            var30 = MouseInput.mouseLastPressedY;
@@ -596,7 +596,7 @@ public class class82 {
                               Graphics3D.Rasterizer3D_zoom = var31;
                               NPC.method1648();
                               class48.region.clearEntities();
-                              Client.field921 = 0;
+                              Client.overheadTextCount = 0;
                               boolean var60 = false;
                               var33 = -1;
                               var34 = class94.playerIndexesCount;
@@ -615,34 +615,34 @@ public class class82 {
                                     var37 = Client.cachedNPCs[Client.npcIndices[var36 - var34]];
                                  }
 
-                                 class22.method168((Actor)var37, var36, var19, var20, var21, var22);
+                                 class22.draw2DExtras((Actor)var37, var36, var19, var20, var21, var22);
                               }
 
                               if(var60) {
-                                 class22.method168(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
+                                 class22.draw2DExtras(Client.cachedPlayers[Client.field957], var33, var19, var20, var21, var22);
                               }
 
-                              for(var36 = 0; var36 < Client.field921; ++var36) {
-                                 var51 = Client.field923[var36];
-                                 var38 = Client.field924[var36];
-                                 var39 = Client.field926[var36];
-                                 var40 = Client.field925[var36];
+                              for(var36 = 0; var36 < Client.overheadTextCount; ++var36) {
+                                 var51 = Client.overheadTextsX[var36];
+                                 var38 = Client.overheadTextsY[var36];
+                                 var39 = Client.overheadTextsOffsetX[var36];
+                                 var40 = Client.overheadTextsOffsetY[var36];
                                  boolean var62 = true;
 
                                  while(var62) {
                                     var62 = false;
 
                                     for(var42 = 0; var42 < var36; ++var42) {
-                                       if(var38 + 2 > Client.field924[var42] - Client.field925[var42] && var38 - var40 < Client.field924[var42] + 2 && var51 - var39 < Client.field926[var42] + Client.field923[var42] && var51 + var39 > Client.field923[var42] - Client.field926[var42] && Client.field924[var42] - Client.field925[var42] < var38) {
-                                          var38 = Client.field924[var42] - Client.field925[var42];
+                                       if(var38 + 2 > Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42] && var38 - var40 < Client.overheadTextsY[var42] + 2 && var51 - var39 < Client.overheadTextsOffsetX[var42] + Client.overheadTextsX[var42] && var51 + var39 > Client.overheadTextsX[var42] - Client.overheadTextsOffsetX[var42] && Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42] < var38) {
+                                          var38 = Client.overheadTextsY[var42] - Client.overheadTextsOffsetY[var42];
                                           var62 = true;
                                        }
                                     }
                                  }
 
-                                 Client.screenY = Client.field923[var36];
-                                 Client.screenX = Client.field924[var36] = var38;
-                                 String var52 = Client.field997[var36];
+                                 Client.screenX = Client.overheadTextsX[var36];
+                                 Client.screenY = Client.overheadTextsY[var36] = var38;
+                                 String var52 = Client.overheadTexts[var36];
                                  if(Client.field990 == 0) {
                                     var43 = 16776960;
                                     if(Client.field927[var36] < 6) {
@@ -662,7 +662,7 @@ public class class82 {
                                     }
 
                                     if(Client.field927[var36] == 9) {
-                                       var44 = 150 - Client.field929[var36];
+                                       var44 = 150 - Client.overheadTextsCyclesRemaining[var36];
                                        if(var44 < 50) {
                                           var43 = var44 * 1280 + 16711680;
                                        } else if(var44 < 100) {
@@ -673,7 +673,7 @@ public class class82 {
                                     }
 
                                     if(Client.field927[var36] == 10) {
-                                       var44 = 150 - Client.field929[var36];
+                                       var44 = 150 - Client.overheadTextsCyclesRemaining[var36];
                                        if(var44 < 50) {
                                           var43 = var44 * 5 + 16711680;
                                        } else if(var44 < 100) {
@@ -684,7 +684,7 @@ public class class82 {
                                     }
 
                                     if(Client.field927[var36] == 11) {
-                                       var44 = 150 - Client.field929[var36];
+                                       var44 = 150 - Client.overheadTextsCyclesRemaining[var36];
                                        if(var44 < 50) {
                                           var43 = 16777215 - var44 * 327685;
                                        } else if(var44 < 100) {
@@ -695,30 +695,30 @@ public class class82 {
                                     }
 
                                     if(Client.field900[var36] == 0) {
-                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0);
                                     }
 
                                     if(Client.field900[var36] == 1) {
-                                       Friend.fontBold12.method4937(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4937(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 2) {
-                                       Friend.fontBold12.method4890(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932);
+                                       Friend.fontBold12.method4890(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932);
                                     }
 
                                     if(Client.field900[var36] == 3) {
-                                       Friend.fontBold12.method4898(var52, var19 + Client.screenY, var20 + Client.screenX, var43, 0, Client.field932, 150 - Client.field929[var36]);
+                                       Friend.fontBold12.method4898(var52, var19 + Client.screenX, var20 + Client.screenY, var43, 0, Client.field932, 150 - Client.overheadTextsCyclesRemaining[var36]);
                                     }
 
                                     if(Client.field900[var36] == 4) {
-                                       var44 = (150 - Client.field929[var36]) * (Friend.fontBold12.method4886(var52) + 100) / 150;
-                                       Rasterizer2D.setInnerDrawRegion(var19 + Client.screenY - 50, var20, var19 + Client.screenY + 50, var20 + var22);
-                                       Friend.fontBold12.method4891(var52, var19 + Client.screenY + 50 - var44, var20 + Client.screenX, var43, 0);
+                                       var44 = (150 - Client.overheadTextsCyclesRemaining[var36]) * (Friend.fontBold12.getTextWidth(var52) + 100) / 150;
+                                       Rasterizer2D.setInnerDrawRegion(var19 + Client.screenX - 50, var20, var19 + Client.screenX + 50, var20 + var22);
+                                       Friend.fontBold12.method4891(var52, var19 + Client.screenX + 50 - var44, var20 + Client.screenY, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                                     }
 
                                     if(Client.field900[var36] == 5) {
-                                       var44 = 150 - Client.field929[var36];
+                                       var44 = 150 - Client.overheadTextsCyclesRemaining[var36];
                                        var45 = 0;
                                        if(var44 < 25) {
                                           var45 = var44 - 25;
@@ -726,23 +726,23 @@ public class class82 {
                                           var45 = var44 - 125;
                                        }
 
-                                       Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenX - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenX + 5);
-                                       Friend.fontBold12.method4884(var52, var19 + Client.screenY, var45 + var20 + Client.screenX, var43, 0);
+                                       Rasterizer2D.setInnerDrawRegion(var19, var20 + Client.screenY - Friend.fontBold12.verticalSpace - 1, var19 + var21, var20 + Client.screenY + 5);
+                                       Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var45 + var20 + Client.screenY, var43, 0);
                                        Rasterizer2D.setDrawRegion(var19, var20, var21 + var19, var22 + var20);
                                     }
                                  } else {
-                                    Friend.fontBold12.method4884(var52, var19 + Client.screenY, var20 + Client.screenX, 16776960, 0);
+                                    Friend.fontBold12.drawTextCentered(var52, var19 + Client.screenX, var20 + Client.screenY, 16776960, 0);
                                  }
                               }
 
                               class21.method154(var19, var20);
                               ((TextureProvider)Graphics3D.textureLoader).method2393(Client.field847);
                               if(Client.cursorState == 1) {
-                                 Size.crossSprites[Client.field1092 / 100].drawAt(Client.field1003 - 8, Client.field936 - 8);
+                                 Size.crossSprites[Client.field1092 / 100].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                               }
 
                               if(Client.cursorState == 2) {
-                                 Size.crossSprites[Client.field1092 / 100 + 4].drawAt(Client.field1003 - 8, Client.field936 - 8);
+                                 Size.crossSprites[Client.field1092 / 100 + 4].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
                               }
 
                               Coordinates.method4077();
@@ -893,8 +893,8 @@ public class class82 {
 
                                        if(var55 != null) {
                                           if(var10 == class39.field506 && var19 == Client.field1073) {
-                                             var24 = MouseInput.field679 - Client.field857;
-                                             var25 = MouseInput.field682 * -469125321 - Client.field1039;
+                                             var24 = MouseInput.mouseLastX - Client.field857;
+                                             var25 = MouseInput.mouseLastY * -469125321 - Client.field1039;
                                              if(var24 < 5 && var24 > -5) {
                                                 var24 = 0;
                                              }
@@ -903,12 +903,12 @@ public class class82 {
                                                 var25 = 0;
                                              }
 
-                                             if(Client.field1082 < 5) {
+                                             if(Client.itemPressedDuration < 5) {
                                                 var24 = 0;
                                                 var25 = 0;
                                              }
 
-                                             var55.method5211(var22 + var24, var23 + var25, 128);
+                                             var55.drawAtOpacity(var22 + var24, var23 + var25, 128);
                                              if(var1 != -1) {
                                                 Widget var56 = var0[var1 & 65535];
                                                 if(var23 + var25 < Rasterizer2D.drawingAreaTop && var56.scrollY > 0) {
@@ -941,8 +941,8 @@ public class class82 {
                                                    class33.method344(var56);
                                                 }
                                              }
-                                          } else if(var10 == Friend.field742 && var19 == Client.field940) {
-                                             var55.method5211(var22, var23, 128);
+                                          } else if(var10 == Friend.field742 && var19 == Client.pressedItemIndex) {
+                                             var55.drawAtOpacity(var22, var23, 128);
                                           } else {
                                              var55.drawAt(var22, var23);
                                           }
@@ -1088,7 +1088,7 @@ public class class82 {
                                              if(var10.textureId != 0) {
                                                 var64.method5218(var20 / 2 + var12 + var24 * var20, var21 / 2 + var13 + var21 * var25, var10.textureId, 4096);
                                              } else if(var14 != 0) {
-                                                var64.method5211(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
+                                                var64.drawAtOpacity(var12 + var20 * var24, var13 + var21 * var25, 256 - (var14 & 255));
                                              } else {
                                                 var64.drawAt(var12 + var20 * var24, var13 + var25 * var21);
                                              }
@@ -1187,7 +1187,7 @@ public class class82 {
                                              if(var10.field2814 == 0) {
                                                 var63.method4891(var54, var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else if(var10.field2814 == 1) {
-                                                var63.method4884(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
+                                                var63.drawTextCentered(var54, var10.width / 2 + var25, var26, var10.textColor, var10.textShadowed?0:-1);
                                              } else {
                                                 var63.method4893(var54, var25 + var10.width - 1, var26, var10.textColor, var10.textShadowed?0:-1);
                                              }
@@ -1215,7 +1215,7 @@ public class class82 {
                                           var48 = "";
                                        }
 
-                                       var25 = var47.method4886(var70);
+                                       var25 = var47.getTextWidth(var70);
                                        if(var25 > var19) {
                                           var19 = var25;
                                        }

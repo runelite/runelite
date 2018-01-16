@@ -46,7 +46,7 @@ public class class192 {
       } else {
          int var2;
          int var3;
-         if((MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= class91.field1351 + 765 - 50 && MouseInput.mouseLastPressedY >= 453) {
+         if((MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4) && MouseInput.mouseLastPressedX >= class91.field1351 + 765 - 50 && MouseInput.mouseLastPressedY >= 453) {
             class2.preferences.muted = !class2.preferences.muted;
             WorldComparator.method63();
             if(!class2.preferences.muted) {
@@ -66,7 +66,7 @@ public class class192 {
             if(Client.gameState == 10 || Client.gameState == 11) {
                int var9;
                if(Client.languageId == 0) {
-                  if(MouseInput.mouseLastButton == 1 || !class34.field455 && MouseInput.mouseLastButton == 4) {
+                  if(MouseInput.mouseLastButton == 1 || !class34.middleMouseMovesCamera && MouseInput.mouseLastButton == 4) {
                      var9 = class91.field1351 + 5;
                      short var15 = 463;
                      byte var16 = 100;
@@ -86,11 +86,11 @@ public class class192 {
                var2 = MouseInput.mouseLastPressedX;
                var3 = MouseInput.mouseLastPressedY;
                if(var9 == 0) {
-                  var2 = MouseInput.field679;
-                  var3 = MouseInput.field682 * -469125321;
+                  var2 = MouseInput.mouseLastX;
+                  var3 = MouseInput.mouseLastY * -469125321;
                }
 
-               if(!class34.field455 && var9 == 4) {
+               if(!class34.middleMouseMovesCamera && var9 == 4) {
                   var9 = 1;
                }
 

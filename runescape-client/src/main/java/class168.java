@@ -171,7 +171,7 @@ public abstract class class168 {
                   WorldMapData.method341(var23, var16, var19);
                   return 1;
                } else if(var0 == 3110) {
-                  class34.field455 = class82.intStack[--class82.intStackSize] == 1;
+                  class34.middleMouseMovesCamera = class82.intStack[--class82.intStackSize] == 1;
                   return 1;
                } else if(var0 == 3111) {
                   class82.intStack[++class82.intStackSize - 1] = class2.preferences.hideRoofs?1:0;

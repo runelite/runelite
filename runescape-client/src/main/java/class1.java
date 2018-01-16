@@ -184,7 +184,7 @@ public class class1 {
          }
 
          if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            class226.field2748.method4891(DecorativeObject.method2908(var1), 0, 9, 16776960, 1);
+            class226.field2748.method4891(DecorativeObject.getItemStackAmountText(var1), 0, 9, 16776960, 1);
          }
 
          if(!var5) {

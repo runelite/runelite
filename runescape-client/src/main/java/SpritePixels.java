@@ -421,7 +421,8 @@ public final class SpritePixels extends Rasterizer2D {
    }
 
    @ObfuscatedName("b")
-   public void method5211(int var1, int var2, int var3) {
+   @Export("drawAtOpacity")
+   public void drawAtOpacity(int var1, int var2, int var3) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var4 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
