@@ -597,7 +597,7 @@ public class class21 {
 
             if(!var9.hasScript || var12 < var14 && var13 < var15) {
                var16 = MouseInput.mouseLastX;
-               var17 = MouseInput.field682 * -469125321;
+               var17 = MouseInput.mouseLastY * -469125321;
                if(MouseInput.mouseLastButton != 0) {
                   var16 = MouseInput.mouseLastPressedX;
                   var17 = MouseInput.mouseLastPressedY;
@@ -612,7 +612,7 @@ public class class21 {
                   AttackOption.method1678(var9, var10, var11);
                } else {
                   if(var9.contentType == 1400) {
-                     class61.renderOverview.method5342(MouseInput.mouseLastX, MouseInput.field682 * -469125321, var29, var10, var11, var9.width, var9.height);
+                     class61.renderOverview.method5342(MouseInput.mouseLastX, MouseInput.mouseLastY * -469125321, var29, var10, var11, var9.width, var9.height);
                   }
 
                   if(!Client.isMenuOpen && var29) {
@@ -635,7 +635,7 @@ public class class21 {
 
                      WidgetNode var25 = (WidgetNode)Client.componentTable.get((long)var9.id);
                      if(var25 != null) {
-                        if(var25.owner == 0 && MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15 && !Client.isMenuOpen && !Client.field978) {
+                        if(var25.owner == 0 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15 && !Client.isMenuOpen && !Client.field978) {
                            for(ScriptEvent var28 = (ScriptEvent)Client.field1027.getFront(); var28 != null; var28 = (ScriptEvent)Client.field1027.getNext()) {
                               if(var28.boolean1) {
                                  var28.unlink();
@@ -660,14 +660,14 @@ public class class21 {
                   if(var9.hasScript) {
                      ScriptEvent var32;
                      if(!var9.noClickThrough) {
-                        if(var9.field2888 && MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15) {
+                        if(var9.field2888 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15) {
                            for(var32 = (ScriptEvent)Client.field1027.getFront(); var32 != null; var32 = (ScriptEvent)Client.field1027.getNext()) {
                               if(var32.boolean1 && var32.widget.scrollListener == var32.objs) {
                                  var32.unlink();
                               }
                            }
                         }
-                     } else if(MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15) {
+                     } else if(MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15) {
                         for(var32 = (ScriptEvent)Client.field1027.getFront(); var32 != null; var32 = (ScriptEvent)Client.field1027.getNext()) {
                            if(var32.boolean1) {
                               var32.unlink();
@@ -685,7 +685,7 @@ public class class21 {
                         }
                      }
 
-                     if(MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15) {
+                     if(MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15) {
                         var29 = true;
                      } else {
                         var29 = false;
@@ -706,7 +706,7 @@ public class class21 {
                      }
 
                      if(var9.contentType == 1400) {
-                        class61.renderOverview.method5343(MouseInput.mouseLastX, MouseInput.field682 * -469125321, var29 & var30, var29 & var20);
+                        class61.renderOverview.method5343(MouseInput.mouseLastX, MouseInput.mouseLastY * -469125321, var29 & var30, var29 & var20);
                      }
 
                      int var22;
@@ -759,7 +759,7 @@ public class class21 {
                            var26.boolean1 = true;
                            var26.widget = var9;
                            var26.field771 = MouseInput.mouseLastX - var10;
-                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                            var26.objs = var9.field2842;
                            Client.field1027.addFront(var26);
                         }
@@ -771,7 +771,7 @@ public class class21 {
                               var26.boolean1 = true;
                               var26.widget = var9;
                               var26.field771 = MouseInput.mouseLastX - var10;
-                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                               var26.objs = var9.field2843;
                               Client.field1029.addFront(var26);
                            }
@@ -782,7 +782,7 @@ public class class21 {
                            var26.boolean1 = true;
                            var26.widget = var9;
                            var26.field771 = MouseInput.mouseLastX - var10;
-                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                            var26.objs = var9.field2873;
                            Client.field1027.addFront(var26);
                         }
@@ -794,7 +794,7 @@ public class class21 {
                               var26.boolean1 = true;
                               var26.widget = var9;
                               var26.field771 = MouseInput.mouseLastX - var10;
-                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                               var26.objs = var9.mouseEnterListener;
                               Client.field1027.addFront(var26);
                            }
@@ -805,7 +805,7 @@ public class class21 {
                            var26.boolean1 = true;
                            var26.widget = var9;
                            var26.field771 = MouseInput.mouseLastX - var10;
-                           var26.field772 = MouseInput.field682 * -469125321 - var11;
+                           var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                            var26.objs = var9.mouseHoverListener;
                            Client.field1027.addFront(var26);
                         }
@@ -817,7 +817,7 @@ public class class21 {
                               var26.boolean1 = true;
                               var26.widget = var9;
                               var26.field771 = MouseInput.mouseLastX - var10;
-                              var26.field772 = MouseInput.field682 * -469125321 - var11;
+                              var26.field772 = MouseInput.mouseLastY * -469125321 - var11;
                               var26.objs = var9.mouseExitListener;
                               Client.field1029.addFront(var26);
                            }
@@ -968,7 +968,7 @@ public class class21 {
                   }
 
                   if(!var9.hasScript && Client.field1064 == null && class39.field506 == null && !Client.isMenuOpen) {
-                     if((var9.field2822 >= 0 || var9.field2786 != 0) && MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15) {
+                     if((var9.field2822 >= 0 || var9.field2786 != 0) && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15) {
                         if(var9.field2822 >= 0) {
                            class29.field391 = var0[var9.field2822];
                         } else {
@@ -976,12 +976,12 @@ public class class21 {
                         }
                      }
 
-                     if(var9.type == 8 && MouseInput.mouseLastX >= var12 && MouseInput.field682 * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.field682 * -469125321 < var15) {
+                     if(var9.type == 8 && MouseInput.mouseLastX >= var12 && MouseInput.mouseLastY * -469125321 >= var13 && MouseInput.mouseLastX < var14 && MouseInput.mouseLastY * -469125321 < var15) {
                         ContextMenuRow.field1299 = var9;
                      }
 
                      if(var9.scrollHeight > var9.height) {
-                        class94.method1767(var9, var10 + var9.width, var11, var9.height, var9.scrollHeight, MouseInput.mouseLastX, MouseInput.field682 * -469125321);
+                        class94.method1767(var9, var10 + var9.width, var11, var9.height, var9.scrollHeight, MouseInput.mouseLastX, MouseInput.mouseLastY * -469125321);
                      }
                   }
                }

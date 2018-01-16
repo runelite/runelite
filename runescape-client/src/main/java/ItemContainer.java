@@ -93,9 +93,9 @@ public class ItemContainer extends Node {
       int var2;
       int var3;
       if(MouseInput.mouseCurrentButton == 4 && class34.field455) {
-         var2 = MouseInput.field682 * -469125321 - Client.field916;
+         var2 = MouseInput.mouseLastY * -469125321 - Client.field916;
          Client.field901 = var2 * 2;
-         Client.field916 = var2 != -1 && var2 != 1?(Client.field916 + MouseInput.field682 * -469125321) / 2:MouseInput.field682 * -469125321;
+         Client.field916 = var2 != -1 && var2 != 1?(Client.field916 + MouseInput.mouseLastY * -469125321) / 2:MouseInput.mouseLastY * -469125321;
          var3 = Client.field915 - MouseInput.mouseLastX;
          Client.field987 = var3 * 2;
          Client.field915 = var3 != -1 && var3 != 1?(Client.field915 + MouseInput.mouseLastX) / 2:MouseInput.mouseLastX;
@@ -116,7 +116,7 @@ public class ItemContainer extends Node {
             Client.field901 /= 2;
          }
 
-         Client.field916 = MouseInput.field682 * -469125321;
+         Client.field916 = MouseInput.mouseLastY * -469125321;
          Client.field915 = MouseInput.mouseLastX;
       }
 

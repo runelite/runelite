@@ -3997,7 +3997,7 @@ public final class Client extends GameEngine {
                                                    mouseCrosshair = 10;
                                                    MouseInput.mouseLastButton = 0;
                                                    class39.field506 = null;
-                                                } else if(itemPressedDuration >= 5 && (MouseInput.mouseLastX > field857 + 5 || MouseInput.mouseLastX < field857 - 5 || MouseInput.field682 * -469125321 > field1039 + 5 || MouseInput.field682 * -469125321 < field1039 - 5)) {
+                                                } else if(itemPressedDuration >= 5 && (MouseInput.mouseLastX > field857 + 5 || MouseInput.mouseLastX < field857 - 5 || MouseInput.mouseLastY * -469125321 > field1039 + 5 || MouseInput.mouseLastY * -469125321 < field1039 - 5)) {
                                                    field945 = true;
                                                 }
                                              }
@@ -4256,7 +4256,7 @@ public final class Client extends GameEngine {
          Rasterizer2D.drawRectangle(var1 + 1, var2 + 18, var3 - 2, var4 - 19, 0);
          Friend.fontBold12.method4891("Choose Option", var1 + 3, var2 + 14, var12, -1);
          var13 = MouseInput.mouseLastX;
-         var7 = MouseInput.field682 * -469125321;
+         var7 = MouseInput.mouseLastY * -469125321;
 
          for(var8 = 0; var8 < menuOptionCount; ++var8) {
             int var9 = (menuOptionCount - 1 - var8) * 15 + var2 + 31;
@@ -6286,7 +6286,7 @@ public final class Client extends GameEngine {
                   int var14;
                   if(var19 != 1 && (class34.field455 || var19 != 4)) {
                      var2 = MouseInput.mouseLastX;
-                     var14 = MouseInput.field682 * -469125321;
+                     var14 = MouseInput.mouseLastY * -469125321;
                      if(var2 < WorldMapType1.menuX - 10 || var2 > Item.menuWidth + WorldMapType1.menuX + 10 || var14 < ClientPacket.menuY - 10 || var14 > Size.menuHeight + ClientPacket.menuY + 10) {
                         isMenuOpen = false;
                         WorldMapData.method305(WorldMapType1.menuX, ClientPacket.menuY, Item.menuWidth, Size.menuHeight);
@@ -6515,7 +6515,7 @@ public final class Client extends GameEngine {
       ++FriendLoginUpdate.field751;
       if(field1009 && field992) {
          int var1 = MouseInput.mouseLastX;
-         int var2 = MouseInput.field682 * -469125321;
+         int var2 = MouseInput.mouseLastY * -469125321;
          var1 -= field889;
          var2 -= field943;
          if(var1 < field1007) {
