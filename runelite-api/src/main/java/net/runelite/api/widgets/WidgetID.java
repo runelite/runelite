@@ -50,6 +50,10 @@ public class WidgetID
 	public static final int CHATBOX_GROUP_ID = 162;
 	public static final int WORLD_MAP_MENU_GROUP_ID = 160;
 	public static final int VOLCANIC_MINE_GROUP_ID = 611;
+	public static final int BA_ATTACKER_GROUP_ID = 485;
+	public static final int BA_COLLECTOR_GROUP_ID = 486;
+	public static final int BA_DEFENDER_GROUP_ID = 487;
+	public static final int BA_HEALER_GROUP_ID = 488;
 
 	static class WorldMap
 	{
@@ -226,5 +230,22 @@ public class WidgetID
 		static final int VENT_A_STATUS = 23;
 		static final int VENT_B_STATUS = 24;
 		static final int VENT_C_STATUS = 25;
+	}
+
+	static class BarbarianAssault
+	{
+		static class ATK
+		{
+			static final int CORRECT_STYLE2 = 4;
+			static final int TO_CALL = 6;
+			static final int ROLE = 8;
+			static final int ROLE_SPRITE = 7;
+		}
+
+		static final int CURRENT_WAVE = 1;
+		static final int CORRECT_STYLE = 3;
+		static final int TO_CALL = 5;
+		static final int ROLE_SPRITE = 6;
+		static final int ROLE = 7;
 	}
 }
