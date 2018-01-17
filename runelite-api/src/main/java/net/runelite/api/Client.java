@@ -84,6 +84,10 @@ public interface Client
 
 	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted);
 
+	void setItemBorderColor(int itemId, int rgb);
+
+	void clearItemBorderColors();
+
 	int getBaseX();
 
 	int getBaseY();
