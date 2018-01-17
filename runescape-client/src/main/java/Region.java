@@ -1,5 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -1043,6 +1044,7 @@ public class Region {
 
    @ObfuscatedName("ae")
    @Export("draw")
+   @Hook(value = "drawRegion", end = true)
    public void draw(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 < 0) {
          var1 = 0;

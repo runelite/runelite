@@ -24,32 +24,32 @@
  */
 package net.runelite.api.widgets;
 
-class WidgetID
+public class WidgetID
 {
-	static final int LOGOUT_PANEL_ID = 182;
-	static final int BANK_GROUP_ID = 12;
-	static final int BANK_INVENTORY_GROUP_ID = 15;
-	static final int DEPOSIT_BOX_GROUP_ID = 192;
-	static final int INVENTORY_GROUP_ID = 149;
-	static final int EQUIPMENT_GROUP_ID = 387;
-	static final int PESTRCONTROL_GROUP_ID = 408;
-	static final int CLAN_CHAT_GROUP_ID = 7;
-	static final int MINIMAP_GROUP_ID = 160;
-	static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
-	static final int CLUE_SCROLL_GROUP_ID = 203;
-	static final int FIXED_VIEWPORT_GROUP_ID = 548;
-	static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID = 161;
-	static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
-	static final int PRAYER_GROUP_ID = 541;
-	static final int SHOP_GROUP_ID = 300;
-	static final int SHOP_INVENTORY_GROUP_ID = 301;
-	static final int COMBAT_GROUP_ID = 593;
-	static final int DIALOG_NPC_GROUP_ID = 231;
-	static final int SLAYER_REWARDS_GROUP_ID = 426;
-	static final int PRIVATE_CHAT = 163;
-	static final int CHATBOX_GROUP_ID = 162;
-	static final int WORLD_MAP_MENU_GROUP_ID = 160;
-	static final int VOLCANIC_MINE_GROUP_ID = 611;
+	public static final int LOGOUT_PANEL_ID = 182;
+	public static final int BANK_GROUP_ID = 12;
+	public static final int BANK_INVENTORY_GROUP_ID = 15;
+	public static final int DEPOSIT_BOX_GROUP_ID = 192;
+	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int EQUIPMENT_GROUP_ID = 387;
+	public static final int PESTRCONTROL_GROUP_ID = 408;
+	public static final int CLAN_CHAT_GROUP_ID = 7;
+	public static final int MINIMAP_GROUP_ID = 160;
+	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
+	public static final int CLUE_SCROLL_GROUP_ID = 203;
+	public static final int FIXED_VIEWPORT_GROUP_ID = 548;
+	public static final int RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID = 161;
+	public static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID = 164;
+	public static final int PRAYER_GROUP_ID = 541;
+	public static final int SHOP_GROUP_ID = 300;
+	public static final int SHOP_INVENTORY_GROUP_ID = 301;
+	public static final int COMBAT_GROUP_ID = 593;
+	public static final int DIALOG_NPC_GROUP_ID = 231;
+	public static final int SLAYER_REWARDS_GROUP_ID = 426;
+	public static final int PRIVATE_CHAT = 163;
+	public static final int CHATBOX_GROUP_ID = 162;
+	public static final int WORLD_MAP_MENU_GROUP_ID = 160;
+	public static final int VOLCANIC_MINE_GROUP_ID = 611;
 
 	static class WorldMap
 	{

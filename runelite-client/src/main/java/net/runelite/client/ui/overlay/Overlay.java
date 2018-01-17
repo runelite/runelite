@@ -31,7 +31,5 @@ public abstract class Overlay implements RenderableEntity
 {
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
-	private boolean drawOverLoginScreen = false;
-	private boolean drawOverBankScreen = false;
-	private boolean drawOverClickToPlayScreen = false;
+	private OverlayLayer layer = OverlayLayer.ABOVE_WIDGETS;
 }

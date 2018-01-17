@@ -1624,19 +1624,19 @@ public class Coordinates {
       garbageValue = "46"
    )
    static final void method4077() {
-      Client.field947 = 0;
+      Client.myPlayerIndex = 0;
       int var0 = (UrlRequest.localPlayer.x >> 7) + class46.baseX;
       int var1 = (UrlRequest.localPlayer.y >> 7) + Client.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
-         Client.field947 = 1;
+         Client.myPlayerIndex = 1;
       }
 
       if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
-         Client.field947 = 1;
+         Client.myPlayerIndex = 1;
       }
 
-      if(Client.field947 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
-         Client.field947 = 0;
+      if(Client.myPlayerIndex == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.myPlayerIndex = 0;
       }
 
    }

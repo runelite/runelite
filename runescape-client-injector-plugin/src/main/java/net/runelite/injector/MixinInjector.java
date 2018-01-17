@@ -41,8 +41,10 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
@@ -339,6 +341,11 @@ public class MixinInjector
 				throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
 			}
 
+			if (method.getDescriptor().size() > obMethod.getDescriptor().size())
+			{
+				throw new InjectionException("Mixin methods cannot have more parameters than their corresponding ob method");
+			}
+
 			Method copy = new Method(cf, "copy$" + deobMethodName, obMethodSignature);
 			moveCode(copy, obMethod.getCode());
 			copy.setAccessFlags(obMethod.getAccessFlags());
@@ -347,7 +354,13 @@ public class MixinInjector
 			copy.getAnnotations().getAnnotations().addAll(obMethod.getAnnotations().getAnnotations());
 			cf.addMethod(copy);
 
-			boolean hasGarbageValue = deobMethod.getDescriptor().size() < obMethodSignature.size();
+			/*
+				If the desc for the mixin method and the desc for the ob method
+				are the same in length, assume that the mixin method is taking
+				care of the garbage parameter itself.
+			 */
+			boolean hasGarbageValue = method.getDescriptor().size() != obMethod.getDescriptor().size()
+					&& deobMethod.getDescriptor().size() < obMethodSignature.size();
 			copiedMethods.put(method.getPoolMethod(), new CopiedMethod(copy, hasGarbageValue));
 
 			logger.debug("Injected copy of {} to {}", obMethod, copy);
@@ -404,6 +417,12 @@ public class MixinInjector
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 				assert obMethod != null : "obfuscated method " + obMethodName + obMethodSignature + " does not exist";
+
+				if (method.getDescriptor().size() > obMethod.getDescriptor().size())
+				{
+					throw new InjectionException("Mixin methods cannot have more parameters than their corresponding ob method");
+				}
+
 				moveCode(obMethod, method.getCode());
 
 				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
@@ -454,6 +473,15 @@ public class MixinInjector
 							? copiedMethod.obMethod.getDescriptor().size() - 1
 							: copiedMethod.obMethod.getDescriptor().size();
 
+						/*
+							If the mixin method doesn't have the garbage parameter,
+							the compiler will have produced code that uses the garbage
+							parameter's local variable index for other things,
+							so we'll have to add 1 to all loads/stores to indices
+							that are >= garbageIndex.
+						 */
+						shiftLocalIndices(method.getCode().getInstructions(), garbageIndex);
+
 						iterator.previous();
 						iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
 						iterator.next();
@@ -488,6 +516,22 @@ public class MixinInjector
 			}
 
 			verify(mixinCf, i);
+		}
+	}
+
+	private void shiftLocalIndices(Instructions instructions, int startIdx)
+	{
+		for (Instruction i : instructions.getInstructions())
+		{
+			if (i instanceof LVTInstruction)
+			{
+				LVTInstruction lvti = (LVTInstruction) i;
+
+				if (lvti.getVariableIndex() >= startIdx)
+				{
+					lvti.setVariableIndex(lvti.getVariableIndex() + 1);
+				}
+			}
 		}
 	}
 

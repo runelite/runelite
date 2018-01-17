@@ -123,7 +123,7 @@ public class FaceNormal {
                         }
 
                         var10 = -1;
-                        if(Client.field976 && KeyFocusListener.field593[81]) {
+                        if(Client.field976 && KeyFocusListener.keyPressed[81]) {
                            var10 = var8.method4719();
                         }
 

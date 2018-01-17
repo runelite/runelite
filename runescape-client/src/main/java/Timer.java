@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -31,12 +32,13 @@ public abstract class Timer {
       signature = "(B)V",
       garbageValue = "89"
    )
-   public static void method3079() {
+   @Export("processMouseInput")
+   public static void processMouseInput() {
       MouseInput var0 = MouseInput.mouse;
       synchronized(MouseInput.mouse) {
          MouseInput.mouseCurrentButton = MouseInput.MouseHandler_currentButton;
-         MouseInput.field679 = MouseInput.mouseX;
-         MouseInput.field682 = MouseInput.mouseY * -1460687225;
+         MouseInput.mouseLastX = MouseInput.mouseX;
+         MouseInput.mouseLastY = MouseInput.mouseY * -1460687225;
          MouseInput.mouseLastButton = MouseInput.MouseHandler_lastButton;
          MouseInput.mouseLastPressedX = MouseInput.MouseHandler_lastPressedX;
          MouseInput.mouseLastPressedY = MouseInput.MouseHandler_lastPressedY;

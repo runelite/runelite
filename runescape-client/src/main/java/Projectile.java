@@ -53,14 +53,14 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = 1550375669
    )
-   @Export("startTime")
-   int startTime;
+   @Export("startMovementCycle")
+   int startMovementCycle;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 632478681
    )
-   @Export("cycle")
-   int cycle;
+   @Export("endCycle")
+   int endCycle;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -45498235
@@ -71,8 +71,8 @@ public final class Projectile extends Renderable {
    @ObfuscatedGetter(
       intValue = -1841552807
    )
-   @Export("start")
-   int start;
+   @Export("startHeight")
+   int startHeight;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -820127231
@@ -86,23 +86,23 @@ public final class Projectile extends Renderable {
    @Export("x")
    double x;
    @ObfuscatedName("n")
-   @Export("velocityZ")
-   double velocityZ;
+   @Export("y")
+   double y;
    @ObfuscatedName("y")
    @Export("z")
    double z;
    @ObfuscatedName("o")
-   @Export("speedX")
-   double speedX;
-   @ObfuscatedName("r")
-   @Export("scalar")
-   double scalar;
-   @ObfuscatedName("i")
-   @Export("velocityY")
-   double velocityY;
-   @ObfuscatedName("l")
    @Export("velocityX")
    double velocityX;
+   @ObfuscatedName("r")
+   @Export("velocityY")
+   double velocityY;
+   @ObfuscatedName("i")
+   @Export("scalar")
+   double scalar;
+   @ObfuscatedName("l")
+   @Export("velocityZ")
+   double velocityZ;
    @ObfuscatedName("m")
    @Export("heightOffset")
    double heightOffset;
@@ -146,10 +146,10 @@ public final class Projectile extends Renderable {
       this.x1 = var3;
       this.y1 = var4;
       this.height = var5;
-      this.startTime = var6;
-      this.cycle = var7;
+      this.startMovementCycle = var6;
+      this.endCycle = var7;
       this.slope = var8;
-      this.start = var9;
+      this.startHeight = var9;
       this.interacting = var10;
       this.endHeight = var11;
       this.isMoving = false;
@@ -175,20 +175,20 @@ public final class Projectile extends Renderable {
          var5 = (double)(var1 - this.x1);
          double var7 = (double)(var2 - this.y1);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
-         this.x = (double)this.x1 + var5 * (double)this.start / var9;
-         this.velocityZ = (double)this.y1 + var7 * (double)this.start / var9;
+         this.x = (double)this.x1 + var5 * (double)this.startHeight / var9;
+         this.y = (double)this.y1 + var7 * (double)this.startHeight / var9;
          this.z = (double)this.height;
       }
 
-      var5 = (double)(this.cycle + 1 - var4);
-      this.speedX = ((double)var1 - this.x) / var5;
-      this.scalar = ((double)var2 - this.velocityZ) / var5;
-      this.velocityY = Math.sqrt(this.speedX * this.speedX + this.scalar * this.scalar);
+      var5 = (double)(this.endCycle + 1 - var4);
+      this.velocityX = ((double)var1 - this.x) / var5;
+      this.velocityY = ((double)var2 - this.y) / var5;
+      this.scalar = Math.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY);
       if(!this.isMoving) {
-         this.velocityX = -this.velocityY * Math.tan(0.02454369D * (double)this.slope);
+         this.velocityZ = -this.scalar * Math.tan(0.02454369D * (double)this.slope);
       }
 
-      this.heightOffset = 2.0D * ((double)var3 - this.z - this.velocityX * var5) / (var5 * var5);
+      this.heightOffset = 2.0D * ((double)var3 - this.z - this.velocityZ * var5) / (var5 * var5);
    }
 
    @ObfuscatedName("w")
@@ -199,12 +199,12 @@ public final class Projectile extends Renderable {
    @Export("update")
    final void update(int var1) {
       this.isMoving = true;
-      this.x += this.speedX * (double)var1;
-      this.velocityZ += (double)var1 * this.scalar;
-      this.z += (double)var1 * this.velocityX + this.heightOffset * 0.5D * (double)var1 * (double)var1;
-      this.velocityX += (double)var1 * this.heightOffset;
-      this.rotationX = (int)(Math.atan2(this.speedX, this.scalar) * 325.949D) + 1024 & 2047;
-      this.rotationY = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) & 2047;
+      this.x += this.velocityX * (double)var1;
+      this.y += (double)var1 * this.velocityY;
+      this.z += (double)var1 * this.velocityZ + this.heightOffset * 0.5D * (double)var1 * (double)var1;
+      this.velocityZ += (double)var1 * this.heightOffset;
+      this.rotationX = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) + 1024 & 2047;
+      this.rotationY = (int)(Math.atan2(this.velocityZ, this.scalar) * 325.949D) & 2047;
       if(this.animationSequence != null) {
          this.int6 += var1;
 

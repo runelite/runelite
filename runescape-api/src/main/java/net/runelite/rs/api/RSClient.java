@@ -25,6 +25,7 @@
 package net.runelite.rs.api;
 
 import java.util.Map;
+import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
@@ -146,6 +147,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("groundItemDeque")
 	RSDeque[][][] getGroundItemDeque();
 
+	@Import("projectiles")
+	RSDeque getProjectilesDeque();
+
 	@Import("username")
 	@Override
 	String getUsername();
@@ -266,6 +270,7 @@ public interface RSClient extends RSGameEngine, Client
 	boolean isMenuOpen();
 
 	@Import("gameCycle")
+	@Override
 	int getGameCycle();
 
 	@Import("packetHandler")
@@ -332,4 +337,22 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	@Override
 	RSIndexedSprite createIndexedSprite();
+
+	@Import("destinationX")
+	int getDestinationX();
+
+	@Import("destinationY")
+	int getDestinationY();
+
+	@Import("isFriended")
+	@Override
+	boolean isFriended(String name, boolean mustBeLoggedIn);
+
+	@Import("isIgnored")
+	@Override
+	boolean isIgnored(String name);
+
+	@Import("rasterProvider")
+	@Override
+	BufferProvider getBufferProvider();
 }

@@ -66,6 +66,7 @@ import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
 import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class InstanceMapOverlay extends Overlay
@@ -114,6 +115,7 @@ class InstanceMapOverlay extends Overlay
 	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config, InstanceMapPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;

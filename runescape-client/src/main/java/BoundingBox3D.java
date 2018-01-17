@@ -11,7 +11,8 @@ public final class BoundingBox3D extends BoundingBox {
    @ObfuscatedSignature(
       signature = "Lks;"
    )
-   static SpritePixels field250;
+   @Export("minimapSprite")
+   static SpritePixels minimapSprite;
    @ObfuscatedName("oq")
    @ObfuscatedGetter(
       intValue = 707237587

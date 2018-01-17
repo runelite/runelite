@@ -99,11 +99,11 @@ public class FriendLoginUpdate extends Link {
          int var9;
          int var10;
          if(var4 != 1 && var4 != 3) {
-            var9 = var8.sizeX;
-            var10 = var8.sizeY;
+            var9 = var8.width;
+            var10 = var8.length;
          } else {
-            var9 = var8.sizeY;
-            var10 = var8.sizeX;
+            var9 = var8.length;
+            var10 = var8.width;
          }
 
          int var11;
@@ -136,7 +136,7 @@ public class FriendLoginUpdate extends Link {
          }
 
          int var20 = var5 + (var4 << 6);
-         if(var8.int3 == 1) {
+         if(var8.supportItems == 1) {
             var20 += 256;
          }
 
@@ -147,11 +147,11 @@ public class FriendLoginUpdate extends Link {
             var21.field1225 = var0;
             var21.field1223 = var1 * 128;
             var21.field1224 = var2 * 128;
-            var22 = var8.sizeX;
-            var23 = var8.sizeY;
+            var22 = var8.width;
+            var23 = var8.length;
             if(var4 == 1 || var4 == 3) {
-               var22 = var8.sizeY;
-               var23 = var8.sizeX;
+               var22 = var8.length;
+               var23 = var8.width;
             }
 
             var21.field1232 = (var22 + var1) * 128;
@@ -174,7 +174,7 @@ public class FriendLoginUpdate extends Link {
 
          Object var30;
          if(var5 == 22) {
-            if(!Client.lowMemory || var8.int1 != 0 || var8.interactType == 1 || var8.boolean2) {
+            if(!Client.lowMemory || var8.int1 != 0 || var8.clipType == 1 || var8.obstructsGround) {
                if(var8.animationId == -1 && var8.impostorIds == null) {
                   var30 = var8.getModel(22, var4, var15, var17, var16, var18);
                } else {
@@ -182,7 +182,7 @@ public class FriendLoginUpdate extends Link {
                }
 
                var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var30, var19, var20);
-               if(var8.interactType == 1 && var7 != null) {
+               if(var8.clipType == 1 && var7 != null) {
                   var7.method3150(var1, var2);
                }
 
@@ -200,8 +200,8 @@ public class FriendLoginUpdate extends Link {
                   TextureProvider.field1667[var0][var1][var2] |= 2340;
                }
 
-               if(var8.interactType != 0 && var7 != null) {
-                  var7.addObject(var1, var2, var9, var10, var8.boolean1);
+               if(var8.clipType != 0 && var7 != null) {
+                  var7.addObject(var1, var2, var9, var10, var8.blocksProjectile);
                }
 
             } else if(var5 == 0) {
@@ -250,12 +250,12 @@ public class FriendLoginUpdate extends Link {
                   }
                }
 
-               if(var8.interactType != 0 && var7 != null) {
-                  var7.method3130(var1, var2, var5, var4, var8.boolean1);
+               if(var8.clipType != 0 && var7 != null) {
+                  var7.method3130(var1, var2, var5, var4, var8.blocksProjectile);
                }
 
-               if(var8.int2 != 16) {
-                  var6.method2769(var0, var1, var2, var8.int2);
+               if(var8.decorDisplacement != 16) {
+                  var6.method2769(var0, var1, var2, var8.decorDisplacement);
                }
 
             } else if(var5 == 1) {
@@ -278,8 +278,8 @@ public class FriendLoginUpdate extends Link {
                   }
                }
 
-               if(var8.interactType != 0 && var7 != null) {
-                  var7.method3130(var1, var2, var5, var4, var8.boolean1);
+               if(var8.clipType != 0 && var7 != null) {
+                  var7.method3130(var1, var2, var5, var4, var8.blocksProjectile);
                }
 
             } else {
@@ -313,12 +313,12 @@ public class FriendLoginUpdate extends Link {
                      }
                   }
 
-                  if(var8.interactType != 0 && var7 != null) {
-                     var7.method3130(var1, var2, var5, var4, var8.boolean1);
+                  if(var8.clipType != 0 && var7 != null) {
+                     var7.method3130(var1, var2, var5, var4, var8.blocksProjectile);
                   }
 
-                  if(var8.int2 != 16) {
-                     var6.method2769(var0, var1, var2, var8.int2);
+                  if(var8.decorDisplacement != 16) {
+                     var6.method2769(var0, var1, var2, var8.decorDisplacement);
                   }
 
                } else if(var5 == 3) {
@@ -341,8 +341,8 @@ public class FriendLoginUpdate extends Link {
                      }
                   }
 
-                  if(var8.interactType != 0 && var7 != null) {
-                     var7.method3130(var1, var2, var5, var4, var8.boolean1);
+                  if(var8.clipType != 0 && var7 != null) {
+                     var7.method3130(var1, var2, var5, var4, var8.blocksProjectile);
                   }
 
                } else if(var5 == 9) {
@@ -353,12 +353,12 @@ public class FriendLoginUpdate extends Link {
                   }
 
                   var6.method2700(var0, var1, var2, var16, 1, 1, (Renderable)var30, 0, var19, var20);
-                  if(var8.interactType != 0 && var7 != null) {
-                     var7.addObject(var1, var2, var9, var10, var8.boolean1);
+                  if(var8.clipType != 0 && var7 != null) {
+                     var7.addObject(var1, var2, var9, var10, var8.blocksProjectile);
                   }
 
-                  if(var8.int2 != 16) {
-                     var6.method2769(var0, var1, var2, var8.int2);
+                  if(var8.decorDisplacement != 16) {
+                     var6.method2769(var0, var1, var2, var8.decorDisplacement);
                   }
 
                } else if(var5 == 4) {
@@ -373,7 +373,7 @@ public class FriendLoginUpdate extends Link {
                   var26 = 16;
                   var22 = var6.method2716(var0, var1, var2);
                   if(var22 != 0) {
-                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).int2;
+                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).decorDisplacement;
                   }
 
                   if(var8.animationId == -1 && var8.impostorIds == null) {
@@ -387,7 +387,7 @@ public class FriendLoginUpdate extends Link {
                   var26 = 8;
                   var22 = var6.method2716(var0, var1, var2);
                   if(var22 != 0) {
-                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).int2 / 2;
+                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).decorDisplacement / 2;
                   }
 
                   if(var8.animationId == -1 && var8.impostorIds == null) {
@@ -410,7 +410,7 @@ public class FriendLoginUpdate extends Link {
                   var26 = 8;
                   var22 = var6.method2716(var0, var1, var2);
                   if(var22 != 0) {
-                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).int2 / 2;
+                     var26 = CacheFile.getObjectDefinition(var22 >> 14 & 32767).decorDisplacement / 2;
                   }
 
                   int var25 = var4 + 2 & 3;
@@ -451,8 +451,8 @@ public class FriendLoginUpdate extends Link {
                }
             }
 
-            if(var8.interactType != 0 && var7 != null) {
-               var7.addObject(var1, var2, var9, var10, var8.boolean1);
+            if(var8.clipType != 0 && var7 != null) {
+               var7.addObject(var1, var2, var9, var10, var8.blocksProjectile);
             }
 
          }

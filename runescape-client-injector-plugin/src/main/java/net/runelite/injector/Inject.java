@@ -24,6 +24,7 @@
  */
 package net.runelite.injector;
 
+import net.runelite.injector.raw.DrawAfterWidgets;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
@@ -67,6 +68,7 @@ public class Inject
 	private final InjectConstruct construct = new InjectConstruct(this);
 
 	private final MixinInjector mixinInjector = new MixinInjector(this);
+	private final DrawAfterWidgets drawAfterWidgets = new DrawAfterWidgets(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -314,6 +316,8 @@ public class Inject
 		logger.info("Injected {} getters, {} settters, {} invokers",
 			getters.getInjectedGetters(),
 			setters.getInjectedSetters(), invokes.getInjectedInvokers());
+
+		drawAfterWidgets.inject();
 	}
 
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -423,6 +427,21 @@ public class Inject
 			String obfuscatedName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
 			if (obClass.getName().equalsIgnoreCase(obfuscatedName))
+			{
+				return cf;
+			}
+		}
+
+		return null;
+	}
+
+	public ClassFile toObClass(ClassFile deobClass)
+	{
+		String obfuscatedName = DeobAnnotations.getObfuscatedName(deobClass.getAnnotations());
+
+		for (ClassFile cf : vanilla.getClasses())
+		{
+			if (cf.getName().equalsIgnoreCase(obfuscatedName))
 			{
 				return cf;
 			}

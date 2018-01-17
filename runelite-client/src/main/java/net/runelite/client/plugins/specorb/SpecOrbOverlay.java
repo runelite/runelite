@@ -44,8 +44,18 @@ public class SpecOrbOverlay extends Overlay
 {
 	private static final int RECHARGE_TIME_TICKS = 51;
 
-	private static final int ORB_X_OFFSET = 33;
-	private static final int ORB_Y_OFFSET = 25;
+	private static final int SPEC_ORB_X_FIXED = 34;
+	private static final int SPEC_ORB_Y_FIXED = 26;
+	private static final int PRAYER_ORB_Y_FIXED = 73;
+	private static final int RUN_ORB_X_FIXED = 12;
+	private static final int RUN_ORB_Y_FIXED = 108;
+
+	private static final int SPEC_ORB_X_RESIZABLE = 29;
+	private static final int SPEC_ORB_Y_RESIZABLE = 28;
+	private static final int PRAYER_ORB_Y_RESIZABLE = 71;
+	private static final int RUN_ORB_X_RESIZABLE = 12;
+	private static final int RUN_ORB_Y_RESIZABLE = 103;
+
 	private static final Color SPECIAL_ORB_BACKGROUND_COLOR = new Color(51, 102, 255);
 	private static final Color SPECIAL_ORB_RECHARGE_COLOR = new Color(153, 204, 255, 50);
 
@@ -86,36 +96,36 @@ public class SpecOrbOverlay extends Overlay
 
 		if (client.isResized())
 		{
-			if (prayerOrb.getRelativeY() != 73)
+			if (prayerOrb.getRelativeY() != PRAYER_ORB_Y_FIXED)
 			{
-				prayerOrb.setRelativeY(73);
+				prayerOrb.setRelativeY(PRAYER_ORB_Y_FIXED);
 			}
 
-			if (runOrb.getRelativeX() != 12)
+			if (runOrb.getRelativeX() != RUN_ORB_X_FIXED)
 			{
-				runOrb.setRelativeX(12);
+				runOrb.setRelativeX(RUN_ORB_X_FIXED);
 			}
 
-			if (runOrb.getRelativeY() != 108)
+			if (runOrb.getRelativeY() != RUN_ORB_Y_FIXED)
 			{
-				runOrb.setRelativeY(108);
+				runOrb.setRelativeY(RUN_ORB_Y_FIXED);
 			}
 		}
 		else
 		{
-			if (prayerOrb.getRelativeY() != 71)
+			if (prayerOrb.getRelativeY() != PRAYER_ORB_Y_RESIZABLE)
 			{
-				prayerOrb.setRelativeY(71);
+				prayerOrb.setRelativeY(PRAYER_ORB_Y_RESIZABLE);
 			}
 
-			if (runOrb.getRelativeX() != 12)
+			if (runOrb.getRelativeX() != RUN_ORB_X_RESIZABLE)
 			{
-				runOrb.setRelativeX(12);
+				runOrb.setRelativeX(RUN_ORB_X_RESIZABLE);
 			}
 
-			if (runOrb.getRelativeY() != 103)
+			if (runOrb.getRelativeY() != RUN_ORB_Y_RESIZABLE)
 			{
-				runOrb.setRelativeY(103);
+				runOrb.setRelativeY(RUN_ORB_Y_RESIZABLE);
 			}
 		}
 
@@ -125,7 +135,8 @@ public class SpecOrbOverlay extends Overlay
 
 		// draw relative to run orb
 		Point runOrbPoint = runOrb.getCanvasLocation();
-		Point specOrbPoint = new Point(runOrbPoint.getX() + ORB_X_OFFSET, runOrbPoint.getY() + ORB_Y_OFFSET);
+		Point specOrbPoint = new Point(runOrbPoint.getX() + (client.isResized() ? SPEC_ORB_X_RESIZABLE : SPEC_ORB_X_FIXED),
+				runOrbPoint.getY() + (client.isResized() ? SPEC_ORB_Y_RESIZABLE : SPEC_ORB_Y_FIXED));
 
 		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;

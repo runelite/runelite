@@ -154,6 +154,8 @@ public interface Client
 
 	IndexedSprite[] getMapScene();
 
+	int getGameCycle();
+
 	SpritePixels[] getMapIcons();
 
 	IndexedSprite[] getModIcons();
@@ -161,4 +163,17 @@ public interface Client
 	void setModIcons(IndexedSprite[] modIcons);
 
 	IndexedSprite createIndexedSprite();
+
+	boolean isFriended(String name, boolean mustBeLoggedIn);
+
+	boolean isIgnored(String name);
+
+	boolean isClanMember(String name);
+
+	Point getSceneDestinationLocation();
+
+	List<Projectile> getProjectiles();
+
+
+	BufferProvider getBufferProvider();
 }

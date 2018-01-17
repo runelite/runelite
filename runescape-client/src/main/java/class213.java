@@ -88,8 +88,8 @@ public class class213 {
                ObjectComposition var21 = CacheFile.getObjectDefinition(var11);
                int var24 = var16 & 7;
                int var25 = var15 & 7;
-               int var27 = var21.sizeX;
-               int var28 = var21.sizeY;
+               int var27 = var21.width;
+               int var28 = var21.length;
                int var29;
                if((var20 & 1) == 1) {
                   var29 = var27;
@@ -110,7 +110,7 @@ public class class213 {
                }
 
                var29 = var2 + var23;
-               int var30 = var3 + FrameMap.method2687(var16 & 7, var15 & 7, var7, var21.sizeX, var21.sizeY, var20);
+               int var30 = var3 + FrameMap.method2687(var16 & 7, var15 & 7, var7, var21.width, var21.length, var20);
                if(var29 > 0 && var30 > 0 && var29 < 103 && var30 < 103) {
                   int var31 = var1;
                   if((class61.tileSettings[1][var29][var30] & 2) == 2) {

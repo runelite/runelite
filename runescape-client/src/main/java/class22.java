@@ -167,7 +167,8 @@ public class class22 extends class28 {
       signature = "(Lbr;IIIIII)V",
       garbageValue = "-1640365653"
    )
-   static final void method168(Actor var0, int var1, int var2, int var3, int var4, int var5) {
+   @Export("draw2DExtras")
+   static final void draw2DExtras(Actor var0, int var1, int var2, int var3, int var4, int var5) {
       if(var0 != null && var0.hasConfig()) {
          if(var0 instanceof NPC) {
             NPCComposition var6 = ((NPC)var0).composition;
@@ -232,8 +233,8 @@ public class class22 extends class28 {
                      var88 = 1;
                   }
 
-                  var20 = var2 + Client.screenY - (var14 >> 1);
-                  var21 = var3 + Client.screenX - var8;
+                  var20 = var2 + Client.screenX - (var14 >> 1);
+                  var21 = var3 + Client.screenY - var8;
                   if(var12 != null && var13 != null) {
                      var20 -= var15;
                      if(var88 == var14) {
@@ -245,9 +246,9 @@ public class class22 extends class28 {
                      var22 = var12.height;
                      var8 += var22;
                      if(var16 >= 0 && var16 < 255) {
-                        var12.method5211(var20, var21, var16);
+                        var12.drawAtOpacity(var20, var21, var16);
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var88 + var20, var21 + var22);
-                        var13.method5211(var20, var21, var16);
+                        var13.drawAtOpacity(var20, var21, var16);
                      } else {
                         var12.drawAt(var20, var21);
                         Rasterizer2D.setInnerDrawRegion(var20, var21, var20 + var88, var22 + var21);
@@ -257,7 +258,7 @@ public class class22 extends class28 {
                      Rasterizer2D.setDrawRegion(var2, var3, var2 + var4, var3 + var5);
                      var8 += 2;
                   } else {
-                     if(Client.screenY > -1) {
+                     if(Client.screenX > -1) {
                         Rasterizer2D.Rasterizer2D_fillRectangle(var20, var21, var88, 5, 65280);
                         Rasterizer2D.Rasterizer2D_fillRectangle(var88 + var20, var21, var14 - var88, 5, 16711680);
                      }
@@ -280,14 +281,14 @@ public class class22 extends class28 {
 
             if(var85.skullIcon != -1 || var85.overheadIcon != -1) {
                Ignore.characterToScreen(var0, var0.field1136 + 15);
-               if(Client.screenY > -1) {
+               if(Client.screenX > -1) {
                   if(var85.skullIcon != -1) {
-                     class18.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     class18.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - var8);
                      var8 += 25;
                   }
 
                   if(var85.overheadIcon != -1) {
-                     UnitPriceComparator.headIconsPrayer[var85.overheadIcon].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+                     UnitPriceComparator.headIconsPrayer[var85.overheadIcon].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - var8);
                      var8 += 25;
                   }
                }
@@ -295,8 +296,8 @@ public class class22 extends class28 {
 
             if(var1 >= 0 && Client.hintArrowTargetType == 10 && var7[var1] == Client.hintArrowPlayerTargetIdx) {
                Ignore.characterToScreen(var0, var0.field1136 + 15);
-               if(Client.screenY > -1) {
-                  RenderOverview.headIconsHint[1].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - var8);
+               if(Client.screenX > -1) {
+                  RenderOverview.headIconsHint[1].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - var8);
                }
             }
          } else {
@@ -307,31 +308,31 @@ public class class22 extends class28 {
 
             if(var86.field3647 >= 0 && var86.field3647 < UnitPriceComparator.headIconsPrayer.length) {
                Ignore.characterToScreen(var0, var0.field1136 + 15);
-               if(Client.screenY > -1) {
-                  UnitPriceComparator.headIconsPrayer[var86.field3647].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 30);
+               if(Client.screenX > -1) {
+                  UnitPriceComparator.headIconsPrayer[var86.field3647].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 30);
                }
             }
 
             if(Client.hintArrowTargetType == 1 && Client.npcIndices[var1 - var74] == Client.hintArrowNpcTargetIdx && Client.gameCycle % 20 < 10) {
                Ignore.characterToScreen(var0, var0.field1136 + 15);
-               if(Client.screenY > -1) {
-                  RenderOverview.headIconsHint[0].drawAt(var2 + Client.screenY - 12, var3 + Client.screenX - 28);
+               if(Client.screenX > -1) {
+                  RenderOverview.headIconsHint[0].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 28);
                }
             }
          }
 
          if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1122 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && class48.isFriended(((Player)var0).name, false))))) {
             Ignore.characterToScreen(var0, var0.field1136);
-            if(Client.screenY > -1 && Client.field921 < Client.field1100) {
-               Client.field926[Client.field921] = Friend.fontBold12.method4886(var0.overhead) / 2;
-               Client.field925[Client.field921] = Friend.fontBold12.verticalSpace;
-               Client.field923[Client.field921] = Client.screenY;
-               Client.field924[Client.field921] = Client.screenX;
-               Client.field927[Client.field921] = var0.field1179;
-               Client.field900[Client.field921] = var0.field1140;
-               Client.field929[Client.field921] = var0.overheadTextCyclesRemaining;
-               Client.field997[Client.field921] = var0.overhead;
-               ++Client.field921;
+            if(Client.screenX > -1 && Client.overheadTextCount < Client.maxOverheadTexts) {
+               Client.overheadTextsOffsetX[Client.overheadTextCount] = Friend.fontBold12.getTextWidth(var0.overhead) / 2;
+               Client.overheadTextsOffsetY[Client.overheadTextCount] = Friend.fontBold12.verticalSpace;
+               Client.overheadTextsX[Client.overheadTextCount] = Client.screenX;
+               Client.overheadTextsY[Client.overheadTextCount] = Client.screenY;
+               Client.field927[Client.overheadTextCount] = var0.field1179;
+               Client.field900[Client.overheadTextCount] = var0.field1140;
+               Client.overheadTextsCyclesRemaining[Client.overheadTextCount] = var0.overheadTextCyclesRemaining;
+               Client.overheadTexts[Client.overheadTextCount] = var0.overhead;
+               ++Client.overheadTextCount;
             }
          }
 
@@ -372,19 +373,19 @@ public class class22 extends class28 {
                   var0.hitsplatCycles[var75] = -1;
                } else {
                   Ignore.characterToScreen(var0, var0.field1136 / 2);
-                  if(Client.screenY > -1) {
+                  if(Client.screenX > -1) {
                      if(var75 == 1) {
-                        Client.screenX -= 20;
+                        Client.screenY -= 20;
                      }
 
                      if(var75 == 2) {
-                        Client.screenY -= 15;
-                        Client.screenX -= 10;
+                        Client.screenX -= 15;
+                        Client.screenY -= 10;
                      }
 
                      if(var75 == 3) {
-                        Client.screenY += 15;
-                        Client.screenX -= 10;
+                        Client.screenX += 15;
+                        Client.screenY -= 10;
                      }
 
                      SpritePixels var80 = null;
@@ -523,10 +524,10 @@ public class class22 extends class28 {
                      boolean var46 = false;
                      int var47 = 0;
                      var44 = var87.method4626(var0.hitsplatTypes[var75]);
-                     int var89 = var84.method4886(var44);
+                     int var89 = var84.getTextWidth(var44);
                      if(var79 != null) {
                         var45 = var79.method4626(var0.field1146[var75]);
-                        var47 = var43.method4886(var45);
+                        var47 = var43.getTextWidth(var45);
                      }
 
                      int var48 = 0;
@@ -613,8 +614,8 @@ public class class22 extends class28 {
                      var61 = var0.hitsplatCycles[var75] - Client.gameCycle;
                      int var62 = var87.field3486 - var61 * var87.field3486 / var87.field3500;
                      int var63 = var61 * var87.field3496 / var87.field3500 + -var87.field3496;
-                     int var64 = var62 + (var2 + Client.screenY - (var50 >> 1));
-                     int var65 = var3 + Client.screenX - 12 + var63;
+                     int var64 = var62 + (var2 + Client.screenX - (var50 >> 1));
+                     int var65 = var3 + Client.screenY - 12 + var63;
                      int var66 = var65;
                      int var67 = var41 + var65;
                      int var68 = var65 + var87.field3494 + 15;
@@ -651,41 +652,41 @@ public class class22 extends class28 {
 
                      if(var72 >= 0 && var72 < 255) {
                         if(var80 != null) {
-                           var80.method5211(var64 + var51 - var25, var65, var72);
+                           var80.drawAtOpacity(var64 + var51 - var25, var65, var72);
                         }
 
                         if(var82 != null) {
-                           var82.method5211(var52 + var64 - var27, var65, var72);
+                           var82.drawAtOpacity(var52 + var64 - var27, var65, var72);
                         }
 
                         if(var81 != null) {
                            for(var73 = 0; var73 < var48; ++var73) {
-                              var81.method5211(var73 * var22 + (var53 + var64 - var26), var65, var72);
+                              var81.drawAtOpacity(var73 * var22 + (var53 + var64 - var26), var65, var72);
                            }
                         }
 
                         if(var83 != null) {
-                           var83.method5211(var55 + var64 - var28, var65, var72);
+                           var83.drawAtOpacity(var55 + var64 - var28, var65, var72);
                         }
 
                         var84.method4892(var44, var64 + var54, var68, var87.field3492, 0, var72);
                         if(var79 != null) {
                            if(var29 != null) {
-                              var29.method5211(var56 + var64 - var37, var65, var72);
+                              var29.drawAtOpacity(var56 + var64 - var37, var65, var72);
                            }
 
                            if(var31 != null) {
-                              var31.method5211(var64 + var57 - var39, var65, var72);
+                              var31.drawAtOpacity(var64 + var57 - var39, var65, var72);
                            }
 
                            if(var30 != null) {
                               for(var73 = 0; var73 < var49; ++var73) {
-                                 var30.method5211(var34 * var73 + (var58 + var64 - var38), var65, var72);
+                                 var30.drawAtOpacity(var34 * var73 + (var58 + var64 - var38), var65, var72);
                               }
                            }
 
                            if(var32 != null) {
-                              var32.method5211(var64 + var59 - var40, var65, var72);
+                              var32.drawAtOpacity(var64 + var59 - var40, var65, var72);
                            }
 
                            var43.method4892(var45, var60 + var64, var71, var79.field3492, 0, var72);

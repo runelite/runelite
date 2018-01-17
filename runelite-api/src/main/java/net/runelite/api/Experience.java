@@ -24,12 +24,15 @@
  */
 package net.runelite.api;
 
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
+
 public class Experience
 {
 	/**
 	 * Maximum level under 200m xp
 	 */
-	private static final int MAX_VIRT_LEVEL = 126;
+	public static final int MAX_VIRT_LEVEL = 126;
 
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
 
@@ -93,16 +96,13 @@ public class Experience
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)
 	{
-		double melee = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
-			+ 0.325 * (attackLevel + strengthLevel);
+		double base = 0.25 * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
 
-		double range = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
-			+ 0.325 * (Math.floor(rangeLevel / 2));
+		double melee = 0.325 * (attackLevel + strengthLevel);
+		double range = 0.325 * (floor(rangeLevel / 2) + rangeLevel);
+		double magic = 0.325 * (floor(magicLevel / 2) + magicLevel);
 
-		double magic = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2))
-			+ 0.325 * (Math.floor(magicLevel / 2));
-
-		return Math.max(melee, Math.max(range, magic));
+		return base + max(melee, max(range, magic));
 	}
 
 	public static int getCombatLevel(int attackLevel, int strengthLevel,

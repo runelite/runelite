@@ -79,23 +79,23 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1899287589
    )
-   @Export("sizeX")
-   public int sizeX;
+   @Export("width")
+   public int width;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -2057232489
    )
-   @Export("sizeY")
-   public int sizeY;
+   @Export("length")
+   public int length;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1161808807
    )
-   @Export("interactType")
-   public int interactType;
+   @Export("clipType")
+   public int clipType;
    @ObfuscatedName("m")
-   @Export("boolean1")
-   public boolean boolean1;
+   @Export("blocksProjectile")
+   public boolean blocksProjectile;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1320550455
@@ -106,8 +106,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 542423197
    )
-   @Export("clipType")
-   int clipType;
+   @Export("contouredGround")
+   int contouredGround;
    @ObfuscatedName("h")
    @Export("nonFlatShading")
    boolean nonFlatShading;
@@ -124,8 +124,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1284309911
    )
-   @Export("int2")
-   public int int2;
+   @Export("decorDisplacement")
+   public int decorDisplacement;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = 2045893851
@@ -196,17 +196,17 @@ public class ObjectComposition extends CacheableNode {
    @Export("offsetY")
    int offsetY;
    @ObfuscatedName("ay")
-   @Export("boolean2")
-   public boolean boolean2;
+   @Export("obstructsGround")
+   public boolean obstructsGround;
    @ObfuscatedName("ai")
-   @Export("isSolid")
-   boolean isSolid;
+   @Export("isHollow")
+   boolean isHollow;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = 2040555547
    )
-   @Export("int3")
-   public int int3;
+   @Export("supportItems")
+   public int supportItems;
    @ObfuscatedName("ah")
    @Export("impostorIds")
    public int[] impostorIds;
@@ -252,7 +252,8 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Lgr;"
    )
-   IterableHashTable field3558;
+   @Export("params")
+   IterableHashTable params;
 
    static {
       ObjectDefinition_isLowDetail = false;
@@ -265,16 +266,16 @@ public class ObjectComposition extends CacheableNode {
 
    ObjectComposition() {
       this.name = "null";
-      this.sizeX = 1;
-      this.sizeY = 1;
-      this.interactType = 2;
-      this.boolean1 = true;
+      this.width = 1;
+      this.length = 1;
+      this.clipType = 2;
+      this.blocksProjectile = true;
       this.int1 = -1;
-      this.clipType = -1;
+      this.contouredGround = -1;
       this.nonFlatShading = false;
       this.modelClipped = false;
       this.animationId = -1;
-      this.int2 = 16;
+      this.decorDisplacement = 16;
       this.ambient = 0;
       this.contrast = 0;
       this.actions = new String[5];
@@ -288,9 +289,9 @@ public class ObjectComposition extends CacheableNode {
       this.offsetX = 0;
       this.offsetHeight = 0;
       this.offsetY = 0;
-      this.boolean2 = false;
-      this.isSolid = false;
-      this.int3 = -1;
+      this.obstructsGround = false;
+      this.isHollow = false;
+      this.supportItems = -1;
       this.varpId = -1;
       this.configId = -1;
       this.ambientSoundId = -1;
@@ -319,8 +320,8 @@ public class ObjectComposition extends CacheableNode {
          }
       }
 
-      if(this.int3 == -1) {
-         this.int3 = this.interactType != 0?1:0;
+      if(this.supportItems == -1) {
+         this.supportItems = this.clipType != 0?1:0;
       }
 
    }
@@ -383,18 +384,18 @@ public class ObjectComposition extends CacheableNode {
             }
          }
       } else if(var2 == 14) {
-         this.sizeX = var1.readUnsignedByte();
+         this.width = var1.readUnsignedByte();
       } else if(var2 == 15) {
-         this.sizeY = var1.readUnsignedByte();
+         this.length = var1.readUnsignedByte();
       } else if(var2 == 17) {
-         this.interactType = 0;
-         this.boolean1 = false;
+         this.clipType = 0;
+         this.blocksProjectile = false;
       } else if(var2 == 18) {
-         this.boolean1 = false;
+         this.blocksProjectile = false;
       } else if(var2 == 19) {
          this.int1 = var1.readUnsignedByte();
       } else if(var2 == 21) {
-         this.clipType = 0;
+         this.contouredGround = 0;
       } else if(var2 == 22) {
          this.nonFlatShading = true;
       } else if(var2 == 23) {
@@ -405,9 +406,9 @@ public class ObjectComposition extends CacheableNode {
             this.animationId = -1;
          }
       } else if(var2 == 27) {
-         this.interactType = 1;
+         this.clipType = 1;
       } else if(var2 == 28) {
-         this.int2 = var1.readUnsignedByte();
+         this.decorDisplacement = var1.readUnsignedByte();
       } else if(var2 == 29) {
          this.ambient = var1.readByte();
       } else if(var2 == 39) {
@@ -456,11 +457,11 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 72) {
          this.offsetY = var1.readShort();
       } else if(var2 == 73) {
-         this.boolean2 = true;
+         this.obstructsGround = true;
       } else if(var2 == 74) {
-         this.isSolid = true;
+         this.isHollow = true;
       } else if(var2 == 75) {
-         this.int3 = var1.readUnsignedByte();
+         this.supportItems = var1.readUnsignedByte();
       } else if(var2 != 77 && var2 != 92) {
          if(var2 == 78) {
             this.ambientSoundId = var1.readUnsignedShort();
@@ -476,11 +477,11 @@ public class ObjectComposition extends CacheableNode {
                this.field3540[var4] = var1.readUnsignedShort();
             }
          } else if(var2 == 81) {
-            this.clipType = var1.readUnsignedByte() * 256;
+            this.contouredGround = var1.readUnsignedByte() * 256;
          } else if(var2 == 82) {
             this.mapIconId = var1.readUnsignedShort();
          } else if(var2 == 249) {
-            this.field3558 = ItemContainer.readStringIntParameters(var1, this.field3558);
+            this.params = ItemContainer.readStringIntParameters(var1, this.params);
          }
       } else {
          this.varpId = var1.readUnsignedShort();
@@ -601,11 +602,11 @@ public class ObjectComposition extends CacheableNode {
          var9 = ((ModelData)var9).method2468();
       }
 
-      if(this.clipType >= 0) {
+      if(this.contouredGround >= 0) {
          if(var9 instanceof Model) {
-            var9 = ((Model)var9).method2518(var3, var4, var5, var6, true, this.clipType);
+            var9 = ((Model)var9).method2518(var3, var4, var5, var6, true, this.contouredGround);
          } else if(var9 instanceof ModelData) {
-            var9 = ((ModelData)var9).method2440(var3, var4, var5, var6, true, this.clipType);
+            var9 = ((ModelData)var9).method2440(var3, var4, var5, var6, true, this.contouredGround);
          }
       }
 
@@ -636,8 +637,8 @@ public class ObjectComposition extends CacheableNode {
          field3521.put(var9, var7);
       }
 
-      if(this.clipType >= 0) {
-         var9 = var9.method2518(var3, var4, var5, var6, true, this.clipType);
+      if(this.contouredGround >= 0) {
+         var9 = var9.method2518(var3, var4, var5, var6, true, this.contouredGround);
       }
 
       return var9;
@@ -667,7 +668,7 @@ public class ObjectComposition extends CacheableNode {
          field3521.put(var11, var9);
       }
 
-      if(var7 == null && this.clipType == -1) {
+      if(var7 == null && this.contouredGround == -1) {
          return var11;
       } else {
          if(var7 != null) {
@@ -676,8 +677,8 @@ public class ObjectComposition extends CacheableNode {
             var11 = var11.method2509(true);
          }
 
-         if(this.clipType >= 0) {
-            var11 = var11.method2518(var3, var4, var5, var6, false, this.clipType);
+         if(this.contouredGround >= 0) {
+            var11 = var11.method2518(var3, var4, var5, var6, false, this.contouredGround);
          }
 
          return var11;
@@ -855,7 +856,7 @@ public class ObjectComposition extends CacheableNode {
       garbageValue = "1466930188"
    )
    public int method4668(int var1, int var2) {
-      return GraphicsObject.method1615(this.field3558, var1, var2);
+      return GraphicsObject.method1615(this.params, var1, var2);
    }
 
    @ObfuscatedName("o")
@@ -864,7 +865,7 @@ public class ObjectComposition extends CacheableNode {
       garbageValue = "-1283434496"
    )
    public String method4685(int var1, String var2) {
-      return class192.method3599(this.field3558, var1, var2);
+      return class192.method3599(this.params, var1, var2);
    }
 
    @ObfuscatedName("i")

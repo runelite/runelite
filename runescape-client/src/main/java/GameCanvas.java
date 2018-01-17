@@ -117,7 +117,7 @@ public final class GameCanvas extends Canvas {
                var21 = true;
             }
 
-            if(!var21 && Client.field947 == 0 && !var2.hidden) {
+            if(!var21 && Client.myPlayerIndex == 0 && !var2.hidden) {
                class94.field1401.offset = 0;
                var0.readBytes(class94.field1401.payload, 0, var8);
                class94.field1401.offset = 0;
