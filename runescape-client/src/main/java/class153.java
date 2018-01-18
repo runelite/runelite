@@ -1,67 +1,82 @@
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("ec")
 public class class153 implements Runnable {
-   @ObfuscatedName("a")
-   Thread field2109;
-   @ObfuscatedName("w")
-   InputStream field2105;
-   @ObfuscatedName("e")
+   @ObfuscatedName("g")
+   @Export("userHome")
+   static String userHome;
+   @ObfuscatedName("ap")
    @ObfuscatedGetter(
-      intValue = 598845505
+      intValue = 1659131861
    )
-   int field2104;
-   @ObfuscatedName("k")
-   byte[] field2107;
-   @ObfuscatedName("u")
+   static int field2128;
+   @ObfuscatedName("cc")
+   @ObfuscatedSignature(
+      signature = "Let;"
+   )
+   @Export("socket")
+   static Task socket;
+   @ObfuscatedName("n")
+   Thread field2133;
+   @ObfuscatedName("v")
+   InputStream field2125;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 4962757
+      intValue = -1280891897
    )
-   int field2112;
-   @ObfuscatedName("z")
+   int field2127;
+   @ObfuscatedName("r")
+   byte[] field2126;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1748739795
+      intValue = 1795840831
    )
-   int field2111;
-   @ObfuscatedName("t")
-   IOException field2110;
+   int field2132;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 2120280661
+   )
+   int field2130;
+   @ObfuscatedName("s")
+   IOException field2131;
 
    class153(InputStream var1, int var2) {
-      this.field2112 = 0;
-      this.field2111 = 0;
-      this.field2105 = var1;
-      this.field2104 = var2 + 1;
-      this.field2107 = new byte[this.field2104];
-      this.field2109 = new Thread(this);
-      this.field2109.setDaemon(true);
-      this.field2109.start();
+      this.field2132 = 0;
+      this.field2130 = 0;
+      this.field2125 = var1;
+      this.field2127 = var2 + 1;
+      this.field2126 = new byte[this.field2127];
+      this.field2133 = new Thread(this);
+      this.field2133.setDaemon(true);
+      this.field2133.start();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1515870281"
+      garbageValue = "-918576593"
    )
-   boolean method2955(int var1) throws IOException {
+   boolean method3010(int var1) throws IOException {
       if(var1 == 0) {
          return true;
-      } else if(var1 > 0 && var1 < this.field2104) {
+      } else if(var1 > 0 && var1 < this.field2127) {
          synchronized(this) {
             int var3;
-            if(this.field2112 <= this.field2111) {
-               var3 = this.field2111 - this.field2112;
+            if(this.field2132 <= this.field2130) {
+               var3 = this.field2130 - this.field2132;
             } else {
-               var3 = this.field2104 - this.field2112 + this.field2111;
+               var3 = this.field2127 - this.field2132 + this.field2130;
             }
 
             if(var3 < var1) {
-               if(this.field2110 != null) {
-                  throw new IOException(this.field2110.toString());
+               if(this.field2131 != null) {
+                  throw new IOException(this.field2131.toString());
                } else {
                   this.notifyAll();
                   return false;
@@ -75,22 +90,22 @@ public class class153 implements Runnable {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1571695955"
+      garbageValue = "1406106689"
    )
-   int method2965() throws IOException {
+   int method3024() throws IOException {
       synchronized(this) {
          int var2;
-         if(this.field2112 <= this.field2111) {
-            var2 = this.field2111 - this.field2112;
+         if(this.field2132 <= this.field2130) {
+            var2 = this.field2130 - this.field2132;
          } else {
-            var2 = this.field2104 - this.field2112 + this.field2111;
+            var2 = this.field2127 - this.field2132 + this.field2130;
          }
 
-         if(var2 <= 0 && this.field2110 != null) {
-            throw new IOException(this.field2110.toString());
+         if(var2 <= 0 && this.field2131 != null) {
+            throw new IOException(this.field2131.toString());
          } else {
             this.notifyAll();
             return var2;
@@ -98,59 +113,59 @@ public class class153 implements Runnable {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "26"
+      signature = "(I)I",
+      garbageValue = "1127559893"
    )
-   int method2949() throws IOException {
+   int method3011() throws IOException {
       synchronized(this) {
-         if(this.field2112 == this.field2111) {
-            if(this.field2110 != null) {
-               throw new IOException(this.field2110.toString());
+         if(this.field2132 == this.field2130) {
+            if(this.field2131 != null) {
+               throw new IOException(this.field2131.toString());
             } else {
                return -1;
             }
          } else {
-            int var2 = this.field2107[this.field2112] & 255;
-            this.field2112 = (this.field2112 + 1) % this.field2104;
+            int var2 = this.field2126[this.field2132] & 255;
+            this.field2132 = (this.field2132 + 1) % this.field2127;
             this.notifyAll();
             return var2;
          }
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "([BIIB)I",
-      garbageValue = "65"
+      garbageValue = "-62"
    )
-   int method2950(byte[] var1, int var2, int var3) throws IOException {
+   int method3012(byte[] var1, int var2, int var3) throws IOException {
       if(var3 >= 0 && var2 >= 0 && var3 + var2 <= var1.length) {
          synchronized(this) {
             int var5;
-            if(this.field2112 <= this.field2111) {
-               var5 = this.field2111 - this.field2112;
+            if(this.field2132 <= this.field2130) {
+               var5 = this.field2130 - this.field2132;
             } else {
-               var5 = this.field2104 - this.field2112 + this.field2111;
+               var5 = this.field2127 - this.field2132 + this.field2130;
             }
 
             if(var3 > var5) {
                var3 = var5;
             }
 
-            if(var3 == 0 && this.field2110 != null) {
-               throw new IOException(this.field2110.toString());
+            if(var3 == 0 && this.field2131 != null) {
+               throw new IOException(this.field2131.toString());
             } else {
-               if(var3 + this.field2112 <= this.field2104) {
-                  System.arraycopy(this.field2107, this.field2112, var1, var2, var3);
+               if(var3 + this.field2132 <= this.field2127) {
+                  System.arraycopy(this.field2126, this.field2132, var1, var2, var3);
                } else {
-                  int var6 = this.field2104 - this.field2112;
-                  System.arraycopy(this.field2107, this.field2112, var1, var2, var6);
-                  System.arraycopy(this.field2107, 0, var1, var6 + var2, var3 - var6);
+                  int var6 = this.field2127 - this.field2132;
+                  System.arraycopy(this.field2126, this.field2132, var1, var2, var6);
+                  System.arraycopy(this.field2126, 0, var1, var6 + var2, var3 - var6);
                }
 
-               this.field2112 = (var3 + this.field2112) % this.field2104;
+               this.field2132 = (var3 + this.field2132) % this.field2127;
                this.notifyAll();
                return var3;
             }
@@ -160,22 +175,22 @@ public class class153 implements Runnable {
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "52"
+      garbageValue = "-2"
    )
-   void method2951() {
+   void method3013() {
       synchronized(this) {
-         if(this.field2110 == null) {
-            this.field2110 = new IOException("");
+         if(this.field2131 == null) {
+            this.field2131 = new IOException("");
          }
 
          this.notifyAll();
       }
 
       try {
-         this.field2109.join();
+         this.field2133.join();
       } catch (InterruptedException var3) {
          ;
       }
@@ -187,16 +202,16 @@ public class class153 implements Runnable {
          int var1;
          synchronized(this) {
             while(true) {
-               if(this.field2110 != null) {
+               if(this.field2131 != null) {
                   return;
                }
 
-               if(this.field2112 == 0) {
-                  var1 = this.field2104 - this.field2111 - 1;
-               } else if(this.field2112 <= this.field2111) {
-                  var1 = this.field2104 - this.field2111;
+               if(this.field2132 == 0) {
+                  var1 = this.field2127 - this.field2130 - 1;
+               } else if(this.field2132 <= this.field2130) {
+                  var1 = this.field2127 - this.field2130;
                } else {
-                  var1 = this.field2112 - this.field2111 - 1;
+                  var1 = this.field2132 - this.field2130 - 1;
                }
 
                if(var1 > 0) {
@@ -213,30 +228,42 @@ public class class153 implements Runnable {
 
          int var7;
          try {
-            var7 = this.field2105.read(this.field2107, this.field2111, var1);
+            var7 = this.field2125.read(this.field2126, this.field2130, var1);
             if(var7 == -1) {
                throw new EOFException();
             }
          } catch (IOException var11) {
             IOException var3 = var11;
             synchronized(this) {
-               this.field2110 = var3;
+               this.field2131 = var3;
                return;
             }
          }
 
          synchronized(this) {
-            this.field2111 = (var7 + this.field2111) % this.field2104;
+            this.field2130 = (var7 + this.field2130) % this.field2127;
          }
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("kx")
    @ObfuscatedSignature(
-      signature = "(I)[Lii;",
-      garbageValue = "-185957239"
+      signature = "(Lhq;I)Lhq;",
+      garbageValue = "-1603704239"
    )
-   public static class239[] method2967() {
-      return new class239[]{class239.field3263, class239.field3257, class239.field3262, class239.field3258, class239.field3256, class239.field3261, class239.field3260, class239.field3259};
+   static Widget method3030(Widget var0) {
+      int var1 = class263.method4654(GraphicsObject.getWidgetConfig(var0));
+      if(var1 == 0) {
+         return null;
+      } else {
+         for(int var2 = 0; var2 < var1; ++var2) {
+            var0 = UrlRequester.getWidget(var0.parentId);
+            if(var0 == null) {
+               return null;
+            }
+         }
+
+         return var0;
+      }
    }
 }

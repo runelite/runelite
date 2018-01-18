@@ -1,37 +1,32 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ei")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("t")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
-   @ObfuscatedName("cc")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("a")
+   @ObfuscatedName("aw")
+   static int[] field1958;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 656904343
+      intValue = -396894033
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1096353093
+      intValue = 844183929
    )
    @Export("count")
    int count;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("types")
    int[] types;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("list")
    int[][] list;
 
@@ -59,57 +54,69 @@ public class FrameMap extends Node {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-2054020432"
+      signature = "(Ljava/io/File;Ljava/io/File;I)V",
+      garbageValue = "-2009876701"
    )
-   static int method2686(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 0) {
-            var1 = 0;
-         } else if(var1 > 127) {
-            var1 = 127;
+   static void method2742(File var0, File var1) {
+      try {
+         FileOnDisk var2 = new FileOnDisk(class157.jagexClDat, "rw", 10000L);
+         Buffer var3 = new Buffer(500);
+         var3.putByte(3);
+         var3.putByte(var1 != null?1:0);
+         var3.putCESU8(var0.getPath());
+         if(var1 != null) {
+            var3.putCESU8("");
          }
 
-         var1 = 127 - var1;
-         return var1;
+         var2.write(var3.payload, 0, var3.offset);
+         var2.close();
+      } catch (IOException var4) {
+         var4.printStackTrace();
+      }
+
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(Lif;II)V",
+      garbageValue = "423116450"
+   )
+   static void method2743(IndexData var0, int var1) {
+      if(CombatInfoListHolder.NetCache_reference != null) {
+         CombatInfoListHolder.NetCache_reference.offset = var1 * 8 + 5;
+         int var2 = CombatInfoListHolder.NetCache_reference.readInt();
+         int var3 = CombatInfoListHolder.NetCache_reference.readInt();
+         var0.setInformation(var2, var3);
       } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+         class56.requestNetFile((IndexData)null, 255, 255, 0, (byte)0, true);
+         class249.NetCache_indexCaches[var1] = var0;
+      }
+   }
+
+   @ObfuscatedName("jb")
+   @ObfuscatedSignature(
+      signature = "(IIIILkg;Lhw;B)V",
+      garbageValue = "-61"
+   )
+   @Export("drawDot")
+   static final void drawDot(int var0, int var1, int var2, int var3, SpritePixels var4, class221 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = Graphics3D.SINE[var6];
+            int var9 = Graphics3D.COSINE[var6];
+            int var10 = var9 * var2 + var3 * var8 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method5292(var10 + var5.field2721 / 2 - var4.maxWidth / 2, var5.field2718 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2721, var5.field2718, var5.field2720, var5.field2719);
+            } else {
+               var4.drawAt(var0 + var10 + var5.field2721 / 2 - var4.maxWidth / 2, var5.field2718 / 2 + var1 - var11 - var4.maxHeight / 2);
+            }
+
          }
-
-         return (var0 & 65408) + var1;
       }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIIIIII)I",
-      garbageValue = "86910519"
-   )
-   public static int method2687(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)[Lcz;",
-      garbageValue = "-394441470"
-   )
-   static AttackOption[] method2688() {
-      return new AttackOption[]{AttackOption.AttackOption_hidden, AttackOption.AttackOption_leftClickWhereAvailable, AttackOption.AttackOption_alwaysRightClick, AttackOption.AttackOption_dependsOnCombatLevels};
    }
 }

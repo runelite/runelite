@@ -2,115 +2,99 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ii")
+@ObfuscatedName("io")
 public enum class239 implements Enumerated {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3261(4, 0),
-   @ObfuscatedName("w")
+   field3258(7, 0),
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3256(2, 1),
-   @ObfuscatedName("e")
+   field3255(6, 1),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3257(3, 2),
-   @ObfuscatedName("k")
+   field3262(5, 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3263(1, 3),
-   @ObfuscatedName("u")
+   field3261(0, 3),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3259(5, 4),
-   @ObfuscatedName("z")
+   field3257(2, 4),
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3260(0, 5),
-   @ObfuscatedName("t")
+   field3259(1, 5),
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3262(6, 6),
-   @ObfuscatedName("f")
+   field3260(4, 6),
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "Lii;"
+      signature = "Lio;"
    )
-   field3258(7, 7);
+   field3256(3, 7);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 741878133
+      intValue = -284381801
    )
-   public final int field3255;
-   @ObfuscatedName("j")
+   public final int field3254;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1892953301
+      intValue = 1328512283
    )
-   final int field3264;
+   final int field3263;
 
    class239(int var3, int var4) {
-      this.field3255 = var3;
-      this.field3264 = var4;
+      this.field3254 = var3;
+      this.field3263 = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1035813094"
+      garbageValue = "2130441585"
    )
    public int rsOrdinal() {
-      return this.field3264;
+      return this.field3263;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lib;I)V",
-      garbageValue = "-1632245897"
+      signature = "(Lgb;ILjava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "1"
    )
-   public static void method4226(IndexDataBase var0) {
-      Varbit.varbit_ref = var0;
+   static String method4279(IterableHashTable var0, int var1, String var2) {
+      if(var0 == null) {
+         return var2;
+      } else {
+         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
+         return var3 == null?var2:(String)var3.value;
+      }
    }
 
-   @ObfuscatedName("hg")
+   @ObfuscatedName("jf")
    @ObfuscatedSignature(
-      signature = "([Lhz;IIIZI)V",
-      garbageValue = "-1010498984"
+      signature = "(Lhq;B)Lhq;",
+      garbageValue = "-75"
    )
-   static void method4227(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var6.parentId == var1) {
-            class89.method1666(var6, var2, var3, var4);
-            class60.method985(var6, var2, var3);
-            if(var6.scrollX > var6.scrollWidth - var6.width) {
-               var6.scrollX = var6.scrollWidth - var6.width;
-            }
-
-            if(var6.scrollX < 0) {
-               var6.scrollX = 0;
-            }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               GrandExchangeOffer.method102(var0, var6, var4);
-            }
-         }
+   static Widget method4280(Widget var0) {
+      Widget var1 = class153.method3030(var0);
+      if(var1 == null) {
+         var1 = var0.dragParent;
       }
 
+      return var1;
    }
 }

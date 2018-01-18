@@ -3,225 +3,182 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("w")
+@ObfuscatedName("v")
 public class class1 {
-   @ObfuscatedName("pe")
-   @ObfuscatedGetter(
-      intValue = -1839846535
-   )
-   static int field9;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
-   static final class1 field10;
-   @ObfuscatedName("w")
+   static final class1 field8;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
    static final class1 field1;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
    static final class1 field2;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
-   static final class1 field3;
-   @ObfuscatedName("u")
+   static final class1 field0;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
    static final class1 field4;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
-   static final class1 field5;
-   @ObfuscatedName("t")
+   static final class1 field10;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "Lv;"
    )
    static final class1 field6;
-   @ObfuscatedName("h")
-   @Export("userHome")
-   static String userHome;
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ldb;"
+   )
+   @Export("task")
+   static SoundTask task;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1558105435
+      intValue = 1832470093
    )
    final int field7;
 
    static {
+      field8 = new class1(5);
+      field1 = new class1(3);
+      field2 = new class1(1);
+      field0 = new class1(2);
+      field4 = new class1(4);
       field10 = new class1(0);
-      field1 = new class1(5);
-      field2 = new class1(4);
-      field3 = new class1(2);
-      field4 = new class1(6);
-      field5 = new class1(3);
-      field6 = new class1(1);
+      field6 = new class1(6);
    }
 
    class1(int var1) {
       this.field7 = var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("fa")
    @ObfuscatedSignature(
-      signature = "(I)[Lkx;",
-      garbageValue = "-1378527525"
+      signature = "(I)V",
+      garbageValue = "-1542256661"
    )
-   public static class296[] method2() {
-      return new class296[]{class296.field3837, class296.field3840, class296.field3838, class296.field3836, class296.field3839};
+   static final void method0() {
+      Client.field915.close();
+      class175.method3264();
+      class45.region.reset();
+
+      for(int var0 = 0; var0 < 4; ++var0) {
+         Client.collisionMaps[var0].reset();
+      }
+
+      System.gc();
+      class214.field2631 = 1;
+      class214.field2632 = null;
+      Ignore.field810 = -1;
+      class262.field3474 = -1;
+      class35.field477 = 0;
+      class214.field2627 = false;
+      FontName.field3711 = 2;
+      Client.field1091 = -1;
+      Client.field991 = false;
+
+      for(class81 var1 = (class81)class81.field1247.getFront(); var1 != null; var1 = (class81)class81.field1247.getNext()) {
+         if(var1.field1249 != null) {
+            class89.field1328.method1924(var1.field1249);
+            var1.field1249 = null;
+         }
+
+         if(var1.field1250 != null) {
+            class89.field1328.method1924(var1.field1250);
+            var1.field1250 = null;
+         }
+      }
+
+      class81.field1247.clear();
+      ClanMember.setGameState(10);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("gg")
    @ObfuscatedSignature(
-      signature = "(IIIIIZI)Lks;",
-      garbageValue = "2117442222"
+      signature = "(I)V",
+      garbageValue = "-178914566"
    )
-   @Export("createSprite")
-   public static final SpritePixels createSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if(var1 == -1) {
-         var4 = 0;
-      } else if(var4 == 2 && var1 != 1) {
-         var4 = 1;
-      }
+   static final void method1() {
+      if(Client.field1082 != class7.plane) {
+         Client.field1082 = class7.plane;
+         int var0 = class7.plane;
+         int[] var1 = class234.minimapSprite.pixels;
+         int var2 = var1.length;
 
-      long var6 = ((long)var3 << 42) + ((long)var4 << 40) + ((long)var2 << 38) + (long)var0 + ((long)var1 << 16);
-      SpritePixels var8;
-      if(!var5) {
-         var8 = (SpritePixels)ItemComposition.itemSpriteCache.get(var6);
-         if(var8 != null) {
-            return var8;
+         int var3;
+         for(var3 = 0; var3 < var2; ++var3) {
+            var1[var3] = 0;
          }
-      }
 
-      ItemComposition var9 = KitDefinition.getItemDefinition(var0);
-      if(var1 > 1 && var9.countObj != null) {
-         int var10 = -1;
+         int var4;
+         int var5;
+         for(var3 = 1; var3 < 103; ++var3) {
+            var4 = (103 - var3) * 2048 + 24628;
 
-         for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
-               var10 = var9.countObj[var11];
+            for(var5 = 1; var5 < 103; ++var5) {
+               if((class61.tileSettings[var0][var5][var3] & 24) == 0) {
+                  class45.region.method2780(var1, var4, 512, var0, var5, var3);
+               }
+
+               if(var0 < 3 && (class61.tileSettings[var0 + 1][var5][var3] & 8) != 0) {
+                  class45.region.method2780(var1, var4, 512, var0 + 1, var5, var3);
+               }
+
+               var4 += 4;
             }
          }
 
-         if(var10 != -1) {
-            var9 = KitDefinition.getItemDefinition(var10);
+         var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
+         var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
+         class234.minimapSprite.method5273();
+
+         int var6;
+         for(var5 = 1; var5 < 103; ++var5) {
+            for(var6 = 1; var6 < 103; ++var6) {
+               if((class61.tileSettings[var0][var6][var5] & 24) == 0) {
+                  Ignore.method1114(var0, var6, var5, var3, var4);
+               }
+
+               if(var0 < 3 && (class61.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
+                  Ignore.method1114(var0 + 1, var6, var5, var3, var4);
+               }
+            }
          }
+
+         Client.field1083 = 0;
+
+         for(var5 = 0; var5 < 104; ++var5) {
+            for(var6 = 0; var6 < 104; ++var6) {
+               int var7 = class45.region.method2775(class7.plane, var5, var6);
+               if(var7 != 0) {
+                  var7 = var7 >> 14 & 32767;
+                  int var8 = NPC.getObjectDefinition(var7).mapIconId;
+                  if(var8 >= 0) {
+                     Client.mapIcons[Client.field1083] = Area.mapAreaType[var8].getMapIcon(false);
+                     Client.field1088[Client.field1083] = var5;
+                     Client.field1085[Client.field1083] = var6;
+                     ++Client.field1083;
+                  }
+               }
+            }
+         }
+
+         class35.rasterProvider.setRaster();
       }
 
-      Model var19 = var9.getModel(1);
-      if(var19 == null) {
-         return null;
-      } else {
-         SpritePixels var20 = null;
-         if(var9.notedTemplate != -1) {
-            var20 = createSprite(var9.note, 10, 1, 0, 0, true);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.notedId != -1) {
-            var20 = createSprite(var9.unnotedId, var1, var2, var3, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         } else if(var9.int3 != -1) {
-            var20 = createSprite(var9.int2, var1, 0, 0, 0, false);
-            if(var20 == null) {
-               return null;
-            }
-         }
-
-         int[] var12 = Rasterizer2D.graphicsPixels;
-         int var13 = Rasterizer2D.graphicsPixelsWidth;
-         int var14 = Rasterizer2D.graphicsPixelsHeight;
-         int[] var15 = new int[4];
-         Rasterizer2D.copyDrawRegion(var15);
-         var8 = new SpritePixels(36, 32);
-         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
-         Rasterizer2D.reset();
-         Graphics3D.Rasterizer3D_method1();
-         Graphics3D.method2607(16, 16);
-         Graphics3D.rasterGouraudLowRes = false;
-         if(var9.int3 != -1) {
-            var20.drawAt(0, 0);
-         }
-
-         int var16 = var9.zoom2d;
-         if(var5) {
-            var16 = (int)(1.5D * (double)var16);
-         } else if(var2 == 2) {
-            var16 = (int)(1.04D * (double)var16);
-         }
-
-         int var17 = var16 * Graphics3D.SINE[var9.xan2d] >> 16;
-         int var18 = var16 * Graphics3D.COSINE[var9.xan2d] >> 16;
-         var19.calculateBoundsCylinder();
-         var19.method2526(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var19.modelHeight / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
-         if(var9.notedId != -1) {
-            var20.drawAt(0, 0);
-         }
-
-         if(var2 >= 1) {
-            var8.method5201(1);
-         }
-
-         if(var2 >= 2) {
-            var8.method5201(16777215);
-         }
-
-         if(var3 != 0) {
-            var8.method5250(var3);
-         }
-
-         Rasterizer2D.setRasterBuffer(var8.pixels, 36, 32);
-         if(var9.notedTemplate != -1) {
-            var20.drawAt(0, 0);
-         }
-
-         if(var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            class226.field2748.method4891(DecorativeObject.getItemStackAmountText(var1), 0, 9, 16776960, 1);
-         }
-
-         if(!var5) {
-            ItemComposition.itemSpriteCache.put(var8, var6);
-         }
-
-         Rasterizer2D.setRasterBuffer(var12, var13, var14);
-         Rasterizer2D.setDrawRegion(var15);
-         Graphics3D.Rasterizer3D_method1();
-         Graphics3D.rasterGouraudLowRes = true;
-         return var8;
-      }
-   }
-
-   @ObfuscatedName("fn")
-   @ObfuscatedSignature(
-      signature = "(Ljj;IIII)V",
-      garbageValue = "1132542682"
-   )
-   static void method1(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field1068 < 50 && Client.field1067 != 0) {
-         if(var0.field3676 != null && var1 < var0.field3676.length) {
-            int var4 = var0.field3676[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field1069[Client.field1068] = var5;
-               Client.field1070[Client.field1068] = var6;
-               Client.field1071[Client.field1068] = 0;
-               Client.audioEffects[Client.field1068] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field1072[Client.field1068] = var7 + (var9 << 8) + (var8 << 16);
-               ++Client.field1068;
-            }
-         }
-      }
    }
 }

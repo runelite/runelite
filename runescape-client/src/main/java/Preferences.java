@@ -7,49 +7,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("ck")
 @Implements("Preferences")
 public class Preferences {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1024797975
+      intValue = 1268161711
    )
-   static int field1212;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -233733647
-   )
-   static int field1217;
-   @ObfuscatedName("dj")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexCache13")
-   static IndexData indexCache13;
-   @ObfuscatedName("e")
+   static int field1232;
+   @ObfuscatedName("y")
    @Export("hideRoofs")
    boolean hideRoofs;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("muted")
    boolean muted;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -881826075
+      intValue = 792293341
    )
    @Export("screenType")
    int screenType;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @Export("rememberedUsername")
    String rememberedUsername;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @Export("hideUsername")
    boolean hideUsername;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @Export("preferences")
    LinkedHashMap preferences;
 
    static {
-      field1212 = 6;
+      field1232 = 6;
    }
 
    Preferences() {
@@ -57,11 +46,11 @@ public class Preferences {
       this.rememberedUsername = null;
       this.hideUsername = false;
       this.preferences = new LinkedHashMap();
-      this.method1527(true);
+      this.method1620(true);
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgh;)V"
+      signature = "(Lgv;)V"
    )
    Preferences(Buffer var1) {
       this.screenType = 1;
@@ -70,7 +59,7 @@ public class Preferences {
       this.preferences = new LinkedHashMap();
       if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field1212) {
+         if(var2 >= 0 && var2 <= field1232) {
             if(var1.readUnsignedByte() == 1) {
                this.hideRoofs = true;
             }
@@ -98,34 +87,34 @@ public class Preferences {
             }
 
             if(var2 > 5) {
-               this.hideUsername = var1.method3268();
+               this.hideUsername = var1.method3342();
             }
          } else {
-            this.method1527(true);
+            this.method1620(true);
          }
       } else {
-         this.method1527(true);
+         this.method1620(true);
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(ZB)V",
-      garbageValue = "-78"
+      garbageValue = "15"
    )
-   void method1527(boolean var1) {
+   void method1620(boolean var1) {
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)Lgh;",
-      garbageValue = "49"
+      signature = "(I)Lgv;",
+      garbageValue = "1138688576"
    )
    @Export("serialize")
    Buffer serialize() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field1212);
+      var1.putByte(field1232);
       var1.putByte(this.hideRoofs?1:0);
       var1.putByte(this.muted?1:0);
       var1.putByte(this.screenType);
@@ -143,19 +132,98 @@ public class Preferences {
       return var1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-1168308091"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1610333101"
    )
-   @Export("currentTimeMs")
-   public static synchronized long currentTimeMs() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class186.currentTimeMsLast) {
-         class186.currentTimeMsOffset += class186.currentTimeMsLast - var0;
+   public static int method1619(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
+         } else {
+            var2 += 3;
+         }
       }
 
-      class186.currentTimeMsLast = var0;
-      return var0 + class186.currentTimeMsOffset;
+      return var2;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lbn;I)V",
+      garbageValue = "2103162057"
+   )
+   public static void method1633(ScriptEvent var0) {
+      BaseVarType.method7(var0, 200000);
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "-125"
+   )
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
+      ScriptVarType.addChatMessage(var0, var1, var2, (String)null);
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(ILcv;ZB)I",
+      garbageValue = "30"
+   )
+   static int method1634(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = UrlRequester.getWidget(class82.intStack[--class82.intStackSize]);
+      } else {
+         var3 = var2?class82.field1267:CombatInfo1.field1216;
+      }
+
+      int var4;
+      if(var0 == 1300) {
+         var4 = class82.intStack[--class82.intStackSize] - 1;
+         if(var4 >= 0 && var4 <= 9) {
+            var3.setAction(var4, class82.scriptStringStack[--FileOnDisk.scriptStringStackSize]);
+            return 1;
+         } else {
+            --FileOnDisk.scriptStringStackSize;
+            return 1;
+         }
+      } else if(var0 == 1301) {
+         class82.intStackSize -= 2;
+         var4 = class82.intStack[class82.intStackSize];
+         int var5 = class82.intStack[class82.intStackSize + 1];
+         var3.dragParent = ScriptVarType.getWidgetChild(var4, var5);
+         return 1;
+      } else if(var0 == 1302) {
+         var3.field2776 = class82.intStack[--class82.intStackSize] == 1;
+         return 1;
+      } else if(var0 == 1303) {
+         var3.field2838 = class82.intStack[--class82.intStackSize];
+         return 1;
+      } else if(var0 == 1304) {
+         var3.field2821 = class82.intStack[--class82.intStackSize];
+         return 1;
+      } else if(var0 == 1305) {
+         var3.name = class82.scriptStringStack[--FileOnDisk.scriptStringStackSize];
+         return 1;
+      } else if(var0 == 1306) {
+         var3.selectedAction = class82.scriptStringStack[--FileOnDisk.scriptStringStackSize];
+         return 1;
+      } else if(var0 == 1307) {
+         var3.actions = null;
+         return 1;
+      } else {
+         return 2;
+      }
    }
 }

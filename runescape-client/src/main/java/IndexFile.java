@@ -9,37 +9,30 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fv")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("x")
-   public static boolean field2181;
-   @ObfuscatedName("bp")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lil;"
-   )
-   static BuildType field2175;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldm;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldm;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1333258905
+      intValue = 1405209691
    )
    @Export("index")
    int index;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -312679233
+      intValue = -1066874589
    )
    @Export("maxSize")
    int maxSize;
@@ -49,7 +42,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdv;Ldv;I)V"
+      signature = "(ILdm;Ldm;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -61,10 +54,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-1510838630"
+      garbageValue = "1665933302"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -108,7 +101,7 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
+                     if(var9 == var1 && var10 == var7 && var12 == this.index) {
                         if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
                               var5[var6++] = IndexStore_buffer[var13 + 8];
@@ -137,10 +130,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I[BII)Z",
-      garbageValue = "-1238112285"
+      signature = "(I[BIS)Z",
+      garbageValue = "-12727"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -159,10 +152,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I[BIZB)Z",
-      garbageValue = "106"
+      signature = "(I[BIZI)Z",
+      garbageValue = "-1174181074"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -204,7 +197,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label145: {
+                  label144: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
@@ -213,14 +206,14 @@ public final class IndexFile {
                         try {
                            this.dataFile.read(IndexStore_buffer, 0, 8);
                         } catch (EOFException var16) {
-                           break label145;
+                           break label144;
                         }
 
                         var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
                         int var11 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                         var9 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                         int var12 = IndexStore_buffer[7] & 255;
-                        if(var14 != var1 || var8 != var11 || var12 != this.index) {
+                        if(var14 != var1 || var11 != var8 || var12 != this.index) {
                            var10000 = false;
                            return var10000;
                         }

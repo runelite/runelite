@@ -4,54 +4,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("dr")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("a")
+   @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "[Lkm;"
+   )
+   @Export("slFlagSprites")
+   static IndexedSprite[] slFlagSprites;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1329167205
+      intValue = 1884863045
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 813439287
+      intValue = -1268769797
    )
    @Export("x")
    int x;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 594162243
+      intValue = -854573269
    )
    @Export("y")
    int y;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lel;"
+      signature = "Leo;"
    )
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lel;"
+      signature = "Leo;"
    )
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lel;"
+      signature = "Leo;"
    )
    @Export("top")
    Renderable top;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 554011731
+      intValue = 1841382633
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 14426789
+      intValue = -697743979
    )
    @Export("height")
    int height;

@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gz")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1239715429
+      intValue = -628582099
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @Export("mm")
    int[] mm;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 877872107
+      intValue = 641625549
    )
-   int field2551;
-   @ObfuscatedName("f")
+   int field2559;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1280145255
+      intValue = 1691602149
    )
-   int field2552;
-   @ObfuscatedName("g")
+   int field2562;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -180751191
+      intValue = 541383797
    )
-   int field2546;
+   int field2557;
 
    public ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -43,13 +43,13 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3585();
+      this.method3642();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-947702233"
+      signature = "(B)I",
+      garbageValue = "5"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -61,12 +61,12 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(B)I",
-      garbageValue = "81"
+      garbageValue = "1"
    )
-   final int method3583() {
+   final int method3640() {
       if(this.valuesRemaining == 0) {
          this.generateMoreResults();
          this.valuesRemaining = 256;
@@ -75,43 +75,43 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining - 1];
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1551048491"
+      garbageValue = "-1149894924"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2552 += ++this.field2546;
+      this.field2562 += ++this.field2557;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2551 ^= this.field2551 << 13;
+               this.field2559 ^= this.field2559 << 13;
             } else {
-               this.field2551 ^= this.field2551 >>> 6;
+               this.field2559 ^= this.field2559 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2551 ^= this.field2551 << 2;
+            this.field2559 ^= this.field2559 << 2;
          } else {
-            this.field2551 ^= this.field2551 >>> 16;
+            this.field2559 ^= this.field2559 >>> 16;
          }
 
-         this.field2551 += this.mm[var1 + 128 & 255];
+         this.field2559 += this.mm[var1 + 128 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2551 + this.field2552;
-         this.randResult[var1] = this.field2552 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2559 + this.field2562;
+         this.randResult[var1] = this.field2562 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1199498217"
+      garbageValue = "2111691275"
    )
-   final void method3585() {
+   final void method3642() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -237,5 +237,43 @@ public final class ISAACCipher {
 
       this.generateMoreResults();
       this.valuesRemaining = 256;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lch;Lch;IZB)I",
+      garbageValue = "1"
+   )
+   static int method3647(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method1581()?(var1.method1581()?0:1):(var1.method1581()?-1:0)):(var2 == 5?(var0.method1579()?(var1.method1579()?0:1):(var1.method1579()?-1:0)):(var2 == 6?(var0.method1580()?(var1.method1580()?0:1):(var1.method1580()?-1:0)):(var2 == 7?(var0.method1592()?(var1.method1592()?0:1):(var1.method1592()?-1:0)):var0.id - var1.id)))));
+      }
+   }
+
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1510507604"
+   )
+   static void method3638() {
+      PacketNode var0 = class235.method4272(ClientPacket.field2360, Client.field915.field1462);
+      var0.packetBuffer.putByte(class43.method612());
+      var0.packetBuffer.putShort(class87.canvasWidth);
+      var0.packetBuffer.putShort(class25.canvasHeight);
+      Client.field915.method1898(var0);
    }
 }

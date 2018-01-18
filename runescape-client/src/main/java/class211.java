@@ -1,60 +1,58 @@
 import java.util.Iterator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hx")
 public class class211 implements Iterator {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lhh;"
+      signature = "Lhe;"
    )
-   @Export("queue")
-   IterableDualNodeQueue queue;
-   @ObfuscatedName("w")
+   IterableDualNodeQueue field2614;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgd;"
    )
-   CacheableNode field2605;
-   @ObfuscatedName("e")
+   CacheableNode field2612;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgd;"
    )
-   CacheableNode field2607;
+   CacheableNode field2613;
 
    @ObfuscatedSignature(
-      signature = "(Lhh;)V"
+      signature = "(Lhe;)V"
    )
    class211(IterableDualNodeQueue var1) {
-      this.field2607 = null;
-      this.queue = var1;
-      this.field2605 = this.queue.sentinel.previous;
-      this.field2607 = null;
+      this.field2613 = null;
+      this.field2614 = var1;
+      this.field2612 = this.field2614.sentinel.previous;
+      this.field2613 = null;
    }
 
    public Object next() {
-      CacheableNode var1 = this.field2605;
-      if(var1 == this.queue.sentinel) {
+      CacheableNode var1 = this.field2612;
+      if(var1 == this.field2614.sentinel) {
          var1 = null;
-         this.field2605 = null;
+         this.field2612 = null;
       } else {
-         this.field2605 = var1.previous;
+         this.field2612 = var1.previous;
       }
 
-      this.field2607 = var1;
+      this.field2613 = var1;
       return var1;
    }
 
-   public boolean hasNext() {
-      return this.queue.sentinel != this.field2605;
-   }
-
    public void remove() {
-      if(this.field2607 == null) {
+      if(this.field2613 == null) {
          throw new IllegalStateException();
       } else {
-         this.field2607.unlinkDual();
-         this.field2607 = null;
+         this.field2613.unlinkDual();
+         this.field2613 = null;
       }
+   }
+
+   public boolean hasNext() {
+      return this.field2614.sentinel != this.field2612;
    }
 }

@@ -1,94 +1,120 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("in")
 @Implements("Permission")
 public enum Permission implements Enumerated {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
-   field3273(0, -1, true, false, true),
-   @ObfuscatedName("w")
+   field3275(0, -1, true, false, true),
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
-   field3277(1, 0, true, true, true),
-   @ObfuscatedName("e")
+   field3273(1, 0, true, true, true),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
-   field3274(2, 1, true, true, false),
-   @ObfuscatedName("k")
+   field3278(2, 1, true, true, false),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
-   field3275(3, 2, false, false, true),
-   @ObfuscatedName("u")
+   field3272(3, 2, false, false, true),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
    field3276(4, 3, false, false, true),
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lij;"
+      signature = "Lin;"
    )
-   field3281(5, 10, false, false, true);
+   field3282(5, 10, false, false, true);
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 443042469
+      intValue = -738693793
    )
-   final int field3280;
-   @ObfuscatedName("f")
+   final int field3277;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 266173609
+      intValue = 1280221939
    )
    public final int field3279;
-   @ObfuscatedName("g")
-   public final boolean field3278;
-   @ObfuscatedName("j")
-   public final boolean field3272;
+   @ObfuscatedName("e")
+   public final boolean field3280;
+   @ObfuscatedName("f")
+   public final boolean field3281;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3280 = var3;
+      this.field3277 = var3;
       this.field3279 = var4;
-      this.field3278 = var6;
-      this.field3272 = var7;
+      this.field3280 = var6;
+      this.field3281 = var7;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1035813094"
+      garbageValue = "2130441585"
    )
    public int rsOrdinal() {
-      return this.field3280;
+      return this.field3277;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(II)Ljj;",
-      garbageValue = "2047559669"
+      signature = "(II)Lix;",
+      garbageValue = "696147550"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.sequences.get((long)var0);
+   public static class254 method4285(int var0) {
+      class254 var1 = (class254)class254.field3405.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class34.seq_ref.getConfigData(12, var0);
-         var1 = new Sequence();
+         byte[] var2 = class254.field3408.getConfigData(19, var0);
+         var1 = new class254();
          if(var2 != null) {
-            var1.decode(new Buffer(var2));
+            var1.method4511(new Buffer(var2));
          }
 
-         var1.post();
-         Sequence.sequences.put(var1, (long)var0);
+         class254.field3405.put(var1, (long)var0);
          return var1;
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "25"
+   )
+   static int method4283(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 0) {
+            var1 = 0;
+         } else if(var1 > 127) {
+            var1 = 127;
+         }
+
+         var1 = 127 - var1;
+         return var1;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
       }
    }
 }

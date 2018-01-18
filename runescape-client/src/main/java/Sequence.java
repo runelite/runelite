@@ -4,94 +4,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jj")
+@ObfuscatedName("js")
 @Implements("Sequence")
 public class Sequence extends CacheableNode {
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lil;"
+   )
+   @Export("seq_ref")
+   public static IndexDataBase seq_ref;
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "Lil;"
    )
    @Export("skel_ref")
    public static IndexDataBase skel_ref;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lil;"
    )
    @Export("skin_ref")
    public static IndexDataBase skin_ref;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lga;"
    )
    @Export("sequences")
-   static NodeCache sequences;
-   @ObfuscatedName("u")
+   public static NodeCache sequences;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lga;"
    )
    @Export("skeletons")
-   static NodeCache skeletons;
-   @ObfuscatedName("z")
+   public static NodeCache skeletons;
+   @ObfuscatedName("d")
    @Export("frameIDs")
    public int[] frameIDs;
-   @ObfuscatedName("t")
-   int[] field3674;
-   @ObfuscatedName("f")
+   @ObfuscatedName("s")
+   int[] field3688;
+   @ObfuscatedName("b")
    @Export("frameLenghts")
    public int[] frameLenghts;
-   @ObfuscatedName("g")
-   public int[] field3676;
-   @ObfuscatedName("j")
+   @ObfuscatedName("e")
+   public int[] field3690;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -220100085
+      intValue = 332827053
    )
    @Export("frameStep")
    public int frameStep;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @Export("interleaveLeave")
    int[] interleaveLeave;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @Export("stretches")
    public boolean stretches;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1623144549
+      intValue = 1538169177
    )
    @Export("forcedPriority")
    public int forcedPriority;
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 199012451
+      intValue = 813918677
    )
    @Export("leftHandItem")
    public int leftHandItem;
-   @ObfuscatedName("y")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1249525367
+      intValue = -628531205
    )
    @Export("rightHandItem")
    public int rightHandItem;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -502401333
+      intValue = -565156721
    )
    @Export("maxLoops")
    public int maxLoops;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -235496103
+      intValue = 592248831
    )
    @Export("precedenceAnimating")
    public int precedenceAnimating;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 100974965
+      intValue = -2091801731
    )
    @Export("priority")
    public int priority;
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1611211339
+      intValue = 733525121
    )
    @Export("replyMode")
    public int replyMode;
@@ -113,10 +119,10 @@ public class Sequence extends CacheableNode {
       this.replyMode = 2;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lgh;I)V",
-      garbageValue = "1579517759"
+      signature = "(Lgv;I)V",
+      garbageValue = "1090810513"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -130,10 +136,10 @@ public class Sequence extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "-1551557110"
+      signature = "(Lgv;IB)V",
+      garbageValue = "33"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -185,30 +191,30 @@ public class Sequence extends CacheableNode {
          this.replyMode = var1.readUnsignedByte();
       } else if(var2 == 12) {
          var3 = var1.readUnsignedByte();
-         this.field3674 = new int[var3];
+         this.field3688 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3674[var4] = var1.readUnsignedShort();
+            this.field3688[var4] = var1.readUnsignedShort();
          }
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3674[var4] += var1.readUnsignedShort() << 16;
+            this.field3688[var4] += var1.readUnsignedShort() << 16;
          }
       } else if(var2 == 13) {
          var3 = var1.readUnsignedByte();
-         this.field3676 = new int[var3];
+         this.field3690 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3676[var4] = var1.read24BitInt();
+            this.field3690[var4] = var1.read24BitInt();
          }
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-85066389"
+      garbageValue = "-776670310"
    )
    @Export("post")
    void post() {
@@ -230,134 +236,134 @@ public class Sequence extends CacheableNode {
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lef;II)Lef;",
-      garbageValue = "830412713"
+      signature = "(Les;II)Les;",
+      garbageValue = "-1976216317"
    )
-   public Model method4837(Model var1, int var2) {
+   public Model method4916(Model var1, int var2) {
       var2 = this.frameIDs[var2];
-      Frames var3 = GraphicsObject.getFrames(var2 >> 16);
+      Frames var3 = class43.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var3 == null) {
-         return var1.method2509(true);
+         return var1.method2584(true);
       } else {
-         Model var4 = var1.method2509(!var3.method2884(var2));
-         var4.method2517(var3, var2);
+         Model var4 = var1.method2584(!var3.method2932(var2));
+         var4.method2579(var3, var2);
          return var4;
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lef;III)Lef;",
-      garbageValue = "-1474656173"
+      signature = "(Les;III)Les;",
+      garbageValue = "-237948137"
    )
-   Model method4838(Model var1, int var2, int var3) {
+   Model method4899(Model var1, int var2, int var3) {
       var2 = this.frameIDs[var2];
-      Frames var4 = GraphicsObject.getFrames(var2 >> 16);
+      Frames var4 = class43.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var4 == null) {
-         return var1.method2509(true);
+         return var1.method2584(true);
       } else {
-         Model var5 = var1.method2509(!var4.method2884(var2));
+         Model var5 = var1.method2584(!var4.method2932(var2));
          var3 &= 3;
          if(var3 == 1) {
-            var5.method2522();
+            var5.method2623();
          } else if(var3 == 2) {
-            var5.method2521();
+            var5.method2593();
          } else if(var3 == 3) {
             var5.rotateY90Ccw();
          }
 
-         var5.method2517(var4, var2);
+         var5.method2579(var4, var2);
          if(var3 == 1) {
             var5.rotateY90Ccw();
          } else if(var3 == 2) {
-            var5.method2521();
+            var5.method2593();
          } else if(var3 == 3) {
-            var5.method2522();
+            var5.method2623();
          }
 
          return var5;
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lef;II)Lef;",
-      garbageValue = "-2039031586"
+      signature = "(Les;IB)Les;",
+      garbageValue = "7"
    )
-   Model method4839(Model var1, int var2) {
+   Model method4911(Model var1, int var2) {
       var2 = this.frameIDs[var2];
-      Frames var3 = GraphicsObject.getFrames(var2 >> 16);
+      Frames var3 = class43.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var3 == null) {
-         return var1.method2555(true);
+         return var1.method2574(true);
       } else {
-         Model var4 = var1.method2555(!var3.method2884(var2));
-         var4.method2517(var3, var2);
+         Model var4 = var1.method2574(!var3.method2932(var2));
+         var4.method2579(var3, var2);
          return var4;
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lef;ILjj;II)Lef;",
-      garbageValue = "352533500"
+      signature = "(Les;ILjs;II)Les;",
+      garbageValue = "226581526"
    )
-   public Model method4847(Model var1, int var2, Sequence var3, int var4) {
+   public Model method4894(Model var1, int var2, Sequence var3, int var4) {
       var2 = this.frameIDs[var2];
-      Frames var5 = GraphicsObject.getFrames(var2 >> 16);
+      Frames var5 = class43.getFrames(var2 >> 16);
       var2 &= 65535;
       if(var5 == null) {
-         return var3.method4837(var1, var4);
+         return var3.method4916(var1, var4);
       } else {
          var4 = var3.frameIDs[var4];
-         Frames var6 = GraphicsObject.getFrames(var4 >> 16);
+         Frames var6 = class43.getFrames(var4 >> 16);
          var4 &= 65535;
          Model var7;
          if(var6 == null) {
-            var7 = var1.method2509(!var5.method2884(var2));
-            var7.method2517(var5, var2);
+            var7 = var1.method2584(!var5.method2932(var2));
+            var7.method2579(var5, var2);
             return var7;
          } else {
-            var7 = var1.method2509(!var5.method2884(var2) & !var6.method2884(var4));
-            var7.method2588(var5, var2, var6, var4, this.interleaveLeave);
+            var7 = var1.method2584(!var5.method2932(var2) & !var6.method2932(var4));
+            var7.method2640(var5, var2, var6, var4, this.interleaveLeave);
             return var7;
          }
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lef;II)Lef;",
-      garbageValue = "779613545"
+      signature = "(Les;II)Les;",
+      garbageValue = "1732046826"
    )
-   public Model method4856(Model var1, int var2) {
+   public Model method4906(Model var1, int var2) {
       int var3 = this.frameIDs[var2];
-      Frames var4 = GraphicsObject.getFrames(var3 >> 16);
+      Frames var4 = class43.getFrames(var3 >> 16);
       var3 &= 65535;
       if(var4 == null) {
-         return var1.method2509(true);
+         return var1.method2584(true);
       } else {
          Frames var5 = null;
          int var6 = 0;
-         if(this.field3674 != null && var2 < this.field3674.length) {
-            var6 = this.field3674[var2];
-            var5 = GraphicsObject.getFrames(var6 >> 16);
+         if(this.field3688 != null && var2 < this.field3688.length) {
+            var6 = this.field3688[var2];
+            var5 = class43.getFrames(var6 >> 16);
             var6 &= 65535;
          }
 
          Model var7;
          if(var5 != null && var6 != 65535) {
-            var7 = var1.method2509(!var4.method2884(var3) & !var5.method2884(var6));
-            var7.method2517(var4, var3);
-            var7.method2517(var5, var6);
+            var7 = var1.method2584(!var4.method2932(var3) & !var5.method2932(var6));
+            var7.method2579(var4, var3);
+            var7.method2579(var5, var6);
             return var7;
          } else {
-            var7 = var1.method2509(!var4.method2884(var3));
-            var7.method2517(var4, var3);
+            var7 = var1.method2584(!var4.method2932(var3));
+            var7.method2579(var4, var3);
             return var7;
          }
       }

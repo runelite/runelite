@@ -4,60 +4,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("in")
+@ObfuscatedName("iq")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("el")
-   @ObfuscatedSignature(
-      signature = "Lju;"
-   )
-   @Export("fonts")
-   static Fonts fonts;
-   @ObfuscatedName("a")
+   @ObfuscatedName("nx")
    @ObfuscatedGetter(
-      intValue = -1959598111
+      intValue = -2057531233
+   )
+   @Export("clanChatCount")
+   static int clanChatCount;
+   @ObfuscatedName("ai")
+   @ObfuscatedGetter(
+      intValue = -232372331
+   )
+   static int field3301;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1608342227
    )
    @Export("type")
    int type;
-   @ObfuscatedName("w")
-   public byte[] field3299;
-   @ObfuscatedName("e")
+   @ObfuscatedName("v")
+   byte[] field3299;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "Lfv;"
    )
    @Export("index")
-   public IndexFile index;
-   @ObfuscatedName("k")
+   IndexFile index;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Lif;"
    )
    @Export("data")
-   public IndexData data;
+   IndexData data;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lfo;Lgj;I)Lfg;",
-      garbageValue = "-987657395"
+      signature = "(Lil;Lil;Ljava/lang/String;Ljava/lang/String;I)Ljz;",
+      garbageValue = "-54154712"
    )
-   public static PacketNode method4252(ClientPacket var0, ISAACCipher var1) {
-      PacketNode var2 = class161.method3067();
-      var2.clientPacket = var0;
-      var2.field2432 = var0.packetLength;
-      if(var2.field2432 == -1) {
-         var2.packetBuffer = new PacketBuffer(260);
-      } else if(var2.field2432 == -2) {
-         var2.packetBuffer = new PacketBuffer(10000);
-      } else if(var2.field2432 <= 18) {
-         var2.packetBuffer = new PacketBuffer(20);
-      } else if(var2.field2432 <= 98) {
-         var2.packetBuffer = new PacketBuffer(100);
+   public static Font method4299(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
+      int var4 = var0.getFile(var2);
+      int var5 = var0.getChild(var4, var3);
+      Font var6;
+      if(!class288.method5126(var0, var4, var5)) {
+         var6 = null;
       } else {
-         var2.packetBuffer = new PacketBuffer(260);
+         byte[] var8 = var1.getConfigData(var4, var5);
+         Font var7;
+         if(var8 == null) {
+            var7 = null;
+         } else {
+            Font var9 = new Font(var8, class299.field3870, class299.offsetsY, class54.field635, UrlRequester.field2099, class299.field3869, class188.spritePixels);
+            class139.method2922();
+            var7 = var9;
+         }
+
+         var6 = var7;
       }
 
-      var2.packetBuffer.setIsaacCipher(var1);
-      var2.packetBuffer.putOpcode(var2.clientPacket.packetId);
-      var2.field2434 = 0;
-      return var2;
+      return var6;
    }
 }

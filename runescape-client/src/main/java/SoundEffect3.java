@@ -3,31 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("di")
 @Implements("SoundEffect3")
 public class SoundEffect3 {
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @Export("minimisedCoefficients")
    static float[][] minimisedCoefficients;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @Export("coefficients")
    static int[][] coefficients;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @Export("fowardMinimisedCoefficientMultiplier")
    static float fowardMinimisedCoefficientMultiplier;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @Export("fowardMultiplier")
    static int fowardMultiplier;
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("pairs")
    int[] pairs;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("phases")
    int[][][] phases;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("magnitudes")
    int[][][] magnitudes;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("unity")
    int[] unity;
 
@@ -43,7 +43,7 @@ public class SoundEffect3 {
       this.unity = new int[2];
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("interpolateMagniture")
    float interpolateMagniture(int var1, int var2, float var3) {
       float var4 = (float)this.magnitudes[var1][0][var2] + var3 * (float)(this.magnitudes[var1][1][var2] - this.magnitudes[var1][0][var2]);
@@ -51,7 +51,7 @@ public class SoundEffect3 {
       return 1.0F - (float)Math.pow(10.0D, (double)(-var4 / 20.0F));
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("interpolatePhase")
    float interpolatePhase(int var1, int var2, float var3) {
       float var4 = (float)this.phases[var1][0][var2] + var3 * (float)(this.phases[var1][1][var2] - this.phases[var1][0][var2]);
@@ -59,7 +59,7 @@ public class SoundEffect3 {
       return normalise(var4);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("compute")
    int compute(int var1, float var2) {
       float var3;
@@ -107,9 +107,9 @@ public class SoundEffect3 {
       }
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lgh;Ldh;)V"
+      signature = "(Lgv;Ldo;)V"
    )
    @Export("decode")
    final void decode(Buffer var1, AudioEnvelope var2) {
@@ -153,7 +153,7 @@ public class SoundEffect3 {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @Export("normalise")
    static float normalise(float var0) {
       float var1 = 32.703197F * (float)Math.pow(2.0D, (double)var0);

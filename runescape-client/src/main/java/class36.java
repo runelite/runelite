@@ -3,132 +3,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ac")
+@ObfuscatedName("ax")
 public class class36 {
-   @ObfuscatedName("od")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Ldn;"
+      signature = "Lax;"
    )
-   @Export("soundSystem0")
-   static AbstractSoundSystem soundSystem0;
-   @ObfuscatedName("a")
+   static final class36 field484;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Lax;"
    )
-   static final class36 field476;
-   @ObfuscatedName("w")
+   static final class36 field480;
+   @ObfuscatedName("ek")
    @ObfuscatedSignature(
-      signature = "Lac;"
+      signature = "Ljz;"
    )
-   static final class36 field471;
-   @ObfuscatedName("ad")
-   static int[] field478;
-   @ObfuscatedName("di")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("indexCache10")
-   static IndexData indexCache10;
-   @ObfuscatedName("jz")
+   @Export("fontBold12")
+   static Font fontBold12;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1715250021
+      intValue = 1694135557
    )
-   @Export("selectedItemIndex")
-   static int selectedItemIndex;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -998767347
-   )
-   final int field472;
+   final int field485;
 
    static {
-      field476 = new class36(0);
-      field471 = new class36(1);
+      field484 = new class36(0);
+      field480 = new class36(1);
    }
 
    class36(int var1) {
-      this.field472 = var1;
+      this.field485 = var1;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-96"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z",
+      garbageValue = "-578890081"
    )
-   @Export("getVarbit")
-   public static int getVarbit(int var0) {
-      Varbit var2 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var1;
-      if(var2 != null) {
-         var1 = var2;
+   public static final boolean method490(String var0, String var1, String var2, String var3) {
+      return var0 != null && var2 != null?(!var0.startsWith("#") && !var2.startsWith("#")?var1.equals(var3):var0.equals(var2)):false;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)Lfm;",
+      garbageValue = "48"
+   )
+   public static Timer method491() {
+      try {
+         return new NanoTimer();
+      } catch (Throwable var1) {
+         return new MilliTimer();
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-47"
+   )
+   static void method489() {
+      class91.username = class91.username.trim();
+      if(class91.username.length() == 0) {
+         ClanMember.method1170("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         byte[] var7 = Varbit.varbit_ref.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(var7 != null) {
-            var2.decode(new Buffer(var7));
+         long var1 = class150.method2992();
+         int var0;
+         if(0L == var1) {
+            var0 = 5;
+         } else {
+            var0 = Player.method1137(var1, class91.username);
          }
 
-         Varbit.varbits.put(var2, (long)var0);
-         var1 = var2;
-      }
-
-      int var3 = var1.configId;
-      int var4 = var1.leastSignificantBit;
-      int var5 = var1.mostSignificantBit;
-      int var6 = class222.varpsMasks[var5 - var4];
-      return class222.widgetSettings[var3] >> var4 & var6;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(ILfv;Liu;I)V",
-      garbageValue = "390709907"
-   )
-   static void method497(int var0, IndexFile var1, IndexData var2) {
-      byte[] var3 = null;
-      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         for(FileSystem var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getFront(); var5 != null; var5 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.getNext()) {
-            if((long)var0 == var5.hash && var1 == var5.index && var5.type == 0) {
-               var3 = var5.field3299;
-               break;
-            }
+         switch(var0) {
+         case 2:
+            ClanMember.method1170("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class91.loginIndex = 6;
+            break;
+         case 3:
+            ClanMember.method1170("", "Error connecting to server.", "");
+            break;
+         case 4:
+            ClanMember.method1170("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            ClanMember.method1170("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            ClanMember.method1170("", "Error connecting to server.", "");
+            break;
+         case 7:
+            ClanMember.method1170("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
+
       }
-
-      if(var3 != null) {
-         var2.load(var1, var0, var3, true);
-      } else {
-         byte[] var8 = var1.read(var0);
-         var2.load(var1, var0, var8, true);
-      }
-   }
-
-   @ObfuscatedName("fe")
-   @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "338988927"
-   )
-   static void method498(int var0, int var1, int var2) {
-      if(Client.field1066 != 0 && var1 != 0 && Client.field1068 < 50) {
-         Client.field1069[Client.field1068] = var0;
-         Client.field1070[Client.field1068] = var1;
-         Client.field1071[Client.field1068] = var2;
-         Client.audioEffects[Client.field1068] = null;
-         Client.field1072[Client.field1068] = 0;
-         ++Client.field1068;
-      }
-
-   }
-
-   @ObfuscatedName("jw")
-   @ObfuscatedSignature(
-      signature = "(Lhz;I)I",
-      garbageValue = "-446153179"
-   )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
    }
 }

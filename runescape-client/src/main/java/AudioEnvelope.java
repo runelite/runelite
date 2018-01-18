@@ -3,42 +3,42 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("do")
 @Implements("AudioEnvelope")
 public class AudioEnvelope {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("segments")
    int segments;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @Export("durations")
    int[] durations;
-   @ObfuscatedName("e")
-   @Export("phases")
-   int[] phases;
-   @ObfuscatedName("k")
-   @Export("start")
-   int start;
-   @ObfuscatedName("u")
-   @Export("end")
-   int end;
-   @ObfuscatedName("z")
-   @Export("form")
-   int form;
-   @ObfuscatedName("t")
-   @Export("ticks")
-   int ticks;
-   @ObfuscatedName("f")
-   @Export("phaseIndex")
-   int phaseIndex;
-   @ObfuscatedName("g")
-   @Export("step")
-   int step;
-   @ObfuscatedName("j")
-   @Export("amplitude")
-   int amplitude;
-   @ObfuscatedName("c")
+   @ObfuscatedName("y")
    @Export("max")
    int max;
+   @ObfuscatedName("r")
+   @Export("phases")
+   int[] phases;
+   @ObfuscatedName("h")
+   @Export("start")
+   int start;
+   @ObfuscatedName("d")
+   @Export("end")
+   int end;
+   @ObfuscatedName("s")
+   @Export("form")
+   int form;
+   @ObfuscatedName("b")
+   @Export("ticks")
+   int ticks;
+   @ObfuscatedName("e")
+   @Export("phaseIndex")
+   int phaseIndex;
+   @ObfuscatedName("f")
+   @Export("step")
+   int step;
+   @ObfuscatedName("z")
+   @Export("amplitude")
+   int amplitude;
 
    AudioEnvelope() {
       this.segments = 2;
@@ -50,9 +50,9 @@ public class AudioEnvelope {
       this.phases[1] = 65535;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lgh;)V"
+      signature = "(Lgv;)V"
    )
    @Export("decode")
    final void decode(Buffer var1) {
@@ -62,9 +62,9 @@ public class AudioEnvelope {
       this.decodeSegments(var1);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lgh;)V"
+      signature = "(Lgv;)V"
    )
    @Export("decodeSegments")
    final void decodeSegments(Buffer var1) {
@@ -79,7 +79,7 @@ public class AudioEnvelope {
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("reset")
    final void reset() {
       this.ticks = 0;
@@ -89,7 +89,7 @@ public class AudioEnvelope {
       this.max = 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("step")
    final int step(int var1) {
       if(this.max >= this.ticks) {

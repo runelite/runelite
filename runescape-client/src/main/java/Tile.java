@@ -1,138 +1,135 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("ej")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1725557519
+      intValue = -123400925
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -695857629
+      intValue = -1747017945
    )
    @Export("x")
    int x;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1267689537
+      intValue = -1024113217
    )
    @Export("y")
    int y;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -721315981
+      intValue = -1654186991
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Led;"
+      signature = "Leg;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Ldf;"
-   )
-   @Export("overlay")
-   SceneTileModel overlay;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Leb;"
-   )
-   @Export("wallObject")
-   WallObject wallObject;
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "Leq;"
-   )
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "Ldq;"
-   )
-   @Export("groundObject")
-   GroundObject groundObject;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "Ldl;"
    )
+   @Export("overlay")
+   SceneTileModel overlay;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Ler;"
+   )
+   @Export("wallObject")
+   WallObject wallObject;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "Lew;"
+   )
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "Lds;"
+   )
+   @Export("groundObject")
+   GroundObject groundObject;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ldr;"
+   )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1495705029
+      intValue = 831855861
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "[Let;"
+      signature = "[Lee;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 414760873
+      intValue = 823196875
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("y")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1613392379
+      intValue = 1114807551
    )
    @Export("physicalLevel")
    int physicalLevel;
    @ObfuscatedName("o")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @Export("visible")
    boolean visible;
    @ObfuscatedName("i")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -746627283
+      intValue = 701297865
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("m")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1182737099
+      intValue = -178883987
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 37190099
+      intValue = -1560273499
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("b")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1139868411
+      intValue = -437205115
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("h")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lez;"
+      signature = "Lej;"
    )
    @Export("bridge")
    Tile bridge;
@@ -146,42 +143,14 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1910530156"
+      signature = "(Lil;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "929636330"
    )
-   static void method2505() {
-      try {
-         File var0 = new File(class1.userHome, "random.dat");
-         int var2;
-         if(var0.exists()) {
-            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         } else {
-            label37:
-            for(int var1 = 0; var1 < GrandExchangeOffer.field298.length; ++var1) {
-               for(var2 = 0; var2 < class115.cacheLocations.length; ++var2) {
-                  File var3 = new File(class115.cacheLocations[var2] + GrandExchangeOffer.field298[var1] + File.separatorChar + "random.dat");
-                  if(var3.exists()) {
-                     class157.randomDat = new CacheFile(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label37;
-                  }
-               }
-            }
-         }
-
-         if(class157.randomDat == null) {
-            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
-            var2 = var4.read();
-            var4.seek(0L);
-            var4.write(var2);
-            var4.seek(0L);
-            var4.close();
-            class157.randomDat = new CacheFile(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         }
-      } catch (IOException var5) {
-         ;
-      }
-
+   public static void method2570(IndexDataBase var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.getFile(var1);
+      int var6 = var0.getChild(var5, var2);
+      World.method1618(var0, var5, var6, var3, var4);
    }
 }

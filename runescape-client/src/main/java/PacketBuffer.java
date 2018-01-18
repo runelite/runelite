@@ -1,111 +1,109 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gy")
+@ObfuscatedName("gr")
 @Implements("PacketBuffer")
 public final class PacketBuffer extends Buffer {
-   @ObfuscatedName("j")
-   static final int[] field2543;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
+   static final int[] field2552;
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgz;"
    )
    @Export("cipher")
    ISAACCipher cipher;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1022606895
+      intValue = -800315305
    )
    @Export("bitPosition")
    int bitPosition;
 
    static {
-      field2543 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+      field2552 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    }
 
    public PacketBuffer(int var1) {
       super(var1);
    }
 
-   @ObfuscatedName("jt")
+   @ObfuscatedName("ii")
    @ObfuscatedSignature(
       signature = "([IB)V",
-      garbageValue = "12"
+      garbageValue = "-43"
    )
    @Export("seed")
    public void seed(int[] var1) {
       this.cipher = new ISAACCipher(var1);
    }
 
-   @ObfuscatedName("jg")
+   @ObfuscatedName("id")
    @ObfuscatedSignature(
-      signature = "(Lgj;I)V",
-      garbageValue = "633383955"
+      signature = "(Lgz;I)V",
+      garbageValue = "-2122243151"
    )
    @Export("setIsaacCipher")
    public void setIsaacCipher(ISAACCipher var1) {
       this.cipher = var1;
    }
 
-   @ObfuscatedName("je")
+   @ObfuscatedName("iq")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-126"
+      signature = "(II)V",
+      garbageValue = "-1378892261"
    )
    @Export("putOpcode")
    public void putOpcode(int var1) {
       super.payload[++super.offset - 1] = (byte)(var1 + this.cipher.nextInt());
    }
 
-   @ObfuscatedName("jf")
+   @ObfuscatedName("it")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1346768526"
+      garbageValue = "1553638675"
    )
    @Export("readOpcode")
    public int readOpcode() {
       return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
    }
 
-   @ObfuscatedName("jq")
+   @ObfuscatedName("il")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1470709432"
+      garbageValue = "-1593178167"
    )
-   public boolean method3567() {
-      int var1 = super.payload[super.offset] - this.cipher.method3583() & 255;
+   public boolean method3614() {
+      int var1 = super.payload[super.offset] - this.cipher.method3640() & 255;
       return var1 >= 128;
    }
 
-   @ObfuscatedName("jr")
+   @ObfuscatedName("ij")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2108611718"
+      signature = "(S)I",
+      garbageValue = "22762"
    )
-   public int method3550() {
+   public int method3610() {
       int var1 = super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
       return var1 < 128?var1:(var1 - 128 << 8) + (super.payload[++super.offset - 1] - this.cipher.nextInt() & 255);
    }
 
-   @ObfuscatedName("jn")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "102"
+      signature = "(I)V",
+      garbageValue = "1521790694"
    )
    @Export("bitAccess")
    public void bitAccess() {
       this.bitPosition = super.offset * 8;
    }
 
-   @ObfuscatedName("jh")
+   @ObfuscatedName("iw")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1886723881"
+      signature = "(IB)I",
+      garbageValue = "-126"
    )
    @Export("getBits")
    public int getBits(int var1) {
@@ -114,104 +112,184 @@ public final class PacketBuffer extends Buffer {
       int var4 = 0;
 
       for(this.bitPosition += var1; var1 > var3; var3 = 8) {
-         var4 += (super.payload[var2++] & field2543[var3]) << var1 - var3;
+         var4 += (super.payload[var2++] & field2552[var3]) << var1 - var3;
          var1 -= var3;
       }
 
       if(var3 == var1) {
-         var4 += super.payload[var2] & field2543[var3];
+         var4 += super.payload[var2] & field2552[var3];
       } else {
-         var4 += super.payload[var2] >> var3 - var1 & field2543[var1];
+         var4 += super.payload[var2] >> var3 - var1 & field2552[var1];
       }
 
       return var4;
    }
 
-   @ObfuscatedName("jj")
+   @ObfuscatedName("iv")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-245555910"
+      signature = "(B)V",
+      garbageValue = "1"
    )
    @Export("byteAccess")
    public void byteAccess() {
       super.offset = (this.bitPosition + 7) / 8;
    }
 
-   @ObfuscatedName("jl")
+   @ObfuscatedName("iz")
    @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "-19954"
+      signature = "(II)I",
+      garbageValue = "-1927318322"
    )
    @Export("bitsAvail")
    public int bitsAvail(int var1) {
       return var1 * 8 - this.bitPosition;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "24"
+      signature = "(CI)B",
+      garbageValue = "-1444618872"
    )
-   public static void method3578() {
-      PlayerComposition.field2737.reset();
+   @Export("charToByteCp1252")
+   public static byte charToByteCp1252(char var0) {
+      byte var1;
+      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+         var1 = (byte)var0;
+      } else if(var0 == 8364) {
+         var1 = -128;
+      } else if(var0 == 8218) {
+         var1 = -126;
+      } else if(var0 == 402) {
+         var1 = -125;
+      } else if(var0 == 8222) {
+         var1 = -124;
+      } else if(var0 == 8230) {
+         var1 = -123;
+      } else if(var0 == 8224) {
+         var1 = -122;
+      } else if(var0 == 8225) {
+         var1 = -121;
+      } else if(var0 == 710) {
+         var1 = -120;
+      } else if(var0 == 8240) {
+         var1 = -119;
+      } else if(var0 == 352) {
+         var1 = -118;
+      } else if(var0 == 8249) {
+         var1 = -117;
+      } else if(var0 == 338) {
+         var1 = -116;
+      } else if(var0 == 381) {
+         var1 = -114;
+      } else if(var0 == 8216) {
+         var1 = -111;
+      } else if(var0 == 8217) {
+         var1 = -110;
+      } else if(var0 == 8220) {
+         var1 = -109;
+      } else if(var0 == 8221) {
+         var1 = -108;
+      } else if(var0 == 8226) {
+         var1 = -107;
+      } else if(var0 == 8211) {
+         var1 = -106;
+      } else if(var0 == 8212) {
+         var1 = -105;
+      } else if(var0 == 732) {
+         var1 = -104;
+      } else if(var0 == 8482) {
+         var1 = -103;
+      } else if(var0 == 353) {
+         var1 = -102;
+      } else if(var0 == 8250) {
+         var1 = -101;
+      } else if(var0 == 339) {
+         var1 = -100;
+      } else if(var0 == 382) {
+         var1 = -98;
+      } else if(var0 == 376) {
+         var1 = -97;
+      } else {
+         var1 = 63;
+      }
+
+      return var1;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2033731319"
+      signature = "(Lgv;IIIIIII)V",
+      garbageValue = "-1914568061"
    )
-   public static void method3546() {
-      Widget.field2753.reset();
-      Widget.Widget_cachedModels.reset();
-      Widget.Widget_cachedFonts.reset();
-      Widget.field2756.reset();
-   }
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class61.tileSettings[var1][var2][var3] = 0;
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Lfs;III)Ldn;",
-      garbageValue = "-1301105916"
-   )
-   public static final AbstractSoundSystem method3579(Signlink var0, int var1, int var2) {
-      if(ScriptState.sampleRate == 0) {
-         throw new IllegalStateException();
-      } else if(var1 >= 0 && var1 < 2) {
-         if(var2 < 256) {
-            var2 = 256;
-         }
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class61.tileHeights[0][var2];
+                  int var11 = var2 + var4 + 932731;
+                  int var12 = var3 + var5 + 556238;
+                  int var13 = class72.getSmoothNoise(45365 + var11, 91923 + var12, 4) - 128 + (class72.getSmoothNoise(var11 + 10294, 37821 + var12, 2) - 128 >> 1) + (class72.getSmoothNoise(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
 
-         try {
-            AbstractSoundSystem var3 = AbstractSoundSystem.soundTaskDataProvider.taskData();
-            var3.samples = new int[(ContextMenuRow.highMemory?2:1) * 256];
-            var3.field1527 = var2;
-            var3.vmethod2025();
-            var3.offset = (var2 & -1024) + 1024;
-            if(var3.offset > 16384) {
-               var3.offset = 16384;
+                  var8[var3] = -var13 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
             }
 
-            var3.create(var3.offset);
-            if(class218.priority > 0 && GroundObject.task == null) {
-               GroundObject.task = new SoundTask();
-               AbstractSoundSystem.field1535 = Executors.newScheduledThreadPool(1);
-               AbstractSoundSystem.field1535.scheduleAtFixedRate(GroundObject.task, 0L, 10L, TimeUnit.MILLISECONDS);
-            }
-
-            if(GroundObject.task != null) {
-               if(GroundObject.task.systems[var1] != null) {
-                  throw new IllegalArgumentException();
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
                }
 
-               GroundObject.task.systems[var1] = var3;
+               if(var1 == 0) {
+                  class61.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class61.tileHeights[var1][var2][var3] = class61.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
             }
 
-            return var3;
-         } catch (Throwable var4) {
-            return new AbstractSoundSystem();
+            if(var7 <= 49) {
+               class61.field731[var1][var2][var3] = var0.readByte();
+               class61.field733[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class37.field487[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class61.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class61.field734[var1][var2][var3] = (byte)(var7 - 81);
+            }
          }
       } else {
-         throw new IllegalArgumentException();
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
       }
+
    }
 }

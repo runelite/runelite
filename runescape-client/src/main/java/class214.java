@@ -1,56 +1,47 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hm")
+@ObfuscatedName("hz")
 public class class214 {
-   @ObfuscatedName("ob")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lcl;"
+      signature = "Lil;"
    )
-   static class101 field2628;
-   @ObfuscatedName("a")
+   public static IndexDataBase field2635;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lil;"
    )
-   public static IndexDataBase field2626;
-   @ObfuscatedName("w")
+   public static IndexDataBase field2633;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lil;"
    )
-   public static IndexDataBase field2621;
-   @ObfuscatedName("e")
+   public static IndexDataBase field2629;
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lhu;"
    )
-   public static IndexDataBase field2624;
-   @ObfuscatedName("u")
+   public static class215 field2630;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -526612227
+      intValue = -1734735133
    )
-   public static int field2620;
+   public static int field2631;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lil;"
+   )
+   public static IndexDataBase field2632;
    @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "Lib;"
-   )
-   public static IndexDataBase field2623;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 738655539
-   )
-   public static int field2625;
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "Lhl;"
-   )
-   public static Track1 field2622;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lde;"
-   )
-   public static class111 field2627;
+   public static boolean field2627;
+   @ObfuscatedName("ff")
+   @Export("mapRegions")
+   static int[] mapRegions;
 
    static {
-      field2620 = 0;
+      field2631 = 0;
    }
 }

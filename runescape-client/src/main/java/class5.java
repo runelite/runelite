@@ -1,343 +1,210 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Iterator;
-import javax.imageio.ImageIO;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("d")
 final class class5 implements class0 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lib;Lib;ZII)V",
-      garbageValue = "1650327181"
+      signature = "(I)V",
+      garbageValue = "263163621"
    )
-   static void method14(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
-      if(class91.field1347) {
-         if(var3 == 4) {
-            class91.loginIndex = 4;
+   public static final void method13() {
+      while(true) {
+         BoundingBox var0 = (BoundingBox)class7.boundingBoxes.removeLast();
+         if(var0 == null) {
+            return;
          }
 
-      } else {
-         class91.loginIndex = var3;
-         Rasterizer2D.reset();
-         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
-         BufferedImage var6 = null;
+         var0.draw();
+      }
+   }
 
-         SpritePixels var5;
-         int var7;
-         int var8;
-         label159: {
-            try {
-               var6 = ImageIO.read(new ByteArrayInputStream(var4));
-               var7 = var6.getWidth();
-               var8 = var6.getHeight();
-               int[] var9 = new int[var7 * var8];
-               PixelGrabber var10 = new PixelGrabber(var6, 0, 0, var7, var8, var9, 0, var7);
-               var10.grabPixels();
-               var5 = new SpritePixels(var9, var7, var8);
-               break label159;
-            } catch (IOException var13) {
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(IZIZI)V",
+      garbageValue = "-1902253482"
+   )
+   static void method14(int var0, boolean var1, int var2, boolean var3) {
+      if(World.worldList != null) {
+         BaseVarType.method8(0, World.worldList.length - 1, var0, var1, var2, var3);
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lil;Ljava/lang/String;Ljava/lang/String;I)[Lkg;",
+      garbageValue = "1101878301"
+   )
+   @Export("getSprites")
+   public static SpritePixels[] getSprites(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return IndexDataBase.method4397(var0, var3, var4);
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(ILcv;ZI)I",
+      garbageValue = "-1115972280"
+   )
+   static int method11(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = UrlRequester.getWidget(class82.intStack[--class82.intStackSize]);
+      } else {
+         var3 = var2?class82.field1267:CombatInfo1.field1216;
+      }
+
+      String var4 = class82.scriptStringStack[--FileOnDisk.scriptStringStackSize];
+      int[] var5 = null;
+      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
+         int var6 = class82.intStack[--class82.intStackSize];
+         if(var6 > 0) {
+            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class82.intStack[--class82.intStackSize]) {
                ;
-            } catch (InterruptedException var14) {
-               ;
-            }
-
-            var5 = new SpritePixels(0, 0);
-         }
-
-         class91.field1315 = var5;
-         class91.field1319 = class91.field1315.method5277();
-         if((Client.flags & 536870912) != 0) {
-            class91.logoSprite = class279.getSprite(var1, "logo_deadman_mode", "");
-         } else {
-            class91.logoSprite = class279.getSprite(var1, "logo", "");
-         }
-
-         class91.field1316 = class279.getSprite(var1, "titlebox", "");
-         class91.field1317 = class279.getSprite(var1, "titlebutton", "");
-         class234.runeSprites = Signlink.getIndexedSprites(var1, "runes", "");
-         class278.titlemuteSprite = Signlink.getIndexedSprites(var1, "title_mute", "");
-         CombatInfoListHolder.field1267 = class279.getSprite(var1, "options_radio_buttons,0", "");
-         class234.field2945 = class279.getSprite(var1, "options_radio_buttons,4", "");
-         class91.field1333 = class279.getSprite(var1, "options_radio_buttons,2", "");
-         WorldMapType2.field492 = class279.getSprite(var1, "options_radio_buttons,6", "");
-         MouseInput.field683 = CombatInfoListHolder.field1267.originalWidth;
-         BoundingBox.field239 = CombatInfoListHolder.field1267.height;
-         class218.field2696 = new int[256];
-
-         int var12;
-         for(var12 = 0; var12 < 64; ++var12) {
-            class218.field2696[var12] = var12 * 262144;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class218.field2696[var12 + 64] = var12 * 1024 + 16711680;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class218.field2696[var12 + 128] = var12 * 4 + 16776960;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class218.field2696[var12 + 192] = 16777215;
-         }
-
-         class91.field1325 = new int[256];
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class91.field1325[var12] = var12 * 1024;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class91.field1325[var12 + 64] = var12 * 4 + 65280;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class91.field1325[var12 + 128] = var12 * 262144 + 65535;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class91.field1325[var12 + 192] = 16777215;
-         }
-
-         class2.field11 = new int[256];
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class2.field11[var12] = var12 * 4;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class2.field11[var12 + 64] = var12 * 262144 + 255;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class2.field11[var12 + 128] = var12 * 1024 + 16711935;
-         }
-
-         for(var12 = 0; var12 < 64; ++var12) {
-            class2.field11[var12 + 192] = 16777215;
-         }
-
-         Item.field1386 = new int[256];
-         class36.field478 = new int['耀'];
-         class186.field2532 = new int['耀'];
-         CombatInfoListHolder.method1623((IndexedSprite)null);
-         class89.field1302 = new int['耀'];
-         BoundingBox.field238 = new int['耀'];
-         if(var2) {
-            class91.username = "";
-            class91.password = "";
-         }
-
-         BoundingBox.field240 = 0;
-         class237.field3245 = "";
-         class91.field1346 = true;
-         class91.worldSelectShown = false;
-         if(!class2.preferences.muted) {
-            IndexData var15 = class29.indexTrack1;
-            var7 = var15.getFile("scape main");
-            var8 = var15.getChild(var7, "");
-            CollisionData.method3152(2, var15, var7, var8, 255, false);
-         } else {
-            class214.field2620 = 1;
-            class214.field2623 = null;
-            class61.field692 = -1;
-            class282.field3754 = -1;
-            class214.field2625 = 0;
-            IndexFile.field2181 = false;
-            Timer.field2159 = 2;
-         }
-
-         class27.sendConInfo(false);
-         class91.field1347 = true;
-         class91.field1351 = (Huffman.canvasWidth - 765) / 2;
-         class91.loginWindowX = class91.field1351 + 202;
-         Preferences.field1217 = class91.loginWindowX + 180;
-         class91.field1315.method5203(class91.field1351, 0);
-         class91.field1319.method5203(class91.field1351 + 382, 0);
-         class91.logoSprite.method5176(class91.field1351 + 382 - class91.logoSprite.originalWidth / 2, 18);
-      }
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "1860937356"
-   )
-   static String method15() {
-      String var0 = "";
-
-      MessageNode var2;
-      for(Iterator var1 = class96.messages.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "330163320"
-   )
-   static void method13() {
-      class91.username = class91.username.trim();
-      if(class91.username.length() == 0) {
-         class64.method1033("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-      } else {
-         long var1 = class44.method620();
-         int var0;
-         if(0L == var1) {
-            var0 = 5;
-         } else {
-            var0 = FontName.method4872(var1, class91.username);
-         }
-
-         switch(var0) {
-         case 2:
-            class64.method1033("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class91.loginIndex = 6;
-            break;
-         case 3:
-            class64.method1033("", "Error connecting to server.", "");
-            break;
-         case 4:
-            class64.method1033("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-            break;
-         case 5:
-            class64.method1033("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-            break;
-         case 6:
-            class64.method1033("", "Error connecting to server.", "");
-            break;
-         case 7:
-            class64.method1033("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
-         }
-
-      }
-   }
-
-   @ObfuscatedName("ew")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1957292188"
-   )
-   static final void method16() {
-      Overlay.overlays.reset();
-      AttackOption.method1669();
-      class250.method4401();
-      WorldMapType3.method209();
-      NPCComposition.npcs.reset();
-      NPCComposition.npcModelCache.reset();
-      ItemComposition.items.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
-      class139.method2870();
-      class21.method155();
-      Varbit.varbits.reset();
-      VarPlayerType.varplayers.reset();
-      class265.field3499.reset();
-      class265.field3489.reset();
-      class265.field3491.reset();
-      CombatInfo2.field3443.reset();
-      CombatInfo2.spriteCache.reset();
-      class263.field3472.reset();
-      class262.field3464.reset();
-      Area.areaSpriteCache.reset();
-      PacketBuffer.method3578();
-      PacketBuffer.method3546();
-      ((TextureProvider)Graphics3D.textureLoader).reset();
-      Script.field1431.reset();
-      BoundingBox.indexInterfaces.reset();
-      FrameMap.indexSoundEffects.reset();
-      MouseInput.indexCache3.reset();
-      class86.indexCache4.reset();
-      class22.indexMaps.reset();
-      class29.indexTrack1.reset();
-      class37.indexModels.reset();
-      class43.indexSprites.reset();
-      class3.indexTextures.reset();
-      class36.indexCache10.reset();
-      class20.indexTrack2.reset();
-      class161.indexScripts.reset();
-   }
-
-   @ObfuscatedName("gq")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-42201957"
-   )
-   static final void method17() {
-      PacketBuffer var0 = Client.field888.packetBuffer;
-      var0.bitAccess();
-      int var1 = var0.getBits(8);
-      int var2;
-      if(var1 < Client.npcIndexesCount) {
-         for(var2 = var1; var2 < Client.npcIndexesCount; ++var2) {
-            Client.field951[++Client.field967 - 1] = Client.npcIndices[var2];
-         }
-      }
-
-      if(var1 > Client.npcIndexesCount) {
-         throw new RuntimeException("");
-      } else {
-         Client.npcIndexesCount = 0;
-
-         for(var2 = 0; var2 < var1; ++var2) {
-            int var3 = Client.npcIndices[var2];
-            NPC var4 = Client.cachedNPCs[var3];
-            int var5 = var0.getBits(1);
-            if(var5 == 0) {
-               Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-               var4.npcCycle = Client.gameCycle;
-            } else {
-               int var6 = var0.getBits(2);
-               if(var6 == 0) {
-                  Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                  var4.npcCycle = Client.gameCycle;
-                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
-               } else {
-                  int var7;
-                  int var8;
-                  if(var6 == 1) {
-                     Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                     var4.npcCycle = Client.gameCycle;
-                     var7 = var0.getBits(3);
-                     var4.method1640(var7, (byte)1);
-                     var8 = var0.getBits(1);
-                     if(var8 == 1) {
-                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
-                     }
-                  } else if(var6 == 2) {
-                     Client.npcIndices[++Client.npcIndexesCount - 1] = var3;
-                     var4.npcCycle = Client.gameCycle;
-                     var7 = var0.getBits(3);
-                     var4.method1640(var7, (byte)2);
-                     var8 = var0.getBits(3);
-                     var4.method1640(var8, (byte)2);
-                     int var9 = var0.getBits(1);
-                     if(var9 == 1) {
-                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var3;
-                     }
-                  } else if(var6 == 3) {
-                     Client.field951[++Client.field967 - 1] = var3;
-                  }
-               }
             }
          }
 
+         var4 = var4.substring(0, var4.length() - 1);
+      }
+
+      Object[] var8 = new Object[var4.length() + 1];
+
+      int var7;
+      for(var7 = var8.length - 1; var7 >= 1; --var7) {
+         if(var4.charAt(var7 - 1) == 's') {
+            var8[var7] = class82.scriptStringStack[--FileOnDisk.scriptStringStackSize];
+         } else {
+            var8[var7] = new Integer(class82.intStack[--class82.intStackSize]);
+         }
+      }
+
+      var7 = class82.intStack[--class82.intStackSize];
+      if(var7 != -1) {
+         var8[0] = new Integer(var7);
+      } else {
+         var8 = null;
+      }
+
+      if(var0 == 1400) {
+         var3.field2844 = var8;
+      } else if(var0 == 1401) {
+         var3.field2847 = var8;
+      } else if(var0 == 1402) {
+         var3.field2854 = var8;
+      } else if(var0 == 1403) {
+         var3.mouseEnterListener = var8;
+      } else if(var0 == 1404) {
+         var3.mouseExitListener = var8;
+      } else if(var0 == 1405) {
+         var3.field2820 = var8;
+      } else if(var0 == 1406) {
+         var3.field2856 = var8;
+      } else if(var0 == 1407) {
+         var3.configListenerArgs = var8;
+         var3.configTriggers = var5;
+      } else if(var0 == 1408) {
+         var3.renderListener = var8;
+      } else if(var0 == 1409) {
+         var3.field2862 = var8;
+      } else if(var0 == 1410) {
+         var3.field2852 = var8;
+      } else if(var0 == 1411) {
+         var3.field2845 = var8;
+      } else if(var0 == 1412) {
+         var3.mouseHoverListener = var8;
+      } else if(var0 == 1414) {
+         var3.tableListenerArgs = var8;
+         var3.tableModTriggers = var5;
+      } else if(var0 == 1415) {
+         var3.skillListenerArgs = var8;
+         var3.skillTriggers = var5;
+      } else if(var0 == 1416) {
+         var3.field2836 = var8;
+      } else if(var0 == 1417) {
+         var3.scrollListener = var8;
+      } else if(var0 == 1418) {
+         var3.field2876 = var8;
+      } else if(var0 == 1419) {
+         var3.field2865 = var8;
+      } else if(var0 == 1420) {
+         var3.field2755 = var8;
+      } else if(var0 == 1421) {
+         var3.field2834 = var8;
+      } else if(var0 == 1422) {
+         var3.field2859 = var8;
+      } else if(var0 == 1423) {
+         var3.field2878 = var8;
+      } else if(var0 == 1424) {
+         var3.field2870 = var8;
+      } else if(var0 == 1425) {
+         var3.field2872 = var8;
+      } else if(var0 == 1426) {
+         var3.field2873 = var8;
+      } else {
+         if(var0 != 1427) {
+            return 2;
+         }
+
+         var3.field2871 = var8;
+      }
+
+      var3.field2890 = true;
+      return 1;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(ILcv;ZI)I",
+      garbageValue = "1067062154"
+   )
+   static int method15(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 5504) {
+         class82.intStackSize -= 2;
+         var3 = class82.intStack[class82.intStackSize];
+         int var4 = class82.intStack[class82.intStackSize + 1];
+         if(!Client.field1101) {
+            Client.field1092 = var3;
+            Client.mapAngle = var4;
+         }
+
+         return 1;
+      } else if(var0 == 5505) {
+         class82.intStack[++class82.intStackSize - 1] = Client.field1092;
+         return 1;
+      } else if(var0 == 5506) {
+         class82.intStack[++class82.intStackSize - 1] = Client.mapAngle;
+         return 1;
+      } else if(var0 == 5530) {
+         var3 = class82.intStack[--class82.intStackSize];
+         if(var3 < 0) {
+            var3 = 0;
+         }
+
+         Client.field1023 = var3;
+         return 1;
+      } else if(var0 == 5531) {
+         class82.intStack[++class82.intStackSize - 1] = Client.field1023;
+         return 1;
+      } else {
+         return 2;
       }
    }
 
-   @ObfuscatedName("hm")
+   @ObfuscatedName("km")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1187732732"
+      signature = "(IIII)V",
+      garbageValue = "-1252213953"
    )
-   static String method18(int var0) {
-      return var0 < 0?"":(Client.menuTargets[var0].length() > 0?Client.menuOptions[var0] + " " + Client.menuTargets[var0]:Client.menuOptions[var0]);
+   public static void method12(int var0, int var1, int var2) {
+      PacketNode var3 = class235.method4272(ClientPacket.field2379, Client.field915.field1462);
+      var3.packetBuffer.putShort(var0);
+      var3.packetBuffer.method3361(var2);
+      var3.packetBuffer.writeIntLE(var1);
+      Client.field915.method1898(var3);
    }
 }

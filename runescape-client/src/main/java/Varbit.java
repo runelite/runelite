@@ -4,41 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jw")
+@ObfuscatedName("je")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lib;"
+      signature = "Lil;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lga;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("t")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 988632729
-   )
-   static int field3462;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1005831171
+      intValue = 1848151097
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 442861105
+      intValue = 208382339
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1796470167
+      intValue = -759227175
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -47,10 +42,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lgh;B)V",
-      garbageValue = "8"
+      signature = "(Lgv;B)V",
+      garbageValue = "29"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -64,10 +59,10 @@ public class Varbit extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lgh;IB)V",
-      garbageValue = "101"
+      signature = "(Lgv;II)V",
+      garbageValue = "629019333"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -77,37 +72,5 @@ public class Varbit extends CacheableNode {
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-18"
-   )
-   public static void method4570(int var0) {
-      if(var0 != -1) {
-         if(class115.validInterfaces[var0]) {
-            class37.widgetIndex.method4327(var0);
-            if(Widget.widgets[var0] != null) {
-               boolean var1 = true;
-
-               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
-                  if(Widget.widgets[var0][var2] != null) {
-                     if(Widget.widgets[var0][var2].type != 2) {
-                        Widget.widgets[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
-                  }
-               }
-
-               if(var1) {
-                  Widget.widgets[var0] = null;
-               }
-
-               class115.validInterfaces[var0] = false;
-            }
-         }
-      }
    }
 }

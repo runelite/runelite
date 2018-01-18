@@ -1,25 +1,28 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ek")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("w")
+   @ObfuscatedName("s")
+   public static int[] field2042;
+   @ObfuscatedName("e")
+   public static short[] field2043;
+   @ObfuscatedName("dk")
    @ObfuscatedGetter(
-      intValue = 711911861
+      intValue = 560840327
    )
-   public static int field2028;
-   @ObfuscatedName("ex")
-   @ObfuscatedGetter(
-      intValue = -1202290627
+   @Export("port1")
+   static int port1;
+   @ObfuscatedName("hl")
+   @ObfuscatedSignature(
+      signature = "Lhq;"
    )
-   static int field2030;
-   @ObfuscatedName("a")
+   static Widget field2040;
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "[Leu;"
    )
@@ -27,7 +30,7 @@ public class Frames extends CacheableNode {
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lib;Lib;IZ)V"
+      signature = "(Lil;Lil;IZ)V"
    )
    Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
@@ -64,36 +67,53 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-67697236"
+      signature = "(IB)Z",
+      garbageValue = "-79"
    )
-   public boolean method2884(int var1) {
+   public boolean method2932(int var1) {
       return this.skeletons[var1].showing;
    }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/io/File;Ljava/io/File;B)V",
-      garbageValue = "88"
+      signature = "(ILcv;ZI)I",
+      garbageValue = "1172966436"
    )
-   static void method2887(File var0, File var1) {
-      try {
-         FileOnDisk var2 = new FileOnDisk(class157.jagexClDat, "rw", 10000L);
-         Buffer var3 = new Buffer(500);
-         var3.putByte(3);
-         var3.putByte(var1 != null?1:0);
-         var3.putCESU8(var0.getPath());
-         if(var1 != null) {
-            var3.putCESU8("");
-         }
-
-         var2.write(var3.payload, 0, var3.offset);
-         var2.close();
-      } catch (IOException var4) {
-         var4.printStackTrace();
+   static int method2941(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class82.field1267:CombatInfo1.field1216;
+      if(var0 == 1500) {
+         class82.intStack[++class82.intStackSize - 1] = var3.relativeX;
+         return 1;
+      } else if(var0 == 1501) {
+         class82.intStack[++class82.intStackSize - 1] = var3.relativeY;
+         return 1;
+      } else if(var0 == 1502) {
+         class82.intStack[++class82.intStackSize - 1] = var3.width;
+         return 1;
+      } else if(var0 == 1503) {
+         class82.intStack[++class82.intStackSize - 1] = var3.height;
+         return 1;
+      } else if(var0 == 1504) {
+         class82.intStack[++class82.intStackSize - 1] = var3.isHidden?1:0;
+         return 1;
+      } else if(var0 == 1505) {
+         class82.intStack[++class82.intStackSize - 1] = var3.parentId;
+         return 1;
+      } else {
+         return 2;
       }
+   }
 
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2114520108"
+   )
+   public static void method2942() {
+      ItemComposition.items.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
    }
 }

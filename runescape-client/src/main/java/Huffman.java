@@ -1,25 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fa")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1401406659
-   )
-   @Export("canvasWidth")
-   public static int canvasWidth;
-   @ObfuscatedName("a")
+   @ObfuscatedName("b")
+   @Export("colorsToReplace")
+   public static short[][] colorsToReplace;
+   @ObfuscatedName("fk")
+   @Export("landRegionFileIds")
+   static int[] landRegionFileIds;
+   @ObfuscatedName("n")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("keys")
    int[] keys;
 
@@ -106,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "([BII[BIB)I",
-      garbageValue = "0"
+      signature = "([BII[BII)I",
+      garbageValue = "1190609133"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -127,7 +126,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var12 + var10 - 1 >> 3) + var11;
+         int var13 = (var10 + var12 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -157,10 +156,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "([BI[BIII)I",
-      garbageValue = "-183302365"
+      signature = "([BI[BIIB)I",
+      garbageValue = "-1"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -299,5 +298,35 @@ public class Huffman {
 
          return var7 + 1 - var2;
       }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "87"
+   )
+   static void method3275() {
+      class61.field729 = 99;
+      class61.field734 = new byte[4][104][104];
+      class61.field731 = new byte[4][104][104];
+      class61.field733 = new byte[4][104][104];
+      class37.field487 = new byte[4][104][104];
+      class161.field2183 = new int[4][105][105];
+      class115.field1595 = new byte[4][105][105];
+      class61.field730 = new int[105][105];
+      class60.field721 = new int[104];
+      class161.field2189 = new int[104];
+      class263.field3483 = new int[104];
+      WidgetNode.field788 = new int[104];
+      class54.field639 = new int[104];
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(I)[Lio;",
+      garbageValue = "-779667940"
+   )
+   public static class239[] method3274() {
+      return new class239[]{class239.field3257, class239.field3261, class239.field3258, class239.field3256, class239.field3260, class239.field3262, class239.field3259, class239.field3255};
    }
 }

@@ -1,13 +1,14 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("im")
+@ObfuscatedName("ik")
 public final class class240 {
-   @ObfuscatedName("gy")
-   @ObfuscatedGetter(
-      intValue = -1524418041
+   @ObfuscatedName("iq")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-70"
    )
-   @Export("cameraYaw")
-   static int cameraYaw;
+   static final int method4281() {
+      return Client.menuOptionCount - 1;
+   }
 }
