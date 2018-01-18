@@ -25,6 +25,7 @@
 package net.runelite.http.service.cache;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
@@ -36,6 +37,7 @@ import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.FileEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import org.sql2o.Connection;
+import org.sql2o.ResultSetIterable;
 
 public class CacheStorage implements Storage
 {
@@ -74,30 +76,39 @@ public class CacheStorage implements Storage
 	public void load(Store store) throws IOException
 	{
 		List<IndexEntry> indexes = cacheDao.findIndexesForCache(con, cacheEntry);
+		List<FileData> fileData = new ArrayList<>();
 		for (IndexEntry indexEntry : indexes)
 		{
 			Index index = store.addIndex(indexEntry.getIndexId());
 			index.setCrc(indexEntry.getCrc());
 			index.setRevision(indexEntry.getRevision());
 
-			List<ArchiveEntry> archives = cacheDao.findArchivesForIndex(con, indexEntry);
-			for (ArchiveEntry archiveEntry : archives)
+			try (ResultSetIterable<ArchiveEntry> archives = cacheDao.findArchivesForIndex(con, indexEntry))
 			{
-				Archive archive = index.addArchive(archiveEntry.getArchiveId());
-				archive.setNameHash(archiveEntry.getNameHash());
-				archive.setCrc(archiveEntry.getCrc());
-				archive.setRevision(archiveEntry.getRevision());
-				archive.setHash(archiveEntry.getHash());
-
-				List<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry);
-				FileData[] fileData = new FileData[files.size()];
-				archive.setFileData(fileData);
-				int idx = 0;
-				for (FileEntry fileEntry : files)
+				for (ArchiveEntry archiveEntry : archives)
 				{
-					FileData file = fileData[idx++] = new FileData();
-					file.setId(fileEntry.getFileId());
-					file.setNameHash(fileEntry.getNameHash());
+					Archive archive = index.addArchive(archiveEntry.getArchiveId());
+					archive.setNameHash(archiveEntry.getNameHash());
+					archive.setCrc(archiveEntry.getCrc());
+					archive.setRevision(archiveEntry.getRevision());
+					archive.setHash(archiveEntry.getHash());
+
+					try (ResultSetIterable<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry))
+					{
+						fileData.clear();
+
+						for (FileEntry fileEntry : files)
+						{
+							FileData file = new FileData();
+							file.setId(fileEntry.getFileId());
+							file.setNameHash(fileEntry.getNameHash());
+							fileData.add(file);
+						}
+
+						FileData[] fileDataArray = new FileData[fileData.size()];
+						fileData.toArray(fileDataArray);
+						archive.setFileData(fileDataArray);
+					}
 				}
 			}
 		}
