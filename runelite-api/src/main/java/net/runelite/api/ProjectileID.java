@@ -47,6 +47,9 @@ public class ProjectileID
 	public static final int GALVEK_MINE = 1495;
 	public static final int GALVEK_BOMB = 1491;
 
+	public static final int DAWN_FREEZE = 1445;
+	public static final int DUSK_CEILING = 1435;
+
 	public static final int VETION_LIGHTNING = 280;
 
 	public static final int CHAOS_FANATIC_AOE = 551; //for lack of a better word

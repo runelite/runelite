@@ -137,6 +137,9 @@ public class AoeWarningPlugin extends Plugin
 			case GALVEK_BOMB:
 			case GALVEK_MINE:
 				return config.isGalvekEnabled();
+			case DAWN_FREEZE:
+			case DUSK_CEILING:
+				return config.isGargBossEnabled();
 			case OLM_FALLING_CRYSTAL:
 			case OLM_BURNING:
 				return config.isOlmEnabled();
