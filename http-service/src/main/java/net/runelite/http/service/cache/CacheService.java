@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.cache;
 
+import com.google.common.collect.Iterables;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
 import io.minio.MinioClient;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.cache.ConfigType;
@@ -70,6 +72,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
+import org.sql2o.ResultSetIterable;
 import org.sql2o.Sql2o;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -85,7 +88,7 @@ public class CacheService
 
 	@Value("${minio.bucket}")
 	private String minioBucket;
-	
+
 	private final MinioClient minioClient;
 
 	@Autowired
@@ -106,6 +109,7 @@ public class CacheService
 
 	/**
 	 * retrieve archive from storage
+	 *
 	 * @param archiveEntry
 	 * @return
 	 */
@@ -131,41 +135,38 @@ public class CacheService
 		}
 	}
 
-	private ArchiveFiles getArchiveFiles(IndexType index, ConfigType config,
-		ArchiveEntry archiveEntry) throws IOException
+	private ArchiveFiles getArchiveFiles(ArchiveEntry archiveEntry) throws IOException
 	{
-		List<FileEntry> files;
+		CacheDAO cacheDao = new CacheDAO();
 
-		try (Connection con = sql2o.open())
+		try (Connection con = sql2o.open();
+			ResultSetIterable<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry))
 		{
-			CacheDAO cacheDao = new CacheDAO();
-			files = cacheDao.findFilesForArchive(con, archiveEntry);
+			byte[] archiveData = getArchive(archiveEntry);
+
+			if (archiveData == null)
+			{
+				return null;
+			}
+
+			Container result = Container.decompress(archiveData, null);
+			if (result == null)
+			{
+				return null;
+			}
+
+			byte[] decompressedData = result.data;
+
+			ArchiveFiles archiveFiles = new ArchiveFiles();
+			for (FileEntry fileEntry : files)
+			{
+				FSFile file = new FSFile(fileEntry.getFileId());
+				archiveFiles.addFile(file);
+				file.setNameHash(fileEntry.getNameHash());
+			}
+			archiveFiles.loadContents(decompressedData);
+			return archiveFiles;
 		}
-
-		byte[] archiveData = getArchive(archiveEntry);
-
-		if (archiveData == null)
-		{
-			return null;
-		}
-
-		Container result = Container.decompress(archiveData, null);
-		if (result == null)
-		{
-			return null;
-		}
-
-		byte[] decompressedData = result.data;
-
-		ArchiveFiles archiveFiles = new ArchiveFiles();
-		for (FileEntry fileEntry : files)
-		{
-			FSFile file = new FSFile(fileEntry.getFileId());
-			archiveFiles.addFile(file);
-			file.setNameHash(fileEntry.getNameHash());
-		}
-		archiveFiles.loadContents(decompressedData);
-		return archiveFiles;
 	}
 
 	@RequestMapping("/")
@@ -208,7 +209,7 @@ public class CacheService
 	public List<CacheArchive> listArchives(@PathVariable int cacheId,
 		@PathVariable int indexId)
 	{
-		List<ArchiveEntry> archives;
+		List<ArchiveEntry> archives = new ArrayList<>();
 
 		try (Connection con = sql2o.open())
 		{
@@ -225,7 +226,10 @@ public class CacheService
 				throw new NotFoundException();
 			}
 
-			archives = cacheDao.findArchivesForIndex(con, indexEntry);
+			try (ResultSetIterable<ArchiveEntry> archiveEntries = cacheDao.findArchivesForIndex(con, indexEntry))
+			{
+				Iterables.addAll(archives, archiveEntries);
+			}
 		}
 
 		return archives.stream()
@@ -306,7 +310,7 @@ public class CacheService
 			}
 		}
 
-		ArchiveFiles archiveFiles = getArchiveFiles(IndexType.CONFIGS, ConfigType.ITEM, archiveEntry);
+		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
 		if (archiveFiles == null)
 		{
 			throw new NotFoundException();
@@ -340,7 +344,7 @@ public class CacheService
 			}
 		}
 
-		ArchiveFiles archiveFiles = getArchiveFiles(IndexType.CONFIGS, ConfigType.OBJECT, archiveEntry);
+		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
 		if (archiveFiles == null)
 		{
 			throw new NotFoundException();
@@ -374,7 +378,7 @@ public class CacheService
 			}
 		}
 
-		ArchiveFiles archiveFiles = getArchiveFiles(IndexType.CONFIGS, ConfigType.NPC, archiveEntry);
+		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
 		if (archiveFiles == null)
 		{
 			throw new NotFoundException();

@@ -33,6 +33,7 @@ import net.runelite.http.service.cache.beans.FileEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.Query;
+import org.sql2o.ResultSetIterable;
 
 public class CacheDAO
 {
@@ -77,14 +78,14 @@ public class CacheDAO
 			.executeAndFetchFirst(IndexEntry.class);
 	}
 
-	public List<ArchiveEntry> findArchivesForIndex(Connection con, IndexEntry indexEntry)
+	public ResultSetIterable<ArchiveEntry> findArchivesForIndex(Connection con, IndexEntry indexEntry)
 	{
 		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash," +
 			" archive.crc, archive.revision, archive.hash from index_archive "
 			+ "join archive on index_archive.archive = archive.id "
 			+ "where index_archive.index = :id")
 			.addParameter("id", indexEntry.getId())
-			.executeAndFetch(ArchiveEntry.class);
+			.executeAndFetchLazy(ArchiveEntry.class);
 	}
 	
 	public ArchiveEntry findArchiveForIndex(Connection con, IndexEntry indexEntry, int archiveId)
@@ -135,7 +136,7 @@ public class CacheDAO
 			.executeAndFetchFirst(ArchiveEntry.class);
 	}
 
-	public List<FileEntry> findFilesForArchive(Connection con, ArchiveEntry archiveEntry)
+	public ResultSetIterable<FileEntry> findFilesForArchive(Connection con, ArchiveEntry archiveEntry)
 	{
 		if (findFilesForArchive == null)
 		{
@@ -145,7 +146,7 @@ public class CacheDAO
 
 		return findFilesForArchive
 			.addParameter("archive", archiveEntry.getId())
-			.executeAndFetch(FileEntry.class);
+			.executeAndFetchLazy(FileEntry.class);
 	}
 
 	public CacheEntry createCache(Connection con, int revision, Instant date)
