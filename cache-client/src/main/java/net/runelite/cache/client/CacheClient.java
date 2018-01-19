@@ -264,6 +264,11 @@ public class CacheClient implements AutoCloseable
 
 			logger.info("Index {} has {} archives", i, indexData.getArchives().length);
 
+			if (watcher != null)
+			{
+				watcher.indexComplete(index);
+			}
+
 			for (ArchiveData ad : indexData.getArchives())
 			{
 				Archive existing = index.getArchive(ad.getId());

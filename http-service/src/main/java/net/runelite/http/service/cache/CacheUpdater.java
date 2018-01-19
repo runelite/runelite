@@ -29,15 +29,21 @@ import io.minio.errors.InvalidEndpointException;
 import io.minio.errors.InvalidPortException;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import net.runelite.cache.client.CacheClient;
+import net.runelite.cache.client.DownloadWatcher;
 import net.runelite.cache.client.IndexInfo;
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.index.FileData;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import net.runelite.protocol.api.login.HandshakeResponseType;
@@ -95,8 +101,45 @@ public class CacheUpdater
 
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 
-			CacheClient client = new CacheClient(store, rsVersion,
-				(Archive archive, byte[] data) -> executor.submit(new CacheUploader(minioClient, minioBucket, archive, data)));
+			CacheEntry newCache = created ? cache : cacheDao.createCache(con, rsVersion, Instant.now());
+
+			CacheClient client = new CacheClient(store, rsVersion, new DownloadWatcher()
+			{
+				private final Map<Index, IndexEntry> indexEntryMap = new HashMap<>();
+
+				@Override
+				public void indexComplete(Index index)
+				{
+					IndexEntry entry = cacheDao.findOrCreateIndex(con, newCache, index.getId(), index.getCrc(), index.getRevision());
+					// this assumes nothing is associated to the cache yet
+					cacheDao.associateIndexToCache(con, newCache, entry);
+					indexEntryMap.put(index, entry);
+				}
+
+				@Override
+				public void downloadComplete(Archive archive, byte[] data)
+				{
+					executor.submit(new CacheUploader(minioClient, minioBucket, archive, data));
+
+					IndexEntry entry = indexEntryMap.get(archive.getIndex());
+					ArchiveEntry archiveEntry = cacheDao.findArchive(con, entry, archive.getArchiveId(),
+						archive.getNameHash(), archive.getCrc(), archive.getRevision());
+					if (archiveEntry == null)
+					{
+						byte[] hash = archive.getHash();
+						archiveEntry = cacheDao.createArchive(con, entry, archive.getArchiveId(),
+							archive.getNameHash(), archive.getCrc(), archive.getRevision(), hash);
+
+						for (FileData file : archive.getFileData())
+						{
+							cacheDao.associateFileToArchive(con, archiveEntry, file.getId(), file.getNameHash());
+						}
+					}
+					cacheDao.associateArchiveToIndex(con, archiveEntry, entry);
+
+					archive.setFileData(null); // don't need this anymore
+				}
+			});
 
 			client.connect();
 			HandshakeResponseType result = client.handshake().join();
@@ -116,11 +159,6 @@ public class CacheUpdater
 			}
 
 			client.download();
-
-			CacheEntry newCache = created ? cache : cacheDao.createCache(con, rsVersion, Instant.now());
-
-			storage.setCacheEntry(newCache);
-			store.save();
 
 			// ensure objects are added to the store before they become
 			// visible in the database
