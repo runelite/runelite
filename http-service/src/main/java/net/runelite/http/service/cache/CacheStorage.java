@@ -93,22 +93,7 @@ public class CacheStorage implements Storage
 					archive.setRevision(archiveEntry.getRevision());
 					archive.setHash(archiveEntry.getHash());
 
-					try (ResultSetIterable<FileEntry> files = cacheDao.findFilesForArchive(con, archiveEntry))
-					{
-						fileData.clear();
-
-						for (FileEntry fileEntry : files)
-						{
-							FileData file = new FileData();
-							file.setId(fileEntry.getFileId());
-							file.setNameHash(fileEntry.getNameHash());
-							fileData.add(file);
-						}
-
-						FileData[] fileDataArray = new FileData[fileData.size()];
-						fileData.toArray(fileDataArray);
-						archive.setFileData(fileDataArray);
-					}
+					// File data is not necessary for cache updating
 				}
 			}
 		}
