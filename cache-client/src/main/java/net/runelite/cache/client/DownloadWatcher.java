@@ -25,9 +25,11 @@
 package net.runelite.cache.client;
 
 import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.Index;
 
-@FunctionalInterface
 public interface DownloadWatcher
 {
+	void indexComplete(Index index);
+
 	void downloadComplete(Archive archive, byte[] data);
 }
