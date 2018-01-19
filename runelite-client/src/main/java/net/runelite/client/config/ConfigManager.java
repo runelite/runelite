@@ -112,7 +112,7 @@ public class ConfigManager
 	{
 		for (Object config : getConfigProxies())
 		{
-			setDefaultConfiguration(config);
+			setDefaultConfiguration(config, false);
 		}
 	}
 
@@ -352,7 +352,7 @@ public class ConfigManager
 	 * Initialize the configuration from the default settings
 	 * @param proxy
 	 */
-	public void setDefaultConfiguration(Object proxy)
+	public void setDefaultConfiguration(Object proxy, boolean override)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
@@ -371,10 +371,13 @@ public class ConfigManager
 				continue;
 			}
 
-			String current = getConfiguration(group.keyName(), item.keyName());
-			if (current != null)
+			if (!override)
 			{
-				continue; // something else is already set
+				String current = getConfiguration(group.keyName(), item.keyName());
+				if (current != null)
+				{
+					continue; // something else is already set
+				}
 			}
 
 			Object defaultValue;
