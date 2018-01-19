@@ -116,9 +116,9 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "gargboss",
-			name = "Gargoyle Boss",
-			description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed"
+		keyName = "gargboss",
+		name = "Gargoyle Boss",
+		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed"
 	)
 	default boolean isGargBossEnabled()
 	{
