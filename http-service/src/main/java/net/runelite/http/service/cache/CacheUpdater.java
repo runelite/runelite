@@ -29,7 +29,7 @@ import io.minio.errors.InvalidEndpointException;
 import io.minio.errors.InvalidPortException;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -105,7 +105,7 @@ public class CacheUpdater
 
 			CacheClient client = new CacheClient(store, rsVersion, new DownloadWatcher()
 			{
-				private final Map<Index, IndexEntry> indexEntryMap = new HashMap<>();
+				private final Map<Index, IndexEntry> indexEntryMap = new IdentityHashMap<>();
 
 				@Override
 				public void indexComplete(Index index)
