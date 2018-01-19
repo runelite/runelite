@@ -27,6 +27,8 @@ package net.runelite.client.plugins.config;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -55,6 +57,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
@@ -318,6 +321,41 @@ public class ConfigPanel extends PluginPanel
 					}
 				});
 				item.add(colorPicker, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == Dimension.class)
+			{
+				JPanel dimensionPanel = new JPanel();
+				dimensionPanel.setLayout(new BorderLayout());
+
+				String str = configManager.getConfiguration(cd.getGroup().keyName(), cid.getItem().keyName());
+				String[] splitStr = str.split("x");
+				int width = Integer.parseInt(splitStr[0]);
+				int height = Integer.parseInt(splitStr[1]);
+
+				SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
+				JSpinner widthSpinner = new JSpinner(widthModel);
+				Component widthEditor = widthSpinner.getEditor();
+				JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
+				widthSpinnerTextField.setColumns(4);
+
+				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
+				JSpinner heightSpinner = new JSpinner(heightModel);
+				Component heightEditor = heightSpinner.getEditor();
+				JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
+				heightSpinnerTextField.setColumns(4);
+
+				ChangeListener listener = e ->
+						configManager.setConfiguration(cd.getGroup().keyName(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+
+				widthSpinner.addChangeListener(listener);
+				heightSpinner.addChangeListener(listener);
+
+				dimensionPanel.add(widthSpinner, BorderLayout.WEST);
+				dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
+				dimensionPanel.add(heightSpinner, BorderLayout.EAST);
+
+				item.add(dimensionPanel, BorderLayout.EAST);
 			}
 
 			if (cid.getType().isEnum())
