@@ -3,18 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("gi")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgw;"
    )
    @Export("head")
    public Node head;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgw;"
    )
    @Export("current")
    Node current;
@@ -25,7 +25,7 @@ public class Deque {
       this.head.previous = this.head;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @Export("clear")
    public void clear() {
       while(true) {
@@ -39,9 +39,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Lgn;)V"
+      signature = "(Lgw;)V"
    )
    @Export("addFront")
    public void addFront(Node var1) {
@@ -55,9 +55,9 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Lgn;)V"
+      signature = "(Lgw;)V"
    )
    @Export("addTail")
    public void addTail(Node var1) {
@@ -71,9 +71,9 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("popFront")
    public Node popFront() {
@@ -86,9 +86,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("popTail")
    public Node popTail() {
@@ -101,9 +101,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("getFront")
    public Node getFront() {
@@ -117,9 +117,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("getTail")
    public Node getTail() {
@@ -133,9 +133,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("getNext")
    public Node getNext() {
@@ -149,9 +149,9 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "()Lgn;"
+      signature = "()Lgw;"
    )
    @Export("getPrevious")
    public Node getPrevious() {
@@ -165,11 +165,11 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lgn;Lgn;)V"
+      signature = "(Lgw;Lgw;)V"
    )
-   public static void method3748(Node var0, Node var1) {
+   public static void method3810(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

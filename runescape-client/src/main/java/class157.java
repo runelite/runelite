@@ -4,44 +4,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fr")
 public class class157 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("jagexClDat")
    static File jagexClDat;
-   @ObfuscatedName("u")
-   static File field2138;
-   @ObfuscatedName("z")
+   @ObfuscatedName("h")
+   static File field2164;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 2015749067
+      intValue = -532493303
    )
    @Export("idxCount")
    static int idxCount;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldm;"
    )
    @Export("randomDat")
    public static CacheFile randomDat;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldm;"
    )
    @Export("dat2File")
    public static CacheFile dat2File;
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ldv;"
+      signature = "Ldm;"
    )
    @Export("idx255File")
    public static CacheFile idx255File;
-   @ObfuscatedName("y")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "[Ldv;"
+      signature = "[Ldm;"
    )
    @Export("idxFiles")
    public static CacheFile[] idxFiles;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @Export("osNameLC")
    public static String osNameLC;
 
@@ -53,18 +53,13 @@ public class class157 {
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "-634923653"
+      signature = "([BI)[B",
+      garbageValue = "1349106950"
    )
-   public static void method3016(Buffer var0, int var1) {
-      if(randomDat != null) {
-         try {
-            randomDat.seek(0L);
-            randomDat.write(var0.payload, var1, 24);
-         } catch (Exception var3) {
-            ;
-         }
-      }
-
+   static byte[] method3065(byte[] var0) {
+      int var1 = var0.length;
+      byte[] var2 = new byte[var1];
+      System.arraycopy(var0, 0, var2, 0, var1);
+      return var2;
    }
 }

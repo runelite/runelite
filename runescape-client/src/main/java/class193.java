@@ -1,44 +1,30 @@
 import java.util.Calendar;
 import java.util.TimeZone;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gw")
+@ObfuscatedName("gq")
 public class class193 {
-   @ObfuscatedName("a")
-   static final String[][] field2563;
-   @ObfuscatedName("w")
-   static final String[] field2561;
-   @ObfuscatedName("e")
-   static Calendar field2562;
+   @ObfuscatedName("n")
+   static final String[][] field2568;
+   @ObfuscatedName("v")
+   static final String[] field2569;
+   @ObfuscatedName("y")
+   static Calendar field2567;
 
    static {
-      field2563 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
-      field2561 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+      field2568 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
+      field2569 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
       Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
-      field2562 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+      field2567 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IB)Lip;",
-      garbageValue = "-11"
+      signature = "(Lfa;B)V",
+      garbageValue = "-30"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = KitDefinition.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
-      }
+   public static void method3653(Huffman var0) {
+      class276.huffman = var0;
    }
 }

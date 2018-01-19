@@ -5,134 +5,129 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cy")
 @Implements("Projectile")
 public final class Projectile extends Renderable {
-   @ObfuscatedName("oy")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -989801921
-   )
-   static int field1380;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 253222545
+      intValue = -623327607
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1093934655
+      intValue = -1173893145
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 696136279
+      intValue = -217171077
    )
    @Export("x1")
    int x1;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 806338563
+      intValue = -1473091927
    )
    @Export("y1")
    int y1;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1885188655
+      intValue = -302590985
    )
    @Export("height")
    int height;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1369906141
+      intValue = -2139108743
    )
    @Export("endHeight")
    int endHeight;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1550375669
+      intValue = 706162689
    )
    @Export("startMovementCycle")
    int startMovementCycle;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 632478681
+      intValue = -2623133
    )
    @Export("endCycle")
    int endCycle;
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -45498235
+      intValue = 1917638751
    )
    @Export("slope")
    int slope;
-   @ObfuscatedName("j")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1841552807
+      intValue = 1931453645
    )
    @Export("startHeight")
    int startHeight;
-   @ObfuscatedName("x")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -820127231
+      intValue = 2034407867
    )
    @Export("interacting")
    int interacting;
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @Export("isMoving")
    boolean isMoving;
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @Export("x")
    double x;
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @Export("y")
    double y;
-   @ObfuscatedName("y")
+   @ObfuscatedName("t")
    @Export("z")
    double z;
    @ObfuscatedName("o")
    @Export("velocityX")
    double velocityX;
-   @ObfuscatedName("r")
+   @ObfuscatedName("a")
    @Export("velocityY")
    double velocityY;
    @ObfuscatedName("i")
    @Export("scalar")
    double scalar;
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @Export("velocityZ")
    double velocityZ;
-   @ObfuscatedName("m")
+   @ObfuscatedName("x")
    @Export("heightOffset")
    double heightOffset;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -83233913
+      intValue = 1633053303
    )
    @Export("rotationX")
    int rotationX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -436430029
+      intValue = -1048200603
    )
    @Export("rotationY")
    int rotationY;
-   @ObfuscatedName("h")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ljj;"
+      signature = "Ljs;"
    )
    @Export("animationSequence")
    Sequence animationSequence;
-   @ObfuscatedName("d")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -851439171
+      intValue = 1814836045
    )
    @Export("int7")
    int int7;
-   @ObfuscatedName("v")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 242707913
+      intValue = -1796280389
    )
    @Export("int6")
    int int6;
@@ -153,19 +148,19 @@ public final class Projectile extends Renderable {
       this.interacting = var10;
       this.endHeight = var11;
       this.isMoving = false;
-      int var12 = class250.getSpotAnimType(this.id).field3413;
+      int var12 = NPCComposition.getSpotAnimType(this.id).field3419;
       if(var12 != -1) {
-         this.animationSequence = Permission.getAnimation(var12);
+         this.animationSequence = class45.getAnimation(var12);
       } else {
          this.animationSequence = null;
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-789078756"
+      signature = "(IIIIB)V",
+      garbageValue = "72"
    )
    @Export("moveProjectile")
    @Hook("projectileMoved")
@@ -176,7 +171,7 @@ public final class Projectile extends Renderable {
          double var7 = (double)(var2 - this.y1);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
          this.x = (double)this.x1 + var5 * (double)this.startHeight / var9;
-         this.y = (double)this.y1 + var7 * (double)this.startHeight / var9;
+         this.y = var7 * (double)this.startHeight / var9 + (double)this.y1;
          this.z = (double)this.height;
       }
 
@@ -185,23 +180,23 @@ public final class Projectile extends Renderable {
       this.velocityY = ((double)var2 - this.y) / var5;
       this.scalar = Math.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY);
       if(!this.isMoving) {
-         this.velocityZ = -this.scalar * Math.tan(0.02454369D * (double)this.slope);
+         this.velocityZ = -this.scalar * Math.tan((double)this.slope * 0.02454369D);
       }
 
-      this.heightOffset = 2.0D * ((double)var3 - this.z - this.velocityZ * var5) / (var5 * var5);
+      this.heightOffset = 2.0D * ((double)var3 - this.z - var5 * this.velocityZ) / (var5 * var5);
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1502627701"
+      signature = "(IB)V",
+      garbageValue = "-126"
    )
    @Export("update")
    final void update(int var1) {
       this.isMoving = true;
-      this.x += this.velocityX * (double)var1;
+      this.x += (double)var1 * this.velocityX;
       this.y += (double)var1 * this.velocityY;
-      this.z += (double)var1 * this.velocityZ + this.heightOffset * 0.5D * (double)var1 * (double)var1;
+      this.z += (double)var1 * 0.5D * this.heightOffset * (double)var1 + (double)var1 * this.velocityZ;
       this.velocityZ += (double)var1 * this.heightOffset;
       this.rotationX = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) + 1024 & 2047;
       this.rotationY = (int)(Math.atan2(this.velocityZ, this.scalar) * 325.949D) & 2047;
@@ -227,13 +222,13 @@ public final class Projectile extends Renderable {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)Lef;",
-      garbageValue = "620909653"
+      signature = "(B)Les;",
+      garbageValue = "-17"
    )
    protected final Model getModel() {
-      Spotanim var1 = class250.getSpotAnimType(this.id);
+      Spotanim var1 = NPCComposition.getSpotAnimType(this.id);
       Model var2 = var1.getModel(this.int7);
       if(var2 == null) {
          return null;
@@ -243,18 +238,263 @@ public final class Projectile extends Renderable {
       }
    }
 
-   @ObfuscatedName("jq")
+   @ObfuscatedName("ho")
    @ObfuscatedSignature(
-      signature = "(Lgh;II)V",
-      garbageValue = "-1904400185"
+      signature = "(Lbf;IIBI)V",
+      garbageValue = "1249775782"
    )
-   static void method1736(Buffer var0, int var1) {
-      byte[] var2 = var0.payload;
-      if(Client.field1034 == null) {
-         Client.field1034 = new byte[24];
-      }
+   static final void method1806(Player var0, int var1, int var2, byte var3) {
+      int var4 = var0.pathX[0];
+      int var5 = var0.pathY[0];
+      int var6 = var0.getSize();
+      if(var4 >= var6 && var4 < 104 - var6 && var5 >= var6 && var5 < 104 - var6) {
+         if(var1 >= var6 && var1 < 104 - var6 && var2 >= var6 && var2 < 104 - var6) {
+            int var8 = var0.getSize();
+            Client.field1131.field2243 = var1;
+            Client.field1131.field2242 = var2;
+            Client.field1131.field2244 = 1;
+            Client.field1131.field2245 = 1;
+            class72 var9 = Client.field1131;
+            class72 var10 = var9;
+            CollisionData var11 = Client.collisionMaps[var0.field856];
+            int[] var12 = Client.field1132;
+            int[] var13 = Client.field1133;
 
-      class194.method3603(var2, var1, Client.field1034, 0, 24);
-      class157.method3016(var0, var1);
+            int var14;
+            int var15;
+            for(var14 = 0; var14 < 128; ++var14) {
+               for(var15 = 0; var15 < 128; ++var15) {
+                  class167.field2236[var14][var15] = 0;
+                  class167.field2238[var14][var15] = 99999999;
+               }
+            }
+
+            int var16;
+            int var17;
+            byte var19;
+            int var20;
+            int var21;
+            int var23;
+            int var25;
+            int var26;
+            int var27;
+            boolean var34;
+            int var36;
+            int var37;
+            int var39;
+            if(var8 == 1) {
+               var16 = var4;
+               var17 = var5;
+               byte var18 = 64;
+               var19 = 64;
+               var20 = var4 - var18;
+               var21 = var5 - var19;
+               class167.field2236[var18][var19] = 99;
+               class167.field2238[var18][var19] = 0;
+               byte var22 = 0;
+               var23 = 0;
+               class167.field2241[var22] = var4;
+               var39 = var22 + 1;
+               class167.field2240[var22] = var5;
+               int[][] var24 = var11.flags;
+
+               boolean var35;
+               while(true) {
+                  if(var23 == var39) {
+                     class3.field16 = var16;
+                     class3.field19 = var17;
+                     var35 = false;
+                     break;
+                  }
+
+                  var16 = class167.field2241[var23];
+                  var17 = class167.field2240[var23];
+                  var23 = var23 + 1 & 4095;
+                  var36 = var16 - var20;
+                  var37 = var17 - var21;
+                  var25 = var16 - var11.x;
+                  var26 = var17 - var11.y;
+                  if(var10.vmethod3237(1, var16, var17, var11)) {
+                     class3.field16 = var16;
+                     class3.field19 = var17;
+                     var35 = true;
+                     break;
+                  }
+
+                  var27 = class167.field2238[var36][var37] + 1;
+                  if(var36 > 0 && class167.field2236[var36 - 1][var37] == 0 && (var24[var25 - 1][var26] & 19136776) == 0) {
+                     class167.field2241[var39] = var16 - 1;
+                     class167.field2240[var39] = var17;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 - 1][var37] = 2;
+                     class167.field2238[var36 - 1][var37] = var27;
+                  }
+
+                  if(var36 < 127 && class167.field2236[var36 + 1][var37] == 0 && (var24[var25 + 1][var26] & 19136896) == 0) {
+                     class167.field2241[var39] = var16 + 1;
+                     class167.field2240[var39] = var17;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 + 1][var37] = 8;
+                     class167.field2238[var36 + 1][var37] = var27;
+                  }
+
+                  if(var37 > 0 && class167.field2236[var36][var37 - 1] == 0 && (var24[var25][var26 - 1] & 19136770) == 0) {
+                     class167.field2241[var39] = var16;
+                     class167.field2240[var39] = var17 - 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36][var37 - 1] = 1;
+                     class167.field2238[var36][var37 - 1] = var27;
+                  }
+
+                  if(var37 < 127 && class167.field2236[var36][var37 + 1] == 0 && (var24[var25][var26 + 1] & 19136800) == 0) {
+                     class167.field2241[var39] = var16;
+                     class167.field2240[var39] = var17 + 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36][var37 + 1] = 4;
+                     class167.field2238[var36][var37 + 1] = var27;
+                  }
+
+                  if(var36 > 0 && var37 > 0 && class167.field2236[var36 - 1][var37 - 1] == 0 && (var24[var25 - 1][var26 - 1] & 19136782) == 0 && (var24[var25 - 1][var26] & 19136776) == 0 && (var24[var25][var26 - 1] & 19136770) == 0) {
+                     class167.field2241[var39] = var16 - 1;
+                     class167.field2240[var39] = var17 - 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 - 1][var37 - 1] = 3;
+                     class167.field2238[var36 - 1][var37 - 1] = var27;
+                  }
+
+                  if(var36 < 127 && var37 > 0 && class167.field2236[var36 + 1][var37 - 1] == 0 && (var24[var25 + 1][var26 - 1] & 19136899) == 0 && (var24[var25 + 1][var26] & 19136896) == 0 && (var24[var25][var26 - 1] & 19136770) == 0) {
+                     class167.field2241[var39] = var16 + 1;
+                     class167.field2240[var39] = var17 - 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 + 1][var37 - 1] = 9;
+                     class167.field2238[var36 + 1][var37 - 1] = var27;
+                  }
+
+                  if(var36 > 0 && var37 < 127 && class167.field2236[var36 - 1][var37 + 1] == 0 && (var24[var25 - 1][var26 + 1] & 19136824) == 0 && (var24[var25 - 1][var26] & 19136776) == 0 && (var24[var25][var26 + 1] & 19136800) == 0) {
+                     class167.field2241[var39] = var16 - 1;
+                     class167.field2240[var39] = var17 + 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 - 1][var37 + 1] = 6;
+                     class167.field2238[var36 - 1][var37 + 1] = var27;
+                  }
+
+                  if(var36 < 127 && var37 < 127 && class167.field2236[var36 + 1][var37 + 1] == 0 && (var24[var25 + 1][var26 + 1] & 19136992) == 0 && (var24[var25 + 1][var26] & 19136896) == 0 && (var24[var25][var26 + 1] & 19136800) == 0) {
+                     class167.field2241[var39] = var16 + 1;
+                     class167.field2240[var39] = var17 + 1;
+                     var39 = var39 + 1 & 4095;
+                     class167.field2236[var36 + 1][var37 + 1] = 12;
+                     class167.field2238[var36 + 1][var37 + 1] = var27;
+                  }
+               }
+
+               var34 = var35;
+            } else if(var8 == 2) {
+               var34 = UrlRequest.method2985(var4, var5, var9, var11);
+            } else {
+               var34 = ScriptVarType.method25(var4, var5, var8, var9, var11);
+            }
+
+            int var7;
+            label366: {
+               var15 = var4 - 64;
+               var16 = var5 - 64;
+               var17 = class3.field16;
+               var36 = class3.field19;
+               if(!var34) {
+                  var37 = Integer.MAX_VALUE;
+                  var20 = Integer.MAX_VALUE;
+                  byte var38 = 10;
+                  var39 = var10.field2243;
+                  var23 = var10.field2242;
+                  int var33 = var10.field2244;
+                  var25 = var10.field2245;
+
+                  for(var26 = var39 - var38; var26 <= var39 + var38; ++var26) {
+                     for(var27 = var23 - var38; var27 <= var23 + var38; ++var27) {
+                        int var28 = var26 - var15;
+                        int var29 = var27 - var16;
+                        if(var28 >= 0 && var29 >= 0 && var28 < 128 && var29 < 128 && class167.field2238[var28][var29] < 100) {
+                           int var30 = 0;
+                           if(var26 < var39) {
+                              var30 = var39 - var26;
+                           } else if(var26 > var33 + var39 - 1) {
+                              var30 = var26 - (var39 + var33 - 1);
+                           }
+
+                           int var31 = 0;
+                           if(var27 < var23) {
+                              var31 = var23 - var27;
+                           } else if(var27 > var25 + var23 - 1) {
+                              var31 = var27 - (var23 + var25 - 1);
+                           }
+
+                           int var32 = var31 * var31 + var30 * var30;
+                           if(var32 < var37 || var37 == var32 && class167.field2238[var28][var29] < var20) {
+                              var37 = var32;
+                              var20 = class167.field2238[var28][var29];
+                              var17 = var26;
+                              var36 = var27;
+                           }
+                        }
+                     }
+                  }
+
+                  if(var37 == Integer.MAX_VALUE) {
+                     var7 = -1;
+                     break label366;
+                  }
+               }
+
+               if(var17 == var4 && var5 == var36) {
+                  var7 = 0;
+               } else {
+                  var19 = 0;
+                  class167.field2241[var19] = var17;
+                  var37 = var19 + 1;
+                  class167.field2240[var19] = var36;
+
+                  for(var20 = var21 = class167.field2236[var17 - var15][var36 - var16]; var17 != var4 || var5 != var36; var20 = class167.field2236[var17 - var15][var36 - var16]) {
+                     if(var21 != var20) {
+                        var21 = var20;
+                        class167.field2241[var37] = var17;
+                        class167.field2240[var37++] = var36;
+                     }
+
+                     if((var20 & 2) != 0) {
+                        ++var17;
+                     } else if((var20 & 8) != 0) {
+                        --var17;
+                     }
+
+                     if((var20 & 1) != 0) {
+                        ++var36;
+                     } else if((var20 & 4) != 0) {
+                        --var36;
+                     }
+                  }
+
+                  var39 = 0;
+
+                  while(var37-- > 0) {
+                     var12[var39] = class167.field2241[var37];
+                     var13[var39++] = class167.field2240[var37];
+                     if(var39 >= var12.length) {
+                        break;
+                     }
+                  }
+
+                  var7 = var39;
+               }
+            }
+
+            var14 = var7;
+            if(var7 >= 1) {
+               for(var15 = 0; var15 < var14 - 1; ++var15) {
+                  var0.method1140(Client.field1132[var15], Client.field1133[var15], var3);
+               }
+
+            }
+         }
+      }
    }
 }

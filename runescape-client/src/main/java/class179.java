@@ -1,32 +1,37 @@
 import java.util.HashMap;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
+@ObfuscatedName("fw")
 public class class179 {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 2023707237
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "Lff;"
    )
-   public static int field2463;
+   @Export("taskManager")
+   protected static Signlink taskManager;
+   @ObfuscatedName("dw")
+   @ObfuscatedGetter(
+      intValue = -660168955
+   )
+   @Export("myWorldPort")
+   static int myWorldPort;
 
    static {
       new HashMap();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "367564648"
+      garbageValue = "-265370917"
    )
-   public static void method3228() {
-      if(KeyFocusListener.keyboard != null) {
-         KeyFocusListener var0 = KeyFocusListener.keyboard;
-         synchronized(KeyFocusListener.keyboard) {
-            KeyFocusListener.keyboard = null;
-         }
-      }
-
+   public static void method3303() {
+      ObjectComposition.objects.reset();
+      ObjectComposition.field3524.reset();
+      ObjectComposition.cachedModels.reset();
+      ObjectComposition.field3552.reset();
    }
 }

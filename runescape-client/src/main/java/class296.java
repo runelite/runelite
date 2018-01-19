@@ -2,61 +2,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kx")
+@ObfuscatedName("kw")
 public enum class296 implements Enumerated {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lkx;"
+      signature = "Lkw;"
    )
-   field3837(0, 0),
-   @ObfuscatedName("w")
+   field3846(0, 0),
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lkx;"
+      signature = "Lkw;"
    )
-   field3838(1, 1),
-   @ObfuscatedName("e")
+   field3841(1, 1),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lkx;"
+      signature = "Lkw;"
    )
-   field3836(2, 2),
-   @ObfuscatedName("k")
+   field3842(2, 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lkx;"
+      signature = "Lkw;"
    )
-   field3839(3, 3),
-   @ObfuscatedName("u")
+   field3845(3, 3),
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lkx;"
+      signature = "Lkw;"
    )
-   field3840(4, 4);
+   field3844(4, 4);
 
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 831576923
+   )
+   public final int field3843;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1483596249
+      intValue = -1809452597
    )
-   static int field3843;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 824355041
-   )
-   public final int field3842;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 665565463
-   )
-   final int field3841;
+   final int field3840;
 
    class296(int var3, int var4) {
-      this.field3842 = var3;
-      this.field3841 = var4;
+      this.field3843 = var3;
+      this.field3840 = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1035813094"
+      garbageValue = "2130441585"
    )
    public int rsOrdinal() {
-      return this.field3841;
+      return this.field3840;
    }
 }

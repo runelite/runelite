@@ -4,33 +4,33 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hy")
 @Implements("HashTableIterator")
 public class HashTableIterator implements Iterator {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgr;"
+      signature = "Lgb;"
    )
    @Export("table")
    IterableHashTable table;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgw;"
    )
    @Export("tail")
    Node tail;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @Export("index")
    int index;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lgn;"
+      signature = "Lgw;"
    )
    @Export("head")
    Node head;
 
    @ObfuscatedSignature(
-      signature = "(Lgr;)V"
+      signature = "(Lgb;)V"
    )
    HashTableIterator(IterableHashTable var1) {
       this.head = null;
@@ -38,7 +38,7 @@ public class HashTableIterator implements Iterator {
       this.reset();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @Export("reset")
    void reset() {
       this.tail = this.table.buckets[0].next;
@@ -64,8 +64,12 @@ public class HashTableIterator implements Iterator {
    }
 
    public void remove() {
-      this.head.unlink();
-      this.head = null;
+      if(this.head == null) {
+         throw new IllegalStateException();
+      } else {
+         this.head.unlink();
+         this.head = null;
+      }
    }
 
    public Object next() {

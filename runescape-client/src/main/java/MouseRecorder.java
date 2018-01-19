@@ -1,29 +1,38 @@
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bv")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-   @ObfuscatedName("a")
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Lkm;"
+   )
+   static IndexedSprite field812;
+   @ObfuscatedName("kc")
+   @ObfuscatedGetter(
+      intValue = 690395125
+   )
+   static int field817;
+   @ObfuscatedName("n")
    @Export("isRunning")
    boolean isRunning;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @Export("lock")
    Object lock;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 396566785
+      intValue = -1208303387
    )
    @Export("index")
    int index;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("xs")
    int[] xs;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("ys")
    int[] ys;
 
@@ -36,12 +45,12 @@ public class MouseRecorder implements Runnable {
    }
 
    public void run() {
-      for(; this.isRunning; World.method1500(50L)) {
+      for(; this.isRunning; class61.method1077(50L)) {
          Object var1 = this.lock;
          synchronized(this.lock) {
             if(this.index < 500) {
                this.xs[this.index] = MouseInput.mouseLastX;
-               this.ys[this.index] = MouseInput.mouseLastY * -469125321;
+               this.ys[this.index] = MouseInput.mouseLastY;
                ++this.index;
             }
          }
@@ -49,67 +58,23 @@ public class MouseRecorder implements Runnable {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "0"
+      signature = "(Lil;Lil;ZB)V",
+      garbageValue = "1"
    )
-   @Export("loadWorlds")
-   static boolean loadWorlds() {
-      try {
-         if(class192.listFetcher == null) {
-            class192.listFetcher = DState.urlRequester.request(new URL(Client.field1107));
-         } else if(class192.listFetcher.isDone()) {
-            byte[] var0 = class192.listFetcher.getResponse();
-            Buffer var1 = new Buffer(var0);
-            var1.readInt();
-            World.worldCount = var1.readUnsignedShort();
-            ItemContainer.worldList = new World[World.worldCount];
-
-            World var3;
-            for(int var2 = 0; var2 < World.worldCount; var3.index = var2++) {
-               var3 = ItemContainer.worldList[var2] = new World();
-               var3.id = var1.readUnsignedShort();
-               var3.mask = var1.readInt();
-               var3.address = var1.readString();
-               var3.activity = var1.readString();
-               var3.location = var1.readUnsignedByte();
-               var3.playerCount = var1.readShort();
-            }
-
-            FontName.method4874(ItemContainer.worldList, 0, ItemContainer.worldList.length - 1, World.field1203, World.field1197);
-            class192.listFetcher = null;
-            return true;
-         }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         class192.listFetcher = null;
-      }
-
-      return false;
+   public static void method1119(IndexDataBase var0, IndexDataBase var1, boolean var2) {
+      ObjectComposition.objects_ref = var0;
+      ObjectComposition.field3522 = var1;
+      ObjectComposition.ObjectDefinition_isLowDetail = var2;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-3645386"
+      signature = "(B)I",
+      garbageValue = "1"
    )
-   @Export("getSmoothNoise")
-   static final int getSmoothNoise(int var0, int var1, int var2) {
-      int var3 = var0 / var2;
-      int var4 = var0 & var2 - 1;
-      int var5 = var1 / var2;
-      int var6 = var1 & var2 - 1;
-      int var7 = Ignore.getSmoothNoise2D(var3, var5);
-      int var8 = Ignore.getSmoothNoise2D(var3 + 1, var5);
-      int var9 = Ignore.getSmoothNoise2D(var3, var5 + 1);
-      int var10 = Ignore.getSmoothNoise2D(var3 + 1, var5 + 1);
-      int var12 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var11 = ((65536 - var12) * var7 >> 16) + (var12 * var8 >> 16);
-      int var14 = 65536 - Graphics3D.COSINE[var4 * 1024 / var2] >> 1;
-      int var13 = ((65536 - var14) * var9 >> 16) + (var14 * var10 >> 16);
-      int var16 = 65536 - Graphics3D.COSINE[var6 * 1024 / var2] >> 1;
-      int var15 = ((65536 - var16) * var11 >> 16) + (var16 * var13 >> 16);
-      return var15;
+   static int method1116() {
+      return 11;
    }
 }

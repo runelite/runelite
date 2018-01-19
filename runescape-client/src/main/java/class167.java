@@ -1,76 +1,65 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fh")
 public class class167 {
+   @ObfuscatedName("y")
+   public static int[][] field2236;
+   @ObfuscatedName("r")
+   public static int[][] field2238;
+   @ObfuscatedName("b")
+   public static int[] field2241;
    @ObfuscatedName("e")
-   public static int[][] field2218;
-   @ObfuscatedName("k")
-   public static int[][] field2216;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -126843981
-   )
-   public static int field2217;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -908241661
-   )
-   public static int field2215;
-   @ObfuscatedName("f")
-   public static int[] field2220;
-   @ObfuscatedName("g")
-   public static int[] field2221;
-   @ObfuscatedName("do")
-   @ObfuscatedGetter(
-      intValue = 1003510665
-   )
-   static int field2222;
+   public static int[] field2240;
 
    static {
-      field2218 = new int[128][128];
-      field2216 = new int[128][128];
-      field2220 = new int[4096];
-      field2221 = new int[4096];
+      field2236 = new int[128][128];
+      field2238 = new int[128][128];
+      field2241 = new int[4096];
+      field2240 = new int[4096];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-1890373794"
+      signature = "(Lil;I)V",
+      garbageValue = "878734503"
    )
-   static char method3158(char var0) {
-      return var0 != 181 && var0 != 131?Character.toTitleCase(var0):var0;
+   public static void method3235(IndexDataBase var0) {
+      class228.EnumDefinition_indexCache = var0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "109"
+      signature = "(II)Z",
+      garbageValue = "-1064240801"
    )
-   @Export("adjustHSLListness0")
-   static final int adjustHSLListness0(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
+   public static boolean method3234(int var0) {
+      return (var0 >> 31 & 1) != 0;
+   }
 
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+   @ObfuscatedName("gk")
+   @ObfuscatedSignature(
+      signature = "(Ljs;IIII)V",
+      garbageValue = "-819383232"
+   )
+   static void method3229(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field1025 < 50 && Client.field1094 != 0) {
+         if(var0.field3690 != null && var1 < var0.field3690.length) {
+            int var4 = var0.field3690[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field1096[Client.field1025] = var5;
+               Client.field1027[Client.field1025] = var6;
+               Client.field1098[Client.field1025] = 0;
+               Client.audioEffects[Client.field1025] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field1099[Client.field1025] = var7 + (var9 << 8) + (var8 << 16);
+               ++Client.field1025;
+            }
          }
-
-         return (var0 & 65408) + var1;
       }
    }
 }

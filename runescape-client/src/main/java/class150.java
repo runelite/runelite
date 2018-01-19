@@ -1,235 +1,131 @@
-import java.util.LinkedHashMap;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("eb")
 public enum class150 implements Enumerated {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Leb;"
    )
-   field2094(3, 0),
-   @ObfuscatedName("w")
+   field2111(0, 0),
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Leb;"
    )
-   field2090(1, 1),
-   @ObfuscatedName("e")
+   field2106(2, 1),
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Leb;"
    )
-   field2091(2, 2),
-   @ObfuscatedName("k")
+   field2107(1, 2),
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "Lex;"
+      signature = "Leb;"
    )
-   field2092(0, 3);
+   field2108(3, 3);
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("du")
    @ObfuscatedGetter(
-      intValue = -684082815
+      intValue = 1621142415
    )
-   public final int field2093;
-   @ObfuscatedName("z")
+   @Export("port2")
+   static int port2;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -955917495
+      intValue = 810031425
    )
-   final int field2089;
+   public final int field2109;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1493067457
+   )
+   final int field2105;
 
    class150(int var3, int var4) {
-      this.field2093 = var3;
-      this.field2089 = var4;
+      this.field2109 = var3;
+      this.field2105 = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-1035813094"
+      garbageValue = "2130441585"
    )
    public int rsOrdinal() {
-      return this.field2089;
+      return this.field2105;
    }
 
-   @ObfuscatedName("eo")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1184897100"
+      signature = "(B)J",
+      garbageValue = "105"
    )
-   static final void method2932(boolean var0) {
-      if(var0) {
-         Client.field1063 = class91.field1346?field2090:field2092;
+   static long method2992() {
+      try {
+         URL var0 = new URL(Actor.method1573("services", false) + "m=accountappeal/login.ws");
+         URLConnection var1 = var0.openConnection();
+         var1.setRequestProperty("connection", "close");
+         var1.setDoInput(true);
+         var1.setDoOutput(true);
+         var1.setConnectTimeout(5000);
+         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
+         var2.write("data1=req");
+         var2.flush();
+         InputStream var3 = var1.getInputStream();
+         Buffer var4 = new Buffer(new byte[1000]);
+
+         do {
+            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
+            if(var5 == -1) {
+               var4.offset = 0;
+               long var7 = var4.readLong();
+               return var7;
+            }
+
+            var4.offset += var5;
+         } while(var4.offset < 1000);
+
+         return 0L;
+      } catch (Exception var9) {
+         return 0L;
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljy;",
+      garbageValue = "0"
+   )
+   @Export("getOverlayDefinition")
+   public static Overlay getOverlayDefinition(int var0) {
+      Overlay var1 = (Overlay)Overlay.overlays.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         LinkedHashMap var1 = class2.preferences.preferences;
-         String var3 = class91.username;
-         int var4 = var3.length();
-         int var5 = 0;
-
-         for(int var6 = 0; var6 < var4; ++var6) {
-            var5 = (var5 << 5) - var5 + var3.charAt(var6);
+         byte[] var2 = Overlay.overlay_ref.getConfigData(4, var0);
+         var1 = new Overlay();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2), var0);
          }
 
-         Client.field1063 = var1.containsKey(Integer.valueOf(var5))?field2094:field2091;
+         var1.post();
+         Overlay.overlays.put(var1, (long)var0);
+         return var1;
       }
-
    }
 
-   @ObfuscatedName("ib")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "761047601"
+      signature = "(I)[Lid;",
+      garbageValue = "-197419366"
    )
-   static final void method2933(int var0) {
-      CombatInfoListHolder.method1630();
-      class28.method236();
-      int var1 = class25.method182(var0).configType;
-      if(var1 != 0) {
-         int var2 = class222.widgetSettings[var0];
-         if(var1 == 1) {
-            if(var2 == 1) {
-               Graphics3D.setBrightness(0.9D);
-               ((TextureProvider)Graphics3D.textureLoader).brightness(0.9D);
-            }
-
-            if(var2 == 2) {
-               Graphics3D.setBrightness(0.8D);
-               ((TextureProvider)Graphics3D.textureLoader).brightness(0.8D);
-            }
-
-            if(var2 == 3) {
-               Graphics3D.setBrightness(0.7D);
-               ((TextureProvider)Graphics3D.textureLoader).brightness(0.7D);
-            }
-
-            if(var2 == 4) {
-               Graphics3D.setBrightness(0.6D);
-               ((TextureProvider)Graphics3D.textureLoader).brightness(0.6D);
-            }
-
-            ItemComposition.itemSpriteCache.reset();
-         }
-
-         if(var1 == 3) {
-            short var3 = 0;
-            if(var2 == 0) {
-               var3 = 255;
-            }
-
-            if(var2 == 1) {
-               var3 = 192;
-            }
-
-            if(var2 == 2) {
-               var3 = 128;
-            }
-
-            if(var2 == 3) {
-               var3 = 64;
-            }
-
-            if(var2 == 4) {
-               var3 = 0;
-            }
-
-            if(var3 != Client.field845) {
-               if(Client.field845 == 0 && Client.field850 != -1) {
-                  class2.method3(class29.indexTrack1, Client.field850, 0, var3, false);
-                  Client.field1008 = false;
-               } else if(var3 == 0) {
-                  class282.field3753.method3849();
-                  class214.field2620 = 1;
-                  class214.field2623 = null;
-                  Client.field1008 = false;
-               } else {
-                  OwnWorldComparator.method1116(var3);
-               }
-
-               Client.field845 = var3;
-            }
-         }
-
-         if(var1 == 4) {
-            if(var2 == 0) {
-               Client.field1066 = 127;
-            }
-
-            if(var2 == 1) {
-               Client.field1066 = 96;
-            }
-
-            if(var2 == 2) {
-               Client.field1066 = 64;
-            }
-
-            if(var2 == 3) {
-               Client.field1066 = 32;
-            }
-
-            if(var2 == 4) {
-               Client.field1066 = 0;
-            }
-         }
-
-         if(var1 == 5) {
-            Client.field965 = var2;
-         }
-
-         if(var1 == 6) {
-            Client.field990 = var2;
-         }
-
-         if(var1 == 9) {
-            Client.field991 = var2;
-         }
-
-         if(var1 == 10) {
-            if(var2 == 0) {
-               Client.field1067 = 127;
-            }
-
-            if(var2 == 1) {
-               Client.field1067 = 96;
-            }
-
-            if(var2 == 2) {
-               Client.field1067 = 64;
-            }
-
-            if(var2 == 3) {
-               Client.field1067 = 32;
-            }
-
-            if(var2 == 4) {
-               Client.field1067 = 0;
-            }
-         }
-
-         if(var1 == 17) {
-            Client.field996 = var2 & 65535;
-         }
-
-         if(var1 == 18) {
-            Client.playerAttackOption = (AttackOption)class91.forOrdinal(FrameMap.method2688(), var2);
-            if(Client.playerAttackOption == null) {
-               Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
-            }
-         }
-
-         if(var1 == 19) {
-            if(var2 == -1) {
-               Client.field957 = -1;
-            } else {
-               Client.field957 = var2 & 2047;
-            }
-         }
-
-         if(var1 == 22) {
-            Client.npcAttackOption = (AttackOption)class91.forOrdinal(FrameMap.method2688(), var2);
-            if(Client.npcAttackOption == null) {
-               Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
-            }
-         }
-
-      }
+   public static JagexGame[] method2990() {
+      return new JagexGame[]{JagexGame.field3290, JagexGame.field3292, JagexGame.field3293, JagexGame.field3289, JagexGame.field3294, JagexGame.field3291};
    }
 }

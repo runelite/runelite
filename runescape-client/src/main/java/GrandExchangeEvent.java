@@ -4,58 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("t")
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
-   @ObfuscatedName("ff")
-   @ObfuscatedSignature(
-      signature = "Lks;"
-   )
-   @Export("compass")
-   static SpritePixels compass;
-   @ObfuscatedName("gd")
+   @ObfuscatedName("ag")
+   static int[] field282;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 508599443
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 306485541
+      intValue = 2070108189
    )
    @Export("world")
    public final int world;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      longValue = 8897992286683141835L
+      longValue = 8120113880925916591L
    )
-   public final long field278;
-   @ObfuscatedName("e")
+   public final long field274;
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "Lr;"
+      signature = "La;"
    )
    @Export("grandExchangeOffer")
    public final GrandExchangeOffer grandExchangeOffer;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("string1")
    String string1;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("string2")
    String string2;
 
    @ObfuscatedSignature(
-      signature = "(Lgh;BI)V"
+      signature = "(Lgv;BI)V"
    )
    GrandExchangeEvent(Buffer var1, byte var2, int var3) {
       this.string1 = var1.readString();
       this.string2 = var1.readString();
       this.world = var1.readUnsignedShort();
-      this.field278 = var1.readLong();
+      this.field274 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
       this.grandExchangeOffer = new GrandExchangeOffer();
-      this.grandExchangeOffer.method99(2);
-      this.grandExchangeOffer.method95(var2);
+      this.grandExchangeOffer.method101(2);
+      this.grandExchangeOffer.method104(var2);
       this.grandExchangeOffer.price = var4;
       this.grandExchangeOffer.totalQuantity = var5;
       this.grandExchangeOffer.quantitySold = 0;
@@ -63,121 +53,146 @@ public class GrandExchangeEvent {
       this.grandExchangeOffer.itemId = var3;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1856400372"
+      garbageValue = "1383475312"
    )
-   public String method72() {
+   public String method83() {
       return this.string1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "0"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "1132957032"
    )
    public String method78() {
       return this.string2;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "-1443270829"
+      signature = "(Lgr;II)Z",
+      garbageValue = "1321132501"
    )
-   public static String method84(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 'a' || var4 > 'z') && (var4 < 'A' || var4 > 'Z') && (var4 < '0' || var4 > '9') && var4 != '.' && var4 != '-' && var4 != '*' && var4 != '_') {
-            if(var4 == ' ') {
-               var2.append('+');
-            } else {
-               byte var5 = class34.charToByteCp1252(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
+   @Export("decodeRegionHash")
+   static boolean decodeRegionHash(PacketBuffer var0, int var1) {
+      int var2 = var0.getBits(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.getBits(1) != 0) {
+            decodeRegionHash(var0, var1);
          }
-      }
 
-      return var2.toString();
-   }
+         var3 = var0.getBits(13);
+         var4 = var0.getBits(13);
+         boolean var12 = var0.getBits(1) == 1;
+         if(var12) {
+            class94.field1413[++class94.field1403 - 1] = var1;
+         }
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(ILhi;B)Lck;",
-      garbageValue = "13"
-   )
-   static Script method83(int var0, class230 var1) {
-      Script var2 = (Script)Script.field1431.get((long)(var0 << 16));
-      if(var2 != null) {
-         return var2;
+         if(Client.cachedPlayers[var1] != null) {
+            throw new RuntimeException();
+         } else {
+            Player var6 = Client.cachedPlayers[var1] = new Player();
+            var6.field842 = var1;
+            if(class94.field1404[var1] != null) {
+               var6.decodeApperance(class94.field1404[var1]);
+            }
+
+            var6.orientation = class94.Players_orientations[var1];
+            var6.interacting = class94.Players_targetIndices[var1];
+            var7 = class94.Players_regions[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.pathTraversed[0] = class94.field1401[var1];
+            var6.field856 = (byte)var8;
+            var6.method1154((var9 << 13) + var3 - class175.baseX, (var10 << 13) + var4 - GraphicsObject.baseY);
+            var6.field858 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.getBits(2);
+         var4 = class94.Players_regions[var1];
+         class94.Players_regions[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+         return false;
       } else {
-         String var3 = String.valueOf(var0);
-         int var4 = class161.indexScripts.getFile(var3);
-         if(var4 == -1) {
-            return null;
-         } else {
-            byte[] var5 = class161.indexScripts.takeRecordFlat(var4);
-            if(var5 != null) {
-               if(var5.length <= 1) {
-                  return null;
-               }
-
-               var2 = WidgetNode.newScript(var5);
-               if(var2 != null) {
-                  Script.field1431.put(var2, (long)(var0 << 16));
-                  return var2;
-               }
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.getBits(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class94.Players_regions[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
             }
 
-            return null;
+            if(var5 == 1) {
+               --var9;
+            }
+
+            if(var5 == 2) {
+               ++var8;
+               --var9;
+            }
+
+            if(var5 == 3) {
+               --var8;
+            }
+
+            if(var5 == 4) {
+               ++var8;
+            }
+
+            if(var5 == 5) {
+               --var8;
+               ++var9;
+            }
+
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class94.Players_regions[var1] = (var8 << 14) + var9 + (var7 << 28);
+            return false;
+         } else {
+            var3 = var0.getBits(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class94.Players_regions[var1];
+            var8 = (var7 >> 28) + var4 & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var11 + var7 & 255;
+            class94.Players_regions[var1] = (var9 << 14) + var10 + (var8 << 28);
+            return false;
          }
       }
    }
 
-   @ObfuscatedName("ha")
+   @ObfuscatedName("gd")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1420140280"
+      signature = "(B)V",
+      garbageValue = "18"
    )
-   static void method82() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
-         }
-      }
-
+   static void method77() {
+      ItemContainer.method1097(GrandExchangeOffer.localPlayer, false);
    }
 }

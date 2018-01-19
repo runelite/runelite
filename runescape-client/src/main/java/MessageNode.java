@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
@@ -7,40 +5,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bs")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("bu")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("dy")
    @ObfuscatedGetter(
-      intValue = -1624456843
+      intValue = 1915926205
+   )
+   static int field826;
+   @ObfuscatedName("fa")
+   @ObfuscatedSignature(
+      signature = "[Lkg;"
+   )
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -890292739
    )
    @Export("id")
    int id;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -181195109
+      intValue = -2130115035
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1783927465
+      intValue = 11789715
    )
    @Export("type")
    int type;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("name")
    String name;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("sender")
    String sender;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @Export("value")
    String value;
 
-   @Hook(value = "setMessage", end = true)
+   @Hook(
+      value = "setMessage",
+      end = true
+   )
    MessageNode(int var1, String var2, String var3, String var4) {
-      this.id = FriendLoginUpdate.method1044();
+      this.id = class72.method1125();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -48,15 +63,18 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1489597992"
+      garbageValue = "-1516721459"
    )
    @Export("setMessage")
-   @Hook(value = "setMessage", end = true)
+   @Hook(
+      value = "setMessage",
+      end = true
+   )
    void setMessage(int var1, String var2, String var3, String var4) {
-      this.id = FriendLoginUpdate.method1044();
+      this.id = class72.method1125();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -64,153 +82,65 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/io/File;",
-      garbageValue = "-959431109"
-   )
-   static File method1071(String var0) {
-      if(!class160.field2150) {
-         throw new RuntimeException("");
-      } else {
-         File var1 = (File)class160.field2149.get(var0);
-         if(var1 != null) {
-            return var1;
-         } else {
-            File var2 = new File(class160.field2148, var0);
-            RandomAccessFile var3 = null;
-
-            try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class160.field2149.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var8) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var7) {
-                  ;
-               }
-
-               throw new RuntimeException();
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-1811690398"
-   )
-   static char method1070(char var0) {
-      return (char)(var0 == 198?69:(var0 == 230?101:(var0 == 223?115:(var0 == 338?69:(var0 == 339?'e':'\u0000')))));
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lgh;J)V"
-   )
-   static void method1073(Buffer var0, long var1) {
-      var1 /= 10L;
-      if(var1 < 0L) {
-         var1 = 0L;
-      } else if(var1 > 65535L) {
-         var1 = 65535L;
-      }
-
-      var0.putShort((int)var1);
-   }
-
-   @ObfuscatedName("gx")
-   @ObfuscatedSignature(
-      signature = "(ZLgy;B)V",
-      garbageValue = "-111"
-   )
-   static final void method1065(boolean var0, PacketBuffer var1) {
-      Client.field967 = 0;
-      Client.pendingNpcFlagsCount = 0;
-      class5.method17();
-      class45.updateNpcs(var0, var1);
-      class27.method215(var1);
-
-      int var2;
-      for(var2 = 0; var2 < Client.field967; ++var2) {
-         int var3 = Client.field951[var2];
-         if(Client.cachedNPCs[var3].npcCycle != Client.gameCycle) {
-            Client.cachedNPCs[var3].composition = null;
-            Client.cachedNPCs[var3] = null;
-         }
-      }
-
-      if(var1.offset != Client.field888.packetLength) {
-         throw new RuntimeException(var1.offset + "," + Client.field888.packetLength);
-      } else {
-         for(var2 = 0; var2 < Client.npcIndexesCount; ++var2) {
-            if(Client.cachedNPCs[Client.npcIndices[var2]] == null) {
-               throw new RuntimeException(var2 + "," + Client.npcIndexesCount);
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("he")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;B)V",
+      signature = "(IB)Z",
       garbageValue = "0"
    )
-   static void method1067(int var0, String var1) {
-      int var2 = class94.playerIndexesCount;
-      int[] var3 = class94.playerIndices;
-      boolean var4 = false;
+   public static boolean method1122(int var0) {
+      return (var0 >> 30 & 1) != 0;
+   }
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         Player var6 = Client.cachedPlayers[var3[var5]];
-         if(var6 != null && var6 != UrlRequest.localPlayer && var6.name != null && var6.name.equalsIgnoreCase(var1)) {
-            PacketNode var7;
-            if(var0 == 1) {
-               var7 = FileSystem.method4252(ClientPacket.field2315, Client.field888.field1449);
-               var7.packetBuffer.putByte(0);
-               var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
-            } else if(var0 == 4) {
-               var7 = FileSystem.method4252(ClientPacket.field2359, Client.field888.field1449);
-               var7.packetBuffer.method3287(0);
-               var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
-            } else if(var0 == 6) {
-               var7 = FileSystem.method4252(ClientPacket.field2361, Client.field888.field1449);
-               var7.packetBuffer.writeIntLE16(var3[var5]);
-               var7.packetBuffer.method3285(0);
-               Client.field888.method1862(var7);
-            } else if(var0 == 7) {
-               var7 = FileSystem.method4252(ClientPacket.field2391, Client.field888.field1449);
-               var7.packetBuffer.method3287(0);
-               var7.packetBuffer.putShortLE(var3[var5]);
-               Client.field888.method1862(var7);
+   @ObfuscatedName("hp")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-1296847789"
+   )
+   @Export("groundItemSpawned")
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[class7.plane][var0][var1];
+      if(var2 == null) {
+         class45.region.removeGroundItemPile(class7.plane, var0, var1);
+      } else {
+         long var3 = -99999999L;
+         Item var5 = null;
+
+         Item var6;
+         for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
+            ItemComposition var7 = class115.getItemDefinition(var6.id);
+            long var8 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var8 *= (long)(var6.quantity + 1);
             }
 
-            var4 = true;
-            break;
+            if(var8 > var3) {
+               var3 = var8;
+               var5 = var6;
+            }
+         }
+
+         if(var5 == null) {
+            class45.region.removeGroundItemPile(class7.plane, var0, var1);
+         } else {
+            var2.addTail(var5);
+            Item var11 = null;
+            Item var10 = null;
+
+            for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
+               if(var5.id != var6.id) {
+                  if(var11 == null) {
+                     var11 = var6;
+                  }
+
+                  if(var11.id != var6.id && var10 == null) {
+                     var10 = var6;
+                  }
+               }
+            }
+
+            int var9 = var0 + (var1 << 7) + 1610612736;
+            class45.region.addItemPile(class7.plane, var0, var1, MouseInput.getTileHeight(var0 * 128 + 64, var1 * 128 + 64, class7.plane), var5, var9, var11, var10);
          }
       }
-
-      if(!var4) {
-         class25.sendGameMessage(4, "", "Unable to find " + var1);
-      }
-
    }
 }

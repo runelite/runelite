@@ -2,25 +2,18 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gg")
+@ObfuscatedName("ge")
 public class class186 {
-   @ObfuscatedName("lm")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 2113685711
-   )
-   static int field2526;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      longValue = -9054710416978003905L
+      longValue = 7321881511881330321L
    )
    @Export("currentTimeMsLast")
    static long currentTimeMsLast;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      longValue = -6119670683134236171L
+      longValue = -6597138507761430893L
    )
    @Export("currentTimeMsOffset")
    static long currentTimeMsOffset;
-   @ObfuscatedName("ag")
-   static int[] field2532;
 }

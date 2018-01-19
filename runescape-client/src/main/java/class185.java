@@ -1,86 +1,61 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gg")
 public class class185 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 972741227
+      intValue = 1727850895
    )
-   static int field2521;
-   @ObfuscatedName("w")
+   static int field2538;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -263654099
+      intValue = 1882613653
    )
-   static int field2519;
-   @ObfuscatedName("e")
+   static int field2535;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 572866317
+      intValue = -2073123387
    )
-   static int field2520;
-   @ObfuscatedName("k")
-   static byte[][] field2524;
-   @ObfuscatedName("u")
-   static byte[][] field2522;
-   @ObfuscatedName("z")
-   static byte[][] field2523;
-   @ObfuscatedName("f")
-   static int[] field2518;
+   static int field2537;
+   @ObfuscatedName("r")
+   static byte[][] field2536;
+   @ObfuscatedName("h")
+   static byte[][] field2539;
+   @ObfuscatedName("d")
+   static byte[][] field2542;
+   @ObfuscatedName("b")
+   public static int[] field2541;
+   @ObfuscatedName("hp")
+   @ObfuscatedSignature(
+      signature = "Lhq;"
+   )
+   static Widget field2540;
 
    static {
-      field2521 = 0;
-      field2519 = 0;
-      field2520 = 0;
-      field2524 = new byte[1000][];
-      field2522 = new byte[250][];
-      field2523 = new byte[50][];
+      field2538 = 0;
+      field2535 = 0;
+      field2537 = 0;
+      field2536 = new byte[1000][];
+      field2539 = new byte[250][];
+      field2542 = new byte[50][];
    }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(ILfv;Liu;B)V",
-      garbageValue = "64"
-   )
-   static void method3513(int var0, IndexFile var1, IndexData var2) {
-      FileSystem var3 = new FileSystem();
-      var3.type = 1;
-      var3.hash = (long)var0;
-      var3.index = var1;
-      var3.data = var2;
-      Deque var4 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-         IndexStoreActionHandler.IndexStoreActionHandler_requestQueue.addFront(var3);
-      }
-
-      Object var9 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if(IndexStoreActionHandler.field3328 == 0) {
-            IndexStoreActionHandler.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.setDaemon(true);
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.start();
-            IndexStoreActionHandler.IndexStoreActionHandler_thread.setPriority(5);
-         }
-
-         IndexStoreActionHandler.field3328 = 600;
-      }
-   }
-
-   @ObfuscatedName("w")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(IZI)[B",
-      garbageValue = "-2101965736"
+      garbageValue = "1046412926"
    )
-   static synchronized byte[] method3505(int var0, boolean var1) {
+   static synchronized byte[] method3556(int var0, boolean var1) {
       byte[] var2;
       if(var0 != 100) {
          if(var0 < 100) {
             ;
          }
-      } else if(field2521 > 0) {
-         var2 = field2524[--field2521];
-         field2524[field2521] = null;
+      } else if(field2538 > 0) {
+         var2 = field2536[--field2538];
+         field2536[field2538] = null;
          return var2;
       }
 
@@ -88,9 +63,9 @@ public class class185 {
          if(var0 < 5000) {
             ;
          }
-      } else if(field2519 > 0) {
-         var2 = field2522[--field2519];
-         field2522[field2519] = null;
+      } else if(field2535 > 0) {
+         var2 = field2539[--field2535];
+         field2539[field2535] = null;
          return var2;
       }
 
@@ -98,21 +73,21 @@ public class class185 {
          if(var0 < 30000) {
             ;
          }
-      } else if(field2520 > 0) {
-         var2 = field2523[--field2520];
-         field2523[field2520] = null;
+      } else if(field2537 > 0) {
+         var2 = field2542[--field2537];
+         field2542[field2537] = null;
          return var2;
       }
 
-      if(class21.field324 != null) {
-         for(int var4 = 0; var4 < CombatInfo1.field1189.length; ++var4) {
-            if(CombatInfo1.field1189[var4] != var0) {
-               if(var0 < CombatInfo1.field1189[var4]) {
+      if(class254.field3404 != null) {
+         for(int var4 = 0; var4 < Frames.field2042.length; ++var4) {
+            if(Frames.field2042[var4] != var0) {
+               if(var0 < Frames.field2042[var4]) {
                   ;
                }
-            } else if(field2518[var4] > 0) {
-               byte[] var3 = class21.field324[var4][--field2518[var4]];
-               class21.field324[var4][field2518[var4]] = null;
+            } else if(field2541[var4] > 0) {
+               byte[] var3 = class254.field3404[var4][--field2541[var4]];
+               class254.field3404[var4][field2541[var4]] = null;
                return var3;
             }
          }
@@ -121,27 +96,18 @@ public class class185 {
       return new byte[var0];
    }
 
-   @ObfuscatedName("fh")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)V",
-      garbageValue = "119"
+      signature = "(CIS)I",
+      garbageValue = "3920"
    )
-   @Export("drawStatusBox")
-   static final void drawStatusBox(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = var2 + 6;
-      int var5 = BaseVarType.font_p12full.method4888(var0, 250);
-      int var6 = BaseVarType.font_p12full.method4889(var0, 250) * 13;
-      Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 0);
-      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 16777215);
-      BaseVarType.font_p12full.method4895(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      WorldMapData.method305(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
-      if(var1) {
-         ScriptState.rasterProvider.drawFull(0, 0);
-      } else {
-         class111.method2084(var3, var4, var5, var6);
+   public static int method3555(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
       }
 
+      return var2;
    }
 }

@@ -1,27 +1,60 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("d")
+@ObfuscatedName("c")
 public class class23 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("ot")
    @ObfuscatedSignature(
-      signature = "([I[II)V",
-      garbageValue = "-1436395149"
+      signature = "Ldc;"
    )
-   public static void method172(int[] var0, int[] var1) {
-      if(var0 != null && var1 != null) {
-         CombatInfo1.field1189 = var0;
-         class185.field2518 = new int[var0.length];
-         class21.field324 = new byte[var0.length][][];
+   static class115 field343;
 
-         for(int var2 = 0; var2 < CombatInfo1.field1189.length; ++var2) {
-            class21.field324[var2] = new byte[var1[var2]][];
+   @ObfuscatedName("hd")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-1453961320"
+   )
+   static final void method167(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.widgetCount; ++var4) {
+         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field1041[var4] = true;
          }
-
-      } else {
-         CombatInfo1.field1189 = null;
-         class185.field2518 = null;
-         class21.field324 = null;
       }
+
+   }
+
+   @ObfuscatedName("ir")
+   @ObfuscatedSignature(
+      signature = "([Lhq;IIIZI)V",
+      garbageValue = "184946789"
+   )
+   static void method168(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(var6 != null && var6.parentId == var1) {
+            Client.method1513(var6, var2, var3, var4);
+            class218.method4083(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
+
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
+
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
+
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
+
+            if(var6.type == 0) {
+               class160.method3094(var0, var6, var4);
+            }
+         }
+      }
+
    }
 }

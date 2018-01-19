@@ -4,32 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("id")
+@ObfuscatedName("ij")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("a")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgi;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
-   public static Deque IndexStoreActionHandler_requestQueue;
-   @ObfuscatedName("w")
+   static Deque IndexStoreActionHandler_requestQueue;
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Lgl;"
+      signature = "Lgi;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
-   public static Deque IndexStoreActionHandler_responseQueue;
-   @ObfuscatedName("e")
+   static Deque IndexStoreActionHandler_responseQueue;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -745457897
+      intValue = -489625501
    )
    public static int field3328;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @Export("IndexStoreActionHandler_lock")
    public static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @Export("IndexStoreActionHandler_thread")
    static Thread IndexStoreActionHandler_thread;
+   @ObfuscatedName("bk")
+   static String field3327;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
@@ -74,7 +76,7 @@ public class IndexStoreActionHandler implements Runnable {
                   field3328 = 600;
                }
             } else {
-               World.method1500(100L);
+               class61.method1077(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
                   if(field3328 <= 1) {
@@ -88,26 +90,7 @@ public class IndexStoreActionHandler implements Runnable {
             }
          }
       } catch (Exception var13) {
-         PendingSpawn.method1461((String)null, var13);
+         Bounds.method5132((String)null, var13);
       }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(II)Lku;",
-      garbageValue = "1368333271"
-   )
-   public static class289 method4353(int var0) {
-      class289[] var1 = new class289[]{class289.field3806, class289.field3807, class289.field3808};
-      class289[] var2 = var1;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class289 var4 = var2[var3];
-         if(var0 == var4.field3809) {
-            return var4;
-         }
-      }
-
-      return null;
    }
 }

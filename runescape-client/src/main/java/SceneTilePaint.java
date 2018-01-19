@@ -4,50 +4,50 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("eg")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("ga")
+   @ObfuscatedName("ej")
    @ObfuscatedGetter(
-      intValue = -617704797
+      longValue = 8778909200186975023L
    )
-   static int field1932;
-   @ObfuscatedName("a")
+   static long field1945;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -829167371
+      intValue = -1205436467
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1295951857
+      intValue = 223131607
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 646505167
+      intValue = -48624337
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 799884147
+      intValue = 1347512629
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -879620257
+      intValue = 1886351167
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -546473555
+      intValue = 450993421
    )
    @Export("rgb")
    int rgb;
@@ -63,149 +63,44 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lib;IIB)[Lks;",
-      garbageValue = "-114"
+      signature = "(IZI)Ljava/lang/String;",
+      garbageValue = "2099683278"
    )
-   static SpritePixels[] method2685(IndexDataBase var0, int var1, int var2) {
-      if(!Parameters.method5029(var0, var1, var2)) {
-         return null;
+   public static String method2741(int var0, boolean var1) {
+      if(var0 < 0) {
+         return Integer.toString(var0);
       } else {
-         SpritePixels[] var4 = new SpritePixels[class299.field3866];
+         int var3 = var0;
+         String var2;
+         if(var0 < 0) {
+            var2 = Integer.toString(var0, 10);
+         } else {
+            int var4 = 2;
 
-         for(int var5 = 0; var5 < class299.field3866; ++var5) {
-            SpritePixels var6 = var4[var5] = new SpritePixels();
-            var6.maxWidth = class299.field3864;
-            var6.maxHeight = class299.field3868;
-            var6.offsetX = class299.field3867[var5];
-            var6.offsetY = class299.offsetsY[var5];
-            var6.width = Item.field1387[var5];
-            var6.height = class276.field3727[var5];
-            int var7 = var6.width * var6.height;
-            byte[] var8 = Bounds.spritePixels[var5];
-            var6.pixels = new int[var7];
-
-            for(int var9 = 0; var9 < var7; ++var9) {
-               var6.pixels[var9] = FaceNormal.field2025[var8[var9] & 255];
+            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+               var5 /= 10;
             }
-         }
 
-         ContextMenuRow.method1663();
-         return var4;
-      }
-   }
+            char[] var6 = new char[var4];
+            var6[0] = '+';
 
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/String;",
-      garbageValue = "-682366863"
-   )
-   public static String method2682(String var0) {
-      int var1 = var0.length();
-      char[] var2 = new char[var1];
-      byte var3 = 2;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         char var5 = var0.charAt(var4);
-         if(var3 == 0) {
-            var5 = Character.toLowerCase(var5);
-         } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            var5 = class167.method3158(var5);
-         }
-
-         if(Character.isLetter(var5)) {
-            var3 = 0;
-         } else if(var5 != '.' && var5 != '?' && var5 != '!') {
-            if(Character.isSpaceChar(var5)) {
-               if(var3 != 2) {
-                  var3 = 1;
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - var3 * 10;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(var9 + 87);
+               } else {
+                  var6[var7] = (char)(var9 + 48);
                }
-            } else {
-               var3 = 1;
             }
-         } else {
-            var3 = 2;
+
+            var2 = new String(var6);
          }
 
-         var2[var4] = var5;
+         return var2;
       }
-
-      return new String(var2);
-   }
-
-   @ObfuscatedName("fj")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "16777215"
-   )
-   static final void method2683(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
-         class2.preferences.hideRoofs = !class2.preferences.hideRoofs;
-         WorldComparator.method63();
-         if(class2.preferences.hideRoofs) {
-            class25.sendGameMessage(99, "", "Roofs are now all hidden");
-         } else {
-            class25.sendGameMessage(99, "", "Roofs will only be removed selectively");
-         }
-      }
-
-      if(var0.equalsIgnoreCase("displayfps")) {
-         Client.displayFps = !Client.displayFps;
-      }
-
-      if(Client.rights >= 2) {
-         if(var0.equalsIgnoreCase("aabb")) {
-            if(!class7.drawBoundingBoxes3D) {
-               class7.drawBoundingBoxes3D = true;
-               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_all;
-            } else if(class11.BoundingBox3DDrawMode_all == class7.boundingBox3DDrawMode) {
-               class7.drawBoundingBoxes3D = true;
-               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_mouseOver;
-            } else {
-               class7.drawBoundingBoxes3D = false;
-            }
-         }
-
-         if(var0.equalsIgnoreCase("fpson")) {
-            Client.displayFps = true;
-         }
-
-         if(var0.equalsIgnoreCase("fpsoff")) {
-            Client.displayFps = false;
-         }
-
-         if(var0.equalsIgnoreCase("gc")) {
-            System.gc();
-         }
-
-         if(var0.equalsIgnoreCase("clientdrop")) {
-            TotalQuantityComparator.method85();
-         }
-
-         if(var0.equalsIgnoreCase("cs")) {
-            class25.sendGameMessage(99, "", "" + Client.field891);
-         }
-
-         if(var0.equalsIgnoreCase("errortest") && Client.socketType == 2) {
-            throw new RuntimeException();
-         }
-      }
-
-      PacketNode var1 = FileSystem.method4252(ClientPacket.field2341, Client.field888.field1449);
-      var1.packetBuffer.putByte(var0.length() + 1);
-      var1.packetBuffer.putString(var0);
-      Client.field888.method1862(var1);
-   }
-
-   @ObfuscatedName("ir")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1202102848"
-   )
-   static final void method2684() {
-      PacketNode var0 = FileSystem.method4252(ClientPacket.field2342, Client.field888.field1449);
-      var0.packetBuffer.putByte(0);
-      Client.field888.method1862(var0);
    }
 }
