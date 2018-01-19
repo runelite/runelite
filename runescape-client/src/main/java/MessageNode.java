@@ -107,7 +107,7 @@ public class MessageNode extends CacheableNode {
 
          Item var6;
          for(var6 = (Item)var2.getFront(); var6 != null; var6 = (Item)var2.getNext()) {
-            ItemComposition var7 = class115.getItemDefinition(var6.id);
+            ItemComposition var7 = Resampler.getItemDefinition(var6.id);
             long var8 = (long)var7.price;
             if(var7.isStackable == 1) {
                var8 *= (long)(var6.quantity + 1);

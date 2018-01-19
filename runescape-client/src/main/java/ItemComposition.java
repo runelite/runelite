@@ -597,7 +597,7 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(var2 != -1) {
-            return class115.getItemDefinition(var2).method4765(1);
+            return Resampler.getItemDefinition(var2).method4765(1);
          }
       }
 
@@ -642,7 +642,7 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(var2 != -1) {
-            return class115.getItemDefinition(var2).getModel(1);
+            return Resampler.getItemDefinition(var2).getModel(1);
          }
       }
 
@@ -695,7 +695,7 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(var2 != -1) {
-            return class115.getItemDefinition(var2);
+            return Resampler.getItemDefinition(var2);
          }
       }
 

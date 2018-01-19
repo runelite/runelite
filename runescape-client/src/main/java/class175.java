@@ -70,7 +70,7 @@ public class class175 {
       int var3 = 0;
 
       for(int var4 = 0; var4 < class89.field1329; ++var4) {
-         ItemComposition var5 = class115.getItemDefinition(var4);
+         ItemComposition var5 = Resampler.getItemDefinition(var4);
          if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
             if(var3 >= 250) {
                BoundingBox.field242 = -1;
@@ -98,7 +98,7 @@ public class class175 {
       String[] var8 = new String[BoundingBox.field242];
 
       for(int var9 = 0; var9 < BoundingBox.field242; ++var9) {
-         var8[var9] = class115.getItemDefinition(var2[var9]).name;
+         var8[var9] = Resampler.getItemDefinition(var2[var9]).name;
       }
 
       short[] var10 = class232.field2926;

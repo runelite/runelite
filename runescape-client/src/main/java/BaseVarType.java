@@ -876,13 +876,13 @@ public enum BaseVarType implements Enumerated {
                                                                                                                var31 = class82.intStack[class82.intStackSize];
                                                                                                                var30 = class82.intStack[class82.intStackSize + 1];
                                                                                                                var18 = class82.intStack[class82.intStackSize + 2];
-                                                                                                               if(Client.field903 != 0 && var30 != 0 && Client.field1025 < 50) {
-                                                                                                                  Client.field1096[Client.field1025] = var31;
-                                                                                                                  Client.field1027[Client.field1025] = var30;
-                                                                                                                  Client.field1098[Client.field1025] = var18;
-                                                                                                                  Client.audioEffects[Client.field1025] = null;
-                                                                                                                  Client.field1099[Client.field1025] = 0;
-                                                                                                                  ++Client.field1025;
+                                                                                                               if(Client.field903 != 0 && var30 != 0 && Client.queuedSoundEffectCount < 50) {
+                                                                                                                  Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var31;
+                                                                                                                  Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var30;
+                                                                                                                  Client.unknownSoundValues2[Client.queuedSoundEffectCount] = var18;
+                                                                                                                  Client.audioEffects[Client.queuedSoundEffectCount] = null;
+                                                                                                                  Client.soundLocations[Client.queuedSoundEffectCount] = 0;
+                                                                                                                  ++Client.queuedSoundEffectCount;
                                                                                                                }
 
                                                                                                                var35 = 1;
@@ -1409,7 +1409,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                } else if(var9 < 4300) {
                                                                                                                   if(var9 == 4200) {
                                                                                                                      var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                     class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = class115.getItemDefinition(var31).name;
+                                                                                                                     class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = Resampler.getItemDefinition(var31).name;
                                                                                                                      var35 = 1;
                                                                                                                   } else {
                                                                                                                      ItemComposition var92;
@@ -1417,7 +1417,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                         class82.intStackSize -= 2;
                                                                                                                         var31 = class82.intStack[class82.intStackSize];
                                                                                                                         var30 = class82.intStack[class82.intStackSize + 1];
-                                                                                                                        var92 = class115.getItemDefinition(var31);
+                                                                                                                        var92 = Resampler.getItemDefinition(var31);
                                                                                                                         if(var30 >= 1 && var30 <= 5 && var92.groundActions[var30 - 1] != null) {
                                                                                                                            class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = var92.groundActions[var30 - 1];
                                                                                                                         } else {
@@ -1429,7 +1429,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                         class82.intStackSize -= 2;
                                                                                                                         var31 = class82.intStack[class82.intStackSize];
                                                                                                                         var30 = class82.intStack[class82.intStackSize + 1];
-                                                                                                                        var92 = class115.getItemDefinition(var31);
+                                                                                                                        var92 = Resampler.getItemDefinition(var31);
                                                                                                                         if(var30 >= 1 && var30 <= 5 && var92.inventoryActions[var30 - 1] != null) {
                                                                                                                            class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = var92.inventoryActions[var30 - 1];
                                                                                                                         } else {
@@ -1439,17 +1439,17 @@ public enum BaseVarType implements Enumerated {
                                                                                                                         var35 = 1;
                                                                                                                      } else if(var9 == 4203) {
                                                                                                                         var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                        class82.intStack[++class82.intStackSize - 1] = class115.getItemDefinition(var31).price;
+                                                                                                                        class82.intStack[++class82.intStackSize - 1] = Resampler.getItemDefinition(var31).price;
                                                                                                                         var35 = 1;
                                                                                                                      } else if(var9 == 4204) {
                                                                                                                         var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                        class82.intStack[++class82.intStackSize - 1] = class115.getItemDefinition(var31).isStackable == 1?1:0;
+                                                                                                                        class82.intStack[++class82.intStackSize - 1] = Resampler.getItemDefinition(var31).isStackable == 1?1:0;
                                                                                                                         var35 = 1;
                                                                                                                      } else {
                                                                                                                         ItemComposition var66;
                                                                                                                         if(var9 == 4205) {
                                                                                                                            var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                           var66 = class115.getItemDefinition(var31);
+                                                                                                                           var66 = Resampler.getItemDefinition(var31);
                                                                                                                            if(var66.notedTemplate == -1 && var66.note >= 0) {
                                                                                                                               class82.intStack[++class82.intStackSize - 1] = var66.note;
                                                                                                                            } else {
@@ -1459,7 +1459,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                            var35 = 1;
                                                                                                                         } else if(var9 == 4206) {
                                                                                                                            var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                           var66 = class115.getItemDefinition(var31);
+                                                                                                                           var66 = Resampler.getItemDefinition(var31);
                                                                                                                            if(var66.notedTemplate >= 0 && var66.note >= 0) {
                                                                                                                               class82.intStack[++class82.intStackSize - 1] = var66.note;
                                                                                                                            } else {
@@ -1469,11 +1469,11 @@ public enum BaseVarType implements Enumerated {
                                                                                                                            var35 = 1;
                                                                                                                         } else if(var9 == 4207) {
                                                                                                                            var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                           class82.intStack[++class82.intStackSize - 1] = class115.getItemDefinition(var31).isMembers?1:0;
+                                                                                                                           class82.intStack[++class82.intStackSize - 1] = Resampler.getItemDefinition(var31).isMembers?1:0;
                                                                                                                            var35 = 1;
                                                                                                                         } else if(var9 == 4208) {
                                                                                                                            var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                           var66 = class115.getItemDefinition(var31);
+                                                                                                                           var66 = Resampler.getItemDefinition(var31);
                                                                                                                            if(var66.int3 == -1 && var66.int2 >= 0) {
                                                                                                                               class82.intStack[++class82.intStackSize - 1] = var66.int2;
                                                                                                                            } else {
@@ -1483,7 +1483,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                            var35 = 1;
                                                                                                                         } else if(var9 == 4209) {
                                                                                                                            var31 = class82.intStack[--class82.intStackSize];
-                                                                                                                           var66 = class115.getItemDefinition(var31);
+                                                                                                                           var66 = Resampler.getItemDefinition(var31);
                                                                                                                            if(var66.int3 >= 0 && var66.int2 >= 0) {
                                                                                                                               class82.intStack[++class82.intStackSize - 1] = var66.int2;
                                                                                                                            } else {

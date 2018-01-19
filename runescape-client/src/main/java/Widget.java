@@ -1376,7 +1376,7 @@ public class Widget extends Node {
             }
 
             if(var5 == 4) {
-               ItemComposition var9 = class115.getItemDefinition(var6);
+               ItemComposition var9 = Resampler.getItemDefinition(var6);
                var8 = var9.method4765(10);
                if(var8 == null) {
                   field2760 = true;

@@ -390,7 +390,7 @@ public class class105 extends Node {
    @ObfuscatedSignature(
       signature = "([I)Ldp;"
    )
-   class106 method2010(int[] var1) {
+   RawAudioNode method2010(int[] var1) {
       if(var1 != null && var1[0] <= 0) {
          return null;
       } else {
@@ -435,7 +435,7 @@ public class class105 extends Node {
          this.field1505 = null;
          byte[] var7 = this.field1515;
          this.field1515 = null;
-         return new class106(this.field1488, var7, this.field1490, this.field1508, this.field1491);
+         return new RawAudioNode(this.field1488, var7, this.field1490, this.field1508, this.field1491);
       }
    }
 
@@ -631,7 +631,8 @@ public class class105 extends Node {
    @ObfuscatedSignature(
       signature = "(Lil;II)Ldj;"
    )
-   static class105 method2028(IndexDataBase var0, int var1, int var2) {
+   @Export("getInstrument")
+   static class105 getInstrument(IndexDataBase var0, int var1, int var2) {
       if(!method2007(var0)) {
          var0.tryLoadRecord(var1, var2);
          return null;

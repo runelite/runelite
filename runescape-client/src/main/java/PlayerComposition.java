@@ -255,7 +255,7 @@ public class PlayerComposition {
                   var9 = true;
                }
 
-               if(var11 >= 512 && !class115.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+               if(var11 >= 512 && !Resampler.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
                   var9 = true;
                }
             }
@@ -286,7 +286,7 @@ public class PlayerComposition {
                   }
 
                   if(var13 >= 512) {
-                     var14 = class115.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                     var14 = Resampler.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
                      if(var14 != null) {
                         var16[var11++] = var14;
                      }
@@ -346,7 +346,7 @@ public class PlayerComposition {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class115.getItemDefinition(var3 - 512).method4776(this.isFemale)) {
+            if(var3 >= 512 && !Resampler.getItemDefinition(var3 - 512).method4776(this.isFemale)) {
                var1 = true;
             }
          }
@@ -369,7 +369,7 @@ public class PlayerComposition {
                }
 
                if(var5 >= 512) {
-                  var6 = class115.getItemDefinition(var5 - 512).method4786(this.isFemale);
+                  var6 = Resampler.getItemDefinition(var5 - 512).method4786(this.isFemale);
                   if(var6 != null) {
                      var7[var3++] = var6;
                   }

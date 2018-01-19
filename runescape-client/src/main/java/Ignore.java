@@ -161,8 +161,8 @@ public class Ignore {
                var6.addBoundary(var0, var1, var2, var16, (Renderable)var30, (Renderable)null, class61.field727[var4], 0, var19, var20);
                if(var4 == 0) {
                   if(var8.clipped) {
-                     class115.field1595[var0][var1][var2] = 50;
-                     class115.field1595[var0][var1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1][var2] = 50;
+                     Resampler.field1595[var0][var1][var2 + 1] = 50;
                   }
 
                   if(var8.modelClipped) {
@@ -170,8 +170,8 @@ public class Ignore {
                   }
                } else if(var4 == 1) {
                   if(var8.clipped) {
-                     class115.field1595[var0][var1][var2 + 1] = 50;
-                     class115.field1595[var0][var1 + 1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2 + 1] = 50;
                   }
 
                   if(var8.modelClipped) {
@@ -179,8 +179,8 @@ public class Ignore {
                   }
                } else if(var4 == 2) {
                   if(var8.clipped) {
-                     class115.field1595[var0][var1 + 1][var2] = 50;
-                     class115.field1595[var0][var1 + 1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2 + 1] = 50;
                   }
 
                   if(var8.modelClipped) {
@@ -188,8 +188,8 @@ public class Ignore {
                   }
                } else if(var4 == 3) {
                   if(var8.clipped) {
-                     class115.field1595[var0][var1][var2] = 50;
-                     class115.field1595[var0][var1 + 1][var2] = 50;
+                     Resampler.field1595[var0][var1][var2] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2] = 50;
                   }
 
                   if(var8.modelClipped) {
@@ -215,13 +215,13 @@ public class Ignore {
                var6.addBoundary(var0, var1, var2, var16, (Renderable)var30, (Renderable)null, class61.field735[var4], 0, var19, var20);
                if(var8.clipped) {
                   if(var4 == 0) {
-                     class115.field1595[var0][var1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1][var2 + 1] = 50;
                   } else if(var4 == 1) {
-                     class115.field1595[var0][var1 + 1][var2 + 1] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2 + 1] = 50;
                   } else if(var4 == 2) {
-                     class115.field1595[var0][var1 + 1][var2] = 50;
+                     Resampler.field1595[var0][var1 + 1][var2] = 50;
                   } else if(var4 == 3) {
-                     class115.field1595[var0][var1][var2] = 50;
+                     Resampler.field1595[var0][var1][var2] = 50;
                   }
                }
 
@@ -278,13 +278,13 @@ public class Ignore {
                   var6.addBoundary(var0, var1, var2, var16, (Renderable)var30, (Renderable)null, class61.field735[var4], 0, var19, var20);
                   if(var8.clipped) {
                      if(var4 == 0) {
-                        class115.field1595[var0][var1][var2 + 1] = 50;
+                        Resampler.field1595[var0][var1][var2 + 1] = 50;
                      } else if(var4 == 1) {
-                        class115.field1595[var0][var1 + 1][var2 + 1] = 50;
+                        Resampler.field1595[var0][var1 + 1][var2 + 1] = 50;
                      } else if(var4 == 2) {
-                        class115.field1595[var0][var1 + 1][var2] = 50;
+                        Resampler.field1595[var0][var1 + 1][var2] = 50;
                      } else if(var4 == 3) {
-                        class115.field1595[var0][var1][var2] = 50;
+                        Resampler.field1595[var0][var1][var2] = 50;
                      }
                   }
 
@@ -391,8 +391,8 @@ public class Ignore {
 
                for(var23 = 0; var23 <= var9; ++var23) {
                   for(int var24 = 0; var24 <= var10; ++var24) {
-                     if(var22 > class115.field1595[var0][var23 + var1][var24 + var2]) {
-                        class115.field1595[var0][var23 + var1][var24 + var2] = (byte)var22;
+                     if(var22 > Resampler.field1595[var0][var23 + var1][var24 + var2]) {
+                        Resampler.field1595[var0][var23 + var1][var24 + var2] = (byte)var22;
                      }
                   }
                }

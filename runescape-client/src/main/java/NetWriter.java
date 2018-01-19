@@ -193,8 +193,8 @@ public class NetWriter {
    )
    static final void method1921(TaskDataNode var0) {
       var0.field1628 = false;
-      if(var0.field1631 != null) {
-         var0.field1631.int1 = 0;
+      if(var0.data != null) {
+         var0.data.int1 = 0;
       }
 
       for(TaskDataNode var1 = var0.vmethod4096(); var1 != null; var1 = var0.vmethod4097()) {

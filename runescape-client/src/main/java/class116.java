@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -20,9 +21,11 @@ public class class116 extends TaskDataNode {
    @ObfuscatedName("b")
    int field1608;
    @ObfuscatedName("e")
-   int field1607;
+   @Export("startPosition")
+   int startPosition;
    @ObfuscatedName("f")
-   int field1610;
+   @Export("endPosition")
+   int endPosition;
    @ObfuscatedName("z")
    boolean field1609;
    @ObfuscatedName("u")
@@ -37,10 +40,10 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldp;III)V"
    )
-   class116(class106 var1, int var2, int var3, int var4) {
-      super.field1631 = var1;
-      this.field1607 = var1.field1521;
-      this.field1610 = var1.field1524;
+   class116(RawAudioNode var1, int var2, int var3, int var4) {
+      super.data = var1;
+      this.startPosition = var1.startPosition;
+      this.endPosition = var1.endPosition;
       this.field1609 = var1.field1525;
       this.field1611 = var2;
       this.field1603 = var3;
@@ -52,10 +55,10 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldp;II)V"
    )
-   class116(class106 var1, int var2, int var3) {
-      super.field1631 = var1;
-      this.field1607 = var1.field1521;
-      this.field1610 = var1.field1524;
+   class116(RawAudioNode var1, int var2, int var3) {
+      super.data = var1;
+      this.startPosition = var1.startPosition;
+      this.endPosition = var1.endPosition;
       this.field1609 = var1.field1525;
       this.field1611 = var2;
       this.field1603 = var3;
@@ -97,10 +100,10 @@ public class class116 extends TaskDataNode {
       if(this.field1603 == 0 && this.field1606 == 0) {
          this.vmethod4100(var3);
       } else {
-         class106 var4 = (class106)super.field1631;
-         int var5 = this.field1607 << 8;
-         int var6 = this.field1610 << 8;
-         int var7 = var4.field1522.length << 8;
+         RawAudioNode var4 = (RawAudioNode)super.data;
+         int var5 = this.startPosition << 8;
+         int var6 = this.endPosition << 8;
+         int var7 = var4.audioBuffer.length << 8;
          int var8 = var6 - var5;
          if(var8 <= 0) {
             this.field1608 = 0;
@@ -131,7 +134,7 @@ public class class116 extends TaskDataNode {
          if(this.field1608 < 0) {
             if(this.field1609) {
                if(this.field1611 < 0) {
-                  var9 = this.method2199(var1, var2, var5, var3, var4.field1522[this.field1607]);
+                  var9 = this.method2199(var1, var2, var5, var3, var4.audioBuffer[this.startPosition]);
                   if(this.field1602 >= var5) {
                      return;
                   }
@@ -141,14 +144,14 @@ public class class116 extends TaskDataNode {
                }
 
                while(true) {
-                  var9 = this.method2198(var1, var9, var6, var3, var4.field1522[this.field1610 - 1]);
+                  var9 = this.method2198(var1, var9, var6, var3, var4.audioBuffer[this.endPosition - 1]);
                   if(this.field1602 < var6) {
                      return;
                   }
 
                   this.field1602 = var6 + var6 - 1 - this.field1602;
                   this.field1611 = -this.field1611;
-                  var9 = this.method2199(var1, var9, var5, var3, var4.field1522[this.field1607]);
+                  var9 = this.method2199(var1, var9, var5, var3, var4.audioBuffer[this.startPosition]);
                   if(this.field1602 >= var5) {
                      return;
                   }
@@ -158,7 +161,7 @@ public class class116 extends TaskDataNode {
                }
             } else if(this.field1611 < 0) {
                while(true) {
-                  var9 = this.method2199(var1, var9, var5, var3, var4.field1522[this.field1610 - 1]);
+                  var9 = this.method2199(var1, var9, var5, var3, var4.audioBuffer[this.endPosition - 1]);
                   if(this.field1602 >= var5) {
                      return;
                   }
@@ -167,7 +170,7 @@ public class class116 extends TaskDataNode {
                }
             } else {
                while(true) {
-                  var9 = this.method2198(var1, var9, var6, var3, var4.field1522[this.field1607]);
+                  var9 = this.method2198(var1, var9, var6, var3, var4.audioBuffer[this.startPosition]);
                   if(this.field1602 < var6) {
                      return;
                   }
@@ -180,7 +183,7 @@ public class class116 extends TaskDataNode {
                if(this.field1609) {
                   label143: {
                      if(this.field1611 < 0) {
-                        var9 = this.method2199(var1, var2, var5, var3, var4.field1522[this.field1607]);
+                        var9 = this.method2199(var1, var2, var5, var3, var4.audioBuffer[this.startPosition]);
                         if(this.field1602 >= var5) {
                            return;
                         }
@@ -193,7 +196,7 @@ public class class116 extends TaskDataNode {
                      }
 
                      do {
-                        var9 = this.method2198(var1, var9, var6, var3, var4.field1522[this.field1610 - 1]);
+                        var9 = this.method2198(var1, var9, var6, var3, var4.audioBuffer[this.endPosition - 1]);
                         if(this.field1602 < var6) {
                            return;
                         }
@@ -204,7 +207,7 @@ public class class116 extends TaskDataNode {
                            break;
                         }
 
-                        var9 = this.method2199(var1, var9, var5, var3, var4.field1522[this.field1607]);
+                        var9 = this.method2199(var1, var9, var5, var3, var4.audioBuffer[this.startPosition]);
                         if(this.field1602 >= var5) {
                            return;
                         }
@@ -217,7 +220,7 @@ public class class116 extends TaskDataNode {
                   int var10;
                   if(this.field1611 < 0) {
                      while(true) {
-                        var9 = this.method2199(var1, var9, var5, var3, var4.field1522[this.field1610 - 1]);
+                        var9 = this.method2199(var1, var9, var5, var3, var4.audioBuffer[this.endPosition - 1]);
                         if(this.field1602 >= var5) {
                            return;
                         }
@@ -234,7 +237,7 @@ public class class116 extends TaskDataNode {
                      }
                   } else {
                      while(true) {
-                        var9 = this.method2198(var1, var9, var6, var3, var4.field1522[this.field1607]);
+                        var9 = this.method2198(var1, var9, var6, var3, var4.audioBuffer[this.startPosition]);
                         if(this.field1602 < var6) {
                            return;
                         }
@@ -301,10 +304,10 @@ public class class116 extends TaskDataNode {
          }
       }
 
-      class106 var2 = (class106)super.field1631;
-      int var3 = this.field1607 << 8;
-      int var4 = this.field1610 << 8;
-      int var5 = var2.field1522.length << 8;
+      RawAudioNode var2 = (RawAudioNode)super.data;
+      int var3 = this.startPosition << 8;
+      int var4 = this.endPosition << 8;
+      int var5 = var2.audioBuffer.length << 8;
       int var6 = var4 - var3;
       if(var6 <= 0) {
          this.field1608 = 0;
@@ -483,7 +486,7 @@ public class class116 extends TaskDataNode {
 
    @ObfuscatedName("x")
    public synchronized void method2248(int var1) {
-      int var2 = ((class106)super.field1631).field1522.length << 8;
+      int var2 = ((RawAudioNode)super.data).audioBuffer.length << 8;
       if(var1 < -1) {
          var1 = -1;
       }
@@ -629,7 +632,7 @@ public class class116 extends TaskDataNode {
 
    @ObfuscatedName("at")
    public boolean method2172() {
-      return this.field1602 < 0 || this.field1602 >= ((class106)super.field1631).field1522.length << 8;
+      return this.field1602 < 0 || this.field1602 >= ((RawAudioNode)super.data).audioBuffer.length << 8;
    }
 
    @ObfuscatedName("ag")
@@ -649,14 +652,14 @@ public class class116 extends TaskDataNode {
             this.field1606 += var2;
             if(this.field1611 == 256 && (this.field1602 & 255) == 0) {
                if(class2.highMemory) {
-                  var2 = method2284(0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this);
+                  var2 = method2284(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this);
                } else {
-                  var2 = method2209(((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this);
+                  var2 = method2209(((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this);
                }
             } else if(class2.highMemory) {
-               var2 = method2214(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this, this.field1611, var5);
+               var2 = method2214(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this, this.field1611, var5);
             } else {
-               var2 = method2176(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this, this.field1611, var5);
+               var2 = method2176(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this, this.field1611, var5);
             }
 
             this.field1606 -= var2;
@@ -673,17 +676,17 @@ public class class116 extends TaskDataNode {
 
          if(this.field1611 == 256 && (this.field1602 & 255) == 0) {
             if(class2.highMemory) {
-               return method2285(0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this);
+               return method2285(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this);
             }
 
-            return method2332(((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, 0, var4, var3, this);
+            return method2332(((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, 0, var4, var3, this);
          }
 
          if(class2.highMemory) {
-            return method2206(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this, this.field1611, var5);
+            return method2206(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this, this.field1611, var5);
          }
 
-         return method2205(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, 0, var4, var3, this, this.field1611, var5);
+         return method2205(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, 0, var4, var3, this, this.field1611, var5);
       }
    }
 
@@ -699,14 +702,14 @@ public class class116 extends TaskDataNode {
             this.field1606 += var2;
             if(this.field1611 == -256 && (this.field1602 & 255) == 0) {
                if(class2.highMemory) {
-                  var2 = method2212(0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this);
+                  var2 = method2212(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this);
                } else {
-                  var2 = method2211(((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this);
+                  var2 = method2211(((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this);
                }
             } else if(class2.highMemory) {
-               var2 = method2216(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this, this.field1611, var5);
+               var2 = method2216(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, this.field1614, this.field1615, 0, var6, var3, this, this.field1611, var5);
             } else {
-               var2 = method2215(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this, this.field1611, var5);
+               var2 = method2215(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, this.field1613, 0, var6, var3, this, this.field1611, var5);
             }
 
             this.field1606 -= var2;
@@ -723,17 +726,17 @@ public class class116 extends TaskDataNode {
 
          if(this.field1611 == -256 && (this.field1602 & 255) == 0) {
             if(class2.highMemory) {
-               return method2193(0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this);
+               return method2193(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this);
             }
 
-            return method2203(((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, 0, var4, var3, this);
+            return method2203(((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, 0, var4, var3, this);
          }
 
          if(class2.highMemory) {
-            return method2208(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this, this.field1611, var5);
+            return method2208(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1601, this.field1612, 0, var4, var3, this, this.field1611, var5);
          }
 
-         return method2207(0, 0, ((class106)super.field1631).field1522, var1, this.field1602, var2, this.field1605, 0, var4, var3, this, this.field1611, var5);
+         return method2207(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1602, var2, this.field1605, 0, var4, var3, this, this.field1611, var5);
       }
    }
 
@@ -811,9 +814,9 @@ public class class116 extends TaskDataNode {
       int var1 = this.field1605 * 3 >> 6;
       var1 = (var1 ^ var1 >> 31) + (var1 >>> 31);
       if(this.field1608 == 0) {
-         var1 -= var1 * this.field1602 / (((class106)super.field1631).field1522.length << 8);
+         var1 -= var1 * this.field1602 / (((RawAudioNode)super.data).audioBuffer.length << 8);
       } else if(this.field1608 >= 0) {
-         var1 -= var1 * this.field1607 / ((class106)super.field1631).field1522.length;
+         var1 -= var1 * this.startPosition / ((RawAudioNode)super.data).audioBuffer.length;
       }
 
       return var1 > 255?255:var1;
@@ -833,16 +836,16 @@ public class class116 extends TaskDataNode {
    @ObfuscatedSignature(
       signature = "(Ldp;II)Ldt;"
    )
-   public static class116 method2286(class106 var0, int var1, int var2) {
-      return var0.field1522 != null && var0.field1522.length != 0?new class116(var0, (int)((long)var0.field1523 * 256L * (long)var1 / (long)(AbstractSoundSystem.sampleRate * 100)), var2 << 6):null;
+   public static class116 method2286(RawAudioNode var0, int var1, int var2) {
+      return var0.audioBuffer != null && var0.audioBuffer.length != 0?new class116(var0, (int)((long)var0.sampleRate * 256L * (long)var1 / (long)(AbstractSoundSystem.sampleRate * 100)), var2 << 6):null;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(Ldp;III)Ldt;"
    )
-   public static class116 method2301(class106 var0, int var1, int var2, int var3) {
-      return var0.field1522 != null && var0.field1522.length != 0?new class116(var0, var1, var2, var3):null;
+   public static class116 method2301(RawAudioNode var0, int var1, int var2, int var3) {
+      return var0.audioBuffer != null && var0.audioBuffer.length != 0?new class116(var0, var1, var2, var3):null;
    }
 
    @ObfuscatedName("bg")

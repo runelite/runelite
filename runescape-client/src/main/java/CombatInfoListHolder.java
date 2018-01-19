@@ -305,7 +305,7 @@ public class CombatInfoListHolder extends Node {
                   var50 = UnitPriceComparator.field301[var49];
                   if(var50 == null && GrandExchangeEvents.field263 < 800) {
                      FontName.method4928();
-                     class115.method2169(var3, var4, 64, 64);
+                     Resampler.method2169(var3, var4, 64, 64);
                   }
                }
 
@@ -410,7 +410,7 @@ public class CombatInfoListHolder extends Node {
                   for(var3 = 0; var3 < 13; ++var3) {
                      var4 = Client.field1118[0][var49][var3];
                      if(var4 == -1) {
-                        class115.method2169(var49 * 8, var3 * 8, 8, 8);
+                        Resampler.method2169(var49 * 8, var3 * 8, 8, 8);
                      }
                   }
                }

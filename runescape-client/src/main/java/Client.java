@@ -253,18 +253,22 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 1020512921
    )
-   static int field1025;
+   @Export("queuedSoundEffectCount")
+   static int queuedSoundEffectCount;
    @ObfuscatedName("or")
-   static int[] field1096;
+   @Export("queuedSoundEffectIDs")
+   static int[] queuedSoundEffectIDs;
    @ObfuscatedName("od")
    @ObfuscatedGetter(
       intValue = -1346122679
    )
    static int field1089;
    @ObfuscatedName("oh")
-   static int[] field1027;
+   @Export("unknownSoundValues1")
+   static int[] unknownSoundValues1;
    @ObfuscatedName("ox")
-   static int[] field1098;
+   @Export("unknownSoundValues2")
+   static int[] unknownSoundValues2;
    @ObfuscatedName("oc")
    @ObfuscatedSignature(
       signature = "[Ldq;"
@@ -272,7 +276,8 @@ public final class Client extends GameEngine {
    @Export("audioEffects")
    static SoundEffect[] audioEffects;
    @ObfuscatedName("oa")
-   static int[] field1099;
+   @Export("soundLocations")
+   static int[] soundLocations;
    @ObfuscatedName("ni")
    @ObfuscatedSignature(
       signature = "[Lkg;"
@@ -1373,11 +1378,11 @@ public final class Client extends GameEngine {
       field991 = false;
       field903 = 127;
       field1094 = 127;
-      field1025 = 0;
-      field1096 = new int[50];
-      field1027 = new int[50];
-      field1098 = new int[50];
-      field1099 = new int[50];
+      queuedSoundEffectCount = 0;
+      queuedSoundEffectIDs = new int[50];
+      unknownSoundValues1 = new int[50];
+      unknownSoundValues2 = new int[50];
+      soundLocations = new int[50];
       audioEffects = new SoundEffect[50];
       field1101 = false;
       field1097 = new boolean[5];
@@ -1578,7 +1583,7 @@ public final class Client extends GameEngine {
    @Hook("clientMainLoop")
    @Export("methodDraw")
    protected final void methodDraw(boolean var1) {
-      boolean var2 = GroundObject.method2559();
+      boolean var2 = GroundObject.loadCurrentSong();
       if(var2 && field991 && Renderable.soundSystem0 != null) {
          Renderable.soundSystem0.tryFlush();
       }
@@ -2550,7 +2555,7 @@ public final class Client extends GameEngine {
                   class96.field1427 = 0;
                   itemSelectionState = 0;
                   spellSelected = false;
-                  field1025 = 0;
+                  queuedSoundEffectCount = 0;
                   mapAngle = 0;
                   field1089 = 0;
                   field1082 = -1;
@@ -2996,31 +3001,31 @@ public final class Client extends GameEngine {
             if(gameState == 30) {
                AbstractByteBuffer.method3583();
 
-               for(var1 = 0; var1 < field1025; ++var1) {
-                  --field1098[var1];
-                  if(field1098[var1] >= -10) {
+               for(var1 = 0; var1 < queuedSoundEffectCount; ++var1) {
+                  --unknownSoundValues2[var1];
+                  if(unknownSoundValues2[var1] >= -10) {
                      SoundEffect var32 = audioEffects[var1];
                      if(var32 == null) {
                         Object var10000 = null;
-                        var32 = SoundEffect.getTrack(class19.indexCache4, field1096[var1], 0);
+                        var32 = SoundEffect.getTrack(class19.indexCache4, queuedSoundEffectIDs[var1], 0);
                         if(var32 == null) {
                            continue;
                         }
 
-                        field1098[var1] += var32.calculateDelay();
+                        unknownSoundValues2[var1] += var32.calculateDelay();
                         audioEffects[var1] = var32;
                      }
 
-                     if(field1098[var1] < 0) {
-                        if(field1099[var1] != 0) {
-                           var4 = (field1099[var1] & 255) * 128;
-                           var5 = field1099[var1] >> 16 & 255;
+                     if(unknownSoundValues2[var1] < 0) {
+                        if(soundLocations[var1] != 0) {
+                           var4 = (soundLocations[var1] & 255) * 128;
+                           var5 = soundLocations[var1] >> 16 & 255;
                            var6 = var5 * 128 + 64 - GrandExchangeOffer.localPlayer.x;
                            if(var6 < 0) {
                               var6 = -var6;
                            }
 
-                           var7 = field1099[var1] >> 8 & 255;
+                           var7 = soundLocations[var1] >> 8 & 255;
                            var8 = var7 * 128 + 64 - GrandExchangeOffer.localPlayer.y;
                            if(var8 < 0) {
                               var8 = -var8;
@@ -3028,7 +3033,7 @@ public final class Client extends GameEngine {
 
                            var9 = var6 + var8 - 128;
                            if(var9 > var4) {
-                              field1098[var1] = -100;
+                              unknownSoundValues2[var1] = -100;
                               continue;
                            }
 
@@ -3042,23 +3047,23 @@ public final class Client extends GameEngine {
                         }
 
                         if(var3 > 0) {
-                           class106 var21 = var32.method1986().method2030(class23.field343);
+                           RawAudioNode var21 = var32.generateAudioNode().applyResampler(class23.resampler);
                            class116 var22 = class116.method2286(var21, 100, var3);
-                           var22.method2177(field1027[var1] - 1);
+                           var22.method2177(unknownSoundValues1[var1] - 1);
                            class89.field1328.method1938(var22);
                         }
 
-                        field1098[var1] = -100;
+                        unknownSoundValues2[var1] = -100;
                      }
                   } else {
-                     --field1025;
+                     --queuedSoundEffectCount;
 
-                     for(var2 = var1; var2 < field1025; ++var2) {
-                        field1096[var2] = field1096[var2 + 1];
+                     for(var2 = var1; var2 < queuedSoundEffectCount; ++var2) {
+                        queuedSoundEffectIDs[var2] = queuedSoundEffectIDs[var2 + 1];
                         audioEffects[var2] = audioEffects[var2 + 1];
-                        field1027[var2] = field1027[var2 + 1];
-                        field1098[var2] = field1098[var2 + 1];
-                        field1099[var2] = field1099[var2 + 1];
+                        unknownSoundValues1[var2] = unknownSoundValues1[var2 + 1];
+                        unknownSoundValues2[var2] = unknownSoundValues2[var2 + 1];
+                        soundLocations[var2] = soundLocations[var2 + 1];
                      }
 
                      --var1;
@@ -3548,7 +3553,7 @@ public final class Client extends GameEngine {
                      var10000 = null;
                      SoundEffect var14 = SoundEffect.getTrack(class19.indexCache4, var5.field1248, 0);
                      if(var14 != null) {
-                        class106 var15 = var14.method1986().method2030(class23.field343);
+                        RawAudioNode var15 = var14.generateAudioNode().applyResampler(class23.resampler);
                         class116 var16 = class116.method2286(var15, 100, var7);
                         var16.method2177(-1);
                         class89.field1328.method1938(var16);
@@ -3565,7 +3570,7 @@ public final class Client extends GameEngine {
                      var10000 = null;
                      SoundEffect var18 = SoundEffect.getTrack(class19.indexCache4, var5.field1245[var8], 0);
                      if(var18 != null) {
-                        class106 var19 = var18.method1986().method2030(class23.field343);
+                        RawAudioNode var19 = var18.generateAudioNode().applyResampler(class23.resampler);
                         class116 var11 = class116.method2286(var19, 100, var7);
                         var11.method2177(0);
                         class89.field1328.method1938(var11);
@@ -4052,7 +4057,7 @@ public final class Client extends GameEngine {
                      return true;
                   }
 
-                  var86 = class115.getItemDefinition(var6);
+                  var86 = Resampler.getItemDefinition(var6);
                   var92.modelType = 4;
                   var92.modelId = var6;
                   var92.rotationX = var86.xan2d;
@@ -4062,7 +4067,7 @@ public final class Client extends GameEngine {
                } else {
                   var92.itemId = var6;
                   var92.itemQuantity = var77;
-                  var86 = class115.getItemDefinition(var6);
+                  var86 = Resampler.getItemDefinition(var6);
                   var92.rotationX = var86.xan2d;
                   var92.rotationZ = var86.yan2d;
                   var92.rotationY = var86.zan2d;
@@ -4391,13 +4396,13 @@ public final class Client extends GameEngine {
                var77 = var3.readUnsignedShort();
                var24 = var3.readUnsignedByte();
                var6 = var3.readUnsignedShort();
-               if(field903 != 0 && var24 != 0 && field1025 < 50) {
-                  field1096[field1025] = var77;
-                  field1027[field1025] = var24;
-                  field1098[field1025] = var6;
-                  audioEffects[field1025] = null;
-                  field1099[field1025] = 0;
-                  ++field1025;
+               if(field903 != 0 && var24 != 0 && queuedSoundEffectCount < 50) {
+                  queuedSoundEffectIDs[queuedSoundEffectCount] = var77;
+                  unknownSoundValues1[queuedSoundEffectCount] = var24;
+                  unknownSoundValues2[queuedSoundEffectCount] = var6;
+                  audioEffects[queuedSoundEffectCount] = null;
+                  soundLocations[queuedSoundEffectCount] = 0;
+                  ++queuedSoundEffectCount;
                }
 
                var1.serverPacket = null;

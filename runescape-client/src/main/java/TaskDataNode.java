@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -18,7 +19,8 @@ public abstract class TaskDataNode extends Node {
    @ObfuscatedSignature(
       signature = "Ldy;"
    )
-   AbstractIntegerNode0 field1631;
+   @Export("data")
+   AbstractIntegerNode0 data;
 
    protected TaskDataNode() {
       this.field1628 = true;

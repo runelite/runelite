@@ -93,7 +93,7 @@ public abstract class class168 {
       int var17;
       int var18;
       for(var2 = 0; var2 < 4; ++var2) {
-         byte[][] var42 = class115.field1595[var2];
+         byte[][] var42 = Resampler.field1595[var2];
          var9 = (int)Math.sqrt(5100.0D);
          var10 = var9 * 768 >> 8;
 
@@ -307,7 +307,7 @@ public abstract class class168 {
          class61.field731[var2] = null;
          class61.field733[var2] = null;
          class37.field487[var2] = null;
-         class115.field1595[var2] = null;
+         Resampler.field1595[var2] = null;
       }
 
       var0.applyLighting(-50, -10, -50);

@@ -648,7 +648,7 @@ public class VertexNormal {
                            class33.field448 = var1;
                            class22.field335 = var3;
                            class28.method220(var24);
-                           Client.lastSelectedItemName = class54.getColTags(16748608) + class115.getItemDefinition(var3).name + class54.getColTags(16777215);
+                           Client.lastSelectedItemName = class54.getColTags(16748608) + Resampler.getItemDefinition(var3).name + class54.getColTags(16777215);
                            if(Client.lastSelectedItemName == null) {
                               Client.lastSelectedItemName = "null";
                            }
@@ -893,7 +893,7 @@ public class VertexNormal {
                                  if(var2 == 1005) {
                                     var24 = UrlRequester.getWidget(var1);
                                     if(var24 != null && var24.itemQuantities[var0] >= 100000) {
-                                       Preferences.sendGameMessage(27, "", var24.itemQuantities[var0] + " x " + class115.getItemDefinition(var3).name);
+                                       Preferences.sendGameMessage(27, "", var24.itemQuantities[var0] + " x " + Resampler.getItemDefinition(var3).name);
                                     } else {
                                        var9 = class235.method4272(ClientPacket.field2337, Client.field915.field1462);
                                        var9.packetBuffer.writeIntLE16(var3);

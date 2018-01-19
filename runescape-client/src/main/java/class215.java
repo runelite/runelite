@@ -375,7 +375,7 @@ public class class215 extends TaskDataNode {
 
       class218 var9 = (class218)this.field2649.get((long)this.field2643[var1]);
       if(var9 != null) {
-         class106 var8 = var9.field2707[var2];
+         RawAudioNode var8 = var9.field2707[var2];
          if(var8 != null) {
             class216 var6 = new class216();
             var6.field2666 = var1;
@@ -425,10 +425,10 @@ public class class215 extends TaskDataNode {
       garbageValue = "1483674486"
    )
    void method4014(class216 var1, boolean var2) {
-      int var3 = var1.field2669.field1522.length;
+      int var3 = var1.field2669.audioBuffer.length;
       int var4;
       if(var2 && var1.field2669.field1525) {
-         int var5 = var3 + var3 - var1.field2669.field1521;
+         int var5 = var3 + var3 - var1.field2669.startPosition;
          var4 = (int)((long)var5 * (long)this.field2651[var1.field2666] >> 6);
          var3 <<= 8;
          if(var4 >= var3) {
@@ -831,7 +831,7 @@ public class class215 extends TaskDataNode {
          var2 += (int)(var6 * (double)var4);
       }
 
-      var4 = (int)((double)(var1.field2669.field1523 * 256) * Math.pow(2.0D, 3.255208333333333E-4D * (double)var2) / (double)AbstractSoundSystem.sampleRate + 0.5D);
+      var4 = (int)((double)(var1.field2669.sampleRate * 256) * Math.pow(2.0D, 3.255208333333333E-4D * (double)var2) / (double)AbstractSoundSystem.sampleRate + 0.5D);
       return var4 < 1?1:var4;
    }
 
@@ -1360,13 +1360,13 @@ public class class215 extends TaskDataNode {
             if(var0.poseFrame < var2.frameIDs.length && var0.field1180 > var2.frameLenghts[var0.poseFrame]) {
                var0.field1180 = 1;
                ++var0.poseFrame;
-               class167.method3229(var2, var0.poseFrame, var0.x, var0.y);
+               class167.queueAnimationSound(var2, var0.poseFrame, var0.x, var0.y);
             }
 
             if(var0.poseFrame >= var2.frameIDs.length) {
                var0.field1180 = 0;
                var0.poseFrame = 0;
-               class167.method3229(var2, var0.poseFrame, var0.x, var0.y);
+               class167.queueAnimationSound(var2, var0.poseFrame, var0.x, var0.y);
             }
          } else {
             var0.poseAnimation = -1;
@@ -1386,7 +1386,7 @@ public class class215 extends TaskDataNode {
                if(var0.field1187 < var3.frameIDs.length && var0.field1188 > var3.frameLenghts[var0.field1187]) {
                   var0.field1188 = 1;
                   ++var0.field1187;
-                  class167.method3229(var3, var0.field1187, var0.x, var0.y);
+                  class167.queueAnimationSound(var3, var0.field1187, var0.x, var0.y);
                }
 
                if(var0.field1187 >= var3.frameIDs.length && (var0.field1187 < 0 || var0.field1187 >= var3.frameIDs.length)) {
@@ -1415,7 +1415,7 @@ public class class215 extends TaskDataNode {
             if(var0.actionFrame < var2.frameIDs.length && var0.field1159 > var2.frameLenghts[var0.actionFrame]) {
                var0.field1159 = 1;
                ++var0.actionFrame;
-               class167.method3229(var2, var0.actionFrame, var0.x, var0.y);
+               class167.queueAnimationSound(var2, var0.actionFrame, var0.x, var0.y);
             }
 
             if(var0.actionFrame >= var2.frameIDs.length) {
@@ -1424,7 +1424,7 @@ public class class215 extends TaskDataNode {
                if(var0.field1185 >= var2.maxLoops) {
                   var0.animation = -1;
                } else if(var0.actionFrame >= 0 && var0.actionFrame < var2.frameIDs.length) {
-                  class167.method3229(var2, var0.actionFrame, var0.x, var0.y);
+                  class167.queueAnimationSound(var2, var0.actionFrame, var0.x, var0.y);
                } else {
                   var0.animation = -1;
                }

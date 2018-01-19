@@ -756,7 +756,7 @@ public class class46 {
                UrlRequester.soundSystem1 = DynamicObject.method1885(class179.taskManager, 1, 2048);
                class89.field1328 = new class101();
                UrlRequester.soundSystem1.method2063(class89.field1328);
-               class23.field343 = new class115(22050, AbstractSoundSystem.sampleRate);
+               class23.resampler = new Resampler(22050, AbstractSoundSystem.sampleRate);
                class91.loadingText = "Prepared sound engine";
                class91.loadingBarPercentage = 35;
                Client.loadingStage = 50;

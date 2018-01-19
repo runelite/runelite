@@ -161,7 +161,7 @@ public class class37 {
             Client.destinationY -= var6;
          }
 
-         Client.field1025 = 0;
+         Client.queuedSoundEffectCount = 0;
          Client.field1101 = false;
          Client.field1082 = -1;
          Client.graphicsObjectDeque.clear();
