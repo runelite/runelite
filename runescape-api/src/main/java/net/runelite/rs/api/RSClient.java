@@ -355,4 +355,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("rasterProvider")
 	@Override
 	BufferProvider getBufferProvider();
+
+	@Import("mouseIdleTicks")
+	@Override
+	int getMouseIdleTicks();
+
+	@Import("keyboardIdleTicks")
+	@Override
+	int getKeyboardIdleTicks();
 }
