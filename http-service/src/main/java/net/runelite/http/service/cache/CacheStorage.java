@@ -34,13 +34,14 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.FileData;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
+import net.runelite.http.service.cache.beans.FileEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
 
 public class CacheStorage implements Storage
 {
-	private final CacheEntry cacheEntry;
+	private CacheEntry cacheEntry;
 	private final CacheDAO cacheDao;
 	private final Connection con;
 
@@ -49,6 +50,16 @@ public class CacheStorage implements Storage
 		this.cacheEntry = cacheEntry;
 		this.cacheDao = cacheDao;
 		this.con = con;
+	}
+
+	public CacheEntry getCacheEntry()
+	{
+		return cacheEntry;
+	}
+
+	public void setCacheEntry(CacheEntry cacheEntry)
+	{
+		this.cacheEntry = cacheEntry;
 	}
 
 	@Override
@@ -91,7 +102,30 @@ public class CacheStorage implements Storage
 	@Override
 	public void save(Store store) throws IOException
 	{
-		throw new UnsupportedOperationException();
+		for (Index index : store.getIndexes())
+		{
+			IndexEntry entry = cacheDao.findOrCreateIndex(con, cacheEntry, index.getId(), index.getCrc(), index.getRevision());
+			// this assumes nothing is associated to the cache yet
+			cacheDao.associateIndexToCache(con, cacheEntry, entry);
+
+			for (Archive archive : index.getArchives())
+			{
+				ArchiveEntry archiveEntry = cacheDao.findArchive(con, entry, archive.getArchiveId(),
+					archive.getNameHash(), archive.getCrc(), archive.getRevision());
+				if (archiveEntry == null)
+				{
+					byte[] hash = archive.getHash();
+					archiveEntry = cacheDao.createArchive(con, entry, archive.getArchiveId(),
+						archive.getNameHash(), archive.getCrc(), archive.getRevision(), hash);
+
+					for (FileData file : archive.getFileData())
+					{
+						cacheDao.associateFileToArchive(con, archiveEntry, file.getId(), file.getNameHash());
+					}
+				}
+				cacheDao.associateArchiveToIndex(con, archiveEntry, entry);
+			}
+		}
 	}
 
 	@Override
