@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import javax.swing.text.StyleContext;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -40,14 +41,22 @@ public class FontManager
 
 		try
 		{
-			runescapeFont = Font.createFont(Font.TRUETYPE_FONT,
+			Font font = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape.ttf"))
 				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(font);
+
+			runescapeFont = StyleContext.getDefaultStyleContext()
+					.getFont(font.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
-			runescapeSmallFont = Font.createFont(Font.TRUETYPE_FONT,
+			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
 				FontManager.class.getResourceAsStream("runescape_small.ttf"))
 				.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(smallFont);
+
+			runescapeSmallFont = StyleContext.getDefaultStyleContext()
+					.getFont(smallFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 		}
 		catch (FontFormatException ex)
