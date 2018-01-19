@@ -65,7 +65,7 @@ public class CacheUpdater
 
 	private final Sql2o sql2o;
 	private final MinioClient minioClient;
-	
+
 	@Value("${minio.bucket}")
 	private String minioBucket;
 
@@ -117,10 +117,20 @@ public class CacheUpdater
 				}
 
 				@Override
+				public void alreadyUpToDate(Archive archive)
+				{
+					updateArchive(archive);
+				}
+
+				@Override
 				public void downloadComplete(Archive archive, byte[] data)
 				{
 					executor.submit(new CacheUploader(minioClient, minioBucket, archive, data));
+					updateArchive(archive);
+				}
 
+				private void updateArchive(Archive archive)
+				{
 					IndexEntry entry = indexEntryMap.get(archive.getIndex());
 					ArchiveEntry archiveEntry = cacheDao.findArchive(con, entry, archive.getArchiveId(),
 						archive.getNameHash(), archive.getCrc(), archive.getRevision());
