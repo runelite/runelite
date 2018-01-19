@@ -115,6 +115,9 @@ import net.runelite.client.ui.ClientUI;
 )
 public class IdleNotifierPlugin extends Plugin
 {
+	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+
 	@Inject
 	Notifier notifier;
 
@@ -134,6 +137,11 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyIdle = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean notifyIdleLogout = true;
+	private boolean notify6HourLogout = true;
+
+	private Instant sixHourWarningTime;
+	private boolean ready;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -242,6 +250,24 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
+
+		GameState state = gameStateChanged.getGameState();
+
+		switch (state)
+		{
+			case LOGGING_IN:
+			case HOPPING:
+			case CONNECTION_LOST:
+				ready = true;
+				break;
+			case LOGGED_IN:
+				if (ready)
+				{
+					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
+					ready = false;
+				}
+				break;
+		}
 	}
 
 	@Schedule(
@@ -255,6 +281,33 @@ public class IdleNotifierPlugin extends Plugin
 		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
+		}
+
+		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
+				&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
+		{
+			if (notifyIdleLogout)
+			{
+				sendNotification("[" + local.getName() + "] is about to log out from idling too long!");
+				notifyIdleLogout = false;
+			}
+		}
+		else
+		{
+			notifyIdleLogout = true;
+		}
+
+		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
+		{
+			if (notify6HourLogout)
+			{
+				sendNotification("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+				notify6HourLogout = false;
+			}
+		}
+		else
+		{
+			notify6HourLogout = true;
 		}
 
 		Duration waitDuration = Duration.ofMillis(config.getTimeout());

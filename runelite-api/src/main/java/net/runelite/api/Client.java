@@ -176,4 +176,8 @@ public interface Client
 
 
 	BufferProvider getBufferProvider();
+
+	int getMouseIdleTicks();
+
+	int getKeyboardIdleTicks();
 }
