@@ -25,7 +25,6 @@
 package net.runelite.http.service.cache;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
@@ -34,7 +33,6 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.FileData;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
-import net.runelite.http.service.cache.beans.FileEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
@@ -76,7 +74,6 @@ public class CacheStorage implements Storage
 	public void load(Store store) throws IOException
 	{
 		List<IndexEntry> indexes = cacheDao.findIndexesForCache(con, cacheEntry);
-		List<FileData> fileData = new ArrayList<>();
 		for (IndexEntry indexEntry : indexes)
 		{
 			Index index = store.addIndex(indexEntry.getIndexId());
