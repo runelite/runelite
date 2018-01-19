@@ -59,6 +59,9 @@ public enum AoeProjectileInfo
 	GALVEK_MINE(ProjectileID.GALVEK_MINE, 3600, 3),
 	GALVEK_BOMB(ProjectileID.GALVEK_BOMB, 2400, 3),
 
+	DAWN_FREEZE(ProjectileID.DAWN_FREEZE, 3000, 3),
+	DUSK_CEILING(ProjectileID.DUSK_CEILING, 3000, 3),
+
 	/**
 	 * the AOE of Vet'ion
 	 */
