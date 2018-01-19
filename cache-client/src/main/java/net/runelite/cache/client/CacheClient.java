@@ -279,10 +279,6 @@ public class CacheClient implements AutoCloseable
 				{
 					logger.debug("Archive {}/{} in index {} is up to date",
 						ad.getId(), indexData.getArchives().length, index.getId());
-					if (watcher != null)
-					{
-						watcher.alreadyUpToDate(existing);
-					}
 					continue;
 				}
 
