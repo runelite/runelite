@@ -31,7 +31,5 @@ public interface DownloadWatcher
 {
 	void indexComplete(Index index);
 
-	void alreadyUpToDate(Archive archive);
-
 	void downloadComplete(Archive archive, byte[] data);
 }
