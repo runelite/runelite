@@ -112,6 +112,8 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+
+		renderer.provideScreenshot(image);
 	}
 
 	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)

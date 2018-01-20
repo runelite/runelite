@@ -152,7 +152,13 @@ public enum WidgetInfo
 	BA_DEF_CALL_TEXT(WidgetID.BA_DEFENDER_GROUP_ID, WidgetID.BarbarianAssault.TO_CALL),
 	BA_DEF_LISTEN_TEXT(WidgetID.BA_DEFENDER_GROUP_ID, WidgetID.BarbarianAssault.CORRECT_STYLE),
 	BA_DEF_ROLE_TEXT(WidgetID.BA_DEFENDER_GROUP_ID, WidgetID.BarbarianAssault.ROLE),
-	BA_DEF_ROLE_SPRITE(WidgetID.BA_DEFENDER_GROUP_ID, WidgetID.BarbarianAssault.ROLE_SPRITE);
+	BA_DEF_ROLE_SPRITE(WidgetID.BA_DEFENDER_GROUP_ID, WidgetID.BarbarianAssault.ROLE_SPRITE),
+
+	LEVEL_UP(WidgetID.LEVEL_UP_GROUP_ID, 0),
+	LEVEL_UP_TEXT(WidgetID.LEVEL_UP_GROUP_ID, WidgetID.LevelUp.TEXT),
+
+	QUEST_COMPLETED(WidgetID.QUEST_COMPLETED_GROUP_ID, 0),
+	QUEST_COMPLETED_NAME_TEXT(WidgetID.QUEST_COMPLETED_GROUP_ID, WidgetID.QuestCompleted.NAME_TEXT);
 
 	private final int groupId;
 	private final int childId;
