@@ -251,7 +251,7 @@ public class ItemService
 
 		return ResponseEntity.ok()
 			.header(RUNELITE_CACHE, hit ? "HIT" : "MISS")
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES))
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
 			.body(itemPrice);
 	}
 
