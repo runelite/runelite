@@ -84,19 +84,19 @@ public class Hooks
 		try
 		{
 			death.check();
+
+			// tick pending scheduled tasks
+			scheduler.tick();
+
+			// cull infoboxes
+			infoBoxManager.cull();
+
+			chatMessageManager.process();
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during death check", ex);
+			log.warn("error during main loop tasks", ex);
 		}
-
-		// tick pending scheduled tasks
-		scheduler.tick();
-
-		// cull infoboxes
-		infoBoxManager.cull();
-
-		chatMessageManager.process();
 	}
 
 	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
