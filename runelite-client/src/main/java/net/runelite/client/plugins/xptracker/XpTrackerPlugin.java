@@ -25,22 +25,34 @@
 package net.runelite.client.plugins.xptracker;
 
 import com.google.common.eventbus.Subscribe;
+import java.io.IOException;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Objects;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
-import java.time.temporal.ChronoUnit;
-import javax.inject.Inject;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "XP tracker plugin"
 )
+@Slf4j
 public class XpTrackerPlugin extends Plugin
 {
 	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
@@ -54,10 +66,25 @@ public class XpTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
+	private WorldResult worlds;
+
+	private XpWorldType lastWorldType;
+	private String lastUsername;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		WorldClient worldClient = new WorldClient();
+		try
+		{
+			worlds = worldClient.lookupWorlds();
+			log.debug("Worlds list contains {} worlds", worlds.getWorlds().size());
+		}
+		catch (IOException e)
+		{
+			log.warn("Error looking up worlds list", e);
+		}
+
 		xpPanel = injector.getInstance(XpPanel.class);
 		navButton = new NavigationButton(
 			"XP Tracker",
@@ -76,13 +103,47 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		// reset on world hop or logging in
-		switch (event.getGameState())
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			case HOPPING:
-			case LOGGING_IN:
+			// LOGGED_IN is triggered between region changes too.
+			// Check that the username changed or the world type changed.
+			World world = worlds.findWorld(client.getWorld());
+
+			if (world == null)
+			{
+				log.warn("Logged into nonexistent world {}?", client.getWorld());
+				return;
+			}
+
+			XpWorldType type = worldSetToType(world.getTypes());
+
+			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
+			{
+				// Reset
+				log.debug("World change: {} -> {}, {} -> {}",
+					lastUsername, client.getUsername(), lastWorldType, type);
+
+				lastUsername = client.getUsername();
+				lastWorldType = type;
+
 				xpPanel.resetAllSkillXpHr();
+				Arrays.fill(xpInfos, null);
+			}
 		}
+	}
+
+	private XpWorldType worldSetToType(EnumSet<WorldType> types)
+	{
+		XpWorldType xpType = NORMAL;
+		for (WorldType type : types)
+		{
+			XpWorldType t = XpWorldType.of(type);
+			if (t != NORMAL)
+			{
+				xpType = t;
+			}
+		}
+		return xpType;
 	}
 
 	@Subscribe

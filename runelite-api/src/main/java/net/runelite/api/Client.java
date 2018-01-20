@@ -62,6 +62,8 @@ public interface Client extends GameEngine
 
 	int getCameraYaw();
 
+	int getWorld();
+
 	int getViewportHeight();
 
 	int getViewportWidth();
