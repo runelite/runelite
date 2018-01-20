@@ -102,6 +102,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getWidth();
 
+	@Import("width")
+	@Override
+	void setWidth(int width);
+
 	@Import("height")
 	@Override
 	int getHeight();
