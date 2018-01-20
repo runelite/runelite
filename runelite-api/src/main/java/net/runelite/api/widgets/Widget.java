@@ -80,6 +80,8 @@ public interface Widget
 
 	int getWidth();
 
+	void setWidth(int width);
+
 	int getHeight();
 
 	Rectangle getBounds();
