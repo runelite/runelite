@@ -66,6 +66,8 @@ public interface Widget
 
 	String getName();
 
+	void setName(String name);
+
 	int getModelId();
 
 	int getSpriteId();

@@ -67,6 +67,9 @@ public interface RSWidget extends Widget
 	@Import("name")
 	String getRSName();
 
+	@Import("name")
+	void setRSName(String name);
+
 	@Import("text")
 	@Override
 	void setText(String text);
