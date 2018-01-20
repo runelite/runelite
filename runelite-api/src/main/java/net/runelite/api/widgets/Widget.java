@@ -62,6 +62,8 @@ public interface Widget
 
 	int getTextColor();
 
+	void setTextColor(int textColor);
+
 	String getName();
 
 	int getModelId();

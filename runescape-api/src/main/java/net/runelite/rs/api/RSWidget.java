@@ -75,6 +75,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getTextColor();
 
+	@Import("textColor")
+	@Override
+	void setTextColor(int textColor);
+
 	@Import("opacity")
 	int getOpacity();
 
