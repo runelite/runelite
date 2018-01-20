@@ -88,12 +88,11 @@ public class PluginToolbar extends JToolBar
 		}
 		else
 		{
+			current = button;
+			current.setSelected(true);
 
 			PluginPanel pluginPanel = panelSupplier.get();
 			ui.expand(pluginPanel);
-
-			current = button;
-			current.setSelected(true);
 		}
 	}
 }
