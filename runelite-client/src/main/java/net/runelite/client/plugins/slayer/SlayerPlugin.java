@@ -283,7 +283,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
-		if (config.enabled() && config.showInfobox())
+		if (config.enabled() && config.showInfobox() && counter != null)
 		{
 			infoBoxManager.addInfoBox(counter);
 		}
