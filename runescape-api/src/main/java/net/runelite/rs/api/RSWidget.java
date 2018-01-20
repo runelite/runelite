@@ -110,6 +110,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getHeight();
 
+	@Import("height")
+	@Override
+	void setHeight(int height);
+
 	@Import("isHidden")
 	boolean isRSHidden();
 
