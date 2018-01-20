@@ -44,6 +44,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.game.ItemManager;
@@ -271,6 +272,21 @@ public class SlayerPlugin extends Plugin
 		}
 
 		killedOne();
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("slayer"))
+		{
+			return;
+		}
+
+		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
+		if (config.enabled() && config.showInfobox())
+		{
+			infoBoxManager.addInfoBox(counter);
+		}
 	}
 
 	private void killedOne()
