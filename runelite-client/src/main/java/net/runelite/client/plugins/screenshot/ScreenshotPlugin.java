@@ -169,10 +169,13 @@ public class ScreenshotPlugin extends Plugin
 		SwingUtilities.invokeLater(() ->
 		{
 			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(clientUi);
-			titleBar.remove(titleBarButton);
 
-			clientUi.revalidate();
-			clientUi.repaint();
+			if (titleBar != null)
+			{
+				titleBar.remove(titleBarButton);
+				clientUi.revalidate();
+				clientUi.repaint();
+			}
 		});
 	}
 
