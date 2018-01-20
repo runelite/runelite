@@ -102,6 +102,8 @@ public class ConfigPanel extends PluginPanel
 
 		configManager.getConfigProxies().stream()
 			.map(configManager::getConfigDescriptor)
+			.filter(configDescriptor -> configDescriptor.getItems().stream()
+				.anyMatch(cid -> !cid.getItem().hidden()))
 			.sorted(Comparator.comparing(left -> left.getGroup().name()))
 			.forEach(cd ->
 			{
