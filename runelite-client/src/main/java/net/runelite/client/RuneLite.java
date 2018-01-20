@@ -164,6 +164,8 @@ public class RuneLite
 		pluginManager.watch();
 
 		SwingUtilities.invokeAndWait(() -> gui.showWithChrome(runeliteConfig.enableCustomChrome()));
+
+		eventBus.post(new ClientUILoaded());
 	}
 
 	public void setGui(ClientUI gui)
