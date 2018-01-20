@@ -70,6 +70,8 @@ public interface Widget
 
 	int getSpriteId();
 
+	void setSpriteId(int spriteId);
+
 	boolean isHidden();
 
 	void setHidden(boolean hidden);
