@@ -84,6 +84,8 @@ public interface Widget
 
 	int getHeight();
 
+	void setHeight(int height);
+
 	Rectangle getBounds();
 
 	Collection<WidgetItem> getWidgetItems();
