@@ -34,11 +34,14 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
@@ -51,6 +54,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
 @Singleton
+@Slf4j
 public class OverlayRenderer
 {
 	private static final int BORDER_TOP = 25;
@@ -74,6 +78,8 @@ public class OverlayRenderer
 	private final List<Overlay> overlays = new ArrayList<>();
 	private BufferedImage surface;
 	private Graphics2D surfaceGraphics;
+
+	private ConcurrentLinkedQueue<Consumer<BufferedImage>> screenshotRequests = new ConcurrentLinkedQueue<>();
 
 	@Subscribe
 	public void onResizableChanged(ResizeableChanged event)
@@ -298,5 +304,26 @@ public class OverlayRenderer
 		final Dimension dimension = entity.render(subGraphics, point);
 		subGraphics.dispose();
 		return dimension;
+	}
+
+	public void provideScreenshot(BufferedImage image)
+	{
+		Consumer<BufferedImage> consumer;
+		while ((consumer = screenshotRequests.poll()) != null)
+		{
+			try
+			{
+				consumer.accept(image);
+			}
+			catch (Exception ex)
+			{
+				log.warn("error in screenshot callback", ex);
+			}
+		}
+	}
+
+	public void requestScreenshot(Consumer<BufferedImage> consumer)
+	{
+		screenshotRequests.add(consumer);
 	}
 }
