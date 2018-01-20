@@ -54,6 +54,8 @@ public class WidgetID
 	public static final int BA_COLLECTOR_GROUP_ID = 486;
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
+	public static final int LEVEL_UP_GROUP_ID = 233;
+	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 
 	static class WorldMap
 	{
@@ -247,5 +249,15 @@ public class WidgetID
 		static final int TO_CALL = 5;
 		static final int ROLE_SPRITE = 6;
 		static final int ROLE = 7;
+	}
+
+	static class LevelUp
+	{
+		static final int TEXT = 1;
+	}
+
+	static class QuestCompleted
+	{
+		static final int NAME_TEXT = 2;
 	}
 }
