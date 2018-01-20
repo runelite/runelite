@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.pushingpixels</groupId>
 			<artifactId>substance</artifactId>
-			<version>7.1.00-rc</version>
+			<version>8.0.00-dev</version>
 		</dependency>
 		<dependency>
 			<groupId>org.pushingpixels</groupId>
