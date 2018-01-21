@@ -119,4 +119,6 @@ public interface Widget
 	int getOriginalY();
 
 	void setOriginalY(int originalY);
+
+	int getPaddingX();
 }
