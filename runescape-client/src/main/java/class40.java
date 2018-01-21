@@ -389,9 +389,9 @@ public class class40 {
    static final void method538(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(FontName.loadWidget(var0)) {
          FontName.field3710 = null;
-         class11.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         BoundingBox3DDrawMode.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if(FontName.field3710 != null) {
-            class11.gameDraw(FontName.field3710, -1412584499, var1, var2, var3, var4, class60.field719, Client.field1134, var7);
+            BoundingBox3DDrawMode.gameDraw(FontName.field3710, -1412584499, var1, var2, var3, var4, class60.field719, Client.field1134, var7);
             FontName.field3710 = null;
          }
 

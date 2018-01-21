@@ -1,22 +1,24 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("u")
-public class class11 {
+@Implements("BoundingBox3DDrawMode")
+public class BoundingBox3DDrawMode {
    @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "Lu;"
    )
-   @Export("BoundingBox3DDrawMode_mouseOver")
-   public static final class11 BoundingBox3DDrawMode_mouseOver;
+   @Export("ON_MOUSEOVER")
+   public static final BoundingBox3DDrawMode ON_MOUSEOVER;
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "Lu;"
    )
-   @Export("BoundingBox3DDrawMode_all")
-   public static final class11 BoundingBox3DDrawMode_all;
+   @Export("ALWAYS")
+   public static final BoundingBox3DDrawMode ALWAYS;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 2068281525
@@ -24,8 +26,8 @@ public class class11 {
    static int field254;
 
    static {
-      BoundingBox3DDrawMode_mouseOver = new class11();
-      BoundingBox3DDrawMode_all = new class11();
+      ON_MOUSEOVER = new BoundingBox3DDrawMode();
+      ALWAYS = new BoundingBox3DDrawMode();
    }
 
    @ObfuscatedName("d")

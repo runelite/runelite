@@ -1582,7 +1582,7 @@ public class Model extends Renderable {
                      if(class7.drawBoundingBoxes3D && var9 > 0) {
                         if(TotalQuantityComparator.boundingBox3DContainsMouse(this, var6, var7, var8)) {
                            class29.method235(this, var6, var7, var8, -65281);
-                        } else if(class11.BoundingBox3DDrawMode_all == class7.boundingBox3DDrawMode) {
+                        } else if(BoundingBox3DDrawMode.ALWAYS == class7.boundingBox3DDrawMode) {
                            class29.method235(this, var6, var7, var8, -16776961);
                         }
                      }

@@ -1083,14 +1083,14 @@ public class Buffer extends Node {
                   if(var23 != null) {
                      var11 = var23.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
                      var12 = var23.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
-                     class11.worldToMinimap(var1, var2, var11, var12, BaseVarType.mapMarkers[1], var4);
+                     BoundingBox3DDrawMode.worldToMinimap(var1, var2, var11, var12, BaseVarType.mapMarkers[1], var4);
                   }
                }
 
                if(Client.hintArrowTargetType == 2) {
                   var10 = Client.hintArrowX * 4 - class175.baseX * 4 + 2 - GrandExchangeOffer.localPlayer.x / 32;
                   var11 = Client.hintArrowY * 4 - GraphicsObject.baseY * 4 + 2 - GrandExchangeOffer.localPlayer.y / 32;
-                  class11.worldToMinimap(var1, var2, var10, var11, BaseVarType.mapMarkers[1], var4);
+                  BoundingBox3DDrawMode.worldToMinimap(var1, var2, var10, var11, BaseVarType.mapMarkers[1], var4);
                }
 
                if(Client.hintArrowTargetType == 10 && Client.hintArrowPlayerTargetIdx >= 0 && Client.hintArrowPlayerTargetIdx < Client.cachedPlayers.length) {
@@ -1098,7 +1098,7 @@ public class Buffer extends Node {
                   if(var24 != null) {
                      var11 = var24.x / 32 - GrandExchangeOffer.localPlayer.x / 32;
                      var12 = var24.y / 32 - GrandExchangeOffer.localPlayer.y / 32;
-                     class11.worldToMinimap(var1, var2, var11, var12, BaseVarType.mapMarkers[1], var4);
+                     BoundingBox3DDrawMode.worldToMinimap(var1, var2, var11, var12, BaseVarType.mapMarkers[1], var4);
                   }
                }
             }

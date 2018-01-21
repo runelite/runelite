@@ -19,7 +19,7 @@ public class class7 {
       signature = "Lu;"
    )
    @Export("boundingBox3DDrawMode")
-   public static class11 boundingBox3DDrawMode;
+   public static BoundingBox3DDrawMode boundingBox3DDrawMode;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Lgs;"
@@ -37,7 +37,7 @@ public class class7 {
       drawBoundingBoxes3D = false;
       drawBoundingBoxes2D = false;
       drawObjectGeometry2D = false;
-      boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_mouseOver;
+      boundingBox3DDrawMode = BoundingBox3DDrawMode.ON_MOUSEOVER;
       boundingBoxes = new CombatInfoList();
    }
 
