@@ -37,6 +37,7 @@
 
 	<properties>
 		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
+		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -61,6 +62,13 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<version>${spring.boot.version}</version>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
