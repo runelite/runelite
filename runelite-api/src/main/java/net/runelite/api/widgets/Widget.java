@@ -36,6 +36,8 @@ public interface Widget
 
 	int getContentType();
 
+	void setContentType(int contentType);
+
 	Widget getParent();
 
 	int getParentId();
