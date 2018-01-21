@@ -195,7 +195,12 @@ public interface RSWidget extends Widget
 	void setOriginalX(int originalX);
 
 	@Import("originalY")
+	@Override
 	int getOriginalY();
+
+	@Import("originalY")
+	@Override
+	void setOriginalY(int originalY);
 
 	@Import("paddingX")
 	int getPaddingX();
