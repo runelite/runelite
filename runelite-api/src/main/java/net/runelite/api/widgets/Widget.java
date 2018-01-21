@@ -107,4 +107,8 @@ public interface Widget
 	int getScrollX();
 
 	void setScrollX(int scrollX);
+
+	int getScrollY();
+
+	void setScrollY(int scrollY);
 }
