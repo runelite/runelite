@@ -160,7 +160,12 @@ public interface RSWidget extends Widget
 	void setScrollX(int scrollX);
 
 	@Import("scrollY")
+	@Override
 	int getScrollY();
+
+	@Import("scrollY")
+	@Override
+	void setScrollY(int scrollY);
 
 	@Import("spriteId")
 	@Override
