@@ -24,6 +24,7 @@
  */
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -61,16 +62,17 @@ public class Order implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 
-		for (int i = 0; i < group.getClasses().size(); i++)
+		List<ClassFile> classes = new ArrayList<>(group.getClasses());
+		for (int i = 0; i < classes.size(); i++)
 		{
-			ClassFile cf = group.getClasses().get(i);
+			ClassFile cf = classes.get(i);
 			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 			nameIndices.put(className, i);
 		}
 
 		int sortedMethods = 0, sortedFields = 0;
 
-		for (ClassFile cf : group.getClasses())
+		for (ClassFile cf : classes)
 		{
 			List<Method> m = cf.getMethods();
 			Collections.sort(m, this::compareMethod);
