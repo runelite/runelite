@@ -103,4 +103,8 @@ public interface Widget
 	int getItemQuantity();
 	
 	boolean contains(Point point);
+
+	int getScrollX();
+
+	void setScrollX(int scrollX);
 }
