@@ -25,13 +25,11 @@
 package net.runelite.http.service.hiscore;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
-import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
-import net.runelite.http.service.util.HiscoreEndpointEditor;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import net.runelite.http.service.util.exception.NotFoundException;
 import okhttp3.HttpUrl;
@@ -40,38 +38,29 @@ import okhttp3.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/hiscore")
+@Service
+@Slf4j
 public class HiscoreService
 {
-	private static final Logger logger = LoggerFactory.getLogger(HiscoreService.class);
-
-	HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
+	public HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
 	{
 		return lookupUsername(username, endpoint.getHiscoreURL());
 	}
 
-	HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
+	public HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
 	{
 		HttpUrl url = hiscoreUrl.newBuilder()
-				.addQueryParameter("player", username)
-				.build();
+			.addQueryParameter("player", username)
+			.build();
 
-		logger.info("Built URL {}", url);
+		log.debug("Built URL {}", url);
 
 		Request okrequest = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		String responseStr;
 
@@ -102,7 +91,7 @@ public class HiscoreService
 		{
 			if (count++ >= HiscoreSkill.values().length)
 			{
-				logger.warn("Jagex Hiscore API returned unexpected data");
+				log.warn("Jagex Hiscore API returned unexpected data");
 				break; // rest is other things?
 			}
 
@@ -124,35 +113,4 @@ public class HiscoreService
 		return hiscoreBuilder;
 	}
 
-	@RequestMapping("/{endpoint}")
-	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws IOException
-	{
-		HiscoreResultBuilder result = lookupUsername(username, endpoint);
-		return result.build();
-	}
-
-	@RequestMapping("/{endpoint}/{skillName}")
-	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws IOException
-	{
-		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
-
-		// RS api only supports looking up all stats
-		HiscoreResultBuilder result = lookupUsername(username, endpoint);
-
-		// Find the skill to return
-		Skill requested = result.getSkill(skill.ordinal());
-
-		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
-		skillResult.setPlayer(username);
-		skillResult.setSkillName(skillName);
-		skillResult.setSkill(requested);
-
-		return skillResult;
-	}
-
-	@InitBinder
-	public void initBinder(WebDataBinder binder)
-	{
-		binder.registerCustomEditor(HiscoreEndpoint.class, new HiscoreEndpointEditor());
-	}
 }
