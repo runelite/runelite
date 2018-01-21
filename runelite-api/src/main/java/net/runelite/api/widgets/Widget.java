@@ -34,6 +34,8 @@ public interface Widget
 
 	int getType();
 
+	void setType(int type);
+
 	int getContentType();
 
 	void setContentType(int contentType);
