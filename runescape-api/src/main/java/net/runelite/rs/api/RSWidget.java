@@ -139,6 +139,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getContentType();
 
+	@Import("contentType")
+	@Override
+	void setContentType(int contentType);
+
 	@Import("type")
 	@Override
 	int getType();
