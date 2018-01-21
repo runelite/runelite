@@ -31,7 +31,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
 import net.runelite.http.service.util.InstantConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -64,6 +63,15 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	Sql2o cacheSql2o() throws NamingException
 	{
 		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache");
+		Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o(dataSource, new NoQuirks(converters));
+	}
+
+	@Bean("Runelite XP Tracker SQL2O")
+	Sql2o trackerSql2o() throws NamingException
+	{
+		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-tracker");
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
