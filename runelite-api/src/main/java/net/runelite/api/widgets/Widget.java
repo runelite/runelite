@@ -115,4 +115,8 @@ public interface Widget
 	int getOriginalX();
 
 	void setOriginalX(int originalX);
+
+	int getOriginalY();
+
+	void setOriginalY(int originalY);
 }
