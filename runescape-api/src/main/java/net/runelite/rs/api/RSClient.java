@@ -352,6 +352,27 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	boolean isIgnored(String name);
 
+	@Import("audioEffects")
+	RSSoundEffect[] getAudioEffects();
+
+	@Import("queuedSoundEffectIDs")
+	int[] getQueuedSoundEffectIDs();
+
+	@Import("soundLocations")
+	int[] getSoundLocations();
+
+	@Import("unknownSoundValues1")
+	int[] getUnknownSoundValues1();
+
+	@Import("unknownSoundValues2")
+	int[] getUnknownSoundValues2();
+
+	@Import("queuedSoundEffectCount")
+	int getQueuedSoundEffectCount();
+
+	@Import("queuedSoundEffectCount")
+	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
+
 	@Import("rasterProvider")
 	@Override
 	BufferProvider getBufferProvider();
