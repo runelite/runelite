@@ -147,6 +147,10 @@ public interface RSWidget extends Widget
 	@Override
 	int getType();
 
+	@Import("type")
+	@Override
+	void setType(int type);
+
 	@Import("scrollX")
 	int getScrollX();
 
