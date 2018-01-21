@@ -181,14 +181,14 @@ public interface Client extends GameEngine
 	 * Play a sound effect at the player's current location.
 	 * This is how UI, and player-generated (e.g. mining, woodcutting) sound effects are normally played
 	 *
-	 * @param id the ID of the sound to play
+	 * @param id the ID of the sound to play. Any int is allowed, but see {@link SoundEffectID} for some common ones
 	 */
 	void playSoundEffect(int id);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play
+	 * @param id the ID of the sound to play. Any int is allowed, but see {@link SoundEffectID} for some common ones
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard from
