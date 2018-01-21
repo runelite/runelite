@@ -24,36 +24,31 @@
  */
 package net.runelite.asm;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import net.runelite.asm.attributes.Code;
 
 public class ClassGroup
 {
-	private final List<ClassFile> classes = new ArrayList<>(); // to keep order
-	private final Map<String, ClassFile> classMap = new HashMap<>();
+	private final Map<String, ClassFile> classMap = new LinkedHashMap<>();
 
 	public void addClass(ClassFile cf)
 	{
 		assert cf.getGroup() == this || cf.getGroup() == null;
 		cf.setGroup(this);
 
-		classes.add(cf);
 		classMap.put(cf.getName(), cf);
 	}
 
 	public void removeClass(ClassFile cf)
 	{
-		classes.remove(cf);
 		classMap.remove(cf.getName());
 	}
 
 	public void renameClass(ClassFile cf, String newName)
 	{
-		assert classes.contains(cf);
 		assert classMap.get(cf.getName()) == cf;
 
 		classMap.remove(cf.getName());
@@ -61,9 +56,9 @@ public class ClassGroup
 		classMap.put(cf.getName(), cf);
 	}
 
-	public List<ClassFile> getClasses()
+	public Collection<ClassFile> getClasses()
 	{
-		return Collections.unmodifiableList(classes);
+		return Collections.unmodifiableCollection(classMap.values());
 	}
 
 	public ClassFile findClass(String name)
@@ -79,12 +74,12 @@ public class ClassGroup
 
 	public void buildClassGraph()
 	{
-		for (ClassFile c : classes)
+		for (ClassFile c : classMap.values())
 		{
 			c.clearClassGraph();
 		}
 
-		for (ClassFile c : classes)
+		for (ClassFile c : classMap.values())
 		{
 			c.buildClassGraph();
 		}

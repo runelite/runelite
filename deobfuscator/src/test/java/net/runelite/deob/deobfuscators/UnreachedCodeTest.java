@@ -68,7 +68,7 @@ public class UnreachedCodeTest
 		UnreachedCode uc = new UnreachedCode();
 		uc.run(group);
 
-		ClassFile cf = group.getClasses().get(0);
+		ClassFile cf = group.getClasses().iterator().next();
 
 		Method method = cf.findMethod("entry");
 		Assert.assertFalse(method.getCode().getExceptions().getExceptions().isEmpty());
