@@ -213,4 +213,8 @@ public interface RSWidget extends Widget
 	@Import("paddingY")
 	@Override
 	int getPaddingY();
+
+	@Import("paddingY")
+	@Override
+	void setPaddingY(int paddingY);
 }

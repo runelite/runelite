@@ -125,4 +125,6 @@ public interface Widget
 	void setPaddingX(int paddingX);
 
 	int getPaddingY();
+
+	void setPaddingY(int paddingY);
 }
