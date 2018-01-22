@@ -165,7 +165,8 @@ public final class GroundObject {
       signature = "(B)Z",
       garbageValue = "1"
    )
-   public static boolean method2559() {
+   @Export("loadCurrentSong")
+   public static boolean loadCurrentSong() {
       try {
          if(class214.field2631 == 2) {
             if(class72.field831 == null) {

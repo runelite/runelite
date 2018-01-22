@@ -190,7 +190,7 @@ public final class Player extends Actor {
             }
 
             if(var4[var5] >= 512) {
-               int var8 = class115.getItemDefinition(var4[var5] - 512).int1;
+               int var8 = Resampler.getItemDefinition(var4[var5] - 512).int1;
                if(var8 != 0) {
                   this.team = var8;
                }

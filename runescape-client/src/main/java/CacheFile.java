@@ -425,7 +425,7 @@ public class CacheFile {
          }
       }
 
-      ItemComposition var9 = class115.getItemDefinition(var0);
+      ItemComposition var9 = Resampler.getItemDefinition(var0);
       if(var1 > 1 && var9.countObj != null) {
          int var10 = -1;
 
@@ -436,7 +436,7 @@ public class CacheFile {
          }
 
          if(var10 != -1) {
-            var9 = class115.getItemDefinition(var10);
+            var9 = Resampler.getItemDefinition(var10);
          }
       }
 

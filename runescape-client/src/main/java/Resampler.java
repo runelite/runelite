@@ -1,26 +1,31 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dc")
-public class class115 {
+@Implements("Resampler")
+public class Resampler {
    @ObfuscatedName("b")
    static byte[][][] field1595;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -340013429
    )
-   int field1594;
+   @Export("storedSampleRateRatio")
+   int storedSampleRateRatio;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1170989341
    )
-   int field1599;
+   @Export("playbackSampleRateRatio")
+   int playbackSampleRateRatio;
    @ObfuscatedName("d")
-   int[][] field1596;
+   @Export("resampleTable")
+   int[][] resampleTable;
 
-   public class115(int var1, int var2) {
+   public Resampler(int var1, int var2) {
       if(var2 != var1) {
          int var4 = var1;
          int var5 = var2;
@@ -37,12 +42,12 @@ public class class115 {
 
          var1 /= var4;
          var2 /= var4;
-         this.field1594 = var1;
-         this.field1599 = var2;
-         this.field1596 = new int[var1][14];
+         this.storedSampleRateRatio = var1;
+         this.playbackSampleRateRatio = var2;
+         this.resampleTable = new int[var1][14];
 
          for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.field1596[var7];
+            int[] var8 = this.resampleTable[var7];
             double var9 = 6.0D + (double)var7 / (double)var1;
             int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
             if(var11 < 0) {
@@ -74,9 +79,10 @@ public class class115 {
       signature = "([BB)[B",
       garbageValue = "85"
    )
-   byte[] method2167(byte[] var1) {
-      if(this.field1596 != null) {
-         int var2 = (int)((long)var1.length * (long)this.field1599 / (long)this.field1594) + 14;
+   @Export("resampleIfNecessary")
+   byte[] resampleIfNecessary(byte[] var1) {
+      if(this.resampleTable != null) {
+         int var2 = (int)((long)var1.length * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -84,17 +90,17 @@ public class class115 {
          int var6;
          for(var6 = 0; var6 < var1.length; ++var6) {
             byte var7 = var1[var6];
-            int[] var8 = this.field1596[var5];
+            int[] var8 = this.resampleTable[var5];
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
                var3[var9 + var4] += var8[var9] * var7;
             }
 
-            var5 += this.field1599;
-            var9 = var5 / this.field1594;
+            var5 += this.playbackSampleRateRatio;
+            var9 = var5 / this.storedSampleRateRatio;
             var4 += var9;
-            var5 -= var9 * this.field1594;
+            var5 -= var9 * this.storedSampleRateRatio;
          }
 
          var1 = new byte[var2];
@@ -119,9 +125,9 @@ public class class115 {
       signature = "(II)I",
       garbageValue = "2131187198"
    )
-   int method2163(int var1) {
-      if(this.field1596 != null) {
-         var1 = (int)((long)this.field1599 * (long)var1 / (long)this.field1594);
+   int convertSampleLocation(int var1) {
+      if(this.resampleTable != null) {
+         var1 = (int)((long)this.playbackSampleRateRatio * (long)var1 / (long)this.storedSampleRateRatio);
       }
 
       return var1;
@@ -132,9 +138,9 @@ public class class115 {
       signature = "(IB)I",
       garbageValue = "-44"
    )
-   int method2162(int var1) {
-      if(this.field1596 != null) {
-         var1 = (int)((long)var1 * (long)this.field1599 / (long)this.field1594) + 6;
+   int convertSampleLocationPlusSix(int var1) {
+      if(this.resampleTable != null) {
+         var1 = (int)((long)var1 * (long)this.playbackSampleRateRatio / (long)this.storedSampleRateRatio) + 6;
       }
 
       return var1;

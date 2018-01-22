@@ -74,7 +74,7 @@ public class class228 {
                   Client.field1020 = var14;
                   class185.field2540 = var0;
                   if(var0.itemIds[var14] > 0) {
-                     ItemComposition var8 = class115.getItemDefinition(var0.itemIds[var14] - 1);
+                     ItemComposition var8 = Resampler.getItemDefinition(var0.itemIds[var14] - 1);
                      if(Client.itemSelectionState == 1 && MessageNode.method1122(GraphicsObject.getWidgetConfig(var0))) {
                         if(var0.id != class33.field448 || var14 != class22.selectedItemIndex) {
                            DecorativeObject.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class54.getColTags(16748608) + var8.name, 31, var8.id, var14, var0.id);

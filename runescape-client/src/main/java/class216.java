@@ -18,7 +18,7 @@ public class class216 extends Node {
    @ObfuscatedSignature(
       signature = "Ldp;"
    )
-   class106 field2669;
+   RawAudioNode field2669;
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "Lhj;"

@@ -28,6 +28,6 @@ public final class Item extends Renderable {
       garbageValue = "-17"
    )
    protected final Model getModel() {
-      return class115.getItemDefinition(this.id).getModel(this.quantity);
+      return Resampler.getItemDefinition(this.id).getModel(this.quantity);
    }
 }

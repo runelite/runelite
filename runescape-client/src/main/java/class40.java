@@ -322,7 +322,7 @@ public class class40 {
                Deque var25 = Client.groundItemDeque[class7.plane][var8][var9];
                if(var25 != null) {
                   for(Item var29 = (Item)var25.getTail(); var29 != null; var29 = (Item)var25.getPrevious()) {
-                     ItemComposition var27 = class115.getItemDefinition(var29.id);
+                     ItemComposition var27 = Resampler.getItemDefinition(var29.id);
                      if(Client.itemSelectionState == 1) {
                         DecorativeObject.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class54.getColTags(16748608) + var27.name, 16, var29.id, var8, var9);
                      } else if(Client.spellSelected) {

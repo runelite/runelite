@@ -439,9 +439,9 @@ public class class64 {
                      var8 = class82.intStack[class82.intStackSize + 1];
                      var9 = DynamicObject.method1881(var8);
                      if(var9.method4617()) {
-                        class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = class115.getItemDefinition(var7).method4773(var8, var9.field3478);
+                        class82.scriptStringStack[++FileOnDisk.scriptStringStackSize - 1] = Resampler.getItemDefinition(var7).method4773(var8, var9.field3478);
                      } else {
-                        class82.intStack[++class82.intStackSize - 1] = class115.getItemDefinition(var7).method4772(var8, var9.field3477);
+                        class82.intStack[++class82.intStackSize - 1] = Resampler.getItemDefinition(var7).method4772(var8, var9.field3477);
                      }
 
                      return 1;

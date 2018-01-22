@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -7,7 +8,8 @@ public class class23 {
    @ObfuscatedSignature(
       signature = "Ldc;"
    )
-   static class115 field343;
+   @Export("resampler")
+   static Resampler resampler;
 
    @ObfuscatedName("hd")
    @ObfuscatedSignature(

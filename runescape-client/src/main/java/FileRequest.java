@@ -40,7 +40,7 @@ public class FileRequest extends CacheableNode {
       class61.field733 = null;
       class37.field487 = null;
       class161.field2183 = null;
-      class115.field1595 = null;
+      Resampler.field1595 = null;
       class61.field730 = null;
       class60.field721 = null;
       class161.field2189 = null;

@@ -14,7 +14,7 @@ public class class218 extends Node {
    @ObfuscatedSignature(
       signature = "[Ldp;"
    )
-   class106[] field2707;
+   RawAudioNode[] field2707;
    @ObfuscatedName("y")
    short[] field2703;
    @ObfuscatedName("r")
@@ -32,7 +32,7 @@ public class class218 extends Node {
    int[] field2701;
 
    class218(byte[] var1) {
-      this.field2707 = new class106[128];
+      this.field2707 = new RawAudioNode[128];
       this.field2703 = new short[128];
       this.field2704 = new byte[128];
       this.field2705 = new byte[128];
@@ -484,7 +484,7 @@ public class class218 extends Node {
    boolean method4094(class111 var1, byte[] var2, int[] var3) {
       boolean var4 = true;
       int var5 = 0;
-      class106 var6 = null;
+      RawAudioNode var6 = null;
 
       for(int var7 = 0; var7 < 128; ++var7) {
          if(var2 == null || var2[var7] != 0) {

@@ -61,7 +61,7 @@ public class class11 {
          int var5 = class82.intStack[class82.intStackSize + 1];
          var3.itemId = var4;
          var3.itemQuantity = var5;
-         ItemComposition var6 = class115.getItemDefinition(var4);
+         ItemComposition var6 = Resampler.getItemDefinition(var4);
          var3.rotationX = var6.xan2d;
          var3.rotationZ = var6.yan2d;
          var3.rotationY = var6.zan2d;
@@ -837,7 +837,7 @@ public class class11 {
                                  }
 
                                  if(var10.hasScript && var10.itemId != -1) {
-                                    ItemComposition var68 = class115.getItemDefinition(var10.itemId);
+                                    ItemComposition var68 = Resampler.getItemDefinition(var10.itemId);
                                     var66 = var68.name;
                                     if(var66 == null) {
                                        var66 = "null";
@@ -928,7 +928,7 @@ public class class11 {
                                  Model var63 = null;
                                  var22 = 0;
                                  if(var10.itemId != -1) {
-                                    var47 = class115.getItemDefinition(var10.itemId);
+                                    var47 = Resampler.getItemDefinition(var10.itemId);
                                     if(var47 != null) {
                                        var47 = var47.method4767(var10.itemQuantity);
                                        var63 = var47.getModel(1);
@@ -990,7 +990,7 @@ public class class11 {
                                     for(var21 = 0; var21 < var10.originalHeight; ++var21) {
                                        for(var22 = 0; var22 < var10.originalWidth; ++var22) {
                                           if(var10.itemIds[var20] > 0) {
-                                             var47 = class115.getItemDefinition(var10.itemIds[var20] - 1);
+                                             var47 = Resampler.getItemDefinition(var10.itemIds[var20] - 1);
                                              String var24;
                                              if(var47.isStackable != 1 && var10.itemQuantities[var20] == 1) {
                                                 var24 = class54.getColTags(16748608) + var47.name + "</col>";

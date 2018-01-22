@@ -47,11 +47,11 @@ public class class111 {
       signature = "(II[II)Ldp;",
       garbageValue = "113203175"
    )
-   class106 method2135(int var1, int var2, int[] var3) {
+   RawAudioNode method2135(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class106 var7 = (class106)this.field1578.get(var5);
+      RawAudioNode var7 = (RawAudioNode)this.field1578.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
@@ -61,10 +61,10 @@ public class class111 {
          if(var8 == null) {
             return null;
          } else {
-            var7 = var8.method1986();
+            var7 = var8.generateAudioNode();
             this.field1578.put(var7, var5);
             if(var3 != null) {
-               var3[0] -= var7.field1522.length;
+               var3[0] -= var7.audioBuffer.length;
             }
 
             return var7;
@@ -77,11 +77,11 @@ public class class111 {
       signature = "(II[II)Ldp;",
       garbageValue = "-95673806"
    )
-   class106 method2134(int var1, int var2, int[] var3) {
+   RawAudioNode method2134(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & 65535 | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class106 var7 = (class106)this.field1578.get(var5);
+      RawAudioNode var7 = (RawAudioNode)this.field1578.get(var5);
       if(var7 != null) {
          return var7;
       } else if(var3 != null && var3[0] <= 0) {
@@ -89,7 +89,7 @@ public class class111 {
       } else {
          class105 var8 = (class105)this.field1580.get(var5);
          if(var8 == null) {
-            var8 = class105.method2028(this.vorbis_index, var1, var2);
+            var8 = class105.getInstrument(this.vorbis_index, var1, var2);
             if(var8 == null) {
                return null;
             }
@@ -113,7 +113,7 @@ public class class111 {
       signature = "(I[II)Ldp;",
       garbageValue = "849016671"
    )
-   public class106 method2137(int var1, int[] var2) {
+   public RawAudioNode method2137(int var1, int[] var2) {
       if(this.sfx_index.size() == 1) {
          return this.method2135(0, var1, var2);
       } else if(this.sfx_index.fileCount(var1) == 1) {
@@ -128,7 +128,7 @@ public class class111 {
       signature = "(I[II)Ldp;",
       garbageValue = "978230848"
    )
-   public class106 method2136(int var1, int[] var2) {
+   public RawAudioNode method2136(int var1, int[] var2) {
       if(this.vorbis_index.size() == 1) {
          return this.method2134(0, var1, var2);
       } else if(this.vorbis_index.fileCount(var1) == 1) {

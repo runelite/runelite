@@ -312,7 +312,7 @@ public class Huffman {
       class61.field733 = new byte[4][104][104];
       class37.field487 = new byte[4][104][104];
       class161.field2183 = new int[4][105][105];
-      class115.field1595 = new byte[4][105][105];
+      Resampler.field1595 = new byte[4][105][105];
       class61.field730 = new int[105][105];
       class60.field721 = new int[104];
       class161.field2189 = new int[104];

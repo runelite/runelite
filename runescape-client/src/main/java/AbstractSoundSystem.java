@@ -381,7 +381,7 @@ public class AbstractSoundSystem {
                            break label98;
                         }
 
-                        AbstractIntegerNode0 var12 = var11.field1631;
+                        AbstractIntegerNode0 var12 = var11.data;
                         if(var12 != null && var12.int1 > var8) {
                            var5 |= 1 << var7;
                            var10 = var11;

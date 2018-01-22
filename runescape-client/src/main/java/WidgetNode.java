@@ -314,13 +314,13 @@ public class WidgetNode extends Node {
                      var34 = var1.readUnsignedByteNegate();
                      if(var7 >= 0 && var40 >= 0 && var7 < 104 && var40 < 104) {
                         var10 = var3 + 1;
-                        if(GrandExchangeOffer.localPlayer.pathX[0] >= var7 - var10 && GrandExchangeOffer.localPlayer.pathX[0] <= var10 + var7 && GrandExchangeOffer.localPlayer.pathY[0] >= var40 - var10 && GrandExchangeOffer.localPlayer.pathY[0] <= var10 + var40 && Client.field1094 != 0 && var4 > 0 && Client.field1025 < 50) {
-                           Client.field1096[Client.field1025] = var5;
-                           Client.field1027[Client.field1025] = var4;
-                           Client.field1098[Client.field1025] = var34;
-                           Client.audioEffects[Client.field1025] = null;
-                           Client.field1099[Client.field1025] = var3 + (var40 << 8) + (var7 << 16);
-                           ++Client.field1025;
+                        if(GrandExchangeOffer.localPlayer.pathX[0] >= var7 - var10 && GrandExchangeOffer.localPlayer.pathX[0] <= var10 + var7 && GrandExchangeOffer.localPlayer.pathY[0] >= var40 - var10 && GrandExchangeOffer.localPlayer.pathY[0] <= var10 + var40 && Client.field1094 != 0 && var4 > 0 && Client.queuedSoundEffectCount < 50) {
+                           Client.queuedSoundEffectIDs[Client.queuedSoundEffectCount] = var5;
+                           Client.unknownSoundValues1[Client.queuedSoundEffectCount] = var4;
+                           Client.unknownSoundValues2[Client.queuedSoundEffectCount] = var34;
+                           Client.audioEffects[Client.queuedSoundEffectCount] = null;
+                           Client.soundLocations[Client.queuedSoundEffectCount] = var3 + (var40 << 8) + (var7 << 16);
+                           ++Client.queuedSoundEffectCount;
                         }
                      }
                   }

@@ -211,7 +211,7 @@ public class ClanMember extends Node {
                   var9 += var2[var4++];
                   var10 = UrlRequester.getWidget(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!class115.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                  if(var11 != -1 && (!Resampler.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
                         if(var11 + 1 == var10.itemIds[var12]) {
                            var7 += var10.itemQuantities[var12];
@@ -249,7 +249,7 @@ public class ClanMember extends Node {
                   var9 += var2[var4++];
                   var10 = UrlRequester.getWidget(var9);
                   var11 = var2[var4++];
-                  if(var11 != -1 && (!class115.getItemDefinition(var11).isMembers || Client.isMembers)) {
+                  if(var11 != -1 && (!Resampler.getItemDefinition(var11).isMembers || Client.isMembers)) {
                      for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
                         if(var11 + 1 == var10.itemIds[var12]) {
                            var7 = 999999999;
