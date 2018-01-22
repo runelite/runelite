@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+/**
+ * Represents a set of stat changes on an item, given a players current stats.
+ * @see ItemStatChangesMethods
+ */
 public class ItemStatChange
 {
 	ItemStatChange(int len)
@@ -32,6 +36,9 @@ public class ItemStatChange
 		this.positivity = Positivity.NO_CHANGE;
 	}
 
+	/**
+	 * A single stat change
+	 */
 	public static class StatChange
 	{
 		public Stat stat;
@@ -40,6 +47,10 @@ public class ItemStatChange
 		public int positivity;
 	}
 
+	/**
+	 * How positive the entire set of stat changes is
+	 * @see Positivity
+	 */
 	public int positivity;
 	public StatChange[] statChanges;
 }

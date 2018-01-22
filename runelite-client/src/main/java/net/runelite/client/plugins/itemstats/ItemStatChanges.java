@@ -35,7 +35,6 @@ public class ItemStatChanges extends ItemStatChangesMethods
 	 * COOKED_SLIMY_EEL
 	 * SWEETCORN + SWEETCORN (bowl)
 	 * White tree fruit (idk)
-	 * raids pots
 	 */
 
 	/*

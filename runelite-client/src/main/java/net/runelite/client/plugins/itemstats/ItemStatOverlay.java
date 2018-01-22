@@ -74,7 +74,7 @@ public class ItemStatOverlay extends Overlay
 					for (ItemStatChange.StatChange c : change.statChanges)
 					{
 						b.append("<col=");
-						b.append(Integer.toHexString(Positivity.getColor(c.positivity).getRGB() & 0xFFFFFF));
+						b.append(Integer.toHexString(Positivity.getColor(config, c.positivity).getRGB() & 0xFFFFFF));
 						b.append(">");
 						if (tooltipMode.isRelative())
 						{

@@ -25,7 +25,13 @@
 package net.runelite.client.plugins.itemstats;
 
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 
+/**
+ * Abstract stat of a player.
+ * This includes {@link Skill}s and other player variables, such as <code>RUN_ENERGY</code>.
+ * @see Stats
+ */
 abstract class Stat
 {
 	protected final Client client;
@@ -42,7 +48,6 @@ abstract class Stat
 	{
 		return name;
 	}
-
 	public abstract int getValue();
 
 	public abstract int getMaximum();

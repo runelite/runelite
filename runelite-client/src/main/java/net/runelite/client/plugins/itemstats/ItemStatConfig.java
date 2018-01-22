@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -43,5 +44,60 @@ public interface ItemStatConfig extends Config
 	default TooltipMode tooltipMode()
 	{
 		return TooltipMode.BOTH;
+	}
+
+	@ConfigItem(
+		keyName = "colorBetterUncapped",
+		name = "Better (Uncapped)",
+		description = "Color to show when the stat change is fully consumed",
+		position = 10
+	)
+	default Color colorBetterUncapped()
+	{
+		return new Color(0x33EE33);
+	}
+
+	@ConfigItem(
+		keyName = "colorBetterSomecapped",
+		name = "Better (Some capped)",
+		description = "Color to show when some stat changes are capped, but some ar not",
+		position = 11
+	)
+	default Color colorBetterSomeCapped()
+	{
+		return new Color(0x9CEE33);
+	}
+
+
+	@ConfigItem(
+		keyName = "colorBetterCapped",
+		name = "Better (Capped)",
+		description = "Color to show when the stat change is positive, but not fully consumed",
+		position = 12
+	)
+	default Color colorBetterCapped()
+	{
+		return new Color(0xEEEE33);
+	}
+	@ConfigItem(
+		keyName = "colorNoChange",
+		name = "No change",
+		description = "Color to show when there is no change",
+		position = 13
+	)
+	default Color colorNoChange()
+	{
+		return new Color(0xEEEEEE);
+	}
+
+	@ConfigItem(
+		keyName = "colorWorse",
+		name = "Worse",
+		description = "Color to show when the stat goes down",
+		position = 14
+	)
+	default Color colorWorse()
+	{
+		return new Color(0xEE3333);
 	}
 }

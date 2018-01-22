@@ -29,6 +29,9 @@ import com.google.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
+/**
+ * Enumeration of player {@link Stat}s for use in {@link ItemStatChange}s
+ */
 @Singleton
 class Stats
 {

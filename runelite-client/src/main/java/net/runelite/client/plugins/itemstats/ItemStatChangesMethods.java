@@ -45,6 +45,13 @@ public class ItemStatChangesMethods
 		this.stats = stats;
 	}
 
+	/**
+	 * Returns an <code>ItemStatChange</code> for the item passed for the current player's stats
+	 *
+	 * @param  item ID of the item to lookup
+	 * @return      Stat changes for the item, or null
+	 * @see         ItemStatChange
+	 */
 	public ItemStatChange getChanges(int item)
 	{
 		StatChangeCalculator calcs = itemToCalcs.get(item);
@@ -55,23 +62,43 @@ public class ItemStatChangesMethods
 		return calcs.calculate();
 	}
 
-	void add(StatChangeCalculator calcs, int... items)
+	/**
+	 * Sets <code>calculator</code> as the <code>StatChangeCalculator</code> for <code>items</code>
+	 * Adding multiple StatChangeCalculators to a single item is illegal
+	 */
+	void add(StatChangeCalculator calculator, int... items)
 	{
 		assert items.length > 0;
 		for (int item : items)
 		{
-			StatChangeCalculator prev = itemToCalcs.put(item, calcs);
-			assert prev == null;
+			StatChangeCalculator prev = itemToCalcs.put(item, calculator);
+			assert prev == null : "Item already added";
 		}
 	}
 
+	/**
+	 * StatChangeCalculator calculates a {@link ItemStatChange} for the item it is assigned to.
+	 * This is responsible for calculating or delegating individual {@link ItemStatChange.StatChange}s
+	 * and for calculating the overall positivity of the change.
+	 *
+	 * @see Combo
+	 * @see SuperRestore
+	 */
 	@FunctionalInterface
 	interface StatChangeCalculator
 	{
 		ItemStatChange calculate();
 	}
 
-	protected static class Combo implements StatChangeCalculator
+	/**
+	 * Combo takes an list of {@link SingleStatChangeCalculator}s and combines them into
+	 * a single StatChangeCalculator.
+	 *
+	 * <code>numPrimaries</code> may be passed as the first parameter to limit the number
+	 * of "Primary" stats to be used for calculating the {@link ItemStatChange}'s overall
+	 * positivity
+	 */
+	static class Combo implements StatChangeCalculator
 	{
 		private final SingleStatChangeCalculator[] calcs;
 		private final int numPrimaries;
@@ -108,34 +135,52 @@ public class ItemStatChangesMethods
 		}
 	}
 
+	/**
+	 * SingleStatChangeCalculator is responsible for calculating a single stat change
+	 */
 	@FunctionalInterface
 	interface SingleStatChangeCalculator
 	{
 		ItemStatChange.StatChange calculate();
 	}
 
-	// This should NOT do limiting
+	/**
+	 * DeltaCalculator calculates the change for a stat given it's maximum.
+	 * It is a convenience interface for {@link SimpleStatCalc}. It should not
+	 * attempt to limit itself based on the <code>max</code> passed to it
+	 */
 	@FunctionalInterface
 	interface DeltaCalculator
 	{
 		int calculateDelta(int max);
 	}
 
-	// Can go over getMaximum
-	protected static final int BOOST = 1;
+	/**
+	 * BOOST is set if the stat's cap should be increased by the calculated delta.
+	 * This behaves like most of RuneScape's "Temporary skill boosts"
+	 *
+	 * @see SimpleStatCalc
+	 */
+	static final int BOOST = 1;
 
-	public SimpleStatCalc simple(Stat stat, DeltaCalculator calc, int flags)
+	/**
+	 * A {@link SingleStatChangeCalculator} for simple stat changes.
+	 *
+	 * @See add
+	 * @See perc
+	 */
+	SingleStatChangeCalculator simple(Stat stat, DeltaCalculator calc, int flags)
 	{
 		return new SimpleStatCalc(stat, calc, flags);
 	}
 
-	public SimpleStatCalc simple(Stat stat, DeltaCalculator calc)
+	SingleStatChangeCalculator simple(Stat stat, DeltaCalculator calc)
 	{
 		return new SimpleStatCalc(stat, calc, 0);
 	}
 
 	@AllArgsConstructor
-	protected static class SimpleStatCalc implements SingleStatChangeCalculator
+	private static class SimpleStatCalc implements SingleStatChangeCalculator
 	{
 		protected Stat stat;
 		protected final DeltaCalculator delta;
@@ -188,7 +233,10 @@ public class ItemStatChangesMethods
 		}
 	}
 
-	protected DeltaCalculator add(int value)
+	/**
+	 * Add is a <code>DeltaCalculator</code> that adds value to stat.
+	 */
+	DeltaCalculator add(int value)
 	{
 		return new DeltaAdd(value);
 	}
@@ -204,7 +252,14 @@ public class ItemStatChangesMethods
 		}
 	}
 
-	protected DeltaCalculator perc(double perc, int delta)
+	/**
+	 * <code>perc</code> is a <code>DeltaCalculator</code> that computes <code> (max * perc) + delta </code>
+	 * <code>perc</code> always rounds to zero.
+	 *
+	 * @param perc  The percentage of <code>getMaximum</code> to boost by
+	 * @param delta The static change to boost by. If this is negative it also makes perc negative
+	 */
+	DeltaCalculator perc(double perc, int delta)
 	{
 		return new DeltaPercentage(perc, delta);
 	}
@@ -221,8 +276,12 @@ public class ItemStatChangesMethods
 		}
 	}
 
+	/**
+	 * Calculates prayer bonus based on if the user has a holy wrench or similar
+	 * in their inventory.
+	 */
 	@RequiredArgsConstructor
-	protected class PrayerCalc implements DeltaCalculator
+	class PrayerCalc implements DeltaCalculator
 	{
 		protected final int delta;
 
@@ -235,13 +294,16 @@ public class ItemStatChangesMethods
 		}
 	}
 
-	protected StatChangeCalculator Food(int healing)
+	/**
+	 * Food represents a static change in hitpoints, non boosting
+	 */
+	StatChangeCalculator Food(int healing)
 	{
 		return new Combo(simple(stats.HITPOINTS, add(healing)));
 	}
 
 	@RequiredArgsConstructor
-	protected class SuperRestore implements StatChangeCalculator
+	class SuperRestore implements StatChangeCalculator
 	{
 		private final int delta;
 		private final Stat[] superRestoreStats = new Stat[]{
@@ -253,8 +315,8 @@ public class ItemStatChangesMethods
 
 		public ItemStatChange calculate()
 		{
-			SimpleStatCalc calc = simple(null, perc(.25, delta));
-			SimpleStatCalc prayer = simple(stats.PRAYER, new PrayerCalc(delta));
+			SimpleStatCalc calc = new SimpleStatCalc(null, perc(.25, delta), 0);
+			SimpleStatCalc prayer = new SimpleStatCalc(stats.PRAYER, new PrayerCalc(delta), 0);
 			ItemStatChange out = new ItemStatChange(0);
 			out.statChanges =
 				Stream.concat(

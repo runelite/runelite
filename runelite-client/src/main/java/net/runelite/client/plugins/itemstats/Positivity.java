@@ -26,28 +26,54 @@ package net.runelite.client.plugins.itemstats;
 
 import java.awt.Color;
 
+/**
+ * Positivity represents how positive or negative a stat change is.
+ * This is turned into the color shown to the user in the toolip.
+ */
 class Positivity
 {
+/**
+ * The stat change is fully consumed. NB: a boost that hits the cap,
+ * but does not go over it is still considered <code>BETTER_UNCAPPED</code>
+ */
 	public static final int BETTER_UNCAPPED = 4;
+
+	/**
+	 * Some stat changes were fully consumed, some were not. This should
+	 * NOT be returned by a single stat change. This should only be used
+	 * by a <code>StatChangeCalculator</code>
+	 */
 	public static final int BETTER_SOMECAPPED = 3;
+
+	/**
+	 * The stat change goes over the cap, but does not net 0
+	 */
 	public static final int BETTER_CAPPED = 2;
+
+	/**
+	 * There is no change, ie: The stat is already capped.
+	 */
 	public static final int NO_CHANGE = 0;
+
+	/**
+	 * The stat is lower than it was before.
+	 */
 	public static final int WORSE = -1;
 
-	public static Color getColor(int pos)
+	public static Color getColor(ItemStatConfig config, int positivity)
 	{
-		switch (pos)
+		switch (positivity)
 		{
 			case BETTER_UNCAPPED:
-				return new Color(0x33EE33);
+				return config.colorBetterUncapped();
 			case BETTER_SOMECAPPED:
-				return new Color(0x9CEE33);
+				return config.colorBetterSomeCapped();
 			case BETTER_CAPPED:
-				return new Color(0xEEEE33);
+				return config.colorBetterCapped();
 			case NO_CHANGE:
-				return new Color(0xEEEEEE);
+				return config.colorNoChange();
 			case WORSE:
-				return new Color(0xEE3333);
+				return config.colorWorse();
 			default:
 				return Color.WHITE;
 		}
