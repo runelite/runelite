@@ -127,6 +127,7 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	IdleNotifierConfig config;
 
+	private Actor lastOpponent;
 	private Instant lastAnimating;
 	private Instant lastInteracting;
 	private Instant lastHitpoints;
@@ -272,6 +273,15 @@ public class IdleNotifierPlugin extends Plugin
 			&& !isPlayer
 			&& opponent.getCombatLevel() > 0
 			&& opponent.getHealth() != -1)
+		{
+			lastOpponent = opponent;
+		}
+		else if (opponent == null)
+		{
+			lastOpponent = null;
+		}
+
+		if (lastOpponent != null && opponent == lastOpponent)
 		{
 			lastInteracting = Instant.now();
 		}
