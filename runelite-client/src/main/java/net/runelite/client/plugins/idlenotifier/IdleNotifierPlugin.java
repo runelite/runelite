@@ -94,20 +94,19 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
@@ -242,7 +241,7 @@ public class IdleNotifierPlugin extends Plugin
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 				notifyIdle = true;
-				lastAnimating = Instant.now();
+				lastAnimating = null;
 				break;
 		}
 	}
@@ -271,54 +270,94 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkIdle()
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		Player local = client.getLocalPlayer();
+		final Player local = client.getLocalPlayer();
+		final Duration waitDuration = Duration.ofMillis(config.getTimeout());
 
 		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}
 
-		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
-				&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
+		if (checkIdleLogout())
 		{
-			if (notifyIdleLogout)
-			{
-				sendNotification("[" + local.getName() + "] is about to log out from idling too long!");
-				notifyIdleLogout = false;
-			}
-		}
-		else
-		{
-			notifyIdleLogout = true;
+			sendNotification("[" + local.getName() + "] is about to log out from idling too long!");
 		}
 
-		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
+		if (check6hrLogout())
 		{
-			if (notify6HourLogout)
-			{
-				sendNotification("[" + local.getName() + "] is about to log out from being online for 6 hours!");
-				notify6HourLogout = false;
-			}
-		}
-		else
-		{
-			notify6HourLogout = true;
+			sendNotification("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		Duration waitDuration = Duration.ofMillis(config.getTimeout());
-		if (notifyIdle && local.getAnimation() == IDLE
-			&& Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
+		if (checkAnimationIdle(waitDuration, local))
 		{
 			sendNotification("[" + local.getName() + "] is now idle!");
-			notifyIdle = false;
 		}
 
+		if (checkOutOfCombat(waitDuration, local))
+		{
+			sendNotification("[" + local.getName() + "] is now out of combat!");
+		}
+
+		if (checkLowHitpoints(waitDuration))
+		{
+			sendNotification("[" + local.getName() + "] has low hitpoints!");
+		}
+
+		if (checkLowPrayer(waitDuration))
+		{
+			sendNotification("[" + local.getName() + "] has low prayer!");
+		}
+	}
+
+	private boolean checkLowHitpoints(Duration waitDuration)
+	{
+		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
+			{
+				if (!notifyHitpoints && Instant.now().compareTo(lastHitpoints.plus(waitDuration)) >= 0)
+				{
+					notifyHitpoints = true;
+					return true;
+				}
+			}
+			else
+			{
+				lastHitpoints = Instant.now();
+				notifyHitpoints = false;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean checkLowPrayer(Duration waitDuration)
+	{
+		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
+		{
+			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
+			{
+				if (!notifyPrayer && Instant.now().compareTo(lastPrayer.plus(waitDuration)) >= 0)
+				{
+					notifyPrayer = true;
+					return true;
+				}
+			}
+			else
+			{
+				lastPrayer = Instant.now();
+				notifyPrayer = false;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean checkOutOfCombat(Duration waitDuration, Player local)
+	{
 		Actor opponent = local.getInteracting();
 		boolean isPlayer = opponent instanceof Player;
 
@@ -341,43 +380,70 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
 		{
-			sendNotification("[" + local.getName() + "] is now out of combat!");
 			lastInteracting = null;
+			return true;
 		}
 
-		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
+		return false;
+	}
+
+	private boolean checkIdleLogout()
+	{
+		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
+			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.getHitpointsThreshold())
+			if (notifyIdleLogout)
 			{
-				if (!notifyHitpoints && Instant.now().compareTo(lastHitpoints.plus(waitDuration)) >= 0)
+				notifyIdleLogout = false;
+				return true;
+			}
+		}
+		else
+		{
+			notifyIdleLogout = true;
+		}
+
+		return false;
+	}
+
+	private boolean check6hrLogout()
+	{
+		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
+		{
+			if (notify6HourLogout)
+			{
+				notify6HourLogout = false;
+				return true;
+			}
+		}
+		else
+		{
+			notify6HourLogout = true;
+		}
+
+		return false;
+	}
+
+	private boolean checkAnimationIdle(Duration waitDuration, Player local)
+	{
+		if (notifyIdle)
+		{
+			if (lastAnimating != null)
+			{
+				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 				{
-					sendNotification("[" + local.getName() + "] has low hitpoints!");
-					notifyHitpoints = true;
+					notifyIdle = false;
+					lastAnimating = null;
+					return true;
 				}
 			}
-			else
+			else if (local.getAnimation() == IDLE)
 			{
-				lastHitpoints = Instant.now();
-				notifyHitpoints = false;
+				lastAnimating = Instant.now();
 			}
 		}
 
-		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
-		{
-			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
-			{
-				if (!notifyPrayer && Instant.now().compareTo(lastPrayer.plus(waitDuration)) >= 0)
-				{
-					sendNotification("[" + local.getName() + "] has low prayer!");
-					notifyPrayer = true;
-				}
-			}
-			else
-			{
-				lastPrayer = Instant.now();
-				notifyPrayer = false;
-			}
-		}
+		return false;
 	}
 
 	private void sendNotification(String message)
