@@ -178,4 +178,8 @@ public interface Client extends GameEngine
 
 
 	BufferProvider getBufferProvider();
+
+	int getMouseIdleTicks();
+
+	int getKeyboardIdleTicks();
 }
