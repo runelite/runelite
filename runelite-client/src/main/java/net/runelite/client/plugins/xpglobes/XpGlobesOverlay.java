@@ -70,7 +70,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
 
-	private static final int TOOLTIP_RECT_SIZE_X = 140;
+	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
 	@Inject
 	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
@@ -232,6 +232,7 @@ public class XpGlobesOverlay extends Overlay
 
 		PanelComponent xpTooltip = new PanelComponent();
 		xpTooltip.setPosition(new java.awt.Point(x, y));
+		xpTooltip.setWidth(TOOLTIP_RECT_SIZE_X);
 
 		List<PanelComponent.Line> lines = xpTooltip.getLines();
 		lines.add(new PanelComponent.Line(skillName, Color.WHITE, skillLevel, Color.WHITE));
@@ -239,7 +240,7 @@ public class XpGlobesOverlay extends Overlay
 		if (mouseOverSkill.getGoalXp() != -1)
 		{
 			String skillXpToLvl = decimalFormat.format(mouseOverSkill.getGoalXp() - mouseOverSkill.getCurrentXp());
-			lines.add(new PanelComponent.Line("Xp to level: ", Color.ORANGE, skillXpToLvl, Color.WHITE));
+			lines.add(new PanelComponent.Line("Xp to level:", Color.ORANGE, skillXpToLvl, Color.WHITE));
 
 			//Create progress bar for skill.
 			ProgressBarComponent progressBar = new ProgressBarComponent();
