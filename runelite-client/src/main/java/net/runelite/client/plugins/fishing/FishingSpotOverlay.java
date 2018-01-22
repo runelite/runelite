@@ -141,5 +141,9 @@ class FishingSpotOverlay extends Overlay
 		{
 			ids.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
 		}
+		if (config.showInfernalEel())
+		{
+			ids.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
+		}
 	}
 }

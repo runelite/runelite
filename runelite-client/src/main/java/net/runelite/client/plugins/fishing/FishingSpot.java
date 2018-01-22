@@ -57,6 +57,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
 import static net.runelite.api.NpcID.FISHING_SPOT_7734;
+import static net.runelite.api.NpcID.FISHING_SPOT_7676;
 
 public enum FishingSpot
 {
@@ -87,7 +88,9 @@ public enum FishingSpot
 	),
 	MINNOW("Minnow", ItemID.MINNOW,
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
-	);
+	),
+	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,
+			FISHING_SPOT_7676);
 
 	public static final int FLYING_FISH = FISHING_SPOT_7734;
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
