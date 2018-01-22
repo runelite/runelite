@@ -72,8 +72,8 @@ public class ProgressBarComponent
 
 		if (Strings.isNullOrEmpty(text))
 		{
-			DecimalFormat df = new DecimalFormat("#.00");
-			textToWrite = df.format(progress) + "%";
+			DecimalFormat df = new DecimalFormat("#0");
+			textToWrite = df.format(Math.floor(progress)) + "%";
 		}
 		else
 		{
