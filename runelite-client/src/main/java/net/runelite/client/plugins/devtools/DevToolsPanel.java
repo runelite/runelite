@@ -73,6 +73,12 @@ public class DevToolsPanel extends PluginPanel
 	private JLabel textureLbl = new JLabel();
 	private JLabel typeLbl = new JLabel();
 	private JLabel contentTypeLbl = new JLabel();
+	private JButton editWidgetBtn = new JButton();
+
+	private JPanel borderedWrap = null;
+	private JPanel widgetTreeContainer = null;
+	private WidgetEditPanel editWidgetPanel = null;
+	private boolean editActive = false;
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
@@ -87,7 +93,7 @@ public class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 
 		settingsTracker = new SettingsTracker(client);
-		final JPanel borderedWrap = new JPanel();
+		borderedWrap = new JPanel();
 		borderedWrap.setLayout(new BorderLayout(0, 3));
 		borderedWrap.add(createOptionsPanel(), BorderLayout.NORTH);
 		borderedWrap.add(createWidgetTreePanel(), BorderLayout.CENTER);
@@ -249,10 +255,43 @@ public class DevToolsPanel extends PluginPanel
 		return buttonPanel;
 	}
 
+	private void editWidget(Widget w)
+	{
+		if (editWidgetPanel == null)
+		{
+			editWidgetPanel = new WidgetEditPanel(this, w);
+		}
+		else
+		{
+			editWidgetPanel.setWidget(w);
+		}
+
+		widgetTreeContainer.setVisible(false);
+		this.borderedWrap.remove(widgetTreeContainer);
+		this.borderedWrap.add(editWidgetPanel, BorderLayout.CENTER);
+		editWidgetPanel.validate();
+		editWidgetPanel.setVisible(true);
+		editWidgetPanel.repaint();
+		editActive = true;
+	}
+
+	public void cancelEdit()
+	{
+		if (!editActive)
+			return;
+
+		editWidgetPanel.setVisible(false);
+		this.borderedWrap.remove(editWidgetPanel);
+		this.borderedWrap.add(widgetTreeContainer, BorderLayout.CENTER);
+		widgetTreeContainer.revalidate();
+		widgetTreeContainer.setVisible(true);
+		widgetTreeContainer.repaint();
+	}
+
 	private JPanel createWidgetTreePanel()
 	{
-		JPanel container = new JPanel();
-		container.setLayout(new BorderLayout(0, 3));
+		widgetTreeContainer = new JPanel();
+		widgetTreeContainer.setLayout(new BorderLayout(0, 3));
 
 		JTree tree = new JTree(new DefaultMutableTreeNode());
 		tree.setRootVisible(false);
@@ -278,7 +317,7 @@ public class DevToolsPanel extends PluginPanel
 		});
 
 		JScrollPane scrollPane = new JScrollPane(tree);
-		container.add(scrollPane, BorderLayout.CENTER);
+		widgetTreeContainer.add(scrollPane, BorderLayout.CENTER);
 
 		JButton refreshWidgetsBtn = new JButton("Refresh Widgets");
 		refreshWidgetsBtn.addActionListener(e ->
@@ -309,7 +348,7 @@ public class DevToolsPanel extends PluginPanel
 		JPanel btnContainer = new JPanel();
 		btnContainer.setLayout(new BorderLayout());
 		btnContainer.add(refreshWidgetsBtn);
-		container.add(btnContainer, BorderLayout.NORTH);
+		widgetTreeContainer.add(btnContainer, BorderLayout.NORTH);
 
 		JPanel infoContainer = new JPanel();
 		infoContainer.setLayout(new GridLayout(0, 1));
@@ -321,6 +360,11 @@ public class DevToolsPanel extends PluginPanel
 		textureLbl = new JLabel("Texture ID: ");
 		typeLbl = new JLabel("Type: ");
 		contentTypeLbl = new JLabel("Content Type: ");
+		editWidgetBtn = new JButton("Edit");
+		editWidgetBtn.addActionListener(e ->
+		{
+			editWidget(plugin.currentWidget);
+		});
 
 		infoContainer.add(textLbl);
 		infoContainer.add(textColorLbl);
@@ -329,12 +373,13 @@ public class DevToolsPanel extends PluginPanel
 		infoContainer.add(textureLbl);
 		infoContainer.add(typeLbl);
 		infoContainer.add(contentTypeLbl);
+		infoContainer.add(editWidgetBtn);
 
 		JScrollPane infoScrollPane = new JScrollPane(infoContainer);
 		infoScrollPane.setBorder(new EmptyBorder(6, 6, 6, 6));
-		container.add(infoScrollPane, BorderLayout.SOUTH);
+		widgetTreeContainer.add(infoScrollPane, BorderLayout.SOUTH);
 
-		return container;
+		return widgetTreeContainer;
 	}
 
 	private void setWidgetInfo(Widget widget)
