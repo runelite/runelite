@@ -28,7 +28,13 @@ public interface ObjectComposition
 {
 	String getName();
 
+	String[] getActions();
+
 	int getMapSceneId();
 
 	int getMapIconId();
+
+	int[] getImpostorIds();
+
+	ObjectComposition getImpostor();
 }
