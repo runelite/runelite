@@ -114,7 +114,7 @@ public class ConfigService
 		HttpServletRequest request,
 		HttpServletResponse response,
 		@PathVariable String key,
-		@RequestBody String value
+		@RequestBody(required = false) String value
 	) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -129,7 +129,7 @@ public class ConfigService
 			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update value = :value")
 				.addParameter("user", session.getUser())
 				.addParameter("key", key)
-				.addParameter("value", value)
+				.addParameter("value", value != null ? value : "")
 				.executeUpdate();
 		}
 	}
