@@ -24,8 +24,7 @@
  */
 package net.runelite.client.plugins.screenshot;
 
-import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
-import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -36,48 +35,56 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.InputStreamReader;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import net.runelite.api.Client;
-import net.runelite.client.events.ClientUILoaded;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.OverlayRenderer;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
+import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.Notifier;
+import net.runelite.client.RuneLite;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ClientUILoaded;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
+import net.runelite.client.plugins.screenshot.imgur.ImageUploadResponse;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import okhttp3.HttpUrl;
 
 @PluginDescriptor(
 	name = "Screenshot plugin"
@@ -91,6 +98,13 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy", Locale.US);
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("h.m.s a d MMM. yyyy", Locale.US);
+
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+
+	private String clueType;
+	private Integer clueNumber;
+
+	private Integer barrowsNumber;
 
 	@Inject
 	ScreenshotConfig config;
@@ -180,6 +194,44 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		{
+			return;
+		}
+
+		if (event.getMessage().contains("Treasure"))
+		{
+			String chatMessage = event.getMessage().replaceAll("<col=3300ff>", "");
+
+			if (chatMessage.startsWith("You have completed"))
+			{
+				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
+				if (m.find())
+				{
+					clueNumber = Integer.valueOf(m.group());
+					clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
+				}
+			}
+		}
+
+		if (event.getMessage().contains("Barrows"))
+		{
+			String chatMessage = event.getMessage().replaceAll("<col=ff0000>", "");
+
+			if (chatMessage.startsWith("Your Barrows chest count is"))
+			{
+				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
+				if (m.find())
+				{
+					barrowsNumber = Integer.valueOf(m.group());
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void hideWidgets(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
@@ -224,6 +276,29 @@ public class ScreenshotPlugin extends Plugin
 				String text = textChild.getText();
 
 				fileName = text.substring(19, text.length() - 1);
+				break;
+			}
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			{
+				if (clueType == null || clueNumber == null)
+				{
+					return;
+				}
+
+				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
+				clueType = null;
+				clueNumber = null;
+				break;
+			}
+			case BARROWS_REWARD_GROUP_ID:
+			{
+				if (barrowsNumber == null)
+				{
+					return;
+				}
+
+				fileName = "Barrows(" + barrowsNumber + ")";
+				barrowsNumber = null;
 				break;
 			}
 			default:
@@ -364,5 +439,23 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	@VisibleForTesting
+	public int getClueNumber()
+	{
+		return clueNumber;
+	}
+
+	@VisibleForTesting
+	public String getClueType()
+	{
+		return clueType;
+	}
+
+	@VisibleForTesting
+	public int getBarrowsNumber()
+	{
+		return barrowsNumber;
 	}
 }
