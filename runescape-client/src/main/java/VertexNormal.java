@@ -80,10 +80,10 @@ public class VertexNormal {
          if(var0.equalsIgnoreCase("aabb")) {
             if(!class7.drawBoundingBoxes3D) {
                class7.drawBoundingBoxes3D = true;
-               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_all;
-            } else if(class11.BoundingBox3DDrawMode_all == class7.boundingBox3DDrawMode) {
+               class7.boundingBox3DDrawMode = BoundingBox3DDrawMode.ALWAYS;
+            } else if(BoundingBox3DDrawMode.ALWAYS == class7.boundingBox3DDrawMode) {
                class7.drawBoundingBoxes3D = true;
-               class7.boundingBox3DDrawMode = class11.BoundingBox3DDrawMode_mouseOver;
+               class7.boundingBox3DDrawMode = BoundingBox3DDrawMode.ON_MOUSEOVER;
             } else {
                class7.drawBoundingBoxes3D = false;
             }

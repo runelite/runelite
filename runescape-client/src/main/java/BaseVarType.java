@@ -516,7 +516,7 @@ public enum BaseVarType implements Enumerated {
                                                                                              } else if(var9 < 1200) {
                                                                                                 var14 = class44.method624(var9, var3, var61);
                                                                                              } else if(var9 < 1300) {
-                                                                                                var14 = class11.method54(var9, var3, var61);
+                                                                                                var14 = BoundingBox3DDrawMode.method54(var9, var3, var61);
                                                                                              } else if(var9 < 1400) {
                                                                                                 var14 = Preferences.method1634(var9, var3, var61);
                                                                                              } else if(var9 < 1500) {
@@ -620,7 +620,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                    } else if(var9 < 2200) {
                                                                                                       var14 = class44.method624(var9, var3, var61);
                                                                                                    } else if(var9 < 2300) {
-                                                                                                      var14 = class11.method54(var9, var3, var61);
+                                                                                                      var14 = BoundingBox3DDrawMode.method54(var9, var3, var61);
                                                                                                    } else if(var9 < 2400) {
                                                                                                       var14 = Preferences.method1634(var9, var3, var61);
                                                                                                    } else if(var9 < 2500) {

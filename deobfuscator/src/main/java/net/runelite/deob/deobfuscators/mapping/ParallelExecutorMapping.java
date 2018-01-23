@@ -141,7 +141,7 @@ public class ParallelExecutorMapping
 		}
 	}
 
-	private void mapClass(Object one, Object two)
+	private void mapClass(StaticInitializerIndexer staticIndexer1, StaticInitializerIndexer staticIndexer2, Object one, Object two)
 	{
 		ClassFile cf1, cf2;
 
@@ -155,7 +155,11 @@ public class ParallelExecutorMapping
 
 			assert f1.isStatic() == f2.isStatic();
 
-			if (f1.isStatic() || f2.isStatic())
+			if (staticIndexer1.isStatic(f1) && staticIndexer2.isStatic(f2))
+			{
+				logger.debug("Mapping class of {} -> {} due to static initializer", f1, f2);
+			}
+			else if (f1.isStatic() || f2.isStatic())
 			{
 				return;
 			}
@@ -265,12 +269,18 @@ public class ParallelExecutorMapping
 			}
 		}
 
+		StaticInitializerIndexer staticIndexer1 = new StaticInitializerIndexer(group);
+		staticIndexer1.index();
+
+		StaticInitializerIndexer staticIndexer2 = new StaticInitializerIndexer(group2);
+		staticIndexer2.index();
+
 		Map<Object, Object> map = getMap();
 		for (Object key : map.keySet())
 		{
 			Object value = map.get(key);
 
-			mapClass(key, value);
+			mapClass(staticIndexer1, staticIndexer2, key, value);
 		}
 
 		map = getMap(); // rebuild map now we've inserted classes...

@@ -550,9 +550,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    )
    void method846() {
       long var1 = class60.currentTimeMs();
-      long var3 = field689[class11.field254];
-      field689[class11.field254] = var1;
-      class11.field254 = class11.field254 + 1 & 31;
+      long var3 = field689[BoundingBox3DDrawMode.field254];
+      field689[BoundingBox3DDrawMode.field254] = var1;
+      BoundingBox3DDrawMode.field254 = BoundingBox3DDrawMode.field254 + 1 & 31;
       if(0L != var3 && var1 > var3) {
          ;
       }

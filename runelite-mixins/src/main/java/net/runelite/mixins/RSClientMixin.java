@@ -375,6 +375,27 @@ public abstract class RSClientMixin implements RSClient
 		return new Point(getDestinationX(), getDestinationY());
 	}
 
+	@Inject
+	@Override
+	public boolean getBoundingBoxAlwaysOnMode()
+	{
+		return  getboundingBox3DDrawMode() == getALWAYSDrawMode();
+	}
+
+	@Inject
+	@Override
+	public void setBoundingBoxAlwaysOnMode(boolean alwaysDrawBoxes)
+	{
+		if (alwaysDrawBoxes)
+		{
+			setboundingBox3DDrawMode(getALWAYSDrawMode());
+		}
+		else
+		{
+			setboundingBox3DDrawMode(getON_MOUSEOVERDrawMode());
+		}
+	}
+
 	@FieldHook("skillExperiences")
 	@Inject
 	public static void experiencedChanged(int idx)

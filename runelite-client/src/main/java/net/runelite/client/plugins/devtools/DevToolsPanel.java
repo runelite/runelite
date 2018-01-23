@@ -30,10 +30,13 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -61,6 +64,7 @@ public class DevToolsPanel extends PluginPanel
 	private JButton renderDecorBtn = new JButton();
 	private JButton renderInventoryBtn = new JButton();
 	private JButton renderProjectilesBtn = new JButton();
+	private JPanel boundsDebugPanel = new JPanel();
 
 	private JLabel textLbl = new JLabel();
 	private JLabel textColorLbl = new JLabel();
@@ -167,6 +171,9 @@ public class DevToolsPanel extends PluginPanel
 		});
 		container.add(renderProjectilesBtn);
 
+		boundsDebugPanel = createBoundsDebugMultiButton();
+		container.add(boundsDebugPanel);
+
 		JButton settingsSnapshotBtn = new JButton("Get Settings");
 		settingsSnapshotBtn.addActionListener(settingsTracker::snapshot);
 		container.add(settingsSnapshotBtn);
@@ -176,6 +183,70 @@ public class DevToolsPanel extends PluginPanel
 		container.add(settingsClearBtn);
 
 		return container;
+	}
+
+	private JPanel createBoundsDebugMultiButton()
+	{
+		ImageIcon bBox2DIcon;
+		ImageIcon bBox3DIcon;
+		ImageIcon clickBoxIcon;
+		ImageIcon bBox3DMousoverIcon;
+
+		try
+		{
+			bBox2DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_bounding_box.png")));
+			bBox3DIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("3D_bounding_box.png")));
+			clickBoxIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("2D_clickbox_geometry.png")));
+			bBox3DMousoverIcon = new ImageIcon(ImageIO.read(DevToolsPlugin.class.getResourceAsStream("mouseover_3D_bounding_box.png")));
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to load bounding box images", ex);
+			return new JPanel();
+		}
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 4));
+		JButton bBox2DButton = new JButton(bBox2DIcon);
+		bBox2DButton.addActionListener(e ->
+		{
+			client.setDrawBoundingBoxes2D(!client.getDrawBoundingBoxes2D());
+			highlightButton(bBox2DButton);
+		});
+		buttonPanel.add(bBox2DButton);
+
+		JButton bBox3DButton = new JButton(bBox3DIcon);
+		bBox3DButton.addActionListener(e ->
+		{
+			client.setDrawBoundingBoxes3D(!client.getDrawBoundingBoxes3D());
+			highlightButton(bBox3DButton);
+		});
+		buttonPanel.add(bBox3DButton);
+
+		JButton clickBoxButton = new JButton(clickBoxIcon);
+		clickBoxButton.addActionListener(e ->
+		{
+			client.setdrawObjectGeometry2D(!client.getdrawObjectGeometry2D());
+			highlightButton(clickBoxButton);
+		});
+		buttonPanel.add(clickBoxButton);
+
+		JButton mouseoverModeButton = new JButton(client.getBoundingBoxAlwaysOnMode() ? bBox3DIcon : bBox3DMousoverIcon);
+		mouseoverModeButton.addActionListener(e ->
+		{
+			client.setBoundingBoxAlwaysOnMode(!client.getBoundingBoxAlwaysOnMode());
+			if (client.getBoundingBoxAlwaysOnMode())
+			{
+				mouseoverModeButton.setIcon(bBox3DIcon);
+			}
+			else
+			{
+				mouseoverModeButton.setIcon(bBox3DMousoverIcon);
+			}
+		});
+		buttonPanel.add(mouseoverModeButton);
+
+		return buttonPanel;
 	}
 
 	private JPanel createWidgetTreePanel()
