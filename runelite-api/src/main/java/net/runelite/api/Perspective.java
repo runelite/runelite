@@ -696,4 +696,31 @@ public class Perspective
 		return new Area(hull);
 	}
 
+	/**
+	 * Calculates text position and centers on minimap depending on string length.
+	 *
+	 * @param client
+	 * @param graphics
+	 * @param localLocation local location of the tile
+	 * @param text string for width measurement
+	 * @return a {@link Point} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Point getCanvasTextMiniMapLocation(Client client, Graphics2D graphics, Point localLocation, String text)
+	{
+		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
+
+		if (p == null)
+		{
+			return null;
+		}
+
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D bounds = fm.getStringBounds(text, graphics);
+		int xOffset = p.getX() - (int) (bounds.getWidth() / 2);
+		int yOffset = p.getY() - (int) (bounds.getHeight() / 2) + fm.getAscent();
+
+		return new Point(xOffset, yOffset);
+	}
+
 }
