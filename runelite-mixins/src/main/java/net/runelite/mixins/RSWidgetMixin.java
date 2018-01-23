@@ -107,6 +107,13 @@ public abstract class RSWidgetMixin implements RSWidget
 
 	@Inject
 	@Override
+	public void setName(String name)
+	{
+		setRSName(name.replace(' ', '\u00A0'));
+	}
+
+	@Inject
+	@Override
 	public boolean isHidden()
 	{
 		Widget parent = getParent();
