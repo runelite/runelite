@@ -89,12 +89,20 @@
 
 	<repositories>
 		<repository>
+			<id>maven-central</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
 			<id>runelite</id>
 			<name>RuneLite</name>
 			<url>http://repo.runelite.net</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-central-plugins</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</pluginRepository>
 		<pluginRepository>
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
