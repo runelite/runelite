@@ -34,6 +34,7 @@ public interface RSObjectComposition extends ObjectComposition
 	String getName();
 
 	@Import("actions")
+	@Override
 	String[] getActions();
 
 	@Import("mapSceneId")
@@ -43,4 +44,12 @@ public interface RSObjectComposition extends ObjectComposition
 	@Import("mapIconId")
 	@Override
 	int getMapIconId();
+
+	@Import("impostorIds")
+	@Override
+	int[] getImpostorIds();
+
+	@Import("getImpostor")
+	@Override
+	RSObjectComposition getImpostor();
 }
