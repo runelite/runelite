@@ -146,9 +146,9 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showInfernalEel",
-			name = "Show Infernal Eel",
-			description = "Configures whether infernal eel is displayed"
+		keyName = "showInfernalEel",
+		name = "Show Infernal Eel",
+		description = "Configures whether infernal eel is displayed"
 	)
 	default boolean showInfernalEel()
 	{
