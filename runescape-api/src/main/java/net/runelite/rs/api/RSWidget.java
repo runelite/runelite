@@ -67,6 +67,9 @@ public interface RSWidget extends Widget
 	@Import("name")
 	String getRSName();
 
+	@Import("name")
+	void setRSName(String name);
+
 	@Import("text")
 	@Override
 	void setText(String text);
@@ -74,6 +77,10 @@ public interface RSWidget extends Widget
 	@Import("textColor")
 	@Override
 	int getTextColor();
+
+	@Import("textColor")
+	@Override
+	void setTextColor(int textColor);
 
 	@Import("opacity")
 	int getOpacity();
@@ -98,9 +105,17 @@ public interface RSWidget extends Widget
 	@Override
 	int getWidth();
 
+	@Import("width")
+	@Override
+	void setWidth(int width);
+
 	@Import("height")
 	@Override
 	int getHeight();
+
+	@Import("height")
+	@Override
+	void setHeight(int height);
 
 	@Import("isHidden")
 	boolean isRSHidden();
@@ -124,19 +139,41 @@ public interface RSWidget extends Widget
 	@Override
 	int getContentType();
 
+	@Import("contentType")
+	@Override
+	void setContentType(int contentType);
+
 	@Import("type")
 	@Override
 	int getType();
 
+	@Import("type")
+	@Override
+	void setType(int type);
+
 	@Import("scrollX")
+	@Override
 	int getScrollX();
 
+	@Import("scrollX")
+	@Override
+	void setScrollX(int scrollX);
+
 	@Import("scrollY")
+	@Override
 	int getScrollY();
+
+	@Import("scrollY")
+	@Override
+	void setScrollY(int scrollY);
 
 	@Import("spriteId")
 	@Override
 	int getSpriteId();
+
+	@Import("spriteId")
+	@Override
+	void setSpriteId(int spriteId);
 
 	@Import("borderThickness")
 	int getBorderThickness();
@@ -150,14 +187,34 @@ public interface RSWidget extends Widget
 	int getItemQuantity();
 
 	@Import("originalX")
+	@Override
 	int getOriginalX();
 
+	@Import("originalX")
+	@Override
+	void setOriginalX(int originalX);
+
 	@Import("originalY")
+	@Override
 	int getOriginalY();
 
+	@Import("originalY")
+	@Override
+	void setOriginalY(int originalY);
+
 	@Import("paddingX")
+	@Override
 	int getPaddingX();
 
+	@Import("paddingX")
+	@Override
+	void setPaddingX(int paddingX);
+
 	@Import("paddingY")
+	@Override
 	int getPaddingY();
+
+	@Import("paddingY")
+	@Override
+	void setPaddingY(int paddingY);
 }

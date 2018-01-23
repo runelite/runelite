@@ -34,7 +34,11 @@ public interface Widget
 
 	int getType();
 
+	void setType(int type);
+
 	int getContentType();
+
+	void setContentType(int contentType);
 
 	Widget getParent();
 
@@ -62,11 +66,17 @@ public interface Widget
 
 	int getTextColor();
 
+	void setTextColor(int textColor);
+
 	String getName();
+
+	void setName(String name);
 
 	int getModelId();
 
 	int getSpriteId();
+
+	void setSpriteId(int spriteId);
 
 	boolean isHidden();
 
@@ -76,7 +86,11 @@ public interface Widget
 
 	int getWidth();
 
+	void setWidth(int width);
+
 	int getHeight();
+
+	void setHeight(int height);
 
 	Rectangle getBounds();
 
@@ -89,4 +103,28 @@ public interface Widget
 	int getItemQuantity();
 	
 	boolean contains(Point point);
+
+	int getScrollX();
+
+	void setScrollX(int scrollX);
+
+	int getScrollY();
+
+	void setScrollY(int scrollY);
+
+	int getOriginalX();
+
+	void setOriginalX(int originalX);
+
+	int getOriginalY();
+
+	void setOriginalY(int originalY);
+
+	int getPaddingX();
+
+	void setPaddingX(int paddingX);
+
+	int getPaddingY();
+
+	void setPaddingY(int paddingY);
 }
