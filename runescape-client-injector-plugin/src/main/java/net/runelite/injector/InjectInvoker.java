@@ -137,7 +137,7 @@ public class InjectInvoker
 
 		Type lastGarbageArgumentType = null;
 
-		if (!deobfuscatedMethod.getDescriptor().equals(invokeMethod.getDescriptor()))
+		if (deobfuscatedMethod.getDescriptor().getArguments().size() != invokeMethod.getDescriptor().getArguments().size())
 		{
 			// allow for obfuscated method to have a single bogus signature at the end
 			assert deobfuscatedMethod.getDescriptor().size() + 1 == invokeMethod.getDescriptor().size();
