@@ -33,7 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -69,7 +69,7 @@ public class RunecraftOverlay extends Overlay
 			return null;
 		}
 
-		Query query = new InventoryItemQuery();
+		Query query = new InventoryWidgetItemQuery();
 		WidgetItem[] widgetItems = queryRunner.runQuery(query);
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
