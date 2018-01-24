@@ -1824,7 +1824,7 @@ public final class Client extends GameEngine {
             }
          }
 
-         Region.lowMemory = false;
+         Region.regionLowMemory = false;
          lowMemory = false;
          class161.host = this.getCodeBase().getHost();
          String var11 = field875.identifier;

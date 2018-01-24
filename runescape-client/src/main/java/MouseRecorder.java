@@ -66,7 +66,7 @@ public class MouseRecorder implements Runnable {
    public static void method1119(IndexDataBase var0, IndexDataBase var1, boolean var2) {
       ObjectComposition.objects_ref = var0;
       ObjectComposition.field3522 = var1;
-      ObjectComposition.ObjectDefinition_isLowDetail = var2;
+      ObjectComposition.ocLowDetail = var2;
    }
 
    @ObfuscatedName("n")
