@@ -239,4 +239,11 @@ public interface Client extends GameEngine
 	int getMouseIdleTicks();
 
 	int getKeyboardIdleTicks();
+
+	/**
+	 * Changes how game behaves based on memory mode. Low memory mode skips drawing of all floors and renders ground
+	 * textures in low quality.
+	 * @param lowMemory if we are running in low memory mode or not
+	 */
+	void changeMemoryMode(boolean lowMemory);
 }
