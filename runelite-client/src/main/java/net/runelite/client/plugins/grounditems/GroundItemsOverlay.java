@@ -228,7 +228,7 @@ public class GroundItemsOverlay extends Overlay
 
 				for (int i = 0; i < itemIds.size(); ++i)
 				{
-					Point point = itemLayer.getCanvasLocation();
+					Point point = itemLayer.getCanvasLocation(itemLayer.getHeight());
 					// if the item is offscreen, don't bother drawing it
 					if (point == null || (viewport != null && !viewport.contains(point)))
 					{
