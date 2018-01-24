@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class InventoryItemQuery extends WidgetItemQuery
+public class InventoryWidgetItemQuery extends WidgetItemQuery
 {
 	private static final WidgetInfo[] INVENTORY_WIDGET_INFOS =
 	{
