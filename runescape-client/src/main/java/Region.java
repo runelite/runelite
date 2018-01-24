@@ -8,8 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Region")
 public class Region {
    @ObfuscatedName("n")
-   @Export("lowMemory")
-   public static boolean lowMemory;
+   @Export("regionLowMemory")
+   public static boolean regionLowMemory;
    @ObfuscatedName("t")
    @Export("tileUpdateCount")
    static int tileUpdateCount;
@@ -187,7 +187,7 @@ public class Region {
    int[][] TILE_ROTATION_2D;
 
    static {
-      lowMemory = true;
+      regionLowMemory = true;
       tileUpdateCount = 0;
       Scene_plane = 0;
       entityBuffer = new GameObject[100];
@@ -1837,7 +1837,7 @@ public class Region {
                         if(var1.neColor != 12345678) {
                            Graphics3D.rasterGouraud(var27, var29, var25, var26, var28, var24, var1.neColor, var1.nwColor, var1.seColor);
                         }
-                     } else if(!lowMemory) {
+                     } else if(!regionLowMemory) {
                         if(var1.flatShade) {
                            Graphics3D.rasterTexture(var27, var29, var25, var26, var28, var24, var1.neColor, var1.nwColor, var1.seColor, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.texture);
                         } else {
@@ -1864,7 +1864,7 @@ public class Region {
                         if(var1.swColor != 12345678) {
                            Graphics3D.rasterGouraud(var23, var25, var29, var22, var24, var28, var1.swColor, var1.seColor, var1.nwColor);
                         }
-                     } else if(!lowMemory) {
+                     } else if(!regionLowMemory) {
                         Graphics3D.rasterTexture(var23, var25, var29, var22, var24, var28, var1.swColor, var1.seColor, var1.nwColor, var10, var14, var9, var17, var18, var21, var12, var11, var15, var1.texture);
                      } else {
                         var30 = Graphics3D.textureLoader.getAverageTextureRGB(var1.texture);
@@ -1939,7 +1939,7 @@ public class Region {
             }
 
             if(var1.triangleTextureId != null && var1.triangleTextureId[var9] != -1) {
-               if(!lowMemory) {
+               if(!regionLowMemory) {
                   if(var1.flatShade) {
                      Graphics3D.rasterTexture(var16, var17, var18, var13, var14, var15, var1.triangleColorA[var9], var1.triangleColorB[var9], var1.triangleColorC[var9], SceneTileModel.vertexSceneX[0], SceneTileModel.vertexSceneX[1], SceneTileModel.vertexSceneX[3], SceneTileModel.vertexSceneY[0], SceneTileModel.vertexSceneY[1], SceneTileModel.vertexSceneY[3], SceneTileModel.vertexSceneZ[0], SceneTileModel.vertexSceneZ[1], SceneTileModel.vertexSceneZ[3], var1.triangleTextureId[var9]);
                   } else {
