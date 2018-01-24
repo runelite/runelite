@@ -420,4 +420,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("keyboardIdleTicks")
 	@Override
 	int getKeyboardIdleTicks();
+
+	@Import("lowMemory")
+	void setLowMemory(boolean lowMemory);
+
+	@Import("regionLowMemory")
+	void setRegionLowMemory(boolean lowMemory);
+
+	@Import("highMemory")
+	void setHighMemory(boolean highMemory);
+
+	@Import("ocLowDetail")
+	void setOcLowDetail(boolean lowDetail);
 }

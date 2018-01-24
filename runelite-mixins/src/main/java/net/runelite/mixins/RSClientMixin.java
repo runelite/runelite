@@ -396,6 +396,16 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
+	@Inject
+	@Override
+	public void changeMemoryMode(boolean lowMemory)
+	{
+		setLowMemory(lowMemory);
+		setRegionLowMemory(lowMemory);
+		setHighMemory(!lowMemory);
+		setOcLowDetail(lowMemory);
+	}
+
 	@FieldHook("skillExperiences")
 	@Inject
 	public static void experiencedChanged(int idx)
