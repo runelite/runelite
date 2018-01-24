@@ -432,4 +432,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("ocLowDetail")
 	void setOcLowDetail(boolean lowDetail);
+
+	@Construct
+	RSItem createItem();
 }

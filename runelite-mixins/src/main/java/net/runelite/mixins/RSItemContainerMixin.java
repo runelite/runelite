@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
 import net.runelite.api.Item;
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSItem;
+import net.runelite.rs.api.RSItemContainer;
 
-public interface RSItem extends RSRenderable, Item
+@Mixin(RSItemContainer.class)
+public abstract class RSItemContainerMixin implements RSItemContainer
 {
-	@Import("id")
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Inject
 	@Override
-	int getId();
+	public Item[] getItems()
+	{
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+		Item[] items = new Item[itemIds.length];
 
-	@Import("id")
-	void setId(int id);
+		for (int i = 0; i < itemIds.length; ++i)
+		{
+			RSItem item = client.createItem();
+			item.setId(itemIds[i]);
+			item.setQuantity(stackSizes[i]);
+			items[i] = item;
+		}
 
-	@Import("quantity")
-	@Override
-	int getQuantity();
+		return items;
+	}
 
-	@Import("quantity")
-	void setQuantity(int quantity);
 }
