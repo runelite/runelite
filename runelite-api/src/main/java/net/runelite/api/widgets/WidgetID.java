@@ -32,6 +32,7 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
+	public static final int DIARY_GROUP_ID = 259;
 	public static final int PESTRCONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
