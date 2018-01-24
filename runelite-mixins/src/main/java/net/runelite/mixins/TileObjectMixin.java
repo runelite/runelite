@@ -85,16 +85,23 @@ public abstract class TileObjectMixin implements TileObject
 	@Inject
 	public Point getRegionLocation()
 	{
-		Point locaLocation = getLocalLocation();
-		return new Point(locaLocation.getX() >>> LOCAL_COORD_BITS, locaLocation.getY() >>> LOCAL_COORD_BITS);
+		Point localLocation = getLocalLocation();
+		return new Point(localLocation.getX() >>> LOCAL_COORD_BITS, localLocation.getY() >>> LOCAL_COORD_BITS);
 	}
 
 	@Override
 	@Inject
 	public Point getCanvasLocation()
 	{
-		Point locaLocation = getLocalLocation();
-		return Perspective.worldToCanvas(client, locaLocation.getX(), locaLocation.getY(), 0);
+		return getCanvasLocation(0);
+	}
+
+	@Override
+	@Inject
+	public Point getCanvasLocation(int zOffset)
+	{
+		Point localLocation = getLocalLocation();
+		return Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), 0, zOffset);
 	}
 
 	@Override

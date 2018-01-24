@@ -45,6 +45,8 @@ public interface TileObject
 
 	Point getCanvasLocation();
 
+	Point getCanvasLocation(int zOffset);
+
 	Polygon getCanvasTilePoly();
 
 	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
