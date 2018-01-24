@@ -101,6 +101,8 @@ public interface Client extends GameEngine
 	int[] getWidgetPositionsX();
 
 	int[] getWidgetPositionsY();
+	
+	int getEnergy();
 
 	String[] getPlayerOptions();
 
