@@ -25,40 +25,61 @@
 package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.swing.ImageIcon;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
-public class XpPanel extends PluginPanel
+class XpPanel extends PluginPanel
 {
-	private Map<Skill, JPanel> labelMap = new HashMap<>();
-	private final XpTrackerPlugin xpTracker;
+	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
+	private final JLabel totalXpGained = new JLabel();
+	private final JLabel totalXpHr = new JLabel();
 
-	@Inject
-	Client client;
 
-	@Inject
-	ScheduledExecutorService executor;
-
-	@Inject
-	public XpPanel(XpTrackerPlugin xpTracker)
+	XpPanel(Client client)
 	{
 		super();
-		this.xpTracker = xpTracker;
+
+		final JPanel layoutPanel = new JPanel();
+		layoutPanel.setLayout(new BorderLayout(0, 3));
+		add(layoutPanel);
+
+		final JPanel totalPanel = new JPanel();
+		totalPanel.setLayout(new BorderLayout());
+		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
+
+		final JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(new GridLayout(3, 1));
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+
+		final JButton resetButton = new JButton("Reset All");
+		resetButton.addActionListener(e -> resetAllInfoBoxes());
+
+		totalXpGained.setText(formatLine(0, "total xp gained"));
+		totalXpHr.setText(formatLine(0, "total xp/hr"));
+
+		infoPanel.add(totalXpGained);
+		infoPanel.add(totalXpHr);
+		infoPanel.add(resetButton);
+		totalPanel.add(infoPanel, BorderLayout.CENTER);
+		layoutPanel.add(totalPanel, BorderLayout.NORTH);
+
+		final JPanel infoBoxPanel = new JPanel();
+		infoBoxPanel.setLayout(new GridLayout(0,1,0,3));
+		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 
 		try
 		{
@@ -69,88 +90,56 @@ public class XpPanel extends PluginPanel
 					break;
 				}
 
-				JLabel skillLabel = new JLabel();
-				labelMap.put(skill, makeSkillPanel(skill, skillLabel));
+				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, new SkillXPInfo(skill)));
 			}
 		}
 		catch (IOException e)
 		{
 			log.warn(null, e);
 		}
-
-		JButton resetButton = new JButton("Reset All");
-		resetButton.addActionListener((e) -> executor.execute(this::resetAllSkillXpHr));
-		resetButton.setPreferredSize(new Dimension(0, 32));
-		add(resetButton);
 	}
 
-	private JButton makeSkillResetButton(Skill skill) throws IOException
+	void resetAllInfoBoxes()
 	{
-		ImageIcon resetIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("reset.png")));
-		JButton resetButton = new JButton(resetIcon);
-		resetButton.setPreferredSize(new Dimension(32, 32));
-		resetButton.addActionListener(actionEvent -> resetSkillXpHr(skill));
-		return resetButton;
+		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.reset());
+		updateTotal();
 	}
 
-	private JPanel makeSkillPanel(Skill skill, JLabel levelLabel) throws IOException
+	void updateAllInfoBoxes()
 	{
-		BorderLayout borderLayout = new BorderLayout();
-		borderLayout.setHgap(12);
-		JPanel iconLevel = new JPanel(borderLayout);
-		iconLevel.setPreferredSize(new Dimension(0, 32));
-
-		String skillIcon = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
-		log.debug("Loading skill icon from {}", skillIcon);
-		JLabel icon = new JLabel(new ImageIcon(ImageIO.read(XpPanel.class.getResourceAsStream(skillIcon))));
-		iconLevel.add(icon, BorderLayout.LINE_START);
-		iconLevel.add(levelLabel, BorderLayout.CENTER);
-		iconLevel.add(makeSkillResetButton(skill), BorderLayout.LINE_END);
-
-		return iconLevel;
+		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.update());
+		updateTotal();
 	}
 
-	public void resetSkillXpHr(Skill skill)
+	void updateSkillExperience(Skill skill)
 	{
-		int skillIdx = skill.ordinal();
-		xpTracker.getXpInfos()[skillIdx].reset(client.getSkillExperience(skill));
-		remove(labelMap.get(skill));
-		revalidate();
+		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		xpInfoBox.update();
+		xpInfoBox.init();
+		updateTotal();
 	}
 
-	public void resetAllSkillXpHr()
+	private void updateTotal()
 	{
-		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
+		final AtomicInteger totalXpGainedVal = new AtomicInteger();
+		final AtomicInteger totalXpHrVal = new AtomicInteger();
+
+		for (XpInfoBox xpInfoBox : infoBoxes.values())
 		{
-			if (skillInfo != null && skillInfo.getSkillTimeStart() != null)
-			{
-				resetSkillXpHr(skillInfo.getSkill());
-			}
+			totalXpGainedVal.addAndGet(xpInfoBox.getXpInfo().getXpGained());
+			totalXpHrVal.addAndGet(xpInfoBox.getXpInfo().getXpHr());
 		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			totalXpGained.setText(formatLine(totalXpGainedVal.get(), "total xp gained"));
+			totalXpHr.setText(formatLine(totalXpHrVal.get(), "total xp/hr"));
+		});
 	}
 
-	public void updateAllSkillXpHr()
+	static String formatLine(double number, String description)
 	{
-		for (SkillXPInfo skillInfo : xpTracker.getXpInfos())
-		{
-			if (skillInfo != null && skillInfo.getSkillTimeStart() != null
-				&& skillInfo.getXpGained() != 0)
-			{
-				updateSkillXpHr(skillInfo);
-			}
-		}
-	}
 
-	public void updateSkillXpHr(SkillXPInfo skillXPInfo)
-	{
-		JPanel skillPanel = labelMap.get(skillXPInfo.getSkill());
-		JLabel xpHr = (JLabel) skillPanel.getComponent(1);
-		xpHr.setText(NumberFormat.getInstance().format(skillXPInfo.getXpHr()) + " xp/hr");
-
-		if (skillPanel.getParent() != this)
-		{
-			add(skillPanel);
-			revalidate();
-		}
+		return NumberFormat.getInstance().format(number) + " " + description;
 	}
 }
