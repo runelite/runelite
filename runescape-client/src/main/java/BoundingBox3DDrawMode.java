@@ -312,8 +312,8 @@ public class BoundingBox3DDrawMode {
                         Player.method1159(var12, var13, var21, var22, true);
                         var19 = Client.Viewport_xOffset;
                         var20 = Client.Viewport_yOffset;
-                        var21 = Client.viewportHeight;
-                        var22 = Client.viewportWidth;
+                        var21 = Client.viewportWidth;
+                        var22 = Client.viewportHeight;
                         Rasterizer2D.setDrawRegion(var19, var20, var19 + var21, var20 + var22);
                         Graphics3D.Rasterizer3D_method1();
                         if(!Client.field1101) {

@@ -328,14 +328,14 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = 81711465
    )
-   @Export("viewportHeight")
-   static int viewportHeight;
+   @Export("viewportWidth")
+   static int viewportWidth;
    @ObfuscatedName("pz")
    @ObfuscatedGetter(
       intValue = -1291048227
    )
-   @Export("viewportWidth")
-   static int viewportWidth;
+   @Export("viewportHeight")
+   static int viewportHeight;
    @ObfuscatedName("pq")
    static short field1113;
    @ObfuscatedName("pf")
@@ -1400,8 +1400,8 @@ public final class Client extends GameEngine {
       field948 = 32767;
       Viewport_xOffset = 0;
       Viewport_yOffset = 0;
-      viewportHeight = 0;
       viewportWidth = 0;
+      viewportHeight = 0;
       scale = 0;
       friendCount = 0;
       field1077 = 0;
