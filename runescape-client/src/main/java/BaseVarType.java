@@ -1933,8 +1933,8 @@ public enum BaseVarType implements Enumerated {
                                                                                                                   } else if(var9 == 6203) {
                                                                                                                      if(Client.field980 != null) {
                                                                                                                         Player.method1159(0, 0, Client.field980.width, Client.field980.height, false);
-                                                                                                                        class82.intStack[++class82.intStackSize - 1] = Client.viewportHeight;
                                                                                                                         class82.intStack[++class82.intStackSize - 1] = Client.viewportWidth;
+                                                                                                                        class82.intStack[++class82.intStackSize - 1] = Client.viewportHeight;
                                                                                                                      } else {
                                                                                                                         class82.intStack[++class82.intStackSize - 1] = -1;
                                                                                                                         class82.intStack[++class82.intStackSize - 1] = -1;
