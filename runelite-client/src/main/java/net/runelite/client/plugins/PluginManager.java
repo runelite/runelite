@@ -65,9 +65,6 @@ public class PluginManager
 	@Inject
 	Scheduler scheduler;
 
-	@Inject
-	PluginWatcher pluginWatcher;
-
 	@Setter
 	boolean isOutdated;
 
@@ -93,11 +90,6 @@ public class PluginManager
 				plugins.remove(plugin);
 			}
 		}
-	}
-
-	public void watch()
-	{
-		pluginWatcher.start();
 	}
 
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
