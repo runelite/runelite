@@ -140,6 +140,7 @@ public class RuneLite
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
+		eventBus.register(gui);
 
 		// Setup the notifier
 		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon());
@@ -161,7 +162,19 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
-		SwingUtilities.invokeAndWait(() -> gui.showWithChrome(runeliteConfig.enableCustomChrome()));
+		SwingUtilities.invokeAndWait(() ->
+		{
+			if (client != null)
+			{
+				client.setSize(runeliteConfig.gameSize());
+				client.setPreferredSize(runeliteConfig.gameSize());
+
+				client.getParent().setPreferredSize(runeliteConfig.gameSize());
+				client.getParent().setSize(runeliteConfig.gameSize());
+			}
+
+			gui.showWithChrome(runeliteConfig.enableCustomChrome());
+		});
 
 		eventBus.post(new ClientUILoaded());
 	}

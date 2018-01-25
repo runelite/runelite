@@ -61,10 +61,12 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
+import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -248,6 +250,52 @@ public class ClientUI extends JFrame
 
 		revalidate();
 		repaint();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("runelite"))
+		{
+			return;
+		}
+
+		if (!event.getKey().equals("gameSize"))
+		{
+			return;
+		}
+
+		if (client == null)
+		{
+			return;
+		}
+
+		String[] splitStr = event.getNewValue().split("x");
+		int width = Integer.parseInt(splitStr[0]);
+		int height = Integer.parseInt(splitStr[1]);
+
+		// The upper bounds are defined by the applet's max size
+		// The lower bounds are taken care of by ClientPanel's setMinimumSize
+
+		if (width > 7680)
+		{
+			width = 7680;
+		}
+
+		if (height > 2160)
+		{
+			height = 2160;
+		}
+
+		Dimension size = new Dimension(width, height);
+
+		client.setSize(size);
+		client.setPreferredSize(size);
+
+		client.getParent().setPreferredSize(size);
+		client.getParent().setSize(size);
+
+		pack();
 	}
 
 	private static void setUIFont(FontUIResource f)
