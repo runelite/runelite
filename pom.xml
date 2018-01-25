@@ -42,7 +42,6 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
-		<archetype.test.skip>true</archetype.test.skip>
 
 		<rs.version>161</rs.version>
 	</properties>
@@ -124,7 +123,6 @@
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>
 		<module>runescape-client-injector-plugin</module>
-		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>protocol-api</module>
