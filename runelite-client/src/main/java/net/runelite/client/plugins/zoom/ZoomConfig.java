@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.zoom;
 
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSCacheableNode extends RSNode
+@ConfigGroup(
+	keyName = "zoom",
+	name = "Zoom Unlimiter",
+	description = "Configuration for the camera zoom limit"
+)
+public interface ZoomConfig extends Config
 {
-	@Import("next")
-	RSCacheableNode getNext();
-
-	@Import("previous")
-	RSCacheableNode getPrevious();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not the zoom limit is reduced"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 }

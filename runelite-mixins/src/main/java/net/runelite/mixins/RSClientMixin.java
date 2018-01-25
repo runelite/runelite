@@ -45,17 +45,23 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.ScriptLoaded;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.callback.Hooks.eventBus;
+
+import net.runelite.client.callback.Hooks;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSScript;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
@@ -473,5 +479,35 @@ public abstract class RSClientMixin implements RSClient
 		ResizeableChanged resizeableChanged = new ResizeableChanged();
 		resizeableChanged.setResized(client.isResized());
 		eventBus.post(resizeableChanged);
+	}
+
+	@Copy("getScript")
+	private static RSScript rs$getScript(int hash)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("getScript")
+	private static RSScript rl$getScript(int hash)
+	{
+		RSScript script = rs$getScript(hash);
+		ScriptLoaded sl = new ScriptLoaded(script);
+		Hooks.eventBus.post(sl);
+		return (RSScript) sl.getScript();
+	}
+
+	@Copy("getScriptByFile")
+	private static RSScript rs$getScriptByFile(int file, Object garbage)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("getScriptByFile")
+	private static RSScript rl$getScriptByFile(int file, Object garbage)
+	{
+		RSScript script = rs$getScriptByFile(file, garbage);
+		ScriptLoaded sl = new ScriptLoaded(script);
+		Hooks.eventBus.post(sl);
+		return (RSScript) sl.getScript();
 	}
 }
