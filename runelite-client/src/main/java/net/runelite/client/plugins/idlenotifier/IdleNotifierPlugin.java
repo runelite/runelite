@@ -240,8 +240,8 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
+				resetTimers();
 				notifyIdle = true;
-				lastAnimating = null;
 				break;
 		}
 	}
@@ -366,6 +366,7 @@ public class IdleNotifierPlugin extends Plugin
 			&& opponent.getCombatLevel() > 0
 			&& opponent.getHealth() != -1)
 		{
+			resetTimers();
 			lastOpponent = opponent;
 		}
 		else if (opponent == null)
@@ -460,5 +461,16 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify(message);
 		}
+	}
+
+	private void resetTimers()
+	{
+		// Reset animation idle timer
+		notifyIdle = false;
+		lastAnimating = null;
+
+		// Reset combat idle timer
+		lastOpponent = null;
+		lastInteracting = null;
 	}
 }
