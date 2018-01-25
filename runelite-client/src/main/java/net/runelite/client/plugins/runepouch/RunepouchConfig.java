@@ -65,4 +65,14 @@ public interface RunepouchConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOnlyOnHover",
+		name = "Show only on hover",
+		description = "Show the runes only when hovered"
+	)
+	default boolean showOnlyOnHover()
+	{
+		return false;
+	}
 }
