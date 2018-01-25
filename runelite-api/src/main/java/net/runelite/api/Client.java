@@ -246,4 +246,11 @@ public interface Client extends GameEngine
 	 * @param lowMemory if we are running in low memory mode or not
 	 */
 	void changeMemoryMode(boolean lowMemory);
+
+	/**
+	 * Get the item container for an inventory
+	 * @param inventory
+	 * @return
+	 */
+	ItemContainer getItemContainer(InventoryID inventory);
 }

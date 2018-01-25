@@ -29,6 +29,7 @@ import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -55,7 +56,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
+import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
@@ -404,6 +407,14 @@ public abstract class RSClientMixin implements RSClient
 		setRegionLowMemory(lowMemory);
 		setHighMemory(!lowMemory);
 		setOcLowDetail(lowMemory);
+	}
+
+	@Inject
+	@Override
+	public RSItemContainer getItemContainer(InventoryID inventory)
+	{
+		RSHashTable itemContainers = getItemContainers();
+		return (RSItemContainer) itemContainers.get(inventory.getId());
 	}
 
 	@FieldHook("skillExperiences")

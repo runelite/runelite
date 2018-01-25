@@ -22,25 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.mixins;
 
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Query;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSItem;
+import net.runelite.rs.api.RSItemContainer;
 
-public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
+@Mixin(RSItemContainer.class)
+public abstract class RSItemContainerMixin implements RSItemContainer
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Inject
 	@Override
-	public Item[] result(Client client)
+	public Item[] getItems()
 	{
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		if (container == null)
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+		Item[] items = new Item[itemIds.length];
+
+		for (int i = 0; i < itemIds.length; ++i)
 		{
-			return null;
+			RSItem item = client.createItem();
+			item.setId(itemIds[i]);
+			item.setQuantity(stackSizes[i]);
+			items[i] = item;
 		}
-		return container.getItems();
+
+		return items;
 	}
 
 }
