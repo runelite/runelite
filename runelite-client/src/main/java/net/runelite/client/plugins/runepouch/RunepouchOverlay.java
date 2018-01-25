@@ -112,6 +112,17 @@ public class RunepouchOverlay extends Overlay
 			Varbits runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getSetting(runeVarbit);
 
+			tooltipBuilder
+				.append(amount)
+				.append(" <col=ffff00>")
+				.append(runeImageCache.getName(runeId))
+				.append("</col></br>");
+
+			if (config.showOnlyOnHover())
+			{
+				continue;
+			}
+
 			graphics.setColor(Color.black);
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
 				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
@@ -119,12 +130,6 @@ public class RunepouchOverlay extends Overlay
 			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
 				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
-
-			tooltipBuilder
-				.append(amount)
-				.append(" <col=ffff00>")
-				.append(runeImageCache.getName(runeId))
-				.append("</col></br>");
 
 			if (!config.showIcons())
 			{
