@@ -103,8 +103,8 @@ public class Perspective
 
 			if (y >= 50)
 			{
-				int pointX = client.getViewportHeight() / 2 + x * client.getScale() / y;
-				int pointY = var8 * client.getScale() / y + client.getViewportWidth() / 2;
+				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
+				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
 				return new Point(pointX, pointY);
 			}
 		}
