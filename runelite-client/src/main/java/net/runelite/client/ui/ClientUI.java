@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -142,7 +141,7 @@ public class ClientUI extends JFrame
 		this.trayIcon = setupTrayIcon();
 
 		init();
-		setTitle(null);
+		setTitle(properties.getTitle());
 		setIconImage(ICON);
 		// Prevent substance from using a resize cursor for pointing
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
@@ -300,19 +299,6 @@ public class ClientUI extends JFrame
 		});
 
 		return trayIcon;
-	}
-
-	@Override
-	public void setTitle(String extra)
-	{
-		if (!Strings.isNullOrEmpty(extra))
-		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
-		}
-		else
-		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion());
-		}
 	}
 
 	private void init()
