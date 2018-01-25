@@ -37,7 +37,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
-import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -192,8 +191,6 @@ public class AccountPlugin extends Plugin
 
 		log.debug("Session opened as {}", session.getUsername());
 
-		ui.setTitle("(" + session.getUsername() + ")");
-
 		replaceLoginWithLogout();
 	}
 
@@ -203,12 +200,6 @@ public class AccountPlugin extends Plugin
 		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(loginButton);
 		navigationPanel.addNavigation(logoutButton);
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
-	{
-		ui.setTitle(null);
 	}
 
 }
