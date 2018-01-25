@@ -175,7 +175,12 @@ public enum Varbits
 	/**
 	 * Barbarian Assault
 	 */
-	IN_GAME_BA(3923, 638, 12, 12);
+	IN_GAME_BA(3923, 638, 12, 12),
+
+	/**
+	 * Motherlode mine sack
+	 */
+	SACK_NUMBER(5558, 375, 8, 15);
 
 	/**
 	 * varbit id
