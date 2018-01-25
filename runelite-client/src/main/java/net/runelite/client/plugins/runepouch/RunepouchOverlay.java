@@ -34,7 +34,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -80,7 +80,7 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Query query = new InventoryItemQuery().idEquals(ItemID.RUNE_POUCH);
+		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
 		WidgetItem[] items = queryRunner.runQuery(query);
 		if (items.length == 0)
 		{

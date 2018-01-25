@@ -29,6 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface RSHashTable extends HashTable
 {
+	@Import("get")
+	RSNode get(long value);
+
 	@Import("size")
 	int getSize();
 

@@ -22,25 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.api;
 
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Query;
-
-public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
+public interface ItemContainer
 {
-	@Override
-	public Item[] result(Client client)
-	{
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		if (container == null)
-		{
-			return null;
-		}
-		return container.getItems();
-	}
-
+	/**
+	 * Get the items from the container
+	 * @return
+	 */
+	Item[] getItems();
 }
