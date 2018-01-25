@@ -84,13 +84,13 @@ public enum BaseVarType implements Enumerated {
          var9 = var6.field3384;
          var10 = var6.field3401;
          var11 = class2.method2(var9, var8);
-         Script var12 = class91.method1752(var11, var8);
+         Script var12 = class91.getScriptByFile(var11, var8);
          Script var7;
          if(var12 != null) {
             var7 = var12;
          } else {
             var13 = (var10 + 40000 << 8) + var8.field2902;
-            var12 = class91.method1752(var13, var8);
+            var12 = class91.getScriptByFile(var13, var8);
             if(var12 != null) {
                var7 = var12;
             } else {
