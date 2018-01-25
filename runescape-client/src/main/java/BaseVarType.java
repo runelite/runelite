@@ -101,7 +101,7 @@ public enum BaseVarType implements Enumerated {
          var3 = var7;
       } else {
          var27 = ((Integer)var2[0]).intValue();
-         var3 = UrlRequester.method2965(var27);
+         var3 = UrlRequester.getScript(var27);
       }
 
       if(var3 != null) {
@@ -312,7 +312,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var13 = var52[var27];
-                                                                                                                                                               Script var76 = UrlRequester.method2965(var13);
+                                                                                                                                                               Script var76 = UrlRequester.getScript(var13);
                                                                                                                                                                int[] var55 = new int[var76.localIntCount];
                                                                                                                                                                var63 = new String[var76.localStringCount];
 
