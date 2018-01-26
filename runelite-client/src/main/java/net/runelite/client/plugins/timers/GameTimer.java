@@ -38,29 +38,29 @@ import net.runelite.api.GraphicID;
 @Slf4j
 public enum GameTimer
 {
-	STAMINA("stamina", 2, ChronoUnit.MINUTES),
-	ANTIFIRE("antifire", 6, ChronoUnit.MINUTES),
-	EXANTIFIRE("exantifire", 12, ChronoUnit.MINUTES),
-	OVERLOAD("overload", 5, ChronoUnit.MINUTES),
-	CANNON("cannon", 25, ChronoUnit.MINUTES),
-	MAGICIMBUE("magicimbue", 15, ChronoUnit.SECONDS),
-	FULLTB("teleblock", 5, ChronoUnit.MINUTES),
-	HALFTB("teleblock", 150, ChronoUnit.SECONDS),
-	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES),
-	SUPERANTIFIRE("superantifire", 2, ChronoUnit.MINUTES),
-	ANTIDOTEPLUSPLUS("antidoteplusplus", 12, ChronoUnit.MINUTES),
-	BIND("bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
-	HALFBIND("bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
-	SNARE("snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
-	HALFSNARE("snare", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
-	ENTANGLE("entangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
-	HALFENTANGLE("entangle", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
-	ICERUSH("icerush", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
-	ICEBURST("iceburst", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),
-	ICEBLITZ("iceblitz", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
-	ICEBARRAGE("icebarrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
-	IMBUEDHEART("imbuedheart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
-	VENGEANCE("vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS);
+	STAMINA("stamina", "Stamina", 2, ChronoUnit.MINUTES),
+	ANTIFIRE("antifire", "Antifire", 6, ChronoUnit.MINUTES),
+	EXANTIFIRE("exantifire", "Extended antifire", 12, ChronoUnit.MINUTES),
+	OVERLOAD("overload", "Overload", 5, ChronoUnit.MINUTES),
+	CANNON("cannon", "Cannon", 25, ChronoUnit.MINUTES),
+	MAGICIMBUE("magicimbue", "Magic imbue", 15, ChronoUnit.SECONDS),
+	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
+	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
+	SUPERANTIVENOM("antivenom", "Anti-venom+", 3, ChronoUnit.MINUTES),
+	SUPERANTIFIRE("superantifire", "Super antifire", 2, ChronoUnit.MINUTES),
+	ANTIDOTEPLUSPLUS("antidoteplusplus", "Antidote++", 12, ChronoUnit.MINUTES),
+	BIND("bind", "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
+	HALFBIND("bind", "Half Bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
+	SNARE("snare", "Snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
+	HALFSNARE("snare", "Half Snare", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
+	ENTANGLE("entangle", "Engangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
+	HALFENTANGLE("entangle", "Half Entangle", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
+	ICERUSH("icerush", "Ice rush", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
+	ICEBURST("iceburst", "Ice burst", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),
+	ICEBLITZ("iceblitz", "Ice blitz", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
+	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
+	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
+	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS);
 
 	@Getter
 	private final String imageResource;
@@ -68,19 +68,22 @@ public enum GameTimer
 	private final Duration duration;
 	@Getter
 	private final Integer graphicId;
+	@Getter
+	private final String description;
 
 	private BufferedImage image;
 
-	GameTimer(String imageResource, Integer graphicId, long time, ChronoUnit unit)
+	GameTimer(String imageResource, String description, Integer graphicId, long time, ChronoUnit unit)
 	{
 		this.imageResource = imageResource;
+		this.description = description;
 		this.graphicId = graphicId;
 		this.duration = Duration.of(time, unit);
 	}
 
-	GameTimer(String imageResource, long time, ChronoUnit unit)
+	GameTimer(String imageResource, String description, long time, ChronoUnit unit)
 	{
-		this(imageResource, null, time, unit);
+		this(imageResource, description, null, time, unit);
 	}
 
 	public BufferedImage getImage()
