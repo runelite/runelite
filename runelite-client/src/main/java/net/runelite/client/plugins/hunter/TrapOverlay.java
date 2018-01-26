@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 /**
@@ -72,7 +71,6 @@ public class TrapOverlay extends Overlay
 	TrapOverlay(@Nullable Client client, HunterPlugin plugin, HunterConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;

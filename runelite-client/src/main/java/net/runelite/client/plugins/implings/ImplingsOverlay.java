@@ -40,7 +40,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Point;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.util.QueryRunner;
 
@@ -65,7 +64,6 @@ public class ImplingsOverlay extends Overlay
 	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
 	}
