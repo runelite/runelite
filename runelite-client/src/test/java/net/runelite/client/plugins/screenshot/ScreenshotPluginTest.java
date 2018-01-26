@@ -28,10 +28,17 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
+import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_SKILL;
+import static net.runelite.api.widgets.WidgetInfo.PACK;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -40,7 +47,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -103,5 +114,49 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(310, screenshotPlugin.getBarrowsNumber());
+	}
+
+	@Test
+	public void testHitpoints()
+	{
+		Widget widget = mock(Widget.class);
+		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
+
+		Widget skillChild = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_SKILL))).thenReturn(skillChild);
+
+		Widget levelChild = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+
+		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Hitpoints level.");
+		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
+
+		WidgetHiddenChanged event = new WidgetHiddenChanged();
+		event.setWidget(widget);
+		screenshotPlugin.hideWidgets(event);
+
+		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
+	}
+
+	@Test
+	public void testFiremaking()
+	{
+		Widget widget = mock(Widget.class);
+		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
+
+		Widget skillChild = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_SKILL))).thenReturn(skillChild);
+
+		Widget levelChild = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+
+		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Firemaking level.");
+		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
+
+		WidgetHiddenChanged event = new WidgetHiddenChanged();
+		event.setWidget(widget);
+		screenshotPlugin.hideWidgets(event);
+
+		verify(overlayRenderer).requestScreenshot(Matchers.any(Consumer.class));
 	}
 }
