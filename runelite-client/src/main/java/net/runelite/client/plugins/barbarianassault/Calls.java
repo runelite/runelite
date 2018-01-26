@@ -34,10 +34,10 @@ public enum Calls
 	GREEN_EGG("Green egg", "Tell-green"),
 	BLUE_EGG("Blue egg", "Tell-blue"),
 	//Collector Calls
-	CONTROLLED("Controlled/Bronze/Wind", "Tell-controlled"),
-	ACCURATE("Accurate/Iron/Water", "Tell-accurate"),
-	AGGRESSIVE("Aggressive/Steel/Earth", "Tell-aggressive"),
-	DEFENSIVE("Defensive/Mithril/Fire", "Tell-defensive"),
+	CONTROLLED("Controlled/Bullet/Wind", "Tell-controlled"),
+	ACCURATE("Accurate/Field/Water", "Tell-accurate"),
+	AGGRESSIVE("Aggressive/Blunt/Earth", "Tell-aggressive"),
+	DEFENSIVE("Defensive/Barbed/Fire", "Tell-defensive"),
 	//Healer Calls
 	TOFU("Tofu", "Tell-tofu"),
 	CRACKERS("Crackers", "Tell-crackers"),
