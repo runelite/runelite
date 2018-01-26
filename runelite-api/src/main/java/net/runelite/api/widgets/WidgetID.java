@@ -255,7 +255,8 @@ public class WidgetID
 
 	static class LevelUp
 	{
-		static final int TEXT = 1;
+		static final int SKILL = 0;
+		static final int LEVEL = 1;
 	}
 
 	static class QuestCompleted
