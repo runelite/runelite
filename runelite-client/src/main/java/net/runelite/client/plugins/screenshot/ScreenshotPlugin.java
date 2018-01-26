@@ -247,18 +247,20 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case LEVEL_UP_GROUP_ID:
 			{
-				Widget textChild = client.getWidget(WidgetInfo.LEVEL_UP_TEXT);
+				Widget skillChild = client.getWidget(WidgetInfo.LEVEL_UP_SKILL);
+				Widget levelChild = client.getWidget(WidgetInfo.LEVEL_UP_LEVEL);
 
-				if (textChild == null)
+				if (skillChild == null || levelChild == null)
 				{
 					return;
 				}
 
 				// "Your Firemaking level is now 9."
-				String text = textChild.getText();
+				String skillText = skillChild.getText();
+				String levelText = levelChild.getText();
 
-				String skillName = text.substring(5, text.indexOf(" level"));
-				String skillLevel = text.substring(text.lastIndexOf(" ") + 1, text.length() - 1);
+				String skillName = skillText.substring(skillText.indexOf("a ") + 2, skillText.indexOf(" level."));
+				String skillLevel = levelText.substring(levelText.lastIndexOf(" ") + 1, levelText.length() - 1);
 
 				fileName = skillName + " (" + skillLevel + ")";
 				break;
