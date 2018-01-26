@@ -59,7 +59,8 @@ public class RuneImageCache
 		"Dust", //17
 		"Lava", //18
 		"Steam", //19
-		"Smoke"		//20
+		"Smoke", //20
+		"Wrath" //21
 	};
 
 	private final LoadingCache<Integer, BufferedImage> cache;
