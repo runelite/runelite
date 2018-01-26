@@ -36,6 +36,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -58,6 +60,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
@@ -108,12 +111,18 @@ public class ConfigPanel extends PluginPanel
 	final void rebuildPluginList()
 	{
 		Map<String, JPanel> newChildren = new TreeMap<>();
-		configManager.getConfigProxies().stream()
-			.map(configManager::getConfigDescriptor)
-			.filter(configDescriptor -> configDescriptor.getItems().stream()
-				.anyMatch(cid -> !cid.getItem().hidden()))
-			.forEach(cd ->
+		configManager.getConfigProxies()
+			.stream()
+			// Config cannot be key because Proxy does not implement hashCode
+			.collect(Collectors.toMap(configManager::getConfigDescriptor, Function.identity()))
+			.entrySet().stream()
+			.filter(e -> e.getKey().getItems().stream()
+					.anyMatch(cid -> !cid.getItem().hidden()))
+			.forEach(e ->
 			{
+				ConfigDescriptor cd = e.getKey();
+				Config config = e.getValue();
+
 				String groupName = cd.getGroup().name();
 				if (children.containsKey(groupName))
 				{
@@ -123,7 +132,7 @@ public class ConfigPanel extends PluginPanel
 				JPanel groupPanel = new JPanel();
 				groupPanel.setLayout(new BorderLayout());
 				JButton viewGroupItemsButton = new JButton(groupName);
-				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(cd, configManager));
+				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(config, cd, configManager));
 				groupPanel.add(viewGroupItemsButton);
 				newChildren.put(groupName, groupPanel);
 			});
@@ -223,7 +232,7 @@ public class ConfigPanel extends PluginPanel
 		}
 	}
 
-	private void openGroupConfigPanel(ConfigDescriptor cd, ConfigManager configManager)
+	private void openGroupConfigPanel(Config config, ConfigDescriptor cd, ConfigManager configManager)
 	{
 		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		removeAll();
@@ -350,9 +359,20 @@ public class ConfigPanel extends PluginPanel
 			add(item);
 		}
 
+		JButton resetButton = new JButton("Reset");
+		resetButton.addActionListener((e) ->
+		{
+			configManager.setDefaultConfiguration(config, true);
+
+			// Reload configuration panel
+			openGroupConfigPanel(config, cd, configManager);
+		});
+		add(resetButton);
+
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> openConfigList());
 		add(backButton);
+
 		revalidate();
 		getScrollPane().getVerticalScrollBar().setValue(0);
 	}
