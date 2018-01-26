@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.config;
 
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -35,10 +38,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.AbstractMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -48,9 +50,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -115,22 +114,21 @@ public class ConfigPanel extends PluginPanel
 		Map<String, JPanel> newChildren = new TreeMap<>();
 		configManager.getConfigProxies()
 			.stream()
-			// Config cannot be key because Proxy does not implement hashCode
-			.collect(Collectors.toMap(configManager::getConfigDescriptor, Function.identity()))
-			.entrySet().stream()
-			.filter(e -> e.getKey().getItems().stream()
-					.anyMatch(cid -> !cid.getItem().hidden()))
+			// Convert config proxies to pair of config descriptors and config proxies
+			.map(c -> new AbstractMap.SimpleEntry<>(configManager.getConfigDescriptor(c), c))
+			.filter(e -> e.getKey().getItems().stream().anyMatch(cid -> !cid.getItem().hidden()))
 			.forEach(e ->
 			{
 				ConfigDescriptor cd = e.getKey();
 				Config config = e.getValue();
-
 				String groupName = cd.getGroup().name();
+
 				if (children.containsKey(groupName))
 				{
 					newChildren.put(groupName, children.get(groupName));
 					return;
 				}
+
 				JPanel groupPanel = new JPanel();
 				groupPanel.setLayout(new BorderLayout());
 				JButton viewGroupItemsButton = new JButton(groupName);
@@ -138,6 +136,7 @@ public class ConfigPanel extends PluginPanel
 				groupPanel.add(viewGroupItemsButton);
 				newChildren.put(groupName, groupPanel);
 			});
+
 		children = newChildren;
 		openConfigList();
 	}
