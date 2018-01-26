@@ -24,6 +24,8 @@
  */
 package net.runelite.client.config;
 
+import java.awt.Dimension;
+
 @ConfigGroup(
 	keyName = "runelite",
 	name = "RuneLite",
@@ -31,6 +33,16 @@ package net.runelite.client.config;
 )
 public interface RuneLiteConfig extends Config
 {
+	@ConfigItem(
+		keyName = "gameSize",
+		name = "Game size",
+		description = "The game will resize to this resolution upon starting the client"
+	)
+	default Dimension gameSize()
+	{
+		return new Dimension(765, 503);
+	}
+
 	@ConfigItem(
 		keyName = "chatCommandsRecolorEnabled",
 		name = "Enable chat commands recolor",
