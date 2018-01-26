@@ -58,6 +58,7 @@ public class WidgetID
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
+	public static final int XP_DROP_GROUP_ID = 122;
 
 	static class WorldMap
 	{
@@ -261,5 +262,16 @@ public class WidgetID
 	static class QuestCompleted
 	{
 		static final int NAME_TEXT = 2;
+	}
+
+	static class ExperienceDrop
+	{
+		static final int DROP_1 = 15;
+		static final int DROP_2 = 16;
+		static final int DROP_3 = 17;
+		static final int DROP_4 = 18;
+		static final int DROP_5 = 19;
+		static final int DROP_6 = 20;
+		static final int DROP_7 = 21;
 	}
 }
