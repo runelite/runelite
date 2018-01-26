@@ -35,11 +35,27 @@ import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIVENOM;
+import static net.runelite.client.plugins.timers.GameTimer.BIND;
+import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
+import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
+import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
+import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
+import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
+import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
+import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.Prayer;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -53,6 +69,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class TimersPlugin extends Plugin
 {
+	@Inject
+	Client client;
+
 	@Inject
 	TimersConfig config;
 
@@ -224,6 +243,91 @@ public class TimersPlugin extends Plugin
 		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>") && config.showSuperAntiFire())
 		{
 			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (event.getMessage().equals("<col=ef1020>Your imbued heart has regained its magical power.</col>"))
+		{
+			removeGameTimer(IMBUEDHEART);
+		}
+	}
+
+	@Subscribe
+	public void onGraphicChanged(GraphicChanged event)
+	{
+		Actor actor = event.getActor();
+
+		if (actor != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		if (actor.getGraphic() == IMBUEDHEART.getGraphicId() && config.showImbuedHeart())
+		{
+			createGameTimer(IMBUEDHEART);
+		}
+
+		if (actor.getGraphic() == VENGEANCE.getGraphicId() && config.showVengeance())
+		{
+			createGameTimer(VENGEANCE);
+		}
+
+		if (config.showFreezes())
+		{
+			if (actor.getGraphic() == BIND.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				{
+					createGameTimer(HALFBIND);
+				}
+				else
+				{
+					createGameTimer(BIND);
+				}
+			}
+
+			if (actor.getGraphic() == SNARE.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				{
+					createGameTimer(HALFSNARE);
+				}
+				else
+				{
+					createGameTimer(SNARE);
+				}
+			}
+
+			if (actor.getGraphic() == ENTANGLE.getGraphicId())
+			{
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				{
+					createGameTimer(HALFENTANGLE);
+				}
+				else
+				{
+					createGameTimer(ENTANGLE);
+				}
+			}
+
+			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			{
+				createGameTimer(ICERUSH);
+			}
+
+			if (actor.getGraphic() == ICEBURST.getGraphicId())
+			{
+				createGameTimer(ICEBURST);
+			}
+
+			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+			{
+				createGameTimer(ICEBLITZ);
+			}
+
+			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
+			{
+				createGameTimer(ICEBARRAGE);
+			}
 		}
 	}
 

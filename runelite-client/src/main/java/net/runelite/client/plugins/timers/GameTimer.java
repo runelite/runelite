@@ -31,7 +31,9 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import javax.imageio.ImageIO;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.GraphicID;
 
 @Slf4j
 public enum GameTimer
@@ -46,27 +48,39 @@ public enum GameTimer
 	HALFTB("teleblock", 150, ChronoUnit.SECONDS),
 	SUPERANTIVENOM("antivenom", 3, ChronoUnit.MINUTES),
 	SUPERANTIFIRE("superantifire", 2, ChronoUnit.MINUTES),
-	ANTIDOTEPLUSPLUS("antidoteplusplus", 12, ChronoUnit.MINUTES);
+	ANTIDOTEPLUSPLUS("antidoteplusplus", 12, ChronoUnit.MINUTES),
+	BIND("bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
+	HALFBIND("bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
+	SNARE("snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS),
+	HALFSNARE("snare", GraphicID.SNARE, 5, ChronoUnit.SECONDS),
+	ENTANGLE("entangle", GraphicID.ENTANGLE, 15, ChronoUnit.SECONDS),
+	HALFENTANGLE("entangle", GraphicID.ENTANGLE, 7500, ChronoUnit.MILLIS),
+	ICERUSH("icerush", GraphicID.ICE_RUSH, 5, ChronoUnit.SECONDS),
+	ICEBURST("iceburst", GraphicID.ICE_BURST, 10, ChronoUnit.SECONDS),
+	ICEBLITZ("iceblitz", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
+	ICEBARRAGE("icebarrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
+	IMBUEDHEART("imbuedheart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
+	VENGEANCE("vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS);
 
+	@Getter
 	private final String imageResource;
+	@Getter
 	private final Duration duration;
+	@Getter
+	private final Integer graphicId;
 
 	private BufferedImage image;
 
-	GameTimer(String imageResource, long time, ChronoUnit unit)
+	GameTimer(String imageResource, Integer graphicId, long time, ChronoUnit unit)
 	{
 		this.imageResource = imageResource;
+		this.graphicId = graphicId;
 		this.duration = Duration.of(time, unit);
 	}
 
-	public String getImageResource()
+	GameTimer(String imageResource, long time, ChronoUnit unit)
 	{
-		return imageResource;
-	}
-
-	public Duration getDuration()
-	{
-		return duration;
+		this(imageResource, null, time, unit);
 	}
 
 	public BufferedImage getImage()

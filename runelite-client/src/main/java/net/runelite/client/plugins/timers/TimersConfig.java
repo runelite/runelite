@@ -144,4 +144,34 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showImbuedHeart",
+		name = "Imbued Heart timer",
+		description = "Configures whether imbued heart timer is displayed"
+	)
+	default boolean showImbuedHeart()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showVengeance",
+		name = "Vengeance timer",
+		description = "Configures whether vengeance timer is displayed"
+	)
+	default boolean showVengeance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFreezes",
+		name = "Freeze timer",
+		description = "Configures whether freeze timer is displayed"
+	)
+	default boolean showFreezes()
+	{
+		return true;
+	}
 }
