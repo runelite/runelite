@@ -67,7 +67,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showExAntiFire",
-		name = "Extended Antifire timer",
+		name = "Extended antifire timer",
 		description = "Configures whether extended antifire timer is displayed"
 	)
 	default boolean showExAntiFire()
@@ -97,7 +97,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMagicImbue",
-		name = "Magic Imbue timer",
+		name = "Magic imbue timer",
 		description = "Configures whether magic imbue timer is displayed"
 	)
 	default boolean showMagicImbue()
@@ -116,18 +116,18 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAntiVenom",
-		name = "Anti Venom+ timer",
+		keyName = "showAntiVenomPlus",
+		name = "Anti-venom+ timer",
 		description = "Configures whether anti venom+ timer is displayed"
 	)
-	default boolean showAntiVenom()
+	default boolean showAntiVenomPlus()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showSuperAntiFire",
-		name = "Super Antifire timer",
+		name = "Super antifire timer",
 		description = "Configures whether super antifire timer is displayed"
 	)
 	default boolean showSuperAntiFire()
@@ -147,7 +147,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showImbuedHeart",
-		name = "Imbued Heart timer",
+		name = "Imbued heart timer",
 		description = "Configures whether imbued heart timer is displayed"
 	)
 	default boolean showImbuedHeart()
@@ -171,6 +171,46 @@ public interface TimersConfig extends Config
 		description = "Configures whether freeze timer is displayed"
 	)
 	default boolean showFreezes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showExSuperAntifire",
+		name = "Extended super antifire timer",
+		description = "Configures whether extended super antifire timer is displayed"
+	)
+	default boolean showExSuperAntifire()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSanfew",
+		name = "Sanfew serum timer",
+		description = "Configures whether sanfew serum timer is displayed"
+	)
+	default boolean showSanfew()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAntidotePlus",
+		name = "Antidote+ timer",
+		description = "Configures whether antidote+ timer is displayed"
+	)
+	default boolean showAntidotePlus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAntiVenom",
+		name = "Anti-venom timer",
+		description = "Configures whether antivenom timer is displayed"
+	)
+	default boolean showAntiVenom()
 	{
 		return true;
 	}
