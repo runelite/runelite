@@ -46,7 +46,7 @@ public enum GameTimer
 	MAGICIMBUE("magicimbue", "Magic imbue", 15, ChronoUnit.SECONDS),
 	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
-	SUPERANTIVENOM("antivenom", "Anti-venom+", 3, ChronoUnit.MINUTES),
+	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
 	SUPERANTIFIRE("superantifire", "Super antifire", 2, ChronoUnit.MINUTES),
 	ANTIDOTEPLUSPLUS("antidoteplusplus", "Antidote++", 12, ChronoUnit.MINUTES),
 	BIND("bind", "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
@@ -60,7 +60,11 @@ public enum GameTimer
 	ICEBLITZ("iceblitz", "Ice blitz", GraphicID.ICE_BLITZ, 15, ChronoUnit.SECONDS),
 	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS),
 	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
-	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS);
+	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
+	ANTIDOTEPLUS("antidoteplus", "Antidote+", 518, ChronoUnit.SECONDS),
+	ANTIVENOM("antivenom", "Anto-venom", 12, ChronoUnit.MINUTES),
+	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
+	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES);
 
 	@Getter
 	private final String imageResource;

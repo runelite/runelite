@@ -24,17 +24,21 @@
  */
 package net.runelite.client.plugins.timers;
 
+import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
 import static net.runelite.client.plugins.timers.GameTimer.CANNON;
 import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
 import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
 import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
 import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIVENOM;
 import static net.runelite.client.plugins.timers.GameTimer.BIND;
 import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
 import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
@@ -123,9 +127,9 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (!config.showAntiVenom())
+		if (!config.showAntiVenomPlus())
 		{
-			removeGameTimer(SUPERANTIVENOM);
+			removeGameTimer(ANTIVENOMPLUS);
 		}
 
 		if (!config.showTeleblock())
@@ -143,6 +147,50 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(ANTIDOTEPLUSPLUS);
 		}
+
+		if (!config.showAntidotePlus())
+		{
+			removeGameTimer(ANTIDOTEPLUS);
+		}
+
+		if (!config.showAntiVenom())
+		{
+			removeGameTimer(ANTIVENOM);
+		}
+
+		if (!config.showAntiVenomPlus())
+		{
+			removeGameTimer(ANTIVENOMPLUS);
+		}
+
+		if (!config.showSanfew())
+		{
+			removeGameTimer(SANFEW);
+		}
+
+		if (!config.showVengeance())
+		{
+			removeGameTimer(VENGEANCE);
+		}
+
+		if (!config.showImbuedHeart())
+		{
+			removeGameTimer(IMBUEDHEART);
+		}
+
+		if (!config.showFreezes())
+		{
+			removeGameTimer(BIND);
+			removeGameTimer(HALFBIND);
+			removeGameTimer(SNARE);
+			removeGameTimer(HALFSNARE);
+			removeGameTimer(ENTANGLE);
+			removeGameTimer(HALFENTANGLE);
+			removeGameTimer(ICERUSH);
+			removeGameTimer(ICEBURST);
+			removeGameTimer(ICEBLITZ);
+			removeGameTimer(ICEBARRAGE);
+		}
 	}
 
 	@Subscribe
@@ -157,6 +205,19 @@ public class TimersPlugin extends Plugin
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUSPLUS);
+			return;
+		}
+
+		if (config.showAntidotePlus()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIDOTE1
+			|| event.getId() == ItemID.ANTIDOTE2
+			|| event.getId() == ItemID.ANTIDOTE3
+			|| event.getId() == ItemID.ANTIDOTE4))
+		{
+			// Needs menu option hook because drink message is intercepting with antipoison message
+			createGameTimer(ANTIDOTEPLUS);
+			return;
 		}
 	}
 
@@ -188,6 +249,11 @@ public class TimersPlugin extends Plugin
 			createGameTimer(EXANTIFIRE);
 		}
 
+		if (event.getMessage().equals("You drink some of your extended super antifire potion.") && config.showExSuperAntifire())
+		{
+			createGameTimer(EXSUPERANTIFIRE);
+		}
+
 		if (event.getMessage().equals("<col=7f007f>Your antifire potion has expired.</col>"))
 		{
 			//they have the same expired message
@@ -210,9 +276,9 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(CANNON);
 		}
 
-		if (event.getMessage().contains("You drink some of your super antivenom potion") && config.showAntiVenom())
+		if (event.getMessage().contains("You drink some of your super antivenom potion") && config.showAntiVenomPlus())
 		{
-			createGameTimer(SUPERANTIVENOM);
+			createGameTimer(ANTIVENOMPLUS);
 		}
 
 		if (event.getMessage().equals("You are charged to combine runes!") && config.showMagicImbue())
@@ -248,6 +314,16 @@ public class TimersPlugin extends Plugin
 		if (event.getMessage().equals("<col=ef1020>Your imbued heart has regained its magical power.</col>"))
 		{
 			removeGameTimer(IMBUEDHEART);
+		}
+
+		if (event.getMessage().contains("You drink some of your antivenom potion") && config.showAntiVenom())
+		{
+			createGameTimer(ANTIVENOM);
+		}
+
+		if (event.getMessage().contains("You drink some of your Sanfew Serum.") && config.showSanfew())
+		{
+			createGameTimer(SANFEW);
 		}
 	}
 
