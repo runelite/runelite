@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +31,8 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "metronomeplugin",
-	name = "Metronome plugin",
-	description = "Configuration for the metronome plugin"
+	name = "Metronome",
+	description = "Plays a sound on the specified tick to aid in efficient skilling"
 )
 public interface MetronomePluginConfiguration extends Config
 {
@@ -43,5 +44,25 @@ public interface MetronomePluginConfiguration extends Config
 	default boolean enabled()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "tickCount",
+			name = "Tick count",
+			description = "Configures the tick on which a sound will be played"
+	)
+	default int tickCount()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+			keyName = "tickSound",
+			name = "Tick sound",
+			description = "Configures which sound to play on the specified tick"
+	)
+	default int tickSound()
+	{
+		return 3929;
 	}
 }
