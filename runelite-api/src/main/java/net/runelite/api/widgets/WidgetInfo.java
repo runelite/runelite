@@ -163,7 +163,16 @@ public enum WidgetInfo
 	QUEST_COMPLETED(WidgetID.QUEST_COMPLETED_GROUP_ID, 0),
 	QUEST_COMPLETED_NAME_TEXT(WidgetID.QUEST_COMPLETED_GROUP_ID, WidgetID.QuestCompleted.NAME_TEXT),
 
-	MOTHERLODE_MINE(WidgetID.MOTHERLODE_MINE_GROUP_ID, 0);
+	MOTHERLODE_MINE(WidgetID.MOTHERLODE_MINE_GROUP_ID, 0),
+
+	XP_DROP_1(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_1),
+	XP_DROP_2(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_2),
+	XP_DROP_3(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_3),
+	XP_DROP_4(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_4),
+	XP_DROP_5(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_5),
+	XP_DROP_6(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_6),
+	XP_DROP_7(WidgetID.XP_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_7);
+
 
 	private final int groupId;
 	private final int childId;
