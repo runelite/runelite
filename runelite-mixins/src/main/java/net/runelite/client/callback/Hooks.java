@@ -25,6 +25,7 @@
 package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
+import org.slf4j.Logger;
 
 /**
  * Dummy class to make the mixins to compile.
@@ -33,5 +34,7 @@ import com.google.common.eventbus.EventBus;
  */
 public class Hooks
 {
+	public static Logger log;
+
 	public static EventBus eventBus;
 }
