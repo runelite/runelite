@@ -42,6 +42,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
 
+	private int id;
 	private int pos;
 	private int intStackCount;
 	private int stringStackCount;
@@ -56,6 +57,13 @@ public class ScriptWriter extends rs2asmBaseListener
 	{
 		this.instructions = instructions;
 		this.labelVisitor = labelVisitor;
+	}
+
+	@Override
+	public void enterId_value(rs2asmParser.Id_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		id = value;
 	}
 
 	@Override
@@ -209,6 +217,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		ScriptDefinition script = new ScriptDefinition();
+		script.setId(id);
 		script.setIntStackCount(intStackCount);
 		script.setStringStackCount(stringStackCount);
 		script.setLocalIntCount(localIntCount);
