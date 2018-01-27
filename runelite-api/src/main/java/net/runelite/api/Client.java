@@ -101,6 +101,8 @@ public interface Client extends GameEngine
 	int[] getWidgetPositionsX();
 
 	int[] getWidgetPositionsY();
+	
+	int getEnergy();
 
 	String[] getPlayerOptions();
 
@@ -239,4 +241,18 @@ public interface Client extends GameEngine
 	int getMouseIdleTicks();
 
 	int getKeyboardIdleTicks();
+
+	/**
+	 * Changes how game behaves based on memory mode. Low memory mode skips drawing of all floors and renders ground
+	 * textures in low quality.
+	 * @param lowMemory if we are running in low memory mode or not
+	 */
+	void changeMemoryMode(boolean lowMemory);
+
+	/**
+	 * Get the item container for an inventory
+	 * @param inventory
+	 * @return
+	 */
+	ItemContainer getItemContainer(InventoryID inventory);
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -57,6 +58,8 @@ public class AttackIndicatorOverlay extends Overlay
 		}
 
 		final String attackStyleString = plugin.getAttackStyle().getName();
+
+		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);
 		panelComponent.setTitle(attackStyleString);
 		panelComponent.setWidth(COMPONENT_WIDTH);
 

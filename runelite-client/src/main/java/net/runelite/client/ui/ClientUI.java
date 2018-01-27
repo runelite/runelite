@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui;
 
-import com.google.common.base.Strings;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -62,10 +61,12 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
+import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -142,7 +143,7 @@ public class ClientUI extends JFrame
 		this.trayIcon = setupTrayIcon();
 
 		init();
-		setTitle(null);
+		setTitle(properties.getTitle());
 		setIconImage(ICON);
 		// Prevent substance from using a resize cursor for pointing
 		getLayeredPane().setCursor(Cursor.getDefaultCursor());
@@ -153,13 +154,16 @@ public class ClientUI extends JFrame
 	public void showWithChrome(boolean customChrome)
 	{
 		setUndecorated(customChrome);
+
 		if (customChrome)
 		{
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 		}
+
 		pack();
 		revalidateMinimumSize();
 		setLocationRelativeTo(getOwner());
+
 		if (customChrome)
 		{
 			try
@@ -251,6 +255,55 @@ public class ClientUI extends JFrame
 		repaint();
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("runelite"))
+		{
+			return;
+		}
+
+		if (!event.getKey().equals("gameSize"))
+		{
+			return;
+		}
+
+		if (client == null)
+		{
+			return;
+		}
+
+		String[] splitStr = event.getNewValue().split("x");
+		int width = Integer.parseInt(splitStr[0]);
+		int height = Integer.parseInt(splitStr[1]);
+
+		// The upper bounds are defined by the applet's max size
+		// The lower bounds are taken care of by ClientPanel's setMinimumSize
+
+		if (width > 7680)
+		{
+			width = 7680;
+		}
+
+		if (height > 2160)
+		{
+			height = 2160;
+		}
+
+		Dimension size = new Dimension(width, height);
+
+		client.setSize(size);
+		client.setPreferredSize(size);
+
+		client.getParent().setPreferredSize(size);
+		client.getParent().setSize(size);
+
+		if (isVisible())
+		{
+			pack();
+		}
+	}
+
 	private static void setUIFont(FontUIResource f)
 	{
 		final Enumeration keys = UIManager.getDefaults().keys();
@@ -300,19 +353,6 @@ public class ClientUI extends JFrame
 		});
 
 		return trayIcon;
-	}
-
-	@Override
-	public void setTitle(String extra)
-	{
-		if (!Strings.isNullOrEmpty(extra))
-		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion() + " " + extra);
-		}
-		else
-		{
-			super.setTitle(properties.getTitle() + " " + properties.getVersion());
-		}
 	}
 
 	private void init()

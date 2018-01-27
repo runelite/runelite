@@ -34,7 +34,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Query;
 import net.runelite.api.Varbits;
-import net.runelite.api.queries.InventoryItemQuery;
+import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -80,7 +80,7 @@ public class RunepouchOverlay extends Overlay
 			return null;
 		}
 
-		Query query = new InventoryItemQuery().idEquals(ItemID.RUNE_POUCH);
+		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
 		WidgetItem[] items = queryRunner.runQuery(query);
 		if (items.length == 0)
 		{
@@ -112,6 +112,17 @@ public class RunepouchOverlay extends Overlay
 			Varbits runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getSetting(runeVarbit);
 
+			tooltipBuilder
+				.append(amount)
+				.append(" <col=ffff00>")
+				.append(runeImageCache.getName(runeId))
+				.append("</col></br>");
+
+			if (config.showOnlyOnHover())
+			{
+				continue;
+			}
+
 			graphics.setColor(Color.black);
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
 				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
@@ -119,12 +130,6 @@ public class RunepouchOverlay extends Overlay
 			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
 				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
-
-			tooltipBuilder
-				.append(amount)
-				.append(" <col=ffff00>")
-				.append(runeImageCache.getName(runeId))
-				.append("</col></br>");
 
 			if (!config.showIcons())
 			{

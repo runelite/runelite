@@ -34,6 +34,7 @@ import static net.runelite.api.Perspective.LOCAL_COORD_BITS;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -184,5 +185,14 @@ public abstract class RSActorMixin implements RSActor
 		AnimationChanged animationChange = new AnimationChanged();
 		animationChange.setActor(this);
 		eventBus.post(animationChange);
+	}
+
+	@FieldHook("graphic")
+	@Inject
+	public void graphicChanged(int idx)
+	{
+		GraphicChanged graphicChanged = new GraphicChanged();
+		graphicChanged.setActor(this);
+		eventBus.post(graphicChanged);
 	}
 }

@@ -24,6 +24,8 @@
  */
 package net.runelite.client.config;
 
+import java.awt.Dimension;
+
 @ConfigGroup(
 	keyName = "runelite",
 	name = "RuneLite",
@@ -31,6 +33,16 @@ package net.runelite.client.config;
 )
 public interface RuneLiteConfig extends Config
 {
+	@ConfigItem(
+		keyName = "gameSize",
+		name = "Game size",
+		description = "The game will resize to this resolution upon starting the client"
+	)
+	default Dimension gameSize()
+	{
+		return new Dimension(765, 503);
+	}
+
 	@ConfigItem(
 		keyName = "chatCommandsRecolorEnabled",
 		name = "Enable chat commands recolor",
@@ -50,19 +62,5 @@ public interface RuneLiteConfig extends Config
 	default boolean enableCustomChrome()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-		confirmationWarining = "WARNING: Using untrusted third party plugins is a SECURITY RISK\n"
-		+ " and can result in loss of YOUR ACCOUNT, and compromise the security\n"
-		+ "of your computer. Are you sure you want to do this?",
-		warnOnEnable = true
-	)
-	default boolean enablePlugins()
-	{
-		return false;
 	}
 }

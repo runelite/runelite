@@ -120,8 +120,8 @@ public final class class61 {
          var8 = var5 * var3 - var4 * var1 >> 16;
          var1 = var4 * var3 + var5 * var1 >> 16;
          if(var1 >= 50) {
-            Client.screenX = var0 * Client.scale / var1 + Client.viewportHeight / 2;
-            Client.screenY = var8 * Client.scale / var1 + Client.viewportWidth / 2;
+            Client.screenX = var0 * Client.scale / var1 + Client.viewportWidth / 2;
+            Client.screenY = var8 * Client.scale / var1 + Client.viewportHeight / 2;
          } else {
             Client.screenX = -1;
             Client.screenY = -1;

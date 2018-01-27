@@ -55,7 +55,6 @@ public class RuneLite
 {
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 
 	private static Injector injector;
@@ -141,6 +140,7 @@ public class RuneLite
 		eventBus.register(overlayRenderer);
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
+		eventBus.register(gui);
 
 		// Setup the notifier
 		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon());
@@ -162,10 +162,19 @@ public class RuneLite
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
 
-		// Begin watching for new plugins
-		pluginManager.watch();
+		SwingUtilities.invokeAndWait(() ->
+		{
+			if (client != null)
+			{
+				client.setSize(runeliteConfig.gameSize());
+				client.setPreferredSize(runeliteConfig.gameSize());
 
-		SwingUtilities.invokeAndWait(() -> gui.showWithChrome(runeliteConfig.enableCustomChrome()));
+				client.getParent().setPreferredSize(runeliteConfig.gameSize());
+				client.getParent().setSize(runeliteConfig.gameSize());
+			}
+
+			gui.showWithChrome(runeliteConfig.enableCustomChrome());
+		});
 
 		eventBus.post(new ClientUILoaded());
 	}

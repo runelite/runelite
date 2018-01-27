@@ -597,7 +597,7 @@ public final class Player extends Actor {
 
       var8 = (Client.field1110 - Client.field1046) * var5 / 100 + Client.field1046;
       Client.scale = var3 * var6 * var8 / 85504 << 1;
-      if(var2 != Client.viewportHeight || var3 != Client.viewportWidth) {
+      if(var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
          int[] var14 = new int[9];
 
          for(int var10 = 0; var10 < 9; ++var10) {
@@ -612,7 +612,7 @@ public final class Player extends Actor {
 
       Client.Viewport_xOffset = var0;
       Client.Viewport_yOffset = var1;
-      Client.viewportHeight = var2;
-      Client.viewportWidth = var3;
+      Client.viewportWidth = var2;
+      Client.viewportHeight = var3;
    }
 }

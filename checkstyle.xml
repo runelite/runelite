@@ -40,6 +40,9 @@
 			<property name="ignoreComments" value="true"/>
 		</module>
 		<module name="WhitespaceAround"/>
+		<module name="WhitespaceAfter">
+			<property name="tokens" value="COMMA"/>
+		</module>
 		<module name="UnusedImports"/>
 		<module name="SuppressionCommentFilter"/>
 	</module>

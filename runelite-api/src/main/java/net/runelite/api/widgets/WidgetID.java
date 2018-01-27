@@ -32,6 +32,7 @@ public class WidgetID
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
 	public static final int EQUIPMENT_GROUP_ID = 387;
+	public static final int DIARY_GROUP_ID = 259;
 	public static final int PESTRCONTROL_GROUP_ID = 408;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
@@ -59,6 +60,7 @@ public class WidgetID
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
+	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 
 	static class WorldMap
 	{
@@ -256,7 +258,8 @@ public class WidgetID
 
 	static class LevelUp
 	{
-		static final int TEXT = 1;
+		static final int SKILL = 0;
+		static final int LEVEL = 1;
 	}
 
 	static class QuestCompleted

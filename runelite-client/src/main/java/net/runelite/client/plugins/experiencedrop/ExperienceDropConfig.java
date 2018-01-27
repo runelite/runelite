@@ -38,7 +38,7 @@ public interface ExperienceDropConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
-		name = "Enabled",
+		name g= "Enabled",
 		description = "Configures whether or not plugin is enabled."
 	)
 	default boolean enabled()

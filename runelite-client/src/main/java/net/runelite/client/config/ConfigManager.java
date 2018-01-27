@@ -28,6 +28,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -112,7 +113,7 @@ public class ConfigManager
 	{
 		for (Object config : getConfigProxies())
 		{
-			setDefaultConfiguration(config);
+			setDefaultConfiguration(config, false);
 		}
 	}
 
@@ -352,7 +353,7 @@ public class ConfigManager
 	 * Initialize the configuration from the default settings
 	 * @param proxy
 	 */
-	public void setDefaultConfiguration(Object proxy)
+	public void setDefaultConfiguration(Object proxy, boolean override)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
@@ -371,10 +372,13 @@ public class ConfigManager
 				continue;
 			}
 
-			String current = getConfiguration(group.keyName(), item.keyName());
-			if (current != null)
+			if (!override)
 			{
-				continue; // something else is already set
+				String current = getConfiguration(group.keyName(), item.keyName());
+				if (current != null)
+				{
+					continue; // something else is already set
+				}
 			}
 
 			Object defaultValue;
@@ -409,6 +413,13 @@ public class ConfigManager
 		{
 			return Color.decode(str);
 		}
+		if (type == Dimension.class)
+		{
+			String[] splitStr = str.split("x");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+			return new Dimension(width, height);
+		}
 		if (type.isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
@@ -425,6 +436,11 @@ public class ConfigManager
 		if (object instanceof Enum)
 		{
 			return ((Enum) object).name();
+		}
+		if (object instanceof Dimension)
+		{
+			Dimension d = (Dimension) object;
+			return d.width + "x" + d.height;
 		}
 		return object.toString();
 	}
