@@ -59,6 +59,7 @@ public class WidgetID
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
+	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 
 	static class WorldMap
 	{
