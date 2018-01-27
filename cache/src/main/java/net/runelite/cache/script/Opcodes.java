@@ -361,6 +361,7 @@ public class Opcodes
 	public static final int GET_SCREENTYPE = 5308;
 	public static final int SET_SCREENTYPE = 5309;
 	public static final int GET_MAPANGLE = 5506;
+	public static final int SET_CAMERA_FOCAL_POINT_HEIGHT = 5530;
 	public static final int CANCEL_LOGIN = 5630;
 	public static final int SET_ZOOM_DISTANCE = 6201;
 	public static final int GET_VIEWPORT_SIZE = 6203;
