@@ -472,7 +472,7 @@ public class Instructions
 		add(SET_ZOOM_DISTANCE, "set_zoom_distance", 2, 0);
 		add(6202, 4, 0);
 		add(GET_VIEWPORT_SIZE, "get_viewport_size", 0, 2);
-		add(6204, 0, 2);
+		add(GET_ZOOM_DISTANCE, "get_zoom_distance", 0, 2);
 		add(6205, 0, 2);
 		// 6300-6600
 		add(LOAD_WORLDS, "load_worlds", 0, 1);
