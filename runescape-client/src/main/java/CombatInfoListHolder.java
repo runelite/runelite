@@ -154,7 +154,7 @@ public class CombatInfoListHolder extends Node {
          }
 
          if(Huffman.landRegionFileIds[var1] != -1 && Client.field926[var1] == null) {
-            Client.field926[var1] = ScriptState.indexMaps.getConfigData(Huffman.landRegionFileIds[var1], 0, WorldMapType3.xteaKeys[var1]);
+            Client.field926[var1] = ScriptState.indexMaps.getConfigDataKeys(Huffman.landRegionFileIds[var1], 0, WorldMapType3.xteaKeys[var1]);
             if(Client.field926[var1] == null) {
                var0 = false;
                ++Client.field921;
