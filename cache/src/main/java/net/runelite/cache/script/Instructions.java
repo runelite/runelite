@@ -469,7 +469,7 @@ public class Instructions
 		add(CANCEL_LOGIN, "cancel_login", 0, 0);
 		// 5700-6300
 		add(6200, 2, 0);
-		add(6201, 2, 0);
+		add(SET_ZOOM_DISTANCE, "set_zoom_distance", 2, 0);
 		add(6202, 4, 0);
 		add(GET_VIEWPORT_SIZE, "get_viewport_size", 0, 2);
 		add(6204, 0, 2);
