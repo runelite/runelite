@@ -464,7 +464,7 @@ public class Instructions
 		add(5505, 0, 1);
 		add(GET_MAPANGLE, "get_mapangle", 0, 1);
 		add(SET_CAMERA_FOCAL_POINT_HEIGHT, "set_camera_focal_point_height", 1, 0);
-		add(5531, 0, 1);
+		add(GET_CAMERA_FOCAL_POINT_HEIGHT, "get_camera_focal_point_height", 0, 1);
 		// 5600-5700
 		add(CANCEL_LOGIN, "cancel_login", 0, 0);
 		// 5700-6300
