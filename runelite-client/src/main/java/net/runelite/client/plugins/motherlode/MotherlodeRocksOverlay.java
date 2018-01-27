@@ -45,14 +45,21 @@ import java.awt.Polygon;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.runelite.api.ObjectID.ORE_VEIN_26661;
+import static net.runelite.api.ObjectID.ORE_VEIN_26662;
+import static net.runelite.api.ObjectID.ORE_VEIN_26663;
+import static net.runelite.api.ObjectID.ORE_VEIN_26664;
+import static net.runelite.api.ObjectID.ROCKFALL;
+import static net.runelite.api.ObjectID.ROCKFALL_26680;
+
 class MotherlodeRocksOverlay extends Overlay
 {
 	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2350;
 
-	private static final List<Integer> MINE_SPOTS = Arrays.asList(26661, 26662, 26663, 26664);
+	private static final List<Integer> MINE_SPOTS = Arrays.asList(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 
-	private static final List<Integer> ROCK_OBSTACLES = Arrays.asList(26680, 26679);
+	private static final List<Integer> ROCK_OBSTACLES = Arrays.asList(ROCKFALL, ROCKFALL_26680);
 
 	private final Client client;
 	private final MotherlodePlugin plugin;
