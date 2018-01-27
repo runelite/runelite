@@ -381,14 +381,15 @@ public class ClientUI extends JFrame
 			navContainer.remove(0);
 		}
 
+		if (pluginPanel == null && getWidth() + PANEL_EXPANDED_WIDTH <= Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+		}
+
 		pluginPanel = panel;
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
-		if (getWidth() + PANEL_EXPANDED_WIDTH <= Toolkit.getDefaultToolkit().getScreenSize().getWidth())
-		{
-			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
-		}
 		final JPanel wrappedPanel = panel.getWrappedPanel();
 		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
