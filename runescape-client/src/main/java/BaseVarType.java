@@ -1955,7 +1955,7 @@ public enum BaseVarType implements Enumerated {
 
                                                                                                                   var14 = var35;
                                                                                                                } else if(var9 < 6600) {
-                                                                                                                  var14 = class64.method1102(var9, var3, var61);
+                                                                                                                  var14 = class64.execute6500(var9, var3, var61);
                                                                                                                } else if(var9 < 6700) {
                                                                                                                   var14 = class60.method1036(var9, var3, var61);
                                                                                                                } else {
