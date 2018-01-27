@@ -32,6 +32,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1506;
 import static net.runelite.api.NpcID.FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
 import static net.runelite.api.NpcID.FISHING_SPOT_1511;
+import static net.runelite.api.NpcID.FISHING_SPOT_1513;
 import static net.runelite.api.NpcID.FISHING_SPOT_1515;
 import static net.runelite.api.NpcID.FISHING_SPOT_1518;
 import static net.runelite.api.NpcID.FISHING_SPOT_1519;
@@ -77,8 +78,8 @@ public enum FishingSpot
 		FISHING_SPOT_4316
 	),
 	SALMON("Salmon, Trout", ItemID.RAW_SALMON,
-		FISHING_SPOT_1506, FISHING_SPOT_1508, FISHING_SPOT_1515,
-		FISHING_SPOT_1526, FISHING_SPOT_1527
+		FISHING_SPOT_1506, FISHING_SPOT_1508, FISHING_SPOT_1513,
+		FISHING_SPOT_1515, FISHING_SPOT_1526, FISHING_SPOT_1527
 	),
 	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
 		FISHING_SPOT_1542
