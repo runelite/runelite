@@ -39,6 +39,7 @@ public class ScriptWriter extends rs2asmBaseListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
 
+	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
 
 	private int pos;
@@ -51,8 +52,9 @@ public class ScriptWriter extends rs2asmBaseListener
 	private List<String> sops = new ArrayList<>();
 	private List<LookupSwitch> switches = new ArrayList<>();
 
-	public ScriptWriter(LabelVisitor labelVisitor)
+	public ScriptWriter(Instructions instructions, LabelVisitor labelVisitor)
 	{
+		this.instructions = instructions;
 		this.labelVisitor = labelVisitor;
 	}
 
@@ -94,7 +96,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	public void enterName_string(rs2asmParser.Name_stringContext ctx)
 	{
 		String text = ctx.getText();
-		Instruction i = Instructions.find(text);
+		Instruction i = instructions.find(text);
 		if (i == null)
 		{
 			logger.warn("Unknown instruction {}", text);

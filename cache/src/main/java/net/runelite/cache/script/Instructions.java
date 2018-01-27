@@ -30,14 +30,11 @@ import static net.runelite.cache.script.Opcodes.*;
 
 public class Instructions
 {
-	private static final Map<Integer, Instruction> instructions = new HashMap<>();
-	private static final Map<String, Instruction> instructionsByName = new HashMap<>();
+	private final Map<Integer, Instruction> instructions = new HashMap<>();
+	private final Map<String, Instruction> instructionsByName = new HashMap<>();
 
-	public static void init()
+	public void init()
 	{
-		instructions.clear();
-		instructionsByName.clear();
-
 		add(LOAD_INT, "load_int", 0, 1);
 		add(GET_SETTINGS, "get_settings", 0, 1);
 		add(PUT_SETTINGS, "put_settings", 0, 1);
@@ -536,7 +533,7 @@ public class Instructions
 		add(6699, 0, 1);
 	}
 
-	private static void add(int opcode, String name, int ipops, int ipushes, int spops, int spushes)
+	protected void add(int opcode, String name, int ipops, int ipushes, int spops, int spushes)
 	{
 		Instruction i = new Instruction(opcode);
 		i.setName(name);
@@ -555,27 +552,27 @@ public class Instructions
 		}
 	}
 
-	private static void add(int opcode, int ipops, int ipushes)
+	protected void add(int opcode, int ipops, int ipushes)
 	{
 		add(opcode, null, ipops, ipushes, 0, 0);
 	}
 
-	private static void add(int opcode, int ipops, int ipushes, int spops, int spushes)
+	protected void add(int opcode, int ipops, int ipushes, int spops, int spushes)
 	{
 		add(opcode, null, ipops, ipushes, spops, spushes);
 	}
 
-	private static void add(int opcode, String name, int ipops, int ipushes)
+	protected void add(int opcode, String name, int ipops, int ipushes)
 	{
 		add(opcode, name, ipops, ipushes, 0, 0);
 	}
 
-	public static Instruction find(int opcode)
+	public Instruction find(int opcode)
 	{
 		return instructions.get(opcode);
 	}
 
-	public static Instruction find(String name)
+	public Instruction find(String name)
 	{
 		return instructionsByName.get(name);
 	}

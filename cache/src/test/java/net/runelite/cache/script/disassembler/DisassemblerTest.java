@@ -35,7 +35,6 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.script.Instructions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -54,8 +53,6 @@ public class DisassemblerTest
 	{
 		File outDir = folder.newFolder();
 		int count = 0;
-
-		Instructions.init();
 
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
