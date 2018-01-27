@@ -435,7 +435,6 @@ public class MixinInjector
 	private void moveCode(Method method, Code code)
 	{
 		Code newCode = new Code(method);
-		assert code.getExceptions().getExceptions().isEmpty();
 		newCode.setMaxStack(code.getMaxStack());
 		newCode.getInstructions().getInstructions().addAll(code.getInstructions().getInstructions());
 		// Update instructions for each instruction
