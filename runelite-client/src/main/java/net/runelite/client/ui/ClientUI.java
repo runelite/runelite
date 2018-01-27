@@ -384,7 +384,7 @@ public class ClientUI extends JFrame
 		else
 		{
 			clientSize = this.getSize();
-			if(isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
+			if (isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
 			{
 				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
 			}
