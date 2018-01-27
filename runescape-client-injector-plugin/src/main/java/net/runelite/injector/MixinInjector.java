@@ -425,6 +425,25 @@ public class MixinInjector
 
 				moveCode(obMethod, method.getCode());
 
+				boolean hasGarbageValue = method.getDescriptor().size() != obMethod.getDescriptor().size()
+						&& deobMethod.getDescriptor().size() < obMethodSignature.size();
+
+				if (hasGarbageValue)
+				{
+					int garbageIndex = obMethod.isStatic()
+							? obMethod.getDescriptor().size() - 1
+							: obMethod.getDescriptor().size();
+
+					/*
+						If the mixin method doesn't have the garbage parameter,
+						the compiler will have produced code that uses the garbage
+						parameter's local variable index for other things,
+						so we'll have to add 1 to all loads/stores to indices
+						that are >= garbageIndex.
+					 */
+					shiftLocalIndices(obMethod.getCode().getInstructions(), garbageIndex);
+				}
+
 				setOwnersToTargetClass(mixinCf, cf, obMethod, shadowFields, copiedMethods);
 
 				logger.debug("Replaced method {} with mixin method {}", obMethod, method);
@@ -472,15 +491,6 @@ public class MixinInjector
 						int garbageIndex = copiedMethod.obMethod.isStatic()
 							? copiedMethod.obMethod.getDescriptor().size() - 1
 							: copiedMethod.obMethod.getDescriptor().size();
-
-						/*
-							If the mixin method doesn't have the garbage parameter,
-							the compiler will have produced code that uses the garbage
-							parameter's local variable index for other things,
-							so we'll have to add 1 to all loads/stores to indices
-							that are >= garbageIndex.
-						 */
-						shiftLocalIndices(method.getCode().getInstructions(), garbageIndex);
 
 						iterator.previous();
 						iterator.add(new ILoad(method.getCode().getInstructions(), garbageIndex));
