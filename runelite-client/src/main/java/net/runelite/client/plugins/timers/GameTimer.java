@@ -47,7 +47,7 @@ public enum GameTimer
 	FULLTB("teleblock", "Full Teleblock", 5, ChronoUnit.MINUTES),
 	HALFTB("teleblock", "Half Teleblock", 150, ChronoUnit.SECONDS),
 	ANTIVENOMPLUS("antivenomplus", "Anti-venom+", 3, ChronoUnit.MINUTES),
-	SUPERANTIFIRE("superantifire", "Super antifire", 2, ChronoUnit.MINUTES),
+	SUPERANTIFIRE("superantifire", "Super antifire", 3, ChronoUnit.MINUTES),
 	ANTIDOTEPLUSPLUS("antidoteplusplus", "Antidote++", 12, ChronoUnit.MINUTES),
 	BIND("bind", "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS),
 	HALFBIND("bind", "Half Bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS),
