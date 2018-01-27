@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.experiencedrop;
+package net.runelite.client.plugins.xpdrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -31,16 +31,18 @@ import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @PluginDescriptor(
 	name = "Experience drop plugin"
 )
-public class ExperienceDropPlugin extends Plugin
+public class XpDropPlugin extends Plugin
 {
 	private enum PrayerType
 	{
@@ -51,12 +53,25 @@ public class ExperienceDropPlugin extends Plugin
 	Client client;
 
 	@Inject
-	ExperienceDropConfig config;
+	XpDropConfig config;
+
+	private static Set<Integer> dropSet = new HashSet<>();
+
+	static
+    {
+        dropSet.add(WidgetInfo.XP_DROP_1.getId());
+        dropSet.add(WidgetInfo.XP_DROP_2.getId());
+        dropSet.add(WidgetInfo.XP_DROP_3.getId());
+        dropSet.add(WidgetInfo.XP_DROP_4.getId());
+        dropSet.add(WidgetInfo.XP_DROP_5.getId());
+        dropSet.add(WidgetInfo.XP_DROP_6.getId());
+        dropSet.add(WidgetInfo.XP_DROP_7.getId());
+    }
 
 	@Provides
-	ExperienceDropConfig provideConfig(ConfigManager configManager)
+	XpDropConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ExperienceDropConfig.class);
+		return configManager.getConfig(XpDropConfig.class);
 	}
 
 	@Subscribe
@@ -69,29 +84,20 @@ public class ExperienceDropPlugin extends Plugin
 		}
 
 		Widget widget = event.getWidget();
-		if (widget != null)
-		{
-			int group = WidgetInfo.TO_GROUP(widget.getId());
-			int child = WidgetInfo.TO_CHILD(widget.getId());
 
-			if (group == WidgetID.EXPERIENCE_DROP_GROUP_ID)
+		if (widget != null && dropSet.contains(widget.getId()))
+		{
+			switch (prayer)
 			{
-				String text = widget.getText();
-				if (text != null)
-				{
-					switch (prayer)
-					{
-						case MELEE:
-							widget.setTextColor(config.getMeleePrayerColor().getRGB());
-							break;
-						case RANGE:
-							widget.setTextColor(config.getRangePrayerColor().getRGB());
-							break;
-						case MAGE:
-							widget.setTextColor(config.getMagePrayerColor().getRGB());
-							break;
-					}
-				}
+				case MELEE:
+					widget.setTextColor(config.getMeleePrayerColor().getRGB());
+					break;
+				case RANGE:
+					widget.setTextColor(config.getRangePrayerColor().getRGB());
+					break;
+				case MAGE:
+					widget.setTextColor(config.getMagePrayerColor().getRGB());
+					break;
 			}
 		}
 	}
@@ -116,12 +122,12 @@ public class ExperienceDropPlugin extends Plugin
 					case PRAYER_SHARP_EYE:
 					case PRAYER_HAWK_EYE:
 					case PRAYER_EAGLE_EYE:
-					case PRAYER_UNKNOWN2:
+					case PRAYER_RIGOUR:
 						return PrayerType.RANGE;
 					case PRAYER_MYSTIC_WILL:
 					case PRAYER_MYSTIC_LORE:
 					case PRAYER_MYSTIC_MIGHT:
-					case PRAYER_UNKNOWN1:
+					case PRAYER_AUGURY:
 						return PrayerType.MAGE;
 				}
 			}

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.experiencedrop;
+package net.runelite.client.plugins.xpdrop;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
@@ -31,14 +31,14 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "xpdrop",
-	name = "Experience Drop",
+	name = "Xp Drop",
 	description = "Configuration for experience drops customization"
 )
-public interface ExperienceDropConfig extends Config
+public interface XpDropConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
-		name g= "Enabled",
+		name = "Enabled",
 		description = "Configures whether or not plugin is enabled."
 	)
 	default boolean enabled()
@@ -53,7 +53,7 @@ public interface ExperienceDropConfig extends Config
 	)
 	default Color getMeleePrayerColor()
 	{
-		return new Color(175, 164, 136);
+		return new Color(255, 0, 0);
 	}
 
 	@ConfigItem(
@@ -63,7 +63,7 @@ public interface ExperienceDropConfig extends Config
 	)
 	default Color getRangePrayerColor()
 	{
-		return new Color(175, 164, 136);
+		return new Color(0, 255, 0);
 	}
 
 	@ConfigItem(
@@ -73,6 +73,6 @@ public interface ExperienceDropConfig extends Config
 	)
 	default Color getMagePrayerColor()
 	{
-		return new Color(175, 164, 136);
+		return new Color(0, 0, 255);
 	}
 }
