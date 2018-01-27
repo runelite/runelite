@@ -22,25 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.api.events;
 
-import com.google.common.eventbus.EventBus;
+import lombok.Data;
 import net.runelite.api.Script;
-import org.slf4j.Logger;
 
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+@Data
+public class ScriptEvent
 {
-	public static Logger log;
-
-	public static EventBus eventBus;
-
-	public static int runeliteExecute(int opcode, Script script, boolean isOne)
-	{
-		throw new RuntimeException();
-	}
+	private Script script;
+	private String eventName;
 }

@@ -44,6 +44,8 @@ import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
+import net.runelite.api.Script;
+import net.runelite.api.events.ScriptEvent;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
@@ -149,6 +151,28 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+	}
+
+	/**
+	 *
+	 * @param opcode
+	 * @param script
+	 * @param isOne
+	 * @return 0 halts, 1 continues, 2 throws
+	 */
+	public static int runeliteExecute(int opcode, Script script, boolean isOne)
+	{
+		String[] stringStack = client.getStringStack();
+		int stackSize = client.getStringStackSize();
+		String eventName = stringStack[--stackSize];
+		client.setStringStackSize(stackSize);
+
+		ScriptEvent event = new ScriptEvent();
+		event.setScript(script);
+		event.setEventName(eventName);
+		eventBus.post(event);
+
+		return 1;
 	}
 
 	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
