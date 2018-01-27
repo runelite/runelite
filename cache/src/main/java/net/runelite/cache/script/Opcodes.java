@@ -364,6 +364,7 @@ public class Opcodes
 	public static final int CANCEL_LOGIN = 5630;
 	public static final int SET_ZOOM_DISTANCE = 6201;
 	public static final int GET_VIEWPORT_SIZE = 6203;
+	public static final int GET_ZOOM_DISTANCE = 6204;
 	public static final int LOAD_WORLDS = 6500;
 	public static final int GET_FIRST_WORLD = 6501;
 	public static final int GET_NEXT_WORLD = 6502;
