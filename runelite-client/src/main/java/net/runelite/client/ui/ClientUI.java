@@ -84,6 +84,7 @@ public class ClientUI extends JFrame
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+	private Dimension clientSize;
 
 	@Getter
 	private TitleToolbar titleToolbar;
@@ -380,10 +381,13 @@ public class ClientUI extends JFrame
 		{
 			navContainer.remove(0);
 		}
-
-		if (pluginPanel == null && getWidth() + PANEL_EXPANDED_WIDTH <= Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		else
 		{
-			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+			clientSize = this.getSize();
+			if(isInScreenBounds((int) getLocationOnScreen().getX() + getWidth() + PANEL_EXPANDED_WIDTH, (int) getLocationOnScreen().getY()))
+			{
+				this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+			}
 		}
 
 		pluginPanel = panel;
@@ -418,9 +422,16 @@ public class ClientUI extends JFrame
 		}
 		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
 		{
-			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
+			this.setSize(clientSize);
 		}
+
 		pluginPanel = null;
+	}
+
+	private boolean isInScreenBounds(int x, int y)
+	{
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		return x >= 0 && x <= size.getWidth() && y >= 0 && y <= size.getHeight();
 	}
 
 	private void checkExit()
