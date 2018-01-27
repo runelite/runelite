@@ -206,7 +206,7 @@ public enum ClueScroll
 	CLUE167("This anagram reveals who to speak to next: LADDER MEMO GUV", "Guard Vemmeldo", "Gnome Stronghold Bank", "3", ANAGRAM),
 	CLUE168("This anagram reveals who to speak to next: MAL IN TAU", "Luminata", "Near Burgh de Rott entrance", ANAGRAM),
 	CLUE169("This anagram reveals who to speak to next: HEORIC", "Eohric", "Burthorpe Castle, top floor", "36", ANAGRAM),
-	CLUE170("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", "Otto's Grotto","2", ANAGRAM),
+	CLUE170("This anagram reveals who to speak to next: GOBLETS ODD TOES", "Otto Godblessed", "Otto's Grotto", "2", ANAGRAM),
 	CLUE171("This anagram reveals who to speak to next: LEAKEY", "Kaylee", "Rising Sun Inn in Falador", "18", ANAGRAM),
 	CLUE172("This anagram reveals who to speak to next: WOO AN EGG KIWI", "Awowogei", "Ape Atoll", "24", ANAGRAM),
 	CLUE173("This anagram reveals who to speak to next: ARE COL", "Oracle", "Ice Mountain West of Edgeville", "48", ANAGRAM),

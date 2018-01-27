@@ -78,7 +78,7 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(totalPanel, BorderLayout.NORTH);
 
 		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new GridLayout(0,1,0,3));
+		infoBoxPanel.setLayout(new GridLayout(0, 1, 0, 3));
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 
 		try

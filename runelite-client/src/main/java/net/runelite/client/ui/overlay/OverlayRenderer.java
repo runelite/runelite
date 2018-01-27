@@ -217,7 +217,7 @@ public class OverlayRenderer
 		final Point bottomRightPoint = new Point();
 		bottomRightPoint.move(bounds.x + bounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 		final Point rightChatboxPoint = new Point();
-		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT,bounds.y + bounds.height - BORDER_BOTTOM);
+		rightChatboxPoint.move(bounds.x + chatboxBounds.width - BORDER_RIGHT, bounds.y + bounds.height - BORDER_BOTTOM);
 
 		//check to see if Chatbox is minimized
 		if (chatbox != null && client.isResized() && chatbox.isHidden())
