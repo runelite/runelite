@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,8 +52,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.http.api.item.ItemPrice;
 
 public class GroundItemsOverlay extends Overlay
@@ -92,7 +92,7 @@ public class GroundItemsOverlay extends Overlay
 	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.config = config;
 	}
