@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +28,10 @@ package net.runelite.client.plugins.metronome;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -42,34 +40,14 @@ import javax.inject.Inject;
 )
 public class MetronomePlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(MetronomePlugin.class);
-
 	@Inject
 	Client client;
 
 	@Inject
 	MetronomePluginConfiguration config;
 
-	private boolean tock = false;
-
-	@Subscribe
-	void onTick(GameTick tick)
-	{
-		if (!config.enabled())
-		{
-			return;
-		}
-		if (tock)
-		{
-			client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-		}
-		else // tick
-		{
-			client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
-		}
-
-		tock = !tock;
-	}
+	private int tickCounter = 0;
+	private boolean shouldTock = false;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -77,4 +55,25 @@ public class MetronomePlugin extends Plugin
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
 
+	@Subscribe
+	void onTick(GameTick tick)
+	{
+		if (!config.enabled() || config.tickCount() == 0)
+		{
+			return;
+		}
+
+		if (++tickCounter % config.tickCount() == 0)
+		{
+			if (config.enableTock() && shouldTock)
+			{
+				client.playSoundEffect(config.tockSound());
+			}
+			else
+			{
+				client.playSoundEffect(config.tickSound());
+			}
+			shouldTock = !shouldTock;
+		}
+	}
 }
