@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -35,13 +34,11 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.http.api.worlds.World;
@@ -55,8 +52,6 @@ import net.runelite.http.api.worlds.WorldType;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
-	private static final int NUMBER_OF_SKILLS = Skill.values().length - 1; //ignore overall
-
 	@Inject
 	ClientUI ui;
 
@@ -65,9 +60,7 @@ public class XpTrackerPlugin extends Plugin
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
-	private final SkillXPInfo[] xpInfos = new SkillXPInfo[NUMBER_OF_SKILLS];
 	private WorldResult worlds;
-
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
@@ -85,7 +78,7 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = injector.getInstance(XpPanel.class);
+		xpPanel = new XpPanel(client);
 		navButton = new NavigationButton(
 			"XP Tracker",
 			ImageIO.read(getClass().getResourceAsStream("xp.png")),
@@ -125,9 +118,7 @@ public class XpTrackerPlugin extends Plugin
 
 				lastUsername = client.getUsername();
 				lastWorldType = type;
-
-				xpPanel.resetAllSkillXpHr();
-				Arrays.fill(xpInfos, null);
+				xpPanel.resetAllInfoBoxes();
 			}
 		}
 	}
@@ -149,33 +140,12 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onXpChanged(ExperienceChanged event)
 	{
-		Skill skill = event.getSkill();
-		int skillIdx = skill.ordinal();
-
-		//To catch login ExperienceChanged event.
-		if (xpInfos[skillIdx] != null)
-		{
-			xpInfos[skillIdx].update(client.getSkillExperience(skill));
-		}
-		else
-		{
-			xpInfos[skillIdx] = new SkillXPInfo(client.getSkillExperience(skill),
-				skill);
-		}
+		xpPanel.updateSkillExperience(event.getSkill());
 	}
 
-	@Schedule(
-		period = 600,
-		unit = ChronoUnit.MILLIS
-	)
-	public void updateXp()
+	@Subscribe
+	public void onGameTick(GameTick event)
 	{
-		xpPanel.updateAllSkillXpHr();
+		xpPanel.updateAllInfoBoxes();
 	}
-
-	public SkillXPInfo[] getXpInfos()
-	{
-		return xpInfos;
-	}
-
 }
