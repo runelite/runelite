@@ -154,13 +154,16 @@ public class ClientUI extends JFrame
 	public void showWithChrome(boolean customChrome)
 	{
 		setUndecorated(customChrome);
+
 		if (customChrome)
 		{
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 		}
+
 		pack();
 		revalidateMinimumSize();
 		setLocationRelativeTo(getOwner());
+
 		if (customChrome)
 		{
 			try
@@ -295,7 +298,10 @@ public class ClientUI extends JFrame
 		client.getParent().setPreferredSize(size);
 		client.getParent().setSize(size);
 
-		pack();
+		if (isVisible())
+		{
+			pack();
+		}
 	}
 
 	private static void setUIFont(FontUIResource f)
