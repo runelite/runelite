@@ -46,25 +46,34 @@ public class MetronomePlugin extends Plugin
 	@Inject
 	MetronomePluginConfiguration config;
 
+	private int tickCounter = 0;
+	private boolean shouldTock = false;
+
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
 
-	private int tickCounter = 0;
-
 	@Subscribe
 	void onTick(GameTick tick)
 	{
-		if (!config.enabled())
+		if (!config.enabled() || config.tickCount() == 0)
 		{
 			return;
 		}
 
 		if (++tickCounter % config.tickCount() == 0)
 		{
-			client.playSoundEffect(config.tickSound());
+			if (config.enableTock() && shouldTock)
+			{
+				client.playSoundEffect(config.tockSound());
+			}
+			else
+			{
+				client.playSoundEffect(config.tickSound());
+			}
+			shouldTock = !shouldTock;
 		}
 	}
 }
