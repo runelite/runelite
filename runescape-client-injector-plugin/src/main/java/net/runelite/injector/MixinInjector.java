@@ -371,6 +371,20 @@ public class MixinInjector
 		{
 			if (method.getAnnotations().find(INJECT) != null)
 			{
+				// Make sure the method doesn't invoke copied methods
+				for (Instruction i : method.getCode().getInstructions().getInstructions())
+				{
+					if (i instanceof InvokeInstruction)
+					{
+						InvokeInstruction ii = (InvokeInstruction) i;
+
+						if (copiedMethods.containsKey(ii.getMethod()))
+						{
+							throw new InjectionException("Injected methods cannot invoke copied methods");
+						}
+					}
+				}
+
 				Method copy = new Method(cf, method.getName(), method.getDescriptor());
 				moveCode(copy, method.getCode());
 				copy.setAccessFlags(method.getAccessFlags());
