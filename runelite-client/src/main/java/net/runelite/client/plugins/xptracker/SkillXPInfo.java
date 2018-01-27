@@ -24,62 +24,105 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.api.Skill;
 import java.time.Duration;
 import java.time.Instant;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 
-public class SkillXPInfo
+@Data
+@Slf4j
+class SkillXPInfo
 {
-	private Skill skill;
+	private final Skill skill;
 	private Instant skillTimeStart = null;
+	private int startXp = -1;
 	private int xpGained = 0;
-	private int loginXp = 0;
+	private int actions = 0;
+	private int actionExp = 0;
+	private int nextLevelExp = 0;
+	private int startLevelExp = 0;
 
-	public SkillXPInfo(int loginXp, Skill skill)
+	int getXpHr()
 	{
-		this.skill = skill;
-		this.loginXp = loginXp;
+		return toHourly(xpGained);
 	}
 
-	public int getXpHr()
+	int getActionsHr()
 	{
-		long timeElapsedInSeconds = Duration.between(
-				skillTimeStart, Instant.now()).getSeconds();
-		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * xpGained);
-
+		return toHourly(actions);
 	}
 
-	public void reset(int loginXp)
+	private int toHourly(int value)
 	{
+		if (skillTimeStart == null)
+		{
+			return 0;
+		}
+
+		long timeElapsedInSeconds = Duration.between(skillTimeStart, Instant.now()).getSeconds();
+		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
+	}
+
+	int getXpRemaining()
+	{
+		return nextLevelExp - (startXp + xpGained);
+	}
+
+	int getActionsRemaining()
+	{
+		return getXpRemaining() / actionExp;
+	}
+
+	int getSkillProgress()
+	{
+		int currentXp = startXp + xpGained;
+
+		double xpGained = currentXp - startLevelExp;
+		double xpGoal = nextLevelExp - startLevelExp;
+		return (int) ((xpGained / xpGoal) * 100);
+	}
+
+	void reset(int currentXp)
+	{
+		if (startXp != -1)
+		{
+			startXp = currentXp;
+		}
+
 		xpGained = 0;
-		this.loginXp = loginXp;
+		actions = 0;
 		skillTimeStart = null;
 	}
 
-	public void update(int currentXp)
+	boolean update(int currentXp)
 	{
-		xpGained = currentXp - loginXp;
+		if (startXp == -1)
+		{
+			return false;
+		}
+
+		int originalXp = xpGained + startXp;
+
+		if (originalXp >= currentXp)
+		{
+			return false;
+		}
+
+		actionExp = currentXp - originalXp;
+		actions++;
+		xpGained = currentXp - startXp;
+		startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
+
+		int currentLevel = Experience.getLevelForXp(currentXp);
+		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+
 		if (skillTimeStart == null)
+		{
 			skillTimeStart = Instant.now();
-	}
+		}
 
-	public Instant getSkillTimeStart()
-	{
-		return skillTimeStart;
-	}
-
-	public int getXpGained()
-	{
-		return xpGained;
-	}
-
-	public int getLoginXp()
-	{
-		return loginXp;
-	}
-
-	public Skill getSkill()
-	{
-		return this.skill;
+		return true;
 	}
 }
