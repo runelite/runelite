@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,16 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.Script;
 import net.runelite.mapping.Import;
 
-public interface RSCacheableNode extends RSNode
+public interface RSScript extends Script, RSCacheableNode
 {
-	@Import("next")
-	RSCacheableNode getNext();
+	@Import("intOperands")
+	@Override
+	int[] getIntOperands();
 
-	@Import("previous")
-	RSCacheableNode getPrevious();
+	@Import("instructions")
+	@Override
+	int[] getInstructions();
 }
