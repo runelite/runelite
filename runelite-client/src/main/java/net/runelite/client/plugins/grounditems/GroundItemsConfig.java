@@ -29,6 +29,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.Color;
+
 @ConfigGroup(
 	keyName = "grounditems",
 	name = "Ground Items",
@@ -104,5 +106,55 @@ public interface GroundItemsConfig extends Config
 	default int getHideUnderHAValue()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "highlightedColor",
+		name = "Highlighted items color",
+		description = "Configures the color for highlighted items"
+	)
+	default Color highlightedColor()
+	{
+		return Color.decode("#AA00FF");
+	}
+
+	@ConfigItem(
+		keyName = "lowValueColor",
+		name = "Low value items color",
+		description = "Configures the color for low value items"
+	)
+	default Color lowValueColor()
+	{
+		return Color.decode("#66B2FF");
+	}
+
+	@ConfigItem(
+		keyName = "mediumValueColor",
+		name = "Medium value items color",
+		description = "Configures the color for medium value items"
+	)
+	default Color mediumValueColor()
+	{
+		return Color.decode("#99FF99");
+	}
+
+	@ConfigItem(
+		keyName = "highValueColor",
+		name = "High value items color",
+		description = "Configures the color for high value items"
+	)
+	default Color highValueColor()
+	{
+		return Color.decode("#FF9600");
+	}
+
+	@ConfigItem(
+		keyName = "insaneValueColor",
+		name = "Insane value items color",
+		description = "Configures the color for insane value items"
+	)
+	default Color insaneValueColor()
+	{
+		return Color.decode("#FF66B2");
 	}
 }

@@ -66,18 +66,12 @@ public class GroundItemsOverlay extends Overlay
 	private static final int STRING_GAP = 15;
 	// Threshold for highlighting items as blue.
 	private static final int LOW_VALUE = 20_000;
-	private static final Color BRIGHT_BLUE = new Color(102, 178, 255);
 	// Threshold for highlighting items as green.
 	private static final int MEDIUM_VALUE = 100_000;
-	private static final Color BRIGHT_GREEN = new Color(153, 255, 153);
 	// Threshold for highlighting items as amber.
 	private static final int HIGH_VALUE = 1_000_000;
-	private static final Color AMBER = new Color(255, 150, 0);
 	// Threshold for highlighting items as pink.
 	private static final int INSANE_VALUE = 10_000_000;
-	private static final Color FADED_PINK = new Color(255, 102, 178);
-	// Color to use if an item is highlighted in the config.
-	private static final Color PURPLE = new Color(170, 0, 255);
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// Regex for splitting the hidden items in the config.
@@ -271,19 +265,19 @@ public class GroundItemsOverlay extends Overlay
 						// set the color according to rarity, if possible
 						if (cost >= INSANE_VALUE) // 10,000,000 gp
 						{
-							textColor = FADED_PINK;
+							textColor = config.insaneValueColor();
 						}
 						else if (cost >= HIGH_VALUE) // 1,000,000 gp
 						{
-							textColor = AMBER;
+							textColor = config.highValueColor();
 						}
 						else if (cost >= MEDIUM_VALUE) // 100,000 gp
 						{
-							textColor = BRIGHT_GREEN;
+							textColor = config.mediumValueColor();
 						}
 						else if (cost >= LOW_VALUE) // 20,000 gp
 						{
-							textColor = BRIGHT_BLUE;
+							textColor = config.lowValueColor();
 						}
 
 						itemStringBuilder.append(" (EX: ")
@@ -300,7 +294,7 @@ public class GroundItemsOverlay extends Overlay
 
 					if (highlightedItems.contains(item.getName().toLowerCase()))
 					{
-						textColor = PURPLE;
+						textColor = config.highlightedColor();
 					}
 
 					String itemString = itemStringBuilder.toString();
