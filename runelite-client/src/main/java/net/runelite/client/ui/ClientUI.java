@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.LayoutManager;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -384,6 +385,10 @@ public class ClientUI extends JFrame
 		navContainer.setMinimumSize(new Dimension(PANEL_EXPANDED_WIDTH, 0));
 		navContainer.setMaximumSize(new Dimension(PANEL_EXPANDED_WIDTH, Integer.MAX_VALUE));
 
+		if (getWidth() + PANEL_EXPANDED_WIDTH <= Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(getWidth() + PANEL_EXPANDED_WIDTH, getHeight());
+		}
 		final JPanel wrappedPanel = panel.getWrappedPanel();
 		navContainer.add(wrappedPanel);
 		navContainer.revalidate();
@@ -409,6 +414,10 @@ public class ClientUI extends JFrame
 		if (wasMinimumWidth)
 		{
 			this.setSize((int) this.getMinimumSize().getWidth(), getHeight());
+		}
+		else if (getWidth() < Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+		{
+			this.setSize(getWidth() - PANEL_EXPANDED_WIDTH, getHeight());
 		}
 		pluginPanel = null;
 	}
