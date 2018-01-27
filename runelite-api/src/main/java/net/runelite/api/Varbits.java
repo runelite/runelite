@@ -216,6 +216,13 @@ public enum Varbits
 	EXPERIENCE_DROP_COLOR(4695),
 
 	/**
+	 * Tithe Farm
+	 */
+	TITHE_FARM_SACK_AMOUNT(4900),
+	TITHE_FARM_SACK_ICON(5370),
+	TITHE_FARM_POINTS(4893),
+
+	/**
 	 * Raids
 	 */
 	IN_RAID(5432),
