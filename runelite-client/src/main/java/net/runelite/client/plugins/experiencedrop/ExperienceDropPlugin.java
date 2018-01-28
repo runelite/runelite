@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -66,8 +67,14 @@ public class ExperienceDropPlugin extends Plugin
 		}
 
 		PrayerType prayer = getActivePrayerType();
-		if (!config.enabled() || widget.isHidden() || prayer == null)
+		if (!config.enabled() || widget.isHidden())
 		{
+			return;
+		}
+
+		if (prayer == null)
+		{
+			resetTextColor(widget);
 			return;
 		}
 
@@ -87,6 +94,13 @@ public class ExperienceDropPlugin extends Plugin
 					break;
 			}
 		}
+	}
+
+	private void resetTextColor(Widget widget)
+	{
+		int defaultColorIdx = client.getSetting(Varbits.EXPERIENCE_DROP_COLOR);
+		int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
+		widget.setTextColor(defaultColor);
 	}
 
 	private PrayerType getActivePrayerType()

@@ -182,7 +182,12 @@ public enum Varbits
 	/**
 	 * Motherlode mine sack
 	 */
-	SACK_NUMBER(5558, 375, 8, 15);
+	SACK_NUMBER(5558, 375, 8, 15),
+
+	/**
+	 * Experience drop color
+	 */
+	EXPERIENCE_DROP_COLOR(4695, 1227, 6, 8);
 
 	/**
 	 * varbit id
