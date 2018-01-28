@@ -229,7 +229,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().equals("You drink some of your stamina potion.") && config.showStamina())
+		if (config.showStamina() && event.getMessage().equals("You drink some of your stamina potion."))
 		{
 			createGameTimer(STAMINA);
 		}
@@ -239,17 +239,17 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(STAMINA);
 		}
 
-		if (event.getMessage().equals("You drink some of your antifire potion.") && config.showAntiFire())
+		if (config.showAntiFire() && event.getMessage().equals("You drink some of your antifire potion."))
 		{
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (event.getMessage().equals("You drink some of your extended antifire potion.") && config.showExAntiFire())
+		if (config.showExAntiFire() && event.getMessage().equals("You drink some of your extended antifire potion."))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
 
-		if (event.getMessage().equals("You drink some of your extended super antifire potion.") && config.showExSuperAntifire())
+		if (config.showExSuperAntifire() && event.getMessage().equals("You drink some of your extended super antifire potion."))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
@@ -261,12 +261,12 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (event.getMessage().contains("You drink some of your overload potion") && config.showOverload())
+		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
 		{
 			createGameTimer(OVERLOAD);
 		}
 
-		if ((event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")) && config.showCannon())
+		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
 		{
 			createGameTimer(CANNON);
 		}
@@ -276,12 +276,12 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(CANNON);
 		}
 
-		if (event.getMessage().contains("You drink some of your super antivenom potion") && config.showAntiVenomPlus())
+		if (config.showAntiVenomPlus() && event.getMessage().contains("You drink some of your super antivenom potion"))
 		{
 			createGameTimer(ANTIVENOMPLUS);
 		}
 
-		if (event.getMessage().equals("You are charged to combine runes!") && config.showMagicImbue())
+		if (config.showMagicImbue() && event.getMessage().equals("You are charged to combine runes!"))
 		{
 			createGameTimer(MAGICIMBUE);
 		}
@@ -291,22 +291,22 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>") && config.showTeleblock())
+		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>"))
 		{
 			createGameTimer(FULLTB);
 		}
 
-		if (event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>") && config.showTeleblock())
+		if (config.showTeleblock() && event.getMessage().equals("<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>"))
 		{
 			createGameTimer(HALFTB);
 		}
 
-		if (event.getMessage().contains("You drink some of your super antifire potion") && config.showSuperAntiFire())
+		if (config.showSuperAntiFire() && event.getMessage().contains("You drink some of your super antifire potion"))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>") && config.showSuperAntiFire())
+		if (event.getMessage().equals("<col=7f007f>Your super antifire potion has expired.</col>"))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
@@ -316,12 +316,12 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (event.getMessage().contains("You drink some of your antivenom potion") && config.showAntiVenom())
+		if (config.showAntiVenom() && event.getMessage().contains("You drink some of your antivenom potion"))
 		{
 			createGameTimer(ANTIVENOM);
 		}
 
-		if (event.getMessage().contains("You drink some of your Sanfew Serum.") && config.showSanfew())
+		if (config.showSanfew() && event.getMessage().contains("You drink some of your Sanfew Serum."))
 		{
 			createGameTimer(SANFEW);
 		}
@@ -337,12 +337,12 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getGraphic() == IMBUEDHEART.getGraphicId() && config.showImbuedHeart())
+		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
 		{
 			createGameTimer(IMBUEDHEART);
 		}
 
-		if (actor.getGraphic() == VENGEANCE.getGraphicId() && config.showVengeance())
+		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
 		{
 			createGameTimer(VENGEANCE);
 		}
