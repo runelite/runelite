@@ -160,8 +160,8 @@ public class GroundItemsOverlay extends Overlay
 		int lowerX = max(0, from.getX() - MAX_RANGE);
 		int lowerY = max(0, from.getY() - MAX_RANGE);
 
-		int upperX = min(from.getX() + MAX_RANGE, REGION_SIZE);
-		int upperY = min(from.getY() + MAX_RANGE, REGION_SIZE);
+		int upperX = min(from.getX() + MAX_RANGE, REGION_SIZE - 1);
+		int upperY = min(from.getY() + MAX_RANGE, REGION_SIZE - 1);
 
 		for (int x = lowerX; x <= upperX; ++x)
 		{
