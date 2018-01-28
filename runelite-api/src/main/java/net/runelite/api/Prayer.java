@@ -52,8 +52,10 @@ public enum Prayer
 	SMITE(Varbits.PRAYER_SMITE),
 	CHIVALRY(Varbits.PRAYER_CHIVALRY),
 	PIETY(Varbits.PRAYER_PIETY),
-	PRESERVE(Varbits.PRAYER_PRESERVE);
-
+	PRESERVE(Varbits.PRAYER_PRESERVE),
+	RIGOUR(Varbits.PRAYER_RIGOUR),
+	AUGURY(Varbits.PRAYER_AUGURY);
+	
 	private final Varbits varbit;
 
 	private Prayer(Varbits varbit)
