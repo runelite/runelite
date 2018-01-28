@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.script;
 
-import net.runelite.mapping.Import;
+import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
+import net.runelite.cache.script.Instructions;
 
-public interface RSCacheableNode extends RSNode
+public class RuneLiteInstructions extends Instructions
 {
-	@Import("next")
-	RSCacheableNode getNext();
-
-	@Import("previous")
-	RSCacheableNode getPrevious();
+	@Override
+	public void init()
+	{
+		super.init();
+		add(RUNELITE_EXECUTE, "runelite_callback", 0, 0, 1, 0);
+	}
 }

@@ -35,10 +35,15 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Assembler
 {
+	private final Instructions instructions;
+
+	public Assembler(Instructions instructions)
+	{
+		this.instructions = instructions;
+	}
+
 	public ScriptDefinition assemble(InputStream in) throws IOException
 	{
-		Instructions.init();
-
 		// Get our lexer
 		rs2asmLexer lexer = new rs2asmLexer(new ANTLRInputStream(in));
 
@@ -66,7 +71,7 @@ public class Assembler
 		LabelVisitor labelVisitor = new LabelVisitor();
 		walker.walk(labelVisitor, progContext);
 
-		ScriptWriter listener = new ScriptWriter(labelVisitor);
+		ScriptWriter listener = new ScriptWriter(instructions, labelVisitor);
 		walker.walk(listener, progContext);
 
 		return listener.buildScript();

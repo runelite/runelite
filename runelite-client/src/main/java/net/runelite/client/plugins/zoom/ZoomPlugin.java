@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018 Abex
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,25 +23,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.client.plugins.zoom;
 
-import com.google.common.eventbus.EventBus;
-import net.runelite.api.Script;
-import org.slf4j.Logger;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.events.ScriptEvent;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+@PluginDescriptor(
+	name = "Camera zoom unlimiter"
+)
+@Slf4j
+public class ZoomPlugin extends Plugin
 {
-	public static Logger log;
+	private static final int INCREASED_RESIZABLE_ZOOM_LIMIT = 70;
+	private static final int INCREASED_FIXED_ZOOM_LIMIT = 95;
 
-	public static EventBus eventBus;
+	@Inject
+	private Client client;
 
-	public static int runeliteExecute(int opcode, Script script, boolean isOne)
+	@Inject
+	private ZoomConfig zoomConfig;
+
+	@Provides
+	ZoomConfig getConfig(ConfigManager configManager)
 	{
-		throw new RuntimeException();
+		return configManager.getConfig(ZoomConfig.class);
+	}
+
+	@Subscribe
+	public void onScriptEvent(ScriptEvent event)
+	{
+		if (!zoomConfig.enabled())
+		{
+			return;
+		}
+
+		switch (event.getEventName())
+		{
+			case "fixedOuterZoomLimit":
+				popAndReplace(INCREASED_FIXED_ZOOM_LIMIT);
+				break;
+			case "resizableOuterZoomLimit":
+				popAndReplace(INCREASED_RESIZABLE_ZOOM_LIMIT);
+				break;
+		}
+	}
+
+	private void popAndReplace(int newValue)
+	{
+		int[] intStack = client.getIntStack();
+		int intStackSize = client.getIntStackSize();
+		intStack[intStackSize - 1] = newValue;
 	}
 }

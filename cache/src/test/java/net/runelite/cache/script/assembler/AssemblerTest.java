@@ -26,6 +26,7 @@ package net.runelite.cache.script.assembler;
 
 import java.io.InputStream;
 import net.runelite.cache.definitions.ScriptDefinition;
+import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.disassembler.Disassembler;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.Assert;
@@ -60,7 +61,10 @@ public class AssemblerTest
 		InputStream in = AssemblerTest.class.getResourceAsStream(script);
 		Assert.assertNotNull(in);
 
-		Assembler assembler = new Assembler();
+		Instructions instructions = new Instructions();
+		instructions.init();
+
+		Assembler assembler = new Assembler(instructions);
 		ScriptDefinition script = assembler.assemble(in);
 
 		// compare with disassembler

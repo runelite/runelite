@@ -255,4 +255,16 @@ public interface Client extends GameEngine
 	 * @return
 	 */
 	ItemContainer getItemContainer(InventoryID inventory);
+
+	int getIntStackSize();
+
+	void setIntStackSize(int stackSize);
+
+	int[] getIntStack();
+
+	int getStringStackSize();
+
+	void setStringStackSize(int stackSize);
+
+	String[] getStringStack();
 }

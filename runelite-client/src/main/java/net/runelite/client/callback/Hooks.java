@@ -35,7 +35,6 @@ import com.google.inject.Injector;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
@@ -45,6 +44,8 @@ import net.runelite.api.PacketBuffer;
 import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Region;
+import net.runelite.api.Script;
+import net.runelite.api.events.ScriptEvent;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.DeathChecker;
@@ -52,10 +53,14 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class Hooks
 {
+	// must be public as the mixins use it
+	public static final Logger log = LoggerFactory.getLogger(Hooks.class);
+
 	private static final long CHECK = 600; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
@@ -146,6 +151,28 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+	}
+
+	/**
+	 *
+	 * @param opcode
+	 * @param script
+	 * @param isOne
+	 * @return 0 halts, 1 continues, 2 throws
+	 */
+	public static int runeliteExecute(int opcode, Script script, boolean isOne)
+	{
+		String[] stringStack = client.getStringStack();
+		int stackSize = client.getStringStackSize();
+		String eventName = stringStack[--stackSize];
+		client.setStringStackSize(stackSize);
+
+		ScriptEvent event = new ScriptEvent();
+		event.setScript(script);
+		event.setEventName(eventName);
+		eventBus.post(event);
+
+		return 1;
 	}
 
 	public static void menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
