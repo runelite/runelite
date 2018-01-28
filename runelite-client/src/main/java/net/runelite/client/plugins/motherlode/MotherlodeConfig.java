@@ -42,7 +42,7 @@ public interface MotherlodeConfig extends Config
 	)
 	default boolean enabled()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
