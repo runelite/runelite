@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
- * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,57 +22,95 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.metronome;
+package net.runelite.client.plugins.experiencedrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Metronome plugin"
+	name = "Experience drop plugin"
 )
-public class MetronomePlugin extends Plugin
+public class ExperienceDropPlugin extends Plugin
 {
 	@Inject
 	Client client;
 
 	@Inject
-	MetronomePluginConfiguration config;
-
-	private int tickCounter = 0;
-	private boolean shouldTock = false;
+	ExperienceDropConfig config;
 
 	@Provides
-	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
+	ExperienceDropConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(MetronomePluginConfiguration.class);
+		return configManager.getConfig(ExperienceDropConfig.class);
 	}
 
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onWidgetHidden(WidgetHiddenChanged event)
 	{
-		if (!config.enabled() || config.tickCount() == 0)
+		Widget widget = event.getWidget();
+
+		int group = WidgetInfo.TO_GROUP(widget.getId());
+
+		if (group != WidgetID.EXPERIENCE_DROP_GROUP_ID)
 		{
 			return;
 		}
 
-		if (++tickCounter % config.tickCount() == 0)
+		PrayerType prayer = getActivePrayerType();
+		if (!config.enabled() || widget.isHidden())
 		{
-			if (config.enableTock() && shouldTock)
-			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-			}
-			else
-			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
-			}
-			shouldTock = !shouldTock;
+			return;
 		}
+		else if (prayer == null)
+		{
+			resetTextColor(widget);
+			return;
+		}
+
+		String text = widget.getText();
+		if (text != null)
+		{
+			switch (prayer)
+			{
+				case MELEE:
+					widget.setTextColor(config.getMeleePrayerColor().getRGB());
+					break;
+				case RANGE:
+					widget.setTextColor(config.getRangePrayerColor().getRGB());
+					break;
+				case MAGIC:
+					widget.setTextColor(config.getMagePrayerColor().getRGB());
+					break;
+			}
+		}
+	}
+
+	private void resetTextColor(Widget widget)
+	{
+		int defaultColorIdx = client.getSetting(Varbits.EXPERIENCE_DROP_COLOR);
+		int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
+		widget.setTextColor(defaultColor);
+	}
+
+	private PrayerType getActivePrayerType()
+	{
+		for (XpPrayer prayer : XpPrayer.values())
+		{
+			if (client.isPrayerActive(prayer.getPrayer()))
+			{
+				return prayer.getType();
+			}
+		}
+		return null;
 	}
 }

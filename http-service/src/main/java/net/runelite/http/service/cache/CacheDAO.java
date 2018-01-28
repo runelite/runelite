@@ -240,7 +240,7 @@ public class CacheDAO
 	{
 		if (findArchive == null)
 		{
-			findArchive = con.createQuery("select archive.id, archive.archiveId, archive.nameHash,"
+			findArchive = con.createQuery("select distinct archive.id, archive.archiveId, archive.nameHash,"
 				+ " archive.crc, archive.revision, archive.hash from archive "
 				+ " join index_archive on index_archive.archive = archive.id"
 				+ " join `index` on index.id = index_archive.index"

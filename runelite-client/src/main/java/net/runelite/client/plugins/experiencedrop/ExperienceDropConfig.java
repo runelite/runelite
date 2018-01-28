@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
- * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,57 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.metronome;
+package net.runelite.client.plugins.experiencedrop;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Metronome plugin"
+@ConfigGroup(
+	keyName = "xpdrop",
+	name = "Experience Drop",
+	description = "Configuration for experience drops customization"
 )
-public class MetronomePlugin extends Plugin
+public interface ExperienceDropConfig extends Config
 {
-	@Inject
-	Client client;
-
-	@Inject
-	MetronomePluginConfiguration config;
-
-	private int tickCounter = 0;
-	private boolean shouldTock = false;
-
-	@Provides
-	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not plugin is enabled."
+	)
+	default boolean enabled()
 	{
-		return configManager.getConfig(MetronomePluginConfiguration.class);
+		return true;
 	}
 
-	@Subscribe
-	void onTick(GameTick tick)
+	@ConfigItem(
+		keyName = "meleePrayerColor",
+		name = "Melee Prayer Color",
+		description = "Xp Drop color when a melee prayer is active"
+	)
+	default Color getMeleePrayerColor()
 	{
-		if (!config.enabled() || config.tickCount() == 0)
-		{
-			return;
-		}
+		return new Color(0x15, 0x80, 0xAD);
+	}
 
-		if (++tickCounter % config.tickCount() == 0)
-		{
-			if (config.enableTock() && shouldTock)
-			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-			}
-			else
-			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
-			}
-			shouldTock = !shouldTock;
-		}
+	@ConfigItem(
+		keyName = "rangePrayerColor",
+		name = "Range Prayer Color",
+		description = "Xp Drop color when a range prayer is active"
+	)
+	default Color getRangePrayerColor()
+	{
+		return new Color(0x15, 0x80, 0xAD);
+	}
+
+	@ConfigItem(
+		keyName = "magePrayerColor",
+		name = "Mage Prayer Color",
+		description = "Xp Drop color when a mage prayer is active"
+	)
+	default Color getMagePrayerColor()
+	{
+		return new Color(0x15, 0x80, 0xAD);
 	}
 }

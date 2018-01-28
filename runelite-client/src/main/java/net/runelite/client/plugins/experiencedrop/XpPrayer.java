@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
- * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,57 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.metronome;
+package net.runelite.client.plugins.experiencedrop;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.GameTick;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import lombok.Getter;
+import net.runelite.api.Prayer;
+import static net.runelite.api.Prayer.*;
+import static net.runelite.client.plugins.experiencedrop.PrayerType.MAGIC;
+import static net.runelite.client.plugins.experiencedrop.PrayerType.MELEE;
+import static net.runelite.client.plugins.experiencedrop.PrayerType.RANGE;
 
-@PluginDescriptor(
-	name = "Metronome plugin"
-)
-public class MetronomePlugin extends Plugin
+enum XpPrayer
 {
-	@Inject
-	Client client;
+	XP_BURST_OF_STRENGTH(BURST_OF_STRENGTH, MELEE),
+	XP_CLARITY_OF_THOUGHT(CLARITY_OF_THOUGHT, MELEE),
+	XP_SHARP_EYE(SHARP_EYE, RANGE),
+	XP_MYSTIC_WILL(MYSTIC_WILL, MAGIC),
+	XP_SUPERHUMAN_STRENGTH(SUPERHUMAN_STRENGTH, MELEE),
+	XP_IMPROVED_REFLEXES(IMPROVED_REFLEXES, MELEE),
+	XP_HAWK_EYE(HAWK_EYE, RANGE),
+	XP_MYSTIC_LORE(MYSTIC_LORE, MAGIC),
+	XP_ULTIMATE_STRENGTH(ULTIMATE_STRENGTH, MELEE),
+	XP_INCREDIBLE_REFLEXES(INCREDIBLE_REFLEXES, MELEE),
+	XP_EAGLE_EYE(EAGLE_EYE, RANGE),
+	XP_MYSTIC_MIGHT(MYSTIC_MIGHT, MAGIC),
+	XP_CHIVALRY(CHIVALRY, MELEE),
+	XP_PIETY(PIETY, MELEE);
 
-	@Inject
-	MetronomePluginConfiguration config;
+	@Getter
+	private final Prayer prayer;
+	@Getter
+	private final PrayerType type;
 
-	private int tickCounter = 0;
-	private boolean shouldTock = false;
-
-	@Provides
-	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
+	XpPrayer(Prayer prayer, PrayerType type)
 	{
-		return configManager.getConfig(MetronomePluginConfiguration.class);
-	}
-
-	@Subscribe
-	void onTick(GameTick tick)
-	{
-		if (!config.enabled() || config.tickCount() == 0)
-		{
-			return;
-		}
-
-		if (++tickCounter % config.tickCount() == 0)
-		{
-			if (config.enableTock() && shouldTock)
-			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
-			}
-			else
-			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
-			}
-			shouldTock = !shouldTock;
-		}
+		this.prayer = prayer;
+		this.type = type;
 	}
 }

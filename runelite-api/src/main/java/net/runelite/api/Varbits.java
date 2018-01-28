@@ -80,8 +80,6 @@ public enum Varbits
 	PRAYER_CHIVALRY(4128, 83, 25, 25),
 	PRAYER_PIETY(4129, 83, 26, 26),
 	PRAYER_PRESERVE(5466, 83, 28, 28),
-	PRAYER_RIGOUR(5464, 83, 24, 24),
-	PRAYER_AUGURY(5465, 83, 27, 27),
 
 	/**
 	 * Diary Entries
@@ -187,7 +185,7 @@ public enum Varbits
 	/**
 	 * Experience drop color
 	 */
-	XP_DROP_COLOR(1227, 6, 8);
+	EXPERIENCE_DROP_COLOR(1227, 6, 8);
 
 	/**
 	 * varbit id
