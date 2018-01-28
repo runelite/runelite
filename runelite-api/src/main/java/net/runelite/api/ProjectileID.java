@@ -27,6 +27,7 @@ package net.runelite.api;
 public class ProjectileID
 {
 	public static final int CANNONBALL = 53;
+	public static final int GRANITE_CANNONBALL = 1443;
 
 	public static final int LIZARDMAN_SHAMAN_AOE = 1293;
 	public static final int CRAZY_ARCHAEOLOGIST_AOE = 1260;
