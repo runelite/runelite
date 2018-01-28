@@ -149,6 +149,11 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	private void saveAmount()
+	{
+		config.amount(amount);
+	}
+
 	private void save()
 	{
 		config.amount(amount);
@@ -277,7 +282,9 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("slayer"))
+		if (!event.getGroup().equals("slayer") ||
+				!event.getKey().equals("enabled") ||
+				!event.getKey().equals("infobox"))
 		{
 			return;
 		}
@@ -292,7 +299,7 @@ public class SlayerPlugin extends Plugin
 	private void killedOne()
 	{
 		amount--;
-		save();
+		saveAmount();
 		if (!config.showInfobox())
 		{
 			return;
