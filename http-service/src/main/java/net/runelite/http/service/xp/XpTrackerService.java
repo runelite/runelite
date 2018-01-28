@@ -26,8 +26,10 @@ package net.runelite.http.service.xp;
 
 import java.io.IOException;
 import java.time.Instant;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.xp.XpData;
 import net.runelite.http.service.hiscore.HiscoreResultBuilder;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.xp.beans.PlayerEntity;
@@ -39,6 +41,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 @Service
+@Slf4j
 public class XpTrackerService
 {
 	@Autowired
@@ -60,6 +63,19 @@ public class XpTrackerService
 		try (Connection con = sql2o.open())
 		{
 			PlayerEntity playerEntity = findOrCreatePlayer(username);
+
+			XpEntity currentXp = findXpAtTime(username, Instant.now());
+			if (currentXp != null)
+			{
+				XpData hiscoreData = XpMapper.INSTANCE.hiscoreResultToXpData(hiscoreResult);
+				XpData existingData = XpMapper.INSTANCE.xpEntityToXpData(currentXp);
+
+				if (hiscoreData.equals(existingData))
+				{
+					log.debug("Hiscore for {} already up to date", username);
+					return;
+				}
+			}
 
 			con.createQuery("insert into xp (player,attack_xp,defence_xp,strength_xp,hitpoints_xp,ranged_xp,prayer_xp,magic_xp,cooking_xp,woodcutting_xp,"
 				+ "fletching_xp,fishing_xp,firemaking_xp,crafting_xp,smithing_xp,mining_xp,herblore_xp,agility_xp,thieving_xp,slayer_xp,farming_xp,"

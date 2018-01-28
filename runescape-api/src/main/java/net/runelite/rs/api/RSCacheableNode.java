@@ -24,13 +24,6 @@
  */
 package net.runelite.rs.api;
 
-import net.runelite.mapping.Import;
-
 public interface RSCacheableNode extends RSNode
 {
-	@Import("next")
-	RSCacheableNode getNext();
-
-	@Import("previous")
-	RSCacheableNode getPrevious();
 }

@@ -35,9 +35,13 @@ import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -53,9 +57,10 @@ public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
-
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
+	private Instant raidStartTime;
+	private boolean raidReady;
 	private Instant loginTime;
 	private boolean ready;
 
@@ -69,6 +74,33 @@ public class ReportButtonPlugin extends Plugin
 	ReportButtonConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ReportButtonConfig.class);
+	}
+
+	private int[] cacheVarb;
+
+	@Subscribe
+	public void onVarbitChange(VarbitChanged event)
+	{
+		if (client.getSetting(Varbits.IN_RAID) == 1)
+		{
+			raidReady = true;
+		}
+		else
+		{
+			raidReady = false;
+			raidStartTime = null;
+		}
+	}
+
+	@Subscribe
+	public void onGameMessage(ChatMessage event)
+	{
+		if (raidReady &&
+				event.getType() == ChatMessageType.CLANCHAT_INFO &&
+				event.getMessage().contains("The raid has begun!"))
+		{
+			raidStartTime = Instant.now();
+		}
 	}
 
 	@Subscribe
@@ -110,6 +142,12 @@ public class ReportButtonPlugin extends Plugin
 			return;
 		}
 
+		if (config.raidTimer() && raidStartTime != null)
+		{
+			reportButton.setText("Raid: " + getRaidTime());
+			return;
+		}
+
 		switch (config.time())
 		{
 			case UTC:
@@ -133,6 +171,17 @@ public class ReportButtonPlugin extends Plugin
 	public String getLocalTime()
 	{
 		return LocalTime.now().format(DATE_TIME_FORMAT);
+	}
+
+	public String getRaidTime()
+	{
+		if (raidStartTime != null)
+		{
+			Duration duration = Duration.between(raidStartTime, Instant.now());
+			LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
+			return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		}
+		return "Report";
 	}
 
 	public String getLoginTime()

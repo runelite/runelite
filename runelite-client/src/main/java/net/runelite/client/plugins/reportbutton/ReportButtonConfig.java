@@ -44,4 +44,14 @@ public interface ReportButtonConfig extends Config
 	{
 		return TimeStyle.LOGIN_TIME;
 	}
+
+	@ConfigItem(
+			keyName = "timeRaids",
+			name = "Display Raid Timer",
+			description = "Replaces report button text with raid time."
+	)
+	default boolean raidTimer()
+	{
+		return true;
+	}
 }

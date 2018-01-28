@@ -344,21 +344,10 @@ public abstract class RSClientMixin implements RSClient
 		List<Projectile> projectiles = new ArrayList<Projectile>();
 		RSDeque projectileDeque = this.getProjectilesDeque();
 		Node head = projectileDeque.getHead();
-		Node current = head;
 
-		while (current != null)
+		for (Node node = head.getNext(); node != head; node = node.getNext())
 		{
-			if (current instanceof Projectile)
-			{
-				projectiles.add((Projectile) current);
-			}
-
-			current = current.getNext();
-
-			if (current == head)
-			{
-				break;
-			}
+			projectiles.add((Projectile) node);
 		}
 
 		return projectiles;

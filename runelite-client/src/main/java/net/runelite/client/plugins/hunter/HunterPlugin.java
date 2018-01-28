@@ -49,7 +49,7 @@ import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.api.queries.PlayerQuery;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameObjectsChanged;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -107,7 +107,7 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectsChanged(GameObjectsChanged event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!config.enabled())
 		{
@@ -285,6 +285,7 @@ public class HunterPlugin extends Plugin
 		}
 
 		//Check if all traps are still there, and remove the ones that are not.
+		//TODO: use despawn events
 		Iterator<HunterTrap> it = traps.iterator();
 		while (it.hasNext())
 		{

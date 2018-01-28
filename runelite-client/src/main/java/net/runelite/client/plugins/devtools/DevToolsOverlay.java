@@ -350,7 +350,6 @@ public class DevToolsOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
 			}
 
-			long projectileLength = projectile.getLength().toMillis();
 			int projectileId = projectile.getId();
 			Actor projectileInteracting = projectile.getInteracting();
 
@@ -365,18 +364,12 @@ public class DevToolsOverlay extends Overlay
 				infoString += "Targeted (T: " + projectileInteracting.getName() + ")";
 			}
 
-			infoString += " (ID: " + projectileId + ") (L: " + projectileLength + "ms)";
+			infoString += " (ID: " + projectileId + ")";
 
 			if (projectileInteracting != null)
 			{
 				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
 			}
-			else
-			{
-				net.runelite.api.Point targetPoint = projectile.getTarget();
-				OverlayUtil.renderTilePointOverlay(graphics, client, targetPoint, infoString, Color.RED);
-			}
-
 		}
 	}
 
