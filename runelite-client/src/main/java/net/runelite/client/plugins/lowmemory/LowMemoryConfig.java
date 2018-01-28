@@ -38,7 +38,10 @@ public interface LowMemoryConfig extends Config
 	@ConfigItem(
 		keyName = "enabled",
 		name = "Enabled",
-		description = "Configures whether or not low memory mode is enabled"
+		description = "Configures whether or not low memory mode is enabled",
+		confirmationWarining = "Please re-log into RuneScape for this change to fully take effect.",
+		warnOnEnable = true,
+		warnOnDisable = true
 	)
 	default boolean enabled()
 	{
