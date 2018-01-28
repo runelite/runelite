@@ -187,7 +187,12 @@ public enum Varbits
 	/**
 	 * Experience drop color
 	 */
-	EXPERIENCE_DROP_COLOR(4695, 1227, 6, 8);
+	EXPERIENCE_DROP_COLOR(4695, 1227, 6, 8),
+
+	/**
+	 * Raids
+	 */
+	IN_RAID(5432, 1431, 31, 31);
 
 	/**
 	 * varbit id

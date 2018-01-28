@@ -36,6 +36,8 @@ import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
 import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
 import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
 import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
+import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
 import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
 import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
 import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
@@ -59,6 +61,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
@@ -115,6 +118,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showOverload())
 		{
 			removeGameTimer(OVERLOAD);
+			removeGameTimer(OVERLOAD_RAID);
 		}
 
 		if (!config.showCannon())
@@ -191,6 +195,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
 		}
+
+		if (!config.showPrayerEnhance())
+		{
+			removeGameTimer(PRAYER_ENHANCE);
+		}
 	}
 
 	@Subscribe
@@ -263,7 +272,15 @@ public class TimersPlugin extends Plugin
 
 		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
 		{
-			createGameTimer(OVERLOAD);
+			if (client.getSetting(Varbits.IN_RAID) == 1)
+			{
+				createGameTimer(OVERLOAD_RAID);
+			}
+			else
+			{
+				createGameTimer(OVERLOAD);
+			}
+
 		}
 
 		if (config.showCannon() && (event.getMessage().equals("You add the furnace.") || event.getMessage().contains("You repair your cannon, restoring it to working order.")))
@@ -324,6 +341,11 @@ public class TimersPlugin extends Plugin
 		if (config.showSanfew() && event.getMessage().contains("You drink some of your Sanfew Serum."))
 		{
 			createGameTimer(SANFEW);
+		}
+
+		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
+		{
+			createGameTimer(PRAYER_ENHANCE);
 		}
 	}
 
