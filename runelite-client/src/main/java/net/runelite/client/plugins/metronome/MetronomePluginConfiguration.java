@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.metronome;
 
-import net.runelite.api.SoundEffectID;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -60,35 +59,13 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-		keyName = "tickSound",
-		name = "Tick sound ID",
-		description = "Configures which sound to play on the specified tick",
-		position = 3
-	)
-	default int tickSound()
-	{
-		return SoundEffectID.GE_INCREMENT_PLOP;
-	}
-
-	@ConfigItem(
 		keyName = "enableTock",
 		name = "Enable tock (alternating) sound",
 		description = "Toggles whether to play two alternating sounds",
-		position = 4
+		position = 3
 	)
 	default boolean enableTock()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "tockSound",
-		name = "Tock sound ID",
-		description = "Configures which sound to alternate between",
-		position = 5
-	)
-	default int tockSound()
-	{
-		return SoundEffectID.GE_DECREMENT_PLOP;
 	}
 }
