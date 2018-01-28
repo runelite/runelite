@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,13 +41,13 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
@@ -60,8 +62,8 @@ public class GroundItemsOverlay extends Overlay
 	// The game won't send anything higher than this value to the plugin -
 	// so we replace any item quantity higher with "Lots" instead.
 	private static final int MAX_QUANTITY = 65535;
-	// The max distance between the player and the item.
-	private static final int MAX_RANGE = 2400;
+	// The max distance in tiles between the player and the item.
+	private static final int MAX_RANGE = 18;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Threshold for highlighting items as blue.
@@ -153,10 +155,17 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		int z = client.getPlane();
+		Point from = player.getRegionLocation();
 
-		for (int x = 0; x < REGION_SIZE; x++)
+		int lowerX = max(0, from.getX() - MAX_RANGE);
+		int lowerY = max(0, from.getY() - MAX_RANGE);
+
+		int upperX = min(from.getX() + MAX_RANGE, REGION_SIZE);
+		int upperY = min(from.getY() + MAX_RANGE, REGION_SIZE);
+
+		for (int x = lowerX; x <= upperX; ++x)
 		{
-			for (int y = 0; y < REGION_SIZE; y++)
+			for (int y = lowerY; y <= upperY; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 				if (tile == null)
@@ -166,11 +175,6 @@ public class GroundItemsOverlay extends Overlay
 
 				ItemLayer itemLayer = tile.getItemLayer();
 				if (itemLayer == null)
-				{
-					continue;
-				}
-
-				if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) >= MAX_RANGE)
 				{
 					continue;
 				}
