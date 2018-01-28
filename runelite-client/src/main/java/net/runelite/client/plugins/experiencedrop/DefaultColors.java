@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,40 +24,25 @@
  */
 package net.runelite.client.plugins.experiencedrop;
 
+import java.awt.Color;
 import lombok.Getter;
-import net.runelite.api.Prayer;
-import static net.runelite.api.Prayer.*;
-import static net.runelite.client.plugins.experiencedrop.PrayerType.MAGIC;
-import static net.runelite.client.plugins.experiencedrop.PrayerType.MELEE;
-import static net.runelite.client.plugins.experiencedrop.PrayerType.RANGE;
 
-enum XpPrayer
+enum DefaultColors
 {
-	XP_BURST_OF_STRENGTH(BURST_OF_STRENGTH, MELEE),
-	XP_CLARITY_OF_THOUGHT(CLARITY_OF_THOUGHT, MELEE),
-	XP_SHARP_EYE(SHARP_EYE, RANGE),
-	XP_MYSTIC_WILL(MYSTIC_WILL, MAGIC),
-	XP_SUPERHUMAN_STRENGTH(SUPERHUMAN_STRENGTH, MELEE),
-	XP_IMPROVED_REFLEXES(IMPROVED_REFLEXES, MELEE),
-	XP_HAWK_EYE(HAWK_EYE, RANGE),
-	XP_MYSTIC_LORE(MYSTIC_LORE, MAGIC),
-	XP_ULTIMATE_STRENGTH(ULTIMATE_STRENGTH, MELEE),
-	XP_INCREDIBLE_REFLEXES(INCREDIBLE_REFLEXES, MELEE),
-	XP_EAGLE_EYE(EAGLE_EYE, RANGE),
-	XP_MYSTIC_MIGHT(MYSTIC_MIGHT, MAGIC),
-	XP_CHIVALRY(CHIVALRY, MELEE),
-	XP_PIETY(PIETY, MELEE),
-	XP_RIGOUR(RIGOUR, RANGE),
-	XP_AUGURY(AUGURY, MAGIC);
+	WHITE(new Color(0xFF, 0xFF, 0xFF)),
+	LILAC(new Color(0xC8, 0xC8, 0xFF)),
+	CYAN(new Color(0x00, 0xFF, 0xFF)),
+	JADE(new Color(0xC8, 0xFF, 0xC8)),
+	LIME(new Color(0x64, 0xFF, 0x64)),
+	YELLOW(new Color(0xFF, 0xFF, 0x40)),
+	ORANGE(new Color(0xFF, 0x98, 0x1F)),
+	PINK(new Color(0xFF, 0xC8, 0xC8));
 
 	@Getter
-	private final Prayer prayer;
-	@Getter
-	private final PrayerType type;
+	private Color color;
 
-	XpPrayer(Prayer prayer, PrayerType type)
+	DefaultColors(Color color)
 	{
-		this.prayer = prayer;
-		this.type = type;
+		this.color = color;
 	}
 }
