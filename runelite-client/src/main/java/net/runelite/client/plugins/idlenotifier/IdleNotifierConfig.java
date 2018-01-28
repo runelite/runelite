@@ -59,13 +59,13 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "focused",
-		name = "Alert When Focused",
+		name = "Notify When Focused",
 		description = "Toggles idle notifications for when the client is focused",
 		position = 3
 	)
 	default boolean alertWhenFocused()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
