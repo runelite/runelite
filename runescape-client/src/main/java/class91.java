@@ -171,7 +171,8 @@ public class class91 {
       signature = "(ILhg;I)Lcv;",
       garbageValue = "686350642"
    )
-   static Script method1752(int var0, class230 var1) {
+   @Export("getScriptByFile")
+   static Script getScriptByFile(int var0, class230 var1) {
       Script var2 = (Script)Script.field1435.get((long)(var0 << 16));
       if(var2 != null) {
          return var2;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSCacheableNode extends RSNode
+public interface RSIndexData extends RSIndexDataBase
 {
-	@Import("next")
-	RSCacheableNode getNext();
-
-	@Import("previous")
-	RSCacheableNode getPrevious();
+	@Import("index")
+	int getIndex();
 }

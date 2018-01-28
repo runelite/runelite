@@ -307,7 +307,8 @@ public class class64 {
       signature = "(ILcv;ZB)I",
       garbageValue = "1"
    )
-   static int method1102(int var0, Script var1, boolean var2) {
+   @Export("execute6500")
+   static int execute6500(int var0, Script var1, boolean var2) {
       if(var0 == 6500) {
          class82.intStack[++class82.intStackSize - 1] = class34.loadWorlds()?1:0;
          return 1;

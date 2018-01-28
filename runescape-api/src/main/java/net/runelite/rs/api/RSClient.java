@@ -436,4 +436,28 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Construct
 	RSItem createItem();
+
+	@Import("intStackSize")
+	@Override
+	int getIntStackSize();
+
+	@Import("intStackSize")
+	@Override
+	void setIntStackSize(int stackSize);
+
+	@Import("intStack")
+	@Override
+	int[] getIntStack();
+
+	@Import("scriptStringStackSize")
+	@Override
+	int getStringStackSize();
+
+	@Import("scriptStringStackSize")
+	@Override
+	void setStringStackSize(int stackSize);
+
+	@Import("scriptStringStack")
+	@Override
+	String[] getStringStack();
 }

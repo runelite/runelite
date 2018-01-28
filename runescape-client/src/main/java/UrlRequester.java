@@ -157,7 +157,8 @@ public class UrlRequester implements Runnable {
       signature = "(II)Lcv;",
       garbageValue = "-1313291930"
    )
-   static Script method2965(int var0) {
+   @Export("getScript")
+   static Script getScript(int var0) {
       Script var1 = (Script)Script.field1435.get((long)var0);
       if(var1 != null) {
          return var1;
