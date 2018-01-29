@@ -26,13 +26,15 @@ grammar rs2asm;
 
 prog: (header NEWLINE)* (line NEWLINE)+ ;
 
-header: int_stack_count | string_stack_count | int_var_count | string_var_count ;
+header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
 
+id: '.id ' id_value ;
 int_stack_count: '.int_stack_count ' int_stack_value ;
 string_stack_count: '.string_stack_count ' string_stack_value ;
 int_var_count: '.int_var_count ' int_var_value ;
 string_var_count: '.string_var_count ' string_var_value ;
 
+id_value: INT ;
 int_stack_value: INT ;
 string_stack_value: INT ;
 int_var_value: INT ;
@@ -55,9 +57,10 @@ switch_lookup: switch_key ':' switch_value ;
 switch_key: INT ;
 switch_value: 'LABEL' INT ;
 
-NEWLINE: '\n'+ ;
+NEWLINE: ( '\r' | '\n' )+ ;
 INT: '-'? [0-9]+ ;
 QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
 INSTRUCTION: [a-z0-9_]+ ;
+COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
 
 WS: (' ' | '\t')+ -> channel(HIDDEN) ;

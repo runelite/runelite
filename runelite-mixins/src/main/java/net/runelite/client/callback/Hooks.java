@@ -25,6 +25,8 @@
 package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
+import net.runelite.api.Script;
+import org.slf4j.Logger;
 
 /**
  * Dummy class to make the mixins to compile.
@@ -33,5 +35,12 @@ import com.google.common.eventbus.EventBus;
  */
 public class Hooks
 {
+	public static Logger log;
+
 	public static EventBus eventBus;
+
+	public static int runeliteExecute(int opcode, Script script, boolean isOne)
+	{
+		throw new RuntimeException();
+	}
 }

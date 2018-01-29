@@ -27,6 +27,7 @@ package net.runelite.cache.definitions.savers;
 import java.io.IOException;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.loaders.ScriptLoader;
+import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.assembler.Assembler;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -42,7 +43,9 @@ public class ScriptSaverTest
 	@Test
 	public void testSave() throws IOException
 	{
-		ScriptDefinition script = new Assembler().assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE));
+		Instructions instructions = new Instructions();
+		instructions.init();
+		ScriptDefinition script = new Assembler(instructions).assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE));
 		byte[] saved = new ScriptSaver().save(script);
 		ScriptDefinition loadedScripot = new ScriptLoader().load(42, saved);
 		assertEquals(script, loadedScripot);

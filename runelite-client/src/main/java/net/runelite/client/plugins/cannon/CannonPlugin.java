@@ -39,6 +39,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
+import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectsChanged;
 import net.runelite.api.events.ProjectileMoved;
@@ -113,7 +114,7 @@ public class CannonPlugin extends Plugin
 	{
 		Projectile projectile = event.getProjectile();
 
-		if (projectile.getId() == CANNONBALL && myCannon != null)
+		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && myCannon != null)
 		{
 			net.runelite.api.Point projectileLoc = Perspective.localToWorld(client, new net.runelite.api.Point(projectile.getX1(), projectile.getY1()));
 

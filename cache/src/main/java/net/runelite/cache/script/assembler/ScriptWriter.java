@@ -39,8 +39,10 @@ public class ScriptWriter extends rs2asmBaseListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
 
+	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
 
+	private int id;
 	private int pos;
 	private int intStackCount;
 	private int stringStackCount;
@@ -51,9 +53,17 @@ public class ScriptWriter extends rs2asmBaseListener
 	private List<String> sops = new ArrayList<>();
 	private List<LookupSwitch> switches = new ArrayList<>();
 
-	public ScriptWriter(LabelVisitor labelVisitor)
+	public ScriptWriter(Instructions instructions, LabelVisitor labelVisitor)
 	{
+		this.instructions = instructions;
 		this.labelVisitor = labelVisitor;
+	}
+
+	@Override
+	public void enterId_value(rs2asmParser.Id_valueContext ctx)
+	{
+		int value = Integer.parseInt(ctx.getText());
+		id = value;
 	}
 
 	@Override
@@ -94,7 +104,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	public void enterName_string(rs2asmParser.Name_stringContext ctx)
 	{
 		String text = ctx.getText();
-		Instruction i = Instructions.find(text);
+		Instruction i = instructions.find(text);
 		if (i == null)
 		{
 			logger.warn("Unknown instruction {}", text);
@@ -207,6 +217,7 @@ public class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		ScriptDefinition script = new ScriptDefinition();
+		script.setId(id);
 		script.setIntStackCount(intStackCount);
 		script.setStringStackCount(stringStackCount);
 		script.setLocalIntCount(localIntCount);

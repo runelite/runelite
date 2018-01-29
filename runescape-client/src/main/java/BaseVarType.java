@@ -84,13 +84,13 @@ public enum BaseVarType implements Enumerated {
          var9 = var6.field3384;
          var10 = var6.field3401;
          var11 = class2.method2(var9, var8);
-         Script var12 = class91.method1752(var11, var8);
+         Script var12 = class91.getScriptByFile(var11, var8);
          Script var7;
          if(var12 != null) {
             var7 = var12;
          } else {
             var13 = (var10 + 40000 << 8) + var8.field2902;
-            var12 = class91.method1752(var13, var8);
+            var12 = class91.getScriptByFile(var13, var8);
             if(var12 != null) {
                var7 = var12;
             } else {
@@ -101,7 +101,7 @@ public enum BaseVarType implements Enumerated {
          var3 = var7;
       } else {
          var27 = ((Integer)var2[0]).intValue();
-         var3 = UrlRequester.method2965(var27);
+         var3 = UrlRequester.getScript(var27);
       }
 
       if(var3 != null) {
@@ -312,7 +312,7 @@ public enum BaseVarType implements Enumerated {
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var13 = var52[var27];
-                                                                                                                                                               Script var76 = UrlRequester.method2965(var13);
+                                                                                                                                                               Script var76 = UrlRequester.getScript(var13);
                                                                                                                                                                int[] var55 = new int[var76.localIntCount];
                                                                                                                                                                var63 = new String[var76.localStringCount];
 
@@ -1955,7 +1955,7 @@ public enum BaseVarType implements Enumerated {
 
                                                                                                                   var14 = var35;
                                                                                                                } else if(var9 < 6600) {
-                                                                                                                  var14 = class64.method1102(var9, var3, var61);
+                                                                                                                  var14 = class64.execute6500(var9, var3, var61);
                                                                                                                } else if(var9 < 6700) {
                                                                                                                   var14 = class60.method1036(var9, var3, var61);
                                                                                                                } else {

@@ -239,7 +239,7 @@ public abstract class IndexDataBase {
    )
    @Export("getConfigData")
    public byte[] getConfigData(int var1, int var2) {
-      return this.getConfigData(var1, var2, (int[])null);
+      return this.getConfigDataKeys(var1, var2, (int[])null);
    }
 
    @ObfuscatedName("r")
@@ -247,8 +247,8 @@ public abstract class IndexDataBase {
       signature = "(II[II)[B",
       garbageValue = "-1857563480"
    )
-   @Export("getConfigData")
-   public byte[] getConfigData(int var1, int var2, int[] var3) {
+   @Export("getConfigDataKeys")
+   public byte[] getConfigDataKeys(int var1, int var2, int[] var3) {
       if(var1 >= 0 && var1 < this.childs.length && this.childs[var1] != null && var2 >= 0 && var2 < this.childs[var1].length) {
          if(this.childs[var1][var2] == null) {
             boolean var4 = this.buildRecords(var1, var3);

@@ -31,7 +31,7 @@ public class InstructionsTest
 	@Test
 	public void testInit()
 	{
-		Instructions.init();
+		new Instructions().init();
 	}
 
 }

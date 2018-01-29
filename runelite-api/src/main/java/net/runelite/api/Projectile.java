@@ -24,17 +24,11 @@
  */
 package net.runelite.api;
 
-import java.time.Duration;
-
 public interface Projectile extends Renderable
 {
 	int getId();
 
 	Actor getInteracting();
-
-	Point getTarget();
-
-	int getTargetZ();
 
 	int getX1();
 
@@ -47,12 +41,6 @@ public interface Projectile extends Renderable
 	int getEndHeight();
 
 	int getStartMovementCycle();
-
-	int getSpawnCycle();
-
-	int getCycleLength();
-
-	Duration getLength();
 
 	int getEndCycle();
 
