@@ -86,7 +86,7 @@ public class DiaryProgressPlugin extends Plugin
 					}
 				}
 
-				progress.append("<col=ffff00> ").append(entry.getName());
+				progress.append("</col> ").append(entry.getName());
 			}
 			else
 			{
