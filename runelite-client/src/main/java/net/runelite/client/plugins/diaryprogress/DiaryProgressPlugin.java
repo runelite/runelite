@@ -75,7 +75,8 @@ public class DiaryProgressPlugin extends Plugin
 			{
 				for (Varbits varbits : entry.getVarbits())
 				{
-					if (client.getSetting(varbits) == 1)
+					int value = client.getSetting(varbits);
+					if ((entry != DiaryEntry.KARAMJA && value == 1) || value == 2)
 					{
 						progress.append(STAGE_FINISHED_STRING);
 					}
