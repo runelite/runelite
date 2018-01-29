@@ -32,10 +32,6 @@ public interface Projectile extends Renderable
 
 	Actor getInteracting();
 
-	Point getTarget();
-
-	int getTargetZ();
-
 	int getX1();
 
 	int getY1();
@@ -47,12 +43,6 @@ public interface Projectile extends Renderable
 	int getEndHeight();
 
 	int getStartMovementCycle();
-
-	int getSpawnCycle();
-
-	int getCycleLength();
-
-	Duration getLength();
 
 	int getEndCycle();
 
