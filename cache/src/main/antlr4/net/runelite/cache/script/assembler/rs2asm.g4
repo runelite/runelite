@@ -57,7 +57,7 @@ switch_lookup: switch_key ':' switch_value ;
 switch_key: INT ;
 switch_value: 'LABEL' INT ;
 
-NEWLINE: '\n'+ ;
+NEWLINE: ( '\r' | '\n' )+ ;
 INT: '-'? [0-9]+ ;
 QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
 INSTRUCTION: [a-z0-9_]+ ;
