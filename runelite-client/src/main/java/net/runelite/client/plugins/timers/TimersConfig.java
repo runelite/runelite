@@ -214,4 +214,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showPrayerEnhance",
+		name = "Prayer enhance timer",
+		description = "Configures whether prayer enhance timer is displayed"
+	)
+	default boolean showPrayerEnhance()
+	{
+		return true;
+	}
 }
