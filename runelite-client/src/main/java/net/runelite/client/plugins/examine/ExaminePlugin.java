@@ -310,10 +310,8 @@ public class ExaminePlugin extends Plugin
 		}
 
 		int itemCompositionPrice = itemComposition.getPrice();
-		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice() * quantity;
-		final int alchPrice = itemCompositionPrice <= 0
-			? 0
-			: Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT) * quantity;
+		final int gePrice = itemPrice == null ? 0 : itemPrice.getPrice();
+		final int alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT);
 
 		if (gePrice > 0 || alchPrice > 0)
 		{
@@ -340,7 +338,18 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", gePrice));
+					.append(String.format("%,d", gePrice * quantity));
+			}
+
+			if (quantity > 1)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(" (")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(gePrice))
+					.append(ChatColorType.NORMAL)
+					.append("ea)");
 			}
 
 			if (alchPrice > 0)
@@ -349,7 +358,18 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(String.format("%,d", alchPrice));
+					.append(String.format("%,d", alchPrice * quantity));
+			}
+
+			if (quantity > 1)
+			{
+				message
+					.append(ChatColorType.NORMAL)
+					.append(" (")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(alchPrice))
+					.append(ChatColorType.NORMAL)
+					.append("ea)");
 			}
 
 			chatMessageManager.queue(ChatMessageType.EXAMINE_ITEM, message.build());
