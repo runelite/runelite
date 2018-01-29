@@ -24,8 +24,6 @@
  */
 package net.runelite.api;
 
-import java.time.Duration;
-
 public interface Projectile extends Renderable
 {
 	int getId();
