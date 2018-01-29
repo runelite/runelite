@@ -39,7 +39,6 @@ public class RaidsPlugin extends Plugin
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(RaidsOverlay.class);
 	}
 
 	@Provides
