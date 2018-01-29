@@ -59,6 +59,7 @@ public class WidgetID
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
+	public static final int RAIDS_GROUP_ID = 513;
 
 	static class WorldMap
 	{
@@ -263,5 +264,10 @@ public class WidgetID
 	static class QuestCompleted
 	{
 		static final int NAME_TEXT = 2;
+	}
+
+	static class Raids
+	{
+		static final int POINTS_INFOBOX = 3;
 	}
 }
