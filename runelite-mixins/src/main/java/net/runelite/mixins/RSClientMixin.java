@@ -33,7 +33,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -54,12 +53,8 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.callback.Hooks.eventBus;
-import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSDeque;
-import net.runelite.rs.api.RSHashTable;
-import net.runelite.rs.api.RSIndexedSprite;
-import net.runelite.rs.api.RSItemContainer;
-import net.runelite.rs.api.RSWidget;
+
+import net.runelite.rs.api.*;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
@@ -343,22 +338,10 @@ public abstract class RSClientMixin implements RSClient
 	{
 		List<Projectile> projectiles = new ArrayList<Projectile>();
 		RSDeque projectileDeque = this.getProjectilesDeque();
-		Node head = projectileDeque.getHead();
-		Node current = head;
-
-		while (current != null)
+		RSNode head = projectileDeque.getHead();
+		for (RSNode node = head.getNext(); node != head; node = node.getNext())
 		{
-			if (current instanceof Projectile)
-			{
-				projectiles.add((Projectile) current);
-			}
-
-			current = current.getNext();
-
-			if (current == head)
-			{
-				break;
-			}
+			projectiles.add((Projectile) node);
 		}
 
 		return projectiles;
