@@ -24,7 +24,6 @@
  */
 package net.runelite.mixins;
 
-import java.time.Duration;
 import net.runelite.api.Actor;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;

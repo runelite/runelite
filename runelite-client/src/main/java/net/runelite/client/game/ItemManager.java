@@ -142,6 +142,12 @@ public class ItemManager
 		}
 
 		itemPrice = itemClient.lookupItemPrice(itemId);
+		if (itemPrice == null)
+		{
+			itemPrices.put(itemId, NONE);
+			return null;
+		}
+
 		itemPrices.put(itemId, itemPrice);
 		return itemPrice;
 	}

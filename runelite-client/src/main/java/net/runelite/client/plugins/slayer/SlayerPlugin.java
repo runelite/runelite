@@ -109,7 +109,7 @@ public class SlayerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
+		removeCounter();
 	}
 
 	@Override
@@ -282,21 +282,33 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
-		if (config.enabled() && config.showInfobox() && counter != null)
+		boolean enabled = config.enabled() && config.showInfobox();
+		if (enabled && counter == null)
 		{
-			infoBoxManager.addInfoBox(counter);
+			addCounter();
+		}
+		else if (!enabled && counter != null)
+		{
+			removeCounter();
 		}
 	}
 
 	private void killedOne()
 	{
+		if (amount == 0)
+		{
+			return;
+		}
+
 		amount--;
-		save();
+		config.amount(amount); // save changed value
+
 		if (!config.showInfobox())
 		{
 			return;
 		}
+
+		// update counter
 		counter.setText(String.valueOf(amount));
 	}
 
@@ -306,13 +318,18 @@ public class SlayerPlugin extends Plugin
 		amount = amt;
 		save();
 
-		infoBoxManager.removeIf(t -> t instanceof TaskCounter);
+		removeCounter();
 
 		if (taskName.isEmpty() || !config.showInfobox())
 		{
 			return;
 		}
 
+		addCounter();
+	}
+
+	private void addCounter()
+	{
 		Task task = Task.getTask(taskName);
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task == null)
@@ -330,6 +347,12 @@ public class SlayerPlugin extends Plugin
 			capsString(taskName), points, streak));
 
 		infoBoxManager.addInfoBox(counter);
+	}
+
+	private void removeCounter()
+	{
+		infoBoxManager.removeInfoBox(counter);
+		counter = null;
 	}
 
 	//Getters
