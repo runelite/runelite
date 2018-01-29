@@ -211,7 +211,7 @@ public class ClientUI extends JFrame
 			final Canvas c = ((Client) client).getCanvas();
 			c.requestFocusInWindow();
 		}
-		else
+		else if (client != null)
 		{
 			client.requestFocusInWindow();
 		}
