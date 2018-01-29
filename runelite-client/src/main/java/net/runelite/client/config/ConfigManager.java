@@ -270,14 +270,18 @@ public class ConfigManager
 
 		}
 
-		try
+		Runnable task = () ->
 		{
-			saveToFile();
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to save configuration file", ex);
-		}
+			try
+			{
+				saveToFile();
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to save configuration file", ex);
+			}
+		};
+		executor.execute(task);
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
@@ -306,14 +310,18 @@ public class ConfigManager
 			}
 		}
 
-		try
+		Runnable task = () ->
 		{
-			saveToFile();
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to save configuration file", ex);
-		}
+			try
+			{
+				saveToFile();
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to save configuration file", ex);
+			}
+		};
+		executor.execute(task);
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
