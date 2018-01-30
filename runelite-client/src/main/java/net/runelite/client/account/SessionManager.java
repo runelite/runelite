@@ -127,7 +127,7 @@ public class SessionManager
 	public void openSession(AccountSession session)
 	{
 		// If the ws session already exists, don't need to do anything
-		if (wsclient == null || !wsclient.getSession().equals(session))
+		if (wsclient == null || !wsclient.checkSession(session))
 		{
 			if (wsclient != null)
 			{
