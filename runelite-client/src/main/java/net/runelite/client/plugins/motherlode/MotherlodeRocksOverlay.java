@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+*  Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,25 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
-import net.runelite.api.Region;
-import net.runelite.api.Tile;
+import net.runelite.api.Point;
 import net.runelite.api.WallObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.util.Arrays;
-import java.util.List;
-
-import static net.runelite.api.ObjectID.ORE_VEIN_26661;
-import static net.runelite.api.ObjectID.ORE_VEIN_26662;
-import static net.runelite.api.ObjectID.ORE_VEIN_26663;
-import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import static net.runelite.api.ObjectID.ROCKFALL;
-import static net.runelite.api.ObjectID.ROCKFALL_26680;
-
 class MotherlodeRocksOverlay extends Overlay
 {
-	private static final int REGION_SIZE = 104;
 	private static final int MAX_DISTANCE = 2350;
-
-	private static final List<Integer> MINE_SPOTS = Arrays.asList(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
-
-	private static final List<Integer> ROCK_OBSTACLES = Arrays.asList(ROCKFALL, ROCKFALL_26680);
 
 	private final Client client;
 	private final MotherlodePlugin plugin;
@@ -76,7 +60,7 @@ class MotherlodeRocksOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics, Point parent)
+	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
 		if (!config.enabled() || !config.showRocks())
 		{
@@ -85,7 +69,6 @@ class MotherlodeRocksOverlay extends Overlay
 
 		Player local = client.getLocalPlayer();
 
-		//Render mining spot
 		renderTiles(graphics, local);
 
 		return null;
@@ -93,57 +76,43 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderTiles(Graphics2D graphics, Player local)
 	{
-		Region region = client.getRegion();
-		Tile[][][] tiles = region.getTiles();
-
-		int z = client.getPlane();
-
-		for (int x = 0; x < REGION_SIZE; ++x)
+		Point localLocation = local.getLocalLocation();
+		for (WallObject vein : plugin.getVeins())
 		{
-			for (int y = 0; y < REGION_SIZE; ++y)
+			Point location = vein.getLocalLocation();
+			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
-				Tile tile = tiles[z][x][y];
+				renderVein(graphics, vein);
+			}
+		}
 
-				if (tile == null)
-				{
-					continue;
-				}
-				if (local.getLocalLocation().distanceTo(tile.getLocalLocation()) <= MAX_DISTANCE)
-				{
-					renderMine(graphics, tile);
-				}
+		for (GameObject rock : plugin.getRocks())
+		{
+			Point location = rock.getLocalLocation();
+			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+			{
+				renderRock(graphics, rock);
 			}
 		}
 	}
 
-	private void renderMine(Graphics2D graphics, Tile tile)
+	private void renderVein(Graphics2D graphics, WallObject vein)
 	{
-		//Draw the Pay-dirt spots
-		WallObject wallObject = tile.getWallObject();
-		if (wallObject != null && MINE_SPOTS.contains(wallObject.getId()))
-		{
-			net.runelite.api.Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, wallObject.getLocalLocation(), plugin.getMineIcon(), 150);
+		Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, vein.getLocalLocation(), plugin.getMineIcon(), 150);
 
-			if (canvasLoc != null)
-			{
-				graphics.drawImage(plugin.getMineIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
-				return;
-			}
+		if (canvasLoc != null)
+		{
+			graphics.drawImage(plugin.getMineIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
 		}
+	}
 
-		//Draw the rock obstacles
-		GameObject[] gameObjects = tile.getGameObjects();
-		for (GameObject gameObject : gameObjects)
+	private void renderRock(Graphics2D graphics, GameObject rock)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+
+		if (poly != null)
 		{
-			if (gameObject != null && ROCK_OBSTACLES.contains(gameObject.getId()))
-			{
-				Polygon poly = Perspective.getCanvasTilePoly(client, gameObject.getLocalLocation());
-
-				if (poly != null)
-				{
-					OverlayUtil.renderPolygon(graphics, poly, Color.red);
-				}
-			}
+			OverlayUtil.renderPolygon(graphics, poly, Color.red);
 		}
 	}
 }
