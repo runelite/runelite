@@ -68,10 +68,8 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfig() throws IOException
 	{
-		AccountSession accountSession = new AccountSession();
-		accountSession.setUuid(UUID.randomUUID());
+		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
-		accountSession.setCreated(Instant.now());
 
 		manager.setConfiguration("test", "key", "moo");
 
@@ -82,10 +80,8 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfigDefault() throws IOException
 	{
-		AccountSession accountSession = new AccountSession();
-		accountSession.setUuid(UUID.randomUUID());
+		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
-		accountSession.setCreated(Instant.now());
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		Assert.assertEquals("default", conf.key());
@@ -94,10 +90,8 @@ public class ConfigManagerTest
 	@Test
 	public void testSetConfig() throws IOException
 	{
-		AccountSession accountSession = new AccountSession();
-		accountSession.setUuid(UUID.randomUUID());
+		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
-		accountSession.setCreated(Instant.now());
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		conf.key("new value");
@@ -108,10 +102,8 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfigDescriptor() throws IOException
 	{
-		AccountSession accountSession = new AccountSession();
-		accountSession.setUuid(UUID.randomUUID());
+		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
 		accountSession.setUsername("test");
-		accountSession.setCreated(Instant.now());
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		ConfigDescriptor descriptor = manager.getConfigDescriptor(conf);
