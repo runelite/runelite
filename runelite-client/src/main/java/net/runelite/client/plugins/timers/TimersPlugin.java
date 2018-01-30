@@ -63,6 +63,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -76,6 +77,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class TimersPlugin extends Plugin
 {
+	private int lastRaidVarb;
+
 	@Inject
 	Client client;
 
@@ -95,6 +98,18 @@ public class TimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
+	}
+
+	@Subscribe
+	public void onVarbitChange(VarbitChanged event)
+	{
+		int raidVarb = client.getSetting(Varbits.IN_RAID);
+		if (lastRaidVarb != raidVarb)
+		{
+			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(PRAYER_ENHANCE);
+			lastRaidVarb = raidVarb;
+		}
 	}
 
 	@Subscribe
