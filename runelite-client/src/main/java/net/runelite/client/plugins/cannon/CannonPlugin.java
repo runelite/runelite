@@ -41,7 +41,7 @@ import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectsChanged;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -94,7 +94,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectsChanged(GameObjectsChanged event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 
