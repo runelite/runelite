@@ -1,11 +1,9 @@
 package net.runelite.client.plugins.raids;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
