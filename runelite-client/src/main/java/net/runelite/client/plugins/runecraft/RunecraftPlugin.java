@@ -29,12 +29,22 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -46,11 +56,17 @@ public class RunecraftPlugin extends Plugin
 {
 	private static Pattern bindNeckString = Pattern.compile("You have ([0-9]+) charges left before your Binding necklace disintegrates.");
 
-	@Inject
-	RunecraftOverlay overlay;
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
 	@Inject
-	BindNeckOverlay bindNeckOverlay;
+	private RunecraftOverlay overlay;
+
+	@Inject
+	private BindNeckOverlay bindNeckOverlay;
+
+	@Inject
+	private AbyssOverlay abyssOverlay;
 
 	@Override
 	public void configure(Binder binder)
@@ -67,7 +83,19 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, bindNeckOverlay);
+		return Arrays.asList(overlay, bindNeckOverlay, abyssOverlay);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		abyssOverlay.updateConfig();
+	}
+
+	@Subscribe
+	public void updateConfig(ConfigChanged event)
+	{
+		abyssOverlay.updateConfig();
 	}
 
 	@Subscribe
@@ -103,6 +131,32 @@ public class RunecraftPlugin extends Plugin
 		{
 			//set it to 17 because this message is triggered first before the above chat event
 			bindNeckOverlay.bindingCharges = 17;
+		}
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawn(DecorativeObjectSpawned event)
+	{
+		DecorativeObject decorativeObject = event.getDecorativeObject();
+		if (AbyssRifts.getRift(decorativeObject.getId()) != null)
+		{
+			abyssObjects.add(decorativeObject);
+		}
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		DecorativeObject decorativeObject = event.getDecorativeObject();
+		abyssObjects.remove(decorativeObject);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			abyssObjects.clear();
 		}
 	}
 }
