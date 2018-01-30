@@ -56,6 +56,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -312,6 +313,14 @@ public class ScreenshotPlugin extends Plugin
 
 	private void takeScreenshot(String fileName, boolean displayDate)
 	{
+		boolean atLogin = client.getGameState() == GameState.LOGIN_SCREEN;
+		if(config.protectLogin() && atLogin)
+		{
+			// Prevent the screenshot from being captured
+			log.info("Login screenshot prevented");
+			return;
+		}
+
 		overlayRenderer.requestScreenshot(image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
