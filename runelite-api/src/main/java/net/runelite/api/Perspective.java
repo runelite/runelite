@@ -405,6 +405,30 @@ public class Perspective
 	}
 
 	/**
+	 * Calculates image position and centers depending on image size.
+	 *
+	 * @param client
+	 * @param localLocation local location of the tile
+	 * @param image image for size measurement
+	 * @return a {@link Point} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Point getMiniMapImageLocation(Client client, Point localLocation, BufferedImage image)
+	{
+		Point p = Perspective.worldToMiniMap(client, localLocation.getX(), localLocation.getY());
+
+		if (p == null)
+		{
+			return null;
+		}
+
+		int xOffset = p.getX() - image.getWidth() / 2;
+		int yOffset = p.getY() - image.getHeight() / 2;
+
+		return new Point(xOffset, yOffset);
+	}
+
+	/**
 	 * Calculates sprite position and centers depending on sprite size.
 	 *
 	 * @param client
