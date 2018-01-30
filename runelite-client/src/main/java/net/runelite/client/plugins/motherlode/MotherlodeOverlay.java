@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,21 +24,15 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import javax.inject.Inject;
+import com.google.common.collect.Sets;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-
+import java.util.Set;
+import javax.inject.Inject;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
@@ -49,11 +43,14 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class MotherlodeOverlay extends Overlay
 {
-	private static final List<Integer> MINING_ANIMATION_IDS = Arrays.asList
-	(
+	private static final Set<Integer> MINING_ANIMATION_IDS = Sets.newHashSet(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
 		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
 		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
@@ -111,16 +108,15 @@ class MotherlodeOverlay extends Overlay
 		}
 
 		panelComponent.getLines().add(new PanelComponent.Line(
-				"Pay-dirt mined:",
-				Integer.toString(session.getTotalMined())
+			"Pay-dirt mined:",
+			Integer.toString(session.getTotalMined())
 		));
 
-
 		panelComponent.getLines().add(new PanelComponent.Line(
-				"Pay-dirt/hr:",
-				session.getRecentMined() > 2
-						? Integer.toString(session.getPerHour())
-						: ""
+			"Pay-dirt/hr:",
+			session.getRecentMined() > 2
+			? Integer.toString(session.getPerHour())
+			: ""
 		));
 
 		return panelComponent.render(graphics, parent);
