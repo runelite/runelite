@@ -26,20 +26,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class RaidsPlugin extends Plugin
 {
-	private final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
-	private final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
+	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
+	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
+	private static final DecimalFormat format = new DecimalFormat("###.##");
 
 	@Inject
-	ChatMessageManager chatMessageManager;
+	private ChatMessageManager chatMessageManager;
+
 	@Inject
-	Client client;
+	private Client client;
+
 	@Inject
 	RaidsConfig config;
-
-	@Override
-	public void configure(Binder binder)
-	{
-	}
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -50,7 +48,7 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pointsMessage())
+		if (config.enabled() && config.pointsMessage())
 		{
 			cacheColors();
 		}
@@ -69,14 +67,10 @@ public class RaidsPlugin extends Plugin
 		{
 			Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
 			String[] raidPoints = raidsWidget.getText().split("<br>");
-			int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS]),
-				personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS]);
+			int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS]);
+			int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS]);
 
 			double percentage = personalPoints / (totalPoints / 100.0);
-
-			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-			symbols.setNaN("0");
-			DecimalFormat df = new DecimalFormat("###.##", symbols);
 
 			String message = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
@@ -90,7 +84,7 @@ public class RaidsPlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" (")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(df.format(percentage))
+					.append(format.format(percentage))
 					.append(ChatColorType.NORMAL)
 					.append("%)")
 					.build();
@@ -103,7 +97,7 @@ public class RaidsPlugin extends Plugin
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, true), ChatMessageType.CLANCHAT_INFO)
+				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
 				.refreshAll();
 	}
