@@ -313,8 +313,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private void takeScreenshot(String fileName, boolean displayDate)
 	{
-		boolean atLogin = client.getGameState() == GameState.LOGIN_SCREEN;
-		if(config.protectLogin() && atLogin)
+		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// Prevent the screenshot from being captured
 			log.info("Login screenshot prevented");

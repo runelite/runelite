@@ -78,12 +78,4 @@ public interface ScreenshotConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-			keyName = "protectLogin",
-			name = "Prevent Login Screenshots",
-			description = "Configures whether or not the the login screen can be captured",
-			position = 0
-	)
-	default boolean protectLogin() { return true; }
 }
