@@ -26,7 +26,7 @@ public class RaidsPlugin extends Plugin
 {
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
-	private static final DecimalFormat format = new DecimalFormat("###.##");
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -35,7 +35,7 @@ public class RaidsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	RaidsConfig config;
+	private RaidsConfig config;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -82,7 +82,7 @@ public class RaidsPlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" (")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(format.format(percentage))
+					.append(DECIMAL_FORMAT.format(percentage))
 					.append(ChatColorType.NORMAL)
 					.append("%)")
 					.build();
