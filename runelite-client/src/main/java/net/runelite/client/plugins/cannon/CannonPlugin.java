@@ -93,6 +93,14 @@ public class CannonPlugin extends Plugin
 		return cannonOverlay;
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		cannonPlaced = false;
+		myCannon = null;
+		cballsLeft = 0;
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{

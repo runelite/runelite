@@ -95,6 +95,12 @@ public class PohPlugin extends Plugin
 		overlay.updateConfig();
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		pohObjects.clear();
+	}
+
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{

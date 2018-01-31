@@ -74,6 +74,14 @@ public class RoguesDenPlugin extends Plugin
 	private RoguesDenOverlay overlay;
 
 	@Override
+	protected void shutDown()
+	{
+		obstaclesHull.clear();
+		obstaclesTile.clear();
+		hasGem = false;
+	}
+
+	@Override
 	public void configure(Binder binder)
 	{
 		binder.bind(RoguesDenOverlay.class);
