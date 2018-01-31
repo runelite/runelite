@@ -60,8 +60,13 @@ public class ReportButtonPlugin extends Plugin
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
+	private static final String RAID_START = "The raid has begun!";
+	private static final String RAID_END = "Congratulations - your raid is complete!";
+
 	private Instant raidStartTime;
+	private Instant raidEndTime;
 	private boolean raidReady;
+
 	private Instant loginTime;
 	private boolean ready;
 
@@ -90,17 +95,23 @@ public class ReportButtonPlugin extends Plugin
 		{
 			raidReady = false;
 			raidStartTime = null;
+			raidEndTime = null;
 		}
 	}
 
 	@Subscribe
 	public void onGameMessage(ChatMessage event)
 	{
-		if (raidReady &&
-				event.getType() == ChatMessageType.CLANCHAT_INFO &&
-				event.getMessage().contains("The raid has begun!"))
+		if (raidReady && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
-			raidStartTime = Instant.now();
+			if (event.getMessage().contains(RAID_START))
+			{
+				raidStartTime = Instant.now();
+			}
+			else if (event.getMessage().contains(RAID_END))
+			{
+				raidEndTime = Instant.now();
+			}
 		}
 	}
 
@@ -178,7 +189,16 @@ public class ReportButtonPlugin extends Plugin
 	{
 		if (raidStartTime != null)
 		{
-			Duration duration = Duration.between(raidStartTime, Instant.now());
+			Duration duration;
+			if (raidEndTime == null)
+			{
+				duration = Duration.between(raidStartTime, Instant.now());
+			}
+			else
+			{
+				duration = Duration.between(raidStartTime, raidEndTime);
+			}
+
 			LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
 			return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		}
