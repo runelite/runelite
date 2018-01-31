@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -280,12 +281,11 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		boolean enabled = config.showInfobox();
-		if (enabled && counter == null)
+		if (config.showInfobox())
 		{
 			addCounter();
 		}
-		else if (!enabled && counter != null)
+		else
 		{
 			removeCounter();
 		}
@@ -315,19 +315,17 @@ public class SlayerPlugin extends Plugin
 		taskName = name.toLowerCase();
 		amount = amt;
 		save();
-
 		removeCounter();
-
-		if (taskName.isEmpty() || !config.showInfobox())
-		{
-			return;
-		}
-
 		addCounter();
 	}
 
 	private void addCounter()
 	{
+		if (!config.showInfobox() || counter != null || Strings.isNullOrEmpty(taskName))
+		{
+			return;
+		}
+
 		Task task = Task.getTask(taskName);
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task == null)
@@ -349,6 +347,11 @@ public class SlayerPlugin extends Plugin
 
 	private void removeCounter()
 	{
+		if (counter == null)
+		{
+			return;
+		}
+
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
 	}
