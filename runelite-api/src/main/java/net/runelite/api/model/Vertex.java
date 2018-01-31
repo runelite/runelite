@@ -48,6 +48,14 @@ public class Vertex
 	 */
 	public Vertex rotate(int orientation)
 	{
+		// models are orientated north (1024) and there are 2048 angles total
+		orientation = (orientation + 1024) % 2048;
+
+		if (orientation == 0)
+		{
+			return this;
+		}
+
 		int sin = Perspective.SINE[orientation];
 		int cos = Perspective.COSINE[orientation];
 
