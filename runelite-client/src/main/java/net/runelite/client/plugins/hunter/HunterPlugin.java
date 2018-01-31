@@ -45,12 +45,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.queries.GameObjectQuery;
-import net.runelite.api.queries.PlayerQuery;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.queries.GameObjectQuery;
+import net.runelite.api.queries.PlayerQuery;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -101,6 +101,15 @@ public class HunterPlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(trapOverlay, catchrateOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		catchAtempts = 0;
+		catchSuccess = 0;
+		lastActionTime = Instant.ofEpochMilli(0);
+		traps.clear();
 	}
 
 	@Subscribe

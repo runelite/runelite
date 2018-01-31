@@ -63,6 +63,12 @@ public class AgilityPlugin extends Plugin
 	private AgilityOverlay overlay;
 
 	@Override
+	protected void shutDown() throws Exception
+	{
+		obstacles.clear();
+	}
+
+	@Override
 	public void configure(Binder binder)
 	{
 		binder.bind(AgilityOverlay.class);

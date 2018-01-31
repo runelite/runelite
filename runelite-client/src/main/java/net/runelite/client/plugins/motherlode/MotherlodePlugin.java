@@ -109,6 +109,13 @@ public class MotherlodePlugin extends Plugin
 		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		veins.clear();
+		rocks.clear();
+	}
+
 	public MotherlodeSession getSession()
 	{
 		return session;

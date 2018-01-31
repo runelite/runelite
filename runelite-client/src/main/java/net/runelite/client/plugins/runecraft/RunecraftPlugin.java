@@ -92,6 +92,12 @@ public class RunecraftPlugin extends Plugin
 		abyssOverlay.updateConfig();
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		abyssObjects.clear();
+	}
+
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
