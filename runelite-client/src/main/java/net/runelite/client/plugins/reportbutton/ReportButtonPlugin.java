@@ -57,6 +57,7 @@ public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
+
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 
 	private Instant raidStartTime;

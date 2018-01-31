@@ -302,6 +302,7 @@ public class SlayerPlugin extends Plugin
 
 		amount--;
 		config.amount(amount); // save changed value
+
 		if (!config.showInfobox())
 		{
 			return;
