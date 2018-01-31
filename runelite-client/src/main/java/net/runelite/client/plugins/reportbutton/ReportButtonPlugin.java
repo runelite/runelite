@@ -107,6 +107,7 @@ public class ReportButtonPlugin extends Plugin
 			if (event.getMessage().contains(RAID_START))
 			{
 				raidStartTime = Instant.now();
+				raidEndTime = null;
 			}
 			else if (event.getMessage().contains(RAID_END))
 			{
