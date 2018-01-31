@@ -141,6 +141,17 @@ class XpPanel extends PluginPanel
 
 	static String formatLine(double number, String description)
 	{
-		return NUMBER_FORMATTER.format(number) + " " + description;
+		String numberStr;
+		if (number < 100000)
+		{
+			numberStr = NUMBER_FORMATTER.format(number);
+		}
+		else
+		{
+			int num = (int) (Math.log(number) / Math.log(1000));
+			numberStr = String.format("%.1f%c", number / Math.pow(1000, num), "KMB".charAt(num - 1));
+		}
+
+		return numberStr + " " + description;
 	}
 }
