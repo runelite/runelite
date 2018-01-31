@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, UniquePassive <https://github.com/uniquepassive>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.api;
 
-public enum OverlayLayer
+public interface TextureProvider
 {
-	/**
-	 * Render right above the scene (that contains actors and the surface)
-	 */
-	ABOVE_SCENE,
-
-	/**
-	 * Render under all interfaces, but above overheads
-	 */
-	UNDER_WIDGETS,
-
-	/**
-	 * Render under the right-click menu
-	 */
-	ABOVE_WIDGETS,
-
-	/**
-	 * Render overlay above all game elements
-	 */
-	ALWAYS_ON_TOP,
+	void checkTextures(int var1);
 }

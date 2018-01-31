@@ -1,4 +1,5 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -198,7 +199,12 @@ public class TextureProvider implements ITextureLoader {
       signature = "(II)V",
       garbageValue = "1136074177"
    )
-   public void method2539(int var1) {
+   @Hook(
+	   value = "drawAboveOverheads",
+	   end = true
+   )
+   @Export("checkTextures")
+   public void checkTextures(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
          if(var3 != null && var3.field1758 != 0 && var3.loaded) {

@@ -375,7 +375,7 @@ final class class3 implements class0 {
       }
 
       class2.method5(var0, var1);
-      ((TextureProvider)Graphics3D.textureLoader).method2539(Client.field882);
+      ((TextureProvider)Graphics3D.textureLoader).checkTextures(Client.field882);
       if(Client.cursorState == 1) {
          class39.crossSprites[Client.field871 / 100].drawAt(Client.lastLeftClickX - 8, Client.lastLeftClickY - 8);
       }
