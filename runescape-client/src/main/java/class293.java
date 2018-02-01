@@ -2,16 +2,12 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kx")
-public class class293 {
-   @ObfuscatedName("n")
+@ObfuscatedName("kc")
+public final class class293 {
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lio;"
    )
-   @Export("classInfos")
-   public static CombatInfoList classInfos;
-
-   static {
-      classInfos = new CombatInfoList();
-   }
+   @Export("configsIndex")
+   static IndexData configsIndex;
 }

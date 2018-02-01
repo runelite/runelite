@@ -4,36 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("je")
+@ObfuscatedName("jf")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Lik;"
    )
    @Export("varbit_ref")
    public static IndexDataBase varbit_ref;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgm;"
    )
    @Export("varbits")
    public static NodeCache varbits;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1848151097
+      intValue = -2014354667
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 208382339
+      intValue = -834827071
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -759227175
+      intValue = -181488447
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
@@ -42,10 +42,10 @@ public class Varbit extends CacheableNode {
       varbits = new NodeCache(64);
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lgv;B)V",
-      garbageValue = "29"
+      signature = "(Lgj;I)V",
+      garbageValue = "706614808"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -59,10 +59,10 @@ public class Varbit extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgv;II)V",
-      garbageValue = "629019333"
+      signature = "(Lgj;II)V",
+      garbageValue = "1778882417"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -72,5 +72,24 @@ public class Varbit extends CacheableNode {
          this.mostSignificantBit = var1.readUnsignedByte();
       }
 
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "1"
+   )
+   public static final boolean method4683() {
+      KeyFocusListener var0 = KeyFocusListener.keyboard;
+      synchronized(KeyFocusListener.keyboard) {
+         if(KeyFocusListener.field595 == KeyFocusListener.field593) {
+            return false;
+         } else {
+            WorldMapData.field427 = KeyFocusListener.field576[KeyFocusListener.field593];
+            class63.field722 = KeyFocusListener.field582[KeyFocusListener.field593];
+            KeyFocusListener.field593 = KeyFocusListener.field593 + 1 & 127;
+            return true;
+         }
+      }
    }
 }

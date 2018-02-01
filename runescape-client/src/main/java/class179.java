@@ -1,37 +1,44 @@
 import java.util.HashMap;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fi")
 public class class179 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("fy")
    @ObfuscatedSignature(
-      signature = "Lff;"
+      signature = "[Lkh;"
    )
-   @Export("taskManager")
-   protected static Signlink taskManager;
-   @ObfuscatedName("dw")
-   @ObfuscatedGetter(
-      intValue = -660168955
-   )
-   @Export("myWorldPort")
-   static int myWorldPort;
+   @Export("mapscene")
+   static IndexedSprite[] mapscene;
 
    static {
       new HashMap();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-265370917"
+      garbageValue = "-371985669"
    )
-   public static void method3303() {
+   public static void method3371() {
       ObjectComposition.objects.reset();
-      ObjectComposition.field3524.reset();
+      ObjectComposition.field3498.reset();
       ObjectComposition.cachedModels.reset();
-      ObjectComposition.field3552.reset();
+      ObjectComposition.field3536.reset();
+   }
+
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1926894885"
+   )
+   static final void method3376(boolean var0) {
+      if(var0) {
+         Client.field860 = class89.field1329?class148.field2079:class148.field2074;
+      } else {
+         Client.field860 = class221.preferences.preferences.containsKey(Integer.valueOf(class185.method3623(class89.username)))?class148.field2080:class148.field2075;
+      }
+
    }
 }

@@ -3,16 +3,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gy")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
    @Export("head")
    public Node head;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
@@ -25,7 +25,7 @@ public class Deque {
       this.head.previous = this.head;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @Export("clear")
    public void clear() {
       while(true) {
@@ -39,7 +39,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Lgw;)V"
    )
@@ -55,7 +55,7 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Lgw;)V"
    )
@@ -71,7 +71,7 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -86,7 +86,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -101,7 +101,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -117,7 +117,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -133,7 +133,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -149,7 +149,7 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -165,11 +165,11 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lgw;Lgw;)V"
    )
-   public static void method3810(Node var0, Node var1) {
+   public static void method3858(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

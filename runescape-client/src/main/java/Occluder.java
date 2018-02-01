@@ -2,145 +2,119 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("es")
 @Implements("Occluder")
 public final class Occluder {
-   @ObfuscatedName("aj")
-   protected static String field2048;
-   @ObfuscatedName("n")
+   @ObfuscatedName("oo")
    @ObfuscatedGetter(
-      intValue = -1174365471
+      intValue = 2105188607
+   )
+   static int field2036;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 679988141
    )
    @Export("minTileX")
    int minTileX;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 295152925
+      intValue = -1830829383
    )
    @Export("maxTIleX")
    int maxTIleX;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 180896165
+      intValue = -510731835
    )
    @Export("minTileZ")
    int minTileZ;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 2127870165
+      intValue = 395982813
    )
    @Export("maxTileZ")
    int maxTileZ;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -980863161
+      intValue = 904974233
    )
    @Export("type")
    int type;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -101138541
+      intValue = 44663045
    )
    @Export("minX")
    int minX;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -555560423
+      intValue = 1988044813
    )
    @Export("maxX")
    int maxX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -2146142723
+      intValue = -71518701
    )
    @Export("minZ")
    int minZ;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1658877971
+      intValue = 622206931
    )
    @Export("maxZ")
    int maxZ;
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -869990365
+      intValue = -1559260307
    )
    @Export("minY")
    int minY;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1537764779
+      intValue = -380182285
    )
    @Export("maxY")
    int maxY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 207502883
+      intValue = 1410271961
    )
    @Export("testDirection")
    int testDirection;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1943418397
+      intValue = 630388313
    )
-   int field2053;
-   @ObfuscatedName("w")
+   int field2022;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 62467425
+      intValue = 789400345
    )
-   int field2059;
-   @ObfuscatedName("t")
+   int field2018;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1199725755
+      intValue = -680737473
    )
    @Export("minNormalX")
    int minNormalX;
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 2003736157
+      intValue = -42790909
    )
    @Export("maxNormalX")
    int maxNormalX;
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1266217975
+      intValue = 1499551391
    )
    @Export("minNormalY")
    int minNormalY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 70756975
+      intValue = 1828749897
    )
    @Export("maxNormalY")
    int maxNormalY;
-
-   @ObfuscatedName("jt")
-   @ObfuscatedSignature(
-      signature = "(Lhq;IIS)V",
-      garbageValue = "-4009"
-   )
-   static final void method2959(Widget var0, int var1, int var2) {
-      if(Client.field1028 == null && !Client.isMenuOpen) {
-         if(var0 != null && class239.method4280(var0) != null) {
-            Client.field1028 = var0;
-            Client.field1029 = class239.method4280(var0);
-            Client.field925 = var1;
-            Client.field1001 = var2;
-            class44.field555 = 0;
-            Client.field1039 = false;
-            int var3 = class240.method4281();
-            if(var3 != -1) {
-               ChatLineBuffer.topContextMenuRow = new ContextMenuRow();
-               ChatLineBuffer.topContextMenuRow.param0 = Client.menuActionParams0[var3];
-               ChatLineBuffer.topContextMenuRow.param1 = Client.menuActionParams1[var3];
-               ChatLineBuffer.topContextMenuRow.type = Client.menuTypes[var3];
-               ChatLineBuffer.topContextMenuRow.identifier = Client.menuIdentifiers[var3];
-               ChatLineBuffer.topContextMenuRow.option = Client.menuOptions[var3];
-            }
-
-         }
-      }
-   }
 }

@@ -1,60 +1,110 @@
+import java.applet.Applet;
+import java.net.URL;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("kk")
+@ObfuscatedName("kw")
 @Implements("Bounds")
 public class Bounds {
-   @ObfuscatedName("o")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -252833499
+      intValue = 499600971
    )
-   static int field3817;
-   @ObfuscatedName("n")
+   public int field3833;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -180991053
+      intValue = -661740851
    )
-   public int field3818;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1403568595
-   )
-   public int field3819;
+   public int field3834;
 
    Bounds(int var1, int var2, int var3, int var4) {
-      this.method5130(var1, var2);
-      this.method5131(var3, var4);
+      this.method5373(var1, var2);
+      this.method5374(var3, var4);
    }
 
    public Bounds(int var1, int var2) {
       this(0, 0, var1, var2);
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-61"
+      signature = "(III)V",
+      garbageValue = "-2040893373"
    )
-   void method5130(int var1, int var2) {
+   void method5373(int var1, int var2) {
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "20"
+      signature = "(III)V",
+      garbageValue = "1963562083"
    )
-   void method5131(int var1, int var2) {
-      this.field3818 = var1;
-      this.field3819 = var2;
+   void method5374(int var1, int var2) {
+      this.field3833 = var1;
+      this.field3834 = var2;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
-      garbageValue = "-1872602788"
+      signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
+      garbageValue = "123"
    )
-   public static void method5132(String var0, Throwable var1) {
-      var1.printStackTrace();
+   static boolean method5379(String var0, int var1, String var2) {
+      if(var1 == 0) {
+         try {
+            if(!class56.field617.startsWith("win")) {
+               throw new Exception();
+            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
+               throw new Exception();
+            } else {
+               String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+
+               for(int var4 = 0; var4 < var0.length(); ++var4) {
+                  if(var13.indexOf(var0.charAt(var4)) == -1) {
+                     throw new Exception();
+                  }
+               }
+
+               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+               return true;
+            }
+         } catch (Throwable var8) {
+            return false;
+         }
+      } else if(var1 == 1) {
+         try {
+            Applet var7 = class56.field620;
+            Object[] var5 = new Object[]{(new URL(class56.field620.getCodeBase(), var0)).toString()};
+            Object var3 = JSObject.getWindow(var7).call(var2, var5);
+            return var3 != null;
+         } catch (Throwable var9) {
+            return false;
+         }
+      } else if(var1 == 2) {
+         try {
+            class56.field620.getAppletContext().showDocument(new URL(class56.field620.getCodeBase(), var0), "_blank");
+            return true;
+         } catch (Exception var10) {
+            return false;
+         }
+      } else if(var1 == 3) {
+         try {
+            class52.method764(class56.field620, "loggedout");
+         } catch (Throwable var12) {
+            ;
+         }
+
+         try {
+            class56.field620.getAppletContext().showDocument(new URL(class56.field620.getCodeBase(), var0), "_top");
+            return true;
+         } catch (Exception var11) {
+            return false;
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

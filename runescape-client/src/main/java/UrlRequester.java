@@ -1,5 +1,7 @@
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.lang.management.GarbageCollectorMXBean;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -10,30 +12,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("eh")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("oo")
-   @ObfuscatedSignature(
-      signature = "Ldd;"
-   )
-   @Export("soundSystem1")
-   static AbstractSoundSystem soundSystem1;
-   @ObfuscatedName("s")
-   public static int[] field2099;
-   @ObfuscatedName("bl")
-   @ObfuscatedSignature(
-      signature = "Lbv;"
-   )
-   @Export("mouseRecorder")
-   static MouseRecorder mouseRecorder;
-   @ObfuscatedName("n")
+   @ObfuscatedName("ak")
+   static GarbageCollectorMXBean field2068;
+   @ObfuscatedName("p")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @Export("requests")
    Queue requests;
 
@@ -44,10 +34,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Len;",
-      garbageValue = "1365732955"
+      signature = "(Ljava/net/URL;I)Leu;",
+      garbageValue = "1919548762"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -59,10 +49,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1913587742"
+      garbageValue = "2058688735"
    )
    @Export("close")
    public void close() {
@@ -127,59 +117,61 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            Bounds.method5132((String)null, var17);
+            class89.method1900((String)null, var17);
          }
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Lhq;",
-      garbageValue = "-1583521359"
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldc;",
+      garbageValue = "1446683435"
    )
-   @Export("getWidget")
-   public static Widget getWidget(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & 65535;
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = FontName.loadWidget(var1);
-         if(!var3) {
-            return null;
+   @Export("getPreferencesFile")
+   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
+      File var3 = new File(class291.field3769, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
+         try {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
          }
       }
 
-      return Widget.widgets[var1][var2];
-   }
+      String var4 = "";
+      if(class45.field545 == 33) {
+         var4 = "_rc";
+      } else if(class45.field545 == 34) {
+         var4 = "_wip";
+      }
 
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(II)Lcv;",
-      garbageValue = "-1313291930"
-   )
-   @Export("getScript")
-   static Script getScript(int var0) {
-      Script var1 = (Script)Script.field1435.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Timer.indexScripts.getConfigData(var0, 0);
-         if(var2 == null) {
-            return null;
-         } else {
-            var1 = class218.newScript(var2);
-            Script.field1435.put(var1, (long)var0);
-            return var1;
+      File var5 = new File(class299.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
          }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lgv;I)Ljava/lang/String;",
-      garbageValue = "-548112750"
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "-368535448"
    )
-   public static String method2972(Buffer var0) {
-      return WorldMapData.method341(var0, 32767);
+   public static int method3031(String var0) {
+      return var0.length() + 2;
    }
 }

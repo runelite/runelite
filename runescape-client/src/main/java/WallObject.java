@@ -4,60 +4,65 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("eb")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("n")
+   @ObfuscatedName("jd")
    @ObfuscatedGetter(
-      intValue = 433254391
+      intValue = -789768693
+   )
+   static int field2000;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 437625143
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 141605773
+      intValue = -1333043881
    )
    @Export("x")
    int x;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1065730419
+      intValue = 1121187441
    )
    @Export("y")
    int y;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1487602585
+      intValue = 1482414659
    )
    @Export("orientationA")
    int orientationA;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1333183839
+      intValue = -676519619
    )
    @Export("orientationB")
    int orientationB;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Leo;"
+      signature = "Lec;"
    )
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Leo;"
+      signature = "Lec;"
    )
    @Export("renderable2")
    public Renderable renderable2;
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1866921115
+      intValue = -1894630301
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 179650203
+      intValue = 610890031
    )
    @Export("config")
    int config;
@@ -67,24 +72,52 @@ public final class WallObject {
       this.config = 0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "96"
+      signature = "(IIIZIZI)V",
+      garbageValue = "1733939807"
    )
-   public static void method2930() {
-      while(true) {
-         Deque var1 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         FileSystem var0;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var0 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.popFront();
+   static void method3002(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
+      if(var0 < var1) {
+         int var6 = (var0 + var1) / 2;
+         int var7 = var0;
+         World var8 = class89.worldList[var6];
+         class89.worldList[var6] = class89.worldList[var1];
+         class89.worldList[var1] = var8;
+
+         for(int var9 = var0; var9 < var1; ++var9) {
+            World var11 = class89.worldList[var9];
+            int var12 = UnitPriceComparator.method134(var11, var8, var2, var3);
+            int var10;
+            if(var12 != 0) {
+               if(var3) {
+                  var10 = -var12;
+               } else {
+                  var10 = var12;
+               }
+            } else if(var4 == -1) {
+               var10 = 0;
+            } else {
+               int var13 = UnitPriceComparator.method134(var11, var8, var4, var5);
+               if(var5) {
+                  var10 = -var13;
+               } else {
+                  var10 = var13;
+               }
+            }
+
+            if(var10 <= 0) {
+               World var14 = class89.worldList[var9];
+               class89.worldList[var9] = class89.worldList[var7];
+               class89.worldList[var7++] = var14;
+            }
          }
 
-         if(var0 == null) {
-            return;
-         }
-
-         var0.data.load(var0.index, (int)var0.hash, var0.field3299, false);
+         class89.worldList[var1] = class89.worldList[var7];
+         class89.worldList[var7] = var8;
+         method3002(var0, var7 - 1, var2, var3, var4, var5);
+         method3002(var7 + 1, var1, var2, var3, var4, var5);
       }
+
    }
 }

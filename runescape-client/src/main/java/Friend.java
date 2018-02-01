@@ -2,43 +2,62 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("jc")
 @Implements("Friend")
-public class Friend {
-   @ObfuscatedName("ow")
+public class Friend extends Nameable {
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1744984165
-   )
-   static int field782;
-   @ObfuscatedName("g")
-   static int[] field777;
-   @ObfuscatedName("jc")
-   @ObfuscatedGetter(
-      intValue = -157777607
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("n")
-   @Export("name")
-   String name;
-   @ObfuscatedName("v")
-   @Export("previousName")
-   String previousName;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 700564557
+      intValue = 216251869
    )
    @Export("world")
-   int world;
-   @ObfuscatedName("r")
+   public int world;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1618849197
+      intValue = -781877595
    )
-   @Export("rank")
-   int rank;
-   @ObfuscatedName("h")
-   boolean field776;
-   @ObfuscatedName("d")
-   boolean field779;
+   public int field3707;
+   @ObfuscatedName("w")
+   boolean field3706;
+   @ObfuscatedName("s")
+   boolean field3704;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Ljc;I)I",
+      garbageValue = "2141076686"
+   )
+   int method5151(Friend var1) {
+      return this.world == Client.world && Client.world != var1.world?-1:(Client.world == var1.world && this.world != Client.world?1:(this.world != 0 && var1.world == 0?-1:(var1.world != 0 && this.world == 0?1:(this.field3706 && !var1.field3706?-1:(!this.field3706 && var1.field3706?1:(this.field3704 && !var1.field3704?-1:(!this.field3704 && var1.field3704?1:super.vmethod5152(var1))))))));
+   }
+
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "(Lju;B)I",
+      garbageValue = "1"
+   )
+   int vmethod5152(Nameable var1) {
+      return this.method5151((Friend)var1);
+   }
+
+   public int compareTo(Object var1) {
+      return this.method5151((Friend)var1);
+   }
+
+   @ObfuscatedName("ff")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-1"
+   )
+   static final void method5158() {
+      if(DecorativeObject.soundSystem1 != null) {
+         DecorativeObject.soundSystem1.method2184();
+      }
+
+      if(CombatInfoListHolder.soundSystem0 != null) {
+         CombatInfoListHolder.soundSystem0.method2184();
+      }
+
+   }
 }

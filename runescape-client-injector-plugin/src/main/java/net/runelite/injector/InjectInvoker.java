@@ -36,6 +36,7 @@ import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.BiPush;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.DLoad;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
@@ -55,7 +56,7 @@ public class InjectInvoker
 	private static final Logger logger = LoggerFactory.getLogger(InjectInvoker.class);
 
 	private final Inject inject;
-	
+
 	private int injectedInvokers;
 
 	public InjectInvoker(Inject inject)
@@ -65,9 +66,12 @@ public class InjectInvoker
 
 	/**
 	 * Inject an invoker for a method
+	 *
 	 * @param m Method in the deobfuscated client to inject an invoker for
-	 * @param other Class in the vanilla client of the same class m is a member of
-	 * @param implementingClass Java class for the API interface the class will implement
+	 * @param other Class in the vanilla client of the same class m is a
+	 * member of
+	 * @param implementingClass Java class for the API interface the class
+	 * will implement
 	 */
 	public void process(Method m, ClassFile other, java.lang.Class<?> implementingClass)
 	{
@@ -104,14 +108,14 @@ public class InjectInvoker
 			assert !m.isStatic();
 
 			// non static exported method on non exported interface, weird.
-			logger.warn("Non static exported method {} on non exported interface", exportedName);
+			logger.debug("Non static exported method {} on non exported interface", exportedName);
 			return;
 		}
 
 		java.lang.reflect.Method apiMethod = inject.findImportMethodOnApi(targetClassJava, exportedName, null); // api method to invoke 'otherm'
 		if (apiMethod == null)
 		{
-			logger.info("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
+			logger.debug("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
 			return;
 		}
 
@@ -176,6 +180,15 @@ public class InjectInvoker
 
 			Instruction loadInstruction = inject.createLoadForTypeIndex(instructions, type, index);
 			ins.add(loadInstruction);
+
+			Signature invokeDesc = invokeMethod.getDescriptor();
+			Type obType = invokeDesc.getTypeOfArg(i);
+			if (!type.equals(obType))
+			{
+				CheckCast checkCast = new CheckCast(instructions);
+				checkCast.setType(obType);
+				ins.add(checkCast);
+			}
 
 			if (loadInstruction instanceof DLoad || loadInstruction instanceof LLoad)
 			{

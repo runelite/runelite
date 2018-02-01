@@ -4,39 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ij")
+@ObfuscatedName("iy")
 @Implements("IndexStoreActionHandler")
 public class IndexStoreActionHandler implements Runnable {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgy;"
    )
    @Export("IndexStoreActionHandler_requestQueue")
    static Deque IndexStoreActionHandler_requestQueue;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgi;"
+      signature = "Lgy;"
    )
    @Export("IndexStoreActionHandler_responseQueue")
    static Deque IndexStoreActionHandler_responseQueue;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -489625501
+      intValue = 270460959
    )
-   public static int field3328;
-   @ObfuscatedName("r")
+   static int field3307;
+   @ObfuscatedName("s")
    @Export("IndexStoreActionHandler_lock")
-   public static Object IndexStoreActionHandler_lock;
-   @ObfuscatedName("h")
-   @Export("IndexStoreActionHandler_thread")
-   static Thread IndexStoreActionHandler_thread;
-   @ObfuscatedName("bk")
-   static String field3327;
+   static Object IndexStoreActionHandler_lock;
 
    static {
       IndexStoreActionHandler_requestQueue = new Deque();
       IndexStoreActionHandler_responseQueue = new Deque();
-      field3328 = 0;
+      field3307 = 0;
       IndexStoreActionHandler_lock = new Object();
    }
 
@@ -52,13 +47,13 @@ public class IndexStoreActionHandler implements Runnable {
             Object var14;
             if(var1 != null) {
                if(var1.type == 0) {
-                  var1.index.write((int)var1.hash, var1.field3299, var1.field3299.length);
+                  var1.index.write((int)var1.hash, var1.field3276, var1.field3276.length);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      var1.unlink();
                   }
                } else if(var1.type == 1) {
-                  var1.field3299 = var1.index.read((int)var1.hash);
+                  var1.field3276 = var1.index.read((int)var1.hash);
                   var2 = IndexStoreActionHandler_requestQueue;
                   synchronized(IndexStoreActionHandler_requestQueue) {
                      IndexStoreActionHandler_responseQueue.addFront(var1);
@@ -67,30 +62,30 @@ public class IndexStoreActionHandler implements Runnable {
 
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3328 <= 1) {
-                     field3328 = 0;
+                  if(field3307 <= 1) {
+                     field3307 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  field3328 = 600;
+                  field3307 = 600;
                }
             } else {
-               class61.method1077(100L);
+               class1.method3(100L);
                var14 = IndexStoreActionHandler_lock;
                synchronized(IndexStoreActionHandler_lock) {
-                  if(field3328 <= 1) {
-                     field3328 = 0;
+                  if(field3307 <= 1) {
+                     field3307 = 0;
                      IndexStoreActionHandler_lock.notifyAll();
                      return;
                   }
 
-                  --field3328;
+                  --field3307;
                }
             }
          }
       } catch (Exception var13) {
-         Bounds.method5132((String)null, var13);
+         class89.method1900((String)null, var13);
       }
    }
 }

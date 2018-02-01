@@ -1,189 +1,140 @@
-import java.net.MalformedURLException;
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("bi")
 @Implements("World")
 public class World {
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "[Lch;"
-   )
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 942053817
+      intValue = 346681645
    )
    @Export("worldCount")
    static int worldCount;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1481306265
+      intValue = 1028183091
    )
-   static int field1217;
-   @ObfuscatedName("b")
-   static int[] field1223;
-   @ObfuscatedName("e")
-   static int[] field1224;
-   @ObfuscatedName("z")
+   static int field1176;
+   @ObfuscatedName("r")
+   static int[] field1171;
+   @ObfuscatedName("m")
+   static int[] field1173;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -73332619
+      intValue = -730407965
    )
    @Export("id")
    int id;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1964230429
+      intValue = -1925927231
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -222012739
+      intValue = 1034719463
    )
    @Export("playerCount")
    int playerCount;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @Export("address")
    String address;
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @Export("activity")
    String activity;
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1687134911
+      intValue = -1569629871
    )
    @Export("location")
    int location;
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -573712759
+      intValue = -656060853
    )
    @Export("index")
    int index;
 
    static {
       worldCount = 0;
-      field1217 = 0;
-      field1223 = new int[]{1, 1, 1, 1};
-      field1224 = new int[]{0, 1, 2, 3};
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "895801383"
-   )
-   boolean method1592() {
-      return (1 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-872648565"
-   )
-   boolean method1579() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-246638536"
-   )
-   boolean method1580() {
-      return (4 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-2072930225"
-   )
-   boolean method1581() {
-      return (8 & this.mask) != 0;
+      field1176 = 0;
+      field1171 = new int[]{1, 1, 1, 1};
+      field1173 = new int[]{0, 1, 2, 3};
    }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1386960340"
+      signature = "(S)Z",
+      garbageValue = "10221"
    )
-   boolean method1589() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "302215926"
-   )
-   boolean method1583() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(Lil;IIIZI)V",
-      garbageValue = "545938496"
-   )
-   public static void method1618(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
-      class214.field2631 = 1;
-      class214.field2632 = var0;
-      Ignore.field810 = var1;
-      class262.field3474 = var2;
-      class35.field477 = var3;
-      class214.field2627 = var4;
-      FontName.field3711 = 10000;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "1931493629"
-   )
-   static boolean method1617(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         try {
-            new URL(var0);
-            return true;
-         } catch (MalformedURLException var2) {
-            return false;
-         }
-      }
+   boolean method1608() {
+      return (1 & this.mask) != 0;
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "15"
+      signature = "(I)Z",
+      garbageValue = "-2068319035"
    )
-   static void method1616() {
-      FileOnDisk var0 = null;
+   boolean method1609() {
+      return (2 & this.mask) != 0;
+   }
 
-      try {
-         var0 = BoundingBox3D.getPreferencesFile("", class3.field18.name, true);
-         Buffer var1 = class222.preferences.serialize();
-         var0.write(var1.payload, 0, var1.offset);
-      } catch (Exception var3) {
-         ;
-      }
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1724826342"
+   )
+   boolean method1610() {
+      return (4 & this.mask) != 0;
+   }
 
-      try {
-         if(var0 != null) {
-            var0.closeSync(true);
-         }
-      } catch (Exception var2) {
-         ;
-      }
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1561325175"
+   )
+   boolean method1611() {
+      return (8 & this.mask) != 0;
+   }
 
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "26"
+   )
+   boolean method1645() {
+      return (536870912 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1997065093"
+   )
+   boolean method1621() {
+      return (33554432 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)[Lit;",
+      garbageValue = "116"
+   )
+   public static class239[] method1637() {
+      return new class239[]{class239.field3227, class239.field3226, class239.field3228, class239.field3234, class239.field3232, class239.field3231, class239.field3229, class239.field3233};
+   }
+
+   @ObfuscatedName("gn")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1098542507"
+   )
+   static int method1644() {
+      return Client.isResized?2:1;
    }
 }

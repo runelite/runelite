@@ -218,7 +218,7 @@ public class UnusedParameters implements Deobfuscator
 
 					InvokeInstruction ii = (InvokeInstruction) i;
 
-					if (!ii.getMethods().containsAll(methods))
+					if (!ii.getMethods().stream().anyMatch(me -> methods.contains(me)))
 					{
 						continue;
 					}

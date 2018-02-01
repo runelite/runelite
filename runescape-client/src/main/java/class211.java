@@ -2,57 +2,57 @@ import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hg")
 public class class211 implements Iterator {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhc;"
    )
-   IterableDualNodeQueue field2614;
-   @ObfuscatedName("v")
+   IterableDualNodeQueue field2578;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgf;"
    )
-   CacheableNode field2612;
-   @ObfuscatedName("y")
+   CacheableNode field2577;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgf;"
    )
-   CacheableNode field2613;
+   CacheableNode field2579;
 
    @ObfuscatedSignature(
-      signature = "(Lhe;)V"
+      signature = "(Lhc;)V"
    )
    class211(IterableDualNodeQueue var1) {
-      this.field2613 = null;
-      this.field2614 = var1;
-      this.field2612 = this.field2614.sentinel.previous;
-      this.field2613 = null;
-   }
-
-   public Object next() {
-      CacheableNode var1 = this.field2612;
-      if(var1 == this.field2614.sentinel) {
-         var1 = null;
-         this.field2612 = null;
-      } else {
-         this.field2612 = var1.previous;
-      }
-
-      this.field2613 = var1;
-      return var1;
-   }
-
-   public void remove() {
-      if(this.field2613 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field2613.unlinkDual();
-         this.field2613 = null;
-      }
+      this.field2579 = null;
+      this.field2578 = var1;
+      this.field2577 = this.field2578.sentinel.previous;
+      this.field2579 = null;
    }
 
    public boolean hasNext() {
-      return this.field2614.sentinel != this.field2612;
+      return this.field2578.sentinel != this.field2577;
+   }
+
+   public void remove() {
+      if(this.field2579 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field2579.unlinkDual();
+         this.field2579 = null;
+      }
+   }
+
+   public Object next() {
+      CacheableNode var1 = this.field2577;
+      if(var1 == this.field2578.sentinel) {
+         var1 = null;
+         this.field2577 = null;
+      } else {
+         this.field2577 = var1.previous;
+      }
+
+      this.field2579 = var1;
+      return var1;
    }
 }

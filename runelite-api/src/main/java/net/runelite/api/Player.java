@@ -36,4 +36,8 @@ public interface Player extends Actor
 	Polygon[] getPolygons();
 
 	int getTeam();
+
+	boolean isClanMember();
+
+	boolean isFriend();
 }

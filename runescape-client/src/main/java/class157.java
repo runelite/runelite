@@ -6,44 +6,39 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fr")
 public class class157 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @Export("jagexClDat")
    static File jagexClDat;
-   @ObfuscatedName("h")
-   static File field2164;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -532493303
+      intValue = -16719223
    )
    @Export("idxCount")
-   static int idxCount;
-   @ObfuscatedName("u")
+   public static int idxCount;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Ldm;"
+      signature = "Ldb;"
    )
    @Export("randomDat")
    public static CacheFile randomDat;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "Ldm;"
+      signature = "Ldb;"
    )
    @Export("dat2File")
    public static CacheFile dat2File;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "Ldm;"
+      signature = "Ldb;"
    )
    @Export("idx255File")
    public static CacheFile idx255File;
-   @ObfuscatedName("t")
+   @ObfuscatedName("bz")
    @ObfuscatedSignature(
-      signature = "[Ldm;"
+      signature = "[Lkh;"
    )
-   @Export("idxFiles")
-   public static CacheFile[] idxFiles;
-   @ObfuscatedName("l")
-   @Export("osNameLC")
-   public static String osNameLC;
+   @Export("slFlagSprites")
+   static IndexedSprite[] slFlagSprites;
 
    static {
       randomDat = null;
@@ -51,15 +46,25 @@ public class class157 {
       idx255File = null;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "1349106950"
+      signature = "(II)Ljx;",
+      garbageValue = "994078541"
    )
-   static byte[] method3065(byte[] var0) {
-      int var1 = var0.length;
-      byte[] var2 = new byte[var1];
-      System.arraycopy(var0, 0, var2, 0, var1);
-      return var2;
+   public static class262 method3115(int var0) {
+      class262 var1 = (class262)class262.field3445.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class262.field3448.getConfigData(11, var0);
+         var1 = new class262();
+         if(var2 != null) {
+            var1.method4690(new Buffer(var2));
+         }
+
+         var1.method4703();
+         class262.field3445.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

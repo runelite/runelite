@@ -7,20 +7,20 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("iz")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Lik;"
    )
-   static IndexDataBase field3374;
-   @ObfuscatedName("v")
+   public static IndexDataBase field3344;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgm;"
    )
    @Export("inventoryCache")
-   static NodeCache inventoryCache;
-   @ObfuscatedName("y")
+   public static NodeCache inventoryCache;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -447579771
+      intValue = -2006695059
    )
    @Export("size")
    public int size;
@@ -29,36 +29,55 @@ public class InvType extends CacheableNode {
       inventoryCache = new NodeCache(64);
    }
 
-   InvType() {
+   public InvType() {
       this.size = 0;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgv;I)V",
-      garbageValue = "-272809543"
+      signature = "(Lgj;B)V",
+      garbageValue = "0"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4468(var1, var2);
+         this.method4534(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgv;II)V",
-      garbageValue = "571047905"
+      signature = "(Lgj;IS)V",
+      garbageValue = "16194"
    )
-   void method4468(Buffer var1, int var2) {
+   void method4534(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1291518546"
+   )
+   static void method4536() {
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3307 == 0) {
+            Item.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
+            Item.IndexStoreActionHandler_thread.setDaemon(true);
+            Item.IndexStoreActionHandler_thread.start();
+            Item.IndexStoreActionHandler_thread.setPriority(5);
+         }
+
+         IndexStoreActionHandler.field3307 = 600;
+      }
    }
 }

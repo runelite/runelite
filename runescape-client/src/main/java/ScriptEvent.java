@@ -1,231 +1,260 @@
-import java.io.File;
-import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("bk")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-   @ObfuscatedName("ll")
-   @ObfuscatedSignature(
-      signature = "Lfk;"
-   )
-   @Export("mouseWheel")
-   static MouseWheel mouseWheel;
-   @ObfuscatedName("gj")
-   @ObfuscatedGetter(
-      intValue = 696974527
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @Export("objs")
    Object[] objs;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @Export("boolean1")
    boolean boolean1;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Lho;"
    )
    @Export("widget")
    Widget widget;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1058572423
+   )
+   int field748;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1616256553
+   )
+   int field746;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 871347815
+   )
+   int field750;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lho;"
+   )
+   Widget field752;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 549393119
+      intValue = 54616507
    )
-   int field795;
+   int field745;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1508896291
+   )
+   int field753;
    @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -972583329
-   )
-   int field793;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -601068453
-   )
-   int field798;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lhq;"
-   )
-   Widget field797;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -624303511
-   )
-   int field800;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1142636893
-   )
-   int field801;
-   @ObfuscatedName("f")
    @Export("string")
    String string;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1159253541
+      intValue = -756142497
    )
-   int field803;
-   @ObfuscatedName("u")
+   int field755;
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lhg;"
+      signature = "Lhe;"
    )
-   class230 field802;
+   class230 field756;
 
    public ScriptEvent() {
-      this.field802 = class230.field2908;
+      this.field756 = class230.field2876;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/Object;I)V",
-      garbageValue = "-1530128191"
+      signature = "([Ljava/lang/Object;B)V",
+      garbageValue = "59"
    )
-   public void method1107(Object[] var1) {
+   public void method1076(Object[] var1) {
       this.objs = var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lhg;B)V",
-      garbageValue = "14"
+      signature = "(Lhe;B)V",
+      garbageValue = "-119"
    )
-   public void method1106(class230 var1) {
-      this.field802 = var1;
+   public void method1077(class230 var1) {
+      this.field756 = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/io/File;I)V",
-      garbageValue = "58512494"
+      signature = "(Lik;III)[Lkh;",
+      garbageValue = "-128447701"
    )
-   static void method1108(File var0) {
-      class160.field2181 = var0;
-      if(!class160.field2181.exists()) {
-         throw new RuntimeException("");
+   static IndexedSprite[] method1075(IndexDataBase var0, int var1, int var2) {
+      return !class160.method3147(var0, var1, var2)?null:class268.method4896();
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([Lbi;II[I[II)V",
+      garbageValue = "2003437593"
+   )
+   static void method1081(World[] var0, int var1, int var2, int[] var3, int[] var4) {
+      if(var1 < var2) {
+         int var5 = var1 - 1;
+         int var6 = var2 + 1;
+         int var7 = (var2 + var1) / 2;
+         World var8 = var0[var7];
+         var0[var7] = var0[var1];
+         var0[var1] = var8;
+
+         while(var5 < var6) {
+            boolean var9 = true;
+
+            int var10;
+            int var11;
+            int var12;
+            do {
+               --var6;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var6].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var6].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var6].method1608()?1:0;
+                     var12 = var8.method1608()?1:0;
+                  } else {
+                     var11 = var0[var6].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var11 != var12) {
+                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            var9 = true;
+
+            do {
+               ++var5;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var5].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var5].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var5].method1608()?1:0;
+                     var12 = var8.method1608()?1:0;
+                  } else {
+                     var11 = var0[var5].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var11 != var12) {
+                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            if(var5 < var6) {
+               World var13 = var0[var5];
+               var0[var5] = var0[var6];
+               var0[var6] = var13;
+            }
+         }
+
+         method1081(var0, var1, var6, var3, var4);
+         method1081(var0, var6 + 1, var2, var3, var4);
+      }
+
+   }
+
+   @ObfuscatedName("gt")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZS)V",
+      garbageValue = "15976"
+   )
+   @Export("drawStatusBox")
+   static final void drawStatusBox(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = var2 + 6;
+      int var4 = var2 + 6;
+      int var5 = BoundingBox2D.font_p12full.method5210(var0, 250);
+      int var6 = BoundingBox2D.font_p12full.method5208(var0, 250) * 13;
+      Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 0);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
+      BoundingBox2D.font_p12full.method5217(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      OwnWorldComparator.method1182(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2);
+      if(var1) {
+         CombatInfo2.rasterProvider.drawFull(0, 0);
       } else {
-         class160.field2179 = true;
+         int var7 = var3;
+         int var8 = var4;
+         int var9 = var5;
+         int var10 = var6;
+
+         for(int var11 = 0; var11 < Client.widgetCount; ++var11) {
+            if(Client.widgetBoundsWidth[var11] + Client.widgetPositionX[var11] > var7 && Client.widgetPositionX[var11] < var9 + var7 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var10 + var8) {
+               Client.field1013[var11] = true;
+            }
+         }
       }
+
    }
 
-   @ObfuscatedName("n")
-   public static String method1112(long var0) {
-      class193.field2567.setTime(new Date(var0));
-      int var2 = class193.field2567.get(7);
-      int var3 = class193.field2567.get(5);
-      int var4 = class193.field2567.get(2);
-      int var5 = class193.field2567.get(1);
-      int var6 = class193.field2567.get(11);
-      int var7 = class193.field2567.get(12);
-      int var8 = class193.field2567.get(13);
-      return class193.field2569[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class193.field2568[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
-   }
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("ip")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1545744863"
+      signature = "(IIB)Ljava/lang/String;",
+      garbageValue = "56"
    )
-   static final void method1110() {
-      short var0 = 256;
-      int var1;
-      if(class91.field1346 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class91.field1346 > 768) {
-               class39.field515[var1] = class19.method149(Friend.field777[var1], GrandExchangeOffer.field296[var1], 1024 - class91.field1346);
-            } else if(class91.field1346 > 256) {
-               class39.field515[var1] = GrandExchangeOffer.field296[var1];
-            } else {
-               class39.field515[var1] = class19.method149(GrandExchangeOffer.field296[var1], Friend.field777[var1], 256 - class91.field1346);
-            }
-         }
-      } else if(class91.field1350 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class91.field1350 > 768) {
-               class39.field515[var1] = class19.method149(Friend.field777[var1], class33.field451[var1], 1024 - class91.field1350);
-            } else if(class91.field1350 > 256) {
-               class39.field515[var1] = class33.field451[var1];
-            } else {
-               class39.field515[var1] = class19.method149(class33.field451[var1], Friend.field777[var1], 256 - class91.field1350);
-            }
-         }
-      } else {
-         for(var1 = 0; var1 < 256; ++var1) {
-            class39.field515[var1] = Friend.field777[var1];
-         }
-      }
+   static final String method1083(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?class1.getColTags(16711680):(var2 < -6?class1.getColTags(16723968):(var2 < -3?class1.getColTags(16740352):(var2 < 0?class1.getColTags(16756736):(var2 > 9?class1.getColTags(65280):(var2 > 6?class1.getColTags(4259584):(var2 > 3?class1.getColTags(8453888):(var2 > 0?class1.getColTags(12648192):class1.getColTags(16776960))))))));
+   }
 
-      Rasterizer2D.setDrawRegion(class91.field1336, 9, class91.field1336 + 128, var0 + 7);
-      class91.field1339.method5287(class91.field1336, 0);
-      Rasterizer2D.noClip();
-      var1 = 0;
-      int var2 = class35.rasterProvider.width * 9 + class91.field1336;
-
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = class91.field1352[var3] * (var0 - var3) / var0;
-         var5 = var4 + 22;
-         if(var5 < 0) {
-            var5 = 0;
-         }
-
-         var1 += var5;
-
-         for(var6 = var5; var6 < 128; ++var6) {
-            var7 = GrandExchangeEvent.field282[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = class39.field515[var7];
-               var10 = class35.rasterProvider.pixels[var2];
-               class35.rasterProvider.pixels[var2++] = ((var7 & 16711935) * var8 + (var10 & 16711935) * var9 & -16711936) + (var9 * (var10 & 65280) + var8 * (var7 & 65280) & 16711680) >> 8;
-            } else {
-               ++var2;
-            }
-         }
-
-         var2 += var5 + class35.rasterProvider.width - 128;
-      }
-
-      Rasterizer2D.setDrawRegion(class91.field1336 + 765 - 128, 9, class91.field1336 + 765, var0 + 7);
-      GrandExchangeEvents.field269.method5287(class91.field1336 + 382, 0);
-      Rasterizer2D.noClip();
-      var1 = 0;
-      var2 = class35.rasterProvider.width * 9 + class91.field1336 + 637 + 24;
-
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = class91.field1352[var3] * (var0 - var3) / var0;
-         var5 = 103 - var4;
-         var2 += var4;
-
-         for(var6 = 0; var6 < var5; ++var6) {
-            var7 = GrandExchangeEvent.field282[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = class39.field515[var7];
-               var10 = class35.rasterProvider.pixels[var2];
-               class35.rasterProvider.pixels[var2++] = ((var7 & 16711935) * var8 + (var10 & 16711935) * var9 & -16711936) + (var9 * (var10 & 65280) + var8 * (var7 & 65280) & 16711680) >> 8;
-            } else {
-               ++var2;
-            }
-         }
-
-         var1 += 128 - var5;
-         var2 += class35.rasterProvider.width - var5 - var4;
-      }
-
+   @ObfuscatedName("ja")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "3"
+   )
+   static void method1082(int var0, int var1) {
+      Huffman.method3338(class45.topContextMenuRow, var0, var1);
+      class45.topContextMenuRow = null;
    }
 }

@@ -4,211 +4,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("dt")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("z")
+   @ObfuscatedName("qh")
+   static short[] field1746;
+   @ObfuscatedName("cd")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Lio;"
    )
-   public static IndexDataBase field1776;
-   @ObfuscatedName("n")
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1388982249
+      intValue = 2062123111
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2093213681
+      intValue = -1891188751
    )
    @Export("x")
    int x;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -2030736887
+      intValue = 572666947
    )
    @Export("y")
    int y;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Leo;"
+      signature = "Lec;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -2132089799
+      intValue = 549994423
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1503278099
+      intValue = -973522319
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "([Lch;II[I[IB)V",
-      garbageValue = "-46"
+      signature = "(I)V",
+      garbageValue = "1435519779"
    )
-   static void method2558(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-      if(var1 < var2) {
-         int var5 = var1 - 1;
-         int var6 = var2 + 1;
-         int var7 = (var2 + var1) / 2;
-         World var8 = var0[var7];
-         var0[var7] = var0[var1];
-         var0[var1] = var8;
-
-         while(var5 < var6) {
-            boolean var9 = true;
-
-            int var10;
-            int var11;
-            int var12;
-            do {
-               --var6;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var6].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var6].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var6].method1592()?1:0;
-                     var12 = var8.method1592()?1:0;
-                  } else {
-                     var11 = var0[var6].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            var9 = true;
-
-            do {
-               ++var5;
-
-               for(var10 = 0; var10 < 4; ++var10) {
-                  if(var3[var10] == 2) {
-                     var11 = var0[var5].index;
-                     var12 = var8.index;
-                  } else if(var3[var10] == 1) {
-                     var11 = var0[var5].playerCount;
-                     var12 = var8.playerCount;
-                     if(var11 == -1 && var4[var10] == 1) {
-                        var11 = 2001;
-                     }
-
-                     if(var12 == -1 && var4[var10] == 1) {
-                        var12 = 2001;
-                     }
-                  } else if(var3[var10] == 3) {
-                     var11 = var0[var5].method1592()?1:0;
-                     var12 = var8.method1592()?1:0;
-                  } else {
-                     var11 = var0[var5].id;
-                     var12 = var8.id;
-                  }
-
-                  if(var11 != var12) {
-                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
-                        var9 = false;
-                     }
-                     break;
-                  }
-
-                  if(var10 == 3) {
-                     var9 = false;
-                  }
-               }
-            } while(var9);
-
-            if(var5 < var6) {
-               World var13 = var0[var5];
-               var0[var5] = var0[var6];
-               var0[var6] = var13;
-            }
-         }
-
-         method2558(var0, var1, var6, var3, var4);
-         method2558(var0, var6 + 1, var2, var3, var4);
-      }
-
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "1"
-   )
-   @Export("loadCurrentSong")
-   public static boolean loadCurrentSong() {
-      try {
-         if(class214.field2631 == 2) {
-            if(class72.field831 == null) {
-               class72.field831 = Track1.getMusicFile(class214.field2632, Ignore.field810, class262.field3474);
-               if(class72.field831 == null) {
-                  return false;
-               }
-            }
-
-            if(UnitPriceComparator.field299 == null) {
-               UnitPriceComparator.field299 = new class111(class214.field2629, class214.field2633);
-            }
-
-            if(class214.field2630.method4003(class72.field831, class214.field2635, UnitPriceComparator.field299, 22050)) {
-               class214.field2630.method3901();
-               class214.field2630.method3898(class35.field477);
-               class214.field2630.method3903(class72.field831, class214.field2627);
-               class214.field2631 = 0;
-               class72.field831 = null;
-               UnitPriceComparator.field299 = null;
-               class214.field2632 = null;
-               return true;
-            }
-         }
-      } catch (Exception var1) {
-         var1.printStackTrace();
-         class214.field2630.method3904();
-         class214.field2631 = 0;
-         class72.field831 = null;
-         UnitPriceComparator.field299 = null;
-         class214.field2632 = null;
-      }
-
-      return false;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-218347175"
-   )
-   public static boolean method2560(int var0) {
-      return (var0 >> 21 & 1) != 0;
+   public static void method2639() {
+      Widget.field2872.reset();
+      Widget.Widget_cachedModels.reset();
+      Widget.Widget_cachedFonts.reset();
+      Widget.field2735.reset();
    }
 }

@@ -1,38 +1,23 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("eq")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("s")
-   public static int[] field2042;
-   @ObfuscatedName("e")
-   public static short[] field2043;
-   @ObfuscatedName("dk")
-   @ObfuscatedGetter(
-      intValue = 560840327
-   )
-   @Export("port1")
-   static int port1;
-   @ObfuscatedName("hl")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lhq;"
-   )
-   static Widget field2040;
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "[Leu;"
+      signature = "[Ldz;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lil;Lil;IZ)V"
+      signature = "(Lik;Lik;IZ)V",
+      garbageValue = "0"
    )
-   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -51,13 +36,7 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13;
-            if(var4) {
-               var13 = var2.getChild(0, var11);
-            } else {
-               var13 = var2.getChild(var11, 0);
-            }
-
+            byte[] var13 = var2.getChild(var11, 0);
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -67,53 +46,54 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-79"
+      signature = "(II)Z",
+      garbageValue = "1753141207"
    )
-   public boolean method2932(int var1) {
+   public boolean method3008(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILcv;ZI)I",
-      garbageValue = "1172966436"
+      signature = "(IIB)V",
+      garbageValue = "81"
    )
-   static int method2941(int var0, Script var1, boolean var2) {
-      Widget var3 = var2?class82.field1267:CombatInfo1.field1216;
-      if(var0 == 1500) {
-         class82.intStack[++class82.intStackSize - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 1501) {
-         class82.intStack[++class82.intStackSize - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 1502) {
-         class82.intStack[++class82.intStackSize - 1] = var3.width;
-         return 1;
-      } else if(var0 == 1503) {
-         class82.intStack[++class82.intStackSize - 1] = var3.height;
-         return 1;
-      } else if(var0 == 1504) {
-         class82.intStack[++class82.intStackSize - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 1505) {
-         class82.intStack[++class82.intStackSize - 1] = var3.parentId;
-         return 1;
+   public static void method3004(int var0, int var1) {
+      Varbit var3 = (Varbit)Varbit.varbits.get((long)var0);
+      Varbit var2;
+      if(var3 != null) {
+         var2 = var3;
       } else {
-         return 2;
+         byte[] var8 = Varbit.varbit_ref.getConfigData(14, var0);
+         var3 = new Varbit();
+         if(var8 != null) {
+            var3.decode(new Buffer(var8));
+         }
+
+         Varbit.varbits.put(var3, (long)var0);
+         var2 = var3;
       }
+
+      int var4 = var2.configId;
+      int var5 = var2.leastSignificantBit;
+      int var6 = var2.mostSignificantBit;
+      int var7 = class222.varpsMasks[var6 - var5];
+      if(var1 < 0 || var1 > var7) {
+         var1 = 0;
+      }
+
+      var7 <<= var5;
+      class222.widgetSettings[var4] = class222.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2114520108"
+      signature = "(II)[B",
+      garbageValue = "-91294148"
    )
-   public static void method2942() {
-      ItemComposition.items.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
+   static synchronized byte[] method3009(int var0) {
+      return class185.method3612(var0, false);
    }
 }

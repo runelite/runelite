@@ -1,87 +1,74 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("f")
 final class class18 implements Comparator {
-   @ObfuscatedName("qo")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lw;"
+      signature = "[Lkh;"
    )
-   @Export("grandExchangeEvents")
-   static GrandExchangeEvents grandExchangeEvents;
-   @ObfuscatedName("fe")
+   @Export("titlemuteSprite")
+   static IndexedSprite[] titlemuteSprite;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "[Lkg;"
+      signature = "Lik;"
    )
-   @Export("headIconsPrayer")
-   static SpritePixels[] headIconsPrayer;
+   public static IndexDataBase field301;
+   @ObfuscatedName("ac")
+   protected static boolean field305;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Lt;Lt;B)I",
-      garbageValue = "-71"
+      signature = "(Ln;Ln;B)I",
+      garbageValue = "-10"
    )
-   int method128(GrandExchangeEvent var1, GrandExchangeEvent var2) {
-      return var1.method83().compareTo(var2.method83());
+   int method152(GrandExchangeEvent var1, GrandExchangeEvent var2) {
+      return var1.method92().compareTo(var2.method92());
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method152((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method128((GrandExchangeEvent)var1, (GrandExchangeEvent)var2);
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgv;Lgb;I)Lgb;",
-      garbageValue = "-1697261002"
+      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
+      garbageValue = "888633041"
    )
-   @Export("readStringIntParameters")
-   static final IterableHashTable readStringIntParameters(Buffer var0, IterableHashTable var1) {
-      int var2 = var0.readUnsignedByte();
-      int var3;
-      if(var1 == null) {
-         var3 = class234.nextPowerOfTwo(var2);
-         var1 = new IterableHashTable(var3);
-      }
-
-      for(var3 = 0; var3 < var2; ++var3) {
-         boolean var4 = var0.readUnsignedByte() == 1;
-         int var5 = var0.read24BitInt();
-         Object var6;
-         if(var4) {
-            var6 = new ObjectNode(var0.readString());
-         } else {
-            var6 = new IntegerNode(var0.readInt());
-         }
-
-         var1.put((Node)var6, (long)var5);
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("jz")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "0"
-   )
-   static final void method129(int var0) {
-      if(FontName.loadWidget(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
-
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3 != null) {
-               var3.field2884 = 0;
-               var3.field2885 = 0;
+   public static void method153(String var0, boolean var1, String var2, boolean var3) {
+      if(var1) {
+         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var5) {
+               ;
             }
          }
 
+         if(class56.field617.startsWith("win")) {
+            Bounds.method5379(var0, 0, "openjs");
+            return;
+         }
+
+         if(class56.field617.startsWith("mac")) {
+            Bounds.method5379(var0, 1, var2);
+            return;
+         }
+
+         Bounds.method5379(var0, 2, "openjs");
+      } else {
+         Bounds.method5379(var0, 3, "openjs");
       }
+
    }
 }

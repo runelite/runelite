@@ -1,37 +1,24 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kc")
+@ObfuscatedName("kd")
 public class class289 {
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "Lkc;"
-   )
-   public static final class289 field3812;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lkc;"
-   )
-   public static final class289 field3813;
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lkc;"
-   )
-   public static final class289 field3814;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 150190149
-   )
-   public final int field3815;
+   @ObfuscatedName("p")
+   @Export("cp1252AsciiExtension")
+   public static final char[] cp1252AsciiExtension;
 
    static {
-      field3812 = new class289(0);
-      field3813 = new class289(1);
-      field3814 = new class289(2);
+      cp1252AsciiExtension = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
    }
 
-   class289(int var1) {
-      this.field3815 = var1;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "125"
+   )
+   static int method5300(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class19.currentRequest != null && var2 == class19.currentRequest.hash?class94.NetCache_responseArchiveBuffer.offset * 99 / (class94.NetCache_responseArchiveBuffer.payload.length - class19.currentRequest.padding) + 1:0;
    }
 }

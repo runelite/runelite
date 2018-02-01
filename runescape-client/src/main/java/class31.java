@@ -1,122 +1,102 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("ax")
 public class class31 {
-   @ObfuscatedName("do")
+   @ObfuscatedName("nr")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lkx;"
    )
-   @Export("indexCache15")
-   static IndexData indexCache15;
-   @ObfuscatedName("n")
+   static class301 field415;
+   @ObfuscatedName("t")
+   @Export("colorsToFind")
+   public static short[] colorsToFind;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1856805415
+      intValue = 935254351
    )
-   final int field422;
-   @ObfuscatedName("v")
+   static int field417;
+   @ObfuscatedName("h")
+   static int[] field413;
+   @ObfuscatedName("jw")
    @ObfuscatedGetter(
-      intValue = 595050407
+      intValue = -1857097095
    )
-   final int field420;
-   @ObfuscatedName("y")
+   @Export("menuX")
+   static int menuX;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -926130039
+      intValue = 710613741
    )
-   final int field421;
+   final int field412;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1643357209
+   )
+   final int field414;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 75270309
+   )
+   final int field411;
 
    class31(int var1, int var2, int var3) {
-      this.field422 = var1;
-      this.field420 = var2;
-      this.field421 = var3;
+      this.field412 = var1;
+      this.field414 = var2;
+      this.field411 = var3;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "-1180869467"
+      signature = "(ZI)V",
+      garbageValue = "-2005662060"
    )
-   public static void method271(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+   @Export("sendConInfo")
+   public static void sendConInfo(boolean var0) {
+      if(class249.NetCache_socket != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
+            class249.NetCache_socket.vmethod3192(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class249.NetCache_socket.vmethod3186();
+            } catch (Exception var3) {
+               ;
             }
+
+            ++class249.field3337;
+            class249.NetCache_socket = null;
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method271(var0, var1, var2, var5 - 1);
-         method271(var0, var1, var5 + 1, var3);
       }
-
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)Lkg;",
-      garbageValue = "-802872046"
+      signature = "(III)Lho;",
+      garbageValue = "-808855025"
    )
-   static SpritePixels method270() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class299.field3868;
-      var0.maxHeight = class299.field3867;
-      var0.offsetX = class299.field3870[0];
-      var0.offsetY = class299.offsetsY[0];
-      var0.width = class54.field635[0];
-      var0.height = UrlRequester.field2099[0];
-      int var1 = var0.width * var0.height;
-      byte[] var2 = class188.spritePixels[0];
-      var0.pixels = new int[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.pixels[var3] = class299.field3869[var2[var3] & 255];
-      }
-
-      class139.method2922();
-      return var0;
+   @Export("getWidgetChild")
+   public static Widget getWidgetChild(int var0, int var1) {
+      Widget var2 = class35.getWidget(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 
-   @ObfuscatedName("iv")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IIS)Ljava/lang/String;",
-      garbageValue = "-12704"
+      signature = "(ZI)V",
+      garbageValue = "2057841909"
    )
-   static final String method272(int var0, int var1) {
-      int var2 = var1 - var0;
-      return var2 < -9?class54.getColTags(16711680):(var2 < -6?class54.getColTags(16723968):(var2 < -3?class54.getColTags(16740352):(var2 < 0?class54.getColTags(16756736):(var2 > 9?class54.getColTags(65280):(var2 > 6?class54.getColTags(4259584):(var2 > 3?class54.getColTags(8453888):(var2 > 0?class54.getColTags(12648192):class54.getColTags(16776960))))))));
-   }
-
-   @ObfuscatedName("ix")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "510193549"
-   )
-   static final String method269(int var0) {
-      String var1 = Integer.toString(var0);
-
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+   public static void method288(boolean var0) {
+      if(var0 != class255.isMembersWorld) {
+         KeyFocusListener.method759();
+         class255.isMembersWorld = var0;
       }
 
-      return var1.length() > 9?" " + class54.getColTags(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class54.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class54.getColTags(16776960) + var1 + "</col>");
    }
 }

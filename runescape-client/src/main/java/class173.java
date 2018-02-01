@@ -1,130 +1,129 @@
-import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fh")
 public class class173 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2445;
-   @ObfuscatedName("v")
+   public static final class173 field2395;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2437;
-   @ObfuscatedName("y")
+   public static final class173 field2389;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2438;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   public static final class173 field2436;
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   public static final class173 field2440;
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lfe;"
-   )
-   public static final class173 field2442;
+   public static final class173 field2390;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2447;
-   @ObfuscatedName("b")
+   public static final class173 field2391;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2443;
-   @ObfuscatedName("e")
+   public static final class173 field2392;
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2444;
-   @ObfuscatedName("f")
+   public static final class173 field2393;
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfe;"
+      signature = "Lfh;"
    )
-   public static final class173 field2439;
+   public static final class173 field2394;
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lfh;"
+   )
+   public static final class173 field2397;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lfh;"
+   )
+   public static final class173 field2396;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lfh;"
+   )
+   public static final class173 field2388;
 
    static {
-      field2445 = new class173(5);
-      field2437 = new class173(4);
-      field2438 = new class173(14);
-      field2436 = new class173(5);
-      field2440 = new class173(7);
-      field2442 = new class173(3);
-      field2447 = new class173(15);
-      field2443 = new class173(2);
-      field2444 = new class173(6);
-      field2439 = new class173(4);
+      field2395 = new class173(7);
+      field2389 = new class173(15);
+      field2390 = new class173(14);
+      field2391 = new class173(6);
+      field2392 = new class173(5);
+      field2393 = new class173(3);
+      field2394 = new class173(4);
+      field2397 = new class173(5);
+      field2396 = new class173(4);
+      field2388 = new class173(2);
    }
 
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "5"
+      garbageValue = "7"
    )
    class173(int var1) {
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "-2045674679"
+      signature = "(IIIIIIII)V",
+      garbageValue = "-2062328855"
    )
-   public static int method3247(byte[] var0, int var1, int var2) {
-      int var3 = -1;
-
-      for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
+   static final void method3299(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int[] var7 = Region.method2864(var0, var1, var2);
+      int[] var8 = Region.method2864(var3, var4, var5);
+      Rasterizer2D.drawLine(var7[0], var7[1], var8[0], var8[1], var6);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)Lck;",
-      garbageValue = "1775957094"
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "-1993447978"
    )
-   static Preferences method3248() {
-      FileOnDisk var0 = null;
-      Preferences var1 = new Preferences();
-
-      try {
-         var0 = BoundingBox3D.getPreferencesFile("", class3.field18.name, false);
-         byte[] var2 = new byte[(int)var0.length()];
-
-         int var4;
-         for(int var3 = 0; var3 < var2.length; var3 += var4) {
-            var4 = var0.read(var2, var3, var2.length - var3);
-            if(var4 == -1) {
-               throw new IOException();
+   @Export("byteArrayToObject")
+   public static Object byteArrayToObject(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !AbstractByteBuffer.directBufferUnavailable) {
+            try {
+               DirectByteBuffer var2 = new DirectByteBuffer();
+               var2.put(var0);
+               return var2;
+            } catch (Throwable var3) {
+               AbstractByteBuffer.directBufferUnavailable = true;
             }
          }
 
-         var1 = new Preferences(new Buffer(var2));
-      } catch (Exception var6) {
-         ;
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(Ldj;B)V",
+      garbageValue = "-11"
+   )
+   static final void method3300(TaskDataNode var0) {
+      var0.field1598 = false;
+      if(var0.data != null) {
+         var0.data.int1 = 0;
       }
 
-      try {
-         if(var0 != null) {
-            var0.close();
-         }
-      } catch (Exception var5) {
-         ;
+      for(TaskDataNode var1 = var0.vmethod4155(); var1 != null; var1 = var0.vmethod4141()) {
+         method3300(var1);
       }
 
-      return var1;
    }
 }

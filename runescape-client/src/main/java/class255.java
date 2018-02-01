@@ -1,48 +1,57 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ib")
 public class class255 extends CacheableNode {
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lik;"
    )
-   public static NodeCache field3410;
-   @ObfuscatedName("y")
-   public boolean field3411;
+   public static IndexDataBase field3380;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lgm;"
+   )
+   public static NodeCache field3379;
+   @ObfuscatedName("r")
+   @Export("isMembersWorld")
+   public static boolean isMembersWorld;
+   @ObfuscatedName("w")
+   public boolean field3378;
 
    static {
-      field3410 = new NodeCache(64);
+      field3379 = new NodeCache(64);
    }
 
    public class255() {
-      this.field3411 = false;
+      this.field3378 = false;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgv;I)V",
-      garbageValue = "-1402643533"
+      signature = "(Lgj;I)V",
+      garbageValue = "1952917597"
    )
-   public void method4514(Buffer var1) {
+   public void method4592(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4515(var1, var2);
+         this.method4590(var1, var2);
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgv;II)V",
-      garbageValue = "-1666211037"
+      signature = "(Lgj;II)V",
+      garbageValue = "1693290455"
    )
-   void method4515(Buffer var1, int var2) {
+   void method4590(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3411 = true;
+         this.field3378 = true;
       }
 
    }

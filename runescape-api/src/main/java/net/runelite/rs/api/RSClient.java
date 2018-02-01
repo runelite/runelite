@@ -201,12 +201,6 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuActionParams1")
 	int[] getMenuActionParams1();
 
-	@Import("friends")
-	RSFriend[] getFriends();
-
-	@Import("ignores")
-	RSIgnore[] getIgnores();
-
 	@Import("worldList")
 	RSWorld[] getWorldList();
 
@@ -258,13 +252,6 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("grandExchangeOffers")
 	RSGrandExchangeOffer[] getGrandExchangeOffers();
-
-	@Import("clanChatCount")
-	@Override
-	int getClanChatCount();
-
-	@Import("clanMembers")
-	RSClanMember[] getClanMembers();
 
 	@Import("isMenuOpen")
 	@Override
@@ -344,14 +331,6 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("destinationY")
 	int getDestinationY();
-
-	@Import("isFriended")
-	@Override
-	boolean isFriended(String name, boolean mustBeLoggedIn);
-
-	@Import("isIgnored")
-	@Override
-	boolean isIgnored(String name);
 
 	@Import("audioEffects")
 	RSSoundEffect[] getAudioEffects();
@@ -460,4 +439,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("scriptStringStack")
 	@Override
 	String[] getStringStack();
+
+	@Import("friendManager")
+	RSFriendManager getFriendManager();
+
+	@Import("clanMemberManager")
+	RSClanMemberManager getClanMemberManager();
+
+	@Import("loginType")
+	RSJagexLoginType getLoginType();
+
+	@Construct
+	RSName createName(String name, RSJagexLoginType type);
 }

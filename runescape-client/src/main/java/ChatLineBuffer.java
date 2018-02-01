@@ -4,29 +4,18 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ci")
+@ObfuscatedName("ck")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("om")
-   @ObfuscatedGetter(
-      intValue = -1201383133
-   )
-   static int field1456;
-   @ObfuscatedName("jv")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lcf;"
-   )
-   @Export("topContextMenuRow")
-   static ContextMenuRow topContextMenuRow;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "[Lbs;"
+      signature = "[Lbl;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1772453129
+      intValue = -1969048231
    )
    @Export("length")
    int length;
@@ -35,10 +24,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbs;",
-      garbageValue = "-50"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbl;",
+      garbageValue = "536400510"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -66,23 +55,62 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Lbs;",
-      garbageValue = "520563005"
+      signature = "(IB)Lbl;",
+      garbageValue = "76"
    )
    @Export("getMessage")
    MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1295127078"
+      signature = "(S)I",
+      garbageValue = "-2924"
    )
    @Export("size")
    int size() {
       return this.length;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "([BB)Ljava/lang/String;",
+      garbageValue = "37"
+   )
+   public static String method2017(byte[] var0) {
+      int var2 = var0.length;
+      StringBuilder var3 = new StringBuilder();
+
+      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
+         int var5 = var0[var4] & 255;
+         var3.append(class292.field3771[var5 >>> 2]);
+         if(var4 < var2 - 1) {
+            int var6 = var0[var4 + 1] & 255;
+            var3.append(class292.field3771[(var5 & 3) << 4 | var6 >>> 4]);
+            if(var4 < var2 - 2) {
+               int var7 = var0[var4 + 2] & 255;
+               var3.append(class292.field3771[(var6 & 15) << 2 | var7 >>> 6]).append(class292.field3771[var7 & 63]);
+            } else {
+               var3.append(class292.field3771[(var6 & 15) << 2]).append("=");
+            }
+         } else {
+            var3.append(class292.field3771[(var5 & 3) << 4]).append("==");
+         }
+      }
+
+      String var1 = var3.toString();
+      return var1;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(B)[Lir;",
+      garbageValue = "125"
+   )
+   public static JagexGame[] method2010() {
+      return new JagexGame[]{JagexGame.field3266, JagexGame.field3267, JagexGame.field3269, JagexGame.field3265, JagexGame.field3268, JagexGame.field3272};
    }
 }

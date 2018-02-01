@@ -1,168 +1,181 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hz")
 public class class216 extends Node {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1735803979
+      intValue = -1789877157
    )
-   int field2666;
-   @ObfuscatedName("v")
+   int field2648;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lhm;"
+      signature = "Lhf;"
    )
-   class218 field2679;
-   @ObfuscatedName("y")
+   class218 field2651;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lhh;"
+   )
+   class213 field2634;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Ldp;"
    )
-   RawAudioNode field2669;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhj;"
-   )
-   class213 field2668;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1750790419
-   )
-   int field2665;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 617351827
-   )
-   int field2670;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -2425003
-   )
-   int field2684;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1956158693
-   )
-   int field2672;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -342055613
-   )
-   int field2671;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1935672103
-   )
-   int field2674;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -313641679
-   )
-   int field2683;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1967811393
-   )
-   int field2676;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1729918911
-   )
-   int field2677;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 11690563
-   )
-   int field2680;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1083778911
-   )
-   int field2667;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1765270467
-   )
-   int field2675;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -779101233
-   )
-   int field2681;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1088291109
-   )
-   int field2682;
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "Ldt;"
-   )
-   class116 field2673;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 717225061
-   )
-   int field2678;
+   RawAudioNode field2633;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1930196335
+      intValue = 995190901
    )
-   int field2685;
-
+   int field2635;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1429101731
+   )
+   int field2636;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1103850305
+   )
+   int field2637;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1407430437
+   )
+   int field2638;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -829686943
+   )
+   int field2639;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1703950983
+   )
+   int field2640;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1708814875
+   )
+   int field2641;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -2096263727
+   )
+   int field2642;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 676665931
+   )
+   int field2643;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1422559719
+   )
+   int field2644;
    @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1411608588"
+   @ObfuscatedGetter(
+      intValue = -8250165
    )
-   void method4027() {
-      this.field2679 = null;
-      this.field2669 = null;
-      this.field2668 = null;
-      this.field2673 = null;
+   int field2631;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 675873075
+   )
+   int field2632;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1247746265
+   )
+   int field2647;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 576806169
+   )
+   int field2645;
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "Ldm;"
+   )
+   class114 field2649;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 408709971
+   )
+   int field2650;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1998284601
+   )
+   int field2646;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-39"
+   )
+   void method4073() {
+      this.field2651 = null;
+      this.field2633 = null;
+      this.field2634 = null;
+      this.field2649 = null;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(CS)Z",
-      garbageValue = "-31088"
+      signature = "(Lgd;I)V",
+      garbageValue = "2144113696"
    )
-   static final boolean method4029(char var0) {
-      if(Character.isISOControl(var0)) {
-         return false;
-      } else if(class230.method4256(var0)) {
-         return true;
-      } else {
-         char[] var1 = class278.field3748;
-
-         int var2;
-         char var3;
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         var1 = class278.field3747;
-
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
-            }
-         }
-
-         return false;
+   @Export("initializeGPI")
+   static final void initializeGPI(PacketBuffer var0) {
+      var0.bitAccess();
+      int var1 = Client.localInteractingIndex;
+      Player var2 = class36.localPlayer = Client.cachedPlayers[var1] = new Player();
+      var2.field809 = var1;
+      int var3 = var0.getBits(30);
+      byte var4 = (byte)(var3 >> 28);
+      int var5 = var3 >> 14 & 16383;
+      int var6 = var3 & 16383;
+      var2.pathX[0] = var5 - WorldMapType1.baseX;
+      var2.x = (var2.pathX[0] << 7) + (var2.getSize() << 6);
+      var2.pathY[0] = var6 - class85.baseY;
+      var2.y = (var2.pathY[0] << 7) + (var2.getSize() << 6);
+      MessageNode.plane = var2.field808 = var4;
+      if(class92.field1377[var1] != null) {
+         var2.decodeApperance(class92.field1377[var1]);
       }
+
+      class92.playerIndexesCount = 0;
+      class92.playerIndices[++class92.playerIndexesCount - 1] = var1;
+      class92.field1375[var1] = 0;
+      class92.field1373 = 0;
+
+      for(int var7 = 1; var7 < 2048; ++var7) {
+         if(var7 != var1) {
+            int var8 = var0.getBits(18);
+            int var9 = var8 >> 16;
+            int var10 = var8 >> 8 & 597;
+            int var11 = var8 & 597;
+            class92.Players_regions[var7] = (var10 << 14) + var11 + (var9 << 28);
+            class92.Players_orientations[var7] = 0;
+            class92.Players_targetIndices[var7] = -1;
+            class92.field1384[++class92.field1373 - 1] = var7;
+            class92.field1375[var7] = 0;
+         }
+      }
+
+      var0.byteAccess();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([BB)Ljava/lang/String;",
-      garbageValue = "18"
+      signature = "(II)I",
+      garbageValue = "1028668801"
    )
-   public static String method4026(byte[] var0) {
-      return AttackOption.method1749(var0, 0, var0.length);
+   static int method4077(int var0) {
+      MessageNode var1 = (MessageNode)class94.messages.get((long)var0);
+      return var1 == null?-1:(var1.next == class94.field1401.sentinel?-1:((MessageNode)var1.next).id);
    }
 }

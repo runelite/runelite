@@ -7,47 +7,51 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("eg")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("ej")
+   @ObfuscatedName("fr")
+   @Export("landMapFileIds")
+   static int[] landMapFileIds;
+   @ObfuscatedName("gp")
    @ObfuscatedGetter(
-      longValue = 8778909200186975023L
+      intValue = -1919970823
    )
-   static long field1945;
-   @ObfuscatedName("n")
+   @Export("cameraPitch")
+   static int cameraPitch;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1205436467
+      intValue = -1037053579
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 223131607
+      intValue = 728831033
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -48624337
+      intValue = -1500459243
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1347512629
+      intValue = 1642698177
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1886351167
+      intValue = -1479182451
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @Export("flatShade")
    boolean flatShade;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 450993421
+      intValue = -300662545
    )
    @Export("rgb")
    int rgb;
@@ -63,44 +67,12 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IZI)Ljava/lang/String;",
-      garbageValue = "2099683278"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1544951906"
    )
-   public static String method2741(int var0, boolean var1) {
-      if(var0 < 0) {
-         return Integer.toString(var0);
-      } else {
-         int var3 = var0;
-         String var2;
-         if(var0 < 0) {
-            var2 = Integer.toString(var0, 10);
-         } else {
-            int var4 = 2;
-
-            for(int var5 = var0 / 10; var5 != 0; ++var4) {
-               var5 /= 10;
-            }
-
-            char[] var6 = new char[var4];
-            var6[0] = '+';
-
-            for(int var7 = var4 - 1; var7 > 0; --var7) {
-               int var8 = var3;
-               var3 /= 10;
-               int var9 = var8 - var3 * 10;
-               if(var9 >= 10) {
-                  var6[var7] = (char)(var9 + 87);
-               } else {
-                  var6[var7] = (char)(var9 + 48);
-               }
-            }
-
-            var2 = new String(var6);
-         }
-
-         return var2;
-      }
+   static final void method2808(String var0) {
+      class63.method1054(var0 + " is already on your friend list");
    }
 }

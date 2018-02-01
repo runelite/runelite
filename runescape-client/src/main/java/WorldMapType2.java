@@ -1,379 +1,252 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("an")
 @Implements("WorldMapType2")
 public class WorldMapType2 implements WorldMapSectionBase {
-   @ObfuscatedName("es")
+   @ObfuscatedName("oy")
+   @ObfuscatedGetter(
+      intValue = -858288283
+   )
+   static int field491;
+   @ObfuscatedName("l")
+   public static String[] field490;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1105510219
+   )
+   int field483;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1542678959
+   )
+   int field489;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1771120471
+   )
+   int field485;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1774723351
+   )
+   int field486;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1204838243
+   )
+   int field484;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -587599695
+   )
+   int field488;
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Let;"
+      signature = "(Lae;I)V",
+      garbageValue = "-1518418003"
    )
-   static Task field501;
-   @ObfuscatedName("fi")
-   @ObfuscatedGetter(
-      intValue = 1665186743
-   )
-   static int field505;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 18409869
-   )
-   int field495;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 852412371
-   )
-   int field494;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 2031371177
-   )
-   int field503;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1354092545
-   )
-   int field497;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -830929141
-   )
-   int field498;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1427102431
-   )
-   int field499;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Laz;I)V",
-      garbageValue = "1596430382"
-   )
-   public void vmethod695(WorldMapData var1) {
-      if(var1.field437 > this.field498) {
-         var1.field437 = this.field498;
+   public void vmethod701(WorldMapData var1) {
+      if(var1.field426 > this.field484) {
+         var1.field426 = this.field484;
       }
 
-      if(var1.field434 < this.field498) {
-         var1.field434 = this.field498;
+      if(var1.field433 < this.field484) {
+         var1.field433 = this.field484;
       }
 
-      if(var1.field436 > this.field499) {
-         var1.field436 = this.field499;
+      if(var1.field428 > this.field488) {
+         var1.field428 = this.field488;
       }
 
-      if(var1.field440 < this.field499) {
-         var1.field440 = this.field499;
+      if(var1.field422 < this.field488) {
+         var1.field422 = this.field488;
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIIB)Z",
-      garbageValue = "-76"
+      signature = "(IIII)Z",
+      garbageValue = "-2038931748"
    )
-   public boolean vmethod696(int var1, int var2, int var3) {
-      return var1 >= this.field495 && var1 < this.field494 + this.field495?var2 >> 6 == this.field503 && var3 >> 6 == this.field497:false;
+   public boolean vmethod702(int var1, int var2, int var3) {
+      return var1 >= this.field483 && var1 < this.field483 + this.field489?var2 >> 6 == this.field485 && var3 >> 6 == this.field486:false;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)Z",
-      garbageValue = "-870088204"
+      garbageValue = "1297520065"
    )
-   public boolean vmethod697(int var1, int var2) {
-      return var1 >> 6 == this.field498 && var2 >> 6 == this.field499;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IIII)[I",
-      garbageValue = "438384537"
-   )
-   public int[] vmethod716(int var1, int var2, int var3) {
-      if(!this.vmethod696(var1, var2, var3)) {
-         return null;
-      } else {
-         int[] var4 = new int[]{this.field498 * 64 - this.field503 * 64 + var2, var3 + (this.field499 * 64 - this.field497 * 64)};
-         return var4;
-      }
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(III)Lht;",
-      garbageValue = "1662378690"
-   )
-   public Coordinates vmethod694(int var1, int var2) {
-      if(!this.vmethod697(var1, var2)) {
-         return null;
-      } else {
-         int var3 = this.field503 * 64 - this.field498 * 64 + var1;
-         int var4 = this.field497 * 64 - this.field499 * 64 + var2;
-         return new Coordinates(this.field495, var3, var4);
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Lgv;I)V",
-      garbageValue = "1961822977"
-   )
-   public void vmethod700(Buffer var1) {
-      this.field495 = var1.readUnsignedByte();
-      this.field494 = var1.readUnsignedByte();
-      this.field503 = var1.readUnsignedShort();
-      this.field497 = var1.readUnsignedShort();
-      this.field498 = var1.readUnsignedShort();
-      this.field499 = var1.readUnsignedShort();
-      this.method505();
+   public boolean vmethod703(int var1, int var2) {
+      return var1 >> 6 == this.field484 && var2 >> 6 == this.field488;
    }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "908739394"
+      signature = "(IIII)[I",
+      garbageValue = "-336358408"
    )
-   void method505() {
+   public int[] vmethod711(int var1, int var2, int var3) {
+      if(!this.vmethod702(var1, var2, var3)) {
+         return null;
+      } else {
+         int[] var4 = new int[]{this.field484 * 64 - this.field485 * 64 + var2, var3 + (this.field488 * 64 - this.field486 * 64)};
+         return var4;
+      }
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIS)V",
-      garbageValue = "-788"
+      signature = "(III)Lhn;",
+      garbageValue = "1673050917"
    )
-   public static void method520(String var0, String var1, int var2, int var3) throws IOException {
-      class157.idxCount = var3;
-      Bounds.field3817 = var2;
+   public Coordinates vmethod700(int var1, int var2) {
+      if(!this.vmethod703(var1, var2)) {
+         return null;
+      } else {
+         int var3 = this.field485 * 64 - this.field484 * 64 + var1;
+         int var4 = this.field486 * 64 - this.field488 * 64 + var2;
+         return new Coordinates(this.field483, var3, var4);
+      }
+   }
 
-      try {
-         SoundTask.osName = System.getProperty("os.name");
-      } catch (Exception var29) {
-         SoundTask.osName = "Unknown";
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lgj;B)V",
+      garbageValue = "7"
+   )
+   public void vmethod706(Buffer var1) {
+      this.field483 = var1.readUnsignedByte();
+      this.field489 = var1.readUnsignedByte();
+      this.field485 = var1.readUnsignedShort();
+      this.field486 = var1.readUnsignedShort();
+      this.field484 = var1.readUnsignedShort();
+      this.field488 = var1.readUnsignedShort();
+      this.method517();
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-122"
+   )
+   void method517() {
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Len;II)V",
+      garbageValue = "808194559"
+   )
+   public static final void method532(Model var0, int var1) {
+      for(int var2 = 0; var2 < var0.indicesCount; ++var2) {
+         if(var0.field1813[var2] != -2) {
+            int var3 = var0.indices1[var2];
+            int var4 = var0.indices2[var2];
+            int var5 = var0.indices3[var2];
+            int var6 = Model.modelViewportYs[var3];
+            int var7 = Model.modelViewportYs[var4];
+            int var8 = Model.modelViewportYs[var5];
+            class25.method189(Model.modelViewportXs[var3], Model.modelViewportXs[var4], Model.modelViewportXs[var5], var6, var7, var8, var1);
+         }
       }
 
-      class157.osNameLC = SoundTask.osName.toLowerCase();
+   }
 
-      try {
-         class153.userHome = System.getProperty("user.home");
-         if(class153.userHome != null) {
-            class153.userHome = class153.userHome + "/";
-         }
-      } catch (Exception var28) {
-         ;
-      }
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-1686168130"
+   )
+   public static boolean method534(int var0) {
+      return (var0 & 1) != 0;
+   }
 
-      try {
-         if(class157.osNameLC.startsWith("win")) {
-            if(class153.userHome == null) {
-               class153.userHome = System.getenv("USERPROFILE");
-            }
-         } else if(class153.userHome == null) {
-            class153.userHome = System.getenv("HOME");
-         }
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;IS)I",
+      garbageValue = "3735"
+   )
+   public static int method516(CharSequence var0, CharSequence var1, int var2) {
+      int var3 = var0.length();
+      int var4 = var1.length();
+      int var5 = 0;
+      int var6 = 0;
+      char var7 = 0;
+      char var8 = 0;
 
-         if(class153.userHome != null) {
-            class153.userHome = class153.userHome + "/";
-         }
-      } catch (Exception var27) {
-         ;
-      }
-
-      if(class153.userHome == null) {
-         class153.userHome = "~/";
-      }
-
-      class29.cacheLocations = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", class153.userHome, "/tmp/", ""};
-      class46.field570 = new String[]{".jagex_cache_" + Bounds.field3817, ".file_store_" + Bounds.field3817};
-      int var18 = 0;
-
-      label277:
-      while(var18 < 4) {
-         String var6 = var18 == 0?"":"" + var18;
-         class157.jagexClDat = new File(class153.userHome, "jagex_cl_" + var0 + "_" + var1 + var6 + ".dat");
-         String var7 = null;
-         String var8 = null;
-         boolean var9 = false;
-         File var36;
-         if(class157.jagexClDat.exists()) {
-            try {
-               FileOnDisk var10 = new FileOnDisk(class157.jagexClDat, "rw", 10000L);
-
-               Buffer var11;
-               int var12;
-               for(var11 = new Buffer((int)var10.length()); var11.offset < var11.payload.length; var11.offset += var12) {
-                  var12 = var10.read(var11.payload, var11.offset, var11.payload.length - var11.offset);
-                  if(var12 == -1) {
-                     throw new IOException();
-                  }
-               }
-
-               var11.offset = 0;
-               var12 = var11.readUnsignedByte();
-               if(var12 < 1 || var12 > 3) {
-                  throw new IOException("" + var12);
-               }
-
-               int var13 = 0;
-               if(var12 > 1) {
-                  var13 = var11.readUnsignedByte();
-               }
-
-               if(var12 <= 2) {
-                  var7 = var11.getJagString();
-                  if(var13 == 1) {
-                     var8 = var11.getJagString();
-                  }
-               } else {
-                  var7 = var11.getCESU8();
-                  if(var13 == 1) {
-                     var8 = var11.getCESU8();
-                  }
-               }
-
-               var10.close();
-            } catch (IOException var32) {
-               var32.printStackTrace();
-            }
-
-            if(var7 != null) {
-               var36 = new File(var7);
-               if(!var36.exists()) {
-                  var7 = null;
-               }
-            }
-
-            if(var7 != null) {
-               var36 = new File(var7, "test.dat");
-               if(!BoundingBox3D.method51(var36, true)) {
-                  var7 = null;
-               }
-            }
+      while(var5 - var7 < var3 || var6 - var8 < var4) {
+         if(var5 - var7 >= var3) {
+            return -1;
          }
 
-         if(var7 == null && var18 == 0) {
-            label251:
-            for(int var19 = 0; var19 < class46.field570.length; ++var19) {
-               for(int var20 = 0; var20 < class29.cacheLocations.length; ++var20) {
-                  File var21 = new File(class29.cacheLocations[var20] + class46.field570[var19] + File.separatorChar + var0 + File.separatorChar);
-                  if(var21.exists() && BoundingBox3D.method51(new File(var21, "test.dat"), true)) {
-                     var7 = var21.toString();
-                     var9 = true;
-                     break label251;
-                  }
-               }
-            }
+         if(var6 - var8 >= var4) {
+            return 1;
          }
 
-         if(var7 == null) {
-            var7 = class153.userHome + File.separatorChar + "jagexcache" + var6 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-            var9 = true;
-         }
-
-         if(var8 != null) {
-            File var35 = new File(var8);
-            var36 = new File(var7);
-
-            try {
-               File[] var39 = var35.listFiles();
-               File[] var22 = var39;
-
-               for(int var14 = 0; var14 < var22.length; ++var14) {
-                  File var15 = var22[var14];
-                  File var16 = new File(var36, var15.getName());
-                  boolean var17 = var15.renameTo(var16);
-                  if(!var17) {
-                     throw new IOException();
-                  }
-               }
-            } catch (Exception var31) {
-               var31.printStackTrace();
-            }
-
-            var9 = true;
-         }
-
-         if(var9) {
-            FrameMap.method2742(new File(var7), (File)null);
-         }
-
-         File var5 = new File(var7);
-         class157.field2164 = var5;
-         if(!class157.field2164.exists()) {
-            class157.field2164.mkdirs();
-         }
-
-         File[] var34 = class157.field2164.listFiles();
-         if(var34 != null) {
-            File[] var37 = var34;
-
-            for(int var23 = 0; var23 < var37.length; ++var23) {
-               File var24 = var37[var23];
-               if(!BoundingBox3D.method51(var24, false)) {
-                  ++var18;
-                  continue label277;
-               }
-            }
-         }
-         break;
-      }
-
-      ScriptEvent.method1108(class157.field2164);
-
-      try {
-         File var4 = new File(class153.userHome, "random.dat");
-         int var26;
-         if(var4.exists()) {
-            class157.randomDat = new CacheFile(new FileOnDisk(var4, "rw", 25L), 24, 0);
+         char var9;
+         if(var7 != 0) {
+            var9 = var7;
+            boolean var14 = false;
          } else {
-            label204:
-            for(int var25 = 0; var25 < class46.field570.length; ++var25) {
-               for(var26 = 0; var26 < class29.cacheLocations.length; ++var26) {
-                  File var38 = new File(class29.cacheLocations[var26] + class46.field570[var25] + File.separatorChar + "random.dat");
-                  if(var38.exists()) {
-                     class157.randomDat = new CacheFile(new FileOnDisk(var38, "rw", 25L), 24, 0);
-                     break label204;
-                  }
-               }
+            var9 = var0.charAt(var5++);
+         }
+
+         char var10;
+         if(var8 != 0) {
+            var10 = var8;
+            boolean var15 = false;
+         } else {
+            var10 = var1.charAt(var6++);
+         }
+
+         var7 = NPC.method1833(var9);
+         var8 = NPC.method1833(var10);
+         var9 = class85.method1846(var9, var2);
+         var10 = class85.method1846(var10, var2);
+         if(var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+            var9 = Character.toLowerCase(var9);
+            var10 = Character.toLowerCase(var10);
+            if(var9 != var10) {
+               return class1.method1(var9, var2) - class1.method1(var10, var2);
+            }
+         }
+      }
+
+      int var16 = Math.min(var3, var4);
+
+      char var12;
+      int var17;
+      for(var17 = 0; var17 < var16; ++var17) {
+         char var11 = var0.charAt(var17);
+         var12 = var1.charAt(var17);
+         if(var11 != var12 && Character.toUpperCase(var11) != Character.toUpperCase(var12)) {
+            var11 = Character.toLowerCase(var11);
+            var12 = Character.toLowerCase(var12);
+            if(var11 != var12) {
+               return class1.method1(var11, var2) - class1.method1(var12, var2);
+            }
+         }
+      }
+
+      var17 = var3 - var4;
+      if(var17 != 0) {
+         return var17;
+      } else {
+         for(int var18 = 0; var18 < var16; ++var18) {
+            var12 = var0.charAt(var18);
+            char var13 = var1.charAt(var18);
+            if(var13 != var12) {
+               return class1.method1(var12, var2) - class1.method1(var13, var2);
             }
          }
 
-         if(class157.randomDat == null) {
-            RandomAccessFile var33 = new RandomAccessFile(var4, "rw");
-            var26 = var33.read();
-            var33.seek(0L);
-            var33.write(var26);
-            var33.seek(0L);
-            var33.close();
-            class157.randomDat = new CacheFile(new FileOnDisk(var4, "rw", 25L), 24, 0);
-         }
-      } catch (IOException var30) {
-         ;
+         return 0;
       }
-
-      class157.dat2File = new CacheFile(new FileOnDisk(class48.method707("main_file_cache.dat2"), "rw", 1048576000L), 5200, 0);
-      class157.idx255File = new CacheFile(new FileOnDisk(class48.method707("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
-      class157.idxFiles = new CacheFile[class157.idxCount];
-
-      for(var18 = 0; var18 < class157.idxCount; ++var18) {
-         class157.idxFiles[var18] = new CacheFile(new FileOnDisk(class48.method707("main_file_cache.idx" + var18), "rw", 1048576L), 6000, 0);
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Lil;I)V",
-      garbageValue = "-1236974592"
-   )
-   public static void method525(IndexDataBase var0) {
-      Overlay.overlay_ref = var0;
    }
 }

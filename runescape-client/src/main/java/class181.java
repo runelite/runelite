@@ -1,37 +1,42 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("ff")
 public class class181 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("gy")
    @ObfuscatedSignature(
-      signature = "(II)Lir;",
-      garbageValue = "1209048745"
+      signature = "(Lbc;ZI)V",
+      garbageValue = "-1658719256"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.identKits.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = KitDefinition.identKit_ref.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
+   static void method3381(Player var0, boolean var1) {
+      if(var0 != null && var0.hasConfig() && !var0.hidden) {
+         int var2 = var0.field809 << 14;
+         var0.isLowDetail = false;
+         if((Client.lowMemory && class92.playerIndexesCount > 50 || class92.playerIndexesCount > 200) && var1 && var0.poseAnimation == var0.idlePoseAnimation) {
+            var0.isLowDetail = true;
          }
 
-         KitDefinition.identKits.put(var1, (long)var0);
-         return var1;
-      }
-   }
+         int var3 = var0.x >> 7;
+         int var4 = var0.y >> 7;
+         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
+               var0.isLowDetail = false;
+               var0.field799 = GameCanvas.getTileHeight(var0.x, var0.y, MessageNode.plane);
+               class48.region.method2900(MessageNode.plane, var0.x, var0.y, var0.field799, 60, var0, var0.angle, var2, var0.field801, var0.field804, var0.field803, var0.field816);
+            } else {
+               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
+                  if(Client.field909[var3][var4] == Client.field821) {
+                     return;
+                  }
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "-135681896"
-   )
-   static synchronized byte[] method3305(int var0) {
-      return class185.method3556(var0, false);
+                  Client.field909[var3][var4] = Client.field821;
+               }
+
+               var0.field799 = GameCanvas.getTileHeight(var0.x, var0.y, MessageNode.plane);
+               class48.region.method2822(MessageNode.plane, var0.x, var0.y, var0.field799, 60, var0, var0.angle, var2, var0.field1132);
+            }
+         }
+      }
+
    }
 }

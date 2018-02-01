@@ -1,5 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ho")
-public interface class229 extends Enumerated {
+@ObfuscatedName("hx")
+public interface class229 extends MouseWheel {
 }

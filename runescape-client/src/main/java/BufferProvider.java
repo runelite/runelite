@@ -4,60 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kr")
+@ObfuscatedName("kk")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1852809795
+      intValue = -614518963
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 116038231
+      intValue = 922823137
    )
    @Export("height")
    public int height;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1348763863"
+      signature = "(IIB)V",
+      garbageValue = "27"
    )
    @Export("drawFull")
    public abstract void drawFull(int var1, int var2);
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIIIB)V",
-      garbageValue = "-128"
+      garbageValue = "48"
    )
    @Export("draw")
    public abstract void draw(int var1, int var2, int var3, int var4);
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("aa")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1860461639"
+      garbageValue = "-1069739227"
    )
    @Export("setRaster")
    public final void setRaster() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(Lil;Ljava/lang/String;Ljava/lang/String;B)[Lkm;",
-      garbageValue = "-121"
-   )
-   @Export("getIndexedSprites")
-   public static IndexedSprite[] getIndexedSprites(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      return AbstractSoundSystem.method2112(var0, var3, var4);
    }
 }

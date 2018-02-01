@@ -1,55 +1,60 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("u")
 public class class21 {
-   @ObfuscatedName("fj")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "[Lkm;"
+      signature = "(IIB)Z",
+      garbageValue = "20"
    )
-   @Export("mapscene")
-   static IndexedSprite[] mapscene;
+   public static boolean method168(int var0, int var1) {
+      return (var0 >> var1 + 1 & 1) != 0;
+   }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("gx")
    @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "3618"
+      signature = "(I)V",
+      garbageValue = "-359398572"
    )
-   static int method153(int var0, int var1) {
-      Overlay var2 = class150.getOverlayDefinition(var0);
-      if(var2 == null) {
-         return var1;
-      } else if(var2.otherRgbColor >= 0) {
-         return var2.otherRgbColor | -16777216;
-      } else if(var2.texture >= 0) {
-         int var3 = Permission.method4283(Graphics3D.textureLoader.getAverageTextureRGB(var2.texture), 96);
-         return Graphics3D.colorPalette[var3] | -16777216;
-      } else if(var2.color == 16711935) {
-         return var1;
-      } else {
-         int var4 = var2.hue;
-         int var5 = var2.saturation;
-         int var6 = var2.lightness;
-         if(var6 > 179) {
-            var5 /= 2;
-         }
+   static final void method167() {
+      int[] var0 = class92.playerIndices;
 
-         if(var6 > 192) {
-            var5 /= 2;
+      int var1;
+      for(var1 = 0; var1 < class92.playerIndexesCount; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.overheadTextCyclesRemaining > 0) {
+            --var2.overheadTextCyclesRemaining;
+            if(var2.overheadTextCyclesRemaining == 0) {
+               var2.overhead = null;
+            }
          }
-
-         if(var6 > 217) {
-            var5 /= 2;
-         }
-
-         if(var6 > 243) {
-            var5 /= 2;
-         }
-
-         int var7 = (var5 / 32 << 7) + var6 / 2 + (var4 / 4 << 10);
-         int var8 = Permission.method4283(var7, 96);
-         return Graphics3D.colorPalette[var8] | -16777216;
       }
+
+      for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
+         int var4 = Client.npcIndices[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(var3 != null && var3.overheadTextCyclesRemaining > 0) {
+            --var3.overheadTextCyclesRemaining;
+            if(var3.overheadTextCyclesRemaining == 0) {
+               var3.overhead = null;
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("ji")
+   @ObfuscatedSignature(
+      signature = "(Lho;B)Lho;",
+      garbageValue = "-29"
+   )
+   static Widget method169(Widget var0) {
+      Widget var1 = BoundingBox3DDrawMode.method73(var0);
+      if(var1 == null) {
+         var1 = var0.dragParent;
+      }
+
+      return var1;
    }
 }

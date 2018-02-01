@@ -26,14 +26,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSFriend
+public interface RSFriend extends RSNameable
 {
-	@Import("name")
-	String getName();
-
-	@Import("previousName")
-	String getPreviousName();
-
 	@Import("world")
 	int getWorld();
 }
