@@ -3,31 +3,31 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("gr")
 @Implements("HashTable")
 public final class HashTable {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @Export("size")
    int size;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "[Lgw;"
    )
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
    @Export("currentGet")
    Node currentGet;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
    @Export("current")
    Node current;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("index")
    int index;
 
@@ -44,7 +44,7 @@ public final class HashTable {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(J)Lgw;"
    )
@@ -64,7 +64,7 @@ public final class HashTable {
       return null;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Lgw;J)V"
    )
@@ -82,7 +82,7 @@ public final class HashTable {
       var1.hash = var2;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @Export("clear")
    void clear() {
       for(int var1 = 0; var1 < this.size; ++var1) {
@@ -102,7 +102,7 @@ public final class HashTable {
       this.current = null;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -112,7 +112,7 @@ public final class HashTable {
       return this.next();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )

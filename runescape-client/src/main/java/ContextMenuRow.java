@@ -4,99 +4,115 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cl")
 @Implements("ContextMenuRow")
 public class ContextMenuRow {
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "Lde;"
+   )
+   public static class109 field1281;
+   @ObfuscatedName("es")
+   @ObfuscatedSignature(
+      signature = "Lkz;"
+   )
+   @Export("fontBold12")
+   static Font fontBold12;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1848826809
+      intValue = -371578253
    )
    @Export("param0")
    int param0;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1931478707
+      intValue = -1634152591
    )
    @Export("param1")
    int param1;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1082153175
+      intValue = 2108844971
    )
    @Export("type")
    int type;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 758036865
+      intValue = -819822163
    )
    @Export("identifier")
    int identifier;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("option")
    String option;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(II)Lim;",
-      garbageValue = "89393955"
+      signature = "(I)[Lfh;",
+      garbageValue = "1622056349"
    )
-   public static VarPlayerType method1742(int var0) {
-      VarPlayerType var1 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = GameEngine.varplayer_ref.getConfigData(16, var0);
-         var1 = new VarPlayerType();
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         VarPlayerType.varplayers.put(var1, (long)var0);
-         return var1;
-      }
+   public static class173[] method1847() {
+      return new class173[]{class173.field2395, class173.field2389, class173.field2390, class173.field2391, class173.field2392, class173.field2393, class173.field2394, class173.field2397, class173.field2396, class173.field2388};
    }
 
-   @ObfuscatedName("jp")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lhq;I)Z",
-      garbageValue = "-1662960890"
+      signature = "(II)I",
+      garbageValue = "-414357950"
    )
-   static final boolean method1743(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 205) {
-         Client.field1084 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            Client.field1126.method4168(var2, var3 == 1);
-         }
-
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            Client.field1126.method4169(var2, var3 == 1);
-         }
-
-         if(var1 == 324) {
-            Client.field1126.method4170(false);
-         }
-
-         if(var1 == 325) {
-            Client.field1126.method4170(true);
-         }
-
-         if(var1 == 326) {
-            PacketNode var4 = class235.method4272(ClientPacket.field2378, Client.field915.field1462);
-            Client.field1126.method4171(var4.packetBuffer);
-            Client.field915.method1898(var4);
-            return true;
-         } else {
-            return false;
-         }
+   @Export("ilog")
+   public static int ilog(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
+
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
+      }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)I",
+      garbageValue = "1573767420"
+   )
+   @Export("getLength")
+   public static int getLength(String var0) {
+      return var0.length() + 1;
+   }
+
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(Lbx;I)V",
+      garbageValue = "-570635551"
+   )
+   static final void method1848(Actor var0) {
+      int var1 = var0.field1143 - Client.gameCycle;
+      int var2 = var0.field1120 * 128 + var0.field1127 * 64;
+      int var3 = var0.field1141 * 128 + var0.field1127 * 64;
+      var0.x += (var2 - var0.x) / var1;
+      var0.y += (var3 - var0.y) / var1;
+      var0.field1136 = 0;
+      var0.orientation = var0.field1145;
    }
 }

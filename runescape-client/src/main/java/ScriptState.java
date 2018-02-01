@@ -1,34 +1,43 @@
+import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("bz")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("ci")
+   @ObfuscatedName("qb")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lli;"
    )
-   @Export("indexMaps")
-   static IndexData indexMaps;
-   @ObfuscatedName("n")
+   @Export("renderOverview")
+   static RenderOverview renderOverview;
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lcv;"
+      signature = "[Lkh;"
+   )
+   @Export("runeSprites")
+   static IndexedSprite[] runeSprites;
+   @ObfuscatedName("ap")
+   static int[] field708;
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "Lcd;"
    )
    @Export("invokedFromScript")
    Script invokedFromScript;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1058908433
+      intValue = -1810912073
    )
    @Export("invokedFromPc")
    int invokedFromPc;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @Export("savedLocalInts")
    int[] savedLocalInts;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @Export("savedLocalStrings")
    String[] savedLocalStrings;
 
@@ -36,39 +45,31 @@ public class ScriptState {
       this.invokedFromPc = -1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-97"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-5733659"
    )
-   @Export("ilog")
-   public static int ilog(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
+   static final void method1050(String var0) {
+      class63.method1054("Please remove " + var0 + " from your friend list first");
+   }
+
+   @ObfuscatedName("ks")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1601858955"
+   )
+   static final void method1051() {
+      Iterator var0 = class94.messages.iterator();
+
+      while(var0.hasNext()) {
+         MessageNode var1 = (MessageNode)var0.next();
+         var1.method1093();
       }
 
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
+      if(class234.clanChatOwner != null) {
+         class234.clanChatOwner.method5167();
       }
 
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var0 + var1;
    }
 }

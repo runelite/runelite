@@ -1,79 +1,78 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jy")
+@ObfuscatedName("jn")
 @Implements("Overlay")
 public class Overlay extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lil;"
+      signature = "Lik;"
    )
    @Export("overlay_ref")
-   static IndexDataBase overlay_ref;
-   @ObfuscatedName("v")
+   public static IndexDataBase overlay_ref;
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgm;"
    )
    @Export("overlays")
-   static NodeCache overlays;
-   @ObfuscatedName("y")
+   public static NodeCache overlays;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1122055089
+      intValue = 1181177553
    )
    @Export("color")
    public int color;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1797220547
+      intValue = 1594759351
    )
    @Export("texture")
    public int texture;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @Export("isHidden")
    public boolean isHidden;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -200980065
+      intValue = -2075441539
    )
    @Export("otherRgbColor")
    public int otherRgbColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1670004891
+      intValue = 1729927029
    )
    @Export("hue")
    public int hue;
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1833550447
+      intValue = -1413205473
    )
    @Export("saturation")
    public int saturation;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1283902265
+      intValue = -257064049
    )
    @Export("lightness")
    public int lightness;
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -351171103
+      intValue = -321047931
    )
    @Export("otherHue")
    public int otherHue;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 442303003
+      intValue = -1126686797
    )
    @Export("otherSaturation")
    public int otherSaturation;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -384475967
+      intValue = 1122977825
    )
    @Export("otherLightness")
    public int otherLightness;
@@ -89,10 +88,10 @@ public class Overlay extends CacheableNode {
       this.otherRgbColor = -1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1353462303"
+      signature = "(B)V",
+      garbageValue = "11"
    )
    @Export("post")
    void post() {
@@ -106,10 +105,10 @@ public class Overlay extends CacheableNode {
       this.setHSL(this.color);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgv;II)V",
-      garbageValue = "-628271893"
+      signature = "(Lgj;II)V",
+      garbageValue = "-805548802"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {
@@ -123,10 +122,10 @@ public class Overlay extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgv;III)V",
-      garbageValue = "1692822161"
+      signature = "(Lgj;III)V",
+      garbageValue = "1825322766"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2, int var3) {
@@ -144,10 +143,10 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-35"
+      signature = "(II)V",
+      garbageValue = "-616519125"
    )
    @Export("setHSL")
    void setHSL(int var1) {
@@ -174,8 +173,8 @@ public class Overlay extends CacheableNode {
 
       double var12 = 0.0D;
       double var14 = 0.0D;
-      double var16 = (var8 + var10) / 2.0D;
-      if(var10 != var8) {
+      double var16 = (var10 + var8) / 2.0D;
+      if(var8 != var10) {
          if(var16 < 0.5D) {
             var14 = (var10 - var8) / (var10 + var8);
          }
@@ -184,18 +183,18 @@ public class Overlay extends CacheableNode {
             var14 = (var10 - var8) / (2.0D - var10 - var8);
          }
 
-         if(var2 == var10) {
+         if(var10 == var2) {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var10 == var4) {
-            var12 = (var6 - var2) / (var10 - var8) + 2.0D;
+            var12 = 2.0D + (var6 - var2) / (var10 - var8);
          } else if(var10 == var6) {
-            var12 = 4.0D + (var2 - var4) / (var10 - var8);
+            var12 = (var2 - var4) / (var10 - var8) + 4.0D;
          }
       }
 
       var12 /= 6.0D;
       this.hue = (int)(var12 * 256.0D);
-      this.saturation = (int)(256.0D * var14);
+      this.saturation = (int)(var14 * 256.0D);
       this.lightness = (int)(256.0D * var16);
       if(this.saturation < 0) {
          this.saturation = 0;
@@ -211,238 +210,61 @@ public class Overlay extends CacheableNode {
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-1699321642"
+      signature = "(I)V",
+      garbageValue = "1879848765"
    )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class249.NetCache_socket != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class249.NetCache_socket.vmethod3166(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class249.NetCache_socket.vmethod3136();
-            } catch (Exception var3) {
-               ;
-            }
-
-            ++class249.field3362;
-            class249.NetCache_socket = null;
-         }
-
-      }
+   public static void method4939() {
+      class262.field3445.reset();
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("jm")
    @ObfuscatedSignature(
-      signature = "(ILcv;ZI)I",
-      garbageValue = "2136130943"
+      signature = "([Lho;IB)V",
+      garbageValue = "-52"
    )
-   static int method4892(int var0, Script var1, boolean var2) {
-      if(var0 == 3300) {
-         class82.intStack[++class82.intStackSize - 1] = Client.gameCycle;
-         return 1;
-      } else {
-         int var3;
-         int var4;
-         if(var0 == 3301) {
-            class82.intStackSize -= 2;
-            var3 = class82.intStack[class82.intStackSize];
-            var4 = class82.intStack[class82.intStackSize + 1];
-            class82.intStack[++class82.intStackSize - 1] = WidgetNode.method1104(var3, var4);
-            return 1;
-         } else {
-            int[] var5;
-            int var6;
-            int var7;
-            ItemContainer var8;
-            if(var0 == 3302) {
-               class82.intStackSize -= 2;
-               var3 = class82.intStack[class82.intStackSize];
-               var4 = class82.intStack[class82.intStackSize + 1];
-               var5 = class82.intStack;
-               var6 = ++class82.intStackSize - 1;
-               var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-               if(var8 == null) {
-                  var7 = 0;
-               } else if(var4 >= 0 && var4 < var8.stackSizes.length) {
-                  var7 = var8.stackSizes[var4];
-               } else {
-                  var7 = 0;
+   static final void method4945(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(var3 != null) {
+            if(var3.type == 0) {
+               if(var3.children != null) {
+                  method4945(var3.children, var1);
                }
 
-               var5[var6] = var7;
-               return 1;
-            } else {
-               int var9;
-               int var10;
-               if(var0 == 3303) {
-                  class82.intStackSize -= 2;
-                  var3 = class82.intStack[class82.intStackSize];
-                  var4 = class82.intStack[class82.intStackSize + 1];
-                  var5 = class82.intStack;
-                  var6 = ++class82.intStackSize - 1;
-                  var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-                  if(var8 == null) {
-                     var7 = 0;
-                  } else if(var4 == -1) {
-                     var7 = 0;
-                  } else {
-                     var9 = 0;
-
-                     for(var10 = 0; var10 < var8.stackSizes.length; ++var10) {
-                        if(var4 == var8.itemIds[var10]) {
-                           var9 += var8.stackSizes[var10];
-                        }
-                     }
-
-                     var7 = var9;
-                  }
-
-                  var5[var6] = var7;
-                  return 1;
-               } else if(var0 == 3304) {
-                  var3 = class82.intStack[--class82.intStackSize];
-                  class82.intStack[++class82.intStackSize - 1] = FileOnDisk.method2424(var3).size;
-                  return 1;
-               } else if(var0 == 3305) {
-                  var3 = class82.intStack[--class82.intStackSize];
-                  class82.intStack[++class82.intStackSize - 1] = Client.boostedSkillLevels[var3];
-                  return 1;
-               } else if(var0 == 3306) {
-                  var3 = class82.intStack[--class82.intStackSize];
-                  class82.intStack[++class82.intStackSize - 1] = Client.realSkillLevels[var3];
-                  return 1;
-               } else if(var0 == 3307) {
-                  var3 = class82.intStack[--class82.intStackSize];
-                  class82.intStack[++class82.intStackSize - 1] = Client.skillExperiences[var3];
-                  return 1;
-               } else {
-                  int var11;
-                  if(var0 == 3308) {
-                     var3 = class7.plane;
-                     var4 = (GrandExchangeOffer.localPlayer.x >> 7) + class175.baseX;
-                     var11 = (GrandExchangeOffer.localPlayer.y >> 7) + GraphicsObject.baseY;
-                     class82.intStack[++class82.intStackSize - 1] = (var4 << 14) + var11 + (var3 << 28);
-                     return 1;
-                  } else if(var0 == 3309) {
-                     var3 = class82.intStack[--class82.intStackSize];
-                     class82.intStack[++class82.intStackSize - 1] = var3 >> 14 & 16383;
-                     return 1;
-                  } else if(var0 == 3310) {
-                     var3 = class82.intStack[--class82.intStackSize];
-                     class82.intStack[++class82.intStackSize - 1] = var3 >> 28;
-                     return 1;
-                  } else if(var0 == 3311) {
-                     var3 = class82.intStack[--class82.intStackSize];
-                     class82.intStack[++class82.intStackSize - 1] = var3 & 16383;
-                     return 1;
-                  } else if(var0 == 3312) {
-                     class82.intStack[++class82.intStackSize - 1] = Client.isMembers?1:0;
-                     return 1;
-                  } else if(var0 == 3313) {
-                     class82.intStackSize -= 2;
-                     var3 = class82.intStack[class82.intStackSize] + 32768;
-                     var4 = class82.intStack[class82.intStackSize + 1];
-                     class82.intStack[++class82.intStackSize - 1] = WidgetNode.method1104(var3, var4);
-                     return 1;
-                  } else if(var0 == 3314) {
-                     class82.intStackSize -= 2;
-                     var3 = class82.intStack[class82.intStackSize] + 32768;
-                     var4 = class82.intStack[class82.intStackSize + 1];
-                     var5 = class82.intStack;
-                     var6 = ++class82.intStackSize - 1;
-                     var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-                     if(var8 == null) {
-                        var7 = 0;
-                     } else if(var4 >= 0 && var4 < var8.stackSizes.length) {
-                        var7 = var8.stackSizes[var4];
-                     } else {
-                        var7 = 0;
-                     }
-
-                     var5[var6] = var7;
-                     return 1;
-                  } else if(var0 != 3315) {
-                     if(var0 == 3316) {
-                        if(Client.rights >= 2) {
-                           class82.intStack[++class82.intStackSize - 1] = Client.rights;
-                        } else {
-                           class82.intStack[++class82.intStackSize - 1] = 0;
-                        }
-
-                        return 1;
-                     } else if(var0 == 3317) {
-                        class82.intStack[++class82.intStackSize - 1] = Client.field889;
-                        return 1;
-                     } else if(var0 == 3318) {
-                        class82.intStack[++class82.intStackSize - 1] = Client.world;
-                        return 1;
-                     } else if(var0 == 3321) {
-                        class82.intStack[++class82.intStackSize - 1] = Client.energy;
-                        return 1;
-                     } else if(var0 == 3322) {
-                        class82.intStack[++class82.intStackSize - 1] = Client.weight;
-                        return 1;
-                     } else if(var0 == 3323) {
-                        if(Client.field983) {
-                           class82.intStack[++class82.intStackSize - 1] = 1;
-                        } else {
-                           class82.intStack[++class82.intStackSize - 1] = 0;
-                        }
-
-                        return 1;
-                     } else if(var0 == 3324) {
-                        class82.intStack[++class82.intStackSize - 1] = Client.flags;
-                        return 1;
-                     } else if(var0 == 3325) {
-                        class82.intStackSize -= 4;
-                        var3 = class82.intStack[class82.intStackSize];
-                        var4 = class82.intStack[class82.intStackSize + 1];
-                        var11 = class82.intStack[class82.intStackSize + 2];
-                        var6 = class82.intStack[class82.intStackSize + 3];
-                        var3 += var4 << 14;
-                        var3 += var11 << 28;
-                        var3 += var6;
-                        class82.intStack[++class82.intStackSize - 1] = var3;
-                        return 1;
-                     } else {
-                        return 2;
-                     }
-                  } else {
-                     class82.intStackSize -= 2;
-                     var3 = class82.intStack[class82.intStackSize] + 32768;
-                     var4 = class82.intStack[class82.intStackSize + 1];
-                     var5 = class82.intStack;
-                     var6 = ++class82.intStackSize - 1;
-                     var8 = (ItemContainer)ItemContainer.itemContainers.get((long)var3);
-                     if(var8 == null) {
-                        var7 = 0;
-                     } else if(var4 == -1) {
-                        var7 = 0;
-                     } else {
-                        var9 = 0;
-
-                        for(var10 = 0; var10 < var8.stackSizes.length; ++var10) {
-                           if(var4 == var8.itemIds[var10]) {
-                              var9 += var8.stackSizes[var10];
-                           }
-                        }
-
-                        var7 = var9;
-                     }
-
-                     var5[var6] = var7;
-                     return 1;
+               WidgetNode var4 = (WidgetNode)Client.componentTable.get((long)var3.id);
+               if(var4 != null) {
+                  int var5 = var4.id;
+                  if(class213.loadWidget(var5)) {
+                     method4945(FileRequest.widgets[var5], var1);
                   }
                }
             }
+
+            ScriptEvent var6;
+            if(var1 == 0 && var3.field2821 != null) {
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.objs = var3.field2821;
+               class87.method1851(var6);
+            }
+
+            if(var1 == 1 && var3.field2771 != null) {
+               if(var3.index >= 0) {
+                  Widget var7 = class35.getWidget(var3.id);
+                  if(var7 == null || var7.children == null || var3.index >= var7.children.length || var3 != var7.children[var3.index]) {
+                     continue;
+                  }
+               }
+
+               var6 = new ScriptEvent();
+               var6.widget = var3;
+               var6.objs = var3.field2771;
+               class87.method1851(var6);
+            }
          }
       }
+
    }
 }

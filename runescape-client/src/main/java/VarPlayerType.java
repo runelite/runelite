@@ -4,29 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("im")
+@ObfuscatedName("ip")
 @Implements("VarPlayerType")
 public class VarPlayerType extends CacheableNode {
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 240707839
+      intValue = 1536394269
    )
-   public static int field3378;
-   @ObfuscatedName("y")
+   public static int field3351;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lga;"
+      signature = "Lgm;"
    )
    @Export("varplayers")
    public static NodeCache varplayers;
-   @ObfuscatedName("fq")
-   @ObfuscatedSignature(
-      signature = "Lkg;"
-   )
-   @Export("compass")
-   static SpritePixels compass;
-   @ObfuscatedName("r")
+   @ObfuscatedName("lv")
    @ObfuscatedGetter(
-      intValue = -1128845797
+      intValue = 688460923
+   )
+   static int field3350;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -648830709
    )
    @Export("configType")
    public int configType;
@@ -35,17 +34,17 @@ public class VarPlayerType extends CacheableNode {
       varplayers = new NodeCache(64);
    }
 
-   VarPlayerType() {
+   public VarPlayerType() {
       this.configType = 0;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lgv;I)V",
-      garbageValue = "-2106061408"
+      signature = "(Lgj;I)V",
+      garbageValue = "-36074608"
    )
    @Export("decode")
-   void decode(Buffer var1) {
+   public void decode(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
@@ -56,10 +55,10 @@ public class VarPlayerType extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lgv;II)V",
-      garbageValue = "1328932662"
+      signature = "(Lgj;II)V",
+      garbageValue = "1692997891"
    )
    @Export("decode")
    void decode(Buffer var1, int var2) {

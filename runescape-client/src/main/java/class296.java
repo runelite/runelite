@@ -1,57 +1,14 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kw")
-public enum class296 implements Enumerated {
-   @ObfuscatedName("n")
+@ObfuscatedName("ku")
+public class class296 {
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lkw;"
+      signature = "(I)[Lkq;",
+      garbageValue = "6185334"
    )
-   field3846(0, 0),
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
-   )
-   field3841(1, 1),
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
-   )
-   field3842(2, 2),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
-   )
-   field3845(3, 3),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lkw;"
-   )
-   field3844(4, 4);
-
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 831576923
-   )
-   public final int field3843;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1809452597
-   )
-   final int field3840;
-
-   class296(int var3, int var4) {
-      this.field3843 = var3;
-      this.field3840 = var4;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "2130441585"
-   )
-   public int rsOrdinal() {
-      return this.field3840;
+   public static Parameters[] method5332() {
+      return new Parameters[]{Parameters.field3808, Parameters.field3801, Parameters.field3798, Parameters.field3804, Parameters.field3810, Parameters.field3807, Parameters.field3805, Parameters.field3797, Parameters.field3799, Parameters.field3803, Parameters.field3802, Parameters.field3796, Parameters.field3806, Parameters.field3809, Parameters.field3795, Parameters.field3800};
    }
 }

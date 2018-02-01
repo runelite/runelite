@@ -4,96 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("eo")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("fc")
-   @ObfuscatedSignature(
-      signature = "[Lkg;"
-   )
-   @Export("mapDots")
-   static SpritePixels[] mapDots;
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1582265761
+      intValue = 1523401203
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -95353139
+      intValue = -1635298889
    )
    @Export("height")
    int height;
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -931394199
+      intValue = -1604885259
    )
    @Export("x")
    int x;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1349051947
+      intValue = -877815521
    )
    @Export("y")
    int y;
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Leo;"
+      signature = "Lec;"
    )
    @Export("renderable")
    public Renderable renderable;
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1513008315
+      intValue = 1530507619
    )
    @Export("orientation")
    int orientation;
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -676003621
+      intValue = -1907947299
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1848891115
+      intValue = -409330677
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1360912861
+      intValue = 1134602301
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1108067955
+      intValue = -978379505
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1059063627
+      intValue = 1841684787
    )
    @Export("drawPriority")
    int drawPriority;
-   @ObfuscatedName("u")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -35435741
+      intValue = 479487297
    )
    @Export("cycle")
    int cycle;
-   @ObfuscatedName("p")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1892082625
+      intValue = -2125664963
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("w")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1620091341
+      intValue = 58575933
    )
    @Export("flags")
    int flags;
@@ -103,12 +97,12 @@ public final class GameObject {
       this.flags = 0;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZI)V",
-      garbageValue = "-1933045476"
+      signature = "(Lik;I)V",
+      garbageValue = "73855304"
    )
-   public static void method2964(String var0, boolean var1, boolean var2) {
-      class40.method537(var0, var1, "openjs", var2);
+   public static void method3020(IndexDataBase var0) {
+      class263.field3455 = var0;
    }
 }

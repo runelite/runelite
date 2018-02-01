@@ -3,100 +3,237 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ar")
 public final class class29 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("nx")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lko;"
    )
-   @Export("currentRequest")
-   public static FileRequest currentRequest;
-   @ObfuscatedName("a")
-   @Export("cacheLocations")
-   static String[] cacheLocations;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1785188141
-   )
-   int field404;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -125212773
-   )
-   int field400;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 196432341
-   )
-   int field399;
+   @Export("minimapSprite")
+   static SpritePixels minimapSprite;
    @ObfuscatedName("r")
+   static byte[][][] field392;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1416205069
+      intValue = 343614309
    )
-   int field402;
+   int field395;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1046054261
+   )
+   int field391;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1154355813
+   )
+   int field394;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 481720557
+   )
+   int field390;
    // $FF: synthetic field
    @ObfuscatedSignature(
-      signature = "Lao;"
+      signature = "Law;"
    )
    final class41 this$0;
 
    @ObfuscatedSignature(
-      signature = "(Lao;)V"
+      signature = "(Law;)V"
    )
    class29(class41 var1) {
       this.this$0 = var1;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Les;IIIII)V",
-      garbageValue = "1452375046"
+      signature = "(IIIII)V",
+      garbageValue = "-428879106"
    )
-   public static final void method235(Model var0, int var1, int var2, int var3, int var4) {
-      class7.boundingBoxes.addFirst(new BoundingBox3D(var0, var1, var2, var3, var4));
+   @Export("setItemTableSlot")
+   static void setItemTableSlot(int var0, int var1, int var2, int var3) {
+      ItemContainer var4 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var4 == null) {
+         var4 = new ItemContainer();
+         ItemContainer.itemContainers.put(var4, (long)var0);
+      }
+
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[var1 + 1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ho")
    @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "45549487"
+      signature = "(ZLgd;I)V",
+      garbageValue = "1881523668"
    )
-   public static int method234(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
-
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & '?');
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> '\f');
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & '?');
+   static final void method259(boolean var0, PacketBuffer var1) {
+      Client.field929 = 0;
+      Client.pendingNpcFlagsCount = 0;
+      PacketBuffer var2 = Client.field867.packetBuffer;
+      var2.bitAccess();
+      int var3 = var2.getBits(8);
+      int var4;
+      if(var3 < Client.npcIndexesCount) {
+         for(var4 = var3; var4 < Client.npcIndexesCount; ++var4) {
+            Client.field930[++Client.field929 - 1] = Client.npcIndices[var4];
          }
       }
 
-      return var4 - var1;
+      if(var3 > Client.npcIndexesCount) {
+         throw new RuntimeException("");
+      } else {
+         Client.npcIndexesCount = 0;
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            int var5 = Client.npcIndices[var4];
+            NPC var6 = Client.cachedNPCs[var5];
+            int var7 = var2.getBits(1);
+            if(var7 == 0) {
+               Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+               var6.npcCycle = Client.gameCycle;
+            } else {
+               int var8 = var2.getBits(2);
+               if(var8 == 0) {
+                  Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                  var6.npcCycle = Client.gameCycle;
+                  Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+               } else {
+                  int var9;
+                  int var10;
+                  if(var8 == 1) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                     var6.npcCycle = Client.gameCycle;
+                     var9 = var2.getBits(3);
+                     var6.method1820(var9, (byte)1);
+                     var10 = var2.getBits(1);
+                     if(var10 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+                     }
+                  } else if(var8 == 2) {
+                     Client.npcIndices[++Client.npcIndexesCount - 1] = var5;
+                     var6.npcCycle = Client.gameCycle;
+                     var9 = var2.getBits(3);
+                     var6.method1820(var9, (byte)2);
+                     var10 = var2.getBits(3);
+                     var6.method1820(var10, (byte)2);
+                     int var11 = var2.getBits(1);
+                     if(var11 == 1) {
+                        Client.pendingNpcFlagsIndices[++Client.pendingNpcFlagsCount - 1] = var5;
+                     }
+                  } else if(var8 == 3) {
+                     Client.field930[++Client.field929 - 1] = var5;
+                  }
+               }
+            }
+         }
+
+         PacketNode.updateNpcs(var0, var1);
+         class84.method1840(var1);
+
+         int var12;
+         for(var12 = 0; var12 < Client.field929; ++var12) {
+            var3 = Client.field930[var12];
+            if(Client.cachedNPCs[var3].npcCycle != Client.gameCycle) {
+               Client.cachedNPCs[var3].composition = null;
+               Client.cachedNPCs[var3] = null;
+            }
+         }
+
+         if(var1.offset != Client.field867.packetLength) {
+            throw new RuntimeException(var1.offset + "," + Client.field867.packetLength);
+         } else {
+            for(var12 = 0; var12 < Client.npcIndexesCount; ++var12) {
+               if(Client.cachedNPCs[Client.npcIndices[var12]] == null) {
+                  throw new RuntimeException(var12 + "," + Client.npcIndexesCount);
+               }
+            }
+
+         }
+      }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("iz")
    @ObfuscatedSignature(
-      signature = "(I)[Liv;",
-      garbageValue = "-599641975"
+      signature = "(Lbc;IIII)V",
+      garbageValue = "-1364895639"
    )
-   static class250[] method237() {
-      return new class250[]{class250.field3367, class250.field3366, class250.field3365};
-   }
+   static final void method257(Player var0, int var1, int var2, int var3) {
+      if(class36.localPlayer != var0) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            if(var0.totalLevel == 0) {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + ScriptEvent.method1083(var0.combatLevel, class36.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.totalLevel + ")" + var0.actions[2];
+            }
 
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-656203955"
-   )
-   public static boolean method236(int var0) {
-      return (var0 >> 28 & 1) != 0;
+            int var5;
+            if(Client.itemSelectionState == 1) {
+               class3.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class1.getColTags(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.spellSelected) {
+               if((GameCanvas.field603 & 8) == 8) {
+                  class3.addMenuEntry(Client.field1001, Client.field966 + " " + "->" + " " + class1.getColTags(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var5 = 7; var5 >= 0; --var5) {
+                  if(Client.playerOptions[var5] != null) {
+                     short var6 = 0;
+                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                        if(Client.playerAttackOption == AttackOption.AttackOption_hidden) {
+                           continue;
+                        }
+
+                        if(AttackOption.AttackOption_alwaysRightClick == Client.playerAttackOption || Client.playerAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > class36.localPlayer.combatLevel) {
+                           var6 = 2000;
+                        }
+
+                        if(class36.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == class36.localPlayer.team) {
+                              var6 = 2000;
+                           } else {
+                              var6 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriorities[var5]) {
+                        var6 = 2000;
+                     }
+
+                     boolean var7 = false;
+                     int var8 = Client.playerMenuTypes[var5] + var6;
+                     class3.addMenuEntry(Client.playerOptions[var5], class1.getColTags(16777215) + var4, var8, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+               if(Client.menuTypes[var5] == 23) {
+                  Client.menuTargets[var5] = class1.getColTags(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
+      }
    }
 }

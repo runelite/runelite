@@ -1,11 +1,19 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("gq")
 public class class192 {
-   @ObfuscatedName("be")
-   @ObfuscatedGetter(
-      intValue = 1669066923
+   @ObfuscatedName("p")
+   @Export("javaVendor")
+   public static String javaVendor;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(ILhe;I)I",
+      garbageValue = "-810837155"
    )
-   static int field2566;
+   public static int method3700(int var0, class230 var1) {
+      return (var0 << 8) + var1.field2877;
+   }
 }

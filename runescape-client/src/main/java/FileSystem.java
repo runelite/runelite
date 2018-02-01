@@ -4,66 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("ic")
 @Implements("FileSystem")
 public class FileSystem extends Node {
-   @ObfuscatedName("nx")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -2057531233
-   )
-   @Export("clanChatCount")
-   static int clanChatCount;
-   @ObfuscatedName("ai")
-   @ObfuscatedGetter(
-      intValue = -232372331
-   )
-   static int field3301;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1608342227
+      intValue = 1706206405
    )
    @Export("type")
    int type;
-   @ObfuscatedName("v")
-   byte[] field3299;
-   @ObfuscatedName("y")
+   @ObfuscatedName("i")
+   byte[] field3276;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lfv;"
+      signature = "Lfx;"
    )
    @Export("index")
    IndexFile index;
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lif;"
+      signature = "Lio;"
    )
    @Export("data")
    IndexData data;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lil;Lil;Ljava/lang/String;Ljava/lang/String;I)Ljz;",
-      garbageValue = "-54154712"
+      signature = "(Lio;IIIBZI)V",
+      garbageValue = "-509113099"
    )
-   public static Font method4299(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
-      int var4 = var0.getFile(var2);
-      int var5 = var0.getChild(var4, var3);
-      Font var6;
-      if(!class288.method5126(var0, var4, var5)) {
-         var6 = null;
-      } else {
-         byte[] var8 = var1.getConfigData(var4, var5);
-         Font var7;
+   @Export("requestNetFile")
+   static void requestNetFile(IndexData var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      FileRequest var8 = (FileRequest)class249.NetCache_pendingPriorityWrites.get(var6);
+      if(var8 == null) {
+         var8 = (FileRequest)class249.NetCache_pendingPriorityResponses.get(var6);
          if(var8 == null) {
-            var7 = null;
-         } else {
-            Font var9 = new Font(var8, class299.field3870, class299.offsetsY, class54.field635, UrlRequester.field2099, class299.field3869, class188.spritePixels);
-            class139.method2922();
-            var7 = var9;
+            var8 = (FileRequest)class249.NetCache_pendingWrites.get(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.unlinkDual();
+                  class249.NetCache_pendingPriorityWrites.put(var8, var6);
+                  --class249.NetCache_pendingWritesCount;
+                  ++class249.NetCache_pendingPriorityWritesCount;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (FileRequest)class249.NetCache_pendingResponses.get(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new FileRequest();
+               var8.index = var0;
+               var8.crc = var3;
+               var8.padding = var4;
+               if(var5) {
+                  class249.NetCache_pendingPriorityWrites.put(var8, var6);
+                  ++class249.NetCache_pendingPriorityWritesCount;
+               } else {
+                  class249.NetCache_pendingWritesQueue.push(var8);
+                  class249.NetCache_pendingWrites.put(var8, var6);
+                  ++class249.NetCache_pendingWritesCount;
+               }
+
+            }
          }
-
-         var6 = var7;
       }
-
-      return var6;
    }
 }

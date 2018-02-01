@@ -4,16 +4,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gk")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
    @Export("node")
    Node node;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lgw;"
    )
@@ -26,15 +26,15 @@ public class CombatInfoList implements Iterable {
       this.node.previous = this.node;
    }
 
-   @ObfuscatedName("n")
-   public void method3786() {
+   @ObfuscatedName("p")
+   public void method3828() {
       while(this.node.next != this.node) {
          this.node.next.unlink();
       }
 
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(Lgw;)V"
    )
@@ -50,7 +50,7 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Lgw;)V"
    )
@@ -66,7 +66,7 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -81,7 +81,7 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -90,7 +90,7 @@ public class CombatInfoList implements Iterable {
       return this.previousOrLast((Node)null);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(Lgw;)Lgw;"
    )
@@ -112,7 +112,7 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "()Lgw;"
    )
@@ -128,7 +128,7 @@ public class CombatInfoList implements Iterable {
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("isEmpty")
    public boolean isEmpty() {
       return this.node.next == this.node;
@@ -138,11 +138,11 @@ public class CombatInfoList implements Iterable {
       return new class199(this);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Lgw;Lgw;)V"
    )
-   public static void method3766(Node var0, Node var1) {
+   public static void method3831(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }

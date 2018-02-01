@@ -1,71 +1,72 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jp")
-public class class280 {
-   @ObfuscatedName("n")
-   static char[] field3755;
-   @ObfuscatedName("v")
-   static char[] field3754;
-   @ObfuscatedName("y")
-   static int[] field3756;
+@ObfuscatedName("jr")
+public class class280 implements Comparable {
+   @ObfuscatedName("er")
+   @ObfuscatedGetter(
+      longValue = 2463806117149332691L
+   )
+   static long field3701;
+   @ObfuscatedName("p")
+   String field3699;
+   @ObfuscatedName("i")
+   String field3700;
 
-   static {
-      field3755 = new char[64];
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Lld;)V"
+   )
+   public class280(String var1, JagexLoginType var2) {
+      this.field3699 = var1;
+      this.field3700 = class159.cleanUsername(var1, var2);
+   }
 
-      int var0;
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3755[var0] = (char)(var0 + 65);
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "376482635"
+   )
+   public String method5137() {
+      return this.field3699;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1149013516"
+   )
+   public boolean method5132() {
+      return this.field3700 != null;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljr;I)I",
+      garbageValue = "-1491105622"
+   )
+   int method5135(class280 var1) {
+      return this.field3700 == null?(var1.field3700 == null?0:1):(var1.field3700 == null?-1:this.field3700.compareTo(var1.field3700));
+   }
+
+   public boolean equals(Object var1) {
+      if(var1 instanceof class280) {
+         class280 var2 = (class280)var1;
+         return this.field3700 == null?var2.field3700 == null:(var2.field3700 == null?false:(this.hashCode() != var2.hashCode()?false:this.field3700.equals(var2.field3700)));
+      } else {
+         return false;
       }
+   }
 
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3755[var0] = (char)(var0 + 97 - 26);
-      }
+   public int hashCode() {
+      return this.field3700 == null?0:this.field3700.hashCode();
+   }
 
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3755[var0] = (char)(var0 + 48 - 52);
-      }
+   public String toString() {
+      return this.method5137();
+   }
 
-      field3755[62] = '+';
-      field3755[63] = '/';
-      field3754 = new char[64];
-
-      for(var0 = 0; var0 < 26; ++var0) {
-         field3754[var0] = (char)(var0 + 65);
-      }
-
-      for(var0 = 26; var0 < 52; ++var0) {
-         field3754[var0] = (char)(var0 + 97 - 26);
-      }
-
-      for(var0 = 52; var0 < 62; ++var0) {
-         field3754[var0] = (char)(var0 + 48 - 52);
-      }
-
-      field3754[62] = '*';
-      field3754[63] = '-';
-      field3756 = new int[128];
-
-      for(var0 = 0; var0 < field3756.length; ++var0) {
-         field3756[var0] = -1;
-      }
-
-      for(var0 = 65; var0 <= 90; ++var0) {
-         field3756[var0] = var0 - 65;
-      }
-
-      for(var0 = 97; var0 <= 122; ++var0) {
-         field3756[var0] = var0 - 97 + 26;
-      }
-
-      for(var0 = 48; var0 <= 57; ++var0) {
-         field3756[var0] = var0 - 48 + 52;
-      }
-
-      int[] var2 = field3756;
-      field3756[43] = 62;
-      var2[42] = 62;
-      int[] var1 = field3756;
-      field3756[47] = 63;
-      var1[45] = 63;
+   public int compareTo(Object var1) {
+      return this.method5135((class280)var1);
    }
 }

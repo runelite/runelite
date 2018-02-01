@@ -1,100 +1,96 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("io")
-public enum class239 implements Enumerated {
-   @ObfuscatedName("n")
+@ObfuscatedName("it")
+public enum class239 implements MouseWheel {
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lit;"
    )
-   field3258(7, 0),
-   @ObfuscatedName("v")
+   field3232(0, 0),
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lit;"
    )
-   field3255(6, 1),
-   @ObfuscatedName("y")
+   field3227(3, 1),
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lit;"
    )
-   field3262(5, 2),
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3261(0, 3),
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3257(2, 4),
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "Lio;"
-   )
-   field3259(1, 5),
+   field3231(2, 2),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lit;"
    )
-   field3260(4, 6),
-   @ObfuscatedName("b")
+   field3229(1, 3),
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lit;"
    )
-   field3256(3, 7);
+   field3226(7, 4),
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   field3228(4, 5),
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   field3234(6, 6),
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   field3233(5, 7);
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("b")
+   static int[] field3236;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -284381801
+      intValue = 1540416405
    )
-   public final int field3254;
-   @ObfuscatedName("f")
+   public final int field3230;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1328512283
+      intValue = 1624120231
    )
-   final int field3263;
+   final int field3235;
 
    class239(int var3, int var4) {
-      this.field3254 = var3;
-      this.field3263 = var4;
+      this.field3230 = var3;
+      this.field3235 = var4;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "2130441585"
+      signature = "(B)I",
+      garbageValue = "8"
    )
    public int rsOrdinal() {
-      return this.field3263;
+      return this.field3235;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Lgb;ILjava/lang/String;B)Ljava/lang/String;",
-      garbageValue = "1"
+      signature = "(ZZB)I",
+      garbageValue = "-19"
    )
-   static String method4279(IterableHashTable var0, int var1, String var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         ObjectNode var3 = (ObjectNode)var0.get((long)var1);
-         return var3 == null?var2:(String)var3.value;
-      }
+   public static int method4340(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class249.NetCache_pendingPriorityResponsesCount + class249.NetCache_pendingPriorityWritesCount;
+      return var3;
    }
 
-   @ObfuscatedName("jf")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lhq;B)Lhq;",
-      garbageValue = "-75"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "115"
    )
-   static Widget method4280(Widget var0) {
-      Widget var1 = class153.method3030(var0);
-      if(var1 == null) {
-         var1 = var0.dragParent;
-      }
-
-      return var1;
+   @Export("getItemStackAmountText")
+   static final String getItemStackAmountText(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

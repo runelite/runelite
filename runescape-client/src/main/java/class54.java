@@ -3,86 +3,55 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bk")
+@ObfuscatedName("by")
 public class class54 {
-   @ObfuscatedName("d")
-   public static int[] field635;
-   @ObfuscatedName("w")
-   static int[] field639;
-
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "55142388"
+      signature = "(Ljava/lang/Object;ZB)[B",
+      garbageValue = "14"
    )
-   @Export("getColTags")
-   static String getColTags(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
+   @Export("toByteArray")
+   public static byte[] toByteArray(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
+         } else {
+            return var6;
+         }
+      } else if(var0 instanceof AbstractByteBuffer) {
+         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
+         return var2.get();
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 
-   @ObfuscatedName("ke")
+   @ObfuscatedName("gg")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1973751084"
+      signature = "(B)V",
+      garbageValue = "-55"
    )
-   static final void method781(String var0) {
-      if(var0 != null) {
-         if((Client.friendCount < 200 || Client.field977 == 1) && Client.friendCount < 400) {
-            String var1 = WorldMapData.cleanUsername(var0, GrandExchangeOffer.jagexLoginType);
-            if(var1 != null) {
-               int var2;
-               String var4;
-               String var5;
-               for(var2 = 0; var2 < Client.friendCount; ++var2) {
-                  Friend var3 = Client.friends[var2];
-                  var4 = WorldMapData.cleanUsername(var3.name, GrandExchangeOffer.jagexLoginType);
-                  if(var4 != null && var4.equals(var1)) {
-                     Preferences.sendGameMessage(30, "", var0 + " is already on your friend list");
-                     return;
-                  }
+   static final void method775() {
+      if(Client.gameCycle == Client.field949) {
+         if(class234.clanChatOwner != null) {
+            class234.clanChatOwner.method5047();
+         }
 
-                  if(var3.previousName != null) {
-                     var5 = WorldMapData.cleanUsername(var3.previousName, GrandExchangeOffer.jagexLoginType);
-                     if(var5 != null && var5.equals(var1)) {
-                        Preferences.sendGameMessage(30, "", var0 + " is already on your friend list");
-                        return;
-                     }
-                  }
-               }
-
-               for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
-                  Ignore var7 = Client.ignores[var2];
-                  var4 = WorldMapData.cleanUsername(var7.name, GrandExchangeOffer.jagexLoginType);
-                  if(var4 != null && var4.equals(var1)) {
-                     Preferences.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
-                     return;
-                  }
-
-                  if(var7.previousName != null) {
-                     var5 = WorldMapData.cleanUsername(var7.previousName, GrandExchangeOffer.jagexLoginType);
-                     if(var5 != null && var5.equals(var1)) {
-                        Preferences.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
-                        return;
-                     }
-                  }
-               }
-
-               if(WorldMapData.cleanUsername(GrandExchangeOffer.localPlayer.name, GrandExchangeOffer.jagexLoginType).equals(var1)) {
-                  Preferences.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
-               } else {
-                  PacketNode var6 = class235.method4272(ClientPacket.field2422, Client.field915.field1462);
-                  var6.packetBuffer.putByte(Size.getLength(var0));
-                  var6.packetBuffer.putString(var0);
-                  Client.field915.method1898(var6);
-               }
-            }
-         } else {
-            Preferences.sendGameMessage(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+         for(int var0 = 0; var0 < class92.playerIndexesCount; ++var0) {
+            Player var1 = Client.cachedPlayers[class92.playerIndices[var0]];
+            var1.method1133();
          }
       }
+
    }
 }

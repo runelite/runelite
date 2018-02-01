@@ -15,13 +15,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bp")
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @Export("component")
    Component component;
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @Export("image")
    Image image;
 
@@ -37,38 +37,38 @@ public final class MainBufferProvider extends BufferProvider {
       this.setRaster();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;B)V",
-      garbageValue = "3"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "-1006897546"
    )
    @Export("replaceComponent")
    final void replaceComponent(Component var1) {
       this.component = var1;
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1348763863"
+      signature = "(IIB)V",
+      garbageValue = "27"
    )
    public final void drawFull(int var1, int var2) {
       this.draw(this.component.getGraphics(), var1, var2);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIIIB)V",
-      garbageValue = "-128"
+      garbageValue = "48"
    )
    public final void draw(int var1, int var2, int var3, int var4) {
       this.drawSub(this.component.getGraphics(), var1, var2, var3, var4);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "-20"
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "306776137"
    )
    @Export("draw")
    @Hook("draw")
@@ -81,10 +81,10 @@ public final class MainBufferProvider extends BufferProvider {
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "-600068131"
+      garbageValue = "811306212"
    )
    @Export("drawSub")
    final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
