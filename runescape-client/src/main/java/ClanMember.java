@@ -1,17 +1,21 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jy")
-public class class272 extends class273 {
+@Implements("ClanMember")
+public class ClanMember extends Nameable {
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1257186361
    )
-   public int field3673;
+   @Export("world")
+   public int world;
    @ObfuscatedName("i")
-   public byte field3674;
+   @Export("rank")
+   public byte rank;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lji;"
@@ -23,7 +27,7 @@ public class class272 extends class273 {
    )
    class278 field3676;
 
-   class272() {
+   ClanMember() {
       this.field3675 = class278.field3690;
       this.field3676 = class278.field3690;
    }
@@ -56,7 +60,7 @@ public class class272 extends class273 {
       garbageValue = "-1539376846"
    )
    void method4973() {
-      this.field3675 = ServerPacket.field2281.field1191.method5038(super.field3678)?class278.field3691:class278.field3692;
+      this.field3675 = ServerPacket.friendManager.field1191.isMember(super.name)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("s")
@@ -87,7 +91,7 @@ public class class272 extends class273 {
       garbageValue = "-1185334931"
    )
    void method4978() {
-      this.field3676 = ServerPacket.field2281.field1196.method5038(super.field3678)?class278.field3691:class278.field3692;
+      this.field3676 = ServerPacket.friendManager.field1196.isMember(super.name)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("p")

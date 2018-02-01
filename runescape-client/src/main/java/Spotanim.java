@@ -400,7 +400,7 @@ public class Spotanim extends CacheableNode {
          } else if(var0 == 1125) {
             var9 = class80.intStack[--class80.intStackSize];
             class307[] var6 = new class307[]{class307.field3863, class307.field3864, class307.field3865, class307.field3866, class307.field3869};
-            class307 var7 = (class307)class272.forOrdinal(var6, var9);
+            class307 var7 = (class307)ClanMember.forOrdinal(var6, var9);
             if(var7 != null) {
                var3.field2758 = var7;
                class60.method1015(var3);

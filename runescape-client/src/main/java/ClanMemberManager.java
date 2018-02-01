@@ -1,8 +1,10 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jk")
-public class class282 extends class275 {
+@Implements("ClanMemberManager")
+public class ClanMemberManager extends NameableContainer {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lld;"
@@ -25,7 +27,7 @@ public class class282 extends class275 {
    @ObfuscatedSignature(
       signature = "(Lld;Ljh;)V"
    )
-   public class282(JagexLoginType var1, class277 var2) {
+   public ClanMemberManager(JagexLoginType var1, class277 var2) {
       super(100);
       this.field3713 = null;
       this.field3708 = null;
@@ -38,8 +40,8 @@ public class class282 extends class275 {
       signature = "(B)Lju;",
       garbageValue = "-98"
    )
-   class273 vmethod5160() {
-      return new class272();
+   Nameable vmethod5160() {
+      return new ClanMember();
    }
 
    @ObfuscatedName("i")
@@ -47,8 +49,8 @@ public class class282 extends class275 {
       signature = "(II)[Lju;",
       garbageValue = "-1319508722"
    )
-   class273[] vmethod5161(int var1) {
-      return new class272[var1];
+   Nameable[] vmethod5161(int var1) {
+      return new ClanMember[var1];
    }
 
    @ObfuscatedName("w")
@@ -84,9 +86,9 @@ public class class282 extends class275 {
          this.method5067();
 
          for(int var5 = 0; var5 < var4; ++var5) {
-            class272 var6 = (class272)this.method5034(new class280(var1.readString(), this.field3709));
-            var6.field3673 = var1.readUnsignedShort();
-            var6.field3674 = var1.readByte();
+            ClanMember var6 = (ClanMember)this.method5034(new Name(var1.readString(), this.field3709));
+            var6.world = var1.readUnsignedShort();
+            var6.rank = var1.readByte();
             var1.readString();
             this.method5168(var6);
          }
@@ -100,7 +102,7 @@ public class class282 extends class275 {
       garbageValue = "-382151944"
    )
    public final void method5165(Buffer var1) {
-      class280 var2 = new class280(var1.readString(), this.field3709);
+      Name var2 = new Name(var1.readString(), this.field3709);
       int var3 = var1.readUnsignedShort();
       byte var4 = var1.readByte();
       boolean var5 = false;
@@ -108,29 +110,29 @@ public class class282 extends class275 {
          var5 = true;
       }
 
-      class272 var6;
+      ClanMember var6;
       if(var5) {
-         if(this.method5036() == 0) {
+         if(this.getCount() == 0) {
             return;
          }
 
-         var6 = (class272)this.method5040(var2);
-         if(var6 != null && var3 == var6.field3673) {
+         var6 = (ClanMember)this.method5040(var2);
+         if(var6 != null && var3 == var6.world) {
             this.method5043(var6);
          }
       } else {
          var1.readString();
-         var6 = (class272)this.method5039(var2);
+         var6 = (ClanMember)this.method5039(var2);
          if(var6 == null) {
-            if(this.method5036() > super.field3685) {
+            if(this.getCount() > super.field3685) {
                return;
             }
 
-            var6 = (class272)this.method5034(var2);
+            var6 = (ClanMember)this.method5034(var2);
          }
 
-         var6.field3673 = var3;
-         var6.field3674 = var4;
+         var6.world = var3;
+         var6.rank = var4;
          this.method5168(var6);
       }
 
@@ -142,8 +144,8 @@ public class class282 extends class275 {
       garbageValue = "1302275940"
    )
    public final void method5166() {
-      for(int var1 = 0; var1 < this.method5036(); ++var1) {
-         ((class272)this.method5054(var1)).method4993();
+      for(int var1 = 0; var1 < this.getCount(); ++var1) {
+         ((ClanMember)this.get(var1)).method4993();
       }
 
    }
@@ -154,8 +156,8 @@ public class class282 extends class275 {
       garbageValue = "1915495201"
    )
    public final void method5167() {
-      for(int var1 = 0; var1 < this.method5036(); ++var1) {
-         ((class272)this.method5054(var1)).method4976();
+      for(int var1 = 0; var1 < this.getCount(); ++var1) {
+         ((ClanMember)this.get(var1)).method4976();
       }
 
    }
@@ -165,9 +167,9 @@ public class class282 extends class275 {
       signature = "(Ljy;B)V",
       garbageValue = "104"
    )
-   final void method5168(class272 var1) {
+   final void method5168(ClanMember var1) {
       if(var1.method5001().equals(this.field3710.vmethod5106())) {
-         this.field3714 = var1.field3674;
+         this.field3714 = var1.rank;
       }
 
    }

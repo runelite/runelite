@@ -43,8 +43,8 @@ public class class54 {
    )
    static final void method775() {
       if(Client.gameCycle == Client.field949) {
-         if(class234.clanChatOwner != null) {
-            class234.clanChatOwner.method5047();
+         if(class234.clanMemberManager != null) {
+            class234.clanMemberManager.method5047();
          }
 
          for(int var0 = 0; var0 < class92.playerIndexesCount; ++var0) {

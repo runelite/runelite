@@ -1033,7 +1033,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       BaseVarType.field24 = new int[104];
       class61.field685 = new int[104];
       ItemLayer.field1669 = new int[104];
-      class276.field3688 = new int[104];
+      Ignore.field3688 = new int[104];
    }
 
    @ObfuscatedName("a")

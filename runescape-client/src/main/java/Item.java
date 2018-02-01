@@ -171,7 +171,7 @@ public final class Item extends Renderable {
       garbageValue = "-1605556164"
    )
    static final void method1921(String var0) {
-      if(class234.clanChatOwner != null) {
+      if(class234.clanMemberManager != null) {
          PacketNode var1 = class35.method501(ClientPacket.field2333, Client.field867.field1439);
          var1.packetBuffer.putByte(ContextMenuRow.getLength(var0));
          var1.packetBuffer.putString(var0);

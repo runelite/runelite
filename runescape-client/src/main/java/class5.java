@@ -286,7 +286,7 @@ final class class5 implements class0 {
                            class89.loginIndex = 0;
                            class89.username = "";
                            class89.password = "";
-                           class276.field3689 = 0;
+                           Ignore.field3689 = 0;
                            Client.field1032 = "";
                            class89.field1329 = true;
                         }
@@ -331,7 +331,7 @@ final class class5 implements class0 {
                                  class89.loginIndex = 0;
                                  class89.username = "";
                                  class89.password = "";
-                                 class276.field3689 = 0;
+                                 Ignore.field3689 = 0;
                                  Client.field1032 = "";
                                  class89.field1329 = true;
                               } else if(class89.field1300 == 0) {
@@ -408,7 +408,7 @@ final class class5 implements class0 {
                                  return;
                               }
 
-                              class276.field3689 = Integer.parseInt(Client.field1032);
+                              Ignore.field3689 = Integer.parseInt(Client.field1032);
                               Client.field1032 = "";
                               class179.method3376(true);
                               PacketNode.method3314("", "Connecting to server...", "");
@@ -430,7 +430,7 @@ final class class5 implements class0 {
                               class89.loginIndex = 0;
                               class89.username = "";
                               class89.password = "";
-                              class276.field3689 = 0;
+                              Ignore.field3689 = 0;
                               Client.field1032 = "";
                            }
 
@@ -448,7 +448,7 @@ final class class5 implements class0 {
                                  class89.loginIndex = 0;
                                  class89.username = "";
                                  class89.password = "";
-                                 class276.field3689 = 0;
+                                 Ignore.field3689 = 0;
                                  Client.field1032 = "";
                               } else {
                                  if(WorldMapData.field427 == 85 && Client.field1032.length() > 0) {
@@ -462,7 +462,7 @@ final class class5 implements class0 {
                                        return;
                                     }
 
-                                    class276.field3689 = Integer.parseInt(Client.field1032);
+                                    Ignore.field3689 = Integer.parseInt(Client.field1032);
                                     Client.field1032 = "";
                                     class179.method3376(true);
                                     PacketNode.method3314("", "Connecting to server...", "");
@@ -829,7 +829,7 @@ final class class5 implements class0 {
                      return 1;
                   } else if(var0 == 5018) {
                      var13 = class80.intStack[--class80.intStackSize];
-                     class80.intStack[++class80.intStackSize - 1] = class78.method1733(var13);
+                     class80.intStack[++class80.intStackSize - 1] = FriendManager.method1733(var13);
                      return 1;
                   } else if(var0 == 5019) {
                      var13 = class80.intStack[--class80.intStackSize];
@@ -905,7 +905,7 @@ final class class5 implements class0 {
                   }
                } else {
                   if(class36.localPlayer != null && class36.localPlayer.name != null) {
-                     var3 = class36.localPlayer.name.method5137();
+                     var3 = class36.localPlayer.name.getName();
                   } else {
                      var3 = "";
                   }

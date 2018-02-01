@@ -391,7 +391,7 @@ public class class39 {
 
                      class221 var63;
                      if(var10.contentType == 1338) {
-                        class281.method5158();
+                        Friend.method5158();
                         var63 = var10.method4288(false);
                         if(var63 != null) {
                            Rasterizer2D.setDrawRegion(var12, var13, var12 + var63.field2686, var13 + var63.field2684);
@@ -440,11 +440,11 @@ public class class39 {
                                              var58 = true;
                                           }
 
-                                          if(var71.method1129()) {
+                                          if(var71.isFriend()) {
                                              RunException.drawDot(var12, var13, var49, var28, Widget.mapDots[3], var63);
                                           } else if(var58) {
                                              RunException.drawDot(var12, var13, var49, var28, Widget.mapDots[4], var63);
-                                          } else if(var71.method1145()) {
+                                          } else if(var71.isClanMember()) {
                                              RunException.drawDot(var12, var13, var49, var28, Widget.mapDots[5], var63);
                                           } else {
                                              RunException.drawDot(var12, var13, var49, var28, Widget.mapDots[2], var63);

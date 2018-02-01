@@ -1,10 +1,13 @@
 import java.util.Iterator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cx")
-public class class78 {
+@Implements("FriendManager")
+public class FriendManager {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lld;"
@@ -29,7 +32,7 @@ public class class78 {
    @ObfuscatedSignature(
       signature = "(Lld;)V"
    )
-   class78(JagexLoginType var1) {
+   FriendManager(JagexLoginType var1) {
       this.field1195 = 0;
       this.field1194 = var1;
       this.field1191 = new class279(var1);
@@ -103,7 +106,8 @@ public class class78 {
       signature = "(Ljr;ZI)Z",
       garbageValue = "-717303535"
    )
-   final boolean method1715(class280 var1, boolean var2) {
+   @Export("isFriended")
+   final boolean isFriended(Name var1, boolean var2) {
       return var1 == null?false:(var1.equals(class36.localPlayer.name)?true:this.field1191.method5116(var1, var2));
    }
 
@@ -112,8 +116,8 @@ public class class78 {
       signature = "(Ljr;I)Z",
       garbageValue = "1659869194"
    )
-   final boolean method1670(class280 var1) {
-      return var1 == null?false:this.field1196.method5038(var1);
+   final boolean method1670(Name var1) {
+      return var1 == null?false:this.field1196.isMember(var1);
    }
 
    @ObfuscatedName("r")
@@ -123,13 +127,13 @@ public class class78 {
    )
    final void method1707(String var1) {
       if(var1 != null) {
-         class280 var2 = new class280(var1, this.field1194);
+         Name var2 = new Name(var1, this.field1194);
          if(var2.method5132()) {
             if(this.method1672()) {
                class63.method1054("Your friend list is full. Max of 200 for free users, and 400 for members");
             } else if(class36.localPlayer.name.equals(var2)) {
                Size.method187();
-            } else if(this.method1715(var2, false)) {
+            } else if(this.isFriended(var2, false)) {
                SceneTilePaint.method2808(var1);
             } else if(this.method1670(var2)) {
                class5.method23(var1);
@@ -146,7 +150,7 @@ public class class78 {
       garbageValue = "1827557930"
    )
    final boolean method1672() {
-      return this.field1191.method5037() || this.field1191.method5036() >= 200 && Client.field928 != 1;
+      return this.field1191.method5037() || this.field1191.getCount() >= 200 && Client.field928 != 1;
    }
 
    @ObfuscatedName("l")
@@ -156,7 +160,7 @@ public class class78 {
    )
    final void method1673(String var1) {
       if(var1 != null) {
-         class280 var2 = new class280(var1, this.field1194);
+         Name var2 = new Name(var1, this.field1194);
          if(var2.method5132()) {
             if(this.method1674()) {
                WorldMapType3.method215();
@@ -164,7 +168,7 @@ public class class78 {
                GameEngine.method983();
             } else if(this.method1670(var2)) {
                BuildType.method4352(var1);
-            } else if(this.method1715(var2, false)) {
+            } else if(this.isFriended(var2, false)) {
                ScriptState.method1050(var1);
             } else {
                ObjectComposition.method4823(var1);
@@ -179,7 +183,7 @@ public class class78 {
       garbageValue = "686206964"
    )
    final boolean method1674() {
-      return this.field1196.method5037() || this.field1196.method5036() >= 100 && Client.field928 != 1;
+      return this.field1196.method5037() || this.field1196.getCount() >= 100 && Client.field928 != 1;
    }
 
    @ObfuscatedName("c")
@@ -189,7 +193,7 @@ public class class78 {
    )
    final void method1675(String var1) {
       if(var1 != null) {
-         class280 var2 = new class280(var1, this.field1194);
+         Name var2 = new Name(var1, this.field1194);
          if(var2.method5132()) {
             if(this.field1191.method5056(var2)) {
                Client.field1000 = Client.cycleCntr;
@@ -211,7 +215,7 @@ public class class78 {
    )
    final void method1713(String var1) {
       if(var1 != null) {
-         class280 var2 = new class280(var1, this.field1194);
+         Name var2 = new Name(var1, this.field1194);
          if(var2.method5132()) {
             if(this.field1196.method5056(var2)) {
                Client.field1000 = Client.cycleCntr;
@@ -228,8 +232,8 @@ public class class78 {
                var4.method1093();
             }
 
-            if(class234.clanChatOwner != null) {
-               class234.clanChatOwner.method5167();
+            if(class234.clanMemberManager != null) {
+               class234.clanMemberManager.method5167();
             }
 
          }

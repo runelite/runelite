@@ -218,10 +218,10 @@ public class Area extends CacheableNode {
             } else if(var2 == 28) {
                var1.readUnsignedByte();
             } else if(var2 == 29) {
-               this.field3356 = (class268)class272.forOrdinal(ObjectComposition.method4825(), var1.readUnsignedByte());
+               this.field3356 = (class268)ClanMember.forOrdinal(ObjectComposition.method4825(), var1.readUnsignedByte());
             } else if(var2 == 30) {
                class250[] var6 = new class250[]{class250.field3338, class250.field3339, class250.field3340};
-               this.field3370 = (class250)class272.forOrdinal(var6, var1.readUnsignedByte());
+               this.field3370 = (class250)ClanMember.forOrdinal(var6, var1.readUnsignedByte());
             }
          }
       }

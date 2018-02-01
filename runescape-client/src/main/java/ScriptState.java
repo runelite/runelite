@@ -67,8 +67,8 @@ public class ScriptState {
          var1.method1093();
       }
 
-      if(class234.clanChatOwner != null) {
-         class234.clanChatOwner.method5167();
+      if(class234.clanMemberManager != null) {
+         class234.clanMemberManager.method5167();
       }
 
    }

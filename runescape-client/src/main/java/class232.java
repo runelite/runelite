@@ -157,7 +157,7 @@ public enum class232 implements MouseWheel {
       int var2 = class92.playerIndexesCount;
       int[] var3 = class92.playerIndices;
       boolean var4 = false;
-      class280 var5 = new class280(var1, class34.field458);
+      Name var5 = new Name(var1, class34.loginType);
 
       for(int var6 = 0; var6 < var2; ++var6) {
          Player var7 = Client.cachedPlayers[var3[var6]];

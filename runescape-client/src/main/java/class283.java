@@ -25,14 +25,14 @@ public class class283 extends class207 {
    @ObfuscatedSignature(
       signature = "Ljr;"
    )
-   public class280 field3715;
+   public Name field3715;
    @ObfuscatedName("j")
    public short field3717;
 
    @ObfuscatedSignature(
       signature = "(Ljr;I)V"
    )
-   class283(class280 var1, int var2) {
+   class283(Name var1, int var2) {
       this.field3719 = (int)(ScriptVarType.currentTimeMs() / 1000L);
       this.field3715 = var1;
       this.field3717 = (short)var2;

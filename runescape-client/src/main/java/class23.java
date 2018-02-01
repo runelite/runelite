@@ -100,12 +100,12 @@ public class class23 {
    )
    static int method180(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
-         if(ServerPacket.field2281.field1195 == 0) {
+         if(ServerPacket.friendManager.field1195 == 0) {
             class80.intStack[++class80.intStackSize - 1] = -2;
-         } else if(ServerPacket.field2281.field1195 == 1) {
+         } else if(ServerPacket.friendManager.field1195 == 1) {
             class80.intStack[++class80.intStackSize - 1] = -1;
          } else {
-            class80.intStack[++class80.intStackSize - 1] = ServerPacket.field2281.field1191.method5036();
+            class80.intStack[++class80.intStackSize - 1] = ServerPacket.friendManager.field1191.getCount();
          }
 
          return 1;
@@ -113,8 +113,8 @@ public class class23 {
          int var3;
          if(var0 == 3601) {
             var3 = class80.intStack[--class80.intStackSize];
-            if(ServerPacket.field2281.method1664() && var3 >= 0 && var3 < ServerPacket.field2281.field1191.method5036()) {
-               class281 var9 = (class281)ServerPacket.field2281.field1191.method5054(var3);
+            if(ServerPacket.friendManager.method1664() && var3 >= 0 && var3 < ServerPacket.friendManager.field1191.getCount()) {
+               Friend var9 = (Friend)ServerPacket.friendManager.field1191.get(var3);
                class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = var9.method5011();
                class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = var9.method5002();
             } else {
@@ -125,8 +125,8 @@ public class class23 {
             return 1;
          } else if(var0 == 3602) {
             var3 = class80.intStack[--class80.intStackSize];
-            if(ServerPacket.field2281.method1664() && var3 >= 0 && var3 < ServerPacket.field2281.field1191.method5036()) {
-               class80.intStack[++class80.intStackSize - 1] = ((class281)ServerPacket.field2281.field1191.method5054(var3)).field3705;
+            if(ServerPacket.friendManager.method1664() && var3 >= 0 && var3 < ServerPacket.friendManager.field1191.getCount()) {
+               class80.intStack[++class80.intStackSize - 1] = ((Friend)ServerPacket.friendManager.field1191.get(var3)).world;
             } else {
                class80.intStack[++class80.intStackSize - 1] = 0;
             }
@@ -134,8 +134,8 @@ public class class23 {
             return 1;
          } else if(var0 == 3603) {
             var3 = class80.intStack[--class80.intStackSize];
-            if(ServerPacket.field2281.method1664() && var3 >= 0 && var3 < ServerPacket.field2281.field1191.method5036()) {
-               class80.intStack[++class80.intStackSize - 1] = ((class281)ServerPacket.field2281.field1191.method5054(var3)).field3707;
+            if(ServerPacket.friendManager.method1664() && var3 >= 0 && var3 < ServerPacket.friendManager.field1191.getCount()) {
+               class80.intStack[++class80.intStackSize - 1] = ((Friend)ServerPacket.friendManager.field1191.get(var3)).field3707;
             } else {
                class80.intStack[++class80.intStackSize - 1] = 0;
             }
@@ -154,36 +154,36 @@ public class class23 {
                return 1;
             } else if(var0 == 3605) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
-               ServerPacket.field2281.method1707(var6);
+               ServerPacket.friendManager.method1707(var6);
                return 1;
             } else if(var0 == 3606) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
-               ServerPacket.field2281.method1675(var6);
+               ServerPacket.friendManager.method1675(var6);
                return 1;
             } else if(var0 == 3607) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
-               ServerPacket.field2281.method1673(var6);
+               ServerPacket.friendManager.method1673(var6);
                return 1;
             } else if(var0 == 3608) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
-               ServerPacket.field2281.method1713(var6);
+               ServerPacket.friendManager.method1713(var6);
                return 1;
             } else if(var0 == 3609) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
                var6 = class33.method361(var6);
-               class80.intStack[++class80.intStackSize - 1] = ServerPacket.field2281.method1715(new class280(var6, class34.field458), false)?1:0;
+               class80.intStack[++class80.intStackSize - 1] = ServerPacket.friendManager.isFriended(new Name(var6, class34.loginType), false)?1:0;
                return 1;
             } else if(var0 == 3611) {
-               if(class234.clanChatOwner != null) {
-                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanChatOwner.field3713;
+               if(class234.clanMemberManager != null) {
+                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanMemberManager.field3713;
                } else {
                   class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = "";
                }
 
                return 1;
             } else if(var0 == 3612) {
-               if(class234.clanChatOwner != null) {
-                  class80.intStack[++class80.intStackSize - 1] = class234.clanChatOwner.method5036();
+               if(class234.clanMemberManager != null) {
+                  class80.intStack[++class80.intStackSize - 1] = class234.clanMemberManager.getCount();
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
                }
@@ -191,8 +191,8 @@ public class class23 {
                return 1;
             } else if(var0 == 3613) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036()) {
-                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanChatOwner.method5054(var3).method5001().method5137();
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount()) {
+                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanMemberManager.get(var3).method5001().getName();
                } else {
                   class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = "";
                }
@@ -200,8 +200,8 @@ public class class23 {
                return 1;
             } else if(var0 == 3614) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036()) {
-                  class80.intStack[++class80.intStackSize - 1] = ((class272)class234.clanChatOwner.method5054(var3)).field3673;
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount()) {
+                  class80.intStack[++class80.intStackSize - 1] = ((ClanMember)class234.clanMemberManager.get(var3)).world;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
                }
@@ -209,22 +209,22 @@ public class class23 {
                return 1;
             } else if(var0 == 3615) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036()) {
-                  class80.intStack[++class80.intStackSize - 1] = ((class272)class234.clanChatOwner.method5054(var3)).field3674;
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount()) {
+                  class80.intStack[++class80.intStackSize - 1] = ((ClanMember)class234.clanMemberManager.get(var3)).rank;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
                }
 
                return 1;
             } else if(var0 == 3616) {
-               class80.intStack[++class80.intStackSize - 1] = class234.clanChatOwner != null?class234.clanChatOwner.field3711:0;
+               class80.intStack[++class80.intStackSize - 1] = class234.clanMemberManager != null?class234.clanMemberManager.field3711:0;
                return 1;
             } else if(var0 == 3617) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
                Item.method1921(var6);
                return 1;
             } else if(var0 == 3618) {
-               class80.intStack[++class80.intStackSize - 1] = class234.clanChatOwner != null?class234.clanChatOwner.field3714:0;
+               class80.intStack[++class80.intStackSize - 1] = class234.clanMemberManager != null?class234.clanMemberManager.field3714:0;
                return 1;
             } else if(var0 == 3619) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
@@ -242,17 +242,17 @@ public class class23 {
                Client.field867.method2021(var10);
                return 1;
             } else if(var0 == 3621) {
-               if(!ServerPacket.field2281.method1664()) {
+               if(!ServerPacket.friendManager.method1664()) {
                   class80.intStack[++class80.intStackSize - 1] = -1;
                } else {
-                  class80.intStack[++class80.intStackSize - 1] = ServerPacket.field2281.field1196.method5036();
+                  class80.intStack[++class80.intStackSize - 1] = ServerPacket.friendManager.field1196.getCount();
                }
 
                return 1;
             } else if(var0 == 3622) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(ServerPacket.field2281.method1664() && var3 >= 0 && var3 < ServerPacket.field2281.field1196.method5036()) {
-                  class276 var4 = (class276)ServerPacket.field2281.field1196.method5054(var3);
+               if(ServerPacket.friendManager.method1664() && var3 >= 0 && var3 < ServerPacket.friendManager.field1196.getCount()) {
+                  Ignore var4 = (Ignore)ServerPacket.friendManager.field1196.get(var3);
                   class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = var4.method5011();
                   class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = var4.method5002();
                } else {
@@ -264,11 +264,11 @@ public class class23 {
             } else if(var0 == 3623) {
                var6 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
                var6 = class33.method361(var6);
-               class80.intStack[++class80.intStackSize - 1] = ServerPacket.field2281.method1670(new class280(var6, class34.field458))?1:0;
+               class80.intStack[++class80.intStackSize - 1] = ServerPacket.friendManager.method1670(new Name(var6, class34.loginType))?1:0;
                return 1;
             } else if(var0 == 3624) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036() && class234.clanChatOwner.method5054(var3).method5001().equals(class36.localPlayer.name)) {
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount() && class234.clanMemberManager.get(var3).method5001().equals(class36.localPlayer.name)) {
                   class80.intStack[++class80.intStackSize - 1] = 1;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
@@ -276,8 +276,8 @@ public class class23 {
 
                return 1;
             } else if(var0 == 3625) {
-               if(class234.clanChatOwner != null && class234.clanChatOwner.field3708 != null) {
-                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanChatOwner.field3708;
+               if(class234.clanMemberManager != null && class234.clanMemberManager.field3708 != null) {
+                  class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = class234.clanMemberManager.field3708;
                } else {
                   class80.scriptStringStack[++WorldComparator.scriptStringStackSize - 1] = "";
                }
@@ -285,7 +285,7 @@ public class class23 {
                return 1;
             } else if(var0 == 3626) {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036() && ((class272)class234.clanChatOwner.method5054(var3)).method4996()) {
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount() && ((ClanMember)class234.clanMemberManager.get(var3)).method4996()) {
                   class80.intStack[++class80.intStackSize - 1] = 1;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;
@@ -296,7 +296,7 @@ public class class23 {
                return 2;
             } else {
                var3 = class80.intStack[--class80.intStackSize];
-               if(class234.clanChatOwner != null && var3 < class234.clanChatOwner.method5036() && ((class272)class234.clanChatOwner.method5054(var3)).method4990()) {
+               if(class234.clanMemberManager != null && var3 < class234.clanMemberManager.getCount() && ((ClanMember)class234.clanMemberManager.get(var3)).method4990()) {
                   class80.intStack[++class80.intStackSize - 1] = 1;
                } else {
                   class80.intStack[++class80.intStackSize - 1] = 0;

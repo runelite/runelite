@@ -24,7 +24,7 @@ public final class Player extends Actor {
       signature = "Ljr;"
    )
    @Export("name")
-   class280 name;
+   Name name;
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lhj;"
@@ -267,11 +267,11 @@ public final class Player extends Actor {
          super.field1109 = -1;
       }
 
-      this.name = new class280(var1.readString(), class34.field458);
+      this.name = new Name(var1.readString(), class34.loginType);
       this.method1130();
       this.method1133();
       if(this == class36.localPlayer) {
-         RunException.field2098 = this.name.method5137();
+         RunException.field2098 = this.name.getName();
       }
 
       this.combatLevel = var1.readUnsignedByte();
@@ -293,7 +293,8 @@ public final class Player extends Actor {
       signature = "(B)Z",
       garbageValue = "0"
    )
-   boolean method1129() {
+   @Export("isFriend")
+   boolean isFriend() {
       if(this.field810 == class278.field3690) {
          this.method1131();
       }
@@ -316,7 +317,7 @@ public final class Player extends Actor {
       garbageValue = "1722784207"
    )
    void method1131() {
-      this.field810 = ServerPacket.field2281.field1191.method5038(this.name)?class278.field3691:class278.field3692;
+      this.field810 = ServerPacket.friendManager.field1191.isMember(this.name)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("j")
@@ -324,7 +325,8 @@ public final class Player extends Actor {
       signature = "(B)Z",
       garbageValue = "40"
    )
-   boolean method1145() {
+   @Export("isClanMember")
+   boolean isClanMember() {
       if(this.field811 == class278.field3690) {
          this.method1134();
       }
@@ -347,7 +349,7 @@ public final class Player extends Actor {
       garbageValue = "744553828"
    )
    void method1134() {
-      this.field811 = class234.clanChatOwner != null && class234.clanChatOwner.method5038(this.name)?class278.field3691:class278.field3692;
+      this.field811 = class234.clanMemberManager != null && class234.clanMemberManager.isMember(this.name)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("r")
@@ -445,7 +447,7 @@ public final class Player extends Actor {
       if(var1 >= 0 && var1 < 104 && var2 >= 0 && var2 < 104) {
          if(super.pathX[0] >= 0 && super.pathX[0] < 104 && super.pathY[0] >= 0 && super.pathY[0] < 104) {
             if(var3 == 2) {
-               class275.method5105(this, var1, var2, (byte)2);
+               NameableContainer.method5105(this, var1, var2, (byte)2);
             }
 
             this.method1151(var1, var2, var3);

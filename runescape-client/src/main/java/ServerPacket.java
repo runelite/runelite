@@ -11,7 +11,8 @@ public class ServerPacket {
    @ObfuscatedSignature(
       signature = "Lcx;"
    )
-   public static class78 field2281;
+   @Export("friendManager")
+   public static FriendManager friendManager;
    @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "Lfo;"

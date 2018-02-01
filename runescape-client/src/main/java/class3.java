@@ -223,15 +223,15 @@ final class class3 implements class0 {
          class237.method4337();
       }
 
-      class281.method5158();
+      Friend.method5158();
       Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
-      class281.method5158();
+      Friend.method5158();
       var12 = Graphics3D.Rasterizer3D_zoom;
       Graphics3D.Rasterizer3D_zoom = Client.scale;
       class48.region.draw(Actor.cameraX, class60.cameraZ, GameCanvas.cameraY, SceneTilePaint.cameraPitch, class33.cameraYaw, var4);
       Spotanim.method4610();
       Graphics3D.Rasterizer3D_zoom = var12;
-      class281.method5158();
+      Friend.method5158();
       class48.region.clearEntities();
       Client.overheadTextCount = 0;
       boolean var31 = false;
@@ -574,7 +574,7 @@ final class class3 implements class0 {
             }
          }
 
-         if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1103 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && ((Player)var0).method1129())))) {
+         if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1103 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && ((Player)var0).isFriend())))) {
             class47.characterToScreen(var0, var0.field1147);
             if(Client.screenX > -1 && Client.overheadTextCount < Client.maxOverheadTexts) {
                Client.overheadTextsOffsetX[Client.overheadTextCount] = ContextMenuRow.fontBold12.getTextWidth(var0.overhead) / 2;

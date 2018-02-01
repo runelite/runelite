@@ -230,7 +230,7 @@ public class class185 {
             class89.password = "";
          }
 
-         class276.field3689 = 0;
+         Ignore.field3689 = 0;
          Client.field1032 = "";
          class89.field1329 = true;
          class89.worldSelectShown = false;

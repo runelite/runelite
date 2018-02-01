@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -19,7 +20,8 @@ public class class34 {
    @ObfuscatedSignature(
       signature = "Lld;"
    )
-   static JagexLoginType field458;
+   @Export("loginType")
+   static JagexLoginType loginType;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1364360519
@@ -344,7 +346,7 @@ public class class34 {
          } else if(var10.otherRgbColor >= 0) {
             var8 = var10.otherRgbColor | -16777216;
          } else if(var10.texture >= 0) {
-            int var11 = class273.method5019(Graphics3D.textureLoader.getAverageTextureRGB(var10.texture), 96);
+            int var11 = Nameable.method5019(Graphics3D.textureLoader.getAverageTextureRGB(var10.texture), 96);
             var8 = Graphics3D.colorPalette[var11] | -16777216;
          } else if(var10.color == 16711935) {
             var8 = var9;
@@ -369,7 +371,7 @@ public class class34 {
             }
 
             int var15 = (var13 / 32 << 7) + var14 / 2 + (var12 / 4 << 10);
-            int var16 = class273.method5019(var15, 96);
+            int var16 = Nameable.method5019(var15, 96);
             var8 = Graphics3D.colorPalette[var16] | -16777216;
          }
 
@@ -405,7 +407,7 @@ public class class34 {
             } else if(var9.otherRgbColor >= 0) {
                var7 = var9.otherRgbColor | -16777216;
             } else if(var9.texture >= 0) {
-               int var10 = class273.method5019(Graphics3D.textureLoader.getAverageTextureRGB(var9.texture), 96);
+               int var10 = Nameable.method5019(Graphics3D.textureLoader.getAverageTextureRGB(var9.texture), 96);
                var7 = Graphics3D.colorPalette[var10] | -16777216;
             } else if(var9.color == 16711935) {
                var7 = var8;
@@ -430,7 +432,7 @@ public class class34 {
                }
 
                int var14 = (var12 / 32 << 7) + var13 / 2 + (var11 / 4 << 10);
-               int var15 = class273.method5019(var14, 96);
+               int var15 = Nameable.method5019(var14, 96);
                var7 = Graphics3D.colorPalette[var15] | -16777216;
             }
 

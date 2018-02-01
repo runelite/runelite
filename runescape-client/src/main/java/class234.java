@@ -8,6 +8,6 @@ public class class234 {
    @ObfuscatedSignature(
       signature = "Ljk;"
    )
-   @Export("clanChatOwner")
-   static class282 clanChatOwner;
+   @Export("clanMemberManager")
+   static ClanMemberManager clanMemberManager;
 }

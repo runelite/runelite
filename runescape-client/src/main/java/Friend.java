@@ -1,14 +1,18 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("jc")
-public class class281 extends class273 {
+@Implements("Friend")
+public class Friend extends Nameable {
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 216251869
    )
-   public int field3705;
+   @Export("world")
+   public int world;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -781877595
@@ -24,8 +28,8 @@ public class class281 extends class273 {
       signature = "(Ljc;I)I",
       garbageValue = "2141076686"
    )
-   int method5151(class281 var1) {
-      return this.field3705 == Client.world && Client.world != var1.field3705?-1:(Client.world == var1.field3705 && this.field3705 != Client.world?1:(this.field3705 != 0 && var1.field3705 == 0?-1:(var1.field3705 != 0 && this.field3705 == 0?1:(this.field3706 && !var1.field3706?-1:(!this.field3706 && var1.field3706?1:(this.field3704 && !var1.field3704?-1:(!this.field3704 && var1.field3704?1:super.vmethod5152(var1))))))));
+   int method5151(Friend var1) {
+      return this.world == Client.world && Client.world != var1.world?-1:(Client.world == var1.world && this.world != Client.world?1:(this.world != 0 && var1.world == 0?-1:(var1.world != 0 && this.world == 0?1:(this.field3706 && !var1.field3706?-1:(!this.field3706 && var1.field3706?1:(this.field3704 && !var1.field3704?-1:(!this.field3704 && var1.field3704?1:super.vmethod5152(var1))))))));
    }
 
    @ObfuscatedName("ai")
@@ -33,12 +37,12 @@ public class class281 extends class273 {
       signature = "(Lju;B)I",
       garbageValue = "1"
    )
-   int vmethod5152(class273 var1) {
-      return this.method5151((class281)var1);
+   int vmethod5152(Nameable var1) {
+      return this.method5151((Friend)var1);
    }
 
    public int compareTo(Object var1) {
-      return this.method5151((class281)var1);
+      return this.method5151((Friend)var1);
    }
 
    @ObfuscatedName("ff")

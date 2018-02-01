@@ -1,11 +1,14 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ja")
-public abstract class class275 {
+@Implements("NameableContainer")
+public abstract class NameableContainer {
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 777467825
@@ -15,21 +18,23 @@ public abstract class class275 {
    @ObfuscatedGetter(
       intValue = -65853015
    )
-   int field3684;
+   @Export("count")
+   int count;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "[Lju;"
    )
-   class273[] field3687;
+   @Export("nameables")
+   Nameable[] nameables;
    @ObfuscatedName("t")
    HashMap field3686;
    @ObfuscatedName("r")
    HashMap field3683;
 
-   class275(int var1) {
-      this.field3684 = 0;
+   NameableContainer(int var1) {
+      this.count = 0;
       this.field3685 = var1;
-      this.field3687 = this.vmethod5161(var1);
+      this.nameables = this.vmethod5161(var1);
       this.field3686 = new HashMap(var1 / 8);
       this.field3683 = new HashMap(var1 / 8);
    }
@@ -39,14 +44,14 @@ public abstract class class275 {
       signature = "(B)Lju;",
       garbageValue = "-98"
    )
-   abstract class273 vmethod5160();
+   abstract Nameable vmethod5160();
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)[Lju;",
       garbageValue = "-1319508722"
    )
-   abstract class273[] vmethod5161(int var1);
+   abstract Nameable[] vmethod5161(int var1);
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
@@ -54,8 +59,8 @@ public abstract class class275 {
       garbageValue = "-111"
    )
    public void method5067() {
-      this.field3684 = 0;
-      Arrays.fill(this.field3687, (Object)null);
+      this.count = 0;
+      Arrays.fill(this.nameables, (Object)null);
       this.field3686.clear();
       this.field3683.clear();
    }
@@ -65,8 +70,9 @@ public abstract class class275 {
       signature = "(B)I",
       garbageValue = "-48"
    )
-   public int method5036() {
-      return this.field3684;
+   @Export("getCount")
+   public int getCount() {
+      return this.count;
    }
 
    @ObfuscatedName("k")
@@ -75,7 +81,7 @@ public abstract class class275 {
       garbageValue = "1646413875"
    )
    public boolean method5037() {
-      return this.field3684 == this.field3685;
+      return this.count == this.field3685;
    }
 
    @ObfuscatedName("e")
@@ -83,7 +89,8 @@ public abstract class class275 {
       signature = "(Ljr;I)Z",
       garbageValue = "1705599167"
    )
-   public boolean method5038(class280 var1) {
+   @Export("isMember")
+   public boolean isMember(Name var1) {
       return !var1.method5132()?false:(this.field3686.containsKey(var1)?true:this.field3683.containsKey(var1));
    }
 
@@ -92,8 +99,8 @@ public abstract class class275 {
       signature = "(Ljr;B)Lju;",
       garbageValue = "-20"
    )
-   class273 method5039(class280 var1) {
-      class273 var2 = this.method5040(var1);
+   Nameable method5039(Name var1) {
+      Nameable var2 = this.method5040(var1);
       return var2 != null?var2:this.method5041(var1);
    }
 
@@ -102,8 +109,8 @@ public abstract class class275 {
       signature = "(Ljr;I)Lju;",
       garbageValue = "1795987005"
    )
-   class273 method5040(class280 var1) {
-      return !var1.method5132()?null:(class273)this.field3686.get(var1);
+   Nameable method5040(Name var1) {
+      return !var1.method5132()?null:(Nameable)this.field3686.get(var1);
    }
 
    @ObfuscatedName("b")
@@ -111,8 +118,8 @@ public abstract class class275 {
       signature = "(Ljr;I)Lju;",
       garbageValue = "-746659853"
    )
-   class273 method5041(class280 var1) {
-      return !var1.method5132()?null:(class273)this.field3683.get(var1);
+   Nameable method5041(Name var1) {
+      return !var1.method5132()?null:(Nameable)this.field3683.get(var1);
    }
 
    @ObfuscatedName("c")
@@ -120,8 +127,8 @@ public abstract class class275 {
       signature = "(Ljr;B)Z",
       garbageValue = "84"
    )
-   public final boolean method5056(class280 var1) {
-      class273 var2 = this.method5040(var1);
+   public final boolean method5056(Name var1) {
+      Nameable var2 = this.method5040(var1);
       if(var2 == null) {
          return false;
       } else {
@@ -135,7 +142,7 @@ public abstract class class275 {
       signature = "(Lju;I)V",
       garbageValue = "339800791"
    )
-   final void method5043(class273 var1) {
+   final void method5043(Nameable var1) {
       int var2 = this.method5049(var1);
       if(var2 != -1) {
          this.method5057(var2);
@@ -148,8 +155,8 @@ public abstract class class275 {
       signature = "(Ljr;B)Lju;",
       garbageValue = "46"
    )
-   class273 method5034(class280 var1) {
-      return this.method5045(var1, (class280)null);
+   Nameable method5034(Name var1) {
+      return this.method5045(var1, (Name)null);
    }
 
    @ObfuscatedName("ao")
@@ -157,11 +164,11 @@ public abstract class class275 {
       signature = "(Ljr;Ljr;I)Lju;",
       garbageValue = "196391872"
    )
-   class273 method5045(class280 var1, class280 var2) {
+   Nameable method5045(Name var1, Name var2) {
       if(this.method5039(var1) != null) {
          throw new IllegalStateException();
       } else {
-         class273 var3 = this.vmethod5160();
+         Nameable var3 = this.vmethod5160();
          var3.method5017(var1, var2);
          this.method5081(var3);
          this.method5052(var3);
@@ -174,9 +181,10 @@ public abstract class class275 {
       signature = "(IB)Lju;",
       garbageValue = "-5"
    )
-   public final class273 method5054(int var1) {
-      if(var1 >= 0 && var1 < this.field3684) {
-         return this.field3687[var1];
+   @Export("get")
+   public final Nameable get(int var1) {
+      if(var1 >= 0 && var1 < this.count) {
+         return this.nameables[var1];
       } else {
          throw new ArrayIndexOutOfBoundsException();
       }
@@ -188,7 +196,7 @@ public abstract class class275 {
       garbageValue = "1496239280"
    )
    public final void method5047() {
-      Arrays.sort(this.field3687, 0, this.field3684);
+      Arrays.sort(this.nameables, 0, this.count);
    }
 
    @ObfuscatedName("ax")
@@ -196,7 +204,7 @@ public abstract class class275 {
       signature = "(Lju;Ljr;Ljr;S)V",
       garbageValue = "600"
    )
-   final void method5042(class273 var1, class280 var2, class280 var3) {
+   final void method5042(Nameable var1, Name var2, Name var3) {
       this.method5050(var1);
       var1.method5017(var2, var3);
       this.method5052(var1);
@@ -207,9 +215,9 @@ public abstract class class275 {
       signature = "(Lju;I)I",
       garbageValue = "-1662464721"
    )
-   final int method5049(class273 var1) {
-      for(int var2 = 0; var2 < this.field3684; ++var2) {
-         if(this.field3687[var2] == var1) {
+   final int method5049(Nameable var1) {
+      for(int var2 = 0; var2 < this.count; ++var2) {
+         if(this.nameables[var2] == var1) {
             return var2;
          }
       }
@@ -222,8 +230,8 @@ public abstract class class275 {
       signature = "(Lju;I)V",
       garbageValue = "-268691451"
    )
-   final void method5050(class273 var1) {
-      if(this.field3686.remove(var1.field3678) == null) {
+   final void method5050(Nameable var1) {
+      if(this.field3686.remove(var1.name) == null) {
          throw new IllegalStateException();
       } else {
          if(var1.field3677 != null) {
@@ -238,8 +246,8 @@ public abstract class class275 {
       signature = "(Lju;I)V",
       garbageValue = "-2042731039"
    )
-   final void method5081(class273 var1) {
-      this.field3687[++this.field3684 - 1] = var1;
+   final void method5081(Nameable var1) {
+      this.nameables[++this.count - 1] = var1;
    }
 
    @ObfuscatedName("au")
@@ -247,8 +255,8 @@ public abstract class class275 {
       signature = "(Lju;S)V",
       garbageValue = "-25820"
    )
-   final void method5052(class273 var1) {
-      this.field3686.put(var1.field3678, var1);
+   final void method5052(Nameable var1) {
+      this.field3686.put(var1.name, var1);
       if(var1.field3677 != null) {
          this.field3683.put(var1.field3677, var1);
       }
@@ -261,9 +269,9 @@ public abstract class class275 {
       garbageValue = "-579154196"
    )
    final void method5057(int var1) {
-      --this.field3684;
-      if(var1 < this.field3684) {
-         System.arraycopy(this.field3687, var1 + 1, this.field3687, var1, this.field3684 - var1);
+      --this.count;
+      if(var1 < this.count) {
+         System.arraycopy(this.nameables, var1 + 1, this.nameables, var1, this.count - var1);
       }
 
    }

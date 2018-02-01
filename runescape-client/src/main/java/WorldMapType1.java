@@ -397,7 +397,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          }
 
          if(var5 == 18) {
-            Client.playerAttackOption = (AttackOption)class272.forOrdinal(FontName.method5194(), var6);
+            Client.playerAttackOption = (AttackOption)ClanMember.forOrdinal(FontName.method5194(), var6);
             if(Client.playerAttackOption == null) {
                Client.playerAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
             }
@@ -412,7 +412,7 @@ public class WorldMapType1 implements WorldMapSectionBase {
          }
 
          if(var5 == 22) {
-            Client.npcAttackOption = (AttackOption)class272.forOrdinal(FontName.method5194(), var6);
+            Client.npcAttackOption = (AttackOption)ClanMember.forOrdinal(FontName.method5194(), var6);
             if(Client.npcAttackOption == null) {
                Client.npcAttackOption = AttackOption.AttackOption_dependsOnCombatLevels;
             }
@@ -439,8 +439,8 @@ public class WorldMapType1 implements WorldMapSectionBase {
          var3.method1113();
       }
 
-      if(class234.clanChatOwner != null) {
-         class234.clanChatOwner.method5166();
+      if(class234.clanMemberManager != null) {
+         class234.clanMemberManager.method5166();
       }
 
    }

@@ -252,7 +252,7 @@ public class class89 {
       BaseVarType.field24 = null;
       class61.field685 = null;
       ItemLayer.field1669 = null;
-      class276.field3688 = null;
+      Ignore.field3688 = null;
    }
 
    @ObfuscatedName("w")

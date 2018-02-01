@@ -538,7 +538,7 @@ public final class class41 {
       }
 
       Client.pendingSpawns = new Deque();
-      ServerPacket.field2281.method1668();
+      ServerPacket.friendManager.method1668();
 
       for(var0 = 0; var0 < VarPlayerType.field3351; ++var0) {
          VarPlayerType var4 = (VarPlayerType)VarPlayerType.varplayers.get((long)var0);
@@ -591,7 +591,7 @@ public final class class41 {
       }
 
       class237.method4338();
-      class234.clanChatOwner = null;
+      class234.clanMemberManager = null;
 
       for(var0 = 0; var0 < 8; ++var0) {
          Client.grandExchangeOffers[var0] = new GrandExchangeOffer();

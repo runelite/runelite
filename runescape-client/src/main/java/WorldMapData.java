@@ -108,7 +108,7 @@ public class WorldMapData {
    )
    WorldMapSectionBase method306(Buffer var1) {
       int var2 = var1.readUnsignedByte();
-      class27 var3 = (class27)class272.forOrdinal(class27.method229(), var2);
+      class27 var3 = (class27)ClanMember.forOrdinal(class27.method229(), var2);
       Object var4 = null;
       switch(var3.field369) {
       case 0:

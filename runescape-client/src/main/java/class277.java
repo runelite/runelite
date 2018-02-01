@@ -8,5 +8,5 @@ public interface class277 {
       signature = "(B)Ljr;",
       garbageValue = "-57"
    )
-   class280 vmethod5106();
+   Name vmethod5106();
 }

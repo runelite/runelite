@@ -175,7 +175,7 @@ final class class19 implements Comparator {
    )
    @Export("flush")
    static final void flush(boolean var0) {
-      class281.method5158();
+      Friend.method5158();
       ++Client.field867.field1438;
       if(Client.field867.field1438 >= 50 || var0) {
          Client.field867.field1438 = 0;

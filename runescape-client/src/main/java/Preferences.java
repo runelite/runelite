@@ -197,13 +197,13 @@ public class Preferences {
          if((var6 & 128) != 0) {
             var8 = var0.readUnsignedShort();
             Permission[] var9 = new Permission[]{Permission.field3257, Permission.field3253, Permission.field3248, Permission.field3252, Permission.field3251, Permission.field3250};
-            Permission var10 = (Permission)class272.forOrdinal(var9, var0.readUnsignedByte());
+            Permission var10 = (Permission)ClanMember.forOrdinal(var9, var0.readUnsignedByte());
             boolean var11 = var0.method3432() == 1;
             var12 = var0.readUnsignedByte();
             var13 = var0.offset;
             if(var5.name != null && var5.composition != null) {
                boolean var14 = false;
-               if(var10.field3256 && ServerPacket.field2281.method1670(var5.name)) {
+               if(var10.field3256 && ServerPacket.friendManager.method1670(var5.name)) {
                   var14 = true;
                }
 
@@ -230,9 +230,9 @@ public class Preferences {
                   if(var10.field3254 != -1) {
                      int var21 = var10.field3254;
                      String var20 = "<img=" + var21 + ">";
-                     class240.sendGameMessage(var18, var20 + var5.name.method5137(), var17);
+                     class240.sendGameMessage(var18, var20 + var5.name.getName(), var17);
                   } else {
-                     class240.sendGameMessage(var18, var5.name.method5137(), var17);
+                     class240.sendGameMessage(var18, var5.name.getName(), var17);
                   }
                }
             }
@@ -308,9 +308,9 @@ public class Preferences {
             var5.overhead = var0.readString();
             if(var5.overhead.charAt(0) == '~') {
                var5.overhead = var5.overhead.substring(1);
-               class240.sendGameMessage(2, var5.name.method5137(), var5.overhead);
+               class240.sendGameMessage(2, var5.name.getName(), var5.overhead);
             } else if(var5 == class36.localPlayer) {
-               class240.sendGameMessage(2, var5.name.method5137(), var5.overhead);
+               class240.sendGameMessage(2, var5.name.getName(), var5.overhead);
             }
 
             var5.field1103 = false;

@@ -39,7 +39,7 @@ public class MessageNode extends CacheableNode {
    @ObfuscatedSignature(
       signature = "Ljr;"
    )
-   class280 field777;
+   Name field777;
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "Lji;"
@@ -121,7 +121,7 @@ public class MessageNode extends CacheableNode {
       garbageValue = "-741286953"
    )
    void method1092() {
-      this.field775 = ServerPacket.field2281.field1191.method5038(this.field777)?class278.field3691:class278.field3692;
+      this.field775 = ServerPacket.friendManager.field1191.isMember(this.field777)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("j")
@@ -152,7 +152,7 @@ public class MessageNode extends CacheableNode {
       garbageValue = "1887164697"
    )
    void method1095() {
-      this.field776 = ServerPacket.field2281.field1196.method5038(this.field777)?class278.field3691:class278.field3692;
+      this.field776 = ServerPacket.friendManager.field1196.isMember(this.field777)?class278.field3691:class278.field3692;
    }
 
    @ObfuscatedName("r")
@@ -162,7 +162,7 @@ public class MessageNode extends CacheableNode {
    )
    final void method1096() {
       if(this.name != null) {
-         this.field777 = new class280(class33.method361(this.name), class34.field458);
+         this.field777 = new Name(class33.method361(this.name), class34.loginType);
       } else {
          this.field777 = null;
       }
