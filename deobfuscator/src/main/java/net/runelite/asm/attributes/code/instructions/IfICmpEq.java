@@ -107,7 +107,7 @@ public class IfICmpEq extends If
 			StackContext s1 = thisIc.getPops().get(0),
 				s2 = thisIc.getPops().get(1);
 
-			if (isZero(s1) || isZero(s2))
+			if (isZero(s1) || isZero(s2) || isOne(s1) || isOne(s2))
 			{
 				return true;
 			}
