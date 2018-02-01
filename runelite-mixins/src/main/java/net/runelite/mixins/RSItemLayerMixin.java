@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,62 +24,22 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
 import java.awt.geom.Area;
 import net.runelite.api.Client;
-import net.runelite.api.Model;
-import net.runelite.api.Perspective;
-import net.runelite.api.Renderable;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.rs.api.RSDecorativeObject;
+import net.runelite.rs.api.RSItemLayer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-@Mixin(RSDecorativeObject.class)
-public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
+@Mixin(RSItemLayer.class)
+public abstract class RSItemLayerMixin implements RSItemLayer
 {
-	@Inject
-	private Model getModel()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
-		{
-			return null;
-		}
-
-		Model model;
-
-		if (renderable instanceof Model)
-		{
-			model = (Model) renderable;
-		}
-		else
-		{
-			model = renderable.getModel();
-		}
-
-		return model;
-	}
 
 	@Inject
 	@Override
 	public Area getClickbox(Client client)
 	{
-		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
+		throw new NotImplementedException();
 	}
 
-	@Inject
-	@Override
-	public Polygon getConvexHull()
-	{
-
-
-		Model model = getModel();
-
-		if (model == null)
-		{
-			return null;
-		}
-
-		return getConvexHull(model, getOrientation());
-	}
 }
