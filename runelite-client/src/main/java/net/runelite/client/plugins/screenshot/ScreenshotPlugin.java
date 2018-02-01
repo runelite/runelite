@@ -56,6 +56,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -312,6 +313,13 @@ public class ScreenshotPlugin extends Plugin
 
 	private void takeScreenshot(String fileName, boolean displayDate)
 	{
+		if (client.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			// Prevent the screenshot from being captured
+			log.info("Login screenshot prevented");
+			return;
+		}
+
 		overlayRenderer.requestScreenshot(image ->
 		{
 			BufferedImage screenshot = config.includeFrame()
@@ -422,21 +430,23 @@ public class ScreenshotPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				InputStream in = response.body().byteStream();
-				ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-					.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
-
-				if (imageUploadResponse.isSuccess())
+				try (InputStream in = response.body().byteStream())
 				{
-					String link = imageUploadResponse.getData().getLink();
+					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
+							.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
 
-					StringSelection selection = new StringSelection(link);
-					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-					clipboard.setContents(selection, selection);
-
-					if (config.notifyWhenTaken())
+					if (imageUploadResponse.isSuccess())
 					{
-						notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+						String link = imageUploadResponse.getData().getLink();
+
+						StringSelection selection = new StringSelection(link);
+						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+						clipboard.setContents(selection, selection);
+
+						if (config.notifyWhenTaken())
+						{
+							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+						}
 					}
 				}
 			}

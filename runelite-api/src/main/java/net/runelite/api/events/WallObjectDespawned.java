@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,12 @@
 package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.GameObject;
+import net.runelite.api.Tile;
+import net.runelite.api.WallObject;
 
 @Data
-public class GameObjectsChanged
+public class WallObjectDespawned
 {
-	private GameObject gameObject;
+	private Tile tile;
+	private WallObject wallObject;
 }

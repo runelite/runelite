@@ -26,8 +26,10 @@ package net.runelite.http.api.xp;
 
 import java.time.Instant;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(exclude = "time")
 public class XpData
 {
 	private Instant time;
@@ -56,6 +58,7 @@ public class XpData
 	private int hunter_xp;
 	private int construction_xp;
 
+	private int overall_rank;
 	private int attack_rank;
 	private int defence_rank;
 	private int strength_rank;

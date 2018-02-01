@@ -132,11 +132,7 @@ public class AccountPlugin extends Plugin
 		}
 
 		// Create new session
-		AccountSession session = new AccountSession();
-		session.setUuid(login.getUid());
-		session.setCreated(Instant.now());
-
-		sessionManager.openSession(session);
+		sessionManager.openSession(new AccountSession(login.getUid(), Instant.now()));
 
 		if (!Desktop.isDesktopSupported())
 		{

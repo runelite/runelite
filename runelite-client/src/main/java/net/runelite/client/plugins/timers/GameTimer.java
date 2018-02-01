@@ -62,7 +62,7 @@ public enum GameTimer
 	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
 	ANTIDOTEPLUS("antidoteplus", "Antidote+", 518, ChronoUnit.SECONDS),
-	ANTIVENOM("antivenom", "Anto-venom", 12, ChronoUnit.MINUTES),
+	ANTIVENOM("antivenom", "Anti-venom", 12, ChronoUnit.MINUTES),
 	EXSUPERANTIFIRE("exsuperantifire", "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	SANFEW("sanfew", "Sanfew serum", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID("overloadraid", "Overload", 5, ChronoUnit.MINUTES),

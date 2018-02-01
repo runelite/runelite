@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.motherlode;
+package net.runelite.api.events;
 
-import java.time.Duration;
-import java.time.Instant;
+import lombok.Data;
+import net.runelite.api.Tile;
+import net.runelite.api.WallObject;
 
-public class MotherlodeSession
+@Data
+public class WallObjectSpawned
 {
-	private static final Duration HOUR = Duration.ofHours(1);
-
-	private int perHour;
-
-	private Instant lastPayDirtMined;
-	private int totalMined;
-
-	private Instant recentPayDirtMined;
-	private int recentMined;
-
-	public void incrementPayDirtMined()
-	{
-		Instant now = Instant.now();
-
-		lastPayDirtMined = now;
-		++totalMined;
-
-		if (recentMined == 0)
-		{
-			recentPayDirtMined = now;
-		}
-		++recentMined;
-
-		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
-		if (!timeSinceStart.isZero())
-		{
-			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
-		}
-	}
-
-	public void resetRecent()
-	{
-		recentPayDirtMined = null;
-		recentMined = 0;
-	}
-
-	public int getPerHour()
-	{
-		return perHour;
-	}
-
-	public Instant getLastPayDirtMined()
-	{
-		return lastPayDirtMined;
-	}
-
-	public int getTotalMined()
-	{
-		return totalMined;
-	}
-
-	public Instant getRecentPayDirtMined()
-	{
-		return recentPayDirtMined;
-	}
-
-	public int getRecentMined()
-	{
-		return recentMined;
-	}
+	private Tile tile;
+	private WallObject wallObject;
 }

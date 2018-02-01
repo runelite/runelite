@@ -29,11 +29,13 @@ import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -45,6 +47,7 @@ import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
+import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
 	name = "XP tracker plugin"
@@ -58,11 +61,16 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	Client client;
 
+	@Inject
+	ScheduledExecutorService executor;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
+
+	private final XpClient xpClient = new XpClient();
 
 	@Override
 	protected void startUp() throws Exception
@@ -119,6 +127,27 @@ public class XpTrackerPlugin extends Plugin
 				lastUsername = client.getUsername();
 				lastWorldType = type;
 				xpPanel.resetAllInfoBoxes();
+			}
+		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			Player local = client.getLocalPlayer();
+			String username = local != null ? local.getName() : null;
+			if (username != null)
+			{
+				log.debug("Submitting xp track for {}", username);
+
+				executor.submit(() ->
+				{
+					try
+					{
+						xpClient.update(username);
+					}
+					catch (IOException ex)
+					{
+						log.warn("error submitting xp track", ex);
+					}
+				});
 			}
 		}
 	}
