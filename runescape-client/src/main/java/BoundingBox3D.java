@@ -68,12 +68,12 @@ public final class BoundingBox3D extends BoundingBox {
       signature = "(Len;IIII)V"
    )
    public BoundingBox3D(Model var1, int var2, int var3, int var4, int var5) {
-      this.int1 = var2 + var1.field1843 - var1.field1834;
-      this.int2 = var3 + var1.field1832 - var1.field1803;
-      this.int3 = var4 + var1.field1833 - var1.field1836;
-      this.int4 = var2 + var1.field1834 + var1.field1843;
-      this.int5 = var3 + var1.field1803 + var1.field1832;
-      this.int6 = var4 + var1.field1836 + var1.field1833;
+      this.int1 = var2 + var1.centerX - var1.extremeX;
+      this.int2 = var3 + var1.centerY - var1.extremeY;
+      this.int3 = var4 + var1.centerZ - var1.extremeZ;
+      this.int4 = var2 + var1.extremeX + var1.centerX;
+      this.int5 = var3 + var1.extremeY + var1.centerY;
+      this.int6 = var4 + var1.extremeZ + var1.centerZ;
       this.color = var5;
    }
 
