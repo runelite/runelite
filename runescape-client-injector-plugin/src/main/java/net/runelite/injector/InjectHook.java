@@ -128,7 +128,7 @@ public class InjectHook
 			String hookName = hookInfo.fieldName;
 			assert hookName != null;
 
-			logger.info("Found injection location for hook {} at instruction {}", hookName, sfi);
+			logger.trace("Found injection location for hook {} at instruction {}", hookName, sfi);
 			++injectedHooks;
 
 			Instruction objectInstruction = new AConstNull(ins);

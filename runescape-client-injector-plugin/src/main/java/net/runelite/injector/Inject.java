@@ -271,7 +271,7 @@ public class Inject
 					assert !f.isStatic();
 
 					// non static field exported on non exported interface
-					logger.warn("Non static exported field {} on non exported interface", exportedName);
+					logger.debug("Non static exported field {} on non exported interface", exportedName);
 					continue;
 				}
 
@@ -290,7 +290,7 @@ public class Inject
 				apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
-					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
+					logger.debug("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
 					continue;
 				}
 
@@ -343,7 +343,7 @@ public class Inject
 		}
 		catch (ClassNotFoundException ex)
 		{
-			logger.info("Class {} implements nonexistent interface {}, skipping interface injection",
+			logger.trace("Class {} implements nonexistent interface {}, skipping interface injection",
 				cf.getName(),
 				ifaceName);
 			return null;
