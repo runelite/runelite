@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,14 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSFriend extends RSNameable
+public interface RSNameableContainer
 {
-	@Import("world")
-	int getWorld();
+	@Import("count")
+	int getCount();
+
+	@Import("nameables")
+	RSNameable[] getNameables();
+
+	@Import("isMember")
+	boolean isMember(RSName var1);
 }

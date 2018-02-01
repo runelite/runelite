@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
@@ -40,7 +41,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ClanMembersChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
@@ -54,11 +54,13 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItemContainer;
+import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSClient.class)
@@ -371,7 +373,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public boolean getBoundingBoxAlwaysOnMode()
 	{
-		return  getboundingBox3DDrawMode() == getALWAYSDrawMode();
+		return getboundingBox3DDrawMode() == getALWAYSDrawMode();
 	}
 
 	@Inject
@@ -404,6 +406,38 @@ public abstract class RSClientMixin implements RSClient
 	{
 		RSHashTable itemContainers = getItemContainers();
 		return (RSItemContainer) itemContainers.get(inventory.getId());
+	}
+
+	@Inject
+	@Override
+	public boolean isFriended(String name, boolean mustBeLoggedIn)
+	{
+		RSName rsName = createName(name, getLoginType());
+		return getFriendManager().isFriended(rsName, mustBeLoggedIn);
+	}
+
+	@Inject
+	@Override
+	public int getClanChatCount()
+	{
+		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		return clanMemberManager != null ? clanMemberManager.getCount() : 0;
+	}
+
+	@Inject
+	@Override
+	public ClanMember[] getClanMembers()
+	{
+		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		return clanMemberManager != null ? (ClanMember[]) getClanMemberManager().getNameables() : null;
+	}
+
+	@Inject
+	@Override
+	public boolean isClanMember(String name)
+	{
+		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
 	@FieldHook("skillExperiences")
@@ -455,14 +489,6 @@ public abstract class RSClientMixin implements RSClient
 	{
 		VarbitChanged varbitChanged = new VarbitChanged();
 		eventBus.post(varbitChanged);
-	}
-
-	@FieldHook("clanMembers")
-	@Inject
-	public static void clanMembersChanged(int idx)
-	{
-		ClanMembersChanged clanMembersChanged = new ClanMembersChanged();
-		eventBus.post(clanMembersChanged);
 	}
 
 	@FieldHook("isResized")
