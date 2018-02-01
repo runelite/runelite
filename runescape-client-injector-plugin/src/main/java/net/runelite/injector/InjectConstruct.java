@@ -30,9 +30,11 @@ import java.util.Map.Entry;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
+import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.Dup;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.New;
@@ -80,11 +82,6 @@ public class InjectConstruct
 					continue;
 				}
 
-				if (method.getParameterCount() != 0)
-				{
-					throw new InjectionException("Only support 0 arg constructors at this time");
-				}
-
 				String obfuscatedName = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 				if (obfuscatedName == null)
 				{
@@ -113,14 +110,12 @@ public class InjectConstruct
 			throw new InjectionException("Unable to find vanilla class which implements interface " + typeToConstruct);
 		}
 
-		Signature sig = new Signature.Builder()
-			.setReturnType(Inject.classToType(typeToConstruct))
-			.build();
+		Signature sig = inject.javaMethodToSignature(apiMethod);
 
-		Method vanillaConstructor = vanillaClass.findMethod("<init>", new Signature("()V"));
+		Method vanillaConstructor = vanillaClass.findMethod("<init>");
 		if (vanillaConstructor == null)
 		{
-			throw new InjectionException("Unable to find constructor of signature " + sig + " on " + vanillaClass + " for " + apiMethod);
+			throw new InjectionException("Unable to find constructor");
 		}
 
 		Method setterMethod = new Method(targetClass, apiMethod.getName(), sig);
@@ -135,6 +130,24 @@ public class InjectConstruct
 
 		ins.add(new New(instructions, vanillaClass.getPoolClass()));
 		ins.add(new Dup(instructions));
+		int idx = 1;
+		int parameter = 0;
+		for (Type type : vanillaConstructor.getDescriptor().getArguments())
+		{
+			Instruction load = inject.createLoadForTypeIndex(instructions, type, idx);
+			idx += type.getSize();
+			ins.add(load);
+
+			Type paramType = sig.getTypeOfArg(parameter);
+			if (!type.equals(paramType))
+			{
+				CheckCast checkCast = new CheckCast(instructions);
+				checkCast.setType(type);
+				ins.add(checkCast);
+			}
+
+			++parameter;
+		}
 		ins.add(new InvokeSpecial(instructions, vanillaConstructor.getPoolMethod()));
 		ins.add(new Return(instructions));
 	}
