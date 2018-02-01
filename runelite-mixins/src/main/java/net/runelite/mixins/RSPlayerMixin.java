@@ -48,7 +48,7 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public String getName()
 	{
-		String name = getRSName();
+		String name = getRsName().getName();
 
 		if (name == null)
 		{
