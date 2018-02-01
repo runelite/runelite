@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.2.14</version>
+		<version>1.2.15-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
