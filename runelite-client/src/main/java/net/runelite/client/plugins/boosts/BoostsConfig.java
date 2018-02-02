@@ -64,4 +64,14 @@ public interface BoostsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "displayIndicators",
+		name = "Display as indicators",
+		description = "Configures whether or not to display the boost as indicators"
+	)
+	default boolean displayIndicators()
+	{
+		return false;
+	}
 }

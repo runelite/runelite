@@ -24,21 +24,47 @@
  */
 package net.runelite.client.plugins.boosts;
 
+import com.google.common.collect.ObjectArrays;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import lombok.Getter;
+import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Boosts plugin"
 )
 public class BoostsPlugin extends Plugin
 {
+	private static final Skill[] COMBAT = new Skill[]
+	{
+		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
+	};
+	private static final Skill[] SKILLING = new Skill[]
+	{
+		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
+		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
+	};
+
+	@Inject
+	InfoBoxManager infoBoxManager;
+
 	@Inject
 	BoostsOverlay boostsOverlay;
+
+	@Inject
+	BoostsConfig config;
+
+	@Getter
+	private Skill[] shownSkills;
 
 	@Override
 	public void configure(Binder binder)
@@ -56,5 +82,57 @@ public class BoostsPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return boostsOverlay;
+	}
+
+	@Override
+	protected void startUp()
+	{
+		if (config.enabled())
+		{
+			updateShownSkills(config.enableSkill());
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!config.enabled())
+		{
+			return;
+		}
+
+		updateShownSkills(config.enableSkill());
+
+		if (event.getKey().equals("displayIndicators"))
+		{
+			for (BoostIndicator indicator : boostsOverlay.getIndicators())
+			{
+				if (indicator == null)
+				{
+					continue;
+				}
+
+				if (config.displayIndicators())
+				{
+					infoBoxManager.addInfoBox(indicator);
+				}
+				else
+				{
+					infoBoxManager.removeInfoBox(indicator);
+				}
+			}
+		}
+	}
+
+	private void updateShownSkills(boolean showSkillingSkills)
+	{
+		if (showSkillingSkills)
+		{
+			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
+		}
+		else
+		{
+			shownSkills = COMBAT;
+		}
 	}
 }

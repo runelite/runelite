@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,77 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.client.plugins.boosts;
 
-import java.awt.Polygon;
-import java.awt.geom.Area;
-import net.runelite.api.Model;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.Renderable;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
-import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSGameObject;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@Mixin(RSGameObject.class)
-public abstract class RSGameObjectMixin implements RSGameObject
+public class BoostIndicator extends InfoBox
 {
-	@Shadow("clientInstance")
-	private static RSClient client;
+	private final BoostsConfig config;
+	private final Client client;
+	private final Skill skill;
 
-	@Inject
-	@Override
-	public Point getRegionMinLocation()
+	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)
 	{
-		return new Point(getRelativeX(), getRelativeY());
+		super(image);
+		this.config = config;
+		this.client = client;
+		this.skill = skill;
+		setTooltip(skill.getName() + " boost");
 	}
 
-	@Inject
 	@Override
-	public Point getRegionMaxLocation()
+	public String getText()
 	{
-		return new Point(getOffsetX(), getOffsetY());
+		if (!config.useRelativeBoost())
+		{
+			return String.valueOf(client.getBoostedSkillLevel(skill));
+		}
+
+		int boost = client.getBoostedSkillLevel(skill) - client.getRealSkillLevel(skill);
+		String text = String.valueOf(boost);
+		if (boost > 0)
+		{
+			text = "+" + text;
+		}
+
+		return text;
 	}
 
-	@Inject
-	private Model getModel()
-	{
-		Renderable renderable = getRenderable();
-		if (renderable == null)
-		{
-			return null;
-		}
-
-		if (renderable instanceof Model)
-		{
-			return (Model) renderable;
-		}
-		else
-		{
-			return renderable.getModel();
-		}
-	}
-
-	@Inject
 	@Override
-	public Area getClickbox()
+	public Color getTextColor()
 	{
-		return Perspective.getClickbox(client, getModel(), getOrientation(), getX(), getY());
-	}
+		int boosted = client.getBoostedSkillLevel(skill),
+			base = client.getRealSkillLevel(skill);
 
-	@Inject
-	@Override
-	public Polygon getConvexHull()
-	{
-		Model model = getModel();
-
-		if (model == null)
+		if (boosted > base)
 		{
-			return null;
+			return Color.GREEN;
 		}
 
-		return getConvexHull(model, getOrientation());
+		return new Color(238, 51, 51);
 	}
 }

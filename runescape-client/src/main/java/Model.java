@@ -149,17 +149,23 @@ public class Model extends Renderable {
    @Export("radius")
    int radius;
    @ObfuscatedName("ae")
-   public int field1843;
+   @Export("centerX")
+   public int centerX;
    @ObfuscatedName("ah")
-   public int field1832;
+   @Export("centerY")
+   public int centerY;
    @ObfuscatedName("ai")
-   public int field1833;
+   @Export("centerZ")
+   public int centerZ;
    @ObfuscatedName("au")
-   public int field1834;
+   @Export("extremeX")
+   public int extremeX;
    @ObfuscatedName("am")
-   public int field1803;
+   @Export("extremeY")
+   public int extremeY;
    @ObfuscatedName("af")
-   public int field1836;
+   @Export("extremeZ")
+   public int extremeZ;
 
    static {
       field1840 = new Model();
@@ -197,9 +203,9 @@ public class Model extends Renderable {
       this.field1811 = 0;
       this.field1819 = 0;
       this.field1825 = false;
-      this.field1834 = -1;
-      this.field1803 = -1;
-      this.field1836 = -1;
+      this.extremeX = -1;
+      this.extremeY = -1;
+      this.extremeZ = -1;
    }
 
    @ObfuscatedSignature(
@@ -211,9 +217,9 @@ public class Model extends Renderable {
       this.field1811 = 0;
       this.field1819 = 0;
       this.field1825 = false;
-      this.field1834 = -1;
-      this.field1803 = -1;
-      this.field1836 = -1;
+      this.extremeX = -1;
+      this.extremeY = -1;
+      this.extremeZ = -1;
       boolean var3 = false;
       boolean var4 = false;
       boolean var5 = false;
@@ -523,7 +529,7 @@ public class Model extends Renderable {
 
    @ObfuscatedName("j")
    void method2659(int var1) {
-      if(this.field1834 == -1) {
+      if(this.extremeX == -1) {
          int var2 = 0;
          int var3 = 0;
          int var4 = 0;
@@ -562,23 +568,23 @@ public class Model extends Renderable {
             }
          }
 
-         this.field1843 = (var5 + var2) / 2;
-         this.field1832 = (var6 + var3) / 2;
-         this.field1833 = (var7 + var4) / 2;
-         this.field1834 = (var5 - var2 + 1) / 2;
-         this.field1803 = (var6 - var3 + 1) / 2;
-         this.field1836 = (var7 - var4 + 1) / 2;
-         if(this.field1834 < 32) {
-            this.field1834 = 32;
+         this.centerX = (var5 + var2) / 2;
+         this.centerY = (var6 + var3) / 2;
+         this.centerZ = (var7 + var4) / 2;
+         this.extremeX = (var5 - var2 + 1) / 2;
+         this.extremeY = (var6 - var3 + 1) / 2;
+         this.extremeZ = (var7 - var4 + 1) / 2;
+         if(this.extremeX < 32) {
+            this.extremeX = 32;
          }
 
-         if(this.field1836 < 32) {
-            this.field1836 = 32;
+         if(this.extremeZ < 32) {
+            this.extremeZ = 32;
          }
 
          if(this.field1825) {
-            this.field1834 += 8;
-            this.field1836 += 8;
+            this.extremeX += 8;
+            this.extremeZ += 8;
          }
 
       }
@@ -649,7 +655,7 @@ public class Model extends Renderable {
    @Export("resetBounds")
    void resetBounds() {
       this.boundsType = 0;
-      this.field1834 = -1;
+      this.extremeX = -1;
    }
 
    @ObfuscatedName("o")

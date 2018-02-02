@@ -80,12 +80,12 @@ final class UnitPriceComparator implements Comparator {
             GrandExchangeEvents.field264 = Math.abs(CombatInfoListHolder.field1254);
          }
 
-         var5 = var0.field1843 + var1;
-         var6 = var2 + var0.field1832;
-         var7 = var3 + var0.field1833;
-         var8 = var0.field1834;
-         var16 = var0.field1803;
-         var17 = var0.field1836;
+         var5 = var0.centerX + var1;
+         var6 = var2 + var0.centerY;
+         var7 = var3 + var0.centerZ;
+         var8 = var0.extremeX;
+         var16 = var0.extremeY;
+         var17 = var0.extremeZ;
          var11 = class131.field1873 - var5;
          var12 = class300.field3825 - var6;
          var13 = class63.field718 - var7;
