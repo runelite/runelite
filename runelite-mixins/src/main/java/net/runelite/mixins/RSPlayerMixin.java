@@ -72,15 +72,11 @@ public abstract class RSPlayerMixin implements RSPlayer
 		int localX = getX();
 		int localY = getY();
 
-		// models are orientated north (1024) and there are 2048 angles total
-		int orientation = (getOrientation() + 1024) % 2048;
+		int orientation = getOrientation();
 
 		List<Triangle> triangles = model.getTriangles();
 
-		if (orientation != 0)
-		{
-			triangles = rotate(triangles, orientation);
-		}
+		triangles = rotate(triangles, orientation);
 
 		List<Polygon> polys = new ArrayList<Polygon>();
 		for (Triangle triangle : triangles)

@@ -25,13 +25,21 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Actor;
+import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
+import net.runelite.api.GroundObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.WallObject;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GroundObjectChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -52,6 +60,12 @@ public abstract class RSTileMixin implements RSTile
 
 	@Inject
 	private WallObject previousWallObject;
+
+	@Inject
+	private DecorativeObject previousDecorativeObject;
+
+	@Inject
+	private GroundObject previousGroundObject;
 
 	@Inject
 	private GameObject[] previousGameObjects;
@@ -109,6 +123,72 @@ public abstract class RSTileMixin implements RSTile
 			wallObjectChanged.setPrevious(previous);
 			wallObjectChanged.setWallObject(current);
 			eventBus.post(wallObjectChanged);
+		}
+	}
+
+	@FieldHook("decorativeObject")
+	@Inject
+	public void decorativeObjectChanged(int idx)
+	{
+		DecorativeObject previous = previousDecorativeObject;
+		DecorativeObject current = getDecorativeObject();
+
+		previousDecorativeObject = current;
+
+		if (current == null && previous != null)
+		{
+			DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned();
+			decorativeObjectDespawned.setTile(this);
+			decorativeObjectDespawned.setDecorativeObject(previous);
+			eventBus.post(decorativeObjectDespawned);
+		}
+		else if (current != null && previous == null)
+		{
+			DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned();
+			decorativeObjectSpawned.setTile(this);
+			decorativeObjectSpawned.setDecorativeObject(current);
+			eventBus.post(decorativeObjectSpawned);
+		}
+		else if (current != null && previous != null)
+		{
+			DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged();
+			decorativeObjectChanged.setTile(this);
+			decorativeObjectChanged.setPrevious(previous);
+			decorativeObjectChanged.setDecorativeObject(current);
+			eventBus.post(decorativeObjectChanged);
+		}
+	}
+
+	@FieldHook("groundObject")
+	@Inject
+	public void groundObjectChanged(int idx)
+	{
+		GroundObject previous = previousGroundObject;
+		GroundObject current = getGroundObject();
+
+		previousGroundObject = current;
+
+		if (current == null && previous != null)
+		{
+			GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned();
+			groundObjectDespawned.setTile(this);
+			groundObjectDespawned.setGroundObject(previous);
+			eventBus.post(groundObjectDespawned);
+		}
+		else if (current != null && previous == null)
+		{
+			GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned();
+			groundObjectSpawned.setTile(this);
+			groundObjectSpawned.setGroundObject(current);
+			eventBus.post(groundObjectSpawned);
+		}
+		else if (current != null && previous != null)
+		{
+			GroundObjectChanged groundObjectChanged = new GroundObjectChanged();
+			groundObjectChanged.setTile(this);
+			groundObjectChanged.setPrevious(previous);
+			groundObjectChanged.setGroundObject(current);
+			eventBus.post(groundObjectChanged);
 		}
 	}
 

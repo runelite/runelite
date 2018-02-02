@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.Area;
 
 public interface TileObject
 {
@@ -54,4 +55,11 @@ public interface TileObject
 	Point getMinimapLocation();
 
 	Polygon getConvexHull(Model model, int orientation);
+
+	/**
+	 * Get the on-screen clickable area of {@code object}
+	 *
+	 * @return the clickable area of {@code object}
+	 */
+	Area getClickbox();
 }
