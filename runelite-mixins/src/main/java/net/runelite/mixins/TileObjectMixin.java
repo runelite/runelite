@@ -132,19 +132,13 @@ public abstract class TileObjectMixin implements TileObject
 		int localX = getX();
 		int localY = getY();
 
-		// models are orientated north (1024) and there are 2048 angles total
-		orientation = (orientation + 1024) % 2048;
-
 		List<Vertex> vertices = model.getVertices();
 
-		if (orientation != 0)
+		// rotate vertices
+		for (int i = 0; i < vertices.size(); ++i)
 		{
-			// rotate vertices
-			for (int i = 0; i < vertices.size(); ++i)
-			{
-				Vertex v = vertices.get(i);
-				vertices.set(i, v.rotate(orientation));
-			}
+			Vertex v = vertices.get(i);
+			vertices.set(i, v.rotate(orientation));
 		}
 
 		List<Point> points = new ArrayList<Point>();
