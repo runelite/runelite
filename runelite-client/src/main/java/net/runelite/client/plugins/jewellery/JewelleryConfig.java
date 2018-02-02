@@ -41,6 +41,13 @@ public interface JewelleryConfig extends Config
 		description = "Configures whether or not the jewellery plugin is displayed"
 	)
 	default boolean enabled()
+
+	@ConfigItem(
+		keyName = "showEnchant",
+		name = "Enable Enchant helper",
+		description = "Configures whether or not the enchant helper is displayed"
+	)
+	default boolean showEnchant()
 	{
 		return true;
 	}

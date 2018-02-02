@@ -24,19 +24,35 @@
  */
 package net.runelite.client.plugins.jewellery;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+
+import lombok.Getter;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 @PluginDescriptor(
 	name = "Jewellery plugin"
 )
 public class JewelleryPlugin extends Plugin
 {
+	@Getter
+	private boolean enchantedClicked;
+
+	@Getter
+	private String enchantType;
+
+	@Inject
+	private EnchantOverlay enchantOverlay;
+
 	@Inject
 	JewelleryConfig config;
 
@@ -56,8 +72,29 @@ public class JewelleryPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public Collection<Overlay> getOverlays()
 	{
-		return overlay;
+		return Arrays.asList(overlay, enchantOverlay);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!config.showEnchant())
+		{
+			return;
+		}
+
+		if (event.getMenuOption().equals("Cast") && event.getMenuTarget().endsWith("Enchant"))
+		{
+			//Remove unnecessary text
+			enchantType = event.getMenuTarget().replace(" Enchant", "").replace("<col=00ff00>", "");
+			enchantedClicked = true;
+		}
+		else
+		{
+			enchantType = "";
+			enchantedClicked = false;
+		}
 	}
 }
