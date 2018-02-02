@@ -50,4 +50,6 @@ public interface Tile
 	Point getRegionLocation();
 
 	Point getLocalLocation();
+
+	int getPlane();
 }

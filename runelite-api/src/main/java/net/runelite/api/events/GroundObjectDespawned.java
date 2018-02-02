@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.model;
+package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
+import net.runelite.api.GroundObject;
+import net.runelite.api.Tile;
 
-@Value
-public class Triangle
+@Data
+public class GroundObjectDespawned
 {
-	private final Vertex a;
-	private final Vertex b;
-	private final Vertex c;
-
-	public Triangle(Vertex a, Vertex b, Vertex c)
-	{
-		this.a = a;
-		this.b = b;
-		this.c = c;
-	}
-
-	public Triangle rotate(int orientation)
-	{
-		return new Triangle(
-			a.rotate(orientation),
-			b.rotate(orientation),
-			c.rotate(orientation)
-		);
-	}
-
+	private Tile tile;
+	private GroundObject groundObject;
 }

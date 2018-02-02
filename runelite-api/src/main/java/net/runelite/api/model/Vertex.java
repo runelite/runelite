@@ -24,8 +24,10 @@
  */
 package net.runelite.api.model;
 
+import lombok.Value;
 import net.runelite.api.Perspective;
 
+@Value
 public class Vertex
 {
 	private final int x;
@@ -39,64 +41,6 @@ public class Vertex
 		this.z = z;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Vertex{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 67 * hash + this.x;
-		hash = 67 * hash + this.y;
-		hash = 67 * hash + this.z;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Vertex other = (Vertex) obj;
-		if (this.x != other.x)
-		{
-			return false;
-		}
-		if (this.y != other.y)
-		{
-			return false;
-		}
-		if (this.z != other.z)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getX()
-	{
-		return x;
-	}
-
-	public int getY()
-	{
-		return y;
-	}
-
-	public int getZ()
-	{
-		return z;
-	}
-
 	/**
 	 * Rotate the vertex by the given orientation
 	 * @param orientation
@@ -104,6 +48,14 @@ public class Vertex
 	 */
 	public Vertex rotate(int orientation)
 	{
+		// models are orientated north (1024) and there are 2048 angles total
+		orientation = (orientation + 1024) % 2048;
+
+		if (orientation == 0)
+		{
+			return this;
+		}
+
 		int sin = Perspective.SINE[orientation];
 		int cos = Perspective.COSINE[orientation];
 

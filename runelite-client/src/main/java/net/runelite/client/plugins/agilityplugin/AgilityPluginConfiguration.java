@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.model;
+package net.runelite.client.plugins.agilityplugin;
 
-import lombok.Value;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Value
-public class Triangle
+@ConfigGroup(
+	keyName = "agilityplugin",
+	name = "Agility plugin",
+	description = "Configuration for the agility plugin"
+)
+public interface AgilityPluginConfiguration extends Config
 {
-	private final Vertex a;
-	private final Vertex b;
-	private final Vertex c;
-
-	public Triangle(Vertex a, Vertex b, Vertex c)
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enable overlay",
+		description = "Configures whether the overlay is enabled"
+	)
+	default boolean enabled()
 	{
-		this.a = a;
-		this.b = b;
-		this.c = c;
-	}
-
-	public Triangle rotate(int orientation)
-	{
-		return new Triangle(
-			a.rotate(orientation),
-			b.rotate(orientation),
-			c.rotate(orientation)
-		);
+		return true;
 	}
 
 }
