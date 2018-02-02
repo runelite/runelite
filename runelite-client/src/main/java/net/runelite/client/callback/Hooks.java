@@ -24,6 +24,7 @@
  */
 package net.runelite.client.callback;
 
+import net.runelite.api.TextureProvider;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.MenuEntryAdded;
@@ -122,6 +123,22 @@ public class Hooks
 	}
 
 	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	{
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		BufferedImage image = (BufferedImage) bufferProvider.getImage();
+		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+
+		try
+		{
+			renderer.render(graphics2d, OverlayLayer.ABOVE_SCENE);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
+	}
+
+	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();

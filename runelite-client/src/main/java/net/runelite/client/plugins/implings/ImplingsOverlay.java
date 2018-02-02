@@ -65,7 +65,7 @@ public class ImplingsOverlay extends Overlay
 	public ImplingsOverlay(QueryRunner queryRunner, ImplingsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.queryRunner = queryRunner;
 		this.config = config;
 	}

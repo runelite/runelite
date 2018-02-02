@@ -24,19 +24,6 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import com.google.inject.Inject;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
@@ -50,7 +37,21 @@ import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
+import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class AbyssOverlay extends Overlay
@@ -72,6 +73,7 @@ class AbyssOverlay extends Overlay
 	AbyssOverlay(Client client, RunecraftPlugin plugin, RunecraftConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;

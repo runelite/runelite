@@ -31,5 +31,5 @@ public abstract class Overlay implements RenderableEntity
 {
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.ABOVE_WIDGETS;
+	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
 }

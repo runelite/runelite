@@ -35,8 +35,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 class CannonOverlay extends Overlay
@@ -50,7 +50,7 @@ class CannonOverlay extends Overlay
 	CannonOverlay(Client client, CannonConfig config, CannonPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setPriority(OverlayPriority.MED);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
