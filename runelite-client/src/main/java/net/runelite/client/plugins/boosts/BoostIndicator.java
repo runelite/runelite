@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018 Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,54 +24,56 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Config;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@ConfigGroup(
-	keyName = "boosts",
-	name = "Boosts Info",
-	description = "Configuration for the Boosts plugin"
-)
-public interface BoostsConfig extends Config
+public class BoostIndicator extends InfoBox
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not boost info is displayed"
-	)
-	default boolean enabled()
+	private final BoostsConfig config;
+	private final Client client;
+	private final Skill skill;
+
+	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)
 	{
-		return true;
+		super(image);
+		this.config = config;
+		this.client = client;
+		this.skill = skill;
+		setTooltip(skill.getName() + " boost");
 	}
 
-	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information"
-	)
-	default boolean enableSkill()
+	@Override
+	public String getText()
 	{
-		return true;
+		if (!config.useRelativeBoost())
+		{
+			return String.valueOf(client.getBoostedSkillLevel(skill));
+		}
+
+		int boost = client.getBoostedSkillLevel(skill) - client.getRealSkillLevel(skill);
+		String text = String.valueOf(boost);
+		if (boost > 0)
+		{
+			text = "+" + text;
+		}
+
+		return text;
 	}
 
-	@ConfigItem(
-		keyName = "relativeBoost",
-		name = "Use Relative Boosts",
-		description = "Configures whether or not relative boost is used"
-	)
-	default boolean useRelativeBoost()
+	@Override
+	public Color getTextColor()
 	{
-		return false;
-	}
+		int boosted = client.getBoostedSkillLevel(skill),
+			base = client.getRealSkillLevel(skill);
 
-	@ConfigItem(
-		keyName = "displayIndicators",
-		name = "Display as indicators",
-		description = "Configures whether or not to display the boost as indicators"
-	)
-	default boolean displayIndicators()
-	{
-		return false;
+		if (boosted > base)
+		{
+			return Color.GREEN;
+		}
+
+		return new Color(238, 51, 51);
 	}
 }
