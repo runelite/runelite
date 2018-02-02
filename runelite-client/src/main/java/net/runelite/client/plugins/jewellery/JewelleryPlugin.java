@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.discord.events;
+package net.runelite.client.plugins.jewellery;
 
-import lombok.Value;
+import com.google.inject.Binder;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.Overlay;
 
-/**
- * Called when the RPC connection has been established
- */
-@Value
-public class DiscordReady
+@PluginDescriptor(
+	name = "Jewellery plugin"
+)
+public class JewelleryPlugin extends Plugin
 {
+	@Inject
+	JewelleryConfig config;
+
+	@Inject
+	JewelleryCountOverlay overlay;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(JewelleryCountOverlay.class);
+	}
+
+	@Provides
+	JewelleryConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(JewelleryConfig.class);
+	}
+
+	@Override
+	public Overlay getOverlay()
+	{
+		return overlay;
+	}
 }

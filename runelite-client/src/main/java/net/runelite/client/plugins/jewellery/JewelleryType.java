@@ -22,31 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.jewellery;
 
-import com.google.inject.Binder;
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-
-@PluginDescriptor(
-	name = "Jewellery count"
-)
-public class JewelleryCountPlugin extends Plugin
+public enum JewelleryType
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(JewelleryCountOverlay.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+	GLORY,
+	ROD,
+	GAMES,
+	ROW,
+	ROS,
+	SKILLS,
+	CBRACE,
+	DIGSITE,
+	BURNING,
+	PASSAGE,
+	RETURNING,
+	TCRYSTAL
 }

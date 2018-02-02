@@ -22,20 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.jewellery;
 
-public enum JewelleryType
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup(
+	keyName = "jewellery",
+	name = "Jewellery",
+	description = "Configuration for the jewellery plugin"
+)
+public interface JewelleryConfig extends Config
 {
-	GLORY,
-	ROD,
-	GAMES,
-	ROW,
-	ROS,
-	SKILLS,
-	CBRACE,
-	DIGSITE,
-	BURNING,
-	PASSAGE,
-	RETURNING,
-	TCRYSTAL
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enable",
+		description = "Configures whether or not the jewellery plugin is displayed"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 }

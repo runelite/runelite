@@ -22,13 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.jewellery;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.jewellerycount.JewelleryType.*;
+import static net.runelite.client.plugins.jewellery.JewelleryType.*;
 
 public enum JewelleryCharges
 {
