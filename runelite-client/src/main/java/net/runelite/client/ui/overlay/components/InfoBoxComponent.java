@@ -71,7 +71,7 @@ public class InfoBoxComponent implements RenderableEntity
 		{
 			graphics.drawImage(image,
 				position.x + (BOX_SIZE - image.getWidth()) / 2,
-				SEPARATOR, null);
+				(BOX_SIZE - image.getHeight()) / 2, null);
 		}
 
 		final TextComponent textComponent = new TextComponent();
