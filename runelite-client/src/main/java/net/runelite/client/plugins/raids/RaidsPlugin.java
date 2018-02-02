@@ -89,8 +89,8 @@ public class RaidsPlugin extends Plugin
 		{
 			Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
 			String[] raidPoints = raidsWidget.getText().split("<br>");
-			int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS]);
-			int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS]);
+			int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS].replace(",", ""));
+			int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS].replace(",", ""));
 
 			double percentage = personalPoints / (totalPoints / 100.0);
 
