@@ -27,8 +27,16 @@ package net.runelite.api;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
 
 public class Perspective
 {
@@ -79,9 +87,54 @@ public class Perspective
 	 */
 	public static Point worldToCanvas(Client client, int x, int y, int plane, int zOffset)
 	{
+		return worldToCanvas(client, x, y, plane, x, y, zOffset);
+	}
+
+	/**
+	 * Translates two-dimensional ground coordinates within the 3D world to
+	 * their corresponding coordinates on the game screen. Calculating heights
+	 * based on the coordinates of the tile provided, rather than the world coordinates
+	 *
+	 * Using the position of each vertex, rather than the location of the object, to determine the
+	 * height of each vertex causes the mesh to be vertically warped, based on the terrain below
+	 *
+	 * @param client
+	 * @param x ground coordinate on the x axis
+	 * @param y ground coordinate on the y axis
+	 * @param plane ground plane on the z axis
+	 * @param tileX the X coordinate of the tile the object is on
+	 * @param tileY the Y coordinate of the tile the object is on
+	 * @return a {@link Point} on screen corresponding to the position in
+	 * 3D-space
+	 */
+	public static Point worldToCanvas(Client client, int x, int y, int plane, int tileX, int tileY)
+	{
+		return worldToCanvas(client, x, y, plane, tileX, tileY, 0);
+	}
+
+	/**
+	 * Translates two-dimensional ground coordinates within the 3D world to
+	 * their corresponding coordinates on the game screen. Calculating heights
+	 * based on the coordinates of the tile provided, rather than the world coordinates
+	 *
+	 * Using the position of each vertex, rather than the location of the object, to determine the
+	 * height of each vertex causes the mesh to be vertically warped, based on the terrain below
+	 *
+	 * @param client
+	 * @param x ground coordinate on the x axis
+	 * @param y ground coordinate on the y axis
+	 * @param plane ground plane on the z axis
+	 * @param tileX the X coordinate of the tile the object is on
+	 * @param tileY the Y coordinate of the tile the object is on
+	 * @param zOffset distance from ground on the z axis
+	 * @return a {@link Point} on screen corresponding to the position in
+	 * 3D-space
+	 */
+	public static Point worldToCanvas(Client client, int x, int y, int plane, int tileX, int tileY, int zOffset)
+	{
 		if (x >= 128 && y >= 128 && x <= 13056 && y <= 13056)
 		{
-			int z = getTileHeight(client, x, y, client.getPlane()) - plane;
+			int z = getTileHeight(client, tileX, tileY, client.getPlane()) - plane;
 			x -= client.getCameraX();
 			y -= client.getCameraY();
 			z -= client.getCameraZ();
@@ -377,6 +430,225 @@ public class Perspective
 		int yOffset = p.getY() - sprite.getHeight() / 2;
 
 		return new Point(xOffset, yOffset);
+	}
+
+	/**
+	 * You don't want this. Use {@link TileObject#getClickbox()} instead
+	 *
+	 * Get the on-screen clickable area of {@code model} as though it's for the object on the tile at
+	 * 	({@code tileX}, {@code tileY}) and rotated to angle {@code orientation}
+	 *
+	 * @param client
+	 * @param model the model to calculate a clickbox for
+	 * @param orientation the orientation of the model (0-2048, where 0 is north)
+	 * @param tileX the X coordinate of the tile that the object using the model is on
+	 * @param tileY the Y coordinate of the tile that the object using the model is on
+	 * @return the clickable area of {@code model}, rotated to angle {@code orientation}, at the height of tile ({@code tileX}, {@code tileY})
+	 */
+	public static Area getClickbox(Client client, Model model, int orientation, int tileX, int tileY)
+	{
+		if (model == null)
+		{
+			return null;
+		}
+
+		List<Triangle> triangles = model.getTriangles().stream()
+			.map(triangle -> triangle.rotate(orientation))
+			.collect(Collectors.toList());
+
+		List<Vertex> vertices = model.getVertices().stream()
+				.map(v -> v.rotate(orientation))
+				.collect(Collectors.toList());
+
+		Area clickBox = get2DGeometry(client, triangles, orientation, tileX, tileY);
+		Area visibleAABB = getAABB(client, vertices, orientation, tileX, tileY);
+
+		if (visibleAABB == null || clickBox == null)
+		{
+			return null;
+		}
+
+		clickBox.intersect(visibleAABB);
+		return clickBox;
+	}
+
+	private static Area get2DGeometry(Client client, List<Triangle> triangles, int orientation, int tileX, int tileY)
+	{
+		int radius = 5;
+		Area geometry = new Area();
+
+		for (Triangle triangle : triangles)
+		{
+			Vertex _a = triangle.getA();
+			Point a = worldToCanvas(client,
+				tileX - _a.getX(),
+				tileY - _a.getZ(),
+				-_a.getY(), tileX, tileY);
+			if (a == null)
+			{
+				continue;
+			}
+
+			Vertex _b = triangle.getB();
+			Point b = worldToCanvas(client,
+				tileX - _b.getX(),
+				tileY - _b.getZ(),
+				-_b.getY(), tileX, tileY);
+			if (b == null)
+			{
+				continue;
+			}
+
+			Vertex _c = triangle.getC();
+			Point c = worldToCanvas(client,
+				tileX - _c.getX(),
+				tileY - _c.getZ(),
+				-_c.getY(), tileX, tileY);
+			if (c == null)
+			{
+				continue;
+			}
+
+			int minX = Math.min(Math.min(a.getX(), b.getX()), c.getX());
+			int minY = Math.min(Math.min(a.getY(), b.getY()), c.getY());
+
+			// For some reason, this calculation is always 4 pixels short of the actual in-client one
+			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
+			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
+
+			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
+			if (!client.isResized())
+			{
+				minX += 4;
+				minY += 4;
+				maxX += 4;
+				maxY += 4;
+			}
+
+			Rectangle clickableRect = new Rectangle(
+				minX - radius, minY - radius,
+				maxX - minX + radius, maxY - minY + radius
+			);
+			geometry.add(new Area(clickableRect));
+		}
+
+		return geometry;
+	}
+
+	private static Area getAABB(Client client, List<Vertex> vertices, int orientation, int tileX, int tileY)
+	{
+		int maxX = 0;
+		int minX = 0;
+		int maxY = 0;
+		int minY = 0;
+		int maxZ = 0;
+		int minZ = 0;
+
+		for (Vertex vertex : vertices)
+		{
+			int x = vertex.getX();
+			int y = vertex.getY();
+			int z = vertex.getZ();
+
+			if (x > maxX)
+			{
+				maxX = x;
+			}
+			if (x < minX)
+			{
+				minX = x;
+			}
+
+			if (y > maxY)
+			{
+				maxY = y;
+			}
+			if (y < minY)
+			{
+				minY = y;
+			}
+
+			if (z > maxZ)
+			{
+				maxZ = z;
+			}
+			if (z < minZ)
+			{
+				minZ = z;
+			}
+		}
+
+		int centerX = (minX + maxX) / 2;
+		int centerY = (minY + maxY) / 2;
+		int centerZ = (minZ + maxZ) / 2;
+
+		int extremeX = (maxX - minX + 1) / 2;
+		int extremeY = (maxY - minY + 1) / 2;
+		int extremeZ = (maxZ - minZ + 1) / 2;
+
+		if (extremeX < 32)
+		{
+			extremeX = 32;
+		}
+
+		if (extremeZ < 32)
+		{
+			extremeZ = 32;
+		}
+
+		int x1 = tileX - (centerX - extremeX);
+		int y1 = centerY - extremeY;
+		int z1 = tileY - (centerZ - extremeZ);
+
+		int x2 = tileX - (centerX + extremeX);
+		int y2 = centerY + extremeY;
+		int z2 = tileY - (centerZ + extremeZ);
+
+		Point p1 = worldToCanvas(client, x1, z1, -y1, tileX, tileY);
+		Point p2 = worldToCanvas(client, x1, z2, -y1, tileX, tileY);
+		Point p3 = worldToCanvas(client, x2, z2, -y1, tileX, tileY);
+
+		Point p4 = worldToCanvas(client, x2, z1, -y1, tileX, tileY);
+		Point p5 = worldToCanvas(client, x1, z1, -y2, tileX, tileY);
+		Point p6 = worldToCanvas(client, x1, z2, -y2, tileX, tileY);
+		Point p7 = worldToCanvas(client, x2, z2, -y2, tileX, tileY);
+		Point p8 = worldToCanvas(client, x2, z1, -y2, tileX, tileY);
+
+		List<Point> points = new ArrayList<>(8);
+		points.add(p1);
+		points.add(p2);
+		points.add(p3);
+		points.add(p4);
+		points.add(p5);
+		points.add(p6);
+		points.add(p7);
+		points.add(p8);
+
+		try
+		{
+			points = Jarvis.convexHull(points);
+		}
+		catch (NullPointerException e)
+		{
+			// No non-null screen points for this AABB e.g. for an way off-screen model
+			return null;
+		}
+
+		if (points == null)
+		{
+			return null;
+		}
+
+		Polygon hull = new Polygon();
+		for (Point p : points)
+		{
+			if (p != null)
+			{
+				hull.addPoint(p.getX(), p.getY());
+			}
+		}
+
+		return new Area(hull);
 	}
 
 }
