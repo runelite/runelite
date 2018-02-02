@@ -51,7 +51,6 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -69,7 +68,6 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenshot.imgur.ImageUploadRequest;
@@ -85,7 +83,6 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 @PluginDescriptor(
 	name = "Screenshot plugin"
@@ -133,7 +130,6 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		// prior to UI loading this does nothing
 		addButtonToTitleBar();
 	}
 
@@ -141,12 +137,6 @@ public class ScreenshotPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeButtonFromTitlebar();
-	}
-
-	@Subscribe
-	public void clientUiLoaded(ClientUILoaded e)
-	{
-		addButtonToTitleBar();
 	}
 
 	private void addButtonToTitleBar()
@@ -170,7 +160,7 @@ public class ScreenshotPlugin extends Plugin
 					}
 				});
 
-				clientUi.addButtonToTitleBar(titleBarButton, iconImage, invertedIconImage, 130);
+				clientUi.getTitleToolbar().addButton(titleBarButton, iconImage, invertedIconImage);
 			});
 		}
 		catch (IOException ex)
@@ -183,14 +173,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(clientUi);
-
-			if (titleBar != null)
-			{
-				titleBar.remove(titleBarButton);
-				clientUi.revalidate();
-				clientUi.repaint();
-			}
+			clientUi.getTitleToolbar().remove(titleBarButton);
 		});
 	}
 
