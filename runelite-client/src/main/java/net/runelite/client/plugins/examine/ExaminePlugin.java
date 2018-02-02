@@ -257,7 +257,8 @@ public class ExaminePlugin extends Plugin
 					itemId = widgetItem.getItemId();
 				}
 			}
-			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
 				if (widgetItem != null)
