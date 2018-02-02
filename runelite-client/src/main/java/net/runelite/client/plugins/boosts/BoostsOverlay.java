@@ -47,6 +47,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 class BoostsOverlay extends Overlay
 {
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
+
 	@Getter
 	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
 
@@ -56,6 +57,7 @@ class BoostsOverlay extends Overlay
 
 	@Inject
 	private BoostsPlugin plugin;
+
 	private PanelComponent panelComponent;
 
 	@Inject
