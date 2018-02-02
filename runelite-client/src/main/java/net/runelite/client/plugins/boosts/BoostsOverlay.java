@@ -24,44 +24,48 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import com.google.common.collect.ObjectArrays;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+@Slf4j
 class BoostsOverlay extends Overlay
 {
-	private static final Skill[] COMBAT = new Skill[]
-	{
-		Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE, Skill.RANGED, Skill.MAGIC
-	};
-	private static final Skill[] SKILLING = new Skill[]
-	{
-		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
-		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER
-	};
+	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
+	@Getter
+	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
 
 	private final Client client;
 	private final BoostsConfig config;
+	private final InfoBoxManager infoBoxManager;
+
+	@Inject
+	private BoostsPlugin plugin;
 	private PanelComponent panelComponent;
 
 	@Inject
-	BoostsOverlay(@Nullable Client client, BoostsConfig config)
+	BoostsOverlay(@Nullable Client client, BoostsConfig config, InfoBoxManager infoBoxManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
 		this.client = client;
 		this.config = config;
+		this.infoBoxManager = infoBoxManager;
 	}
 
 	@Override
@@ -72,59 +76,97 @@ class BoostsOverlay extends Overlay
 			return null;
 		}
 
-		Skill[] show;
-		if (config.enableSkill())
-		{
-			show = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
-		}
-		else
-		{
-			show = COMBAT;
-		}
-
 		panelComponent = new PanelComponent();
 
-		for (Skill skill : show)
+		for (Skill skill : plugin.getShownSkills())
 		{
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
 
 			if (boosted == base)
 			{
+				if (indicators[skill.ordinal()] != null)
+				{
+					infoBoxManager.removeInfoBox(indicators[skill.ordinal()]);
+					indicators[skill.ordinal()] = null;
+				}
+
 				continue;
 			}
 
-
-			String str;
-			Color strColor = Color.WHITE;
-			if (!config.useRelativeBoost())
+			if (config.displayIndicators())
 			{
-				str = boosted + "/" + base;
+				if (indicators[skill.ordinal()] == null)
+				{
+					BoostIndicator indicator = new BoostIndicator(skill, getSkillImage(skill), client, config);
+					indicators[skill.ordinal()] = indicator;
+					infoBoxManager.addInfoBox(indicator);
+				}
 			}
 			else
 			{
-				int boost = boosted - base;
-				str = String.valueOf(boost);
-				if (boost > 0)
+				String str;
+				Color strColor = Color.WHITE;
+				if (!config.useRelativeBoost())
 				{
-					str = "+"  + str;
-					strColor = Color.GREEN.darker();
+					str = boosted + "/" + base;
 				}
 				else
 				{
-					strColor = Color.RED.darker();
+					int boost = boosted - base;
+					str = String.valueOf(boost);
+					strColor = getTextColor(boost);
+					if (boost > 0)
+					{
+						str = "+" + str;
+					}
 				}
-			}
 
-			panelComponent.getLines().add(new PanelComponent.Line(
-				skill.getName(),
-				Color.WHITE,
-				str,
-				strColor
-			));
+				panelComponent.getLines().add(new PanelComponent.Line(
+					skill.getName(),
+					Color.WHITE,
+					str,
+					strColor
+				));
+			}
 		}
 
-		return panelComponent.render(graphics, parent);
+		return config.displayIndicators() ? null : panelComponent.render(graphics, parent);
 	}
 
+	private Color getTextColor(int boost)
+	{
+		if (boost > 0)
+		{
+			return Color.GREEN;
+		}
+
+		return new Color(238, 51, 51);
+
+	}
+
+	private BufferedImage getSkillImage(Skill skill)
+	{
+		int skillIdx = skill.ordinal();
+		BufferedImage skillImage = null;
+
+		if (imgCache[skillIdx] != null)
+		{
+			return imgCache[skillIdx];
+		}
+
+		try
+		{
+			String skillIconPath = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
+			log.debug("Loading skill icon from {}", skillIconPath);
+			skillImage = ImageIO.read(BoostsOverlay.class.getResourceAsStream(skillIconPath));
+			imgCache[skillIdx] = skillImage;
+		}
+		catch (IOException e)
+		{
+			log.debug("Error Loading skill icons {}", e);
+		}
+
+		return skillImage;
+	}
 }
