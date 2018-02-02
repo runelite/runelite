@@ -61,7 +61,7 @@ class JewelleryCountOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
+		if (!config.showCount())
 		{
 			return null;
 		}

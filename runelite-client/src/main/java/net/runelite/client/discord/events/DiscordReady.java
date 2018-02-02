@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellery;
+package net.runelite.client.discord.events;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Value;
 
-@ConfigGroup(
-	keyName = "jewellery",
-	name = "Jewellery",
-	description = "Configuration for the jewellery plugin"
-)
-public interface JewelleryConfig extends Config
+/**
+ * Called when the RPC connection has been established
+ */
+@Value
+public class DiscordReady
 {
-	@ConfigItem(
-		keyName = "showCount",
-		name = "Enable Jewellery count",
-		description = "Configures whether or not the jewellery count is displayed"
-	)
-	default boolean showCount()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showEnchant",
-		name = "Enable Enchant helper",
-		description = "Configures whether or not the enchant helper is displayed"
-	)
-	default boolean showEnchant()
-	{
-		return true;
-	}
 }
