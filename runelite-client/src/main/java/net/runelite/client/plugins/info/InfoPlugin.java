@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.plugins.info;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import lombok.extern.slf4j.Slf4j;
-
+import com.google.inject.Binder;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
 
-@Singleton
-@Slf4j
-public class RuneLiteProperties
+@PluginDescriptor(
+	name = "Info panel plugin",
+	loadWhenOutdated = true
+)
+public class InfoPlugin extends Plugin
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
-	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-
-	private final Properties properties = new Properties();
-
 	@Inject
-	public RuneLiteProperties()
+	private ClientUI ui;
+
+	@Override
+	public void configure(Binder binder)
 	{
-		InputStream in = getClass().getResourceAsStream("runelite.properties");
-		try
-		{
-			properties.load(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load propertries", ex);
-		}
+		binder.bind(InfoPanel.class);
 	}
 
-	public String getTitle()
+	@Override
+	protected void startUp() throws Exception
 	{
-		return properties.getProperty(RUNELITE_TITLE);
-	}
+		final InfoPanel panel = injector.getInstance(InfoPanel.class);
+		panel.init();
 
-	public String getVersion()
-	{
-		return properties.getProperty(RUNELITE_VERSION);
-	}
+		final NavigationButton navButton = new NavigationButton(
+			"Info",
+			ImageIO.read(getClass().getResourceAsStream("info_icon.png")),
+			() -> panel
+		);
 
-	public String getRunescapeVersion()
-	{
-		return properties.getProperty(RUNESCAPE_VERSION);
+		ui.getPluginToolbar().addNavigation(navButton);
 	}
 }
