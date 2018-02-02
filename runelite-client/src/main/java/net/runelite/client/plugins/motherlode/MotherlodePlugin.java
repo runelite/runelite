@@ -77,16 +77,16 @@ public class MotherlodePlugin extends Plugin
 	private BufferedImage mineIcon;
 
 	@Inject
-	MotherlodeOverlay overlay;
+	private MotherlodeOverlay overlay;
 
 	@Inject
-	MotherlodeRocksOverlay rocksOverlay;
+	private MotherlodeRocksOverlay rocksOverlay;
 
 	@Inject
-	MotherlodeSackOverlay motherlodeSackOverlay;
+	private MotherlodeSackOverlay motherlodeSackOverlay;
 
 	@Inject
-	MotherlodeConfig config;
+	private MotherlodeConfig config;
 
 	private final MotherlodeSession session = new MotherlodeSession();
 

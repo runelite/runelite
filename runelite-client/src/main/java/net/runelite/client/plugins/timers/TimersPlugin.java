@@ -80,13 +80,13 @@ public class TimersPlugin extends Plugin
 	private int lastRaidVarb;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	TimersConfig config;
+	private TimersConfig config;
 
 	@Inject
-	InfoBoxManager infoBoxManager;
+	private InfoBoxManager infoBoxManager;
 
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)

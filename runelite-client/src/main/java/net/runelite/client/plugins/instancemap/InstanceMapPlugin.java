@@ -51,13 +51,13 @@ public class InstanceMapPlugin extends Plugin
 	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
 
 	@Inject
-	InstanceMapConfig config;
+	private InstanceMapConfig config;
 
 	@Inject
-	InstanceMapOverlay overlay;
+	private InstanceMapOverlay overlay;
 
 	@Inject
-	MenuManager menuManager;
+	private MenuManager menuManager;
 
 	@Override
 	public void configure(Binder binder)

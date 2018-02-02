@@ -56,13 +56,13 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 public class AccountPlugin extends Plugin
 {
 	@Inject
-	SessionManager sessionManager;
+	private SessionManager sessionManager;
 
 	@Inject
-	ClientUI ui;
+	private ClientUI ui;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;

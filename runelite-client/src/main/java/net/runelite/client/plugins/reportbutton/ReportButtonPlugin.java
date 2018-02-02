@@ -60,10 +60,10 @@ public class ReportButtonPlugin extends Plugin
 	private boolean ready;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ReportButtonConfig config;
+	private ReportButtonConfig config;
 
 	@Provides
 	ReportButtonConfig provideConfig(ConfigManager configManager)

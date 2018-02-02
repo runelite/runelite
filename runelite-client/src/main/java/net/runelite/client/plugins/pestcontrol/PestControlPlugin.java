@@ -40,7 +40,7 @@ public class PestControlPlugin extends Plugin
 	private Font font;
 
 	@Inject
-	PestControlOverlay overlay;
+	private PestControlOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

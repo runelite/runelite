@@ -41,10 +41,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class MetronomePlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	MetronomePluginConfiguration config;
+	private MetronomePluginConfiguration config;
 
 	private int tickCounter = 0;
 	private boolean shouldTock = false;

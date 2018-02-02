@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class MouseHighlightPlugin extends Plugin
 {
 	@Inject
-	MouseHighlightConfig config;
+	private MouseHighlightConfig config;
 
 	@Inject
-	MouseHighlightOverlay overlay;
+	private MouseHighlightOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
