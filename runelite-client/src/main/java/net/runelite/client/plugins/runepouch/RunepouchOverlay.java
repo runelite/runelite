@@ -101,6 +101,7 @@ public class RunepouchOverlay extends Overlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		StringBuilder tooltipBuilder = new StringBuilder();
+
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			Varbits amountVarbit = AMOUNT_VARBITS[i];
@@ -146,10 +147,12 @@ public class RunepouchOverlay extends Overlay
 					runeImg);
 			}
 		}
+		
+		String tooltip = tooltipBuilder.toString();
 
-		if (runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		if (!tooltip.isEmpty() && runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			tooltipManager.add(new Tooltip(tooltipBuilder.toString()));
+			tooltipManager.add(new Tooltip(tooltip));
 		}
 		return null;
 	}
