@@ -71,5 +71,6 @@ public interface RSTile extends Tile
 	int getY();
 
 	@Import("plane")
+	@Override
 	int getPlane();
 }
