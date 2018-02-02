@@ -84,6 +84,15 @@ public class BoostsPlugin extends Plugin
 		return boostsOverlay;
 	}
 
+	@Override
+	protected void startUp()
+	{
+		if (config.enabled())
+		{
+			updateShownSkills(config.enableSkill());
+		}
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -92,14 +101,7 @@ public class BoostsPlugin extends Plugin
 			return;
 		}
 
-		if (config.enableSkill())
-		{
-			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
-		}
-		else
-		{
-			shownSkills = COMBAT;
-		}
+		updateShownSkills(config.enableSkill());
 
 		if (event.getKey().equals("displayIndicators"))
 		{
@@ -119,6 +121,18 @@ public class BoostsPlugin extends Plugin
 					infoBoxManager.removeInfoBox(indicator);
 				}
 			}
+		}
+	}
+
+	private void updateShownSkills(boolean showSkillingSkills)
+	{
+		if (showSkillingSkills)
+		{
+			shownSkills = ObjectArrays.concat(COMBAT, SKILLING, Skill.class);
+		}
+		else
+		{
+			shownSkills = COMBAT;
 		}
 	}
 }
