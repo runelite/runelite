@@ -44,7 +44,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Raids Plugin"
+	name = "Raids Plugin"
 )
 public class RaidsPlugin extends Plugin
 {
