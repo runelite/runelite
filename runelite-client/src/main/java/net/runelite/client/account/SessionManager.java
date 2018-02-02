@@ -25,12 +25,17 @@
 package net.runelite.client.account;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,6 +46,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.http.api.account.AccountClient;
+import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.ws.messages.LoginResponse;
 
 @Singleton
 @Slf4j
@@ -52,14 +59,22 @@ public class SessionManager
 	@Getter
 	private AccountSession accountSession;
 
-	@Inject
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	@Inject
 	private ConfigManager configManager;
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	private final AccountClient loginClient = new AccountClient();
+
+	@Inject
+	public SessionManager(EventBus eventBus)
+	{
+		this.eventBus = eventBus;
+		eventBus.register(this);
+	}
 
 	public void loadSession()
 	{
@@ -165,11 +180,85 @@ public class SessionManager
 
 		log.debug("Logging out of account {}", accountSession.getUsername());
 
+		AccountClient client = new AccountClient(accountSession.getUuid());
+		try
+		{
+			client.logout();
+		}
+		catch (IOException ex)
+		{
+			log.warn("Unable to logout of session", ex);
+		}
+
 		accountSession = null; // No more account
 
 		// Restore config
 		configManager.switchSession(null);
 
 		eventBus.post(new SessionClose());
+	}
+
+	public void login()
+	{
+		OAuthResponse login;
+
+		try
+		{
+			login = loginClient.login();
+		}
+		catch (IOException ex)
+		{
+			log.warn("Unable to get oauth url", ex);
+			return;
+		}
+
+		// Create new session
+		openSession(new AccountSession(login.getUid(), Instant.now()));
+
+		if (!Desktop.isDesktopSupported())
+		{
+			log.info("Desktop is not supported. Visit {}", login.getOauthUrl());
+			return;
+		}
+
+		Desktop desktop = Desktop.getDesktop();
+		if (!desktop.isSupported(Desktop.Action.BROWSE))
+		{
+			log.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
+			return;
+		}
+
+		try
+		{
+			desktop.browse(new URI(login.getOauthUrl()));
+
+			log.debug("Opened browser to {}", login.getOauthUrl());
+		}
+		catch (IOException | URISyntaxException ex)
+		{
+			log.warn("Unable to open login page", ex);
+		}
+	}
+
+	@Subscribe
+	public void onLogin(LoginResponse loginResponse)
+	{
+		log.debug("Now logged in as {}", loginResponse.getUsername());
+
+		AccountSession session = getAccountSession();
+		session.setUsername(loginResponse.getUsername());
+
+		// Open session, again, now that we have a username
+		// This triggers onSessionOpen
+		openSession(session);
+
+		// Save session to disk
+		saveSession();
+	}
+
+	public void logout()
+	{
+		closeSession();
+		deleteSession();
 	}
 }
