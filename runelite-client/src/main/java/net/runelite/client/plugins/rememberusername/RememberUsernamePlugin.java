@@ -40,10 +40,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class RememberUsernamePlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	RememberUsernameConfig config;
+	private RememberUsernameConfig config;
 
 	@Provides
 	RememberUsernameConfig getConfig(ConfigManager configManager)

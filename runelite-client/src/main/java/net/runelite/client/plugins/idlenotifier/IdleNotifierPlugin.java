@@ -118,16 +118,16 @@ public class IdleNotifierPlugin extends Plugin
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	@Inject
-	Notifier notifier;
+	private Notifier notifier;
 
 	@Inject
-	ClientUI gui;
+	private ClientUI gui;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	IdleNotifierConfig config;
+	private IdleNotifierConfig config;
 
 	private Actor lastOpponent;
 	private Instant lastAnimating;

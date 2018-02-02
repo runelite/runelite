@@ -49,13 +49,13 @@ import net.runelite.client.ui.overlay.Overlay;
 public class TeamCapesPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	TeamCapesConfig config;
+	private TeamCapesConfig config;
 
 	@Inject
-	TeamCapesOverlay teamCapesOverlay;
+	private TeamCapesOverlay teamCapesOverlay;
 
 	private Map<Integer, Integer> teams = new HashMap<>();
 

@@ -46,13 +46,13 @@ import net.runelite.client.task.Schedule;
 public class ClueScrollPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ClueScrollConfig config;
+	private ClueScrollConfig config;
 
 	@Inject
-	ClueScrollOverlay clueScrollOverlay;
+	private ClueScrollOverlay clueScrollOverlay;
 
 	@Override
 	public void configure(Binder binder)

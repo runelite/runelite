@@ -74,19 +74,19 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: (\\d*)");
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	SlayerConfig config;
+	private SlayerConfig config;
 
 	@Inject
-	SlayerOverlay overlay;
+	private SlayerOverlay overlay;
 
 	@Inject
-	InfoBoxManager infoBoxManager;
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	private String taskName;
 	private int amount;

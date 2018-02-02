@@ -65,13 +65,13 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int inGameBit = 0;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	BarbarianAssaultConfig config;
+	private BarbarianAssaultConfig config;
 
 	@Inject
-	BarbarianAssaultOverlay overlay;
+	private BarbarianAssaultOverlay overlay;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)

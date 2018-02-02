@@ -42,10 +42,10 @@ import net.runelite.client.ui.NavigationButton;
 public class ConfigPlugin extends Plugin
 {
 	@Inject
-	ClientUI ui;
+	private ClientUI ui;
 
 	@Inject
-	ConfigManager configManager;
+	private ConfigManager configManager;
 
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;

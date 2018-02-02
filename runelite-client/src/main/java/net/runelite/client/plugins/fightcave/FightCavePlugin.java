@@ -46,16 +46,16 @@ import net.runelite.client.util.QueryRunner;
 public class FightCavePlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	QueryRunner queryRunner;
+	private QueryRunner queryRunner;
 
 	@Inject
-	FightCaveConfig config;
+	private FightCaveConfig config;
 
 	@Inject
-	FightCaveOverlay overlay;
+	private FightCaveOverlay overlay;
 
 	private JadAttack attack;
 

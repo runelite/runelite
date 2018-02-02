@@ -86,7 +86,7 @@ public class GroundItemsOverlay extends Overlay
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
 	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
