@@ -72,7 +72,7 @@ public class TrapOverlay extends Overlay
 	TrapOverlay(@Nullable Client client, HunterPlugin plugin, HunterConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;

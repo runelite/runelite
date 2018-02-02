@@ -45,6 +45,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 
@@ -76,6 +77,7 @@ public class XpGlobesOverlay extends Overlay
 	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.HIGH);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;

@@ -47,8 +47,8 @@ public class TileIndicatorsOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPriority(OverlayPriority.LOW);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
 	}
 
 	@Override
