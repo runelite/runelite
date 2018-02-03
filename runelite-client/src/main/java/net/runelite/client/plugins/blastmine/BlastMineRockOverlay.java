@@ -67,7 +67,7 @@ public class BlastMineRockOverlay extends Overlay
 	BlastMineRockOverlay(@Nullable Client client, BlastMinePlugin plugin, BlastMinePluginConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.config = config;
 		this.client = client;
