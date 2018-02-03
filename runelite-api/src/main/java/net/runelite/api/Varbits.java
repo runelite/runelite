@@ -228,7 +228,14 @@ public enum Varbits
 	/**
 	 * the current/last slot of the offer, slots listed from left to right 1-4 first row and 5-8 the second row
 	 */
-	GE_OFFER_SLOT(4439, 375, 4, 7);
+	GE_OFFER_SLOT(4439, 375, 4, 7),
+
+	/**
+	 * true if run is enabled
+	 * completely accurately reflect the run setting, so it stays false even if running through ctrl click
+	 */
+	RUNNING(173, 0, 0);
+	
 	/**
 	 * varbit id
 	 */
