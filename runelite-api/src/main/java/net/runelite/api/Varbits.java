@@ -203,12 +203,12 @@ public enum Varbits
 	QUEST_POINTS(101, 0, 30),
 
 	/**
-	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell
+	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell, 0 if no price
 	 */
 	GE_OFFER_PRICE(4398, 1043, 0, 30),
 
 	/**
-	 * the current/last offer item id, same reset and buy/sell as above
+	 * the current/last offer item id, same reset and buy/sell as above, -1 if not set
 	 */
 	GE_OFFER_ID(1151, 0, 30);
 	/**
