@@ -153,9 +153,12 @@ public enum Varbits
 	/**
 	 * Poison
 	 * Venom - 1,000,000 (6dmg/hit) - 1,000,008 (20 dmg/hit)
+	 * if the number is negative it means immunity to poison, every number is 18 seconds, ie -20 would be 6 minutes
+	 * when you are venomed your previous immunity from poison is also lifted
 	 */
 	POISON(102, 0, 5),
 	VENOM(102, 6, 9),
+	POISON_VENOM(102, 0, 31),
 
 	/**
 	 * Attack Style
