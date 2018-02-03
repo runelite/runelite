@@ -205,8 +205,12 @@ public enum Varbits
 	/**
 	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell
 	 */
-	GE_OFFER_PRICE(4398, 1043, 0, 30);
+	GE_OFFER_PRICE(4398, 1043, 0, 30),
 
+	/**
+	 * the current/last offer item id, same reset and buy/sell as above
+	 */
+	GE_OFFER_ID(1151, 0, 30);
 	/**
 	 * varbit id
 	 */
