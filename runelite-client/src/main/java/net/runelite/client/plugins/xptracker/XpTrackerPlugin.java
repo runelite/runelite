@@ -56,10 +56,10 @@ import net.runelite.http.api.xp.XpClient;
 public class XpTrackerPlugin extends Plugin
 {
 	@Inject
-	ClientUI ui;
+	private ClientUI ui;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
 	ScheduledExecutorService executor;

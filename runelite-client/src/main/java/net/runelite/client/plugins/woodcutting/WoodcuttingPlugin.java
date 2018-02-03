@@ -46,13 +46,13 @@ import net.runelite.client.ui.overlay.Overlay;
 public class WoodcuttingPlugin extends Plugin
 {
 	@Inject
-	Notifier notifier;
+	private Notifier notifier;
 
 	@Inject
-	WoodcuttingOverlay overlay;
+	private WoodcuttingOverlay overlay;
 
 	@Inject
-	WoodcuttingConfig config;
+	private WoodcuttingConfig config;
 
 	private final WoodcuttingSession session = new WoodcuttingSession();
 

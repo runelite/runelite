@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class TileIndicatorsPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	TileIndicatorsConfig config;
+	private TileIndicatorsConfig config;
 
 	private TileIndicatorsOverlay tileIndicatorsOverlay;
 

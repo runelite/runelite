@@ -55,13 +55,13 @@ public class BoostsPlugin extends Plugin
 	};
 
 	@Inject
-	InfoBoxManager infoBoxManager;
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
-	BoostsOverlay boostsOverlay;
+	private BoostsOverlay boostsOverlay;
 
 	@Inject
-	BoostsConfig config;
+	private BoostsConfig config;
 
 	@Getter
 	private Skill[] shownSkills;

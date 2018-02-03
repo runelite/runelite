@@ -79,19 +79,19 @@ public class ExaminePlugin extends Plugin
 		.build();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ExamineConfig config;
+	private ExamineConfig config;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
-	ChatMessageManager chatMessageManager;
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	@Provides
 	ExamineConfig provideConfig(ConfigManager configManager)

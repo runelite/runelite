@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class JewelleryCountPlugin extends Plugin
 {
 	@Inject
-	JewelleryCountConfig config;
+	private JewelleryCountConfig config;
 
 	@Inject
-	JewelleryCountOverlay overlay;
+	private JewelleryCountOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	PlayerIndicatorsConfig config;
+	private PlayerIndicatorsConfig config;
 
 	PlayerIndicatorsOverlay playerIndicatorsOverlay;
 
