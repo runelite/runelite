@@ -48,7 +48,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Region;
 import net.runelite.api.Tile;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -105,30 +104,6 @@ public class GroundItemsOverlay extends Overlay
 			return null;
 		}
 
-		Widget viewport = client.getViewportWidget();
-
-		if (viewport != null)
-		{
-			Widget[] subViewports = viewport.getStaticChildren();
-			if (subViewports.length > 0)
-			{
-				for (Widget w : subViewports)
-				{
-					if (w.getNestedChildren().length > 0)
-					{
-						return null;
-					}
-				}
-			}
-			else
-			{
-				if (viewport.getNestedChildren().length > 0)
-				{
-					return null;
-				}
-			}
-		}
-
 		// gets the hidden/highlighted items from the text box in the config
 		String configItems = config.getHiddenItems().toLowerCase();
 		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));
@@ -141,7 +116,7 @@ public class GroundItemsOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 
 		Player player = client.getLocalPlayer();
-		if (player == null)
+		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
 		}
@@ -228,7 +203,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					Point point = itemLayer.getCanvasLocation(itemLayer.getHeight());
 					// if the item is offscreen, don't bother drawing it
-					if (point == null || (viewport != null && !viewport.contains(point)))
+					if (point == null)
 					{
 						continue;
 					}
