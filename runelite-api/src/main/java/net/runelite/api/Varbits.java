@@ -200,7 +200,7 @@ public enum Varbits
 	/**
 	 * the amount of quest points for the local player
 	 */
-	QUEST_POINTS(101, 0, 31);
+	QUEST_POINTS(101, 0, 30);
 
 	/**
 	 * varbit id
