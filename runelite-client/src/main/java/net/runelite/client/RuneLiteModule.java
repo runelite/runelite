@@ -36,14 +36,13 @@ import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QueryRunner;
-import net.runelite.client.config.RuneLiteConfig;
 
 @Slf4j
 public class RuneLiteModule extends AbstractModule
@@ -56,7 +55,6 @@ public class RuneLiteModule extends AbstractModule
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
-		bind(InfoBoxManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
 		bind(RuneLiteProperties.class);

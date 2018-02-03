@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.discord.events;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Value;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
-@Slf4j
-public class RuneLiteProperties
+/**
+ * Called when an internal error is caught within the SDK
+ */
+@Value
+public class DiscordErrored
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
-	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
+	/**
+	 * Discord error code.
+	 */
+	private int errorCode;
 
-	private final Properties properties = new Properties();
-
-	@Inject
-	public RuneLiteProperties()
-	{
-		InputStream in = getClass().getResourceAsStream("runelite.properties");
-		try
-		{
-			properties.load(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load propertries", ex);
-		}
-	}
-
-	public String getTitle()
-	{
-		return properties.getProperty(RUNELITE_TITLE);
-	}
-
-	public String getVersion()
-	{
-		return properties.getProperty(RUNELITE_VERSION);
-	}
-
-	public String getRunescapeVersion()
-	{
-		return properties.getProperty(RUNESCAPE_VERSION);
-	}
-
-	public String getDiscordAppId()
-	{
-		return properties.getProperty(DISCORD_APP_ID);
-	}
+	/**
+	 * Error message
+	 */
+	private String message;
 }
