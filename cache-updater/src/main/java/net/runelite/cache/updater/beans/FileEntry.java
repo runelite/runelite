@@ -22,15 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache.beans;
+package net.runelite.cache.updater.beans;
 
-import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class CacheEntry
+public class FileEntry
 {
 	private int id;
-	private int revision;
-	private Instant date;
+	private int archiveId;
+	private int fileId;
+	private int nameHash;
 }

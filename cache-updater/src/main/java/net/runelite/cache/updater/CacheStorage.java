@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.cache.updater;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,9 +32,9 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.FileData;
-import net.runelite.http.service.cache.beans.ArchiveEntry;
-import net.runelite.http.service.cache.beans.CacheEntry;
-import net.runelite.http.service.cache.beans.IndexEntry;
+import net.runelite.cache.updater.beans.ArchiveEntry;
+import net.runelite.cache.updater.beans.CacheEntry;
+import net.runelite.cache.updater.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
 

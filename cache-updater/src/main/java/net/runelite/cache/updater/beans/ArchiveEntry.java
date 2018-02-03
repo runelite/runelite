@@ -22,45 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.cache.updater.beans;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import lombok.Data;
 
-@Configuration
-@EnableWebSecurity
-@Order(200)
-public class CacheSecurity extends WebSecurityConfigurerAdapter
+@Data
+public class ArchiveEntry
 {
-	@Value("${auth.password}")
-	private String password;
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception
-	{
-		// By default spring security adds headers to not cache anything
-		http.headers().cacheControl().disable();
-		
-		http.csrf().disable();
-		
-		http.httpBasic()
-			.and()
-			.authorizeRequests()
-			.antMatchers("/cache/admin/**")
-			.hasRole("ADMIN");
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
-	{
-		auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password(password)
-			.roles("ADMIN");
-	}
+	private int id;
+	private int archiveId;
+	private int nameHash;
+	private int crc;
+	private int revision;
+	private byte[] hash;
 }
