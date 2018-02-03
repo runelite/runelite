@@ -228,6 +228,11 @@ public class CacheClient implements AutoCloseable
 					logger.info("Index {} has the wrong revision (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
 				}
 			}
+			else if (index.getCrc() != crc)
+			{
+				logger.warn("Index {} CRC has changed! (our crc {}, their crc {})",
+					index.getCrc(), index.getCrc(), crc);
+			}
 			else
 			{
 				// despite the index being up to date, not everything
