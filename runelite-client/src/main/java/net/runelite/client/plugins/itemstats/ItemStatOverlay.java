@@ -80,6 +80,8 @@ public class ItemStatOverlay extends Overlay
 						if (tooltipMode.isRelative())
 						{
 							b.append(c.getRelative());
+							b.append("/");
+							b.append(c.getTheoretical());
 						}
 						if (tooltipMode == TooltipMode.BOTH)
 						{
