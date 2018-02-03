@@ -210,7 +210,12 @@ public enum Varbits
 	/**
 	 * the current/last offer item id, same reset and buy/sell as above, -1 if not set
 	 */
-	GE_OFFER_ID(1151, 0, 30);
+	GE_OFFER_ID(1151, 0, 30),
+
+	/**
+	 * the amount being bought/sold, same reset conditions as all other ge offers
+	 */
+	GE_OFFER_AMOUNT(4396, 563, 0, 30);
 	/**
 	 * varbit id
 	 */
