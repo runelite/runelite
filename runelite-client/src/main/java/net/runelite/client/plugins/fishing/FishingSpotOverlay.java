@@ -56,7 +56,7 @@ class FishingSpotOverlay extends Overlay
 	public FishingSpotOverlay(QueryRunner queryRunner, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.UNDER_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.queryRunner = queryRunner;
 		this.config = config;
 	}

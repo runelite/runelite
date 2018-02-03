@@ -38,6 +38,7 @@ import net.runelite.api.Prayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PrayerFlickOverlay extends Overlay
@@ -51,6 +52,7 @@ public class PrayerFlickOverlay extends Overlay
 	public PrayerFlickOverlay(@Nullable Client client, PrayerFlickConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.config = config;
 	}

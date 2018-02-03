@@ -49,10 +49,10 @@ public class XteaPlugin extends Plugin
 	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onMapRegionChanged(MapRegionChanged event)

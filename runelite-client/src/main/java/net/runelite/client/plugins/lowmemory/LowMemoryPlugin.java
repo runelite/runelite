@@ -41,10 +41,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class LowMemoryPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	LowMemoryConfig config;
+	private LowMemoryConfig config;
 
 	@Provides
 	LowMemoryConfig provideConfig(ConfigManager configManager)

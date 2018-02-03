@@ -43,10 +43,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class ExperienceDropPlugin extends Plugin
 {
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ExperienceDropConfig config;
+	private ExperienceDropConfig config;
 
 	@Provides
 	ExperienceDropConfig provideConfig(ConfigManager configManager)

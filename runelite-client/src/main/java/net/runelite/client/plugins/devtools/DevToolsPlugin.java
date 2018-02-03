@@ -43,10 +43,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class DevToolsPlugin extends Plugin
 {
 	@Inject
-	ClientUI ui;
+	private ClientUI ui;
 
 	@Inject
-	DevToolsOverlay overlay;
+	private DevToolsOverlay overlay;
 
 	private boolean togglePlayers;
 	private boolean toggleNpcs;

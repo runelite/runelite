@@ -76,10 +76,10 @@ public class ClanChatPlugin extends Plugin
 	private int modIconsLength;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ClanChatConfig config;
+	private ClanChatConfig config;
 
 	@Provides
 	ClanChatConfig provideConfig(ConfigManager configManager)

@@ -47,7 +47,7 @@ public class SpecOrbPlugin extends Plugin
 	private Image specialAttackIcon;
 
 	@Inject
-	SpecOrbOverlay overlay;
+	private SpecOrbOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

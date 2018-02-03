@@ -27,17 +27,22 @@ package net.runelite.client.ui.overlay;
 public enum OverlayLayer
 {
 	/**
-	 * Render overlay above all game elements
+	 * Render right above the scene (that contains actors and the surface)
 	 */
-	ALWAYS_ON_TOP,
+	ABOVE_SCENE,
 
 	/**
-	 * Render under all interfaces
+	 * Render under all interfaces, but above overheads
 	 */
 	UNDER_WIDGETS,
 
 	/**
 	 * Render under the right-click menu
 	 */
-	ABOVE_WIDGETS
+	ABOVE_WIDGETS,
+
+	/**
+	 * Render overlay above all game elements
+	 */
+	ALWAYS_ON_TOP,
 }

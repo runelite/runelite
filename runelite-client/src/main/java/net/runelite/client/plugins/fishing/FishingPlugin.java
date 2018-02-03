@@ -50,13 +50,13 @@ import net.runelite.client.ui.overlay.Overlay;
 public class FishingPlugin extends Plugin
 {
 	@Inject
-	FishingConfig config;
+	private FishingConfig config;
 
 	@Inject
-	FishingOverlay overlay;
+	private FishingOverlay overlay;
 
 	@Inject
-	FishingSpotOverlay spotOverlay;
+	private FishingSpotOverlay spotOverlay;
 
 	private final FishingSession session = new FishingSession();
 
