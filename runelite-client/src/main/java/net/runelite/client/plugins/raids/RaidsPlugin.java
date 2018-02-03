@@ -48,7 +48,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class RaidsPlugin extends Plugin
 {
-	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
+	private static final String RAID_COMPLETE_MESSAGE = "<col=ef20ff>Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 
