@@ -30,6 +30,9 @@ public enum Varbits
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARANT_CHATBOX(4608, 1055, 9, 9),
+	/**
+	 * true if split
+	 */
 	SPLIT_CHAT(287, 0, 0),
 
 	/**
