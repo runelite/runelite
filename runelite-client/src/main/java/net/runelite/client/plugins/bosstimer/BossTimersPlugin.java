@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class BossTimersPlugin extends Plugin
 {
 	@Inject
-	InfoBoxManager infoBoxManager;
+	private InfoBoxManager infoBoxManager;
 
 	@Override
 	protected void shutDown() throws Exception

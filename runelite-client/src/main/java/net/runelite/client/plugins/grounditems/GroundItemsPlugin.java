@@ -38,10 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 public class GroundItemsPlugin extends Plugin
 {
 	@Inject
-	ConfigManager configManager;
+	private ConfigManager configManager;
 
 	@Inject
-	GroundItemsOverlay overlay;
+	private GroundItemsOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

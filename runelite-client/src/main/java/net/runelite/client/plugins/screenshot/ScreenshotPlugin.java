@@ -108,19 +108,19 @@ public class ScreenshotPlugin extends Plugin
 	private Integer barrowsNumber;
 
 	@Inject
-	ScreenshotConfig config;
+	private ScreenshotConfig config;
 
 	@Inject
-	Notifier notifier;
+	private Notifier notifier;
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ClientUI clientUi;
+	private ClientUI clientUi;
 
 	@Inject
-	OverlayRenderer overlayRenderer;
+	private OverlayRenderer overlayRenderer;
 
 	private JButton titleBarButton;
 

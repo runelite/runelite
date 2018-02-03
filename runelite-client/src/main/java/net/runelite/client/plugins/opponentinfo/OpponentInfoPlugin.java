@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.Overlay;
 public class OpponentInfoPlugin extends Plugin
 {
 	@Inject
-	OpponentInfoOverlay overlay;
+	private OpponentInfoOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

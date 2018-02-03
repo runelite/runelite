@@ -64,13 +64,13 @@ public class CannonPlugin extends Plugin
 	net.runelite.api.Point myCannon;
 
 	@Inject
-	Notifier notifier;
+	private Notifier notifier;
 
 	@Inject
-	CannonOverlay cannonOverlay;
+	private CannonOverlay cannonOverlay;
 
 	@Inject
-	CannonConfig config;
+	private CannonConfig config;
 
 	@Inject
 	private Client client;

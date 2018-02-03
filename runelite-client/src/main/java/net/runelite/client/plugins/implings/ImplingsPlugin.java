@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.Overlay;
 public class ImplingsPlugin extends Plugin
 {
 	@Inject
-	ImplingsOverlay overlay;
+	private ImplingsOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

@@ -54,13 +54,13 @@ public class XpGlobesPlugin extends Plugin
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	XpGlobesConfig config;
+	private XpGlobesConfig config;
 
 	@Inject
-	XpGlobesOverlay overlay;
+	private XpGlobesOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.Overlay;
 public class PrayerFlickPlugin extends Plugin
 {
 	@Inject
-	PrayerFlickOverlay overlay;
+	private PrayerFlickOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)

@@ -46,13 +46,13 @@ public class HiscorePlugin extends Plugin
 	private static final String LOOKUP = "Lookup";
 
 	@Inject
-	ClientUI ui;
+	private ClientUI ui;
 
 	@Inject
-	MenuManager menuManager;
+	private MenuManager menuManager;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;

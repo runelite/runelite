@@ -45,10 +45,10 @@ public class DiaryProgressPlugin extends Plugin
 	private static final String STAGE_UNFINISHED_STRING = "<col=ffff00>_</col>";
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	DiaryProgressConfig config;
+	private DiaryProgressConfig config;
 
 	@Provides
 	DiaryProgressConfig provideConfig(ConfigManager configManager)

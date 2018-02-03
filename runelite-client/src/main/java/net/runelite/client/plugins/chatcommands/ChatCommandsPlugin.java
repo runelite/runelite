@@ -68,19 +68,19 @@ public class ChatCommandsPlugin extends Plugin
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	ChatCommandsConfig config;
+	private ChatCommandsConfig config;
 
 	@Inject
-	ItemManager itemManager;
+	private ItemManager itemManager;
 
 	@Inject
-	ChatMessageManager chatMessageManager;
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private ScheduledExecutorService executor;
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)

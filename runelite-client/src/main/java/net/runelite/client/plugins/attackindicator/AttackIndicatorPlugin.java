@@ -65,13 +65,13 @@ public class AttackIndicatorPlugin extends Plugin
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
-	Client client;
+	private Client client;
 
 	@Inject
-	AttackIndicatorConfig config;
+	private AttackIndicatorConfig config;
 
 	@Inject
-	AttackIndicatorOverlay overlay;
+	private AttackIndicatorOverlay overlay;
 
 	@Override
 	public void configure(Binder binder)
