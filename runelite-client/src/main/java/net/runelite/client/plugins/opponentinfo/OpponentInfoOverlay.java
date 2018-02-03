@@ -102,8 +102,8 @@ class OpponentInfoOverlay extends Overlay
 		{
 			lastTime = Instant.now();
 			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
-			opponentName = opponent.getName();
-			lastMaxHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+			opponentName = opponent.getName().replaceAll("<[^>]*>", "");
+			lastMaxHealth = oppInfoHealth.get(opponentName + "_" + opponent.getCombatLevel());
 		}
 
 		if (Duration.between(Instant.now(), lastTime).abs().compareTo(WAIT) > 0)
