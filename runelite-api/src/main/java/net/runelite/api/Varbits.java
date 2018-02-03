@@ -220,7 +220,12 @@ public enum Varbits
 	/**
 	 * true if the current/last offer was a sale, false if buy. same resets as other ge offers
 	 */
-	GE_OFFER_IS_SELL(4397, 563, 31, 31);
+	GE_OFFER_IS_SELL(4397, 563, 31, 31),
+
+	/**
+	 * the current/last slot of the offer, slots listed from left to right 1-4 first row and 5-8 the second row
+	 */
+	GE_OFFER_SLOT(4439, 375, 4, 7);
 	/**
 	 * varbit id
 	 */
