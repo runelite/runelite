@@ -192,7 +192,12 @@ public enum Varbits
 	/**
 	 * Raids
 	 */
-	IN_RAID(5432, 1431, 31, 31);
+	IN_RAID(5432, 1431, 31, 31),
+
+	/**
+	 * the amount of quest points for the local player
+	 */
+	QUEST_POINTS(101, 0, 31);
 
 	/**
 	 * varbit id
