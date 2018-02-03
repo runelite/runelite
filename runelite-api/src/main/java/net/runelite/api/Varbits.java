@@ -200,7 +200,12 @@ public enum Varbits
 	/**
 	 * the amount of quest points for the local player
 	 */
-	QUEST_POINTS(101, 0, 30);
+	QUEST_POINTS(101, 0, 30),
+
+	/**
+	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell
+	 */
+	GE_OFFER_PRICE(4398, 1043, 0, 30);
 
 	/**
 	 * varbit id
