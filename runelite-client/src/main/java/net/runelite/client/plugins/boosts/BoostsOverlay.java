@@ -84,12 +84,13 @@ class BoostsOverlay extends Overlay
 			int boosted = client.getBoostedSkillLevel(skill),
 				base = client.getRealSkillLevel(skill);
 
+			BoostIndicator indicator = indicators[skill.ordinal()];
+
 			if (boosted == base)
 			{
-				if (indicators[skill.ordinal()] != null)
+				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
 				{
-					infoBoxManager.removeInfoBox(indicators[skill.ordinal()]);
-					indicators[skill.ordinal()] = null;
+					infoBoxManager.removeInfoBox(indicator);
 				}
 
 				continue;
@@ -97,15 +98,24 @@ class BoostsOverlay extends Overlay
 
 			if (config.displayIndicators())
 			{
-				if (indicators[skill.ordinal()] == null)
+				if (indicator == null)
 				{
-					BoostIndicator indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
+					indicator = new BoostIndicator(skill, iconManager.getSkillImage(skill), client, config);
 					indicators[skill.ordinal()] = indicator;
+				}
+
+				if (!infoBoxManager.getInfoBoxes().contains(indicator))
+				{
 					infoBoxManager.addInfoBox(indicator);
 				}
 			}
 			else
 			{
+				if (indicator != null && infoBoxManager.getInfoBoxes().contains(indicator))
+				{
+					infoBoxManager.removeInfoBox(indicator);
+				}
+
 				String str;
 				Color strColor = Color.WHITE;
 				if (!config.useRelativeBoost())
