@@ -22,12 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.cache.updater.beans;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+import lombok.Data;
 
-@ResponseStatus(reason = "Out of date")
-public class OutOfDateException extends RuntimeException
+@Data
+public class IndexEntry
 {
-
+	private int id;
+	private int indexId;
+	private int crc;
+	private int revision;
 }

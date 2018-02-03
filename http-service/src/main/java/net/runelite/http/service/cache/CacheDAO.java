@@ -24,7 +24,6 @@
  */
 package net.runelite.http.service.cache;
 
-import java.time.Instant;
 import java.util.List;
 import net.runelite.cache.IndexType;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
@@ -37,12 +36,6 @@ import org.sql2o.ResultSetIterable;
 
 class CacheDAO
 {
-	// cache prepared statements for high volume queries
-	private Query associateArchive;
-	private Query findArchive, insertArchive;
-	private Query associateFile;
-	private Query findFilesForArchive;
-
 	public List<CacheEntry> listCaches(Connection con)
 	{
 		return con.createQuery("select id, revision, date from cache")
@@ -94,22 +87,6 @@ class CacheDAO
 			.executeAndFetchFirst(ArchiveEntry.class);
 	}
 
-	public ArchiveEntry findArchiveById(Connection con, CacheEntry cache, IndexType index, int archiveId)
-	{
-		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash,"
-			+ " archive.crc, archive.revision, archive.hash from archive "
-			+ "join index_archive on index_archive.archive = archive.id "
-			+ "join `index` on index.id = index_archive.index "
-			+ "where index.cache = :cacheId "
-			+ "and index.indexId = :indexId "
-			+ "and archive.archiveId = :archiveId "
-			+ "limit 1")
-			.addParameter("cacheId", cache.getId())
-			.addParameter("indexId", index.getNumber())
-			.addParameter("archiveId", archiveId)
-			.executeAndFetchFirst(ArchiveEntry.class);
-	}
-
 	public ArchiveEntry findArchiveByName(Connection con, CacheEntry cache, IndexType index, int nameHash)
 	{
 		return con.createQuery("select archive.id, archive.archiveId, archive.nameHash,"
@@ -128,30 +105,12 @@ class CacheDAO
 
 	public ResultSetIterable<FileEntry> findFilesForArchive(Connection con, ArchiveEntry archiveEntry)
 	{
-		if (findFilesForArchive == null)
-		{
-			findFilesForArchive = con.createQuery("select id, fileId, nameHash from file "
-				+ "where archive = :archive");
-		}
+		Query findFilesForArchive = con.createQuery("select id, fileId, nameHash from file "
+			+ "where archive = :archive");
 
 		return findFilesForArchive
 			.addParameter("archive", archiveEntry.getId())
 			.executeAndFetchLazy(FileEntry.class);
-	}
-
-	public CacheEntry createCache(Connection con, int revision, Instant date)
-	{
-		int cacheId = con.createQuery("insert into cache (revision, date) values (:revision, :date)")
-			.addParameter("revision", revision)
-			.addParameter("date", date)
-			.executeUpdate()
-			.getKey(int.class);
-
-		CacheEntry entry = new CacheEntry();
-		entry.setId(cacheId);
-		entry.setRevision(revision);
-		entry.setDate(date);
-		return entry;
 	}
 
 	public CacheEntry findCache(Connection con, int cacheId)
@@ -160,102 +119,5 @@ class CacheDAO
 			+ "where id = :cacheId")
 			.addParameter("cacheId", cacheId)
 			.executeAndFetchFirst(CacheEntry.class);
-	}
-
-	public IndexEntry createIndex(Connection con, CacheEntry cache, int indexId, int crc, int revision)
-	{
-		int id = con.createQuery("insert into `index` (cache, indexId, crc, revision) values (:cache, :indexId, :crc, :revision)")
-			.addParameter("cache", cache.getId())
-			.addParameter("indexId", indexId)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
-			.executeUpdate()
-			.getKey(int.class);
-
-		IndexEntry entry = new IndexEntry();
-		entry.setId(id);
-		entry.setIndexId(indexId);
-		entry.setCrc(crc);
-		entry.setRevision(revision);
-		return entry;
-	}
-
-	public void associateArchiveToIndex(Connection con, ArchiveEntry archive, IndexEntry index)
-	{
-		if (associateArchive == null)
-		{
-			associateArchive = con.createQuery("insert into index_archive (`index`, archive) values (:index, :archive)");
-		}
-		associateArchive
-			.addParameter("index", index.getId())
-			.addParameter("archive", archive.getId())
-			.executeUpdate();
-	}
-
-	public ArchiveEntry findArchive(Connection con, IndexEntry index,
-		int archiveId, int nameHash, int crc, int revision)
-	{
-		if (findArchive == null)
-		{
-			findArchive = con.createQuery("select distinct archive.id, archive.archiveId, archive.nameHash,"
-				+ " archive.crc, archive.revision, archive.hash from archive "
-				+ " join index_archive on index_archive.archive = archive.id"
-				+ " join `index` on index.id = index_archive.index"
-				+ " where archive.archiveId = :archiveId"
-				+ " and archive.nameHash = :nameHash"
-				+ " and archive.crc = :crc"
-				+ " and archive.revision = :revision"
-				+ " and index.indexId = :indexId");
-		}
-
-		ArchiveEntry entry = findArchive
-			.addParameter("archiveId", archiveId)
-			.addParameter("nameHash", nameHash)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
-			.addParameter("indexId", index.getIndexId())
-			.executeAndFetchFirst(ArchiveEntry.class);
-		return entry;
-	}
-
-	public ArchiveEntry createArchive(Connection con, IndexEntry index,
-		int archiveId, int nameHash, int crc, int revision, byte[] hash)
-	{
-		if (insertArchive == null)
-		{
-			insertArchive = con.createQuery("insert into archive (archiveId, nameHash, crc, revision, hash) values "
-				+ "(:archiveId, :nameHash, :crc, :revision, :hash)");
-		}
-
-		int id = insertArchive
-			.addParameter("archiveId", archiveId)
-			.addParameter("nameHash", nameHash)
-			.addParameter("crc", crc)
-			.addParameter("revision", revision)
-			.addParameter("hash", hash)
-			.executeUpdate()
-			.getKey(int.class);
-
-		ArchiveEntry entry = new ArchiveEntry();
-		entry.setId(id);
-		entry.setArchiveId(archiveId);
-		entry.setNameHash(nameHash);
-		entry.setCrc(crc);
-		entry.setRevision(revision);
-		entry.setHash(hash);
-		return entry;
-	}
-
-	public void associateFileToArchive(Connection con, ArchiveEntry archive, int fileId, int nameHash)
-	{
-		if (associateFile == null)
-		{
-			associateFile = con.createQuery("insert into file (archive, fileId, nameHash) values (:archive, :fileId, :nameHash)");
-		}
-		associateFile
-			.addParameter("archive", archive.getId())
-			.addParameter("fileId", fileId)
-			.addParameter("nameHash", nameHash)
-			.executeUpdate();
 	}
 }
