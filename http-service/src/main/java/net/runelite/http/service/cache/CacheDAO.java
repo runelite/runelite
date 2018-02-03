@@ -35,7 +35,7 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.ResultSetIterable;
 
-public class CacheDAO
+class CacheDAO
 {
 	// cache prepared statements for high volume queries
 	private Query associateArchive;
