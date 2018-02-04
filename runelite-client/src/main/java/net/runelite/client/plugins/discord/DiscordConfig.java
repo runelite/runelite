@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.plugins.discord;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
-@Slf4j
-public class RuneLiteProperties
+@ConfigGroup(
+	keyName = "discord",
+	name = "Discord",
+	description = "Configuration for Discord plugin"
+)
+public interface DiscordConfig extends Config
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
-	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
-
-	private final Properties properties = new Properties();
-
-	@Inject
-	public RuneLiteProperties()
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not Discord plugin is enabled"
+	)
+	default boolean enabled()
 	{
-		InputStream in = getClass().getResourceAsStream("runelite.properties");
-		try
-		{
-			properties.load(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load propertries", ex);
-		}
+		return true;
 	}
 
-	public String getTitle()
+	@ConfigItem(
+		keyName = "actionTimeout",
+		name = "Action timeout (minutes)",
+		description = "Configures after how long of not updating status will be reset (in minutes)"
+	)
+	default int actionTimeout()
 	{
-		return properties.getProperty(RUNELITE_TITLE);
+		return 5;
 	}
 
-	public String getVersion()
+	@ConfigItem(
+		keyName = "actionDelay",
+		name = "New action delay (seconds)",
+		description = "Configures the delay before new action will be considered as valid"
+	)
+	default int actionDelay()
 	{
-		return properties.getProperty(RUNELITE_VERSION);
-	}
-
-	public String getRunescapeVersion()
-	{
-		return properties.getProperty(RUNESCAPE_VERSION);
-	}
-
-	public String getDiscordAppId()
-	{
-		return properties.getProperty(DISCORD_APP_ID);
+		return 10;
 	}
 }
