@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,13 +40,19 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.game.SkillIconManager;
 
 @Slf4j
 class XpInfoBox extends JPanel
 {
 
-	private static final Color[] PROGRESS_COLORS = new Color[] { Color.RED, Color.YELLOW, Color.GREEN };
+	private static final Color[] PROGRESS_COLORS = new Color[]
+	{
+		Color.RED, Color.YELLOW, Color.GREEN
+	};
 
+	private final Client client;
+	private final JPanel panel;
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillXPInfo xpInfo;
 
@@ -56,10 +61,8 @@ class XpInfoBox extends JPanel
 	private final JLabel xpGained = new JLabel();
 	private final JLabel actionsHr = new JLabel();
 	private final JLabel actions = new JLabel();
-	private final Client client;
-	private final JPanel panel;
 
-	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo) throws IOException
+	XpInfoBox(Client client, JPanel panel, SkillXPInfo xpInfo, SkillIconManager iconManager) throws IOException
 	{
 		this.client = client;
 		this.panel = panel;
@@ -73,8 +76,7 @@ class XpInfoBox extends JPanel
 		container.setLayout(new BorderLayout(3, 3));
 
 		// Create skill/reset icon
-		final String skillIcon = "/skill_icons/" + xpInfo.getSkill().getName().toLowerCase() + ".png";
-		final JButton resetIcon = new JButton(new ImageIcon(ImageIO.read(getClass().getResourceAsStream(skillIcon))));
+		final JButton resetIcon = new JButton(new ImageIcon(iconManager.getSkillImage(xpInfo.getSkill())));
 		resetIcon.setToolTipText("Reset " + xpInfo.getSkill().getName() + " tracker");
 		resetIcon.setPreferredSize(new Dimension(64, 64));
 		resetIcon.addActionListener(e -> reset());
@@ -143,7 +145,7 @@ class XpInfoBox extends JPanel
 				final int progress = xpInfo.getSkillProgress();
 
 				progressBar.setValue(progress);
-				progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double)progress / 100d));
+				progressBar.setBackground(interpolateColors(PROGRESS_COLORS, (double) progress / 100d));
 
 				progressBar.setToolTipText("<html>"
 					+ XpPanel.formatLine(xpInfo.getXpRemaining(), "xp remaining")
@@ -158,10 +160,13 @@ class XpInfoBox extends JPanel
 		});
 	}
 
-
 	/**
-	 * Interpolate between array of colors using Normal (Gaussian) distribution
-	 * @see <a href="https://en.wikipedia.org/wiki/Normal_distribution}">Normal distribution on Wikipedia</a>
+	 * Interpolate between array of colors using Normal (Gaussian)
+	 * distribution
+	 *
+	 * @see
+	 * <a href="https://en.wikipedia.org/wiki/Normal_distribution}">Normal
+	 * distribution on Wikipedia</a>
 	 * @param colors array of colors
 	 * @param x distribution factor
 	 * @return interpolated color
@@ -170,7 +175,7 @@ class XpInfoBox extends JPanel
 	{
 		double r = 0.0, g = 0.0, b = 0.0;
 		double total = 0.0;
-		double step = 1.0 / (double)(colors.length - 1);
+		double step = 1.0 / (double) (colors.length - 1);
 		double mu = 0.0;
 		double sigma2 = 0.035;
 
@@ -192,6 +197,6 @@ class XpInfoBox extends JPanel
 			b += color.getBlue() * percent / total;
 		}
 
-		return new Color((int)r, (int)g, (int)b);
+		return new Color((int) r, (int) g, (int) b);
 	}
 }

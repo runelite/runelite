@@ -29,7 +29,6 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -72,9 +70,6 @@ public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MINE_SPOTS = Sets.newHashSet(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 	private static final Set<Integer> ROCK_OBSTACLES = Sets.newHashSet(ROCKFALL, ROCKFALL_26680);
-
-	@Getter
-	private BufferedImage mineIcon;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -111,12 +106,6 @@ public class MotherlodePlugin extends Plugin
 	public Collection<Overlay> getOverlays()
 	{
 		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		mineIcon = ImageIO.read(MotherlodePlugin.class.getResourceAsStream("/skill_icons/mining.png"));
 	}
 
 	public MotherlodeSession getSession()

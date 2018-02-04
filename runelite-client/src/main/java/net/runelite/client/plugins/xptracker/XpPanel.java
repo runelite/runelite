@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -48,8 +49,7 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
-
-	XpPanel(Client client)
+	XpPanel(Client client, SkillIconManager iconManager)
 	{
 		super();
 
@@ -90,7 +90,7 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, new SkillXPInfo(skill)));
+				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, new SkillXPInfo(skill), iconManager));
 			}
 		}
 		catch (IOException e)
