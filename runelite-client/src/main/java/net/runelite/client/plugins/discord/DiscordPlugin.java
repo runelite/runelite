@@ -65,6 +65,19 @@ public class DiscordPlugin extends Plugin
 		return configManager.getConfig(DiscordConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateGameStatus(client.getGameState(), true);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		discordService.clearPresence();
+		discordState.reset();
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
