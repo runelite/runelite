@@ -104,7 +104,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 		final String name = actor.getName().replace('\u00A0', ' ');
 		net.runelite.api.Point textLocation = actor
-			.getCanvasTextLocation(graphics, name, actor.getModelHeight() + 40);
+			.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
 
 		if (textLocation != null)
 		{

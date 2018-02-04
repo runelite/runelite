@@ -63,4 +63,9 @@ public interface Actor extends Renderable
 	Point getMinimapLocation();
 
 	Point getRegionLocation();
+
+	/**
+	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
+	 */
+	int getLogicalHeight();
 }
