@@ -73,7 +73,7 @@ public class ItemStatOverlay extends Overlay
 					StatsChanges statsChanges = change.calculate(client);
 					for (StatChange c : statsChanges.getStatChanges())
 					{
-					    b.append(buildStatChangeString(c));
+						b.append(buildStatChangeString(c));
 					}
 					tooltipManager.add(new Tooltip(b.toString()));
 				}
@@ -84,12 +84,12 @@ public class ItemStatOverlay extends Overlay
 
 	private String buildStatChangeString(StatChange c)
 	{
-	 	StringBuilder b = new StringBuilder();
+		StringBuilder b = new StringBuilder();
 		b.append("<col=");
 		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
 		b.append(">");
 
-		if(config.absolute() && config.theoretical() && !config.relative())
+		if (config.absolute() && config.theoretical() && !config.relative())
 		{
 			b.append(c.getAbsolute());
 			b.append(" ").append("(/").append(c.getTheoretical()).append(") ");
@@ -102,7 +102,7 @@ public class ItemStatOverlay extends Overlay
 			b.append(c.getRelative());
 		}
 
-		if(config.theoretical())
+		if (config.theoretical())
 		{
 			b.append("/");
 			b.append(c.getTheoretical());

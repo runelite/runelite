@@ -42,7 +42,10 @@ public interface ItemStatConfig extends Config
 		description = "Show relative stat change in tooltip"
 	)
 
-	default boolean relative() { return true; }
+	default boolean relative()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "absolute",
@@ -50,7 +53,10 @@ public interface ItemStatConfig extends Config
 		description = "Show absolute stat change in tooltip"
 	)
 
-	default boolean absolute() { return true; }
+	default boolean absolute()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "theoretical",
@@ -58,7 +64,10 @@ public interface ItemStatConfig extends Config
 		description = "Show theoretical stat change in tooltip"
 	)
 
-	default boolean theoretical() { return false; }
+	default boolean theoretical()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "colorBetterUncapped",
