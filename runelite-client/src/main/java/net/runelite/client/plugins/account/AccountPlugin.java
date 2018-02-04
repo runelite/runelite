@@ -25,16 +25,12 @@
 package net.runelite.client.plugins.account;
 
 import com.google.common.eventbus.Subscribe;
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.SessionClose;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.api.events.SessionOpen;
@@ -44,9 +40,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
-import net.runelite.http.api.account.AccountClient;
-import net.runelite.http.api.account.OAuthResponse;
-import net.runelite.http.api.ws.messages.LoginResponse;
 
 @PluginDescriptor(
 	name = "Account plugin",
@@ -67,8 +60,6 @@ public class AccountPlugin extends Plugin
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;
 
-	private final AccountClient loginClient = new AccountClient();
-
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -88,91 +79,22 @@ public class AccountPlugin extends Plugin
 
 	private void loginClick(ActionEvent ae)
 	{
-		executor.execute(RunnableExceptionLogger.wrap(this::openLoginPage));
+		executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
 	}
 
 	private void logoutClick(ActionEvent ae)
 	{
-		// Destroy session
-		AccountSession session = sessionManager.getAccountSession();
-		if (session != null)
-		{
-			AccountClient client = new AccountClient(session.getUuid());
-			try
-			{
-				client.logout();
-			}
-			catch (IOException ex)
-			{
-				log.warn("Unable to logout of session", ex);
-			}
-		}
+		sessionManager.logout();
+	}
 
-		sessionManager.closeSession(); // remove session from client
-		sessionManager.deleteSession(); // delete saved session file
-
+	@Subscribe
+	public void onSessionClose(SessionClose e)
+	{
 		// Replace logout nav button with login
 		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(logoutButton);
 		navigationPanel.addNavigation(loginButton);
-	}
-
-	private void openLoginPage()
-	{
-		OAuthResponse login;
-
-		try
-		{
-			login = loginClient.login();
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to get oauth url", ex);
-			return;
-		}
-
-		// Create new session
-		sessionManager.openSession(new AccountSession(login.getUid(), Instant.now()));
-
-		if (!Desktop.isDesktopSupported())
-		{
-			log.info("Desktop is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		Desktop desktop = Desktop.getDesktop();
-		if (!desktop.isSupported(Desktop.Action.BROWSE))
-		{
-			log.info("Desktop browser is not supported. Visit {}", login.getOauthUrl());
-			return;
-		}
-
-		try
-		{
-			desktop.browse(new URI(login.getOauthUrl()));
-
-			log.debug("Opened browser to {}", login.getOauthUrl());
-		}
-		catch (IOException | URISyntaxException ex)
-		{
-			log.warn("Unable to open login page", ex);
-		}
-	}
-
-	@Subscribe
-	public void onLogin(LoginResponse loginResponse)
-	{
-		log.debug("Now logged in as {}", loginResponse.getUsername());
-
-		AccountSession session = sessionManager.getAccountSession();
-		session.setUsername(loginResponse.getUsername());
-
-		// Open session, again, now that we have a username
-		// This triggers onSessionOpen
-		sessionManager.openSession(session);
-
-		// Save session to disk
-		sessionManager.saveSession();
+		navigationPanel.repaint();
 	}
 
 	@Subscribe
@@ -187,15 +109,11 @@ public class AccountPlugin extends Plugin
 
 		log.debug("Session opened as {}", session.getUsername());
 
-		replaceLoginWithLogout();
-	}
-
-	private void replaceLoginWithLogout()
-	{
 		// Replace login nav button with logout
 		PluginToolbar navigationPanel = ui.getPluginToolbar();
 		navigationPanel.removeNavigation(loginButton);
 		navigationPanel.addNavigation(logoutButton);
+		navigationPanel.repaint();
 	}
 
 }
