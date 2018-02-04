@@ -89,14 +89,6 @@ public class ItemStatOverlay extends Overlay
 		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
 		b.append(">");
 
-		if (config.absolute() && config.theoretical() && !config.relative())
-		{
-			b.append(c.getAbsolute());
-			b.append(" ").append("(/").append(c.getTheoretical()).append(") ");
-			b.append(" ").append(c.getStat().getName()).append("</br>");
-			return b.toString();
-		}
-
 		if (config.relative())
 		{
 			b.append(c.getRelative());
