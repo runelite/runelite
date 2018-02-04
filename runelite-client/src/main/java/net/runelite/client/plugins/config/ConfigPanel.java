@@ -24,13 +24,11 @@
  */
 package net.runelite.client.plugins.config;
 
-import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -38,9 +36,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.AbstractMap;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -50,6 +53,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -66,6 +72,10 @@ import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.PluginPanel;
 
@@ -74,18 +84,39 @@ public class ConfigPanel extends PluginPanel
 {
 	private static final int TEXT_FIELD_WIDTH = 7;
 	private static final int SPINNER_FIELD_WIDTH = 6;
+	private static BufferedImage CONFIG_ICON;
+	private static BufferedImage UNCHECK_ICON;
+	private static BufferedImage CHECK_ICON;
+
+	static
+	{
+		try
+		{
+			CONFIG_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("config_icon.png"));
+			UNCHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("698-0.png"));
+			CHECK_ICON = ImageIO.read(ConfigPanel.class.getResourceAsStream("699-0.png"));
+		}
+		catch (IOException e)
+		{
+			log.warn("Failed to read icon", e);
+		}
+	}
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
+	private final ScheduledExecutorService executorService;
+	private final RuneLiteConfig runeLiteConfig;
 	private final JTextField searchBar = new JTextField();
 	private Map<String, JPanel> children = new TreeMap<>();
 	private int scrollBarPosition = 0;
 
-	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager)
+	public ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService, RuneLiteConfig runeLiteConfig)
 	{
 		super();
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
+		this.executorService = executorService;
+		this.runeLiteConfig = runeLiteConfig;
 
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
@@ -114,34 +145,123 @@ public class ConfigPanel extends PluginPanel
 
 	final void rebuildPluginList()
 	{
+		scrollBarPosition = getScrollPane().getVerticalScrollBar().getValue();
 		Map<String, JPanel> newChildren = new TreeMap<>();
-		pluginManager.getPluginConfigProxies()
-			.stream()
-			// Convert config proxies to pair of config descriptors and config proxies
-			.map(c -> new AbstractMap.SimpleEntry<>(configManager.getConfigDescriptor(c), c))
-			.filter(e -> e.getKey().getItems().stream().anyMatch(cid -> !cid.getItem().hidden()))
-			.forEach(e ->
-			{
-				ConfigDescriptor cd = e.getKey();
-				Config config = e.getValue();
-				String groupName = cd.getGroup().name();
 
-				if (children.containsKey(groupName))
+		pluginManager.getPlugins().stream()
+				.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
+				.forEach(plugin ->
 				{
-					newChildren.put(groupName, children.get(groupName));
-					return;
-				}
+					final Config pluginConfigProxy = pluginManager.getPluginConfigProxy(plugin);
+					final String pluginName = plugin.getClass().getAnnotation(PluginDescriptor.class).name();
 
-				JPanel groupPanel = new JPanel();
-				groupPanel.setLayout(new BorderLayout());
-				JButton viewGroupItemsButton = new JButton(groupName);
-				viewGroupItemsButton.addActionListener(ae -> openGroupConfigPanel(config, cd, configManager));
-				groupPanel.add(viewGroupItemsButton);
-				newChildren.put(groupName, groupPanel);
-			});
+					final JPanel groupPanel = buildGroupPanel();
+					groupPanel.add(new JLabel(pluginName), BorderLayout.CENTER);
+
+					final JPanel buttonPanel = new JPanel();
+					buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
+					groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+
+					final JButton editConfigButton = buildConfigButton(pluginConfigProxy);
+					buttonPanel.add(editConfigButton);
+
+					final JButton toggleButton = buildToggleButton(plugin);
+					buttonPanel.add(toggleButton);
+
+					newChildren.put(pluginName, groupPanel);
+				});
+
+
+		final JPanel groupPanel = buildGroupPanel();
+		groupPanel.add(new JLabel("RuneLite"), BorderLayout.CENTER);
+
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 2, 3, 0));
+		groupPanel.add(buttonPanel, BorderLayout.LINE_END);
+
+		final JButton editConfigButton = buildConfigButton(runeLiteConfig);
+		buttonPanel.add(editConfigButton);
+
+		final JButton toggleButton = buildToggleButton(null);
+		buttonPanel.add(toggleButton);
+		newChildren.put("RuneLite", groupPanel);
 
 		children = newChildren;
 		openConfigList();
+	}
+
+	private JPanel buildGroupPanel()
+	{
+		// Create base panel for the config button and enabled/disabled button
+		final JPanel groupPanel = new JPanel();
+		groupPanel.setLayout(new BorderLayout(3, 0));
+		return groupPanel;
+	}
+
+	private JButton buildConfigButton(Config config)
+	{
+		// Create edit config button and disable it by default
+		final JButton editConfigButton = new JButton(new ImageIcon(CONFIG_ICON));
+		editConfigButton.setPreferredSize(new Dimension(32, 0));
+		editConfigButton.setEnabled(false);
+
+		// If we have configuration proxy enable the button and add edit config listener
+		if (config != null)
+		{
+			final ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
+			editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager));
+			editConfigButton.setEnabled(true);
+			editConfigButton.setToolTipText("Edit plugin configuration");
+		}
+
+		return editConfigButton;
+	}
+
+	private JButton buildToggleButton(Plugin plugin)
+	{
+		// Create enabling/disabling button
+		final JButton toggleButton = new JButton(new ImageIcon(CHECK_ICON));
+		toggleButton.setPreferredSize(new Dimension(32, 0));
+
+		if (plugin == null)
+		{
+			toggleButton.setEnabled(false);
+			return toggleButton;
+		}
+
+		highlightButton(toggleButton, pluginManager.isPluginEnabled(plugin));
+
+		toggleButton.addActionListener(e -> executorService.submit(() ->
+		{
+			final boolean enabled = pluginManager.isPluginEnabled(plugin);
+			pluginManager.setPluginEnabled(plugin, !enabled);
+
+			try
+			{
+				if (enabled)
+				{
+					pluginManager.stopPlugin(plugin);
+				}
+				else
+				{
+					pluginManager.startPlugin(plugin);
+				}
+			}
+			catch (PluginInstantiationException ex)
+			{
+				log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), ex);
+			}
+
+			highlightButton(toggleButton, !enabled);
+		}));
+
+		return toggleButton;
+	}
+
+	private void highlightButton(JButton button, boolean enabled)
+	{
+		button.setIcon(enabled ? new ImageIcon(CHECK_ICON) : new ImageIcon(UNCHECK_ICON));
+		button.setToolTipText(enabled ? "Disable plugin" : "Enable plugin");
 	}
 
 	private void onSearchBarChanged()

@@ -124,6 +124,22 @@ public class PluginManager
 			}));
 	}
 
+	public Config getPluginConfigProxy(Plugin plugin)
+	{
+		final Injector injector = plugin.getInjector();
+
+		for (Key<?> key : injector.getAllBindings().keySet())
+		{
+			Class<?> type = key.getTypeLiteral().getRawType();
+			if (Config.class.isAssignableFrom(type))
+			{
+				return (Config) injector.getInstance(key);
+			}
+		}
+
+		return null;
+	}
+
 	public List<Config> getPluginConfigProxies()
 	{
 		List<Injector> injectors = new ArrayList<>();
@@ -143,6 +159,7 @@ public class PluginManager
 				}
 			}
 		}
+
 		return list;
 	}
 
