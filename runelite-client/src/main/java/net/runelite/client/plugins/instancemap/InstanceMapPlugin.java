@@ -66,6 +66,7 @@ public class InstanceMapPlugin extends Plugin
 			{
 				return;
 			}
+			System.out.println("plugin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.isShiftDown() && !overlay.isMapShown())
 			{
 				overlay.setShowMap(true);

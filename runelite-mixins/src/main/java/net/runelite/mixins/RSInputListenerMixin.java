@@ -28,13 +28,12 @@ package net.runelite.mixins;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSInputListeners;
+import net.runelite.rs.api.RSKeyFocusListener;
 
 import java.awt.event.KeyEvent;
 
-@Mixin(RSInputListeners.class)
-public abstract class RSInputListenerMixin implements RSInputListeners
+@Mixin(RSKeyFocusListener.class)
+public abstract class RSInputListenerMixin implements RSKeyFocusListener
 {
 	@Copy("keyPressed")
 	abstract void rs$keyPressed(KeyEvent e);
@@ -42,7 +41,11 @@ public abstract class RSInputListenerMixin implements RSInputListeners
 	@Replace("keyPressed")
 	public void rl$keyPressed(KeyEvent e)
 	{
-		System.out.println("sup bitch");
+		System.out.println("mixin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
+		if (e.isConsumed())
+		{
+			return;
+		}
 		rs$keyPressed(e);
 	}
 }

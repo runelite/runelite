@@ -31,7 +31,7 @@ import net.runelite.mapping.Import;
 
 import java.awt.event.KeyEvent;
 
-public interface RSInputListeners extends InputListener
+public interface RSKeyFocusListener extends InputListener
 {
 	@Import("keyPressed")
 	void keyPressed(KeyEvent var1);
