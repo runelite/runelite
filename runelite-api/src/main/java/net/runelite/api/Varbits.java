@@ -234,8 +234,13 @@ public enum Varbits
 	 * true if run is enabled
 	 * completely accurately reflect the run setting, so it stays false even if running through ctrl click
 	 */
-	RUNNING(173, 0, 0);
-	
+	RUNNING(173, 0, 0),
+
+	/**
+	 * the currently active spellbook, 0 = standard, 1 = ancients, 2 = lunar, 3 = arceuus
+	 */
+	SPELLBOOK(4070, 439, 0, 1);
+
 	/**
 	 * varbit id
 	 */
