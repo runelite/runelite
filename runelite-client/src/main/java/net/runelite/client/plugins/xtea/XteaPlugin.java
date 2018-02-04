@@ -39,7 +39,7 @@ import net.runelite.http.api.xtea.XteaClient;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Xtea plugin"
+	name = "Xtea"
 )
 @Slf4j
 public class XteaPlugin extends Plugin

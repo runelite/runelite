@@ -38,7 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Experience drop plugin"
+	name = "Experience drop"
 )
 public class ExperienceDropPlugin extends Plugin
 {

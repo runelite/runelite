@@ -39,7 +39,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clue scroll plugin"
+	name = "Clue scroll"
 )
 public class ClueScrollPlugin extends Plugin
 {

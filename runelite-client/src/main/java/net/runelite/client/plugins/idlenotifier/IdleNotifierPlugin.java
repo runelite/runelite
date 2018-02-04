@@ -110,7 +110,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-	name = "Idle notifier plugin"
+	name = "Idle notifier"
 )
 public class IdleNotifierPlugin extends Plugin
 {

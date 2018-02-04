@@ -42,7 +42,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Nightmare Zone Plugin"
+	name = "Nightmare Zone"
 )
 public class NightmareZonePlugin extends Plugin
 {

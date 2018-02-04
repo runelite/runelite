@@ -59,7 +59,7 @@ import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter plugin"
+	name = "Hunter"
 )
 public class HunterPlugin extends Plugin
 {

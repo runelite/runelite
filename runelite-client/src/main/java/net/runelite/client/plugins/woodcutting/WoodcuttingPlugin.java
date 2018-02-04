@@ -41,7 +41,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Woodcutting plugin"
+	name = "Woodcutting"
 )
 public class WoodcuttingPlugin extends Plugin
 {

@@ -35,7 +35,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Diary Progress plugin",
+	name = "Diary Progress",
 	enabledByDefault = false
 )
 public class DiaryProgressPlugin extends Plugin

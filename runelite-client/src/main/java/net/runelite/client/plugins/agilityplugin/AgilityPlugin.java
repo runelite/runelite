@@ -50,7 +50,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Agility plugin"
+	name = "Agility"
 )
 @Slf4j
 public class AgilityPlugin extends Plugin

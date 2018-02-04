@@ -31,7 +31,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Jewellery count plugin"
+	name = "Jewellery count"
 )
 public class JewelleryCountPlugin extends Plugin
 {

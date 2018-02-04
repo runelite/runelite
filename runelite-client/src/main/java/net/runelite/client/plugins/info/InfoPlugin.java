@@ -33,7 +33,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
-	name = "Info panel plugin",
+	name = "Info panel",
 	loadWhenOutdated = true
 )
 public class InfoPlugin extends Plugin

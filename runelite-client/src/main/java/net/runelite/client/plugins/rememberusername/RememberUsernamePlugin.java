@@ -35,7 +35,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Remember username plugin"
+	name = "Remember username"
 )
 public class RememberUsernamePlugin extends Plugin
 {

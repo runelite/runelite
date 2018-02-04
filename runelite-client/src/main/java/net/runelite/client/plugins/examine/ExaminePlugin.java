@@ -65,7 +65,7 @@ import net.runelite.http.api.item.ItemPrice;
  * @author Adam
  */
 @PluginDescriptor(
-	name = "Examine plugin"
+	name = "Examine"
 )
 @Slf4j
 public class ExaminePlugin extends Plugin

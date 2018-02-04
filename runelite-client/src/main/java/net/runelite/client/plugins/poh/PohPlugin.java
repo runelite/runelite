@@ -55,7 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Poh plugin"
+	name = "Poh"
 )
 public class PohPlugin extends Plugin
 {
