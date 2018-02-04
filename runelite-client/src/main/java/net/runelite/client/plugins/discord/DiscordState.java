@@ -41,6 +41,16 @@ public class DiscordState
 	private DiscordPresence lastPresence;
 	private boolean needsFlush;
 
+	void reset()
+	{
+		lastQueue.clear();
+		lastEvent = null;
+		startOfAction = null;
+		lastAction = null;
+		lastPresence = null;
+		needsFlush = false;
+	}
+
 	void flushEvent(DiscordService discordService)
 	{
 		if (lastPresence != null && needsFlush)
