@@ -26,6 +26,7 @@ package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -34,6 +35,8 @@ public class BoostIndicator extends InfoBox
 {
 	private final BoostsConfig config;
 	private final Client client;
+
+	@Getter
 	private final Skill skill;
 
 	public BoostIndicator(Skill skill, BufferedImage image, Client client, BoostsConfig config)

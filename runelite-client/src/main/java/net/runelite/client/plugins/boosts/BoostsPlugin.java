@@ -28,6 +28,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Skill;
@@ -93,35 +94,25 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!config.enabled())
 		{
+			infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
 			return;
 		}
 
 		updateShownSkills(config.enableSkill());
 
-		if (event.getKey().equals("displayIndicators"))
-		{
-			for (BoostIndicator indicator : boostsOverlay.getIndicators())
-			{
-				if (indicator == null)
-				{
-					continue;
-				}
-
-				if (config.displayIndicators())
-				{
-					infoBoxManager.addInfoBox(indicator);
-				}
-				else
-				{
-					infoBoxManager.removeInfoBox(indicator);
-				}
-			}
-		}
+		infoBoxManager.removeIf(t -> t instanceof BoostIndicator
+			&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
