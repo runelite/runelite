@@ -409,6 +409,11 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean check6hrLogout()
 	{
+		if (sixHourWarningTime == null)
+		{
+			return false;
+		}
+
 		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
 		{
 			if (notify6HourLogout)
