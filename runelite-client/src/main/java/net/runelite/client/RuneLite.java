@@ -32,18 +32,18 @@ import com.google.inject.Injector;
 import java.applet.Applet;
 import java.io.File;
 import java.util.Optional;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.discord.DiscordService;
+import net.runelite.client.events.ClientUILoaded;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
@@ -79,9 +79,6 @@ public class RuneLite
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
 	private OverlayRenderer overlayRenderer;
 
 	@Inject
@@ -89,6 +86,9 @@ public class RuneLite
 
 	@Inject
 	private RuneLiteConfig runeliteConfig;
+
+	@Inject
+	private DiscordService discordService;
 
 	Client client;
 	ClientUI gui;
@@ -132,6 +132,9 @@ public class RuneLite
 
 		// Load swing UI
 		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(properties, client)));
+
+		// Initialize Discord service
+		discordService.init();
 
 		// Load default configuration
 		configManager.load();
