@@ -250,7 +250,7 @@ public class OverlayUtil
 			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight() + 40);
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + 40);
 		if (textLocation != null)
 		{
 			renderTextLocation(graphics, textLocation, text, color);
@@ -271,7 +271,7 @@ public class OverlayUtil
 			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
-		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getModelHeight());
+		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getLogicalHeight());
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -292,7 +292,7 @@ public class OverlayUtil
 			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
-		Point imageLocation = actor.getCanvasSpriteLocation(graphics, sprite, actor.getModelHeight());
+		Point imageLocation = actor.getCanvasSpriteLocation(graphics, sprite, actor.getLogicalHeight());
 		if (imageLocation != null)
 		{
 			renderSpriteLocation(graphics, imageLocation, sprite);

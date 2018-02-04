@@ -173,7 +173,7 @@ public class ImplingsOverlay extends Overlay
 			graphics.drawOval(minimapLocation.getX(), minimapLocation.getY(), 5, 5);
 		}
 
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getModelHeight());
+		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());
 		if (textLocation != null)
 		{
 			int x = textLocation.getX();
