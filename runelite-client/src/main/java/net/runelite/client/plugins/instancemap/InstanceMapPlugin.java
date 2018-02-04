@@ -28,6 +28,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.swing.JComponent;
+
+import net.runelite.api.Client;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.config.ConfigManager;
@@ -40,6 +43,11 @@ import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 
 @PluginDescriptor(
 	name = "Instance Map"
@@ -59,6 +67,9 @@ public class InstanceMapPlugin extends Plugin
 	@Inject
 	private MenuManager menuManager;
 
+	@Inject
+	private Client client;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -76,6 +87,46 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(openMapOption);
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
+		client.getCanvas().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.isConsumed() || !overlay.isMapShown())
+				{
+					return;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					overlay.setShowMap(false);
+					openMapOption.setMenuOption("Show");
+				}
+				e.consume();
+				super.keyPressed(e);
+			}
+		});
+		client.getCanvas().addMouseWheelListener(new MouseAdapter() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				if (e.isConsumed() || !overlay.isMapShown())
+				{
+					return;
+				}
+				if (e.isShiftDown())
+				{
+					if (e.getWheelRotation() > 0)
+					{
+						overlay.onDescend();
+					}
+					else if (e.getWheelRotation() < 0)
+					{
+						overlay.onAscend();
+					}
+				}
+				e.consume();
+				super.mouseWheelMoved(e);
+			}
+		});
 	}
 
 	private void removeCustomOptions()
