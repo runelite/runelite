@@ -37,14 +37,28 @@ import net.runelite.client.config.ConfigItem;
 public interface ItemStatConfig extends Config
 {
 	@ConfigItem(
-		keyName = "tooltipMode",
-		name = "Tooltip mode",
-		description = "How to show tooltip values"
+		keyName = "relative",
+		name = "Show Relative",
+		description = "Show relative stat change in tooltip"
 	)
-	default TooltipMode tooltipMode()
-	{
-		return TooltipMode.BOTH;
-	}
+
+	default boolean relative() { return true; }
+
+	@ConfigItem(
+		keyName = "absolute",
+		name = "Show Absolute",
+		description = "Show absolute stat change in tooltip"
+	)
+
+	default boolean absolute() { return true; }
+
+	@ConfigItem(
+		keyName = "theoretical",
+		name = "Show Theoretical",
+		description = "Show theoretical stat change in tooltip"
+	)
+
+	default boolean theoretical() { return false; }
 
 	@ConfigItem(
 		keyName = "colorBetterUncapped",

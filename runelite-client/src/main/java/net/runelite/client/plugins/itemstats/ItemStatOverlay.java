@@ -56,8 +56,7 @@ public class ItemStatOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		TooltipMode tooltipMode = config.tooltipMode();
-		if (tooltipMode == TooltipMode.OFF)
+		if (!config.relative() && ! config.absolute() && !config.theoretical())
 		{
 			return null;
 		}
@@ -74,34 +73,57 @@ public class ItemStatOverlay extends Overlay
 					StatsChanges statsChanges = change.calculate(client);
 					for (StatChange c : statsChanges.getStatChanges())
 					{
-						b.append("<col=");
-						b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
-						b.append(">");
-						if (tooltipMode.isRelative())
-						{
-							b.append(c.getRelative());
-							b.append("/");
-							b.append(c.getTheoretical());
-						}
-						if (tooltipMode == TooltipMode.BOTH)
-						{
-							b.append(" (");
-						}
-						if (tooltipMode.isAbsolute())
-						{
-							b.append(c.getAbsolute());
-						}
-						if (tooltipMode == TooltipMode.BOTH)
-						{
-							b.append(")");
-						}
-						b.append(" ").append(c.getStat().getName());
-						b.append("</br>");
+					    b.append(buildStatChangeString(c));
 					}
 					tooltipManager.add(new Tooltip(b.toString()));
 				}
 			}
 		}
 		return null;
+	}
+
+	private String buildStatChangeString(StatChange c)
+	{
+	 	StringBuilder b = new StringBuilder();
+		b.append("<col=");
+		b.append(Integer.toHexString(Positivity.getColor(config, c.getPositivity()).getRGB() & 0xFFFFFF));
+		b.append(">");
+
+		if(config.absolute() && config.theoretical() && !config.relative())
+		{
+			b.append(c.getAbsolute());
+			b.append(" ").append("(/").append(c.getTheoretical()).append(") ");
+			b.append(" ").append(c.getStat().getName()).append("</br>");
+			return b.toString();
+		}
+
+		if (config.relative())
+		{
+			b.append(c.getRelative());
+		}
+
+		if(config.theoretical())
+		{
+			b.append("/");
+			b.append(c.getTheoretical());
+		}
+
+		if (config.absolute() && (config.relative() || config.theoretical()))
+		{
+			b.append(" (");
+		}
+		if (config.absolute())
+		{
+			b.append(c.getAbsolute());
+		}
+
+		if (config.absolute() && (config.relative() || config.theoretical()))
+		{
+			b.append(")");
+		}
+		b.append(" ").append(c.getStat().getName());
+		b.append("</br>");
+
+		return b.toString();
 	}
 }
