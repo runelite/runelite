@@ -379,7 +379,7 @@ public final class Player extends Actor {
             return null;
          } else {
             var3.calculateBoundsCylinder();
-            super.field1147 = var3.modelHeight;
+            super.logicalHeight = var3.modelHeight;
             Model var4;
             Model[] var5;
             if(!this.isLowDetail && super.graphic != -1 && super.field1135 != -1) {

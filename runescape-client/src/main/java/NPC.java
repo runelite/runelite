@@ -132,7 +132,7 @@ public final class NPC extends Actor {
             return null;
          } else {
             var3.calculateBoundsCylinder();
-            super.field1147 = var3.modelHeight;
+            super.logicalHeight = var3.modelHeight;
             if(super.graphic != -1 && super.field1135 != -1) {
                Model var4 = GrandExchangeEvents.getSpotAnimType(super.graphic).getModel(super.field1135);
                if(var4 != null) {

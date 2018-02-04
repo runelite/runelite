@@ -258,7 +258,8 @@ public abstract class Actor extends Renderable {
    @ObfuscatedGetter(
       intValue = 357012715
    )
-   int field1147;
+   @Export("logicalHeight")
+   int logicalHeight;
    @ObfuscatedName("cg")
    @ObfuscatedGetter(
       intValue = 1677234875
@@ -339,7 +340,7 @@ public abstract class Actor extends Renderable {
       this.field1135 = 0;
       this.field1131 = 0;
       this.npcCycle = 0;
-      this.field1147 = 200;
+      this.logicalHeight = 200;
       this.field1139 = 0;
       this.field1150 = 32;
       this.queueSize = 0;
