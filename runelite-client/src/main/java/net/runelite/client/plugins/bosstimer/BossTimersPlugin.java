@@ -35,7 +35,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boss timers plugin"
+	name = "Boss timers"
 )
 @Slf4j
 public class BossTimersPlugin extends Plugin

@@ -53,7 +53,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Attack indicator plugin"
+	name = "Attack indicator"
 )
 @Slf4j
 public class AttackIndicatorPlugin extends Plugin

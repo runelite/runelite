@@ -73,7 +73,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers plugin"
+	name = "Timers"
 )
 public class TimersPlugin extends Plugin
 {

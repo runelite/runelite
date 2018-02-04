@@ -33,7 +33,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Puzzle solver plugin"
+	name = "Puzzle solver"
 )
 public class PuzzleSolverPlugin extends Plugin
 {

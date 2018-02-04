@@ -52,7 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Rogues' Den plugin"
+	name = "Rogues' Den"
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin

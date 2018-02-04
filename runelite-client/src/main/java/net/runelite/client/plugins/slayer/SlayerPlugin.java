@@ -56,7 +56,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Slayer plugin"
+	name = "Slayer"
 )
 @Slf4j
 public class SlayerPlugin extends Plugin

@@ -36,7 +36,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Special Attack Orb plugin"
+	name = "Special Attack Orb"
 )
 public class SpecOrbPlugin extends Plugin
 {

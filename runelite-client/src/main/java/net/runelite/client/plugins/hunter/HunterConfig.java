@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "hunterplugin",
-	name = "Hunter plugin",
+	name = "Hunter",
 	description = "Configuration for the hunter plugin"
 )
 public interface HunterConfig extends Config

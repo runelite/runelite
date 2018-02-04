@@ -42,7 +42,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Discord plugin"
+	name = "Discord"
 )
 public class DiscordPlugin extends Plugin
 {

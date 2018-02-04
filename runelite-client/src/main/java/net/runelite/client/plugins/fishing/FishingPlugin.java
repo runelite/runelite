@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
-	name = "Fishing plugin"
+	name = "Fishing"
 )
 @Singleton
 public class FishingPlugin extends Plugin
