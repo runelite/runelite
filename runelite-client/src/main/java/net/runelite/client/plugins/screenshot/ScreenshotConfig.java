@@ -69,10 +69,32 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rewards",
+		name = "Screenshot Rewards",
+		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
+		position = 3
+	)
+	default boolean screenshotRewards()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "levels",
+		name = "Screenshot Levels",
+		description = "Configures whether screenshots are taken of level ups",
+		position = 4
+	)
+	default boolean screenshotLevels()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "uploadScreenshot",
 		name = "Upload To Imgur",
 		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
-		position = 3
+		position = 5
 	)
 	default boolean uploadScreenshot()
 	{

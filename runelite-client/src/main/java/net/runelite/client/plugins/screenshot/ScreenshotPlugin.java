@@ -242,6 +242,24 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		switch (TO_GROUP(widget.getId()))
+		{
+			case LEVEL_UP_GROUP_ID:
+				if (!config.screenshotLevels())
+				{
+					return;
+				}
+				break;
+			case QUEST_COMPLETED_GROUP_ID:
+			case CLUE_SCROLL_REWARD_GROUP_ID:
+			case BARROWS_REWARD_GROUP_ID:
+				if (!config.screenshotRewards())
+				{
+					return;
+				}
+				break;
+		}
+
 		String fileName;
 
 		switch (TO_GROUP(widget.getId()))
