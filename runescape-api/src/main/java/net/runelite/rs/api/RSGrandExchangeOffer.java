@@ -43,6 +43,7 @@ public interface RSGrandExchangeOffer
 	@Import("spent")
 	int getSpent();
 
-	@Import("progress")
-	byte getProgress();
+	@Import("state")
+	byte getRSState();
+
 }
