@@ -14,8 +14,8 @@ public class GrandExchangeOffer {
    @Export("indexTrack2")
    static IndexData indexTrack2;
    @ObfuscatedName("b")
-   @Export("progress")
-   byte progress;
+   @Export("state")
+   byte state;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -1660235255
@@ -55,7 +55,7 @@ public class GrandExchangeOffer {
       garbageValue = "0"
    )
    public GrandExchangeOffer(Buffer var1, boolean var2) {
-      this.progress = var1.readByte();
+      this.state = var1.readByte();
       this.itemId = var1.readUnsignedShort();
       this.price = var1.readInt();
       this.totalQuantity = var1.readInt();
@@ -70,7 +70,7 @@ public class GrandExchangeOffer {
    )
    @Export("status")
    public int status() {
-      return this.progress & 7;
+      return this.state & 7;
    }
 
    @ObfuscatedName("p")
@@ -80,7 +80,7 @@ public class GrandExchangeOffer {
    )
    @Export("type")
    public int type() {
-      return (this.progress & 8) == 8?1:0;
+      return (this.state & 8) == 8?1:0;
    }
 
    @ObfuscatedName("a")
@@ -89,8 +89,8 @@ public class GrandExchangeOffer {
       garbageValue = "-908897606"
    )
    void method105(int var1) {
-      this.progress &= -8;
-      this.progress = (byte)(this.progress | var1 & 7);
+      this.state &= -8;
+      this.state = (byte)(this.state | var1 & 7);
    }
 
    @ObfuscatedName("h")
@@ -99,9 +99,9 @@ public class GrandExchangeOffer {
       garbageValue = "-1985438027"
    )
    void method106(int var1) {
-      this.progress &= -9;
+      this.state &= -9;
       if(var1 == 1) {
-         this.progress = (byte)(this.progress | 8);
+         this.state = (byte)(this.state | 8);
       }
 
    }
