@@ -66,6 +66,16 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "drawNonClanMemberNames",
+		name = "Draw non-clan member names",
+		description = "Configures whether or not names of non-clan members should be drawn"
+	)
+	default boolean drawNonClanMemberNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles",
 		description = "Configures whether or not tiles under players with rendered names should be drawn"
