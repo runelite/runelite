@@ -39,6 +39,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -62,7 +63,10 @@ public class XpTrackerPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	ScheduledExecutorService executor;
+	private SkillIconManager skillIconManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
@@ -86,7 +90,7 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(client);
+		xpPanel = new XpPanel(client, skillIconManager);
 		navButton = new NavigationButton(
 			"XP Tracker",
 			ImageIO.read(getClass().getResourceAsStream("xp.png")),

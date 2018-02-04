@@ -29,13 +29,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.WallObject;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,14 +52,18 @@ class MotherlodeRocksOverlay extends Overlay
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
 
+	private final BufferedImage miningIcon;
+
 	@Inject
-	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config)
+	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+
+		miningIcon = iconManager.getSkillImage(Skill.MINING);
 	}
 
 	@Override
@@ -98,11 +105,11 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderVein(Graphics2D graphics, WallObject vein)
 	{
-		Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, vein.getLocalLocation(), plugin.getMineIcon(), 150);
+		Point canvasLoc = Perspective.getCanvasImageLocation(client, graphics, vein.getLocalLocation(), miningIcon, 150);
 
 		if (canvasLoc != null)
 		{
-			graphics.drawImage(plugin.getMineIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
+			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
 		}
 	}
 
