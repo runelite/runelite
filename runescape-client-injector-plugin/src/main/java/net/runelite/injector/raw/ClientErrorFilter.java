@@ -27,16 +27,23 @@ package net.runelite.injector.raw;
 import com.google.common.io.ByteStreams;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
+import net.runelite.asm.attributes.code.instructions.Dup;
+import net.runelite.asm.attributes.code.instructions.GetField;
+import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfNe;
+import net.runelite.asm.attributes.code.instructions.InstanceOf;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
@@ -55,6 +62,7 @@ public class ClientErrorFilter
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientErrorFilter.class);
 
+	public static final Type THROWABLE = new Type("Ljava/lang/Throwable;");
 	public static final String METHOD_TO_INJECT_NAME = "clientErrorFilter$shouldSend";
 
 	private static boolean clientErrorFilter$shouldSend(Throwable throwable)
@@ -125,7 +133,8 @@ public class ClientErrorFilter
 					continue;
 				}
 
-				if (!m.isStatic() || m.getDescriptor().size() < 2
+				if (!m.isStatic()
+						|| m.getDescriptor().size() < 2
 						|| m.getDescriptor().size() > 3
 						|| !m.getDescriptor().getTypeOfArg(0).equals(Type.STRING)
 						|| !m.getDescriptor().getTypeOfArg(1).equals(Type.THROWABLE))
@@ -135,7 +144,81 @@ public class ClientErrorFilter
 
 				Instructions instructions = m.getCode().getInstructions();
 
+				// Find the instanceof in the method in order to establish the ob name for RunException class
+				Type instanceOfType = null;
+
+				for (Instruction i : instructions.getInstructions())
+				{
+					if (i instanceof InstanceOf)
+					{
+						if (instanceOfType != null)
+						{
+							throw new InjectionException("There should only be one instanceof in this method");
+						}
+
+						instanceOfType = ((InstanceOf) i).getType_();
+					}
+				}
+
+				if (instanceOfType == null)
+				{
+					throw new InjectionException("instanceof instruction could not be located");
+				}
+
+				ClassFile runException = inject
+						.getVanilla()
+						.findClass(instanceOfType.getInternalName());
+
+				if (runException == null)
+				{
+					throw new InjectionException("RunException class could not be located from instanceof type");
+				}
+
+				// Find non-static "parent" field of type Throwable
+				List<Field> throwableFields = runException
+						.getFields()
+						.stream()
+						.filter(f -> !f.isStatic())
+						.filter(f -> f.getType().equals(THROWABLE))
+						.collect(Collectors.toList());
+
+				if (throwableFields.size() != 1)
+				{
+					throw new InjectionException("Expected 1 throwable field, found " + throwableFields.size());
+				}
+
+				Field parentThrowable = throwableFields.get(0);
+
+				/*
+					#162
+
+					aload 1
+					dup
+					instanceof ef
+					ifeq L1
+					checkcast ef
+					getfield ef.j : Ljava/lang/Throwable;
+					L1:
+					invokestatic shouldSend
+					ifne L2
+					return
+					L2:
+					original method code
+				 */
+
 				Instruction aload1 = new ALoad(instructions, 1); // load throwable
+
+				Dup dup = new Dup(instructions);
+
+				InstanceOf instanceOf = new InstanceOf(instructions, InstructionType.INSTANCEOf);
+				instanceOf.setType(instanceOfType);
+
+				IfEq ifEq = new IfEq(instructions, InstructionType.IFEQ);
+
+				CheckCast checkCast = new CheckCast(instructions);
+				checkCast.setType(instanceOfType);
+
+				GetField getField = new GetField(instructions, parentThrowable.getPoolField());
 
 				InvokeStatic shouldSend = new InvokeStatic(instructions,
 						new net.runelite.asm.pool.Method(
@@ -145,17 +228,23 @@ public class ClientErrorFilter
 						)
 				);
 
-				Label startLabel = instructions.createLabelFor(instructions.getInstructions().get(0));
-
 				IfNe ifNe = new IfNe(instructions, InstructionType.IFNE);
-				ifNe.setTo(startLabel);
+				ifNe.setTo(instructions.createLabelFor(instructions.getInstructions().get(0)));
 
 				Instruction ret = new VReturn(instructions);
 
 				instructions.addInstruction(0, aload1);
-				instructions.addInstruction(1, shouldSend);
-				instructions.addInstruction(2, ifNe);
-				instructions.addInstruction(3, ret);
+				instructions.addInstruction(1, dup);
+				instructions.addInstruction(2, instanceOf);
+				instructions.addInstruction(3, ifEq);
+				instructions.addInstruction(4, checkCast);
+				instructions.addInstruction(5, getField);
+				instructions.addInstruction(6, shouldSend);
+				instructions.addInstruction(7, ifNe);
+				instructions.addInstruction(8, ret);
+
+				// Cannot call createLabelFor when shouldSend isn't in the instructions list..
+				ifEq.setTo(instructions.createLabelFor(shouldSend));
 
 				hasInjected = true;
 				shouldInjectMethod = true;
