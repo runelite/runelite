@@ -52,26 +52,26 @@ public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 		return onMouseWheelMovedEvents;
 	}
 
-//	@Copy("mouseWheelMoved")
-//	abstract void rs$mouseWheelMoved(MouseWheelEvent var1);
-//
-//	@Replace("mouseWheelMoved")
-//	public void rl$mouseWheelMoved(MouseWheelEvent var1)
-//	{
-//		boolean skip = false;
-//		for (RLMouseAdapter event : onMouseWheelMovedEvents)
-//		{
-//			event.mouseWheelMoved(var1);
-//			if (event.isMouseWheelMovedConsumed())
-//			{
-//				skip = true;
-//			}
-//			event.setMouseWheelMovedConsumed(false);
-//		}
-//		if (skip)
-//		{
-//			return;
-//		}
-//		rs$mouseWheelMoved(var1);
-//	}
+	@Copy("mouseWheelMoved")
+	abstract void rs$mouseWheelMoved(MouseWheelEvent var1);
+
+	@Replace("mouseWheelMoved")
+	public void rl$mouseWheelMoved(MouseWheelEvent var1)
+	{
+		boolean skip = false;
+		for (RLMouseAdapter event : onMouseWheelMovedEvents)
+		{
+			event.mouseWheelMoved(var1);
+			if (event.isMouseWheelMovedConsumed())
+			{
+				skip = true;
+			}
+			event.setMouseWheelMovedConsumed(false);
+		}
+		if (skip)
+		{
+			return;
+		}
+		rs$mouseWheelMoved(var1);
+	}
 }

@@ -58,7 +58,6 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyPressed")
 	public void rl$keyPressed(KeyEvent e)
 	{
-		//System.out.println("Pressed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString() + " " + onKeyEvents);
 		boolean skip = false;
 		for (RLKeyAdapter event : onKeyEvents)
 		{
@@ -69,12 +68,11 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 			}
 			event.setPressConsumed(false);
 		}
-		if (skip) //insert flag here to skip client input
+		if (skip)
 		{
 			return;
 		}
 		rs$keyPressed(e);
-		//System.out.println("Pressed Passed");
 	}
 
 	@Copy("keyTyped")
@@ -83,7 +81,6 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyTyped")
 	public void rl$keyTyped(KeyEvent e)
 	{
-		//System.out.println("Typed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
 		boolean skip = false;
 		for (RLKeyAdapter event : onKeyEvents)
 		{
@@ -94,12 +91,11 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 			}
 			event.setTypeConsumed(false);
 		}
-		if (skip) //insert flag here to skip client input
+		if (skip)
 		{
 			return;
 		}
 		rs$keyTyped(e);
-		//System.out.println("Typed Passed");
 	}
 
 	@Copy("keyReleased")
@@ -108,7 +104,6 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyReleased")
 	public void rl$keyReleased(KeyEvent e)
 	{
-		//System.out.println("Released " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
 		boolean skip = false;
 		for (RLKeyAdapter event : onKeyEvents)
 		{
@@ -119,11 +114,10 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 			}
 			event.setReleasedConsumed(false);
 		}
-		if (skip) //insert flag here to skip client input
+		if (skip)
 		{
 			return;
 		}
 		rs$keyReleased(e);
-		//System.out.println("Released Passed");
 	}
 }

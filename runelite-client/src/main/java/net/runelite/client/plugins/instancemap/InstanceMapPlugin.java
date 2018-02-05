@@ -27,28 +27,26 @@ package net.runelite.client.plugins.instancemap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import javax.inject.Inject;
-
 import net.runelite.api.Client;
 import net.runelite.api.RLKeyAdapter;
 import net.runelite.api.RLMouseAdapter;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
+import javax.inject.Inject;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 
 @PluginDescriptor(
 	name = "Instance Map"
@@ -67,7 +65,6 @@ public class InstanceMapPlugin extends Plugin
 			{
 				return;
 			}
-			//System.out.println("plugin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.isShiftDown() && !overlay.isMapShown())
 			{
 				overlay.setShowMap(true);
@@ -143,7 +140,7 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
 		client.getKeyboard().getOnKeyEvents().add(keyPressedListener);
-		System.out.println(client.getMouseWheelHandler().getOnMouseWheelMovedEvents().toString());
+		client.getMouseWheelHandler().getOnMouseWheelMovedEvents().add(mouseWheelListener);
 		//client.getMouseWheelHandler().getOnMouseWheelMovedEvents().add(mouseWheelListener);
 //		client.getCanvas().addKeyListener(keyPressedListener);
 //		client.getCanvas().addMouseWheelListener(mouseWheelListener);
@@ -156,7 +153,7 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(descendOption);
 		menuManager.removeManagedCustomMenu(ascendOption);
 		client.getKeyboard().getOnKeyEvents().remove(keyPressedListener);
-		//client.getMouseWheelHandler().getOnMouseWheelMovedEvents().remove(mouseWheelListener);
+		client.getMouseWheelHandler().getOnMouseWheelMovedEvents().remove(mouseWheelListener);
 //		client.getCanvas().removeKeyListener(keyPressedListener);
 //		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
 	}
