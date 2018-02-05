@@ -329,7 +329,7 @@ public class AbstractSoundSystem {
    @ObfuscatedName("ar")
    final void method2188(int[] var1, int var2) {
       int var3 = var2;
-      if(BoundingBox3DDrawMode.highMemory) {
+      if(BoundingBox3DDrawMode.audioHighMemory) {
          var3 = var2 << 1;
       }
 
