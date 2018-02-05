@@ -26,26 +26,97 @@
 package net.runelite.mixins;
 
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.rs.api.RSKeyFocusListener;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 @Mixin(RSKeyFocusListener.class)
 public abstract class RSInputListenerMixin implements RSKeyFocusListener
 {
+	@Inject
+	public ArrayList<KeyAdapter> onKeyEvents;
+
+	@Inject
+	@Override
+	public void addOnKeyEvent(KeyAdapter event)
+	{
+		if (onKeyEvents == null)
+		{
+			onKeyEvents = new ArrayList<KeyAdapter>();
+		}
+		this.onKeyEvents.add(event);
+	}
+
+	@Inject
+	@Override
+	public void removeOnKeyEvent(KeyAdapter event)
+	{
+		if (onKeyEvents == null)
+		{
+			onKeyEvents = new ArrayList<KeyAdapter>();
+		}
+		this.onKeyEvents.remove(event);
+	}
+
 	@Copy("keyPressed")
 	abstract void rs$keyPressed(KeyEvent e);
 
 	@Replace("keyPressed")
 	public void rl$keyPressed(KeyEvent e)
 	{
-		System.out.println("mixin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
-		if (e.isConsumed())
+		System.out.println("Pressed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString() + " " + onKeyEvents);
+		for (KeyAdapter event : onKeyEvents)
+		{
+			event.keyPressed(e);
+		}
+		if (false) //insert flag here to skip client input
 		{
 			return;
 		}
 		rs$keyPressed(e);
+		System.out.println("Pressed Passed");
+	}
+
+	@Copy("keyTyped")
+	abstract void rs$keyTyped(KeyEvent e);
+
+	@Replace("keyTyped")
+	public void rl$keyTyped(KeyEvent e)
+	{
+		System.out.println("Typed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
+		for (KeyAdapter event : onKeyEvents)
+		{
+			event.keyTyped(e);
+		}
+		if (false) //insert flag here to skip client input
+		{
+			return;
+		}
+		rs$keyTyped(e);
+		System.out.println("Typed Passed");
+	}
+
+	@Copy("keyReleased")
+	abstract void rs$keyReleased(KeyEvent e);
+
+	@Replace("keyReleased")
+	public void rl$keyReleased(KeyEvent e)
+	{
+		System.out.println("Released " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
+		for (KeyAdapter event : onKeyEvents)
+		{
+			event.keyReleased(e);
+		}
+		if (false) //insert flag here to skip client input
+		{
+			return;
+		}
+		rs$keyReleased(e);
+		System.out.println("Released Passed");
 	}
 }

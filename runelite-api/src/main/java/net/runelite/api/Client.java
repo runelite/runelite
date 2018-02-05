@@ -276,4 +276,6 @@ public interface Client extends GameEngine
 	ClanMember[] getClanMembers();
 
 	boolean isClanMember(String name);
+
+	InputListener getKeyboard();
 }

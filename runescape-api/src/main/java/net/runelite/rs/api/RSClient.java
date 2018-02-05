@@ -451,4 +451,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Construct
 	RSName createName(String name, RSJagexLoginType type);
+
+	@Import("keyboard")
+	RSKeyFocusListener getKeyboard();
 }

@@ -135,8 +135,10 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(openMapOption);
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
-		client.getCanvas().addKeyListener(keyPressedListener);
-		client.getCanvas().addMouseWheelListener(mouseWheelListener);
+		client.getKeyboard().addOnKeyEvent(keyPressedListener);
+//		client.getCanvas().addKeyListener(keyPressedListener);
+//		client.getCanvas().addMouseWheelListener(mouseWheelListener);
+
 	}
 
 	private void removeCustomOptions()
@@ -144,8 +146,9 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(openMapOption);
 		menuManager.removeManagedCustomMenu(descendOption);
 		menuManager.removeManagedCustomMenu(ascendOption);
-		client.getCanvas().removeKeyListener(keyPressedListener);
-		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
+		client.getKeyboard().removeOnKeyEvent(keyPressedListener);
+//		client.getCanvas().removeKeyListener(keyPressedListener);
+//		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
 	}
 
 	@Override

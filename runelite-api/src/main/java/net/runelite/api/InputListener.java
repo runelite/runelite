@@ -26,9 +26,18 @@
 
 package net.runelite.api;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public interface InputListener
 {
+	void addOnKeyEvent(KeyAdapter event);
+
+	void removeOnKeyEvent(KeyAdapter event);
+
 	void keyPressed(KeyEvent var1);
+
+	void keyTyped(KeyEvent var1);
+
+	void keyReleased(KeyEvent var1);
 }
