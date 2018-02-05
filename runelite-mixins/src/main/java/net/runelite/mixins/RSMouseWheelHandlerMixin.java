@@ -24,43 +24,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.api;
+package net.runelite.mixins;
 
-import java.awt.event.KeyAdapter;
+import net.runelite.api.RLMouseAdapter;
+import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
+import net.runelite.rs.api.RSMouseWheelHandler;
+import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 
-public abstract class RLKeyAdapter extends KeyAdapter
+@Mixin(RSMouseWheelHandler.class)
+public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 {
-	private boolean _isPressConsumed = false;
-	private boolean _isTypedConsumed = false;
-	private boolean _isReleasedConsumed = false;
+	@Inject
+	private ArrayList<RLMouseAdapter> onMouseWheelMovedEvents;
 
-	public boolean isPressConsumed()
+	@Override
+	@Inject
+	public ArrayList<RLMouseAdapter> getOnMouseWheelMovedEvents()
 	{
-		return _isPressConsumed;
+		if (onMouseWheelMovedEvents == null)
+		{
+			onMouseWheelMovedEvents = new ArrayList<RLMouseAdapter>();
+		}
+		return onMouseWheelMovedEvents;
 	}
 
-	public boolean isTypedConsumed()
-	{
-		return _isTypedConsumed;
-	}
-
-	public boolean isReleasedConsumed()
-	{
-		return _isReleasedConsumed;
-	}
-
-	public void setPressConsumed(boolean value)
-	{
-		_isPressConsumed = value;
-	}
-
-	public void setTypeConsumed(boolean value)
-	{
-		_isTypedConsumed = value;
-	}
-
-	public void setReleasedConsumed(boolean value)
-	{
-		_isReleasedConsumed = value;
-	}
+//	@Copy("mouseWheelMoved")
+//	abstract void rs$mouseWheelMoved(MouseWheelEvent var1);
+//
+//	@Replace("mouseWheelMoved")
+//	public void rl$mouseWheelMoved(MouseWheelEvent var1)
+//	{
+//		boolean skip = false;
+//		for (RLMouseAdapter event : onMouseWheelMovedEvents)
+//		{
+//			event.mouseWheelMoved(var1);
+//			if (event.isMouseWheelMovedConsumed())
+//			{
+//				skip = true;
+//			}
+//			event.setMouseWheelMovedConsumed(false);
+//		}
+//		if (skip)
+//		{
+//			return;
+//		}
+//		rs$mouseWheelMoved(var1);
+//	}
 }

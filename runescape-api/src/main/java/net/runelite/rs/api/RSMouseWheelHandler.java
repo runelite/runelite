@@ -24,43 +24,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.api;
+package net.runelite.rs.api;
 
-import java.awt.event.KeyAdapter;
+import net.runelite.api.MouseWheelHandler;
+import net.runelite.mapping.Import;
 
-public abstract class RLKeyAdapter extends KeyAdapter
+import java.awt.event.MouseWheelEvent;
+
+public interface RSMouseWheelHandler extends MouseWheelHandler
 {
-	private boolean _isPressConsumed = false;
-	private boolean _isTypedConsumed = false;
-	private boolean _isReleasedConsumed = false;
+	@Import("rotation")
+	@Override
+	int getRotation();
 
-	public boolean isPressConsumed()
-	{
-		return _isPressConsumed;
-	}
+	@Import("useRotation")
+	@Override
+	int useRotation();
 
-	public boolean isTypedConsumed()
-	{
-		return _isTypedConsumed;
-	}
-
-	public boolean isReleasedConsumed()
-	{
-		return _isReleasedConsumed;
-	}
-
-	public void setPressConsumed(boolean value)
-	{
-		_isPressConsumed = value;
-	}
-
-	public void setTypeConsumed(boolean value)
-	{
-		_isTypedConsumed = value;
-	}
-
-	public void setReleasedConsumed(boolean value)
-	{
-		_isReleasedConsumed = value;
-	}
+	@Import("mouseWheelMoved")
+	@Override
+	void mouseWheelMoved(MouseWheelEvent var1);
 }

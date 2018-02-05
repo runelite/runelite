@@ -338,7 +338,11 @@ public class MixinInjector
 			Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
 			if (obMethod == null)
 			{
-				throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
+				obMethod = obCf.findMethod(deobMethodName);
+				if (obMethod == null)
+				{
+					throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
+				}
 			}
 
 			if (method.getDescriptor().size() > obMethod.getDescriptor().size())
@@ -430,7 +434,15 @@ public class MixinInjector
 				ClassFile obCf = inject.getVanilla().findClass(obClassName);
 
 				Method obMethod = obCf.findMethod(obMethodName, obMethodSignature);
-				assert obMethod != null : "obfuscated method " + obMethodName + obMethodSignature + " does not exist";
+				//assert obMethod != null : "obfuscated method " + obMethodName + obMethodSignature + " does not exist";
+				if (obMethod == null)
+				{
+					obMethod = obCf.findMethod(deobMethodName);
+					if (obMethod == null)
+					{
+						throw new InjectionException("Failed to find the ob method " + obMethodName + " for mixin " + mixinCf);
+					}
+				}
 
 				if (method.getDescriptor().size() > obMethod.getDescriptor().size())
 				{

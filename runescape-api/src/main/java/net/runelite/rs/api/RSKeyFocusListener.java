@@ -26,12 +26,12 @@
 
 package net.runelite.rs.api;
 
-import net.runelite.api.InputListener;
+import net.runelite.api.KeyInputListener;
 import net.runelite.mapping.Import;
 
 import java.awt.event.KeyEvent;
 
-public interface RSKeyFocusListener extends InputListener
+public interface RSKeyFocusListener extends KeyInputListener
 {
 	@Import("keyPressed")
 	void keyPressed(KeyEvent var1);

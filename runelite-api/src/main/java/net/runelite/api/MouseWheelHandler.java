@@ -26,16 +26,16 @@
 
 package net.runelite.api;
 
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
-public interface InputListener
+public interface MouseWheelHandler
 {
-	ArrayList<RLKeyAdapter> getOnKeyEvents();
+	ArrayList<RLMouseAdapter> getOnMouseWheelMovedEvents();
 
-	void keyPressed(KeyEvent var1);
+	int getRotation();
 
-	void keyTyped(KeyEvent var1);
+	int useRotation();
 
-	void keyReleased(KeyEvent var1);
+	void mouseWheelMoved(MouseWheelEvent var1);
 }

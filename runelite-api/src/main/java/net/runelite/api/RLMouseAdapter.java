@@ -26,41 +26,19 @@
 
 package net.runelite.api;
 
-import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 
-public abstract class RLKeyAdapter extends KeyAdapter
+public abstract class RLMouseAdapter extends MouseAdapter
 {
-	private boolean _isPressConsumed = false;
-	private boolean _isTypedConsumed = false;
-	private boolean _isReleasedConsumed = false;
+	private boolean _isMouseWheelMovedConsumed = false;
 
-	public boolean isPressConsumed()
+	public boolean isMouseWheelMovedConsumed()
 	{
-		return _isPressConsumed;
+		return _isMouseWheelMovedConsumed;
 	}
 
-	public boolean isTypedConsumed()
+	public void setMouseWheelMovedConsumed(boolean value)
 	{
-		return _isTypedConsumed;
-	}
-
-	public boolean isReleasedConsumed()
-	{
-		return _isReleasedConsumed;
-	}
-
-	public void setPressConsumed(boolean value)
-	{
-		_isPressConsumed = value;
-	}
-
-	public void setTypeConsumed(boolean value)
-	{
-		_isTypedConsumed = value;
-	}
-
-	public void setReleasedConsumed(boolean value)
-	{
-		_isReleasedConsumed = value;
+		_isMouseWheelMovedConsumed = value;
 	}
 }

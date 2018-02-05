@@ -43,7 +43,7 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 
 	@Override
 	@Inject
-	public ArrayList getOnKeyEvents()
+	public ArrayList<RLKeyAdapter> getOnKeyEvents()
 	{
 		if (onKeyEvents == null)
 		{

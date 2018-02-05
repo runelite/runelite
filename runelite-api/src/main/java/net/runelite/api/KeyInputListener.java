@@ -26,15 +26,16 @@
 
 package net.runelite.api;
 
-import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
-public interface RLKeyListener extends KeyListener
+public interface KeyInputListener
 {
-	boolean isPressConsumed();
-	boolean isTypedConsumed();
-	boolean isReleasedConsumed();
+	ArrayList<RLKeyAdapter> getOnKeyEvents();
 
-	void setPressConsumed(boolean value);
-	void setTypeConsumed(boolean value);
-	void setReleasedConsumed(boolean value);
+	void keyPressed(KeyEvent var1);
+
+	void keyTyped(KeyEvent var1);
+
+	void keyReleased(KeyEvent var1);
 }

@@ -31,4 +31,7 @@ public interface RSGameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("mouseWheel")
+	RSMouseWheelHandler getMouseWheelHandler();
 }

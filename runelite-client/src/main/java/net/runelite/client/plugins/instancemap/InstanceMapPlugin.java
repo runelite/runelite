@@ -31,6 +31,7 @@ import javax.inject.Inject;
 
 import net.runelite.api.Client;
 import net.runelite.api.RLKeyAdapter;
+import net.runelite.api.RLMouseAdapter;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.config.ConfigManager;
@@ -84,7 +85,7 @@ public class InstanceMapPlugin extends Plugin
 			super.keyPressed(e);
 		}
 	};
-	private final MouseWheelListener mouseWheelListener = new MouseAdapter()
+	private final RLMouseAdapter mouseWheelListener = new RLMouseAdapter()
 	{
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e)
@@ -99,11 +100,13 @@ public class InstanceMapPlugin extends Plugin
 				{
 					overlay.onDescend();
 					e.consume();
+					setMouseWheelMovedConsumed(true);
 				}
 				else if (e.getWheelRotation() < 0)
 				{
 					overlay.onAscend();
 					e.consume();
+					setMouseWheelMovedConsumed(true);
 				}
 			}
 			super.mouseWheelMoved(e);
@@ -140,6 +143,8 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
 		client.getKeyboard().getOnKeyEvents().add(keyPressedListener);
+		System.out.println(client.getMouseWheelHandler().getOnMouseWheelMovedEvents().toString());
+		//client.getMouseWheelHandler().getOnMouseWheelMovedEvents().add(mouseWheelListener);
 //		client.getCanvas().addKeyListener(keyPressedListener);
 //		client.getCanvas().addMouseWheelListener(mouseWheelListener);
 
@@ -151,6 +156,7 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(descendOption);
 		menuManager.removeManagedCustomMenu(ascendOption);
 		client.getKeyboard().getOnKeyEvents().remove(keyPressedListener);
+		//client.getMouseWheelHandler().getOnMouseWheelMovedEvents().remove(mouseWheelListener);
 //		client.getCanvas().removeKeyListener(keyPressedListener);
 //		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
 	}

@@ -53,6 +53,7 @@ public final class MouseWheelHandler implements class158, MouseWheelListener {
       return var1;
    }
 
+   @Export("mouseWheelMoved")
    public synchronized void mouseWheelMoved(MouseWheelEvent var1) {
       this.rotation += var1.getWheelRotation();
    }
