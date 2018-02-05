@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 
 import net.runelite.api.Client;
+import net.runelite.api.RLKeyAdapter;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.config.ConfigManager;
@@ -43,7 +44,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
@@ -57,7 +57,7 @@ public class InstanceMapPlugin extends Plugin
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
 	private final WidgetMenuOption ascendOption = new WidgetMenuOption("Ascend", "Instance Map", WidgetInfo.WORLD_MAP);
 	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
-	private final KeyAdapter keyPressedListener = new KeyAdapter()
+	private final RLKeyAdapter keyPressedListener = new RLKeyAdapter()
 	{
 		@Override
 		public void keyPressed(KeyEvent e)
@@ -66,18 +66,21 @@ public class InstanceMapPlugin extends Plugin
 			{
 				return;
 			}
-			System.out.println("plugin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
+			//System.out.println("plugin " + e.isConsumed() + " " + e.getKeyCode() + " " + e.getSource());
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.isShiftDown() && !overlay.isMapShown())
 			{
 				overlay.setShowMap(true);
 				openMapOption.setMenuOption("Hide");
+				e.consume();
+				setPressConsumed(true);
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && overlay.isMapShown())
 			{
 				overlay.setShowMap(false);
 				openMapOption.setMenuOption("Show");
+				e.consume();
+				setPressConsumed(true);
 			}
-			e.consume();
 			super.keyPressed(e);
 		}
 	};
@@ -95,13 +98,14 @@ public class InstanceMapPlugin extends Plugin
 				if (e.getWheelRotation() > 0)
 				{
 					overlay.onDescend();
+					e.consume();
 				}
 				else if (e.getWheelRotation() < 0)
 				{
 					overlay.onAscend();
+					e.consume();
 				}
 			}
-			e.consume();
 			super.mouseWheelMoved(e);
 		}
 	};
@@ -135,7 +139,7 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(openMapOption);
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
-		client.getKeyboard().addOnKeyEvent(keyPressedListener);
+		client.getKeyboard().getOnKeyEvents().add(keyPressedListener);
 //		client.getCanvas().addKeyListener(keyPressedListener);
 //		client.getCanvas().addMouseWheelListener(mouseWheelListener);
 
@@ -146,7 +150,7 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(openMapOption);
 		menuManager.removeManagedCustomMenu(descendOption);
 		menuManager.removeManagedCustomMenu(ascendOption);
-		client.getKeyboard().removeOnKeyEvent(keyPressedListener);
+		client.getKeyboard().getOnKeyEvents().remove(keyPressedListener);
 //		client.getCanvas().removeKeyListener(keyPressedListener);
 //		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
 	}

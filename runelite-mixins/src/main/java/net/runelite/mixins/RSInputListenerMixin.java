@@ -25,13 +25,13 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.RLKeyAdapter;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.rs.api.RSKeyFocusListener;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -39,28 +39,17 @@ import java.util.ArrayList;
 public abstract class RSInputListenerMixin implements RSKeyFocusListener
 {
 	@Inject
-	public ArrayList<KeyAdapter> onKeyEvents;
+	private ArrayList<RLKeyAdapter> onKeyEvents;
 
-	@Inject
 	@Override
-	public void addOnKeyEvent(KeyAdapter event)
+	@Inject
+	public ArrayList getOnKeyEvents()
 	{
 		if (onKeyEvents == null)
 		{
-			onKeyEvents = new ArrayList<KeyAdapter>();
+			onKeyEvents = new ArrayList<RLKeyAdapter>();
 		}
-		this.onKeyEvents.add(event);
-	}
-
-	@Inject
-	@Override
-	public void removeOnKeyEvent(KeyAdapter event)
-	{
-		if (onKeyEvents == null)
-		{
-			onKeyEvents = new ArrayList<KeyAdapter>();
-		}
-		this.onKeyEvents.remove(event);
+		return onKeyEvents;
 	}
 
 	@Copy("keyPressed")
@@ -69,17 +58,23 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyPressed")
 	public void rl$keyPressed(KeyEvent e)
 	{
-		System.out.println("Pressed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString() + " " + onKeyEvents);
-		for (KeyAdapter event : onKeyEvents)
+		//System.out.println("Pressed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString() + " " + onKeyEvents);
+		boolean skip = false;
+		for (RLKeyAdapter event : onKeyEvents)
 		{
 			event.keyPressed(e);
+			if (event.isPressConsumed())
+			{
+				skip = true;
+			}
+			event.setPressConsumed(false);
 		}
-		if (false) //insert flag here to skip client input
+		if (skip) //insert flag here to skip client input
 		{
 			return;
 		}
 		rs$keyPressed(e);
-		System.out.println("Pressed Passed");
+		//System.out.println("Pressed Passed");
 	}
 
 	@Copy("keyTyped")
@@ -88,17 +83,23 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyTyped")
 	public void rl$keyTyped(KeyEvent e)
 	{
-		System.out.println("Typed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
-		for (KeyAdapter event : onKeyEvents)
+		//System.out.println("Typed " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
+		boolean skip = false;
+		for (RLKeyAdapter event : onKeyEvents)
 		{
 			event.keyTyped(e);
+			if (event.isTypedConsumed())
+			{
+				skip = true;
+			}
+			event.setTypeConsumed(false);
 		}
-		if (false) //insert flag here to skip client input
+		if (skip) //insert flag here to skip client input
 		{
 			return;
 		}
 		rs$keyTyped(e);
-		System.out.println("Typed Passed");
+		//System.out.println("Typed Passed");
 	}
 
 	@Copy("keyReleased")
@@ -107,16 +108,22 @@ public abstract class RSInputListenerMixin implements RSKeyFocusListener
 	@Replace("keyReleased")
 	public void rl$keyReleased(KeyEvent e)
 	{
-		System.out.println("Released " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
-		for (KeyAdapter event : onKeyEvents)
+		//System.out.println("Released " + e.getKeyCode() + " " + e.getKeyChar() + " " + e.toString());
+		boolean skip = false;
+		for (RLKeyAdapter event : onKeyEvents)
 		{
 			event.keyReleased(e);
+			if (event.isReleasedConsumed())
+			{
+				skip = true;
+			}
+			event.setReleasedConsumed(false);
 		}
-		if (false) //insert flag here to skip client input
+		if (skip) //insert flag here to skip client input
 		{
 			return;
 		}
 		rs$keyReleased(e);
-		System.out.println("Released Passed");
+		//System.out.println("Released Passed");
 	}
 }
