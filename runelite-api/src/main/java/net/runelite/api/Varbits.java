@@ -224,6 +224,11 @@ public enum Varbits
 	FARMING_FRUIT_TREE(4772, 529, 8, 15),
 
 	/**
+	 * TODO will have to confirm this
+	 */
+	FARMING_HARDWOOD_TREE(4773, 529, 16, 23),
+
+	/**
 	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell, 0 if no price
 	 */
 	GE_OFFER_PRICE(4398, 1043, 0, 30),
