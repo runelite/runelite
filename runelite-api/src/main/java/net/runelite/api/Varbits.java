@@ -206,6 +206,24 @@ public enum Varbits
 	QUEST_POINTS(101, 0, 31),
 
 	/**
+	 * Farming varbits [WIP]
+	 * no varbits for added compost
+	 * 0 - 3 weed
+	 * 1 - 2 weed
+	 * 2 - 1 weed
+	 * 3 - empty patch
+	 * 15 - willow - just planted
+	 * 24 - maple - just planted
+	 * 35 - yew - just planted
+	 * 48 - magic - just planted
+	 * 60 - magic - healthy full
+	 * 61 - magic - healthy checked
+	 */
+
+	FARMING_TREE(4771, 529, 0, 7),
+	FARMING_FRUIT_TREE(4772, 529, 8, 15),
+
+	/**
 	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell, 0 if no price
 	 */
 	GE_OFFER_PRICE(4398, 1043, 0, 30),
