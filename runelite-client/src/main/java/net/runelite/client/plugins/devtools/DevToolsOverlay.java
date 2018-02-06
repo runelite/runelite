@@ -139,12 +139,12 @@ public class DevToolsOverlay extends Overlay
 		{
 			if (p != local)
 			{
-				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ") (IDX: " + p.getCacheIndex() + ")";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ") (IDX: " + local.getCacheIndex() + ")";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 		renderPlayerWireframe(graphics, local, CYAN);
 	}
@@ -154,7 +154,7 @@ public class DevToolsOverlay extends Overlay
 		List<NPC> npcs = client.getNpcs();
 		for (NPC npc : npcs)
 		{
-			String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ")";
+			String text = npc.getName() + " (ID: " + npc.getId() + ") (A: " + npc.getAnimation() + ") (G: " + npc.getGraphic() + ") (IDX: " + npc.getCacheIndex() + ")";
 			if (npc.getCombatLevel() > 1)
 			{
 				OverlayUtil.renderActorOverlay(graphics, npc, text, YELLOW);
