@@ -655,12 +655,12 @@ public class class114 extends TaskDataNode {
 
             this.field1582 += var2;
             if(this.field1581 == 256 && (this.field1572 & 255) == 0) {
-               if(BoundingBox3DDrawMode.highMemory) {
+               if(BoundingBox3DDrawMode.audioHighMemory) {
                   var2 = method2321(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, this.field1584, this.field1585, 0, var6, var3, this);
                } else {
                   var2 = method2320(((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, this.field1583, 0, var6, var3, this);
                }
-            } else if(BoundingBox3DDrawMode.highMemory) {
+            } else if(BoundingBox3DDrawMode.audioHighMemory) {
                var2 = method2325(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, this.field1584, this.field1585, 0, var6, var3, this, this.field1581, var5);
             } else {
                var2 = method2324(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, this.field1583, 0, var6, var3, this, this.field1581, var5);
@@ -679,14 +679,14 @@ public class class114 extends TaskDataNode {
          }
 
          if(this.field1581 == 256 && (this.field1572 & 255) == 0) {
-            if(BoundingBox3DDrawMode.highMemory) {
+            if(BoundingBox3DDrawMode.audioHighMemory) {
                return method2358(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, 0, var4, var3, this);
             }
 
             return method2383(((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, 0, var4, var3, this);
          }
 
-         if(BoundingBox3DDrawMode.highMemory) {
+         if(BoundingBox3DDrawMode.audioHighMemory) {
             return method2334(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, 0, var4, var3, this, this.field1581, var5);
          }
 
@@ -705,12 +705,12 @@ public class class114 extends TaskDataNode {
 
             this.field1582 += var2;
             if(this.field1581 == -256 && (this.field1572 & 255) == 0) {
-               if(BoundingBox3DDrawMode.highMemory) {
+               if(BoundingBox3DDrawMode.audioHighMemory) {
                   var2 = method2323(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, this.field1584, this.field1585, 0, var6, var3, this);
                } else {
                   var2 = method2322(((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, this.field1583, 0, var6, var3, this);
                }
-            } else if(BoundingBox3DDrawMode.highMemory) {
+            } else if(BoundingBox3DDrawMode.audioHighMemory) {
                var2 = method2384(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, this.field1584, this.field1585, 0, var6, var3, this, this.field1581, var5);
             } else {
                var2 = method2326(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, this.field1583, 0, var6, var3, this, this.field1581, var5);
@@ -729,14 +729,14 @@ public class class114 extends TaskDataNode {
          }
 
          if(this.field1581 == -256 && (this.field1572 & 255) == 0) {
-            if(BoundingBox3DDrawMode.highMemory) {
+            if(BoundingBox3DDrawMode.audioHighMemory) {
                return method2340(0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, 0, var4, var3, this);
             }
 
             return method2314(((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1575, 0, var4, var3, this);
          }
 
-         if(BoundingBox3DDrawMode.highMemory) {
+         if(BoundingBox3DDrawMode.audioHighMemory) {
             return method2359(0, 0, ((RawAudioNode)super.data).audioBuffer, var1, this.field1572, var2, this.field1576, this.field1577, 0, var4, var3, this, this.field1581, var5);
          }
 

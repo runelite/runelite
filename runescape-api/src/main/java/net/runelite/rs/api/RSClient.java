@@ -407,11 +407,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("regionLowMemory")
 	void setRegionLowMemory(boolean lowMemory);
 
-	@Import("highMemory")
-	void setHighMemory(boolean highMemory);
+	@Import("audioHighMemory")
+	void setAudioHighMemory(boolean highMemory);
 
-	@Import("ocLowDetail")
-	void setOcLowDetail(boolean lowDetail);
+	@Import("objectCompositionLowDetail")
+	void setObjectCompositionLowDetail(boolean lowDetail);
 
 	@Construct
 	RSItem createItem();

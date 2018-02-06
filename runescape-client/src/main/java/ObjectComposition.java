@@ -8,8 +8,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ObjectComposition")
 public class ObjectComposition extends CacheableNode {
    @ObfuscatedName("p")
-   @Export("ocLowDetail")
-   public static boolean ocLowDetail;
+   @Export("objectCompositionLowDetail")
+   public static boolean objectCompositionLowDetail;
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "Lik;"
@@ -250,7 +250,7 @@ public class ObjectComposition extends CacheableNode {
    IterableHashTable params;
 
    static {
-      ocLowDetail = false;
+      objectCompositionLowDetail = false;
       objects = new NodeCache(4096);
       field3498 = new NodeCache(500);
       cachedModels = new NodeCache(30);
@@ -349,7 +349,7 @@ public class ObjectComposition extends CacheableNode {
       if(var2 == 1) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !ocLowDetail) {
+            if(this.objectModels != null && !objectCompositionLowDetail) {
                var1.offset += var3 * 3;
             } else {
                this.objectTypes = new int[var3];
@@ -366,7 +366,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 5) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
-            if(this.objectModels != null && !ocLowDetail) {
+            if(this.objectModels != null && !objectCompositionLowDetail) {
                var1.offset += var3 * 2;
             } else {
                this.objectTypes = null;

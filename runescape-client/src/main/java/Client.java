@@ -6194,7 +6194,7 @@ public final class Client extends GameEngine implements class277 {
 
          try {
             AbstractSoundSystem var3 = DecorativeObject.soundTaskDataProvider.taskData();
-            var3.samples = new int[(BoundingBox3DDrawMode.highMemory?2:1) * 256];
+            var3.samples = new int[(BoundingBox3DDrawMode.audioHighMemory ?2:1) * 256];
             var3.field1531 = var2;
             var3.vmethod2190();
             var3.offset = (var2 & -1024) + 1024;
