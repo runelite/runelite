@@ -370,4 +370,10 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		eventBus.post(event);
 	}
+
+	@Inject
+	public String toString()
+	{
+		return String.format("%d:%d", TO_GROUP(getId()), TO_CHILD(getId()));
+	}
 }

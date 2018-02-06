@@ -475,6 +475,12 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSPreferences getPreferences();
 
+	@Import("scriptStack")
+	RSScriptState[] getScriptStack();
+
+	@Import("scriptStackCount")
+	int getScriptStackCount();
+
 	/**
 	 * This is the pitch the user has set the camera to.
 	 * It should be between 128 and (pitchUnlimiter?512:383) JAUs(1).
