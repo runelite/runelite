@@ -26,11 +26,16 @@ package net.runelite.mixins;
 
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSNPC;
 
 @Mixin(RSNPC.class)
 public abstract class RSNPCMixin implements RSNPC
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public int getId()
@@ -50,5 +55,22 @@ public abstract class RSNPCMixin implements RSNPC
 	public int getCombatLevel()
 	{
 		return getComposition().getCombatLevel();
+	}
+
+	@Inject
+	@Override
+	public int getCacheIndex()
+	{
+		RSNPC[] npcs = client.getCachedNPCs();
+
+		for (int i = 0; i < npcs.length; ++i)
+		{
+			RSNPC npc = npcs[i];
+
+			if (npc == this)
+				return i;
+		}
+
+		return -1;
 	}
 }
