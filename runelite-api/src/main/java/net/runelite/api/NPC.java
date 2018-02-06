@@ -34,5 +34,12 @@ public interface NPC extends Actor
 	@Override
 	int getCombatLevel();
 
+	/**
+	 * This returns the index of the NPC in the client cache.
+	 * This cache usually persists throughout the game session and is the preferred
+	 * method for tracking NPCs.
+	 * Additionaly for NPCs this index also persists through respawns.
+	 * @return the cache id of the NPC
+	 */
 	int getCacheIndex();
 }
