@@ -70,7 +70,7 @@ public class FightCaveOverlay extends Overlay
 		BufferedImage prayerImage = getPrayerImage(attack);
 		ImagePanelComponent imagePanelComponent = new ImagePanelComponent();
 		imagePanelComponent.setTitle("Switch!");
-		imagePanelComponent.setImage(prayerImage);
+		imagePanelComponent.getImages().add(prayerImage);
 		return imagePanelComponent.render(graphics, parent);
 	}
 
