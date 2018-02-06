@@ -36,5 +36,6 @@ public class StatChange
 	private Stat stat;
 	private String relative;
 	private String absolute;
+	private String theoretical;
 	private Positivity positivity;
 }
