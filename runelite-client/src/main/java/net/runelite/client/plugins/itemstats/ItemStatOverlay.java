@@ -56,10 +56,11 @@ public class ItemStatOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.relative() && ! config.absolute() && !config.theoretical())
+		if (!config.relative() && !config.absolute() && !config.theoretical())
 		{
 			return null;
 		}
+
 		WidgetItem[] inventory = queryRunner.runQuery(new InventoryWidgetItemQuery());
 		Point mousePos = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
 		for (WidgetItem item : inventory)
