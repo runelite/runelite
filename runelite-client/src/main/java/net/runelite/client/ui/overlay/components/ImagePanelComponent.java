@@ -25,10 +25,6 @@
 package net.runelite.client.ui.overlay.components;
 
 import com.google.common.base.Strings;
-import lombok.Setter;
-import net.runelite.client.ui.overlay.RenderableEntity;
-
-import javax.annotation.Nullable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -36,6 +32,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class ImagePanelComponent implements RenderableEntity
 {
@@ -54,8 +56,8 @@ public class ImagePanelComponent implements RenderableEntity
 	@Setter
 	private Color backgroundColor = BackgroundComponent.DEFAULT_BACKGROUND_COLOR;
 
-	@Setter
-	private BufferedImage image;
+	@Getter
+	private final List<BufferedImage> images = new ArrayList<>();
 
 	@Setter
 	private Point position = new Point();
@@ -65,18 +67,35 @@ public class ImagePanelComponent implements RenderableEntity
 	{
 		final Dimension dimension = new Dimension();
 		final FontMetrics metrics = graphics.getFontMetrics();
-		int height = TOP_BORDER + (Strings.isNullOrEmpty(title) ? 0 : metrics.getHeight())
-			+ SEPARATOR + image.getHeight() + BOTTOM_BORDER;
-		int width = Math.max(Strings.isNullOrEmpty(title) ? 0 : metrics.stringWidth(title), image.getWidth()) + SIDE_BORDER * 2;
+
+		//Determine max height and width of images
+		int maxImageHeight = 0;
+		int imageWidth = 0;
+		for (final BufferedImage image : images)
+		{
+			if (image.getHeight() > maxImageHeight)
+			{
+				maxImageHeight = image.getHeight();
+			}
+			imageWidth += image.getWidth() + SEPARATOR;
+		}
+
+		int height = TOP_BORDER + (Strings.isNullOrEmpty(title) ? 0 : metrics.getHeight() + SEPARATOR)
+			+ maxImageHeight + BOTTOM_BORDER;
+		int width = Math.max(Strings.isNullOrEmpty(title) ? 0 : metrics.stringWidth(title), imageWidth) + SIDE_BORDER * 2;
 		dimension.setSize(width, height);
 
-		if (dimension.height == 0)
+		if (dimension.height == TOP_BORDER + BOTTOM_BORDER)
 		{
 			return null;
 		}
 
-		// Calculate panel dimensions
-		int y = position.y + TOP_BORDER + metrics.getHeight();
+		int y = position.y + TOP_BORDER;
+		if (!Strings.isNullOrEmpty(title))
+		{
+			// Calculate panel dimensions
+			y += metrics.getHeight();
+		}
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
@@ -95,8 +114,13 @@ public class ImagePanelComponent implements RenderableEntity
 			y += SEPARATOR;
 		}
 
-		// Render image
-		graphics.drawImage(image, position.x + (width - image.getWidth()) / 2, y, null);
+		// Render all images
+		int imageOffsetX = ((width - imageWidth) / 2) - (SEPARATOR / 2);
+		for (final BufferedImage image : images)
+		{
+			graphics.drawImage(image, imageOffsetX + ((width / images.size()) - image.getWidth()) / 2, y, null);
+			imageOffsetX += image.getWidth() + SEPARATOR;
+		}
 
 		return dimension;
 	}
