@@ -34,7 +34,7 @@ public class WidgetNode extends Node {
    public static final void method1074(int var0, boolean var1, int var2) {
       if(var0 >= 8000 && var0 <= 48000) {
          class20.sampleRate = var0;
-         BoundingBox3DDrawMode.highMemory = var1;
+         BoundingBox3DDrawMode.audioHighMemory = var1;
          AbstractSoundSystem.priority = var2;
       } else {
          throw new IllegalArgumentException();

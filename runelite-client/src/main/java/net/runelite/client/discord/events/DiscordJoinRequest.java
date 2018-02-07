@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.client.discord.events;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import lombok.Value;
 
-@Configuration
-@EnableWebSecurity
-@Order(200)
-public class CacheSecurity extends WebSecurityConfigurerAdapter
+/**
+ * Called when another discord user wants to join the game of the logged in user
+ */
+@Value
+public class DiscordJoinRequest
 {
-	@Value("${auth.password}")
-	private String password;
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception
-	{
-		// By default spring security adds headers to not cache anything
-		http.headers().cacheControl().disable();
-		
-		http.csrf().disable();
-		
-		http.httpBasic()
-			.and()
-			.authorizeRequests()
-			.antMatchers("/cache/admin/**")
-			.hasRole("ADMIN");
-	}
+	/**
+	 * The userId for the user that requests to join
+	 */
+	private String userId;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
-	{
-		auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password(password)
-			.roles("ADMIN");
-	}
+	/**
+	 * The username of the user that requests to join
+	 */
+	private String username;
+
+	/**
+	 * The discriminator of the user that requests to join
+	 */
+	private String discriminator;
+
+	/**
+	 * The avatar of the user that requests to join
+	 */
+	private String avatar;
 }

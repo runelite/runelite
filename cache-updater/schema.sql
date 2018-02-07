@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.20-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.16  Distrib 10.2.9-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: localhost
+-- Host: localhost    Database: cache
 -- ------------------------------------------------------
--- Server version	10.1.20-MariaDB
+-- Server version       10.2.9-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -44,28 +44,9 @@ DROP TABLE IF EXISTS `cache`;
 CREATE TABLE `cache` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `revision` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `revision_date` (`revision`,`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cache_index`
---
-
-DROP TABLE IF EXISTS `cache_index`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cache_index` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cache` int(11) NOT NULL,
-  `index` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cacheId` (`cache`),
-  KEY `indexId` (`index`),
-  CONSTRAINT `cache_index_ibfk_1` FOREIGN KEY (`cache`) REFERENCES `cache` (`id`),
-  CONSTRAINT `cache_index_ibfk_2` FOREIGN KEY (`index`) REFERENCES `index` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -96,11 +77,13 @@ DROP TABLE IF EXISTS `index`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `index` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cache` int(11) NOT NULL,
   `indexId` int(11) NOT NULL,
   `crc` int(11) NOT NULL,
   `revision` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `indexId` (`indexId`,`revision`,`crc`) USING BTREE
+  UNIQUE KEY `indexId` (`cache`,`indexId`,`revision`,`crc`) USING BTREE,
+  CONSTRAINT `index_ibfk_1` FOREIGN KEY (`cache`) REFERENCES `cache` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,7 +99,7 @@ CREATE TABLE `index_archive` (
   `index` int(11) NOT NULL,
   `archive` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `index` (`index`) USING BTREE,
+  UNIQUE KEY `idx_index_archive` (`index`,`archive`) USING BTREE,
   KEY `archive` (`archive`) USING BTREE,
   CONSTRAINT `index_archive_ibfk_1` FOREIGN KEY (`index`) REFERENCES `index` (`id`),
   CONSTRAINT `index_archive_ibfk_2` FOREIGN KEY (`archive`) REFERENCES `archive` (`id`)
@@ -132,4 +115,4 @@ CREATE TABLE `index_archive` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-24 15:38:31
+-- Dump completed on 2018-02-02 21:55:48

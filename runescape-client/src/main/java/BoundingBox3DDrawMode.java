@@ -21,8 +21,8 @@ public class BoundingBox3DDrawMode {
    @Export("ALWAYS")
    public static final BoundingBox3DDrawMode ALWAYS;
    @ObfuscatedName("a")
-   @Export("highMemory")
-   protected static boolean highMemory;
+   @Export("audioHighMemory")
+   protected static boolean audioHighMemory;
    @ObfuscatedName("aj")
    @ObfuscatedGetter(
       intValue = -1534439537

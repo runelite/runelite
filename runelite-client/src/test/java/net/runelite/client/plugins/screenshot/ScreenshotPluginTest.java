@@ -95,6 +95,8 @@ public class ScreenshotPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 	}
 
 	@Test

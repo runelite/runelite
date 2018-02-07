@@ -90,6 +90,7 @@ public abstract class StatBoost extends SingleEffect
 		}
 		out.setAbsolute(Integer.toString(newValue));
 		out.setRelative(String.format("%+d", delta));
+		out.setTheoretical(String.format("%+d", calcedDelta));
 		return out;
 	}
 

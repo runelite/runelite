@@ -43,6 +43,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private static final Color CYAN = new Color(0, 184, 212);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color PURPLE = new Color(170, 0, 255);
+	private static final Color RED = new Color(255, 0, 0);
+
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
@@ -57,7 +59,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.drawOwnName() && !config.drawClanMemberNames() && !config.drawFriendNames())
+		if (!config.drawOwnName() && !config.drawClanMemberNames()
+			&& !config.drawFriendNames() && !config.drawNonClanMemberNames())
 		{
 			return null;
 		}
@@ -69,7 +72,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 				continue;
 			}
 
-			final String name = player.getName();
+			boolean isClanMember = player.isClanMember();
 
 			if (player == client.getLocalPlayer())
 			{
@@ -78,13 +81,17 @@ public class PlayerIndicatorsOverlay extends Overlay
 					renderPlayerOverlay(graphics, player, CYAN);
 				}
 			}
-			else if (config.drawFriendNames() && client.isFriended(name, false))
+			else if (config.drawFriendNames() && player.isFriend())
 			{
 				renderPlayerOverlay(graphics, player, GREEN);
 			}
-			else if (config.drawClanMemberNames() && client.isClanMember(name))
+			else if (config.drawClanMemberNames() && isClanMember)
 			{
 				renderPlayerOverlay(graphics, player, PURPLE);
+			}
+			else if (config.drawNonClanMemberNames() && !isClanMember)
+			{
+				renderPlayerOverlay(graphics, player, RED);
 			}
 		}
 
@@ -104,7 +111,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 		final String name = actor.getName().replace('\u00A0', ' ');
 		net.runelite.api.Point textLocation = actor
-			.getCanvasTextLocation(graphics, name, actor.getModelHeight() + 40);
+			.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
 
 		if (textLocation != null)
 		{

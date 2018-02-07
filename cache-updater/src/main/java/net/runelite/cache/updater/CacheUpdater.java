@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.cache.updater;
 
 import io.minio.MinioClient;
 import io.minio.errors.InvalidEndpointException;
@@ -37,29 +37,29 @@ import net.runelite.cache.client.CacheClient;
 import net.runelite.cache.client.IndexInfo;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.updater.beans.CacheEntry;
+import net.runelite.cache.updater.beans.IndexEntry;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.service.cache.beans.CacheEntry;
-import net.runelite.http.service.cache.beans.IndexEntry;
 import net.runelite.protocol.api.login.HandshakeResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
-@RestController
-@RequestMapping("/cache/admin")
-public class CacheUpdater
+@SpringBootApplication
+public class CacheUpdater implements CommandLineRunner
 {
 	private static final Logger logger = LoggerFactory.getLogger(CacheUpdater.class);
 
 	private final Sql2o sql2o;
 	private final MinioClient minioClient;
-	
+
 	@Value("${minio.bucket}")
 	private String minioBucket;
 
@@ -73,8 +73,7 @@ public class CacheUpdater
 		this.minioClient = minioClient;
 	}
 
-	@RequestMapping("/update")
-	public void check() throws IOException, InvalidEndpointException, InvalidPortException, InterruptedException
+	public void update() throws IOException, InvalidEndpointException, InvalidPortException, InterruptedException
 	{
 		int rsVersion = RuneLiteAPI.getRsVersion();
 
@@ -103,7 +102,8 @@ public class CacheUpdater
 
 			if (result != HandshakeResponseType.RESPONSE_OK)
 			{
-				throw new OutOfDateException();
+				logger.warn("Out of date!");
+				return;
 			}
 
 			List<IndexInfo> indexes = client.requestIndexes();
@@ -156,6 +156,18 @@ public class CacheUpdater
 		}
 
 		return false;
+	}
+
+	@Override
+	public void run(String... args) throws Exception
+	{
+		update();
+	}
+
+	public static void main(String[] args)
+	{
+		SpringApplication.run(CacheUpdater.class, args).close();
+		System.exit(0);
 	}
 
 }

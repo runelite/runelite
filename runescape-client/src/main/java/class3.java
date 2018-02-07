@@ -441,7 +441,7 @@ final class class3 implements class0 {
          int var21;
          int var22;
          if(!var0.combatInfoList.isEmpty()) {
-            class47.characterToScreen(var0, var0.field1147 + 15);
+            class47.characterToScreen(var0, var0.logicalHeight + 15);
 
             for(CombatInfoListHolder var9 = (CombatInfoListHolder)var0.combatInfoList.last(); var9 != null; var9 = (CombatInfoListHolder)var0.combatInfoList.previous()) {
                CombatInfo1 var10 = var9.method1810(Client.gameCycle);
@@ -533,7 +533,7 @@ final class class3 implements class0 {
             }
 
             if(var85.skullIcon != -1 || var85.overheadIcon != -1) {
-               class47.characterToScreen(var0, var0.field1147 + 15);
+               class47.characterToScreen(var0, var0.logicalHeight + 15);
                if(Client.screenX > -1) {
                   if(var85.skullIcon != -1) {
                      GrandExchangeOffer.headIconsPk[var85.skullIcon].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - var8);
@@ -548,7 +548,7 @@ final class class3 implements class0 {
             }
 
             if(var1 >= 0 && Client.hintArrowTargetType == 10 && var7[var1] == Client.hintArrowPlayerTargetIdx) {
-               class47.characterToScreen(var0, var0.field1147 + 15);
+               class47.characterToScreen(var0, var0.logicalHeight + 15);
                if(Client.screenX > -1) {
                   GrandExchangeEvent.headIconsHint[1].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - var8);
                }
@@ -560,14 +560,14 @@ final class class3 implements class0 {
             }
 
             if(var86.field3633 >= 0 && var86.field3633 < Player.headIconsPrayer.length) {
-               class47.characterToScreen(var0, var0.field1147 + 15);
+               class47.characterToScreen(var0, var0.logicalHeight + 15);
                if(Client.screenX > -1) {
                   Player.headIconsPrayer[var86.field3633].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 30);
                }
             }
 
             if(Client.hintArrowTargetType == 1 && Client.npcIndices[var1 - var74] == Client.hintArrowNpcTargetIdx && Client.gameCycle % 20 < 10) {
-               class47.characterToScreen(var0, var0.field1147 + 15);
+               class47.characterToScreen(var0, var0.logicalHeight + 15);
                if(Client.screenX > -1) {
                   GrandExchangeEvent.headIconsHint[0].drawAt(var2 + Client.screenX - 12, var3 + Client.screenY - 28);
                }
@@ -575,7 +575,7 @@ final class class3 implements class0 {
          }
 
          if(var0.overhead != null && (var1 >= var74 || !var0.inSequence && (Client.publicChatMode == 4 || !var0.field1103 && (Client.publicChatMode == 0 || Client.publicChatMode == 3 || Client.publicChatMode == 1 && ((Player)var0).isFriend())))) {
-            class47.characterToScreen(var0, var0.field1147);
+            class47.characterToScreen(var0, var0.logicalHeight);
             if(Client.screenX > -1 && Client.overheadTextCount < Client.maxOverheadTexts) {
                Client.overheadTextsOffsetX[Client.overheadTextCount] = ContextMenuRow.fontBold12.getTextWidth(var0.overhead) / 2;
                Client.overheadTextsOffsetY[Client.overheadTextCount] = ContextMenuRow.fontBold12.verticalSpace;
@@ -625,7 +625,7 @@ final class class3 implements class0 {
                if(var87 == null) {
                   var0.hitsplatCycles[var75] = -1;
                } else {
-                  class47.characterToScreen(var0, var0.field1147 / 2);
+                  class47.characterToScreen(var0, var0.logicalHeight / 2);
                   if(Client.screenX > -1) {
                      if(var75 == 1) {
                         Client.screenY -= 20;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.client.discord.events;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+import lombok.Value;
 
-@ResponseStatus(reason = "Out of date")
-public class OutOfDateException extends RuntimeException
+/**
+ * Called when an internal error is caught within the SDK
+ */
+@Value
+public class DiscordErrored
 {
+	/**
+	 * Discord error code.
+	 */
+	private int errorCode;
 
+	/**
+	 * Error message
+	 */
+	private String message;
 }

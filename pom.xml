@@ -114,6 +114,7 @@
 		<module>cache</module>
 		<module>cache-client</module>
 		<module>cache-server</module>
+		<module>cache-updater</module>
 		<module>deobfuscator</module>
 		<module>model-viewer</module>
 		<module>runelite-api</module>

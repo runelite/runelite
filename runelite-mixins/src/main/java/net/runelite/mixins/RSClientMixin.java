@@ -396,8 +396,8 @@ public abstract class RSClientMixin implements RSClient
 	{
 		setLowMemory(lowMemory);
 		setRegionLowMemory(lowMemory);
-		setHighMemory(!lowMemory);
-		setOcLowDetail(lowMemory);
+		setAudioHighMemory(true);
+		setObjectCompositionLowDetail(lowMemory);
 	}
 
 	@Inject

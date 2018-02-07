@@ -217,7 +217,7 @@ public class MouseRecorder implements Runnable {
                      boolean var24 = Client.lowMemory;
                      SoundTask.objects_ref = var22;
                      ObjectComposition.field3496 = var23;
-                     ObjectComposition.ocLowDetail = var24;
+                     ObjectComposition.objectCompositionLowDetail = var24;
                      RunException.method3090(class293.configsIndex, indexModels);
                      GameObject.method3020(class293.configsIndex);
                      IndexData var5 = class293.configsIndex;

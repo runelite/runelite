@@ -22,21 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.cache;
+package net.runelite.cache.updater;
 
 import java.io.IOException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.FileData;
-import net.runelite.http.service.cache.beans.ArchiveEntry;
-import net.runelite.http.service.cache.beans.CacheEntry;
-import net.runelite.http.service.cache.beans.IndexEntry;
+import net.runelite.cache.updater.beans.ArchiveEntry;
+import net.runelite.cache.updater.beans.CacheEntry;
+import net.runelite.cache.updater.beans.IndexEntry;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
 
+@Slf4j
 public class CacheStorage implements Storage
 {
 	private CacheEntry cacheEntry;
@@ -84,6 +86,11 @@ public class CacheStorage implements Storage
 			{
 				for (ArchiveEntry archiveEntry : archives)
 				{
+					if (index.getArchive(archiveEntry.getArchiveId()) != null)
+					{
+						throw new IOException("Duplicate archive " + archiveEntry + " on " + indexEntry);
+					}
+
 					Archive archive = index.addArchive(archiveEntry.getArchiveId());
 					archive.setNameHash(archiveEntry.getNameHash());
 					archive.setCrc(archiveEntry.getCrc());
@@ -101,9 +108,7 @@ public class CacheStorage implements Storage
 	{
 		for (Index index : store.getIndexes())
 		{
-			IndexEntry entry = cacheDao.findOrCreateIndex(con, cacheEntry, index.getId(), index.getCrc(), index.getRevision());
-			// this assumes nothing is associated to the cache yet
-			cacheDao.associateIndexToCache(con, cacheEntry, entry);
+			IndexEntry entry = cacheDao.createIndex(con, cacheEntry, index.getId(), index.getCrc(), index.getRevision());
 
 			for (Archive archive : index.getArchives())
 			{
@@ -120,6 +125,7 @@ public class CacheStorage implements Storage
 						cacheDao.associateFileToArchive(con, archiveEntry, file.getId(), file.getNameHash());
 					}
 				}
+
 				cacheDao.associateArchiveToIndex(con, archiveEntry, entry);
 			}
 		}

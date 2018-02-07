@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemstats;
+package net.runelite.client.discord.events;
 
-import lombok.AllArgsConstructor;
+import lombok.Value;
 
-@AllArgsConstructor
-public enum TooltipMode
+/**
+ * Called when the RPC connection has been established
+ */
+@Value
+public class DiscordReady
 {
-	OFF("Off", 0x0),
-	RELATIVE("Relative", 0x1),
-	ABSOLUTE("Absolute", 0x2),
-	BOTH("Both", 0x3);
-
-	private final String display;
-	private final int value;
-
-	public boolean isRelative()
-	{
-		return (value & 0x01) != 0;
-	}
-
-	public boolean isAbsolute()
-	{
-		return (value & 0x02) != 0;
-	}
-
-	@Override
-	public String toString()
-	{
-		return display;
-	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017-2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,46 +42,29 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import net.runelite.cache.ConfigType;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.IndexType;
-import net.runelite.cache.definitions.ItemDefinition;
-import net.runelite.cache.definitions.NpcDefinition;
-import net.runelite.cache.definitions.ObjectDefinition;
-import net.runelite.cache.definitions.loaders.ItemLoader;
-import net.runelite.cache.definitions.loaders.NpcLoader;
-import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.FSFile;
-import net.runelite.http.api.cache.Cache;
-import net.runelite.http.api.cache.CacheArchive;
-import net.runelite.http.api.cache.CacheIndex;
-import net.runelite.http.service.util.exception.NotFoundException;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.cache.beans.FileEntry;
 import net.runelite.http.service.cache.beans.IndexEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.ResultSetIterable;
 import org.sql2o.Sql2o;
 import org.xmlpull.v1.XmlPullParserException;
 
-@RestController
-@RequestMapping("/cache")
+@Service
+@Slf4j
 public class CacheService
 {
-	private static final Logger logger = LoggerFactory.getLogger(CacheService.class);
-
 	@Autowired
 	@Qualifier("Runelite Cache SQL2O")
 	private Sql2o sql2o;
@@ -130,12 +113,12 @@ public class CacheService
 			| IOException | InvalidKeyException | NoResponseException | XmlPullParserException
 			| ErrorResponseException | InternalException | InvalidArgumentException ex)
 		{
-			logger.warn(null, ex);
+			log.warn(null, ex);
 			return null;
 		}
 	}
 
-	private ArchiveFiles getArchiveFiles(ArchiveEntry archiveEntry) throws IOException
+	public ArchiveFiles getArchiveFiles(ArchiveEntry archiveEntry) throws IOException
 	{
 		CacheDAO cacheDao = new CacheDAO();
 
@@ -169,228 +152,78 @@ public class CacheService
 		}
 	}
 
-	@RequestMapping("/")
-	public List<Cache> listCaches()
+	public List<CacheEntry> listCaches()
 	{
-		List<CacheEntry> caches;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			caches = cacheDao.listCaches(con);
+			return cacheDao.listCaches(con);
 		}
-		return caches.stream()
-			.map(entry -> new Cache(entry.getId(), entry.getRevision(), entry.getDate()))
-			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}")
-	public List<CacheIndex> listIndexes(@PathVariable int cacheId)
+	public CacheEntry findCache(int cacheId)
 	{
-		List<IndexEntry> indexes;
-
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			CacheEntry cacheEntry = cacheDao.findCache(con, cacheId);
-			if (cacheEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			indexes = cacheDao.findIndexesForCache(con, cacheEntry);
+			return cacheDao.findCache(con, cacheId);
 		}
-
-		return indexes.stream()
-			.map(entry -> new CacheIndex(entry.getIndexId(), entry.getRevision()))
-			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}")
-	public List<CacheArchive> listArchives(@PathVariable int cacheId,
-		@PathVariable int indexId)
+	public CacheEntry findMostRecent()
 	{
-		List<ArchiveEntry> archives = new ArrayList<>();
-
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			CacheEntry cacheEntry = cacheDao.findCache(con, cacheId);
-			if (cacheEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			IndexEntry indexEntry = cacheDao.findIndexForCache(con, cacheEntry, indexId);
-			if (indexEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			try (ResultSetIterable<ArchiveEntry> archiveEntries = cacheDao.findArchivesForIndex(con, indexEntry))
-			{
-				Iterables.addAll(archives, archiveEntries);
-			}
+			return cacheDao.findMostRecent(con);
 		}
-
-		return archives.stream()
-			.map(archive -> new CacheArchive(archive.getArchiveId(), archive.getNameHash(), archive.getRevision()))
-			.collect(Collectors.toList());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}")
-	public CacheArchive getCacheArchive(@PathVariable int cacheId,
-		@PathVariable int indexId,
-		@PathVariable int archiveId)
+	public List<IndexEntry> findIndexesForCache(CacheEntry cacheEntry)
 	{
-		ArchiveEntry archiveEntry;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			CacheEntry cacheEntry = cacheDao.findCache(con, cacheId);
-			if (cacheEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			IndexEntry indexEntry = cacheDao.findIndexForCache(con, cacheEntry, indexId);
-			if (indexEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			archiveEntry = cacheDao.findArchiveForIndex(con, indexEntry, archiveId);
+			return cacheDao.findIndexesForCache(con, cacheEntry);
 		}
-
-		return new CacheArchive(archiveEntry.getArchiveId(),
-			archiveEntry.getNameHash(), archiveEntry.getRevision());
 	}
 
-	@RequestMapping("{cacheId}/{indexId}/{archiveId}/data")
-	public byte[] getArchiveData(
-		@PathVariable int cacheId,
-		@PathVariable int indexId,
-		@PathVariable int archiveId
-	)
+	public IndexEntry findIndexForCache(CacheEntry cahceEntry, int indexId)
 	{
-		ArchiveEntry archiveEntry;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-			CacheEntry cacheEntry = cacheDao.findCache(con, cacheId);
-			if (cacheEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			IndexEntry indexEntry = cacheDao.findIndexForCache(con, cacheEntry, indexId);
-			if (indexEntry == null)
-			{
-				throw new NotFoundException();
-			}
-
-			archiveEntry = cacheDao.findArchiveForIndex(con, indexEntry, archiveId);
+			return cacheDao.findIndexForCache(con, cahceEntry, indexId);
 		}
-
-		return getArchive(archiveEntry);
 	}
 
-	@RequestMapping("item/{itemId}")
-	public ItemDefinition getItem(@PathVariable int itemId) throws IOException
+	public List<ArchiveEntry> findArchivesForIndex(IndexEntry indexEntry)
 	{
-		ArchiveEntry archiveEntry;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-
-			CacheEntry cache = cacheDao.findMostRecent(con);
-			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.ITEM.getId());
-			if (archiveEntry == null)
-			{
-				throw new NotFoundException();
-			}
+			ResultSetIterable<ArchiveEntry> archiveEntries = cacheDao.findArchivesForIndex(con, indexEntry);
+			List<ArchiveEntry> archives = new ArrayList<>();
+			Iterables.addAll(archives, archiveEntries);
+			return archives;
 		}
-
-		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
-		if (archiveFiles == null)
-		{
-			throw new NotFoundException();
-		}
-
-		FSFile file = archiveFiles.findFile(itemId);
-		if (file == null)
-		{
-			throw new NotFoundException();
-		}
-
-		ItemDefinition itemdef = new ItemLoader().load(itemId, file.getContents());
-		return itemdef;
 	}
 
-	@RequestMapping("object/{objectId}")
-	public ObjectDefinition getObject(
-		@PathVariable int objectId
-	) throws IOException
+	public ArchiveEntry findArchiveForIndex(IndexEntry indexEntry, int archiveId)
 	{
-		ArchiveEntry archiveEntry;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-
-			CacheEntry cache = cacheDao.findMostRecent(con);
-			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.OBJECT.getId());
-			if (archiveEntry == null)
-			{
-				throw new NotFoundException();
-			}
+			return cacheDao.findArchiveForIndex(con, indexEntry, archiveId);
 		}
-
-		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
-		if (archiveFiles == null)
-		{
-			throw new NotFoundException();
-		}
-
-		FSFile file = archiveFiles.findFile(objectId);
-		if (file == null)
-		{
-			throw new NotFoundException();
-		}
-
-		ObjectDefinition objectdef = new ObjectLoader().load(objectId, file.getContents());
-		return objectdef;
 	}
 
-	@RequestMapping("npc/{npcId}")
-	public NpcDefinition getNpc(
-		@PathVariable int npcId
-	) throws IOException
+	public ArchiveEntry findArchiveForTypeAndName(CacheEntry cache, IndexType index, int nameHash)
 	{
-		ArchiveEntry archiveEntry;
 		try (Connection con = sql2o.open())
 		{
 			CacheDAO cacheDao = new CacheDAO();
-
-			CacheEntry cache = cacheDao.findMostRecent(con);
-			archiveEntry = cacheDao.findArchiveById(con, cache, IndexType.CONFIGS, ConfigType.NPC.getId());
-			if (archiveEntry == null)
-			{
-				throw new NotFoundException();
-			}
+			return cacheDao.findArchiveByName(con, cache, index, nameHash);
 		}
-
-		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
-		if (archiveFiles == null)
-		{
-			throw new NotFoundException();
-		}
-
-		FSFile file = archiveFiles.findFile(npcId);
-		if (file == null)
-		{
-			throw new NotFoundException();
-		}
-
-		NpcDefinition npcdef = new NpcLoader().load(npcId, file.getContents());
-		return npcdef;
 	}
 }

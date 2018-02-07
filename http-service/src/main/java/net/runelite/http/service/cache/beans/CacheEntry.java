@@ -25,88 +25,12 @@
 package net.runelite.http.service.cache.beans;
 
 import java.time.Instant;
-import java.util.Objects;
+import lombok.Data;
 
+@Data
 public class CacheEntry
 {
 	private int id;
 	private int revision;
 	private Instant date;
-
-	@Override
-	public String toString()
-	{
-		return "CacheEntry{" + "id=" + id + ", revision=" + revision + ", date=" + date + '}';
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 23 * hash + this.id;
-		hash = 23 * hash + this.revision;
-		hash = 23 * hash + Objects.hashCode(this.date);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final CacheEntry other = (CacheEntry) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.revision != other.revision)
-		{
-			return false;
-		}
-		if (!Objects.equals(this.date, other.date))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public Instant getDate()
-	{
-		return date;
-	}
-
-	public void setDate(Instant date)
-	{
-		this.date = date;
-	}
 }

@@ -34,8 +34,8 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
       garbageValue = "-1683722552"
    )
    protected void vmethod2190() {
-      this.audioFormat = new AudioFormat((float)class20.sampleRate, 16, BoundingBox3DDrawMode.highMemory?2:1, true, false);
-      this.bytes = new byte[256 << (BoundingBox3DDrawMode.highMemory?2:1)];
+      this.audioFormat = new AudioFormat((float)class20.sampleRate, 16, BoundingBox3DDrawMode.audioHighMemory ?2:1, true, false);
+      this.bytes = new byte[256 << (BoundingBox3DDrawMode.audioHighMemory ?2:1)];
    }
 
    @ObfuscatedName("i")
@@ -46,7 +46,7 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
    @Export("create")
    protected void create(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.audioFormat, var1 << (BoundingBox3DDrawMode.highMemory?2:1));
+         Info var2 = new Info(SourceDataLine.class, this.audioFormat, var1 << (BoundingBox3DDrawMode.audioHighMemory ?2:1));
          this.source = (SourceDataLine)AudioSystem.getLine(var2);
          this.source.open();
          this.source.start();
@@ -74,14 +74,14 @@ public class SourceDataSoundSystem extends AbstractSoundSystem {
    )
    @Export("size")
    protected int size() {
-      return this.size - (this.source.available() >> (BoundingBox3DDrawMode.highMemory?2:1));
+      return this.size - (this.source.available() >> (BoundingBox3DDrawMode.audioHighMemory ?2:1));
    }
 
    @ObfuscatedName("s")
    @Export("write")
    protected void write() {
       int var1 = 256;
-      if(BoundingBox3DDrawMode.highMemory) {
+      if(BoundingBox3DDrawMode.audioHighMemory) {
          var1 <<= 1;
       }
 

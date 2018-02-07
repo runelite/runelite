@@ -32,17 +32,15 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Point;
-import net.runelite.api.Skill;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -56,6 +54,9 @@ public class XpGlobesOverlay extends Overlay
 	private final XpGlobesPlugin plugin;
 	private final XpGlobesConfig config;
 
+	@Inject
+	private SkillIconManager iconManager;
+
 	private static final int DEFAULT_CIRCLE_WIDTH = 40;
 	private static final int DEFAULT_CIRCLE_HEIGHT = 40;
 	private static final int MINIMUM_STEP_WIDTH = DEFAULT_CIRCLE_WIDTH + 10;
@@ -68,8 +69,6 @@ public class XpGlobesOverlay extends Overlay
 	private static final Color DEFAULT_PROGRESS_REMAINDER_ARC_COLOR = Color.BLACK;
 
 	private static final int DEFAULT_START_Y = 10;
-
-	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length - 1];
 
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
@@ -171,7 +170,7 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawSkillImage(Graphics2D graphics, XpGlobe xpGlobe, int x, int y)
 	{
-		BufferedImage skillImage = getSkillImage(xpGlobe);
+		BufferedImage skillImage = iconManager.getSkillImage(xpGlobe.getSkill());
 
 		if (skillImage == null)
 		{
@@ -184,31 +183,6 @@ public class XpGlobesOverlay extends Overlay
 			y + (DEFAULT_CIRCLE_HEIGHT / 2) - (skillImage.getHeight() / 2),
 			null
 		);
-	}
-
-	private BufferedImage getSkillImage(XpGlobe xpGlobe)
-	{
-		int skillIdx = xpGlobe.getSkill().ordinal();
-		BufferedImage skillImage = null;
-
-		if (imgCache[skillIdx] != null)
-		{
-			return imgCache[skillIdx];
-		}
-
-		try
-		{
-			String skillIconPath = "/skill_icons/" + xpGlobe.getSkillName().toLowerCase() + ".png";
-			log.debug("Loading skill icon from {}", skillIconPath);
-			skillImage = ImageIO.read(XpGlobesOverlay.class.getResourceAsStream(skillIconPath));
-			imgCache[skillIdx] = skillImage;
-		}
-		catch (IOException e)
-		{
-			log.debug("Error Loading skill icons {}", e);
-		}
-
-		return skillImage;
 	}
 
 	private void drawTooltipIfMouseover(Graphics2D graphics, java.awt.Point parent, XpGlobe mouseOverSkill, Ellipse2D drawnGlobe)
