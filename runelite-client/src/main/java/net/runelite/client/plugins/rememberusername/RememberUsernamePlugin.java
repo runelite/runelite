@@ -31,6 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -77,6 +78,16 @@ public class RememberUsernamePlugin extends Plugin
 			}
 
 			config.username(client.getUsername());
+		}
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{
+		client.setUsername("");
+		if (config.enabled())
+		{
+			client.setUsername(config.username());
 		}
 	}
 }
