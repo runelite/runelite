@@ -28,6 +28,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Font;
 import com.google.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.swing.BorderFactory;
@@ -179,6 +180,7 @@ public class InfoPanel extends PluginPanel
 	@Subscribe
 	private void onClientUILoaded(ClientUILoaded e)
 	{
+		// Add the title toolbar to the infopanel if the custom chrome is disabled
 		if (!runeliteConfig.enableCustomChrome())
 		{
 			try
@@ -190,7 +192,7 @@ public class InfoPanel extends PluginPanel
 					toolbar.revalidate();
 				});
 			}
-			catch (Exception ex)
+			catch (InterruptedException | InvocationTargetException ex)
 			{
 				throw new RuntimeException(ex);
 			}

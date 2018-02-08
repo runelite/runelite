@@ -40,13 +40,13 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 public class TitleToolbar extends JPanel
 {
-	private static final String DISCORD_INVITE = "https://discord.gg/R4BQ8tU";
-	private static final int titlebarSize = 23;
+	private static final int TITLEBAR_SIZE = 23;
 
 	@Getter
 	private final GroupLayout.SequentialGroup horizontal;
@@ -54,7 +54,7 @@ public class TitleToolbar extends JPanel
 	@Getter
 	private final GroupLayout.ParallelGroup vertical;
 
-	public TitleToolbar()
+	public TitleToolbar(RuneLiteProperties properties)
 	{
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -82,7 +82,7 @@ public class TitleToolbar extends JPanel
 					super.mouseClicked(e);
 					try
 					{
-						Desktop.getDesktop().browse(new URL(DISCORD_INVITE).toURI());
+						Desktop.getDesktop().browse(new URL(properties.getDiscordInvite()).toURI());
 					}
 					catch (IOException | URISyntaxException ex)
 					{
@@ -101,7 +101,7 @@ public class TitleToolbar extends JPanel
 
 	public void addButton(JButton button, Image iconImage, Image invertedIconImage)
 	{
-		final int iconSize = titlebarSize - 6;
+		final int iconSize = TITLEBAR_SIZE - 6;
 		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
 		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
 
@@ -111,8 +111,8 @@ public class TitleToolbar extends JPanel
 		button.setFocusable(false);
 
 		horizontal.addGap(6);
-		horizontal.addComponent(button, 0, titlebarSize, titlebarSize);
-		vertical.addComponent(button, 0, titlebarSize, titlebarSize);
+		horizontal.addComponent(button, 0, TITLEBAR_SIZE, TITLEBAR_SIZE);
+		vertical.addComponent(button, 0, TITLEBAR_SIZE, TITLEBAR_SIZE);
 		revalidate();
 	}
 }

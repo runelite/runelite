@@ -322,7 +322,7 @@ public class ClientUI extends JFrame
 		pluginToolbar = new PluginToolbar(this);
 		container.add(pluginToolbar);
 
-		titleToolbar = new TitleToolbar();
+		titleToolbar = new TitleToolbar(properties);
 
 		add(container);
 	}
