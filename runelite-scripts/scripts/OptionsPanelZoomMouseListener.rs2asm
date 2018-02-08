@@ -34,14 +34,14 @@ LABEL5:
    istore                 2
    load_int               715
    load_int               175
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   ;load_string            "resizableOuterZoomLimit"
+   ;runelite_callback
    isub                  
    istore                 6
    load_int               700
    load_int               195
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   ;load_string            "fixedOuterZoomLimit"
+   ;runelite_callback
    isub                  
    istore                 7
    iload                  2
@@ -50,8 +50,8 @@ LABEL5:
    iload                  5
    idiv                  
    load_int               175
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   ;load_string            "resizableOuterZoomLimit"
+   ;runelite_callback
    iadd                  
    istore                 3
    iload                  2
@@ -60,8 +60,8 @@ LABEL5:
    iload                  5
    idiv                  
    load_int               195
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   ;load_string            "fixedOuterZoomLimit"
+   ;runelite_callback
    iadd                  
    istore                 4
    iload                  4
