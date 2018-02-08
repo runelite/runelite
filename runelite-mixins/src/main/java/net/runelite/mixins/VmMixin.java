@@ -27,12 +27,10 @@ package net.runelite.mixins;
 import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
 import net.runelite.api.Script;
 import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.client.callback.Hooks;
-import net.runelite.rs.api.RSClient;
 
-@Mixin(RSClient.class)
+//@Mixin(RSClient.class)
 public abstract class VmMixin
 {
 	@Copy("execute6500")
