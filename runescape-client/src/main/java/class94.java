@@ -5,40 +5,39 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cq")
+@ObfuscatedName("cu")
 public class class94 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @Export("chatLineMap")
    static final Map chatLineMap;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgs;"
+      signature = "Lgz;"
    )
    @Export("messages")
    static final IterableHashTable messages;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhc;"
+      signature = "Lhk;"
    )
-   static final IterableDualNodeQueue field1401;
-   @ObfuscatedName("s")
+   static final IterableDualNodeQueue field1413;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1636316499
+      intValue = 1439843581
    )
-   static int field1402;
-   @ObfuscatedName("y")
+   static int field1414;
+   @ObfuscatedName("l")
+   static int[] field1417;
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lhs;"
    )
-   @Export("NetCache_responseArchiveBuffer")
-   public static Buffer NetCache_responseArchiveBuffer;
-   @ObfuscatedName("ao")
-   static int[] field1404;
+   static Widget field1418;
 
    static {
       chatLineMap = new HashMap();
       messages = new IterableHashTable(1024);
-      field1401 = new IterableDualNodeQueue();
-      field1402 = 0;
+      field1413 = new IterableDualNodeQueue();
+      field1414 = 0;
    }
 }

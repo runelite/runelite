@@ -4,18 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("cr")
 @Implements("ChatLineBuffer")
 public class ChatLineBuffer {
-   @ObfuscatedName("i")
+   @ObfuscatedName("ek")
+   @ObfuscatedGetter(
+      intValue = -408614819
+   )
+   static int field1440;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "[Lbl;"
+      signature = "[Lbx;"
    )
    @Export("lines")
    MessageNode[] lines;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1969048231
+      intValue = -1747566333
    )
    @Export("length")
    int length;
@@ -24,10 +29,10 @@ public class ChatLineBuffer {
       this.lines = new MessageNode[100];
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbl;",
-      garbageValue = "536400510"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lbx;",
+      garbageValue = "-500012674"
    )
    @Export("addMessage")
    MessageNode addMessage(int var1, String var2, String var3, String var4) {
@@ -55,62 +60,74 @@ public class ChatLineBuffer {
       return var5;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)Lbl;",
-      garbageValue = "76"
+      signature = "(II)Lbx;",
+      garbageValue = "378036039"
    )
    @Export("getMessage")
    MessageNode getMessage(int var1) {
       return var1 >= 0 && var1 < this.length?this.lines[var1]:null;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "-2924"
+      signature = "(I)I",
+      garbageValue = "-1796575714"
    )
    @Export("size")
    int size() {
       return this.length;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("fw")
    @ObfuscatedSignature(
-      signature = "([BB)Ljava/lang/String;",
-      garbageValue = "37"
+      signature = "(Lbe;II)V",
+      garbageValue = "1032425359"
    )
-   public static String method2017(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
-
-      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class292.field3771[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class292.field3771[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class292.field3771[(var6 & 15) << 2 | var7 >>> 6]).append(class292.field3771[var7 & 63]);
-            } else {
-               var3.append(class292.field3771[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class292.field3771[(var5 & 3) << 4]).append("==");
+   static final void method2040(Actor var0, int var1) {
+      if(var0.field1160 > Client.gameCycle) {
+         class173.method3412(var0);
+      } else if(var0.field1149 >= Client.gameCycle) {
+         if(var0.field1149 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || var0.field1140 + 1 > FileRequest.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+            int var2 = var0.field1149 - var0.field1160;
+            int var3 = Client.gameCycle - var0.field1160;
+            int var4 = var0.field1162 * 128 + var0.field1127 * 64;
+            int var5 = var0.field1158 * 128 + var0.field1127 * 64;
+            int var6 = var0.field1157 * 128 + var0.field1127 * 64;
+            int var7 = var0.field1159 * 128 + var0.field1127 * 64;
+            var0.x = (var6 * var3 + var4 * (var2 - var3)) / var2;
+            var0.y = (var3 * var7 + var5 * (var2 - var3)) / var2;
          }
+
+         var0.field1172 = 0;
+         var0.orientation = var0.field1118;
+         var0.angle = var0.orientation;
+      } else {
+         class45.method618(var0);
       }
 
-      String var1 = var3.toString();
-      return var1;
-   }
+      if(var0.x < 128 || var0.y < 128 || var0.x >= 13184 || var0.y >= 13184) {
+         var0.animation = -1;
+         var0.graphic = -1;
+         var0.field1160 = 0;
+         var0.field1149 = 0;
+         var0.x = var0.pathX[0] * 128 + var0.field1127 * 64;
+         var0.y = var0.pathY[0] * 128 + var0.field1127 * 64;
+         var0.method1602();
+      }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)[Lir;",
-      garbageValue = "125"
-   )
-   public static JagexGame[] method2010() {
-      return new JagexGame[]{JagexGame.field3266, JagexGame.field3267, JagexGame.field3269, JagexGame.field3265, JagexGame.field3268, JagexGame.field3272};
+      if(GroundObject.localPlayer == var0 && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
+         var0.animation = -1;
+         var0.graphic = -1;
+         var0.field1160 = 0;
+         var0.field1149 = 0;
+         var0.x = var0.pathX[0] * 128 + var0.field1127 * 64;
+         var0.y = var0.pathY[0] * 128 + var0.field1127 * 64;
+         var0.method1602();
+      }
+
+      class36.method486(var0);
+      Preferences.method1666(var0);
    }
 }

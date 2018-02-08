@@ -4,42 +4,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iu")
+@ObfuscatedName("it")
 @Implements("BuildType")
 public class BuildType {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("RC")
-   public static final BuildType RC;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("WIP")
-   public static final BuildType WIP;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   @Export("LIVE")
-   public static final BuildType LIVE;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Liu;"
+      signature = "Lit;"
+   )
+   @Export("RC")
+   static final BuildType RC;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   @Export("WIP")
+   static final BuildType WIP;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   @Export("LIVE")
+   static final BuildType LIVE;
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lit;"
    )
    @Export("BUILD_LIVE")
-   public static final BuildType BUILD_LIVE;
-   @ObfuscatedName("j")
+   static final BuildType BUILD_LIVE;
+   @ObfuscatedName("i")
    @Export("identifier")
    public final String identifier;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 649607495
+      intValue = 1872728409
    )
    @Export("ordinal")
-   public final int ordinal;
+   final int ordinal;
 
    static {
       RC = new BuildType("LIVE", 0);
@@ -53,70 +53,38 @@ public class BuildType {
       this.ordinal = var2;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lik;I)V",
-      garbageValue = "28837339"
+      signature = "([BILjava/lang/CharSequence;I)I",
+      garbageValue = "-1025439051"
    )
-   public static void method4353(IndexDataBase var0) {
-      class175.varplayer_ref = var0;
-      VarPlayerType.field3351 = class175.varplayer_ref.fileCount(16);
-   }
+   public static int method4487(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
 
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IB)Leq;",
-      garbageValue = "-67"
-   )
-   @Export("getFrames")
-   static Frames getFrames(int var0) {
-      Frames var1 = (Frames)Sequence.skeletons.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         IndexDataBase var3 = Sequence.skel_ref;
-         IndexDataBase var4 = Sequence.skin_ref;
-         boolean var5 = true;
-         int[] var6 = var3.getChilds(var0);
-
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.getChild(var0, var6[var7]);
-            if(var8 == null) {
-               var5 = false;
-            } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.getChild(var9, 0);
-               if(var10 == null) {
-                  var5 = false;
-               }
-            }
-         }
-
-         Frames var2;
-         if(!var5) {
-            var2 = null;
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & '?');
          } else {
-            try {
-               var2 = new Frames(var3, var4, var0, false);
-            } catch (Exception var12) {
-               var2 = null;
-            }
+            var0[var4++] = (byte)(224 | var6 >> '\f');
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & '?');
          }
-
-         if(var2 != null) {
-            Sequence.skeletons.put(var2, (long)var0);
-         }
-
-         return var2;
       }
+
+      return var4 - var1;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-241160630"
+      signature = "(Lir;II)Lkh;",
+      garbageValue = "-404771081"
    )
-   static final void method4352(String var0) {
-      class63.method1054(var0 + " is already on your ignore list");
+   public static IndexedSprite method4491(IndexDataBase var0, int var1) {
+      return !class274.method5158(var0, var1)?null:class89.method1909();
    }
 }

@@ -4,40 +4,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("be")
+@ObfuscatedName("bl")
 @Implements("WidgetNode")
 public class WidgetNode extends Node {
-   @ObfuscatedName("p")
+   @ObfuscatedName("qo")
    @ObfuscatedGetter(
-      intValue = 787032163
+      longValue = 8153442694785265883L
+   )
+   static long field766;
+   @ObfuscatedName("fc")
+   @ObfuscatedSignature(
+      signature = "[Lki;"
+   )
+   @Export("mapDots")
+   static SpritePixels[] mapDots;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -947214667
    )
    @Export("id")
    int id;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1393049217
+      intValue = -2076820327
    )
    @Export("owner")
    int owner;
-   @ObfuscatedName("w")
-   boolean field744;
+   @ObfuscatedName("m")
+   boolean field768;
 
    WidgetNode() {
-      this.field744 = false;
+      this.field768 = false;
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IZIB)V",
-      garbageValue = "46"
+      signature = "(ZZI)Lkh;",
+      garbageValue = "767486344"
    )
-   public static final void method1074(int var0, boolean var1, int var2) {
-      if(var0 >= 8000 && var0 <= 48000) {
-         class20.sampleRate = var0;
-         BoundingBox3DDrawMode.audioHighMemory = var1;
-         AbstractSoundSystem.priority = var2;
-      } else {
-         throw new IllegalArgumentException();
+   static IndexedSprite method1062(boolean var0, boolean var1) {
+      return var0?(var1?BaseVarType.field16:class89.field1321):(var1?class85.field1292:Size.field350);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-196869128"
+   )
+   static void method1063(int var0) {
+      ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
+      if(var1 != null) {
+         var1.unlink();
       }
    }
 }

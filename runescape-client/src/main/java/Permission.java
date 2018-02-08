@@ -1,74 +1,75 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ia")
+@ObfuscatedName("ik")
 @Implements("Permission")
 public enum Permission implements MouseWheel {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lia;"
-   )
-   field3253(0, -1, true, false, true),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lia;"
-   )
-   field3248(1, 0, true, true, true),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lia;"
-   )
-   field3257(2, 1, true, true, false),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lik;"
    )
-   field3250(3, 2, false, false, true),
-   @ObfuscatedName("j")
+   field3271(0, -1, true, false, true),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lik;"
    )
-   field3251(4, 3, false, false, true),
-   @ObfuscatedName("a")
+   field3265(1, 0, true, true, true),
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lia;"
+      signature = "Lik;"
    )
-   field3252(5, 10, false, false, true);
+   field3266(2, 1, true, true, false),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3267(3, 2, false, false, true),
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3264(4, 3, false, false, true),
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lik;"
+   )
+   field3268(5, 10, false, false, true);
 
-   @ObfuscatedName("u")
-   @Export("osName")
-   public static String osName;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -2109155543
+   )
+   static int field3274;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1685434527
+      intValue = 698388719
    )
-   final int field3249;
-   @ObfuscatedName("r")
+   final int field3269;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -877669211
+      intValue = -272598109
    )
-   public final int field3254;
-   @ObfuscatedName("m")
-   public final boolean field3255;
-   @ObfuscatedName("h")
-   public final boolean field3256;
+   public final int field3270;
+   @ObfuscatedName("z")
+   public final boolean field3272;
+   @ObfuscatedName("k")
+   public final boolean field3273;
 
    Permission(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-      this.field3249 = var3;
-      this.field3254 = var4;
-      this.field3255 = var6;
-      this.field3256 = var7;
+      this.field3269 = var3;
+      this.field3270 = var4;
+      this.field3272 = var6;
+      this.field3273 = var7;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "8"
+      signature = "(I)I",
+      garbageValue = "744101166"
    )
    public int rsOrdinal() {
-      return this.field3249;
+      return this.field3269;
    }
 }

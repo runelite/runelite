@@ -4,138 +4,138 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("de")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("cr")
+   @ObfuscatedName("qf")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lfu;"
    )
-   @Export("indexSprites")
-   static IndexData indexSprites;
-   @ObfuscatedName("p")
+   @Export("indexStore255")
+   static IndexFile indexStore255;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -50434875
+      intValue = -2105934049
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1698904917
+      intValue = 1329435683
    )
    @Export("x")
    int x;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1757699383
+      intValue = -309325813
    )
    @Export("y")
    int y;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -588276949
+      intValue = 877475327
    )
    @Export("renderLevel")
    int renderLevel;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Leg;"
+      signature = "Lev;"
    )
    @Export("paint")
    SceneTilePaint paint;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ldl;"
+      signature = "Ldy;"
    )
    @Export("overlay")
    SceneTileModel overlay;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Leb;"
+      signature = "Lem;"
    )
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lek;"
+      signature = "Len;"
    )
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "Ldt;"
+      signature = "Ldn;"
    )
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "Ldg;"
+      signature = "Ldm;"
    )
    @Export("itemLayer")
    ItemLayer itemLayer;
-   @ObfuscatedName("o")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1849306135
+      intValue = -345764159
    )
    @Export("entityCount")
    int entityCount;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "[Leo;"
+      signature = "[Lef;"
    )
    @Export("objects")
    GameObject[] objects;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @Export("entityFlags")
    int[] entityFlags;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1249728633
+      intValue = 844857511
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1326835837
+      intValue = -1951036295
    )
    @Export("physicalLevel")
    int physicalLevel;
-   @ObfuscatedName("y")
+   @ObfuscatedName("r")
    @Export("draw")
    boolean draw;
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @Export("visible")
    boolean visible;
-   @ObfuscatedName("l")
+   @ObfuscatedName("u")
    @Export("drawEntities")
    boolean drawEntities;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -378639003
+      intValue = -1767770041
    )
    @Export("wallCullDirection")
    int wallCullDirection;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 531201003
+      intValue = 1908885699
    )
    @Export("wallUncullDirection")
    int wallUncullDirection;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1156876317
+      intValue = 1057753803
    )
    @Export("wallCullOppositeDirection")
    int wallCullOppositeDirection;
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2135894193
+      intValue = -1962025195
    )
    @Export("wallDrawFlags")
    int wallDrawFlags;
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ldd;"
+      signature = "Lde;"
    )
    @Export("bridge")
    Tile bridge;
@@ -149,97 +149,26 @@ public final class Tile extends Node {
       this.y = var3;
    }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
-   )
-   public static void method2654() {
-      class265.field3471.reset();
-      class265.field3480.reset();
-      class265.field3473.reset();
+   @ObfuscatedName("s")
+   public static final void method2712(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            ContextMenuRow.method1876(var0 - 1L);
+            ContextMenuRow.method1876(1L);
+         } else {
+            ContextMenuRow.method1876(var0);
+         }
+
+      }
    }
 
-   @ObfuscatedName("hi")
+   @ObfuscatedName("iy")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1662823757"
+      signature = "(III)Ljava/lang/String;",
+      garbageValue = "-1120847280"
    )
-   static final void method2653(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-         if(Client.lowMemory && var0 != MessageNode.plane) {
-            return;
-         }
-
-         int var7 = 0;
-         boolean var8 = true;
-         boolean var9 = false;
-         boolean var10 = false;
-         if(var1 == 0) {
-            var7 = class48.region.method2895(var0, var2, var3);
-         }
-
-         if(var1 == 1) {
-            var7 = class48.region.method2873(var0, var2, var3);
-         }
-
-         if(var1 == 2) {
-            var7 = class48.region.method2839(var0, var2, var3);
-         }
-
-         if(var1 == 3) {
-            var7 = class48.region.method2840(var0, var2, var3);
-         }
-
-         int var11;
-         if(var7 != 0) {
-            var11 = class48.region.getObjectFlags(var0, var2, var3, var7);
-            int var13 = var7 >> 14 & 32767;
-            int var14 = var11 & 31;
-            int var15 = var11 >> 6 & 3;
-            ObjectComposition var12;
-            if(var1 == 0) {
-               class48.region.removeBoundaryObject(var0, var2, var3);
-               var12 = TextureProvider.getObjectDefinition(var13);
-               if(var12.clipType != 0) {
-                  Client.collisionMaps[var0].removeWall(var2, var3, var14, var15, var12.blocksProjectile);
-               }
-            }
-
-            if(var1 == 1) {
-               class48.region.removeWallDecoration(var0, var2, var3);
-            }
-
-            if(var1 == 2) {
-               class48.region.method2830(var0, var2, var3);
-               var12 = TextureProvider.getObjectDefinition(var13);
-               if(var2 + var12.width > 103 || var3 + var12.width > 103 || var2 + var12.length > 103 || var3 + var12.length > 103) {
-                  return;
-               }
-
-               if(var12.clipType != 0) {
-                  Client.collisionMaps[var0].removeObject(var2, var3, var12.width, var12.length, var15, var12.blocksProjectile);
-               }
-            }
-
-            if(var1 == 3) {
-               class48.region.removeFloorDecoration(var0, var2, var3);
-               var12 = TextureProvider.getObjectDefinition(var13);
-               if(var12.clipType == 1) {
-                  Client.collisionMaps[var0].method3253(var2, var3);
-               }
-            }
-         }
-
-         if(var4 >= 0) {
-            var11 = var0;
-            if(var0 < 3 && (class61.tileSettings[1][var2][var3] & 2) == 2) {
-               var11 = var0 + 1;
-            }
-
-            class36.method504(var0, var11, var2, var3, var4, var5, var6, class48.region, Client.collisionMaps[var0]);
-         }
-      }
-
+   static final String method2711(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?class70.getColTags(16711680):(var2 < -6?class70.getColTags(16723968):(var2 < -3?class70.getColTags(16740352):(var2 < 0?class70.getColTags(16756736):(var2 > 9?class70.getColTags(65280):(var2 > 6?class70.getColTags(4259584):(var2 > 3?class70.getColTags(8453888):(var2 > 0?class70.getColTags(12648192):class70.getColTags(16776960))))))));
    }
 }

@@ -1,60 +1,87 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("n")
 public class class21 {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "20"
-   )
-   public static boolean method168(int var0, int var1) {
-      return (var0 >> var1 + 1 & 1) != 0;
-   }
+   @ObfuscatedName("q")
+   static int[][][] field331;
 
-   @ObfuscatedName("gx")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-359398572"
+      garbageValue = "1400003601"
    )
-   static final void method167() {
-      int[] var0 = class92.playerIndices;
-
-      int var1;
-      for(var1 = 0; var1 < class92.playerIndexesCount; ++var1) {
-         Player var2 = Client.cachedPlayers[var0[var1]];
-         if(var2 != null && var2.overheadTextCyclesRemaining > 0) {
-            --var2.overheadTextCyclesRemaining;
-            if(var2.overheadTextCyclesRemaining == 0) {
-               var2.overhead = null;
-            }
-         }
-      }
-
-      for(var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         int var4 = Client.npcIndices[var1];
-         NPC var3 = Client.cachedNPCs[var4];
-         if(var3 != null && var3.overheadTextCyclesRemaining > 0) {
-            --var3.overheadTextCyclesRemaining;
-            if(var3.overheadTextCyclesRemaining == 0) {
-               var3.overhead = null;
-            }
-         }
-      }
-
+   public static final void method161() {
+      class131.Viewport_containsMouse = false;
+      class131.Viewport_entityCountAtMouse = 0;
    }
 
-   @ObfuscatedName("ji")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lho;B)Lho;",
-      garbageValue = "-29"
+      signature = "(IIIIIIII)Z",
+      garbageValue = "-1879533096"
    )
-   static Widget method169(Widget var0) {
-      Widget var1 = BoundingBox3DDrawMode.method73(var0);
-      if(var1 == null) {
-         var1 = var0.dragParent;
+   static final boolean method162(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7 = class131.Viewport_mouseY + var6;
+      if(var7 < var0 && var7 < var1 && var7 < var2) {
+         return false;
+      } else {
+         var7 = class131.Viewport_mouseY - var6;
+         if(var7 > var0 && var7 > var1 && var7 > var2) {
+            return false;
+         } else {
+            var7 = class131.Viewport_mouseX + var6;
+            if(var7 < var3 && var7 < var4 && var7 < var5) {
+               return false;
+            } else {
+               var7 = class131.Viewport_mouseX - var6;
+               return var7 <= var3 || var7 <= var4 || var7 <= var5;
+            }
+         }
       }
+   }
 
-      return var1;
+   @ObfuscatedName("jz")
+   @ObfuscatedSignature(
+      signature = "(Lhs;I)Z",
+      garbageValue = "-1481520401"
+   )
+   static final boolean method160(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 205) {
+         Client.field943 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            Client.field1087.method4400(var2, var3 == 1);
+         }
+
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            Client.field1087.method4380(var2, var3 == 1);
+         }
+
+         if(var1 == 324) {
+            Client.field1087.method4381(false);
+         }
+
+         if(var1 == 325) {
+            Client.field1087.method4381(true);
+         }
+
+         if(var1 == 326) {
+            PacketNode var4 = Script.method2025(ClientPacket.field2414, Client.field937.field1454);
+            Client.field1087.method4379(var4.packetBuffer);
+            Client.field937.method2044(var4);
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

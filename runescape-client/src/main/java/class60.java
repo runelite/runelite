@@ -3,61 +3,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bq")
 public final class class60 {
-   @ObfuscatedName("oz")
-   @ObfuscatedGetter(
-      intValue = 1097629993
-   )
-   static int field681;
-   @ObfuscatedName("gx")
-   @ObfuscatedGetter(
-      intValue = 1395462501
-   )
-   @Export("cameraZ")
-   static int cameraZ;
-
    @ObfuscatedName("w")
+   public static int[] field708;
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1141511745"
+      signature = "Lir;"
    )
-   public static void method1016() {
-      while(true) {
-         Deque var1 = IndexStoreActionHandler.IndexStoreActionHandler_requestQueue;
-         FileSystem var0;
-         synchronized(IndexStoreActionHandler.IndexStoreActionHandler_requestQueue) {
-            var0 = (FileSystem)IndexStoreActionHandler.IndexStoreActionHandler_responseQueue.popFront();
+   @Export("widgetIndex")
+   public static IndexDataBase widgetIndex;
+   @ObfuscatedName("br")
+   @ObfuscatedSignature(
+      signature = "Lit;"
+   )
+   static BuildType field706;
+   @ObfuscatedName("im")
+   @ObfuscatedGetter(
+      intValue = -1957103251
+   )
+   @Export("plane")
+   static int plane;
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Ljg;",
+      garbageValue = "671454457"
+   )
+   public static Enum method983(int var0) {
+      Enum var1 = (Enum)Enum.EnumDefinition_cached.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Enum.EnumDefinition_indexCache.getConfigData(8, var0);
+         var1 = new Enum();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
 
-         if(var0 == null) {
-            return;
-         }
-
-         var0.data.load(var0.index, (int)var0.hash, var0.field3276, false);
+         Enum.EnumDefinition_cached.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("jt")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(Lho;I)V",
-      garbageValue = "-1880361395"
+      signature = "(III)I",
+      garbageValue = "-1539295169"
    )
-   static void method1015(Widget var0) {
-      if(var0.loopCycle == Client.field1024) {
-         Client.field1012[var0.boundsIndex] = true;
+   static final int method982(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = (var0 & 127) * var1 / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 65408) + var1;
       }
-
-   }
-
-   @ObfuscatedName("kj")
-   @ObfuscatedSignature(
-      signature = "(Lho;I)I",
-      garbageValue = "2052374811"
-   )
-   @Export("getWidgetConfig")
-   static int getWidgetConfig(Widget var0) {
-      IntegerNode var1 = (IntegerNode)Client.widgetFlags.get((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.value:var0.config;
    }
 }

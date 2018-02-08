@@ -1,7 +1,5 @@
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.GarbageCollectorMXBean;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,18 +10,16 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ey")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-   @ObfuscatedName("ak")
-   static GarbageCollectorMXBean field2068;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @Export("thread")
    final Thread thread;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @Export("isClosed")
    volatile boolean isClosed;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("requests")
    Queue requests;
 
@@ -34,10 +30,10 @@ public class UrlRequester implements Runnable {
       this.thread.start();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Leu;",
-      garbageValue = "1919548762"
+      signature = "(Ljava/net/URL;B)Lea;",
+      garbageValue = "-2"
    )
    @Export("request")
    public UrlRequest request(URL var1) {
@@ -49,10 +45,10 @@ public class UrlRequester implements Runnable {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2058688735"
+      garbageValue = "1748468462"
    )
    @Export("close")
    public void close() {
@@ -117,61 +113,26 @@ public class UrlRequester implements Runnable {
 
             }
          } catch (Exception var17) {
-            class89.method1900((String)null, var17);
+            GrandExchangeEvent.method78((String)null, var17);
          }
       }
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("fq")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Ldc;",
-      garbageValue = "1446683435"
+      signature = "(B)V",
+      garbageValue = "-125"
    )
-   @Export("getPreferencesFile")
-   public static FileOnDisk getPreferencesFile(String var0, String var1, boolean var2) {
-      File var3 = new File(class291.field3769, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
+   static final void method3145() {
+      if(GrandExchangeEvent.field282) {
+         if(class22.clanMemberManager != null) {
+            class22.clanMemberManager.method5180();
          }
+
+         class179.method3471();
+         GrandExchangeEvent.field282 = false;
       }
 
-      String var4 = "";
-      if(class45.field545 == 33) {
-         var4 = "_rc";
-      } else if(class45.field545 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class299.userHome, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)I",
-      garbageValue = "-368535448"
-   )
-   public static int method3031(String var0) {
-      return var0.length() + 2;
    }
 }

@@ -1,42 +1,27 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kp")
+@ObfuscatedName("kz")
 public class class310 {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 216507099
-   )
-   static int field3894;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -319996635
-   )
-   static int field3891;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 271511809
-   )
-   static int field3898;
    @ObfuscatedName("s")
-   static int[] field3892;
-   @ObfuscatedName("j")
-   @Export("offsetsY")
-   static int[] offsetsY;
-   @ObfuscatedName("a")
-   static int[] field3895;
-   @ObfuscatedName("t")
-   static int[] field3896;
-   @ObfuscatedName("r")
-   static int[] field3897;
-   @ObfuscatedName("h")
-   public static short[][] field3890;
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "Lfq;"
+   @ObfuscatedGetter(
+      intValue = -2096011895
    )
-   @Export("timer")
-   static Timer timer;
+   static int field3909;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1610742871
+   )
+   static int field3908;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1265489691
+   )
+   static int field3910;
+   @ObfuscatedName("t")
+   public static int[] field3911;
+   @ObfuscatedName("z")
+   @Export("spritePixels")
+   public static byte[][] spritePixels;
 }

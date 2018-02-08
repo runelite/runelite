@@ -2,68 +2,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jx")
+@ObfuscatedName("jl")
 public class class262 extends CacheableNode {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   static IndexDataBase field3448;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lgm;"
-   )
-   static NodeCache field3445;
-   @ObfuscatedName("w")
-   char field3446;
    @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1032345299
+   @ObfuscatedSignature(
+      signature = "Lir;"
    )
-   public int field3451;
-   @ObfuscatedName("j")
-   public String field3449;
-   @ObfuscatedName("a")
-   boolean field3450;
+   public static IndexDataBase field3468;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
+   )
+   public static NodeCache field3466;
+   @ObfuscatedName("m")
+   char field3467;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1802213605
+   )
+   public int field3465;
+   @ObfuscatedName("i")
+   public String field3469;
+   @ObfuscatedName("w")
+   boolean field3470;
 
    static {
-      field3445 = new NodeCache(64);
+      field3466 = new NodeCache(64);
    }
 
    class262() {
-      this.field3450 = true;
+      this.field3470 = true;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "12"
+      garbageValue = "7"
    )
-   void method4703() {
+   void method4845() {
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgj;I)V",
-      garbageValue = "1194594322"
+      signature = "(Lgy;I)V",
+      garbageValue = "728607222"
    )
-   void method4690(Buffer var1) {
+   void method4831(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4696(var1, var2);
+         this.method4830(var1, var2);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lgj;II)V",
-      garbageValue = "1896663005"
+      signature = "(Lgy;IB)V",
+      garbageValue = "-82"
    )
-   void method4696(Buffer var1, int var2) {
+   void method4830(Buffer var1, int var2) {
       if(var2 == 1) {
          byte var4 = var1.readByte();
          int var5 = var4 & 255;
@@ -81,23 +81,23 @@ public class class262 extends CacheableNode {
          }
 
          char var3 = (char)var5;
-         this.field3446 = var3;
+         this.field3467 = var3;
       } else if(var2 == 2) {
-         this.field3451 = var1.readInt();
+         this.field3465 = var1.readInt();
       } else if(var2 == 4) {
-         this.field3450 = false;
+         this.field3470 = false;
       } else if(var2 == 5) {
-         this.field3449 = var1.readString();
+         this.field3469 = var1.readString();
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "903518701"
+      garbageValue = "-2145605090"
    )
-   public boolean method4692() {
-      return this.field3446 == 's';
+   public boolean method4833() {
+      return this.field3467 == 's';
    }
 }

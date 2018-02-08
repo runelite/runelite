@@ -2,36 +2,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kx")
+@ObfuscatedName("kl")
 public class class301 {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   static final class301 field3831;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   public static final class301 field3832;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   static final class301 field3830;
    @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1122015583
+   @ObfuscatedSignature(
+      signature = "Lkl;"
    )
-   public final int field3829;
+   public static final class301 field3855;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lkl;"
+   )
+   public static final class301 field3854;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lkl;"
+   )
+   public static final class301 field3853;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -2119556553
+   )
+   public final int field3856;
 
    static {
-      field3831 = new class301(0);
-      field3832 = new class301(1);
-      field3830 = new class301(2);
+      field3855 = new class301(0);
+      field3854 = new class301(1);
+      field3853 = new class301(2);
    }
 
    class301(int var1) {
-      this.field3829 = var1;
+      this.field3856 = var1;
    }
 }

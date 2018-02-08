@@ -6,38 +6,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fx")
+@ObfuscatedName("fu")
 @Implements("IndexFile")
 public final class IndexFile {
-   @ObfuscatedName("p")
+   @ObfuscatedName("ni")
+   @ObfuscatedSignature(
+      signature = "Lkl;"
+   )
+   static class301 field2185;
+   @ObfuscatedName("s")
    @Export("IndexStore_buffer")
    static byte[] IndexStore_buffer;
-   @ObfuscatedName("t")
-   static byte[][][] field2159;
-   @ObfuscatedName("b")
-   @Export("tt")
-   static int[] tt;
-   @ObfuscatedName("i")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 251619923
+      intValue = -1307186807
    )
-   @Export("index")
-   int index;
-   @ObfuscatedName("w")
+   public static int field2192;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 2045136949
+   )
+   @Export("canvasHeight")
+   protected static int canvasHeight;
+   @ObfuscatedName("bv")
+   @Export("sessionToken")
+   static String sessionToken;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Ldb;"
+      signature = "Lcy;"
    )
    @Export("dataFile")
    CacheFile dataFile;
-   @ObfuscatedName("s")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Ldb;"
+      signature = "Lcy;"
    )
    @Export("indexFile")
    CacheFile indexFile;
-   @ObfuscatedName("j")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 719650725
+      intValue = 1580633103
+   )
+   @Export("index")
+   int index;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1166502847
    )
    @Export("maxSize")
    int maxSize;
@@ -47,7 +61,7 @@ public final class IndexFile {
    }
 
    @ObfuscatedSignature(
-      signature = "(ILdb;Ldb;I)V"
+      signature = "(ILcy;Lcy;I)V"
    )
    public IndexFile(int var1, CacheFile var2, CacheFile var3, int var4) {
       this.dataFile = null;
@@ -59,10 +73,10 @@ public final class IndexFile {
       this.maxSize = var4;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "1997751002"
+      garbageValue = "-774740927"
    )
    @Export("read")
    public byte[] read(int var1) {
@@ -87,8 +101,9 @@ public final class IndexFile {
                } else {
                   byte[] var5 = new byte[var3];
                   int var6 = 0;
+                  int var7 = 0;
 
-                  for(int var7 = 0; var6 < var3; ++var7) {
+                  while(var6 < var3) {
                      if(var4 == 0) {
                         var10000 = null;
                         return (byte[])var10000;
@@ -105,21 +120,23 @@ public final class IndexFile {
                      int var10 = (IndexStore_buffer[3] & 255) + ((IndexStore_buffer[2] & 255) << 8);
                      int var11 = ((IndexStore_buffer[5] & 255) << 8) + ((IndexStore_buffer[4] & 255) << 16) + (IndexStore_buffer[6] & 255);
                      int var12 = IndexStore_buffer[7] & 255;
-                     if(var9 != var1 || var10 != var7 || var12 != this.index) {
+                     if(var9 == var1 && var7 == var10 && var12 == this.index) {
+                        if(var11 >= 0 && (long)var11 <= this.dataFile.length() / 520L) {
+                           for(int var13 = 0; var13 < var8; ++var13) {
+                              var5[var6++] = IndexStore_buffer[var13 + 8];
+                           }
+
+                           var4 = var11;
+                           ++var7;
+                           continue;
+                        }
+
                         var10000 = null;
                         return (byte[])var10000;
                      }
 
-                     if(var11 < 0 || (long)var11 > this.dataFile.length() / 520L) {
-                        var10000 = null;
-                        return (byte[])var10000;
-                     }
-
-                     for(int var13 = 0; var13 < var8; ++var13) {
-                        var5[var6++] = IndexStore_buffer[var13 + 8];
-                     }
-
-                     var4 = var11;
+                     var10000 = null;
+                     return (byte[])var10000;
                   }
 
                   byte[] var18 = var5;
@@ -132,10 +149,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I[BII)Z",
-      garbageValue = "-252310823"
+      signature = "(I[BIB)Z",
+      garbageValue = "-28"
    )
    @Export("write")
    public boolean write(int var1, byte[] var2, int var3) {
@@ -154,10 +171,10 @@ public final class IndexFile {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I[BIZI)Z",
-      garbageValue = "67396817"
+      garbageValue = "933004585"
    )
    @Export("write0")
    boolean write0(int var1, byte[] var2, int var3, boolean var4) {
@@ -199,7 +216,7 @@ public final class IndexFile {
 
             while(true) {
                if(var7 < var3) {
-                  label144: {
+                  label143: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
@@ -208,7 +225,7 @@ public final class IndexFile {
                         try {
                            this.dataFile.read(IndexStore_buffer, 0, 8);
                         } catch (EOFException var16) {
-                           break label144;
+                           break label143;
                         }
 
                         var14 = (IndexStore_buffer[1] & 255) + ((IndexStore_buffer[0] & 255) << 8);
@@ -233,7 +250,7 @@ public final class IndexFile {
                            ++var9;
                         }
 
-                        if(var6 == var9) {
+                        if(var9 == var6) {
                            ++var9;
                         }
                      }
@@ -272,5 +289,44 @@ public final class IndexFile {
             return false;
          }
       }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Ljp;",
+      garbageValue = "-1913986945"
+   )
+   public static Varbit method3336(int var0) {
+      Varbit var1 = (Varbit)Varbit.varbits.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = Varbit.varbit_ref.getConfigData(14, var0);
+         var1 = new Varbit();
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
+         }
+
+         Varbit.varbits.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(ILhj;I)I",
+      garbageValue = "-1091030470"
+   )
+   public static int method3329(int var0, class230 var1) {
+      return (var0 << 8) + var1.field2899;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1921783371"
+   )
+   public static int method3332() {
+      return ++MouseInput.mouseIdleTicks - 1;
    }
 }

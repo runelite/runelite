@@ -1,96 +1,85 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("it")
+@ObfuscatedName("ib")
 public enum class239 implements MouseWheel {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   field3232(0, 0),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   field3227(3, 1),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lit;"
-   )
-   field3231(2, 2),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lib;"
    )
-   field3229(1, 3),
-   @ObfuscatedName("j")
+   field3251(2, 0),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lib;"
    )
-   field3226(7, 4),
-   @ObfuscatedName("a")
+   field3245(0, 1),
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lib;"
    )
-   field3228(4, 5),
+   field3246(4, 2),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   field3249(6, 3),
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   field3255(5, 4),
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lib;"
+   )
+   field3244(1, 5),
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lib;"
    )
-   field3234(6, 6),
-   @ObfuscatedName("r")
+   field3250(3, 6),
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "Lit;"
+      signature = "Lib;"
    )
-   field3233(5, 7);
+   field3247(7, 7);
 
-   @ObfuscatedName("b")
-   static int[] field3236;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1540416405
+      intValue = 455437101
    )
-   public final int field3230;
-   @ObfuscatedName("h")
+   public final int field3252;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1624120231
+      intValue = -684433551
    )
-   final int field3235;
+   final int field3248;
 
    class239(int var3, int var4) {
-      this.field3230 = var3;
-      this.field3235 = var4;
+      this.field3252 = var3;
+      this.field3248 = var4;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "8"
+      signature = "(I)I",
+      garbageValue = "744101166"
    )
    public int rsOrdinal() {
-      return this.field3235;
+      return this.field3248;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "(ZZB)I",
-      garbageValue = "-19"
+      signature = "(ZI)V",
+      garbageValue = "-2088060801"
    )
-   public static int method4340(boolean var0, boolean var1) {
-      byte var2 = 0;
-      int var3 = var2 + class249.NetCache_pendingPriorityResponsesCount + class249.NetCache_pendingPriorityWritesCount;
-      return var3;
-   }
+   public static void method4481(boolean var0) {
+      if(var0 != class35.isMembersWorld) {
+         JagexGame.method4492();
+         class35.isMembersWorld = var0;
+      }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "115"
-   )
-   @Export("getItemStackAmountText")
-   static final String getItemStackAmountText(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

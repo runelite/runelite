@@ -1,66 +1,66 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("gu")
 public class class206 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lgr;"
    )
-   class207 field2567;
-   @ObfuscatedName("i")
+   class207 field2590;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgu;"
+      signature = "Lgr;"
    )
-   class207 field2568;
+   class207 field2591;
 
    public class206() {
-      this.field2567 = new class207();
-      this.field2567.field2570 = this.field2567;
-      this.field2567.field2569 = this.field2567;
+      this.field2590 = new class207();
+      this.field2590.field2593 = this.field2590;
+      this.field2590.field2592 = this.field2590;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lgu;)V"
+      signature = "(Lgr;)V"
    )
-   public void method3896(class207 var1) {
-      if(var1.field2569 != null) {
-         var1.method3909();
+   public void method4065(class207 var1) {
+      if(var1.field2592 != null) {
+         var1.method4076();
       }
 
-      var1.field2569 = this.field2567.field2569;
-      var1.field2570 = this.field2567;
-      var1.field2569.field2570 = var1;
-      var1.field2570.field2569 = var1;
+      var1.field2592 = this.field2590.field2592;
+      var1.field2593 = this.field2590;
+      var1.field2592.field2593 = var1;
+      var1.field2593.field2592 = var1;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "()Lgu;"
+      signature = "()Lgr;"
    )
-   public class207 method3895() {
-      class207 var1 = this.field2567.field2570;
-      if(var1 == this.field2567) {
-         this.field2568 = null;
+   public class207 method4069() {
+      class207 var1 = this.field2590.field2593;
+      if(var1 == this.field2590) {
+         this.field2591 = null;
          return null;
       } else {
-         this.field2568 = var1.field2570;
+         this.field2591 = var1.field2593;
          return var1;
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "()Lgu;"
+      signature = "()Lgr;"
    )
-   public class207 method3897() {
-      class207 var1 = this.field2568;
-      if(var1 == this.field2567) {
-         this.field2568 = null;
+   public class207 method4066() {
+      class207 var1 = this.field2591;
+      if(var1 == this.field2590) {
+         this.field2591 = null;
          return null;
       } else {
-         this.field2568 = var1.field2570;
+         this.field2591 = var1.field2593;
          return var1;
       }
    }

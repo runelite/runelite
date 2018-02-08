@@ -230,8 +230,8 @@ LABEL198:
    6202                  
    get_varc               73
    load_int               195
-   load_string            "fixedOuterZoomLimit"
-   runelite_callback
+   ;load_string            "fixedOuterZoomLimit"
+   ;runelite_callback
    if_icmpge              LABEL210
    jump                   LABEL226
 LABEL210:
@@ -242,8 +242,8 @@ LABEL210:
 LABEL214:
    get_varc               74
    load_int               175
-   load_string            "resizableOuterZoomLimit"
-   runelite_callback
+   ;load_string            "resizableOuterZoomLimit"
+   ;runelite_callback
    if_icmpge              LABEL218
    jump                   LABEL226
 LABEL218:

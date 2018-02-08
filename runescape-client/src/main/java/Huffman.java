@@ -1,18 +1,24 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fz")
+@ObfuscatedName("fr")
 @Implements("Huffman")
 public class Huffman {
-   @ObfuscatedName("p")
+   @ObfuscatedName("dq")
+   @ObfuscatedGetter(
+      intValue = 1858001445
+   )
+   static int field2452;
+   @ObfuscatedName("s")
    @Export("masks")
    int[] masks;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @Export("bits")
    byte[] bits;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("keys")
    int[] keys;
 
@@ -99,10 +105,10 @@ public class Huffman {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([BII[BIS)I",
-      garbageValue = "-7797"
+      signature = "([BII[BIB)I",
+      garbageValue = "96"
    )
    @Export("compress")
    public int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
@@ -120,7 +126,7 @@ public class Huffman {
          int var11 = var7 >> 3;
          int var12 = var7 & 7;
          var6 &= -var12 >> 31;
-         int var13 = (var12 + var10 - 1 >> 3) + var11;
+         int var13 = (var10 + var12 - 1 >> 3) + var11;
          var12 += 24;
          var4[var11] = (byte)(var6 |= var9 >>> var12);
          if(var11 < var13) {
@@ -150,10 +156,10 @@ public class Huffman {
       return (var7 + 7 >> 3) - var5;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "-260477927"
+      garbageValue = "1707215461"
    )
    @Export("decompress")
    public int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -291,129 +297,6 @@ public class Huffman {
          }
 
          return var7 + 1 - var2;
-      }
-   }
-
-   @ObfuscatedName("it")
-   @ObfuscatedSignature(
-      signature = "(Lcl;III)V",
-      garbageValue = "2014038768"
-   )
-   static final void method3338(ContextMenuRow var0, int var1, int var2) {
-      Player.menuAction(var0.param0, var0.param1, var0.type, var0.identifier, var0.option, var0.option, var1, var2);
-   }
-
-   @ObfuscatedName("ih")
-   @ObfuscatedSignature(
-      signature = "(Ljp;IIII)V",
-      garbageValue = "-2138959746"
-   )
-   static final void method3335(NPCComposition var0, int var1, int var2, int var3) {
-      if(Client.menuOptionCount < 400) {
-         if(var0.configs != null) {
-            var0 = var0.transform();
-         }
-
-         if(var0 != null) {
-            if(var0.field3630) {
-               if(!var0.field3640 || Client.field890 == var1) {
-                  String var4 = var0.name;
-                  if(var0.combatLevel != 0) {
-                     var4 = var4 + ScriptEvent.method1083(var0.combatLevel, class36.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
-                  }
-
-                  if(var0.field3640 && Client.field953) {
-                     class3.addMenuEntry("Examine", class1.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                  }
-
-                  if(Client.itemSelectionState == 1) {
-                     class3.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class1.getColTags(16776960) + var4, 7, var1, var2, var3);
-                  } else if(Client.spellSelected) {
-                     if((GameCanvas.field603 & 2) == 2) {
-                        class3.addMenuEntry(Client.field1001, Client.field966 + " " + "->" + " " + class1.getColTags(16776960) + var4, 8, var1, var2, var3);
-                     }
-                  } else {
-                     int var5 = var0.field3640 && Client.field953?2000:0;
-                     String[] var6 = var0.actions;
-                     if(Client.numberMenuOptions) {
-                        var6 = GrandExchangeOffer.prependIndices(var6);
-                     }
-
-                     int var7;
-                     int var8;
-                     if(var6 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
-                              var8 = 0;
-                              if(var7 == 0) {
-                                 var8 = var5 + 9;
-                              }
-
-                              if(var7 == 1) {
-                                 var8 = var5 + 10;
-                              }
-
-                              if(var7 == 2) {
-                                 var8 = var5 + 11;
-                              }
-
-                              if(var7 == 3) {
-                                 var8 = var5 + 12;
-                              }
-
-                              if(var7 == 4) {
-                                 var8 = var5 + 13;
-                              }
-
-                              class3.addMenuEntry(var6[var7], class1.getColTags(16776960) + var4, var8, var1, var2, var3);
-                           }
-                        }
-                     }
-
-                     if(var6 != null) {
-                        for(var7 = 4; var7 >= 0; --var7) {
-                           if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
-                              short var9 = 0;
-                              if(AttackOption.AttackOption_hidden != Client.npcAttackOption) {
-                                 if(AttackOption.AttackOption_alwaysRightClick == Client.npcAttackOption || Client.npcAttackOption == AttackOption.AttackOption_dependsOnCombatLevels && var0.combatLevel > class36.localPlayer.combatLevel) {
-                                    var9 = 2000;
-                                 }
-
-                                 var8 = 0;
-                                 if(var7 == 0) {
-                                    var8 = var9 + 9;
-                                 }
-
-                                 if(var7 == 1) {
-                                    var8 = var9 + 10;
-                                 }
-
-                                 if(var7 == 2) {
-                                    var8 = var9 + 11;
-                                 }
-
-                                 if(var7 == 3) {
-                                    var8 = var9 + 12;
-                                 }
-
-                                 if(var7 == 4) {
-                                    var8 = var9 + 13;
-                                 }
-
-                                 class3.addMenuEntry(var6[var7], class1.getColTags(16776960) + var4, var8, var1, var2, var3);
-                              }
-                           }
-                        }
-                     }
-
-                     if(!var0.field3640 || !Client.field953) {
-                        class3.addMenuEntry("Examine", class1.getColTags(16776960) + var4, 1003, var1, var2, var3);
-                     }
-                  }
-
-               }
-            }
-         }
       }
    }
 }

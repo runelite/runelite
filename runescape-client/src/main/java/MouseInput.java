@@ -9,105 +9,110 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("bi")
 @Implements("MouseInput")
 public class MouseInput implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lbb;"
+      signature = "Lbi;"
    )
    @Export("mouse")
    public static MouseInput mouse;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 654790203
+      intValue = -1331456959
    )
    @Export("mouseIdleTicks")
-   public static volatile int mouseIdleTicks;
-   @ObfuscatedName("a")
+   static volatile int mouseIdleTicks;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -886897949
+      intValue = -840403113
    )
    @Export("MouseHandler_currentButton")
    public static volatile int MouseHandler_currentButton;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1443878151
+      intValue = 1473396205
    )
    @Export("mouseX")
    public static volatile int mouseX;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1885886773
+      intValue = -1210195897
    )
    @Export("mouseY")
    public static volatile int mouseY;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1871732367
+      intValue = -896776711
    )
    @Export("mouseCurrentButton")
    public static int mouseCurrentButton;
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 2014715911
+      intValue = 2113243559
    )
    @Export("mouseLastX")
    public static int mouseLastX;
-   @ObfuscatedName("o")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1517615511
+      intValue = -425794071
    )
    @Export("mouseLastY")
    public static int mouseLastY;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 739817041
+      intValue = -686301093
    )
    @Export("MouseHandler_lastButton")
    public static volatile int MouseHandler_lastButton;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1076387091
+      intValue = -686189529
    )
    @Export("MouseHandler_lastPressedX")
    public static volatile int MouseHandler_lastPressedX;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 416871713
+      intValue = -1423574975
    )
    @Export("MouseHandler_lastPressedY")
    public static volatile int MouseHandler_lastPressedY;
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      longValue = 9117763537011108053L
+      longValue = 3314161609246916717L
    )
    @Export("MouseHandler_lastPressedTimeMillis")
    public static volatile long MouseHandler_lastPressedTimeMillis;
-   @ObfuscatedName("y")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -13738411
+      intValue = -1355727431
    )
    @Export("mouseLastButton")
    public static int mouseLastButton;
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1885768613
+      intValue = 1708678573
    )
    @Export("mouseLastPressedX")
    public static int mouseLastPressedX;
-   @ObfuscatedName("l")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 996880025
+      intValue = 540133709
    )
    @Export("mouseLastPressedY")
    public static int mouseLastPressedY;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = 2407381000152208753L
+      longValue = 4658616330377991295L
    )
    @Export("mouseLastPressedTimeMillis")
    public static long mouseLastPressedTimeMillis;
+   @ObfuscatedName("bo")
+   @ObfuscatedGetter(
+      intValue = 1828022061
+   )
+   static int field687;
 
    static {
       mouse = new MouseInput();
@@ -128,21 +133,24 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
       mouseLastPressedTimeMillis = 0L;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/event/MouseEvent;I)I",
-      garbageValue = "438060503"
+      signature = "(Ljava/awt/event/MouseEvent;S)I",
+      garbageValue = "-2894"
    )
-   final int method984(MouseEvent var1) {
+   final int method951(MouseEvent var1) {
       int var2 = var1.getButton();
       return !var1.isAltDown() && var2 != 2?(!var1.isMetaDown() && var2 != 3?1:2):4;
    }
 
-   public final synchronized void mouseDragged(MouseEvent var1) {
+   public final synchronized void mouseReleased(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         mouseX = var1.getX();
-         mouseY = var1.getY();
+         MouseHandler_currentButton = 0;
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
       }
 
    }
@@ -154,11 +162,50 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    }
 
+   @Export("mousePressed")
+   @ObfuscatedName("mousePressed")
+   public final synchronized void mousePressed(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         MouseHandler_lastPressedX = var1.getX();
+         MouseHandler_lastPressedY = var1.getY();
+         MouseHandler_lastPressedTimeMillis = SceneTilePaint.currentTimeMs();
+         MouseHandler_lastButton = this.method951(var1);
+         if(MouseHandler_lastButton != 0) {
+            MouseHandler_currentButton = MouseHandler_lastButton;
+         }
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
    public final synchronized void mouseEntered(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
          mouseX = var1.getX();
          mouseY = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         mouseX = var1.getX();
+         mouseY = var1.getY();
+      }
+
+   }
+
+   public final void focusGained(FocusEvent var1) {
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(mouse != null) {
+         MouseHandler_currentButton = 0;
       }
 
    }
@@ -181,78 +228,42 @@ public class MouseInput implements MouseListener, MouseMotionListener, FocusList
 
    }
 
-   public final void focusGained(FocusEvent var1) {
-   }
-
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(mouse != null) {
-         MouseHandler_currentButton = 0;
-      }
-
-   }
-
-   @Export("mousePressed")
-   @ObfuscatedName("mousePressed")
-   public final synchronized void mousePressed(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         MouseHandler_lastPressedX = var1.getX();
-         MouseHandler_lastPressedY = var1.getY();
-         MouseHandler_lastPressedTimeMillis = ScriptVarType.currentTimeMs();
-         MouseHandler_lastButton = this.method984(var1);
-         if(MouseHandler_lastButton != 0) {
-            MouseHandler_currentButton = MouseHandler_lastButton;
-         }
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   public final synchronized void mouseReleased(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         MouseHandler_currentButton = 0;
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1870328581"
+      signature = "(Lir;Lir;IZI)Lex;",
+      garbageValue = "1039730793"
    )
-   static int method991(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if(var2 == null) {
-         return 0;
-      } else if(var1 == -1) {
-         return 0;
-      } else {
-         int var3 = 0;
+   public static Frames method980(IndexDataBase var0, IndexDataBase var1, int var2, boolean var3) {
+      boolean var4 = true;
+      int[] var5 = var0.getChilds(var2);
 
-         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
-            if(var2.itemIds[var4] == var1) {
-               var3 += var2.stackSizes[var4];
+      for(int var6 = 0; var6 < var5.length; ++var6) {
+         byte[] var7 = var0.getChild(var2, var5[var6]);
+         if(var7 == null) {
+            var4 = false;
+         } else {
+            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+            byte[] var9;
+            if(var3) {
+               var9 = var1.getChild(0, var8);
+            } else {
+               var9 = var1.getChild(var8, 0);
+            }
+
+            if(var9 == null) {
+               var4 = false;
             }
          }
-
-         return var3;
       }
-   }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-980675991"
-   )
-   public static void method1010() {
-      KitDefinition.identKits.reset();
+      if(!var4) {
+         return null;
+      } else {
+         try {
+            return new Frames(var0, var1, var2, var3);
+         } catch (Exception var11) {
+            return null;
+         }
+      }
    }
 }
