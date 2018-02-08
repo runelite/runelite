@@ -3,101 +3,81 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ju")
+@ObfuscatedName("jq")
 @Implements("Nameable")
 public class Nameable implements Comparable {
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Lja;"
    )
    @Export("name")
    Name name;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Ljr;"
+      signature = "Lja;"
    )
-   Name field3677;
+   Name field3700;
 
-   @ObfuscatedName("ay")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
-      signature = "(I)Ljr;",
-      garbageValue = "-212260818"
+      signature = "(S)Lja;",
+      garbageValue = "3922"
    )
-   public Name method5001() {
+   public Name method5136() {
       return this.name;
+   }
+
+   @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-1182479335"
+   )
+   public String method5137() {
+      return this.name == null?"":this.name.getName();
    }
 
    @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "75"
-   )
-   public String method5011() {
-      return this.name == null?"":this.name.getName();
-   }
-
-   @ObfuscatedName("ae")
-   @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1708322748"
+      garbageValue = "1075689815"
    )
-   public String method5002() {
-      return this.field3677 == null?"":this.field3677.getName();
+   public String method5145() {
+      return this.field3700 == null?"":this.field3700.getName();
    }
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "(Ljr;Ljr;B)V",
-      garbageValue = "31"
+      signature = "(Lja;Lja;I)V",
+      garbageValue = "-1742337772"
    )
-   void method5017(Name var1, Name var2) {
+   void method5139(Name var1, Name var2) {
       if(var1 == null) {
          throw new NullPointerException();
       } else {
          this.name = var1;
-         this.field3677 = var2;
+         this.field3700 = var2;
       }
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(Lju;B)I",
-      garbageValue = "1"
+      signature = "(Ljq;I)I",
+      garbageValue = "-1632311756"
    )
-   int vmethod5152(Nameable var1) {
-      return this.name.method5135(var1.name);
+   int vmethod5337(Nameable var1) {
+      return this.name.method5278(var1.name);
    }
 
    public int compareTo(Object var1) {
-      return this.vmethod5152((Nameable)var1);
+      return this.vmethod5337((Nameable)var1);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1590251870"
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "-462734788"
    )
-   static int method5019(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 0) {
-            var1 = 0;
-         } else if(var1 > 127) {
-            var1 = 127;
-         }
-
-         var1 = 127 - var1;
-         return var1;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 65408) + var1;
-      }
+   public static boolean method5146(String var0, int var1) {
+      return MouseRecorder.method1078(var0, var1, "openjs");
    }
 }

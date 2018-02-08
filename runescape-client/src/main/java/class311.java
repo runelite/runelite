@@ -2,105 +2,105 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kr")
+@ObfuscatedName("kx")
 public class class311 {
-   @ObfuscatedName("a")
-   String field3907;
+   @ObfuscatedName("w")
+   String field3916;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lir;"
    )
-   IndexDataBase field3905;
-   @ObfuscatedName("r")
+   IndexDataBase field3917;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 148252747
+      intValue = -646630637
    )
-   int field3906;
-   @ObfuscatedName("m")
-   boolean field3900;
+   int field3918;
+   @ObfuscatedName("z")
+   boolean field3919;
 
    @ObfuscatedSignature(
-      signature = "(Lik;)V"
+      signature = "(Lir;)V"
    )
    class311(IndexDataBase var1) {
-      this.field3906 = 0;
-      this.field3900 = false;
-      this.field3905 = var1;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1967153694"
-   )
-   void method5645(String var1) {
-      if(var1 != null && !var1.isEmpty()) {
-         if(var1 != this.field3907) {
-            this.field3907 = var1;
-            this.field3906 = 0;
-            this.field3900 = false;
-            this.method5644();
-         }
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2039004459"
-   )
-   int method5644() {
-      if(this.field3906 < 25) {
-         if(!this.field3905.tryLoadRecordByNames(class40.field505.field509, this.field3907)) {
-            return this.field3906;
-         }
-
-         this.field3906 = 25;
-      }
-
-      if(this.field3906 == 25) {
-         if(!this.field3905.tryLoadRecordByNames(this.field3907, class40.field512.field509)) {
-            return 25 + this.field3905.archiveLoadPercentByName(this.field3907) * 25 / 100;
-         }
-
-         this.field3906 = 50;
-      }
-
-      if(this.field3906 == 50) {
-         if(this.field3905.method4434(class40.field506.field509, this.field3907) && !this.field3905.tryLoadRecordByNames(class40.field506.field509, this.field3907)) {
-            return 50;
-         }
-
-         this.field3906 = 75;
-      }
-
-      if(this.field3906 == 75) {
-         if(!this.field3905.tryLoadRecordByNames(this.field3907, class40.field507.field509)) {
-            return 75;
-         }
-
-         this.field3906 = 100;
-         this.field3900 = true;
-      }
-
-      return this.field3906;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1890088499"
-   )
-   boolean method5647() {
-      return this.field3900;
+      this.field3918 = 0;
+      this.field3919 = false;
+      this.field3917 = var1;
    }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "208996336"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "2130917929"
    )
-   int method5648() {
-      return this.field3906;
+   void method5795(String var1) {
+      if(var1 != null && !var1.isEmpty()) {
+         if(var1 != this.field3916) {
+            this.field3916 = var1;
+            this.field3918 = 0;
+            this.field3919 = false;
+            this.method5796();
+         }
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-377601582"
+   )
+   int method5796() {
+      if(this.field3918 < 25) {
+         if(!this.field3917.tryLoadRecordByNames(class40.field516.field515, this.field3916)) {
+            return this.field3918;
+         }
+
+         this.field3918 = 25;
+      }
+
+      if(this.field3918 == 25) {
+         if(!this.field3917.tryLoadRecordByNames(this.field3916, class40.field518.field515)) {
+            return 25 + this.field3917.archiveLoadPercentByName(this.field3916) * 25 / 100;
+         }
+
+         this.field3918 = 50;
+      }
+
+      if(this.field3918 == 50) {
+         if(this.field3917.method4502(class40.field517.field515, this.field3916) && !this.field3917.tryLoadRecordByNames(class40.field517.field515, this.field3916)) {
+            return 50;
+         }
+
+         this.field3918 = 75;
+      }
+
+      if(this.field3918 == 75) {
+         if(!this.field3917.tryLoadRecordByNames(this.field3916, class40.field519.field515)) {
+            return 75;
+         }
+
+         this.field3918 = 100;
+         this.field3919 = true;
+      }
+
+      return this.field3918;
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "271752723"
+   )
+   boolean method5797() {
+      return this.field3919;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1567033695"
+   )
+   int method5805() {
+      return this.field3918;
    }
 }

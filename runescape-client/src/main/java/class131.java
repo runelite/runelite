@@ -3,48 +3,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("ew")
 public class class131 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @Export("Viewport_containsMouse")
    public static boolean Viewport_containsMouse;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -2035121927
+      intValue = 1284971533
    )
    @Export("Viewport_mouseX")
    public static int Viewport_mouseX;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 648497225
+      intValue = 108900277
    )
    @Export("Viewport_mouseY")
    public static int Viewport_mouseY;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @Export("Viewport_false0")
    public static boolean Viewport_false0;
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 807624593
+      intValue = 414922731
    )
-   static int field1873;
-   @ObfuscatedName("m")
+   static int field1881;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 2074655975
-   )
-   static int field1869;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -334386227
-   )
-   static int field1875;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -2006995183
+      intValue = 918593961
    )
    @Export("Viewport_entityCountAtMouse")
    public static int Viewport_entityCountAtMouse;
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @Export("Viewport_entityIdsAtMouse")
    public static int[] Viewport_entityIdsAtMouse;
 
@@ -57,34 +47,148 @@ public class class131 {
       Viewport_entityIdsAtMouse = new int[1000];
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)[Lfo;",
-      garbageValue = "754587895"
+      signature = "(I)[Lik;",
+      garbageValue = "-1236851461"
    )
-   public static ServerPacket[] method2739() {
-      return new ServerPacket[]{ServerPacket.field2220, ServerPacket.field2209, ServerPacket.field2207, ServerPacket.field2219, ServerPacket.field2248, ServerPacket.field2203, ServerPacket.field2204, ServerPacket.field2276, ServerPacket.field2206, ServerPacket.field2224, ServerPacket.field2208, ServerPacket.field2244, ServerPacket.field2210, ServerPacket.field2211, ServerPacket.field2212, ServerPacket.field2226, ServerPacket.field2214, ServerPacket.field2215, ServerPacket.field2216, ServerPacket.field2199, ServerPacket.field2218, ServerPacket.field2265, ServerPacket.field2236, ServerPacket.field2201, ServerPacket.field2222, ServerPacket.field2223, ServerPacket.field2217, ServerPacket.field2225, ServerPacket.field2221, ServerPacket.field2227, ServerPacket.field2198, ServerPacket.field2263, ServerPacket.field2230, ServerPacket.field2231, ServerPacket.field2202, ServerPacket.field2239, ServerPacket.field2234, ServerPacket.field2235, ServerPacket.field2228, ServerPacket.field2237, ServerPacket.field2238, ServerPacket.field2232, ServerPacket.field2240, ServerPacket.field2241, ServerPacket.field2229, ServerPacket.field2243, ServerPacket.field2242, ServerPacket.field2268, ServerPacket.field2246, ServerPacket.field2247, ServerPacket.field2200, ServerPacket.field2249, ServerPacket.field2250, ServerPacket.field2251, ServerPacket.field2252, ServerPacket.field2213, ServerPacket.field2254, ServerPacket.field2253, ServerPacket.field2256, ServerPacket.field2257, ServerPacket.field2258, ServerPacket.field2255, ServerPacket.field2260, ServerPacket.field2261, ServerPacket.field2262, ServerPacket.field2233, ServerPacket.field2264, ServerPacket.field2205, ServerPacket.field2266, ServerPacket.field2259, ServerPacket.field2245, ServerPacket.field2269, ServerPacket.field2270, ServerPacket.field2271, ServerPacket.field2272, ServerPacket.field2273, ServerPacket.field2274, ServerPacket.field2275, ServerPacket.field2267, ServerPacket.field2277, ServerPacket.field2278};
+   public static Permission[] method2805() {
+      return new Permission[]{Permission.field3265, Permission.field3267, Permission.field3266, Permission.field3268, Permission.field3271, Permission.field3264};
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "([BIIII[Lfb;I)V",
+      garbageValue = "-895637786"
+   )
+   static final void method2810(byte[] var0, int var1, int var2, int var3, int var4, CollisionData[] var5) {
+      int var7;
+      int var8;
+      for(int var6 = 0; var6 < 4; ++var6) {
+         for(var7 = 0; var7 < 64; ++var7) {
+            for(var8 = 0; var8 < 64; ++var8) {
+               if(var7 + var1 > 0 && var7 + var1 < 103 && var8 + var2 > 0 && var8 + var2 < 103) {
+                  var5[var6].flags[var7 + var1][var8 + var2] &= -16777217;
+               }
+            }
+         }
+      }
+
+      Buffer var10 = new Buffer(var0);
+
+      for(var7 = 0; var7 < 4; ++var7) {
+         for(var8 = 0; var8 < 64; ++var8) {
+            for(int var9 = 0; var9 < 64; ++var9) {
+               SceneTilePaint.loadTerrain(var10, var7, var8 + var1, var9 + var2, var3, var4, 0);
+            }
+         }
+      }
+
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Ljd;",
-      garbageValue = "-16711936"
+      signature = "(ZZI)I",
+      garbageValue = "-1516419834"
    )
-   public static class263 method2740(int var0) {
-      class263 var1 = (class263)class263.field3453.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class263.field3455.getConfigData(34, var0);
-         var1 = new class263();
-         if(var2 != null) {
-            var1.method4709(new Buffer(var2));
+   public static int method2812(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class249.NetCache_pendingPriorityResponsesCount + class249.NetCache_pendingPriorityWritesCount;
+      return var3;
+   }
+
+   @ObfuscatedName("fx")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1384650102"
+   )
+   static final void method2811() {
+      for(int var0 = 0; var0 < Client.queuedSoundEffectCount; ++var0) {
+         --Client.unknownSoundValues2[var0];
+         if(Client.unknownSoundValues2[var0] >= -10) {
+            SoundEffect var9 = Client.audioEffects[var0];
+            if(var9 == null) {
+               Object var10000 = null;
+               var9 = SoundEffect.getTrack(class62.indexCache4, Client.queuedSoundEffectIDs[var0], 0);
+               if(var9 == null) {
+                  continue;
+               }
+
+               Client.unknownSoundValues2[var0] += var9.calculateDelay();
+               Client.audioEffects[var0] = var9;
+            }
+
+            if(Client.unknownSoundValues2[var0] < 0) {
+               int var2;
+               if(Client.soundLocations[var0] != 0) {
+                  int var3 = (Client.soundLocations[var0] & 255) * 128;
+                  int var4 = Client.soundLocations[var0] >> 16 & 255;
+                  int var5 = var4 * 128 + 64 - GroundObject.localPlayer.x;
+                  if(var5 < 0) {
+                     var5 = -var5;
+                  }
+
+                  int var6 = Client.soundLocations[var0] >> 8 & 255;
+                  int var7 = var6 * 128 + 64 - GroundObject.localPlayer.y;
+                  if(var7 < 0) {
+                     var7 = -var7;
+                  }
+
+                  int var8 = var7 + var5 - 128;
+                  if(var8 > var3) {
+                     Client.unknownSoundValues2[var0] = -100;
+                     continue;
+                  }
+
+                  if(var8 < 0) {
+                     var8 = 0;
+                  }
+
+                  var2 = (var3 - var8) * Client.field878 / var3;
+               } else {
+                  var2 = Client.field1058;
+               }
+
+               if(var2 > 0) {
+                  RawAudioNode var10 = var9.method2181().applyResampler(VarPlayerType.field3370);
+                  class116 var11 = class116.method2526(var10, 100, var2);
+                  var11.method2387(Client.unknownSoundValues1[var0] - 1);
+                  class33.field450.method2129(var11);
+               }
+
+               Client.unknownSoundValues2[var0] = -100;
+            }
+         } else {
+            --Client.queuedSoundEffectCount;
+
+            for(int var1 = var0; var1 < Client.queuedSoundEffectCount; ++var1) {
+               Client.queuedSoundEffectIDs[var1] = Client.queuedSoundEffectIDs[var1 + 1];
+               Client.audioEffects[var1] = Client.audioEffects[var1 + 1];
+               Client.unknownSoundValues1[var1] = Client.unknownSoundValues1[var1 + 1];
+               Client.unknownSoundValues2[var1] = Client.unknownSoundValues2[var1 + 1];
+               Client.soundLocations[var1] = Client.soundLocations[var1 + 1];
+            }
+
+            --var0;
+         }
+      }
+
+      if(Client.field1059) {
+         boolean var12;
+         if(class214.field2617 != 0) {
+            var12 = true;
+         } else {
+            var12 = class25.field356.method4221();
          }
 
-         var1.method4713();
-         class263.field3453.put(var1, (long)var0);
-         return var1;
+         if(!var12) {
+            if(Client.field1057 != 0 && Client.field902 != -1) {
+               class3.method7(class231.indexTrack1, Client.field902, 0, Client.field1057, false);
+            }
+
+            Client.field1059 = false;
+         }
       }
+
    }
 }

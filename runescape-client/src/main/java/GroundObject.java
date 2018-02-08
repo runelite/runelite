@@ -4,63 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("dn")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("qh")
-   static short[] field1746;
-   @ObfuscatedName("cd")
+   @ObfuscatedName("ib")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lby;"
    )
-   @Export("indexSoundEffects")
-   static IndexData indexSoundEffects;
-   @ObfuscatedName("p")
+   @Export("localPlayer")
+   static Player localPlayer;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 2062123111
+      intValue = 2069998175
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1891188751
+      intValue = -2068966877
    )
    @Export("x")
    int x;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 572666947
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Lec;"
-   )
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 549994423
+      intValue = -1414255563
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("a")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -973522319
+      intValue = 219715917
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Leh;"
+   )
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 2074372609
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked;
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1435519779"
+      garbageValue = "-1093760864"
    )
-   public static void method2639() {
-      Widget.field2872.reset();
+   public static void method2699() {
+      Widget.field2885.reset();
       Widget.Widget_cachedModels.reset();
       Widget.Widget_cachedFonts.reset();
-      Widget.field2735.reset();
+      Widget.field2751.reset();
    }
 }

@@ -5,129 +5,129 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cx")
 @Implements("Projectile")
 public final class Projectile extends Renderable {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1576911331
+      intValue = -30234031
    )
    @Export("id")
    int id;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -457745123
+      intValue = -955439205
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1947095667
+      intValue = 422799389
    )
    @Export("x1")
    int x1;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1340050615
+      intValue = -1044833441
    )
    @Export("y1")
    int y1;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 311139067
+      intValue = -1902036031
    )
    @Export("height")
    int height;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -541020193
+      intValue = 1663431895
    )
    @Export("endHeight")
    int endHeight;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 163260799
+      intValue = 724017815
    )
    @Export("startMovementCycle")
    int startMovementCycle;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1371338451
+      intValue = 1297832527
    )
    @Export("endCycle")
    int endCycle;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1130892069
+      intValue = -1769762109
    )
    @Export("slope")
    int slope;
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1491332981
+      intValue = -223044381
    )
    @Export("startHeight")
    int startHeight;
-   @ObfuscatedName("o")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1941728137
+      intValue = -1623181563
    )
    @Export("interacting")
    int interacting;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @Export("isMoving")
    boolean isMoving;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @Export("x")
    double x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("f")
    @Export("y")
    double y;
-   @ObfuscatedName("n")
+   @ObfuscatedName("q")
    @Export("z")
    double z;
-   @ObfuscatedName("y")
+   @ObfuscatedName("r")
    @Export("velocityX")
    double velocityX;
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @Export("velocityY")
    double velocityY;
-   @ObfuscatedName("l")
+   @ObfuscatedName("u")
    @Export("scalar")
    double scalar;
-   @ObfuscatedName("f")
+   @ObfuscatedName("b")
    @Export("velocityZ")
    double velocityZ;
-   @ObfuscatedName("k")
+   @ObfuscatedName("p")
    @Export("heightOffset")
    double heightOffset;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 265069775
+      intValue = 1805145307
    )
    @Export("rotationX")
    int rotationX;
-   @ObfuscatedName("u")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1109372395
+      intValue = -2082851155
    )
    @Export("rotationY")
    int rotationY;
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "Ljm;"
+      signature = "Lje;"
    )
    @Export("animationSequence")
    Sequence animationSequence;
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1612697559
+      intValue = 64091035
    )
    @Export("int7")
    int int7;
-   @ObfuscatedName("b")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -548242029
+      intValue = 973766365
    )
    @Export("int6")
    int int6;
@@ -148,19 +148,19 @@ public final class Projectile extends Renderable {
       this.interacting = var10;
       this.endHeight = var11;
       this.isMoving = false;
-      int var12 = GrandExchangeEvents.getSpotAnimType(this.id).field3395;
+      int var12 = CollisionData.getSpotAnimType(this.id).field3404;
       if(var12 != -1) {
-         this.animationSequence = CacheFile.getAnimation(var12);
+         this.animationSequence = FileRequest.getAnimation(var12);
       } else {
          this.animationSequence = null;
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "1797761383"
+      garbageValue = "-1602937388"
    )
    @Export("moveProjectile")
    @Hook("projectileMoved")
@@ -170,34 +170,34 @@ public final class Projectile extends Renderable {
          var5 = (double)(var1 - this.x1);
          double var7 = (double)(var2 - this.y1);
          double var9 = Math.sqrt(var5 * var5 + var7 * var7);
-         this.x = (double)this.x1 + var5 * (double)this.startHeight / var9;
-         this.y = (double)this.y1 + var7 * (double)this.startHeight / var9;
+         this.x = var5 * (double)this.startHeight / var9 + (double)this.x1;
+         this.y = (double)this.startHeight * var7 / var9 + (double)this.y1;
          this.z = (double)this.height;
       }
 
       var5 = (double)(this.endCycle + 1 - var4);
       this.velocityX = ((double)var1 - this.x) / var5;
       this.velocityY = ((double)var2 - this.y) / var5;
-      this.scalar = Math.sqrt(this.velocityY * this.velocityY + this.velocityX * this.velocityX);
+      this.scalar = Math.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY);
       if(!this.isMoving) {
          this.velocityZ = -this.scalar * Math.tan(0.02454369D * (double)this.slope);
       }
 
-      this.heightOffset = 2.0D * ((double)var3 - this.z - var5 * this.velocityZ) / (var5 * var5);
+      this.heightOffset = ((double)var3 - this.z - var5 * this.velocityZ) * 2.0D / (var5 * var5);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1992456317"
+      signature = "(IB)V",
+      garbageValue = "20"
    )
    @Export("update")
    final void update(int var1) {
       this.isMoving = true;
-      this.x += (double)var1 * this.velocityX;
-      this.y += this.velocityY * (double)var1;
-      this.z += (double)var1 * (double)var1 * 0.5D * this.heightOffset + (double)var1 * this.velocityZ;
-      this.velocityZ += (double)var1 * this.heightOffset;
+      this.x += this.velocityX * (double)var1;
+      this.y += (double)var1 * this.velocityY;
+      this.z += this.velocityZ * (double)var1 + (double)var1 * this.heightOffset * 0.5D * (double)var1;
+      this.velocityZ += this.heightOffset * (double)var1;
       this.rotationX = (int)(Math.atan2(this.velocityX, this.velocityY) * 325.949D) + 1024 & 2047;
       this.rotationY = (int)(Math.atan2(this.velocityZ, this.scalar) * 325.949D) & 2047;
       if(this.animationSequence != null) {
@@ -222,13 +222,13 @@ public final class Projectile extends Renderable {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)Len;",
-      garbageValue = "-2096748380"
+      signature = "(I)Les;",
+      garbageValue = "-25440425"
    )
    protected final Model getModel() {
-      Spotanim var1 = GrandExchangeEvents.getSpotAnimType(this.id);
+      Spotanim var1 = CollisionData.getSpotAnimType(this.id);
       Model var2 = var1.getModel(this.int7);
       if(var2 == null) {
          return null;
@@ -238,23 +238,125 @@ public final class Projectile extends Renderable {
       }
    }
 
-   @ObfuscatedName("ir")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1116857099"
+      signature = "([Lge;II)Lge;",
+      garbageValue = "294807194"
    )
-   static void method1916() {
-      if(Client.spellSelected) {
-         Widget var0 = class31.getWidgetChild(class35.field464, Client.field963);
-         if(var0 != null && var0.field2830 != null) {
-            ScriptEvent var1 = new ScriptEvent();
-            var1.widget = var0;
-            var1.objs = var0.field2830;
-            class87.method1851(var1);
+   @Export("forOrdinal")
+   public static MouseWheel forOrdinal(MouseWheel[] var0, int var1) {
+      MouseWheel[] var2 = var0;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         MouseWheel var4 = var2[var3];
+         if(var1 == var4.rsOrdinal()) {
+            return var4;
+         }
+      }
+
+      return null;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZS)I",
+      garbageValue = "-32055"
+   )
+   @Export("parseInt")
+   public static int parseInt(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == '-') {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == '+') {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= '0' && var8 <= '9') {
+               var10 = var8 - '0';
+            } else if(var8 >= 'A' && var8 <= 'Z') {
+               var10 = var8 - '7';
+            } else {
+               if(var8 < 'a' || var8 > 'z') {
+                  throw new NumberFormatException();
+               }
+
+               var10 = var8 - 'W';
+            }
+
+            if(var10 >= var1) {
+               throw new NumberFormatException();
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var10 + var5 * var1;
+            if(var9 / var1 != var5) {
+               throw new NumberFormatException();
+            }
+
+            var5 = var9;
+            var4 = true;
          }
 
-         Client.spellSelected = false;
-         class60.method1015(var0);
+         if(!var4) {
+            throw new NumberFormatException();
+         } else {
+            return var5;
+         }
+      } else {
+         throw new IllegalArgumentException("");
       }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "1685476825"
+   )
+   static void method1943(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
+         }
+
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method1943(var0, var1, var2, var5 - 1);
+         method1943(var0, var1, var5 + 1, var3);
+      }
+
    }
 }

@@ -3,274 +3,166 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("am")
+@ObfuscatedName("ai")
 public class class36 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lam;"
+      signature = "Lai;"
    )
-   static final class36 field466;
-   @ObfuscatedName("i")
+   static final class36 field480;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lam;"
+      signature = "Lai;"
    )
-   static final class36 field468;
-   @ObfuscatedName("by")
-   @ObfuscatedSignature(
-      signature = "Liu;"
-   )
-   static BuildType field472;
-   @ObfuscatedName("fc")
+   static final class36 field479;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1043246631
+      intValue = 229746779
    )
-   static int field465;
-   @ObfuscatedName("id")
+   static int field482;
+   @ObfuscatedName("jy")
    @ObfuscatedSignature(
-      signature = "Lbc;"
+      signature = "Lcj;"
    )
-   @Export("localPlayer")
-   static Player localPlayer;
-   @ObfuscatedName("w")
+   @Export("topContextMenuRow")
+   static ContextMenuRow topContextMenuRow;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1160453427
+      intValue = 78031223
    )
-   final int field467;
+   final int field478;
 
    static {
-      field466 = new class36(0);
-      field468 = new class36(1);
+      field480 = new class36(0);
+      field479 = new class36(1);
    }
 
    class36(int var1) {
-      this.field467 = var1;
+      this.field478 = var1;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIIIIILee;Lfg;I)V",
-      garbageValue = "-380720272"
+      signature = "(ILhj;I)Lcf;",
+      garbageValue = "59050678"
    )
-   static final void method504(int var0, int var1, int var2, int var3, int var4, int var5, int var6, Region var7, CollisionData var8) {
-      ObjectComposition var9 = TextureProvider.getObjectDefinition(var4);
-      int var10;
-      int var11;
-      if(var5 != 1 && var5 != 3) {
-         var10 = var9.width;
-         var11 = var9.length;
+   @Export("getScriptByFile")
+   static Script getScriptByFile(int var0, class230 var1) {
+      Script var2 = (Script)Script.field1424.get((long)(var0 << 16));
+      if(var2 != null) {
+         return var2;
       } else {
-         var10 = var9.length;
-         var11 = var9.width;
-      }
-
-      int var12;
-      int var13;
-      if(var10 + var2 <= 104) {
-         var12 = (var10 >> 1) + var2;
-         var13 = var2 + (var10 + 1 >> 1);
-      } else {
-         var12 = var2;
-         var13 = var2 + 1;
-      }
-
-      int var14;
-      int var15;
-      if(var3 + var11 <= 104) {
-         var14 = var3 + (var11 >> 1);
-         var15 = var3 + (var11 + 1 >> 1);
-      } else {
-         var14 = var3;
-         var15 = var3 + 1;
-      }
-
-      int[][] var16 = class61.tileHeights[var1];
-      int var17 = var16[var13][var15] + var16[var12][var15] + var16[var12][var14] + var16[var13][var14] >> 2;
-      int var18 = (var2 << 7) + (var10 << 6);
-      int var19 = (var3 << 7) + (var11 << 6);
-      int var20 = (var3 << 7) + var2 + (var4 << 14) + 1073741824;
-      if(var9.int1 == 0) {
-         var20 -= Integer.MIN_VALUE;
-      }
-
-      int var21 = (var5 << 6) + var6;
-      if(var9.supportItems == 1) {
-         var21 += 256;
-      }
-
-      Object var22;
-      if(var6 == 22) {
-         if(var9.animationId == -1 && var9.impostorIds == null) {
-            var22 = var9.method4799(22, var5, var16, var18, var17, var19);
+         String var3 = String.valueOf(var0);
+         int var4 = class22.indexScripts.getFile(var3);
+         if(var4 == -1) {
+            return null;
          } else {
-            var22 = new DynamicObject(var4, 22, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
+            byte[] var5 = class22.indexScripts.takeRecordFlat(var4);
+            if(var5 != null) {
+               if(var5.length <= 1) {
+                  return null;
+               }
+
+               var2 = CombatInfoListHolder.newScript(var5);
+               if(var2 != null) {
+                  Script.field1424.put(var2, (long)(var0 << 16));
+                  return var2;
+               }
+            }
+
+            return null;
+         }
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lir;Ljava/lang/String;Ljava/lang/String;I)[Lki;",
+      garbageValue = "2143382294"
+   )
+   @Export("getSprites")
+   public static SpritePixels[] getSprites(IndexDataBase var0, String var1, String var2) {
+      int var3 = var0.getFile(var1);
+      int var4 = var0.getChild(var3, var2);
+      return CombatInfo2.method4796(var0, var3, var4);
+   }
+
+   @ObfuscatedName("fl")
+   @ObfuscatedSignature(
+      signature = "(Lbe;I)V",
+      garbageValue = "-1160354580"
+   )
+   static final void method486(Actor var0) {
+      if(var0.field1167 != 0) {
+         if(var0.interacting != -1) {
+            Object var1 = null;
+            if(var0.interacting < 32768) {
+               var1 = Client.cachedNPCs[var0.interacting];
+            } else if(var0.interacting >= 32768) {
+               var1 = Client.cachedPlayers[var0.interacting - 32768];
+            }
+
+            if(var1 != null) {
+               int var2 = var0.x - ((Actor)var1).x;
+               int var3 = var0.y - ((Actor)var1).y;
+               if(var2 != 0 || var3 != 0) {
+                  var0.orientation = (int)(Math.atan2((double)var2, (double)var3) * 325.949D) & 2047;
+               }
+            } else if(var0.field1141) {
+               var0.interacting = -1;
+               var0.field1141 = false;
+            }
          }
 
-         var7.groundObjectSpawned(var0, var2, var3, var17, (Renderable)var22, var20, var21);
-         if(var9.clipType == 1) {
-            var8.method3260(var2, var3);
+         if(var0.field1142 != -1 && (var0.queueSize == 0 || var0.field1172 > 0)) {
+            var0.orientation = var0.field1142;
+            var0.field1142 = -1;
          }
 
-      } else if(var6 != 10 && var6 != 11) {
-         if(var6 >= 12) {
-            if(var9.animationId == -1 && var9.impostorIds == null) {
-               var22 = var9.method4799(var6, var5, var16, var18, var17, var19);
+         int var4 = var0.orientation - var0.angle & 2047;
+         if(var4 == 0 && var0.field1141) {
+            var0.interacting = -1;
+            var0.field1141 = false;
+         }
+
+         if(var4 != 0) {
+            ++var0.field1166;
+            boolean var6;
+            if(var4 > 1024) {
+               var0.angle -= var0.field1167;
+               var6 = true;
+               if(var4 < var0.field1167 || var4 > 2048 - var0.field1167) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field1166 > 25 || var6)) {
+                  if(var0.field1120 != -1) {
+                     var0.poseAnimation = var0.field1120;
+                  } else {
+                     var0.poseAnimation = var0.field1156;
+                  }
+               }
             } else {
-               var22 = new DynamicObject(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
+               var0.angle += var0.field1167;
+               var6 = true;
+               if(var4 < var0.field1167 || var4 > 2048 - var0.field1167) {
+                  var0.angle = var0.orientation;
+                  var6 = false;
+               }
+
+               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field1166 > 25 || var6)) {
+                  if(var0.field1121 != -1) {
+                     var0.poseAnimation = var0.field1121;
+                  } else {
+                     var0.poseAnimation = var0.field1156;
+                  }
+               }
             }
 
-            var7.method2823(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
-            if(var9.clipType != 0) {
-               var8.addObject(var2, var3, var10, var11, var9.blocksProjectile);
-            }
-
-         } else if(var6 == 0) {
-            if(var9.animationId == -1 && var9.impostorIds == null) {
-               var22 = var9.method4799(0, var5, var16, var18, var17, var19);
-            } else {
-               var22 = new DynamicObject(var4, 0, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-            }
-
-            var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field698[var5], 0, var20, var21);
-            if(var9.clipType != 0) {
-               var8.method3270(var2, var3, var6, var5, var9.blocksProjectile);
-            }
-
-         } else if(var6 == 1) {
-            if(var9.animationId == -1 && var9.impostorIds == null) {
-               var22 = var9.method4799(1, var5, var16, var18, var17, var19);
-            } else {
-               var22 = new DynamicObject(var4, 1, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-            }
-
-            var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field697[var5], 0, var20, var21);
-            if(var9.clipType != 0) {
-               var8.method3270(var2, var3, var6, var5, var9.blocksProjectile);
-            }
-
+            var0.angle &= 2047;
          } else {
-            Object var24;
-            int var27;
-            if(var6 == 2) {
-               var27 = var5 + 1 & 3;
-               Object var23;
-               if(var9.animationId == -1 && var9.impostorIds == null) {
-                  var23 = var9.method4799(2, var5 + 4, var16, var18, var17, var19);
-                  var24 = var9.method4799(2, var27, var16, var18, var17, var19);
-               } else {
-                  var23 = new DynamicObject(var4, 2, var5 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                  var24 = new DynamicObject(var4, 2, var27, var1, var2, var3, var9.animationId, true, (Renderable)null);
-               }
-
-               var7.addBoundary(var0, var2, var3, var17, (Renderable)var23, (Renderable)var24, class61.field698[var5], class61.field698[var27], var20, var21);
-               if(var9.clipType != 0) {
-                  var8.method3270(var2, var3, var6, var5, var9.blocksProjectile);
-               }
-
-            } else if(var6 == 3) {
-               if(var9.animationId == -1 && var9.impostorIds == null) {
-                  var22 = var9.method4799(3, var5, var16, var18, var17, var19);
-               } else {
-                  var22 = new DynamicObject(var4, 3, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-               }
-
-               var7.addBoundary(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field697[var5], 0, var20, var21);
-               if(var9.clipType != 0) {
-                  var8.method3270(var2, var3, var6, var5, var9.blocksProjectile);
-               }
-
-            } else if(var6 == 9) {
-               if(var9.animationId == -1 && var9.impostorIds == null) {
-                  var22 = var9.method4799(var6, var5, var16, var18, var17, var19);
-               } else {
-                  var22 = new DynamicObject(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-               }
-
-               var7.method2823(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
-               if(var9.clipType != 0) {
-                  var8.addObject(var2, var3, var10, var11, var9.blocksProjectile);
-               }
-
-            } else if(var6 == 4) {
-               if(var9.animationId == -1 && var9.impostorIds == null) {
-                  var22 = var9.method4799(4, var5, var16, var18, var17, var19);
-               } else {
-                  var22 = new DynamicObject(var4, 4, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-               }
-
-               var7.addBoundaryDecoration(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class61.field698[var5], 0, 0, 0, var20, var21);
-            } else {
-               int var28;
-               if(var6 == 5) {
-                  var27 = 16;
-                  var28 = var7.method2895(var0, var2, var3);
-                  if(var28 != 0) {
-                     var27 = TextureProvider.getObjectDefinition(var28 >> 14 & 32767).decorDisplacement;
-                  }
-
-                  if(var9.animationId == -1 && var9.impostorIds == null) {
-                     var24 = var9.method4799(4, var5, var16, var18, var17, var19);
-                  } else {
-                     var24 = new DynamicObject(var4, 4, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                  }
-
-                  var7.addBoundaryDecoration(var0, var2, var3, var17, (Renderable)var24, (Renderable)null, class61.field698[var5], 0, var27 * class61.field694[var5], var27 * class61.field695[var5], var20, var21);
-               } else if(var6 == 6) {
-                  var27 = 8;
-                  var28 = var7.method2895(var0, var2, var3);
-                  if(var28 != 0) {
-                     var27 = TextureProvider.getObjectDefinition(var28 >> 14 & 32767).decorDisplacement / 2;
-                  }
-
-                  if(var9.animationId == -1 && var9.impostorIds == null) {
-                     var24 = var9.method4799(4, var5 + 4, var16, var18, var17, var19);
-                  } else {
-                     var24 = new DynamicObject(var4, 4, var5 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                  }
-
-                  var7.addBoundaryDecoration(var0, var2, var3, var17, (Renderable)var24, (Renderable)null, 256, var5, var27 * class61.field696[var5], var27 * class61.field692[var5], var20, var21);
-               } else if(var6 == 7) {
-                  var28 = var5 + 2 & 3;
-                  if(var9.animationId == -1 && var9.impostorIds == null) {
-                     var22 = var9.method4799(4, var28 + 4, var16, var18, var17, var19);
-                  } else {
-                     var22 = new DynamicObject(var4, 4, var28 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                  }
-
-                  var7.addBoundaryDecoration(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, 256, var28, 0, 0, var20, var21);
-               } else if(var6 == 8) {
-                  var27 = 8;
-                  var28 = var7.method2895(var0, var2, var3);
-                  if(var28 != 0) {
-                     var27 = TextureProvider.getObjectDefinition(var28 >> 14 & 32767).decorDisplacement / 2;
-                  }
-
-                  int var26 = var5 + 2 & 3;
-                  Object var25;
-                  if(var9.animationId == -1 && var9.impostorIds == null) {
-                     var24 = var9.method4799(4, var5 + 4, var16, var18, var17, var19);
-                     var25 = var9.method4799(4, var26 + 4, var16, var18, var17, var19);
-                  } else {
-                     var24 = new DynamicObject(var4, 4, var5 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                     var25 = new DynamicObject(var4, 4, var26 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
-                  }
-
-                  var7.addBoundaryDecoration(var0, var2, var3, var17, (Renderable)var24, (Renderable)var25, 256, var5, var27 * class61.field696[var5], var27 * class61.field692[var5], var20, var21);
-               }
-            }
-         }
-      } else {
-         if(var9.animationId == -1 && var9.impostorIds == null) {
-            var22 = var9.method4799(10, var5, var16, var18, var17, var19);
-         } else {
-            var22 = new DynamicObject(var4, 10, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
-         }
-
-         if(var22 != null) {
-            var7.method2823(var0, var2, var3, var17, var10, var11, (Renderable)var22, var6 == 11?256:0, var20, var21);
-         }
-
-         if(var9.clipType != 0) {
-            var8.addObject(var2, var3, var10, var11, var9.blocksProjectile);
+            var0.field1166 = 0;
          }
 
       }

@@ -5,56 +5,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dp")
 @Implements("TextureProvider")
 public class TextureProvider implements ITextureLoader {
-   @ObfuscatedName("x")
+   @ObfuscatedName("er")
    @ObfuscatedSignature(
-      signature = "Lkh;"
+      signature = "Lkp;"
    )
-   static IndexedSprite field1658;
-   @ObfuscatedName("p")
+   @Export("font_p12full")
+   static Font font_p12full;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "[Ldv;"
+      signature = "[Ldi;"
    )
    @Export("textures")
    Texture[] textures;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgy;"
+      signature = "Lgw;"
    )
    @Export("deque")
    Deque deque;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 2098905815
+      intValue = -1830088627
    )
    @Export("maxSize")
    int maxSize;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1123036141
+      intValue = 2071579283
    )
    @Export("size")
    int size;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("brightness")
    double brightness;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1963371079
+      intValue = 362040901
    )
    @Export("width")
    int width;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lir;"
    )
    @Export("sprites")
    IndexDataBase sprites;
 
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;IDI)V"
+      signature = "(Lir;Lir;IDI)V"
    )
    public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.deque = new Deque();
@@ -77,12 +78,12 @@ public class TextureProvider implements ITextureLoader {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "1"
+      signature = "(I)I",
+      garbageValue = "917816256"
    )
-   public int method2531() {
+   public int method2595() {
       int var1 = 0;
       int var2 = 0;
       Texture[] var3 = this.textures;
@@ -95,7 +96,7 @@ public class TextureProvider implements ITextureLoader {
 
             for(int var7 = 0; var7 < var6.length; ++var7) {
                int var8 = var6[var7];
-               if(this.sprites.method4374(var8)) {
+               if(this.sprites.method4587(var8)) {
                   ++var2;
                }
             }
@@ -109,17 +110,17 @@ public class TextureProvider implements ITextureLoader {
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @Export("brightness")
    public void brightness(double var1) {
       this.brightness = var1;
       this.reset();
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "493747558"
+      garbageValue = "-802368556"
    )
    @Export("load")
    public int[] load(int var1) {
@@ -131,7 +132,7 @@ public class TextureProvider implements ITextureLoader {
             return var2.pixels;
          }
 
-         boolean var3 = var2.method2646(this.brightness, this.width, this.sprites);
+         boolean var3 = var2.method2701(this.brightness, this.width, this.sprites);
          if(var3) {
             if(this.size == 0) {
                Texture var4 = (Texture)this.deque.popTail();
@@ -149,38 +150,38 @@ public class TextureProvider implements ITextureLoader {
       return null;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "1826552232"
+      garbageValue = "975899805"
    )
    @Export("getAverageTextureRGB")
    public int getAverageTextureRGB(int var1) {
-      return this.textures[var1] != null?this.textures[var1].field1762:0;
+      return this.textures[var1] != null?this.textures[var1].field1759:0;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "1730745843"
+      garbageValue = "-1297239195"
    )
-   public boolean vmethod3012(int var1) {
+   public boolean vmethod3127(int var1) {
       return this.textures[var1].field1756;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-468750423"
+      signature = "(IB)Z",
+      garbageValue = "68"
    )
-   public boolean vmethod3013(int var1) {
+   public boolean vmethod3136(int var1) {
       return this.width == 64;
    }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "29"
+      signature = "(I)V",
+      garbageValue = "-1270116220"
    )
    @Export("reset")
    public void reset() {
@@ -194,118 +195,24 @@ public class TextureProvider implements ITextureLoader {
       this.size = this.maxSize;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1136074177"
+      garbageValue = "-834098053"
    )
    @Hook(
-	   value = "drawAboveOverheads",
-	   end = true
+      value = "drawAboveOverheads",
+      end = true
    )
    @Export("checkTextures")
    public void checkTextures(int var1) {
       for(int var2 = 0; var2 < this.textures.length; ++var2) {
          Texture var3 = this.textures[var2];
-         if(var3 != null && var3.field1758 != 0 && var3.loaded) {
-            var3.method2643(var1);
+         if(var3 != null && var3.field1765 != 0 && var3.loaded) {
+            var3.method2703(var1);
             var3.loaded = false;
          }
       }
 
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)Ljv;",
-      garbageValue = "1579741683"
-   )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.objects.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = SoundTask.objects_ref.getConfigData(6, var0);
-         var1 = new ObjectComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         if(var1.isHollow) {
-            var1.clipType = 0;
-            var1.blocksProjectile = false;
-         }
-
-         ObjectComposition.objects.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-110595508"
-   )
-   static void method2557() {
-      for(class79 var0 = (class79)class79.field1208.getFront(); var0 != null; var0 = (class79)class79.field1208.getNext()) {
-         if(var0.field1209 != null) {
-            CombatInfoListHolder.field1251.method2082(var0.field1209);
-            var0.field1209 = null;
-         }
-
-         if(var0.field1214 != null) {
-            CombatInfoListHolder.field1251.method2082(var0.field1214);
-            var0.field1214 = null;
-         }
-      }
-
-      class79.field1208.clear();
-   }
-
-   @ObfuscatedName("kz")
-   @ObfuscatedSignature(
-      signature = "(Lho;I)Z",
-      garbageValue = "822373569"
-   )
-   static final boolean method2552(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 205) {
-         Client.field1043 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            Client.field1081.method4209(var2, var3 == 1);
-         }
-
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            Client.field1081.method4222(var2, var3 == 1);
-         }
-
-         if(var1 == 324) {
-            Client.field1081.method4211(false);
-         }
-
-         if(var1 == 325) {
-            Client.field1081.method4211(true);
-         }
-
-         if(var1 == 326) {
-            PacketNode var4 = class35.method501(ClientPacket.field2322, Client.field867.field1439);
-            Client.field1081.method4212(var4.packetBuffer);
-            Client.field867.method2021(var4);
-            return true;
-         } else {
-            return false;
-         }
-      }
    }
 }

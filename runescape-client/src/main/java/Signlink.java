@@ -7,25 +7,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fy")
 @Implements("Signlink")
 public class Signlink implements Runnable {
-   @ObfuscatedName("w")
+   @ObfuscatedName("g")
+   @Export("javaVersion")
+   public static String javaVersion;
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "Led;"
    )
    @Export("currentTask")
    Task currentTask;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "Led;"
    )
    @Export("cachedTask")
    Task cachedTask;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("sysEventQueue")
    Thread sysEventQueue;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @Export("closed")
    boolean closed;
 
@@ -33,12 +36,12 @@ public class Signlink implements Runnable {
       this.currentTask = null;
       this.cachedTask = null;
       this.closed = false;
-      class192.javaVendor = "Unknown";
-      class150.javaVersion = "1.6";
+      class188.javaVendor = "Unknown";
+      javaVersion = "1.6";
 
       try {
-         class192.javaVendor = System.getProperty("java.vendor");
-         class150.javaVersion = System.getProperty("java.version");
+         class188.javaVendor = System.getProperty("java.vendor");
+         javaVersion = System.getProperty("java.version");
       } catch (Exception var2) {
          ;
       }
@@ -50,10 +53,10 @@ public class Signlink implements Runnable {
       this.sysEventQueue.start();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "68"
+      signature = "(I)V",
+      garbageValue = "-1462013979"
    )
    @Export("join")
    public final void join() {
@@ -70,10 +73,10 @@ public class Signlink implements Runnable {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIILjava/lang/Object;I)Led;",
-      garbageValue = "1877347946"
+      garbageValue = "245349557"
    )
    @Export("newTask")
    final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -94,20 +97,20 @@ public class Signlink implements Runnable {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IB)Led;",
-      garbageValue = "-1"
+      signature = "(Ljava/lang/String;II)Led;",
+      garbageValue = "-980366431"
    )
    @Export("createSocket")
    public final Task createSocket(String var1, int var2) {
       return this.newTask(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Runnable;II)Led;",
-      garbageValue = "-1347320438"
+      garbageValue = "-526758598"
    )
    @Export("createRunnable")
    public final Task createRunnable(Runnable var1, int var2) {
@@ -161,14 +164,5 @@ public class Signlink implements Runnable {
             var1.status = 2;
          }
       }
-   }
-
-   @ObfuscatedName("ka")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "31"
-   )
-   public static boolean method3107() {
-      return Client.rights >= 2;
    }
 }

@@ -3,21 +3,26 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ex")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("p")
+   @ObfuscatedName("cl")
    @ObfuscatedSignature(
-      signature = "[Ldz;"
+      signature = "Lij;"
+   )
+   @Export("configsIndex")
+   static IndexData configsIndex;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "[Ldu;"
    )
    @Export("skeletons")
    Frame[] skeletons;
 
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;IZ)V",
-      garbageValue = "0"
+      signature = "(Lir;Lir;IZ)V"
    )
-   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
+   Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.fileCount(var3);
       this.skeletons = new Frame[var6];
@@ -36,7 +41,13 @@ public class Frames extends CacheableNode {
          }
 
          if(var10 == null) {
-            byte[] var13 = var2.getChild(var11, 0);
+            byte[] var13;
+            if(var4) {
+               var13 = var2.getChild(0, var11);
+            } else {
+               var13 = var2.getChild(var11, 0);
+            }
+
             var10 = new FrameMap(var11, var13);
             var5.addFront(var10);
          }
@@ -46,54 +57,51 @@ public class Frames extends CacheableNode {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1753141207"
+      signature = "(IB)Z",
+      garbageValue = "34"
    )
-   public boolean method3008(int var1) {
+   public boolean method3117(int var1) {
       return this.skeletons[var1].showing;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "81"
+      signature = "(ILcf;ZI)I",
+      garbageValue = "-1909405820"
    )
-   public static void method3004(int var0, int var1) {
-      Varbit var3 = (Varbit)Varbit.varbits.get((long)var0);
-      Varbit var2;
-      if(var3 != null) {
-         var2 = var3;
-      } else {
-         byte[] var8 = Varbit.varbit_ref.getConfigData(14, var0);
-         var3 = new Varbit();
-         if(var8 != null) {
-            var3.decode(new Buffer(var8));
+   static int method3124(int var0, Script var1, boolean var2) {
+      int var3;
+      if(var0 == 5504) {
+         class80.intStackSize -= 2;
+         var3 = class80.intStack[class80.intStackSize];
+         int var4 = class80.intStack[class80.intStackSize + 1];
+         if(!Client.field1068) {
+            Client.field907 = var3;
+            Client.mapAngle = var4;
          }
 
-         Varbit.varbits.put(var3, (long)var0);
-         var2 = var3;
+         return 1;
+      } else if(var0 == 5505) {
+         class80.intStack[++class80.intStackSize - 1] = Client.field907;
+         return 1;
+      } else if(var0 == 5506) {
+         class80.intStack[++class80.intStackSize - 1] = Client.mapAngle;
+         return 1;
+      } else if(var0 == 5530) {
+         var3 = class80.intStack[--class80.intStackSize];
+         if(var3 < 0) {
+            var3 = 0;
+         }
+
+         Client.field1061 = var3;
+         return 1;
+      } else if(var0 == 5531) {
+         class80.intStack[++class80.intStackSize - 1] = Client.field1061;
+         return 1;
+      } else {
+         return 2;
       }
-
-      int var4 = var2.configId;
-      int var5 = var2.leastSignificantBit;
-      int var6 = var2.mostSignificantBit;
-      int var7 = class222.varpsMasks[var6 - var5];
-      if(var1 < 0 || var1 > var7) {
-         var1 = 0;
-      }
-
-      var7 <<= var5;
-      class222.widgetSettings[var4] = class222.widgetSettings[var4] & ~var7 | var1 << var5 & var7;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "-91294148"
-   )
-   static synchronized byte[] method3009(int var0) {
-      return class185.method3612(var0, false);
    }
 }

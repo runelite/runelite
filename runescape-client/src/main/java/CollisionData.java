@@ -4,34 +4,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fb")
 @Implements("CollisionData")
 public class CollisionData {
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ax")
    @ObfuscatedGetter(
-      intValue = -1320225961
+      intValue = 38599785
    )
    @Export("x")
-   public int x;
-   @ObfuscatedName("ai")
+   int x;
+   @ObfuscatedName("ak")
    @ObfuscatedGetter(
-      intValue = -653969139
+      intValue = -1387977053
    )
    @Export("y")
-   public int y;
-   @ObfuscatedName("au")
+   int y;
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = -1952921507
+      intValue = -1175091293
    )
    @Export("width")
    int width;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ai")
    @ObfuscatedGetter(
-      intValue = -542392667
+      intValue = -1595202999
    )
    @Export("height")
    int height;
-   @ObfuscatedName("af")
+   @ObfuscatedName("ab")
    @Export("flags")
    public int[][] flags;
 
@@ -44,10 +44,10 @@ public class CollisionData {
       this.reset();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1197033939"
+      garbageValue = "-1853290766"
    )
    @Export("reset")
    public void reset() {
@@ -63,12 +63,12 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIIZB)V",
-      garbageValue = "2"
+      signature = "(IIIIZI)V",
+      garbageValue = "-2076439895"
    )
-   public void method3270(int var1, int var2, int var3, int var4, boolean var5) {
+   public void method3380(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.x;
       var2 -= this.y;
       if(var3 == 0) {
@@ -215,10 +215,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "567630426"
+      garbageValue = "-1519072684"
    )
    @Export("addObject")
    public void addObject(int var1, int var2, int var3, int var4, boolean var5) {
@@ -242,32 +242,32 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "2130819484"
+      signature = "(IIB)V",
+      garbageValue = "-111"
    )
-   public void method3249(int var1, int var2) {
+   public void method3376(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 2097152;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IIB)V",
-      garbageValue = "0"
+      garbageValue = "-9"
    )
-   public void method3260(int var1, int var2) {
+   public void method3352(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] |= 262144;
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1312140342"
+      garbageValue = "1824112419"
    )
    @Export("add")
    void add(int var1, int var2, int var3) {
@@ -277,7 +277,7 @@ public class CollisionData {
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IIIIZI)V",
-      garbageValue = "-1200736511"
+      garbageValue = "1609437111"
    )
    @Export("removeWall")
    public void removeWall(int var1, int var2, int var3, int var4, boolean var5) {
@@ -427,10 +427,10 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(IIIIIZI)V",
-      garbageValue = "1751774544"
+      garbageValue = "514130876"
    )
    @Export("removeObject")
    public void removeObject(int var1, int var2, int var3, int var4, int var5, boolean var6) {
@@ -460,104 +460,91 @@ public class CollisionData {
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "1820657065"
+      garbageValue = "-1724242805"
    )
    @Export("remove")
    void remove(int var1, int var2, int var3) {
       this.flags[var1][var2] &= ~var3;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "614351085"
+      garbageValue = "966087574"
    )
-   public void method3253(int var1, int var2) {
+   public void method3354(int var1, int var2) {
       var1 -= this.x;
       var2 -= this.y;
       this.flags[var1][var2] &= -262145;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
-      garbageValue = "-1718562779"
+      signature = "(II)Liv;",
+      garbageValue = "-136408307"
    )
-   public static String method3272(CharSequence[] var0, int var1, int var2) {
-      if(var2 == 0) {
-         return "";
-      } else if(var2 == 1) {
-         CharSequence var3 = var0[var1];
-         return var3 == null?"null":var3.toString();
+   @Export("getSpotAnimType")
+   public static Spotanim getSpotAnimType(int var0) {
+      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         int var8 = var2 + var1;
-         int var4 = 0;
-
-         for(int var5 = var1; var5 < var8; ++var5) {
-            CharSequence var6 = var0[var5];
-            if(var6 == null) {
-               var4 += 4;
-            } else {
-               var4 += var6.length();
-            }
+         byte[] var2 = Spotanim.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
+         var1 = new Spotanim();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.decode(new Buffer(var2));
          }
 
-         StringBuilder var9 = new StringBuilder(var4);
-
-         for(int var10 = var1; var10 < var8; ++var10) {
-            CharSequence var7 = var0[var10];
-            if(var7 == null) {
-               var9.append("null");
-            } else {
-               var9.append(var7);
-            }
-         }
-
-         return var9.toString();
+         Spotanim.spotanims.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("jf")
    @ObfuscatedSignature(
-      signature = "(Lgs;III)I",
-      garbageValue = "-717205259"
+      signature = "(Lhs;Ljc;IIZI)V",
+      garbageValue = "-1705908592"
    )
-   static int method3283(IterableHashTable var0, int var1, int var2) {
-      if(var0 == null) {
-         return var2;
-      } else {
-         IntegerNode var3 = (IntegerNode)var0.get((long)var1);
-         return var3 == null?var2:var3.value;
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)Lkx;",
-      garbageValue = "524049247"
-   )
-   public static class301 method3285(int var0) {
-      class301[] var1 = class109.method2244();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class301 var3 = var1[var2];
-         if(var0 == var3.field3829) {
-            return var3;
+   static final void method3357(Widget var0, ItemComposition var1, int var2, int var3, boolean var4) {
+      String[] var5 = var1.inventoryActions;
+      byte var6 = -1;
+      String var7 = null;
+      if(var5 != null && var5[var3] != null) {
+         if(var3 == 0) {
+            var6 = 33;
+         } else if(var3 == 1) {
+            var6 = 34;
+         } else if(var3 == 2) {
+            var6 = 35;
+         } else if(var3 == 3) {
+            var6 = 36;
+         } else {
+            var6 = 37;
          }
+
+         var7 = var5[var3];
+      } else if(var3 == 4) {
+         var6 = 37;
+         var7 = "Drop";
       }
 
-      return null;
+      if(var6 != -1 && var7 != null) {
+         Resampler.method2380(var7, class70.getColTags(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
+      }
+
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("jh")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-16"
+      signature = "(I)V",
+      garbageValue = "-741769844"
    )
-   public static int method3282(int var0) {
-      return var0 >> 11 & 63;
+   static final void method3379() {
+      Client.field1030 = Client.cycleCntr;
+      GrandExchangeEvent.field282 = true;
    }
 }

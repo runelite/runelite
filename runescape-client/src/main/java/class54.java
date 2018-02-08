@@ -3,55 +3,80 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("by")
+@ObfuscatedName("br")
 public class class54 {
+   @ObfuscatedName("dc")
+   @ObfuscatedSignature(
+      signature = "Lij;"
+   )
+   @Export("indexTrack2")
+   static IndexData indexTrack2;
+
    static {
       ImageIO.setUseCache(false);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZB)[B",
-      garbageValue = "14"
+      signature = "(Lir;Lir;I)Z",
+      garbageValue = "1928821755"
    )
-   @Export("toByteArray")
-   public static byte[] toByteArray(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
-         }
-      } else if(var0 instanceof AbstractByteBuffer) {
-         AbstractByteBuffer var2 = (AbstractByteBuffer)var0;
-         return var2.get();
+   public static boolean method750(IndexDataBase var0, IndexDataBase var1) {
+      Area.field3376 = var1;
+      if(!var0.method4508()) {
+         return false;
       } else {
-         throw new IllegalArgumentException();
+         Area.field3393 = var0.fileCount(35);
+         Area.mapAreaType = new Area[Area.field3393];
+
+         for(int var2 = 0; var2 < Area.field3393; ++var2) {
+            byte[] var3 = var0.getConfigData(35, var2);
+            if(var3 != null) {
+               Area.mapAreaType[var2] = new Area(var2);
+               Area.mapAreaType[var2].method4680(new Buffer(var3));
+               Area.mapAreaType[var2].method4682();
+            }
+         }
+
+         return true;
       }
    }
 
-   @ObfuscatedName("gg")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-55"
+      signature = "(II)Z",
+      garbageValue = "-133828210"
    )
-   static final void method775() {
-      if(Client.gameCycle == Client.field949) {
-         if(class234.clanMemberManager != null) {
-            class234.clanMemberManager.method5047();
-         }
+   public static boolean method752(int var0) {
+      return (var0 >> 30 & 1) != 0;
+   }
 
-         for(int var0 = 0; var0 < class92.playerIndexesCount; ++var0) {
-            Player var1 = Client.cachedPlayers[class92.playerIndices[var0]];
-            var1.method1133();
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)[Lki;",
+      garbageValue = "2036922150"
+   )
+   static SpritePixels[] method753() {
+      SpritePixels[] var0 = new SpritePixels[class310.field3909];
+
+      for(int var1 = 0; var1 < class310.field3909; ++var1) {
+         SpritePixels var2 = var0[var1] = new SpritePixels();
+         var2.maxWidth = class310.field3908;
+         var2.maxHeight = class310.field3910;
+         var2.offsetX = class219.field2698[var1];
+         var2.offsetY = class263.offsetsY[var1];
+         var2.width = class60.field708[var1];
+         var2.height = class310.field3911[var1];
+         int var3 = var2.height * var2.width;
+         byte[] var4 = class310.spritePixels[var1];
+         var2.pixels = new int[var3];
+
+         for(int var5 = 0; var5 < var3; ++var5) {
+            var2.pixels[var5] = class289.field3786[var4[var5] & 255];
          }
       }
 
+      Name.method5282();
+      return var0;
    }
 }

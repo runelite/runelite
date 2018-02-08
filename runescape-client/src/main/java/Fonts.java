@@ -4,36 +4,36 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("je")
+@ObfuscatedName("js")
 @Implements("Fonts")
 public class Fonts {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lir;"
    )
-   IndexDataBase field3735;
-   @ObfuscatedName("i")
+   IndexDataBase field3758;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lir;"
    )
-   IndexDataBase field3736;
-   @ObfuscatedName("w")
+   IndexDataBase field3757;
+   @ObfuscatedName("m")
    @Export("map")
    HashMap map;
 
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;)V"
+      signature = "(Lir;Lir;)V"
    )
    public Fonts(IndexDataBase var1, IndexDataBase var2) {
-      this.field3735 = var1;
-      this.field3736 = var2;
+      this.field3758 = var1;
+      this.field3757 = var2;
       this.map = new HashMap();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "([Ljo;B)Ljava/util/HashMap;",
-      garbageValue = "-4"
+      signature = "([Ljx;B)Ljava/util/HashMap;",
+      garbageValue = "-34"
    )
    @Export("createMap")
    public HashMap createMap(FontName[] var1) {
@@ -45,48 +45,35 @@ public class Fonts {
          if(this.map.containsKey(var5)) {
             var2.put(var5, this.map.get(var5));
          } else {
-            IndexDataBase var7 = this.field3735;
-            IndexDataBase var8 = this.field3736;
-            String var9 = var5.field3727;
+            IndexDataBase var7 = this.field3758;
+            IndexDataBase var8 = this.field3757;
+            String var9 = var5.field3749;
             int var10 = var7.getFile(var9);
             int var11 = var7.getChild(var10, "");
-            Font var6 = ScriptVarType.method35(var7, var8, var10, var11);
-            if(var6 != null) {
-               this.map.put(var5, var6);
-               var2.put(var5, var6);
+            Font var12;
+            if(!class35.method484(var7, var10, var11)) {
+               var12 = null;
+            } else {
+               byte[] var14 = var8.getConfigData(var10, var11);
+               Font var13;
+               if(var14 == null) {
+                  var13 = null;
+               } else {
+                  Font var15 = new Font(var14, class219.field2698, class263.offsetsY, class60.field708, class310.field3911, class289.field3786, class310.spritePixels);
+                  Name.method5282();
+                  var13 = var15;
+               }
+
+               var12 = var13;
+            }
+
+            if(var12 != null) {
+               this.map.put(var5, var12);
+               var2.put(var5, var12);
             }
          }
       }
 
       return var2;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)[Lko;",
-      garbageValue = "56"
-   )
-   static SpritePixels[] method5199() {
-      SpritePixels[] var0 = new SpritePixels[class310.field3894];
-
-      for(int var1 = 0; var1 < class310.field3894; ++var1) {
-         SpritePixels var2 = var0[var1] = new SpritePixels();
-         var2.maxWidth = class310.field3891;
-         var2.maxHeight = class310.field3898;
-         var2.offsetX = class310.field3892[var1];
-         var2.offsetY = class310.offsetsY[var1];
-         var2.width = class310.field3895[var1];
-         var2.height = class310.field3896[var1];
-         int var3 = var2.height * var2.width;
-         byte[] var4 = class160.spritePixels[var1];
-         var2.pixels = new int[var3];
-
-         for(int var5 = 0; var5 < var3; ++var5) {
-            var2.pixels[var5] = class310.field3897[var4[var5] & 255];
-         }
-      }
-
-      class47.method698();
-      return var0;
    }
 }

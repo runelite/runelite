@@ -1,14 +1,24 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ku")
+@ObfuscatedName("kc")
 public class class296 {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(I)[Lkq;",
-      garbageValue = "6185334"
+   @ObfuscatedName("ow")
+   @ObfuscatedGetter(
+      intValue = -1269709663
    )
-   public static Parameters[] method5332() {
-      return new Parameters[]{Parameters.field3808, Parameters.field3801, Parameters.field3798, Parameters.field3804, Parameters.field3810, Parameters.field3807, Parameters.field3805, Parameters.field3797, Parameters.field3799, Parameters.field3803, Parameters.field3802, Parameters.field3796, Parameters.field3806, Parameters.field3809, Parameters.field3795, Parameters.field3800};
+   static int field3815;
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "([BB)[B",
+      garbageValue = "-57"
+   )
+   static byte[] method5513(byte[] var0) {
+      int var1 = var0.length;
+      byte[] var2 = new byte[var1];
+      System.arraycopy(var0, 0, var2, 0, var1);
+      return var2;
    }
 }

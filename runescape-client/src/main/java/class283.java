@@ -1,40 +1,53 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jb")
+@ObfuscatedName("jh")
 public class class283 extends class207 {
-   @ObfuscatedName("pg")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -551775619
+      intValue = 1711132097
    )
-   static int field3718;
-   @ObfuscatedName("dn")
+   public int field3745;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lja;"
    )
-   @Export("indexWorldMap")
-   static IndexData indexWorldMap;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1390311161
-   )
-   public int field3719;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "Ljr;"
-   )
-   public Name field3715;
-   @ObfuscatedName("j")
-   public short field3717;
+   public Name field3746;
+   @ObfuscatedName("i")
+   public short field3744;
 
    @ObfuscatedSignature(
-      signature = "(Ljr;I)V"
+      signature = "(Lja;I)V"
    )
    class283(Name var1, int var2) {
-      this.field3719 = (int)(ScriptVarType.currentTimeMs() / 1000L);
-      this.field3715 = var1;
-      this.field3717 = (short)var2;
+      this.field3745 = (int)(SceneTilePaint.currentTimeMs() / 1000L);
+      this.field3746 = var1;
+      this.field3744 = (short)var2;
+   }
+
+   @ObfuscatedName("gl")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1393876306"
+   )
+   static void method5349(int var0) {
+      Client.field1037 = 0L;
+      if(var0 >= 2) {
+         Client.isResized = true;
+      } else {
+         Client.isResized = false;
+      }
+
+      if(BoundingBox.method40() == 1) {
+         class175.clientInstance.method806(765, 503);
+      } else {
+         class175.clientInstance.method806(7680, 2160);
+      }
+
+      if(Client.gameState >= 25) {
+         ScriptState.method985();
+      }
+
    }
 }

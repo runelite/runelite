@@ -1,7 +1,3 @@
-import java.awt.Image;
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -11,40 +7,33 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("go")
 @Implements("ISAACCipher")
 public final class ISAACCipher {
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public static IndexDataBase field2525;
-   @ObfuscatedName("ai")
-   static Image field2516;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 177743925
+      intValue = -287590129
    )
    @Export("valuesRemaining")
    int valuesRemaining;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("randResult")
    int[] randResult;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @Export("mm")
    int[] mm;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -285264015
+      intValue = -1733086969
    )
-   int field2521;
-   @ObfuscatedName("r")
+   int field2546;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 431748801
+      intValue = -1227517167
    )
-   int field2522;
-   @ObfuscatedName("m")
+   int field2550;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1316008237
+      intValue = -2055407049
    )
-   int field2523;
+   int field2548;
 
    public ISAACCipher(int[] var1) {
       this.mm = new int[256];
@@ -54,13 +43,13 @@ public final class ISAACCipher {
          this.randResult[var2] = var1[var2];
       }
 
-      this.method3686();
+      this.method3848();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-279053551"
+      garbageValue = "1520566890"
    )
    @Export("nextInt")
    final int nextInt() {
@@ -72,12 +61,12 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "1205"
+      signature = "(I)I",
+      garbageValue = "371938190"
    )
-   final int method3684() {
+   final int method3849() {
       if(this.valuesRemaining == 0) {
          this.generateMoreResults();
          this.valuesRemaining = 256;
@@ -86,43 +75,43 @@ public final class ISAACCipher {
       return this.randResult[this.valuesRemaining - 1];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1721007371"
+      garbageValue = "933777686"
    )
    @Export("generateMoreResults")
    final void generateMoreResults() {
-      this.field2522 += ++this.field2523;
+      this.field2550 += ++this.field2548;
 
       for(int var1 = 0; var1 < 256; ++var1) {
          int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2521 ^= this.field2521 << 13;
+               this.field2546 ^= this.field2546 << 13;
             } else {
-               this.field2521 ^= this.field2521 >>> 6;
+               this.field2546 ^= this.field2546 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2521 ^= this.field2521 << 2;
+            this.field2546 ^= this.field2546 << 2;
          } else {
-            this.field2521 ^= this.field2521 >>> 16;
+            this.field2546 ^= this.field2546 >>> 16;
          }
 
-         this.field2521 += this.mm[128 + var1 & 255];
+         this.field2546 += this.mm[128 + var1 & 255];
          int var3;
-         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2522 + this.field2521;
-         this.randResult[var1] = this.field2522 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.mm[(var2 & 1020) >> 2] + this.field2550 + this.field2546;
+         this.randResult[var1] = this.field2550 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-757711774"
+      garbageValue = "-1442462748"
    )
-   final void method3686() {
+   final void method3848() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -248,75 +237,5 @@ public final class ISAACCipher {
 
       this.generateMoreResults();
       this.valuesRemaining = 256;
-   }
-
-   @ObfuscatedName("ab")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "660410707"
-   )
-   protected static int method3691() {
-      int var0 = 0;
-      if(UrlRequester.field2068 == null || !UrlRequester.field2068.isValid()) {
-         try {
-            Iterator var1 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
-
-            while(var1.hasNext()) {
-               GarbageCollectorMXBean var2 = (GarbageCollectorMXBean)var1.next();
-               if(var2.isValid()) {
-                  UrlRequester.field2068 = var2;
-                  GameEngine.garbageCollectorLastCheckTimeMs = -1L;
-                  GameEngine.garbageCollectorLastCollectionTime = -1L;
-               }
-            }
-         } catch (Throwable var11) {
-            ;
-         }
-      }
-
-      if(UrlRequester.field2068 != null) {
-         long var9 = ScriptVarType.currentTimeMs();
-         long var3 = UrlRequester.field2068.getCollectionTime();
-         if(GameEngine.garbageCollectorLastCollectionTime != -1L) {
-            long var5 = var3 - GameEngine.garbageCollectorLastCollectionTime;
-            long var7 = var9 - GameEngine.garbageCollectorLastCheckTimeMs;
-            if(var7 != 0L) {
-               var0 = (int)(100L * var5 / var7);
-            }
-         }
-
-         GameEngine.garbageCollectorLastCollectionTime = var3;
-         GameEngine.garbageCollectorLastCheckTimeMs = var9;
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("kg")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
-      garbageValue = "-271169034"
-   )
-   static String method3697(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.socketType == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.socketType == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.socketType == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.socketType == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.socketType == 4) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(class61.sessionToken != null) {
-         var3 = "/p=" + class61.sessionToken;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.languageId + "/a=" + class150.field2081 + var3 + "/";
    }
 }
