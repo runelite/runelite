@@ -66,7 +66,6 @@ public class JRichTextPane extends JEditorPane
 			{
 				linkHandler = e ->
 				{
-					log.info(e.toString());
 					if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
 					{
 						if (Desktop.isDesktopSupported())
@@ -77,7 +76,7 @@ public class JRichTextPane extends JEditorPane
 							}
 							catch (URISyntaxException | IOException ex)
 							{
-								log.info("Error opening link", ex);
+								log.warn("Error opening link", ex);
 							}
 						}
 					}
