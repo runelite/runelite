@@ -28,11 +28,15 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.awt.Font;
 import com.google.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
+import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -40,6 +44,9 @@ import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.events.ClientUILoaded;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.RunnableExceptionLogger;
@@ -52,6 +59,12 @@ public class InfoPanel extends PluginPanel
 	@Inject
 	@Nullable
 	private Client client;
+
+	@Inject
+	private ClientUI clientUI;
+
+	@Inject
+	private RuneLiteConfig runeliteConfig;
 
 	@Inject
 	private RuneLiteProperties runeLiteProperties;
@@ -67,6 +80,8 @@ public class InfoPanel extends PluginPanel
 
 	private final GroupLayout layout = new GroupLayout(this);
 
+	private final JPanel toolbarPanelPlaceholder = new JPanel();
+
 	private final JLabel usernameHeader = new JLabel();
 	private final JRichTextPane username = new JRichTextPane();
 
@@ -75,6 +90,8 @@ public class InfoPanel extends PluginPanel
 		setLayout(layout);
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
+
+		toolbarPanelPlaceholder.setVisible(false);
 
 		final JLabel runeliteVersionHeader = new JLabel("RuneLite version");
 		runeliteVersionHeader.setFont(smallFont);
@@ -112,7 +129,11 @@ public class InfoPanel extends PluginPanel
 			+ "</a>"
 		);
 
+		setBorder(BorderFactory.createEmptyBorder(2, 6, 6, 6));
+
 		layout.setVerticalGroup(layout.createSequentialGroup()
+			.addComponent(toolbarPanelPlaceholder)
+			.addGap(3)
 			.addGroup(layout.createParallelGroup()
 				.addComponent(runeliteVersionHeader)
 				.addComponent(runescapeVersionHeader)
@@ -130,6 +151,9 @@ public class InfoPanel extends PluginPanel
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
 			.addGroup(layout.createSequentialGroup()
+				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+				.addComponent(toolbarPanelPlaceholder)
+			).addGroup(layout.createSequentialGroup()
 				.addComponent(runeliteVersionHeader)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 				.addComponent(runescapeVersionHeader)
@@ -154,7 +178,29 @@ public class InfoPanel extends PluginPanel
 	}
 
 	@Subscribe
-	private void onSessionOpen(SessionOpen sessionOpen)
+	private void onClientUILoaded(ClientUILoaded e)
+	{
+		// Add the title toolbar to the infopanel if the custom chrome is disabled
+		if (!runeliteConfig.enableCustomChrome())
+		{
+			try
+			{
+				SwingUtilities.invokeAndWait(() ->
+				{
+					JPanel toolbar = clientUI.getTitleToolbar();
+					layout.replace(toolbarPanelPlaceholder, toolbar);
+					toolbar.revalidate();
+				});
+			}
+			catch (InterruptedException | InvocationTargetException ex)
+			{
+				throw new RuntimeException(ex);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
 	{
 		String name = sessionManager.getAccountSession().getUsername();
 		if (name != null)

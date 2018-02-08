@@ -29,10 +29,8 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ComponentAdapter;
@@ -43,13 +41,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Enumeration;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -69,7 +63,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
@@ -78,7 +71,6 @@ public class ClientUI extends JFrame
 {
 	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
 	private static final BufferedImage ICON;
-	private static final String DISCORD_INVITE = "https://discord.gg/R4BQ8tU";
 
 	@Getter
 	private TrayIcon trayIcon;
@@ -88,6 +80,9 @@ public class ClientUI extends JFrame
 	private JPanel navContainer;
 	private PluginToolbar pluginToolbar;
 	private PluginPanel pluginPanel;
+
+	@Getter
+	private TitleToolbar titleToolbar;
 
 	static
 	{
@@ -158,45 +153,28 @@ public class ClientUI extends JFrame
 		if (customChrome)
 		{
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
+			titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
+			titleBar.add(titleToolbar);
+
+			// The title bar doesn't have a real layout manager, so we have to do it manually
+			titleBar.addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					super.componentResized(e);
+					final int width = titleToolbar.getPreferredSize().width;
+					titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
+					titleToolbar.revalidate();
+				}
+			});
 		}
 
 		pack();
 		revalidateMinimumSize();
 		setLocationRelativeTo(getOwner());
-
-		if (customChrome)
-		{
-			try
-			{
-				BufferedImage discordIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord.png"));
-				BufferedImage invertedIcon = ImageIO.read(ClientUI.class.getResourceAsStream("discord_inverted.png"));
-
-				JButton discordButton = new JButton();
-				discordButton.setToolTipText("Join Discord");
-				discordButton.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
-					{
-						super.mouseClicked(e);
-						try
-						{
-							Desktop.getDesktop().browse(new URL(DISCORD_INVITE).toURI());
-						}
-						catch (IOException | URISyntaxException ex)
-						{
-							log.warn("error opening browser", ex);
-						}
-					}
-				});
-
-				addButtonToTitleBar(discordButton, discordIcon, invertedIcon, 100);
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to load discord button", ex);
-			}
-		}
 
 		setVisible(true);
 		toFront();
@@ -215,44 +193,6 @@ public class ClientUI extends JFrame
 		{
 			client.requestFocusInWindow();
 		}
-	}
-
-	public void addButtonToTitleBar(JButton button, Image iconImage, Image invertedIconImage, int xOffset)
-	{
-		JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
-
-		if (titleBar == null)
-		{
-			return;
-		}
-
-		int size = titleBar.getHeight() - 6;
-
-		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(size, size, Image.SCALE_SMOOTH));
-		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(size, size, Image.SCALE_SMOOTH));
-
-		button.setIcon(icon);
-		button.setRolloverIcon(invertedIcon);
-		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
-		button.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-		button.setFocusable(false);
-		button.setBounds(titleBar.getWidth() - xOffset, 2,
-				icon.getIconWidth() + 4, icon.getIconHeight() + 2);
-
-		titleBar.addComponentListener(new ComponentAdapter()
-		{
-			@Override
-			public void componentResized(ComponentEvent e)
-			{
-				super.componentResized(e);
-				button.setBounds(titleBar.getWidth() - xOffset, 1, button.getWidth(), button.getHeight());
-			}
-		});
-
-		titleBar.add(button);
-
-		revalidate();
-		repaint();
 	}
 
 	@Subscribe
@@ -381,6 +321,8 @@ public class ClientUI extends JFrame
 
 		pluginToolbar = new PluginToolbar(this);
 		container.add(pluginToolbar);
+
+		titleToolbar = new TitleToolbar(properties);
 
 		add(container);
 	}
