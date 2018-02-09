@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,28 +28,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class FishingSpotOverlay extends Overlay
+class FishingSpotMinimapOverlay extends Overlay
 {
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
 
 	@Inject
-	ItemManager itemManager;
-
-	@Inject
-	public FishingSpotOverlay(FishingPlugin plugin, FishingConfig config)
+	public FishingSpotMinimapOverlay(FishingPlugin plugin, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -78,27 +73,14 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
-			if (config.showIcons())
+
+			net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
+			if (minimapLocation != null)
 			{
-				BufferedImage fishImage = getFishImage(spot);
-				if (fishImage != null)
-				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker());
-				}
-			}
-			else
-			{
-				String text = spot.getName();
-				OverlayUtil.renderActorOverlay(graphics, npc, text, color.darker());
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
 			}
 		}
 
 		return null;
-	}
-
-	private BufferedImage getFishImage(FishingSpot spot)
-	{
-		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
-		return fishImage;
 	}
 }

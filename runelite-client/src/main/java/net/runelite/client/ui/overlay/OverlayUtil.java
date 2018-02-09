@@ -244,12 +244,6 @@ public class OverlayUtil
 			renderPolygon(graphics, poly, color);
 		}
 
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			renderMinimapLocation(graphics, minimapLocation, color);
-		}
-
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight() + 40);
 		if (textLocation != null)
 		{
@@ -263,12 +257,6 @@ public class OverlayUtil
 		if (poly != null)
 		{
 			renderPolygon(graphics, poly, color);
-		}
-
-		Point minimapLocation = actor.getMinimapLocation();
-		if (minimapLocation != null)
-		{
-			renderMinimapLocation(graphics, minimapLocation, color);
 		}
 
 		Point imageLocation = actor.getCanvasImageLocation(graphics, image, actor.getLogicalHeight());
