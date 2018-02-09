@@ -33,7 +33,7 @@ public class Counter extends InfoBox
 
 	public Counter(BufferedImage image, String text)
 	{
-		super(image);
+		super(image, Type.MISCELLANEOUS);
 		this.text = text;
 	}
 
