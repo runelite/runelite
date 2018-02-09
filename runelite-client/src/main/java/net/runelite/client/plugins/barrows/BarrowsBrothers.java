@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.barrows;
 
-import net.runelite.api.ObjectComposition;
-import net.runelite.mapping.Import;
+import lombok.Getter;
+import net.runelite.api.Point;
 
-public interface RSObjectComposition extends ObjectComposition
+public enum BarrowsBrothers
 {
-	@Import("name")
-	@Override
-	String getName();
+	VERAC("V", new Point(3557, 3298)),
+	DHAROK("D", new Point(3575, 3298)),
+	AHRIM("A", new Point(3566, 3289)),
+	TORAG("T", new Point(3553, 3283)),
+	KARIL("K", new Point(3566, 3275)),
+	GUTHAN("G", new Point(3577, 3283));
 
-	@Import("actions")
-	@Override
-	String[] getActions();
+	@Getter
+	private final String name;
+	@Getter
+	private final Point location;
 
-	@Import("mapSceneId")
-	@Override
-	int getMapSceneId();
-
-	@Import("mapIconId")
-	@Override
-	int getMapIconId();
-
-	@Import("impostorIds")
-	@Override
-	int[] getImpostorIds();
-
-	@Import("getImpostor")
-	@Override
-	RSObjectComposition getImpostor();
+	BarrowsBrothers(String name, net.runelite.api.Point location)
+	{
+		this.name = name;
+		this.location = location;
+	}
 }
