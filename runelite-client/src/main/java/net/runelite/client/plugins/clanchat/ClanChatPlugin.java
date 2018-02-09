@@ -70,7 +70,30 @@ public class ClanChatPlugin extends Plugin
 	};
 
 
-	private LoadingCache<String, ClanMemberRank> clanRanksCache;
+	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
+		.maximumSize(100)
+		.expireAfterAccess(1, TimeUnit.MINUTES)
+		.build(new CacheLoader<String, ClanMemberRank>()
+		{
+			@Override
+			public ClanMemberRank load(String key) throws Exception
+			{
+				final ClanMember[] clanMembersArr = client.getClanMembers();
+
+				if (clanMembersArr == null || clanMembersArr.length == 0)
+				{
+					return ClanMemberRank.UNRANKED;
+				}
+
+				return Arrays.stream(clanMembersArr)
+					.filter(Objects::nonNull)
+					.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
+					.map(ClanMember::getRank)
+					.findAny()
+					.orElse(ClanMemberRank.UNRANKED);
+			}
+		});
+
 	private int modIconsLength;
 
 	@Inject
@@ -79,29 +102,16 @@ public class ClanChatPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clanRanksCache = CacheBuilder.newBuilder()
-			.maximumSize(100)
-			.expireAfterAccess(1, TimeUnit.MINUTES)
-			.build(new CacheLoader<String, ClanMemberRank>()
-			{
-				@Override
-				public ClanMemberRank load(String key) throws Exception
-				{
-					final ClanMember[] clanMembersArr = client.getClanMembers();
+		if (modIconsLength == 0 && client.getGameState().compareTo(GameState.LOGIN_SCREEN) >= 0)
+		{
+			loadClanChatIcons();
+		}
+	}
 
-					if (clanMembersArr == null || clanMembersArr.length == 0)
-					{
-						return ClanMemberRank.UNRANKED;
-					}
-
-					return Arrays.stream(clanMembersArr)
-						.filter(Objects::nonNull)
-						.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
-						.map(ClanMember::getRank)
-						.findAny()
-						.orElse(ClanMemberRank.UNRANKED);
-				}
-			});
+	@Override
+	protected void shutDown()
+	{
+		clanRanksCache.invalidateAll();
 	}
 
 	@Subscribe
