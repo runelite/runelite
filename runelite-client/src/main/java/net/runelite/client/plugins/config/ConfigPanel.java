@@ -149,6 +149,7 @@ public class ConfigPanel extends PluginPanel
 		Map<String, JPanel> newChildren = new TreeMap<>();
 
 		pluginManager.getPlugins().stream()
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
 				.sorted(Comparator.comparing(left -> left.getClass().getAnnotation(PluginDescriptor.class).name()))
 				.forEach(plugin ->
 				{
