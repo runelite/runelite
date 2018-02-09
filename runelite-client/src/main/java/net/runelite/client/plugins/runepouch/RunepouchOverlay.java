@@ -36,6 +36,7 @@ import net.runelite.api.Query;
 import net.runelite.api.Varbits;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -55,13 +56,16 @@ public class RunepouchOverlay extends Overlay
 	{
 		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
 	};
+	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
-	private final RuneImageCache runeImageCache = new RuneImageCache();
 
 	private final QueryRunner queryRunner;
 	private final Client client;
 	private final RunepouchConfig config;
 	private final TooltipManager tooltipManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	RunepouchOverlay(QueryRunner queryRunner, Client client, RunepouchConfig config, TooltipManager tooltipManager)
@@ -114,11 +118,16 @@ public class RunepouchOverlay extends Overlay
 
 			Varbits runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getSetting(runeVarbit);
+			Runes rune = Runes.getRune(runeId);
+			if (rune == null)
+			{
+				continue;
+			}
 
 			tooltipBuilder
 				.append(amount)
 				.append(" <col=ffff00>")
-				.append(runeImageCache.getName(runeId))
+				.append(rune.getName())
 				.append("</col></br>");
 
 			if (config.showOnlyOnHover())
@@ -127,27 +136,27 @@ public class RunepouchOverlay extends Overlay
 			}
 
 			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 1),
-				location.getY() + 14 + graphics.getFontMetrics().getHeight() * i);
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 6),
+				location.getY() + 14 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
 			graphics.setColor(config.fontColor());
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 0),
-				location.getY() + 13 + graphics.getFontMetrics().getHeight() * i);
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
+				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
 			if (!config.showIcons())
 			{
 				continue;
 			}
 
-			BufferedImage runeImg = runeImageCache.getImage(runeId);
-			if (runeImg != null)
+			BufferedImage image = getRuneImage(rune);
+			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX(), location.getY() + 2 + (graphics.getFontMetrics().getHeight()) * i),
-					runeImg);
+					new Point(location.getX(), location.getY() + graphics.getFontMetrics().getHeight() * i),
+					getRuneImage(rune));
 			}
 		}
-		
+
 		String tooltip = tooltipBuilder.toString();
 
 		if (!tooltip.isEmpty() && runePouch.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
@@ -155,6 +164,29 @@ public class RunepouchOverlay extends Overlay
 			tooltipManager.add(new Tooltip(tooltip));
 		}
 		return null;
+	}
+
+	private BufferedImage getRuneImage(Runes rune)
+	{
+		BufferedImage runeImg = rune.getImage();
+		if (runeImg != null)
+		{
+			return runeImg;
+		}
+
+		runeImg = itemManager.getImage(rune.getItemId());
+		if (runeImg == null)
+		{
+			return null;
+		}
+
+		BufferedImage resizedImg = new BufferedImage(IMAGE_SIZE.width, IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImg.createGraphics();
+		g.drawImage(runeImg, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
+		g.dispose();
+
+		rune.setImage(resizedImg);
+		return resizedImg;
 	}
 
 	private static String formatNumber(int amount)
