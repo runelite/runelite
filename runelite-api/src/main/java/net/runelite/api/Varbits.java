@@ -192,7 +192,13 @@ public enum Varbits
 	/**
 	 * Raids
 	 */
-	IN_RAID(5432, 1431, 31, 31);
+	IN_RAID(5432, 1431, 31, 31),
+
+	/**
+	 * Nightmare Zone
+	 */
+	NMZ_ABSORPTION(3956, 1067, 5, 14),
+	NMZ_POINTS(3949, 1059, 0, 19);
 
 	/**
 	 * varbit id

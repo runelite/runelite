@@ -167,7 +167,9 @@ public enum WidgetInfo
 
 	MOTHERLODE_MINE(WidgetID.MOTHERLODE_MINE_GROUP_ID, 0),
 
-	PUZZLE_BOX(WidgetID.PUZZLE_BOX_GROUP_ID, WidgetID.PuzzleBox.VISIBLE_BOX);
+	PUZZLE_BOX(WidgetID.PUZZLE_BOX_GROUP_ID, WidgetID.PuzzleBox.VISIBLE_BOX),
+
+	NIGHTMARE_ZONE(WidgetID.NIGHTMARE_ZONE_GROUP_ID, 1);
 
 	private final int groupId;
 	private final int childId;
