@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.rs.api;
 
-import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
-import net.runelite.api.Script;
-import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Replace;
-import net.runelite.client.callback.Hooks;
-
-//@Mixin(RSClient.class)
-public abstract class VmMixin
+public interface RSScriptEvent
 {
-	@Copy("execute6500")
-	static int rs$execute6500(int opcode, Script script, boolean isOne)
-	{
-		throw new RuntimeException();
-	}
-
-	@Replace("execute6500")
-	static int rl$execute6500(int opcode, Script script, boolean isOne)
-	{
-		if (opcode == RUNELITE_EXECUTE)
-		{
-			return Hooks.runeliteExecute(opcode, script, isOne);
-		}
-		return rs$execute6500(opcode, script, isOne);
-	}
 }
