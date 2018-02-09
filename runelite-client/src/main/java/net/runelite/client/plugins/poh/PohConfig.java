@@ -244,4 +244,14 @@ public interface PohConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "hideBury",
+			name = "Hide Bury option",
+			description = "Configures whether 'Bury' option is listed on item menu"
+	)
+	default boolean hideBury ()
+	{
+		return false;
+	}
 }

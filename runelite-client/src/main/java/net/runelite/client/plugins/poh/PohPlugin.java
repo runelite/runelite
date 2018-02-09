@@ -32,11 +32,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
 import static net.runelite.api.ObjectID.INCENSE_BURNER;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13209;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13210;
@@ -47,6 +50,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -68,6 +72,12 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
+
+	@Inject
+	private PohConfig config;
+
+	@Inject
+	private Client client;
 
 	@Override
 	public void configure(Binder binder)
@@ -122,6 +132,26 @@ public class PohPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			pohObjects.clear();
+		}
+	}
+
+	@Subscribe
+	public void onMenuOpen(MenuEntryAdded event)
+	{
+		ArrayList<MenuEntry> entries = new ArrayList<>();
+		if (config.enabled() && config.hideBury())
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			entries.clear();
+			for (MenuEntry entry : menuEntries)
+			{
+				String option = entry.getOption();
+				if (!option.startsWith("Bury"))
+				{
+					entries.add(entry);
+				}
+			}
+			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 		}
 	}
 }
