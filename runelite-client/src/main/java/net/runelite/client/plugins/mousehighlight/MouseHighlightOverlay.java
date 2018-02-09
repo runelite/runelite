@@ -88,6 +88,12 @@ class MouseHighlightOverlay extends Overlay
 			case "Cancel":
 			case "Continue":
 				return null;
+			case "Move":
+				// Hide overlay on sliding puzzle boxes
+				if (target.contains("Sliding piece"))
+				{
+					return null;
+				}
 		}
 
 		tooltipManager.add(new Tooltip(option + " " + target));
