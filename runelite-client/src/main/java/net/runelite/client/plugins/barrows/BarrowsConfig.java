@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.barrows;
 
-import net.runelite.api.ObjectComposition;
-import net.runelite.mapping.Import;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public interface RSObjectComposition extends ObjectComposition
+@ConfigGroup(
+	keyName = "barrows",
+	name = "Barrows Plugin",
+	description = "Configuration for the Barrows plugin"
+)
+public interface BarrowsConfig extends Config
 {
-	@Import("name")
-	@Override
-	String getName();
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not the Barrows plugin is displayed"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 
-	@Import("actions")
-	@Override
-	String[] getActions();
+	@ConfigItem(
+		keyName = "showMinimap",
+		name = "Show Minimap in tunnels",
+		description = "Configures whether or not the minimap is displayed"
+	)
+	default boolean showMinimap()
+	{
+		return true;
+	}
 
-	@Import("mapSceneId")
-	@Override
-	int getMapSceneId();
-
-	@Import("mapIconId")
-	@Override
-	int getMapIconId();
-
-	@Import("impostorIds")
-	@Override
-	int[] getImpostorIds();
-
-	@Import("getImpostor")
-	@Override
-	RSObjectComposition getImpostor();
+	@ConfigItem(
+		keyName = "showBrotherLoc",
+		name = "Show Brothers location",
+		description = "Configures whether or not the brothers location is displayed"
+	)
+	default boolean showBrotherLoc()
+	{
+		return true;
+	}
 }
