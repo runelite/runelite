@@ -1,102 +1,66 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ax")
+@ObfuscatedName("af")
 public class class31 {
-   @ObfuscatedName("nr")
-   @ObfuscatedSignature(
-      signature = "Lkx;"
-   )
-   static class301 field415;
-   @ObfuscatedName("t")
-   @Export("colorsToFind")
-   public static short[] colorsToFind;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 935254351
-   )
-   static int field417;
-   @ObfuscatedName("h")
-   static int[] field413;
-   @ObfuscatedName("jw")
-   @ObfuscatedGetter(
-      intValue = -1857097095
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 710613741
-   )
-   final int field412;
    @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1643357209
+   @ObfuscatedSignature(
+      signature = "[Lbs;"
    )
-   final int field414;
-   @ObfuscatedName("w")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 75270309
+      intValue = 1884190427
    )
-   final int field411;
+   static int field425;
+   @ObfuscatedName("an")
+   static int[] field424;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 452860795
+   )
+   final int field419;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1053715011
+   )
+   final int field423;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1131360409
+   )
+   final int field421;
 
    class31(int var1, int var2, int var3) {
-      this.field412 = var1;
-      this.field414 = var2;
-      this.field411 = var3;
+      this.field419 = var1;
+      this.field423 = var2;
+      this.field421 = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-2005662060"
+      signature = "(I)[Lkh;",
+      garbageValue = "364820352"
    )
-   @Export("sendConInfo")
-   public static void sendConInfo(boolean var0) {
-      if(class249.NetCache_socket != null) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.putByte(var0?2:3);
-            var1.put24bitInt(0);
-            class249.NetCache_socket.vmethod3192(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class249.NetCache_socket.vmethod3186();
-            } catch (Exception var3) {
-               ;
-            }
+   static IndexedSprite[] method270() {
+      IndexedSprite[] var0 = new IndexedSprite[class310.field3909];
 
-            ++class249.field3337;
-            class249.NetCache_socket = null;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(III)Lho;",
-      garbageValue = "-808855025"
-   )
-   @Export("getWidgetChild")
-   public static Widget getWidgetChild(int var0, int var1) {
-      Widget var2 = class35.getWidget(var0);
-      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "2057841909"
-   )
-   public static void method288(boolean var0) {
-      if(var0 != class255.isMembersWorld) {
-         KeyFocusListener.method759();
-         class255.isMembersWorld = var0;
+      for(int var1 = 0; var1 < class310.field3909; ++var1) {
+         IndexedSprite var2 = var0[var1] = new IndexedSprite();
+         var2.width = class310.field3908;
+         var2.originalHeight = class310.field3910;
+         var2.offsetX = class219.field2698[var1];
+         var2.offsetY = class263.offsetsY[var1];
+         var2.originalWidth = class60.field708[var1];
+         var2.height = class310.field3911[var1];
+         var2.palette = class289.field3786;
+         var2.pixels = class310.spritePixels[var1];
       }
 
+      Name.method5282();
+      return var0;
    }
 }

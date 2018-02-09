@@ -3,75 +3,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hj")
 public class class230 implements class229 {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2886;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2880;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2878;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhj;"
    )
-   public static final class230 field2884;
-   @ObfuscatedName("j")
+   public static final class230 field2892;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhj;"
    )
-   public static final class230 field2879;
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2881;
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2882;
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "Lhe;"
-   )
-   public static final class230 field2883;
+   public static final class230 field2893;
    @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhj;"
    )
-   static final class230 field2885;
+   public static final class230 field2894;
    @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lhe;"
+      signature = "Lhj;"
    )
-   public static final class230 field2876;
-   @ObfuscatedName("o")
+   public static final class230 field2895;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   public static final class230 field2896;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   public static final class230 field2897;
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   public static final class230 field2898;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   public static final class230 field2902;
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   static final class230 field2900;
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "Lhj;"
+   )
+   public static final class230 field2901;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -994179067
+      intValue = 1668077241
    )
-   public final int field2877;
+   public final int field2899;
 
    static {
-      field2886 = new class230("", 10);
-      field2880 = new class230("", 11);
-      field2878 = new class230("", 12);
-      field2884 = new class230("", 13);
-      field2879 = new class230("", 14);
-      field2881 = new class230("", 15, new ScriptVarType[]{ScriptVarType.field69, ScriptVarType.field69}, (ScriptVarType[])null);
-      field2882 = new class230("", 16, new ScriptVarType[]{ScriptVarType.field69, ScriptVarType.field69}, (ScriptVarType[])null);
-      field2883 = new class230("", 17, new ScriptVarType[]{ScriptVarType.field69, ScriptVarType.field69}, (ScriptVarType[])null);
-      field2885 = new class230("", 73, true, true);
-      field2876 = new class230("", 76, true, false);
+      field2892 = new class230("", 10);
+      field2893 = new class230("", 11);
+      field2894 = new class230("", 12);
+      field2895 = new class230("", 13);
+      field2896 = new class230("", 14);
+      field2897 = new class230("", 15, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
+      field2898 = new class230("", 16, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
+      field2902 = new class230("", 17, new ScriptVarType[]{ScriptVarType.field200, ScriptVarType.field200}, (ScriptVarType[])null);
+      field2900 = new class230("", 73, true, true);
+      field2901 = new class230("", 76, true, false);
    }
 
    class230(String var1, int var2) {
@@ -82,50 +82,36 @@ public class class230 implements class229 {
       signature = "(Ljava/lang/String;IZ[Lt;Z[Lt;)V"
    )
    class230(String var1, int var2, boolean var3, ScriptVarType[] var4, boolean var5, ScriptVarType[] var6) {
-      this.field2877 = var2;
+      this.field2899 = var2;
    }
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I[Lt;[Lt;)V"
    )
    class230(String var1, int var2, ScriptVarType[] var3, ScriptVarType[] var4) {
-      this(var1, var2, var3 != null, var3, null != var4, var4);
+      this(var1, var2, var3 != null, var3, var4 != null, var4);
    }
 
    class230(String var1, int var2, boolean var3, boolean var4) {
       this(var1, var2, var3, (ScriptVarType[])null, var4, (ScriptVarType[])null);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "8"
+      signature = "(I)I",
+      garbageValue = "744101166"
    )
    public int rsOrdinal() {
-      return this.field2877;
+      return this.field2899;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)Ljp;",
-      garbageValue = "-672594403"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-1215432455"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.npcs.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = NPCComposition.NpcDefinition_indexCache.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         var1.post();
-         NPCComposition.npcs.put(var1, (long)var0);
-         return var1;
-      }
+   @Export("getItemStackAmountText")
+   static final String getItemStackAmountText(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

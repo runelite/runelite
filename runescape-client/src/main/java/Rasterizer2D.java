@@ -3,28 +3,28 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ky")
+@ObfuscatedName("kj")
 @Implements("Rasterizer2D")
 public class Rasterizer2D extends CacheableNode {
-   @ObfuscatedName("ap")
+   @ObfuscatedName("al")
    @Export("graphicsPixels")
    public static int[] graphicsPixels;
-   @ObfuscatedName("ao")
+   @ObfuscatedName("aq")
    @Export("graphicsPixelsWidth")
    public static int graphicsPixelsWidth;
    @ObfuscatedName("ar")
    @Export("graphicsPixelsHeight")
    public static int graphicsPixelsHeight;
-   @ObfuscatedName("ay")
+   @ObfuscatedName("an")
    @Export("drawingAreaTop")
    public static int drawingAreaTop;
-   @ObfuscatedName("ax")
+   @ObfuscatedName("af")
    @Export("drawingAreaRight")
    public static int drawingAreaRight;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("as")
    @Export("draw_region_x")
    public static int draw_region_x;
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ax")
    @Export("drawingAreaBottom")
    protected static int drawingAreaBottom;
 
@@ -44,7 +44,7 @@ public class Rasterizer2D extends CacheableNode {
       setDrawRegion(0, 0, var1, var2);
    }
 
-   @ObfuscatedName("cm")
+   @ObfuscatedName("cs")
    @Export("noClip")
    public static void noClip() {
       draw_region_x = 0;
@@ -53,7 +53,7 @@ public class Rasterizer2D extends CacheableNode {
       drawingAreaRight = graphicsPixelsHeight;
    }
 
-   @ObfuscatedName("cn")
+   @ObfuscatedName("cq")
    @Export("setDrawRegion")
    public static void setDrawRegion(int var0, int var1, int var2, int var3) {
       if(var0 < 0) {
@@ -78,7 +78,7 @@ public class Rasterizer2D extends CacheableNode {
       drawingAreaRight = var3;
    }
 
-   @ObfuscatedName("cb")
+   @ObfuscatedName("cz")
    @Export("setInnerDrawRegion")
    public static void setInnerDrawRegion(int var0, int var1, int var2, int var3) {
       if(draw_region_x < var0) {
@@ -99,7 +99,7 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("cq")
+   @ObfuscatedName("ct")
    @Export("copyDrawRegion")
    public static void copyDrawRegion(int[] var0) {
       var0[0] = draw_region_x;
@@ -108,7 +108,7 @@ public class Rasterizer2D extends CacheableNode {
       var0[3] = drawingAreaRight;
    }
 
-   @ObfuscatedName("cd")
+   @ObfuscatedName("dr")
    @Export("setDrawRegion")
    public static void setDrawRegion(int[] var0) {
       draw_region_x = var0[0];
@@ -117,7 +117,7 @@ public class Rasterizer2D extends CacheableNode {
       drawingAreaRight = var0[3];
    }
 
-   @ObfuscatedName("cs")
+   @ObfuscatedName("dc")
    @Export("reset")
    public static void reset() {
       int var0 = 0;
@@ -139,8 +139,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("ck")
-   static void method5398(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("dz")
+   static void method5583(int var0, int var1, int var2, int var3) {
       if(var2 == 0) {
          Rasterizer2D_setPixel(var0, var1, var3);
       } else {
@@ -233,11 +233,11 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("cj")
-   public static void method5399(int var0, int var1, int var2, int var3, int var4) {
+   @ObfuscatedName("ds")
+   public static void method5562(int var0, int var1, int var2, int var3, int var4) {
       if(var4 != 0) {
          if(var4 == 256) {
-            method5398(var0, var1, var2, var3);
+            method5583(var0, var1, var2, var3);
          } else {
             if(var2 < 0) {
                var2 = -var2;
@@ -345,7 +345,7 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("cz")
+   @ObfuscatedName("df")
    @Export("fillRectangle")
    public static void fillRectangle(int var0, int var1, int var2, int var3, int var4, int var5) {
       if(var0 < draw_region_x) {
@@ -383,7 +383,7 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("ce")
+   @ObfuscatedName("dl")
    @Export("Rasterizer2D_fillRectangle")
    public static void Rasterizer2D_fillRectangle(int var0, int var1, int var2, int var3, int var4) {
       if(var0 < draw_region_x) {
@@ -417,8 +417,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("cf")
-   public static void method5402(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("da")
+   public static void method5565(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = var5 == var4 && var7 == var6?-1:65536 / var3;
       int var10 = var6;
@@ -481,8 +481,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("cr")
-   public static void method5472(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("dh")
+   public static void method5566(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = var5 == var4 && var7 == var6?-1:65536 / var3;
       int var10 = var6;
@@ -559,8 +559,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("cp")
-   public static void method5454(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("dj")
+   public static void method5567(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = 65536 / var3;
       int var10 = var6;
@@ -633,8 +633,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("dp")
-   public static void method5405(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("do")
+   public static void method5568(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = 65536 / var3;
       int var10 = var6;
@@ -707,8 +707,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("du")
-   public static void method5481(int var0, int var1, int var2, int var3, int var4, int var5) {
+   @ObfuscatedName("dv")
+   public static void method5569(int var0, int var1, int var2, int var3, int var4, int var5) {
       int var6 = 0;
       int var7 = 65536 / var3;
       if(var0 < draw_region_x) {
@@ -748,12 +748,12 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("do")
+   @ObfuscatedName("dg")
    @ObfuscatedSignature(
       signature = "(IIIIII[BIZ)V",
       garbageValue = "1"
    )
-   public static void method5396(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
+   public static void method5570(int var0, int var1, int var2, int var3, int var4, int var5, byte[] var6, int var7) {
       if(var0 + var2 >= 0 && var3 + var1 >= 0) {
          if(var0 < graphicsPixelsWidth && var1 < graphicsPixelsHeight) {
             int var8 = 0;
@@ -828,16 +828,16 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("dk")
+   @ObfuscatedName("dt")
    @Export("drawRectangle")
    public static void drawRectangle(int var0, int var1, int var2, int var3, int var4) {
-      method5410(var0, var1, var2, var4);
-      method5410(var0, var3 + var1 - 1, var2, var4);
-      method5464(var0, var1, var3, var4);
-      method5464(var0 + var2 - 1, var1, var3, var4);
+      method5573(var0, var1, var2, var4);
+      method5573(var0, var3 + var1 - 1, var2, var4);
+      method5575(var0, var1, var3, var4);
+      method5575(var0 + var2 - 1, var1, var3, var4);
    }
 
-   @ObfuscatedName("df")
+   @ObfuscatedName("dx")
    @Export("Rasterizer2D_drawRectangleAlpha")
    public static void Rasterizer2D_drawRectangleAlpha(int var0, int var1, int var2, int var3, int var4, int var5) {
       Rasterizer2D_drawHorizontalLineAlpha(var0, var1, var2, var4, var5);
@@ -849,8 +849,8 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("de")
-   public static void method5410(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("db")
+   public static void method5573(int var0, int var1, int var2, int var3) {
       if(var1 >= drawingAreaTop && var1 < drawingAreaRight) {
          if(var0 < draw_region_x) {
             var2 -= draw_region_x - var0;
@@ -870,7 +870,7 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("dn")
+   @ObfuscatedName("dd")
    @Export("Rasterizer2D_drawHorizontalLineAlpha")
    static void Rasterizer2D_drawHorizontalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
       if(var1 >= drawingAreaTop && var1 < drawingAreaRight) {
@@ -900,8 +900,8 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("di")
-   public static void method5464(int var0, int var1, int var2, int var3) {
+   @ObfuscatedName("dk")
+   public static void method5575(int var0, int var1, int var2, int var3) {
       if(var0 >= draw_region_x && var0 < drawingAreaBottom) {
          if(var1 < drawingAreaTop) {
             var2 -= drawingAreaTop - var1;
@@ -921,7 +921,7 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("da")
+   @ObfuscatedName("dq")
    @Export("Rasterizer2D_drawVerticalLineAlpha")
    static void Rasterizer2D_drawVerticalLineAlpha(int var0, int var1, int var2, int var3, int var4) {
       if(var0 >= draw_region_x && var0 < drawingAreaBottom) {
@@ -952,23 +952,23 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("ds")
+   @ObfuscatedName("dp")
    @Export("drawLine")
    public static void drawLine(int var0, int var1, int var2, int var3, int var4) {
       var2 -= var0;
       var3 -= var1;
       if(var3 == 0) {
          if(var2 >= 0) {
-            method5410(var0, var1, var2 + 1, var4);
+            method5573(var0, var1, var2 + 1, var4);
          } else {
-            method5410(var0 + var2, var1, -var2 + 1, var4);
+            method5573(var0 + var2, var1, -var2 + 1, var4);
          }
 
       } else if(var2 == 0) {
          if(var3 >= 0) {
-            method5464(var0, var1, var3 + 1, var4);
+            method5575(var0, var1, var3 + 1, var4);
          } else {
-            method5464(var0, var3 + var1, -var3 + 1, var4);
+            method5575(var0, var3 + var1, -var3 + 1, var4);
          }
 
       } else {
@@ -1043,7 +1043,7 @@ public class Rasterizer2D extends CacheableNode {
    }
 
    @ObfuscatedName("dw")
-   public static void method5473(int var0, int var1, int var2, int[] var3, int[] var4) {
+   public static void method5598(int var0, int var1, int var2, int[] var3, int[] var4) {
       int var5 = var0 + graphicsPixelsWidth * var1;
 
       for(var1 = 0; var1 < var3.length; ++var1) {

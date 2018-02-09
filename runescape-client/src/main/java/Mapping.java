@@ -2,39 +2,39 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("dd")
 @Implements("Mapping")
 public class Mapping {
-   @ObfuscatedName("p")
-   int field1602;
-   @ObfuscatedName("i")
+   @ObfuscatedName("s")
+   int field1631;
+   @ObfuscatedName("g")
    @Export("mux")
    int mux;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("submapFloors")
    int[] submapFloors;
-   @ObfuscatedName("s")
-   int[] field1604;
+   @ObfuscatedName("h")
+   int[] field1632;
 
    Mapping() {
-      class103.getInt(16);
-      this.field1602 = class103.getBit() != 0?class103.getInt(4) + 1:1;
-      if(class103.getBit() != 0) {
-         class103.getInt(8);
+      class105.getInt(16);
+      this.field1631 = class105.getBit() != 0?class105.getInt(4) + 1:1;
+      if(class105.getBit() != 0) {
+         class105.getInt(8);
       }
 
-      class103.getInt(2);
-      if(this.field1602 > 1) {
-         this.mux = class103.getInt(4);
+      class105.getInt(2);
+      if(this.field1631 > 1) {
+         this.mux = class105.getInt(4);
       }
 
-      this.submapFloors = new int[this.field1602];
-      this.field1604 = new int[this.field1602];
+      this.submapFloors = new int[this.field1631];
+      this.field1632 = new int[this.field1631];
 
-      for(int var1 = 0; var1 < this.field1602; ++var1) {
-         class103.getInt(8);
-         this.submapFloors[var1] = class103.getInt(8);
-         this.field1604[var1] = class103.getInt(8);
+      for(int var1 = 0; var1 < this.field1631; ++var1) {
+         class105.getInt(8);
+         this.submapFloors[var1] = class105.getInt(8);
+         this.field1632[var1] = class105.getInt(8);
       }
 
    }

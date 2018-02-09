@@ -4,12 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("ee")
 @Implements("NanoTimer")
 public class NanoTimer extends Timer {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      longValue = -8446437226234075015L
+      longValue = 3532384758210787507L
    )
    @Export("nanoTime")
    long nanoTime;
@@ -18,32 +18,32 @@ public class NanoTimer extends Timer {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "41"
+      signature = "(I)V",
+      garbageValue = "1942817352"
    )
-   public void vmethod3175() {
+   public void vmethod3287() {
       this.nanoTime = System.nanoTime();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-791155116"
+      garbageValue = "2085537313"
    )
-   public int vmethod3176(int var1, int var2) {
-      long var3 = (long)var2 * 1000000L;
+   public int vmethod3288(int var1, int var2) {
+      long var3 = 1000000L * (long)var2;
       long var5 = this.nanoTime - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      class1.method3(var5 / 1000000L);
+      Tile.method2712(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;
-      for(var9 = 0; var9 < 10 && (var9 < 1 || this.nanoTime < var7); this.nanoTime += (long)var1 * 1000000L) {
+      for(var9 = 0; var9 < 10 && (var9 < 1 || this.nanoTime < var7); this.nanoTime += 1000000L * (long)var1) {
          ++var9;
       }
 

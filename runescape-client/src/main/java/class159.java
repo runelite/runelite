@@ -1,230 +1,80 @@
 import java.io.IOException;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("ff")
 public abstract class class159 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)Z",
-      garbageValue = "-1280125978"
+      garbageValue = "-2070343570"
    )
-   public abstract boolean vmethod3220(int var1) throws IOException;
+   public abstract boolean vmethod3297(int var1) throws IOException;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "479833160"
+   )
+   public abstract int vmethod3300() throws IOException;
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "91"
+   )
+   public abstract int vmethod3301() throws IOException;
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "([BIIB)I",
+      garbageValue = "-14"
+   )
+   public abstract int vmethod3302(byte[] var1, int var2, int var3) throws IOException;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-120"
+      signature = "([BIII)V",
+      garbageValue = "16711680"
    )
-   public abstract int vmethod3188() throws IOException;
+   public abstract void vmethod3304(byte[] var1, int var2, int var3) throws IOException;
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-693383529"
-   )
-   public abstract int vmethod3215() throws IOException;
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "-719042495"
-   )
-   public abstract int vmethod3190(byte[] var1, int var2, int var3) throws IOException;
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "44"
-   )
-   public abstract void vmethod3192(byte[] var1, int var2, int var3) throws IOException;
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-953149698"
+      garbageValue = "1598662762"
    )
-   public abstract void vmethod3186();
+   public abstract void vmethod3299();
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("gp")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lld;I)Ljava/lang/String;",
-      garbageValue = "-2134727145"
+      signature = "(ZI)V",
+      garbageValue = "1421639468"
    )
-   @Export("cleanUsername")
-   public static String cleanUsername(CharSequence var0, JagexLoginType var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         int var2 = 0;
-
-         int var3;
-         for(var3 = var0.length(); var2 < var3 && class39.method535(var0.charAt(var2)); ++var2) {
-            ;
-         }
-
-         while(var3 > var2 && class39.method535(var0.charAt(var3 - 1))) {
-            --var3;
-         }
-
-         int var4 = var3 - var2;
-         if(var4 >= 1) {
-            byte var6;
-            if(var1 == null) {
-               var6 = 12;
-            } else {
-               switch(var1.field3964) {
-               case 3:
-                  var6 = 20;
-                  break;
-               default:
-                  var6 = 12;
-               }
-            }
-
-            if(var4 <= var6) {
-               StringBuilder var12 = new StringBuilder(var4);
-
-               for(int var14 = var2; var14 < var3; ++var14) {
-                  char var7 = var0.charAt(var14);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
-                  } else if(MilliTimer.method3053(var7)) {
-                     var8 = true;
-                  } else {
-                     char[] var13 = class290.field3763;
-                     int var10 = 0;
-
-                     label98:
-                     while(true) {
-                        char var11;
-                        if(var10 >= var13.length) {
-                           var13 = class290.field3766;
-
-                           for(var10 = 0; var10 < var13.length; ++var10) {
-                              var11 = var13[var10];
-                              if(var11 == var7) {
-                                 var8 = true;
-                                 break label98;
-                              }
-                           }
-
-                           var8 = false;
-                           break;
-                        }
-
-                        var11 = var13[var10];
-                        if(var7 == var11) {
-                           var8 = true;
-                           break;
-                        }
-
-                        ++var10;
-                     }
+   static final void method3257(boolean var0) {
+      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
+         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
+         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method5026()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field1127 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field1027[var4][var5] == Client.field928) {
+                     continue;
                   }
 
-                  if(var8) {
-                     char var9;
-                     switch(var7) {
-                     case ' ':
-                     case '-':
-                     case '_':
-                     case ' ':
-                        var9 = '_';
-                        break;
-                     case '#':
-                     case '[':
-                     case ']':
-                        var9 = var7;
-                        break;
-                     case 'À':
-                     case 'Á':
-                     case 'Â':
-                     case 'Ã':
-                     case 'Ä':
-                     case 'à':
-                     case 'á':
-                     case 'â':
-                     case 'ã':
-                     case 'ä':
-                        var9 = 'a';
-                        break;
-                     case 'Ç':
-                     case 'ç':
-                        var9 = 'c';
-                        break;
-                     case 'È':
-                     case 'É':
-                     case 'Ê':
-                     case 'Ë':
-                     case 'è':
-                     case 'é':
-                     case 'ê':
-                     case 'ë':
-                        var9 = 'e';
-                        break;
-                     case 'Í':
-                     case 'Î':
-                     case 'Ï':
-                     case 'í':
-                     case 'î':
-                     case 'ï':
-                        var9 = 'i';
-                        break;
-                     case 'Ñ':
-                     case 'ñ':
-                        var9 = 'n';
-                        break;
-                     case 'Ò':
-                     case 'Ó':
-                     case 'Ô':
-                     case 'Õ':
-                     case 'Ö':
-                     case 'ò':
-                     case 'ó':
-                     case 'ô':
-                     case 'õ':
-                     case 'ö':
-                        var9 = 'o';
-                        break;
-                     case 'Ù':
-                     case 'Ú':
-                     case 'Û':
-                     case 'Ü':
-                     case 'ù':
-                     case 'ú':
-                     case 'û':
-                     case 'ü':
-                        var9 = 'u';
-                        break;
-                     case 'ß':
-                        var9 = 'b';
-                        break;
-                     case 'ÿ':
-                     case 'Ÿ':
-                        var9 = 'y';
-                        break;
-                     default:
-                        var9 = Character.toLowerCase(var7);
-                     }
-
-                     if(var9 != 0) {
-                        var12.append(var9);
-                     }
-                  }
+                  Client.field1027[var4][var5] = Client.field928;
                }
 
-               if(var12.length() == 0) {
-                  return null;
+               if(!var2.composition.field3660) {
+                  var3 -= Integer.MIN_VALUE;
                }
 
-               return var12.toString();
+               TotalQuantityComparator.region.method2915(class60.plane, var2.x, var2.y, MessageNode.getTileHeight(var2.field1127 * 64 - 64 + var2.x, var2.field1127 * 64 - 64 + var2.y, class60.plane), var2.field1127 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1117);
             }
          }
-
-         return null;
       }
+
    }
 }

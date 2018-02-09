@@ -1,146 +1,207 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bk")
 public class class65 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("cr")
    @ObfuscatedSignature(
-      signature = "(B)Lfq;",
-      garbageValue = "1"
+      signature = "Lij;"
    )
-   public static Timer method1071() {
-      try {
-         return new NanoTimer();
-      } catch (Throwable var1) {
-         return new MilliTimer();
+   @Export("indexCache3")
+   static IndexData indexCache3;
+   @ObfuscatedName("dr")
+   @ObfuscatedSignature(
+      signature = "Lij;"
+   )
+   @Export("indexCache10")
+   static IndexData indexCache10;
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "([BIIB)I",
+      garbageValue = "60"
+   )
+   public static int method1060(byte[] var0, int var1, int var2) {
+      int var3 = -1;
+
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
       }
+
+      var3 = ~var3;
+      return var3;
    }
 
-   @ObfuscatedName("ae")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "18"
+      garbageValue = "-43"
    )
-   protected static final void method1072() {
-      class310.timer.vmethod3175();
-
-      int var0;
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field636[var0] = 0L;
-      }
-
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field638[var0] = 0L;
-      }
-
-      GameEngine.field632 = 0;
+   static void method1058() {
+      class62.field724 = null;
+      class29.field403 = null;
+      TotalQuantityComparator.field288 = null;
+      class62.field725 = null;
+      class21.field331 = null;
+      class160.field2156 = null;
+      class62.field726 = null;
+      BoundingBox2D.field229 = null;
+      TotalQuantityComparator.field292 = null;
+      class62.field727 = null;
+      class94.field1417 = null;
+      BoundingBox3D.field247 = null;
    }
 
-   @ObfuscatedName("gr")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIIIZS)V",
-      garbageValue = "25222"
+      signature = "(Lir;Lir;ZIB)V",
+      garbageValue = "67"
    )
-   static final void method1069(int var0, int var1, int var2, int var3, boolean var4) {
-      if(var2 < 1) {
-         var2 = 1;
-      }
-
-      if(var3 < 1) {
-         var3 = 1;
-      }
-
-      int var5 = var3 - 334;
-      if(var5 < 0) {
-         var5 = 0;
-      } else if(var5 > 100) {
-         var5 = 100;
-      }
-
-      int var6 = (Client.field1058 - Client.field1057) * var5 / 100 + Client.field1057;
-      int var7 = var3 * var6 * 512 / (var2 * 334);
-      int var8;
-      int var9;
-      short var15;
-      if(var7 < Client.field1063) {
-         var15 = Client.field1063;
-         var6 = var15 * var2 * 334 / (var3 * 512);
-         if(var6 > Client.field1062) {
-            var6 = Client.field1062;
-            var8 = var3 * var6 * 512 / (var15 * 334);
-            var9 = (var2 - var8) / 2;
-            if(var4) {
-               Rasterizer2D.noClip();
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
-            }
-
-            var0 += var9;
-            var2 -= var9 * 2;
-         }
-      } else if(var7 > Client.field1064) {
-         var15 = Client.field1064;
-         var6 = var15 * var2 * 334 / (var3 * 512);
-         if(var6 < Client.field1061) {
-            var6 = Client.field1061;
-            var8 = var15 * var2 * 334 / (var6 * 512);
-            var9 = (var3 - var8) / 2;
-            if(var4) {
-               Rasterizer2D.noClip();
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
-               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
-            }
-
-            var1 += var9;
-            var3 -= var9 * 2;
-         }
-      }
-
-      var8 = (Client.field1060 - Client.field856) * var5 / 100 + Client.field856;
-      Client.scale = var3 * var8 * var6 / 85504 << 1;
-      if(var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
-         int[] var14 = new int[9];
-
-         for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = var10 * 32 + 15 + 128;
-            int var12 = var11 * 3 + 600;
-            int var13 = Graphics3D.SINE[var11];
-            var14[var10] = var12 * var13 >> 16;
+   static void method1059(IndexDataBase var0, IndexDataBase var1, boolean var2, int var3) {
+      if(class89.field1329) {
+         if(var3 == 4) {
+            class89.loginIndex = 4;
          }
 
-         Region.method2846(var14, 500, 800, var2, var3);
-      }
+      } else {
+         class89.loginIndex = var3;
+         Rasterizer2D.reset();
+         byte[] var4 = var0.takeRecordByNames("title.jpg", "");
+         UnitPriceComparator.field307 = SoundTask.method2330(var4);
+         class37.field483 = UnitPriceComparator.field307.method5673();
+         if((Client.flags & 536870912) != 0) {
+            class137.logoSprite = class163.getSprite(var1, "logo_deadman_mode", "");
+         } else {
+            class137.logoSprite = class163.getSprite(var1, "logo", "");
+         }
 
-      Client.Viewport_xOffset = var0;
-      Client.Viewport_yOffset = var1;
-      Client.viewportWidth = var2;
-      Client.viewportHeight = var3;
+         AbstractByteBuffer.field2531 = class163.getSprite(var1, "titlebox", "");
+         class89.field1319 = class163.getSprite(var1, "titlebutton", "");
+         class89.runeSprites = class233.getIndexedSprites(var1, "runes", "");
+         class35.titlemuteSprite = class233.getIndexedSprites(var1, "title_mute", "");
+         Size.field350 = class163.getSprite(var1, "options_radio_buttons,0", "");
+         class85.field1292 = class163.getSprite(var1, "options_radio_buttons,4", "");
+         class89.field1321 = class163.getSprite(var1, "options_radio_buttons,2", "");
+         BaseVarType.field16 = class163.getSprite(var1, "options_radio_buttons,6", "");
+         WorldMapType2.field499 = Size.field350.originalWidth;
+         class192.field2551 = Size.field350.height;
+         KeyFocusListener.field623 = new int[256];
+
+         int var5;
+         for(var5 = 0; var5 < 64; ++var5) {
+            KeyFocusListener.field623[var5] = var5 * 262144;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            KeyFocusListener.field623[var5 + 64] = var5 * 1024 + 16711680;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            KeyFocusListener.field623[var5 + 128] = var5 * 4 + 16776960;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            KeyFocusListener.field623[var5 + 192] = 16777215;
+         }
+
+         class89.field1326 = new int[256];
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class89.field1326[var5] = var5 * 1024;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class89.field1326[var5 + 64] = var5 * 4 + 65280;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class89.field1326[var5 + 128] = var5 * 262144 + 65535;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class89.field1326[var5 + 192] = 16777215;
+         }
+
+         class80.field1251 = new int[256];
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class80.field1251[var5] = var5 * 4;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class80.field1251[var5 + 64] = var5 * 262144 + 255;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class80.field1251[var5 + 128] = var5 * 1024 + 16711935;
+         }
+
+         for(var5 = 0; var5 < 64; ++var5) {
+            class80.field1251[var5 + 192] = 16777215;
+         }
+
+         class5.field29 = new int[256];
+         class43.field547 = new int['耀'];
+         OwnWorldComparator.field834 = new int['耀'];
+         class18.method143((IndexedSprite)null);
+         OwnWorldComparator.field838 = new int['耀'];
+         class31.field424 = new int['耀'];
+         if(var2) {
+            class89.username = "";
+            class89.password = "";
+         }
+
+         MouseInput.field687 = 0;
+         class27.field376 = "";
+         class89.field1346 = true;
+         class89.worldSelectShown = false;
+         if(!WorldComparator.preferences.muted) {
+            IndexData var8 = class231.indexTrack1;
+            int var6 = var8.getFile("scape main");
+            int var7 = var8.getChild(var6, "");
+            DState.method3488(2, var8, var6, var7, 255, false);
+         } else {
+            UnitPriceComparator.method132(2);
+         }
+
+         Timer.sendConInfo(false);
+         class89.field1329 = true;
+         class89.field1356 = (GameEngine.canvasWidth - 765) / 2;
+         class89.loginWindowX = class89.field1356 + 202;
+         class89.field1323 = class89.loginWindowX + 180;
+         UnitPriceComparator.field307.method5682(class89.field1356, 0);
+         class37.field483.method5682(class89.field1356 + 382, 0);
+         class137.logoSprite.method5653(class89.field1356 + 382 - class137.logoSprite.originalWidth / 2, 18);
+      }
    }
 
-   @ObfuscatedName("ha")
+   @ObfuscatedName("ij")
    @ObfuscatedSignature(
-      signature = "(III)Lfd;",
-      garbageValue = "683801603"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "73"
    )
-   static class168 method1070(int var0, int var1) {
-      Client.field896.field2197 = var0;
-      Client.field896.field2194 = var1;
-      Client.field896.field2195 = 1;
-      Client.field896.field2193 = 1;
-      return Client.field896;
+   static final String method1061(int var0) {
+      String var1 = Integer.toString(var0);
+
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+      }
+
+      return var1.length() > 9?" " + class70.getColTags(65408) + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class70.getColTags(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class70.getColTags(16776960) + var1 + "</col>");
    }
 
-   @ObfuscatedName("jw")
+   @ObfuscatedName("ip")
    @ObfuscatedSignature(
-      signature = "([Lho;IIIZI)V",
-      garbageValue = "-1889919141"
+      signature = "([Lhs;IIIZI)V",
+      garbageValue = "1059352676"
    )
-   static void method1068(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+   static void method1057(Widget[] var0, int var1, int var2, int var3, boolean var4) {
       for(int var5 = 0; var5 < var0.length; ++var5) {
          Widget var6 = var0[var5];
          if(var6 != null && var6.parentId == var1) {
-            ScriptVarType.method27(var6, var2, var3, var4);
-            class150.method3042(var6, var2, var3);
+            PendingSpawn.method1593(var6, var2, var3, var4);
+            class216.method4247(var6, var2, var3);
             if(var6.scrollX > var6.scrollWidth - var6.width) {
                var6.scrollX = var6.scrollWidth - var6.width;
             }
@@ -158,7 +219,7 @@ public class class65 {
             }
 
             if(var6.type == 0) {
-               class33.method362(var0, var6, var4);
+               class5.method14(var0, var6, var4);
             }
          }
       }

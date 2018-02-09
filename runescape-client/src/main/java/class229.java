@@ -1,5 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hc")
 public interface class229 extends MouseWheel {
 }

@@ -8,41 +8,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("v")
+@ObfuscatedName("f")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
-   @ObfuscatedName("i")
-   public static Comparator field271;
-   @ObfuscatedName("w")
-   public static Comparator field266;
-   @ObfuscatedName("s")
-   public static Comparator field267;
-   @ObfuscatedName("j")
-   public static Comparator field268;
-   @ObfuscatedName("q")
+   @ObfuscatedName("oq")
    @ObfuscatedGetter(
-      intValue = 451041219
-   )
-   static int field264;
-   @ObfuscatedName("ei")
-   @ObfuscatedGetter(
-      intValue = 155612475
+      intValue = 1879372235
    )
    static int field269;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
+   public static Comparator field270;
+   @ObfuscatedName("m")
+   public static Comparator field271;
+   @ObfuscatedName("h")
+   public static Comparator field272;
+   @ObfuscatedName("i")
+   public static Comparator field273;
+   @ObfuscatedName("s")
    @Export("events")
    public final List events;
 
    static {
-      field271 = new class19();
+      field270 = new class19();
       new WorldComparator();
-      field266 = new UnitPriceComparator();
-      field267 = new class18();
-      field268 = new TotalQuantityComparator();
+      field271 = new UnitPriceComparator();
+      field272 = new class18();
+      field273 = new TotalQuantityComparator();
    }
 
    @ObfuscatedSignature(
-      signature = "(Lgj;Z)V",
+      signature = "(Lgy;Z)V",
       garbageValue = "1"
    )
    public GrandExchangeEvents(Buffer var1, boolean var2) {
@@ -64,10 +59,10 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZB)V",
-      garbageValue = "-22"
+      signature = "(Ljava/util/Comparator;ZI)V",
+      garbageValue = "-547954296"
    )
    @Export("sort")
    public void sort(Comparator var1, boolean var2) {
@@ -79,54 +74,22 @@ public class GrandExchangeEvents {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)Lie;",
-      garbageValue = "-1494332767"
+      signature = "(IB)[B",
+      garbageValue = "1"
    )
-   @Export("getSpotAnimType")
-   public static Spotanim getSpotAnimType(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.spotanims.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class188.SpotAnimationDefinition_indexCache.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.decode(new Buffer(var2));
-         }
-
-         Spotanim.spotanims.put(var1, (long)var0);
-         return var1;
-      }
+   static synchronized byte[] method73(int var0) {
+      return class185.method3753(var0, false);
    }
 
-   @ObfuscatedName("fz")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-108067340"
+      signature = "(I)Lbs;",
+      garbageValue = "-1948248882"
    )
-   static final void method89() {
-      Client.field867.close();
-      class7.method49();
-      class48.region.reset();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].reset();
-      }
-
-      System.gc();
-      class214.field2596 = 1;
-      Item.field1369 = null;
-      GZipDecompressor.field2420 = -1;
-      class186.field2505 = -1;
-      class214.field2597 = 0;
-      class214.field2594 = false;
-      class85.field1268 = 2;
-      Client.field1041 = -1;
-      Client.field1014 = false;
-      TextureProvider.method2557();
-      class5.setGameState(10);
+   static World method76() {
+      World.field1185 = 0;
+      return FileRequest.method4498();
    }
 }

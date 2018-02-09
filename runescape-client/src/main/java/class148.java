@@ -1,70 +1,61 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ez")
 public enum class148 implements MouseWheel {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lej;"
-   )
-   field2080(2, 0),
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lej;"
-   )
-   field2079(1, 1),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lej;"
-   )
-   field2075(0, 2),
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lej;"
+      signature = "Lez;"
    )
-   field2074(3, 3);
-
-   @ObfuscatedName("ce")
+   field2085(1, 0),
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lio;"
+      signature = "Lez;"
    )
-   @Export("indexTrack1")
-   static IndexData indexTrack1;
-   @ObfuscatedName("j")
+   field2083(0, 1),
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lez;"
+   )
+   field2086(3, 2),
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "Lez;"
+   )
+   field2084(2, 3);
+
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -735753889
+      intValue = 1832281831
    )
-   public final int field2077;
-   @ObfuscatedName("a")
+   public final int field2082;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 772826137
+      intValue = -2098358223
    )
-   final int field2078;
+   final int field2087;
 
    class148(int var3, int var4) {
-      this.field2077 = var3;
-      this.field2078 = var4;
+      this.field2082 = var3;
+      this.field2087 = var4;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "8"
+      signature = "(I)I",
+      garbageValue = "744101166"
    )
    public int rsOrdinal() {
-      return this.field2078;
+      return this.field2087;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lik;Lik;Lik;I)V",
-      garbageValue = "-1064123271"
+      signature = "(IB)V",
+      garbageValue = "-24"
    )
-   public static void method3040(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
-      class265.field3492 = var0;
-      class265.field3469 = var1;
-      class265.field3476 = var2;
+   static final void method3166(int var0) {
+      class131.Viewport_entityIdsAtMouse[++class131.Viewport_entityCountAtMouse - 1] = var0;
    }
 }

@@ -4,23 +4,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("ia")
 @Implements("InvType")
 public class InvType extends CacheableNode {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lik;"
+   @ObfuscatedName("lf")
+   @ObfuscatedGetter(
+      intValue = 915443269
    )
-   public static IndexDataBase field3344;
-   @ObfuscatedName("i")
+   static int field3363;
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lir;"
+   )
+   public static IndexDataBase field3366;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "Lgc;"
    )
    @Export("inventoryCache")
    public static NodeCache inventoryCache;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -2006695059
+      intValue = -1472057091
    )
    @Export("size")
    public int size;
@@ -33,10 +38,10 @@ public class InvType extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgj;B)V",
-      garbageValue = "0"
+      signature = "(Lgy;I)V",
+      garbageValue = "-2090494221"
    )
    @Export("decode")
    public void decode(Buffer var1) {
@@ -46,38 +51,19 @@ public class InvType extends CacheableNode {
             return;
          }
 
-         this.method4534(var1, var2);
+         this.method4658(var1, var2);
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgj;IS)V",
-      garbageValue = "16194"
+      signature = "(Lgy;II)V",
+      garbageValue = "-2147337409"
    )
-   void method4534(Buffer var1, int var2) {
+   void method4658(Buffer var1, int var2) {
       if(var2 == 2) {
          this.size = var1.readUnsignedShort();
       }
 
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1291518546"
-   )
-   static void method4536() {
-      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
-      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
-         if(IndexStoreActionHandler.field3307 == 0) {
-            Item.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
-            Item.IndexStoreActionHandler_thread.setDaemon(true);
-            Item.IndexStoreActionHandler_thread.start();
-            Item.IndexStoreActionHandler_thread.setPriority(5);
-         }
-
-         IndexStoreActionHandler.field3307 = 600;
-      }
    }
 }

@@ -1,53 +1,52 @@
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("z")
 @Implements("BoundingBox2D")
 public final class BoundingBox2D extends BoundingBox {
-   @ObfuscatedName("q")
-   static boolean field235;
-   @ObfuscatedName("ew")
+   @ObfuscatedName("k")
+   static int[] field229;
+   @ObfuscatedName("cf")
    @ObfuscatedSignature(
-      signature = "Lkz;"
+      signature = "Lij;"
    )
-   @Export("font_p12full")
-   static Font font_p12full;
-   @ObfuscatedName("p")
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -443137477
+      intValue = -488513313
    )
    @Export("xMin")
    final int xMin;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -538559971
+      intValue = 822571245
    )
    @Export("yMin")
    final int yMin;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1357133025
+      intValue = -1084556877
    )
    @Export("xMax")
    final int xMax;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 552755495
+      intValue = 812500605
    )
    @Export("yMax")
    final int yMax;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 911679263
+      intValue = -1217968107
    )
    @Export("color")
    final int color;
 
-   public BoundingBox2D(int var1, int var2, int var3, int var4, int var5) {
+   BoundingBox2D(int var1, int var2, int var3, int var4, int var5) {
       this.xMin = var1;
       this.yMin = var2;
       this.xMax = var3;
@@ -55,303 +54,240 @@ public final class BoundingBox2D extends BoundingBox {
       this.color = var5;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "160"
+      signature = "(I)V",
+      garbageValue = "-1287124829"
    )
    final void draw() {
       Rasterizer2D.drawRectangle(this.xMin + Rasterizer2D.draw_region_x, this.yMin + Rasterizer2D.drawingAreaTop, this.xMax - this.xMin, this.yMax - this.yMin, this.color);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("gt")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "120"
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "1304948061"
    )
-   public static boolean method53() {
-      long var0 = ScriptVarType.currentTimeMs();
-      int var2 = (int)(var0 - class25.field351);
-      class25.field351 = var0;
-      if(var2 > 200) {
-         var2 = 200;
+   @Export("drawStatusBox")
+   static final void drawStatusBox(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = var2 + 6;
+      int var4 = var2 + 6;
+      int var5 = TextureProvider.font_p12full.method5447(var0, 250);
+      int var6 = TextureProvider.font_p12full.method5370(var0, 250) * 13;
+      Rasterizer2D.Rasterizer2D_fillRectangle(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 0);
+      Rasterizer2D.drawRectangle(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
+      TextureProvider.font_p12full.method5376(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      class188.method3796(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
+      if(var1) {
+         class22.rasterProvider.drawFull(0, 0);
+      } else {
+         int var7 = var3;
+         int var8 = var4;
+         int var9 = var5;
+         int var10 = var6;
+
+         for(int var11 = 0; var11 < Client.widgetCount; ++var11) {
+            if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var7 && Client.widgetPositionX[var11] < var9 + var7 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var8 + var10) {
+               Client.field906[var11] = true;
+            }
+         }
       }
 
-      class249.field3321 += var2;
-      if(class249.NetCache_pendingResponsesCount == 0 && class249.NetCache_pendingPriorityResponsesCount == 0 && class249.NetCache_pendingWritesCount == 0 && class249.NetCache_pendingPriorityWritesCount == 0) {
-         return true;
-      } else if(class249.NetCache_socket == null) {
-         return false;
-      } else {
-         try {
-            if(class249.field3321 > 30000) {
-               throw new IOException();
-            } else {
-               FileRequest var3;
-               Buffer var4;
-               while(class249.NetCache_pendingPriorityResponsesCount < 200 && class249.NetCache_pendingPriorityWritesCount > 0) {
-                  var3 = (FileRequest)class249.NetCache_pendingPriorityWrites.first();
-                  var4 = new Buffer(4);
-                  var4.putByte(1);
-                  var4.put24bitInt((int)var3.hash);
-                  class249.NetCache_socket.vmethod3192(var4.payload, 0, 4);
-                  class249.NetCache_pendingPriorityResponses.put(var3, var3.hash);
-                  --class249.NetCache_pendingPriorityWritesCount;
-                  ++class249.NetCache_pendingPriorityResponsesCount;
-               }
+   }
 
-               while(class249.NetCache_pendingResponsesCount < 200 && class249.NetCache_pendingWritesCount > 0) {
-                  var3 = (FileRequest)class249.NetCache_pendingWritesQueue.peek();
-                  var4 = new Buffer(4);
-                  var4.putByte(0);
-                  var4.put24bitInt((int)var3.hash);
-                  class249.NetCache_socket.vmethod3192(var4.payload, 0, 4);
-                  var3.unlinkDual();
-                  class249.NetCache_pendingResponses.put(var3, var3.hash);
-                  --class249.NetCache_pendingWritesCount;
-                  ++class249.NetCache_pendingResponsesCount;
-               }
+   @ObfuscatedName("go")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "322844635"
+   )
+   static final void method38(int var0, int var1, int var2, int var3, boolean var4) {
+      if(var2 < 1) {
+         var2 = 1;
+      }
 
-               for(int var15 = 0; var15 < 100; ++var15) {
-                  int var16 = class249.NetCache_socket.vmethod3188();
-                  if(var16 < 0) {
-                     throw new IOException();
+      if(var3 < 1) {
+         var3 = 1;
+      }
+
+      int var5 = var3 - 334;
+      if(var5 < 0) {
+         var5 = 0;
+      } else if(var5 > 100) {
+         var5 = 100;
+      }
+
+      int var6 = (Client.field1075 - Client.field1082) * var5 / 100 + Client.field1082;
+      int var7 = var3 * var6 * 512 / (var2 * 334);
+      int var8;
+      int var9;
+      short var15;
+      if(var7 < Client.field982) {
+         var15 = Client.field982;
+         var6 = var15 * var2 * 334 / (var3 * 512);
+         if(var6 > Client.field938) {
+            var6 = Client.field938;
+            var8 = var3 * var6 * 512 / (var15 * 334);
+            var9 = (var2 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.noClip();
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+            }
+
+            var0 += var9;
+            var2 -= var9 * 2;
+         }
+      } else if(var7 > Client.field1081) {
+         var15 = Client.field1081;
+         var6 = var15 * var2 * 334 / (var3 * 512);
+         if(var6 < Client.field1078) {
+            var6 = Client.field1078;
+            var8 = var15 * var2 * 334 / (var6 * 512);
+            var9 = (var3 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.noClip();
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
+               Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+            }
+
+            var1 += var9;
+            var3 -= var9 * 2;
+         }
+      }
+
+      var8 = (Client.field962 - Client.field1076) * var5 / 100 + Client.field1076;
+      Client.scale = var3 * var6 * var8 / 85504 << 1;
+      if(var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
+         int[] var14 = new int[9];
+
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = var10 * 32 + 15 + 128;
+            int var12 = var11 * 3 + 600;
+            int var13 = Graphics3D.SINE[var11];
+            var14[var10] = var12 * var13 >> 16;
+         }
+
+         Region.method3041(var14, 500, 800, var2, var3);
+      }
+
+      Client.Viewport_xOffset = var0;
+      Client.Viewport_yOffset = var1;
+      Client.viewportWidth = var2;
+      Client.viewportHeight = var3;
+   }
+
+   @ObfuscatedName("ik")
+   @ObfuscatedSignature(
+      signature = "(Ljv;IIII)V",
+      garbageValue = "675147756"
+   )
+   static final void method37(NPCComposition var0, int var1, int var2, int var3) {
+      if(Client.menuOptionCount < 400) {
+         if(var0.configs != null) {
+            var0 = var0.transform();
+         }
+
+         if(var0 != null) {
+            if(var0.field3660) {
+               if(!var0.field3638 || Client.field992 == var1) {
+                  String var4 = var0.name;
+                  if(var0.combatLevel != 0) {
+                     var4 = var4 + Tile.method2711(var0.combatLevel, GroundObject.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
                   }
 
-                  if(var16 == 0) {
-                     break;
+                  if(var0.field3638 && Client.field1013) {
+                     NPCComposition.addMenuEntry("Examine", class70.getColTags(16776960) + var4, 1003, var1, var2, var3);
                   }
 
-                  class249.field3321 = 0;
-                  byte var5 = 0;
-                  if(class19.currentRequest == null) {
-                     var5 = 8;
-                  } else if(class249.field3332 == 0) {
-                     var5 = 1;
-                  }
-
-                  int var6;
-                  int var7;
-                  int var8;
-                  int var10;
-                  if(var5 > 0) {
-                     var6 = var5 - class249.NetCache_responseHeaderBuffer.offset;
-                     if(var6 > var16) {
-                        var6 = var16;
-                     }
-
-                     class249.NetCache_socket.vmethod3190(class249.NetCache_responseHeaderBuffer.payload, class249.NetCache_responseHeaderBuffer.offset, var6);
-                     if(class249.field3335 != 0) {
-                        for(var7 = 0; var7 < var6; ++var7) {
-                           class249.NetCache_responseHeaderBuffer.payload[class249.NetCache_responseHeaderBuffer.offset + var7] ^= class249.field3335;
-                        }
-                     }
-
-                     class249.NetCache_responseHeaderBuffer.offset += var6;
-                     if(class249.NetCache_responseHeaderBuffer.offset < var5) {
-                        break;
-                     }
-
-                     if(class19.currentRequest == null) {
-                        class249.NetCache_responseHeaderBuffer.offset = 0;
-                        var7 = class249.NetCache_responseHeaderBuffer.readUnsignedByte();
-                        var8 = class249.NetCache_responseHeaderBuffer.readUnsignedShort();
-                        int var9 = class249.NetCache_responseHeaderBuffer.readUnsignedByte();
-                        var10 = class249.NetCache_responseHeaderBuffer.readInt();
-                        long var11 = (long)(var8 + (var7 << 16));
-                        FileRequest var13 = (FileRequest)class249.NetCache_pendingPriorityResponses.get(var11);
-                        field235 = true;
-                        if(var13 == null) {
-                           var13 = (FileRequest)class249.NetCache_pendingResponses.get(var11);
-                           field235 = false;
-                        }
-
-                        if(var13 == null) {
-                           throw new IOException();
-                        }
-
-                        int var14 = var9 == 0?5:9;
-                        class19.currentRequest = var13;
-                        class94.NetCache_responseArchiveBuffer = new Buffer(var10 + var14 + class19.currentRequest.padding);
-                        class94.NetCache_responseArchiveBuffer.putByte(var9);
-                        class94.NetCache_responseArchiveBuffer.putInt(var10);
-                        class249.field3332 = 8;
-                        class249.NetCache_responseHeaderBuffer.offset = 0;
-                     } else if(class249.field3332 == 0) {
-                        if(class249.NetCache_responseHeaderBuffer.payload[0] == -1) {
-                           class249.field3332 = 1;
-                           class249.NetCache_responseHeaderBuffer.offset = 0;
-                        } else {
-                           class19.currentRequest = null;
-                        }
+                  if(Client.itemSelectionState == 1) {
+                     NPCComposition.addMenuEntry("Use", Client.lastSelectedItemName + " " + "->" + " " + class70.getColTags(16776960) + var4, 7, var1, var2, var3);
+                  } else if(Client.spellSelected) {
+                     if((Occluder.field2038 & 2) == 2) {
+                        NPCComposition.addMenuEntry(Client.field854, Client.field995 + " " + "->" + " " + class70.getColTags(16776960) + var4, 8, var1, var2, var3);
                      }
                   } else {
-                     var6 = class94.NetCache_responseArchiveBuffer.payload.length - class19.currentRequest.padding;
-                     var7 = 512 - class249.field3332;
-                     if(var7 > var6 - class94.NetCache_responseArchiveBuffer.offset) {
-                        var7 = var6 - class94.NetCache_responseArchiveBuffer.offset;
+                     int var5 = var0.field3638 && Client.field1013?2000:0;
+                     String[] var6 = var0.actions;
+                     if(Client.numberMenuOptions) {
+                        var6 = class84.prependIndices(var6);
                      }
 
-                     if(var7 > var16) {
-                        var7 = var16;
-                     }
-
-                     class249.NetCache_socket.vmethod3190(class94.NetCache_responseArchiveBuffer.payload, class94.NetCache_responseArchiveBuffer.offset, var7);
-                     if(class249.field3335 != 0) {
-                        for(var8 = 0; var8 < var7; ++var8) {
-                           class94.NetCache_responseArchiveBuffer.payload[var8 + class94.NetCache_responseArchiveBuffer.offset] ^= class249.field3335;
-                        }
-                     }
-
-                     class94.NetCache_responseArchiveBuffer.offset += var7;
-                     class249.field3332 += var7;
-                     if(var6 == class94.NetCache_responseArchiveBuffer.offset) {
-                        if(class19.currentRequest.hash == 16711935L) {
-                           class87.NetCache_reference = class94.NetCache_responseArchiveBuffer;
-
-                           for(var8 = 0; var8 < 256; ++var8) {
-                              IndexData var17 = class249.NetCache_indexCaches[var8];
-                              if(var17 != null) {
-                                 class87.NetCache_reference.offset = var8 * 8 + 5;
-                                 var10 = class87.NetCache_reference.readInt();
-                                 int var18 = class87.NetCache_reference.readInt();
-                                 var17.setInformation(var10, var18);
-                              }
-                           }
-                        } else {
-                           class249.NetCache_crc.reset();
-                           class249.NetCache_crc.update(class94.NetCache_responseArchiveBuffer.payload, 0, var6);
-                           var8 = (int)class249.NetCache_crc.getValue();
-                           if(var8 != class19.currentRequest.crc) {
-                              try {
-                                 class249.NetCache_socket.vmethod3186();
-                              } catch (Exception var20) {
-                                 ;
+                     int var7;
+                     int var8;
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
+                              var8 = 0;
+                              if(var7 == 0) {
+                                 var8 = var5 + 9;
                               }
 
-                              ++class249.field3336;
-                              class249.NetCache_socket = null;
-                              class249.field3335 = (byte)((int)(Math.random() * 255.0D + 1.0D));
-                              return false;
+                              if(var7 == 1) {
+                                 var8 = var5 + 10;
+                              }
+
+                              if(var7 == 2) {
+                                 var8 = var5 + 11;
+                              }
+
+                              if(var7 == 3) {
+                                 var8 = var5 + 12;
+                              }
+
+                              if(var7 == 4) {
+                                 var8 = var5 + 13;
+                              }
+
+                              NPCComposition.addMenuEntry(var6[var7], class70.getColTags(16776960) + var4, var8, var1, var2, var3);
                            }
-
-                           class249.field3336 = 0;
-                           class249.field3337 = 0;
-                           class19.currentRequest.index.write((int)(class19.currentRequest.hash & 65535L), class94.NetCache_responseArchiveBuffer.payload, (class19.currentRequest.hash & 16711680L) == 16711680L, field235);
                         }
+                     }
 
-                        class19.currentRequest.unlink();
-                        if(field235) {
-                           --class249.NetCache_pendingPriorityResponsesCount;
-                        } else {
-                           --class249.NetCache_pendingResponsesCount;
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
+                              short var9 = 0;
+                              if(AttackOption.AttackOption_hidden != Client.npcAttackOption) {
+                                 if(Client.npcAttackOption == AttackOption.AttackOption_alwaysRightClick || AttackOption.AttackOption_dependsOnCombatLevels == Client.npcAttackOption && var0.combatLevel > GroundObject.localPlayer.combatLevel) {
+                                    var9 = 2000;
+                                 }
+
+                                 var8 = 0;
+                                 if(var7 == 0) {
+                                    var8 = var9 + 9;
+                                 }
+
+                                 if(var7 == 1) {
+                                    var8 = var9 + 10;
+                                 }
+
+                                 if(var7 == 2) {
+                                    var8 = var9 + 11;
+                                 }
+
+                                 if(var7 == 3) {
+                                    var8 = var9 + 12;
+                                 }
+
+                                 if(var7 == 4) {
+                                    var8 = var9 + 13;
+                                 }
+
+                                 NPCComposition.addMenuEntry(var6[var7], class70.getColTags(16776960) + var4, var8, var1, var2, var3);
+                              }
+                           }
                         }
+                     }
 
-                        class249.field3332 = 0;
-                        class19.currentRequest = null;
-                        class94.NetCache_responseArchiveBuffer = null;
-                     } else {
-                        if(class249.field3332 != 512) {
-                           break;
-                        }
-
-                        class249.field3332 = 0;
+                     if(!var0.field3638 || !Client.field1013) {
+                        NPCComposition.addMenuEntry("Examine", class70.getColTags(16776960) + var4, 1003, var1, var2, var3);
                      }
                   }
+
                }
-
-               return true;
-            }
-         } catch (IOException var21) {
-            try {
-               class249.NetCache_socket.vmethod3186();
-            } catch (Exception var19) {
-               ;
-            }
-
-            ++class249.field3337;
-            class249.NetCache_socket = null;
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(Lik;Ljava/lang/String;Ljava/lang/String;I)[Lko;",
-      garbageValue = "1672793030"
-   )
-   @Export("getSprites")
-   public static SpritePixels[] getSprites(IndexDataBase var0, String var1, String var2) {
-      int var3 = var0.getFile(var1);
-      int var4 = var0.getChild(var3, var2);
-      SpritePixels[] var5;
-      if(!class160.method3147(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = Fonts.method5199();
-      }
-
-      return var5;
-   }
-
-   @ObfuscatedName("gf")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "509912798"
-   )
-   static final void method54(boolean var0) {
-      for(int var1 = 0; var1 < Client.npcIndexesCount; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.npcIndices[var1]];
-         int var3 = (Client.npcIndices[var1] << 14) + 536870912;
-         if(var2 != null && var2.hasConfig() && var2.composition.isVisible == var0 && var2.composition.method4904()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field1127 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field909[var4][var5] == Client.field821) {
-                     continue;
-                  }
-
-                  Client.field909[var4][var5] = Client.field821;
-               }
-
-               if(!var2.composition.field3630) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               class48.region.method2822(MessageNode.plane, var2.x, var2.y, GameCanvas.getTileHeight(var2.field1127 * 64 - 64 + var2.x, var2.field1127 * 64 - 64 + var2.y, MessageNode.plane), var2.field1127 * 64 - 64 + 60, var2, var2.angle, var3, var2.field1132);
             }
          }
       }
-
-   }
-
-   @ObfuscatedName("is")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "98"
-   )
-   static void method55() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[var3 + 1];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[var3 + 1];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[var3 + 1];
-                  Client.menuBooleanArray[var3] = Client.menuBooleanArray[var3 + 1];
-               }
-            }
-
-            --Client.menuOptionCount;
-         }
-      }
-
    }
 }

@@ -4,54 +4,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ev")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("fr")
-   @Export("landMapFileIds")
-   static int[] landMapFileIds;
-   @ObfuscatedName("gp")
+   @ObfuscatedName("l")
+   static boolean field1927;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1919970823
-   )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1037053579
+      intValue = 186062521
    )
    @Export("swColor")
    int swColor;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 728831033
+      intValue = 157610739
    )
    @Export("seColor")
    int seColor;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1500459243
+      intValue = -1563358177
    )
    @Export("neColor")
    int neColor;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1642698177
+      intValue = 1135213171
    )
    @Export("nwColor")
    int nwColor;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1479182451
+      intValue = -1515318095
    )
    @Export("texture")
    int texture;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @Export("flatShade")
    boolean flatShade;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -300662545
+      intValue = 1322932211
    )
    @Export("rgb")
    int rgb;
@@ -67,12 +60,108 @@ public final class SceneTilePaint {
       this.flatShade = var7;
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1544951906"
+      signature = "(B)J",
+      garbageValue = "52"
    )
-   static final void method2808(String var0) {
-      class63.method1054(var0 + " is already on your friend list");
+   @Export("currentTimeMs")
+   public static synchronized long currentTimeMs() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class186.currentTimeMsLast) {
+         class186.currentTimeMsOffset += class186.currentTimeMsLast - var0;
+      }
+
+      class186.currentTimeMsLast = var0;
+      return var0 + class186.currentTimeMsOffset;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "203"
+   )
+   public static void method2898() {
+      if(class19.NetCache_socket != null) {
+         class19.NetCache_socket.vmethod3299();
+      }
+
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lgy;IIIIIII)V",
+      garbageValue = "1267249988"
+   )
+   @Export("loadTerrain")
+   static final void loadTerrain(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class62.tileSettings[var1][var2][var3] = 0;
+
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class62.tileHeights[0][var2];
+                  int var11 = var2 + var4 + 932731;
+                  int var12 = var3 + var5 + 556238;
+                  int var13 = class185.getSmoothNoise(45365 + var11, 91923 + var12, 4) - 128 + (class185.getSmoothNoise(var11 + 10294, 37821 + var12, 2) - 128 >> 1) + (class185.getSmoothNoise(var11, var12, 1) - 128 >> 2);
+                  var13 = (int)((double)var13 * 0.3D) + 35;
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
+
+                  var8[var3] = -var13 * 8;
+               } else {
+                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
+               }
+
+               if(var1 == 0) {
+                  class62.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class62.tileHeights[var1][var2][var3] = class62.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class29.field403[var1][var2][var3] = var0.readByte();
+               TotalQuantityComparator.field288[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class62.field725[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class62.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class62.field724[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
+      }
+
    }
 }

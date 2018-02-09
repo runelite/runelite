@@ -2,57 +2,84 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ib")
+@ObfuscatedName("iq")
 public class class255 extends CacheableNode {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Lir;"
    )
-   public static IndexDataBase field3380;
-   @ObfuscatedName("i")
+   public static IndexDataBase field3402;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgc;"
    )
-   public static NodeCache field3379;
-   @ObfuscatedName("r")
-   @Export("isMembersWorld")
-   public static boolean isMembersWorld;
-   @ObfuscatedName("w")
-   public boolean field3378;
+   static NodeCache field3401;
+   @ObfuscatedName("m")
+   public boolean field3403;
 
    static {
-      field3379 = new NodeCache(64);
+      field3401 = new NodeCache(64);
    }
 
-   public class255() {
-      this.field3378 = false;
+   class255() {
+      this.field3403 = false;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgj;I)V",
-      garbageValue = "1952917597"
+      signature = "(Lgy;I)V",
+      garbageValue = "-642662137"
    )
-   public void method4592(Buffer var1) {
+   void method4727(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method4590(var1, var2);
+         this.method4725(var1, var2);
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgj;II)V",
-      garbageValue = "1693290455"
+      signature = "(Lgy;IB)V",
+      garbageValue = "32"
    )
-   void method4590(Buffer var1, int var2) {
+   void method4725(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field3378 = true;
+         this.field3403 = true;
       }
 
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lgy;Lgz;B)Lgz;",
+      garbageValue = "4"
+   )
+   @Export("readStringIntParameters")
+   static final IterableHashTable readStringIntParameters(Buffer var0, IterableHashTable var1) {
+      int var2 = var0.readUnsignedByte();
+      int var3;
+      if(var1 == null) {
+         var3 = class180.nextPowerOfTwo(var2);
+         var1 = new IterableHashTable(var3);
+      }
+
+      for(var3 = 0; var3 < var2; ++var3) {
+         boolean var4 = var0.readUnsignedByte() == 1;
+         int var5 = var0.read24BitInt();
+         Object var6;
+         if(var4) {
+            var6 = new ObjectNode(var0.readString());
+         } else {
+            var6 = new IntegerNode(var0.readInt());
+         }
+
+         var1.put((Node)var6, (long)var5);
+      }
+
+      return var1;
    }
 }

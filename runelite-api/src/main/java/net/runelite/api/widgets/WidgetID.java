@@ -63,6 +63,7 @@ public class WidgetID
 	public static final int RAIDS_GROUP_ID = 513;
 	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
+	public static final int PUZZLE_BOX_GROUP_ID = 306;
 
 	static class WorldMap
 	{
@@ -283,5 +284,10 @@ public class WidgetID
 		static final int DROP_5 = 19;
 		static final int DROP_6 = 20;
 		static final int DROP_7 = 21;
+	}
+
+	static class PuzzleBox
+	{
+		static final int VISIBLE_BOX = 4;
 	}
 }

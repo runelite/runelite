@@ -5,317 +5,227 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("ca")
 @Implements("NetWriter")
 public class NetWriter {
-   @ObfuscatedName("ar")
-   static int[] field1440;
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lfn;"
+      signature = "Lff;"
    )
    @Export("rssocket")
    class159 rssocket;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgk;"
+      signature = "Lgi;"
    )
    @Export("packetBufferNodes")
    CombatInfoList packetBufferNodes;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 357159945
+      intValue = 2122835097
    )
-   int field1437;
-   @ObfuscatedName("s")
+   int field1445;
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "Lgj;"
+      signature = "Lgy;"
    )
    @Export("buffer")
    Buffer buffer;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "Lgo;"
    )
-   public ISAACCipher field1439;
-   @ObfuscatedName("a")
+   public ISAACCipher field1454;
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "Lgd;"
+      signature = "Lgt;"
    )
    @Export("packetBuffer")
    PacketBuffer packetBuffer;
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "Lfo;"
+      signature = "Lfx;"
    )
    @Export("serverPacket")
    ServerPacket serverPacket;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1835324509
+      intValue = 962318401
    )
    @Export("packetLength")
    int packetLength;
-   @ObfuscatedName("m")
-   boolean field1443;
-   @ObfuscatedName("h")
+   @ObfuscatedName("z")
+   boolean field1452;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1958033877
+      intValue = 1416729479
    )
-   int field1450;
+   int field1456;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1658129769
+   )
+   int field1449;
    @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 2076435761
-   )
-   int field1438;
-   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "Lfo;"
+      signature = "Lfx;"
+   )
+   ServerPacket field1455;
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "Lfx;"
    )
    ServerPacket field1446;
-   @ObfuscatedName("q")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "Lfo;"
+      signature = "Lfx;"
    )
-   ServerPacket field1435;
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "Lfo;"
-   )
-   ServerPacket field1448;
+   ServerPacket field1457;
 
    NetWriter() {
       this.packetBufferNodes = new CombatInfoList();
-      this.field1437 = 0;
+      this.field1445 = 0;
       this.buffer = new Buffer(5000);
       this.packetBuffer = new PacketBuffer(40000);
       this.serverPacket = null;
       this.packetLength = 0;
-      this.field1443 = true;
-      this.field1450 = 0;
-      this.field1438 = 0;
+      this.field1452 = true;
+      this.field1456 = 0;
+      this.field1449 = 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1587775395"
+      signature = "(B)V",
+      garbageValue = "-6"
    )
-   final void method2040() {
-      this.packetBufferNodes.method3828();
-      this.field1437 = 0;
+   final void method2041() {
+      this.packetBufferNodes.method3985();
+      this.field1445 = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1654524803"
+      garbageValue = "-297426778"
    )
-   final void method2020() throws IOException {
-      if(this.rssocket != null && this.field1437 > 0) {
+   final void method2043() throws IOException {
+      if(this.rssocket != null && this.field1445 > 0) {
          this.buffer.offset = 0;
 
          while(true) {
             PacketNode var1 = (PacketNode)this.packetBufferNodes.last();
-            if(var1 == null || var1.field2400 > this.buffer.payload.length - this.buffer.offset) {
-               this.rssocket.vmethod3192(this.buffer.payload, 0, this.buffer.offset);
-               this.field1438 = 0;
+            if(var1 == null || var1.field2437 > this.buffer.payload.length - this.buffer.offset) {
+               this.rssocket.vmethod3304(this.buffer.payload, 0, this.buffer.offset);
+               this.field1449 = 0;
                break;
             }
 
-            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2400);
-            this.field1437 -= var1.field2400;
+            this.buffer.putBytes(var1.packetBuffer.payload, 0, var1.field2437);
+            this.field1445 -= var1.field2437;
             var1.unlink();
-            var1.packetBuffer.method3388();
-            var1.method3302();
+            var1.packetBuffer.method3574();
+            var1.method3413();
          }
       }
 
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lfa;I)V",
-      garbageValue = "-1806579795"
+      signature = "(Lfv;B)V",
+      garbageValue = "0"
    )
-   public final void method2021(PacketNode var1) {
+   public final void method2044(PacketNode var1) {
       this.packetBufferNodes.addFirst(var1);
-      var1.field2400 = var1.packetBuffer.offset;
+      var1.field2437 = var1.packetBuffer.offset;
       var1.packetBuffer.offset = 0;
-      this.field1437 += var1.field2400;
+      this.field1445 += var1.field2437;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lfn;B)V",
-      garbageValue = "47"
+      signature = "(Lff;I)V",
+      garbageValue = "50096353"
    )
    @Export("setSocket")
    void setSocket(class159 var1) {
       this.rssocket = var1;
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1710283776"
+      garbageValue = "1994137115"
    )
    @Export("close")
    void close() {
       if(this.rssocket != null) {
-         this.rssocket.vmethod3186();
+         this.rssocket.vmethod3299();
          this.rssocket = null;
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2062347974"
+      signature = "(B)V",
+      garbageValue = "-71"
    )
-   void method2023() {
+   void method2047() {
       this.rssocket = null;
    }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)Lfn;",
-      garbageValue = "1169149194"
+      signature = "(I)Lff;",
+      garbageValue = "2122463196"
    )
    @Export("getSocket")
    class159 getSocket() {
       return this.rssocket;
    }
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(Lik;II)Lhf;",
-      garbageValue = "345186623"
-   )
-   static class218 method2043(IndexDataBase var0, int var1) {
-      byte[] var2 = var0.takeRecordFlat(var1);
-      return var2 == null?null:new class218(var2);
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "2039787633"
-   )
-   public static boolean method2042(int var0) {
-      return (var0 >> 30 & 1) != 0;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(ILcd;ZB)I",
-      garbageValue = "53"
-   )
-   static int method2024(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class35.getWidget(class80.intStack[--class80.intStackSize]);
-      } else {
-         var3 = var2?class23.field331:GrandExchangeOffer.field297;
-      }
-
-      String var4 = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
-      int[] var5 = null;
-      if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 'Y') {
-         int var6 = class80.intStack[--class80.intStackSize];
-         if(var6 > 0) {
-            for(var5 = new int[var6]; var6-- > 0; var5[var6] = class80.intStack[--class80.intStackSize]) {
-               ;
-            }
-         }
-
-         var4 = var4.substring(0, var4.length() - 1);
-      }
-
-      Object[] var8 = new Object[var4.length() + 1];
-
-      int var7;
-      for(var7 = var8.length - 1; var7 >= 1; --var7) {
-         if(var4.charAt(var7 - 1) == 's') {
-            var8[var7] = class80.scriptStringStack[--WorldComparator.scriptStringStackSize];
+   @ObfuscatedName("g")
+   public static String method2045(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(0L == var0 % 37L) {
+            return null;
          } else {
-            var8[var7] = new Integer(class80.intStack[--class80.intStackSize]);
+            int var2 = 0;
+
+            for(long var3 = var0; 0L != var3; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5;
+            char var8;
+            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
+               long var6 = var0;
+               var0 /= 37L;
+               var8 = class291.field3791[(int)(var6 - 37L * var0)];
+               if(var8 == '_') {
+                  int var9 = var5.length() - 1;
+                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  var8 = 160;
+               }
+            }
+
+            var5.reverse();
+            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+            return var5.toString();
          }
-      }
-
-      var7 = class80.intStack[--class80.intStackSize];
-      if(var7 != -1) {
-         var8[0] = new Integer(var7);
       } else {
-         var8 = null;
+         return null;
       }
+   }
 
-      if(var0 == 1400) {
-         var3.field2820 = var8;
-      } else if(var0 == 1401) {
-         var3.field2823 = var8;
-      } else if(var0 == 1402) {
-         var3.field2760 = var8;
-      } else if(var0 == 1403) {
-         var3.mouseEnterListener = var8;
-      } else if(var0 == 1404) {
-         var3.mouseExitListener = var8;
-      } else if(var0 == 1405) {
-         var3.field2832 = var8;
-      } else if(var0 == 1406) {
-         var3.field2830 = var8;
-      } else if(var0 == 1407) {
-         var3.configListenerArgs = var8;
-         var3.configTriggers = var5;
-      } else if(var0 == 1408) {
-         var3.renderListener = var8;
-      } else if(var0 == 1409) {
-         var3.field2838 = var8;
-      } else if(var0 == 1410) {
-         var3.field2849 = var8;
-      } else if(var0 == 1411) {
-         var3.field2812 = var8;
-      } else if(var0 == 1412) {
-         var3.mouseHoverListener = var8;
-      } else if(var0 == 1414) {
-         var3.tableListenerArgs = var8;
-         var3.tableModTriggers = var5;
-      } else if(var0 == 1415) {
-         var3.skillListenerArgs = var8;
-         var3.skillTriggers = var5;
-      } else if(var0 == 1416) {
-         var3.field2780 = var8;
-      } else if(var0 == 1417) {
-         var3.scrollListener = var8;
-      } else if(var0 == 1418) {
-         var3.field2761 = var8;
-      } else if(var0 == 1419) {
-         var3.field2841 = var8;
-      } else if(var0 == 1420) {
-         var3.field2842 = var8;
-      } else if(var0 == 1421) {
-         var3.field2843 = var8;
-      } else if(var0 == 1422) {
-         var3.field2844 = var8;
-      } else if(var0 == 1423) {
-         var3.field2821 = var8;
-      } else if(var0 == 1424) {
-         var3.field2771 = var8;
-      } else if(var0 == 1425) {
-         var3.field2848 = var8;
-      } else if(var0 == 1426) {
-         var3.field2834 = var8;
-      } else {
-         if(var0 != 1427) {
-            return 2;
-         }
-
-         var3.field2744 = var8;
-      }
-
-      var3.field2813 = true;
-      return 1;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)[Lib;",
+      garbageValue = "1167457763"
+   )
+   public static class239[] method2042() {
+      return new class239[]{class239.field3250, class239.field3251, class239.field3255, class239.field3245, class239.field3247, class239.field3246, class239.field3244, class239.field3249};
    }
 }

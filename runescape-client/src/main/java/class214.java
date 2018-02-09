@@ -2,150 +2,177 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hf")
 public class class214 {
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public static IndexDataBase field2598;
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public static IndexDataBase field2593;
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "Lik;"
-   )
-   public static IndexDataBase field2592;
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "Lhq;"
+      signature = "Lir;"
    )
-   public static class215 field2595;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -2086115957
-   )
-   public static int field2596;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1954560121
-   )
-   public static int field2597;
-   @ObfuscatedName("o")
-   public static boolean field2594;
-   @ObfuscatedName("x")
+   public static IndexDataBase field2618;
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lhk;"
+      signature = "Lir;"
    )
-   public static Track1 field2599;
+   public static IndexDataBase field2615;
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "Lir;"
+   )
+   public static IndexDataBase field2619;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -747367745
+   )
+   public static int field2617;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "Lir;"
+   )
+   public static IndexDataBase field2614;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1418623185
+   )
+   static int field2616;
 
    static {
-      field2596 = 0;
+      field2617 = 0;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "53233045"
+      signature = "(B)V",
+      garbageValue = "0"
    )
-   static final void method3948() {
-      short var0 = 256;
-      int var1;
-      if(class89.field1311 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class89.field1311 > 768) {
-               TotalQuantityComparator.field284[var1] = WorldComparator.method84(UnitPriceComparator.field300[var1], class238.field3223[var1], 1024 - class89.field1311);
-            } else if(class89.field1311 > 256) {
-               TotalQuantityComparator.field284[var1] = class238.field3223[var1];
-            } else {
-               TotalQuantityComparator.field284[var1] = WorldComparator.method84(class238.field3223[var1], UnitPriceComparator.field300[var1], 256 - class89.field1311);
-            }
+   static void method4129() {
+      Object var0 = IndexStoreActionHandler.IndexStoreActionHandler_lock;
+      synchronized(IndexStoreActionHandler.IndexStoreActionHandler_lock) {
+         if(IndexStoreActionHandler.field3324 == 0) {
+            class219.IndexStoreActionHandler_thread = new Thread(new IndexStoreActionHandler());
+            class219.IndexStoreActionHandler_thread.setDaemon(true);
+            class219.IndexStoreActionHandler_thread.start();
+            class219.IndexStoreActionHandler_thread.setPriority(5);
          }
-      } else if(class89.field1312 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class89.field1312 > 768) {
-               TotalQuantityComparator.field284[var1] = WorldComparator.method84(UnitPriceComparator.field300[var1], class239.field3236[var1], 1024 - class89.field1312);
-            } else if(class89.field1312 > 256) {
-               TotalQuantityComparator.field284[var1] = class239.field3236[var1];
-            } else {
-               TotalQuantityComparator.field284[var1] = WorldComparator.method84(class239.field3236[var1], UnitPriceComparator.field300[var1], 256 - class89.field1312);
-            }
+
+         IndexStoreActionHandler.field3324 = 600;
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-473539797"
+   )
+   static int method4131(int var0) {
+      ChatLineBuffer var1 = (ChatLineBuffer)class94.chatLineMap.get(Integer.valueOf(var0));
+      return var1 == null?0:var1.size();
+   }
+
+   @ObfuscatedName("gb")
+   @ObfuscatedSignature(
+      signature = "(Lby;ZB)V",
+      garbageValue = "109"
+   )
+   static void method4127(Player var0, boolean var1) {
+      if(var0 != null && var0.hasConfig() && !var0.hidden) {
+         int var2 = var0.field822 << 14;
+         var0.isLowDetail = false;
+         if((Client.lowMemory && class92.playerIndexesCount > 50 || class92.playerIndexesCount > 200) && var1 && var0.idlePoseAnimation == var0.poseAnimation) {
+            var0.isLowDetail = true;
          }
-      } else {
-         for(var1 = 0; var1 < 256; ++var1) {
-            TotalQuantityComparator.field284[var1] = UnitPriceComparator.field300[var1];
+
+         int var3 = var0.x >> 7;
+         int var4 = var0.y >> 7;
+         if(var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
+            if(var0.model != null && Client.gameCycle >= var0.animationCycleStart && Client.gameCycle < var0.animationCycleEnd) {
+               var0.isLowDetail = false;
+               var0.field813 = MessageNode.getTileHeight(var0.x, var0.y, class60.plane);
+               TotalQuantityComparator.region.method3010(class60.plane, var0.x, var0.y, var0.field813, 60, var0, var0.angle, var2, var0.field820, var0.field821, var0.field815, var0.field812);
+            } else {
+               if((var0.x & 127) == 64 && (var0.y & 127) == 64) {
+                  if(Client.field1027[var3][var4] == Client.field928) {
+                     return;
+                  }
+
+                  Client.field1027[var3][var4] = Client.field928;
+               }
+
+               var0.field813 = MessageNode.getTileHeight(var0.x, var0.y, class60.plane);
+               TotalQuantityComparator.region.method2915(class60.plane, var0.x, var0.y, var0.field813, 60, var0, var0.angle, var2, var0.field1117);
+            }
          }
       }
 
-      Rasterizer2D.setDrawRegion(class89.field1301, 9, class89.field1301 + 128, var0 + 7);
-      class89.field1316.method5534(class89.field1301, 0);
-      Rasterizer2D.noClip();
-      var1 = 0;
-      int var2 = CombatInfo2.rasterProvider.width * 9 + class89.field1301;
+   }
 
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = class89.field1340[var3] * (var0 - var3) / var0;
-         var5 = var4 + 22;
-         if(var5 < 0) {
-            var5 = 0;
-         }
-
-         var1 += var5;
-
-         for(var6 = var5; var6 < 128; ++var6) {
-            var7 = NetWriter.field1440[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = TotalQuantityComparator.field284[var7];
-               var10 = CombatInfo2.rasterProvider.pixels[var2];
-               CombatInfo2.rasterProvider.pixels[var2++] = ((var7 & 16711935) * var8 + (var10 & 16711935) * var9 & -16711936) + (var9 * (var10 & 65280) + var8 * (var7 & 65280) & 16711680) >> 8;
-            } else {
-               ++var2;
-            }
-         }
-
-         var2 += var5 + CombatInfo2.rasterProvider.width - 128;
+   @ObfuscatedName("iv")
+   @ObfuscatedSignature(
+      signature = "(IIIIII)V",
+      garbageValue = "2074153896"
+   )
+   static final void method4128(int var0, int var1, int var2, int var3, int var4) {
+      class34.scrollbarSprites[0].method5653(var0, var1);
+      class34.scrollbarSprites[1].method5653(var0, var3 + var1 - 16);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.field901);
+      int var5 = var3 * (var3 - 32) / var4;
+      if(var5 < 8) {
+         var5 = 8;
       }
 
-      Rasterizer2D.setDrawRegion(class89.field1301 + 765 - 128, 9, class89.field1301 + 765, var0 + 7);
-      class295.field3780.method5534(class89.field1301 + 382, 0);
-      Rasterizer2D.noClip();
-      var1 = 0;
-      var2 = CombatInfo2.rasterProvider.width * 9 + class89.field1301 + 637 + 24;
+      int var6 = (var3 - 32 - var5) * var2 / (var4 - var3);
+      Rasterizer2D.Rasterizer2D_fillRectangle(var0, var6 + var1 + 16, 16, var5, Client.field905);
+      Rasterizer2D.method5575(var0, var6 + var1 + 16, var5, Client.field904);
+      Rasterizer2D.method5575(var0 + 1, var6 + var1 + 16, var5, Client.field904);
+      Rasterizer2D.method5573(var0, var6 + var1 + 16, 16, Client.field904);
+      Rasterizer2D.method5573(var0, var6 + var1 + 17, 16, Client.field904);
+      Rasterizer2D.method5575(var0 + 15, var6 + var1 + 16, var5, Client.field931);
+      Rasterizer2D.method5575(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field931);
+      Rasterizer2D.method5573(var0, var6 + var5 + var1 + 15, 16, Client.field931);
+      Rasterizer2D.method5573(var0 + 1, var5 + var6 + var1 + 14, 15, Client.field931);
+   }
 
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = class89.field1340[var3] * (var0 - var3) / var0;
-         var5 = 103 - var4;
-         var2 += var4;
+   @ObfuscatedName("kg")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "2071957546"
+   )
+   static void method4122(String var0, boolean var1) {
+      var0 = var0.toLowerCase();
+      short[] var2 = new short[16];
+      int var3 = 0;
 
-         for(var6 = 0; var6 < var5; ++var6) {
-            var7 = NetWriter.field1440[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = TotalQuantityComparator.field284[var7];
-               var10 = CombatInfo2.rasterProvider.pixels[var2];
-               CombatInfo2.rasterProvider.pixels[var2++] = (var9 * (var10 & 65280) + var8 * (var7 & 65280) & 16711680) + ((var10 & 16711935) * var9 + (var7 & 16711935) * var8 & -16711936) >> 8;
-            } else {
-               ++var2;
+      for(int var4 = 0; var4 < class235.field2949; ++var4) {
+         ItemComposition var5 = ItemContainer.getItemDefinition(var4);
+         if((!var1 || var5.isTradable) && var5.notedTemplate == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
+            if(var3 >= 250) {
+               OwnWorldComparator.field836 = -1;
+               class27.field382 = null;
+               return;
             }
-         }
 
-         var1 += 128 - var5;
-         var2 += CombatInfo2.rasterProvider.width - var5 - var4;
+            if(var3 >= var2.length) {
+               short[] var6 = new short[var2.length * 2];
+
+               for(int var7 = 0; var7 < var3; ++var7) {
+                  var6[var7] = var2[var7];
+               }
+
+               var2 = var6;
+            }
+
+            var2[var3++] = (short)var4;
+         }
       }
 
+      class27.field382 = var2;
+      class157.field2152 = 0;
+      OwnWorldComparator.field836 = var3;
+      String[] var8 = new String[OwnWorldComparator.field836];
+
+      for(int var9 = 0; var9 < OwnWorldComparator.field836; ++var9) {
+         var8[var9] = ItemContainer.getItemDefinition(var2[var9]).name;
+      }
+
+      class153.method3200(var8, class27.field382);
    }
 }

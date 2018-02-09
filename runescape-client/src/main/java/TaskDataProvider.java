@@ -3,13 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cz")
 @Implements("TaskDataProvider")
 public interface TaskDataProvider {
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)Ldo;",
-      garbageValue = "284237156"
+      signature = "(I)Ldf;",
+      garbageValue = "956750753"
    )
    @Export("taskData")
    AbstractSoundSystem taskData();

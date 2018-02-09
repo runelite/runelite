@@ -4,49 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("jg")
 @Implements("Enum")
 public class Enum extends CacheableNode {
-   @ObfuscatedName("p")
+   @ObfuscatedName("oh")
    @ObfuscatedSignature(
-      signature = "Lik;"
+      signature = "Ldf;"
+   )
+   @Export("soundSystem1")
+   static AbstractSoundSystem soundSystem1;
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "Lir;"
    )
    @Export("EnumDefinition_indexCache")
    public static IndexDataBase EnumDefinition_indexCache;
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "Lgm;"
+      signature = "Lgc;"
    )
    @Export("EnumDefinition_cached")
    static NodeCache EnumDefinition_cached;
-   @ObfuscatedName("w")
+   @ObfuscatedName("fr")
+   @ObfuscatedSignature(
+      signature = "[Lki;"
+   )
+   @Export("crossSprites")
+   static SpritePixels[] crossSprites;
+   @ObfuscatedName("m")
    @Export("keyType")
    public char keyType;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @Export("valType")
    public char valType;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("defaultString")
    public String defaultString;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -279184441
+      intValue = 1330365559
    )
    @Export("defaultInt")
    public int defaultInt;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1299362767
+      intValue = -1953497599
    )
    @Export("size")
    public int size;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @Export("keys")
    public int[] keys;
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @Export("intVals")
    public int[] intVals;
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @Export("stringVals")
    public String[] stringVals;
 
@@ -59,10 +71,10 @@ public class Enum extends CacheableNode {
       this.size = 0;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lgj;I)V",
-      garbageValue = "402936430"
+      signature = "(Lgy;B)V",
+      garbageValue = "3"
    )
    @Export("decode")
    void decode(Buffer var1) {
@@ -76,10 +88,10 @@ public class Enum extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lgj;II)V",
-      garbageValue = "-1758109662"
+      signature = "(Lgy;IB)V",
+      garbageValue = "0"
    )
    @Export("readNext")
    void readNext(Buffer var1, int var2) {
@@ -116,12 +128,32 @@ public class Enum extends CacheableNode {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1254004234"
+      garbageValue = "-919829593"
    )
-   public int method4728() {
+   public int method4868() {
       return this.size;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lir;Lir;I)V",
+      garbageValue = "-1347217661"
+   )
+   public static void method4880(IndexDataBase var0, IndexDataBase var1) {
+      KitDefinition.identKit_ref = var0;
+      KitDefinition.field3441 = var1;
+      KitDefinition.field3431 = KitDefinition.identKit_ref.fileCount(3);
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lgy;B)Ljava/lang/String;",
+      garbageValue = "20"
+   )
+   public static String method4881(Buffer var0) {
+      return Timer.method3296(var0, 32767);
    }
 }

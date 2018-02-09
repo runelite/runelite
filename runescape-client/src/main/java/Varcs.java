@@ -5,68 +5,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("cm")
 @Implements("Varcs")
 public class Varcs {
-   @ObfuscatedName("qg")
-   @ObfuscatedSignature(
-      signature = "Lv;"
-   )
-   @Export("grandExchangeEvents")
-   static GrandExchangeEvents grandExchangeEvents;
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @Export("varcSerials")
    boolean[] varcSerials;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @Export("varcstringSerials")
    boolean[] varcstringSerials;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("varcs")
    int[] varcs;
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @Export("varcstrings")
    String[] varcstrings;
    @ObfuscatedName("t")
    @Export("changed")
    boolean changed;
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = -3173811430113367859L
+      longValue = -116963315871757039L
    )
    @Export("lastSerialize")
    long lastSerialize;
 
    Varcs() {
       this.changed = false;
-      this.varcs = new int[class293.configsIndex.fileCount(19)];
-      this.varcstrings = new String[class293.configsIndex.fileCount(15)];
+      this.varcs = new int[Frames.configsIndex.fileCount(19)];
+      this.varcstrings = new String[Frames.configsIndex.fileCount(15)];
       this.varcSerials = new boolean[this.varcs.length];
 
       int var1;
       for(var1 = 0; var1 < this.varcs.length; ++var1) {
-         class254 var2 = class44.method622(var1);
-         this.varcSerials[var1] = var2.field3377;
+         class254 var2 = class250.method4656(var1);
+         this.varcSerials[var1] = var2.field3398;
       }
 
       this.varcstringSerials = new boolean[this.varcstrings.length];
 
       for(var1 = 0; var1 < this.varcstrings.length; ++var1) {
-         class255 var3 = (class255)class255.field3379.get((long)var1);
-         class255 var5;
-         if(var3 != null) {
-            var5 = var3;
-         } else {
-            byte[] var4 = class255.field3380.getConfigData(15, var1);
-            var3 = new class255();
-            if(var4 != null) {
-               var3.method4592(new Buffer(var4));
-            }
-
-            class255.field3379.put(var3, (long)var1);
-            var5 = var3;
-         }
-
-         this.varcstringSerials[var1] = var5.field3378;
+         class255 var3 = IndexData.method4624(var1);
+         this.varcstringSerials[var1] = var3.field3403;
       }
 
       for(var1 = 0; var1 < this.varcs.length; ++var1) {
@@ -76,10 +56,10 @@ public class Varcs {
       this.deserialize();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1942518383"
+      signature = "(IIS)V",
+      garbageValue = "-19207"
    )
    @Export("putVarc")
    void putVarc(int var1, int var2) {
@@ -90,20 +70,20 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "42949103"
+      garbageValue = "1355638292"
    )
    @Export("getVarc")
    int getVarc(int var1) {
       return this.varcs[var1];
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;I)V",
-      garbageValue = "1455758700"
+      garbageValue = "-1825547234"
    )
    @Export("putVarcString")
    void putVarcString(int var1, String var2) {
@@ -114,20 +94,20 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "-27"
+      signature = "(IS)Ljava/lang/String;",
+      garbageValue = "47"
    )
    @Export("getVarcString")
    String getVarcString(int var1) {
       return this.varcstrings[var1];
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1929964894"
+      signature = "(B)V",
+      garbageValue = "-13"
    )
    @Export("reset")
    void reset() {
@@ -146,20 +126,20 @@ public class Varcs {
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(ZB)Ldc;",
-      garbageValue = "121"
+      signature = "(ZI)Lcs;",
+      garbageValue = "-2124780357"
    )
    @Export("getVarPrefs")
    FileOnDisk getVarPrefs(boolean var1) {
-      return UrlRequester.getPreferencesFile("2", WorldComparator.field261.name, var1);
+      return VertexNormal.getPreferencesFile("2", AbstractSoundSystem.field1553.name, var1);
    }
 
    @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
+      signature = "(I)V",
+      garbageValue = "-851191154"
    )
    @Export("serialize")
    void serialize() {
@@ -182,7 +162,7 @@ public class Varcs {
 
          for(int var5 = 0; var5 < this.varcstrings.length; ++var5) {
             if(this.varcstringSerials[var5] && this.varcstrings[var5] != null) {
-               var2 += 2 + ContextMenuRow.getLength(this.varcstrings[var5]);
+               var2 += 2 + FrameMap.getLength(this.varcstrings[var5]);
                ++var4;
             }
          }
@@ -221,13 +201,13 @@ public class Varcs {
       }
 
       this.changed = false;
-      this.lastSerialize = ScriptVarType.currentTimeMs();
+      this.lastSerialize = SceneTilePaint.currentTimeMs();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "83"
+      garbageValue = "-34"
    )
    @Export("deserialize")
    void deserialize() {
@@ -290,26 +270,82 @@ public class Varcs {
       this.changed = false;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "555851766"
+      signature = "(B)V",
+      garbageValue = "6"
    )
    @Export("process")
    void process() {
-      if(this.changed && this.lastSerialize < ScriptVarType.currentTimeMs() - 60000L) {
+      if(this.changed && this.lastSerialize < SceneTilePaint.currentTimeMs() - 60000L) {
          this.serialize();
       }
 
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1874961191"
+      garbageValue = "443545917"
    )
    @Export("changed")
    boolean changed() {
       return this.changed;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(ILcf;ZI)I",
+      garbageValue = "1781455247"
+   )
+   static int method1997(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class94.field1418:ItemLayer.field1668;
+      if(var0 == 1800) {
+         int[] var4 = class80.intStack;
+         int var5 = ++class80.intStackSize - 1;
+         int var7 = WorldComparator.getWidgetConfig(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
+            } else {
+               class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class80.intStack[--class80.intStackSize];
+         --var8;
+         if(var3.actions != null && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class80.scriptStringStack[++class294.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class80.scriptStringStack[++class294.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
+   }
+
+   @ObfuscatedName("fi")
+   @ObfuscatedSignature(
+      signature = "(IS)V",
+      garbageValue = "25132"
+   )
+   static void method1998(int var0) {
+      if(var0 == -1 && !Client.field1059) {
+         class25.field356.method4139();
+         class214.field2617 = 1;
+         class214.field2614 = null;
+      } else if(var0 != -1 && var0 != Client.field902 && Client.field1057 != 0 && !Client.field1059) {
+         DState.method3488(2, class231.indexTrack1, var0, 0, Client.field1057, false);
+      }
+
+      Client.field902 = var0;
    }
 }
