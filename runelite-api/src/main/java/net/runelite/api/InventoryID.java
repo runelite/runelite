@@ -27,7 +27,8 @@ package net.runelite.api;
 public enum InventoryID
 {
 	INVENTORY(93),
-	EQUIPMENT(94);
+	EQUIPMENT(94),
+	PUZZLE_BOX(140);
 
 	private final int id;
 
