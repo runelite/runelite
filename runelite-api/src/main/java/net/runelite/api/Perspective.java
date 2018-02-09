@@ -45,6 +45,8 @@ public class Perspective
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
 
+	public static final int SCENE_SIZE = 104; // in tiles
+
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
@@ -55,6 +57,25 @@ public class Perspective
 			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
 			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
 		}
+	}
+
+	/**
+	 * Check if a world location is in the scene
+	 * @param point world location
+	 * @return
+	 */
+	public static boolean isWorldInScene(Client client, Point point)
+	{
+		int x = point.getX();
+		int y = point.getY();
+
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+
+		int maxX = baseX + SCENE_SIZE;
+		int maxY = baseY + SCENE_SIZE;
+
+		return x >= baseX && x < maxX && y >= baseY && y < maxY;
 	}
 
 	/**
