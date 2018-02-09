@@ -44,6 +44,13 @@
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -172,6 +179,23 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>com.github.abextm</groupId>
+				<artifactId>jasmin-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>compile-jasmin</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/jasmin</sourceDirectory>
+							<outputDirectory>${project.build.directory}/asm_classes</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
@@ -182,6 +206,23 @@
 						<nonFilteredFileExtension>gif</nonFilteredFileExtension>
 					</nonFilteredFileExtensions>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/asm_classes</directory>
+									<include>**/*.class</include>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
