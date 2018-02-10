@@ -264,14 +264,22 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		int slayerExp = client.getSkillExperience(SLAYER);
+
+		if (slayerExp <= cachedXp)
+		{
+			return;
+		}
+
 		if (cachedXp == 0)
 		{
 			// this is the initial xp sent on login
-			cachedXp = client.getSkillExperience(SLAYER);
+			cachedXp = slayerExp;
 			return;
 		}
 
 		killedOne();
+		cachedXp = slayerExp;
 	}
 
 	@Subscribe
