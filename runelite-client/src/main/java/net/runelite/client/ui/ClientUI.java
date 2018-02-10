@@ -28,13 +28,14 @@ import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.LayoutManager;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -158,16 +159,41 @@ public class ClientUI extends JFrame
 			titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
 			titleBar.add(titleToolbar);
 
-			// The title bar doesn't have a real layout manager, so we have to do it manually
-			titleBar.addComponentListener(new ComponentAdapter()
+			// Substance's default layout manager for the title bar only lays out substance's components
+			// This wraps the default manager and lays out the TitleToolbar as well.
+			LayoutManager delegate = titleBar.getLayout();
+			titleBar.setLayout(new LayoutManager()
 			{
 				@Override
-				public void componentResized(ComponentEvent e)
+				public void addLayoutComponent(String name, Component comp)
 				{
-					super.componentResized(e);
+					delegate.addLayoutComponent(name, comp);
+				}
+
+				@Override
+				public void removeLayoutComponent(Component comp)
+				{
+					delegate.removeLayoutComponent(comp);
+				}
+
+				@Override
+				public Dimension preferredLayoutSize(Container parent)
+				{
+					return delegate.preferredLayoutSize(parent);
+				}
+
+				@Override
+				public Dimension minimumLayoutSize(Container parent)
+				{
+					return delegate.minimumLayoutSize(parent);
+				}
+
+				@Override
+				public void layoutContainer(Container parent)
+				{
+					delegate.layoutContainer(parent);
 					final int width = titleToolbar.getPreferredSize().width;
 					titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					titleToolbar.revalidate();
 				}
 			});
 		}
