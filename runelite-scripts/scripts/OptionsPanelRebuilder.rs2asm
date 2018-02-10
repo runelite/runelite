@@ -237,6 +237,8 @@ LABEL198:
 LABEL210:
    get_varc               73
    load_int               700
+   load_string            "fixedInnerZoomLimit"
+   runelite_callback
    if_icmple              LABEL214
    jump                   LABEL226
 LABEL214:
@@ -249,6 +251,8 @@ LABEL214:
 LABEL218:
    get_varc               74
    load_int               715
+   load_string            "resizableInnerZoomLimit"
+   runelite_callback
    if_icmple              LABEL222
    jump                   LABEL226
 LABEL222:

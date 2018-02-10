@@ -41,9 +41,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class ZoomPlugin extends Plugin
 {
-	private static final int INCREASED_RESIZABLE_ZOOM_LIMIT = 70;
-	private static final int INCREASED_FIXED_ZOOM_LIMIT = 95;
-
 	@Inject
 	private Client client;
 
@@ -59,26 +56,55 @@ public class ZoomPlugin extends Plugin
 	@Subscribe
 	public void onScriptEvent(ScriptEvent event)
 	{
-		if (!zoomConfig.enabled())
-		{
-			return;
-		}
-
-		switch (event.getEventName())
-		{
-			case "fixedOuterZoomLimit":
-				popAndReplace(INCREASED_FIXED_ZOOM_LIMIT);
-				break;
-			case "resizableOuterZoomLimit":
-				popAndReplace(INCREASED_RESIZABLE_ZOOM_LIMIT);
-				break;
-		}
-	}
-
-	private void popAndReplace(int newValue)
-	{
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		intStack[intStackSize - 1] = newValue;
+		if (zoomConfig.outerLimit())
+		{
+			switch (event.getEventName())
+			{
+				case "fixedOuterZoomLimit":
+					intStack[intStackSize - 1] = 95;
+					break;
+				case "resizableOuterZoomLimit":
+					intStack[intStackSize - 1] = 70;
+					break;
+			}
+		}
+		if (zoomConfig.innerLimit())
+		{
+			switch (event.getEventName())
+			{
+				case "fixedInnerZoomLimit":
+					intStack[intStackSize - 1] = 2100;
+					break;
+				case "resizableInnerZoomLimit":
+					intStack[intStackSize - 1] = 2200;
+					break;
+			}
+		}
+		if (zoomConfig.outerLimit() || zoomConfig.innerLimit())
+		{
+			// This lets the options panel's slider have an exponential rate
+			final double exponent = 3.d;
+			switch (event.getEventName())
+			{
+				case "zoomLinToExp":
+				{
+					double range = intStack[intStackSize - 1];
+					double value = intStack[intStackSize - 2];
+					value = Math.pow(value / range, exponent) * range;
+					intStack[intStackSize - 2] = (int) value;
+					break;
+				}
+				case "zoomExpToLin":
+				{
+					double range = intStack[intStackSize - 1];
+					double value = intStack[intStackSize - 2];
+					value = Math.pow(value / range, 1.d / exponent) * range;
+					intStack[intStackSize - 2] = (int) value;
+					break;
+				}
+			}
+		}
 	}
 }
