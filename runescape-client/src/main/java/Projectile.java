@@ -244,11 +244,11 @@ public final class Projectile extends Renderable {
       garbageValue = "294807194"
    )
    @Export("forOrdinal")
-   public static MouseWheel forOrdinal(MouseWheel[] var0, int var1) {
-      MouseWheel[] var2 = var0;
+   public static Enumerated forOrdinal(Enumerated[] var0, int var1) {
+      Enumerated[] var2 = var0;
 
       for(int var3 = 0; var3 < var2.length; ++var3) {
-         MouseWheel var4 = var2[var3];
+         Enumerated var4 = var2[var3];
          if(var1 == var4.rsOrdinal()) {
             return var4;
          }

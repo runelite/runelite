@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ik")
 @Implements("Permission")
-public enum Permission implements MouseWheel {
+public enum Permission implements Enumerated {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lik;"
