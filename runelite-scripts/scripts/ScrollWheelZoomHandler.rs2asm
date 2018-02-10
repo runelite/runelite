@@ -11,6 +11,8 @@ LABEL4:
    return                
 LABEL5:
    load_int               700
+   load_string            "fixedInnerZoomLimit"
+   runelite_callback
    iload                  0
    invoke                 1046
    istore                 0
@@ -21,6 +23,8 @@ LABEL5:
    invoke                 1045
    istore                 0
    load_int               715
+   load_string            "resizableInnerZoomLimit"
+   runelite_callback
    iload                  1
    invoke                 1046
    istore                 1
