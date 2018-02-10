@@ -5,14 +5,14 @@
 .string_var_count   0
    load_int               715
    load_int               175
-   ;load_string            "resizableOuterZoomLimit"
-   ;runelite_callback
+   load_string            "resizableOuterZoomLimit"
+   runelite_callback
    isub                  
    istore                 0
    load_int               700
    load_int               195
-   ;load_string            "fixedOuterZoomLimit"
-   ;runelite_callback
+   load_string            "fixedOuterZoomLimit"
+   runelite_callback
    isub                  
    istore                 1
    load_int               17104904
@@ -37,8 +37,8 @@
 LABEL27:
    get_varc               74
    load_int               175
-   ;load_string            "resizableOuterZoomLimit"
-   ;runelite_callback
+   load_string            "resizableOuterZoomLimit"
+   runelite_callback
    isub                  
    iload                  2
    imul                  
@@ -49,8 +49,8 @@ LABEL27:
 LABEL36:
    get_varc               73
    load_int               195
-   ;load_string            "fixedOuterZoomLimit"
-   ;runelite_callback
+   load_string            "fixedOuterZoomLimit"
+   runelite_callback
    isub                  
    iload                  2
    imul                  
