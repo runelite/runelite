@@ -25,7 +25,6 @@
 package net.runelite.client.callback;
 
 import com.google.common.eventbus.EventBus;
-import net.runelite.api.Script;
 import org.slf4j.Logger;
 
 /**
@@ -38,9 +37,4 @@ public class Hooks
 	public static Logger log;
 
 	public static EventBus eventBus;
-
-	public static int runeliteExecute(int opcode, Script script, boolean isOne)
-	{
-		throw new RuntimeException();
-	}
 }
