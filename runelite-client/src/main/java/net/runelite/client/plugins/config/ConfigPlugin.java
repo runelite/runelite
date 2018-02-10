@@ -40,7 +40,8 @@ import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
 	name = "Configuration",
-	loadWhenOutdated = true
+	loadWhenOutdated = true,
+	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
 {
