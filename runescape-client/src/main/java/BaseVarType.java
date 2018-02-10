@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("i")
 @Implements("BaseVarType")
-public enum BaseVarType implements MouseWheel {
+public enum BaseVarType implements Enumerated {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Li;"
