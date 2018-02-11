@@ -232,6 +232,10 @@ public enum MenuAction
 	 */
 	EXAMINE_ITEM(1005),
 	/**
+	 * Menu action triggered by canceling a menu.
+	 */
+	CANCEL(1006),
+	/**
 	 * Menu action triggered by either examining item in bank, examining
 	 * item in inventory while having bank open, or examining equipped item.
 	 */
