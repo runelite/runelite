@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -31,10 +32,9 @@ import java.awt.Canvas;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -54,17 +53,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
-import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLiteProperties;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
 @Slf4j
 public class ClientUI extends JFrame
@@ -153,23 +152,16 @@ public class ClientUI extends JFrame
 		if (customChrome)
 		{
 			getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+			SubstanceCortex.WindowScope.extendContentIntoTitlePane(
+				this,
+				SubstanceSlices.HorizontalGravity.TRAILING,
+				SubstanceSlices.VerticalGravity.CENTERED);
 
-			JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(this);
-			titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-			titleBar.add(titleToolbar);
-
-			// The title bar doesn't have a real layout manager, so we have to do it manually
-			titleBar.addComponentListener(new ComponentAdapter()
-			{
-				@Override
-				public void componentResized(ComponentEvent e)
-				{
-					super.componentResized(e);
-					final int width = titleToolbar.getPreferredSize().width;
-					titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					titleToolbar.revalidate();
-				}
-			});
+			SubstanceCortex.ComponentScope.setDecorationType(titleToolbar,
+				SubstanceSlices.DecorationAreaType.PRIMARY_TITLE_PANE);
+			final Insets insets = SubstanceCortex.WindowScope.getTitlePaneControlInsets(this);
+			titleToolbar.setBorder(new EmptyBorder(0, insets.left + 6, 0, insets.right + 6));
+			getContentPane().add(titleToolbar, BorderLayout.NORTH);
 		}
 
 		pack();
@@ -322,7 +314,7 @@ public class ClientUI extends JFrame
 		pluginToolbar = new PluginToolbar(this);
 		container.add(pluginToolbar);
 
-		titleToolbar = new TitleToolbar(properties);
+		titleToolbar = new TitleToolbar(ICON, properties);
 
 		add(container);
 	}

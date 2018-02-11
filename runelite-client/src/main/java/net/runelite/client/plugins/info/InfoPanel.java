@@ -133,7 +133,7 @@ public class InfoPanel extends PluginPanel
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
 			.addComponent(toolbarPanelPlaceholder)
-			.addGap(3)
+			.addGap(12)
 			.addGroup(layout.createParallelGroup()
 				.addComponent(runeliteVersionHeader)
 				.addComponent(runescapeVersionHeader)
@@ -150,10 +150,8 @@ public class InfoPanel extends PluginPanel
 		);
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
+			.addComponent(toolbarPanelPlaceholder)
 			.addGroup(layout.createSequentialGroup()
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-				.addComponent(toolbarPanelPlaceholder)
-			).addGroup(layout.createSequentialGroup()
 				.addComponent(runeliteVersionHeader)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 				.addComponent(runescapeVersionHeader)
