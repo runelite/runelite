@@ -36,7 +36,7 @@ package net.runelite.api.widgets;
  */
 public class WidgetID
 {
-	public static final int FAIRY_RING_CODE_GROUP_ID = 381;
+	public static final int FAIRY_RING_PANEL_GROUP_ID = 381;
 	public static final int FAIRY_RING_GROUP_ID = 398;
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
@@ -508,6 +508,15 @@ public class WidgetID
 	{
 		static final int WIDGET = 1;
 		static final int BOTTOM_BAR = 14;
+	}
+
+	static class FairyRingPanel
+	{
+		static final int HEADER = 2;
+		static final int LIST = 7;
+		static final int FAVORITES = 8;
+		static final int SEPARATOR = 9;
+		static final int SCROLLBAR = 152;
 	}
 
 	static class FairyRing

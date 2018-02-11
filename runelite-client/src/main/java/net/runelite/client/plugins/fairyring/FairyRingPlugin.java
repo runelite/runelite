@@ -61,7 +61,7 @@ public class FairyRingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.FAIRY_RING_CODE_GROUP_ID)
+		if (widgetLoaded.getGroupId() == WidgetID.FAIRY_RING_PANEL_GROUP_ID)
 		{
 			setWidgetTextToDestination();
 		}
