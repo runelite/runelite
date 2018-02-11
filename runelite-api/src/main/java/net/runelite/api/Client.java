@@ -304,6 +304,8 @@ public interface Client extends GameEngine
 	ScriptStackFrame[] getScriptStackTrace();
 
 	ScriptEvent getCurrentScriptEvent();
+
+	void setScriptEventTracingEnabled(boolean enabled);
 	
 	void setCameraPitchRelaxerEnabled(boolean enabled);
 

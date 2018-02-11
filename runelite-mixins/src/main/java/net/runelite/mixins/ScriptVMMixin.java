@@ -56,6 +56,17 @@ public abstract class ScriptVMMixin implements RSClient
 	@Inject
 	private static ScriptEvent currentEvent;
 
+	// This is shadowed in RSScriptEventMixin
+	@Inject
+	private static boolean scriptEventTracing;
+
+	@Inject
+	@Override
+	public void setScriptEventTracingEnabled(boolean enabled)
+	{
+		scriptEventTracing = enabled;
+	}
+
 	@Inject
 	@Override
 	public boolean isScriptRunning()

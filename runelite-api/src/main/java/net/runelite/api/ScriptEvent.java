@@ -31,4 +31,6 @@ public interface ScriptEvent extends Node
 	Object[] getArguments();
 
 	Widget getWidget();
+
+	Throwable getTrace();
 }
