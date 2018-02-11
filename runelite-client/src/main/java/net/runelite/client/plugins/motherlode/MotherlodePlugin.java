@@ -125,28 +125,6 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkMining()
-	{
-		Instant lastPayDirtMined = session.getLastPayDirtMined();
-		if (lastPayDirtMined == null)
-		{
-			return;
-		}
-
-		// reset recentPayDirtMined if you haven't mined anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceMined = Duration.between(lastPayDirtMined, Instant.now());
-
-		if (sinceMined.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
-		}
-	}
-
 	@Subscribe
 	public void onWallObjectSpanwed(WallObjectSpawned event)
 	{

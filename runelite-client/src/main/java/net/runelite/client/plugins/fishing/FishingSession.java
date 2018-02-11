@@ -24,70 +24,20 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import java.time.Duration;
 import java.time.Instant;
 
 public class FishingSession
 {
-	private static final Duration HOUR = Duration.ofHours(1);
-
-	private int perHour;
-
 	private Instant lastFishCaught;
-	private int totalFished;
-
-	private Instant recentFishCaught;
-	private int recentFished;
 
 	public void incrementFishCaught()
 	{
 		Instant now = Instant.now();
-
 		lastFishCaught = now;
-		++totalFished;
-
-		if (recentFished == 0)
-		{
-			recentFishCaught = now;
-		}
-		++recentFished;
-
-		Duration timeSinceStart = Duration.between(recentFishCaught, now);
-		if (!timeSinceStart.isZero())
-		{
-			perHour = (int) ((double) recentFished * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
-		}
-	}
-
-	public void resetRecent()
-	{
-		recentFishCaught = null;
-		recentFished = 0;
-	}
-
-	public int getPerHour()
-	{
-		return perHour;
 	}
 
 	public Instant getLastFishCaught()
 	{
 		return lastFishCaught;
 	}
-
-	public int getTotalFished()
-	{
-		return totalFished;
-	}
-
-	public Instant getRecentFishCaught()
-	{
-		return recentFishCaught;
-	}
-
-	public int getRecentFished()
-	{
-		return recentFished;
-	}
-
 }

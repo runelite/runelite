@@ -109,26 +109,4 @@ public class FishingPlugin extends Plugin
 	{
 		spotOverlay.updateConfig();
 	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkFishing()
-	{
-		Instant lastFishCaught = session.getLastFishCaught();
-		if (lastFishCaught == null)
-		{
-			return;
-		}
-
-		// reset recentcaught if you haven't caught anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCaught = Duration.between(lastFishCaught, Instant.now());
-
-		if (sinceCaught.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
-		}
-	}
 }

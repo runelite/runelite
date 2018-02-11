@@ -95,26 +95,4 @@ public class WoodcuttingPlugin extends Plugin
 			}
 		}
 	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkCutting()
-	{
-		Instant lastLogCut = session.getLastLogCut();
-		if (lastLogCut == null)
-		{
-			return;
-		}
-
-		// reset recentCut if you haven't cut anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(lastLogCut, Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
-		}
-	}
 }
