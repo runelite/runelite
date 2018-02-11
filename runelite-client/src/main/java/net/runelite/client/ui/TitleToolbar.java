@@ -24,7 +24,10 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,12 +36,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -47,25 +48,21 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 public class TitleToolbar extends JPanel
 {
 	private static final int TITLEBAR_SIZE = 23;
+	private static final int ICON_SIZE = TITLEBAR_SIZE - 6;
 
-	@Getter
-	private final GroupLayout.SequentialGroup horizontal;
+	private final JPanel buttonPanel = new JPanel();
 
-	@Getter
-	private final GroupLayout.ParallelGroup vertical;
-
-	public TitleToolbar(RuneLiteProperties properties)
+	TitleToolbar(BufferedImage icon, RuneLiteProperties properties)
 	{
-		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
+		setLayout(new BorderLayout(6, 0));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 1, 0));
+		final JLabel iconLabel = new JLabel(new ImageIcon(icon.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH)));
+		final JLabel titleLabel = new JLabel(properties.getTitle());
+		titleLabel.setFont(FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16));
 
-		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-		horizontal = layout.createSequentialGroup();
-		layout.setHorizontalGroup(horizontal);
-
-		vertical = layout.createParallelGroup();
-		layout.setVerticalGroup(vertical);
+		add(iconLabel, BorderLayout.WEST);
+		add(titleLabel, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.EAST);
 
 		try
 		{
@@ -101,18 +98,20 @@ public class TitleToolbar extends JPanel
 
 	public void addButton(JButton button, Image iconImage, Image invertedIconImage)
 	{
-		final int iconSize = TITLEBAR_SIZE - 6;
-		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
-		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH));
+		ImageIcon icon = new ImageIcon(iconImage.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
+		ImageIcon invertedIcon = new ImageIcon(invertedIconImage.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
 
 		button.setIcon(icon);
 		button.setRolloverIcon(invertedIcon);
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);
 		button.setFocusable(false);
+		buttonPanel.add(button);
+		buttonPanel.revalidate();
+	}
 
-		horizontal.addGap(6);
-		horizontal.addComponent(button, 0, TITLEBAR_SIZE, TITLEBAR_SIZE);
-		vertical.addComponent(button, 0, TITLEBAR_SIZE, TITLEBAR_SIZE);
-		revalidate();
+	public void removeButton(JButton button)
+	{
+		buttonPanel.remove(button);
+		buttonPanel.revalidate();
 	}
 }

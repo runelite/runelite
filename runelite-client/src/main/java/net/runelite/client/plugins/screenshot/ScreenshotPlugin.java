@@ -173,7 +173,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			clientUi.getTitleToolbar().remove(titleBarButton);
+			clientUi.getTitleToolbar().removeButton(titleBarButton);
 		});
 	}
 
