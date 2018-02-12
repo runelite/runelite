@@ -30,10 +30,9 @@ public class MotherlodeSession
 {
 	private Instant lastPayDirtMined;
 
-	public void incrementPayDirtMined()
+	public void setLastPayDirtMined()
 	{
-		Instant now = Instant.now();
-		lastPayDirtMined = now;
+		lastPayDirtMined = Instant.now();
 	}
 
 	public Instant getLastPayDirtMined()

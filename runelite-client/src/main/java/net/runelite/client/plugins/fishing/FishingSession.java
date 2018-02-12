@@ -30,10 +30,9 @@ public class FishingSession
 {
 	private Instant lastFishCaught;
 
-	public void incrementFishCaught()
+	public void setLastFishCaught()
 	{
-		Instant now = Instant.now();
-		lastFishCaught = now;
+		lastFishCaught = Instant.now();
 	}
 
 	public Instant getLastFishCaught()

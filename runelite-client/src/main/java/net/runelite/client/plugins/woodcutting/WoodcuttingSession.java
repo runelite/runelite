@@ -24,19 +24,15 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.time.Duration;
 import java.time.Instant;
 
 public class WoodcuttingSession
 {
-	private static final Duration HOUR = Duration.ofHours(1);
-
 	private Instant lastLogCut;
 
-	public void incrementLogCut()
+	public void setLastLogCut()
 	{
-		Instant now = Instant.now();
-		lastLogCut = now;
+		lastLogCut = Instant.now();
 	}
 
 	public Instant getLastLogCut()

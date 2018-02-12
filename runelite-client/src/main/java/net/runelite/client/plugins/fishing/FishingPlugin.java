@@ -27,9 +27,7 @@ package net.runelite.client.plugins.fishing;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+
 import java.util.Arrays;
 import java.util.Collection;
 import javax.inject.Inject;
@@ -40,7 +38,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -100,7 +97,7 @@ public class FishingPlugin extends Plugin
 
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
-			session.incrementFishCaught();
+			session.setLastFishCaught();
 		}
 	}
 
