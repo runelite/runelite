@@ -102,57 +102,62 @@ public class FreezeManager
 		if (a instanceof Player)
 		{
 			log.debug("Player \"{}\" freeze queued", a.getName());
-			a.getFreeze().queueFreeze(type, false);
+			//TODO determine halving of ticks when praying
+			a.getFreeze().queueFreeze(type, type.getTicks(), false);
 		}
 		else if (a instanceof NPC)
 		{
 			log.debug("NPC \"{}\" freeze queued", a.getName());
-			a.getFreeze().queueFreeze(type, true);
+			//TODO determine halving of ticks when praying
+			a.getFreeze().queueFreeze(type, type.getTicks(), true);
 		}
 	}
 
 	private static void processActor(Actor subject)
 	{
 		FreezeInfo freezeInfo = subject.getFreeze();
-
-		FreezeInfo.FreezeState state = freezeInfo.getState();
+		boolean wasImmune = freezeInfo.isImmune();
 
 		freezeInfo.decrementAll();
 
-
-
-		switch (state)
+		//after immunity runs out
+		if (!freezeInfo.isFrozen() && !freezeInfo.isImmune() && freezeInfo.getType() == null && wasImmune)
 		{
-			case FROZEN:
-				log.debug("{} frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
+			freezeInfo.resetFreeze();
+			log.debug("{} is no longer immune", subject.getName());
+		}
 
-				if (freezeInfo.getFrozen() == 0)
+		//if not frozen, not immune and queued freezes
+		if (!freezeInfo.isImmune() && !freezeInfo.isFrozen() && freezeInfo.getType() == null && freezeInfo.hasQueued())
+		{
+			for (FreezeInfo.QueuedFreeze qf : freezeInfo.getQueuedFreezes())
+			{
+				if (qf.shouldTrigger())
 				{
-					freezeInfo.setImmune(IMMUNE_TICKS);
-					freezeInfo.setType(null);
-					//TODO broadcast changes
-					log.debug("{} is now immune to freezes", subject.getName());
+					int ticks = qf.getLengthTicks();
+					//halving has already been determined on cast
+					freezeInfo.startFreeze(qf.getType(), ticks);
+					break;
 				}
-				return;
-			case IMMUNE:
-				if (freezeInfo.getImmune() > 0) //return if still immune
-				{
-					log.debug("{} immune for another {} ticks", subject.getName(), subject.getFreeze().getImmune());
-					return;
-				}
-				//TODO broadcast immunity lift
-				log.debug("{} has their freeze immunity lifted", subject.getName());
-				//if immunity lifted we also go into the queued case
-			case QUEUED:
+			}
+		}
 
-				//this will never be reached when frozen so.
-				//queue must be over and a freeze type must be set
-				if (freezeInfo.getQueued() <= 0 && freezeInfo.getType() != null)
-				{
-					//TODO check overhead prayer and broadcast frozen status
-					freezeInfo.setFrozen(freezeInfo.getType().getTicks());
-					log.debug("{} frozen for {} ticks", subject.getName(), freezeInfo.getFrozen());
-				}
+		//if we were frozen last tick or this tick
+		if (freezeInfo.isFrozen())
+		{
+			log.debug("{} frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
+		}
+
+		//if there is a type set from when we were last frozen but we're not frozen anymore then we're immune
+		if (freezeInfo.getType() != null && !freezeInfo.isFrozen())
+		{
+			freezeInfo.startImmunity();
+		}
+
+		//if we're immune
+		if (freezeInfo.isImmune())
+		{
+			log.debug("{} immune for another {} ticks", subject.getName(), subject.getFreeze().getImmune());
 		}
 	}
 }

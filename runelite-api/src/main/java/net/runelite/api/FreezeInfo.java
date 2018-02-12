@@ -26,8 +26,10 @@ package net.runelite.api;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,6 +37,7 @@ import java.util.List;
  * queuedTicks can vary depending on whether we assumed we have pid or not. when others get frozen we always assume
  * we have pid, otherwise refreezes could happen whilst it shows immunity and inaccurate information will display
  */
+@Slf4j
 public class FreezeInfo
 {
 	/**
@@ -80,14 +83,11 @@ public class FreezeInfo
 	/**
 	 * Create a freeze info object with a queued freeze
 	 * @param type The freeze which will be applied
-	 * @param pid whether the target has pid or not, npcs always have pid
-	 * @return the newly created freeze info object
+	 * @param hasPid whether the target has pid or not, npcs always have pid
 	 */
-	public void queueFreeze(FreezeType type, boolean pid)
+	public void queueFreeze(FreezeType type, int ticks, boolean hasPid)
 	{
-		this.setType(type);
-
-		this.queuedFreezes.add(new QueuedFreeze(type, pid ? 2 : 1));
+		this.queuedFreezes.add(new QueuedFreeze(type, ticks, hasPid));
 	}
 
 	/**
@@ -99,8 +99,17 @@ public class FreezeInfo
 		this.immune -= 1;
 		this.frozen -= 1;
 
-		for (QueuedFreeze qf : queuedFreezes)
+		for (Iterator<QueuedFreeze> qfIt = queuedFreezes.iterator(); qfIt.hasNext();)
+		{
+			QueuedFreeze qf = qfIt.next();
 			qf.decrement();
+
+			if (qf.getTicksTillActive() < 0)
+			{
+				qfIt.remove();
+				continue;
+			}
+		}
 	}
 
 	public boolean isFrozen()
@@ -118,28 +127,59 @@ public class FreezeInfo
 		return this.queuedFreezes.size() > 0;
 	}
 
-	private class QueuedFreeze
+	public void startFreeze(FreezeType t, int frozenTicks)
+	{
+		this.immune = 0;
+		this.frozen = frozenTicks;
+		this.type = t;
+	}
+
+	public void startImmunity()
+	{
+		this.immune = 6;
+		this.frozen = 0;
+		this.type = null;
+	}
+
+	public void resetFreeze()
+	{
+		this.immune = 0;
+		this.frozen = 0;
+		this.type = null;
+	}
+
+	public class QueuedFreeze
 	{
 		@Getter
 		private FreezeType type;
 
 		@Getter
-		private int ticks;
+		private int lengthTicks;
 
-		public QueuedFreeze(FreezeType type, int ticks)
+		@Getter
+		private int ticksTillActive;
+
+		/**
+		 *
+		 * @param type which type of freeze was applied
+		 * @param ticks pray halfing is determined on cast and not activation so ticks must be passed at this point and not later on
+		 * @param hasPid whether the target has pid or not, npcs should always have pid.
+		 */
+		public QueuedFreeze(FreezeType type, int ticks, boolean hasPid)
 		{
 			this.type = type;
-			this.ticks = ticks;
+			this.lengthTicks = ticks;
+			this.ticksTillActive = hasPid ? 2 : 1;
 		}
 
 		public void decrement()
 		{
-			this.ticks -= 1;
+			this.ticksTillActive -= 1;
 		}
 
 		public boolean shouldTrigger()
 		{
-			return (this.getTicks() <= 0) ? true : false;
+			return (this.getTicksTillActive() == 0) ? true : false;
 		}
 	}
 }
