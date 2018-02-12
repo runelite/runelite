@@ -131,7 +131,7 @@ public class RuneLite
 		}
 
 		// Load swing UI
-		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(properties, client)));
+		SwingUtilities.invokeAndWait(() -> setGui(ClientUI.create(this, properties, client)));
 
 		// Initialize Discord service
 		discordService.init();
@@ -180,6 +180,11 @@ public class RuneLite
 		});
 
 		eventBus.post(new ClientUILoaded());
+	}
+
+	public void shutdown()
+	{
+		discordService.close();
 	}
 
 	public void setGui(ClientUI gui)
