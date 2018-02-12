@@ -34,6 +34,15 @@ import lombok.Data;
 @Data
 public class FreezeInfo
 {
+	public enum FreezeState
+	{
+		FROZEN,
+		IMMUNE,
+		QUEUED,
+
+		NONE
+	}
+
 	/**
 	 * on which tick this freeze gets activated, can vary depending on pid or not.
 	 * We assume we always have pid against other players and players never have pid against npcs
@@ -54,4 +63,20 @@ public class FreezeInfo
 	 * the type of freeze applied. To know which sprite to display
 	 */
 	private FreezeType type;
+
+	/**
+	 * Easy method to determine which state this object is currently in
+	 * @return the current state of the freeze
+	 */
+	public FreezeState getState()
+	{
+		if (queued > 0)
+			return FreezeState.QUEUED;
+		if (frozen > 0)
+			return FreezeState.FROZEN;
+		if (immune > 0)
+			return FreezeState.IMMUNE;
+
+		return FreezeState.NONE;
+	}
 }
