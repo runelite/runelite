@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("iy")
 @Implements("JagexGame")
-public enum JagexGame implements MouseWheel {
+public enum JagexGame implements Enumerated {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Liy;"

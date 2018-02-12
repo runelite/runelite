@@ -10,7 +10,7 @@ public class class33 {
       signature = "Lfa;"
    )
    @Export("mouseWheel")
-   static class158 mouseWheel;
+   static MouseWheel mouseWheel;
    @ObfuscatedName("oc")
    @ObfuscatedSignature(
       signature = "Lcq;"

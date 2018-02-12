@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.client.plugins.barrows;
 
-import com.google.common.eventbus.EventBus;
-import org.slf4j.Logger;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+@ConfigGroup(
+	keyName = "barrows",
+	name = "Barrows Plugin",
+	description = "Configuration for the Barrows plugin"
+)
+public interface BarrowsConfig extends Config
 {
-	public static Logger log;
+	@ConfigItem(
+		keyName = "enabled",
+		name = "Enabled",
+		description = "Configures whether or not the Barrows plugin is displayed"
+	)
+	default boolean enabled()
+	{
+		return true;
+	}
 
-	public static EventBus eventBus;
+	@ConfigItem(
+		keyName = "showMinimap",
+		name = "Show Minimap in tunnels",
+		description = "Configures whether or not the minimap is displayed"
+	)
+	default boolean showMinimap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBrotherLoc",
+		name = "Show Brothers location",
+		description = "Configures whether or not the brothers location is displayed"
+	)
+	default boolean showBrotherLoc()
+	{
+		return true;
+	}
 }

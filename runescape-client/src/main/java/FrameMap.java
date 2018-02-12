@@ -85,7 +85,7 @@ public class FrameMap extends Node {
                   ScriptEvent var4 = new ScriptEvent();
                   var4.widget = var3;
                   var4.objs = var3.field2743;
-                  ScriptState.method984(var4, 2000000);
+                  ScriptState.runScript(var4, 2000000);
                }
             }
 

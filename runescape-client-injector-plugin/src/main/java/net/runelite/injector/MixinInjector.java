@@ -475,6 +475,11 @@ public class MixinInjector
 		{
 			i.setInstructions(newCode.getInstructions());
 		}
+		newCode.getExceptions().getExceptions().addAll(code.getExceptions().getExceptions());
+		for (net.runelite.asm.attributes.code.Exception e : newCode.getExceptions().getExceptions())
+		{
+			e.setExceptions(newCode.getExceptions());
+		}
 		method.setCode(newCode);
 	}
 

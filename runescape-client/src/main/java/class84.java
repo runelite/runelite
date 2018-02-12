@@ -35,7 +35,7 @@ public class class84 {
       garbageValue = "101"
    )
    public static void method1868(ScriptEvent var0) {
-      ScriptState.method984(var0, 200000);
+      ScriptState.runScript(var0, 200000);
    }
 
    @ObfuscatedName("w")
