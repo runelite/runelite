@@ -60,6 +60,16 @@ public class FreezeManager
 	{
 		List<NPC> npcs = client.getNpcs();
 		List<Player> players = client.getPlayers();
+
+		for (NPC npc : npcs) //process npcs before players just like the game does
+		{
+			processActor(npc);
+		}
+
+		for (Player player : players)
+		{
+			processActor(player);
+		}
 	}
 
 	@Subscribe
@@ -91,10 +101,12 @@ public class FreezeManager
 
 		if (a instanceof Player)
 		{
+			log.debug("Player \"{}\" frozen", a.getName());
 			a.getFreeze().queueFreeze(type, false);
 		}
 		else if (a instanceof NPC)
 		{
+			log.debug("NPC \"{}\" frozen", a.getName());
 			a.getFreeze().queueFreeze(type, true);
 		}
 	}
@@ -113,6 +125,7 @@ public class FreezeManager
 					freezeInfo.setImmune(IMMUNE_TICKS);
 					freezeInfo.setType(null);
 					//TODO broadcast changes
+					log.debug("{} is frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
 				}
 				return;
 			case IMMUNE:
@@ -123,6 +136,7 @@ public class FreezeManager
 					return;
 				}
 				//TODO broadcast immunity lift
+				log.debug("{} has their freeze immunity lifted", subject.getName());
 				//if immunity lifted we also go into the queued case
 			case QUEUED:
 				freezeInfo.setQueued(freezeInfo.getQueued() - 1); //decrement queued time
@@ -131,6 +145,7 @@ public class FreezeManager
 				{
 					//TODO check overhead prayer and broadcast frozen status
 					freezeInfo.setFrozen(freezeInfo.getType().getTicks());
+					log.debug("{} frozen for {} ticks");
 				}
 		}
 	}
