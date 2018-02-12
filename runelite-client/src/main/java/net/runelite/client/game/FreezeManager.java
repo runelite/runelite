@@ -101,12 +101,12 @@ public class FreezeManager
 
 		if (a instanceof Player)
 		{
-			log.debug("Player \"{}\" frozen", a.getName());
+			log.debug("Player \"{}\" freeze queued", a.getName());
 			a.getFreeze().queueFreeze(type, false);
 		}
 		else if (a instanceof NPC)
 		{
-			log.debug("NPC \"{}\" frozen", a.getName());
+			log.debug("NPC \"{}\" freeze queued", a.getName());
 			a.getFreeze().queueFreeze(type, true);
 		}
 	}
@@ -115,37 +115,43 @@ public class FreezeManager
 	{
 		FreezeInfo freezeInfo = subject.getFreeze();
 
-		switch (freezeInfo.getState())
+		FreezeInfo.FreezeState state = freezeInfo.getState();
+
+		freezeInfo.decrementAll();
+
+
+
+		switch (state)
 		{
 			case FROZEN:
-				freezeInfo.setFrozen(freezeInfo.getFrozen() - 1); //decrement freeze time
+				log.debug("{} frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
 
 				if (freezeInfo.getFrozen() == 0)
 				{
 					freezeInfo.setImmune(IMMUNE_TICKS);
 					freezeInfo.setType(null);
 					//TODO broadcast changes
-					log.debug("{} is frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
+					log.debug("{} is now immune to freezes", subject.getName());
 				}
 				return;
 			case IMMUNE:
-				freezeInfo.setImmune(freezeInfo.getImmune() - 1); //decrement immune time
-
 				if (freezeInfo.getImmune() > 0) //return if still immune
 				{
+					log.debug("{} immune for another {} ticks", subject.getName(), subject.getFreeze().getImmune());
 					return;
 				}
 				//TODO broadcast immunity lift
 				log.debug("{} has their freeze immunity lifted", subject.getName());
 				//if immunity lifted we also go into the queued case
 			case QUEUED:
-				freezeInfo.setQueued(freezeInfo.getQueued() - 1); //decrement queued time
 
-				if (freezeInfo.getQueued() == 0)
+				//this will never be reached when frozen so.
+				//queue must be over and a freeze type must be set
+				if (freezeInfo.getQueued() <= 0 && freezeInfo.getType() != null)
 				{
 					//TODO check overhead prayer and broadcast frozen status
 					freezeInfo.setFrozen(freezeInfo.getType().getTicks());
-					log.debug("{} frozen for {} ticks");
+					log.debug("{} frozen for {} ticks", subject.getName(), freezeInfo.getFrozen());
 				}
 		}
 	}

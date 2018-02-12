@@ -74,12 +74,12 @@ public class FreezeInfo
 	 */
 	public FreezeState getState()
 	{
-		if (queued > 0)
-			return FreezeState.QUEUED;
 		if (frozen > 0)
 			return FreezeState.FROZEN;
 		if (immune > 0)
 			return FreezeState.IMMUNE;
+		if (queued > 0) //must be last or can interfere with immune
+			return FreezeState.QUEUED;
 
 		return FreezeState.NONE;
 	}
@@ -102,5 +102,16 @@ public class FreezeInfo
 		{
 			this.setQueued(1);
 		}
+	}
+
+	/**
+	 * decrement all remaining ticks by 1, called every tick by the freeze manager.
+	 * for internal use only.
+	 */
+	public void decrementAll()
+	{
+		this.immune -= 1;
+		this.frozen -= 1;
+		this.queued -= 1;
 	}
 }
