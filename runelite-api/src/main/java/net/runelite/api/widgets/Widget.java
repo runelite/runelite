@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+import net.runelite.api.ExceptionWithScriptStack;
 import net.runelite.api.Point;
 
 public interface Widget
@@ -138,4 +139,6 @@ public interface Widget
 	int getPaddingY();
 
 	void setPaddingY(int paddingY);
+
+	ExceptionWithScriptStack getTrace();
 }
