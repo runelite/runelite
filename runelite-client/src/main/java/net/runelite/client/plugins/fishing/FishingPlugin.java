@@ -25,20 +25,29 @@
 package net.runelite.client.plugins.fishing;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.queries.NPCQuery;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Fishing plugin"
@@ -46,6 +55,14 @@ import net.runelite.client.ui.overlay.Overlay;
 @Singleton
 public class FishingPlugin extends Plugin
 {
+	private final List<Integer> spotIds = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private NPC[] fishingSpots;
+
+	@Inject
+	private QueryRunner queryRunner;
+
 	@Inject
 	private FishingConfig config;
 
@@ -54,6 +71,9 @@ public class FishingPlugin extends Plugin
 
 	@Inject
 	private FishingSpotOverlay spotOverlay;
+
+	@Inject
+	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
 
 	private final FishingSession session = new FishingSession();
 
@@ -73,13 +93,13 @@ public class FishingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		// Initialize overlay config
-		spotOverlay.updateConfig();
+		updateConfig();
 	}
 
 	@Override
 	public Collection<Overlay> getOverlays()
 	{
-		return Arrays.asList(overlay, spotOverlay);
+		return Arrays.asList(overlay, spotOverlay, fishingSpotMinimapOverlay);
 	}
 
 	public FishingSession getSession()
@@ -104,6 +124,55 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
-		spotOverlay.updateConfig();
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		spotIds.clear();
+		if (config.showShrimp())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SHRIMP.getIds()));
+		}
+		if (config.showLobster())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.LOBSTER.getIds()));
+		}
+		if (config.showShark())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SHARK.getIds()));
+		}
+		if (config.showMonkfish())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.MONKFISH.getIds()));
+		}
+		if (config.showSalmon())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.SALMON.getIds()));
+		}
+		if (config.showBarb())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.BARB_FISH.getIds()));
+		}
+		if (config.showAngler())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.ANGLERFISH.getIds()));
+		}
+		if (config.showMinnow())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.MINNOW.getIds()));
+		}
+		if (config.showInfernalEel())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
+		}
+	}
+
+	@Subscribe
+	public void checkSpots(GameTick event)
+	{
+		NPCQuery query = new NPCQuery()
+			.idEquals(Ints.toArray(spotIds));
+		fishingSpots = queryRunner.runQuery(query);
 	}
 }

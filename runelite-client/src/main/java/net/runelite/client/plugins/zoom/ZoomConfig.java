@@ -37,10 +37,20 @@ public interface ZoomConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the zoom limit is reduced"
+		name = "Expand outer zoom limit",
+		description = "Configures whether or not the outer zoom limit is reduced"
 	)
-	default boolean enabled()
+	default boolean outerLimit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "inner",
+		name = "Expand inner zoom limit",
+		description = "Configures whether or not the inner zoom limit is reduced"
+	)
+	default boolean innerLimit()
 	{
 		return false;
 	}

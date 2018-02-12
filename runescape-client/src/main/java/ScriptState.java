@@ -53,7 +53,8 @@ public class ScriptState {
       signature = "(Lbc;II)V",
       garbageValue = "1690409976"
    )
-   static void method984(ScriptEvent var0, int var1) {
+   @Export("runScript")
+   static void runScript(ScriptEvent var0, int var1) {
       Object[] var2 = var0.objs;
       Script var3;
       Script var5;

@@ -22,30 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mixins;
+package net.runelite.client.plugins.fishing;
 
-import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
-import net.runelite.api.Script;
-import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Replace;
-import net.runelite.client.callback.Hooks;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import javax.inject.Inject;
+import net.runelite.api.NPC;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-//@Mixin(RSClient.class)
-public abstract class VmMixin
+class FishingSpotMinimapOverlay extends Overlay
 {
-	@Copy("execute6500")
-	static int rs$execute6500(int opcode, Script script, boolean isOne)
+	private final FishingPlugin plugin;
+	private final FishingConfig config;
+
+	@Inject
+	public FishingSpotMinimapOverlay(FishingPlugin plugin, FishingConfig config)
 	{
-		throw new RuntimeException();
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.plugin = plugin;
+		this.config = config;
 	}
 
-	@Replace("execute6500")
-	static int rl$execute6500(int opcode, Script script, boolean isOne)
+	@Override
+	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (opcode == RUNELITE_EXECUTE)
+		if (!config.enabled())
 		{
-			return Hooks.runeliteExecute(opcode, script, isOne);
+			return null;
 		}
-		return rs$execute6500(opcode, script, isOne);
+
+		NPC[] fishingSpots = plugin.getFishingSpots();
+		if (fishingSpots == null)
+		{
+			return null;
+		}
+
+		for (NPC npc : fishingSpots)
+		{
+			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+
+			if (spot == null)
+			{
+				continue;
+			}
+
+			Color color = npc.getId() == FishingSpot.FLYING_FISH ? Color.RED : Color.CYAN;
+
+			net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
+			if (minimapLocation != null)
+			{
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
+			}
+		}
+
+		return null;
 	}
 }

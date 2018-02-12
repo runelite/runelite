@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("t")
 @Implements("ScriptVarType")
-public class ScriptVarType implements MouseWheel, class316 {
+public class ScriptVarType implements Enumerated, class316 {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lt;"

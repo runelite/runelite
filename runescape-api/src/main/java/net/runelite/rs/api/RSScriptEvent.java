@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.callback;
+package net.runelite.rs.api;
 
-import com.google.common.eventbus.EventBus;
-import org.slf4j.Logger;
-
-/**
- * Dummy class to make the mixins to compile.
- *
- * @author Adam
- */
-public class Hooks
+public interface RSScriptEvent
 {
-	public static Logger log;
-
-	public static EventBus eventBus;
 }

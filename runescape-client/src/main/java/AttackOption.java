@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cp")
 @Implements("AttackOption")
-public enum AttackOption implements MouseWheel {
+public enum AttackOption implements Enumerated {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lcp;"

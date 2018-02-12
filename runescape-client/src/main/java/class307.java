@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ka")
-public enum class307 implements MouseWheel {
+public enum class307 implements Enumerated {
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "Lka;"

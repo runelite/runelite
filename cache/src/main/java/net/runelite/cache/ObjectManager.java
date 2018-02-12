@@ -102,12 +102,16 @@ public class ObjectManager
 			fw.println("{");
 			for (ObjectDefinition def : objects)
 			{
+				String name;
 				if (def.getName().equalsIgnoreCase("NULL"))
 				{
-					continue;
+					name = namer.name("NULL", def.getId());
+				}
+				else
+				{
+					name = namer.name(def.getName(), def.getId());
 				}
 
-				String name = namer.name(def.getName(), def.getId());
 				if (name == null)
 				{
 					continue;
