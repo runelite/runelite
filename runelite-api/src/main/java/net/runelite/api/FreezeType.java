@@ -24,34 +24,32 @@
  */
 package net.runelite.api;
 
-import lombok.Data;
+import lombok.Getter;
 
-/**
- * stores information about freezes.
- * queuedTicks can vary depending on whether we assumed we have pid or not. when others get frozen we always assume
- * we have pid, otherwise refreezes could happen whilst it shows immunity and inaccurate information will display
- */
-@Data
-public class FreezeInfo
+public enum FreezeType
 {
-	/**
-	 * on which tick this freeze gets activated, can vary depending on pid or not.
-	 * We assume we always have pid against other players and players never have pid against npcs
-	 */
-	private int queued;
+	ICE_RUSH(8, 361, false),
+	ICE_BURST(16, 363, false),
+	ICE_BLITZ(24, 367, false),
+	ICE_BARRAGE(32, 369, false),
 
-	/**
-	 * the tick when the freeze ends
-	 */
-	private int frozen;
+	BIND(8, 181, true),
+	SNARE(16, 180, true),
+	ENTANGLE(24, 179, true);
 
-	/**
-	 * the tick when the immunity ends
-	 */
-	private int immune;
+	@Getter
+	private int ticks;
 
-	/**
-	 * the type of freeze applied. To know which sprite to display
-	 */
-	private FreezeType type;
+	@Getter
+	private int graphic;
+
+	@Getter
+	private boolean halfOnPray;
+
+	FreezeType(int ticks, int graphic, boolean halfOnPray)
+	{
+		this.ticks = ticks;
+		this.graphic = graphic;
+		this.halfOnPray = halfOnPray;
+	}
 }
