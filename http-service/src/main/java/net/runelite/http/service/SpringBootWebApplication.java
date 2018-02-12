@@ -24,14 +24,21 @@
  */
 package net.runelite.http.service;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.util.InstantConverter;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -42,8 +49,46 @@ import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
 @SpringBootApplication
+@Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
+	@Bean
+	protected ServletContextListener listener()
+	{
+		return new ServletContextListener()
+		{
+			@Override
+			public void contextInitialized(ServletContextEvent sce)
+			{
+				log.info("RuneLite API started");
+			}
+
+			@Override
+			public void contextDestroyed(ServletContextEvent sce)
+			{
+				// Destroy okhttp client
+				OkHttpClient client = RuneLiteAPI.CLIENT;
+				client.dispatcher().executorService().shutdown();
+				client.connectionPool().evictAll();
+				try
+				{
+					Cache cache = client.cache();
+					if (cache != null)
+					{
+						cache.close();
+					}
+				}
+				catch (IOException ex)
+				{
+					log.warn(null, ex);
+				}
+
+				log.info("RuneLite API stopped");
+			}
+
+		};
+	}
+
 	private Context getContext() throws NamingException
 	{
 		Context initCtx = new InitialContext();
