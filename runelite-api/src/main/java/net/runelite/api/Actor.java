@@ -72,6 +72,8 @@ public interface Actor extends Renderable
 
 	FreezeInfo getFreeze();
 
+	FreezeInfo getFreeze();
+
 	/**
 	 * Returns the logical height of the actor's model. This is roughly where the health bar is drawn.
 	 */
