@@ -24,39 +24,38 @@
  */
 package net.runelite.api;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * stores information about freezes.
  * queuedTicks can vary depending on whether we assumed we have pid or not. when others get frozen we always assume
  * we have pid, otherwise refreezes could happen whilst it shows immunity and inaccurate information will display
  */
-@Data
 public class FreezeInfo
 {
-	public enum FreezeState
-	{
-		FROZEN,
-		IMMUNE,
-		QUEUED,
-
-		NONE
-	}
-
 	/**
-	 * on which tick this freeze gets activated, can vary depending on pid or not.
+	 * list of freezes which ave been queued, can vary depending on pid or not.
 	 * We assume we always have pid against other players and players never have pid against npcs
 	 */
-	private int queued;
+	@Getter
+	private List<QueuedFreeze> queuedFreezes;
 
 	/**
 	 * the remaining frozen ticks
 	 */
+	@Getter
+	@Setter
 	private int frozen;
 
 	/**
 	 * the remaining immune
 	 */
+	@Getter
+	@Setter
 	private int immune;
 
 	/**
@@ -66,22 +65,16 @@ public class FreezeInfo
 	 * it's for the queued freeze.
 	 * As a result this value should never be null when the State is either QUEUED or FROZEN
 	 */
+	@Getter
+	@Setter
 	private FreezeType type;
 
-	/**
-	 * Easy method to determine which state this object is currently in
-	 * @return the current state of the freeze
-	 */
-	public FreezeState getState()
+	public FreezeInfo()
 	{
-		if (frozen > 0)
-			return FreezeState.FROZEN;
-		if (immune > 0)
-			return FreezeState.IMMUNE;
-		if (queued > 0) //must be last or can interfere with immune
-			return FreezeState.QUEUED;
-
-		return FreezeState.NONE;
+		this.queuedFreezes = new ArrayList<>();
+		this.frozen = 0;
+		this.immune = 0;
+		this.type = null;
 	}
 
 	/**
@@ -94,14 +87,7 @@ public class FreezeInfo
 	{
 		this.setType(type);
 
-		if (pid) //if we have pid our action will register next tick
-		{
-			this.setQueued(2);
-		}
-		else //otherwise it takes an extra tick
-		{
-			this.setQueued(1);
-		}
+		this.queuedFreezes.add(new QueuedFreeze(type, pid ? 2 : 1));
 	}
 
 	/**
@@ -112,6 +98,48 @@ public class FreezeInfo
 	{
 		this.immune -= 1;
 		this.frozen -= 1;
-		this.queued -= 1;
+
+		for (QueuedFreeze qf : queuedFreezes)
+			qf.decrement();
+	}
+
+	public boolean isFrozen()
+	{
+		return this.frozen > 0;
+	}
+
+	public boolean isImmune()
+	{
+		return this.immune > 0;
+	}
+
+	public boolean hasQueued()
+	{
+		return this.queuedFreezes.size() > 0;
+	}
+
+	private class QueuedFreeze
+	{
+		@Getter
+		private FreezeType type;
+
+		@Getter
+		private int ticks;
+
+		public QueuedFreeze(FreezeType type, int ticks)
+		{
+			this.type = type;
+			this.ticks = ticks;
+		}
+
+		public void decrement()
+		{
+			this.ticks -= 1;
+		}
+
+		public boolean shouldTrigger()
+		{
+			return (this.getTicks() <= 0) ? true : false;
+		}
 	}
 }
