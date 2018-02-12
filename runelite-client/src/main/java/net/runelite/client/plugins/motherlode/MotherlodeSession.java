@@ -24,19 +24,69 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import java.time.Duration;
 import java.time.Instant;
 
 public class MotherlodeSession
 {
-	private Instant lastPayDirtMined;
+	private static final Duration HOUR = Duration.ofHours(1);
 
-	public void setLastPayDirtMined()
+	private int perHour;
+
+	private Instant lastPayDirtMined;
+	private int totalMined;
+
+	private Instant recentPayDirtMined;
+	private int recentMined;
+
+	public void incrementPayDirtMined()
 	{
-		lastPayDirtMined = Instant.now();
+		Instant now = Instant.now();
+
+		lastPayDirtMined = now;
+		++totalMined;
+
+		if (recentMined == 0)
+		{
+			recentPayDirtMined = now;
+		}
+		++recentMined;
+
+		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
+		if (!timeSinceStart.isZero())
+		{
+			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
+	}
+
+	public void resetRecent()
+	{
+		recentPayDirtMined = null;
+		recentMined = 0;
+	}
+
+	public int getPerHour()
+	{
+		return perHour;
 	}
 
 	public Instant getLastPayDirtMined()
 	{
 		return lastPayDirtMined;
+	}
+
+	public int getTotalMined()
+	{
+		return totalMined;
+	}
+
+	public Instant getRecentPayDirtMined()
+	{
+		return recentPayDirtMined;
+	}
+
+	public int getRecentMined()
+	{
+		return recentMined;
 	}
 }

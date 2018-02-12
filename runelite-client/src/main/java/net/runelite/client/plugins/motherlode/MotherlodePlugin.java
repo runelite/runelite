@@ -29,7 +29,9 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,6 +60,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -117,8 +120,30 @@ public class MotherlodePlugin extends Plugin
 		{
 			if (event.getMessage().equals("You manage to mine some pay-dirt."))
 			{
-				session.setLastPayDirtMined();
+				session.incrementPayDirtMined();
 			}
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void checkMining()
+	{
+		Instant lastPayDirtMined = session.getLastPayDirtMined();
+		if (lastPayDirtMined == null)
+		{
+			return;
+		}
+
+		// reset recentPayDirtMined if you haven't mined anything recently
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceMined = Duration.between(lastPayDirtMined, Instant.now());
+
+		if (sinceMined.compareTo(statTimeout) >= 0)
+		{
+			session.resetRecent();
 		}
 	}
 

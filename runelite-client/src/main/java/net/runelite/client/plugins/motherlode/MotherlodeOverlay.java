@@ -107,6 +107,18 @@ class MotherlodeOverlay extends Overlay
 			panelComponent.setTitleColor(Color.RED);
 		}
 
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Pay-dirt mined:",
+			Integer.toString(session.getTotalMined())
+		));
+
+		panelComponent.getLines().add(new PanelComponent.Line(
+			"Pay-dirt/hr:",
+			session.getRecentMined() > 2
+			? Integer.toString(session.getPerHour())
+			: ""
+		));
+
 		return panelComponent.render(graphics, parent);
 	}
 }
