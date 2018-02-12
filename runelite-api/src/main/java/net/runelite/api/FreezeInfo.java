@@ -83,4 +83,24 @@ public class FreezeInfo
 
 		return FreezeState.NONE;
 	}
+
+	/**
+	 * Create a freeze info object with a queued freeze
+	 * @param type The freeze which will be applied
+	 * @param pid whether the target has pid or not, npcs always have pid
+	 * @return the newly created freeze info object
+	 */
+	public void queueFreeze(FreezeType type, boolean pid)
+	{
+		this.setType(type);
+
+		if (pid) //if we have pid our action will register next tick
+		{
+			this.setQueued(2);
+		}
+		else //otherwise it takes an extra tick
+		{
+			this.setQueued(1);
+		}
+	}
 }

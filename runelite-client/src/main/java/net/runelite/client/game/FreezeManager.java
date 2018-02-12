@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.FreezeInfo;
+import net.runelite.api.FreezeType;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
@@ -66,6 +67,36 @@ public class FreezeManager
 	{
 		Actor a = event.getActor();
 		int graphic = a.getGraphic();
+		FreezeType type = null;
+
+		if (graphic == FreezeType.ICE_RUSH.getGraphic())
+		{
+			type = FreezeType.ICE_RUSH;
+		}
+		else if (graphic == FreezeType.ICE_BURST.getGraphic())
+		{
+			type = FreezeType.ICE_BURST;
+		}
+		else if (graphic == FreezeType.ICE_BLITZ.getGraphic())
+		{
+			type = FreezeType.ICE_BLITZ;
+		}
+		else if (graphic == FreezeType.ICE_BARRAGE.getGraphic())
+		{
+			type = FreezeType.ICE_BARRAGE;
+		}
+
+		if (type == null)
+			return;
+
+		if (a instanceof Player)
+		{
+			a.getFreeze().queueFreeze(type, false);
+		}
+		else if (a instanceof NPC)
+		{
+			a.getFreeze().queueFreeze(type, true);
+		}
 	}
 
 	private static void processActor(Actor subject)
@@ -98,6 +129,7 @@ public class FreezeManager
 
 				if (freezeInfo.getQueued() == 0)
 				{
+					//TODO check overhead prayer and broadcast frozen status
 					freezeInfo.setFrozen(freezeInfo.getType().getTicks());
 				}
 		}
