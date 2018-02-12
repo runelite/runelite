@@ -25,21 +25,16 @@
 package net.runelite.client.plugins.roguesden;
 
 import java.awt.Color;
-import java.awt.Polygon;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.annotation.Nullable;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import static net.runelite.api.ItemID.*;
 
 @Slf4j
 public class RoguesDenOverlay extends Overlay
@@ -51,7 +46,7 @@ public class RoguesDenOverlay extends Overlay
 	private final RoguesDenConfig config;
 
 	@Inject
-	public RoguesDenOverlay(@Nullable Client client, RoguesDenPlugin plugin, RoguesDenConfig config)
+	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin, RoguesDenConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -68,7 +63,7 @@ public class RoguesDenOverlay extends Overlay
 			return null;
 		}
 
-		if(!hasGem())
+		if (!plugin.isHasGem())
 		{
 			return null;
 		}
@@ -102,24 +97,5 @@ public class RoguesDenOverlay extends Overlay
 		});
 
 		return null;
-	}
-
-	private boolean hasGem()
-	{
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		if (container == null)
-		{
-			return false;
-		}
-
-		for (Item item : container.getItems())
-		{
-			if(item.getId() == MYSTIC_JEWEL)
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 }

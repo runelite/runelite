@@ -28,7 +28,7 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 import static net.runelite.api.ObjectID.*;
 
-public class Obstacles
+class Obstacles
 {
 	public static final Set<Integer> OBSTACLE_IDS_HULL = Sets.newHashSet(
 			SPINNING_BLADES_7224,

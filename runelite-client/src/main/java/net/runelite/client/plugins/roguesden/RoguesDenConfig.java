@@ -29,16 +29,16 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "roguesden",
-		name = "Rogues' Den",
-		description = "Configuration for the Rogues' Den plugin"
+	keyName = "roguesden",
+	name = "Rogues' Den",
+	description = "Configuration for the Rogues' Den plugin"
 )
 public interface RoguesDenConfig extends Config
 {
 	@ConfigItem(
-			keyName = "enabled",
-			name = "Enable overlay",
-			description = "Configures whether the overlay is enabled"
+		keyName = "enabled",
+		name = "Enable overlay",
+		description = "Configures whether the overlay is enabled"
 	)
 	default boolean enabled()
 	{

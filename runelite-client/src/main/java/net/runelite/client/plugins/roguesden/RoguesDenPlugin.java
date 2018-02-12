@@ -27,35 +27,49 @@ package net.runelite.client.plugins.roguesden;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.MYSTIC_JEWEL;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-		name = "Rogues' Den plugin"
+	name = "Rogues' Den plugin"
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final HashMap<TileObject, Tile> obstaclesHull = new HashMap<>();
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final HashMap<TileObject, Tile> obstaclesTile = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hasGem;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	@Getter
@@ -74,6 +88,31 @@ public class RoguesDenPlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(RoguesDenOverlay.class);
+	}
+
+	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
+	public void checkGem()
+	{
+		hasGem = hasGem();
+	}
+
+	private boolean hasGem()
+	{
+		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+		if (container == null)
+		{
+			return false;
+		}
+
+		for (Item item : container.getItems())
+		{
+			if (item.getId() == MYSTIC_JEWEL)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Subscribe
