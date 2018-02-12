@@ -25,10 +25,23 @@
 package net.runelite.client.game;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.FreezeInfo;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicChanged;
 
+import java.util.List;
+
+@Slf4j
 public class FreezeManager
 {
+	public static final int IMMUNE_TICKS = 6;
+
 	private Client client;
 	private EventBus eventBus;
 
@@ -39,5 +52,54 @@ public class FreezeManager
 
 		//register ourself with the event bus to process changes
 		this.eventBus.register(this);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		List<NPC> npcs = client.getNpcs();
+		List<Player> players = client.getPlayers();
+	}
+
+	@Subscribe
+	public void onGraphicChanged(GraphicChanged event)
+	{
+		Actor a = event.getActor();
+		int graphic = a.getGraphic();
+	}
+
+	private static void processActor(Actor subject)
+	{
+		FreezeInfo freezeInfo = subject.getFreeze();
+
+		switch (freezeInfo.getState())
+		{
+			case FROZEN:
+				freezeInfo.setFrozen(freezeInfo.getFrozen() - 1); //decrement freeze time
+
+				if (freezeInfo.getFrozen() == 0)
+				{
+					freezeInfo.setImmune(IMMUNE_TICKS);
+					freezeInfo.setType(null);
+					//TODO broadcast changes
+				}
+				return;
+			case IMMUNE:
+				freezeInfo.setImmune(freezeInfo.getImmune() - 1); //decrement immune time
+
+				if (freezeInfo.getImmune() > 0) //return if still immune
+				{
+					return;
+				}
+				//TODO broadcast immunity lift
+				//if immunity lifted we also go into the queued case
+			case QUEUED:
+				freezeInfo.setQueued(freezeInfo.getQueued() - 1); //decrement queued time
+
+				if (freezeInfo.getQueued() == 0)
+				{
+					freezeInfo.setFrozen(freezeInfo.getType().getTicks());
+				}
+		}
 	}
 }
