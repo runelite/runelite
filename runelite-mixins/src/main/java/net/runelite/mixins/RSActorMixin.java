@@ -181,6 +181,16 @@ public abstract class RSActorMixin implements RSActor
 		return Perspective.worldToMiniMap(client, getX(), getY());
 	}
 
+	@Inject
+	@Override
+	public FreezeInfo getFreeze()
+	{
+		if (this.freeze == null)
+			this.freeze = new FreezeInfo();
+		
+		return this.freeze;
+	}
+
 	@FieldHook("animation")
 	@Inject
 	public void animationChanged(int idx)

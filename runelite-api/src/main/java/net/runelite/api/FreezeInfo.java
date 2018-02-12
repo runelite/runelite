@@ -50,17 +50,21 @@ public class FreezeInfo
 	private int queued;
 
 	/**
-	 * the tick when the freeze ends
+	 * the remaining frozen ticks
 	 */
 	private int frozen;
 
 	/**
-	 * the tick when the immunity ends
+	 * the remaining immune
 	 */
 	private int immune;
 
 	/**
 	 * the type of freeze applied. To know which sprite to display
+	 * null upon initialisation and when no freeze is activate.
+	 * This value will also be null whilst immune and if this type is set during immunity
+	 * it's for the queued freeze.
+	 * As a result this value should never be null when the State is either QUEUED or FROZEN
 	 */
 	private FreezeType type;
 
