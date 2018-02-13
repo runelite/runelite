@@ -96,6 +96,18 @@ public class FreezeManager
 		{
 			type = FreezeType.ICE_BARRAGE;
 		}
+		else if (graphic == FreezeType.BIND.getGraphic())
+		{
+			type = FreezeType.BIND;
+		}
+		else if (graphic == FreezeType.SNARE.getGraphic())
+		{
+			type = FreezeType.SNARE;
+		}
+		else if (graphic == FreezeType.ENTANGLE.getGraphic())
+		{
+			type = FreezeType.ENTANGLE;
+		}
 
 		if (type == null)
 			return;
@@ -118,7 +130,7 @@ public class FreezeManager
 		{
 			log.debug("NPC \"{}\" freeze queued", a.getName());
 			//TODO determine halving of ticks when praying
-			a.getFreeze().queueFreeze(type, freezeTicks, true);
+			a.getFreeze().queueFreeze(type, freezeTicks, false);
 		}
 	}
 

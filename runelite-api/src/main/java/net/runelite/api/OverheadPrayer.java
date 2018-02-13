@@ -24,8 +24,8 @@
 */
 package net.runelite.api;
 
-public enum OverheadPrayer {
-
+public enum OverheadPrayer
+{
 	NONE(-1),
 	PROTECT_MELEE(0),
 	PROTECT_RANGED(1),
