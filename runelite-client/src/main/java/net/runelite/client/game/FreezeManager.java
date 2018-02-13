@@ -32,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.FreezeInfo;
 import net.runelite.api.FreezeType;
 import net.runelite.api.NPC;
+import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
@@ -99,17 +100,25 @@ public class FreezeManager
 		if (type == null)
 			return;
 
+		int freezeTicks = type.getTicks();
+
 		if (a instanceof Player)
 		{
 			log.debug("Player \"{}\" freeze queued", a.getName());
-			//TODO determine halving of ticks when praying
-			a.getFreeze().queueFreeze(type, type.getTicks(), false);
+			OverheadPrayer activeOverhead = ((Player) a).getOverheadPrayer();
+
+			if (type.isHalfOnPray() && activeOverhead == OverheadPrayer.PROTECT_MAGIC)
+			{
+				freezeTicks /= 2;
+			}
+
+			a.getFreeze().queueFreeze(type, freezeTicks, false);
 		}
 		else if (a instanceof NPC)
 		{
 			log.debug("NPC \"{}\" freeze queued", a.getName());
 			//TODO determine halving of ticks when praying
-			a.getFreeze().queueFreeze(type, type.getTicks(), true);
+			a.getFreeze().queueFreeze(type, freezeTicks, true);
 		}
 	}
 
