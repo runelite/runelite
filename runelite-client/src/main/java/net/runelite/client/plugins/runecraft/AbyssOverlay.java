@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import java.awt.Color;
+import java.awt.geom.Area;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
@@ -108,6 +110,28 @@ class AbyssOverlay extends Overlay
 			return;
 		}
 
+		if (config.showClickBox())
+		{
+			//Draw clickbox
+			Point mousePosition = client.getMouseCanvasPosition();
+			Area objectClickbox = object.getClickbox();
+			if (objectClickbox != null)
+			{
+				if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
+				{
+					graphics.setColor(Color.MAGENTA.darker());
+				}
+				else
+				{
+					graphics.setColor(Color.MAGENTA);
+				}
+				graphics.draw(objectClickbox);
+				graphics.setColor(new Color(255, 0, 255, 20));
+				graphics.fill(objectClickbox);
+			}
+		}
+
+		//Draw minimap
 		BufferedImage image = getImage(rift);
 		Point miniMapImage = Perspective.getMiniMapImageLocation(client, object.getLocalLocation(), image);
 
