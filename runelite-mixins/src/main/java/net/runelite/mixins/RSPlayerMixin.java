@@ -179,4 +179,13 @@ public abstract class RSPlayerMixin implements RSPlayer
 			setSpotAnimFrame(spotAnimFrame);
 		}
 	}
+	
+	/*
+	@Inject
+	@Override
+	public OverheadPrayer getOverheadPrayer()
+	{
+		return OverheadPrayer.fromId(this.getOverheadIcon());
+	}
+	*/
 }
