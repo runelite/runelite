@@ -192,6 +192,11 @@ public class RuneLite
 			}
 
 			gui.showWithChrome(runeliteConfig.enableCustomChrome());
+
+			if (gui.isAlwaysOnTopSupported())
+			{
+				gui.setAlwaysOnTop(runeliteConfig.gameAlwaysOnTop());
+			}
 		});
 
 		eventBus.post(new ClientUILoaded());
