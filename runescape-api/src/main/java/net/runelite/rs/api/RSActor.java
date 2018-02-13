@@ -66,6 +66,7 @@ public interface RSActor extends RSRenderable, Actor
 	@Override
 	int getLogicalHeight();
 
+<<<<<<< HEAD
 	@Import("actionFrame")
 	int getActionFrame();
 
@@ -101,4 +102,11 @@ public interface RSActor extends RSRenderable, Actor
 
 	@Import("hitsplatCycles")
 	int[] getHitsplatCycles();
+=======
+	@Import("pathX")
+	int[] getPathX();
+
+	@Import("pathY")
+	int[] getPathY();
+>>>>>>> 0d16fe3a6... implement regiontile and worldtile getter for actors
 }
