@@ -37,7 +37,6 @@ import java.util.List;
  * queuedTicks can vary depending on whether we assumed we have pid or not. when others get frozen we always assume
  * we have pid, otherwise refreezes could happen whilst it shows immunity and inaccurate information will display
  */
-@Slf4j
 public class FreezeInfo
 {
 	/**
@@ -72,12 +71,19 @@ public class FreezeInfo
 	@Setter
 	private FreezeType type;
 
+	/**
+	 * position we are frozen at, if we move from this point the freeze is automatically cancelled and immunity applied
+	 */
+	@Getter
+	private Point position;
+
 	public FreezeInfo()
 	{
 		this.queuedFreezes = new ArrayList<>();
 		this.frozen = 0;
 		this.immune = 0;
 		this.type = null;
+		this.position = null;
 	}
 
 	/**
@@ -127,11 +133,12 @@ public class FreezeInfo
 		return this.queuedFreezes.size() > 0;
 	}
 
-	public void startFreeze(FreezeType t, int frozenTicks)
+	public void startFreeze(FreezeType t, int frozenTicks, Point position)
 	{
 		this.immune = 0;
 		this.frozen = frozenTicks;
 		this.type = t;
+		this.position = position;
 	}
 
 	public void startImmunity()
@@ -139,6 +146,7 @@ public class FreezeInfo
 		this.immune = 6;
 		this.frozen = 0;
 		this.type = null;
+		this.position = null;
 	}
 
 	public void resetFreeze()
@@ -146,6 +154,7 @@ public class FreezeInfo
 		this.immune = 0;
 		this.frozen = 0;
 		this.type = null;
+		this.position = null;
 	}
 
 	public class QueuedFreeze

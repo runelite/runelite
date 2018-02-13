@@ -136,7 +136,7 @@ public class FreezeManager
 				{
 					int ticks = qf.getLengthTicks();
 					//halving has already been determined on cast
-					freezeInfo.startFreeze(qf.getType(), ticks);
+					freezeInfo.startFreeze(qf.getType(), ticks, subject.getWorldTile());
 					break;
 				}
 			}
