@@ -30,6 +30,9 @@ public enum Varbits
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARANT_CHATBOX(4608, 1055, 9, 9),
+	/**
+	 * true if split
+	 */
 	SPLIT_CHAT(287, 0, 0),
 
 	/**
@@ -150,9 +153,12 @@ public enum Varbits
 	/**
 	 * Poison
 	 * Venom - 1,000,000 (6dmg/hit) - 1,000,008 (20 dmg/hit)
+	 * if the number is negative it means immunity to poison, every number is 18 seconds, ie -20 would be 6 minutes
+	 * when you are venomed your previous immunity from poison is also lifted
 	 */
 	POISON(102, 0, 5),
 	VENOM(102, 6, 9),
+	POISON_VENOM(102, 0, 31),
 
 	/**
 	 * Attack Style
@@ -192,7 +198,71 @@ public enum Varbits
 	/**
 	 * Raids
 	 */
-	IN_RAID(5432, 1431, 31, 31);
+	IN_RAID(5432, 1431, 31, 31),
+
+	/**
+	 * the amount of quest points for the local player
+	 */
+	QUEST_POINTS(101, 0, 31),
+
+	/**
+	 * Farming varbits [WIP]
+	 * no varbits for added compost
+	 * 0 - 3 weed
+	 * 1 - 2 weed
+	 * 2 - 1 weed
+	 * 3 - empty patch
+	 * 15 - willow - just planted
+	 * 24 - maple - just planted
+	 * 35 - yew - just planted
+	 * 48 - magic - just planted
+	 * 60 - magic - healthy full
+	 * 61 - magic - healthy checked
+	 */
+
+	FARMING_TREE(4771, 529, 0, 7),
+	FARMING_FRUIT_TREE(4772, 529, 8, 15),
+
+	/**
+	 * TODO will have to confirm this
+	 */
+	FARMING_HARDWOOD_TREE(4773, 529, 16, 23),
+
+	/**
+	 * price of the current/last ge offer, resets when the ge is reopened, both buy and sell, 0 if no price
+	 */
+	GE_OFFER_PRICE(4398, 1043, 0, 30),
+
+	/**
+	 * the current/last offer item id, same reset and buy/sell as above, -1 if not set
+	 */
+	GE_OFFER_ID(1151, 0, 31),
+
+	/**
+	 * the amount being bought/sold, same reset conditions as all other ge offers
+	 */
+	GE_OFFER_AMOUNT(4396, 563, 0, 30),
+
+	/**
+	 * true if the current/last offer was a sale, false if buy. same resets as other ge offers
+	 */
+	GE_OFFER_IS_SELL(4397, 563, 31, 31),
+
+	/**
+	 * the current/last slot of the offer, slots listed from left to right 1-4 first row and 5-8 the second row
+	 */
+	GE_OFFER_SLOT(4439, 375, 4, 7),
+
+	/**
+	 * true if run is enabled
+	 * completely accurately reflect the run setting, so it stays false even if running through ctrl click
+	 */
+	RUNNING(173, 0, 0),
+
+	/**
+	 * the currently active spellbook, 0 = standard, 1 = ancients, 2 = lunar, 3 = arceuus
+	 */
+	SPELLBOOK(4070, 439, 0, 1);
 
 	/**
 	 * varbit id
