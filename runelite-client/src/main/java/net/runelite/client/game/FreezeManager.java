@@ -169,7 +169,7 @@ public class FreezeManager
 			log.debug("{} immune for another {} ticks", subject.getName(), subject.getFreeze().getImmune());
 		}
 
-		if (freezeInfo.getPosition() != null && (freezeInfo.getPosition().getX() != subject.getWorldTile().getX() || freezeInfo.getPosition().getY() != subject.getWorldTile().getY()))
+		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldTile())))
 		{
 			freezeInfo.resetFreeze();
 			log.debug("{} had their freeze cancelled", subject.getName());
