@@ -65,4 +65,14 @@ public interface RuneLiteConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "gameAlwaysOnTop",
+		name = "Enable client always on top",
+		description = "The game will always be on the top of the screen"
+	)
+	default boolean gameAlwaysOnTop()
+	{
+		return false;
+	}
 }

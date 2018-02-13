@@ -206,6 +206,14 @@ public class ClientUI extends JFrame
 			return;
 		}
 
+		if (event.getKey().equals("gameAlwaysOnTop"))
+		{
+			if (this.isAlwaysOnTopSupported())
+			{
+				this.setAlwaysOnTop(Boolean.valueOf(event.getNewValue()));
+			}
+		}
+
 		if (!event.getKey().equals("gameSize"))
 		{
 			return;
