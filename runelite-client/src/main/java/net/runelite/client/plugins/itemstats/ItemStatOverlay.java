@@ -56,7 +56,7 @@ public class ItemStatOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.relative() && !config.absolute() && !config.theoretical())
+		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
 		{
 			return null;
 		}
@@ -97,7 +97,10 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.theoretical())
 		{
-			b.append("/");
+			if (config.relative())
+			{
+				b.append("/");
+			}
 			b.append(c.getTheoretical());
 		}
 
