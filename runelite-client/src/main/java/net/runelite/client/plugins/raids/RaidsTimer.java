@@ -24,44 +24,60 @@
  */
 package net.runelite.client.plugins.raids;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@ConfigGroup(
-	keyName = "raids",
-	name = "Raids",
-	description = "Configuration for the raids plugin"
-)
-public interface RaidsConfig extends Config
+public class RaidsTimer extends InfoBox
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the raids plugin is enabled"
-	)
-	default boolean enabled()
+	private final Instant startTime;
+	private LocalTime time;
+
+	@Setter
+	private boolean stopped;
+
+	public RaidsTimer(BufferedImage image, Instant startTime)
 	{
-		return true;
+		super(image);
+		this.startTime = startTime;
+		stopped = false;
 	}
 
-	@ConfigItem(
-			keyName = "raidsTimer",
-			name = "Display elapsed raid time",
-			description = "Display elapsed raid time"
-	)
-	default boolean raidsTimer()
+	@Override
+	public String getText()
 	{
-		return true;
+		if (startTime == null)
+			return "";
+
+		if (!stopped)
+		{
+			Duration elapsed = Duration.between(startTime, Instant.now());
+			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+
+		if (time.getHour() > 0)
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
 	}
 
-	@ConfigItem(
-		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
-		description = "Display a message with total points, individual points and percentage at the end of a raid"
-	)
-	default boolean pointsMessage()
+	@Override
+	public Color getTextColor()
 	{
-		return true;
+		if (stopped)
+			return Color.GREEN;
+
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return "Elapsed raid time: " + time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }

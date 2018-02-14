@@ -27,12 +27,20 @@ package net.runelite.client.plugins.raids;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.time.Instant;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColor;
@@ -40,20 +48,30 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Raids Plugin"
 )
+@Slf4j
 public class RaidsPlugin extends Plugin
 {
+	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private BufferedImage raidsIcon;
+	private RaidsTimer timer;
+	private boolean inRaidChambers = false;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private Client client;
@@ -74,46 +92,86 @@ public class RaidsPlugin extends Plugin
 		{
 			cacheColors();
 		}
+
+		if (event.getKey().equals("enabled") || event.getKey().equals("raidsTimer"))
+		{
+			if (timer != null)
+			{
+				if (config.enabled() && config.raidsTimer())
+					infoBoxManager.addInfoBox(timer);
+				else
+					infoBoxManager.removeInfoBox(timer);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChange(VarbitChanged event)
+	{
+		boolean setting = client.getSetting(Varbits.IN_RAID) == 1;
+
+		if (inRaidChambers != setting)
+		{
+			inRaidChambers = setting;
+
+			if (timer != null && !inRaidChambers)
+			{
+				infoBoxManager.removeInfoBox(timer);
+				timer = null;
+			}
+		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (!config.enabled())
-		{
 			return;
-		}
 
-		String message = event.getMessage().replaceAll("<[^>]*>", "");
-
-		if (config.pointsMessage() && event.getType() == ChatMessageType.CLANCHAT_INFO
-				&& message.startsWith(RAID_COMPLETE_MESSAGE))
+		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
-			Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
-			String[] raidPoints = raidsWidget.getText().split("<br>");
-			int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS].replace(",", ""));
-			int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS].replace(",", ""));
+			String message = event.getMessage().replaceAll("<[^>]*>", "");
 
-			double percentage = personalPoints / (totalPoints / 100.0);
+			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+			{
+				timer = new RaidsTimer(getRaidsIcon(), Instant.now());
+				infoBoxManager.addInfoBox(timer);
+			}
 
-			String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append("Total points: ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(raidPoints[TOTAL_POINTS])
-					.append(ChatColorType.NORMAL)
-					.append(", Personal points: ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(raidPoints[PERSONAL_POINTS])
-					.append(ChatColorType.NORMAL)
-					.append(" (")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(DECIMAL_FORMAT.format(percentage))
-					.append(ChatColorType.NORMAL)
-					.append("%)")
-					.build();
+			if (message.startsWith(RAID_COMPLETE_MESSAGE))
+			{
+				if (timer != null)
+					timer.setStopped(true);
 
-			chatMessageManager.queue(ChatMessageType.CLANCHAT_INFO, chatMessage);
+				if (config.pointsMessage())
+				{
+					Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
+					String[] raidPoints = raidsWidget.getText().split("<br>");
+					int totalPoints = Integer.parseInt(raidPoints[TOTAL_POINTS].replace(",", ""));
+					int personalPoints = Integer.parseInt(raidPoints[PERSONAL_POINTS].replace(",", ""));
+
+					double percentage = personalPoints / (totalPoints / 100.0);
+
+					String chatMessage = new ChatMessageBuilder()
+							.append(ChatColorType.NORMAL)
+							.append("Total points: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(raidPoints[TOTAL_POINTS])
+							.append(ChatColorType.NORMAL)
+							.append(", Personal points: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(raidPoints[PERSONAL_POINTS])
+							.append(ChatColorType.NORMAL)
+							.append(" (")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(DECIMAL_FORMAT.format(percentage))
+							.append(ChatColorType.NORMAL)
+							.append("%)")
+							.build();
+
+					chatMessageManager.queue(ChatMessageType.CLANCHAT_INFO, chatMessage);
+				}
+			}
 		}
 	}
 
@@ -124,5 +182,24 @@ public class RaidsPlugin extends Plugin
 				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
 				.refreshAll();
+	}
+
+	public BufferedImage getRaidsIcon()
+	{
+		if (raidsIcon != null)
+			return raidsIcon;
+
+		InputStream in = RaidsPlugin.class.getResourceAsStream("raids_icon.png");
+
+		try
+		{
+			raidsIcon = ImageIO.read(in);
+		}
+		catch (IOException ex)
+		{
+			log.warn("Unable to load image", ex);
+		}
+
+		return raidsIcon;
 	}
 }
