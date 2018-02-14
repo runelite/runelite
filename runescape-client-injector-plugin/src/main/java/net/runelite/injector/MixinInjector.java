@@ -45,10 +45,14 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeDynamic;
+import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.visitors.ClassFileVisitor;
@@ -369,7 +373,89 @@ public class MixinInjector
 		// Handle the rest of the mixin types
 		for (Method method : mixinCf.getMethods())
 		{
-			if (method.getAnnotations().find(INJECT) != null)
+			boolean isClinit = "<clinit>".equals(method.getName());
+			boolean isInit = "<init>".equals(method.getName());
+			boolean hasInject = method.getAnnotations().find(INJECT) != null;
+
+			// You can't annotate clinit, so its always injected
+			if ((hasInject && isInit) || isClinit)
+			{
+				if (!"()V".equals(method.getDescriptor().toString()))
+				{
+					throw new InjectionException("Injected constructors cannot have arguments");
+				}
+
+				Method[] originalMethods = cf.getMethods().stream()
+					.filter(n -> n.getName().equals(method.getName()))
+					.toArray(Method[]::new);
+				// If there isn't a <clinit> already just inject ours, otherwise rename it
+				// This is always true for <init>
+				String name = method.getName();
+				if (originalMethods.length > 0)
+				{
+					name = "rl$$" + (isInit ? "init" : "clinit");
+				}
+
+				Method copy = new Method(cf, name, method.getDescriptor());
+				moveCode(copy, method.getCode());
+				copy.setAccessFlags(method.getAccessFlags());
+				copy.setPrivate();
+				assert method.getExceptions().getExceptions().isEmpty();
+
+				// Remove the call to the superclass's ctor
+				if (isInit)
+				{
+					Instructions instructions = copy.getCode().getInstructions();
+					ListIterator<Instruction> listIter = instructions.getInstructions().listIterator();
+					for (; listIter.hasNext(); )
+					{
+						Instruction instr = listIter.next();
+						if (instr instanceof InvokeSpecial)
+						{
+							InvokeSpecial invoke = (InvokeSpecial) instr;
+							assert invoke.getMethod().getName().equals("<init>");
+							listIter.remove();
+							int pops = invoke.getMethod().getType().getArguments().size() + 1;
+							for (int i = 0; i < pops; i++)
+							{
+								listIter.add(new Pop(instructions));
+							}
+							break;
+						}
+					}
+				}
+
+				setOwnersToTargetClass(mixinCf, cf, copy, shadowFields, copiedMethods);
+				cf.addMethod(copy);
+
+				// Call our method at the return point of the matching method(s)
+				for (Method om : originalMethods)
+				{
+					Instructions instructions = om.getCode().getInstructions();
+					ListIterator<Instruction> listIter = instructions.getInstructions().listIterator();
+					for (; listIter.hasNext(); )
+					{
+						Instruction instr = listIter.next();
+						if (instr instanceof ReturnInstruction)
+						{
+							listIter.previous();
+							if (isInit)
+							{
+								listIter.add(new ALoad(instructions, 0));
+								listIter.add(new InvokeSpecial(instructions, copy.getPoolMethod()));
+							}
+							else if (isClinit)
+							{
+								listIter.add(new InvokeStatic(instructions, copy.getPoolMethod()));
+							}
+							listIter.next();
+						}
+					}
+				}
+
+				logger.debug("Injected mixin method {} to {}", copy, cf);
+			}
+			else if (hasInject)
 			{
 				// Make sure the method doesn't invoke copied methods
 				for (Instruction i : method.getCode().getInstructions().getInstructions())
