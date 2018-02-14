@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
@@ -45,6 +46,14 @@ import net.runelite.http.api.item.SearchResult;
 @Singleton
 public class ItemManager
 {
+	@Value
+	private static class ImageKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final boolean stackable;
+	}
+
 	/**
 	 * not yet looked up
 	 */
@@ -59,7 +68,7 @@ public class ItemManager
 	private final ItemClient itemClient = new ItemClient();
 	private final LoadingCache<String, SearchResult> itemSearches;
 	private final LoadingCache<Integer, ItemPrice> itemPrices;
-	private final LoadingCache<Integer, BufferedImage> itemImages;
+	private final LoadingCache<ImageKey, BufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 
 	@Inject
@@ -86,12 +95,12 @@ public class ItemManager
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<Integer, BufferedImage>()
+			.build(new CacheLoader<ImageKey, BufferedImage>()
 			{
 				@Override
-				public BufferedImage load(Integer itemId) throws Exception
+				public BufferedImage load(ImageKey key) throws Exception
 				{
-					return loadImage(itemId & 0xffff, itemId >>> 16);
+					return loadImage(key.itemId, key.itemQuantity, key.stackable);
 				}
 			});
 
@@ -203,9 +212,9 @@ public class ItemManager
 	 * @param itemId
 	 * @return
 	 */
-	private BufferedImage loadImage(int itemId, int quantity)
+	private BufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
+		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, stackable ? 1 : 0, false);
 		return sprite.toBufferedImage();
 	}
 
@@ -217,7 +226,7 @@ public class ItemManager
 	 */
 	public BufferedImage getImage(int itemId)
 	{
-		return getImage(itemId, 1);
+		return getImage(itemId, 1, false);
 	}
 
 	/**
@@ -227,11 +236,11 @@ public class ItemManager
 	 * @param quantity
 	 * @return
 	 */
-	public BufferedImage getImage(int itemId, int quantity)
+	public BufferedImage getImage(int itemId, int quantity, boolean stackable)
 	{
 		try
 		{
-			return itemImages.get(itemId | (quantity << 16));
+			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
 		{
