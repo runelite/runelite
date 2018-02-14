@@ -48,7 +48,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class RaidsPlugin extends Plugin
 {
-	private static final String RAID_COMPLETE_MESSAGE = "<col=ef20ff>Congratulations - your raid is complete!";
+	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 
@@ -84,8 +84,10 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
+		String message = event.getMessage().replaceAll("<[^>]*>", "");
+
 		if (config.pointsMessage() && event.getType() == ChatMessageType.CLANCHAT_INFO
-				&& event.getMessage().startsWith(RAID_COMPLETE_MESSAGE))
+				&& message.startsWith(RAID_COMPLETE_MESSAGE))
 		{
 			Widget raidsWidget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX).getChild(TEXT_CHILD);
 			String[] raidPoints = raidsWidget.getText().split("<br>");
@@ -94,7 +96,7 @@ public class RaidsPlugin extends Plugin
 
 			double percentage = personalPoints / (totalPoints / 100.0);
 
-			String message = new ChatMessageBuilder()
+			String chatMessage = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
 					.append("Total points: ")
 					.append(ChatColorType.HIGHLIGHT)
@@ -111,7 +113,7 @@ public class RaidsPlugin extends Plugin
 					.append("%)")
 					.build();
 
-			chatMessageManager.queue(ChatMessageType.CLANCHAT_INFO, message);
+			chatMessageManager.queue(ChatMessageType.CLANCHAT_INFO, chatMessage);
 		}
 	}
 
