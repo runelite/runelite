@@ -65,17 +65,20 @@ public class BurnerOverlay extends Overlay
 			return null;
 		}
 
-		for (GameObject object : plugin.getPohObjects())
+		plugin.getPohObjects().forEach((object, tile) ->
 		{
-			if (BURNER_UNLIT.contains(object.getId()))
+			if (tile.getPlane() == client.getPlane())
 			{
-				drawBurner(graphics, "Unlit", object, Color.RED, parent);
+				if (BURNER_UNLIT.contains(object.getId()))
+				{
+					drawBurner(graphics, "Unlit", object, Color.RED, parent);
+				}
+				else if (BURNER_LIT.contains(object.getId()))
+				{
+					drawBurner(graphics, "Lit", object, Color.GREEN, parent);
+				}
 			}
-			else if (BURNER_LIT.contains(object.getId()))
-			{
-				drawBurner(graphics, "Lit", object, Color.GREEN, parent);
-			}
-		}
+		});
 		return null;
 	}
 

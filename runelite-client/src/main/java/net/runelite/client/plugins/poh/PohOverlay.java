@@ -31,7 +31,6 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import static net.runelite.client.plugins.poh.PohIcons.ALTAR;
@@ -87,11 +86,10 @@ public class PohOverlay extends Overlay
 		}
 
 		Point localLocation = client.getLocalPlayer().getLocalLocation();
-
-		for (GameObject object : plugin.getPohObjects())
+		plugin.getPohObjects().forEach((object, tile) ->
 		{
 			Point location = object.getLocalLocation();
-			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+			if (tile.getPlane() == client.getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				PohIcons icon = PohIcons.getIcon(object.getId());
 
@@ -105,7 +103,7 @@ public class PohOverlay extends Overlay
 					}
 				}
 			}
-		}
+		});
 
 		return null;
 	}
