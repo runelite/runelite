@@ -39,6 +39,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
+import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ExperienceChanged;
@@ -210,11 +211,10 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public int getSetting(Varbits varbit)
+	public int getSetting(Setting setting)
 	{
 		int[] settings = getSettings();
-		int value = settings[varbit.getIndex()];
-		return varbit.get(value);
+		return settings[setting.getId()];
 	}
 
 	@Inject
