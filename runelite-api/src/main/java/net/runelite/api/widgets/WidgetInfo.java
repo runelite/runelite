@@ -169,7 +169,9 @@ public enum WidgetInfo
 
 	PUZZLE_BOX(WidgetID.PUZZLE_BOX_GROUP_ID, WidgetID.PuzzleBox.VISIBLE_BOX),
 
-	NIGHTMARE_ZONE(WidgetID.NIGHTMARE_ZONE_GROUP_ID, 1);
+	NIGHTMARE_ZONE(WidgetID.NIGHTMARE_ZONE_GROUP_ID, 1),
+
+	BLAST_FURNACE_COFFER(WidgetID.BLAST_FURNACE_GROUP_ID, 0);
 
 	private final int groupId;
 	private final int childId;
