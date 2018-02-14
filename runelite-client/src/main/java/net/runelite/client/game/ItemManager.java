@@ -84,14 +84,14 @@ public class ItemManager
 			});
 
 		itemImages = CacheBuilder.newBuilder()
-			.maximumSize(200)
+			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(new CacheLoader<Integer, BufferedImage>()
 			{
 				@Override
 				public BufferedImage load(Integer itemId) throws Exception
 				{
-					return loadImage(itemId);
+					return loadImage(itemId & 0xffff, itemId >>> 16);
 				}
 			});
 
@@ -203,23 +203,35 @@ public class ItemManager
 	 * @param itemId
 	 * @return
 	 */
-	private BufferedImage loadImage(int itemId)
+	private BufferedImage loadImage(int itemId, int quantity)
 	{
-		SpritePixels sprite = client.createItemSprite(itemId, 1, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
+		SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR, 0, false);
 		return sprite.toBufferedImage();
 	}
 
 	/**
-	 * Get item sprite image as BufferedImage
+	 * Get item sprite image
 	 *
 	 * @param itemId
 	 * @return
 	 */
 	public BufferedImage getImage(int itemId)
 	{
+		return getImage(itemId, 1);
+	}
+
+	/**
+	 * Get item sprite image as BufferedImage
+	 *
+	 * @param itemId
+	 * @param quantity
+	 * @return
+	 */
+	public BufferedImage getImage(int itemId, int quantity)
+	{
 		try
 		{
-			return itemImages.get(itemId);
+			return itemImages.get(itemId | (quantity << 16));
 		}
 		catch (ExecutionException ex)
 		{
