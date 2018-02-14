@@ -195,4 +195,14 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showClickBox",
+		name = "Show Rift click box",
+		description = "Configures whether to display the click box of the rift"
+	)
+	default boolean showClickBox()
+	{
+		return true;
+	}
 }

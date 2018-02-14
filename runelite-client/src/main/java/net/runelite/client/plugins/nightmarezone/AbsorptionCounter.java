@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.client.plugins.nightmarezone;
 
-prog: (header NEWLINE+)* (line NEWLINE+)+ ;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
+public class AbsorptionCounter extends Counter
+{
+	public AbsorptionCounter(BufferedImage image, String text)
+	{
+		super(image, text);
+	}
 
-id: '.id ' id_value ;
-int_stack_count: '.int_stack_count ' int_stack_value ;
-string_stack_count: '.string_stack_count ' string_stack_value ;
-int_var_count: '.int_var_count ' int_var_value ;
-string_var_count: '.string_var_count ' string_var_value ;
-
-id_value: INT ;
-int_stack_value: INT ;
-string_stack_value: INT ;
-int_var_value: INT ;
-string_var_value: INT ;
-
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
-
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
-
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
-
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
-
-NEWLINE: ( '\r' | '\n' )+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
-COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
-
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+	public void setAbsorption(int value)
+	{
+		setText(String.valueOf(value));
+	}
+}

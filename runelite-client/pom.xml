@@ -38,6 +38,7 @@
 
 	<properties>
 		<slf4j.version>1.7.12</slf4j.version>
+		<logback.version>1.2.3</logback.version>
 		<guice.version>4.1.0</guice.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
@@ -50,10 +51,9 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jopt-simple</groupId>
@@ -211,6 +211,12 @@
 								</filter>
 								<filter>
 									<artifact>com.google.guava:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>ch.qos.logback:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

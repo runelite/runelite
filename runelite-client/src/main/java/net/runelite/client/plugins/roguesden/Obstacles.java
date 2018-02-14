@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-grammar rs2asm;
+package net.runelite.client.plugins.roguesden;
 
-prog: (header NEWLINE+)* (line NEWLINE+)+ ;
+import com.google.common.collect.Sets;
+import java.util.Set;
+import static net.runelite.api.ObjectID.*;
 
-header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
+class Obstacles
+{
+	public static final Set<Integer> OBSTACLE_IDS_HULL = Sets.newHashSet(
+			SPINNING_BLADES_7224,
+			CONTORTION_BARS,
+			PENDULUM,
+			WALL_7249,	/*Wall crushers*/
+			WALL_7248,	/*Wall blade*/
+			LEDGE_7240,	/*Ledge climb*/
+			NULL_7235	/*Wall safe*/
+	);
 
-id: '.id ' id_value ;
-int_stack_count: '.int_stack_count ' int_stack_value ;
-string_stack_count: '.string_stack_count ' string_stack_value ;
-int_var_count: '.int_var_count ' int_var_value ;
-string_var_count: '.string_var_count ' string_var_value ;
-
-id_value: INT ;
-int_stack_value: INT ;
-string_stack_value: INT ;
-int_var_value: INT ;
-string_var_value: INT ;
-
-line: instruction | label | switch_lookup ;
-instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
-
-instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
-name_opcode: INT ;
-
-instruction_operand: operand_int | operand_qstring | operand_label | ;
-operand_int: INT ;
-operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
-
-switch_lookup: switch_key ':' switch_value ;
-switch_key: INT ;
-switch_value: 'LABEL' INT ;
-
-NEWLINE: ( '\r' | '\n' )+ ;
-INT: '-'? [0-9]+ ;
-QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
-COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
-
-WS: (' ' | '\t')+ -> channel(HIDDEN) ;
+	public static final Set<Integer> OBSTACLE_IDS_TILE = Sets.newHashSet(
+			FLOOR,		/*Floor spikes*/
+			WALL_7228,	/*Wall spikes*/
+			WALL_7229,	/*Wall spears*/
+			FLOOR_7245,	/*Pressure pad a*/
+			FLOOR_7230,	/*Pressure pad b*/
+			BLADE_7252,	/*Floor blade*/
+			7239		/*Bridge [Ground object]*/
+	);
+}

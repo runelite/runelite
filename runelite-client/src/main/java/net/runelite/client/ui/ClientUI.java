@@ -61,6 +61,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -75,6 +76,7 @@ public class ClientUI extends JFrame
 	@Getter
 	private TrayIcon trayIcon;
 
+	private final RuneLite runelite;
 	private final Applet client;
 	private final RuneLiteProperties properties;
 	private JPanel navContainer;
@@ -100,7 +102,7 @@ public class ClientUI extends JFrame
 		ICON = icon;
 	}
 
-	public static ClientUI create(RuneLiteProperties properties, Applet client)
+	public static ClientUI create(RuneLite runelite, RuneLiteProperties properties, Applet client)
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
@@ -128,11 +130,12 @@ public class ClientUI extends JFrame
 		// Use custom UI font
 		setUIFont(new FontUIResource(FontManager.getRunescapeFont()));
 
-		return new ClientUI(properties, client);
+		return new ClientUI(runelite, properties, client);
 	}
 
-	private ClientUI(RuneLiteProperties properties, Applet client)
+	private ClientUI(RuneLite runelite, RuneLiteProperties properties, Applet client)
 	{
+		this.runelite = runelite;
 		this.properties = properties;
 		this.client = client;
 		this.trayIcon = setupTrayIcon();
@@ -201,6 +204,14 @@ public class ClientUI extends JFrame
 		if (!event.getGroup().equals("runelite"))
 		{
 			return;
+		}
+
+		if (event.getKey().equals("gameAlwaysOnTop"))
+		{
+			if (this.isAlwaysOnTopSupported())
+			{
+				this.setAlwaysOnTop(Boolean.valueOf(event.getNewValue()));
+			}
 		}
 
 		if (!event.getKey().equals("gameSize"))
@@ -385,6 +396,7 @@ public class ClientUI extends JFrame
 
 		if (result == JOptionPane.OK_OPTION)
 		{
+			runelite.shutdown();
 			System.exit(0);
 		}
 	}
