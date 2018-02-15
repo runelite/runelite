@@ -130,6 +130,8 @@ public interface Client extends GameEngine
 
 	int[] getWidgetSettings();
 
+	int getSetting(Setting setting);
+
 	int getSetting(Varbits varbit);
 
 	HashTable getComponentTable();

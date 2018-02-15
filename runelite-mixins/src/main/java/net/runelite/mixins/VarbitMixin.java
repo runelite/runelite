@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mixins;
 
-import org.junit.Assert;
-import org.junit.Test;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import net.runelite.api.Varbits;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSNodeCache;
+import net.runelite.rs.api.RSVarbit;
 
-public class VarbitsTest
+@Mixin(RSClient.class)
+public abstract class VarbitMixin implements RSClient
 {
-	@Test
-	public void testGet()
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Inject
+	private Cache<Integer, RSVarbit> varbitCache = CacheBuilder.newBuilder()
+		.maximumSize(128)
+		.build();
+
+	@Inject
+	VarbitMixin()
 	{
-		//              28   24   20   16   12    8    4    0
-		int value = 0b1101_1110_1010_1101_1011_1110_1110_1111;
-
-		// Bit indexes are inclusive
-		// Small pouch is bits 0-2
-		// Medium pouch is bits 3-8
-		// Large pouch is bits 9-17
-		// Giant pouch is bits 18-29
-		Varbits small = Varbits.POUCH_SMALL;
-		Varbits med = Varbits.POUCH_MEDIUM;
-		Varbits large = Varbits.POUCH_LARGE;
-		Varbits giant = Varbits.POUCH_GIANT;
-
-		Assert.assertEquals(7, small.get(value));
-		Assert.assertEquals(29, med.get(value));
-		Assert.assertEquals(223, large.get(value));
-		Assert.assertEquals(1963, giant.get(value));
 	}
 
-	@Test
-	public void testSet()
+	@Inject
+	@Override
+	public int getSetting(Varbits varbit)
 	{
-		//              28   24   20   16   12    8    4    0
-		int value = 0b1101_1110_1010_1101_1011_1110_1110_1111;
-		int mask = 0b0000_0000_0000_0011_1111_1110_0000_0000; // mask for large pouch
+		int varbitId = varbit.getId();
+		RSVarbit v = varbitCache.getIfPresent(varbitId);
+		if (v == null)
+		{
+			client.getVarbit(varbitId); // load varbit into cache
+			RSNodeCache varbits = client.getVarbitCache();
+			v = (RSVarbit) varbits.get(varbitId); // get from cache
+			varbitCache.put(varbitId, v);
+		}
 
-		Varbits large = Varbits.POUCH_LARGE;
-
-		int newValue = large.set(value, 42);
-		int expect = (value & ~mask) | (42 << large.getLeastSignificantBit());
-		Assert.assertEquals(expect, newValue);
+		int[] settings = getWidgetSettings();
+		int value = settings[v.getIndex()];
+		int lsb = v.getLeastSignificantBit();
+		int msb = v.getMostSignificantBit();
+		int mask = (1 << ((msb - lsb) + 1)) - 1;
+		return (value >> lsb) & mask;
 	}
 }
