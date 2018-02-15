@@ -46,9 +46,9 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "raidsTimer",
-			name = "Display elapsed raid time",
-			description = "Display elapsed raid time"
+		keyName = "raidsTimer",
+		name = "Display elapsed raid time",
+		description = "Display elapsed raid time"
 	)
 	default boolean raidsTimer()
 	{
