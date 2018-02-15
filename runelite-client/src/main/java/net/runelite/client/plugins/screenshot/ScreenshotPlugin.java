@@ -257,8 +257,9 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				// "Your Firemaking level is now 9."
+				// "Congratulations, you just advanced a Firemaking level."
 				String skillText = skillChild.getText();
+				// "Your Firemaking level is now 9."
 				String levelText = levelChild.getText();
 
 				String skillName = skillText.substring(skillText.indexOf("a ") + 2, skillText.indexOf(" level."));
