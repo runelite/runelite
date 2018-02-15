@@ -27,6 +27,8 @@ package net.runelite.injector;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
@@ -112,10 +114,24 @@ public class InjectConstruct
 
 		Signature sig = inject.javaMethodToSignature(apiMethod);
 
-		Method vanillaConstructor = vanillaClass.findMethod("<init>");
+		Signature constructorSig = new Signature.Builder()
+			.addArguments(Stream.of(apiMethod.getParameterTypes())
+				.map(arg ->
+				{
+					ClassFile vanilla = inject.findVanillaForInterface(arg);
+					if (vanilla != null)
+					{
+						return new Type("L" + vanilla.getName() + ";");
+					}
+					return Inject.classToType(arg);
+				})
+				.collect(Collectors.toList()))
+			.setReturnType(Type.VOID)
+			.build();
+		Method vanillaConstructor = vanillaClass.findMethod("<init>", constructorSig);
 		if (vanillaConstructor == null)
 		{
-			throw new InjectionException("Unable to find constructor");
+			throw new InjectionException("Unable to find constructor for " + vanillaClass.getName() + ".<init>" + constructorSig);
 		}
 
 		Method setterMethod = new Method(targetClass, apiMethod.getName(), sig);
