@@ -93,6 +93,13 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Override
+	protected void startUp()
+	{
+		cacheConfiguredColors();
+		chatMessageManager.refreshAll();
+	}
+
 	@Provides
 	ExamineConfig provideConfig(ConfigManager configManager)
 	{

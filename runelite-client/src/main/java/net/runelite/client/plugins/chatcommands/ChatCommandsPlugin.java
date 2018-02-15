@@ -82,6 +82,13 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Override
+	protected void startUp()
+	{
+		cacheConfiguredColors();
+		chatMessageManager.refreshAll();
+	}
+
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
