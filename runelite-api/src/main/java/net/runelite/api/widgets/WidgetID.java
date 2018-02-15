@@ -64,6 +64,7 @@ public class WidgetID
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
+	public static final int BLAST_FURNACE_GROUP_ID = 474;
 
 	static class WorldMap
 	{
