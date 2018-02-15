@@ -29,4 +29,6 @@ import java.awt.Canvas;
 public interface GameEngine
 {
 	Canvas getCanvas();
+
+	MouseWheelHandler getMouseWheelHandler();
 }

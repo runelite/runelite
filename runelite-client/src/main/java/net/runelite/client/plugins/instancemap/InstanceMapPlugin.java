@@ -27,19 +27,26 @@ package net.runelite.client.plugins.instancemap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
-import net.runelite.client.config.ConfigManager;
+import net.runelite.api.Client;
+import net.runelite.api.RLKeyAdapter;
+import net.runelite.api.RLMouseAdapter;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
+
+import javax.inject.Inject;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseWheelEvent;
+
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 
 @PluginDescriptor(
 	name = "Instance Map"
@@ -49,6 +56,59 @@ public class InstanceMapPlugin extends Plugin
 	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WidgetInfo.WORLD_MAP);
 	private final WidgetMenuOption ascendOption = new WidgetMenuOption("Ascend", "Instance Map", WidgetInfo.WORLD_MAP);
 	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
+	private final RLKeyAdapter keyPressedListener = new RLKeyAdapter()
+	{
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			if (e.isConsumed())
+			{
+				return;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.isShiftDown() && !overlay.isMapShown())
+			{
+				overlay.setShowMap(true);
+				openMapOption.setMenuOption("Hide");
+				e.consume();
+				setPressConsumed(true);
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && overlay.isMapShown())
+			{
+				overlay.setShowMap(false);
+				openMapOption.setMenuOption("Show");
+				e.consume();
+				setPressConsumed(true);
+			}
+			super.keyPressed(e);
+		}
+	};
+	private final RLMouseAdapter mouseWheelListener = new RLMouseAdapter()
+	{
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e)
+		{
+			if (e.isConsumed() || !overlay.isMapShown())
+			{
+				return;
+			}
+			if (e.isShiftDown())
+			{
+				if (e.getWheelRotation() > 0)
+				{
+					overlay.onDescend();
+					e.consume();
+					setMouseWheelMovedConsumed(true);
+				}
+				else if (e.getWheelRotation() < 0)
+				{
+					overlay.onAscend();
+					e.consume();
+					setMouseWheelMovedConsumed(true);
+				}
+			}
+			super.mouseWheelMoved(e);
+		}
+	};
 
 	@Inject
 	private InstanceMapConfig config;
@@ -58,6 +118,9 @@ public class InstanceMapPlugin extends Plugin
 
 	@Inject
 	private MenuManager menuManager;
+
+	@Inject
+	private Client client;
 
 	@Override
 	public void configure(Binder binder)
@@ -76,6 +139,12 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.addManagedCustomMenu(openMapOption);
 		menuManager.addManagedCustomMenu(descendOption);
 		menuManager.addManagedCustomMenu(ascendOption);
+		client.getKeyboard().getOnKeyEvents().add(keyPressedListener);
+		client.getMouseWheelHandler().getOnMouseWheelMovedEvents().add(mouseWheelListener);
+		//client.getMouseWheelHandler().getOnMouseWheelMovedEvents().add(mouseWheelListener);
+//		client.getCanvas().addKeyListener(keyPressedListener);
+//		client.getCanvas().addMouseWheelListener(mouseWheelListener);
+
 	}
 
 	private void removeCustomOptions()
@@ -83,6 +152,10 @@ public class InstanceMapPlugin extends Plugin
 		menuManager.removeManagedCustomMenu(openMapOption);
 		menuManager.removeManagedCustomMenu(descendOption);
 		menuManager.removeManagedCustomMenu(ascendOption);
+		client.getKeyboard().getOnKeyEvents().remove(keyPressedListener);
+		client.getMouseWheelHandler().getOnMouseWheelMovedEvents().remove(mouseWheelListener);
+//		client.getCanvas().removeKeyListener(keyPressedListener);
+//		client.getCanvas().removeMouseWheelListener(mouseWheelListener);
 	}
 
 	@Override

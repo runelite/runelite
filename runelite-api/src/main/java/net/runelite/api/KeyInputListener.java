@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018. l2-
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *     list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,20 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import java.awt.Canvas;
+package net.runelite.api;
 
-import net.runelite.api.GameEngine;
-import net.runelite.mapping.Import;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
-public interface RSGameEngine extends GameEngine
+public interface KeyInputListener
 {
-	@Import("canvas")
-	@Override
-	Canvas getCanvas();
+	ArrayList<RLKeyAdapter> getOnKeyEvents();
 
-	@Import("mouseWheel")
-	@Override
-	RSMouseWheelHandler getMouseWheelHandler();
+	void keyPressed(KeyEvent var1);
+
+	void keyTyped(KeyEvent var1);
+
+	void keyReleased(KeyEvent var1);
 }
