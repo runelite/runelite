@@ -262,7 +262,8 @@ public class ScreenshotPlugin extends Plugin
 				// "Your Firemaking level is now 9."
 				String levelText = levelChild.getText();
 
-				String skillName = skillText.substring(skillText.indexOf("a ") + 2, skillText.indexOf(" level."));
+				String[] splitSkillName = skillText.split(" ");
+				String skillName = splitSkillName[splitSkillName.length - 2];
 				String skillLevel = levelText.substring(levelText.lastIndexOf(" ") + 1, levelText.length() - 1);
 
 				fileName = skillName + "(" + skillLevel + ")";
