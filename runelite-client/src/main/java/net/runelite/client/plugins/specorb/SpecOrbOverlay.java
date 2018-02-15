@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
+import net.runelite.api.Setting;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
@@ -133,14 +133,14 @@ public class SpecOrbOverlay extends Overlay
 
 		graphics.setColor(SPECIAL_ORB_BACKGROUND_COLOR);
 
-		boolean specialAttackEnabled = client.getSetting(Varbits.SPECIAL_ATTACK_ENABLED) == 1;
+		boolean specialAttackEnabled = client.getSetting(Setting.SPECIAL_ATTACK_ENABLED) == 1;
 
 		// draw relative to run orb
 		Point runOrbPoint = runOrb.getCanvasLocation();
 		Point specOrbPoint = new Point(runOrbPoint.getX() + (client.isResized() ? SPEC_ORB_X_RESIZABLE : SPEC_ORB_X_FIXED),
 				runOrbPoint.getY() + (client.isResized() ? SPEC_ORB_Y_RESIZABLE : SPEC_ORB_Y_FIXED));
 
-		double specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT) / 1000.0;
+		double specialPercent = client.getSetting(Setting.SPECIAL_ATTACK_PERCENT) / 1000.0;
 		double specialRechargePercent = tickCounter / (double) RECHARGE_TIME_TICKS;
 
 		OverlayUtil.drawMinimapOrb(graphics, specOrbPoint, specialPercent,
@@ -153,7 +153,7 @@ public class SpecOrbOverlay extends Overlay
 
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT);
+		int specialPercent = client.getSetting(Setting.SPECIAL_ATTACK_PERCENT);
 		if (lastSpecialPercent != specialPercent)
 		{
 			int diff = specialPercent - lastSpecialPercent;
@@ -175,7 +175,7 @@ public class SpecOrbOverlay extends Overlay
 	public void onTick(GameTick event)
 	{
 		// 1000 = 100%, 500 = 50%, 0 = 0%
-		int specialPercent = client.getSetting(Varbits.SPECIAL_ATTACK_PERCENT);
+		int specialPercent = client.getSetting(Setting.SPECIAL_ATTACK_PERCENT);
 		// The recharge doesn't tick when at 100%
 		if (specialPercent == 1000)
 		{

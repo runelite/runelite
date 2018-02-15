@@ -451,4 +451,10 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Construct
 	RSName createName(String name, RSJagexLoginType type);
+
+	@Import("getVarbit")
+	int getVarbit(int varbitId);
+
+	@Import("varbits")
+	RSNodeCache getVarbitCache();
 }
