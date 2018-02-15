@@ -264,7 +264,7 @@ public class ScreenshotPlugin extends Plugin
 				String skillName = skillText.substring(skillText.indexOf("a ") + 2, skillText.indexOf(" level."));
 				String skillLevel = levelText.substring(levelText.lastIndexOf(" ") + 1, levelText.length() - 1);
 
-				fileName = skillName + " (" + skillLevel + ")";
+				fileName = skillName + "(" + skillLevel + ")";
 				break;
 			}
 			case QUEST_COMPLETED_GROUP_ID:
