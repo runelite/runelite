@@ -65,9 +65,6 @@ public abstract class FreezeBarMixin implements RSClient
 				{
 					RSNPCComposition actorComposition = ((RSNPC) actor).getComposition();
 
-					if (actorComposition == null)
-						System.out.println("actorComposition null");
-
 					if (actorComposition.getConfigs() != null)
 					{
 						actorComposition = actorComposition.transform();
@@ -82,9 +79,6 @@ public abstract class FreezeBarMixin implements RSClient
 				int offset = 3;
 				int healthScale;
 
-				if (actor.getCombatInfoList() == null)
-					System.out.println("getCombatInfoList null");
-
 				if (!actor.getCombatInfoList().isEmpty())
 				{
 					int height = actor.getLogicalHeight() + 15;
@@ -97,9 +91,6 @@ public abstract class FreezeBarMixin implements RSClient
 						{
 							RSCombatInfo2 cbInfo2 = cbInfoListHolder.getCombatInfo2();
 
-							if (cbInfo2 == null)
-								System.out.println("cbInfo2 null");
-
 							healthScale = cbInfo2.getHealthScale();
 
 							int x;
@@ -110,17 +101,12 @@ public abstract class FreezeBarMixin implements RSClient
 
 							if (canvasPoint.getX() > -1)
 							{
-								if (freezeInfo == null)
-									System.out.println("freezeInfo null");
 								if (freezeInfo.isFrozen())
 								{
-									int width = (int) ((float) freezeInfo.getFrozen() * ((float) healthScale / 32.0f));
-									System.out.println(freezeInfo.getFrozen() + " " + width + " " + healthScale);
-									int immunityWidth = healthScale - width;
-									int immunityStart = x + width;
-
+									if (healthScale < 32)
+										healthScale = 32;
+									int width = freezeInfo.getFrozen() * (healthScale / 32);
 									client.Rasterizer2D_fillRectangle(x, y - 3, width, 2, 0x36cfe0);
-									client.Rasterizer2D_fillRectangle(immunityStart, y - 3, immunityWidth, 2, 0xe09736);
 								} else if (freezeInfo.isImmune())
 								{
 									int width = freezeInfo.getImmune() * (healthScale / 6);
