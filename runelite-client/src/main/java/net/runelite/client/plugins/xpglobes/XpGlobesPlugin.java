@@ -162,7 +162,7 @@ public class XpGlobesPlugin extends Plugin
 	public void resetGlobeState()
 	{
 		xpGlobes.clear();
-		globeCache = new XpGlobe[Skill.values().length - 1];
+		globeCache = new XpGlobe[Skill.VALUES.length - 1];
 	}
 
 	@Subscribe
