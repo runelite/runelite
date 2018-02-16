@@ -108,7 +108,7 @@ public abstract class FreezeBarMixin implements RSClient
 				int x;
 				int y;
 
-				x = var2 + canvasPoint.getX() - (maxWidth >> 1);
+				x = var2 + canvasPoint.getX() - ((maxWidth - 2) >> 1);
 				y = var3 + canvasPoint.getY() - offset;
 
 				if (freezeInfo.isFrozen())
