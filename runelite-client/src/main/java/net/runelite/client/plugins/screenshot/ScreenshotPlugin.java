@@ -308,7 +308,7 @@ public class ScreenshotPlugin extends Plugin
 		takeScreenshot(fileName, config.displayDate());
 	}
 
-	private String parseLevelUpWidget(WidgetInfo levelUpSkill, WidgetInfo levelUpLevel)
+	public String parseLevelUpWidget(WidgetInfo levelUpSkill, WidgetInfo levelUpLevel)
 	{
 		Widget skillChild = client.getWidget(levelUpSkill);
 		Widget levelChild = client.getWidget(levelUpLevel);
