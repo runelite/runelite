@@ -24,13 +24,11 @@
  */
 package net.runelite.client.plugins.itemstats;
 
-import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.itemstats.stats.Stats;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -40,14 +38,6 @@ public class ItemStatPlugin extends Plugin
 {
 	@Inject
 	private ItemStatOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(Stats.class);
-		binder.bind(ItemStatChanges.class);
-		binder.bind(ItemStatOverlay.class);
-	}
 
 	@Provides
 	ItemStatConfig getConfig(ConfigManager configManager)

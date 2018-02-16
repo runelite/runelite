@@ -42,12 +42,6 @@ public class InfoPlugin extends Plugin
 	private ClientUI ui;
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(InfoPanel.class);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
 		final InfoPanel panel = injector.getInstance(InfoPanel.class);

@@ -43,12 +43,6 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private GroundItemsOverlay overlay;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(GroundItemsOverlay.class);
-	}
-
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
 	{

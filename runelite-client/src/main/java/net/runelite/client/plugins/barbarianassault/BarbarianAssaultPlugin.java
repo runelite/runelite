@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
@@ -77,12 +76,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BarbarianAssaultConfig.class);
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(BarbarianAssaultOverlay.class);
 	}
 
 	@Override

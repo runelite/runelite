@@ -24,9 +24,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import static net.runelite.api.Skill.SLAYER;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
@@ -41,13 +39,14 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
+import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -111,12 +110,6 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeCounter();
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(SlayerOverlay.class);
 	}
 
 	@Provides

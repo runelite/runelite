@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.prayflick;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.plugins.Plugin;
@@ -39,12 +38,6 @@ public class PrayerFlickPlugin extends Plugin
 {
 	@Inject
 	private PrayerFlickOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(PrayerFlickOverlay.class);
-	}
 
 	@Override
 	public Overlay getOverlay()

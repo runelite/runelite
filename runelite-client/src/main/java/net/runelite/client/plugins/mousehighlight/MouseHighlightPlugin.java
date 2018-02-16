@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
-import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -37,12 +36,6 @@ public class MouseHighlightPlugin extends Plugin
 {
 	@Inject
 	private MouseHighlightOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(MouseHighlightOverlay.class);
-	}
 
 	@Override
 	public Overlay getOverlay()

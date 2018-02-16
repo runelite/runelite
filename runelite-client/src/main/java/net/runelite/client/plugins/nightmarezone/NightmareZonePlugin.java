@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.nightmarezone;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -71,12 +70,6 @@ public class NightmareZonePlugin extends Plugin
 	NightmareZoneConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NightmareZoneConfig.class);
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(NightmareZoneOverlay.class);
 	}
 
 	@Override

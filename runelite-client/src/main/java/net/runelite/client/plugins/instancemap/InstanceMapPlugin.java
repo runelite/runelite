@@ -53,12 +53,6 @@ public class InstanceMapPlugin extends Plugin
 	@Inject
 	private MenuManager menuManager;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(InstanceMapOverlay.class);
-	}
-
 	private void addCustomOptions()
 	{
 		menuManager.addManagedCustomMenu(openMapOption);

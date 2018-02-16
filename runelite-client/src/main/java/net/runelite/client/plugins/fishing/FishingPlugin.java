@@ -76,12 +76,6 @@ public class FishingPlugin extends Plugin
 
 	private final FishingSession session = new FishingSession();
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(FishingOverlay.class);
-	}
-
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
 	{

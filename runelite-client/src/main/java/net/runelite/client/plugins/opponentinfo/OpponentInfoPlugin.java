@@ -26,7 +26,6 @@ package net.runelite.client.plugins.opponentinfo;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.inject.Binder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -43,12 +42,6 @@ public class OpponentInfoPlugin extends Plugin
 {
 	@Inject
 	private OpponentInfoOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(OpponentInfoOverlay.class);
-	}
 
 	@Override
 	public Overlay getOverlay()

@@ -73,12 +73,6 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	BarrowsOverlay barrowsOverlay;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(BarrowsOverlay.class);
-	}
-
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
 	{

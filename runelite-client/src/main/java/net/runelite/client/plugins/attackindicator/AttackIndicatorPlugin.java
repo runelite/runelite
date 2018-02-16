@@ -24,15 +24,9 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
-import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,10 +42,15 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 
 @PluginDescriptor(
 	name = "Attack indicator"
@@ -75,12 +74,6 @@ public class AttackIndicatorPlugin extends Plugin
 
 	@Inject
 	private AttackIndicatorOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(AttackIndicatorOverlay.class);
-	}
 
 	@Provides
 	AttackIndicatorConfig provideConfig(ConfigManager configManager)

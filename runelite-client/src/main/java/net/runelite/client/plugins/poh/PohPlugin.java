@@ -26,7 +26,6 @@ package net.runelite.client.plugins.poh;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
@@ -70,12 +69,6 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(PohOverlay.class);
-	}
 
 	@Provides
 	PohConfig getConfig(ConfigManager configManager)
