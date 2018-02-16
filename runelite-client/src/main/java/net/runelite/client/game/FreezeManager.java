@@ -116,7 +116,7 @@ public class FreezeManager
 
 		if (a instanceof Player)
 		{
-			log.debug("Player \"{}\" freeze queued", a.getName());
+			log.debug("Player freeze queued");
 			OverheadPrayer activeOverhead = ((Player) a).getOverheadPrayer();
 
 			if (type.isHalfOnPray() && activeOverhead == OverheadPrayer.PROTECT_MAGIC)
@@ -128,7 +128,7 @@ public class FreezeManager
 		}
 		else if (a instanceof NPC)
 		{
-			log.debug("NPC \"{}\" freeze queued", a.getName());
+			log.debug("NPC freeze queued");
 			//TODO determine halving of ticks when praying
 			a.getFreeze().queueFreeze(type, freezeTicks, false);
 		}
@@ -166,7 +166,7 @@ public class FreezeManager
 		//if we were frozen last tick or this tick
 		if (freezeInfo.isFrozen())
 		{
-			log.debug("{} frozen for another {} ticks", subject.getName(), subject.getFreeze().getFrozen());
+
 		}
 
 		//if there is a type set from when we were last frozen but we're not frozen anymore then we're immune
@@ -178,7 +178,7 @@ public class FreezeManager
 		//if we're immune
 		if (freezeInfo.isImmune())
 		{
-			log.debug("{} immune for another {} ticks", subject.getName(), subject.getFreeze().getImmune());
+			
 		}
 
 		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldTile())))
