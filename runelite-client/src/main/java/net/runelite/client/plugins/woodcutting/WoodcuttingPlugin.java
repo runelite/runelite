@@ -27,9 +27,7 @@ package net.runelite.client.plugins.woodcutting;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.client.Notifier;
@@ -37,7 +35,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
@@ -86,35 +83,13 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
 			{
-				session.incrementLogCut();
+				session.setLastLogCut();
 			}
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
 				notifier.notify("A bird nest has spawned!");
 			}
-		}
-	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkCutting()
-	{
-		Instant lastLogCut = session.getLastLogCut();
-		if (lastLogCut == null)
-		{
-			return;
-		}
-
-		// reset recentCut if you haven't cut anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(lastLogCut, Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
 		}
 	}
 }

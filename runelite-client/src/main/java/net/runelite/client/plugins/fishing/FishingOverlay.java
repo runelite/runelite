@@ -85,19 +85,6 @@ class FishingOverlay extends Overlay
 			panelComponent.setTitleColor(Color.RED);
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Caught fish:",
-			Integer.toString(session.getTotalFished())
-		));
-
-
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Fish/hr:",
-			session.getRecentFished() > 2
-				? Integer.toString(session.getPerHour())
-				: ""
-		));
-
 		return panelComponent.render(graphics, parent);
 	}
 }

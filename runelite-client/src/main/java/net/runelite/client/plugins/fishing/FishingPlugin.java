@@ -28,9 +28,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,7 +45,6 @@ import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
@@ -120,7 +116,7 @@ public class FishingPlugin extends Plugin
 
 		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
 		{
-			session.incrementFishCaught();
+			session.setLastFishCaught();
 		}
 	}
 
@@ -177,27 +173,5 @@ public class FishingPlugin extends Plugin
 		NPCQuery query = new NPCQuery()
 			.idEquals(Ints.toArray(spotIds));
 		fishingSpots = queryRunner.runQuery(query);
-	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkFishing()
-	{
-		Instant lastFishCaught = session.getLastFishCaught();
-		if (lastFishCaught == null)
-		{
-			return;
-		}
-
-		// reset recentcaught if you haven't caught anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCaught = Duration.between(lastFishCaught, Instant.now());
-
-		if (sinceCaught.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
-		}
 	}
 }

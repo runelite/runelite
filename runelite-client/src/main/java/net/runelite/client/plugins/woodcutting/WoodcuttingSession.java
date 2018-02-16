@@ -24,69 +24,19 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.time.Duration;
 import java.time.Instant;
 
 public class WoodcuttingSession
 {
-	private static final Duration HOUR = Duration.ofHours(1);
-
-	private int perHour;
-
 	private Instant lastLogCut;
-	private int totalCut;
 
-	private Instant recentLogCut;
-	private int recentCut;
-
-	public void incrementLogCut()
+	public void setLastLogCut()
 	{
-		Instant now = Instant.now();
-
-		lastLogCut = now;
-		++totalCut;
-
-		if (recentCut == 0)
-		{
-			recentLogCut = now;
-		}
-		++recentCut;
-
-		Duration timeSinceStart = Duration.between(recentLogCut, now);
-		if (!timeSinceStart.isZero())
-		{
-			perHour = (int) ((double) recentCut * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
-		}
-	}
-
-	public void resetRecent()
-	{
-		recentLogCut = null;
-		recentCut = 0;
-	}
-
-	public int getPerHour()
-	{
-		return perHour;
+		lastLogCut = Instant.now();
 	}
 
 	public Instant getLastLogCut()
 	{
 		return lastLogCut;
-	}
-
-	public int getTotalCut()
-	{
-		return totalCut;
-	}
-
-	public Instant getRecentLogCut()
-	{
-		return recentLogCut;
-	}
-
-	public int getRecentCut()
-	{
-		return recentCut;
 	}
 }
