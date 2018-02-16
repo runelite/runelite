@@ -47,7 +47,7 @@ public enum InstanceTemplates
 	@Getter
 	private final int height;
 
-	public InstanceTemplates findMatch(int chunkData)
+	public static InstanceTemplates findMatch(int chunkData)
 	{
 		int rotation = chunkData >> 1 & 0x3; //unused, but shows us the rotation of the chunk
 		int y = (chunkData >> 3 & 0x7FF) * 8;
