@@ -22,31 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.jewellery;
 
-import com.google.inject.Binder;
-import javax.inject.Inject;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Jewellery count"
+@ConfigGroup(
+	keyName = "jewellery",
+	name = "Jewellery",
+	description = "Configuration for the jewellery plugin"
 )
-public class JewelleryCountPlugin extends Plugin
+public interface JewelleryConfig extends Config
 {
-	@Inject
-	private JewelleryCountOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
+	@ConfigItem(
+		keyName = "showCount",
+		name = "Enable Jewellery count",
+		description = "Configures whether or not the jewellery count is displayed"
+	)
+	default boolean showCount()
 	{
-		binder.bind(JewelleryCountOverlay.class);
+		return true;
 	}
 
-	@Override
-	public Overlay getOverlay()
+	@ConfigItem(
+		keyName = "showEnchant",
+		name = "Enable Enchant helper",
+		description = "Configures whether or not the enchant helper is displayed"
+	)
+	default boolean showEnchant()
 	{
-		return overlay;
+		return true;
 	}
 }

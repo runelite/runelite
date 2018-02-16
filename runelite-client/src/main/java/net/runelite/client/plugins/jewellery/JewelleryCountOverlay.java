@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.jewellerycount;
+package net.runelite.client.plugins.jewellery;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -47,18 +47,25 @@ import net.runelite.client.util.QueryRunner;
 class JewelleryCountOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
+	private final JewelleryConfig config;
 
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner)
+	JewelleryCountOverlay(QueryRunner queryRunner, JewelleryConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
+		if (!config.showCount())
+		{
+			return null;
+		}
+
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getJewelleryWidgetItems())
