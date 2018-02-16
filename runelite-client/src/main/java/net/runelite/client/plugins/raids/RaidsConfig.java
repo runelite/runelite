@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RaidsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the raids plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "raidsTimer",
 		name = "Display elapsed raid time",
 		description = "Display elapsed raid time"

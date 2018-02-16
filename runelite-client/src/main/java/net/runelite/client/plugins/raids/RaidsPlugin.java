@@ -64,7 +64,7 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
-	private boolean inRaidChambers = false;
+	private int raidVarbit;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -84,50 +84,49 @@ public class RaidsPlugin extends Plugin
 		return configManager.getConfig(RaidsConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateInfoBoxState();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		if (timer != null)
+			infoBoxManager.removeInfoBox(timer);
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.enabled() && config.pointsMessage())
+		if (config.pointsMessage())
 		{
 			cacheColors();
 		}
 
-		if (event.getKey().equals("enabled") || event.getKey().equals("raidsTimer"))
+		if (event.getKey().equals("raidsTimer"))
 		{
-			if (timer != null)
-			{
-				if (config.enabled() && config.raidsTimer())
-					infoBoxManager.addInfoBox(timer);
-				else
-					infoBoxManager.removeInfoBox(timer);
-			}
+			updateInfoBoxState();
 		}
 	}
 
 	@Subscribe
 	public void onVarbitChange(VarbitChanged event)
 	{
-		boolean setting = client.getSetting(Varbits.IN_RAID) == 1;
+		int varbit = client.getSetting(Varbits.IN_RAID);
 
-		if (inRaidChambers != setting)
+		if (raidVarbit != varbit)
 		{
-			inRaidChambers = setting;
-
-			if (timer != null && !inRaidChambers)
-			{
-				infoBoxManager.removeInfoBox(timer);
-				timer = null;
-			}
+			raidVarbit = varbit;
+			updateInfoBoxState();
 		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.enabled())
-			return;
-
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (raidVarbit == 1 && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
 			String message = event.getMessage().replaceAll("<[^>]*>", "");
 
@@ -174,7 +173,23 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	public void cacheColors()
+	private void updateInfoBoxState()
+	{
+		if (timer != null)
+		{
+			boolean inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
+
+			if (config.raidsTimer() && inRaidChambers)
+				infoBoxManager.addInfoBox(timer);
+			else
+				infoBoxManager.removeInfoBox(timer);
+
+			if (!inRaidChambers)
+				timer = null;
+		}
+	}
+
+	private void cacheColors()
 	{
 		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
 				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
@@ -183,7 +198,7 @@ public class RaidsPlugin extends Plugin
 				.refreshAll();
 	}
 
-	public BufferedImage getRaidsIcon()
+	private BufferedImage getRaidsIcon()
 	{
 		if (raidsIcon != null)
 			return raidsIcon;
