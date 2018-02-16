@@ -50,6 +50,8 @@ public enum ChatMessageType
 	ACTION(109),
 	UNKNOWN(-1);
 
+	public static final ChatMessageType[] VALUES = values();
+
 	private final int type;
 
 	ChatMessageType(int type)
@@ -59,7 +61,7 @@ public enum ChatMessageType
 
 	public static ChatMessageType of(int type)
 	{
-		for (ChatMessageType ct : ChatMessageType.values())
+		for (ChatMessageType ct : ChatMessageType.VALUES)
 		{
 			if (ct.type == type)
 			{
