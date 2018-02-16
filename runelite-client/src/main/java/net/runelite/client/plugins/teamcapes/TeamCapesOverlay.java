@@ -39,25 +39,19 @@ import java.util.Map;
 public class TeamCapesOverlay extends Overlay
 {
 	private final TeamCapesPlugin plugin;
-	private final TeamCapesConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config)
+	TeamCapesOverlay(TeamCapesPlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
 		Map<Integer, Integer> teams = plugin.getTeams();
 		if (teams.isEmpty())
 		{
