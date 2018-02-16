@@ -111,7 +111,7 @@ public class PrayerFlickOverlay extends Overlay
 
 	boolean isAnyPrayerActive()
 	{
-		for (Prayer pray : Prayer.values())//Check if any prayers are active
+		for (Prayer pray : Prayer.VALUES)//Check if any prayers are active
 		{
 			if (client.isPrayerActive(pray))
 			{
