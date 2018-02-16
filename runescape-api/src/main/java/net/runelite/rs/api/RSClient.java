@@ -625,4 +625,8 @@ public interface RSClient extends RSGameEngine, Client
 	
 	@Import("Rasterizer2D_fillRectangle")
 	void Rasterizer2D_fillRectangle(int x, int y, int width, int height, int color);
+
+	void setDrawFreezeBar(boolean draw);
+
+	boolean getDrawFreezeBar();
 }

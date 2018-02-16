@@ -332,6 +332,7 @@ public interface Client extends GameEngine
 
 	boolean isClanMember(String name);
 
+<<<<<<< HEAD
 	Preferences getPreferences();
 
 	void setCameraPitchRelaxerEnabled(boolean enabled);
@@ -415,4 +416,8 @@ public interface Client extends GameEngine
 	void setProjectilesHidden(boolean state);
 
 	CollisionData[] getCollisionMaps();
+
+	void setDrawFreezeBar(boolean draw);
+
+	boolean getDrawFreezeBar();
 }

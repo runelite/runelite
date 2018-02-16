@@ -28,14 +28,12 @@ import net.runelite.api.FreezeInfo;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSCombatInfo1;
-import net.runelite.rs.api.RSCombatInfo2;
-import net.runelite.rs.api.RSCombatInfoListHolder;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNPCComposition;
 
@@ -44,6 +42,26 @@ public abstract class FreezeBarMixin implements RSClient
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	Boolean drawFreezeBar;
+
+	@Override
+	@Inject
+	public boolean getDrawFreezeBar()
+	{
+		if (drawFreezeBar == null)
+			drawFreezeBar = false;
+
+		return drawFreezeBar;
+	}
+
+	@Override
+	@Inject
+	public void setDrawFreezeBar(boolean draw)
+	{
+		drawFreezeBar = draw;
+	}
 
 	@Copy("draw2DExtras")
 	public static final void rs$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
@@ -54,7 +72,7 @@ public abstract class FreezeBarMixin implements RSClient
 	@Replace("draw2DExtras")
 	public static final void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
-		if (actor != null)
+		if (actor != null && client.getDrawFreezeBar())
 		{
 			FreezeInfo freezeInfo = actor.getFreeze();
 
