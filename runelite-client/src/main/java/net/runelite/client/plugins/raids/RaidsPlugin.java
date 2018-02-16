@@ -87,6 +87,7 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		cacheColors();
 		updateInfoBoxState();
 	}
 
