@@ -308,6 +308,8 @@ public enum InstructionType
 	IFNONNULL(0xc7, "ifnonnull", IfNonNull.class),
 	GOTO_W(0xc8, "goto_w", GotoW.class);
 
+	public static final InstructionType[] VALUES = values();
+
 	private final int code;
 	private final String name;
 	private final Class<? extends Instruction> clazz;
@@ -336,7 +338,7 @@ public enum InstructionType
 
 	public static InstructionType findInstructionFromCode(int code)
 	{
-		for (InstructionType t : InstructionType.values())
+		for (InstructionType t : InstructionType.VALUES)
 		{
 			if (t.getCode() == code)
 			{
