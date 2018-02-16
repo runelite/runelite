@@ -123,4 +123,11 @@ public abstract class RSNPCMixin implements RSNPC
 			setSpotAnimFrame(spotAnimFrame);
 		}
 	}
+
+	@Inject
+	@Override
+	public boolean hasComposition()
+	{
+		return this.getComposition() != null;
+	}
 }

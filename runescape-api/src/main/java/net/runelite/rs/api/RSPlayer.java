@@ -61,4 +61,7 @@ public interface RSPlayer extends RSActor, Player
 	@Import("overheadIcon")
 	@Override
 	int getOverheadIcon();
+
+	@Override
+	boolean hasComposition();
 }

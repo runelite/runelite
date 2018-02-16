@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Dreyri <https://github.com/Dreyri>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSCombatInfoList;
+import net.runelite.rs.api.RSNode;
 
-/**
- * Created by bold on 2/2/17.
- */
-public interface RSCombatInfoList
+@Mixin(RSCombatInfoList.class)
+public abstract class RSCombatInfoListMixin implements RSCombatInfoList
 {
-	@Import("node")
-	RSNode getNode();
+	@Override
+	@Inject
+	public boolean isEmpty()
+	{
+		return this.getNode().getNext() == this.getNode();
+	}
 
-	@Import("current")
-	RSNode getCurrent();
+	@Override
+	@Inject
+	public RSNode last()
+	{
+		return this.previousOrLast(null);
+	}
 
-	@Import("current")
-	void setCurrent(RSNode newCurrent);
-
-	boolean isEmpty();
-
-	@Import("previousOrLast")
-	RSNode previousOrLast(RSNode node);
-
-	RSNode last();
-
-	RSNode previous();
+	@Override
+	@Inject
+	public RSNode previous() {
+		RSNode current = this.getCurrent();
+		if (current == this.getNode())
+		{
+			this.setCurrent(null);
+			return null;
+		}
+		else
+		{
+			this.setCurrent(current.getNext());
+			return current;
+		}
+	}
 }

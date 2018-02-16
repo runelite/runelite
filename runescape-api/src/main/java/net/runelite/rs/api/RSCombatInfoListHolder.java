@@ -33,4 +33,7 @@ public interface RSCombatInfoListHolder extends RSNode
 
 	@Import("combatInfo2")
 	RSCombatInfo2 getCombatInfo2();
+
+	@Import("getCombatInfo1")
+	RSCombatInfo1 getCombatInfo1(int cycle);
 }
