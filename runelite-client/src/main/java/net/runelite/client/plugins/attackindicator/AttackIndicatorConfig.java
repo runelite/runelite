@@ -91,10 +91,54 @@ public interface AttackIndicatorConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "warnForStyle1",
+			name = "Warn for style 1",
+			description = "Configures whether ot not users are warned for selecting style 1",
+			position = 7
+	)
+	default boolean warnForStyle1()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "warnForStyle2",
+			name = "Warn for style 2",
+			description = "Configures whether ot not users are warned for selecting style 2",
+			position = 8
+	)
+	default boolean warnForStyle2()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "warnForStyle3",
+			name = "Warn for style 3",
+			description = "Configures whether ot not users are warned for selecting style 3",
+			position = 9
+	)
+	default boolean warnForStyle3()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "warnForStyle4",
+			name = "Warn for style 4",
+			description = "Configures whether ot not users are warned for selecting style 4",
+			position = 10
+	)
+	default boolean warnForStyle4()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "removeWarnedStyles",
 		name = "Remove warned styles",
 		description = "Configures whether or not warned styles are removed from the combat options tab",
-		position = 7
+		position = 11
 	)
 	default boolean removeWarnedStyles()
 	{

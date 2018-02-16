@@ -331,6 +331,28 @@ public class AttackIndicatorPlugin extends Plugin
 		if (style == null)
 			return false;
 
+		switch (styleNumber)
+		{
+			case 0:
+				if (config.warnForStyle1())
+					return true;
+				break;
+			case 1:
+				if (config.warnForStyle2())
+					return true;
+				break;
+			case 2:
+				if (config.warnForStyle3())
+					return true;
+				break;
+			case 3:
+				if (config.warnForStyle4())
+					return true;
+				break;
+			default:
+				break;
+		}
+
 		switch (style)
 		{
 			case ACCURATE:
