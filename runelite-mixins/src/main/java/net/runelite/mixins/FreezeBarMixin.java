@@ -45,7 +45,6 @@ public abstract class FreezeBarMixin implements RSClient
 	@Shadow("clientInstance")
 	private static RSClient client;
 
-
 	@Copy("draw2DExtras")
 	public static final void rs$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
@@ -59,7 +58,7 @@ public abstract class FreezeBarMixin implements RSClient
 		{
 			FreezeInfo freezeInfo = actor.getFreeze();
 
-			if (actor.hasComposition() && freezeInfo != null && (freezeInfo.isFrozen() || freezeInfo.isImmune() || freezeInfo.hasQueued()))
+			if (actor.hasComposition() && freezeInfo != null && (freezeInfo.isFrozen() || freezeInfo.isImmune()))
 			{
 				if (actor instanceof RSNPC)
 				{
@@ -77,48 +76,33 @@ public abstract class FreezeBarMixin implements RSClient
 				}
 
 				int offset = 3;
-				int healthScale;
+				int maxWidth;
 
-				if (!actor.getCombatInfoList().isEmpty())
+
+				int height = actor.getLogicalHeight() + 15;
+				Point canvasPoint = Perspective.worldToCanvas(client, actor.getX(), actor.getY(), height, client.getPlane());
+
+				if (canvasPoint == null)
+					return;
+
+				maxWidth = 32;
+
+				int x;
+				int y;
+
+				x = var2 + canvasPoint.getX() - (maxWidth >> 1);
+				y = var3 + canvasPoint.getY() - offset;
+
+				if (freezeInfo.isFrozen())
 				{
-					int height = actor.getLogicalHeight() + 15;
-					Point canvasPoint = Perspective.worldToCanvas(client, actor.getX(), actor.getY(), height, client.getPlane());
+					int width = freezeInfo.getFrozen() * (maxWidth / 32);
+					client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0x36cfe0);
+				}
+				else if (freezeInfo.isImmune())
+				{
+					int width = freezeInfo.getImmune() * (maxWidth / 6);
 
-					for (RSCombatInfoListHolder cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().last(); cbInfoListHolder != null; cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().previous())
-					{
-						if (canvasPoint == null)
-							break;
-
-						RSCombatInfo1 cbInfo1 = cbInfoListHolder.getCombatInfo1(client.getGameCycle());
-						if (cbInfo1 != null)
-						{
-							RSCombatInfo2 cbInfo2 = cbInfoListHolder.getCombatInfo2();
-
-							healthScale = cbInfo2.getHealthScale();
-
-							int x;
-							int y;
-
-							x = var2 + canvasPoint.getX() - (healthScale >> 1);
-							y = var3 + canvasPoint.getY() - offset;
-
-
-							if (freezeInfo.isFrozen())
-							{
-								if (healthScale < 32)
-									healthScale = 32;
-								int width = freezeInfo.getFrozen() * (healthScale / 32);
-								client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0x36cfe0);
-							}
-							else if (freezeInfo.isImmune())
-							{
-								int width = freezeInfo.getImmune() * (healthScale / 6);
-
-								client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0xe09736);
-							}
-
-						}
-					}
+					client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0xe09736);
 				}
 			}
 		}
