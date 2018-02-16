@@ -210,9 +210,14 @@ public class ConfigPanel extends PluginPanel
 		if (config != null)
 		{
 			final ConfigDescriptor configDescriptor = configManager.getConfigDescriptor(config);
-			editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager));
-			editConfigButton.setEnabled(true);
-			editConfigButton.setToolTipText("Edit plugin configuration");
+			final boolean configEmpty = configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
+
+			if (!configEmpty)
+			{
+				editConfigButton.addActionListener(ae -> openGroupConfigPanel(config, configDescriptor, configManager));
+				editConfigButton.setEnabled(true);
+				editConfigButton.setToolTipText("Edit plugin configuration");
+			}
 		}
 
 		return editConfigButton;
