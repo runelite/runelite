@@ -124,6 +124,8 @@ public interface Client extends GameEngine
 
 	int[] getMapRegions();
 
+	int[][][] getInstanceTemplateChunks();
+
 	int[][] getXteaKeys();
 
 	int[] getSettings();
