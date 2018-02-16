@@ -24,6 +24,7 @@
  */
 package net.runelite.rs.api;
 
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
@@ -468,4 +469,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("varbits")
 	RSNodeCache getVarbitCache();
+
+	@Override
+	List<Integer> getForceHiddenWidgetIds();
 }

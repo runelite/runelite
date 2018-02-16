@@ -269,6 +269,16 @@ public class AttackIndicatorPlugin extends Plugin
 			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_SPELL_TEXT, warnedMagic && hide));
 		}
 
+		client.getForceHiddenWidgetIds().clear();
+
+		for (Pair<WidgetInfo, Boolean> pair : touchedWidgets)
+		{
+			if (pair.getValue())
+			{
+				client.getForceHiddenWidgetIds().add(pair.getKey().getPackedId());
+			}
+		}
+
 	}
 
 	private void updateTouchedWidgets()
