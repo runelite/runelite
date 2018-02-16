@@ -39,11 +39,13 @@ public enum ClanMemberRank
 	GENERAL((byte) 6),
 	OWNER((byte) 7);
 
+	public static final ClanMemberRank[] VALUES = values();
+
 	private static final Map<Byte, ClanMemberRank> BYTE_TO_RANK = new HashMap<>();
 
 	static
 	{
-		for (final ClanMemberRank clanMemberRank : ClanMemberRank.values())
+		for (final ClanMemberRank clanMemberRank : ClanMemberRank.VALUES)
 		{
 			BYTE_TO_RANK.put(clanMemberRank.value, clanMemberRank);
 		}
