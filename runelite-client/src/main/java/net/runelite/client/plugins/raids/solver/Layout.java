@@ -22,56 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.client.plugins.raids.solver;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import lombok.Getter;
 
-@ConfigGroup(
-	keyName = "raids",
-	name = "Raids",
-	description = "Configuration for the raids plugin"
-)
-public interface RaidsConfig extends Config
+public class Layout
 {
-	@ConfigItem(
-		keyName = "raidsTimer",
-		name = "Display elapsed raid time",
-		description = "Display elapsed raid time"
-	)
-	default boolean raidsTimer()
+	@Getter
+	private final ArrayList<Room> rooms = new ArrayList<>();
+
+	public void add(Room room)
 	{
-		return true;
+		rooms.add(room);
 	}
 
-	@ConfigItem(
-		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
-		description = "Display a message with total points, individual points and percentage at the end of a raid"
-	)
-	default boolean pointsMessage()
+	public Room getRoomAt(int position)
 	{
-		return true;
+		for (Room room : rooms)
+		{
+			if (room.getPosition() == position)
+				return room;
+		}
+
+		return null;
 	}
 
-	@ConfigItem(
-		keyName = "scoutOverlay",
-		name = "Show scout overlay",
-		description = "Display an overlay that shows the current raid layout (when entering lobby)"
-	)
-	default boolean scoutOverlay()
+	public String toCode()
 	{
-		return true;
-	}
+		StringBuilder builder = new StringBuilder();
 
-	@ConfigItem(
-		keyName = "scoutOverlayAtBank",
-		name = "Show scout overlay outside lobby",
-		description = "Keep the overlay active while at the raids area"
-	)
-	default boolean scoutOverlayAtBank()
-	{
-		return true;
+		for (Room room : rooms)
+		{
+			builder.append(room.getSymbol());
+		}
+
+		return builder.toString();
 	}
 }

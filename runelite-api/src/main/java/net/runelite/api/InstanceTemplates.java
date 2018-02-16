@@ -30,7 +30,25 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum InstanceTemplates
 {
-	;
+	RAIDS_LOBBY(3264, 5184, 0, 96, 32),
+	RAIDS_START(3264, 5696, 0, 96, 32),
+	RAIDS_END(3264, 5152, 0, 64, 32),
+	RAIDS_SCAVENGERS(3264, 5216, 0, 96, 32),
+	RAIDS_SHAMANS(3264, 5248, 0, 96, 32),
+	RAIDS_VASA(3264, 5280, 0, 96, 32),
+	RAIDS_VANGUARDS(3264, 5312, 0, 96, 32),
+	RAIDS_ICE_DEMON(3264, 5344, 0, 96, 32),
+	RAIDS_THIEVING(3264, 5376, 0, 96, 32),
+	RAIDS_FARMING(3264, 5440, 0, 96, 32),
+	RAIDS_SCAVENGERS2(3264, 5216, 1, 96, 32),
+	RAIDS_MUTTADILES(3264, 5312, 1, 96, 32),
+	RAIDS_MYSTICS(3264, 5248, 1, 96, 32),
+	RAIDS_TEKTON(3264, 5280, 1, 96, 32),
+	RAIDS_TIGHTROPE(3264, 5344, 1, 96, 32),
+	RAIDS_FARMING2(3264, 5440, 1, 96, 32),
+	RAIDS_GUARDIANS(3264, 5248, 2, 96, 32),
+	RAIDS_VESPULA(3264, 5280, 2, 96, 32),
+	RAIDS_CRABS(3264, 5344, 2, 96, 32);
 
 	@Getter
 	private final int baseX;
@@ -47,7 +65,7 @@ public enum InstanceTemplates
 	@Getter
 	private final int height;
 
-	public InstanceTemplates findMatch(int chunkData)
+	public static InstanceTemplates findMatch(int chunkData)
 	{
 		int rotation = chunkData >> 1 & 0x3; //unused, but shows us the rotation of the chunk
 		int y = (chunkData >> 3 & 0x7FF) * 8;

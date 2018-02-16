@@ -22,56 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.client.plugins.raids.solver;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.Setter;
 
-@ConfigGroup(
-	keyName = "raids",
-	name = "Raids",
-	description = "Configuration for the raids plugin"
-)
-public interface RaidsConfig extends Config
+public class Room
 {
-	@ConfigItem(
-		keyName = "raidsTimer",
-		name = "Display elapsed raid time",
-		description = "Display elapsed raid time"
-	)
-	default boolean raidsTimer()
-	{
-		return true;
-	}
+	@Getter
+	private final int position;
 
-	@ConfigItem(
-		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
-		description = "Display a message with total points, individual points and percentage at the end of a raid"
-	)
-	default boolean pointsMessage()
-	{
-		return true;
-	}
+	@Getter
+	private final char symbol;
 
-	@ConfigItem(
-		keyName = "scoutOverlay",
-		name = "Show scout overlay",
-		description = "Display an overlay that shows the current raid layout (when entering lobby)"
-	)
-	default boolean scoutOverlay()
-	{
-		return true;
-	}
+	@Getter
+	@Setter
+	private Room next;
 
-	@ConfigItem(
-		keyName = "scoutOverlayAtBank",
-		name = "Show scout overlay outside lobby",
-		description = "Keep the overlay active while at the raids area"
-	)
-	default boolean scoutOverlayAtBank()
+	@Getter
+	@Setter
+	private Room previous;
+
+	Room(int position, char symbol)
 	{
-		return true;
+		this.position = position;
+		this.symbol = symbol;
 	}
 }
