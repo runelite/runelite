@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import net.runelite.api.ItemID;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.ItemID;
 import static net.runelite.api.NpcID.FISHING_SPOT_1506;
 import static net.runelite.api.NpcID.FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
@@ -47,18 +46,21 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1530;
 import static net.runelite.api.NpcID.FISHING_SPOT_1542;
 import static net.runelite.api.NpcID.FISHING_SPOT_1544;
 import static net.runelite.api.NpcID.FISHING_SPOT_4316;
+import static net.runelite.api.NpcID.FISHING_SPOT_4710;
+import static net.runelite.api.NpcID.FISHING_SPOT_4712;
+import static net.runelite.api.NpcID.FISHING_SPOT_4713;
 import static net.runelite.api.NpcID.FISHING_SPOT_6825;
 import static net.runelite.api.NpcID.FISHING_SPOT_7155;
 import static net.runelite.api.NpcID.FISHING_SPOT_7199;
 import static net.runelite.api.NpcID.FISHING_SPOT_7200;
 import static net.runelite.api.NpcID.FISHING_SPOT_7469;
 import static net.runelite.api.NpcID.FISHING_SPOT_7470;
+import static net.runelite.api.NpcID.FISHING_SPOT_7676;
 import static net.runelite.api.NpcID.FISHING_SPOT_7730;
 import static net.runelite.api.NpcID.FISHING_SPOT_7731;
 import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
 import static net.runelite.api.NpcID.FISHING_SPOT_7734;
-import static net.runelite.api.NpcID.FISHING_SPOT_7676;
 
 public enum FishingSpot
 {
@@ -91,7 +93,14 @@ public enum FishingSpot
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733, FISHING_SPOT_7734
 	),
 	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,
-			FISHING_SPOT_7676);
+		FISHING_SPOT_7676
+	),
+	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
+		FISHING_SPOT_4712, FISHING_SPOT_4713
+	),
+	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI,
+		FISHING_SPOT_4710
+	);
 
 	public static final int FLYING_FISH = FISHING_SPOT_7734;
 	private static final Map<Integer, FishingSpot> fishingSpots = new HashMap<>();
