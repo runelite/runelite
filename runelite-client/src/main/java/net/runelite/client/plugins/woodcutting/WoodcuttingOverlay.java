@@ -101,19 +101,6 @@ class WoodcuttingOverlay extends Overlay
 			panelComponent.setTitleColor(Color.RED);
 		}
 
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Logs cut:",
-			Integer.toString(session.getTotalCut())
-		));
-
-
-		panelComponent.getLines().add(new PanelComponent.Line(
-			"Logs/hr:",
-			session.getRecentCut() > 2
-				? Integer.toString(session.getPerHour())
-				: ""
-		));
-
 		return panelComponent.render(graphics, parent);
 	}
 }
