@@ -165,6 +165,14 @@ public class FishingPlugin extends Plugin
 		{
 			spotIds.addAll(Ints.asList(FishingSpot.INFERNAL_EEL.getIds()));
 		}
+		if (config.showKarambwanji())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWANJI.getIds()));
+		}
+		if (config.showKarambwan())
+		{
+			spotIds.addAll(Ints.asList(FishingSpot.KARAMBWAN.getIds()));
+		}
 	}
 
 	@Subscribe
