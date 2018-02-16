@@ -48,7 +48,8 @@ public abstract class RSCombatInfoListMixin implements RSCombatInfoList
 
 	@Override
 	@Inject
-	public RSNode previous() {
+	public RSNode previous()
+	{
 		RSNode current = this.getCurrent();
 		if (current == this.getNode())
 		{
