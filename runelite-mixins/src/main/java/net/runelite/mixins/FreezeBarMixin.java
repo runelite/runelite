@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.FreezeInfo;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.mixins.Copy;
@@ -44,6 +45,7 @@ public abstract class FreezeBarMixin implements RSClient
 	@Shadow("clientInstance")
 	private static RSClient client;
 
+
 	@Copy("draw2DExtras")
 	public static final void rs$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
@@ -53,48 +55,79 @@ public abstract class FreezeBarMixin implements RSClient
 	@Replace("draw2DExtras")
 	public static final void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
 	{
-		if (actor != null && actor.hasComposition())
+		if (actor != null)
 		{
-			if (actor instanceof RSNPC)
+			FreezeInfo freezeInfo = actor.getFreeze();
+
+			if (actor.hasComposition() && freezeInfo != null && (freezeInfo.isFrozen() || freezeInfo.isImmune() || freezeInfo.hasQueued()))
 			{
-				RSNPCComposition actorComposition = ((RSNPC) actor).getComposition();
-				if (actorComposition.getConfigs() != null)
+				if (actor instanceof RSNPC)
 				{
-					actorComposition = actorComposition.transform();
-				}
+					RSNPCComposition actorComposition = ((RSNPC) actor).getComposition();
 
-				if (actorComposition == null)
-				{
-					return;
-				}
-			}
+					if (actorComposition == null)
+						System.out.println("actorComposition null");
 
-			int offset = 3;
-			int healthScale;
-
-			if (!actor.getCombatInfoList().isEmpty())
-			{
-				Point canvasPoint = Perspective.worldToCanvas(client, actor.getX(), actor.getY(), actor.getLogicalHeight() + 15, client.getPlane());
-				//class3.characterToScreen(actor, actor.logicalHeight + 15);
-
-				for (RSCombatInfoListHolder cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().last(); cbInfoListHolder != null; cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().previous())
-				{
-					RSCombatInfo1 cbInfo1 = cbInfoListHolder.getCombatInfo1(client.getGameCycle());
-					if (cbInfo1 != null)
+					if (actorComposition.getConfigs() != null)
 					{
-						RSCombatInfo2 cbInfo2 = cbInfoListHolder.getCombatInfo2();
+						actorComposition = actorComposition.transform();
+					}
 
-						healthScale = cbInfo2.getHealthScale();
+					if (actorComposition == null)
+					{
+						return;
+					}
+				}
 
-						int x;
-						int y;
+				int offset = 3;
+				int healthScale;
 
-						x = var2 + canvasPoint.getX() - (healthScale >> 1);
-						y = var3 + canvasPoint.getY() - offset;
+				if (actor.getCombatInfoList() == null)
+					System.out.println("getCombatInfoList null");
 
-						if (canvasPoint.getX() > -1)
+				if (!actor.getCombatInfoList().isEmpty())
+				{
+					int height = actor.getLogicalHeight() + 15;
+					Point canvasPoint = Perspective.worldToCanvas(client, actor.getX(), actor.getY(), height, client.getPlane());
+
+					for (RSCombatInfoListHolder cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().last(); cbInfoListHolder != null; cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().previous())
+					{
+						RSCombatInfo1 cbInfo1 = cbInfoListHolder.getCombatInfo1(client.getGameCycle());
+						if (cbInfo1 != null)
 						{
-							client.Rasterizer2D_fillRectangle(x, y + 5, healthScale, 4, 255);
+							RSCombatInfo2 cbInfo2 = cbInfoListHolder.getCombatInfo2();
+
+							if (cbInfo2 == null)
+								System.out.println("cbInfo2 null");
+
+							healthScale = cbInfo2.getHealthScale();
+
+							int x;
+							int y;
+
+							x = var2 + canvasPoint.getX() - (healthScale >> 1);
+							y = var3 + canvasPoint.getY() - offset;
+
+							if (canvasPoint.getX() > -1)
+							{
+								if (freezeInfo == null)
+									System.out.println("freezeInfo null");
+								if (freezeInfo.isFrozen())
+								{
+									int width = (int) ((float) freezeInfo.getFrozen() * ((float) healthScale / 32.0f));
+									System.out.println(freezeInfo.getFrozen() + " " + width + " " + healthScale);
+									int immunityWidth = healthScale - width;
+									int immunityStart = x + width;
+
+									client.Rasterizer2D_fillRectangle(x, y - 3, width, 2, 0x36cfe0);
+									client.Rasterizer2D_fillRectangle(immunityStart, y - 3, immunityWidth, 2, 0xe09736);
+								} else if (freezeInfo.isImmune())
+								{
+									int width = freezeInfo.getImmune() * (healthScale / 6);
+
+									client.Rasterizer2D_fillRectangle(x, y - 3, width, 2, 0xe09736);
+								}
+							}
 						}
 					}
 				}
