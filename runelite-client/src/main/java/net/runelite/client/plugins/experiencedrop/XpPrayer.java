@@ -50,6 +50,8 @@ enum XpPrayer
 	XP_RIGOUR(RIGOUR, RANGE),
 	XP_AUGURY(AUGURY, MAGIC);
 
+	public static final XpPrayer[] VALUES = values();
+
 	@Getter
 	private final Prayer prayer;
 	@Getter

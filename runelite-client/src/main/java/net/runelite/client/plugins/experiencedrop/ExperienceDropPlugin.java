@@ -105,7 +105,7 @@ public class ExperienceDropPlugin extends Plugin
 
 	private PrayerType getActivePrayerType()
 	{
-		for (XpPrayer prayer : XpPrayer.values())
+		for (XpPrayer prayer : XpPrayer.VALUES)
 		{
 			if (client.isPrayerActive(prayer.getPrayer()))
 			{
