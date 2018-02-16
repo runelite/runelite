@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.teamcapes;
 
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -37,7 +36,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -52,9 +50,6 @@ public class TeamCapesPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private TeamCapesConfig config;
-
-	@Inject
 	private TeamCapesOverlay teamCapesOverlay;
 
 	private Map<Integer, Integer> teams = new HashMap<>();
@@ -65,16 +60,16 @@ public class TeamCapesPlugin extends Plugin
 		binder.bind(TeamCapesOverlay.class);
 	}
 
-	@Provides
-	TeamCapesConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(TeamCapesConfig.class);
-	}
-
 	@Override
 	public Overlay getOverlay()
 	{
 		return teamCapesOverlay;
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		teams.clear();
 	}
 
 	@Schedule(
@@ -83,7 +78,7 @@ public class TeamCapesPlugin extends Plugin
 	)
 	public void update()
 	{
-		if (!config.enabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
