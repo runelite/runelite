@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Boosts plugin"
+	name = "Boosts"
 )
 public class BoostsPlugin extends Plugin
 {
@@ -88,10 +88,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		if (config.enabled())
-		{
-			updateShownSkills(config.enableSkill());
-		}
+		updateShownSkills(config.enableSkill());
 	}
 
 	@Override
@@ -103,12 +100,6 @@ public class BoostsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!config.enabled())
-		{
-			infoBoxManager.removeIf(t -> t instanceof BoostIndicator);
-			return;
-		}
-
 		updateShownSkills(config.enableSkill());
 
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator

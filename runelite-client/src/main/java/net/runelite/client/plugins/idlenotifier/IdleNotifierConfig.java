@@ -36,17 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface IdleNotifierConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Toggles idle notifications",
-		position = 1
-	)
-	default boolean isEnabled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "tray",
 		name = "Send Tray Notification",
 		description = "Toggles tray notifications",

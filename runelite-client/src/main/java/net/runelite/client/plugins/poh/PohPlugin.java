@@ -30,7 +30,8 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -43,6 +44,7 @@ import static net.runelite.api.ObjectID.INCENSE_BURNER_13210;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13211;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13212;
 import static net.runelite.api.ObjectID.INCENSE_BURNER_13213;
+import net.runelite.api.Tile;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -53,7 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Poh plugin"
+	name = "Poh"
 )
 public class PohPlugin extends Plugin
 {
@@ -61,7 +63,7 @@ public class PohPlugin extends Plugin
 	static final Set<Integer> BURNER_LIT = Sets.newHashSet(INCENSE_BURNER_13209, INCENSE_BURNER_13211, INCENSE_BURNER_13213);
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<GameObject> pohObjects = new HashSet<>();
+	private final Map<GameObject, Tile> pohObjects = new HashMap<>();
 
 	@Inject
 	private PohOverlay overlay;
@@ -93,6 +95,12 @@ public class PohPlugin extends Plugin
 		overlay.updateConfig();
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		pohObjects.clear();
+	}
+
 	@Subscribe
 	public void updateConfig(ConfigChanged event)
 	{
@@ -105,7 +113,7 @@ public class PohPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 		if (BURNER_LIT.contains(gameObject.getId()) || BURNER_UNLIT.contains(gameObject.getId()) || PohIcons.getIcon(gameObject.getId()) != null)
 		{
-			pohObjects.add(gameObject);
+			pohObjects.put(gameObject, event.getTile());
 		}
 	}
 

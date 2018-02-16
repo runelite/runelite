@@ -24,6 +24,26 @@
  */
 package net.runelite.client.plugins.instancemap;
 
+import static net.runelite.client.plugins.instancemap.PixelMaps.ALL;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_DOT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_TO_TOP_RIGHT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_DOT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.LEFT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.RIGHT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_DOT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_TO_BOTTOM_RIGHT;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_CORNER;
+import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_DOT;
+import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_LEFT;
+import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_RIGHT;
+import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
+import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
+import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -45,26 +65,6 @@ import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
-import static net.runelite.client.plugins.instancemap.PixelMaps.ALL;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_CORNER;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_DOT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_LEFT_TO_TOP_RIGHT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_CORNER;
-import static net.runelite.client.plugins.instancemap.PixelMaps.BOTTOM_RIGHT_DOT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.LEFT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.RIGHT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_CORNER;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_DOT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_LEFT_TO_BOTTOM_RIGHT;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_CORNER;
-import static net.runelite.client.plugins.instancemap.PixelMaps.TOP_RIGHT_DOT;
-import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_LEFT;
-import static net.runelite.client.plugins.instancemap.WallOffset.BOTTOM_RIGHT;
-import static net.runelite.client.plugins.instancemap.WallOffset.NONE;
-import static net.runelite.client.plugins.instancemap.WallOffset.TOP_LEFT;
-import static net.runelite.client.plugins.instancemap.WallOffset.TOP_RIGHT;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -101,8 +101,6 @@ class InstanceMapOverlay extends Overlay
 	private int viewedPlane = 0;
 
 	private final Client client;
-	private final InstanceMapConfig config;
-	private final InstanceMapPlugin plugin;
 
 	/**
 	 * Saved image of the region, no reason to draw the whole thing every
@@ -112,13 +110,11 @@ class InstanceMapOverlay extends Overlay
 	private boolean showMap = false;
 
 	@Inject
-	InstanceMapOverlay(@Nullable Client client, InstanceMapConfig config, InstanceMapPlugin plugin)
+	InstanceMapOverlay(@Nullable Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		this.client = client;
-		this.config = config;
-		this.plugin = plugin;
 	}
 
 	public boolean isMapShown()
@@ -173,7 +169,7 @@ class InstanceMapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled() || !showMap)
+		if (!showMap)
 		{
 			return null;
 		}

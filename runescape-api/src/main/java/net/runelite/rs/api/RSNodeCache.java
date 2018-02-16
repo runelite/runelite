@@ -22,27 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.agilityplugin;
+package net.runelite.rs.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.mapping.Import;
 
-@ConfigGroup(
-	keyName = "agilityplugin",
-	name = "Agility plugin",
-	description = "Configuration for the agility plugin"
-)
-public interface AgilityPluginConfiguration extends Config
+public interface RSNodeCache
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable overlay",
-		description = "Configures whether the overlay is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
+	@Import("get")
+	RSCacheableNode get(long id);
 }

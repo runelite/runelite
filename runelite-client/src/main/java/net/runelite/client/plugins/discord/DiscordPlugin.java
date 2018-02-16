@@ -42,7 +42,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Discord plugin"
+	name = "Discord"
 )
 public class DiscordPlugin extends Plugin
 {
@@ -65,14 +65,22 @@ public class DiscordPlugin extends Plugin
 		return configManager.getConfig(DiscordConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		updateGameStatus(client.getGameState(), true);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		discordService.clearPresence();
+		discordState.reset();
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		updateGameStatus(event.getGameState(), false);
 	}
 
@@ -83,11 +91,6 @@ public class DiscordPlugin extends Plugin
 		final Integer previous = skillExp.put(event.getSkill(), exp);
 
 		if (previous == null || previous >= exp)
-		{
-			return;
-		}
-
-		if (!config.enabled())
 		{
 			return;
 		}
@@ -106,11 +109,6 @@ public class DiscordPlugin extends Plugin
 	)
 	public void checkForValidStatus()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		if (discordState.checkForTimeout(config.actionTimeout()))
 		{
 			updateGameStatus(client.getGameState(), true);
@@ -123,11 +121,6 @@ public class DiscordPlugin extends Plugin
 	)
 	public void flushDiscordStatus()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		discordState.flushEvent(discordService);
 	}
 

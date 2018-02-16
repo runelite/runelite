@@ -44,28 +44,21 @@ public class ClueScrollOverlay extends Overlay
 	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
 
 	private final Client client;
-	private final ClueScrollConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	ClueScroll clue;
 	Instant clueTimeout;
 
 	@Inject
-	public ClueScrollOverlay(@Nullable Client client, ClueScrollConfig config)
+	public ClueScrollOverlay(@Nullable Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (clue == null)
 		{
 			return null;

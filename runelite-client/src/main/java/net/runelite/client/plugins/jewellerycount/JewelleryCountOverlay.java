@@ -47,25 +47,18 @@ import net.runelite.client.util.QueryRunner;
 class JewelleryCountOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
-	private final JewelleryCountConfig config;
 
 	@Inject
-	JewelleryCountOverlay(QueryRunner queryRunner, JewelleryCountConfig config)
+	JewelleryCountOverlay(QueryRunner queryRunner)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		for (WidgetItem item : getJewelleryWidgetItems())

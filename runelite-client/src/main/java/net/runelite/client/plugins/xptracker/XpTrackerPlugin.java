@@ -51,7 +51,7 @@ import net.runelite.http.api.worlds.WorldType;
 import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
-	name = "XP tracker plugin"
+	name = "XP tracker"
 )
 @Slf4j
 public class XpTrackerPlugin extends Plugin

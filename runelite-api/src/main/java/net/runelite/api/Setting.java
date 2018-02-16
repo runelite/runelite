@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,44 +24,17 @@
  */
 package net.runelite.api;
 
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public class VarbitsTest
+@AllArgsConstructor
+@Getter
+public enum Setting
 {
-	@Test
-	public void testGet()
-	{
-		//              28   24   20   16   12    8    4    0
-		int value = 0b1101_1110_1010_1101_1011_1110_1110_1111;
+	ATTACK_STYLE(43),
 
-		// Bit indexes are inclusive
-		// Small pouch is bits 0-2
-		// Medium pouch is bits 3-8
-		// Large pouch is bits 9-17
-		// Giant pouch is bits 18-29
-		Varbits small = Varbits.POUCH_SMALL;
-		Varbits med = Varbits.POUCH_MEDIUM;
-		Varbits large = Varbits.POUCH_LARGE;
-		Varbits giant = Varbits.POUCH_GIANT;
+	SPECIAL_ATTACK_PERCENT(300),
+	SPECIAL_ATTACK_ENABLED(301);
 
-		Assert.assertEquals(7, small.get(value));
-		Assert.assertEquals(29, med.get(value));
-		Assert.assertEquals(223, large.get(value));
-		Assert.assertEquals(1963, giant.get(value));
-	}
-
-	@Test
-	public void testSet()
-	{
-		//              28   24   20   16   12    8    4    0
-		int value = 0b1101_1110_1010_1101_1011_1110_1110_1111;
-		int mask = 0b0000_0000_0000_0011_1111_1110_0000_0000; // mask for large pouch
-
-		Varbits large = Varbits.POUCH_LARGE;
-
-		int newValue = large.set(value, 42);
-		int expect = (value & ~mask) | (42 << large.getLeastSignificantBit());
-		Assert.assertEquals(expect, newValue);
-	}
+	private final int id;
 }

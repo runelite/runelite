@@ -85,13 +85,6 @@ public class XpGlobesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point point)
 	{
-
-		// won't draw if not logged in or not enabled
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		//check the width of the client if we can draw properly
 		int clientWidth = client.isResized() ? client.getCanvas().getWidth() : client.getViewportWidth();
 		if (clientWidth <= 0)

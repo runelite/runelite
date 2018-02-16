@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not XP globes are displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "enableTooltips",
 		name = "Enable Tooltips",
 		description = "Configures whether or not to show tooltips"

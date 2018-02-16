@@ -60,7 +60,6 @@ class OpponentInfoOverlay extends Overlay
 	private static final Duration WAIT = Duration.ofSeconds(3);
 
 	private final Client client;
-	private final OpponentConfig config;
 	private Integer lastMaxHealth;
 	private DecimalFormat df = new DecimalFormat("0.0");
 	private float lastRatio = 0;
@@ -69,12 +68,11 @@ class OpponentInfoOverlay extends Overlay
 	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	@Inject
-	OpponentInfoOverlay(@Nullable Client client, OpponentConfig config)
+	OpponentInfoOverlay(@Nullable Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 		this.client = client;
-		this.config = config;
 	}
 
 	private Actor getOpponent()
@@ -91,11 +89,6 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Actor opponent = getOpponent();
 
 		if (opponent != null && opponent.getHealth() > 0)

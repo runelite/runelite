@@ -59,7 +59,7 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!plugin.cannonPlaced || plugin.myCannon == null || !config.enabled())
+		if (!plugin.cannonPlaced || plugin.myCannon == null)
 		{
 			return null;
 		}

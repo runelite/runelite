@@ -50,7 +50,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Cannon plugin"
+	name = "Cannon"
 )
 public class CannonPlugin extends Plugin
 {
@@ -91,6 +91,14 @@ public class CannonPlugin extends Plugin
 	public Overlay getOverlay()
 	{
 		return cannonOverlay;
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		cannonPlaced = false;
+		myCannon = null;
+		cballsLeft = 0;
 	}
 
 	@Subscribe

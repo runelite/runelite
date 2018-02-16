@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -35,12 +34,11 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Combat level plugin"
+	name = "Combat level"
 )
 public class CombatLevelPlugin extends Plugin
 {
@@ -49,13 +47,20 @@ public class CombatLevelPlugin extends Plugin
 	@Inject
 	Client client;
 
-	@Inject
-	CombatLevelConfig config;
-
-	@Provides
-	CombatLevelConfig provideConfig(ConfigManager configManager)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		return configManager.getConfig(CombatLevelConfig.class);
+		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+
+		if (combatLevelWidget != null)
+		{
+			String widgetText = combatLevelWidget.getText();
+
+			if (widgetText.contains("."))
+			{
+				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
+			}
+		}
 	}
 
 	@Subscribe
@@ -72,9 +77,7 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		if (config.enabled())
-		{
-			double combatLevelPrecise = Experience.getCombatLevelPrecise(
+		double combatLevelPrecise = Experience.getCombatLevelPrecise(
 				client.getRealSkillLevel(Skill.ATTACK),
 				client.getRealSkillLevel(Skill.STRENGTH),
 				client.getRealSkillLevel(Skill.DEFENCE),
@@ -82,16 +85,8 @@ public class CombatLevelPlugin extends Plugin
 				client.getRealSkillLevel(Skill.MAGIC),
 				client.getRealSkillLevel(Skill.RANGED),
 				client.getRealSkillLevel(Skill.PRAYER)
-			);
-			combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
-		}
-		else
-		{
-			String widgetText = combatLevelWidget.getText();
-			if (widgetText.contains("."))
-			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
-			}
-		}
+		);
+
+		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
 	}
 }

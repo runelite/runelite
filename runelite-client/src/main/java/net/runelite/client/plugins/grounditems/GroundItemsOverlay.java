@@ -99,11 +99,6 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		// gets the hidden/highlighted items from the text box in the config
 		String configItems = config.getHiddenItems().toLowerCase();
 		List<String> hiddenItems = Arrays.asList(configItems.split(DELIMITER_REGEX));

@@ -24,6 +24,11 @@
  */
 package net.runelite.client.plugins.attackindicator;
 
+import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackindicator.AttackStyle.OTHER;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.eventbus.Subscribe;
@@ -35,6 +40,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Setting;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
@@ -42,16 +48,13 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackindicator.AttackStyle.*;
 
 @PluginDescriptor(
-	name = "Attack indicator plugin"
+	name = "Attack indicator"
 )
 @Slf4j
 public class AttackIndicatorPlugin extends Plugin
@@ -104,7 +107,7 @@ public class AttackIndicatorPlugin extends Plugin
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 			updateAttackStyle(
 				client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE),
-				client.getSetting(Varbits.ATTACK_STYLE),
+				client.getSetting(Setting.ATTACK_STYLE),
 				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
 		}
@@ -160,9 +163,9 @@ public class AttackIndicatorPlugin extends Plugin
 	@Subscribe
 	public void onAttackStyleChange(VarbitChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getSetting(Varbits.ATTACK_STYLE))
+		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getSetting(Setting.ATTACK_STYLE))
 		{
-			attackStyleVarbit = client.getSetting(Varbits.ATTACK_STYLE);
+			attackStyleVarbit = client.getSetting(Setting.ATTACK_STYLE);
 			updateAttackStyle(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
 				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(false);
@@ -175,7 +178,7 @@ public class AttackIndicatorPlugin extends Plugin
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
 			equippedWeaponTypeVarbit = client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getSetting(Varbits.ATTACK_STYLE),
+			updateAttackStyle(equippedWeaponTypeVarbit, client.getSetting(Setting.ATTACK_STYLE),
 				client.getSetting(Varbits.DEFENSIVE_CASTING_MODE));
 			updateWarning(true);
 		}
@@ -187,7 +190,7 @@ public class AttackIndicatorPlugin extends Plugin
 		if (castingModeVarbit == -1 || castingModeVarbit != client.getSetting(Varbits.DEFENSIVE_CASTING_MODE))
 		{
 			castingModeVarbit = client.getSetting(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Varbits.ATTACK_STYLE),
+			updateAttackStyle(client.getSetting(Varbits.EQUIPPED_WEAPON_TYPE), client.getSetting(Setting.ATTACK_STYLE),
 				castingModeVarbit);
 			updateWarning(false);
 		}
@@ -201,8 +204,6 @@ public class AttackIndicatorPlugin extends Plugin
 			boolean enabled = event.getNewValue().equals("true");
 			switch (event.getKey())
 			{
-				case "enabled":
-					break;
 				case "warnForDefensive":
 					updateWarnedSkills(enabled, Skill.DEFENCE);
 					break;
@@ -221,8 +222,6 @@ public class AttackIndicatorPlugin extends Plugin
 				case "removeWarnedStyles":
 					hideWarnedStyles(enabled);
 					break;
-				default:
-					log.warn("Unreachable default case for config keys");
 			}
 		}
 	}

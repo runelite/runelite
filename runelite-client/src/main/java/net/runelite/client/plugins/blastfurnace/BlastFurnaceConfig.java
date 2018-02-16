@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcave;
+package net.runelite.client.plugins.blastfurnace;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-	keyName = "fightcave",
-	name = "Fight Cave",
-	description = "Configuration for the fight cave plugin"
+	keyName = "blastfurnace",
+	name = "Blast Furnace",
+	description = "Configuration for the Blast furnace plugin"
 )
-public interface FightCaveConfig extends Config
+public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not fight cave overlay is displayed"
+		keyName = "showConveyorBelt",
+		name = "Show Conveyor belt clickbox",
+		description = "Configures whether or not the clickbox for the conveyor belt is displayed"
 	)
-	default boolean enabled()
+	default boolean showConveyorBelt()
 	{
 		return true;
 	}

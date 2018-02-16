@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether or not the motherlode plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showRocks",
 		name = "Show Pay-dirt mining spots",
 		description = "Configures whether or not the pay-dirt minings spots is displayed"

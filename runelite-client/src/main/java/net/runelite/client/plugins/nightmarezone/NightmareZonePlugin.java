@@ -42,7 +42,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Nightmare Zone Plugin"
+	name = "Nightmare Zone"
 )
 public class NightmareZonePlugin extends Plugin
 {
@@ -88,7 +88,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.enabled() || !isInNightmareZone())
+		if (!isInNightmareZone())
 		{
 			return;
 		}
@@ -101,8 +101,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.enabled()
-				|| event.getType() != ChatMessageType.SERVER
+		if (event.getType() != ChatMessageType.SERVER
 				|| !isInNightmareZone()
 				|| !config.overloadNotification())
 		{

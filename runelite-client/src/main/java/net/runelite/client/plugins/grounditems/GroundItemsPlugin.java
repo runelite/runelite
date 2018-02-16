@@ -33,7 +33,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Ground items plugin"
+	name = "Ground items"
 )
 public class GroundItemsPlugin extends Plugin
 {

@@ -151,7 +151,7 @@ public class RuneLite
 		// Initialize Discord service
 		discordService.init();
 
-		// Load default configuration
+		// Load user configuration
 		configManager.load();
 
 		// Register event listeners
@@ -159,6 +159,7 @@ public class RuneLite
 		eventBus.register(menuManager);
 		eventBus.register(chatMessageManager);
 		eventBus.register(gui);
+		eventBus.register(pluginManager);
 
 		// Setup the notifier
 		notifier = new Notifier(properties.getTitle(), gui.getTrayIcon());
@@ -172,7 +173,7 @@ public class RuneLite
 
 		// Plugins have provided their config, so set default config
 		// to main settings
-		configManager.loadDefault();
+		pluginManager.loadDefaultPluginConfiguration();
 
 		// Start plugins
 		pluginManager.startCorePlugins();

@@ -36,17 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
-			keyName = "enabled",
-			name = "Enable plugin",
-			description = "Configures whether or not the plugin is enabled",
-			position = 1
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 			keyName = "tray",
 			name = "Send Tray Notification",
 			description = "Toggles tray notifications",

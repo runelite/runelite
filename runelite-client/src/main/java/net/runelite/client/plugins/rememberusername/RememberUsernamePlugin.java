@@ -35,7 +35,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Remember username plugin"
+	name = "Remember username"
 )
 public class RememberUsernamePlugin extends Plugin
 {
@@ -54,11 +54,6 @@ public class RememberUsernamePlugin extends Plugin
 	@Subscribe
 	public void onGameStateChange(GameStateChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			if (config.username() == null || config.username().isEmpty())

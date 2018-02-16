@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.rs.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.mapping.Import;
 
-@ConfigGroup(
-	keyName = "clanchat",
-	name = "Clan Chat",
-	description = "Configuration for clan chat"
-)
-public interface ClanChatConfig extends Config
+public interface RSVarbit extends RSCacheableNode
 {
-	@ConfigItem(
-		keyName = "clanRank",
-		name = "Show Clan Ranks Icon",
-		description = "Configures whether the clan ranks icons are shown next to name in chat"
-	)
-	default boolean clanRank()
-	{
-		return true;
-	}
+	@Import("configId")
+	int getIndex();
+
+	@Import("leastSignificantBit")
+	int getLeastSignificantBit();
+
+	@Import("mostSignificantBit")
+	int getMostSignificantBit();
 }

@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether the woodcutting plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
 		description = "Configures the time until statistic is reset"

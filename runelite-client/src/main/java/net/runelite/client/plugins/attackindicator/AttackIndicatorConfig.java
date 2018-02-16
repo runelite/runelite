@@ -36,17 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface AttackIndicatorConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Show attack style",
-		description = "Configures whether or not the attack indicator overlay is displayed",
-		position = 1
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "warnForDefensive",
 		name = "Warn for defensive",
 		description = "Configures whether or not users are warned for selecting a defensive combat option",

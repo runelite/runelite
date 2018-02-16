@@ -44,7 +44,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Team capes plugin"
+	name = "Team capes"
 )
 public class TeamCapesPlugin extends Plugin
 {
