@@ -38,6 +38,8 @@ public enum Rotation
 	YRPB(YELLOW, RED, PURPLE, BLUE),
 	YPRB(YELLOW, PURPLE, RED, BLUE);
 
+	public static final Rotation[] VALUES = values();
+
 	private final Portal[] portals;
 
 	private Rotation(Portal first, Portal second, Portal third, Portal fourth)
