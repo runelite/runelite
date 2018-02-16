@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -90,6 +92,9 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private Raid raid;
 
+	@Getter
+	private ArrayList<String> blacklist = new ArrayList<>();
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -116,6 +121,8 @@ public class RaidsPlugin extends Plugin
 			inRaidChambers = client.getSetting(Varbits.IN_RAID) == 1;
 			updateInfoBoxState();
 		}
+
+		updateBlacklist();
 	}
 
 	@Override
@@ -133,6 +140,9 @@ public class RaidsPlugin extends Plugin
 
 		if (event.getKey().equals("raidsTimer"))
 			updateInfoBoxState();
+
+		if (event.getKey().equals("blacklistedRooms"))
+			updateBlacklist();
 	}
 
 	@Subscribe
@@ -243,6 +253,12 @@ public class RaidsPlugin extends Plugin
 			if (!inRaidChambers)
 				timer = null;
 		}
+	}
+
+	private void updateBlacklist()
+	{
+		blacklist.clear();
+		blacklist.addAll(Arrays.asList(config.blacklistedRooms().toLowerCase().split(", ")));
 	}
 
 	private void cacheColors()

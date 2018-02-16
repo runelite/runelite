@@ -74,4 +74,14 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "blacklistedRooms",
+		name = "Blacklisted rooms",
+		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
+	)
+	default String blacklistedRooms()
+	{
+		return "";
+	}
 }
