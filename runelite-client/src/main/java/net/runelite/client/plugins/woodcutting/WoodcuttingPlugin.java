@@ -25,14 +25,12 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
-
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -52,12 +50,6 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingConfig config;
 
 	private final WoodcuttingSession session = new WoodcuttingSession();
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(WoodcuttingOverlay.class);
-	}
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)

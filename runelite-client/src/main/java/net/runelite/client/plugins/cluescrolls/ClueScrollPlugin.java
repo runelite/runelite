@@ -50,12 +50,6 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollOverlay clueScrollOverlay;
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ClueScrollOverlay.class);
-	}
-
-	@Override
 	public ClueScrollOverlay getOverlay()
 	{
 		return clueScrollOverlay;

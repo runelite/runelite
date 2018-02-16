@@ -84,13 +84,6 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(TrapOverlay.class);
-		binder.bind(CatchrateOverlay.class);
-	}
-
 	@Provides
 	HunterConfig provideConfig(ConfigManager configManager)
 	{

@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.specorb;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -45,12 +44,6 @@ public class SpecOrbPlugin extends Plugin
 
 	@Inject
 	private SpecOrbOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(SpecOrbOverlay.class);
-	}
 
 	@Override
 	public Overlay getOverlay()

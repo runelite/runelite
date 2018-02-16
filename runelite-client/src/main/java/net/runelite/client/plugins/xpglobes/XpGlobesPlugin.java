@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.xpglobes;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -35,9 +34,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -61,12 +60,6 @@ public class XpGlobesPlugin extends Plugin
 
 	@Inject
 	private XpGlobesOverlay overlay;
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(XpGlobesOverlay.class);
-	}
 
 	@Provides
 	XpGlobesConfig getConfig(ConfigManager configManager)

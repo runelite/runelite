@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.roguesden;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
@@ -79,12 +78,6 @@ public class RoguesDenPlugin extends Plugin
 		obstaclesHull.clear();
 		obstaclesTile.clear();
 		hasGem = false;
-	}
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(RoguesDenOverlay.class);
 	}
 
 	@Schedule(period = 600, unit = ChronoUnit.MILLIS)

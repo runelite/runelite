@@ -67,12 +67,6 @@ public class BoostsPlugin extends Plugin
 	@Getter
 	private Skill[] shownSkills;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(BoostsOverlay.class);
-	}
-
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
 	{

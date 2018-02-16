@@ -75,12 +75,6 @@ public class CannonPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(CannonOverlay.class);
-	}
-
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
 	{

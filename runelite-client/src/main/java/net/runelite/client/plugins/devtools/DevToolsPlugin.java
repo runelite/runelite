@@ -65,13 +65,6 @@ public class DevToolsPlugin extends Plugin
 	private NavigationButton navButton;
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(DevToolsOverlay.class);
-		binder.bind(DevToolsPanel.class);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);

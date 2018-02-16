@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.teamcapes;
 
-import com.google.inject.Binder;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -53,12 +52,6 @@ public class TeamCapesPlugin extends Plugin
 	private TeamCapesOverlay teamCapesOverlay;
 
 	private Map<Integer, Integer> teams = new HashMap<>();
-
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(TeamCapesOverlay.class);
-	}
 
 	@Override
 	public Overlay getOverlay()

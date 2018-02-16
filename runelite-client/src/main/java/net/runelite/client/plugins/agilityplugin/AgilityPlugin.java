@@ -68,12 +68,6 @@ public class AgilityPlugin extends Plugin
 		obstacles.clear();
 	}
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(AgilityOverlay.class);
-	}
-
 	// This code, brought to you, in part, by the letters C and V
 	// ... and the words "search" and "replace"
 	@Subscribe

@@ -55,12 +55,6 @@ public class FightCavePlugin extends Plugin
 	private JadAttack attack;
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(FightCaveOverlay.class);
-	}
-
-	@Override
 	public Overlay getOverlay()
 	{
 		return overlay;

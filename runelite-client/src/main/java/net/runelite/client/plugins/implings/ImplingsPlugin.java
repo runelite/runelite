@@ -46,12 +46,6 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private ImplingsOverlay overlay;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ImplingsOverlay.class);
-	}
-
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
 	{
