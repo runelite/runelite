@@ -86,6 +86,9 @@ public abstract class FreezeBarMixin implements RSClient
 
 					for (RSCombatInfoListHolder cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().last(); cbInfoListHolder != null; cbInfoListHolder = (RSCombatInfoListHolder) actor.getCombatInfoList().previous())
 					{
+						if (canvasPoint == null)
+							break;
+
 						RSCombatInfo1 cbInfo1 = cbInfoListHolder.getCombatInfo1(client.getGameCycle());
 						if (cbInfo1 != null)
 						{
@@ -99,21 +102,21 @@ public abstract class FreezeBarMixin implements RSClient
 							x = var2 + canvasPoint.getX() - (healthScale >> 1);
 							y = var3 + canvasPoint.getY() - offset;
 
-							if (canvasPoint.getX() > -1)
-							{
-								if (freezeInfo.isFrozen())
-								{
-									if (healthScale < 32)
-										healthScale = 32;
-									int width = freezeInfo.getFrozen() * (healthScale / 32);
-									client.Rasterizer2D_fillRectangle(x, y - 3, width, 2, 0x36cfe0);
-								} else if (freezeInfo.isImmune())
-								{
-									int width = freezeInfo.getImmune() * (healthScale / 6);
 
-									client.Rasterizer2D_fillRectangle(x, y - 3, width, 2, 0xe09736);
-								}
+							if (freezeInfo.isFrozen())
+							{
+								if (healthScale < 32)
+									healthScale = 32;
+								int width = freezeInfo.getFrozen() * (healthScale / 32);
+								client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0x36cfe0);
 							}
+							else if (freezeInfo.isImmune())
+							{
+								int width = freezeInfo.getImmune() * (healthScale / 6);
+
+								client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0xe09736);
+							}
+
 						}
 					}
 				}
