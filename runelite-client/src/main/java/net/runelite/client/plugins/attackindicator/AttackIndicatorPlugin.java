@@ -191,16 +191,6 @@ public class AttackIndicatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCastingModeChange(VarbitChanged event)
-	{
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getSetting(Varbits.DEFENSIVE_CASTING_MODE))
-		{
-			castingModeVarbit = client.getSetting(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle();
-		}
-	}
-
-	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN && client.getGameState() != GameState.LOADING)
@@ -264,6 +254,21 @@ public class AttackIndicatorPlugin extends Plugin
 			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_STYLE_FOUR, warned && hide));
 		}
 
+		if (type.getAttackStyles().length > 4) //4th style is always magic
+		{
+			boolean warnedMagic = isWarnedStyle(AttackStyle.CASTING, 4);
+			boolean warnedDefense = isWarnedStyle(AttackStyle.DEFENSIVE_CASTING, 4);
+
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, warnedDefense && hide));
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, warnedDefense && hide));
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_DEFENSIVE_SPELL_SHIELD, warnedDefense && hide));
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_DEFENSIVE_SPELL_TEXT, warnedDefense && hide));
+
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_SPELL_BOX, warnedMagic && hide));
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_SPELL_ICON, warnedMagic && hide));
+			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_SPELL_TEXT, warnedMagic && hide));
+		}
+
 	}
 
 	private void updateTouchedWidgets()
@@ -308,102 +313,6 @@ public class AttackIndicatorPlugin extends Plugin
 		else
 		{
 			warnedSkillSelected = false;
-		}
-	}
-
-	private void updateWarnedSkills(boolean enabled, Skill skill)
-	{
-		if (enabled)
-		{
-			warnedSkills.remove(skill);
-			warnedSkills.add(skill);
-		}
-		else
-		{
-			warnedSkills.remove(skill);
-		}
-		updateWarning(false);
-	}
-
-	private void updateWarning(boolean weaponSwitch)
-	{
-		warnedSkillSelected = false;
-		if (attackStyle != null)
-		{
-			for (Skill skill : attackStyle.getSkills())
-			{
-				if (warnedSkills.contains(skill))
-				{
-					if (weaponSwitch)
-					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
-					}
-					warnedSkillSelected = true;
-					break;
-				}
-			}
-		}
-		hideWarnedStyles(config.removeWarnedStyles());
-	}
-
-	private void hideWarnedStyles(boolean enabled)
-	{
-		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
-		if (equippedWeaponType == null)
-		{
-			return;
-		}
-
-		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
-
-		// Iterate over attack styles
-		for (int i = 0; i < attackStyles.length; i++)
-		{
-			if (attackStyles[i] == null)
-			{
-				continue;
-			}
-
-			boolean warnedSkill = false;
-			for (Skill skill : attackStyles[i].getSkills())
-			{
-				if (warnedSkills.contains(skill))
-				{
-					warnedSkill = true;
-					break;
-				}
-			}
-
-			// Magic staves defensive casting mode
-			if (equippedWeaponType.getAttackStyles().length > 4)
-			{
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_SHIELD, (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_TEXT, (warnedSkills.contains(Skill.DEFENCE) || warnedSkill));
-			}
-
-			// Remove appropriate combat option
-			switch (i)
-			{
-				case 0:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_ONE, warnedSkill);
-					break;
-				case 1:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_TWO, warnedSkill);
-					break;
-				case 2:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_THREE, warnedSkill);
-					break;
-				case 3:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_FOUR, warnedSkill);
-					break;
-				case 4:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_SPELLS, warnedSkill);
-					break;
-				default:
-					log.warn("Unreachable default case for equipped weapon type attack styles");
-			}
 		}
 	}
 
