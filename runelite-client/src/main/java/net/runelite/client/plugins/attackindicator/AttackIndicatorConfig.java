@@ -144,4 +144,15 @@ public interface AttackIndicatorConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "removeRetaliate",
+			name = "Remove Auto Retaliate",
+			description = "Configures whether or not auto retaliate is removed",
+			position = 12
+	)
+	default boolean removeAutoRetaliate()
+	{
+		return false;
+	}
 }
