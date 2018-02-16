@@ -35,6 +35,8 @@ public enum GameState
 	CONNECTION_LOST(40),
 	HOPPING(45);
 
+	public static final GameState[] VALUES = values();
+
 	private final int state;
 
 	GameState(int state)
@@ -44,7 +46,7 @@ public enum GameState
 
 	public static GameState of(int state)
 	{
-		for (GameState gs : GameState.values())
+		for (GameState gs : GameState.VALUES)
 		{
 			if (gs.state == state)
 			{
