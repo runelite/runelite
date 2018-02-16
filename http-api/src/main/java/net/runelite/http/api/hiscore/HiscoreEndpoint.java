@@ -37,6 +37,8 @@ public enum HiscoreEndpoint
 	DEADMAN("Deadman", "http://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
 	SEASONAL_DEADMAN("Seasonal Deadman", "http://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws");
 
+	public static final HiscoreEndpoint[] VALUES = values();
+
 	private final String name;
 	private final HttpUrl hiscoreURL;
 
