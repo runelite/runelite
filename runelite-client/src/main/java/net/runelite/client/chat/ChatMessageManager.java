@@ -24,6 +24,8 @@
  */
 package net.runelite.client.chat;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -100,9 +102,9 @@ public class ChatMessageManager
 		return this;
 	}
 
-	public void queue(ChatMessageType type, String message)
+	public void queue(QueuedMessage message)
 	{
-		queuedMessages.add(new QueuedMessage(type, message));
+		queuedMessages.add(message);
 	}
 
 	public void process()
@@ -110,56 +112,60 @@ public class ChatMessageManager
 		for (Iterator<QueuedMessage> it = queuedMessages.iterator(); it.hasNext();)
 		{
 			QueuedMessage message = it.next();
-			add(message.getType(), message.getMessage());
+			add(message.getType(), message.getSender(), message.getMessage(), message.getClan());
 			it.remove();
 		}
 	}
 
-	public void add(final ChatMessageType type, final String mesage)
+	private void add(final ChatMessageType type, final String name, final String mesage, final String sender)
 	{
 		final Client client = clientProvider.get();
-		client.sendGameMessage(type, mesage); // this updates chat cycle
+		client.addChatMessage(type, MoreObjects.firstNonNull(name, ""), mesage, sender); // this updates chat cycle
 		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(type.getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
 		final MessageNode line = lines[0];
-		update(line.getType(), mesage, line);
+		update(line);
 	}
 
-	public void update(final ChatMessageType type, final String message, final MessageNode target)
+	public void update(final MessageNode target)
 	{
 		final Client client = clientProvider.get();
-		final Set<ChatColor> chatColors = colorCache.get(type);
+		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
+		final Set<ChatColor> chatColors = colorCache.get(target.getType());
 
-		// If we do not have any colors cached or recoloring is disabled, simply set message
-		if (!config.chatCommandsRecolorEnabled() || chatColors == null || chatColors.isEmpty())
+		if (Strings.isNullOrEmpty(target.getRuneLiteFormatMessage()))
 		{
-			target.setRuneLiteFormatMessage(message);
-			target.setValue(message);
 			return;
 		}
 
+		// If we do not have any colors cached or recoloring is disabled, simply set clean message
+		if (!config.chatCommandsRecolorEnabled() || chatColors == null || chatColors.isEmpty())
+		{
+			target.setValue(target.getRuneLiteFormatMessage());
+			return;
+		}
+
+		target.setValue(recolorMessage(transparent, target.getRuneLiteFormatMessage(), target.getType()));
+	}
+
+	private String recolorMessage(boolean transparent, String message, ChatMessageType messageType)
+	{
+		final Set<ChatColor> chatColors = colorCache.get(messageType);
 		final AtomicReference<String> resultMessage = new AtomicReference<>(message);
 
 		// Replace custom formatting with actual colors
 		chatColors.stream()
-			.filter(chatColor -> chatColor.isTransparent() ==
-				(client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0))
+			.filter(chatColor -> chatColor.isTransparent() == transparent)
 			.forEach(chatColor ->
 				resultMessage.getAndUpdate(oldMessage -> oldMessage.replaceAll(
 					"<col" + chatColor.getType().name() + ">",
 					"<col=" + Integer.toHexString(chatColor.getColor().getRGB() & 0xFFFFFF) + ">")));
 
-		target.setRuneLiteFormatMessage(message);
-		target.setValue(resultMessage.get());
+		return resultMessage.get();
 	}
 
 	public void refreshAll()
 	{
-		if (!config.chatCommandsRecolorEnabled())
-		{
-			return;
-		}
-
 		final Client client = clientProvider.get();
 
 		executor.submit(() ->
@@ -168,15 +174,14 @@ public class ChatMessageManager
 				.filter(Objects::nonNull)
 				.flatMap(clb -> Arrays.stream(clb.getLines()))
 				.filter(Objects::nonNull)
-				.filter(mn -> mn.getRuneLiteFormatMessage() != null)
 				.collect(Collectors.toSet());
 
-			chatLines.forEach(chatLine -> update(chatLine.getType(), chatLine.getRuneLiteFormatMessage(), chatLine));
-
-			if (!chatLines.isEmpty())
+			for (MessageNode line : chatLines)
 			{
-				client.refreshChat();
+				update(line);
 			}
+
+			client.refreshChat();
 		});
 	}
 }
