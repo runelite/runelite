@@ -33,6 +33,8 @@ import java.time.Instant;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -84,6 +86,14 @@ class FishingOverlay extends Overlay
 			panelComponent.setTitle("You are NOT fishing");
 			panelComponent.setTitleColor(Color.RED);
 		}
+
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"", XpTrackerPlugin.getSkillXpInfo(Skill.FISHING).getActions()
+		));
+
+		panelComponent.getLines().add(new PanelComponent.Line(
+				"", XpTrackerPlugin.getSkillXpInfo(Skill.FISHING).getActionsHr()
+		));
 
 		return panelComponent.render(graphics, parent);
 	}
