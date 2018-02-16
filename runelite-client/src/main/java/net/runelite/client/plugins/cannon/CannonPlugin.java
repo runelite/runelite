@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.cannon;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

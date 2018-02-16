@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.fightcave;
 
-import com.google.inject.Binder;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import net.runelite.api.Client;

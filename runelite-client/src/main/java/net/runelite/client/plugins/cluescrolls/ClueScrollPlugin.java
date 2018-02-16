@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import com.google.inject.Binder;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;

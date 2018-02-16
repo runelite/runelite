@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.hunter;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

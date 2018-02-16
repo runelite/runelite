@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.instancemap;
 
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;

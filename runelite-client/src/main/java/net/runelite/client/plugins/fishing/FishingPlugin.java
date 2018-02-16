@@ -26,7 +26,6 @@ package net.runelite.client.plugins.fishing;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
