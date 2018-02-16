@@ -104,9 +104,6 @@ public class RaidsOverlay extends Overlay
 						break;
 
 					default:
-						/*panelComponent.getLines().add(new PanelComponent.Line(
-								room.getType().getName(), ""
-						));*/
 						break;
 				}
 			}
@@ -115,10 +112,5 @@ public class RaidsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	public boolean isScoutOverlayShown()
-	{
-		return scoutOverlayShown;
 	}
 }

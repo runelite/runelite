@@ -143,20 +143,6 @@ public class RaidRoom
 		this.type = type;
 	}
 
-	public RaidRoom(Tile base, Type type, Boss boss)
-	{
-		this.base = base;
-		this.type = type;
-		this.boss = boss;
-	}
-
-	public RaidRoom(Tile base, Type type, Puzzle puzzle)
-	{
-		this.base = base;
-		this.type = type;
-		this.puzzle = puzzle;
-	}
-
 	@Override
 	public String toString()
 	{
