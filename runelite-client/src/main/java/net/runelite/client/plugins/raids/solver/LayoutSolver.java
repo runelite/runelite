@@ -196,7 +196,7 @@ public class LayoutSolver
 
 				for (int i = 0; i < directions.length(); i++)
 				{
-					char symbol = (i == 0 ? '#': symbols.charAt(i - 1));
+					char symbol = (i == 0 ? '#' : symbols.charAt(i - 1));
 
 					room = new Room(position, symbol);
 

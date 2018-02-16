@@ -46,7 +46,6 @@ public class Raid
 
 		for (int i = 0; i < rooms.length; i++)
 		{
-
 			if (layout.getRoomAt(i) == null)
 				continue;
 
