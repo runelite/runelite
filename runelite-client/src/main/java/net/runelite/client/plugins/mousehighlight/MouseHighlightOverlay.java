@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mousehighlight;
 
+import com.google.common.base.Strings;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -69,7 +70,7 @@ class MouseHighlightOverlay extends Overlay
 		String target = menuEntry.getTarget();
 		String option = menuEntry.getOption();
 
-		if (target.isEmpty())
+		if (Strings.isNullOrEmpty(option))
 		{
 			return null;
 		}
@@ -89,7 +90,7 @@ class MouseHighlightOverlay extends Overlay
 				}
 		}
 
-		tooltipManager.add(new Tooltip(option + " " + target));
+		tooltipManager.add(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
 	}
 }
