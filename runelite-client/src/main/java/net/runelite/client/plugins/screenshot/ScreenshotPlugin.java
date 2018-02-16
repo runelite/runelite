@@ -190,32 +190,26 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("Treasure"))
-		{
-			String chatMessage = event.getMessage().replaceAll("<col=3300ff>", "");
+		String chatMessage = event.getMessage();
 
-			if (chatMessage.startsWith("You have completed"))
+		if (chatMessage.contains("You have completed") && chatMessage.contains("Treasure"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			if (m.find())
 			{
-				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
-				if (m.find())
-				{
-					clueNumber = Integer.valueOf(m.group());
-					clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
-				}
+				clueNumber = Integer.valueOf(m.group());
+				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
+				return;
 			}
 		}
 
-		if (event.getMessage().contains("Barrows"))
+		if (chatMessage.startsWith("Your Barrows chest count is"))
 		{
-			String chatMessage = event.getMessage().replaceAll("<col=ff0000>", "");
-
-			if (chatMessage.startsWith("Your Barrows chest count is"))
+			Matcher m = NUMBER_PATTERN.matcher(chatMessage.replaceAll("<[^>]*>", ""));
+			if (m.find())
 			{
-				Matcher m = NUMBER_PATTERN.matcher(chatMessage);
-				if (m.find())
-				{
-					barrowsNumber = Integer.valueOf(m.group());
-				}
+				barrowsNumber = Integer.valueOf(m.group());
+				return;
 			}
 		}
 	}
