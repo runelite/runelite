@@ -651,7 +651,8 @@ public final class Client extends GameEngine implements class277 {
    @Export("isDynamicRegion")
    static boolean isDynamicRegion;
    @ObfuscatedName("fu")
-   static int[][][] field897;
+   @Export("instanceTemplateChunks")
+   static int[][][] instanceTemplateChunks;
    @ObfuscatedName("fg")
    static final int[] field898;
    @ObfuscatedName("fj")
@@ -1191,7 +1192,7 @@ public final class Client extends GameEngine implements class277 {
       field894 = 0;
       collisionMaps = new CollisionData[4];
       isDynamicRegion = false;
-      field897 = new int[4][13][13];
+      instanceTemplateChunks = new int[4][13][13];
       field898 = new int[]{0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
       field1091 = 0;
       field901 = 2301979;
@@ -1781,7 +1782,7 @@ public final class Client extends GameEngine implements class277 {
                         if(var41 >= 4) {
                            for(var41 = 0; var41 < 13; ++var41) {
                               for(var40 = 0; var40 < 13; ++var40) {
-                                 var5 = field897[0][var41][var40];
+                                 var5 = instanceTemplateChunks[0][var41][var40];
                                  if(var5 == -1) {
                                     class43.method592(var41 * 8, var40 * 8, 8, 8);
                                  }
@@ -1800,7 +1801,7 @@ public final class Client extends GameEngine implements class277 {
 
                               for(var40 = 0; var40 < 13; ++var40) {
                                  for(var5 = 0; var5 < 13; ++var5) {
-                                    var6 = field897[var41][var40][var5];
+                                    var6 = instanceTemplateChunks[var41][var40][var5];
                                     if(var6 != -1) {
                                        var7 = var6 >> 24 & 3;
                                        var57 = var6 >> 1 & 3;
@@ -1827,7 +1828,7 @@ public final class Client extends GameEngine implements class277 {
                         for(var40 = 0; var40 < 13; ++var40) {
                            for(var5 = 0; var5 < 13; ++var5) {
                               boolean var56 = false;
-                              var7 = field897[var41][var40][var5];
+                              var7 = instanceTemplateChunks[var41][var40][var5];
                               if(var7 != -1) {
                                  var57 = var7 >> 24 & 3;
                                  var46 = var7 >> 1 & 3;

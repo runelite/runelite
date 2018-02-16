@@ -276,6 +276,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int[] getMapRegions();
 
+	@Import("instanceTemplateChunks")
+	@Override
+	int[][][] getInstanceTemplateChunks();
+
 	@Import("xteaKeys")
 	@Override
 	int[][] getXteaKeys();
