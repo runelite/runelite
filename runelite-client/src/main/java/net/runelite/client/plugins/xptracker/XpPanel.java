@@ -137,6 +137,10 @@ class XpPanel extends PluginPanel
 		});
 	}
 
+	public Map<Skill, XpInfoBox> getInfoBoxes(){
+		return infoBoxes;
+	}
+
 	static String formatLine(double number, String description)
 	{
 
