@@ -145,4 +145,23 @@ public interface FishingConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "showKarambwanji",
+		name = "Show Karambwanji",
+		description = "Configures whether karambwanji is displayed"
+	)
+	default boolean showKarambwanji()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showKarambwan",
+		name = "Show Karambwan",
+		description = "Configures whether karambwan is displayed"
+	)
+	default boolean showKarambwan()
+	{
+		return true;
+	}
 }
