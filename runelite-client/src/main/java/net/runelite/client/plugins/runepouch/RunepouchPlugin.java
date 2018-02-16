@@ -33,7 +33,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Runepouch plugin"
+	name = "Runepouch"
 )
 public class RunepouchPlugin extends Plugin
 {

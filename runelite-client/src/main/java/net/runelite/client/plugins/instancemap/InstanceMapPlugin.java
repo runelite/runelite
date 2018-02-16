@@ -24,17 +24,14 @@
  */
 package net.runelite.client.plugins.instancemap;
 
+import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -51,9 +48,6 @@ public class InstanceMapPlugin extends Plugin
 	private final WidgetMenuOption descendOption = new WidgetMenuOption("Descend", "Instance Map", WidgetInfo.WORLD_MAP);
 
 	@Inject
-	private InstanceMapConfig config;
-
-	@Inject
 	private InstanceMapOverlay overlay;
 
 	@Inject
@@ -63,12 +57,6 @@ public class InstanceMapPlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(InstanceMapOverlay.class);
-	}
-
-	@Provides
-	InstanceMapConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(InstanceMapConfig.class);
 	}
 
 	private void addCustomOptions()
@@ -88,29 +76,13 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (config.enabled())
-		{
-			addCustomOptions();
-		}
+		addCustomOptions();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		removeCustomOptions();
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (config.enabled())
-		{
-			addCustomOptions();
-		}
-		else
-		{
-			removeCustomOptions();
-		}
 	}
 
 	@Subscribe
@@ -133,7 +105,7 @@ public class InstanceMapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
-		if (!config.enabled() || event.getWidget() != WORLD_MAP)
+		if (event.getWidget() != WORLD_MAP)
 		{
 			return;
 		}

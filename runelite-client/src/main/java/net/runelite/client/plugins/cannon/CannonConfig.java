@@ -30,21 +30,11 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "cannon",
-	name = "Cannon Plugin",
+	name = "Cannon",
 	description = "Configuration for the Cannon plugin"
 )
 public interface CannonConfig extends Config
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the Cannon plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		keyName = "showEmptyCannonNotification",
 		name = "Empty cannon notification",

@@ -69,7 +69,7 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled() || !config.showRocks())
+		if (!config.showRocks())
 		{
 			return null;
 		}

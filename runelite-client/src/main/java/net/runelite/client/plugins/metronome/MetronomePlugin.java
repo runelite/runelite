@@ -36,7 +36,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Metronome plugin"
+	name = "Metronome",
+	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin
 {
@@ -58,7 +59,7 @@ public class MetronomePlugin extends Plugin
 	@Subscribe
 	void onTick(GameTick tick)
 	{
-		if (!config.enabled() || config.tickCount() == 0)
+		if (config.tickCount() == 0)
 		{
 			return;
 		}

@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface TimersConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable",
-		description = "Configures whether the timer plugin is displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showStamina",
 		name = "Stamina timer",
 		description = "Configures whether stamina timer is displayed"

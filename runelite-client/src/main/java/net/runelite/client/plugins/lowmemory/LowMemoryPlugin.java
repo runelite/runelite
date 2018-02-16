@@ -25,37 +25,26 @@
 package net.runelite.client.plugins.lowmemory;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.SessionClose;
-import net.runelite.api.events.SessionOpen;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Low memory plugin")
+@PluginDescriptor(
+	name = "Low memory",
+	enabledByDefault = false
+)
 public class LowMemoryPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
-	@Inject
-	private LowMemoryConfig config;
-
-	@Provides
-	LowMemoryConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(LowMemoryConfig.class);
-	}
-
 	@Override
 	protected void startUp() throws Exception
 	{
-		client.changeMemoryMode(config.enabled());
+		client.changeMemoryMode(true);
 	}
 
 	@Override
@@ -65,32 +54,11 @@ public class LowMemoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("lowmemory"))
-		{
-			client.changeMemoryMode(config.enabled());
-		}
-	}
-
-	@Subscribe
-	private void onSessionOpen(SessionOpen event)
-	{
-		client.changeMemoryMode(config.enabled());
-	}
-
-	@Subscribe
-	private void onSessionClose(SessionClose event)
-	{
-		client.changeMemoryMode(config.enabled());
-	}
-
-	@Subscribe
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			client.changeMemoryMode(config.enabled());
+			client.changeMemoryMode(true);
 		}
 	}
 }

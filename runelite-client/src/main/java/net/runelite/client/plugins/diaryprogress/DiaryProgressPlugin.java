@@ -26,18 +26,17 @@ package net.runelite.client.plugins.diaryprogress;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Diary Progress plugin"
+	name = "Diary Progress",
+	enabledByDefault = false
 )
 public class DiaryProgressPlugin extends Plugin
 {
@@ -47,13 +46,21 @@ public class DiaryProgressPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	@Inject
-	private DiaryProgressConfig config;
-
-	@Provides
-	DiaryProgressConfig provideConfig(ConfigManager configManager)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		return configManager.getConfig(DiaryProgressConfig.class);
+		Widget diaryWidget = client.getWidget(WidgetInfo.DIARY_LIST);
+
+		if (diaryWidget == null)
+		{
+			return;
+		}
+
+		for (DiaryEntry entry : DiaryEntry.values())
+		{
+			Widget child = diaryWidget.getChild(entry.getIndex());
+			child.setText(entry.getName());
+		}
 	}
 
 	@Subscribe
@@ -71,28 +78,20 @@ public class DiaryProgressPlugin extends Plugin
 			Widget child = diaryWidget.getChild(entry.getIndex());
 			StringBuilder progress = new StringBuilder();
 
-			if (config.enabled())
+			for (Varbits varbits : entry.getVarbits())
 			{
-				for (Varbits varbits : entry.getVarbits())
+				int value = client.getSetting(varbits);
+				if ((entry != DiaryEntry.KARAMJA && value == 1) || value == 2)
 				{
-					int value = client.getSetting(varbits);
-					if ((entry != DiaryEntry.KARAMJA && value == 1) || value == 2)
-					{
-						progress.append(STAGE_FINISHED_STRING);
-					}
-					else
-					{
-						progress.append(STAGE_UNFINISHED_STRING);
-					}
+					progress.append(STAGE_FINISHED_STRING);
 				}
-
-				progress.append("</col> ").append(entry.getName());
-			}
-			else
-			{
-				progress.append(entry.getName());
+				else
+				{
+					progress.append(STAGE_UNFINISHED_STRING);
+				}
 			}
 
+			progress.append("</col> ").append(entry.getName());
 			child.setText(progress.toString());
 		}
 	}

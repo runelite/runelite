@@ -37,26 +37,19 @@ public class AttackIndicatorOverlay extends Overlay
 {
 	private static final int COMPONENT_WIDTH = 80;
 
-	private final AttackIndicatorConfig config;
 	private final AttackIndicatorPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin, AttackIndicatorConfig config)
+	public AttackIndicatorOverlay(AttackIndicatorPlugin plugin)
 	{
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		final String attackStyleString = plugin.getAttackStyle().getName();
 
 		panelComponent.setTitleColor(plugin.isWarnedSkillSelected() ? Color.RED : Color.WHITE);

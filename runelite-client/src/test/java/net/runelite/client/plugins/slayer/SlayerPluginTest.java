@@ -24,21 +24,20 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import static net.runelite.api.ChatMessageType.SERVER;
+import static org.junit.Assert.assertEquals;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
-import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -78,7 +77,6 @@ public class SlayerPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(slayerConfig.enabled()).thenReturn(true);
 	}
 
 	@Test

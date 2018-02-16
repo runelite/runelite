@@ -37,17 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface ExamineConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
-		keyName = "itemPrice",
-		name = "Show item price on examine",
-		description = "Configures whether the item price is shown when examining item"
-	)
-	default boolean itemPrice()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 2,
 		keyName = "hexColorExamine",
 		name = "Examine messages",

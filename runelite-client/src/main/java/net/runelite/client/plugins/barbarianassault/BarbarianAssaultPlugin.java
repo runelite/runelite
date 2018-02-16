@@ -52,7 +52,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Barbarian Assault Plugin"
+	name = "Barbarian Assault"
 )
 public class BarbarianAssaultPlugin extends Plugin
 {

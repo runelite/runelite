@@ -81,10 +81,7 @@ public class TrapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (config.enabled())
-		{
-			drawTraps(graphics);
-		}
+		drawTraps(graphics);
 		return null;
 	}
 

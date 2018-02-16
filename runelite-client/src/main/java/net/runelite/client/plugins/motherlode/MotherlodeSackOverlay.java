@@ -54,11 +54,6 @@ class MotherlodeSackOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
 		panelComponent.getLines().clear();

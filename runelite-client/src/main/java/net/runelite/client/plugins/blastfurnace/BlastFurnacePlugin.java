@@ -59,6 +59,12 @@ public class BlastFurnacePlugin extends Plugin
 	@Inject
 	private ConveyorBeltOverlay conveyorBeltOverlay;
 
+	@Override
+	protected void shutDown()
+	{
+		conveyorBelt = null;
+	}
+
 	@Provides
 	BlastFurnaceConfig provideConfig(ConfigManager configManager)
 	{

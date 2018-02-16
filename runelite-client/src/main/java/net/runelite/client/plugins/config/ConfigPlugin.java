@@ -25,19 +25,23 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.eventbus.Subscribe;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
 @PluginDescriptor(
-	name = "Configuration plugin",
-	loadWhenOutdated = true
+	name = "Configuration",
+	loadWhenOutdated = true,
+	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
 {
@@ -47,13 +51,22 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private PluginManager pluginManager;
+
+	@Inject
+	private ScheduledExecutorService executorService;
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
+
 	private ConfigPanel configPanel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(configManager);
+		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
 
 		navButton = new NavigationButton(
 			"Configuration",

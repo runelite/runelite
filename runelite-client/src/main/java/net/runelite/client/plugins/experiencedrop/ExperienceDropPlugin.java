@@ -38,7 +38,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Experience drop plugin"
+	name = "Experience drop"
 )
 public class ExperienceDropPlugin extends Plugin
 {
@@ -67,7 +67,7 @@ public class ExperienceDropPlugin extends Plugin
 		}
 
 		PrayerType prayer = getActivePrayerType();
-		if (!config.enabled() || widget.isHidden())
+		if (widget.isHidden())
 		{
 			return;
 		}

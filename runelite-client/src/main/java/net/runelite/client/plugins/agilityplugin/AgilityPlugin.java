@@ -26,7 +26,6 @@ package net.runelite.client.plugins.agilityplugin;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -47,12 +46,11 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Agility plugin"
+	name = "Agility"
 )
 @Slf4j
 public class AgilityPlugin extends Plugin
@@ -64,10 +62,10 @@ public class AgilityPlugin extends Plugin
 	@Getter
 	private AgilityOverlay overlay;
 
-	@Provides
-	AgilityPluginConfiguration getConfig(ConfigManager configManager)
+	@Override
+	protected void shutDown() throws Exception
 	{
-		return configManager.getConfig(AgilityPluginConfiguration.class);
+		obstacles.clear();
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
@@ -48,17 +47,16 @@ import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clan chat plugin"
+	name = "Clan chat"
 )
 @Slf4j
 public class ClanChatPlugin extends Plugin
@@ -72,47 +70,48 @@ public class ClanChatPlugin extends Plugin
 	};
 
 
-	private LoadingCache<String, ClanMemberRank> clanRanksCache;
+	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
+		.maximumSize(100)
+		.expireAfterAccess(1, TimeUnit.MINUTES)
+		.build(new CacheLoader<String, ClanMemberRank>()
+		{
+			@Override
+			public ClanMemberRank load(String key) throws Exception
+			{
+				final ClanMember[] clanMembersArr = client.getClanMembers();
+
+				if (clanMembersArr == null || clanMembersArr.length == 0)
+				{
+					return ClanMemberRank.UNRANKED;
+				}
+
+				return Arrays.stream(clanMembersArr)
+					.filter(Objects::nonNull)
+					.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
+					.map(ClanMember::getRank)
+					.findAny()
+					.orElse(ClanMemberRank.UNRANKED);
+			}
+		});
+
 	private int modIconsLength;
 
 	@Inject
 	private Client client;
 
-	@Inject
-	private ClanChatConfig config;
-
-	@Provides
-	ClanChatConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ClanChatConfig.class);
-	}
-
 	@Override
 	protected void startUp() throws Exception
 	{
-		clanRanksCache = CacheBuilder.newBuilder()
-			.maximumSize(100)
-			.expireAfterAccess(1, TimeUnit.MINUTES)
-			.build(new CacheLoader<String, ClanMemberRank>()
-			{
-				@Override
-				public ClanMemberRank load(String key) throws Exception
-				{
-					final ClanMember[] clanMembersArr = client.getClanMembers();
+		if (modIconsLength == 0 && client.getGameState().compareTo(GameState.LOGIN_SCREEN) >= 0)
+		{
+			loadClanChatIcons();
+		}
+	}
 
-					if (clanMembersArr == null || clanMembersArr.length == 0)
-					{
-						return ClanMemberRank.UNRANKED;
-					}
-
-					return Arrays.stream(clanMembersArr)
-						.filter(Objects::nonNull)
-						.filter(clanMember -> sanitize(clanMember.getUsername()).equals(sanitize(key)))
-						.map(ClanMember::getRank)
-						.findAny()
-						.orElse(ClanMemberRank.UNRANKED);
-				}
-			});
+	@Override
+	protected void shutDown()
+	{
+		clanRanksCache.invalidateAll();
 	}
 
 	@Subscribe
@@ -152,7 +151,7 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		if (config.clanRank() && setMessage.getType() == ChatMessageType.CLANCHAT)
+		if (setMessage.getType() == ChatMessageType.CLANCHAT)
 		{
 			insertClanRankIcon(setMessage);
 		}

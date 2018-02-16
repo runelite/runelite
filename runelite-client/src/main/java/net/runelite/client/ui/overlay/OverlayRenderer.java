@@ -32,9 +32,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,11 +45,11 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.api.events.ResizeableChanged;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
@@ -75,7 +76,7 @@ public class OverlayRenderer
 	@Inject
 	TooltipOverlay tooltipOverlay;
 
-	private final List<Overlay> overlays = new ArrayList<>();
+	private final List<Overlay> overlays = new CopyOnWriteArrayList<>();
 	private BufferedImage surface;
 	private Graphics2D surfaceGraphics;
 
@@ -107,16 +108,7 @@ public class OverlayRenderer
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		if (event.isLoaded())
-		{
-			overlays.addAll(event.getPlugin().getOverlays());
-		}
-		else
-		{
-			overlays.removeAll(event.getPlugin().getOverlays());
-		}
-
-		sortOverlays(overlays);
+		refreshPlugins();
 	}
 
 	private void refreshPlugins()
@@ -126,8 +118,10 @@ public class OverlayRenderer
 			.concat(
 				pluginManager.getPlugins()
 					.stream()
+					.filter(plugin -> pluginManager.isPluginEnabled(plugin))
 					.flatMap(plugin -> plugin.getOverlays().stream()),
 				Stream.of(infoBoxOverlay, tooltipOverlay))
+			.filter(Objects::nonNull)
 			.collect(Collectors.toList()));
 		sortOverlays(overlays);
 	}

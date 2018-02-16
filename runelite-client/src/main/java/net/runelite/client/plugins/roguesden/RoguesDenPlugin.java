@@ -26,7 +26,6 @@ package net.runelite.client.plugins.roguesden;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
@@ -48,13 +47,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Rogues' Den plugin"
+	name = "Rogues' Den"
 )
 @Slf4j
 public class RoguesDenPlugin extends Plugin
@@ -75,13 +73,12 @@ public class RoguesDenPlugin extends Plugin
 	@Getter
 	private RoguesDenOverlay overlay;
 
-	@Inject
-	private RoguesDenConfig config;
-
-	@Provides
-	RoguesDenConfig getConfig(ConfigManager configManager)
+	@Override
+	protected void shutDown()
 	{
-		return configManager.getConfig(RoguesDenConfig.class);
+		obstaclesHull.clear();
+		obstaclesTile.clear();
+		hasGem = false;
 	}
 
 	@Override
