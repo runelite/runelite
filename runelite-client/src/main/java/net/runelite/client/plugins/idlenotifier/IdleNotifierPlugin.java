@@ -110,7 +110,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-	name = "Idle notifier plugin"
+	name = "Idle notifier"
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -152,7 +152,7 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -276,7 +276,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getTimeout());
 
-		if (!config.isEnabled() || client.getGameState() != GameState.LOGGED_IN || local == null)
+		if (client.getGameState() != GameState.LOGGED_IN || local == null)
 		{
 			return;
 		}
@@ -409,6 +409,11 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean check6hrLogout()
 	{
+		if (sixHourWarningTime == null)
+		{
+			return false;
+		}
+
 		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
 		{
 			if (notify6HourLogout)

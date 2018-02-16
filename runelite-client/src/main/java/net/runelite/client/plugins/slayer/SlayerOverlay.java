@@ -93,11 +93,6 @@ class SlayerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (!config.showItemOverlay())
 		{
 			return null;

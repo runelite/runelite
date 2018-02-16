@@ -50,7 +50,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "Runecraft plugin"
+	name = "Runecraft"
 )
 public class RunecraftPlugin extends Plugin
 {
@@ -90,6 +90,12 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		abyssOverlay.updateConfig();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		abyssObjects.clear();
 	}
 
 	@Subscribe

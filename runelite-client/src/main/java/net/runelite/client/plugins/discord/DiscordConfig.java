@@ -36,16 +36,6 @@ import net.runelite.client.config.ConfigItem;
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not Discord plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "actionTimeout",
 		name = "Action timeout (minutes)",
 		description = "Configures after how long of not updating status will be reset (in minutes)"

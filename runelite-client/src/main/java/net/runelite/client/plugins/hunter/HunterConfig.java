@@ -31,22 +31,11 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "hunterplugin",
-	name = "Hunter plugin",
+	name = "Hunter",
 	description = "Configuration for the hunter plugin"
 )
 public interface HunterConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not the hunter plugin is enabled"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		position = 1,
 		keyName = "hexColorOpenTrap",

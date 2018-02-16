@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.Overlay;
  * @author robin
  */
 @PluginDescriptor(
-	name = "Implings plugin"
+	name = "Implings"
 )
 public class ImplingsPlugin extends Plugin
 {

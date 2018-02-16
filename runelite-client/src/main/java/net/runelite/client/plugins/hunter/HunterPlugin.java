@@ -45,12 +45,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.queries.GameObjectQuery;
-import net.runelite.api.queries.PlayerQuery;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.queries.GameObjectQuery;
+import net.runelite.api.queries.PlayerQuery;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -59,7 +59,7 @@ import net.runelite.client.util.QueryRunner;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter plugin"
+	name = "Hunter"
 )
 public class HunterPlugin extends Plugin
 {
@@ -68,9 +68,6 @@ public class HunterPlugin extends Plugin
 
 	@Inject
 	private QueryRunner queryRunner;
-
-	@Inject
-	private HunterConfig config;
 
 	@Inject
 	private TrapOverlay trapOverlay;
@@ -106,14 +103,18 @@ public class HunterPlugin extends Plugin
 		return Arrays.asList(trapOverlay, catchrateOverlay);
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		catchAtempts = 0;
+		catchSuccess = 0;
+		lastActionTime = Instant.ofEpochMilli(0);
+		traps.clear();
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		GameObject gameObject = event.getGameObject();
 
 		HunterTrap myTrap = getTrapFromCollection(gameObject);
@@ -199,7 +200,7 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
-			//Black chin shaking box	
+			//Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
@@ -279,11 +280,6 @@ public class HunterPlugin extends Plugin
 	)
 	public void updateTraps()
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		//Check if all traps are still there, and remove the ones that are not.
 		//TODO: use despawn events
 		Iterator<HunterTrap> it = traps.iterator();

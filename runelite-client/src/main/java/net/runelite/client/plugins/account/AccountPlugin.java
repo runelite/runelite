@@ -42,7 +42,7 @@ import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
-	name = "Account plugin",
+	name = "Account",
 	loadWhenOutdated = true
 )
 @Slf4j

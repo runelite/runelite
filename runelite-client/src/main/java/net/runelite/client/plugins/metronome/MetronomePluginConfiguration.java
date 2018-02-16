@@ -37,17 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface MetronomePluginConfiguration extends Config
 {
 	@ConfigItem(
-		keyName = "enabled",
-		name = "Enable metronome",
-		description = "Toggles tick metronome",
-		position = 1
-	)
-	default boolean enabled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "tickCount",
 		name = "Tick count",
 		description = "Configures the tick on which a sound will be played",

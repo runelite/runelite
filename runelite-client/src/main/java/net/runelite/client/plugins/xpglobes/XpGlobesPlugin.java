@@ -43,7 +43,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "XP globes plugin"
+	name = "XP globes"
 )
 public class XpGlobesPlugin extends Plugin
 {
@@ -83,11 +83,6 @@ public class XpGlobesPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (!config.enabled())
-		{
-			return;
-		}
-
 		Skill skill = event.getSkill();
 		int currentXp = client.getSkillExperience(skill);
 		int currentLevel = Experience.getLevelForXp(currentXp);

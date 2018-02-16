@@ -37,16 +37,6 @@ import net.runelite.client.config.ConfigItem;
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "highlightDestination",
-		name = "Highlight current destination (walk-to) tile",
-		description = "Configures whether or not current destination tile is highlighted"
-	)
-	default boolean highlightDestination()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "highlightDestinationColor",
 		name = "Color of current destination highlighting",
 		description = "Configures the highlight color of current destination"

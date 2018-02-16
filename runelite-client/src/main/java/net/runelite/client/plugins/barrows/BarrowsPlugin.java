@@ -91,6 +91,13 @@ public class BarrowsPlugin extends Plugin
 		return barrowsOverlay;
 	}
 
+	@Override
+	protected void shutDown()
+	{
+		walls.clear();
+		ladders.clear();
+	}
+
 	@Subscribe
 	public void onWallObjectSpanwed(WallObjectSpawned event)
 	{

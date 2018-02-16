@@ -38,27 +38,20 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 class MouseHighlightOverlay extends Overlay
 {
-	private final MouseHighlightConfig config;
 	private final TooltipManager tooltipManager;
 	private final Client client;
 
 	@Inject
-	MouseHighlightOverlay(@Nullable Client client, MouseHighlightConfig config, TooltipManager tooltipManager)
+	MouseHighlightOverlay(@Nullable Client client, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
-		this.config = config;
 		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point point)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		if (client.isMenuOpen())
 		{
 			return null;

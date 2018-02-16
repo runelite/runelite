@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.inject.Binder;
-import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
@@ -35,21 +34,17 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Clue scroll plugin"
+	name = "Clue scroll"
 )
 public class ClueScrollPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClueScrollConfig config;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
@@ -58,12 +53,6 @@ public class ClueScrollPlugin extends Plugin
 	public void configure(Binder binder)
 	{
 		binder.bind(ClueScrollOverlay.class);
-	}
-
-	@Provides
-	ClueScrollConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ClueScrollConfig.class);
 	}
 
 	@Override
@@ -78,7 +67,7 @@ public class ClueScrollPlugin extends Plugin
 	)
 	public void checkForClues()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !config.enabled())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}

@@ -58,7 +58,7 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.SearchResult;
 
 @PluginDescriptor(
-	name = "Chat commands plugin"
+	name = "Chat commands"
 )
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
@@ -81,6 +81,13 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Override
+	protected void startUp()
+	{
+		cacheConfiguredColors();
+		chatMessageManager.refreshAll();
+	}
 
 	@Provides
 	ChatCommandsConfig provideConfig(ConfigManager configManager)

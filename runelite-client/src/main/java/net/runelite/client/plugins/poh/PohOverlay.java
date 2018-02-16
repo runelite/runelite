@@ -80,11 +80,6 @@ public class PohOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, java.awt.Point parent)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
-
 		Point localLocation = client.getLocalPlayer().getLocalLocation();
 		plugin.getPohObjects().forEach((object, tile) ->
 		{

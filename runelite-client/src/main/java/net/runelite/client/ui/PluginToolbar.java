@@ -59,6 +59,7 @@ public class PluginToolbar extends JToolBar
 		buttons.add(button);
 		add(button);
 		revalidate();
+		repaint();
 	}
 
 	public void removeNavigation(NavigationButton button)
@@ -66,6 +67,7 @@ public class PluginToolbar extends JToolBar
 		buttons.remove(button);
 		remove(button);
 		revalidate();
+		repaint();
 	}
 
 	private void onClick(NavigationButton button)
