@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.agilityplugin;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.Getter;

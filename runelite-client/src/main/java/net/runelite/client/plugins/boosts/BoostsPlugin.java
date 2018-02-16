@@ -26,7 +26,6 @@ package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ObjectArrays;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;

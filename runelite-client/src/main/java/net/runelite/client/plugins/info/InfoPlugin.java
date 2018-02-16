@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.info;
 
-import com.google.inject.Binder;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;

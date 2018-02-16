@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.inject.Binder;
 import java.awt.Font;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
