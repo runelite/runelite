@@ -52,6 +52,8 @@ public enum Skill
 	CONSTRUCTION("Construction"),
 	OVERALL("Overall");
 
+	public static final Skill[] VALUES = values();
+
 	private final String name;
 
 	Skill(String name)

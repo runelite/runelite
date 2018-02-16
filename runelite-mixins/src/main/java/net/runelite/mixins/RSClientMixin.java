@@ -445,7 +445,7 @@ public abstract class RSClientMixin implements RSClient
 	public static void experiencedChanged(int idx)
 	{
 		ExperienceChanged experienceChanged = new ExperienceChanged();
-		Skill[] possibleSkills = Skill.values();
+		Skill[] possibleSkills = Skill.VALUES;
 
 		// We subtract one here because 'Overall' isn't considered a skill that's updated.
 		if (idx < possibleSkills.length - 1)

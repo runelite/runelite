@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 class BoostsOverlay extends Overlay
 {
 	@Getter
-	private final BoostIndicator[] indicators = new BoostIndicator[Skill.values().length - 1];
+	private final BoostIndicator[] indicators = new BoostIndicator[Skill.VALUES.length - 1];
 
 	private final Client client;
 	private final BoostsConfig config;
