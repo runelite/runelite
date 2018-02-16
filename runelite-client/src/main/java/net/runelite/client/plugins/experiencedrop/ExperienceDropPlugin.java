@@ -99,13 +99,13 @@ public class ExperienceDropPlugin extends Plugin
 	private void resetTextColor(Widget widget)
 	{
 		int defaultColorIdx = client.getSetting(Varbits.EXPERIENCE_DROP_COLOR);
-		int defaultColor = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
+		int defaultColor = DefaultColors.VALUES[defaultColorIdx].getColor().getRGB();
 		widget.setTextColor(defaultColor);
 	}
 
 	private PrayerType getActivePrayerType()
 	{
-		for (XpPrayer prayer : XpPrayer.values())
+		for (XpPrayer prayer : XpPrayer.VALUES)
 		{
 			if (client.isPrayerActive(prayer.getPrayer()))
 			{

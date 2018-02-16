@@ -37,6 +37,8 @@ enum ServiceWorldType
 	DEADMAN(WorldType.DEADMAN, 1 << 29),
 	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
 
+	public static final ServiceWorldType[] VALUES = values();
+
 	private final WorldType apiType;
 	private final int mask;
 

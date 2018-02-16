@@ -40,6 +40,8 @@ public enum DiaryEntry
 	WESTERN(10, "Western Provinces", Varbits.DIARY_WESTERN_EASY, Varbits.DIARY_WESTERN_MEDIUM, Varbits.DIARY_WESTERN_HARD, Varbits.DIARY_WESTERN_ELITE),
 	WILDERNESS(9, "Wilderness", Varbits.DIARY_WILDERNESS_EASY, Varbits.DIARY_WILDERNESS_MEDIUM, Varbits.DIARY_WILDERNESS_HARD, Varbits.DIARY_WILDERNESS_ELITE);
 
+	public static final DiaryEntry[] VALUES = values();
+
 	private final int index;
 	private final String name;
 	private final Varbits[] varbits;

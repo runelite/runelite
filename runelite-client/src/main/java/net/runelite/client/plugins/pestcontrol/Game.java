@@ -37,7 +37,7 @@ import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 public class Game
 {
 	// Game starts with all possible rotations
-	private Rotation[] possibleRotations = Rotation.values();
+	private Rotation[] possibleRotations = Rotation.VALUES;
 	// Number of shields dropped
 	private int shieldsDropped;
 

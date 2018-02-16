@@ -56,7 +56,7 @@ public class DiaryProgressPlugin extends Plugin
 			return;
 		}
 
-		for (DiaryEntry entry : DiaryEntry.values())
+		for (DiaryEntry entry : DiaryEntry.VALUES)
 		{
 			Widget child = diaryWidget.getChild(entry.getIndex());
 			child.setText(entry.getName());
@@ -73,7 +73,7 @@ public class DiaryProgressPlugin extends Plugin
 			return;
 		}
 
-		for (DiaryEntry entry : DiaryEntry.values())
+		for (DiaryEntry entry : DiaryEntry.VALUES)
 		{
 			Widget child = diaryWidget.getChild(entry.getIndex());
 			StringBuilder progress = new StringBuilder();

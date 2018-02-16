@@ -40,6 +40,8 @@ enum DefaultColors
 	ORANGE(new Color(0xFF, 0x98, 0x1F)),
 	PINK(new Color(0xFF, 0xC8, 0xC8));
 
+	public static final DefaultColors[] VALUES = values();
+
 	@Getter
 	private final Color color;
 }

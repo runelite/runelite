@@ -60,6 +60,8 @@ public enum HiscoreSkill
 	CLUE_SCROLL_ELITE("Clue Scrolls (elite)"),
 	CLUE_SCROLL_MASTER("Clue Scrolls (master)");
 
+	public static final HiscoreSkill[] VALUES = values();
+
 	private final String name;
 
 	HiscoreSkill(String name)

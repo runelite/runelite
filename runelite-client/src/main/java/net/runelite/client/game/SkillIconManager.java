@@ -35,7 +35,7 @@ import net.runelite.api.Skill;
 @Slf4j
 public class SkillIconManager
 {
-	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length];
+	private final BufferedImage[] imgCache = new BufferedImage[Skill.VALUES.length];
 
 	public BufferedImage getSkillImage(Skill skill)
 	{

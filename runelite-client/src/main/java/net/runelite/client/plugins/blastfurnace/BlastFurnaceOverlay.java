@@ -62,7 +62,7 @@ class BlastFurnaceOverlay extends Overlay
 
 		imagePanelComponent.getImages().clear();
 
-		for (BarsOres varbit : BarsOres.values())
+		for (BarsOres varbit : BarsOres.VALUES)
 		{
 			int amount = client.getSetting(varbit.getVarbit());
 

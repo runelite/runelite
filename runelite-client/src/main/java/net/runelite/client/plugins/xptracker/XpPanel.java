@@ -83,7 +83,7 @@ class XpPanel extends PluginPanel
 
 		try
 		{
-			for (Skill skill : Skill.values())
+			for (Skill skill : Skill.VALUES)
 			{
 				if (skill == Skill.OVERALL)
 				{

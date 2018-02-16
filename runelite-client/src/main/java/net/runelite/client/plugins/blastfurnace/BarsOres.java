@@ -50,6 +50,8 @@ public enum BarsOres
 	SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
 	GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
 
+	public static final BarsOres[] VALUES = values();
+
 	private static final Map<Varbits, BarsOres> VARBIT = new HashMap<>();
 
 	static

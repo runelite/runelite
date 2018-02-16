@@ -124,7 +124,7 @@ public enum DiscordGameEventType
 
 	static boolean combatSkillChanged(final DiscordGameEventType l)
 	{
-		for (Skill skill : Skill.values())
+		for (Skill skill : Skill.VALUES)
 		{
 			if (l.getState().contains(skill.getName()))
 			{

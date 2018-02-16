@@ -36,6 +36,8 @@ public enum BarrowsBrothers
 	KARIL("K", new Point(3566, 3275)),
 	GUTHAN("G", new Point(3577, 3283));
 
+	public static final BarrowsBrothers[] VALUES = values();
+
 	@Getter
 	private final String name;
 	@Getter

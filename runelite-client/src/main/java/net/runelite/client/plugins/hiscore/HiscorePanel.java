@@ -214,7 +214,7 @@ public class HiscorePanel extends PluginPanel
 
 		List<JToggleButton> endpointButtons = new ArrayList<>();
 
-		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
+		for (HiscoreEndpoint endpoint : HiscoreEndpoint.VALUES)
 		{
 			try
 			{

@@ -91,7 +91,7 @@ public class WorldsService
 	{
 		EnumSet<WorldType> types = EnumSet.noneOf(WorldType.class);
 
-		for (ServiceWorldType type : ServiceWorldType.values())
+		for (ServiceWorldType type : ServiceWorldType.VALUES)
 		{
 			if ((mask & type.getMask()) != 0)
 			{

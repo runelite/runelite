@@ -89,7 +89,7 @@ public class HiscoreService
 
 		for (CSVRecord record : parser.getRecords())
 		{
-			if (count++ >= HiscoreSkill.values().length)
+			if (count++ >= HiscoreSkill.VALUES.length)
 			{
 				log.warn("Jagex Hiscore API returned unexpected data");
 				break; // rest is other things?

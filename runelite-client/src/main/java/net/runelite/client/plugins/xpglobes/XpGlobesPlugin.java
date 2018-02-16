@@ -50,7 +50,7 @@ public class XpGlobesPlugin extends Plugin
 	private static final int SECONDS_TO_SHOW_GLOBE = 10;
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
-	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+	private XpGlobe[] globeCache = new XpGlobe[Skill.VALUES.length - 1]; //overall does not trigger xp change event
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
@@ -162,7 +162,7 @@ public class XpGlobesPlugin extends Plugin
 	public void resetGlobeState()
 	{
 		xpGlobes.clear();
-		globeCache = new XpGlobe[Skill.values().length - 1];
+		globeCache = new XpGlobe[Skill.VALUES.length - 1];
 	}
 
 	@Subscribe

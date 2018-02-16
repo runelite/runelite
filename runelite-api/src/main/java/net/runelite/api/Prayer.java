@@ -55,7 +55,9 @@ public enum Prayer
 	PRESERVE(Varbits.PRAYER_PRESERVE),
 	RIGOUR(Varbits.PRAYER_RIGOUR),
 	AUGURY(Varbits.PRAYER_AUGURY);
-	
+
+	public static final Prayer[] VALUES = values();
+
 	private final Varbits varbit;
 
 	private Prayer(Varbits varbit)

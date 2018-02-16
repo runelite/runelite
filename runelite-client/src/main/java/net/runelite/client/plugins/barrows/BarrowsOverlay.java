@@ -160,7 +160,7 @@ class BarrowsOverlay extends Overlay
 
 	private void renderBarrowsBrothers(Graphics2D graphics)
 	{
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		for (BarrowsBrothers brother : BarrowsBrothers.VALUES)
 		{
 			net.runelite.api.Point location = brother.getLocation();
 
