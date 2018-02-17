@@ -34,6 +34,10 @@ import net.runelite.api.FreezeType;
 import net.runelite.api.NPC;
 import net.runelite.api.OverheadPrayer;
 import net.runelite.api.Player;
+import net.runelite.api.events.ActorFreeze;
+import net.runelite.api.events.ActorFreezeEnded;
+import net.runelite.api.events.ActorFreezeImmune;
+import net.runelite.api.events.ActorFreezeImmuneEnded;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 
@@ -134,7 +138,7 @@ public class FreezeManager
 		}
 	}
 
-	private static void processActor(Actor subject)
+	private void processActor(Actor subject)
 	{
 		FreezeInfo freezeInfo = subject.getFreeze();
 		boolean wasImmune = freezeInfo.isImmune();
@@ -145,6 +149,11 @@ public class FreezeManager
 		if (!freezeInfo.isFrozen() && !freezeInfo.isImmune() && freezeInfo.getType() == null && wasImmune)
 		{
 			freezeInfo.resetFreeze();
+
+			ActorFreezeImmuneEnded event = new ActorFreezeImmuneEnded();
+			event.setActor(subject);
+			eventBus.post(event);
+
 			log.debug("{} is no longer immune", subject.getName());
 		}
 
@@ -158,6 +167,11 @@ public class FreezeManager
 					int ticks = qf.getLengthTicks();
 					//halving has already been determined on cast
 					freezeInfo.startFreeze(qf.getType(), ticks, subject.getWorldLocation());
+
+					ActorFreeze event = new ActorFreeze();
+					event.setActor(subject);
+					eventBus.post(event);
+
 					break;
 				}
 			}
@@ -173,6 +187,10 @@ public class FreezeManager
 		if (freezeInfo.getType() != null && !freezeInfo.isFrozen())
 		{
 			freezeInfo.startImmunity();
+
+			ActorFreezeImmune event = new ActorFreezeImmune();
+			event.setActor(subject);
+			eventBus.post(event);
 		}
 
 		//if we're immune
@@ -184,6 +202,11 @@ public class FreezeManager
 		if (freezeInfo.getPosition() != null && (!freezeInfo.getPosition().equals(subject.getWorldLocation())))
 		{
 			freezeInfo.resetFreeze();
+
+			ActorFreezeEnded event = new ActorFreezeEnded();
+			event.setActor(subject);
+			eventBus.post(event);
+
 			log.debug("{} had their freeze cancelled", subject.getName());
 		}
 	}
