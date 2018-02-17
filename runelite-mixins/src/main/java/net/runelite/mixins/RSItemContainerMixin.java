@@ -25,12 +25,16 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Item;
+import net.runelite.api.events.ContainerChanged;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
+
+import static net.runelite.client.callback.Hooks.eventBus;
 
 @Mixin(RSItemContainer.class)
 public abstract class RSItemContainerMixin implements RSItemContainer
@@ -55,6 +59,19 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		}
 
 		return items;
+	}
+
+	@FieldHook("itemIds")
+	@Inject
+	public void itemsChanged(int idx)
+	{
+		if (idx >= 0 && idx <= getItemIds().length)
+		{
+			ContainerChanged containerChanged = new ContainerChanged();
+			containerChanged.setContainer(this);
+			containerChanged.setIdx(idx);
+			eventBus.post(containerChanged);
+		}
 	}
 
 }
