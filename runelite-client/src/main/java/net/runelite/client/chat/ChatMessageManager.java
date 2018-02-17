@@ -112,9 +112,37 @@ public class ChatMessageManager
 		for (Iterator<QueuedMessage> it = queuedMessages.iterator(); it.hasNext();)
 		{
 			QueuedMessage message = it.next();
-			add(message.getType(), message.getSender(), message.getMessage(), message.getClan());
+			final MessageNode target = message.getTarget();
+
+			if (target != null)
+			{
+				if (!Strings.isNullOrEmpty(message.getValue()))
+				{
+					target.setValue(message.getValue());
+				}
+
+				if (!Strings.isNullOrEmpty(message.getName()))
+				{
+					target.setName(message.getName());
+				}
+
+				if (!Strings.isNullOrEmpty(message.getSender()))
+				{
+					target.setSender(message.getSender());
+				}
+
+				target.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
+				update(message.getTarget());
+			}
+			else
+			{
+				add(message.getType(), message.getName(), message.getValue(), message.getSender());
+			}
+
 			it.remove();
 		}
+
+		clientProvider.get().refreshChat();
 	}
 
 	private void add(final ChatMessageType type, final String name, final String mesage, final String sender)
@@ -127,7 +155,7 @@ public class ChatMessageManager
 		update(line);
 	}
 
-	public void update(final MessageNode target)
+	private void update(final MessageNode target)
 	{
 		final Client client = clientProvider.get();
 		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
