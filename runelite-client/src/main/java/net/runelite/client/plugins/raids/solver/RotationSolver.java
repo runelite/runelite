@@ -42,6 +42,9 @@ public class RotationSolver
 		@Override
 		public E get(int index)
 		{
+			if (index < 0)
+				index = index + size();
+
 			return super.get(index % size());
 		}
 	}
@@ -59,7 +62,7 @@ public class RotationSolver
 		if (rooms ==  null)
 			return false;
 
-		Rotation match = null;
+		Rotation<Boss> match = null;
 		Integer start = null;
 		Integer index = null;
 		int known = 0;
@@ -115,7 +118,7 @@ public class RotationSolver
 				continue;
 
 			if (rooms[i].getBoss() == null || rooms[i].getBoss() == Boss.UNKNOWN)
-				rooms[i].setBoss((Boss) match.get(index + i));
+				rooms[i].setBoss(match.get(index + i));
 		}
 
 		return true;
