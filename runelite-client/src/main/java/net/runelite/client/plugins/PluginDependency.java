@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,18 @@
  */
 package net.runelite.client.plugins;
 
-public class PluginInstantiationException extends Exception
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Documented
+@Repeatable(PluginDependencies.class)
+public @interface PluginDependency
 {
-	public PluginInstantiationException(String message)
-	{
-		super(message);
-	}
-
-	public PluginInstantiationException(Throwable cause)
-	{
-		super(cause);
-	}
-
+	Class<? extends Plugin> value();
 }

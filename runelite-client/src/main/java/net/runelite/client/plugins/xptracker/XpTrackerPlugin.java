@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Binder;
 import java.io.IOException;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.imageio.ImageIO;
@@ -36,12 +38,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.http.api.worlds.World;
@@ -70,11 +74,20 @@ public class XpTrackerPlugin extends Plugin
 
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
+
+	private final Map<Skill, SkillXPInfo> xpInfos = new HashMap<>();
+
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 
 	private final XpClient xpClient = new XpClient();
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(XpTrackerService.class).to(XpTrackerServiceImpl.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -90,7 +103,7 @@ public class XpTrackerPlugin extends Plugin
 			log.warn("Error looking up worlds list", e);
 		}
 
-		xpPanel = new XpPanel(client, skillIconManager);
+		xpPanel = new XpPanel(this, client, skillIconManager);
 		navButton = new NavigationButton(
 			"XP Tracker",
 			ImageIO.read(getClass().getResourceAsStream("xp.png")),
@@ -168,6 +181,11 @@ public class XpTrackerPlugin extends Plugin
 			}
 		}
 		return xpType;
+	}
+
+	public SkillXPInfo getSkillXpInfo(Skill skill)
+	{
+		return xpInfos.computeIfAbsent(skill, s -> new SkillXPInfo(s));
 	}
 
 	@Subscribe
