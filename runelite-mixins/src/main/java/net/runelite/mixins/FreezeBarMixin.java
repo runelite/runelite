@@ -96,31 +96,30 @@ public abstract class FreezeBarMixin implements RSClient
 				int offset = 3;
 				int maxWidth;
 
-
 				int height = actor.getLogicalHeight() + 15;
 				Point canvasPoint = Perspective.worldToCanvas(client, actor.getX(), actor.getY(), height, client.getPlane());
 
-				if (canvasPoint == null)
-					return;
-
-				maxWidth = 32;
-
-				int x;
-				int y;
-
-				x = var2 + canvasPoint.getX() - ((maxWidth - 2) >> 1);
-				y = var3 + canvasPoint.getY() - offset;
-
-				if (freezeInfo.isFrozen())
+				if (canvasPoint != null)
 				{
-					int width = freezeInfo.getFrozen() * (maxWidth / 32);
-					client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0x36cfe0);
-				}
-				else if (freezeInfo.isImmune())
-				{
-					int width = freezeInfo.getImmune() * (maxWidth / 6);
+					maxWidth = 32;
 
-					client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0xe09736);
+					int x;
+					int y;
+
+					x = var2 + canvasPoint.getX() - ((maxWidth - 2) >> 1);
+					y = var3 + canvasPoint.getY() - offset;
+
+					if (freezeInfo.isFrozen())
+					{
+						int width = freezeInfo.getFrozen() * (maxWidth / 32);
+						client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0x36cfe0);
+					}
+					else if (freezeInfo.isImmune())
+					{
+						int width = freezeInfo.getImmune() * (maxWidth / 6);
+
+						client.Rasterizer2D_fillRectangle(x, y + 7, width, 3, 0xe09736);
+					}
 				}
 			}
 		}
