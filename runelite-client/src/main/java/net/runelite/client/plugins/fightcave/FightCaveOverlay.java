@@ -31,7 +31,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImagePanelComponent;
 
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.Dimension;
@@ -51,7 +50,7 @@ public class FightCaveOverlay extends Overlay
 	private BufferedImage protectFromMissilesImg;
 
 	@Inject
-	FightCaveOverlay(@Nullable Client client, FightCavePlugin plugin)
+	FightCaveOverlay(Client client, FightCavePlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);

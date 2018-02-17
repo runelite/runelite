@@ -34,7 +34,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -73,7 +72,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 
 	@Inject
-	public XpGlobesOverlay(@Nullable Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
+	public XpGlobesOverlay(Client client, XpGlobesPlugin plugin, XpGlobesConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
