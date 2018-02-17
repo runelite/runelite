@@ -36,7 +36,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -83,7 +82,7 @@ public class DevToolsOverlay extends Overlay
 	private final DevToolsPlugin plugin;
 
 	@Inject
-	public DevToolsOverlay(@Nullable Client client, DevToolsPlugin plugin)
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);

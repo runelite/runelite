@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -46,7 +45,7 @@ public class AgilityOverlay extends Overlay
 	private final AgilityPlugin plugin;
 
 	@Inject
-	public AgilityOverlay(@Nullable Client client, AgilityPlugin plugin)
+	public AgilityOverlay(Client client, AgilityPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

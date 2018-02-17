@@ -27,7 +27,6 @@ package net.runelite.client.plugins.mousehighlight;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -42,7 +41,7 @@ class MouseHighlightOverlay extends Overlay
 	private final Client client;
 
 	@Inject
-	MouseHighlightOverlay(@Nullable Client client, TooltipManager tooltipManager)
+	MouseHighlightOverlay(Client client, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;

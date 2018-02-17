@@ -31,7 +31,6 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.time.Duration;
 import java.time.Instant;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
@@ -48,7 +47,7 @@ public class PrayerFlickOverlay extends Overlay
 	private Instant startOfLastTick = Instant.now();
 
 	@Inject
-	public PrayerFlickOverlay(@Nullable Client client)
+	public PrayerFlickOverlay(Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
