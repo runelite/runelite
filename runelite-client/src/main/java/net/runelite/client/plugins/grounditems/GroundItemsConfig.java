@@ -147,4 +147,14 @@ public interface GroundItemsConfig extends Config
 	{
 		return Color.decode("#FF66B2");
 	}
+
+	@ConfigItem(
+		keyName = "showHighlightedOnly",
+		name = "Show Highlighted items only",
+		description = "Configures whether or not to draw items only on your highlighted list"
+	)
+	default boolean showHighlightedOnly()
+	{
+		return false;
+	}
 }
