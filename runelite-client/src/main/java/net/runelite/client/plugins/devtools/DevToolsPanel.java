@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.devtools;
 
+
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import java.awt.BorderLayout;
@@ -33,7 +34,6 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
-import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
@@ -86,7 +86,7 @@ public class DevToolsPanel extends PluginPanel
 	private final SettingsTracker settingsTracker;
 
 	@Inject
-	public DevToolsPanel(@Nullable Client client, DevToolsPlugin plugin)
+	public DevToolsPanel(Client client, DevToolsPlugin plugin)
 	{
 		super();
 		this.client = client;

@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -88,7 +87,7 @@ public class GroundItemsOverlay extends Overlay
 	private ItemManager itemManager;
 
 	@Inject
-	public GroundItemsOverlay(@Nullable Client client, GroundItemsConfig config)
+	public GroundItemsOverlay(Client client, GroundItemsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

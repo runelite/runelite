@@ -34,7 +34,6 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -68,7 +67,7 @@ class OpponentInfoOverlay extends Overlay
 	private Map<String, Integer> oppInfoHealth = OpponentInfoPlugin.loadNpcHealth();
 
 	@Inject
-	OpponentInfoOverlay(@Nullable Client client)
+	OpponentInfoOverlay(Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);

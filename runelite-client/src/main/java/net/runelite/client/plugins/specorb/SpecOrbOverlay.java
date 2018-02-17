@@ -27,7 +27,6 @@ package net.runelite.client.plugins.specorb;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -66,7 +65,7 @@ public class SpecOrbOverlay extends Overlay
 	private int tickCounter = 0;
 
 	@Inject
-	public SpecOrbOverlay(@Nullable Client client, SpecOrbPlugin plugin)
+	public SpecOrbOverlay(Client client, SpecOrbPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
