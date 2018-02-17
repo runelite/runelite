@@ -66,6 +66,7 @@ public class WidgetID
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
+	public static final int LIBRARY_FIND_GROUP_ID = 193;
 
 	static class WorldMap
 	{
@@ -286,5 +287,11 @@ public class WidgetID
 	static class PuzzleBox
 	{
 		static final int VISIBLE_BOX = 4;
+	}
+
+	static class DialogLibrary
+	{
+		static final int ITEM = 0;
+		static final int TEXT = 1;
 	}
 }
