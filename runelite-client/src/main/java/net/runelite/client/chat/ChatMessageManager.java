@@ -136,7 +136,7 @@ public class ChatMessageManager
 			}
 			else
 			{
-				add(message.getType(), message.getName(), message.getValue(), message.getSender());
+				add(message);
 			}
 
 			it.remove();
@@ -145,13 +145,21 @@ public class ChatMessageManager
 		clientProvider.get().refreshChat();
 	}
 
-	private void add(final ChatMessageType type, final String name, final String mesage, final String sender)
+	private void add(QueuedMessage message)
 	{
 		final Client client = clientProvider.get();
-		client.addChatMessage(type, MoreObjects.firstNonNull(name, ""), mesage, sender); // this updates chat cycle
-		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(type.getType());
+
+		// this updates chat cycle
+		client.addChatMessage(message.getType(), MoreObjects.firstNonNull(message.getName(), ""),
+			message.getValue(), message.getSender());
+
+		// Get last message from line buffer (the one we just added)
+		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(message.getType().getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
 		final MessageNode line = lines[0];
+
+		// Update the message with RuneLite additions
+		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
 		update(line);
 	}
 

@@ -242,7 +242,7 @@ public class RaidsPlugin extends Plugin
 
 					chatMessageManager.queue(QueuedMessage.builder()
 						.type(ChatMessageType.CLANCHAT_INFO)
-						.message(chatMessage)
+						.runeLiteFormattedMessage(chatMessage)
 						.build());
 				}
 			}
