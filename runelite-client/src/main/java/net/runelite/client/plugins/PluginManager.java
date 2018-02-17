@@ -25,8 +25,13 @@
 package net.runelite.client.plugins;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.common.graph.Graph;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.Graphs;
+import com.google.common.graph.MutableGraph;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Binder;
@@ -40,9 +45,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
@@ -210,6 +219,10 @@ public class PluginManager
 	{
 		boolean developerPlugins = RuneLite.getOptions().has("developer-mode");
 
+		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
+			.directed()
+			.build();
+
 		List<Plugin> scannedPlugins = new ArrayList<>();
 		ClassPath classPath = ClassPath.from(classLoader);
 
@@ -225,7 +238,7 @@ public class PluginManager
 				if (clazz.getSuperclass() == Plugin.class)
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor",
-						clazz);
+							clazz);
 				}
 				continue;
 			}
@@ -233,7 +246,7 @@ public class PluginManager
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
-					clazz);
+						clazz);
 				continue;
 			}
 
@@ -247,10 +260,35 @@ public class PluginManager
 				continue;
 			}
 
+			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
+			graph.addNode(pluginClass);
+		}
+
+		// Build plugin graph
+		for (Class<? extends Plugin> pluginClazz : graph.nodes())
+		{
+			PluginDependency[] pluginDependencies = pluginClazz.getAnnotationsByType(PluginDependency.class);
+
+			for (PluginDependency pluginDependency : pluginDependencies)
+			{
+				graph.putEdge(pluginClazz, pluginDependency.value());
+			}
+		}
+
+		if (Graphs.hasCycle(graph))
+		{
+			throw new RuntimeException("Plugin dependency graph contains a cycle!");
+		}
+
+		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
+		sortedPlugins = Lists.reverse(sortedPlugins);
+
+		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
+		{
 			Plugin plugin;
 			try
 			{
-				plugin = instantiate((Class<Plugin>) clazz);
+				plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
 			}
 			catch (PluginInstantiationException ex)
 			{
@@ -354,8 +392,20 @@ public class PluginManager
 		return Boolean.valueOf(value);
 	}
 
-	private Plugin instantiate(Class<Plugin> clazz) throws PluginInstantiationException
+	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
 	{
+		PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(PluginDependency.class);
+		List<Plugin> deps = new ArrayList<>();
+		for (PluginDependency pluginDependency : pluginDependencies)
+		{
+			Optional<Plugin> dependency = scannedPlugins.stream().filter(p -> p.getClass() == pluginDependency.value()).findFirst();
+			if (!dependency.isPresent())
+			{
+				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
+			}
+			deps.add(dependency.get());
+		}
+
 		Plugin plugin;
 		try
 		{
@@ -372,6 +422,15 @@ public class PluginManager
 			{
 				binder.bind(clazz).toInstance(plugin);
 				binder.install(plugin);
+				for (Plugin p : deps)
+				{
+					Module p2 = (Binder binder2) ->
+					{
+						binder2.bind((Class<Plugin>) p.getClass()).toInstance(p);
+						binder2.install(p);
+					};
+					binder.install(p2);
+				}
 			};
 			Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
 			pluginInjector.injectMembers(plugin);
@@ -433,5 +492,42 @@ public class PluginManager
 			log.debug("Removing scheduled task {}", method);
 			scheduler.removeScheduledMethod(method);
 		}
+	}
+
+	/**
+	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 * @param graph
+	 * @param <T>
+	 * @return
+	 */
+	private <T> List<T> topologicalSort(Graph<T> graph)
+	{
+		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
+		List<T> l = new ArrayList<>();
+		Set<T> s = graphCopy.nodes().stream()
+			.filter(node -> graphCopy.inDegree(node) == 0)
+			.collect(Collectors.toSet());
+		while (!s.isEmpty())
+		{
+			Iterator<T> it = s.iterator();
+			T n = it.next();
+			it.remove();
+
+			l.add(n);
+
+			for (T m : graphCopy.successors(n))
+			{
+				graphCopy.removeEdge(n, m);
+				if (graphCopy.inDegree(m) == 0)
+				{
+					s.add(m);
+				}
+			}
+		}
+		if (!graphCopy.edges().isEmpty())
+		{
+			throw new RuntimeException("Graph has at least one cycle");
+		}
+		return l;
 	}
 }
