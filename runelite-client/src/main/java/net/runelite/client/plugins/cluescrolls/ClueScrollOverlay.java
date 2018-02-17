@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.time.Duration;
 import java.time.Instant;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
@@ -50,7 +49,7 @@ public class ClueScrollOverlay extends Overlay
 	Instant clueTimeout;
 
 	@Inject
-	public ClueScrollOverlay(@Nullable Client client)
+	public ClueScrollOverlay(Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
