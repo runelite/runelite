@@ -508,6 +508,22 @@ public class Inject
 
 		return Type.getType("L" + rlApiType.getName().replace('.', '/') + ";", type.getDimensions());
 	}
+
+	Type apiTypeToDeobfuscatedType(Type type) throws InjectionException
+	{
+		if (type.isPrimitive())
+		{
+			return type;
+		}
+
+		String internalName = type.getInternalName().replace('/', '.');
+		if (!internalName.startsWith(API_PACKAGE_BASE))
+		{
+			return type; // not an rs api type
+		}
+
+		return Type.getType("L" + type.getInternalName().substring(API_PACKAGE_BASE.length()) + ";", type.getDimensions());
+	}
 	
 	ClassFile findVanillaForInterface(java.lang.Class<?> clazz)
 	{
