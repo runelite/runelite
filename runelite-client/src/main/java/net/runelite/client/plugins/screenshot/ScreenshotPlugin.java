@@ -96,7 +96,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final MediaType JSON = MediaType.parse("application/json");
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy", Locale.US);
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("h.m.s a d MMM. yyyy", Locale.US);
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 
