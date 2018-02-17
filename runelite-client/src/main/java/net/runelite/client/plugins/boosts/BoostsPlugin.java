@@ -93,10 +93,14 @@ public class BoostsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		Skill[] old = shownSkills;
 		updateShownSkills(config.enableSkill());
 
-		infoBoxManager.removeIf(t -> t instanceof BoostIndicator
-			&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
+		if (!Arrays.equals(old, shownSkills))
+		{
+			infoBoxManager.removeIf(t -> t instanceof BoostIndicator
+				&& !Arrays.asList(shownSkills).contains(((BoostIndicator) t).getSkill()));
+		}
 	}
 
 	private void updateShownSkills(boolean showSkillingSkills)
