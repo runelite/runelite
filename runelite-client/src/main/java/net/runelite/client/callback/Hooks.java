@@ -204,7 +204,7 @@ public class Hooks
 		eventBus.post(menuEntry);
 	}
 
-	public static void addChatMessage(int type, String sender, String message, String clan)
+	public static void addChatMessage(int type, String name, String message, String sender)
 	{
 		if (log.isDebugEnabled())
 		{
@@ -212,7 +212,7 @@ public class Hooks
 		}
 
 		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, sender, message, clan);
+		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
 
 		eventBus.post(chatMessage);
 	}
