@@ -56,6 +56,9 @@ public class ItemController
 	private final Cache<String, SearchResult> cachedSearches = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
 		.build();
+	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
+		.maximumSize(1024L)
+		.build();
 
 	private final ItemService itemService;
 
@@ -131,6 +134,13 @@ public class ItemController
 		@RequestParam(required = false) Instant time
 	)
 	{
+		if (cachedEmpty.getIfPresent(itemId) != null)
+		{
+			return ResponseEntity.notFound()
+				.header(RUNELITE_CACHE, "HIT")
+				.build();
+		}
+
 		Instant now = Instant.now();
 		boolean hit = true;
 
@@ -147,7 +157,10 @@ public class ItemController
 
 			if (item == null)
 			{
-				return ResponseEntity.notFound().build();
+				cachedEmpty.put(itemId, itemId);
+				return ResponseEntity.notFound()
+					.header(RUNELITE_CACHE, "MISS")
+					.build();
 			}
 		}
 
@@ -158,7 +171,9 @@ public class ItemController
 			if (priceEntry == null)
 			{
 				// we maybe can't backfill this
-				return ResponseEntity.notFound().build();
+				return ResponseEntity.notFound()
+					.header(RUNELITE_CACHE, "MISS")
+					.build();
 			}
 		}
 		else
@@ -171,7 +186,10 @@ public class ItemController
 
 				if (prices == null || prices.isEmpty())
 				{
-					return ResponseEntity.notFound().build();
+					cachedEmpty.put(itemId, itemId);
+					return ResponseEntity.notFound()
+						.header(RUNELITE_CACHE, "MISS")
+						.build();
 				}
 
 				// Get the most recent price
