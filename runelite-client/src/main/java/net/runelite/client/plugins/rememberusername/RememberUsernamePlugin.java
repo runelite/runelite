@@ -24,19 +24,24 @@
  */
 package net.runelite.client.plugins.rememberusername;
 
+import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.Objects;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SessionOpen;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Remember username"
 )
+@Slf4j
 public class RememberUsernamePlugin extends Plugin
 {
 	@Inject
@@ -44,6 +49,24 @@ public class RememberUsernamePlugin extends Plugin
 
 	@Inject
 	private RememberUsernameConfig config;
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		applyUsername();
+	}
+
+	protected void shutDown() throws Exception
+	{
+		GameState gameState = client.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN)
+		{
+			if (Objects.equals(config.username(), client.getUsername()))
+			{
+				client.setUsername("");
+			}
+		}
+	}
 
 	@Provides
 	RememberUsernameConfig getConfig(ConfigManager configManager)
@@ -56,22 +79,39 @@ public class RememberUsernamePlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			if (config.username() == null || config.username().isEmpty())
-			{
-				return;
-			}
-
-			client.setUsername(config.username());
+			applyUsername();
 		}
-
-		if (event.getGameState() == GameState.LOGGED_IN)
+		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			if (config.username().equals(client.getUsername()))
 			{
 				return;
 			}
 
+			log.debug("Saving username: {}", client.getUsername());
 			config.username(client.getUsername());
+		}
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{
+		// configuation for the account is available now, so update the username
+		applyUsername();
+	}
+
+	private void applyUsername()
+	{
+		GameState gameState = client.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN)
+		{
+			String username = config.username();
+			if (Strings.isNullOrEmpty(username))
+			{
+				return;
+			}
+
+			client.setUsername(username);
 		}
 	}
 }
