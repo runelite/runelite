@@ -44,11 +44,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
 @SpringBootApplication
+@EnableScheduling
 @Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {

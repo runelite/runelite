@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.item.ItemType;
@@ -40,6 +41,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -78,7 +80,10 @@ public class ItemService
 	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
 		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
 
+	private static final int MAX_PENDING_LOOKUPS = 512;
+
 	private final Sql2o sql2o;
+	private final ConcurrentLinkedQueue<Integer> pendingPriceLookups = new ConcurrentLinkedQueue<>();
 
 	@Autowired
 	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -338,5 +343,27 @@ public class ItemService
 
 			return response.body().bytes();
 		}
+	}
+
+	public void queueLookup(int itemId)
+	{
+		if (pendingPriceLookups.size() >= MAX_PENDING_LOOKUPS)
+		{
+			return;
+		}
+
+		pendingPriceLookups.add(itemId);
+	}
+
+	@Scheduled(fixedDelay = 5000)
+	public void checkPrices()
+	{
+		Integer itemId = pendingPriceLookups.poll();
+		if (itemId == null)
+		{
+			return;
+		}
+
+		fetchPrice(itemId);
 	}
 }

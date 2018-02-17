@@ -176,25 +176,30 @@ public class ItemController
 					.build();
 			}
 		}
+		else if (priceEntry == null)
+		{
+			// Price is unknown
+			List<PriceEntry> prices = itemService.fetchPrice(itemId);
+
+			if (prices == null || prices.isEmpty())
+			{
+				cachedEmpty.put(itemId, itemId);
+				return ResponseEntity.notFound()
+					.header(RUNELITE_CACHE, "MISS")
+					.build();
+			}
+
+			// Get the most recent price
+			priceEntry = prices.get(prices.size() - 1);
+			hit = false;
+		}
 		else
 		{
 			Instant cacheTime = now.minus(CACHE_DUATION);
-			if (priceEntry == null || priceEntry.getFetched_time().isBefore(cacheTime))
+			if (priceEntry.getFetched_time().isBefore(cacheTime))
 			{
-				// Price is unknown, or was fetched too long ago
-				List<PriceEntry> prices = itemService.fetchPrice(itemId);
-
-				if (prices == null || prices.isEmpty())
-				{
-					cachedEmpty.put(itemId, itemId);
-					return ResponseEntity.notFound()
-						.header(RUNELITE_CACHE, "MISS")
-						.build();
-				}
-
-				// Get the most recent price
-				priceEntry = prices.get(prices.size() - 1);
-				hit = false;
+				// Queue a check for the price
+				itemService.queueLookup(itemId);
 			}
 		}
 
