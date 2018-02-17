@@ -43,13 +43,16 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Fishing"
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Singleton
 public class FishingPlugin extends Plugin
 {
