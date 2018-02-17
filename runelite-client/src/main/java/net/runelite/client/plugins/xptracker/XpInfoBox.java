@@ -43,7 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.client.game.SkillIconManager;
 
 @Slf4j
-class XpInfoBox extends JPanel
+public class XpInfoBox extends JPanel
 {
 
 	private static final Color[] PROGRESS_COLORS = new Color[]
@@ -198,5 +198,13 @@ class XpInfoBox extends JPanel
 		}
 
 		return new Color((int) r, (int) g, (int) b);
+	}
+
+	public String getActions() {
+		return actions.getText();
+	}
+
+	public String getActionsHr() {
+		return actionsHr.getText();
 	}
 }

@@ -36,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -69,7 +70,7 @@ public class XpTrackerPlugin extends Plugin
 	private ScheduledExecutorService executor;
 
 	private NavigationButton navButton;
-	private XpPanel xpPanel;
+	private static XpPanel xpPanel;
 	private WorldResult worlds;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
@@ -168,6 +169,10 @@ public class XpTrackerPlugin extends Plugin
 			}
 		}
 		return xpType;
+	}
+
+	public static XpInfoBox getSkillXpInfo (Skill skill) {
+		return xpPanel.getInfoBoxes().get(skill);
 	}
 
 	@Subscribe
