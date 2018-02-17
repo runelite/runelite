@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.xptracker;
 
-public class PluginInstantiationException extends Exception
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Skill;
+
+@Singleton
+class XpTrackerServiceImpl implements XpTrackerService
 {
-	public PluginInstantiationException(String message)
+	private final XpTrackerPlugin plugin;
+
+	@Inject
+	XpTrackerServiceImpl(XpTrackerPlugin plugin)
 	{
-		super(message);
+		this.plugin = plugin;
 	}
 
-	public PluginInstantiationException(Throwable cause)
+	@Override
+	public int getActions(Skill skill)
 	{
-		super(cause);
+		SkillXPInfo xpInfo = plugin.getSkillXpInfo(skill);
+		return xpInfo.getActions();
 	}
 
+	@Override
+	public int getActionsHr(Skill skill)
+	{
+		SkillXPInfo xpInfo = plugin.getSkillXpInfo(skill);
+		return xpInfo.getActionsHr();
+	}
 }

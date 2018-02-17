@@ -49,7 +49,7 @@ class XpPanel extends PluginPanel
 	private final JLabel totalXpGained = new JLabel();
 	private final JLabel totalXpHr = new JLabel();
 
-	XpPanel(Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
 	{
 		super();
 
@@ -90,7 +90,7 @@ class XpPanel extends PluginPanel
 					break;
 				}
 
-				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, new SkillXPInfo(skill), iconManager));
+				infoBoxes.put(skill, new XpInfoBox(client, infoBoxPanel, xpTrackerPlugin.getSkillXpInfo(skill), iconManager));
 			}
 		}
 		catch (IOException e)
