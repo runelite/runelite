@@ -34,11 +34,13 @@ import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
 @SpringBootApplication
+@EnableScheduling
 public class SpringBootWebApplicationTest
 {
 	@Bean("Runelite SQL2O")
