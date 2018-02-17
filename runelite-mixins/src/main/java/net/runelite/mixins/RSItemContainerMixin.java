@@ -61,11 +61,11 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		return items;
 	}
 
-	@FieldHook("itemIds")
+	@FieldHook("stackSizes")
 	@Inject
 	public void itemsChanged(int idx)
 	{
-		if (idx >= 0 && idx <= getItemIds().length)
+		if (idx >= 0 && idx < getItemIds().length)
 		{
 			ContainerChanged containerChanged = new ContainerChanged();
 			containerChanged.setContainer(this);
