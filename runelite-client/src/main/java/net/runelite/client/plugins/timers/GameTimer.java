@@ -58,6 +58,7 @@ public enum GameTimer
 	ICEBURST("iceburst", "Ice burst", GraphicID.ICE_BURST, 9600, ChronoUnit.MILLIS),
 	ICEBLITZ("iceblitz", "Ice blitz", GraphicID.ICE_BLITZ, 14400, ChronoUnit.MILLIS),
 	ICEBARRAGE("icebarrage", "Ice barrage", GraphicID.ICE_BARRAGE, 19200, ChronoUnit.MILLIS),
+	FREEZEIMMUNE("freezeimmune", "Freeze Immune", 3600, ChronoUnit.MILLIS),
 	IMBUEDHEART("imbuedheart", "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE("vengeance", "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
 	VENGEANCEOTHER("vengeanceother", "Vengeance Other", -1, 30, ChronoUnit.SECONDS),
