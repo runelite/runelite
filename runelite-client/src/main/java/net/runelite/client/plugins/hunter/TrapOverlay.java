@@ -110,7 +110,8 @@ public class TrapOverlay extends Overlay
 		Widget viewport = client.getViewportWidget();
 		for (HunterTrap trap : plugin.getTraps())
 		{
-			if (viewport != null && viewport.contains(trap.getGameObject().getCanvasLocation()))
+			net.runelite.api.Point trapLoc = trap.getGameObject().getCanvasLocation();
+			if (viewport != null && trapLoc != null && viewport.contains(trapLoc))
 			{
 				switch (trap.getState())
 				{
