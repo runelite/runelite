@@ -155,6 +155,8 @@ public interface Client extends GameEngine
 	Area[] getMapAreas();
 
 	IndexedSprite[] getMapScene();
+	
+	SpritePixels[] getMapDots();
 
 	int getGameCycle();
 
@@ -165,6 +167,8 @@ public interface Client extends GameEngine
 	void setModIcons(IndexedSprite[] modIcons);
 
 	IndexedSprite createIndexedSprite();
+
+	SpritePixels createSpritePixels(int[] pixels, int width, int height);
 
 	Point getSceneDestinationLocation();
 
