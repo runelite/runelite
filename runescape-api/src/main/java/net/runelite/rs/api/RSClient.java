@@ -315,6 +315,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSSpritePixels[] getMapIcons();
 
+	@Import("mapDots")
+	RSSpritePixels[] getMapDots();
+
 	@Import("modIcons")
 	@Override
 	RSIndexedSprite[] getModIcons();
@@ -325,6 +328,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	@Override
 	RSIndexedSprite createIndexedSprite();
+
+	@Construct
+	@Override
+	RSSpritePixels createSpritePixels(int[] pixels, int width, int height);
 
 	@Import("destinationX")
 	int getDestinationX();
