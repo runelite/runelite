@@ -39,9 +39,21 @@ import java.awt.Color;
 public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showHighlightedOnly",
+		name = "Show Highlighted items only",
+		description = "Configures whether or not to draw items only on your highlighted list",
+		position = 1
+	)
+	default boolean showHighlightedOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showGEPrice",
 		name = "Show Grand Exchange Prices",
-		description = "Configures whether or not to draw GE prices alongside ground items"
+		description = "Configures whether or not to draw GE prices alongside ground items",
+		position = 2
 	)
 	default boolean showGEPrice()
 	{
@@ -51,7 +63,8 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "showHAValue",
 		name = "Show High Alchemy Values",
-		description = "Configures whether or not to draw High Alchemy values alongside ground items"
+		description = "Configures whether or not to draw High Alchemy values alongside ground items",
+		position = 3
 	)
 	default boolean showHAValue()
 	{
@@ -59,29 +72,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "Hidden Items",
-		description = "Configures hidden ground items. Format: (item), (item)"
-	)
-	default String getHiddenItems()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "highlightedItems",
-		name = "Highlighted Items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)"
-	)
-	default String getHighlightItems()
-	{
-		return "";
-	}
-
-	@ConfigItem(
 		keyName = "hideUnderGeValue",
 		name = "Hide < GE Value",
-		description = "Configures hidden ground items under GE value"
+		description = "Configures hidden ground items under GE value",
+		position = 4
 	)
 	default int getHideUnderGeValue()
 	{
@@ -91,7 +85,8 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "hideUnderHaValue",
 		name = "Hide < HA Value",
-		description = "Configures hidden ground items under High Alch value"
+		description = "Configures hidden ground items under High Alch value",
+		position = 5
 	)
 	default int getHideUnderHAValue()
 	{
@@ -99,9 +94,32 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightedItems",
+		name = "Highlighted Items",
+		description = "Configures specifically highlighted ground items. Format: (item), (item)",
+		position = 6
+	)
+	default String getHighlightItems()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "hiddenItems",
+		name = "Hidden Items",
+		description = "Configures hidden ground items. Format: (item), (item)",
+		position = 7
+	)
+	default String getHiddenItems()
+	{
+		return "";
+	}
+
+	@ConfigItem(
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
-		description = "Configures the color for highlighted items"
+		description = "Configures the color for highlighted items",
+		position = 8
 	)
 	default Color highlightedColor()
 	{
@@ -111,7 +129,8 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "lowValueColor",
 		name = "Low value items color",
-		description = "Configures the color for low value items"
+		description = "Configures the color for low value items",
+		position = 9
 	)
 	default Color lowValueColor()
 	{
@@ -121,7 +140,8 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
-		description = "Configures the color for medium value items"
+		description = "Configures the color for medium value items",
+		position = 10
 	)
 	default Color mediumValueColor()
 	{
@@ -131,7 +151,8 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highValueColor",
 		name = "High value items color",
-		description = "Configures the color for high value items"
+		description = "Configures the color for high value items",
+		position = 11
 	)
 	default Color highValueColor()
 	{
@@ -141,20 +162,11 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
-		description = "Configures the color for insane value items"
+		description = "Configures the color for insane value items",
+		position = 12
 	)
 	default Color insaneValueColor()
 	{
 		return Color.decode("#FF66B2");
-	}
-
-	@ConfigItem(
-		keyName = "showHighlightedOnly",
-		name = "Show Highlighted items only",
-		description = "Configures whether or not to draw items only on your highlighted list"
-	)
-	default boolean showHighlightedOnly()
-	{
-		return false;
 	}
 }
