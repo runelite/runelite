@@ -64,6 +64,11 @@ class CannonOverlay extends Overlay
 			return null;
 		}
 
+		if (!Perspective.isWorldInScene(client, plugin.myCannon))
+		{
+			return null;
+		}
+
 		net.runelite.api.Point cannonLoc = Perspective.getCanvasTextLocation(client,
 			graphics,
 			Perspective.worldToLocal(client, plugin.myCannon),
