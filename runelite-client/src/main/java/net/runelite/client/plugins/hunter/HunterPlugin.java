@@ -124,6 +124,7 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
+			case ObjectID.MAGIC_BOX: // Imp box placed
 			case ObjectID.BOX_TRAP_9380: //Box trap placed
 			case ObjectID.BIRD_SNARE_9345: //Bird snare placed
 			case ObjectID.NET_TRAP_9343: //Net trap placed at green sallys
@@ -154,6 +155,7 @@ public class HunterPlugin extends Plugin
 
 				}
 				break;
+			case ObjectID.MAGIC_BOX_19226: // Imp caught
 			case ObjectID.SHAKING_BOX: //Black chinchompa caught
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
 			case ObjectID.SHAKING_BOX_9383: //Red chinchompa caught
@@ -180,6 +182,7 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
+			case ObjectID.MAGIC_BOX_FAILED: //Empty imp box
 			case ObjectID.BOX_TRAP_9385: //Empty box trap
 			case ObjectID.BIRD_SNARE: //Empty box trap
 				if (myTrap != null)
@@ -192,6 +195,9 @@ public class HunterPlugin extends Plugin
 					lastActionTime = Instant.now();
 				}
 				break;
+			// Imp entering box
+			case ObjectID.MAGIC_BOX_19225:
+
 			//Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
