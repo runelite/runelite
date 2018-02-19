@@ -25,12 +25,13 @@
 package net.runelite.client.plugins.raids.solver;
 
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 public class Layout
 {
 	@Getter
-	private final ArrayList<Room> rooms = new ArrayList<>();
+	private final List<Room> rooms = new ArrayList<>();
 
 	public void add(Room room)
 	{

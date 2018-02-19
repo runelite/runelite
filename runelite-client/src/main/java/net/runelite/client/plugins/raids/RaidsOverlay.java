@@ -57,60 +57,61 @@ public class RaidsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
 	{
-		if (config.scoutOverlay() && scoutOverlayShown)
+		if (!config.scoutOverlay() || !scoutOverlayShown)
 		{
-			panelComponent.getLines().clear();
+			return null;
+		}
 
-			if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
-			{
-				panelComponent.setTitleColor(Color.RED);
-				panelComponent.setTitle("Unable to scout this raid!");
-				return panelComponent.render(graphics, parent);
-			}
+		panelComponent.getLines().clear();
 
-			panelComponent.setTitleColor(Color.WHITE);
-			panelComponent.setTitle("Raid scouter");
-
-			Color color;
-
-			for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
-			{
-				int position = layoutRoom.getPosition();
-				RaidRoom room = plugin.getRaid().getRoom(position);
-
-				if (room == null)
-					continue;
-
-				color = Color.WHITE;
-
-				switch (room.getType())
-				{
-					case COMBAT:
-						if (plugin.getBlacklist().contains(room.getBoss().getName().toLowerCase()))
-							color = Color.RED;
-
-						panelComponent.getLines().add(new PanelComponent.Line(
-							room.getType().getName(), Color.WHITE, room.getBoss().getName(), color
-						));
-						break;
-
-					case PUZZLE:
-						if (plugin.getBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
-							color = Color.RED;
-
-						panelComponent.getLines().add(new PanelComponent.Line(
-								room.getType().getName(), Color.WHITE, room.getPuzzle().getName(), color
-						));
-						break;
-
-					default:
-						break;
-				}
-			}
-
+		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
+		{
+			panelComponent.setTitleColor(Color.RED);
+			panelComponent.setTitle("Unable to scout this raid!");
 			return panelComponent.render(graphics, parent);
 		}
 
-		return null;
+		panelComponent.setTitleColor(Color.WHITE);
+		panelComponent.setTitle("Raid scouter");
+
+		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
+		{
+			int position = layoutRoom.getPosition();
+			RaidRoom room = plugin.getRaid().getRoom(position);
+
+			if (room == null)
+			{
+				continue;
+			}
+
+			Color color = Color.WHITE;
+
+			switch (room.getType())
+			{
+				case COMBAT:
+					if (plugin.getBlacklist().contains(room.getBoss().getName().toLowerCase()))
+					{
+						color = Color.RED;
+					}
+
+					panelComponent.getLines().add(new PanelComponent.Line(
+						room.getType().getName(), Color.WHITE, room.getBoss().getName(), color
+					));
+					break;
+
+				case PUZZLE:
+					if (plugin.getBlacklist().contains(room.getPuzzle().getName().toLowerCase()))
+					{
+						color = Color.RED;
+					}
+
+					panelComponent.getLines().add(new PanelComponent.Line(
+						room.getType().getName(), Color.WHITE, room.getPuzzle().getName(), color
+					));
+					break;
+			}
+		}
+
+		return panelComponent.render(graphics, parent);
 	}
 }

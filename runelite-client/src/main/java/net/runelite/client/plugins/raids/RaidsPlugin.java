@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -65,11 +66,11 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
-	private static final int REGION_MAX_SIZE = 104;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final int TOTAL_POINTS = 0, PERSONAL_POINTS = 1, TEXT_CHILD = 4;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+
 	private BufferedImage raidsIcon;
 	private RaidsTimer timer;
 	private boolean inRaidChambers;
@@ -88,6 +89,9 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private RaidsOverlay overlay;
+
+	@Inject
+	private LayoutSolver layoutSolver;
 
 	@Getter
 	private Raid raid;
@@ -165,7 +169,7 @@ public class RaidsPlugin extends Plugin
 					return;
 				}
 
-				Layout layout = LayoutSolver.getInstance().findLayout(raid.toCode());
+				Layout layout = layoutSolver.findLayout(raid.toCode());
 
 				if (layout == null)
 				{
@@ -274,14 +278,14 @@ public class RaidsPlugin extends Plugin
 	{
 		Tile[][] tiles = client.getRegion().getTiles()[LOBBY_PLANE];
 
-		for (int x = 0; x < REGION_MAX_SIZE; x++)
+		for (int x = 0; x < SCENE_SIZE; x++)
 		{
-			for (int y = 0; y < REGION_MAX_SIZE; y++)
+			for (int y = 0; y < SCENE_SIZE; y++)
 			{
 				if (tiles[x][y] == null || tiles[x][y].getWallObject() == null)
 					continue;
 
-				if (tiles[x][y].getWallObject().getId() == 12231)
+				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
 					return tiles[x][y].getRegionLocation();
 			}
 		}
@@ -319,13 +323,13 @@ public class RaidsPlugin extends Plugin
 					x = gridBase.getX() + (j * RaidRoom.ROOM_MAX_SIZE);
 					offsetX = 0;
 
-					if (x > REGION_MAX_SIZE && position > 1 && position < 4)
+					if (x > SCENE_SIZE && position > 1 && position < 4)
 						position++;
 
 					if (x < 0)
 						offsetX = Math.abs(x) + 1; //add 1 because the tile at x=0 will always be null
 
-					if (x < REGION_MAX_SIZE && y >= 0 && y < REGION_MAX_SIZE)
+					if (x < SCENE_SIZE && y >= 0 && y < SCENE_SIZE)
 					{
 						if (tiles[x + offsetX][y] == null)
 						{

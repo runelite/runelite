@@ -81,19 +81,9 @@ public class LayoutSolver
 		"SPSFP.CCCSF - #NWSWWN#ESEENW",
 	};
 
-	private static LayoutSolver instance = null;
-
 	private LayoutSolver()
 	{
 		build();
-	}
-
-	public static LayoutSolver getInstance()
-	{
-		if (instance == null)
-			instance = new LayoutSolver();
-
-		return instance;
 	}
 
 	public Layout findLayout(String code)

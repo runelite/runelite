@@ -154,8 +154,8 @@ public class RaidRoom
 			case PUZZLE:
 				return "RaidRoom (type: " + type.getName() + ", " + puzzle.getName() + ")";
 
-				default:
-					return "RaidRoom (type: " + type.getName() + ")";
+			default:
+				return "RaidRoom (type: " + type.getName() + ")";
 		}
 	}
 }

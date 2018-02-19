@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.raids;
 
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
@@ -80,7 +81,7 @@ public class Raid
 
 	public RaidRoom[] getCombatRooms()
 	{
-		ArrayList<RaidRoom> combatRooms = new ArrayList<>();
+		List<RaidRoom> combatRooms = new ArrayList<>();
 
 		for (Room room : layout.getRooms())
 		{
