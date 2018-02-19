@@ -71,10 +71,14 @@ public class ArchiveResponseEncoder extends MessageToByteEncoder<ArchiveResponse
 			archiveResponse.getData().length, size);
 	}
 
-	private void writeChunk(ByteBuf chunk, ByteBuf out) {
-		try {
+	private void writeChunk(ByteBuf chunk, ByteBuf out)
+	{
+		try
+		{
 			out.writeBytes(chunk);
-		} finally {
+		}
+		finally
+		{
 			chunk.release();
 		}
 	}
