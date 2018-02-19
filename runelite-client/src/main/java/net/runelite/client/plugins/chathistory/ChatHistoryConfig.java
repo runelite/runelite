@@ -45,4 +45,15 @@ public interface ChatHistoryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "showTimestamps",
+		name = "Show chat message timestamps",
+		description = "Configures whether timestamps next to chat messages are displayed"
+	)
+	default boolean showTimestamps()
+	{
+		return false;
+	}
 }

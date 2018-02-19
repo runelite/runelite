@@ -29,10 +29,15 @@ import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
+import joptsimple.internal.Strings;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
@@ -44,6 +49,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(name = "Chat history")
 public class ChatHistoryPlugin extends Plugin
 {
+	private static final Pattern DATE_PATTERN = Pattern.compile("(\\[?)([0-9]+:[0-9]+)(])");
 	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
 		ChatMessageType.PUBLIC,
@@ -54,7 +60,18 @@ public class ChatHistoryPlugin extends Plugin
 		ChatMessageType.GAME
 	);
 
+	private static final Set<ChatMessageType> ALLOWED_TIMESTAMP = Sets.newHashSet(
+		ChatMessageType.PUBLIC,
+		ChatMessageType.CLANCHAT,
+		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
+		ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD,
+		ChatMessageType.PRIVATE_MESSAGE_SENT
+	);
+
 	private Queue<QueuedMessage> messageQueue;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -73,6 +90,7 @@ public class ChatHistoryPlugin extends Plugin
 	{
 		messageQueue.clear();
 		messageQueue = null;
+		clearTimestamps();
 	}
 
 	@Provides
@@ -93,11 +111,35 @@ public class ChatHistoryPlugin extends Plugin
 		{
 			messageQueue.clear();
 		}
+
+		if (!config.showTimestamps())
+		{
+			clearTimestamps();
+		}
 	}
 
 	@Subscribe
 	public void onSetMessage(SetMessage message)
 	{
+		long runeLiteTime = message.getMessageNode().getRuneLiteTime();
+
+		if (config.showTimestamps() && ALLOWED_TIMESTAMP.contains(message.getType()))
+		{
+			// In case we received message and either time is not set or the time is set but sender do not contains
+			// time, reset time. Second case happens when RS client starts reusing messages in chat buffer
+			if (runeLiteTime == 0 || (!Strings.isNullOrEmpty(message.getMessageNode().getSender()) &&
+				!DATE_PATTERN.matcher(message.getMessageNode().getSender()).find()))
+			{
+				runeLiteTime = Instant.now().toEpochMilli();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+					.runeLiteTime(Instant.ofEpochMilli(runeLiteTime))
+					.runeLiteFormattedMessage(message.getMessageNode().getRuneLiteFormatMessage())
+					.target(message.getMessageNode())
+					.build());
+			}
+		}
+
 		if (!config.persistChatHistory())
 		{
 			return;
@@ -149,4 +191,18 @@ public class ChatHistoryPlugin extends Plugin
 
 		return null;
 	}
+
+	/**
+	 * Set all timestamps on all messages to 0
+	 */
+	private void clearTimestamps()
+	{
+		client.getChatLineMap().values().stream()
+			.flatMap(chatLineBuffer -> Arrays.stream(chatLineBuffer.getLines()))
+			.filter(Objects::nonNull)
+			.forEach(line -> line.setRuneLiteTime(0));
+
+		chatMessageManager.refreshAll();
+	}
+
 }
