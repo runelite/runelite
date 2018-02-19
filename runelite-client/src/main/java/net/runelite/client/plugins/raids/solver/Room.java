@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raids.solver;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
-@Getter
-public enum Setting
+public class Room
 {
-	ATTACK_STYLE(43),
+	@Getter
+	private final int position;
 
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
+	@Getter
+	private final char symbol;
 
-	IN_RAID_PARTY(1427);
+	@Getter
+	@Setter
+	private Room next;
 
-	private final int id;
+	@Getter
+	@Setter
+	private Room previous;
+
+	Room(int position, char symbol)
+	{
+		this.position = position;
+		this.symbol = symbol;
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raids.solver;
 
-import lombok.AllArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
-public enum Setting
+public class Layout
 {
-	ATTACK_STYLE(43),
+	@Getter
+	private final List<Room> rooms = new ArrayList<>();
 
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
+	public void add(Room room)
+	{
+		rooms.add(room);
+	}
 
-	IN_RAID_PARTY(1427);
+	public Room getRoomAt(int position)
+	{
+		for (Room room : rooms)
+		{
+			if (room.getPosition() == position)
+				return room;
+		}
 
-	private final int id;
+		return null;
+	}
+
+	public String toCode()
+	{
+		StringBuilder builder = new StringBuilder();
+
+		for (Room room : rooms)
+		{
+			builder.append(room.getSymbol());
+		}
+
+		return builder.toString();
+	}
 }

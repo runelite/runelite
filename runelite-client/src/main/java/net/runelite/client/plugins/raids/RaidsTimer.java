@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Kamiel
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raids;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@AllArgsConstructor
-@Getter
-public enum Setting
+public class RaidsTimer extends InfoBox
 {
-	ATTACK_STYLE(43),
+	private final Instant startTime;
+	private LocalTime time;
 
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
+	@Setter
+	private boolean stopped;
 
-	IN_RAID_PARTY(1427);
+	public RaidsTimer(BufferedImage image, Instant startTime)
+	{
+		super(image);
+		this.startTime = startTime;
+		stopped = false;
+	}
 
-	private final int id;
+	@Override
+	public String getText()
+	{
+		if (startTime == null)
+			return "";
+
+		if (!stopped)
+		{
+			Duration elapsed = Duration.between(startTime, Instant.now());
+			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+		}
+
+		if (time.getHour() > 0)
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		if (stopped)
+			return Color.GREEN;
+
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return "Elapsed raid time: " + time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+	}
 }
