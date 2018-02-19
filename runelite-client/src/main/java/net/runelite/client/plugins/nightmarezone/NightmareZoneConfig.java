@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -69,10 +70,21 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "moveoverlay",
+		name = "Override NMZ overlay",
+		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
+		position = 4
+	)
+	default boolean moveOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 4
+		position = 5
 	)
 	default boolean absorptionNotification()
 	{
@@ -83,7 +95,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 5
+		position = 6
 	)
 	default int absorptionThreshold()
 	{
@@ -91,13 +103,25 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "moveoverlay",
-		name = "Override NMZ overlay",
-		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
-		position = 6
+		keyName = "absorptioncoloroverthreshold",
+		name = "Color above threshold",
+		description = "Configures the color for the absorption widget when above the threshold",
+		position = 7
 	)
-	default boolean moveOverlay()
+	default Color absorptionColorAboveThreshold()
 	{
-		return true;
+		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "absorptioncolorbelowthreshold",
+		name = "Color below threshold",
+		description = "Configures the color for the absorption widget when below the threshold",
+		position = 8
+	)
+	default Color absorptionColorBelowThreshold()
+	{
+		return Color.RED;
+	}
+
 }
