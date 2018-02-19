@@ -56,18 +56,6 @@ public class RememberUsernamePlugin extends Plugin
 		applyUsername();
 	}
 
-	protected void shutDown() throws Exception
-	{
-		GameState gameState = client.getGameState();
-		if (gameState == GameState.LOGIN_SCREEN)
-		{
-			if (Objects.equals(config.username(), client.getUsername()))
-			{
-				client.setUsername("");
-			}
-		}
-	}
-
 	@Provides
 	RememberUsernameConfig getConfig(ConfigManager configManager)
 	{
@@ -83,13 +71,20 @@ public class RememberUsernamePlugin extends Plugin
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			if (config.username().equals(client.getUsername()))
+			String username = "";
+			
+			if (client.getPreferences().getRememberedUsername() != null)
+			{
+				username = client.getUsername();
+			}
+
+			if (config.username().equals(username))
 			{
 				return;
 			}
 
-			log.debug("Saving username: {}", client.getUsername());
-			config.username(client.getUsername());
+			log.debug("Saving username: {}", username);
+			config.username(username);
 		}
 	}
 
@@ -106,12 +101,13 @@ public class RememberUsernamePlugin extends Plugin
 		if (gameState == GameState.LOGIN_SCREEN)
 		{
 			String username = config.username();
+
 			if (Strings.isNullOrEmpty(username))
 			{
 				return;
 			}
 
-			client.setUsername(username);
+			client.getPreferences().setRememberedUsername(username);
 		}
 	}
 }
