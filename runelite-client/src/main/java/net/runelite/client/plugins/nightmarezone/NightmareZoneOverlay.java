@@ -133,15 +133,25 @@ class NightmareZoneOverlay extends Overlay
 
 	private void addAbsorptionCounter(int startValue)
 	{
-		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), "0");
-		absorptionCounter.setAbsorption(startValue);
+		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), startValue, config.absorptionThreshold());
+		absorptionCounter.setAboveThresholdColor(config.absorptionColorAboveThreshold());
+		absorptionCounter.setBelowThresholdColor(config.absorptionColorBelowThreshold());
 		infoBoxManager.addInfoBox(absorptionCounter);
 	}
 
-	private void removeAbsorptionCounter()
+	public void removeAbsorptionCounter()
 	{
 		infoBoxManager.removeInfoBox(absorptionCounter);
 		absorptionCounter = null;
 	}
 
+	public void updateConfig()
+	{
+		if (absorptionCounter != null)
+		{
+			absorptionCounter.setAboveThresholdColor(config.absorptionColorAboveThreshold());
+			absorptionCounter.setBelowThresholdColor(config.absorptionColorBelowThreshold());
+			absorptionCounter.setThreshold(config.absorptionThreshold());
+		}
+	}
 }

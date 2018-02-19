@@ -32,6 +32,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -65,6 +66,18 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+
+	@Override
+	protected void shutDown()
+	{
+		overlay.removeAbsorptionCounter();
+	}
+
+	@Subscribe
+	public void updateConfig(ConfigChanged event)
+	{
+		overlay.updateConfig();
+	}
 
 	@Provides
 	NightmareZoneConfig getConfig(ConfigManager configManager)
