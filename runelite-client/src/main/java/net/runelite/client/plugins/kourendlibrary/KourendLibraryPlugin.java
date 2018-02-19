@@ -143,7 +143,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (lastBookcaseAnimatedOn != null)
 		{
-			Widget find = client.getWidget(WidgetInfo.DIALOG_LIBRARY_FIND);
+			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
 			if (find != null)
 			{
 				Book book = Book.byId(find.getItemId());

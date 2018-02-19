@@ -35,10 +35,10 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.HUNTER_LEVEL_UP_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.HUNTER_LEVEL_UP_LEVEL;
-import static net.runelite.api.widgets.WidgetInfo.HUNTER_LEVEL_UP_SKILL;
+import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_SPRITE;
+import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_SKILL;
 import static net.runelite.api.widgets.WidgetInfo.PACK;
@@ -197,18 +197,18 @@ public class ScreenshotPluginTest
 	public void testHunter()
 	{
 		Widget widget = mock(Widget.class);
-		when(widget.getId()).thenReturn(PACK(HUNTER_LEVEL_UP_GROUP_ID, 0));
+		when(widget.getId()).thenReturn(PACK(DIALOG_SPRITE_GROUP_ID, 0));
 
 		Widget skillChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(HUNTER_LEVEL_UP_SKILL))).thenReturn(skillChild);
+		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_SPRITE))).thenReturn(skillChild);
 
 		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(HUNTER_LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
 		when(skillChild.getText()).thenReturn("Congratulations, you just advanced a Hunter level.");
 		when(levelChild.getText()).thenReturn("Your Hunter level is now 2.");
 
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(HUNTER_LEVEL_UP_SKILL, HUNTER_LEVEL_UP_LEVEL));
+		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_SPRITE, DIALOG_SPRITE_TEXT));
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(widget);

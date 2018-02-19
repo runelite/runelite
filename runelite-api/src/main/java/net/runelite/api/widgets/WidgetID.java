@@ -57,7 +57,7 @@ public class WidgetID
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
 	public static final int LEVEL_UP_GROUP_ID = 233;
-	public static final int HUNTER_LEVEL_UP_GROUP_ID = 193;
+	public static final int DIALOG_SPRITE_GROUP_ID = 193;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
@@ -66,7 +66,6 @@ public class WidgetID
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int NIGHTMARE_ZONE_GROUP_ID = 202;
 	public static final int BLAST_FURNACE_GROUP_ID = 474;
-	public static final int LIBRARY_FIND_GROUP_ID = 193;
 
 	static class WorldMap
 	{
@@ -289,9 +288,9 @@ public class WidgetID
 		static final int VISIBLE_BOX = 4;
 	}
 
-	static class DialogLibrary
+	static class DialogSprite
 	{
-		static final int ITEM = 0;
+		static final int SPRITE = 0;
 		static final int TEXT = 1;
 	}
 }
