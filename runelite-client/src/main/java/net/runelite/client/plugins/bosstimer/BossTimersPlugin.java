@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -42,6 +43,9 @@ public class BossTimersPlugin extends Plugin
 {
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Override
 	protected void shutDown() throws Exception
@@ -65,7 +69,7 @@ public class BossTimersPlugin extends Plugin
 
 		log.debug("Creating spawn timer for {} ({} seconds)", actor.getName(), boss.getSpawnTime());
 
-		RespawnTimer timer = new RespawnTimer(boss);
+		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()));
 		infoBoxManager.addInfoBox(timer);
 	}
 }

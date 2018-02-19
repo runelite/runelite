@@ -25,43 +25,38 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ItemID;
 
 @Slf4j
 enum Boss
 {
-	GENERAL_GRAARDOR("General Graardor", 90, ChronoUnit.SECONDS, "bando"),
-	KRIL_TSUTSAROTH("K'ril Tsutsaroth", 90, ChronoUnit.SECONDS, "zammy"),
-	KREEARRA("Kree'arra", 90, ChronoUnit.SECONDS, "arma"),
-	COMMANDER_ZILYANA("Commander Zilyana", 90, ChronoUnit.SECONDS, "sara"),
-	CALLISTO("Callisto", 30, ChronoUnit.SECONDS, "callisto"),
-	CHAOS_FANATIC("Chaos fanatic", 30, ChronoUnit.SECONDS, "chaos_fanatic"),
-	CRAZY_ARCHAEOLOGIST("Crazy archaeologist", 30, ChronoUnit.SECONDS, "crazy_arch"),
-	KING_BLACK_DRAGON("King Black Dragon", 10, ChronoUnit.SECONDS, "kbd"),
-	SCORPIA("Scorpia", 10, ChronoUnit.SECONDS, "scorpia"),
-	VENENATIS("Venenatis", 30, ChronoUnit.SECONDS, "venenatis"),
-	VETION("Vet'ion", 30, ChronoUnit.SECONDS, "vetion"),
-	DAGANNOTH_PRIME("Dagannoth Prime", 90, ChronoUnit.SECONDS, "prime"),
-	DAGANNOTH_REX("Dagannoth Rex", 90, ChronoUnit.SECONDS, "rex"),
-	DAGANNOTH_SUPREME("Dagannoth Supreme", 90, ChronoUnit.SECONDS, "supreme"),
-	CORPOREAL_BEAST("Corporeal Beast", 30, ChronoUnit.SECONDS, "corp"),
-	GIANT_MOLE("Giant Mole", 10, ChronoUnit.SECONDS, "mole");
+	GENERAL_GRAARDOR("General Graardor", 90, ChronoUnit.SECONDS, ItemID.PET_GENERAL_GRAARDOR),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth", 90, ChronoUnit.SECONDS, ItemID.PET_KRIL_TSUTSAROTH),
+	KREEARRA("Kree'arra", 90, ChronoUnit.SECONDS, ItemID.PET_KREEARRA),
+	COMMANDER_ZILYANA("Commander Zilyana", 90, ChronoUnit.SECONDS, ItemID.PET_ZILYANA),
+	CALLISTO("Callisto", 30, ChronoUnit.SECONDS, ItemID.CALLISTO_CUB),
+	CHAOS_FANATIC("Chaos fanatic", 30, ChronoUnit.SECONDS, ItemID.ANCIENT_STAFF),
+	CRAZY_ARCHAEOLOGIST("Crazy archaeologist", 30, ChronoUnit.SECONDS, ItemID.FEDORA),
+	KING_BLACK_DRAGON("King Black Dragon", 10, ChronoUnit.SECONDS, ItemID.PRINCE_BLACK_DRAGON),
+	SCORPIA("Scorpia", 10, ChronoUnit.SECONDS, ItemID.SCORPIAS_OFFSPRING),
+	VENENATIS("Venenatis", 30, ChronoUnit.SECONDS, ItemID.VENENATIS_SPIDERLING),
+	VETION("Vet'ion", 30, ChronoUnit.SECONDS, ItemID.VETION_JR),
+	DAGANNOTH_PRIME("Dagannoth Prime", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_PRIME),
+	DAGANNOTH_REX("Dagannoth Rex", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_REX),
+	DAGANNOTH_SUPREME("Dagannoth Supreme", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_SUPREME),
+	CORPOREAL_BEAST("Corporeal Beast", 30, ChronoUnit.SECONDS, ItemID.PET_DARK_CORE),
+	GIANT_MOLE("Giant Mole", 10, ChronoUnit.SECONDS, ItemID.BABY_MOLE);
 
 	private static final Map<String, Boss> bosses = new HashMap<>();
 
 	private final String name;
 	private final Duration spawnTime;
-	private final String imageResource;
-
-	private BufferedImage image;
+	private final int itemSpriteId;
 
 	static
 	{
@@ -71,11 +66,11 @@ enum Boss
 		}
 	}
 
-	private Boss(String name, long period, ChronoUnit unit, String imageResource)
+	private Boss(String name, long period, ChronoUnit unit, int itemSpriteId)
 	{
 		this.name = name;
 		this.spawnTime = Duration.of(period, unit);
-		this.imageResource = imageResource;
+		this.itemSpriteId = itemSpriteId;
 	}
 
 	public String getName()
@@ -88,24 +83,9 @@ enum Boss
 		return spawnTime;
 	}
 
-	public BufferedImage getImage()
+	public int getItemSpriteId()
 	{
-		if (image != null)
-		{
-			return image;
-		}
-
-		InputStream in = Boss.class.getResourceAsStream(imageResource + ".png");
-		try
-		{
-			image = ImageIO.read(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load image", ex);
-		}
-
-		return image;
+		return itemSpriteId;
 	}
 
 	public static Boss find(String name)
