@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids.solver;
 
+import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -46,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  * copies or substantial portions of the Software.
  */
 @Slf4j
+@Singleton
 public class LayoutSolver
 {
 	@Getter
@@ -81,7 +83,7 @@ public class LayoutSolver
 		"SPSFP.CCCSF - #NWSWWN#ESEENW",
 	};
 
-	private LayoutSolver()
+	public LayoutSolver()
 	{
 		build();
 	}
