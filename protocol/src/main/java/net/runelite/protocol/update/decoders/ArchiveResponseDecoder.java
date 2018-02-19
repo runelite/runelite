@@ -29,8 +29,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
-
-import io.netty.util.ReferenceCountUtil;
 import net.runelite.cache.fs.jagex.CompressionType;
 import net.runelite.protocol.api.update.ArchiveResponsePacket;
 import org.slf4j.Logger;
@@ -93,16 +91,9 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 				bytesInBlock,
 				compressedData.writerIndex(), size);
 
-			ByteBuf chunk = null;
-			try
-			{
-				chunk = in.readBytes(bytesToRead);
-				compressedData.writeBytes(chunk);
-			}
-			finally
-			{
-				ReferenceCountUtil.release(chunk);
-			}
+			ByteBuf chunk = in.readBytes(bytesToRead);
+			compressedData.writeBytes(chunk);
+			chunk.release();
 
 			totalRead += bytesToRead;
 
