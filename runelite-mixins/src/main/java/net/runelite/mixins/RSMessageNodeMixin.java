@@ -36,6 +36,9 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	private String runeLiteFormatMessage;
 
 	@Inject
+	private long runeLiteTime;
+
+	@Inject
 	@Override
 	public ChatMessageType getType()
 	{
@@ -54,5 +57,19 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	public void setRuneLiteFormatMessage(String runeLiteFormatMessage)
 	{
 		this.runeLiteFormatMessage = runeLiteFormatMessage;
+	}
+
+	@Inject
+	@Override
+	public long getRuneLiteTime()
+	{
+		return runeLiteTime;
+	}
+
+	@Inject
+	@Override
+	public void setRuneLiteTime(long runeLiteTime)
+	{
+		this.runeLiteTime = runeLiteTime;
 	}
 }

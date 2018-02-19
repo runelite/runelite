@@ -24,6 +24,7 @@
  */
 package net.runelite.client.chat;
 
+import java.time.Instant;
 import lombok.Builder;
 import lombok.Data;
 import net.runelite.api.ChatMessageType;
@@ -37,6 +38,7 @@ public class QueuedMessage
 	private final String value;
 	private String name;
 	private String sender;
+	private Instant runeLiteTime;
 	private String runeLiteFormattedMessage;
 	private MessageNode target;
 }

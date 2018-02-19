@@ -43,4 +43,8 @@ public interface MessageNode
 	String getRuneLiteFormatMessage();
 
 	void setRuneLiteFormatMessage(String runeLiteFormatMessage);
+
+	long getRuneLiteTime();
+
+	void setRuneLiteTime(long runeLiteTime);
 }

@@ -28,6 +28,7 @@ import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.time.Instant;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
@@ -123,6 +124,7 @@ public class ChatHistoryPlugin extends Plugin
 				.name(message.getName())
 				.sender(message.getSender())
 				.value(encryptMessage(message.getValue()))
+				.runeLiteTime(Instant.ofEpochMilli(message.getMessageNode().getRuneLiteTime()))
 				.runeLiteFormattedMessage(encryptMessage(message.getMessageNode().getRuneLiteFormatMessage()))
 				.build();
 

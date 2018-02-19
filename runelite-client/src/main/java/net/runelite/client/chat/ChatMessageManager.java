@@ -131,6 +131,11 @@ public class ChatMessageManager
 					target.setSender(message.getSender());
 				}
 
+				if (message.getRuneLiteTime() != null)
+				{
+					target.setRuneLiteTime(message.getRuneLiteTime().toEpochMilli());
+				}
+
 				target.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
 				update(message.getTarget());
 			}
@@ -159,6 +164,11 @@ public class ChatMessageManager
 		final MessageNode line = lines[0];
 
 		// Update the message with RuneLite additions
+		if (message.getRuneLiteTime() != null)
+		{
+			line.setRuneLiteTime(message.getRuneLiteTime().toEpochMilli());
+		}
+
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
 		update(line);
 	}
