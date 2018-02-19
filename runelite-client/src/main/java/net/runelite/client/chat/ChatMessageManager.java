@@ -27,6 +27,10 @@ package net.runelite.client.chat;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoField;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +42,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -56,6 +61,7 @@ import net.runelite.client.config.RuneLiteConfig;
 @Singleton
 public class ChatMessageManager
 {
+	private static final Pattern DATE_PATTERN = Pattern.compile("(\\[?)([0-9]+:[0-9]+)(])");
 	private final Map<ChatMessageType, Set<ChatColor>> colorCache = new HashMap<>();
 	private final Provider<Client> clientProvider;
 	private final ScheduledExecutorService executor;
@@ -178,6 +184,29 @@ public class ChatMessageManager
 		final Client client = clientProvider.get();
 		final boolean transparent = client.isResized() && client.getSetting(Varbits.TRANSPARANT_CHATBOX) != 0;
 		final Set<ChatColor> chatColors = colorCache.get(target.getType());
+
+		if (target.getRuneLiteTime() > 0)
+		{
+			final ZonedDateTime time = ZonedDateTime
+				.ofInstant(Instant.ofEpochMilli(target.getRuneLiteTime()), ZoneId.systemDefault());
+
+			final String dateFormat = time.get(ChronoField.HOUR_OF_DAY) + ":" +
+				String.format("%02d", time.get(ChronoField.MINUTE_OF_HOUR));
+
+			if (!Strings.isNullOrEmpty(target.getSender()))
+			{
+				final String sender = target.getSender();
+
+				if (!DATE_PATTERN.matcher(sender).find())
+				{
+					final String originalColor = transparent ? "9090FF" : "0000FF";
+					final String dateColor = transparent ? "FFFFFF" : "000000";
+					final String newSender = "<col=" + dateColor + ">" +
+						dateFormat + "] [<col=" + originalColor + ">" + sender;
+					target.setSender(newSender);
+				}
+			}
+		}
 
 		if (Strings.isNullOrEmpty(target.getRuneLiteFormatMessage()))
 		{
