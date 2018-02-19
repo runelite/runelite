@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberusername;
+package net.runelite.client.plugins.usernamesyncer;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -30,10 +30,10 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
 	keyName = "rememberusername",
-	name = "Remember Username",
-	description = "Configuration for the remember username plugin"
+	name = "Username Syncer",
+	description = "Syncs the username that is currently remembered between computers"
 )
-public interface RememberUsernameConfig extends Config
+public interface UsernameSyncerConfig extends Config
 {
 	@ConfigItem(
 		keyName = "username",

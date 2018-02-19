@@ -22,12 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberusername;
+package net.runelite.client.plugins.usernamesyncer;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -39,16 +38,16 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Remember username"
+	name = "Username Syncer"
 )
 @Slf4j
-public class RememberUsernamePlugin extends Plugin
+public class UsernameSyncerPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private RememberUsernameConfig config;
+	private UsernameSyncerConfig config;
 
 	@Override
 	protected void startUp() throws Exception
@@ -57,9 +56,9 @@ public class RememberUsernamePlugin extends Plugin
 	}
 
 	@Provides
-	RememberUsernameConfig getConfig(ConfigManager configManager)
+	UsernameSyncerConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RememberUsernameConfig.class);
+		return configManager.getConfig(UsernameSyncerConfig.class);
 	}
 
 	@Subscribe
@@ -72,7 +71,7 @@ public class RememberUsernamePlugin extends Plugin
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			String username = "";
-			
+
 			if (client.getPreferences().getRememberedUsername() != null)
 			{
 				username = client.getUsername();
