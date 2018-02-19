@@ -29,17 +29,17 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(
-		keyName = "nightmareZone",
-		name = "Nightmare Zone",
-		description = "Configuration for the nightmare zone plugin"
+	keyName = "nightmareZone",
+	name = "Nightmare Zone",
+	description = "Configuration for the nightmare zone plugin"
 )
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
-			keyName = "tray",
-			name = "Send Tray Notification",
-			description = "Toggles tray notifications",
-			position = 2
+		keyName = "tray",
+		name = "Send Tray Notification",
+		description = "Toggles tray notifications",
+		position = 1
 	)
 	default boolean sendTrayNotification()
 	{
@@ -47,10 +47,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "request",
-			name = "Request Window Focus",
-			description = "Toggles window focus request",
-			position = 3
+		keyName = "request",
+		name = "Request Window Focus",
+		description = "Toggles window focus request",
+		position = 2
 	)
 	default boolean requestFocus()
 	{
@@ -58,10 +58,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "overloadnotification",
-			name = "Overload notification",
-			description = "Toggles notifications when your overload runs out",
-			position = 4
+		keyName = "overloadnotification",
+		name = "Overload notification",
+		description = "Toggles notifications when your overload runs out",
+		position = 3
 	)
 	default boolean overloadNotification()
 	{
@@ -69,10 +69,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "absorptionnotification",
-			name = "Absorption notification",
-			description = "Toggles notifications when your absorption points gets below your threshold",
-			position = 5
+		keyName = "absorptionnotification",
+		name = "Absorption notification",
+		description = "Toggles notifications when your absorption points gets below your threshold",
+		position = 4
 	)
 	default boolean absorptionNotification()
 	{
@@ -80,10 +80,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "absorptionthreshold",
-			name = "Absorption Threshold",
-			description = "The amount of absorption points to send a notification at",
-			position = 6
+		keyName = "absorptionthreshold",
+		name = "Absorption Threshold",
+		description = "The amount of absorption points to send a notification at",
+		position = 5
 	)
 	default int absorptionThreshold()
 	{
@@ -91,10 +91,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "moveoverlay",
-			name = "Override NMZ overlay",
-			description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
-			position = 7
+		keyName = "moveoverlay",
+		name = "Override NMZ overlay",
+		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
+		position = 6
 	)
 	default boolean moveOverlay()
 	{
