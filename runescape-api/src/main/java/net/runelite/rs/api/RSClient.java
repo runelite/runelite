@@ -24,12 +24,12 @@
  */
 package net.runelite.rs.api;
 
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
+
+import java.util.Map;
 
 public interface RSClient extends RSGameEngine, Client
 {
