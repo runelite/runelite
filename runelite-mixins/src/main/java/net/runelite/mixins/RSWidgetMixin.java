@@ -143,7 +143,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			return true;
 		}
 
-		return isRSHidden();
+		return isSelfHidden();
 	}
 
 	@Inject
