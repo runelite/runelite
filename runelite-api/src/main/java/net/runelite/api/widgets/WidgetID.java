@@ -57,7 +57,7 @@ public class WidgetID
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
 	public static final int LEVEL_UP_GROUP_ID = 233;
-	public static final int HUNTER_LEVEL_UP_GROUP_ID = 193;
+	public static final int DIALOG_SPRITE_GROUP_ID = 193;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
@@ -292,5 +292,11 @@ public class WidgetID
 	static class PuzzleBox
 	{
 		static final int VISIBLE_BOX = 4;
+	}
+
+	static class DialogSprite
+	{
+		static final int SPRITE = 0;
+		static final int TEXT = 1;
 	}
 }

@@ -178,9 +178,6 @@ public class Hooks
 			menuAction -= 2000;
 		}
 
-		log.debug("Menu action clicked: {} ({}) on {} ({} widget: {})",
-			menuOption, menuAction, menuTarget.isEmpty() ? "<nothing>" : menuTarget, id, actionParam, widgetId);
-
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setActionParam(actionParam);
 		menuOptionClicked.setMenuOption(menuOption);
@@ -188,6 +185,8 @@ public class Hooks
 		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
 		menuOptionClicked.setId(id);
 		menuOptionClicked.setWidgetId(widgetId);
+
+		log.debug("Menu action clicked: {}", menuOptionClicked);
 
 		eventBus.post(menuOptionClicked);
 	}
