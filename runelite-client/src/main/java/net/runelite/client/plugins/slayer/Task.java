@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
@@ -44,7 +45,6 @@ enum Task
 	BLACK_DRAGONS("black dragons", ItemID.BLACK_DRAGON_MASK),
 	BLOODVELD("bloodveld", ItemID.BLOODVELD),
 	BLUE_DRAGONS("blue dragons", ItemID.BLUE_DRAGON_MASK),
-	BOSSES("bosses", -1),
 	BRINE_RATS("brine rats", ItemID.BRINE_RAT),
 	BRONZE_DRAGONS("bronze dragons", ItemID.BRONZE_DRAGON_MASK),
 	CATABLEPON("catablepon", ItemID.LEFT_SKULL_HALF),
@@ -66,11 +66,7 @@ enum Task
 	EARTH_WARRIORS("earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("elves", ItemID.ELF),
 	FEVER_SPIDERS("fever spiders", ItemID.FEVER_SPIDER),
-	FIRE_GIANTS("fire giants", -1),
-	FLESHCRAWLERS("fleshcrawlers", -1),
 	GARGOYLES("gargoyles", ItemID.GARGOYLE),
-	GHOSTS("ghosts", -1),
-	GHOULS("ghouls", -1),
 	GOBLINS("goblins", ItemID.ENSOULED_GOBLIN_HEAD),
 	GREATER_DEMONS("greater demons", ItemID.GREATER_DEMON_MASK),
 	GREEN_DRAGONS("green dragons", ItemID.GREEN_DRAGON_MASK),
@@ -78,13 +74,10 @@ enum Task
 	HELLHOUNDS("hellhounds", ItemID.HELLHOUND),
 	HILL_GIANTS("hill giants", ItemID.ENSOULED_GIANT_HEAD),
 	HOBGOBLINS("hobgoblins", ItemID.HOBGOBLIN_GUARD),
-	ICE_GIANTS("ice giants", -1),
 	ICE_WARRIORS("ice warriors", ItemID.MITHRIL_FULL_HELM_T),
-	ICEFIENDS("icefiends", -1),
 	INFERNAL_MAGES("infernal mages", ItemID.INFERNAL_MAGE),
 	IRON_DRAGONS("iron dragons", ItemID.IRON_DRAGON_MASK),
 	JELLIES("jellies", ItemID.JELLY),
-	JUNGLE_HORRORS("jungle horrors", -1),
 	KALPHITE("kalphite", ItemID.KALPHITE_SOLDIER),
 	KILLERWATTS("killerwatts", ItemID.KILLERWATT),
 	KURASK("kurask", ItemID.KURASK),
@@ -96,7 +89,6 @@ enum Task
 	MOGRES("mogres", ItemID.MOGRE),
 	MOLANISKS("molanisks", ItemID.MOLANISK),
 	MONKEYS("monkeys", ItemID.ENSOULED_MONKEY_HEAD),
-	MOSS_GIANTS("moss giants", -1),
 	MUTATED_ZYGOMITES("mutated zygomites", ItemID.MUTATED_ZYGOMITE),
 	NECHRYAEL("nechryael", ItemID.NECHRYAEL),
 	OGRES("ogres", ItemID.ENSOULED_OGRE_HEAD),
@@ -105,15 +97,12 @@ enum Task
 	RATS("rats", ItemID.RATS_TAIL),
 	RED_DRAGONS("red dragons", ItemID.BABY_RED_DRAGON),
 	ROCKSLUGS("rockslugs", ItemID.ROCKSLUG),
-	SCORPIONS("scorpions", -1),
 	SEA_SNAKES("sea snakes", ItemID.SNAKE_CORPSE),
 	SHADES("shades", ItemID.SHADE_ROBE_TOP),
-	SHADOW_WARRIORS("shadow warriors", -1),
 	SKELETAL_WYVERNS("skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("skeletons", ItemID.SKELETON_GUARD),
 	SMOKE_DEVILS("smoke devils", ItemID.SMOKE_DEVIL),
 	SPIDERS("spiders", ItemID.HUGE_SPIDER),
-	SPIRITUAL_CREATURES("spiritual creatures", -1),
 	STEEL_DRAGONS("steel dragons", ItemID.STEEL_DRAGON),
 	SUQAHS("suqahs", ItemID.SUQAH_TOOTH),
 	TERROR_DOGS("terror dogs", ItemID.TERROR_DOG),
@@ -122,7 +111,6 @@ enum Task
 	TZHAAR("tzhaar", ItemID.ENSOULED_TZHAAR_HEAD),
 	VAMPIRES("vampires", ItemID.STAKE),
 	WALL_BEASTS("wall beasts", ItemID.SWAMP_WALLBEAST),
-	WATERFIENDS("waterfiends", -1),
 	WEREWOLVES("werewolves", ItemID.WOLFBANE),
 	WOLVES("wolves", ItemID.GREY_WOLF_FUR),
 	ZOMBIES("zombies", ItemID.ZOMBIE_HEAD);
@@ -143,6 +131,7 @@ enum Task
 
 	Task(String name, int itemSpriteId)
 	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
 	}
