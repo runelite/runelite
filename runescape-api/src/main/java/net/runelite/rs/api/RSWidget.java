@@ -118,7 +118,8 @@ public interface RSWidget extends Widget
 	void setHeight(int height);
 
 	@Import("isHidden")
-	boolean isRSHidden();
+	@Override
+	boolean isSelfHidden();
 
 	@Import("isHidden")
 	void setHidden(boolean hidden);
