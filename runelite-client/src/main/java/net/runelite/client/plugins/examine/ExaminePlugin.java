@@ -52,6 +52,7 @@ import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -376,8 +377,10 @@ public class ExaminePlugin extends Plugin
 					.append("ea)");
 			}
 
-			chatMessageManager.queue(ChatMessageType.EXAMINE_ITEM, message.build());
-			client.refreshChat();
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.EXAMINE_ITEM)
+				.runeLiteFormattedMessage(message.build())
+				.build());
 		}
 	}
 

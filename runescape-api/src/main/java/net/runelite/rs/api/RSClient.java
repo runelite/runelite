@@ -204,8 +204,8 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("worldList")
 	RSWorld[] getWorldList();
 
-	@Import("sendGameMessage")
-	void sendGameMessage(int var1, String var2, String var3);
+	@Import("addChatMessage")
+	void addChatMessage(int type, String name, String message, String sender);
 
 	@Override
 	@Import("getObjectDefinition")

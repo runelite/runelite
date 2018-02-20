@@ -40,7 +40,7 @@ public interface Client extends GameEngine
 
 	int getRealSkillLevel(Skill skill);
 
-	void sendGameMessage(ChatMessageType type, String message);
+	void addChatMessage(ChatMessageType type, String name, String message, String sender);
 
 	GameState getGameState();
 

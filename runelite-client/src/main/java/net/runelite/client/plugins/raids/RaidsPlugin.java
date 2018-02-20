@@ -50,6 +50,7 @@ import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -239,7 +240,10 @@ public class RaidsPlugin extends Plugin
 							.append("%)")
 							.build();
 
-					chatMessageManager.queue(ChatMessageType.CLANCHAT_INFO, chatMessage);
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.CLANCHAT_INFO)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
 				}
 			}
 		}
