@@ -284,6 +284,4 @@ public interface Client extends GameEngine
 	ClanMember[] getClanMembers();
 
 	boolean isClanMember(String name);
-
-	List<Integer> getForceHiddenWidgetIds();
 }

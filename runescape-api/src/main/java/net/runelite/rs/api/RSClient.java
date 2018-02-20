@@ -469,7 +469,4 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("varbits")
 	RSNodeCache getVarbitCache();
-
-	@Override
-	List<Integer> getForceHiddenWidgetIds();
 }

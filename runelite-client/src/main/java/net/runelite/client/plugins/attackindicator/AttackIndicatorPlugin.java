@@ -154,7 +154,7 @@ public class AttackIndicatorPlugin extends Plugin
 
 		if (w != null)
 		{
-			if (w.isHidden() != hide)
+			if (w.isLocalHidden() != hide)
 			{
 				w.setHidden(hide);
 			}
@@ -252,7 +252,7 @@ public class AttackIndicatorPlugin extends Plugin
 			touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_STYLE_FOUR, warned && hide));
 		}
 
-		if (type.getAttackStyles().length > 4) //4th style is always magic
+		if (type.getAttackStyles().length > 4) //5th style is always magic
 		{
 			boolean warnedMagic = isWarnedStyle(AttackStyle.CASTING, 4);
 			boolean warnedDefense = isWarnedStyle(AttackStyle.DEFENSIVE_CASTING, 4);
@@ -269,16 +269,7 @@ public class AttackIndicatorPlugin extends Plugin
 
 		//add auto retaliate if necessary
 		touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_AUTO_RETALIATE_BOX, config.removeAutoRetaliate()));
-
-		client.getForceHiddenWidgetIds().clear();
-
-		for (Pair<WidgetInfo, Boolean> pair : touchedWidgets)
-		{
-			if (pair.getValue())
-			{
-				client.getForceHiddenWidgetIds().add(pair.getKey().getPackedId());
-			}
-		}
+		touchedWidgets.add(new Pair<>(WidgetInfo.COMBAT_AUTO_RETALIATE_TEXT, config.removeAutoRetaliate()));
 	}
 
 	private void updateTouchedWidgets()
@@ -398,7 +389,7 @@ public class AttackIndicatorPlugin extends Plugin
 	{
 		if (widget != null)
 		{
-			if (widget.isHidden() != hidden)
+			if (widget.isLocalHidden() != hidden)
 			{
 				widget.setHidden(hidden);
 			}
