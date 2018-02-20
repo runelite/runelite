@@ -38,14 +38,14 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatColor;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -185,7 +185,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Running price lookup for {}", search);
 
-			executor.submit(() -> itemPriceLookup(setMessage.getType(), setMessage.getMessageNode(), search));
+			executor.submit(() -> itemPriceLookup(setMessage.getMessageNode(), search));
 		}
 		else if (config.lvl() && message.toLowerCase().startsWith("!lvl") && message.length() > 5)
 		{
@@ -203,7 +203,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param messageNode The chat message containing the command.
 	 * @param search The item given with the command.
 	 */
-	private void itemPriceLookup(ChatMessageType type, MessageNode messageNode, String search)
+	private void itemPriceLookup(MessageNode messageNode, String search)
 	{
 		SearchResult result;
 
@@ -263,7 +263,8 @@ public class ChatCommandsPlugin extends Plugin
 			String response = builder.build();
 
 			log.debug("Setting response {}", response);
-			chatMessageManager.update(type, response, messageNode);
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 	}
@@ -325,7 +326,9 @@ public class ChatCommandsPlugin extends Plugin
 				.build();
 
 			log.debug("Setting response {}", response);
-			chatMessageManager.update(type, response, setMessage.getMessageNode());
+			final MessageNode messageNode = setMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)
