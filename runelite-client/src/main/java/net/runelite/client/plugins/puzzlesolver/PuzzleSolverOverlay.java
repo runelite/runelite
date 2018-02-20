@@ -50,6 +50,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.plugins.puzzlesolver.PuzzleSolver.BLANK_TILE_VALUE;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -83,6 +84,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.config = config;
 	}
