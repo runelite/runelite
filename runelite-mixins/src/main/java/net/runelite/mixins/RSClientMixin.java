@@ -122,9 +122,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public void sendGameMessage(ChatMessageType type, String message)
+	public void addChatMessage(ChatMessageType type, String name, String message, String sender)
 	{
-		sendGameMessage(type.getType(), "", message);
+		addChatMessage(type.getType(), name, message, sender);
 	}
 
 	@Inject

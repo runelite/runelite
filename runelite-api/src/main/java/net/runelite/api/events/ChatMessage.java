@@ -33,7 +33,7 @@ import net.runelite.api.ChatMessageType;
 public class ChatMessage
 {
 	private ChatMessageType type;
-	private String sender;
+	private String name;
 	private String message;
-	private String clan;
+	private String sender;
 }
