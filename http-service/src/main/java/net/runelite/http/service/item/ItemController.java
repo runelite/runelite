@@ -26,7 +26,6 @@ package net.runelite.http.service.item;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -53,9 +52,6 @@ public class ItemController
 	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
 	private static final String RUNELITE_CACHE = "RuneLite-Cache";
 
-	private final Cache<String, SearchResult> cachedSearches = CacheBuilder.newBuilder()
-		.maximumSize(1024L)
-		.build();
 	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
 		.maximumSize(1024L)
 		.build();
@@ -217,37 +213,14 @@ public class ItemController
 	@RequestMapping("/search")
 	public SearchResult search(HttpServletResponse response, @RequestParam String query)
 	{
-		// rs api seems to require lowercase
-		query = query.toLowerCase();
+		List<ItemEntry> result = itemService.search(query);
 
-		SearchResult searchResult = cachedSearches.getIfPresent(query);
-		if (searchResult != null)
-		{
-			response.setHeader(RUNELITE_CACHE, "HIT");
-			return searchResult;
-		}
+		itemService.queueSearch(query);
 
-		try
-		{
-			RSSearch search = itemService.fetchRSSearch(query);
-
-			searchResult = new SearchResult();
-			List<Item> items = search.getItems().stream()
-				.map(rsi -> rsi.toItem())
-				.collect(Collectors.toList());
-			searchResult.setItems(items);
-
-			cachedSearches.put(query, searchResult);
-
-			itemService.batchInsertItems(search);
-
-			response.setHeader(RUNELITE_CACHE, "MISS");
-			return searchResult;
-		}
-		catch (IOException ex)
-		{
-			log.warn("error while searching items", ex);
-			return null;
-		}
+		SearchResult searchResult = new SearchResult();
+		searchResult.setItems(result.stream()
+			.map(ItemEntry::toItem)
+			.collect(Collectors.toList()));
+		return searchResult;
 	}
 }

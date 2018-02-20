@@ -65,7 +65,8 @@ public class ItemService
 		+ "  `icon` blob,\n"
 		+ "  `icon_large` blob,\n"
 		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`id`)\n"
+		+ "  PRIMARY KEY (`id`),\n"
+		+ "  FULLTEXT idx_name (name)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
@@ -80,10 +81,11 @@ public class ItemService
 	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
 		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
 
-	private static final int MAX_PENDING_LOOKUPS = 512;
+	private static final int MAX_PENDING = 512;
 
 	private final Sql2o sql2o;
 	private final ConcurrentLinkedQueue<Integer> pendingPriceLookups = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<String> pendingSearches = new ConcurrentLinkedQueue<>();
 
 	@Autowired
 	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
@@ -139,6 +141,18 @@ public class ItemService
 					.addParameter("item", itemId)
 					.executeAndFetchFirst(PriceEntry.class);
 			}
+		}
+	}
+
+	public List<ItemEntry> search(String search)
+	{
+		try (Connection con = sql2o.open())
+		{
+			return con.createQuery("select id, name, description, type, match (name) against (:search) as score from items "
+				+ "where match (name) against (:search) order by score desc limit 10")
+				.throwOnMappingFailure(false) // otherwise it tries to map 'score'
+				.addParameter("search", search)
+				.executeAndFetch(ItemEntry.class);
 		}
 	}
 
@@ -274,6 +288,9 @@ public class ItemService
 
 	public RSSearch fetchRSSearch(String query) throws IOException
 	{
+		// rs api seems to require lowercase
+		query = query.toLowerCase();
+
 		HttpUrl searchUrl = RS_SEARCH_URL
 			.newBuilder()
 			.addQueryParameter("alpha", query)
@@ -286,7 +303,7 @@ public class ItemService
 		return fetchJson(request, RSSearch.class);
 	}
 
-	public void batchInsertItems(RSSearch search)
+	private void batchInsertItems(RSSearch search)
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -347,12 +364,22 @@ public class ItemService
 
 	public void queueLookup(int itemId)
 	{
-		if (pendingPriceLookups.size() >= MAX_PENDING_LOOKUPS)
+		if (pendingPriceLookups.size() >= MAX_PENDING)
 		{
 			return;
 		}
 
 		pendingPriceLookups.add(itemId);
+	}
+
+	public void queueSearch(String search)
+	{
+		if (pendingSearches.size() >= MAX_PENDING)
+		{
+			return;
+		}
+
+		pendingSearches.add(search);
 	}
 
 	@Scheduled(fixedDelay = 5000)
@@ -365,5 +392,26 @@ public class ItemService
 		}
 
 		fetchPrice(itemId);
+	}
+
+	@Scheduled(fixedDelay = 5000)
+	public void checkSearches()
+	{
+		String search = pendingSearches.poll();
+		if (search == null)
+		{
+			return;
+		}
+
+		try
+		{
+			RSSearch reSearch = fetchRSSearch(search);
+
+			batchInsertItems(reSearch);
+		}
+		catch (IOException ex)
+		{
+			log.warn("error while searching items", ex);
+		}
 	}
 }
