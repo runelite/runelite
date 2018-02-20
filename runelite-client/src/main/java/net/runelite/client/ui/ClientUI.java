@@ -75,7 +75,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 public class ClientUI extends JFrame
 {
 	private static final int PANEL_EXPANDED_WIDTH = PluginPanel.PANEL_WIDTH + PluginPanel.SCROLLBAR_WIDTH;
-	private static final BufferedImage ICON;
+	public static final BufferedImage ICON;
 
 	@Getter
 	private TrayIcon trayIcon;
