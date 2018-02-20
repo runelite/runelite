@@ -321,11 +321,7 @@ public class SlayerPlugin extends Plugin
 
 		Task task = Task.getTask(taskName);
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
-		if (task == null)
-		{
-			log.debug("No slayer task for {} in the Task database", taskName);
-		}
-		else
+		if (task != null)
 		{
 			itemSpriteId = task.getItemSpriteId();
 		}
