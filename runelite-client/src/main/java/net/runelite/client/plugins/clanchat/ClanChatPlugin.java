@@ -151,7 +151,7 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		if (setMessage.getType() == ChatMessageType.CLANCHAT)
+		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
 		{
 			insertClanRankIcon(setMessage);
 		}
