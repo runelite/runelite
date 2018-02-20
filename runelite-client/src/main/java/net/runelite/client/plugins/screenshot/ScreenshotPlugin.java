@@ -61,7 +61,7 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.HUNTER_LEVEL_UP_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -253,9 +253,9 @@ public class ScreenshotPlugin extends Plugin
 				fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_SKILL, WidgetInfo.LEVEL_UP_LEVEL);
 				break;
 			}
-			case HUNTER_LEVEL_UP_GROUP_ID:
+			case DIALOG_SPRITE_GROUP_ID:
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.HUNTER_LEVEL_UP_SKILL, WidgetInfo.HUNTER_LEVEL_UP_LEVEL);
+				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_SPRITE, WidgetInfo.DIALOG_SPRITE_TEXT);
 				break;
 			}
 			case QUEST_COMPLETED_GROUP_ID:

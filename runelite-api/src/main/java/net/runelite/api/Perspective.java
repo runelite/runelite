@@ -279,8 +279,8 @@ public class Perspective
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
-		int x = (point.getX() - baseX) << LOCAL_COORD_BITS;
-		int y = (point.getY() - baseY) << LOCAL_COORD_BITS;
+		int x = ((point.getX() - baseX) << LOCAL_COORD_BITS) + (1 << LOCAL_COORD_BITS - 1) - 1;
+		int y = ((point.getY() - baseY) << LOCAL_COORD_BITS) + (1 << LOCAL_COORD_BITS - 1) - 1;
 
 		return new Point(x, y);
 	}
