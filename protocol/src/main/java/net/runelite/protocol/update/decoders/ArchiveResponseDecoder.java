@@ -91,7 +91,9 @@ public class ArchiveResponseDecoder extends ByteToMessageDecoder
 				bytesInBlock,
 				compressedData.writerIndex(), size);
 
-			compressedData.writeBytes(in.readBytes(bytesToRead));
+			ByteBuf chunk = in.readBytes(bytesToRead);
+			compressedData.writeBytes(chunk);
+			chunk.release();
 
 			totalRead += bytesToRead;
 
