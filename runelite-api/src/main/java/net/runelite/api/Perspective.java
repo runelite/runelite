@@ -276,6 +276,11 @@ public class Perspective
 
 	public static Point worldToLocal(Client client, Point point)
 	{
+		if (!isWorldInScene(client, point))
+		{
+			return null;
+		}
+
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
