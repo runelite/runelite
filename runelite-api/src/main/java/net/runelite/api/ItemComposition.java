@@ -74,4 +74,11 @@ public interface ItemComposition
 	 * @return true if members-only, false otherwise.
 	 */
 	boolean isMembers();
+
+	/**
+	 * Returns whether or not the item stacks in the players' inventories
+	 *
+	 * @return true if stackable, false otherwise
+	 */
+	boolean isStackable();
 }
