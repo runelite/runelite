@@ -40,18 +40,26 @@ public class InfoPlugin extends Plugin
 	@Inject
 	private ClientUI ui;
 
+	private NavigationButton navButton;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		final InfoPanel panel = injector.getInstance(InfoPanel.class);
 		panel.init();
 
-		final NavigationButton navButton = new NavigationButton(
+		navButton = new NavigationButton(
 			"Info",
 			ImageIO.read(getClass().getResourceAsStream("info_icon.png")),
 			() -> panel
 		);
 
 		ui.getPluginToolbar().addNavigation(navButton);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		ui.getPluginToolbar().removeNavigation(navButton);
 	}
 }
