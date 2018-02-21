@@ -153,7 +153,9 @@ public class GroundItemsOverlay extends Overlay
 					ItemComposition itemDefinition = itemManager.getItemComposition(itemId);
 
 					Integer currentQuantity = items.get(itemId);
-					if (!hiddenItems.contains(itemDefinition.getName().toLowerCase()))
+
+					String itemName = itemDefinition.getName().toLowerCase();
+					if (config.showHighlightedOnly() ? highlightedItems.contains(itemName) : !hiddenItems.contains(itemName))
 					{
 						if (itemDefinition.getNote() != -1)
 						{
@@ -179,8 +181,8 @@ public class GroundItemsOverlay extends Overlay
 							alchPrice = Math.round(itemDefinition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 						}
 						if (highlightedItems.contains(itemDefinition.getName().toLowerCase()) ||
-								gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
-								(alchPrice >= config.getHideUnderHAValue())))
+							gePrice == 0 || ((gePrice >= config.getHideUnderGeValue()) &&
+							(alchPrice >= config.getHideUnderHAValue())))
 						{
 							items.put(itemId, quantity);
 						}
