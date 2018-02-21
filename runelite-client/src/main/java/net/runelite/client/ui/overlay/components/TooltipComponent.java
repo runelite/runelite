@@ -30,17 +30,17 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Setter;
+import net.runelite.api.IndexedSprite;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
 public class TooltipComponent implements RenderableEntity
 {
-	private static final Pattern COLOR_SPLIT = Pattern.compile("<\\/?col=?([^>]+)?>");
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
+	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 
 	@Setter
 	private String text;
@@ -50,6 +50,9 @@ public class TooltipComponent implements RenderableEntity
 
 	@Setter
 	private Point position = new Point();
+
+	@Setter
+	private IndexedSprite[] modIcons;
 
 	@Override
 	public Dimension render(Graphics2D graphics, Point parent)
@@ -64,10 +67,11 @@ public class TooltipComponent implements RenderableEntity
 		int tooltipHeight = 0;
 		String[] lines = BR.split(text);
 
+		// Calculate tooltip size
 		for (String line : lines)
 		{
-			String lineClean = COLOR_SPLIT.matcher(line).replaceAll("");
-			int textWidth = graphics.getFontMetrics().stringWidth(lineClean);
+			int textWidth = calculateTextWidth(metrics, line);
+
 			if (textWidth > tooltipWidth)
 			{
 				tooltipWidth = textWidth;
@@ -109,43 +113,113 @@ public class TooltipComponent implements RenderableEntity
 		{
 			lineX = textX;
 			final String line = lines[i];
-			final Matcher m = COLOR_SPLIT.matcher(line);
+			char[] chars = line.toCharArray();
 
 			int begin = 0;
-			while (m.find())
+			for (int j = 0; j < chars.length; j++)
 			{
-				// Draw text prior to color tag
-				String preText = line.substring(begin, m.start());
-				final TextComponent textComponent = new TextComponent();
-				textComponent.setText(preText);
-				textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-				textComponent.setColor(nextColor);
-				textComponent.render(graphics, parent);
+				if (chars[j] == '<')
+				{
+					TextComponent textComponent = new TextComponent();
+					textComponent.setColor(nextColor);
+					String text = line.substring(begin, j);
+					textComponent.setText(text);
+					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
+					textComponent.render(graphics, parent);
 
-				// Set color for next text part
-				if (m.group(1) == null)
-				{
-					// no color tag
-					nextColor = Color.WHITE;
+					lineX += metrics.stringWidth(text);
+
+					begin = j;
 				}
-				else
+				else if (chars[j] == '>')
 				{
-					// color tag
-					nextColor = Color.decode("#" + m.group(1));
+					String subLine = line.substring(begin + 1, j);
+
+					if (subLine.startsWith("col="))
+					{
+						String argument = subLine.substring(4);
+						nextColor = Color.decode("#" + argument);
+					}
+					else if (subLine.equals("/col"))
+					{
+						nextColor = Color.WHITE;
+					}
+					else if (subLine.startsWith("img="))
+					{
+						if (modIcons != null)
+						{
+							String argument = subLine.substring(4);
+							int iconId = Integer.parseInt(argument);
+							IndexedSprite modIcon = modIcons[iconId];
+							renderModIcon(graphics, lineX, textY + i * textHeight - textDescent, modIcon);
+							lineX += modIcon.getWidth();
+						}
+					}
+
+					begin = j + 1;
 				}
-				begin = m.end();
-				lineX += metrics.stringWidth(preText);
 			}
 
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
+			textComponent.setColor(nextColor);
 			textComponent.setText(line.substring(begin, line.length()));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
-			textComponent.setColor(nextColor);
 			textComponent.render(graphics, parent);
 		}
 
-
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
+	}
+
+	private static int calculateTextWidth(FontMetrics metrics, String line)
+	{
+		char[] chars = line.toCharArray();
+		int textWidth = 0;
+
+		int begin = 0;
+		for (int j = 0; j < chars.length; j++)
+		{
+			if (chars[j] == '<')
+			{
+				textWidth += metrics.stringWidth(line.substring(begin, j));
+
+				begin = j;
+			}
+			else if (chars[j] == '>')
+			{
+				String subLine = line.substring(begin + 1, j);
+
+				if (subLine.startsWith("img="))
+				{
+					textWidth += MOD_ICON_WIDTH;
+				}
+
+				begin = j + 1;
+			}
+		}
+
+		// Include trailing text (after last tag)
+		textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+
+		return textWidth;
+	}
+
+	private void renderModIcon(Graphics2D graphics, int x, int y, IndexedSprite modIcon)
+	{
+		int sourceOffset = 0;
+
+		for (int y2 = 0; y2 < modIcon.getHeight(); y2++)
+		{
+			for (int x2 = 0; x2 < modIcon.getOriginalWidth(); x2++)
+			{
+				int index = modIcon.getPixels()[sourceOffset++] & 0xff;
+
+				if (index != 0)
+				{
+					graphics.setColor(new Color(modIcon.getPalette()[index]));
+					graphics.drawLine(x + x2, y + y2, x + x2, y + y2);
+				}
+			}
+		}
 	}
 }
