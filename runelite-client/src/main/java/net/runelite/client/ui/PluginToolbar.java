@@ -24,18 +24,21 @@
  */
 package net.runelite.client.ui;
 
+import java.awt.Component;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 import javax.swing.JToolBar;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PluginToolbar extends JToolBar
 {
 	public static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
 
 	private final ClientUI ui;
-	private final List<NavigationButton> buttons = new ArrayList<>();
+	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(Component::getName));
 
 	private NavigationButton current;
 
@@ -56,8 +59,15 @@ public class PluginToolbar extends JToolBar
 		button.addActionListener((ae) -> onClick(button));
 		button.setToolTipText(button.getName());
 
+		if (buttons.contains(button))
+		{
+			log.warn("Button already in container '{}'", button.getName());
+			return;
+		}
+
 		buttons.add(button);
-		add(button);
+		int index = buttons.headSet(button).size();
+		add(button, index);
 		revalidate();
 		repaint();
 	}
