@@ -122,6 +122,13 @@ public abstract class RSWidgetMixin implements RSWidget
 
 	@Inject
 	@Override
+	public boolean isLocalHidden()
+	{
+		return isRSHidden();
+	}
+
+	@Inject
+	@Override
 	public Point getCanvasLocation()
 	{
 		int x = 0;
@@ -336,7 +343,7 @@ public abstract class RSWidgetMixin implements RSWidget
 			return;
 		}
 
-		boolean hidden = isHidden();
+		boolean hidden = isLocalHidden();
 
 		WidgetHiddenChanged event = new WidgetHiddenChanged();
 		event.setWidget(this);

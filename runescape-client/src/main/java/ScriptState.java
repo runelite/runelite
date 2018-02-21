@@ -553,7 +553,7 @@ public class ScriptState {
 
                                                                                                 var36 = var37;
                                                                                              } else if(var7 < 1100) {
-                                                                                                var36 = Actor.method1612(var7, var3, var68);
+                                                                                                var36 = Actor.scriptWidgetInstructions(var7, var3, var68);
                                                                                              } else if(var7 < 1200) {
                                                                                                 var36 = ContextMenuRow.method1874(var7, var3, var68);
                                                                                              } else if(var7 < 1300) {
@@ -573,7 +573,7 @@ public class ScriptState {
                                                                                              } else if(var7 < 2000) {
                                                                                                 var36 = ScriptEvent.method1073(var7, var3, var68);
                                                                                              } else if(var7 < 2100) {
-                                                                                                var36 = Actor.method1612(var7, var3, var68);
+                                                                                                var36 = Actor.scriptWidgetInstructions(var7, var3, var68);
                                                                                              } else if(var7 < 2200) {
                                                                                                 var36 = ContextMenuRow.method1874(var7, var3, var68);
                                                                                              } else if(var7 < 2300) {

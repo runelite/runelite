@@ -508,7 +508,8 @@ public abstract class Actor extends Renderable {
       signature = "(ILcf;ZI)I",
       garbageValue = "-475447881"
    )
-   static int method1612(int var0, Script var1, boolean var2) {
+   @Export("scriptWidgetInstructions")
+   static int scriptWidgetInstructions(int var0, Script var1, boolean var2) {
       int var3 = -1;
       Widget var4;
       if(var0 >= 2000) {

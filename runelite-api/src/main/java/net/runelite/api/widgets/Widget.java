@@ -78,7 +78,17 @@ public interface Widget
 
 	void setSpriteId(int spriteId);
 
+	/**
+	 * whether the widget is hidden on the screen returns
+	 * @return hidden if any of its parents or itself are hidden
+	 */
 	boolean isHidden();
+
+	/**
+	 * whether the widget is hidden on a local level, not including its parents hidden value
+	 * @return hidden if this widget is set to hidden, parents don't affect this.
+	 */
+	boolean isLocalHidden();
 
 	void setHidden(boolean hidden);
 
