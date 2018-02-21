@@ -79,4 +79,15 @@ public interface HunterConfig extends Config
 	{
 		return Color.ORANGE;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "maniacalMonkeyNotify",
+		name = "Maniacal monkey notification",
+		description = "Send notification when maniacal monkey is caught or you fail to catch."
+	)
+	default boolean maniacalMonkeyNotify()
+	{
+		return false;
+	}
 }

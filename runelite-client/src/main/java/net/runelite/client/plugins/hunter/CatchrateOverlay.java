@@ -47,14 +47,12 @@ public class CatchrateOverlay extends Overlay
 	private final PanelComponent catchRatePanel = new PanelComponent();
 
 	private final HunterPlugin plugin;
-	private final HunterConfig config;
 
 	@Inject
-	CatchrateOverlay(HunterPlugin plugin, HunterConfig config)
+	CatchrateOverlay(HunterPlugin plugin)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		this.plugin = plugin;
-		this.config = config;
 	}
 
 	@Override
