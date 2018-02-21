@@ -67,36 +67,10 @@ public class TooltipComponent implements RenderableEntity
 		int tooltipHeight = 0;
 		String[] lines = BR.split(text);
 
+		// Calculate tooltip size
 		for (String line : lines)
 		{
-			int textWidth = 0;
-
-			char[] chars = line.toCharArray();
-
-			int begin = 0;
-			for (int j = 0; j < chars.length; j++)
-			{
-				if (chars[j] == '<')
-				{
-					textWidth += metrics.stringWidth(line.substring(begin, j));
-
-					begin = j;
-				}
-				else if (chars[j] == '>')
-				{
-					String subLine = line.substring(begin + 1, j);
-
-					if (subLine.startsWith("img="))
-					{
-						textWidth += MOD_ICON_WIDTH;
-					}
-
-					begin = j + 1;
-				}
-			}
-
-			// Include trailing text (after last tag)
-			textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+			int textWidth = calculateTextWidth(metrics, line);
 
 			if (textWidth > tooltipWidth)
 			{
@@ -195,6 +169,39 @@ public class TooltipComponent implements RenderableEntity
 		}
 
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
+	}
+
+	private static int calculateTextWidth(FontMetrics metrics, String line)
+	{
+		char[] chars = line.toCharArray();
+		int textWidth = 0;
+
+		int begin = 0;
+		for (int j = 0; j < chars.length; j++)
+		{
+			if (chars[j] == '<')
+			{
+				textWidth += metrics.stringWidth(line.substring(begin, j));
+
+				begin = j;
+			}
+			else if (chars[j] == '>')
+			{
+				String subLine = line.substring(begin + 1, j);
+
+				if (subLine.startsWith("img="))
+				{
+					textWidth += MOD_ICON_WIDTH;
+				}
+
+				begin = j + 1;
+			}
+		}
+
+		// Include trailing text (after last tag)
+		textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+
+		return textWidth;
 	}
 
 	private void renderModIcon(Graphics2D graphics, int x, int y, IndexedSprite modIcon)
