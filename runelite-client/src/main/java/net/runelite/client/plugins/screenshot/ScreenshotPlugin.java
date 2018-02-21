@@ -46,6 +46,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -119,6 +120,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private OverlayRenderer overlayRenderer;
+
+	@Inject
+	private ScheduledExecutorService executor;
 
 	private JButton titleBarButton;
 
@@ -397,34 +401,40 @@ public class ScreenshotPlugin extends Plugin
 				}
 			}
 
-			File playerFolder = RuneLite.SCREENSHOT_DIR;
-
+			File playerFolder;
 			if (client.getLocalPlayer() != null)
 			{
 				playerFolder = new File(RuneLite.SCREENSHOT_DIR, client.getLocalPlayer().getName());
 			}
+			else
+			{
+				playerFolder = RuneLite.SCREENSHOT_DIR;
+			}
 
 			playerFolder.mkdirs();
 
-			try
+			executor.execute(() ->
 			{
-				File screenshotFile = new File(playerFolder, fileName + ".png");
-
-				ImageIO.write(screenshot, "PNG", screenshotFile);
-
-				if (config.uploadScreenshot())
+				try
 				{
-					uploadScreenshot(screenshotFile);
+					File screenshotFile = new File(playerFolder, fileName + ".png");
+
+					ImageIO.write(screenshot, "PNG", screenshotFile);
+
+					if (config.uploadScreenshot())
+					{
+						uploadScreenshot(screenshotFile);
+					}
+					else if (config.notifyWhenTaken())
+					{
+						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+					}
 				}
-				else if (config.notifyWhenTaken())
+				catch (IOException ex)
 				{
-					notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+					log.warn("error writing screenshot", ex);
 				}
-			}
-			catch (IOException ex)
-			{
-				log.warn("error writing screenshot", ex);
-			}
+			});
 		});
 	}
 
