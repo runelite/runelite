@@ -468,4 +468,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("varbits")
 	RSNodeCache getVarbitCache();
+
+	@Import("preferences")
+	@Override
+	RSPreferences getPreferences();
 }

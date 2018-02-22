@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberusername;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(
-	keyName = "rememberusername",
-	name = "Remember Username",
-	description = "Configuration for the remember username plugin"
-)
-public interface RememberUsernameConfig extends Config
+public interface Preferences
 {
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String username()
-	{
-		return "";
-	}
+	String getRememberedUsername();
 
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = ""
-	)
-	void username(String key);
+	void setRememberedUsername(String username);
 }
