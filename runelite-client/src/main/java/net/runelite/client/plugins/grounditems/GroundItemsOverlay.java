@@ -292,13 +292,11 @@ public class GroundItemsOverlay extends Overlay
 
 	private boolean listContains(List<String> list, String itemName)
 	{
-		int wildcardIndex;
-		String matchString;
 		itemName = itemName.toLowerCase();
 
 		for (String item : list)
 		{
-			wildcardIndex = item.indexOf("*");
+			int wildcardIndex = item.indexOf("*");
 
 			if (wildcardIndex == -1)
 			{
@@ -308,7 +306,7 @@ public class GroundItemsOverlay extends Overlay
 					continue;
 			}
 
-			matchString = item.replaceAll("\\*", "").toLowerCase();
+			String matchString = item.replaceAll("\\*", "").toLowerCase();
 
 			if (wildcardIndex == 0 && itemName.endsWith(matchString) || itemName.startsWith(matchString))
 				return true;
